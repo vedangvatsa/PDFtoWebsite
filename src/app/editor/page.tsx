@@ -511,7 +511,7 @@ export default function EditorPage() {
             <Header />
             {!user && (
                 <div className="border-b bg-background">
-                    <div className="container mx-auto max-w-4xl px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div className="container mx-auto max-w-4xl px-4 md:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
                         <p className="text-sm text-muted-foreground">
                             <span className="font-medium text-foreground">Preview is ready!</span>{' '}
                             Sign up to publish your profile and get a shareable link.
@@ -682,16 +682,7 @@ export default function EditorPage() {
                                                     <Input 
                                                         id="phone" 
                                                         name="phone" 
-                                                        placeholder={(() => {
-                                                            try {
-                                                                const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                                                                if (tz.includes('Kolkata') || tz.includes('Calcutta')) return '+91 98765 43210';
-                                                                if (tz.includes('London')) return '+44 7911 123456';
-                                                                if (tz.includes('Australia')) return '+61 412 345 678';
-                                                                if (tz.includes('Europe/')) return '+49 151 2345 6789';
-                                                                return '+1 (555) 123-4567';
-                                                            } catch { return '+1 (555) 123-4567'; }
-                                                        })()}
+                                                        placeholder="+1 (555) 123-4567"
                                                         value={profile.phone || ''} 
                                                         onChange={handleProfileChange} 
                                                         onBlur={handleProfileBlur} 
@@ -703,22 +694,7 @@ export default function EditorPage() {
                                                     <Input 
                                                         id="location" 
                                                         name="location" 
-                                                        placeholder={(() => {
-                                                            try {
-                                                                const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                                                                if (tz.includes('Kolkata') || tz.includes('Calcutta')) return 'Mumbai, India';
-                                                                if (tz.includes('London')) return 'London, UK';
-                                                                if (tz.includes('Australia/Sydney')) return 'Sydney, Australia';
-                                                                if (tz.includes('America/New_York')) return 'New York, NY';
-                                                                if (tz.includes('America/Los_Angeles')) return 'San Francisco, CA';
-                                                                if (tz.includes('Europe/Berlin')) return 'Berlin, Germany';
-                                                                
-                                                                const parts = tz.split('/');
-                                                                if (parts.length > 1) return `${parts[parts.length - 1].replace(/_/g, ' ')}, ${parts[0]}`;
-                                                                
-                                                                return 'San Francisco, CA';
-                                                            } catch { return 'San Francisco, CA'; }
-                                                        })()} 
+                                                        placeholder="San Francisco, CA" 
                                                         value={profile.location || ''} 
                                                         onChange={handleProfileChange} 
                                                         onBlur={handleProfileBlur} 

@@ -13,6 +13,19 @@ import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/login-dialog';
 import { useUser } from '@/auth';
 
+function StepIndicator({ num, label }: { num: number; label: string }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground font-bold text-xs">{num}</div>
+      <span className="text-[11px] font-medium uppercase tracking-wider">{label}</span>
+    </div>
+  );
+}
+
+function StepDivider() {
+  return <div className="h-px flex-1 mx-4 bg-border hidden sm:block" />;
+}
+
 export default function Home() {
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
@@ -61,13 +74,12 @@ export default function Home() {
       <Header />
       <main className="flex-1 flex flex-col items-center justify-center p-4">
         <div className="flex flex-col items-center space-y-6 text-center">
-          
-          <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-white/95">
+          <div className="rounded-2xl p-4 transition-colors dark:bg-white dark:shadow-md">
             <Image
               src="/images/cvtopdf.png"
               alt="CVinBio — Turn your resume into a website"
-              width={180}
-              height={180}
+              width={250}
+              height={250}
               className="mb-0"
               priority
             />
@@ -92,7 +104,7 @@ export default function Home() {
           ) : (
             <>
               <div className="w-full max-w-md space-y-3">
-                <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent/50 ${isProcessingFile ? 'cursor-wait' : ''}`}>
+                <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait' : ''}`}>
                     {isProcessingFile ? (
                         <>
                             <Loader2 className="mr-3 h-6 w-6 animate-spin text-muted-foreground" />
@@ -128,21 +140,12 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-muted-foreground pt-4">
-                <div className="flex items-center gap-2">
-                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground font-bold text-xs">1</div>
-                    <span className="text-sm font-medium">Upload or Enter Details</span>
-                  </div>
-                  <div className="h-px w-8 bg-border md:block hidden"></div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground font-bold text-xs">2</div>
-                    <span className="text-sm font-medium">Customize Profile</span>
-                  </div>
-                   <div className="h-px w-8 bg-border md:block hidden"></div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground font-bold text-xs">3</div>
-                    <span className="text-sm font-medium">Publish & Share</span>
-                  </div>
+              <div className="flex flex-row items-center justify-between w-full max-w-md text-muted-foreground pt-4 px-2">
+                <StepIndicator num={1} label="Upload" />
+                <StepDivider />
+                <StepIndicator num={2} label="Customize" />
+                <StepDivider />
+                <StepIndicator num={3} label="Publish" />
               </div>
             </>
           )}
