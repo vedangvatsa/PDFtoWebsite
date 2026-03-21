@@ -15,7 +15,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'CVinBio | AI CV to Website Builder',
+    default: 'Convert your CV to a Website',
     template: '%s | CVinBio',
   },
   description: 'Upload your CV and let AI generate a custom, mobile-ready personal website in seconds.',
