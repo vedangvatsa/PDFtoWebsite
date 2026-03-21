@@ -25,13 +25,6 @@ export default async function Image() {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, padding: '0 80px', textAlign: 'center', width: '100%' }}>
-          
-          {/* Logo Badge */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 24px', border: '1px solid #e4e4e7', borderRadius: 100, backgroundColor: '#ffffff', marginBottom: 20 }}>
-            <div style={{ display: 'flex', fontSize: 18, fontWeight: 700, color: '#52525b', letterSpacing: '0.1em' }}>
-              CVin.Bio
-            </div>
-          </div>
 
           {/* Main Title */}
           <div style={{ display: 'flex', fontSize: 80, fontWeight: 800, letterSpacing: '-0.04em', color: '#09090b', lineHeight: 1.1 }}>
