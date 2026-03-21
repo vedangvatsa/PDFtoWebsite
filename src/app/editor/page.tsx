@@ -613,7 +613,7 @@ export default function EditorPage() {
 
                         <div className="space-y-3">
                             <Card className="shadow-sm">
-                                <CardContent className="pt-5 pb-4">
+                                <CardContent className="pt-4 pb-3">
                                     <div className="flex flex-col md:flex-row gap-6 md:items-center">
                                         <div className="flex flex-col items-center gap-2 sm:w-32 shrink-0">
                                             <label htmlFor="avatar-upload" className="relative group cursor-pointer flex-shrink-0">
@@ -737,7 +737,7 @@ export default function EditorPage() {
                                     {workItems.map(item => (
                                         <div key={item.id} className="border rounded-lg p-3 space-y-2 transition-all hover:border-primary/40 hover:bg-secondary/10 hover:shadow-sm">
                                             <div className="flex justify-between items-center">
-                                                <span className="text-sm font-medium">{item.title || 'Untitled Experience'}{item.company ? ` at ${item.company}` : ''}</span>
+                                                <span className="text-sm font-medium">{item.title || '\u00A0'}{item.company ? ` at ${item.company}` : ''}</span>
                                                 <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleDeleteItem('workExperience', item.id)}><Trash2 className="h-3 w-3 text-destructive"/></Button>
                                             </div>
                                             <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
@@ -763,7 +763,7 @@ export default function EditorPage() {
                                     {educationItems.map(item => (
                                         <div key={item.id} className="border rounded-lg p-3 space-y-2 transition-all hover:border-primary/40 hover:bg-secondary/10 hover:shadow-sm">
                                             <div className="flex justify-between items-center">
-                                                <span className="text-sm font-medium">{item.institution || 'Untitled Education'}{item.degree ? ` — ${item.degree}` : ''}</span>
+                                                <span className="text-sm font-medium">{item.institution || '\u00A0'}{item.degree ? ` — ${item.degree}` : ''}</span>
                                                 <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleDeleteItem('education', item.id)}><Trash2 className="h-3 w-3 text-destructive"/></Button>
                                             </div>
                                             <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
