@@ -121,7 +121,7 @@ export default function CustomSectionsEditor({ customSections, setCustomSections
 
             <Button variant="outline" className="w-full border-dashed py-8 bg-primary/5 hover:bg-primary/10 text-primary border-primary/20" onClick={handleAddSection}>
                 <PlusCircle className="mr-2 h-5 w-5" />
-                Add Completely Custom Section
+                Add Custom Section
             </Button>
         </div>
     );
