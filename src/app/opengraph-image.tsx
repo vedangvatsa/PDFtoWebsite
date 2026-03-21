@@ -63,41 +63,35 @@ export default async function Image() {
              <div style={{ display: 'flex', width: '100%', height: '100%', backgroundColor: '#ffffff', padding: '48px 64px' }}>
                
                {/* Left Column: Profile */}
-               <div style={{ display: 'flex', flexDirection: 'column', width: '40%', borderRight: '1px solid #e4e4e7', paddingRight: 48, gap: 16 }}>
-                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" style={{ width: 140, height: 140, borderRadius: 140, border: '2px solid #e4e4e7', objectFit: 'cover' }} />
+               <div style={{ display: 'flex', flexDirection: 'column', width: '45%', borderRight: '1px solid #e4e4e7', paddingRight: 48, gap: 16 }}>
+                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" style={{ width: 180, height: 180, borderRadius: 180, border: '2px solid #e4e4e7', objectFit: 'cover' }} />
                  
-                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 12 }}>
-                   <div style={{ display: 'flex', fontSize: 38, fontWeight: 800, color: '#09090b', letterSpacing: '-0.02em' }}>Emily Chen</div>
-                   <div style={{ display: 'flex', fontSize: 18, color: '#71717a', fontWeight: 500 }}>Lead Software Engineer</div>
+                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 16 }}>
+                   <div style={{ display: 'flex', fontSize: 44, fontWeight: 800, color: '#09090b', letterSpacing: '-0.02em' }}>Emily Chen</div>
+                   <div style={{ display: 'flex', fontSize: 22, color: '#71717a', fontWeight: 500 }}>Lead Software Engineer</div>
                  </div>
                  
-                 <div style={{ display: 'flex', fontSize: 14, color: '#a1a1aa', lineHeight: 1.5, marginTop: 12 }}>
-                   Building modern web interfaces and scalable backend systems.
-                 </div>
-                 
-                 <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                   <div style={{ display: 'flex', padding: '4px 12px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 12, color: '#52525b', fontWeight: 500 }}>React</div>
-                   <div style={{ display: 'flex', padding: '4px 12px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 12, color: '#52525b', fontWeight: 500 }}>Next.js</div>
-                   <div style={{ display: 'flex', padding: '4px 12px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 12, color: '#52525b', fontWeight: 500 }}>Python</div>
+                 <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+                   <div style={{ display: 'flex', padding: '6px 16px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 14, color: '#52525b', fontWeight: 500 }}>React</div>
+                   <div style={{ display: 'flex', padding: '6px 16px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 14, color: '#52525b', fontWeight: 500 }}>Next.js</div>
+                   <div style={{ display: 'flex', padding: '6px 16px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 14, color: '#52525b', fontWeight: 500 }}>Python</div>
                  </div>
                </div>
                
                {/* Right Column: Experience */}
-               <div style={{ display: 'flex', flexDirection: 'column', width: '60%', paddingLeft: 48, gap: 24, paddingTop: 12 }}>
+               <div style={{ display: 'flex', flexDirection: 'column', width: '55%', paddingLeft: 48, gap: 32, paddingTop: 16 }}>
                  
-                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                   <div style={{ display: 'flex', fontSize: 20, fontWeight: 700, color: '#09090b', letterSpacing: '-0.01em' }}>Senior Engineer @ Stripe</div>
-                   <div style={{ display: 'flex', fontSize: 14, color: '#a1a1aa' }}>2021 — Present  •  San Francisco</div>
-                   <div style={{ display: 'flex', width: '100%', height: 12, borderRadius: 4, backgroundColor: '#f4f4f5', marginTop: 12 }} />
-                   <div style={{ display: 'flex', width: '85%', height: 12, borderRadius: 4, backgroundColor: '#f4f4f5', marginTop: 4 }} />
-                   <div style={{ display: 'flex', width: '60%', height: 12, borderRadius: 4, backgroundColor: '#f4f4f5', marginTop: 4 }} />
+                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                   <div style={{ display: 'flex', fontSize: 24, fontWeight: 700, color: '#09090b', letterSpacing: '-0.01em' }}>Senior Engineer @ Stripe</div>
+                   <div style={{ display: 'flex', fontSize: 16, color: '#a1a1aa' }}>2021 — Present</div>
+                   <div style={{ display: 'flex', width: '90%', height: 16, borderRadius: 8, backgroundColor: '#f4f4f5', marginTop: 12 }} />
+                   <div style={{ display: 'flex', width: '60%', height: 16, borderRadius: 8, backgroundColor: '#f4f4f5', marginTop: 4 }} />
                  </div>
                  
-                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 16 }}>
-                   <div style={{ display: 'flex', fontSize: 20, fontWeight: 700, color: '#09090b', letterSpacing: '-0.01em' }}>Front-End Dev @ Linear</div>
-                   <div style={{ display: 'flex', fontSize: 14, color: '#a1a1aa' }}>2018 — 2021  •  Remote</div>
-                   <div style={{ display: 'flex', width: '90%', height: 12, borderRadius: 4, backgroundColor: '#f4f4f5', marginTop: 12 }} />
-                   <div style={{ display: 'flex', width: '70%', height: 12, borderRadius: 4, backgroundColor: '#f4f4f5', marginTop: 4 }} />
+                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                   <div style={{ display: 'flex', fontSize: 24, fontWeight: 700, color: '#09090b', letterSpacing: '-0.01em' }}>Front-End Lead @ Linear</div>
+                   <div style={{ display: 'flex', fontSize: 16, color: '#a1a1aa' }}>2018 — 2021</div>
+                   <div style={{ display: 'flex', width: '80%', height: 16, borderRadius: 8, backgroundColor: '#f4f4f5', marginTop: 12 }} />
                  </div>
                  
                </div>
