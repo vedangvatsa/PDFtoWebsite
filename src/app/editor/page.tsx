@@ -659,12 +659,32 @@ export default function EditorPage() {
                                         </div>
 
                                         <div className="flex-1 w-full space-y-3">
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-                                                <div className="space-y-1 sm:col-span-2"><Label htmlFor="fullName" className="text-xs">Full Name</Label><Input id="fullName" name="fullName" value={profile.fullName || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
-                                                <div className="space-y-1"><Label htmlFor="email" className="text-xs">Email</Label><Input id="email" name="email" type="email" value={profile.email || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
-                                                <div className="space-y-1"><Label htmlFor="phone" className="text-xs">Phone</Label><Input id="phone" name="phone" value={profile.phone || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
-                                                <div className="space-y-1 sm:col-span-2"><Label htmlFor="location" className="text-xs">Location</Label><Input id="location" name="location" placeholder="City, State" value={profile.location || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
-                                                <div className="space-y-1 sm:col-span-2"><Label htmlFor="website" className="text-xs">Website/Portfolio</Label><Input id="website" name="website" placeholder="your-website.com" value={profile.website || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-3">
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-2"><Label htmlFor="fullName" className="text-xs">Full Name</Label><Input id="fullName" name="fullName" value={profile.fullName || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-4"><Label htmlFor="email" className="text-xs">Email</Label><Input id="email" name="email" type="email" value={profile.email || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-2">
+                                                    <Label htmlFor="phone" className="text-xs">Phone</Label>
+                                                    <Input 
+                                                        id="phone" 
+                                                        name="phone" 
+                                                        placeholder={(() => {
+                                                            try {
+                                                                const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                                                                if (tz.includes('Kolkata') || tz.includes('Calcutta')) return '+91 98765 43210';
+                                                                if (tz.includes('London')) return '+44 7911 123456';
+                                                                if (tz.includes('Australia')) return '+61 412 345 678';
+                                                                if (tz.includes('Europe/')) return '+49 151 2345 6789';
+                                                                return '+1 (555) 123-4567';
+                                                            } catch { return '+1 (555) 123-4567'; }
+                                                        })()}
+                                                        value={profile.phone || ''} 
+                                                        onChange={handleProfileChange} 
+                                                        onBlur={handleProfileBlur} 
+                                                        className="h-9" 
+                                                    />
+                                                </div>
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-2"><Label htmlFor="location" className="text-xs">Location</Label><Input id="location" name="location" placeholder="City, State" value={profile.location || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
+                                                <div className="space-y-1 sm:col-span-2 xl:col-span-2"><Label htmlFor="website" className="text-xs">Website/Portfolio</Label><Input id="website" name="website" placeholder="your-website.com" value={profile.website || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
                                             </div>
                                             <div className="space-y-1"><Label htmlFor="summary" className="text-xs">Summary</Label><Textarea id="summary" name="summary" placeholder="A brief professional summary..." value={profile.summary || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} rows={3} className="resize-none" /></div>
                                         </div>
