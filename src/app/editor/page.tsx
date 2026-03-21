@@ -19,7 +19,7 @@ import { createClient } from '@/utils/supabase/client';
 import { Progress } from '@/components/ui/progress';
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { ChartContainer, ChartConfig, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
 import { LoginDialog } from '@/components/login-dialog';
 import TemplateModern from '@/app/[slug]/templates/modern-creative';
 
@@ -570,6 +570,7 @@ export default function EditorPage() {
             {/* Local Preview Dialog */}
             <Dialog open={showPreview} onOpenChange={setShowPreview}>
                 <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0">
+                    <DialogTitle className="sr-only">Profile Preview</DialogTitle>
                     <TemplateModern {...previewData} />
                 </DialogContent>
             </Dialog>
