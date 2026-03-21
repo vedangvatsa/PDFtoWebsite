@@ -39,7 +39,7 @@ export default async function Image() {
           </div>
           
           {/* Subtitle */}
-          <div style={{ display: 'flex', fontSize: 32, color: '#a1a1aa', fontWeight: 500, letterSpacing: '-0.01em', maxWidth: 850, lineHeight: 1.4, textAlign: 'center' }}>
+          <div style={{ display: 'flex', fontSize: 30, color: '#a1a1aa', fontWeight: 500, letterSpacing: '-0.01em', maxWidth: 1040, lineHeight: 1.4, textAlign: 'center', whiteSpace: 'nowrap' }}>
             AI converts your PDF CV into a stunning, shareable personal portfolio in seconds.
           </div>
 
