@@ -64,10 +64,10 @@ export default async function Image() {
                
                {/* Left Column: Profile */}
                <div style={{ display: 'flex', flexDirection: 'column', width: '40%', borderRight: '1px solid #e4e4e7', paddingRight: 48, gap: 16 }}>
-                 <div style={{ display: 'flex', width: 96, height: 96, borderRadius: 96, backgroundColor: '#f4f4f5', border: '1px solid #e4e4e7', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 700, color: '#a1a1aa' }}>J.D.</div>
+                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" style={{ width: 140, height: 140, borderRadius: 140, border: '2px solid #e4e4e7', objectFit: 'cover' }} />
                  
                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 12 }}>
-                   <div style={{ display: 'flex', fontSize: 38, fontWeight: 800, color: '#09090b', letterSpacing: '-0.02em' }}>John Doe</div>
+                   <div style={{ display: 'flex', fontSize: 38, fontWeight: 800, color: '#09090b', letterSpacing: '-0.02em' }}>Emily Chen</div>
                    <div style={{ display: 'flex', fontSize: 18, color: '#71717a', fontWeight: 500 }}>Lead Software Engineer</div>
                  </div>
                  
@@ -78,7 +78,7 @@ export default async function Image() {
                  <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
                    <div style={{ display: 'flex', padding: '4px 12px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 12, color: '#52525b', fontWeight: 500 }}>React</div>
                    <div style={{ display: 'flex', padding: '4px 12px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 12, color: '#52525b', fontWeight: 500 }}>Next.js</div>
-                   <div style={{ display: 'flex', padding: '4px 12px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 12, color: '#52525b', fontWeight: 500 }}>Go</div>
+                   <div style={{ display: 'flex', padding: '4px 12px', borderRadius: 100, border: '1px solid #e4e4e7', fontSize: 12, color: '#52525b', fontWeight: 500 }}>Python</div>
                  </div>
                </div>
                
