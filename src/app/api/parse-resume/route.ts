@@ -10,10 +10,13 @@ Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks
 {
   "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "website": "", "github": "", "linkedin": "" },
   "summary": "",
-  "workExperience": [{ "company": "", "title": "", "startDate": "", "endDate": "", "description": [""] }],
+  "workExperience": [{ "company": "", "title": "", "startDate": "", "endDate": "", "description": "" }],
   "education": [{ "institution": "", "degree": "", "fieldOfStudy": "", "startDate": "", "endDate": "", "description": "" }],
   "skills": [""],
-  "customSections": [{ "id": "1", "userProfileId": "", "sectionTitle": "Section Name", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] }]
+  "customSections": [
+    { "id": "1", "userProfileId": "", "sectionTitle": "Publications", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] },
+    { "id": "2", "userProfileId": "", "sectionTitle": "Awards", "order": 2, "items": [{ "id": "2", "title": "", "subtitle": "", "description": "", "date": "" }] }
+  ]
 }
 
 OCR CLEANING RULE: If the input contains garbled characters, use your reasoning to determine the correct word intended.
@@ -79,14 +82,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'GEMINI_API_KEY is missing.' }, { status: 500 });
     }
 
-    try {
-      let requestBody;
-      let pageCount = 0;
+    let requestBody;
+    let pageCount = 0;
+    let extractedText = '';
+    let aiStructuredData: any = null;
 
+    try {
       if (fileType === 'pdf') {
-        // PDF: Vision Mode (send binary for visual analysis)
         const pdfData = await pdf(fileBuffer);
         pageCount = pdfData.numpages;
+        extractedText = pdfData.text || '';
         if (pdfData.numpages > 10) {
           return NextResponse.json({ error: `Document is ${pdfData.numpages} pages. Max 10.` }, { status: 400 });
         }
@@ -102,9 +107,6 @@ export async function POST(request: NextRequest) {
         };
 
       } else {
-        // DOC/DOCX/RTF/TXT: Extract text, then send to AI
-        let extractedText = '';
-
         if (fileType === 'doc' || fileType === 'docx') {
           const mammothResult = await mammoth.extractRawText({ buffer: fileBuffer });
           extractedText = mammothResult.value;
@@ -158,7 +160,6 @@ export async function POST(request: NextRequest) {
       const result = await response.json();
       const parts = result.candidates?.[0]?.content?.parts || [];
       
-      // Gemini 2.5 Flash may return multiple parts (thinking + response). Get the last text part.
       let responseText = '';
       for (const part of parts) {
         if (part.text) responseText = part.text;
@@ -166,11 +167,24 @@ export async function POST(request: NextRequest) {
       if (!responseText) throw new Error('Empty response from AI engine');
 
       let rawResponse = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-      const aiStructuredData = JSON.parse(rawResponse);
+      aiStructuredData = JSON.parse(rawResponse);
 
-      const duration = Date.now() - startTime;
+    } catch (aiError) {
+      console.warn("AI extraction failed/rate-limited, attempting regex fallback...", aiError);
       
-      // ---------- Option C: Safe Slug Generation (No Aggressive Backend Upsert) ----------
+      if (!extractedText || extractedText.trim().length < 50) {
+          const message = aiError instanceof Error ? aiError.message : 'Unknown error';
+          return NextResponse.json({ error: `Parse failed: ${message}` }, { status: 500 });
+      }
+      
+      // Fallback
+      aiStructuredData = parseResumeText(extractedText);
+    }
+    
+    // Resume processing after successful extraction (AI or Fallback)
+    const duration = Date.now() - startTime;
+    
+    // ---------- Option C: Safe Slug Generation (No Aggressive Backend Upsert) ----------
       const supabaseUserClient = await createClient();
       const { data: { user } } = await supabaseUserClient.auth.getUser();
 
@@ -248,19 +262,6 @@ export async function POST(request: NextRequest) {
       }));
 
       return NextResponse.json(aiStructuredData, { status: 200 });
-    } catch (aiError) {
-      const duration = Date.now() - startTime;
-      const message = aiError instanceof Error ? aiError.message : 'Unknown error';
-      console.log(JSON.stringify({
-        event: 'cv_parse_failure',
-        fileType,
-        fileSizeKB: Math.round(file.size / 1024),
-        durationMs: duration,
-        error: message,
-        ip,
-      }));
-      return NextResponse.json({ error: `Parse failed: ${message}` }, { status: 500 });
-    }
 
   } catch (error) {
     console.error('Fatal API Error:', error);

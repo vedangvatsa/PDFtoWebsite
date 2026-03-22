@@ -18,6 +18,8 @@ export interface ServerProfileData {
     avatarUrl?: string;
     avatarHint?: string;
     website?: string;
+    github?: string;
+    linkedin?: string;
     viewCount?: number;
     skills?: string[];
     links?: any[];
@@ -50,19 +52,24 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
     const { data: profile } = await supabase.from('profiles').select('*').eq('username', slug).single();
     if (!profile) return null;
 
+    const links = profile.links || [];
+    const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || undefined;
+
     return {
         profile: {
             userId: profile.id,
             fullName: profile.full_name || 'Professional Profile',
             slug: profile.username || slug,
-            email: undefined,
-            phone: undefined,
-            location: undefined,
+            email: getLink('email'),
+            phone: getLink('phone'),
+            location: getLink('location'),
             summary: profile.about || '',
             themeId: profile.target_role || 'modern-creative',
             avatarUrl: profile.profile_picture_url || '',
             avatarHint: 'person portrait',
-            website: undefined,
+            website: getLink('website'),
+            github: getLink('github'),
+            linkedin: getLink('linkedin'),
             viewCount: profile.views || 0,
             skills: profile.skills || [],
             links: profile.links || []

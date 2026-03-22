@@ -17,7 +17,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
   if (post) {
     return new ImageResponse(
       (
-        <div style={{ display: 'flex', width: '100%', height: '100%', backgroundColor: '#ffffff', fontFamily: 'sans-serif' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', backgroundColor: '#ffffff', fontFamily: 'sans-serif' }}>
           
           {/* Left Text Side (60%) */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between', width: '55%', height: '100%', padding: '80px', backgroundColor: '#ffffff' }}>
@@ -58,7 +58,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
   const { profile, workExperience } = data;
   const name = profile.fullName;
   const role = workExperience.length > 0 ? `${workExperience[0].title} at ${workExperience[0].company}` : profile.summary?.slice(0, 70) || 'Professional CV Profile';
-  const avatarUrl = profile.avatarUrl && !profile.avatarUrl.includes('picsum.photos') && profile.avatarUrl.startsWith('http') ? profile.avatarUrl : null;
+  const avatarUrl = profile.avatarUrl && !profile.avatarUrl.includes('picsum.photos') && (profile.avatarUrl.startsWith('http') || profile.avatarUrl.startsWith('data:')) ? profile.avatarUrl : null;
 
   return new ImageResponse(
     (

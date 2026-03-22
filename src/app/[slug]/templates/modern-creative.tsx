@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Globe, Download, ArrowUpRight, FileDown } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Download, ArrowUpRight, FileDown, Github, Linkedin } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import type { ServerProfileData as ProfileData } from '@/lib/supabase-server';
 
@@ -142,7 +142,31 @@ export default function TemplateModern(props: ProfileData) {
                     className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
                   >
                     <Globe className="h-3 w-3" />
-                    {profile.website.replace(/^https?:\/\//, '')}
+                    {profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                    <ArrowUpRight className="h-2.5 w-2.5" />
+                  </a>
+                )}
+                {profile.github && (
+                  <a
+                    href={profile.github.startsWith('http') ? profile.github : `https://${profile.github}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                  >
+                    <Github className="h-3 w-3" />
+                    {profile.github.replace(/^https?:\/\/(www\.)?github\.com\//, '').replace(/\/$/, '')}
+                    <ArrowUpRight className="h-2.5 w-2.5" />
+                  </a>
+                )}
+                {profile.linkedin && (
+                  <a
+                    href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://${profile.linkedin}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                  >
+                    <Linkedin className="h-3 w-3" />
+                    {profile.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, '').replace(/\/$/, '')}
                     <ArrowUpRight className="h-2.5 w-2.5" />
                   </a>
                 )}
@@ -155,7 +179,7 @@ export default function TemplateModern(props: ProfileData) {
               )}
             </header>
 
-            <div className="h-px bg-border" />
+            {(workExperience.length > 0 || education.length > 0 || skills.length > 0 || customSections?.length > 0) && <div className="h-px bg-border" />}
 
             {/* ─── EXPERIENCE ─── */}
             {workExperience.length > 0 && (
@@ -185,7 +209,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                <div className="h-px bg-border" />
+                {(education.length > 0 || skills.length > 0 || customSections?.length > 0) && <div className="h-px bg-border" />}
               </>
             )}
 
@@ -217,7 +241,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                <div className="h-px bg-border" />
+                {(skills.length > 0 || customSections?.length > 0) && <div className="h-px bg-border" />}
               </>
             )}
 

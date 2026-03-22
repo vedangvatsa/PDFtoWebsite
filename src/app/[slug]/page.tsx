@@ -93,7 +93,7 @@ function buildPersonSchema(data: ServerProfileData) {
     ...(profile.links && Array.isArray(profile.links) && profile.links.length > 0 ? {
       sameAs: [
         ...(profile.website ? [profile.website.startsWith('http') ? profile.website : `https://${profile.website}`] : []),
-        ...profile.links.map((link: any) => link.url || link)
+        ...profile.links.map((link: any) => link.value || link.url || (typeof link === 'string' ? link : '')).filter(Boolean)
       ]
     } : (profile.website ? { sameAs: [profile.website.startsWith('http') ? profile.website : `https://${profile.website}`] } : {})),
     ...(workExperience.length > 0 ? {

@@ -191,12 +191,17 @@ export default function EditorPage() {
                 try {
                     const data = JSON.parse(parsed);
                     const slug = generateSlug(data.personalInfo?.fullName || 'user');
+                    const links = data.links || [];
+                    const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || '';
+
                     setProfile({
                         fullName: data.personalInfo?.fullName || '',
-                        email: data.personalInfo?.email || '',
-                        phone: data.personalInfo?.phone || '',
-                        location: data.personalInfo?.location || '',
-                        website: data.personalInfo?.website || '',
+                        email: data.personalInfo?.email || getLink('email') || '',
+                        phone: data.personalInfo?.phone || getLink('phone') || '',
+                        location: data.personalInfo?.location || getLink('location') || '',
+                        website: data.personalInfo?.website || getLink('website') || '',
+                        github: data.personalInfo?.github || getLink('github') || '',
+                        linkedin: data.personalInfo?.linkedin || getLink('linkedin') || '',
                         summary: data.summary || '',
                         slug,
                         themeId: 'modern-creative',
@@ -206,6 +211,7 @@ export default function EditorPage() {
                     setWorkItems((data.workExperience || []).map((w: any, i: number) => ({ ...w, id: `guest-work-${i}`, userProfileId: '' })));
                     setEducationItems((data.education || []).map((e: any, i: number) => ({ ...e, id: `guest-edu-${i}`, userProfileId: '' })));
                     setSkillItems((data.skills || []).map((s: any) => s.name || s));
+                    setCustomSections((data.customSections || []).map((cs: any, i: number) => ({ ...cs, id: cs.id || `guest-cs-${i}`, userProfileId: '' })));
                 } catch (e) {
                     console.error('Failed to restore guest session:', e);
                     toast({ variant: 'destructive', title: 'Restore Error', description: e instanceof Error ? e.message : 'Could not restore your previous session.' });
@@ -261,10 +267,18 @@ export default function EditorPage() {
         const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         let profileData: UserProfile;
         if (p) {
+            const links = p.links || [];
+            const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || '';
+
             profileData = {
                 userId: p.id,
                 fullName: p.full_name || '',
-                email: user.email || '',
+                email: getLink('email') || user.email || '',
+                phone: getLink('phone'),
+                location: getLink('location'),
+                website: getLink('website'),
+                github: getLink('github'),
+                linkedin: getLink('linkedin'),
                 summary: p.about || '',
                 slug: p.username || '',
                 avatarUrl: p.profile_picture_url || `https://picsum.photos/seed/${user.id}/200/200`,
@@ -303,6 +317,7 @@ export default function EditorPage() {
                 if ('avatarUrl' in data) map.profile_picture_url = data.avatarUrl;
                 if ('slug' in data) map.username = data.slug;
                 if ('skills' in data) map.skills = data.skills;
+                if ('links' in data) map.links = data.links;
                 if (Object.keys(map).length > 0) await supabase.from('profiles').update(map).eq('id', user.id);
             }
         } finally {
@@ -351,10 +366,31 @@ export default function EditorPage() {
                 skills: skillsArr,
             }));
             
-            setWorkItems((extractedData.workExperience || []).map((w: any, i: number) => ({ ...w, id: w.id || `work-${Date.now()}-${i}`, userProfileId: user?.id || '' })));
-            setEducationItems((extractedData.education || []).map((e: any, i: number) => ({ ...e, id: e.id || `edu-${Date.now()}-${i}`, userProfileId: user?.id || '' })));
+            const workItemsWithIds = (extractedData.workExperience || []).map((w: any, i: number) => ({ ...w, id: w.id || `work-${Date.now()}-${i}`, userProfileId: user?.id || '' }));
+            const eduItemsWithIds = (extractedData.education || []).map((e: any, i: number) => ({ ...e, id: e.id || `edu-${Date.now()}-${i}`, userProfileId: user?.id || '' }));
+            const customSectionsWithIds = (extractedData.customSections || []).map((cs: any, i: number) => {
+                const csId = cs.id || `section-${Date.now()}-${i}`;
+                const items = (cs.items || []).map((item: any, j: number) => ({ ...item, id: item.id || `csitem-${Date.now()}-${i}-${j}` }));
+                return { ...cs, id: csId, items, userProfileId: user?.id || '' };
+            });
+
+            setWorkItems(workItemsWithIds);
+            setEducationItems(eduItemsWithIds);
             setSkillItems(skillsArr);
-            setCustomSections((extractedData.customSections || []).map((cs: any, i: number) => ({ ...cs, id: cs.id || `section-${Date.now()}-${i}`, userProfileId: user?.id || '' })));
+            setCustomSections(customSectionsWithIds);
+
+            // Configure links for the DB
+            const existingLinks = user ? ((await supabase.from('profiles').select('links').eq('id', user.id).single()).data?.links || []) : [];
+            const newLinksMap = new Map(existingLinks.map((l: any) => [l.type, l.value]));
+            
+            if (extractedData.personalInfo?.email) newLinksMap.set('email', extractedData.personalInfo.email);
+            if (extractedData.personalInfo?.phone) newLinksMap.set('phone', extractedData.personalInfo.phone);
+            if (extractedData.personalInfo?.location) newLinksMap.set('location', extractedData.personalInfo.location);
+            if (extractedData.personalInfo?.website) newLinksMap.set('website', extractedData.personalInfo.website);
+            if (extractedData.personalInfo?.github) newLinksMap.set('github', extractedData.personalInfo.github);
+            if (extractedData.personalInfo?.linkedin) newLinksMap.set('linkedin', extractedData.personalInfo.linkedin);
+            
+            const combinedLinks = Array.from(newLinksMap.entries()).map(([type, value]) => ({ type, value })).filter(l => !!l.value);
 
             // --- DATABASE SYNC (If Auth) ---
             if (user) {
@@ -365,9 +401,10 @@ export default function EditorPage() {
                     username: currentProfile?.username || slug,
                     about: extractedData.summary || currentProfile?.about || '',
                     skills: skillsArr,
-                    experience: extractedData.workExperience || [],
-                    education: extractedData.education || [],
-                    custom_sections: extractedData.customSections || [],
+                    experience: workItemsWithIds,
+                    education: eduItemsWithIds,
+                    custom_sections: customSectionsWithIds,
+                    links: combinedLinks
                 };
                 
                 const { error: upsertError } = await supabase.from('profiles').upsert(updatedProfile);
@@ -404,17 +441,38 @@ export default function EditorPage() {
                         const skillsArr = (extractedData.skills || []).map((s: any) => s.name || s);
                         const { data: currentProfile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
                         
+                        const workItemsWithIds = (extractedData.workExperience || []).map((w: any, i: number) => ({ ...w, id: w.id || `work-${Date.now()}-${i}`, userProfileId: user?.id || '' }));
+                        const eduItemsWithIds = (extractedData.education || []).map((e: any, i: number) => ({ ...e, id: e.id || `edu-${Date.now()}-${i}`, userProfileId: user?.id || '' }));
+                        const customSectionsWithIds = (extractedData.customSections || []).map((cs: any, i: number) => {
+                            const csId = cs.id || `section-${Date.now()}-${i}`;
+                            const items = (cs.items || []).map((item: any, j: number) => ({ ...item, id: item.id || `csitem-${Date.now()}-${i}-${j}` }));
+                            return { ...cs, id: csId, items, userProfileId: user?.id || '' };
+                        });
+
+                        const existingLinks = currentProfile?.links || [];
+                        const newLinksMap = new Map(existingLinks.map((l: any) => [l.type, l.value]));
+                        
+                        if (extractedData.personalInfo?.email) newLinksMap.set('email', extractedData.personalInfo.email);
+                        if (extractedData.personalInfo?.phone) newLinksMap.set('phone', extractedData.personalInfo.phone);
+                        if (extractedData.personalInfo?.location) newLinksMap.set('location', extractedData.personalInfo.location);
+                        if (extractedData.personalInfo?.website) newLinksMap.set('website', extractedData.personalInfo.website);
+                        if (extractedData.personalInfo?.github) newLinksMap.set('github', extractedData.personalInfo.github);
+                        if (extractedData.personalInfo?.linkedin) newLinksMap.set('linkedin', extractedData.personalInfo.linkedin);
+                        
+                        const combinedLinks = Array.from(newLinksMap.entries()).map(([type, value]) => ({ type, value })).filter(l => !!l.value);
+
                         const updatedProfile = {
                             id: user.id,
                             full_name: extractedData.personalInfo?.fullName || currentProfile?.full_name || user.user_metadata?.full_name || '',
-                            username: currentProfile?.username || generateSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user'),
+                            username: currentProfile?.username || extractedData.personalInfo?.slug || generateSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user'),
                             about: extractedData.summary || currentProfile?.about || '',
                             profile_picture_url: currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || `https://picsum.photos/seed/${user.id}/200/200`,
                             target_role: extractedData.themeId || currentProfile?.target_role || 'modern-creative',
                             skills: skillsArr,
-                            experience: extractedData.workExperience || currentProfile?.experience || [],
-                            education: extractedData.education || currentProfile?.education || [],
-                            custom_sections: extractedData.customSections || currentProfile?.custom_sections || [],
+                            experience: extractedData.workExperience ? workItemsWithIds : (currentProfile?.experience || []),
+                            education: extractedData.education ? eduItemsWithIds : (currentProfile?.education || []),
+                            custom_sections: extractedData.customSections ? customSectionsWithIds : (currentProfile?.custom_sections || []),
+                            links: combinedLinks
                         };
                         await supabase.from('profiles').upsert(updatedProfile);
                         toast({ title: 'Success!', description: 'Your profile has been updated from your CV.' });
@@ -486,7 +544,18 @@ export default function EditorPage() {
             }
         }
         
-        if (name === 'slug' && value !== initialSlug) {
+        if (['email', 'phone', 'location', 'website', 'github', 'linkedin'].includes(name)) {
+            const nextProfile = { ...profile, [name]: value };
+            const linksObject = [
+                { type: 'email', value: nextProfile.email },
+                { type: 'phone', value: nextProfile.phone },
+                { type: 'location', value: nextProfile.location },
+                { type: 'website', value: nextProfile.website },
+                { type: 'github', value: nextProfile.github },
+                { type: 'linkedin', value: nextProfile.linkedin },
+            ].filter(l => !!l.value);
+            autoSave('profile', user.id, { links: linksObject });
+        } else if (name === 'slug' && value !== initialSlug) {
             if (slugError) return; // Wait until they fix the error before saving
             setSlugSuccess(false);
             await autoSave('profile', user.id, { slug: value });
@@ -761,31 +830,11 @@ export default function EditorPage() {
                                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-x-3 gap-y-2.5">
                                                 <div className="space-y-1 sm:col-span-1 xl:col-span-2"><Label htmlFor="fullName" className="text-xs">Full Name</Label><Input id="fullName" name="fullName" value={profile.fullName || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
                                                 <div className="space-y-1 sm:col-span-1 xl:col-span-4"><Label htmlFor="email" className="text-xs">Email</Label><Input id="email" name="email" type="email" value={profile.email || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
-                                                <div className="space-y-1 sm:col-span-1 xl:col-span-2">
-                                                    <Label htmlFor="phone" className="text-xs">Phone</Label>
-                                                    <Input 
-                                                        id="phone" 
-                                                        name="phone" 
-                                                        placeholder="+1 (555) 123-4567"
-                                                        value={profile.phone || ''} 
-                                                        onChange={handleProfileChange} 
-                                                        onBlur={handleProfileBlur} 
-                                                        className="h-9" 
-                                                    />
-                                                </div>
-                                                <div className="space-y-1 sm:col-span-1 xl:col-span-2">
-                                                    <Label htmlFor="location" className="text-xs">Location</Label>
-                                                    <Input 
-                                                        id="location" 
-                                                        name="location" 
-                                                        placeholder="San Francisco, CA" 
-                                                        value={profile.location || ''} 
-                                                        onChange={handleProfileChange} 
-                                                        onBlur={handleProfileBlur} 
-                                                        className="h-9" 
-                                                    />
-                                                </div>
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-2"><Label htmlFor="phone" className="text-xs">Phone</Label><Input id="phone" name="phone" placeholder="+1 (555) 123-4567" value={profile.phone || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-2"><Label htmlFor="location" className="text-xs">Location</Label><Input id="location" name="location" placeholder="San Francisco, CA" value={profile.location || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
                                                 <div className="space-y-1 sm:col-span-2 xl:col-span-2"><Label htmlFor="website" className="text-xs">Website/Portfolio</Label><Input id="website" name="website" placeholder="cvin.bio/johndoe" value={profile.website || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-3"><Label htmlFor="github" className="text-xs">GitHub Profile</Label><Input id="github" name="github" placeholder="github.com/..." value={profile.github || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
+                                                <div className="space-y-1 sm:col-span-1 xl:col-span-3"><Label htmlFor="linkedin" className="text-xs">LinkedIn Profile</Label><Input id="linkedin" name="linkedin" placeholder="linkedin.com/in/..." value={profile.linkedin || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} className="h-9" /></div>
                                             </div>
                                             <div className="space-y-1"><Label htmlFor="summary" className="text-xs">Summary</Label><Textarea id="summary" name="summary" placeholder="A brief professional summary..." value={profile.summary || ''} onChange={handleProfileChange} onBlur={handleProfileBlur} rows={3} className="resize-none" /></div>
                                         </div>

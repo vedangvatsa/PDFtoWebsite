@@ -11,6 +11,8 @@ export type UserProfile = {
     avatarUrl?: string;
     avatarHint?: string;
     website?: string;
+    github?: string;
+    linkedin?: string;
     viewCount?: number;
     skills?: string[];
     links?: any[];
