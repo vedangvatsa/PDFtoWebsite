@@ -39,8 +39,17 @@ export default function TemplateModern(props: ProfileData) {
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // Use any as html2pdf has non-standard type definitions
-    (html2pdf() as any).set(opt).from(element as HTMLElement).save();
+    const root = window.document.documentElement;
+    const isDark = root.classList.contains('dark');
+    if (isDark) root.classList.remove('dark');
+
+    // Slight delay to allow DOM to repaint text colors to black
+    await new Promise(r => setTimeout(r, 50));
+
+    // Wait for the PDF to be fully generated and saved
+    await (html2pdf() as any).set(opt).from(element as HTMLElement).save();
+
+    if (isDark) root.classList.add('dark');
   }, [profile.fullName, toast]);
 
 
@@ -85,8 +94,8 @@ export default function TemplateModern(props: ProfileData) {
           <span className="text-xs font-semibold pr-1">Save PDF</span>
         </button>
 
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10 sm:py-14">
-          <div className="resume-page space-y-8 pb-12">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 py-6 sm:py-8">
+          <div className="resume-page space-y-5 pb-8">
 
             {/* ─── HEADER ─── */}
             <header className="text-center">
@@ -187,10 +196,10 @@ export default function TemplateModern(props: ProfileData) {
             {workExperience.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
                     Experience
                   </h2>
-                  <div className="space-y-5">
+                  <div className="space-y-3">
                     {workExperience.map(job => (
                       <div key={job.id}>
                         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
@@ -219,10 +228,10 @@ export default function TemplateModern(props: ProfileData) {
             {education.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
                     Education
                   </h2>
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {education.map(edu => (
                       <div key={edu.id}>
                         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
@@ -251,7 +260,7 @@ export default function TemplateModern(props: ProfileData) {
             {skills.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
                     Skills
                   </h2>
                   <div className="flex flex-wrap gap-1.5">
@@ -273,10 +282,10 @@ export default function TemplateModern(props: ProfileData) {
             {customSections?.map((section, idx) => (
               <React.Fragment key={section.id}>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
                     {section.sectionTitle}
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {section.items?.map(item => (
                       <div key={item.id}>
                         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
