@@ -43,61 +43,66 @@ export async function POST(request: NextRequest) {
 
     const fileBuffer = Buffer.from(await file.arrayBuffer());
     
-    // We execute local pdf-parse first to mathematically test the structure for free
-    const data = await pdf(fileBuffer);
+    // 1. Initial Local Text Extraction
+    const pdfData = await pdf(fileBuffer);
     
     // --- ZERO-COST FIREWALL (Rule 2): Max 10 Pages ---
-    if (data.numpages > 10) {
-      return NextResponse.json({ error: `This document is ${data.numpages} pages long. Standard CVs are under 10 pages. Please upload a professional resume.` }, { status: 400 });
+    if (pdfData.numpages > 10) {
+      return NextResponse.json({ error: `This document is ${pdfData.numpages} pages long. Standard CVs are under 10 pages. Please upload a professional resume.` }, { status: 400 });
     }
 
-    // --- ZERO-COST FIREWALL (Rule 3): Keyword Heuristics (Only if PDF contains text) ---
-    // If it's a scanned PDF (image only), it will have ~0 text, so we skip the keyword check safely!
-    const extractedText = data.text.toLowerCase();
-    if (extractedText.length > 100) {
+    const extractedText = pdfData.text;
+    
+    // --- ZERO-COST FIREWALL (Rule 3): Keyword Heuristics ---
+    const lowerExtractedText = extractedText.toLowerCase();
+    if (lowerExtractedText.length > 100) {
       const professionalKeywords = ['experience', 'work', 'education', 'skills', 'university', 'college', 'job', 'project', 'resume', 'cv'];
-      const hasKeywords = professionalKeywords.some(keyword => extractedText.includes(keyword));
-      
+      const hasKeywords = professionalKeywords.some(keyword => lowerExtractedText.includes(keyword));
       if (!hasKeywords) {
-        return NextResponse.json({ error: 'This file lacks fundamental professional identifiers (like "Experience" or "Education"). It appears to be a random document, book, or essay. Please upload a valid CV.' }, { status: 400 });
+        return NextResponse.json({ error: 'This file lacks fundamental professional identifiers (like "Experience" or "Education"). Please upload a valid CV.' }, { status: 400 });
       }
     }
 
-    // 1. Primary Engine: Smart Multimodal AI Parsing (Handles Scanned PDFs & Images)
+    // 2. High-Quality Local Bypass (Algorithm Engine)
+    // We try to parse it locally first. If it's "Grade A", we skip the AI bill.
+    const localParsed = parseResumeText(extractedText);
+    
+    const hasName = localParsed.personalInfo.fullName && localParsed.personalInfo.fullName !== 'Unknown';
+    const hasEmail = !!localParsed.personalInfo.email;
+    const hasExperience = localParsed.workExperience.length >= 2;
+    const hasEducation = localParsed.education.length >= 1;
+    
+    // Check for "Garbage" or "Garbled" text in the local parse
+    const isGarbled = (extractedText.match(/[ÄÊó]/g)?.length ?? 0) > 3;
+
+    // IF it's a solid, clean parse, return it immediately and save $$$
+    if (hasName && hasEmail && hasExperience && hasEducation && !isGarbled) {
+      return NextResponse.json({ ...localParsed, source: 'local_high_quality' }, { status: 200 });
+    }
+
+    // 3. Primary AI Engine: Multimodal Parsing (Fallback for complex or messy CVs)
     if (genAI) {
       try {
         const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-        
-        // Convert the raw PDF binary into a base64 encoded stream so Gemini can visually "see" the CV
         const base64Pdf = fileBuffer.toString('base64');
-        const pdfPart = {
-          inlineData: {
-            data: base64Pdf,
-            mimeType: 'application/pdf',
-          },
-        };
+        const pdfPart = { inlineData: { data: base64Pdf, mimeType: 'application/pdf' } };
 
         const result = await model.generateContent([systemInstruction, pdfPart]);
         let rawResponse = result.response.text();
-        
-        // Clean markdown backticks natively if model hallucinates them
         rawResponse = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
         const aiStructuredData = JSON.parse(rawResponse);
         
-        return NextResponse.json(aiStructuredData, { status: 200 });
+        return NextResponse.json({ ...aiStructuredData, source: 'ai_multimodal' }, { status: 200 });
       } catch (aiError) {
-        console.warn('AI Parsing encountered a syntax failure, executing native local algorithmic fallback immediately:', aiError);
+        console.warn('AI Parsing failed, falling back to basic local extraction:', aiError);
       }
     }
 
-    // 2. Fallback Engine: Fast Local Mathematical Regex
-    // This strictly executes if AI fails, relying strictly on whatever raw text it can rip from the file bytes.
-    const fallbackStructuredData = parseResumeText(data.text);
-    return NextResponse.json(fallbackStructuredData, { status: 200 });
+    // 4. Absolute Fallback: Basic Local Extraction (Source of garbled text if AI fails)
+    return NextResponse.json({ ...localParsed, source: 'local_fallback' }, { status: 200 });
 
   } catch (error) {
     console.error('Error parsing resume:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
-    return NextResponse.json({ error: 'Failed to parse resume.', details: errorMessage }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to parse resume.' }, { status: 500 });
   }
 }
