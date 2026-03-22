@@ -12,7 +12,7 @@ export default function Error({
       <p className="text-sm font-medium text-muted-foreground mb-2">Something went wrong</p>
       <h1 className="text-2xl font-bold tracking-tight mb-1">Unexpected error</h1>
       <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-        We ran into an issue. Please try again or go back to the homepage.
+        {error?.message || 'We ran into an issue. Please try again or go back to the homepage.'}
       </p>
       <div className="flex gap-3">
         <button

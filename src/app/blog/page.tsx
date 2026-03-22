@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import Header from '@/components/header';
 import { blogPosts } from '@/lib/blog-data';
 
@@ -21,8 +20,9 @@ export default function BlogPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {blogPosts.map((post) => (
             <Link key={post.slug} href={`/${post.slug}`} className="group relative flex flex-col bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all h-full overflow-hidden">
-              <div className="w-full aspect-[1200/630] bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-100 dark:border-zinc-800/50 overflow-hidden transition-colors relative">
-                <Image src={`/${post.slug}/opengraph-image?v=9`} alt={post.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
+              <div className="w-full aspect-[1200/630] bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-100 dark:border-zinc-800/50 overflow-hidden transition-colors">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/${post.slug}/opengraph-image?v=9`} alt={post.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
               </div>
               <div className="p-8 flex flex-col flex-1 justify-between">
                 <div>

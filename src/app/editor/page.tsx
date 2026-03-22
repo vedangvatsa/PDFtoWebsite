@@ -206,7 +206,10 @@ export default function EditorPage() {
                     setWorkItems((data.workExperience || []).map((w: any, i: number) => ({ ...w, id: `guest-work-${i}`, userProfileId: '' })));
                     setEducationItems((data.education || []).map((e: any, i: number) => ({ ...e, id: `guest-edu-${i}`, userProfileId: '' })));
                     setSkillItems((data.skills || []).map((s: any) => s.name || s));
-                } catch {}
+                } catch (e) {
+                    console.error('Failed to restore guest session:', e);
+                    toast({ variant: 'destructive', title: 'Restore Error', description: e instanceof Error ? e.message : 'Could not restore your previous session.' });
+                }
             }
             setPageIsLoading(false);
         }
@@ -244,6 +247,7 @@ export default function EditorPage() {
                 toast({ title: 'Profile saved!', description: 'Your profile is now live.' });
             } catch (e) {
                 console.error('Failed to save guest data:', e);
+                toast({ variant: 'destructive', title: 'Save Failed', description: e instanceof Error ? e.message : 'Could not save your profile. Please try again.' });
             } finally {
                 fetchProfileData();
             }
@@ -386,7 +390,10 @@ export default function EditorPage() {
                         toast({ title: 'Success!', description: 'Your profile has been updated from your CV.' });
                         sessionStorage.removeItem('parsedResume');
                         await fetchProfileData(); // Reload the UI with updated DB data
-                    } catch (e) { console.error("Parse failed", e); }
+                    } catch (e) {
+                        console.error('Parse failed', e);
+                        toast({ variant: 'destructive', title: 'Import Failed', description: e instanceof Error ? e.message : 'Could not import your resume data. Please try uploading again.' });
+                    }
                 } else if (pendingResumeDataUrl && pendingResumeName && data?.profile) {
                     const resumeFile = dataURLtoFile(pendingResumeDataUrl, pendingResumeName);
                     if (resumeFile) handleResumeUpload(resumeFile); // Triggers real generation
@@ -838,7 +845,7 @@ export default function EditorPage() {
                                     toast({ title: 'Account deleted', description: 'All your data has been removed.' });
                                     window.location.href = '/';
                                 } catch (err: any) {
-                                    toast({ variant: 'destructive', title: 'Error', description: 'Failed to delete account.' });
+                                    toast({ variant: 'destructive', title: 'Delete Failed', description: err?.message || 'Failed to delete account. Please try again.' });
                                 }
                             }}
                         >
