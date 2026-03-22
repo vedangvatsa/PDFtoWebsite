@@ -50,25 +50,22 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
     const { data: profile } = await supabase.from('profiles').select('*').eq('username', slug).single();
     if (!profile) return null;
 
-    const links = profile.links || [];
-    const findLink = (label: string) => links.find((l: any) => l.label === label);
-
     return {
         profile: {
             userId: profile.id,
             fullName: profile.full_name || 'Professional Profile',
             slug: profile.username || slug,
-            email: findLink('Email')?.url?.replace('mailto:', '') || undefined,
-            phone: findLink('Phone')?.url?.replace('tel:', '') || undefined,
-            location: findLink('Location')?.value || undefined,
+            email: undefined,
+            phone: undefined,
+            location: undefined,
             summary: profile.about || '',
             themeId: profile.target_role || 'modern-creative',
             avatarUrl: profile.profile_picture_url || '',
             avatarHint: 'person portrait',
-            website: findLink('Website')?.url || undefined,
+            website: undefined,
             viewCount: profile.views || 0,
             skills: profile.skills || [],
-            links: links.filter((l: any) => !['Email', 'Phone', 'Location', 'Website'].includes(l.label))
+            links: profile.links || []
         },
         workExperience: profile.experience || [],
         education: profile.education || [],
