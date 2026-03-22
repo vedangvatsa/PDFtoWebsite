@@ -27,7 +27,6 @@ DO NOT throw real data away!`;
 // Supported file types
 const ALLOWED_TYPES: Record<string, string> = {
   'application/pdf': 'pdf',
-  'application/msword': 'doc',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
   'application/rtf': 'rtf',
   'text/rtf': 'rtf',
@@ -65,6 +64,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided.' }, { status: 400 });
     }
 
+    if (file.name.toLowerCase().endsWith('.doc') || file.type === 'application/msword') {
+      return NextResponse.json({ error: 'Legacy .doc files are not supported by the parser. Please save and upload your resume as a .pdf or .docx file.' }, { status: 400 });
+    }
+
     if (file.size > 10 * 1024 * 1024) {
       return NextResponse.json({ error: 'File too large. Max 10MB.' }, { status: 400 });
     }
@@ -89,7 +92,16 @@ export async function POST(request: NextRequest) {
 
     try {
       if (fileType === 'pdf') {
-        const pdfData = await pdf(fileBuffer);
+        let pdfData;
+        try {
+          pdfData = await pdf(fileBuffer);
+        } catch (err: any) {
+          if (err?.name === 'PasswordException' || err?.message?.toLowerCase().includes('password')) {
+            return NextResponse.json({ error: 'This PDF is password-protected. Please unlock your resume and try again.' }, { status: 400 });
+          }
+          throw err;
+        }
+        
         pageCount = pdfData.numpages;
         extractedText = pdfData.text || '';
         if (pdfData.numpages > 10) {
@@ -107,9 +119,13 @@ export async function POST(request: NextRequest) {
         };
 
       } else {
-        if (fileType === 'doc' || fileType === 'docx') {
-          const mammothResult = await mammoth.extractRawText({ buffer: fileBuffer });
-          extractedText = mammothResult.value;
+        if (fileType === 'docx') {
+          try {
+            const mammothResult = await mammoth.extractRawText({ buffer: fileBuffer });
+            extractedText = mammothResult.value;
+          } catch (err) {
+            return NextResponse.json({ error: 'This Word document appears to be corrupted or password-protected. Please save it as a PDF and try again.' }, { status: 400 });
+          }
         } else if (fileType === 'rtf') {
           // RTF: strip formatting tags and extract plain text
           const rtfContent = fileBuffer.toString('utf-8');

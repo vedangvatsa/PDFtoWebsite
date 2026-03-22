@@ -125,7 +125,7 @@ export default function Home() {
                             </span>
                        </>
                     )}
-                    <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt" onChange={handleFileChange} disabled={isProcessingFile} />
+                    <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.docx,.rtf,.txt" onChange={handleFileChange} disabled={isProcessingFile} />
                 </label>
 
                 <div className="flex items-center gap-3">
