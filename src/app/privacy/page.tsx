@@ -42,6 +42,7 @@ export default function PrivacyPage() {
               <li>To track profile and page view analytics to display on your personal dashboard.</li>
               <li>To improve, personalize, and expand our platform functionalities.</li>
               <li>To communicate with you regarding updates, security alerts, and support messages.</li>
+              <li><strong>Showcase &amp; Promotion:</strong> To feature your public profile, profile link, or selected content in our marketing materials, website showcases, testimonials, case studies, and social media channels, helping both the platform grow and giving your professional brand increased visibility. You can opt out by deleting your account at any time.</li>
             </ul>
           </section>
 
