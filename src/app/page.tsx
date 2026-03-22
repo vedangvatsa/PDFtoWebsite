@@ -100,7 +100,7 @@ export default function Home() {
           </div>
           
           {(isUserLoading) ? null : user ? (
-             <div className="w-full max-w-md">
+             <div className="w-full max-w-[600px]">
                 <Button size="lg" className="w-full mt-2" asChild>
                     <Link href="/editor">Go to Your Editor</Link>
                 </Button>
@@ -110,7 +110,7 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <div className="w-full max-w-md space-y-3">
+              <div className="w-full max-w-[600px] space-y-3">
                 <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait' : ''}`}>
                     {isProcessingFile ? (
                         <>
@@ -147,7 +147,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex flex-row items-center justify-between w-full max-w-md text-muted-foreground pt-4 px-2">
+              <div className="flex flex-row items-center justify-between w-full max-w-[600px] text-muted-foreground pt-4 px-2">
                 <StepIndicator num={1} label="Upload" />
                 <StepDivider />
                 <StepIndicator num={2} label="Customize" />
