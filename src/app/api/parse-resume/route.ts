@@ -49,36 +49,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: `This document is ${pdfData.numpages} pages long. Please upload a professional resume under 10 pages.` }, { status: 400 });
     }
 
-    // 2. High-Fidelity AI Vision Engine (Primary)
-    if (genAI) {
-      try {
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-        
-        const base64Pdf = fileBuffer.toString('base64');
-        const pdfPart = { inlineData: { data: base64Pdf, mimeType: 'application/pdf' } };
-
-        const result = await model.generateContent([systemInstruction, pdfPart]);
-        let rawResponse = result.response.text();
-        
-        rawResponse = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
-        const aiStructuredData = JSON.parse(rawResponse);
-        
-        // Success: Mark as AI-sourced
-        return NextResponse.json({ ...aiStructuredData, source: 'ai_vision' }, { status: 200 });
-      } catch (aiError) {
-        console.error('CRITICAL: Gemini AI Engine Failure:', aiError);
-        // We only fall back if we absolutely have to, but we mark it clearly
-      }
-    } else {
-      console.warn('WARNING: No GEMINI_API_KEY found in environment variables.');
+    // --- 100% FORCED AI VISION ENGINE ---
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+       return NextResponse.json({ error: 'Production Error: GEMINI_API_KEY is missing from environment variables. Please check your Vercel settings.' }, { status: 500 });
     }
 
-    // 3. Absolute Safety Fallback: Local Extraction
-    const fallbackData = parseResumeText(pdfData.text);
-    return NextResponse.json({ ...fallbackData, source: 'local_fallback_warning' }, { status: 200 });
+    try {
+      const genAIInstance = new GoogleGenerativeAI(apiKey);
+      const model = genAIInstance.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      
+      const base64Pdf = fileBuffer.toString('base64');
+      const pdfPart = { inlineData: { data: base64Pdf, mimeType: 'application/pdf' } };
+
+      const result = await model.generateContent([systemInstruction, pdfPart]);
+      let rawResponse = result.response.text();
+      
+      rawResponse = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+      const aiStructuredData = JSON.parse(rawResponse);
+      
+      return NextResponse.json(aiStructuredData, { status: 200 });
+    } catch (aiError) {
+      console.error('LIVE PRODUCTION AI ERROR:', aiError);
+      const message = aiError instanceof Error ? aiError.message : 'Unknown AI error';
+      return NextResponse.json({ 
+        error: `AI Engine failed: ${message}. If this persists, verify your API Key quota and region.`,
+        source: 'ai_error_report'
+      }, { status: 500 });
+    }
 
   } catch (error) {
-    console.error('Error parsing resume:', error);
-    return NextResponse.json({ error: 'Failed to parse resume.' }, { status: 500 });
+    console.error('Fatal API Error:', error);
+    return NextResponse.json({ error: 'Failed to process resume document.' }, { status: 500 });
   }
 }
