@@ -6,23 +6,23 @@ import mammoth from 'mammoth';
 import { parseResumeText } from '@/lib/resume-parser';
 
 const systemInstruction = `You are a strict, highly accurate JSON API extracting candidate resumes.
-Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks like \`\`\`json):
+Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks):
 {
   "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "website": "", "github": "", "linkedin": "" },
   "summary": "",
-  "workExperience": [{ "company": "", "title": "", "startDate": "", "endDate": "", "description": "" }],
-  "education": [{ "institution": "", "degree": "", "fieldOfStudy": "", "startDate": "", "endDate": "", "description": "" }],
-  "skills": [""],
-  "customSections": [
-    { "id": "1", "userProfileId": "", "sectionTitle": "Publications", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] },
-    { "id": "2", "userProfileId": "", "sectionTitle": "Awards", "order": 2, "items": [{ "id": "2", "title": "", "subtitle": "", "description": "", "date": "" }] }
-  ]
+  "workExperience": [], 
+  "education": [],
+  "skills": [],
+  "customSections": []
 }
 
-OCR CLEANING RULE: If the input contains garbled characters, use your reasoning to determine the correct word intended.
-If a field doesn't exist, leave it as an empty string or array.
-CRITICAL RULE FOR UNMAPPED SECTIONS: If the CV contains extra sections like 'Publications', 'Patents', 'Hackathons', or 'Awards' that don't fit into Experience or Education, you MUST logically extract them into the "customSections" array.
-DO NOT throw data away!`;
+CRITICAL RULES:
+1. ONLY extract information that is explicitly present in the provided resume text. DO NOT hallucinate, guess, or invent ANY details, dummy sections, or placeholders.
+2. If a field or section (like workExperience, education, skills, or customSections) doesn't exist in the resume, leave that array completely EMPTY ([]). Do NOT populate [] with dummy objects.
+3. If a string field doesn't exist, leave it as an empty string "". 
+4. If the CV actually contains extra logical sections (e.g., 'Publications', 'Patents', 'Awards', 'Projects') that don't fit standard arrays, logically extract them into the "customSections" array with the following object schema: { "id": "1", "userProfileId": "", "sectionTitle": "Exact Section Name From CV", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] }. DO NOT CREATE CUSTOM SECTIONS IF THEY ARE NOT IN THE CV!
+5. OCR CLEANING RULE: If the input contains garbled characters, use your reasoning to correct the word intended.
+DO NOT throw real data away!`;
 
 // Supported file types
 const ALLOWED_TYPES: Record<string, string> = {
