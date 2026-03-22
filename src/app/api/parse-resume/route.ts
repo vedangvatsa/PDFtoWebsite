@@ -59,8 +59,11 @@ export async function POST(request: NextRequest) {
       console.log(`Initializing Gemini 1.5 Flash (Key Length: ${apiKey.length})`);
       const genAIInstance = new GoogleGenerativeAI(apiKey);
       
-      // Use the stable model ID. 'gemini-1.5-flash' is the most compatible.
-      const model = genAIInstance.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      // CRITICAL FIX: Explicitly force 'v1' stable API to avoid the v1beta 404 error
+      const model = genAIInstance.getGenerativeModel(
+        { model: 'gemini-1.5-flash' }, 
+        { apiVersion: 'v1' }
+      );
       
       const base64Pdf = fileBuffer.toString('base64');
       const pdfPart = { inlineData: { data: base64Pdf, mimeType: 'application/pdf' } };
@@ -76,7 +79,7 @@ export async function POST(request: NextRequest) {
       console.error('LIVE PRODUCTION AI ERROR:', aiError);
       const message = aiError instanceof Error ? aiError.message : 'Unknown AI error';
       return NextResponse.json({ 
-        error: `AI Engine failed (404/Auth): ${message}. Check Project/Region access for Gemini 1.5 Flash.`,
+        error: `AI Engine failed (Forced v1): ${message}. Check Project/Region access for Gemini 1.5 Flash.`,
         source: 'ai_error_report'
       }, { status: 500 });
     }
