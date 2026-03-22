@@ -107,6 +107,8 @@ export default function TemplateModern(props: ProfileData) {
                       height={72}
                       className="rounded-full border object-cover"
                       style={{ width: 72, height: 72 }}
+                      unoptimized={true}
+                      crossOrigin="anonymous"
                       data-ai-hint={profile.avatarHint || 'person portrait'}
                     />
                   )}

@@ -161,7 +161,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonSchema(data)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonSchema(data)).replace(/</g, '\\u003c') }}
       />
       <ProfilePageClient data={data} slug={slug} />
     </>
