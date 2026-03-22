@@ -19,7 +19,7 @@ export default function CustomSectionsEditor({ customSections, setCustomSections
 
     const handleAddSection = () => {
         const newSection: CustomSection = {
-            id: `cs-${Date.now()}`,
+            id: `cs-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
             userProfileId: user?.id || '',
             sectionTitle: 'New Section',
             items: [],
@@ -41,7 +41,7 @@ export default function CustomSectionsEditor({ customSections, setCustomSections
     };
 
     const handleAddItem = (sectionId: string) => {
-        const newItem = { id: `cs-item-${Date.now()}`, title: '', subtitle: '', description: '', date: '' };
+        const newItem = { id: `cs-item-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`, title: '', subtitle: '', description: '', date: '' };
         setCustomSections(prev => {
             const next = prev.map(s => s.id === sectionId ? { ...s, items: [...(s.items || []), newItem] } : s);
             syncArray('custom_sections', next);

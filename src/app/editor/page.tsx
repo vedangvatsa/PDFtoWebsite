@@ -593,7 +593,7 @@ export default function EditorPage() {
 
     const handleAddItem = async (collectionName: 'workExperience' | 'education') => {
         let newItem: any = (collectionName === 'workExperience') ? { title: '', company: '', startDate: '', endDate: '', description: '' } : { institution: '', degree: '', startDate: '', endDate: '' };
-        newItem.id = `item-${Date.now()}`;
+        newItem.id = `item-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
         const setter = { workExperience: setWorkItems, education: setEducationItems }[collectionName];
         (setter as any)((prev: any[]) => { const next = [...prev, newItem]; syncArray(collectionName === 'workExperience' ? 'experience' : 'education', next); return next; });
     };
