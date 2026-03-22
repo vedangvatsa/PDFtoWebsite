@@ -1,27 +1,22 @@
 # CVinBio
 
-**Turn Your CV into a Professional Website**
-
-CVinBio is a modern, ultra-minimalist web application that transforms traditional PDF CVs into beautiful, shareable, and intensely professional online portfolios natively hosted on your own unique URL. Bypassing clunky templates, this platform mathematically restructures your credentials into a crisp, high-performing digital identity.
+CVinBio generates web profiles from CV documents using AI. Users upload their CVs, and the application extracts and routes the structured data into an editable profile hosted at a custom URL.
 
 ## 🚀 Key Features
 
-*   **📄 Algorithmic CV Parsing:** Upload an arbitrary PDF CV and the backend uses an advanced local heuristic text-extraction engine (`pdf-parse`) to instantly map, categorize, and seamlessly structure your personal information, work history, education, and skills.
-*   **🎨 Aggressive Minimalism:** The frontend deploys a highly disciplined monochromatic design system (Inter font, stark whitespace, tight tracking, zero drop-shadows) specifically engineered to mimic the aesthetic of a premium SaaS application or high-end digital business card. *(No messy themes or templates required)*
-*   **⚡ Edge-Computed Link Previews (OpenGraph):** When sharing your `cvinbio.com/[slug]` URL on LinkedIn or Twitter/iMessage, Next.js natively utilizes the Edge Runtime (Satori) to physically draw a perfectly symmetrical, personalized `1200x630` PNG image in microseconds containing your avatar, name, and job title.
-*   **🔐 Supabase Architecture:** Completely integrated into a hardcore PostgreSQL backend utilizing strictly bound Row Level Security (RLS) and GoTrue Auth to permanently secure and seamlessly sync your professional edits in real-time.
-*   **✏️ Frictionless Editor:** A fully dynamic client-side interface allowing you to instantly restructure your extracted logic, upload compressed avatars, and rewrite work summaries effortlessly.
+*   **📄 AI CV Parsing:** Upload a CV; the backend uses data extraction (`pdf-parse`) to categorize and store the user's personal information, work history, education, and skills.
+*   **🎨 Structural Rendering:** Generates a consistent, monochrome profile mapping without relying on manual themes.
+*   **⚡ OpenGraph Edge Generation:** Next.js uses the Edge Runtime (Satori) to automatically generate dynamic `1200x630` PNG social previews mapping the user's routing URL and avatar metrics.
+*   **🔐 Supabase Integration:** Connects to PostgreSQL using Row Level Security (RLS) and GoTrue Auth to persist user edits.
+*   **✏️ Data Editor:** A client-facing configuration dashboard to mutate work summaries, upload new media, and re-order data arrays.
 
 ## 🛠️ Tech Stack
 
-This project strictly utilizes a bleeding-edge, type-safe, and highly-performant production stack:
-
-*   **Framework:** [Next.js 15](https://nextjs.org/) (App Router, Server Components, Turbopack)
+*   **Framework:** [Next.js 15](https://nextjs.org/) (App Router, Server Components)
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
 *   **UI & Styling:** [Tailwind CSS v3](https://tailwindcss.com/) & [Shadcn UI](https://ui.shadcn.com/)
 *   **Backend & Database:** [Supabase](https://supabase.com/) (PostgreSQL & Auth)
-*   **PDF Extraction Engine:** `pdf-parse` mapping custom RegEx structures
-*   **Image Generation:** [Next/OG](https://vercel.com/docs/functions/og-image-generation) (Satori Edge computing)
+*   **Image Generation:** [Next/OG](https://vercel.com/docs/functions/og-image-generation)
 
 ## 📁 Project Structure
 

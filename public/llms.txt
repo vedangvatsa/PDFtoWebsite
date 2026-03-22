@@ -1,37 +1,28 @@
-# PDFtoPortfolio
+# CVinBio
 
-> Turn your PDF resume into a beautiful, shareable professional profile website in seconds.
+> Convert your CV to a Website using AI.
 
-## What is PDFtoPortfolio?
+## Overview
 
-PDFtoPortfolio is a free tool that converts PDF resumes into hosted professional profile pages. Users upload their CV/resume PDF and the app automatically parses it and creates a public profile page accessible at a custom URL.
+CVinBio is a utility that converts CV documents into hosted web profiles. Users upload a CV, and the system extracts the data to generate a public profile page at a custom URL.
 
 ## Features
 
-- Upload any PDF resume and get a hosted profile page instantly
-- Multiple professional themes (Modern Creative, Classic Minimalist, Monochrome Professional)
-- Editable profile: update work experience, education, skills, summary, and contact info
-- Custom URL (e.g., yourname-abc12)
-- Profile view tracking
+- CV upload and automated website generation mapping.
+- Editable profile interface for work experience, education, skills, and summary.
+- Custom URL routing (e.g., yourname-abc12).
+- Profile view analytics tracking.
 
-## How it works
+## Workflow
 
-1. Upload your PDF resume on the homepage
-2. Create an account (email/password or Google sign-in)
-3. Your profile is automatically generated and published
-4. Share your profile URL with employers, on LinkedIn, etc.
+1. Upload CV document.
+2. Authenticate (Email/Password or OAuth).
+3. System provisions and publishes public profile routing.
+4. Share generated URL structure.
 
-## Public profile pages
+## Architecture & Technology
 
-Each user's profile is accessible at: https://your-domain.com/{slug}
-
-Profile pages include:
-- Full name, contact info, location
-- Professional summary
-- Work experience history
-- Education background
-- Skills list
-
-## Technology
-
-Built with Next.js, Firebase, and TypeScript.
+- Framework: Next.js (App Router)
+- Database & Auth: Supabase (PostgreSQL)
+- Styling: Tailwind CSS
+- Data Extraction: AI logic sequence mapping.

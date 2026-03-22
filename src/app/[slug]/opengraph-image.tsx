@@ -1,17 +1,48 @@
 import { ImageResponse } from 'next/og';
 import { getProfileBySlug } from '@/lib/supabase-server';
+import { blogMetadata } from '@/lib/blog-metadata';
 
 export const runtime = 'edge';
 
-export const alt = 'Professional CV Profile';
+export const alt = 'CVinBio SEO Preview';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
-  const data = await getProfileBySlug(slug);
 
   const siteDomain = (process.env.NEXT_PUBLIC_SITE_URL || 'cvin.bio').replace(/^https?:\/\//, '');
+
+  const post = blogMetadata.find((p: any) => p.slug === slug);
+  if (post) {
+    return new ImageResponse(
+      (
+        <div style={{ display: 'flex', width: '100%', height: '100%', backgroundColor: '#ffffff', fontFamily: 'sans-serif' }}>
+          
+          {/* Left Text Side (60%) */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between', width: '55%', height: '100%', padding: '80px', backgroundColor: '#ffffff' }}>
+            <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-2px', lineHeight: 1.1, marginTop: 20 }}>
+              {post.imageText || post.title}
+            </div>
+            
+            <div style={{ display: 'flex', width: '100%' }}>
+              <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-2px', lineHeight: 1.1 }}>
+                CVin.Bio
+              </div>
+            </div>
+          </div>
+
+          {/* Right Visual Side (45%) */}
+          <div style={{ display: 'flex', width: '45%', height: '100%', backgroundColor: '#f4f4f5' }}>
+            <img src={post.featuredImage} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+
+        </div>
+      ), { ...size }
+    );
+  }
+
+  const data = await getProfileBySlug(slug);
 
   if (!data) {
     return new ImageResponse(
@@ -33,10 +64,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
     (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100%', backgroundColor: '#ffffff', padding: '70px 90px', justifyContent: 'space-between', fontFamily: 'sans-serif' }}>
         
-        {/* Top Header Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-           <div style={{ fontSize: 38, fontWeight: 800, color: '#000000', letterSpacing: '-0.05em' }}>📄 CVinBio</div>
-        </div>
+        {/* Profile Output Generator mapping strictly to candidate user model */}
         
         {/* Candidate Profile Payload */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, gap: 24 }}>
