@@ -547,15 +547,15 @@ export default function EditorPage() {
         <div className="flex min-h-screen flex-col">
             <Header />
             {!user && (
-                <div className="border-b bg-background">
-                    <div className="container mx-auto max-w-4xl px-4 md:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
-                        <p className="text-sm text-muted-foreground">
-                            <span className="font-medium text-foreground">Preview is ready!</span>{' '}
+                <div className="border-b bg-background shadow-sm">
+                    <div className="container mx-auto max-w-4xl px-4 md:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between text-center sm:text-left gap-4">
+                        <p className="text-sm text-muted-foreground leading-relaxed max-w-md sm:max-w-none">
+                            <span className="font-semibold text-foreground">Preview is ready!</span>{' '}
                             Sign up to publish your profile and get a shareable link.
                         </p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-center shrink-0">
                             <LoginDialog trigger={
-                                <Button size="sm" onClick={() => {
+                                <Button size="sm" className="px-6 font-semibold" onClick={() => {
                                     const snapshot = {
                                         personalInfo: { fullName: profile.fullName, email: profile.email, phone: profile.phone, location: profile.location, website: profile.website, slug: profile.slug },
                                         summary: profile.summary,
