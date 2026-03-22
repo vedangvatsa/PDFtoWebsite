@@ -116,8 +116,8 @@ export const blogPosts: BlogPost[] = [
           <li>The reader just scrolls down, the most natural phone gesture</li>
         </ul>
 
-        <h2 className={h2}>Interactivity and Deep Dives</h2>
-        <p>A non-responsive PDF is static. A web profile can have expandable sections. If a recruiter is interested in a specific project, they can click to see more details without cluttering the main page view. This allows you to provide high-level summaries and detailed deep-dives in the same document without overwhelming the reader.</p>
+        <h2 className={h2}>Interactivity and Detail</h2>
+        <p>A non-responsive PDF is static. A web profile can have expandable sections. If a recruiter is interested in a specific project, they can click to see more details without cluttering the main page view. This allows you to provide high-level summaries and detailed exploration in the same document without overwhelming the reader.</p>
 
         <h2 className={h2}>Frequently Asked Questions</h2>
         <div className="space-y-6">
@@ -252,10 +252,10 @@ export const blogPosts: BlogPost[] = [
           </div>
         </div>
 
-        <h2 className={h2}>Deep Dive Articles</h2>
+        <h2 className={h2}>Related Analysis</h2>
         <ul className={ul}>
-          <li><Link href="/pdf-breaks-ats" className={link}>Deep dive: Why complex PDFs break recruiter algorithms</Link></li>
-          <li><Link href="/tech-resume-keywords" className={link}>Expert guide: Mapping visual hierarchy for technical recruiters</Link></li>
+          <li><Link href="/pdf-breaks-ats" className={link}>Analysis: Why complex PDFs break recruiter algorithms</Link></li>
+          <li><Link href="/tech-resume-keywords" className={link}>Guide: Mapping visual hierarchy for technical recruiters</Link></li>
         </ul>
       </div>
     )
@@ -377,7 +377,7 @@ export const blogPosts: BlogPost[] = [
 
         <h2 className={h2}>Further Reading</h2>
         <ul className={ul}>
-          <li><Link href="/bypass-ats" className={link}>The definitive guide to bypassing ATS formatting destruction</Link></li>
+          <li><Link href="/bypass-ats" className={link}>The guide to bypassing ATS formatting destruction</Link></li>
           <li><Link href="/mobile-responsive-cv" className={link}>Why your resume must be mobile-responsive in 2026</Link></li>
         </ul>
       </div>
