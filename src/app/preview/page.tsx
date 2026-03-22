@@ -112,8 +112,6 @@ export default function PreviewPage() {
                                 <ArrowLeft className="h-5 w-5" />
                             </Link>
                         </Button>
-                        <div className="h-6 w-px bg-border hidden sm:block"></div>
-                        <span className="text-sm font-medium text-muted-foreground hidden sm:block">Guest Temporary Preview</span>
                     </div>
                     <LoginDialog trigger={<Button size="sm" className="font-bold">Claim Link</Button>} />
                 </div>

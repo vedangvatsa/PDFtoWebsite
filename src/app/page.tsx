@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { UploadCloud, Edit, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/header';
+import MicroFooter from '@/components/micro-footer';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -166,6 +167,7 @@ export default function Home() {
 
         </div>
       </main>
+      <MicroFooter />
     </div>
   );
 }

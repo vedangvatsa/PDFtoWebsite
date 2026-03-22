@@ -22,6 +22,7 @@ CRITICAL RULES:
 3. EXTRACT ALL PROFESSIONAL EXPERIENCE into "workExperience"! Even if it is labeled irregularly (e.g. 'Internships', 'Freelance', 'Partnerships', 'Self-Employed', 'Leadership'), aggressively map it to "workExperience" to ensure no primary job data is lost.
 4. If the CV contains extra supplementary sections (e.g. 'Publications', 'Patents', 'Awards', 'Testimonials') map them purely into "customSections" using this schema: { "id": "1", "userProfileId": "", "sectionTitle": "Exact Section Name From CV", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] }.
 5. OCR CLEANING RULE: If the input contains garbled characters, aggressively apply reasoning to reconstruct the intended words. Maintain detailed descriptions and retain bullet point formatting.
+6. LOCATION PRIVACY RULE: Do NOT extract full specific street addresses. ONLY output the generalized "City, Country" (e.g., "San Francisco, USA", "London, UK") for the personal location field!
 DO NOT THROW ANY REAL WORK DATA AWAY!`;
 
 // Supported file types

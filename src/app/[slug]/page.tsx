@@ -3,8 +3,10 @@ import type { Metadata } from 'next';
 import { getProfileBySlug, type ServerProfileData } from '@/lib/supabase-server';
 import ProfilePageClient from './profile-page-client';
 import Header from '@/components/header';
+import MicroFooter from '@/components/micro-footer';
+import BlogCTA from '@/components/blog-cta';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, CheckCircle2, Copy, FileText, Share2, Upload, PenLine } from 'lucide-react';
 import { blogPosts } from '@/lib/blog-data';
 
 export const dynamic = 'force-dynamic';
@@ -142,14 +144,53 @@ export default async function ProfileSlugPage({ params }: PageProps) {
             
             {/* Direct OpenGraph Mock Preview Mapping for Featured Image strictly obeying UI constraint */}
             <div className="w-full aspect-[1200/630] rounded-2xl border border-zinc-200 dark:border-zinc-800/50 overflow-hidden mb-12 shadow-sm dark:shadow-none bg-zinc-50 dark:bg-zinc-900/50 relative transition-colors">
-              <img src={`/${slug}/opengraph-image?v=9`} alt={post.title} className="w-full h-full object-cover" />
+              <img src={`/${slug}/opengraph-image?v=10`} alt={post.title} className="w-full h-full object-cover" />
             </div>
 
-            <div className="prose prose-zinc dark:prose-invert prose-lg min-w-full transition-colors">
+            <div className="prose prose-zinc dark:prose-invert prose-lg min-w-full transition-colors mb-16">
               {post.content}
+            </div>
+
+            {/* Global Article CTA */}
+            <BlogCTA />
+
+            {/* Local Contextual FAQs */}
+            {post.faqs && post.faqs.length > 0 && (
+              <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 transition-colors">
+                <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-8 tracking-tight">Frequently Asked Questions</h3>
+                <div className="space-y-8">
+                  {post.faqs.map((faq, i) => (
+                    <div key={i}>
+                      <h4 className="font-bold text-lg text-zinc-900 dark:text-zinc-50 mb-2">{faq.question}</h4>
+                      <p className="text-zinc-600 dark:text-zinc-400">{faq.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Global Further Reading */}
+            <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 transition-colors">
+              <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-8 tracking-tight">Further Reading</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {blogPosts
+                  .filter(p => p.slug !== slug)
+                  // Deterministic SEO link cycling: Start pulling articles positioned statically after the current index to guarantee stable Googlebot crawl paths.
+                  .slice(
+                     blogPosts.findIndex(p => p.slug === slug) % Math.max(1, blogPosts.length - 4), 
+                     (blogPosts.findIndex(p => p.slug === slug) % Math.max(1, blogPosts.length - 4)) + 4
+                  )
+                  .map(related => (
+                  <Link key={related.slug} href={`/${related.slug}`} className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/50 transition-colors group flex flex-col h-full">
+                    <h4 className="font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors text-sm mb-2 leading-snug">{related.title}</h4>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">{related.excerpt}</p>
+                  </Link>
+                ))}
+              </div>
             </div>
           </article>
         </main>
+        <MicroFooter />
       </div>
     );
   }

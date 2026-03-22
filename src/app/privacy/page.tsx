@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Header from '@/components/header';
+import MicroFooter from '@/components/micro-footer';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy - CVin.Bio',
@@ -23,38 +24,39 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-foreground mb-3">2. Information We Collect</h2>
+            <h2 className="text-xl font-bold text-foreground mb-3">2. Information We May Collect</h2>
             <ul className="list-disc pl-5 space-y-2 mt-2">
-              <li><strong>Personal Information:</strong> When you register an account, we may collect identifiable information such as your name, email address, and authentication data provided by Google or other third-party identity providers.</li>
-              <li><strong>Resume and Profile Data:</strong> To generate your personal website, we collect information contained within the resumes or CVs you upload (e.g., PDFs), or information you explicitly enter into our Editor. This includes your employment history, educational background, skills, and profile photo.</li>
-              <li><strong>Usage Data:</strong> We may collect automatic information about how you interact with our platform, including IP addresses, browser types, operating systems, and page views, to help us understand use patterns and improve our service.</li>
-              <li><strong>Cookies and Tracking:</strong> We use essential cookies strictly to maintain your session and authentication status. We do not employ invasive third-party tracking or advertising cookies.</li>
+              <li><strong>Personal Information:</strong> When you register an account, we may collect identifiable information such as your name, email address, and authentication data provided by third-party identity providers.</li>
+              <li><strong>Resume and Profile Data:</strong> To help generate your personal website, we may collect information contained within the resumes or CVs you upload. This can include your employment history, educational background, skills, and profile photos.</li>
+              <li><strong>Usage Data:</strong> We might collect automatic information about how you interact with our platform, including IP addresses, browser types, and page views, to help us understand use patterns and improve our service.</li>
+              <li><strong>Cookies and Tracking:</strong> We may use cookies to help maintain your session and authentication status. We strive to avoid employing invasive third-party tracking cookies where possible.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-foreground mb-3">3. How We Use Your Information</h2>
-            <p>We use the collected information for various purposes, including:</p>
+            <h2 className="text-xl font-bold text-foreground mb-3">3. How We May Use Your Information</h2>
+            <p>We may use the collected information for various purposes, which can include:</p>
             <ul className="list-disc pl-5 space-y-2 mt-2">
-              <li>To provide, operate, and maintain the CVin.Bio service.</li>
-              <li>To automatically parse and generate your public-facing professional profile.</li>
-              <li>To process authentication securely via Supabase.</li>
-              <li>To track profile and page view analytics to display on your personal dashboard.</li>
+              <li>To help provide, operate, and maintain the CVin.Bio service.</li>
+              <li>To help parse and generate your public-facing professional profile.</li>
+              <li>To process authentication via our partners.</li>
+              <li>To help track profile and page view analytics to display on your dashboard.</li>
               <li>To improve, personalize, and expand our platform functionalities.</li>
-              <li>To communicate with you regarding updates, security alerts, and support messages.</li>
-              <li><strong>Showcase &amp; Promotion:</strong> To feature your public profile, profile link, or selected content in our marketing materials, website showcases, testimonials, case studies, and social media channels, helping both the platform grow and giving your professional brand increased visibility. You can opt out by deleting your account at any time.</li>
+              <li>To communicate with you regarding updates, security alerts, support messages, and occasional promotional offers or marketing insights that may be relevant to your professional growth.</li>
+              <li><strong>Showcase & Promotion:</strong> We may feature your public profile, profile link, or selected content in our marketing materials, website showcases, testimonials, and social media channels. This can help both the platform grow and provide your professional brand with increased visibility. You can always opt out by deleting your account at any time.</li>
+              <li><strong>Platform Evolution & Innovation:</strong> We may occasionally utilize aggregated or profile insights to help us build new tools, develop features, identify industry trends, or explore new business models as our platform evolves. We are always striving to continuously adapt to the needs of the modern workforce.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-foreground mb-3">4. Information Sharing and Disclosure</h2>
             <p>
-              CVin.Bio is meticulously designed to help you proactively grow your career. To do this, we offer powerful features that can match your public profile data with relevant recruiters and exciting job opportunities.
+              CVin.Bio is designed to try and help you proactively grow your career. To do this, we may offer features that can match your public profile data with relevant recruiters and exciting job opportunities.
             </p>
             <ul className="list-disc pl-5 space-y-2 mt-2">
-              <li><strong>Recruiters and Partners:</strong> We strictly use this sharing capability exclusively to benefit your career. You retain full autonomous control. If you ever decide you no longer want to participate in this network, you can securely opt-out by permanently deleting your account and all associated professional data directly from your dashboard. We never sell your personal contact data to bulk marketing lists.</li>
-              <li><strong>Service Providers:</strong> We use trusted third-party cloud infrastructure (like Supabase and Vercel) to run the website. They strictly help us securely host the platform and process data securely.</li>
-              <li><strong>Legal Requirements:</strong> If required by valid legal process, we may need to securely disclose information to authorized public authorities.</li>
+              <li><strong>Recruiters and Partners:</strong> We may use this sharing capability to try and benefit your career, and you always retain autonomous control. If you decide you no longer want to participate in this network, you can opt-out by permanently deleting your account and associated professional data. We aim to never sell your personal contact data to bulk marketing lists.</li>
+              <li><strong>Service Providers:</strong> We may use third-party cloud infrastructure like Supabase and Vercel to help run the website and process data securely.</li>
+              <li><strong>Legal Requirements:</strong> If requested by valid legal process, we may occasionally need to disclose information to authorized public authorities.</li>
             </ul>
           </section>
 
@@ -66,13 +68,14 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-foreground mb-3">6. Your Data Rights</h2>
+            <h2 className="text-xl font-bold text-foreground mb-3">6. Your Data Autonomy</h2>
             <p>
-              You have complete control over your profile data. From your account Editor dashboard, you retain the ability to:
+              We firmly believe in building a platform that respects your privacy and ownership. We try to give you as much autonomous control over your public footprint as possible. From your account Editor dashboard, you can generally:
             </p>
             <ul className="list-disc pl-5 space-y-2 mt-2">
-              <li><strong>Access and Update:</strong> Modify your work history, skills, links, and personal information at any time.</li>
-              <li><strong>Delete:</strong> Permanently delete your account. This action instantly removes your profile from our active databases, including parsed resume data and view analytics.</li>
+              <li><strong>Access and Modify:</strong> You can edit your work history, skills, links, and personal information whenever you wish.</li>
+              <li><strong>Right to Erasure (Deletion):</strong> You can permanently delete your account autonomously. This action instantly removes your profile from our active databases, ensuring your data is forgotten.</li>
+              <li><strong>Withdraw Consent:</strong> Because you control your public link, you can unpublish or delete your profile at any time to withdraw it from public view.</li>
             </ul>
           </section>
 
@@ -91,6 +94,7 @@ export default function PrivacyPage() {
           </section>
         </div>
       </main>
+      <MicroFooter />
     </div>
   );
 }

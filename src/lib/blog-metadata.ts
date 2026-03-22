@@ -6,5 +6,20 @@ export const blogMetadata = [
   { slug: 'stand-out-inbox', title: 'Using Clean URLs to Stand Out in Application Inboxes', imageText: 'Commanding Attention', featuredImage: 'https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=1200&q=80' },
   { slug: 'pdf-breaks-ats', title: 'Why Complex PDFs Break Recruiter Algorithms', imageText: 'When Good Design Fails Algorithms', featuredImage: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=1200&q=80' },
   { slug: 'tech-resume-keywords', title: 'Mapping Visual Hierarchy for Technical Recruiters', imageText: 'Scanning for Signal in the Noise', featuredImage: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&q=80' },
-  { slug: 'update-cv-anytime', title: 'The Hidden Advantage of Fixing Typos Anytime', imageText: 'Correct Your Typos in Real-Time', featuredImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80' }
+  { slug: 'update-cv-anytime', title: 'The Hidden Advantage of Fixing Typos Anytime', imageText: 'Correct Your Typos in Real-Time', featuredImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80' },
+  { slug: 'objective-statement-death', title: 'Drop the Objective Section', imageText: 'Stop Writing Objectives', featuredImage: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=80' },
+  { slug: 'overstuffing-bullets', title: 'Write Shorter Job Details', imageText: 'Stop Stuffing Bullet Points', featuredImage: 'https://images.unsplash.com/photo-1542626991-cbc4e32524cc?w=1200&q=80' },
+  { slug: 'measuring-impact-no-data', title: 'How to Show Value Without Money Numbers', imageText: 'Prove Impact Without Dollars', featuredImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80' },
+  { slug: 'short-tenures-tech', title: 'How to Explain Short Jobs', imageText: 'Own Your Short Tenures', featuredImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80' },
+  { slug: 'keyword-trust', title: 'Stop Faking Your Skills List', imageText: 'Faking Skills Ruins Trust', featuredImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80' },
+  { slug: 'soft-skills-evidence', title: 'Prove You Can Work With Others', imageText: 'Soft Skills Demand Proof', featuredImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80' },
+  { slug: 'the-30-second-scan', title: 'Write For the 30 Second Scan', imageText: 'The 30-Second Recruiter Scan', featuredImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80' },
+  { slug: 'gap-explanation', title: 'How to Explain Time Off', imageText: 'Own Your Sabbatical', featuredImage: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&q=80' },
+  { slug: 'academic-to-commercial', title: 'How to Sell Your PhD', imageText: 'Leave The Lab Behind', featuredImage: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80' },
+  { slug: 'generic-skill-bars', title: 'Stop Using Skill Progress Bars', imageText: 'Skill Ratings Are Useless', featuredImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80' },
+  { slug: 'beat-smart-ai-bots', title: 'How to Beat Smart AI Resume Bots', imageText: 'Beat the AI Parsers', featuredImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80' },
+  { slug: 'where-to-put-ai-skills', title: 'Where to Put AI Skills on Your Page', imageText: 'How to List AI Skills', featuredImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80' },
+  { slug: 'show-your-code', title: 'Show Your Code Do Not Just List It', imageText: 'Live Links Prove Skills', featuredImage: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&q=80' },
+  { slug: 'college-degrees-matter-less', title: 'Why College Degrees Matter Less Now', imageText: 'Skills Over Degrees', featuredImage: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80' },
+  { slug: 'two-page-resume-myth', title: 'The Two Page Resume Myth', imageText: 'The One Page Myth', featuredImage: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80' }
 ];

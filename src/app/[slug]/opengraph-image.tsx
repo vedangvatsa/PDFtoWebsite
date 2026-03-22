@@ -21,7 +21,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
           
           {/* Left Text Side (60%) */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between', width: '55%', height: '100%', padding: '80px', backgroundColor: '#ffffff' }}>
-            <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-2px', lineHeight: 1.1, marginTop: 20 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', overflow: 'hidden', width: '100%', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-2px', lineHeight: 1.1, marginTop: 20 }}>
               {post.imageText || post.title}
             </div>
             
@@ -92,8 +92,8 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
 
         {/* Bottom Centered Link */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-          <div style={{ fontSize: 32, fontWeight: 500, color: '#71717a' }}>
-            {siteDomain}/{slug}
+          <div style={{ display: 'flex', fontSize: 32, fontWeight: 500, color: '#71717a' }}>
+            {`${siteDomain}/${slug}`}
           </div>
         </div>
 

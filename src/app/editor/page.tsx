@@ -1029,7 +1029,10 @@ export default function EditorPage() {
                                                     }}
                                                     onBlur={() => {
                                                         if (user) {
-                                                            autoSave('profile', user.id, { skills: skillItems });
+                                                            setSkillItems(prev => {
+                                                                autoSave('profile', user.id, { skills: prev });
+                                                                return prev;
+                                                            });
                                                         }
                                                     }}
                                                 />

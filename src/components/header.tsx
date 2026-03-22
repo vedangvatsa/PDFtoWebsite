@@ -45,7 +45,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
         {children}
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
           {!isUserLoading && user && (
               <TooltipProvider>
                 <div className="flex items-center space-x-1">
