@@ -117,23 +117,23 @@ export default function TemplateModern(props: ProfileData) {
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground">
                 {profile.fullName}
               </h1>
-              <div className="mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+              <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
                 {profile.location && (
-                  <span className="inline-flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    {profile.location}
+                  <span className="flex items-center">
+                    <MapPin className="h-3 w-3 shrink-0 mr-1.5" />
+                    <span>{profile.location}</span>
                   </span>
                 )}
                 {profile.email && (
-                  <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-1 hover:text-foreground transition-colors">
-                    <Mail className="h-3 w-3" />
-                    {profile.email}
+                  <a href={`mailto:${profile.email}`} className="flex items-center hover:text-foreground transition-colors">
+                    <Mail className="h-3 w-3 shrink-0 mr-1.5" />
+                    <span>{profile.email}</span>
                   </a>
                 )}
                 {profile.phone && (
-                  <span className="inline-flex items-center gap-1">
-                    <Phone className="h-3 w-3" />
-                    {profile.phone}
+                  <span className="flex items-center">
+                    <Phone className="h-3 w-3 shrink-0 mr-1.5" />
+                    <span>{profile.phone}</span>
                   </span>
                 )}
                 {profile.website && (
@@ -141,11 +141,11 @@ export default function TemplateModern(props: ProfileData) {
                     href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                    className="flex items-center hover:text-foreground transition-colors"
                   >
-                    <Globe className="h-3 w-3" />
-                    {profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                    <ArrowUpRight className="h-2.5 w-2.5" />
+                    <Globe className="h-3 w-3 shrink-0 mr-1.5" />
+                    <span>{profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1" />
                   </a>
                 )}
                 {profile.github && (
@@ -153,11 +153,11 @@ export default function TemplateModern(props: ProfileData) {
                     href={profile.github.startsWith('http') ? profile.github : `https://${profile.github}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                    className="flex items-center hover:text-foreground transition-colors"
                   >
-                    <Github className="h-3 w-3" />
-                    {profile.github.replace(/^https?:\/\/(www\.)?github\.com\//, '').replace(/\/$/, '')}
-                    <ArrowUpRight className="h-2.5 w-2.5" />
+                    <Github className="h-3 w-3 shrink-0 mr-1.5" />
+                    <span>{profile.github.replace(/^https?:\/\/(www\.)?github\.com\//, '').replace(/\/$/, '')}</span>
+                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1" />
                   </a>
                 )}
                 {profile.linkedin && (
@@ -165,11 +165,11 @@ export default function TemplateModern(props: ProfileData) {
                     href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://${profile.linkedin}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                    className="flex items-center hover:text-foreground transition-colors"
                   >
-                    <Linkedin className="h-3 w-3" />
-                    {profile.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, '').replace(/\/$/, '')}
-                    <ArrowUpRight className="h-2.5 w-2.5" />
+                    <Linkedin className="h-3 w-3 shrink-0 mr-1.5" />
+                    <span>{profile.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, '').replace(/\/$/, '')}</span>
+                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1" />
                   </a>
                 )}
               </div>
