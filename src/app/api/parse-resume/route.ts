@@ -2,9 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import pdf from 'pdf-parse';
 import { parseResumeText } from '@/lib/resume-parser';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
 
 const systemInstruction = `You are a strict, highly accurate JSON API extracting candidate resumes.
 Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks like \`\`\`json):
@@ -31,10 +28,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided.' }, { status: 400 });
     }
 
-    // --- ZERO-COST FIREWALL (Rule 1): Max 10MB File Size ---
     const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
     if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json({ error: 'This file is too large to be a CV. Please upload a resume under 10MB.' }, { status: 400 });
+      return NextResponse.json({ error: 'This file is too large. Please upload a resume under 10MB.' }, { status: 400 });
     }
 
     if (file.type !== 'application/pdf') {
@@ -42,45 +38,67 @@ export async function POST(request: NextRequest) {
     }
 
     const fileBuffer = Buffer.from(await file.arrayBuffer());
-    
-    // 1. Zero-Cost Firewall: Page Count
     const pdfData = await pdf(fileBuffer);
+    
     if (pdfData.numpages > 10) {
-      return NextResponse.json({ error: `This document is ${pdfData.numpages} pages long. Please upload a professional resume under 10 pages.` }, { status: 400 });
+      return NextResponse.json({ error: `Document is ${pdfData.numpages} pages long. Max 10 pages.` }, { status: 400 });
     }
 
-    // --- 100% FORCED AI VISION ENGINE (v1 Stable) ---
+    // --- THE DEFINITIVE FIX: DIRECT REST API CALL (v1 Stable) ---
     const apiKey = process.env.GEMINI_API_KEY?.trim();
     if (!apiKey) {
        return NextResponse.json({ error: 'Production Error: GEMINI_API_KEY is missing. Check Vercel Settings.' }, { status: 500 });
     }
 
     try {
-      console.log(`Initializing Gemini 1.5 Flash (Key Length: ${apiKey.length})`);
-      const genAIInstance = new GoogleGenerativeAI(apiKey);
-      
-      // CRITICAL FIX: Explicitly force 'v1' stable API to avoid the v1beta 404 error
-      const model = genAIInstance.getGenerativeModel(
-        { model: 'gemini-1.5-flash' }, 
-        { apiVersion: 'v1' }
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: systemInstruction },
+                {
+                  inline_data: {
+                    mime_type: 'application/pdf',
+                    data: fileBuffer.toString('base64')
+                  }
+                }
+              ]
+            }],
+            generationConfig: {
+              temperature: 0.1,
+              topP: 0.95,
+              topK: 64,
+              maxOutputTokens: 2048,
+              responseMimeType: 'application/json'
+            }
+          })
+        }
       );
-      
-      const base64Pdf = fileBuffer.toString('base64');
-      const pdfPart = { inlineData: { data: base64Pdf, mimeType: 'application/pdf' } };
 
-      const result = await model.generateContent([systemInstruction, pdfPart]);
-      const responseText = result.response.text();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || `API Error ${response.status}`);
+      }
+
+      const result = await response.json();
+      const responseText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (!responseText) throw new Error('Empty response from AI engine');
       
       let rawResponse = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
       const aiStructuredData = JSON.parse(rawResponse);
       
       return NextResponse.json(aiStructuredData, { status: 200 });
     } catch (aiError) {
-      console.error('LIVE PRODUCTION AI ERROR:', aiError);
+      console.error('ULTIMATE REST FAILURE:', aiError);
       const message = aiError instanceof Error ? aiError.message : 'Unknown AI error';
       return NextResponse.json({ 
-        error: `AI Engine failed (Forced v1): ${message}. Check Project/Region access for Gemini 1.5 Flash.`,
-        source: 'ai_error_report'
+        error: `Definitive Repair Mode Failed: ${message}.`,
+        source: 'rest_api_failure'
       }, { status: 500 });
     }
 
