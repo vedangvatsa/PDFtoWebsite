@@ -6,17 +6,29 @@
 
 CVinBio is a utility that converts CV documents into hosted web profiles. Users upload a CV, and the system extracts the data to generate a public profile page at a custom URL.
 
+## High-Value Content & Guides
+
+- [Why You Should Stop Sending PDF Resumes](/cv-attachments) - Technical and practical disadvantages of PDF attachments in modern hiring.
+- [Mobile Responsive CVs](/mobile-responsive-cv) - Usability research on how font legibility and responsive design affect recruiter scanning.
+- [Bypassing ATS](/bypass-ats) - Strategies for satisfying both the applicant tracking system algorithms and human recruiters.
+- [Standing Out in Inboxes](/stand-out-inbox) - Using clean URLs and Open Graph preview cards to distinguish applications.
+- [Complex PDFs Break Algorithms](/pdf-breaks-ats) - Deep dive into how vector fonts and layered backgrounds in PDFs cause data integrity gaps.
+- [Visual Hierarchy for Recruiters](/tech-resume-keywords) - Research on F-shaped scanning patterns and cognitive load in technical resume screening.
+- [Fix Typos Anytime](/update-cv-anytime) - The operational advantage of live-editable profiles over static file attachments.
+- [Clean URLs as Professional Brand](/cv-web-link) - Building credibility through consistent digital identity and shared web links.
+
 ## Features
 
 - CV upload and automated website generation mapping.
 - Editable profile interface for work experience, education, skills, and summary.
 - Custom URL routing (e.g., yourname-abc12).
 - Profile view analytics tracking.
+- Magic link and OAuth passwordless authentication.
 
 ## Workflow
 
 1. Upload CV document.
-2. Authenticate (Email/Password or OAuth).
+2. Authenticate (Magic Link or Google OAuth).
 3. System provisions and publishes public profile routing.
 4. Share generated URL structure.
 
