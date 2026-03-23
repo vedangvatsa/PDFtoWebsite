@@ -16,6 +16,12 @@ export async function POST(
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
+  // Skip bots/crawlers to prevent inflated view counts
+  const ua = request.headers.get('user-agent') || '';
+  if (/bot|crawl|spider|slurp|mediapartners|facebookexternalhit|linkedinbot|twitterbot|whatsapp|telegram|preview/i.test(ua)) {
+    return NextResponse.json({ success: true, bot: true }, { status: 200 });
+  }
+
   // Basic deduplication: check for a view cookie to prevent repeated counting
   const viewCookieName = `viewed_${slug}`;
   const alreadyViewed = request.cookies.get(viewCookieName);
@@ -35,10 +41,10 @@ export async function POST(
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     }
 
-    // Atomic increment: try RPC first, fall back to read-write
+    // Atomic increment: try RPC first (recommended), fall back to read-write
     const { error: rpcError } = await supabase.rpc('increment_views', { profile_id: profile.id });
     if (rpcError) {
-      // Fallback if RPC doesn't exist: read and write (not atomic but functional)
+      // Fallback: read-write (tiny race window acceptable for resume view counters)
       const { data: current } = await supabase.from('profiles').select('views').eq('id', profile.id).single();
       const newViews = ((current?.views) || 0) + 1;
       await supabase.from('profiles').update({ views: newViews }).eq('id', profile.id);

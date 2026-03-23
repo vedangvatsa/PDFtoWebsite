@@ -150,13 +150,22 @@ export default function TemplateModern(props: ProfileData) {
     const isDark = root.classList.contains('dark');
     if (isDark) root.classList.remove('dark');
 
-    // Slight delay to allow DOM to repaint text colors to black
-    await new Promise(r => setTimeout(r, 50));
+    // Increased delay to allow full CSS repaint of text colors for PDF capture
+    await new Promise(r => setTimeout(r, 300));
 
-    // Wait for the PDF to be fully generated and saved
-    await (html2pdf() as any).set(opt).from(element as HTMLElement).save();
-
-    if (isDark) root.classList.add('dark');
+    try {
+      // Wait for the PDF to be fully generated and saved
+      await (html2pdf() as any).set(opt).from(element as HTMLElement).save();
+    } catch (pdfError) {
+      console.error('PDF generation failed:', pdfError);
+      toast({
+        variant: "destructive",
+        title: "PDF generation failed",
+        description: "Could not generate PDF. Try using your browser's Print → Save as PDF instead.",
+      });
+    } finally {
+      if (isDark) root.classList.add('dark');
+    }
   }, [profile.fullName, toast]);
 
 

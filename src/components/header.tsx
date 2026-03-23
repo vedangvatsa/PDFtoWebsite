@@ -27,7 +27,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         const supabase = createClient();
         try {
             await supabase.auth.signOut();
-            router.push('/');
+            router.push('/blog');
         } catch (error: any) {
             console.error("Error signing out: ", error);
             alert(error?.message || 'Failed to sign out. Please try again.');

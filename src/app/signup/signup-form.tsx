@@ -23,8 +23,15 @@ export default function SignUpForm() {
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
   const fromParam = searchParams.get('from');
+  const errorParam = searchParams.get('error');
   const fromUpload = fromParam === 'upload';
   const fromManual = fromParam === 'manual';
+
+  useEffect(() => {
+    if (errorParam === 'auth') {
+      toast({ variant: 'destructive', title: 'Sign-in failed', description: 'Something went wrong during sign-in. Please try again.' });
+    }
+  }, [errorParam, toast]);
 
   useEffect(() => {
     if (!isUserLoading && user) {

@@ -49,9 +49,9 @@ export default function Home() {
         return;
       }
       
-      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/rtf', 'text/rtf', 'text/plain'];
-      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|rtf|txt)$/i)) {
-         toast({ variant: 'destructive', title: 'Invalid Format', description: 'Please select a PDF, Word, or text file.' });
+      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/rtf', 'text/rtf', 'text/plain', 'image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|rtf|txt|jpg|jpeg|png|webp|heic|heif)$/i)) {
+         toast({ variant: 'destructive', title: 'Invalid Format', description: 'Please select a PDF, Word, text, or image file.' });
          event.target.value = '';
          return;
       }
@@ -79,7 +79,7 @@ export default function Home() {
         
         const parsed = await res.json();
         sessionStorage.setItem('parsedResume', JSON.stringify(parsed));
-        try { localStorage.setItem('parsedResume', JSON.stringify(parsed)); } catch (e) { /* quota exceeded */ }
+        try { localStorage.setItem('parsedResume', JSON.stringify(parsed)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
         router.push('/editor');
       } catch (err) {
          // Network Disconnect 
@@ -141,7 +141,7 @@ export default function Home() {
                             </span>
                        </>
                     )}
-                    <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.docx,.rtf,.txt" onChange={handleFileChange} disabled={isProcessingFile} />
+                    <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isProcessingFile} />
                 </label>
 
                 <div className="flex items-center gap-3">

@@ -20,24 +20,31 @@ CRITICAL RULES:
 1. ONLY extract information that is explicitly present in the provided resume text. DO NOT hallucinate, guess, or invent ANY details or dummy placeholders.
 2. If a section (like workExperience, education) doesn't exist, leave that array completely EMPTY ([]). Do NOT populate [] with dummy objects.
 3. EXTRACT ALL PROFESSIONAL EXPERIENCE into "workExperience"! Even if it is labeled irregularly (e.g. 'Internships', 'Freelance', 'Partnerships', 'Self-Employed', 'Leadership'), aggressively map it to "workExperience" to ensure no primary job data is lost.
-4. If the CV contains extra supplementary sections (e.g. 'Publications', 'Patents', 'Awards', 'Testimonials') map them purely into "customSections" using this schema: { "id": "1", "userProfileId": "", "sectionTitle": "Exact Section Name From CV", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] }.
+4. CUSTOM SECTIONS RULE: If the CV contains ANY supplementary sections beyond work/education/skills, you MUST map them into "customSections". This includes but is not limited to: 'Awards', 'Achievements', 'Honors', 'Certifications', 'Licenses', 'Publications', 'Patents', 'Projects', 'Volunteering', 'Community Service', 'Languages', 'Interests', 'Hobbies', 'Testimonials', 'References', 'Courses', 'Training', 'Conferences', 'Memberships', 'Professional Affiliations', 'Research', 'Presentations', 'Extracurricular Activities', 'Competitions', 'Scholarships', 'Fellowships', 'Grants'. Use this schema: { "id": "1", "userProfileId": "", "sectionTitle": "Exact Section Name From CV", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] }. EVERY distinct section in the CV that is not work/education/skills MUST appear as a separate customSection. Do NOT silently skip any section!
 5. OCR CLEANING RULE: If the input contains garbled characters, aggressively apply reasoning to reconstruct the intended words. Maintain detailed descriptions and retain bullet point formatting.
 6. LOCATION PRIVACY RULE: Do NOT extract full specific street addresses. ONLY output the generalized "City, Country" (e.g., "San Francisco, USA", "London, UK") for the personal location field!
 7. LINKS RULE: Extract ALL URLs/links found anywhere in the CV. Put GitHub in "github", LinkedIn in "linkedin", and a personal website/portfolio in "website". ALL other links (ResearchGate, Google Scholar, Twitter/X, Behance, Dribbble, Medium, Stack Overflow, Kaggle, ORCID, YouTube, Facebook, Instagram, or any other URL) MUST go into "additionalLinks" with a human-readable "label" (e.g. "ResearchGate", "Google Scholar", "Twitter") and the full "url". Do NOT drop any link!
+8. COMPLETENESS RULE: Count every distinct section heading in the CV. Every one must appear in your output (as workExperience, education, skills, or customSections). If your output has fewer sections than the CV, you are WRONG.
 DO NOT THROW ANY REAL WORK DATA AWAY!`;
 
 // Supported file types
 const ALLOWED_TYPES: Record<string, string> = {
   'application/pdf': 'pdf',
+  'application/msword': 'doc',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
   'application/rtf': 'rtf',
   'text/rtf': 'rtf',
   'text/plain': 'txt',
+  'image/jpeg': 'image',
+  'image/png': 'image',
+  'image/webp': 'image',
+  'image/heic': 'image',
+  'image/heif': 'image',
 };
 
-// Rate Limiter: Max 5 parses per IP per hour
+// Rate Limiter: Max 10 parses per IP per hour
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 5;
+const RATE_LIMIT = 10;
 const RATE_WINDOW_MS = 60 * 60 * 1000;
 
 function isRateLimited(ip: string): boolean {
@@ -55,7 +62,8 @@ function isRateLimited(ip: string): boolean {
 export async function POST(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   if (isRateLimited(ip)) {
-    return NextResponse.json({ error: 'Too many requests. Max 5 uploads per hour.' }, { status: 429 });
+    console.warn(`Rate limit hit: ${ip}`);
+    return NextResponse.json({ error: 'Too many requests. Max 10 uploads per hour.' }, { status: 429 });
   }
 
   try {
@@ -66,17 +74,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided.' }, { status: 400 });
     }
 
-    if (file.name.toLowerCase().endsWith('.doc') || file.type === 'application/msword') {
-      return NextResponse.json({ error: 'Legacy .doc files are not supported by the parser. Please save and upload your resume as a .pdf or .docx file.' }, { status: 400 });
-    }
+    // .doc files and images are handled natively by Gemini's vision/document understanding
 
     if (file.size > 10 * 1024 * 1024) {
       return NextResponse.json({ error: 'File too large. Max 10MB.' }, { status: 400 });
     }
 
-    const fileType = ALLOWED_TYPES[file.type];
+    let fileType = ALLOWED_TYPES[file.type];
+    // Fallback: check extension if MIME type not in map (some OS report wrong MIME for HEIC etc.)
     if (!fileType) {
-      return NextResponse.json({ error: 'Unsupported file type. Please upload your CV in a common format.' }, { status: 400 });
+      const ext = file.name.split('.').pop()?.toLowerCase();
+      if (ext === 'pdf') fileType = 'pdf';
+      else if (ext === 'docx') fileType = 'docx';
+      else if (ext === 'doc') fileType = 'doc';
+      else if (ext === 'rtf') fileType = 'rtf';
+      else if (ext === 'txt') fileType = 'txt';
+      else if (ext && ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'].includes(ext)) fileType = 'image';
+      else return NextResponse.json({ error: 'Unsupported file type. Please upload your CV as PDF, Word, text, or image.' }, { status: 400 });
     }
 
     const fileBuffer = Buffer.from(await file.arrayBuffer());
@@ -110,15 +124,73 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ error: `Document is ${pdfData.numpages} pages. Max 10.` }, { status: 400 });
         }
 
+        // Use text-only path when pdf-parse got enough text (cheaper). Fall back to inline_data for scanned PDFs.
+        if (extractedText && extractedText.trim().length >= 50) {
+          requestBody = {
+            contents: [{
+              parts: [
+                { text: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` }
+              ]
+            }],
+            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+          };
+        } else {
+          // Scanned/image PDF — send binary for Gemini Vision
+          requestBody = {
+            contents: [{
+              parts: [
+                { text: systemInstruction },
+                { inline_data: { mime_type: 'application/pdf', data: fileBuffer.toString('base64') } }
+              ]
+            }],
+            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+          };
+        }
+
+      } else if (fileType === 'image') {
+        // Send image directly to Gemini Vision — it can read CV screenshots/photos
+        const mimeType = file.type.startsWith('image/') ? file.type : 'image/jpeg';
         requestBody = {
           contents: [{
             parts: [
               { text: systemInstruction },
-              { inline_data: { mime_type: 'application/pdf', data: fileBuffer.toString('base64') } }
+              { inline_data: { mime_type: mimeType, data: fileBuffer.toString('base64') } }
             ]
           }],
           generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
         };
+
+      } else if (fileType === 'doc') {
+        // .doc files: try mammoth first, fall back to Gemini inline
+        try {
+          const mammothResult = await mammoth.extractRawText({ buffer: fileBuffer });
+          extractedText = mammothResult.value;
+        } catch (err) {
+          // mammoth can't handle old .doc — try sending raw to Gemini
+          extractedText = '';
+        }
+        
+        if (extractedText && extractedText.trim().length >= 50) {
+          requestBody = {
+            contents: [{
+              parts: [
+                { text: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` }
+              ]
+            }],
+            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+          };
+        } else {
+          // If mammoth couldn't extract, send as binary to Gemini
+          requestBody = {
+            contents: [{
+              parts: [
+                { text: systemInstruction + '\n\nExtract the resume data from this document.' },
+                { inline_data: { mime_type: 'application/msword', data: fileBuffer.toString('base64') } }
+              ]
+            }],
+            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+          };
+        }
 
       } else {
         if (fileType === 'docx') {
@@ -155,43 +227,77 @@ export async function POST(request: NextRequest) {
         };
       }
 
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
-
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody),
-          signal: controller.signal
-        }
-      );
-
-      clearTimeout(timeout);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || `API Error ${response.status}`);
-      }
-
-      const result = await response.json();
-      const parts = result.candidates?.[0]?.content?.parts || [];
+      // Retry loop for transient Gemini API failures (429 rate limit, 503 overloaded, timeouts)
+      const MAX_RETRIES = 2;
+      let lastError: Error | null = null;
       
-      let responseText = '';
-      for (const part of parts) {
-        if (part.text) responseText = part.text;
-      }
-      if (!responseText) throw new Error('Empty response from AI engine');
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
 
-      let rawResponse = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-      aiStructuredData = JSON.parse(rawResponse);
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(requestBody),
+              signal: controller.signal
+            }
+          );
+
+          clearTimeout(timeout);
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            const statusCode = response.status;
+            const errorMsg = errorData.error?.message || `API Error ${statusCode}`;
+            
+            // Retry on transient errors (429 rate limit, 500 internal, 503 overloaded)
+            if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
+              console.warn(`Gemini API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`);
+              lastError = new Error(errorMsg);
+              await new Promise(r => setTimeout(r, 1500 * (attempt + 1))); // 1.5s, then 3s backoff
+              continue;
+            }
+            throw new Error(errorMsg);
+          }
+
+          const result = await response.json();
+          const parts = result.candidates?.[0]?.content?.parts || [];
+          
+          let responseText = '';
+          for (const part of parts) {
+            if (part.text) responseText = part.text;
+          }
+          if (!responseText) throw new Error('Empty response from AI engine');
+
+          let rawResponse = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+          aiStructuredData = JSON.parse(rawResponse);
+          break; // Success — exit retry loop
+          
+        } catch (retryError) {
+          lastError = retryError instanceof Error ? retryError : new Error('Unknown error');
+          if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
+            console.warn(`Gemini request failed (attempt ${attempt + 1}), retrying...`, lastError.message);
+            await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
+            continue;
+          }
+          throw lastError;
+        }
+      }
+      
+      if (!aiStructuredData && lastError) throw lastError;
 
     } catch (aiError) {
-      console.warn("AI extraction failed/rate-limited, attempting regex fallback...", aiError);
+      console.warn("AI extraction failed after retries, attempting regex fallback...", aiError);
       
       if (!extractedText || extractedText.trim().length < 50) {
           const message = aiError instanceof Error ? aiError.message : 'Unknown error';
+          // For images, there's no text fallback — give a helpful hint
+          if (fileType === 'image') {
+            return NextResponse.json({ error: 'Could not read the image. Please try a clearer photo or upload your CV as a PDF instead.' }, { status: 500 });
+          }
           return NextResponse.json({ error: `Parse failed: ${message}` }, { status: 500 });
       }
       
@@ -202,25 +308,25 @@ export async function POST(request: NextRequest) {
     // Resume processing after successful extraction (AI or Fallback)
     const duration = Date.now() - startTime;
     
-    // ---------- Option C: Safe Slug Generation (No Aggressive Backend Upsert) ----------
+    // ---------- Option C: Safe Slug Generation (Non-Fatal — frontend has its own fallback) ----------
+    try {
       const supabaseUserClient = await createClient();
       const { data: { user } } = await supabaseUserClient.auth.getUser();
 
-      let finalSlug;
-
-      if (user) {
+      if (user && process.env.SUPABASE_SERVICE_ROLE_KEY) {
         const supabaseAdmin = createAdminClient(
           process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.SUPABASE_SERVICE_ROLE_KEY!
+          process.env.SUPABASE_SERVICE_ROLE_KEY
         );
 
         // 1. Prioritize keeping their existing URL stable if they already have one
-        const { data: currentProfile, error: profileErr } = await supabaseAdmin
+        const { data: currentProfile } = await supabaseAdmin
           .from('profiles')
           .select('username')
           .eq('id', user.id)
           .maybeSingle();
 
+        let finalSlug;
         if (currentProfile && currentProfile.username) {
           finalSlug = currentProfile.username;
         } else {
@@ -234,18 +340,18 @@ export async function POST(request: NextRequest) {
 
           finalSlug = prefixSlug;
           let isUnique = false;
+          let maxAttempts = 10;
           
-          while (!isUnique) {
+          while (!isUnique && maxAttempts-- > 0) {
             const { data: existingProfile, error: existErr } = await supabaseAdmin
               .from('profiles')
               .select('id')
               .eq('username', finalSlug)
               .maybeSingle();
             
-            // If the query failed (e.g., timeout), don't falsely assume uniqueness
             if (existErr) {
-              console.error("Database connection issue assessing DB uniqueness", existErr);
-              throw new Error("Unable to create a unique URL presently. Please try again.");
+              console.error("Slug uniqueness check failed, frontend will handle:", existErr);
+              break; // Non-fatal — let frontend handle slug
             }
 
             if (!existingProfile || existingProfile.id === user.id) {
@@ -257,12 +363,17 @@ export async function POST(request: NextRequest) {
           }
         }
         
-        // Inject the safe unique slug into the payload to allow the frontend to safely upsert and preview it
-        if (!aiStructuredData.personalInfo) {
-          aiStructuredData.personalInfo = {};
+        // Inject the safe unique slug into the payload
+        if (finalSlug) {
+          if (!aiStructuredData.personalInfo) {
+            aiStructuredData.personalInfo = {};
+          }
+          aiStructuredData.personalInfo.slug = finalSlug;
         }
-        aiStructuredData.personalInfo.slug = finalSlug;
       }
+    } catch (slugError) {
+      console.warn('Slug generation failed (non-fatal, frontend will handle):', slugError);
+    }
 
       console.log(JSON.stringify({
         event: 'cv_parse_success',

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, FileUp, CheckCircle, XCircle, Share2 } from 'lucide-react';
+import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, FileUp, CheckCircle, XCircle, Share2, Copy, Link2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import Header from '@/components/header';
 import { useUser } from '@/auth';
@@ -20,6 +20,7 @@ import { Progress } from '@/components/ui/progress';
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { ChartContainer, ChartConfig, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { LoginDialog } from '@/components/login-dialog';
 import TemplateModern from '@/app/[slug]/templates/modern-creative';
 import CustomSectionsEditor from './custom-sections-editor';
@@ -53,7 +54,7 @@ const ResumeUploadPrompt = ({ onFileChange, isGenerating }: { onFileChange: (e: 
         ) : (
             <><UploadCloud className="mr-2 h-4 w-4 text-primary" /><span className="text-sm font-medium text-primary">Upload your CV to automatically fill details</span></>
         )}
-        <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.docx,.rtf,.txt" onChange={onFileChange} disabled={isGenerating} />
+        <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={onFileChange} disabled={isGenerating} />
     </label>
 );
 
@@ -230,46 +231,68 @@ export default function EditorPage() {
     const fetchProfileData = useCallback(async () => {
         if (!user) return;
         setPageIsLoading(true);
-        const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         let profileData: UserProfile;
-        if (p) {
-            const links = p.links || [];
-            const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || '';
+        try {
+            const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+            if (p) {
+                const links = p.links || [];
+                const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || '';
 
-            profileData = {
-                userId: p.id,
-                fullName: p.full_name || '',
-                email: getLink('email') || user.email || '',
-                phone: getLink('phone'),
-                location: getLink('location'),
-                website: getLink('website'),
-                github: getLink('github'),
-                linkedin: getLink('linkedin'),
-                summary: p.about || '',
-                slug: p.username || '',
-                avatarUrl: p.profile_picture_url || `https://picsum.photos/seed/${user.id}/200/200`,
-                avatarHint: 'person portrait',
-                themeId: p.target_role || 'modern-creative',
-                viewCount: p.views || 0,
-                skills: p.skills || [],
-            };
+                profileData = {
+                    userId: p.id,
+                    fullName: p.full_name || '',
+                    email: getLink('email') || user.email || '',
+                    phone: getLink('phone'),
+                    location: getLink('location'),
+                    website: getLink('website'),
+                    github: getLink('github'),
+                    linkedin: getLink('linkedin'),
+                    summary: p.about || '',
+                    slug: p.username || '',
+                    avatarUrl: p.profile_picture_url || `https://picsum.photos/seed/${user.id}/200/200`,
+                    avatarHint: 'person portrait',
+                    themeId: p.target_role || 'modern-creative',
+                    viewCount: p.views || 0,
+                    skills: p.skills || [],
+                };
+                setProfile(profileData);
+                setInitialSlug(profileData.slug);
+                setActiveThemeId(profileData.themeId);
+                setWorkItems(p.experience || []);
+                setEducationItems(p.education || []);
+                setSkillItems(profileData.skills || []);
+                setCustomSections(p.custom_sections || []);
+            } else {
+                // New user — create a blank profile with a unique slug
+                let newSlug = generateSlug(user.user_metadata?.full_name || 'user');
+                // Ensure slug uniqueness before insert
+                let isUnique = false;
+                let maxAttempts = 10;
+                while (!isUnique && maxAttempts-- > 0) {
+                    const { data: existing } = await supabase.from('profiles').select('id').eq('username', newSlug).maybeSingle();
+                    if (!existing) {
+                        isUnique = true;
+                    } else {
+                        newSlug = `${generateSlug(user.user_metadata?.full_name || 'user')}-${Math.random().toString(36).substring(2, 6)}`;
+                    }
+                }
+                const newProfile = { id: user.id, username: newSlug, full_name: user.user_metadata?.full_name || 'Your Name', profile_picture_url: user.user_metadata?.avatar_url || `https://picsum.photos/seed/${user.id}/200/200`, experience: [], education: [], custom_sections: [], skills: [], links: [] };
+                const { error: insertError } = await supabase.from('profiles').upsert(newProfile);
+                if (insertError) console.error('Profile creation error:', insertError);
+                profileData = { userId: user.id, fullName: newProfile.full_name, email: user.email || '', summary: '', slug: newSlug, avatarUrl: newProfile.profile_picture_url, avatarHint: '', themeId: 'modern-creative', viewCount: 0, skills: [] };
+                setProfile(profileData);
+                setInitialSlug(newSlug);
+            }
+            return { profile: profileData };
+        } catch (e) {
+            console.error('fetchProfileData error:', e);
+            // Set minimal profile so the page doesn't stay blank
+            profileData = { userId: user.id, fullName: user.user_metadata?.full_name || '', email: user.email || '', summary: '', slug: '', avatarUrl: user.user_metadata?.avatar_url || '', avatarHint: '', themeId: 'modern-creative', viewCount: 0, skills: [] };
             setProfile(profileData);
-            setInitialSlug(profileData.slug);
-            setActiveThemeId(profileData.themeId);
-            setWorkItems(p.experience || []);
-            setEducationItems(p.education || []);
-            setSkillItems(profileData.skills || []);
-            setCustomSections(p.custom_sections || []);
-        } else {
-            const newSlug = generateSlug(user.user_metadata?.full_name || 'user');
-            const newProfile = { id: user.id, username: newSlug, full_name: user.user_metadata?.full_name || 'Your Name', profile_picture_url: user.user_metadata?.avatar_url || `https://picsum.photos/seed/${user.id}/200/200`, experience: [], education: [], custom_sections: [], skills: [], links: [] };
-            await supabase.from('profiles').insert(newProfile);
-            profileData = { userId: user.id, fullName: newProfile.full_name, email: user.email || '', summary: '', slug: newSlug, avatarUrl: newProfile.profile_picture_url, avatarHint: '', themeId: 'modern-creative', viewCount: 0, skills: [] };
-            setProfile(profileData);
-            setInitialSlug(newSlug);
+            return { profile: profileData };
+        } finally {
+            setPageIsLoading(false);
         }
-        setPageIsLoading(false);
-        return { profile: profileData };
     }, [user, supabase]);
 
     const autoSave = useCallback(async (collectionName: string, id: string, data: any) => {
@@ -284,19 +307,37 @@ export default function EditorPage() {
                 if ('slug' in data) map.username = data.slug?.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-');
                 if ('skills' in data) map.skills = data.skills;
                 if ('links' in data) map.links = data.links;
-                if (Object.keys(map).length > 0) await supabase.from('profiles').update(map).eq('id', user.id);
+                if (Object.keys(map).length > 0) {
+                    const { error } = await supabase.from('profiles').update(map).eq('id', user.id);
+                    if (error) {
+                        console.error('Autosave DB error:', error);
+                        toast({ variant: 'destructive', title: 'Save Failed', description: error.message });
+                    }
+                }
             }
+        } catch (e) {
+            console.error('Autosave error:', e);
+            toast({ variant: 'destructive', title: 'Save Failed', description: 'Could not save changes. Check your connection.' });
         } finally {
             setTimeout(() => setIsSaving(false), 700);
         }
-    }, [user, supabase]);
+    }, [user, supabase, toast]);
 
     const syncArray = useCallback(async (column: string, array: any[]) => {
         if (!user) return;
         setIsSaving(true);
-        await supabase.from('profiles').update({ [column]: array }).eq('id', user.id);
-        setTimeout(() => setIsSaving(false), 700);
-    }, [user, supabase]);
+        try {
+            const { error } = await supabase.from('profiles').update({ [column]: array }).eq('id', user.id);
+            if (error) {
+                console.error('SyncArray DB error:', error);
+                toast({ variant: 'destructive', title: 'Save Failed', description: error.message });
+            }
+        } catch (e) {
+            console.error('SyncArray error:', e);
+        } finally {
+            setTimeout(() => setIsSaving(false), 700);
+        }
+    }, [user, supabase, toast]);
 
     const handleResumeUpload = useCallback(async (resumeFile: File) => {
         if (!resumeFile) {
@@ -374,7 +415,7 @@ export default function EditorPage() {
                     full_name: extractedData.personalInfo?.fullName || currentProfile?.full_name || '',
                     username: currentProfile?.username || slug,
                     about: extractedData.summary || currentProfile?.about || '',
-                    profile_picture_url: currentProfile?.profile_picture_url, // Explicitly preserve their existing custom Avatar
+                    profile_picture_url: currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || `https://picsum.photos/seed/${user.id}/200/200`,
                     skills: skillsArr,
                     experience: workItemsWithIds,
                     education: eduItemsWithIds,
@@ -390,12 +431,13 @@ export default function EditorPage() {
             } else {
                 // Keep session storage AND localStorage in sync for later login transition
                 sessionStorage.setItem('parsedResume', JSON.stringify(extractedData));
-                try { localStorage.setItem('parsedResume', JSON.stringify(extractedData)); } catch (e) { /* quota exceeded */ }
+                try { localStorage.setItem('parsedResume', JSON.stringify(extractedData)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
                 toast({ title: 'CV Parsed!', description: 'Sign up to publish this profile.' });
             }
         } catch (error) {
             console.error('Upload Process Error:', error);
-            toast({ variant: 'destructive', title: 'Update Failed', description: error instanceof Error ? error.message : 'Could not update fields.' });
+            const msg = error instanceof Error ? error.message : 'Could not update fields.';
+            toast({ variant: 'destructive', title: 'Update Failed', description: msg });
         } finally {
             setIsGenerating(false);
             setFile(null); setFileName(null);
@@ -419,9 +461,15 @@ export default function EditorPage() {
                     );
                     
                     if (hasExistingData && !sessionStorage.getItem('parsedResume')) {
-                        // Stale localStorage from a previous session — discard it, don't overwrite real DB data
-                        localStorage.removeItem('parsedResume');
-                        return;
+                        // Check timestamp — if data was saved <5 min ago, it's from a recent auth flow (magic link / mobile OAuth)
+                        const savedAt = parseInt(localStorage.getItem('parsedResumeTimestamp') || '0', 10);
+                        const isFresh = (Date.now() - savedAt) < 5 * 60 * 1000; // 5 minutes
+                        if (!isFresh) {
+                            // Stale localStorage from a previous session — discard it, don't overwrite real DB data
+                            localStorage.removeItem('parsedResume');
+                            localStorage.removeItem('parsedResumeTimestamp');
+                            return;
+                        }
                     }
 
                     // Safe manual update mimicking handleResumeUpload using parsed JSON
@@ -460,7 +508,8 @@ export default function EditorPage() {
 
                         let finalSlug = currentProfile?.username || extractedData.personalInfo?.slug || generateSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
                         let isUnique = false;
-                        while (!isUnique) {
+                        let maxAttempts = 10;
+                        while (!isUnique && maxAttempts-- > 0) {
                             const { data: existing } = await supabase.from('profiles').select('id').eq('username', finalSlug).maybeSingle();
                             if (!existing || existing.id === user.id) {
                                 isUnique = true;
@@ -486,6 +535,7 @@ export default function EditorPage() {
                         toast({ title: 'Success!', description: 'Your profile has been updated from your CV.' });
                         sessionStorage.removeItem('parsedResume');
                         localStorage.removeItem('parsedResume');
+                        localStorage.removeItem('parsedResumeTimestamp');
                         await fetchProfileData(); // Reload the UI with updated DB data
                     } catch (e) {
                         console.error('Parse failed', e);
@@ -513,6 +563,13 @@ export default function EditorPage() {
         const cleanSlug = profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-');
         if (cleanSlug.length < 3) {
             setSlugError('Must be at least 3 characters.');
+            setSlugSuccess(false);
+            return;
+        }
+        
+        const RESERVED_SLUGS = ['blog', 'editor', 'signup', 'login', 'preview', 'privacy', 'terms', 'auth', 'api', 'admin', 'settings', 'dashboard', 'sitemap', 'robots', 'media'];
+        if (RESERVED_SLUGS.includes(cleanSlug)) {
+            setSlugError('This URL is reserved. Please choose a different one.');
             setSlugSuccess(false);
             return;
         }
@@ -577,6 +634,27 @@ export default function EditorPage() {
         return () => bc.close();
     }, [profile, activeThemeId, workItems, educationItems, skillItems, customSections]);
 
+    // Auto-save to sessionStorage for guests so they don't lose changes on refresh
+    useEffect(() => {
+        if (user || isUserLoading) return; // Only for guests
+        if (!profile.fullName && workItems.length === 0 && educationItems.length === 0) return; // Nothing to save
+        const timer = setTimeout(() => {
+            try {
+                const snapshot = {
+                    personalInfo: { fullName: profile.fullName, email: profile.email, phone: profile.phone, location: profile.location, website: profile.website, github: profile.github, linkedin: profile.linkedin, slug: profile.slug, avatarUrl: profile.avatarUrl },
+                    summary: profile.summary,
+                    themeId: activeThemeId,
+                    workExperience: workItems,
+                    education: educationItems,
+                    skills: skillItems,
+                    customSections: customSections
+                };
+                sessionStorage.setItem('parsedResume', JSON.stringify(snapshot));
+            } catch (e) { /* quota exceeded */ }
+        }, 1000); // 1s debounce
+        return () => clearTimeout(timer);
+    }, [user, isUserLoading, profile, activeThemeId, workItems, educationItems, skillItems, customSections]);
+
     const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setProfile(prev => ({...prev, [name]: (name === 'slug' ? value.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-') : value) }));
@@ -595,19 +673,30 @@ export default function EditorPage() {
         }
         
         if (['email', 'phone', 'location', 'website', 'github', 'linkedin'].includes(name)) {
-            setProfile(prev => {
-                const nextProfile = { ...prev, [name]: value };
-                const linksObject = [
-                    { type: 'email', value: nextProfile.email },
-                    { type: 'phone', value: nextProfile.phone },
-                    { type: 'location', value: nextProfile.location },
-                    { type: 'website', value: nextProfile.website },
-                    { type: 'github', value: nextProfile.github },
-                    { type: 'linkedin', value: nextProfile.linkedin },
-                ].filter(l => !!l.value);
-                autoSave('profile', user.id, { links: linksObject });
-                return nextProfile;
-            });
+            const nextProfile = { ...profile, [name]: value };
+            setProfile(nextProfile);
+            // Build links from current React state (not DB) to avoid race conditions
+            // Only fetch additional links (non-core) from DB — these don't change during editing
+            (async () => {
+                try {
+                    const { data: existing } = await supabase.from('profiles').select('links').eq('id', user.id).single();
+                    const existingLinks: Array<{type: string; value: string}> = existing?.links || [];
+                    const coreTypes = new Set(['email', 'phone', 'location', 'website', 'github', 'linkedin']);
+                    const additionalLinks = existingLinks.filter(l => !coreTypes.has(l.type));
+                    const coreLinks = [
+                        { type: 'email', value: nextProfile.email },
+                        { type: 'phone', value: nextProfile.phone },
+                        { type: 'location', value: nextProfile.location },
+                        { type: 'website', value: nextProfile.website },
+                        { type: 'github', value: nextProfile.github },
+                        { type: 'linkedin', value: nextProfile.linkedin },
+                    ].filter(l => !!l.value) as Array<{type: string; value: string}>;
+                    const mergedLinks = [...coreLinks, ...additionalLinks];
+                    autoSave('profile', user.id, { links: mergedLinks });
+                } catch (e) {
+                    console.error('Links save error:', e);
+                }
+            })();
         } else if (name === 'slug' && value !== initialSlug) {
             if (slugError) return; // Wait until they fix the error before saving
             setSlugSuccess(false);
@@ -650,14 +739,20 @@ export default function EditorPage() {
         if (f) {
             const allowedTypes = [
                 'application/pdf',
+                'application/msword',
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 'application/rtf',
                 'text/rtf',
-                'text/plain'
+                'text/plain',
+                'image/jpeg',
+                'image/png',
+                'image/webp',
+                'image/heic',
+                'image/heif'
             ];
             
-            if (!allowedTypes.includes(f.type) || f.size > 10 * 1024 * 1024) {
-                toast({ variant: 'destructive', title: 'Invalid File', description: 'Please select a PDF, DOCX, or TXT file under 10MB.' });
+            if ((!allowedTypes.includes(f.type) && !f.name.match(/\.(pdf|doc|docx|rtf|txt|jpg|jpeg|png|webp|heic|heif)$/i)) || f.size > 10 * 1024 * 1024) {
+                toast({ variant: 'destructive', title: 'Invalid File', description: 'Please select a PDF, Word, text, or image file under 10MB.' });
                 setFile(null); setFileName(null);
             } else {
                 setFile(f); setFileName(f.name);
@@ -683,7 +778,14 @@ export default function EditorPage() {
             linkedin: profile.linkedin || '',
             summary: profile.summary || '',
             skills: skillItems,
-            links: [],  // populated from DB on live page
+            links: [
+                profile.email && { type: 'email', value: profile.email },
+                profile.phone && { type: 'phone', value: profile.phone },
+                profile.location && { type: 'location', value: profile.location },
+                profile.website && { type: 'website', value: profile.website },
+                profile.github && { type: 'github', value: profile.github },
+                profile.linkedin && { type: 'linkedin', value: profile.linkedin },
+            ].filter(Boolean) as Array<{type: string; value: string}>,
             avatarUrl: profile.avatarUrl || '',
             avatarHint: profile.avatarHint || 'person portrait',
         },
@@ -732,7 +834,7 @@ export default function EditorPage() {
                                         customSections: customSections
                                     };
                                     sessionStorage.setItem('parsedResume', JSON.stringify(snapshot));
-                                    try { localStorage.setItem('parsedResume', JSON.stringify(snapshot)); } catch (e) { /* quota exceeded */ }
+                                    try { localStorage.setItem('parsedResume', JSON.stringify(snapshot)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
                                 }}>Publish</Button>
                             } />
                         </div>
@@ -763,7 +865,7 @@ export default function EditorPage() {
                                 <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                     {isGenerating ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : <UploadCloud className="h-4 w-4 mr-1.5" />}
                                     <span className="text-xs md:text-sm">{isGenerating ? 'Processing...' : 'Update CV'}</span>
-                                    <Input type="file" className="hidden" accept=".pdf,.docx,.rtf,.txt" onChange={handleFileChange} disabled={isGenerating} />
+                                    <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isGenerating} />
                                 </label>
                            )}
                             {user && profile.slug ? (
@@ -812,7 +914,7 @@ export default function EditorPage() {
                     </div>
 
                     <div className="space-y-4">
-                        {(workItems.length === 0 && educationItems.length === 0) && (
+                        {(workItems.length === 0 && educationItems.length === 0 && skillItems.length === 0 && customSections.length === 0) && (
                             <ResumeUploadPrompt onFileChange={handleFileChange} isGenerating={isGenerating} />
                         )}
                         
@@ -822,7 +924,9 @@ export default function EditorPage() {
                                     <Card className="shadow-sm h-full flex flex-col justify-center">
                                         <CardContent className="pt-4 pb-3">
                                             <div className="flex justify-between items-center mb-3">
-                                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Public Link</p>
+                                                <div className="flex items-center gap-2">
+                                                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Public Link</p>
+                                                </div>
                                                 <div className="flex items-center gap-1.5 text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-bold" title="Total Views">
                                                     <Eye className="h-3.5 w-3.5" /> {profile.viewCount || 0}
                                                 </div>
@@ -836,19 +940,54 @@ export default function EditorPage() {
                                                     onBlur={handleProfileBlur} 
                                                     className={`h-9 font-medium ${slugError ? 'border-red-500 focus-visible:ring-red-500 text-red-600' : slugSuccess ? 'border-green-500 focus-visible:ring-green-500 text-green-700' : ''}`} 
                                                 />
-                                                <Button 
-                                                    variant="secondary" 
-                                                    size="icon" 
-                                                    className="h-9 w-9 shrink-0 bg-primary/10 text-primary hover:bg-primary/20" 
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`);
-                                                        toast({ title: 'Link copied!' });
-                                                    }}
-                                                    title="Copy Share Link"
-                                                    disabled={!!slugError || isCheckingSlug}
-                                                >
-                                                    <Share2 className="h-4 w-4" />
-                                                </Button>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <Button 
+                                                            variant="secondary" 
+                                                            size="icon" 
+                                                            className="h-9 w-9 shrink-0 bg-primary/10 text-primary hover:bg-primary/20" 
+                                                            title="Share Profile"
+                                                            disabled={!!slugError || isCheckingSlug}
+                                                        >
+                                                            <Share2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-56 p-2" align="end" sideOffset={8}>
+                                                        {(() => {
+                                                            const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`;
+                                                            const firstName = profile.fullName?.split(' ')[0] || '';
+                                                            const chatMsg = firstName 
+                                                                ? `Here's ${firstName}'s professional profile — everything in one place 👉 ${url}` 
+                                                                : `Here's my professional profile — everything in one place 👉 ${url}`;
+                                                            const socialMsg = `Just made my entire resume a single link ✌️ ${url}`;
+                                                            return (
+                                                                <div className="flex flex-col gap-0.5">
+                                                                    <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(chatMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                        <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#25D366] shrink-0" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                                                        WhatsApp
+                                                                    </button>
+                                                                    <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(socialMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-foreground shrink-0" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                                                        X / Twitter
+                                                                    </button>
+                                                                    <button onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                        <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#0A66C2] shrink-0" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                                                        LinkedIn
+                                                                    </button>
+                                                                    <div className="h-px bg-border my-1" />
+                                                                    <button onClick={() => { navigator.clipboard.writeText(url); toast({ title: 'Link copied!' }); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                        <Link2 className="h-4 w-4 shrink-0" />
+                                                                        Copy link
+                                                                    </button>
+                                                                    <button onClick={() => { navigator.clipboard.writeText(chatMsg); toast({ title: 'Message copied!', description: 'Paste it anywhere to share.' }); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                        <Copy className="h-4 w-4 shrink-0" />
+                                                                        Copy with message
+                                                                    </button>
+                                                                </div>
+                                                            );
+                                                        })()}
+                                                    </PopoverContent>
+                                                </Popover>
                                                 {slugError || isCheckingSlug ? (
                                                     <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm" disabled>Visit</Button>
                                                 ) : (
@@ -864,7 +1003,42 @@ export default function EditorPage() {
                                             ) : slugSuccess ? (
                                                 <p className="text-[10px] text-green-600 mt-2 font-medium">✅ This URL is available!</p>
                                             ) : profile.slug ? (
-                                                <p className="text-[10px] text-muted-foreground mt-2 truncate max-w-[250px]">{`${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`}</p>
+                                                <div className="mt-2.5 space-y-2">
+                                                    <p className="text-[10px] text-green-600 flex items-center gap-1">
+                                                        <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                                                        Live at{' '}
+                                                        <a href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-700 truncate max-w-[200px]">
+                                                            {`${(process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/^https?:\/\//, '')}/${profile.slug}`}
+                                                        </a>
+                                                    </p>
+                                                    <div className="flex items-center gap-1.5 mt-1">
+                                                        <span className="text-[10px] text-muted-foreground">Share it →</span>
+                                                        {(() => {
+                                                            const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`;
+                                                            const firstName = profile.fullName?.split(' ')[0] || '';
+                                                            const chatMsg = firstName 
+                                                                ? `Here's ${firstName}'s professional profile — everything in one place 👉 ${url}` 
+                                                                : `Here's my professional profile — everything in one place 👉 ${url}`;
+                                                            const socialMsg = `Just made my entire resume a single link ✌️ ${url}`;
+                                                            return (
+                                                                <>
+                                                                    <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(chatMsg)}`, '_blank')} className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-green-50 dark:hover:bg-green-950 transition-colors" title="WhatsApp">
+                                                                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-[#25D366]" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                                                    </button>
+                                                                    <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(socialMsg)}`, '_blank')} className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-accent transition-colors" title="X / Twitter">
+                                                                        <svg viewBox="0 0 24 24" className="h-3 w-3 text-foreground" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                                                    </button>
+                                                                    <button onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank')} className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-accent transition-colors" title="LinkedIn">
+                                                                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-[#0A66C2]" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                                                    </button>
+                                                                    <button onClick={() => { navigator.clipboard.writeText(chatMsg); toast({ title: 'Message copied!', description: 'Paste it anywhere.' }); }} className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground transition-colors px-1.5 py-0.5 rounded-md hover:bg-accent" title="Copy share message">
+                                                                        <Copy className="h-3 w-3" /> Copy msg
+                                                                    </button>
+                                                                </>
+                                                            );
+                                                        })()}
+                                                    </div>
+                                                </div>
                                             ) : null}
                                         </CardContent>
                                     </Card>
@@ -1055,7 +1229,8 @@ export default function EditorPage() {
                                 if (!confirm('Are you sure? This will permanently delete your account and all data. This cannot be undone.')) return;
                                 try {
                                     if(user) {
-                                        await supabase.from('profiles').delete().eq('id', user.id);
+                                        const { error: deleteError } = await supabase.from('profiles').delete().eq('id', user.id);
+                                        if (deleteError) throw new Error(deleteError.message);
                                         await supabase.auth.signOut();
                                     }
                                     toast({ title: 'Account deleted', description: 'All your data has been removed.' });

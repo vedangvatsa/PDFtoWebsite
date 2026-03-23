@@ -29,7 +29,15 @@ export default function PreviewPage() {
                         summary: data.summary || '',
                         avatarUrl: data.personalInfo?.avatarUrl || '',
                         avatarHint: 'person portrait',
-                        skills: Array.isArray(data.skills) ? data.skills.map((s: any) => s.name || s) : []
+                        skills: Array.isArray(data.skills) ? data.skills.map((s: any) => s.name || s) : [],
+                        links: [
+                            data.personalInfo?.email && { type: 'email', value: data.personalInfo.email },
+                            data.personalInfo?.phone && { type: 'phone', value: data.personalInfo.phone },
+                            data.personalInfo?.location && { type: 'location', value: data.personalInfo.location },
+                            data.personalInfo?.website && { type: 'website', value: data.personalInfo.website },
+                            data.personalInfo?.github && { type: 'github', value: data.personalInfo.github },
+                            data.personalInfo?.linkedin && { type: 'linkedin', value: data.personalInfo.linkedin },
+                        ].filter(Boolean) as Array<{type: string; value: string}>,
                     },
                     workExperience: data.workExperience || [],
                     education: data.education || [],
@@ -113,7 +121,21 @@ export default function PreviewPage() {
                             </Link>
                         </Button>
                     </div>
-                    <LoginDialog trigger={<Button size="sm" className="font-bold">Claim Link</Button>} />
+                    <LoginDialog trigger={<Button size="sm" className="font-bold" onClick={() => {
+                        // Ensure data is saved before OAuth redirect
+                        if (previewData) {
+                            const snapshot = {
+                                personalInfo: previewData.profile,
+                                summary: previewData.profile?.summary || '',
+                                workExperience: previewData.workExperience || [],
+                                education: previewData.education || [],
+                                skills: previewData.profile?.skills || [],
+                                customSections: previewData.customSections || [],
+                            };
+                            sessionStorage.setItem('parsedResume', JSON.stringify(snapshot));
+                            try { localStorage.setItem('parsedResume', JSON.stringify(snapshot)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota */ }
+                        }
+                    }}>Claim Link</Button>} />
                 </div>
             </div>
             
