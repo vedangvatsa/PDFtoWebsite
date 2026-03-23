@@ -209,6 +209,7 @@ export default function EditorPage() {
                         linkedin: data.personalInfo?.linkedin || getLink('linkedin') || '',
                         summary: data.summary || '',
                         slug,
+                        avatarUrl: data.personalInfo?.avatarUrl,
                         themeId: 'modern-creative',
                         skills: (data.skills || []).map((s: any) => s.name || s),
                     });
@@ -496,7 +497,7 @@ export default function EditorPage() {
                             full_name: extractedData.personalInfo?.fullName || currentProfile?.full_name || user.user_metadata?.full_name || '',
                             username: finalSlug,
                             about: extractedData.summary || currentProfile?.about || '',
-                            profile_picture_url: currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || `https://picsum.photos/seed/${user.id}/200/200`,
+                            profile_picture_url: extractedData.personalInfo?.avatarUrl || currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || `https://picsum.photos/seed/${user.id}/200/200`,
                             target_role: extractedData.themeId || currentProfile?.target_role || 'modern-creative',
                             skills: skillsArr,
                             experience: extractedData.workExperience ? workItemsWithIds : (currentProfile?.experience || []),
@@ -742,12 +743,13 @@ export default function EditorPage() {
                             <LoginDialog trigger={
                                 <Button size="sm" className="px-6 font-semibold" onClick={() => {
                                     const snapshot = {
-                                        personalInfo: { fullName: profile.fullName, email: profile.email, phone: profile.phone, location: profile.location, website: profile.website, github: profile.github, linkedin: profile.linkedin, slug: profile.slug },
+                                        personalInfo: { fullName: profile.fullName, email: profile.email, phone: profile.phone, location: profile.location, website: profile.website, github: profile.github, linkedin: profile.linkedin, slug: profile.slug, avatarUrl: profile.avatarUrl },
                                         summary: profile.summary,
                                         themeId: activeThemeId,
                                         workExperience: workItems,
                                         education: educationItems,
                                         skills: skillItems,
+                                        customSections: customSections
                                     };
                                     sessionStorage.setItem('parsedResume', JSON.stringify(snapshot));
                                 }}>Publish</Button>

@@ -7,6 +7,32 @@ import { Mail, Phone, MapPin, Globe, Download, ArrowUpRight, FileDown, Github, L
 import { useToast } from "@/hooks/use-toast";
 import type { ServerProfileData as ProfileData } from '@/lib/supabase-server';
 
+function LinkifiedText({ text }: { text?: string }) {
+  if (!text) return null;
+  const urlRegex = /((?:https?:\/\/|www\.)[^\s<>()[\]{}]+)/gi;
+  
+  const parts = text.split(urlRegex);
+  
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.match(urlRegex)) {
+          let href = part;
+          if (!href.startsWith('http')) {
+            href = 'https://' + href;
+          }
+          return (
+            <a key={i} href={href} target="_blank" rel="noopener noreferrer" className="text-foreground underline decoration-muted-foreground/40 hover:decoration-foreground transition-colors">
+              {part}
+            </a>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 export default function TemplateModern(props: ProfileData) {
   const { profile, workExperience, education, customSections } = props;
   const skills = profile.skills || [];
@@ -244,7 +270,7 @@ export default function TemplateModern(props: ProfileData) {
                         </div>
                         {job.description && (
                           <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                            {job.description}
+                            <LinkifiedText text={job.description} />
                           </p>
                         )}
                       </div>
@@ -276,7 +302,7 @@ export default function TemplateModern(props: ProfileData) {
                         </div>
                         {edu.description && (
                           <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                            {edu.description}
+                            <LinkifiedText text={edu.description} />
                           </p>
                         )}
                       </div>
@@ -331,7 +357,7 @@ export default function TemplateModern(props: ProfileData) {
                         </div>
                         {item.description && (
                           <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                            {item.description}
+                            <LinkifiedText text={item.description} />
                           </p>
                         )}
                       </div>
