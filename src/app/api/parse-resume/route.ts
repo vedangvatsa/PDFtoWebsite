@@ -283,6 +283,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Fatal API Error:', error);
-    return NextResponse.json({ error: 'Failed to process resume.' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: `Failed to process resume: ${message}` }, { status: 500 });
   }
 }

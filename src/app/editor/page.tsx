@@ -411,6 +411,19 @@ export default function EditorPage() {
                 const pendingResumeName = sessionStorage.getItem('pendingResumeName');
                 
                 if (parsedData) {
+                    // Check if this is a returning user with existing data — if so, DON'T overwrite with stale localStorage
+                    const { data: existingProfile } = await supabase.from('profiles').select('experience, education').eq('id', user.id).single();
+                    const hasExistingData = existingProfile && (
+                        (Array.isArray(existingProfile.experience) && existingProfile.experience.length > 0) ||
+                        (Array.isArray(existingProfile.education) && existingProfile.education.length > 0)
+                    );
+                    
+                    if (hasExistingData && !sessionStorage.getItem('parsedResume')) {
+                        // Stale localStorage from a previous session — discard it, don't overwrite real DB data
+                        localStorage.removeItem('parsedResume');
+                        return;
+                    }
+
                     // Safe manual update mimicking handleResumeUpload using parsed JSON
                     try {
                         const extractedData = JSON.parse(parsedData);
