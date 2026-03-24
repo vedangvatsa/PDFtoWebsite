@@ -340,9 +340,9 @@ export async function POST(request: NextRequest) {
 
           finalSlug = prefixSlug;
           let isUnique = false;
-          let maxAttempts = 10;
+          let attempt = 0;
           
-          while (!isUnique && maxAttempts-- > 0) {
+          while (!isUnique && attempt < 100) {
             const { data: existingProfile, error: existErr } = await supabaseAdmin
               .from('profiles')
               .select('id')
@@ -357,8 +357,8 @@ export async function POST(request: NextRequest) {
             if (!existingProfile || existingProfile.id === user.id) {
               isUnique = true;
             } else {
-              const suffix = Math.random().toString(36).substring(2, 6);
-              finalSlug = `${prefixSlug}-${suffix}`;
+              attempt++;
+              finalSlug = `${prefixSlug}${attempt}`;
             }
           }
         }

@@ -41,10 +41,10 @@ function dataURLtoFile(dataurl: string, filename: string): File | null {
     return new File([u8arr], filename, {type:mime});
 }
 
-function generateSlug(name: string) {
-  const randomString = Math.random().toString(36).substring(2, 7);
-  const firstName = name.split(' ')[0] || 'user';
-  return firstName.toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + randomString;
+function generateBaseSlug(name: string) {
+  const firstName = name.trim().split(/\s+/)[0] || 'user';
+  const base = firstName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  return base || 'user';
 }
 
 const ResumeUploadPrompt = ({ onFileChange, isGenerating }: { onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void, isGenerating: boolean }) => (
@@ -195,7 +195,7 @@ export default function EditorPage() {
             if (parsed) {
                 try {
                     const data = JSON.parse(parsed);
-                    const slug = generateSlug(data.personalInfo?.fullName || 'user');
+                    const slug = generateBaseSlug(data.personalInfo?.fullName || 'user');
                     const links = data.links || [];
                     const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || '';
 
@@ -238,6 +238,27 @@ export default function EditorPage() {
                 const links = p.links || [];
                 const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || '';
 
+                let finalSlug = p.username || '';
+                
+                // If the database trigger defaulted their slug to their long UUID, generate a prettier one.
+                if (finalSlug === user.id) {
+                    let baseSlug = generateBaseSlug(user.user_metadata?.full_name || p.full_name || 'user');
+                    let newSlug = baseSlug;
+                    let isUnique = false;
+                    let attempt = 0;
+                    while (!isUnique && attempt < 100) {
+                        const { data: existing } = await supabase.from('profiles').select('id').eq('username', newSlug).maybeSingle();
+                        if (!existing || existing.id === user.id) {
+                            isUnique = true;
+                        } else {
+                            attempt++;
+                            newSlug = `${baseSlug}${attempt}`;
+                        }
+                    }
+                    finalSlug = newSlug;
+                    await supabase.from('profiles').update({ username: finalSlug }).eq('id', user.id);
+                }
+
                 profileData = {
                     userId: p.id,
                     fullName: p.full_name || '',
@@ -248,7 +269,7 @@ export default function EditorPage() {
                     github: getLink('github'),
                     linkedin: getLink('linkedin'),
                     summary: p.about || '',
-                    slug: p.username || '',
+                    slug: finalSlug,
                     avatarUrl: p.profile_picture_url || `https://picsum.photos/seed/${user.id}/200/200`,
                     avatarHint: 'person portrait',
                     themeId: p.target_role || 'modern-creative',
@@ -264,16 +285,18 @@ export default function EditorPage() {
                 setCustomSections(p.custom_sections || []);
             } else {
                 // New user — create a blank profile with a unique slug
-                let newSlug = generateSlug(user.user_metadata?.full_name || 'user');
+                let baseSlug = generateBaseSlug(user.user_metadata?.full_name || 'user');
+                let newSlug = baseSlug;
                 // Ensure slug uniqueness before insert
                 let isUnique = false;
-                let maxAttempts = 10;
-                while (!isUnique && maxAttempts-- > 0) {
+                let attempt = 0;
+                while (!isUnique && attempt < 100) {
                     const { data: existing } = await supabase.from('profiles').select('id').eq('username', newSlug).maybeSingle();
-                    if (!existing) {
+                    if (!existing || existing.id === user.id) {
                         isUnique = true;
                     } else {
-                        newSlug = `${generateSlug(user.user_metadata?.full_name || 'user')}-${Math.random().toString(36).substring(2, 6)}`;
+                        attempt++;
+                        newSlug = `${baseSlug}${attempt}`;
                     }
                 }
                 const newProfile = { id: user.id, username: newSlug, full_name: user.user_metadata?.full_name || 'Your Name', profile_picture_url: user.user_metadata?.avatar_url || `https://picsum.photos/seed/${user.id}/200/200`, experience: [], education: [], custom_sections: [], skills: [], links: [] };
@@ -358,7 +381,7 @@ export default function EditorPage() {
             console.log('CV Parsed Successfully:', extractedData);
 
             const skillsArr = (extractedData.skills || []).map((s: any) => s.name || s);
-            const slug = extractedData.personalInfo?.slug || generateSlug(extractedData.personalInfo?.fullName || 'user');
+            const slug = extractedData.personalInfo?.slug || generateBaseSlug(extractedData.personalInfo?.fullName || 'user');
 
             // --- SHARED UI UPDATE (Instant) ---
             setProfile(prev => ({
@@ -506,15 +529,17 @@ export default function EditorPage() {
                         
                         const combinedLinks = Array.from(newLinksMap.entries()).map(([type, value]) => ({ type, value })).filter(l => !!l.value);
 
-                        let finalSlug = currentProfile?.username || extractedData.personalInfo?.slug || generateSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
+                        let baseSlug = generateBaseSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
+                        let finalSlug = currentProfile?.username || extractedData.personalInfo?.slug || baseSlug;
                         let isUnique = false;
-                        let maxAttempts = 10;
-                        while (!isUnique && maxAttempts-- > 0) {
+                        let attempt = 0;
+                        while (!isUnique && attempt < 100) {
                             const { data: existing } = await supabase.from('profiles').select('id').eq('username', finalSlug).maybeSingle();
                             if (!existing || existing.id === user.id) {
                                 isUnique = true;
                             } else {
-                                finalSlug = `${generateSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user')}-${Math.random().toString(36).substring(2,6)}`;
+                                attempt++;
+                                finalSlug = `${baseSlug}${attempt}`;
                             }
                         }
 

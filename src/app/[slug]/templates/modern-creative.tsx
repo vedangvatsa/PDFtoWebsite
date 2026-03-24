@@ -239,14 +239,14 @@ export default function TemplateModern(props: ProfileData) {
         </button> 
         */}
 
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 py-6 sm:py-8">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-6 sm:py-8">
           <div className="resume-page space-y-5 pb-8">
 
             {/* ─── HEADER ─── */}
             <header className="text-center">
               {profile.avatarUrl && !profile.avatarUrl.includes('picsum.photos') && (
                 <div className="flex justify-center mb-4">
-                  <div className="relative overflow-hidden rounded-full border bg-muted shrink-0 flex items-center justify-center transform-gpu" style={{ width: 72, height: 72, borderRadius: '50%' }}>
+                  <div className="relative overflow-hidden rounded-full border-2 border-indigo-100 dark:border-indigo-900/50 bg-muted shrink-0 flex items-center justify-center transform-gpu shadow-[0_0_40px_-10px_rgba(99,102,241,0.5)] dark:shadow-[0_0_40px_-5px_rgba(99,102,241,0.3)] transition-all hover:shadow-[0_0_50px_-5px_rgba(99,102,241,0.6)]" style={{ width: 72, height: 72, borderRadius: '50%' }}>
                     {profile.avatarUrl.startsWith('data:') ? (
                       <img
                         src={profile.avatarUrl}
@@ -255,14 +255,11 @@ export default function TemplateModern(props: ProfileData) {
                         style={{ width: '100%', height: '100%' }}
                       />
                     ) : (
-                      <Image
+                      <img
                         src={profile.avatarUrl}
                         alt={profile.fullName}
-                        fill
-                        className="object-cover"
+                        className="w-full h-full object-cover"
                         style={{ width: '100%', height: '100%' }}
-                        unoptimized={true}
-                        crossOrigin="anonymous"
                         data-ai-hint={profile.avatarHint || 'person portrait'}
                       />
                     )}
@@ -280,7 +277,7 @@ export default function TemplateModern(props: ProfileData) {
                   </span>
                 )}
                 {profile.email && (
-                  <a href={`mailto:${profile.email}`} className="inline-flex items-center hover:text-foreground transition-colors mx-2 my-1">
+                  <a href={`mailto:${profile.email}`} className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1">
                     <Mail className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#EA4335]" />
                     <span>{profile.email}</span>
                   </a>
@@ -296,11 +293,11 @@ export default function TemplateModern(props: ProfileData) {
                     href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                    className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
                   >
                     <Globe className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#4285F4]" />
                     <span>{profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
-                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px]" />
+                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
                   </a>
                 )}
                 {profile.github && (
@@ -308,11 +305,11 @@ export default function TemplateModern(props: ProfileData) {
                     href={profile.github.startsWith('http') ? profile.github : `https://${profile.github}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                    className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
                   >
                     <Github className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#181717] dark:text-[#f0f6fc]" />
                     <span>{profile.github.replace(/^(?:https?:\/\/)?(?:www\.)?github\.com\//i, '').replace(/\/$/, '')}</span>
-                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px]" />
+                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
                   </a>
                 )}
                 {profile.linkedin && (
@@ -320,11 +317,11 @@ export default function TemplateModern(props: ProfileData) {
                     href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://${profile.linkedin}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                    className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
                   >
                     <Linkedin className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#0A66C2]" />
                     <span>{profile.linkedin.replace(/^(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, '')}</span>
-                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px]" />
+                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
                   </a>
                 )}
                 {/* Additional links (ResearchGate, Google Scholar, Twitter, etc.) */}
@@ -336,11 +333,11 @@ export default function TemplateModern(props: ProfileData) {
                       href={link.value.startsWith('http') ? link.value : `https://${link.value}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                      className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
                     >
                       <Icon className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px]" style={{ color }} />
                       <span>{link.type.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}</span>
-                      <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px]" />
+                      <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
                     </a>
                   );
                 })}
@@ -353,13 +350,13 @@ export default function TemplateModern(props: ProfileData) {
               )}
             </header>
 
-            {(workExperience.length > 0 || education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px bg-border" />}
+            {(workExperience.length > 0 || education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
 
             {/* ─── EXPERIENCE ─── */}
             {workExperience.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
                     Experience
                   </h2>
                   <div className="space-y-3">
@@ -370,7 +367,7 @@ export default function TemplateModern(props: ProfileData) {
                             <h3 className="text-sm font-semibold text-foreground">{job.title}</h3>
                             <p className="text-sm text-muted-foreground">{job.company}</p>
                           </div>
-                          <span className="text-xs text-muted-foreground/60 whitespace-nowrap">
+                          <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-400/80 whitespace-nowrap">
                             {job.startDate} — {job.endDate || 'Present'}
                           </span>
                         </div>
@@ -383,7 +380,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                {(education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px bg-border" />}
+                {(education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
               </>
             )}
 
@@ -391,7 +388,7 @@ export default function TemplateModern(props: ProfileData) {
             {education.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
                     Education
                   </h2>
                   <div className="space-y-2.5">
@@ -402,7 +399,7 @@ export default function TemplateModern(props: ProfileData) {
                             <h3 className="text-sm font-semibold text-foreground">{edu.institution}</h3>
                             <p className="text-xs text-muted-foreground">{edu.degree}</p>
                           </div>
-                          <span className="text-xs text-muted-foreground/60 whitespace-nowrap">
+                          <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-400/80 whitespace-nowrap">
                             {edu.startDate} — {edu.endDate || 'Present'}
                           </span>
                         </div>
@@ -415,7 +412,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                {(skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px bg-border" />}
+                {(skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
               </>
             )}
 
@@ -423,22 +420,21 @@ export default function TemplateModern(props: ProfileData) {
             {skills.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
                     Skills
                   </h2>
                   <div className="block" style={{ breakInside: 'avoid', pageBreakInside: 'avoid' }}>
                     {skills.map((skill, idx) => (
                       <span
                         key={idx}
-                        className="inline-block rounded-md border text-xs text-muted-foreground"
-                        style={{ padding: '4px 10px', margin: '0 6px 6px 0', backgroundColor: '#fafafa' }}
+                        className="inline-block rounded-md border border-indigo-500/20 bg-indigo-50/50 text-indigo-700 dark:border-indigo-400/20 dark:bg-indigo-950/30 dark:text-indigo-300 text-xs px-2.5 py-1 mb-1.5 mr-1.5"
                       >
                         {skill}
                       </span>
                     ))}
                   </div>
                 </section>
-                {customSections?.some(s => s.items?.length > 0) && <div className="h-px bg-border" />}
+                {customSections?.some(s => s.items?.length > 0) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
               </>
             )}
 
@@ -446,7 +442,7 @@ export default function TemplateModern(props: ProfileData) {
             {customSections?.filter(s => s.items && s.items.length > 0).map((section, idx, filteredArr) => (
               <React.Fragment key={section.id}>
                 <section>
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
                     {section.sectionTitle}
                   </h2>
                   <div className="space-y-3">
@@ -458,7 +454,7 @@ export default function TemplateModern(props: ProfileData) {
                             {item.subtitle && <p className="text-sm text-muted-foreground">{item.subtitle}</p>}
                           </div>
                           {item.date && (
-                            <span className="text-xs text-muted-foreground/60 whitespace-nowrap">{item.date}</span>
+                            <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-400/80 whitespace-nowrap">{item.date}</span>
                           )}
                         </div>
                         {item.description && (
@@ -470,7 +466,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                {idx < filteredArr.length - 1 && <div className="h-px bg-border" />}
+                {idx < filteredArr.length - 1 && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
               </React.Fragment>
             ))}
 
