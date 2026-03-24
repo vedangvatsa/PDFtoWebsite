@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, FilePenLine } from "lucide-react";
+
 import { Icons } from "./icons";
 import { ThemeToggle } from "./theme-toggle";
 import { Button } from "./ui/button";
@@ -50,16 +50,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               <TooltipProvider>
                 <div className="flex items-center gap-1">
                   {pathname !== '/editor' && (
-                    <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 gap-1.5 text-xs text-muted-foreground hover:text-foreground">
-                      <Link href="/editor">
-                        <FilePenLine className="h-3.5 w-3.5" />
-                        <span>Editor</span>
-                      </Link>
+                    <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+                      <Link href="/editor">Editor</Link>
                     </Button>
                   )}
-                  <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-8 px-2.5 gap-1.5 text-xs text-muted-foreground hover:text-foreground">
-                    <LogOut className="h-3.5 w-3.5" />
-                    <span>Logout</span>
+                  <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+                    Logout
                   </Button>
                 </div>
               </TooltipProvider>
