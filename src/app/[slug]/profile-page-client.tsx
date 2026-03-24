@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import confetti from 'canvas-confetti';
+
 import TemplateModern from './templates/modern-creative';
 import type { ServerProfileData } from '@/lib/supabase-server';
 import { createClient } from '@/utils/supabase/client';
@@ -65,9 +65,6 @@ export default function ProfilePageClient({ data, slug }: Props) {
       setCopiedX(pick(X_COPIES)(slug));
       setCopiedWhatsApp(pick(WHATSAPP_COPIES)(slug));
       setShowCelebration(true);
-      confetti({ particleCount: 160, spread: 70, origin: { y: 0.6 } });
-      setTimeout(() => confetti({ particleCount: 80, angle: 60, spread: 100, origin: { y: 0.55 } }), 350);
-      setTimeout(() => confetti({ particleCount: 80, angle: 120, spread: 100, origin: { y: 0.55 } }), 600);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

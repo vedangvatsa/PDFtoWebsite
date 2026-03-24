@@ -196,8 +196,25 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   const data = await getProfileBySlug(slug);
   if (!data) notFound();
 
+  const avatarUrl = data.profile.avatarUrl;
+  const isValidAvatarForPreload = avatarUrl
+    && !avatarUrl.startsWith('data:')
+    && !avatarUrl.includes('picsum.photos');
+
+  const supabaseStorageHost = process.env.NEXT_PUBLIC_SUPABASE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+    : null;
+
   return (
     <>
+      {/* Preconnect to Supabase storage to shave DNS/TCP time off image fetch */}
+      {supabaseStorageHost && (
+        <link rel="preconnect" href={`https://${supabaseStorageHost}`} crossOrigin="anonymous" />
+      )}
+      {/* Preload the avatar so the browser fetches it before React hydrates (LCP) */}
+      {isValidAvatarForPreload && (
+        <link rel="preload" as="image" href={avatarUrl} fetchPriority="high" />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonSchema(data)).replace(/</g, '\\u003c') }}

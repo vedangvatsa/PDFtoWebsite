@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import confetti from 'canvas-confetti';
+
 import Link from 'next/link';
 
 import { useRouter } from 'next/navigation';
@@ -253,9 +253,6 @@ export default function EditorPage() {
         setCopiedX(pick(X_COPIES)(slug));
         setCopiedWhatsApp(pick(WHATSAPP_COPIES)(slug));
         setShowCelebration(true);
-        confetti({ particleCount: 160, spread: 70, origin: { y: 0.6 } });
-        setTimeout(() => confetti({ particleCount: 80, angle: 60,  spread: 100, origin: { y: 0.55 } }), 350);
-        setTimeout(() => confetti({ particleCount: 80, angle: 120, spread: 100, origin: { y: 0.55 } }), 600);
     }, []);
 
     // Generate 9:16 story card whenever celebration modal opens

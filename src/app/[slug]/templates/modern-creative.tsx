@@ -304,6 +304,8 @@ export default function TemplateModern(props: ProfileData) {
                         alt={profile.fullName}
                         className="w-full h-full object-cover"
                         style={{ width: '100%', height: '100%' }}
+                        fetchPriority="high"
+                        loading="eager"
                       />
                     ) : (
                       <img
@@ -312,6 +314,8 @@ export default function TemplateModern(props: ProfileData) {
                         className="w-full h-full object-cover"
                         style={{ width: '100%', height: '100%' }}
                         data-ai-hint={profile.avatarHint || 'person portrait'}
+                        fetchPriority="high"
+                        loading="eager"
                       />
                     )}
                   </div>
