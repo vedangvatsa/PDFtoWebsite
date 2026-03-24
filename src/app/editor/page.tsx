@@ -591,7 +591,6 @@ export default function EditorPage() {
                 
                 toast({ title: 'Success!', description: 'Your profile has been saved.' });
                 await fetchProfileData();
-                fireCelebration(updatedProfile.username);
             } else {
                 // Keep session storage AND localStorage in sync for later login transition
                 sessionStorage.setItem('parsedResume', JSON.stringify(extractedData));
@@ -703,7 +702,6 @@ export default function EditorPage() {
                         localStorage.removeItem('parsedResume');
                         localStorage.removeItem('parsedResumeTimestamp');
                         await fetchProfileData(); // Reload the UI with updated DB data
-                        fireCelebration(updatedProfile.username);
                     } catch (e) {
                         console.error('Parse failed', e);
                         toast({ variant: 'destructive', title: 'Import Failed', description: e instanceof Error ? e.message : 'Could not import your resume data. Please try uploading again.' });
