@@ -75,54 +75,123 @@ export default function ProfilePageClient({ data, slug }: Props) {
   useEffect(() => {
     if (!showCelebration) return;
     setCardDataUrl(null);
-    const name = data.profile.fullName || '';
-    const timer = setTimeout(() => {
+
+    const generateCard = async () => {
+      const W = 1080, H = 1920;
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d')!;
+
+      // — Background gradient (site's indigo palette)
+      const grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, '#0f0d2e');   // near-black indigo
+      grad.addColorStop(0.45, '#2d2b7a'); // indigo deep
+      grad.addColorStop(1, '#3b1f6e');   // violet-dark
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // — Dot grid texture
+      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      for (let x = 80; x < W; x += 90) for (let y = 80; y < H; y += 90) {
+        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // — Try to load Inter from the browser's already-loaded font cache
       try {
-        const W = 1080, H = 1920;
-        const canvas = document.createElement('canvas');
-        canvas.width = W; canvas.height = H;
-        const ctx = canvas.getContext('2d')!;
-        const grad = ctx.createLinearGradient(0, 0, W, H);
-        grad.addColorStop(0, '#1e1b4b');
-        grad.addColorStop(0.5, '#3730a3');
-        grad.addColorStop(1, '#4c1d95');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, W, H);
-        ctx.fillStyle = 'rgba(255,255,255,0.045)';
-        for (let x = 72; x < W; x += 90) for (let y = 72; y < H; y += 90) {
-          ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
-        }
-        ctx.fillStyle = 'rgba(199,210,254,0.75)';
-        ctx.font = '500 44px -apple-system,BlinkMacSystemFont,sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('CVin.Bio', W / 2, 210);
-        ctx.strokeStyle = 'rgba(165,180,252,0.3)'; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.moveTo(220, 255); ctx.lineTo(860, 255); ctx.stroke();
-        ctx.fillStyle = 'rgba(255,255,255,0.97)';
-        let fs = 108;
-        ctx.font = `bold ${fs}px -apple-system,BlinkMacSystemFont,sans-serif`;
-        while (ctx.measureText(name).width > 900 && fs > 52) { fs -= 4; ctx.font = `bold ${fs}px -apple-system,BlinkMacSystemFont,sans-serif`; }
-        ctx.fillText(name, W / 2, 890);
-        ctx.fillStyle = 'rgba(199,210,254,0.88)';
-        ctx.font = '54px -apple-system,BlinkMacSystemFont,sans-serif';
-        ctx.fillText('pdf is dead.', W / 2, 1010);
-        ctx.fillText("here's my link ↓", W / 2, 1082);
-        const urlText = `cvin.bio/${slug}`;
-        let ufs = 72;
-        ctx.font = `bold ${ufs}px -apple-system,BlinkMacSystemFont,sans-serif`;
-        while (ctx.measureText(urlText).width > 780 && ufs > 44) { ufs -= 4; ctx.font = `bold ${ufs}px -apple-system,BlinkMacSystemFont,sans-serif`; }
-        ctx.fillStyle = 'rgba(255,255,255,0.13)';
-        ctx.beginPath(); ctx.roundRect(130, 1210, 820, 130, 22); ctx.fill();
-        ctx.fillStyle = 'white';
-        ctx.fillText(urlText, W / 2, 1290);
-        ctx.fillStyle = 'rgba(165,180,252,0.5)';
-        ctx.font = '40px -apple-system,BlinkMacSystemFont,sans-serif';
-        ctx.fillText('Scan · Click · Connect', W / 2, 1770);
-        setCardDataUrl(canvas.toDataURL('image/png'));
-      } catch (e) { console.error('Story card error', e); }
-    }, 150);
+        await document.fonts.load('bold 96px Inter');
+        await document.fonts.load('500 44px Inter');
+      } catch (_) { /* fall back to system font gracefully */ }
+      const font = document.fonts.check('bold 96px Inter') ? 'Inter' : '-apple-system,BlinkMacSystemFont,sans-serif';
+
+      // — Top branding
+      ctx.fillStyle = 'rgba(165,180,252,0.8)'; // indigo-300
+      ctx.font = `500 46px ${font}`;
+      ctx.textAlign = 'center';
+      ctx.letterSpacing = '2px';
+      ctx.fillText('CVin.Bio', W / 2, 180);
+      ctx.letterSpacing = '0px';
+
+      // — Divider
+      ctx.strokeStyle = 'rgba(129,140,248,0.3)'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(240, 220); ctx.lineTo(840, 220); ctx.stroke();
+
+      // — Profile photo (circular with glow)
+      const hasPhoto = !!data.profile.avatarUrl && !data.profile.avatarUrl.includes('picsum.photos');
+      const photoRadius = 170;
+      const photoCY = hasPhoto ? 640 : 0; // only used when photo exists
+      const nameCY = hasPhoto ? 900 : 780;
+
+      if (hasPhoto) {
+        await new Promise<void>((resolve) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => {
+            const cx = W / 2, cy = photoCY;
+            // Outer glow
+            ctx.save();
+            ctx.shadowColor = 'rgba(129,140,248,0.7)';
+            ctx.shadowBlur = 50;
+            ctx.beginPath(); ctx.arc(cx, cy, photoRadius + 8, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(99,102,241,0.25)'; ctx.fill();
+            ctx.restore();
+            // Border ring
+            ctx.beginPath(); ctx.arc(cx, cy, photoRadius + 5, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(165,180,252,0.7)'; ctx.lineWidth = 4; ctx.stroke();
+            // Clip and draw photo
+            ctx.save();
+            ctx.beginPath(); ctx.arc(cx, cy, photoRadius, 0, Math.PI * 2); ctx.clip();
+            ctx.drawImage(img, cx - photoRadius, cy - photoRadius, photoRadius * 2, photoRadius * 2);
+            ctx.restore();
+            resolve();
+          };
+          img.onerror = () => resolve();
+          img.src = data.profile.avatarUrl!;
+        });
+      }
+
+      // — Name (auto-size to fit)
+      const name = data.profile.fullName || '';
+      ctx.fillStyle = 'rgba(255,255,255,0.97)';
+      let nameFSize = 108;
+      ctx.font = `bold ${nameFSize}px ${font}`;
+      while (ctx.measureText(name).width > 920 && nameFSize > 56) {
+        nameFSize -= 4; ctx.font = `bold ${nameFSize}px ${font}`;
+      }
+      ctx.fillText(name, W / 2, nameCY);
+
+      // — Taglines
+      ctx.fillStyle = 'rgba(199,210,254,0.82)'; // indigo-200
+      ctx.font = `400 56px ${font}`;
+      const tagY = nameCY + 100;
+      ctx.fillText('pdf is dead.', W / 2, tagY);
+      ctx.font = `400 52px ${font}`;
+      ctx.fillText("here's my link ↓", W / 2, tagY + 80);
+
+      // — URL pill (glassmorphism)
+      const pillY = tagY + 190, pillH = 130;
+      ctx.fillStyle = 'rgba(99,102,241,0.18)';
+      ctx.strokeStyle = 'rgba(165,180,252,0.35)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.roundRect(120, pillY, 840, pillH, 28); ctx.fill(); ctx.stroke();
+      const urlText = `cvin.bio/${slug}`;
+      let urlFSize = 76;
+      ctx.font = `bold ${urlFSize}px ${font}`;
+      while (ctx.measureText(urlText).width > 780 && urlFSize > 44) {
+        urlFSize -= 4; ctx.font = `bold ${urlFSize}px ${font}`;
+      }
+      ctx.fillStyle = 'white';
+      ctx.fillText(urlText, W / 2, pillY + 82);
+
+      // — Bottom caption
+      ctx.fillStyle = 'rgba(148,163,184,0.5)'; // slate-400 muted
+      ctx.font = `400 38px ${font}`;
+      ctx.fillText('Scan · Click · Connect', W / 2, 1800);
+
+      setCardDataUrl(canvas.toDataURL('image/png'));
+    };
+
+    const timer = setTimeout(() => generateCard().catch(e => console.error('Story card error', e)), 200);
     return () => clearTimeout(timer);
-  }, [showCelebration, slug, data.profile.fullName]);
+  }, [showCelebration, slug, data.profile.fullName, data.profile.avatarUrl]);
 
   return (
     <>

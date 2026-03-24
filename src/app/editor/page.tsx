@@ -1208,10 +1208,8 @@ export default function EditorPage() {
                                                         {(() => {
                                                             const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`;
                                                             const firstName = profile.fullName?.split(' ')[0] || '';
-                                                            const chatMsg = firstName 
-                                                                ? `Here's ${firstName}'s professional profile — everything in one place 👉 ${url}` 
-                                                                : `Here's my professional profile — everything in one place 👉 ${url}`;
-                                                            const socialMsg = `Just made my entire resume a single link ✌️ ${url}`;
+                                                            const chatMsg = `pdf resume? nah.\nhere's the link: ${url}`;
+                                                            const socialMsg = `stopped attaching resumes, dropped a link instead → ${url}`;
                                                             return (
                                                                 <div className="flex flex-col gap-0.5">
                                                                     <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(chatMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
