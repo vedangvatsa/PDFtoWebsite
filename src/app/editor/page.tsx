@@ -1206,10 +1206,9 @@ export default function EditorPage() {
                                                     </PopoverTrigger>
                                                     <PopoverContent className="w-56 p-2" align="end" sideOffset={8}>
                                                         {(() => {
-                                                            const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`;
-                                                            const firstName = profile.fullName?.split(' ')[0] || '';
-                                                            const chatMsg = `pdf resume? nah.\nhere's the link: ${url}`;
-                                                            const socialMsg = `stopped attaching resumes, dropped a link instead → ${url}`;
+                                                            const url = `https://cvin.bio/${profile.slug}`;
+                                                            const chatMsg = `my resume is a link now\nhttps://cvin.bio/${profile.slug}`;
+                                                            const socialMsg = `stopped attaching my resume. here's the link instead\nhttps://cvin.bio/${profile.slug}`;
                                                             return (
                                                                 <div className="flex flex-col gap-0.5">
                                                                     <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(chatMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
@@ -1264,12 +1263,9 @@ export default function EditorPage() {
                                                     <div className="flex items-center gap-1.5 mt-1">
                                                         <span className="text-[10px] text-muted-foreground">Share it →</span>
                                                         {(() => {
-                                                            const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`;
-                                                            const firstName = profile.fullName?.split(' ')[0] || '';
-                                                            const chatMsg = firstName 
-                                                                ? `Here's ${firstName}'s professional profile — everything in one place 👉 ${url}` 
-                                                                : `Here's my professional profile — everything in one place 👉 ${url}`;
-                                                            const socialMsg = `Just made my entire resume a single link ✌️ ${url}`;
+                                                            const url = `https://cvin.bio/${profile.slug}`;
+                                                            const chatMsg = `my resume is a link now\nhttps://cvin.bio/${profile.slug}`;
+                                                            const socialMsg = `stopped attaching my resume. here's the link instead\nhttps://cvin.bio/${profile.slug}`;
                                                             return (
                                                                 <>
                                                                     <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(chatMsg)}`, '_blank')} className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-green-50 dark:hover:bg-green-950 transition-colors" title="WhatsApp">
