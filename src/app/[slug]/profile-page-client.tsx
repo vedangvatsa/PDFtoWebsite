@@ -204,8 +204,8 @@ export default function ProfilePageClient({ data, slug }: Props) {
           <div className="flex flex-col items-center gap-4 py-2">
             <div className="text-5xl">🎉</div>
             <div>
-              <h2 className="text-xl font-bold">PDF is dead. You've got a link.</h2>
-              <p className="text-sm text-muted-foreground mt-1">Drop it anywhere. No attachment, no version confusion.</p>
+              <h2 className="text-xl font-bold">It's live. Now get it seen.</h2>
+              <p className="text-sm text-muted-foreground mt-1">Most jobs come through someone who knew you were looking. Every share puts you in front of that person.</p>
             </div>
             {/* URL pill */}
             <div className="w-full bg-secondary rounded-lg px-3 py-2.5 flex items-center justify-between gap-2">
