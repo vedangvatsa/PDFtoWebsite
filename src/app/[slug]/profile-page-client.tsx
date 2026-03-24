@@ -8,6 +8,7 @@ import type { ServerProfileData } from '@/lib/supabase-server';
 import { createClient } from '@/utils/supabase/client';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { Trophy } from 'lucide-react';
 import { LINKEDIN_CAPTIONS, X_COPIES, WHATSAPP_COPIES, pick } from '@/lib/share-copy';
 
 interface Props {
@@ -197,15 +198,23 @@ export default function ProfilePageClient({ data, slug }: Props) {
     <>
       <TemplateModern {...data} />
 
-      {/* 🎉 First-visit Celebration Dialog */}
+      {/* 🏆 First-visit Celebration Dialog */}
       <Dialog open={showCelebration} onOpenChange={setShowCelebration}>
-        <DialogContent className="max-w-md text-center max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-md text-center max-h-[90vh] overflow-y-auto p-0 overflow-hidden">
           <DialogTitle className="sr-only">Your profile is live!</DialogTitle>
-          <div className="flex flex-col items-center gap-4 py-2">
-            <div className="text-5xl">🎉</div>
+          {/* Indigo accent bar at top */}
+          <div className="h-1.5 w-full bg-gradient-to-r from-violet-500 via-indigo-500 to-blue-500" />
+          <div className="flex flex-col items-center gap-4 px-6 py-5">
+            {/* Trophy icon badge */}
+            <div className="relative flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-indigo-500/20 blur-xl scale-150" />
+              <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30">
+                <Trophy className="h-8 w-8 text-white" strokeWidth={1.75} />
+              </div>
+            </div>
             <div>
-              <h2 className="text-xl font-bold">It's live. Now get it seen.</h2>
-              <p className="text-sm text-muted-foreground mt-1">Most jobs come through someone who knew you were looking. Every share puts you in front of that person.</p>
+              <h2 className="text-xl font-bold tracking-tight">It's live. Now get it seen.</h2>
+              <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Most jobs come through someone who knew you were looking. Every share puts you in front of that person.</p>
             </div>
             {/* URL pill */}
             <div className="w-full bg-secondary rounded-lg px-3 py-2.5 flex items-center justify-between gap-2">
