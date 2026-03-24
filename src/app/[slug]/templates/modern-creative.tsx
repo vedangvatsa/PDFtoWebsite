@@ -320,75 +320,79 @@ export default function TemplateModern(props: ProfileData) {
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground">
                 {profile.fullName}
               </h1>
-              <div className="mt-2 text-center text-xs text-muted-foreground">
+              {/* ── Contact & social row ── */}
+              <div className="mt-3 flex flex-wrap justify-center items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
                 {profile.location && (
-                  <span className="inline-flex items-center mx-2 my-1">
-                    <MapPin className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#E74C3C]" />
+                  <span className="inline-flex items-center gap-1.5 cursor-default">
+                    <MapPin className="h-3.5 w-3.5 shrink-0 text-[#E74C3C]" />
                     <span>{profile.location}</span>
                   </span>
                 )}
                 {profile.email && (
-                  <a href={`mailto:${profile.email}`} className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1">
-                    <Mail className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#EA4335]" />
+                  <a
+                    href={`mailto:${profile.email}`}
+                    className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+                  >
+                    <Mail className="h-3.5 w-3.5 shrink-0 text-[#EA4335]" />
                     <span>{profile.email}</span>
                   </a>
                 )}
                 {profile.phone && (
-                  <span className="inline-flex items-center mx-2 my-1">
-                    <Phone className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#25D366]" />
+                  <a
+                    href={`tel:${profile.phone}`}
+                    className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+                  >
+                    <Phone className="h-3.5 w-3.5 shrink-0 text-[#25D366]" />
                     <span>{profile.phone}</span>
-                  </span>
+                  </a>
                 )}
                 {profile.website && (
                   <a
                     href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                    title={profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
                   >
-                    <Globe className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#4285F4]" />
-                    <span>{profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
-                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
+                    <Globe className="h-4 w-4 text-[#4285F4]" />
                   </a>
                 )}
                 {profile.github && (
                   <a
-                    href={profile.github.startsWith('http') ? profile.github : `https://${profile.github}`}
+                    href={profile.github.startsWith('http') ? profile.github : `https://github.com/${profile.github}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                    title={profile.github.replace(/^(?:https?:\/\/)?(?:www\.)?github\.com\//i, '').replace(/\/$/, '')}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
                   >
-                    <Github className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#181717] dark:text-[#f0f6fc]" />
-                    <span>{profile.github.replace(/^(?:https?:\/\/)?(?:www\.)?github\.com\//i, '').replace(/\/$/, '')}</span>
-                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
+                    <Github className="h-4 w-4 text-[#181717] dark:text-[#f0f6fc]" />
                   </a>
                 )}
                 {profile.linkedin && (
                   <a
-                    href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://${profile.linkedin}`}
+                    href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://linkedin.com/in/${profile.linkedin}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                    title={profile.linkedin.replace(/^(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, '')}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
                   >
-                    <Linkedin className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px] text-[#0A66C2]" />
-                    <span>{profile.linkedin.replace(/^(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, '')}</span>
-                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
+                    <Linkedin className="h-4 w-4 text-[#0A66C2]" />
                   </a>
                 )}
                 {/* Additional links (ResearchGate, Google Scholar, Twitter, etc.) */}
                 {profile.links?.filter((l: any) => !['email', 'phone', 'location', 'website', 'github', 'linkedin'].includes(l.type)).map((link: any, idx: number) => {
                   const { Icon, color } = getLinkIcon(link.type);
+                  const label = link.type.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
                   return (
                     <a
                       key={idx}
                       href={link.value.startsWith('http') ? link.value : `https://${link.value}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center hover:text-foreground transition-colors mx-2 my-1"
+                      title={label}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
                     >
-                      <Icon className="h-3.5 w-3.5 shrink-0 mr-1.5 relative top-[-1px]" style={{ color }} />
-                      <span>{link.type.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}</span>
-                      <ArrowUpRight className="h-2.5 w-2.5 shrink-0 ml-1 relative top-[1px] text-indigo-500/70 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
+                      <Icon className="h-4 w-4" style={{ color }} />
                     </a>
                   );
                 })}
