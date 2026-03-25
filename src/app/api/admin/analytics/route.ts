@@ -56,10 +56,16 @@ export async function GET(request: NextRequest) {
     const usersWithLinks = profiles.filter(p => Array.isArray(p.links) && p.links.length > 0).length;
     const avgViews = totalUsers > 0 ? Math.round(totalViews / totalUsers) : 0;
 
-    // ── Signup trend (last 30 days) — use profiles.created_at (works without service key) ──
+    // ── Signup trend — dynamic start from earliest profile ──
     const signupsByDay: Record<string, number> = {};
     const now = new Date();
-    for (let i = 29; i >= 0; i--) {
+    const earliestDate = profiles.reduce((min: Date, p: any) => {
+      if (!p.created_at) return min;
+      const d = new Date(p.created_at);
+      return d < min ? d : min;
+    }, now);
+    const daysSinceFirst = Math.max(Math.ceil((now.getTime() - earliestDate.getTime()) / (86400000)), 1);
+    for (let i = daysSinceFirst; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(d.getDate() - i);
       const key = d.toISOString().split('T')[0];
@@ -76,13 +82,13 @@ export async function GET(request: NextRequest) {
 
     // ── Views distribution (top 15 profiles) ──
     const topProfiles = [...profiles]
-      .sort((a, b) => (b.views || 0) - (a.views || 0))
+      .sort((a: any, b: any) => (b.views || 0) - (a.views || 0))
       .slice(0, 15)
-      .map(p => ({ name: p.full_name || p.username || 'Unknown', slug: p.username, views: p.views || 0 }));
+      .map((p: any) => ({ name: p.full_name || p.username || 'Unknown', slug: p.username, views: p.views || 0 }));
 
-    // ── Parse trend (last 14 days) ──
+    // ── Parse trend — same dynamic window ──
     const parsesByDay: Record<string, number> = {};
-    for (let i = 13; i >= 0; i--) {
+    for (let i = daysSinceFirst; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(d.getDate() - i);
       const key = d.toISOString().split('T')[0];

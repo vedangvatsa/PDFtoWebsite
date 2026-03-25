@@ -144,7 +144,7 @@ export default function AdminPage() {
         {/* Charts Row 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <Card className="shadow-sm">
-            <CardHeader className="pb-1 pt-3 px-4"><CardTitle className="text-xs font-semibold">Signups — 30 Days</CardTitle></CardHeader>
+            <CardHeader className="pb-1 pt-3 px-4"><CardTitle className="text-xs font-semibold">Signups</CardTitle></CardHeader>
             <CardContent className="px-3 pb-2">
               <ChartContainer config={signupConfig} className="h-[180px] w-full">
                 <AreaChart data={signupTrend}>
@@ -177,7 +177,7 @@ export default function AdminPage() {
         {/* Charts Row 2 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <Card className="shadow-sm">
-            <CardHeader className="pb-1 pt-3 px-4"><CardTitle className="text-xs font-semibold">CV Parses — 14 Days</CardTitle></CardHeader>
+            <CardHeader className="pb-1 pt-3 px-4"><CardTitle className="text-xs font-semibold">CV Parses</CardTitle></CardHeader>
             <CardContent className="px-3 pb-2">
               <ChartContainer config={parseConfig} className="h-[160px] w-full">
                 <BarChart data={parseTrend}>
