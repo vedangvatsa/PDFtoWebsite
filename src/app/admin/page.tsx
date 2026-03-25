@@ -111,18 +111,19 @@ export default function AdminPage() {
 
         {/* KPIs */}
         <Section title="Overview">
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6">
             <Stat v={kpis.totalUsers} label="Users" />
             <Stat v={kpis.totalViews} label="Total views" sub={`avg ${kpis.avgViews} · median ${kpis.medianViews}`} />
             <Stat v={kpis.totalParses} label="CV parses" />
             <Stat v={kpis.usersUpdatedLast7d} label="Active (7d)" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.usersUpdatedLast7d / kpis.totalUsers) * 100) : 0}% of total`} />
             <Stat v={kpis.zeroViewProfiles} label="Zero-view profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
+            <Stat v={kpis.avgSkillsPerUser} label="Skills / user" />
           </div>
         </Section>
 
         {/* Completeness */}
         <Section title="Profile completeness">
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6">
             <Pct has={completeness.hasPhoto} total={kpis.totalUsers} label="Photo" />
             <Pct has={completeness.hasExperience} total={kpis.totalUsers} label="Experience" />
             <Pct has={completeness.hasEducation} total={kpis.totalUsers} label="Education" />
@@ -227,8 +228,11 @@ export default function AdminPage() {
               <div key={i} className="flex gap-4">
                 <span className="text-xs text-muted-foreground w-12 shrink-0 pt-0.5 text-right">{new Date(e.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
                 <div className="pb-5 border-l border-border/60 pl-4 -mt-0.5">
-                  <p className="text-sm font-medium">{e.title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{e.desc}</p>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="text-sm font-medium">{e.title}</p>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded border border-border text-muted-foreground leading-none">{e.tag}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{e.desc}</p>
                 </div>
               </div>
             ))}
