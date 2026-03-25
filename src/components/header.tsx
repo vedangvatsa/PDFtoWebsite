@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { useUser } from "@/auth";
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from "next/navigation";
+import posthog from 'posthog-js';
 import {
   Tooltip,
   TooltipContent,
@@ -27,6 +28,8 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         const supabase = createClient();
         try {
             await supabase.auth.signOut();
+            posthog.capture('user_logout');
+            posthog.reset();
             router.push('/blog');
         } catch (error: any) {
             console.error("Error signing out: ", error);

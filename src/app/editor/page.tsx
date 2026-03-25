@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import posthog from 'posthog-js';
 
 import Link from 'next/link';
 
@@ -557,6 +558,7 @@ export default function EditorPage() {
         }
         
         setIsGenerating(true);
+        posthog.capture('editor_cv_parse_started', { file_type: resumeFile.type, file_size: resumeFile.size });
         toast({ title: 'Processing CV...', description: `Analyzing ${resumeFile.name}...` });
         
         try {
@@ -638,16 +640,19 @@ export default function EditorPage() {
                 if (upsertError) throw upsertError;
                 
                 toast({ title: 'Success!', description: 'Your profile has been saved.' });
+                posthog.capture('profile_saved', { slug: updatedProfile.username, source: 'cv_parse' });
                 await fetchProfileData();
             } else {
                 // Keep session storage AND localStorage in sync for later login transition
                 sessionStorage.setItem('parsedResume', JSON.stringify(extractedData));
                 try { localStorage.setItem('parsedResume', JSON.stringify(extractedData)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
+                posthog.capture('editor_cv_parsed_anon');
                 toast({ title: 'CV Parsed!', description: 'Sign up to publish this profile.' });
             }
         } catch (error) {
             console.error('Upload Process Error:', error);
             const msg = error instanceof Error ? error.message : 'Could not update fields.';
+            posthog.capture('editor_cv_parse_failed', { error: msg });
             toast({ variant: 'destructive', title: 'Update Failed', description: msg });
         } finally {
             setIsGenerating(false);
@@ -916,6 +921,7 @@ export default function EditorPage() {
             setSlugSuccess(false);
             await autoSave('profile', user.id, { slug: value });
             setInitialSlug(value);
+            posthog.capture('editor_slug_changed', { new_slug: value });
             toast({ title: 'URL Updated!', description: `Your new link is ready.` });
         } else {
             autoSave('profile', user.id, { [name]: value });
@@ -1605,6 +1611,8 @@ export default function EditorPage() {
                                         throw new Error(data.error || 'Deletion failed');
                                     }
                                     await supabase.auth.signOut();
+                                    posthog.capture('editor_account_deleted');
+                                    posthog.reset();
                                     toast({ title: 'Account deleted', description: 'All your data has been removed.' });
                                     window.location.href = '/';
                                 } catch (err: any) {

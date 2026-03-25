@@ -1,8 +1,9 @@
 'use client'
 
 import posthog from 'posthog-js'
-import { PostHogProvider as PHProvider } from 'posthog-js/react'
+import { PostHogProvider as PHProvider, usePostHog } from 'posthog-js/react'
 import { useEffect } from 'react'
+import { useUser } from '@/auth'
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -17,5 +18,28 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     })
   }, [])
 
-  return <PHProvider client={posthog}>{children}</PHProvider>
+  return (
+    <PHProvider client={posthog}>
+      <PostHogIdentify />
+      {children}
+    </PHProvider>
+  )
+}
+
+/** Identify logged-in users so PostHog links events to a person */
+function PostHogIdentify() {
+  const { user } = useUser()
+  const ph = usePostHog()
+
+  useEffect(() => {
+    if (user && ph) {
+      ph.identify(user.id, {
+        email: user.email,
+        name: user.user_metadata?.full_name,
+        provider: user.app_metadata?.provider,
+      })
+    }
+  }, [user, ph])
+
+  return null
 }
