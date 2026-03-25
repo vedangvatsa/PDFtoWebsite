@@ -1228,8 +1228,8 @@ export default function EditorPage() {
                                                 <div className="flex items-center gap-2">
                                                     <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Public Link</p>
                                                 </div>
-                                                <div className="flex items-center gap-1.5 text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-bold" title="Total Views">
-                                                    <Eye className="h-3.5 w-3.5" /> {profile.viewCount || 0}
+                                                <div className="flex items-center gap-1.5 text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-bold" title="Total profile views">
+                                                    <Eye className="h-3.5 w-3.5" /> {profile.viewCount || 0} views
                                                 </div>
                                             </div>
                                             <div className="flex space-x-2">
