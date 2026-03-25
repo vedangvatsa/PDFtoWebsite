@@ -767,7 +767,7 @@ export default function EditorPage() {
             return;
         }
         
-        const RESERVED_SLUGS = ['blog', 'editor', 'signup', 'login', 'preview', 'privacy', 'terms', 'auth', 'api', 'admin', 'settings', 'dashboard', 'sitemap', 'robots', 'media'];
+        const RESERVED_SLUGS = ['admin', 'blog', 'editor', 'signup', 'login', 'preview', 'privacy', 'terms', 'auth', 'api', 'settings', 'dashboard', 'sitemap', 'robots', 'media'];
         if (RESERVED_SLUGS.includes(cleanSlug)) {
             setSlugError('This URL is reserved. Please choose a different one.');
             setSlugSuccess(false);
