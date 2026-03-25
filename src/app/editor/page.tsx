@@ -439,7 +439,8 @@ export default function EditorPage() {
                         newSlug = `${baseSlug}${attempt}`;
                     }
                 }
-                const newProfile = { id: user.id, username: newSlug, full_name: user.user_metadata?.full_name || 'Your Name', profile_picture_url: user.user_metadata?.avatar_url || '', experience: [], education: [], custom_sections: [], skills: [], links: [] };
+                const initialLinks = user.email ? [{ type: 'email', value: user.email }] : [];
+                const newProfile = { id: user.id, username: newSlug, full_name: user.user_metadata?.full_name || 'Your Name', profile_picture_url: user.user_metadata?.avatar_url || '', experience: [], education: [], custom_sections: [], skills: [], links: initialLinks };
                 const { error: insertError } = await supabase.from('profiles').upsert(newProfile);
                 if (insertError) console.error('Profile creation error:', insertError);
                 profileData = { userId: user.id, fullName: newProfile.full_name, email: user.email || '', summary: '', slug: newSlug, avatarUrl: newProfile.profile_picture_url, avatarHint: '', themeId: 'modern-creative', viewCount: 0, skills: [] };
