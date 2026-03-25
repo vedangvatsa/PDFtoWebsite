@@ -45,11 +45,27 @@ export default function ProfilePageClient({ data, slug }: Props) {
   const [copiedX, setCopiedX] = useState('');
   const [copiedWhatsApp, setCopiedWhatsApp] = useState('');
 
-  // Record view
+  // Record view with rich context
   useEffect(() => {
-    posthog.capture('profile_viewed', { slug });
+    const startTime = Date.now();
+    posthog.capture('profile_viewed', {
+      slug,
+      has_photo: !!data.profile.avatarUrl && !data.profile.avatarUrl.includes('picsum.photos'),
+      has_work: (data.workExperience?.length || 0) > 0,
+      has_education: (data.education?.length || 0) > 0,
+      skill_count: (data.profile.skills?.length || 0),
+      has_summary: !!(data.profile.summary?.trim()),
+      work_count: data.workExperience?.length || 0,
+      is_complete: isProfileComplete(data),
+    });
     fetch(`/api/views/${slug}`, { method: 'POST' }).catch(console.error);
-  }, [slug]);
+
+    // Track time on page when leaving
+    return () => {
+      const timeSpent = Math.round((Date.now() - startTime) / 1000);
+      posthog.capture('profile_time_spent', { slug, seconds: timeSpent });
+    };
+  }, [slug, data]);
 
   // Check: owner + profile complete + first visit → celebrate
   useEffect(() => {
@@ -274,6 +290,7 @@ export default function ProfilePageClient({ data, slug }: Props) {
                 <a
                   href={cardDataUrl}
                   download={`cvin-${slug}.png`}
+                  onClick={() => posthog.capture('story_card_downloaded', { slug })}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
                 >
                   ↓ Download story card
