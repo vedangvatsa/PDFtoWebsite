@@ -26,6 +26,35 @@ async function hogql(query: string): Promise<any[] | null> {
   } catch { return null; }
 }
 
+/** Map raw referrer domains to friendly names */
+const SOURCE_MAP: Record<string, string> = {
+  '$direct': 'Direct', '': 'Direct', 'direct': 'Direct',
+  'www.google.com': 'Google', 'google.com': 'Google',
+  'www.linkedin.com': 'LinkedIn', 'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn',
+  'www.facebook.com': 'Facebook', 'facebook.com': 'Facebook', 'm.facebook.com': 'Facebook', 'l.facebook.com': 'Facebook',
+  'www.instagram.com': 'Instagram', 'instagram.com': 'Instagram', 'l.instagram.com': 'Instagram',
+  'twitter.com': 'X', 'x.com': 'X', 't.co': 'X',
+  'www.reddit.com': 'Reddit', 'reddit.com': 'Reddit',
+  'wa.me': 'WhatsApp', 'web.whatsapp.com': 'WhatsApp', 'whatsapp.com': 'WhatsApp',
+  't.me': 'Telegram', 'web.telegram.org': 'Telegram',
+  'bsky.app': 'Bluesky',
+  'www.tumblr.com': 'Tumblr', 'tumblr.com': 'Tumblr',
+  'dev.to': 'Dev.to',
+  'hashnode.com': 'Hashnode',
+  'www.youtube.com': 'YouTube', 'youtube.com': 'YouTube', 'youtu.be': 'YouTube',
+  'github.com': 'GitHub', 'www.github.com': 'GitHub',
+  'mail.google.com': 'Gmail',
+  'outlook.live.com': 'Outlook', 'outlook.office.com': 'Outlook',
+};
+function friendlySource(raw: string): string {
+  if (!raw) return 'Direct';
+  const lower = raw.toLowerCase().trim();
+  if (SOURCE_MAP[lower]) return SOURCE_MAP[lower];
+  // Fallback: strip www. and TLD, capitalize
+  const clean = lower.replace(/^www\./, '').replace(/\.(com|org|net|io|co|app|me)$/, '');
+  return clean.charAt(0).toUpperCase() + clean.slice(1);
+}
+
 export async function GET(request: NextRequest) {
   try {
     // Auth: get current user from cookie
@@ -131,7 +160,7 @@ export async function GET(request: NextRequest) {
       views: viewsTotal?.[0]?.views || profile.views || 0,
       uniques: viewsTotal?.[0]?.uniques || 0,
       sparkline,
-      sources: (referrers || []).map((r: any) => ({ name: r.source || 'Direct', count: r.visits })),
+      sources: (referrers || []).map((r: any) => ({ name: friendlySource(r.source), count: r.visits })),
       countries: (countries || []).map((r: any) => ({ name: r.country, count: r.visits })),
       avgTime: Math.round(avgTime?.[0]?.avg_seconds || 0),
       shares: shareCount?.[0]?.shares || 0,

@@ -9,6 +9,33 @@ const PH_API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
 const PH_PROJECT_ID = process.env.POSTHOG_PROJECT_ID;
 const PH_HOST = 'https://us.posthog.com';
 
+/** Map raw referrer domains to friendly names */
+const SOURCE_MAP: Record<string, string> = {
+  '$direct': 'Direct', '': 'Direct', 'direct': 'Direct',
+  'www.google.com': 'Google', 'google.com': 'Google',
+  'www.linkedin.com': 'LinkedIn', 'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn',
+  'www.facebook.com': 'Facebook', 'facebook.com': 'Facebook', 'm.facebook.com': 'Facebook', 'l.facebook.com': 'Facebook',
+  'www.instagram.com': 'Instagram', 'instagram.com': 'Instagram', 'l.instagram.com': 'Instagram',
+  'twitter.com': 'X', 'x.com': 'X', 't.co': 'X',
+  'www.reddit.com': 'Reddit', 'reddit.com': 'Reddit',
+  'wa.me': 'WhatsApp', 'web.whatsapp.com': 'WhatsApp', 'whatsapp.com': 'WhatsApp',
+  't.me': 'Telegram', 'web.telegram.org': 'Telegram',
+  'bsky.app': 'Bluesky',
+  'www.tumblr.com': 'Tumblr', 'tumblr.com': 'Tumblr',
+  'dev.to': 'Dev.to', 'hashnode.com': 'Hashnode',
+  'www.youtube.com': 'YouTube', 'youtube.com': 'YouTube', 'youtu.be': 'YouTube',
+  'github.com': 'GitHub', 'www.github.com': 'GitHub',
+  'mail.google.com': 'Gmail',
+  'outlook.live.com': 'Outlook', 'outlook.office.com': 'Outlook',
+};
+function friendlySource(raw: string): string {
+  if (!raw) return 'Direct';
+  const lower = raw.toLowerCase().trim();
+  if (SOURCE_MAP[lower]) return SOURCE_MAP[lower];
+  const clean = lower.replace(/^www\./, '').replace(/\.(com|org|net|io|co|app|me)$/, '');
+  return clean.charAt(0).toUpperCase() + clean.slice(1);
+}
+
 async function hogql(query: string, name?: string): Promise<any[] | null> {
   if (!PH_API_KEY || !PH_PROJECT_ID) return null;
   try {
@@ -484,7 +511,7 @@ export async function GET(request: NextRequest) {
         pageviewsByDay: phPageviewsByDay,
         uniqueVisitors: phUniqueVisitors?.[0] || null,
         topPages: phTopPages,
-        topReferrers: phTopReferrers,
+        topReferrers: (phTopReferrers || []).map((r: any) => ({ ...r, referrer: friendlySource(r.referrer) })),
         deviceTypes: phDeviceTypes,
         topCountries: phTopCountries,
         topBrowsers: phTopBrowsers,
