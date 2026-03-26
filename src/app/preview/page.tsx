@@ -85,9 +85,9 @@ export default function PreviewPage() {
         return (
             <div className="flex min-h-screen flex-col items-center justify-center bg-secondary/10 text-center px-4">
                 <div className="max-w-md space-y-4 bg-background p-8 rounded-xl border shadow-sm">
-                    <h1 className="text-2xl font-bold tracking-tight">Private Preview Link</h1>
+                    <h1 className="text-2xl font-bold tracking-tight">This link does not work</h1>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                        The link you clicked is a temporary local preview and cannot be shared. To view this person's profile, ask them for their public <strong>CVin.bio</strong> link!
+                        This link only works on the computer it was created on. Ask the person for their public <strong>CVin.bio</strong> link instead.
                     </p>
                     <div className="pt-4">
                         <Button asChild className="w-full font-bold">
@@ -103,7 +103,7 @@ export default function PreviewPage() {
         return (
             <div className="flex h-screen items-center justify-center bg-gray-50 flex-col gap-4">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground animate-pulse">Loading preview...</p>
+                <p className="text-muted-foreground animate-pulse">Loading...</p>
             </div>
         );
     }
@@ -111,7 +111,7 @@ export default function PreviewPage() {
     return (
         <div className="min-h-screen bg-secondary/30 pb-20">
             <div className="bg-destructive text-destructive-foreground text-center text-xs py-1.5 font-bold tracking-wide shadow-sm flex items-center justify-center gap-2">
-                ⚠️ THIS IS A LOCAL PREVIEW. Do not copy or share this URL. Click "Claim Link" to get a public sharable link!
+                This is not your public link. Sign up below to get one.
             </div>
             <div className="bg-background border-b shadow-sm sticky top-0 z-50">
                 <div className="container mx-auto p-4 flex justify-between items-center max-w-5xl">
@@ -141,7 +141,7 @@ export default function PreviewPage() {
                             sessionStorage.setItem('parsedResume', JSON.stringify(snapshot));
                             try { localStorage.setItem('parsedResume', JSON.stringify(snapshot)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota */ }
                         }
-                    }}>Claim Link</Button>} />
+                    }}>Sign up & share</Button>} />
                 </div>
             </div>
             

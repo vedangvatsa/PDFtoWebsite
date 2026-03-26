@@ -174,6 +174,113 @@ Year 4: budget freeze.
 Meanwhile, someone hired externally gets 20% more than you on day one.
 
 Loyalty is not a career strategy. Options are. cvin.bio`,
+
+  // Post 17 → post_17.png (infographic: "the real cost of a bad hire")
+  `The real cost of a bad hire:
+
+$240,000 per wrong hire.
+6 months to realize the mistake.
+74% of employers admit they've hired wrong.
+
+Companies spend more recovering from bad hires than actually finding good ones.
+
+Be impossible to ignore. cvin.bio`,
+
+  // Post 18 → post_18.png (infographic: "where recruiters actually look")
+  `Where recruiters actually look:
+
+1. LinkedIn — 3 seconds
+2. Portfolio link — 12 seconds
+3. Your CV — 6 seconds
+4. Cover letter — never
+
+A link gets 4x more attention than a PDF. cvin.bio`,
+
+  // Post 19 → post_19.png (infographic: "remote jobs: what changed")
+  `Remote work in 2021:
+Everywhere. Flexible. Trust-based.
+
+Remote work in 2026:
+Hybrid mandatory. Surveillance software. Return to office.
+
+The job market changed. Your strategy should too.
+
+Start here. cvin.bio`,
+
+  // Post 20 → post_20.png (infographic: "the interview gap")
+  `What they ask: "Tell me about yourself."
+
+What they mean: sell yourself in 60 seconds or you're out.
+
+The gap between what interviewers say and what they want is enormous.
+
+Let your profile speak before you walk in. cvin.bio`,
+
+  // Post 21 → post_21.png (infographic: "your CV vs your profile")
+  `Your CV: sits in a folder.
+Your profile link: works while you sleep.
+
+One gets lost. One gets shared.
+
+Stop sending files. Start sharing links. cvin.bio`,
+
+  // Post 22 → post_22.png (chart: "applications vs callbacks")
+  `100 applications sent. 12 callbacks. 4 interviews. 1 offer.
+
+That's the average.
+
+The system isn't broken for companies. It's broken for you.
+
+Make every application count. cvin.bio`,
+
+  // Post 23 → post_23.png (pie chart: "why candidates get rejected")
+  `Why candidates get rejected:
+
+34% — No online presence
+28% — Generic CV
+22% — No portfolio
+16% — Other
+
+More than half of rejections happen before anyone reads your skills.
+
+Fix the first impression. cvin.bio`,
+
+  // Post 24 → post_24.png (timeline: "how long companies take to reply")
+  `How long companies take to reply:
+
+Day 1 — You apply.
+Day 14 — Automated acknowledgment.
+Day 45 — First human contact.
+Day 90 — "We went with someone else."
+
+90 days of silence is not a process. It's disrespect.
+
+Take back control. cvin.bio`,
+
+  // Post 25 → post_25.png (comparison: "PDF vs Link")
+  `Sending a PDF:
+✗ Filtered by ATS
+✗ Buried in inbox
+✗ Can't update once sent
+✗ No analytics
+
+Sharing a link:
+✓ Bypasses all filters
+✓ Always accessible
+✓ Updates in real time
+✓ Track who viewed
+
+The difference is one click. cvin.bio`,
+
+  // Post 26 → post_26.png (stats: "the job market in 2026")
+  `The job market in 2026:
+
+250 applications per opening.
+7.4 seconds spent on each CV.
+63% of jobs filled through networking.
+85% of applications never reach a human.
+
+Numbers don't lie. Your strategy needs to change. cvin.bio`,
 ];
 
 // ── OAuth 1.0a ────────────────────────────────────────────────────────────
@@ -268,21 +375,9 @@ function postTweet(text, mediaId) {
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────
-const COOLDOWN_MS = 7 * 60 * 60 * 1000; // 7 hours
-
 async function main() {
   let state = { index: 0, lastPostedAt: null };
   if (fs.existsSync(STATE_FILE)) state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-
-  // Cooldown: skip if last post was less than 7 hours ago
-  if (state.lastPostedAt) {
-    const elapsed = Date.now() - new Date(state.lastPostedAt).getTime();
-    if (elapsed < COOLDOWN_MS) {
-      const hoursLeft = ((COOLDOWN_MS - elapsed) / 3600000).toFixed(1);
-      console.log(`⏸ Cooldown: last post was ${(elapsed / 3600000).toFixed(1)}h ago. Next in ${hoursLeft}h. Skipping.`);
-      process.exit(0);
-    }
-  }
 
   // Stop if all 16 posts exhausted (don't cycle)
   if (state.index >= POSTS.length) {

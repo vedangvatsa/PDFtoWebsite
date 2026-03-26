@@ -96,7 +96,7 @@ const ProfileCompleteness = ({ profile, work, education, skills, onNavigate }: {
         <Card className="h-full shadow-sm flex flex-col justify-center">
             <CardContent className="pt-4 pb-3">
                 <div className="flex justify-between items-center mb-3">
-                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Job Readiness Score</p>
+                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Profile Score</p>
                     <div className="flex items-center gap-2">
                         <Progress value={score} className="h-1.5 w-16 sm:w-24 bg-secondary" />
                         <span className="text-xs font-bold text-foreground">{score}%</span>
@@ -241,6 +241,7 @@ export default function EditorPage() {
     
     const [pageIsLoading, setPageIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState<string | null>(null);
@@ -415,7 +416,7 @@ export default function EditorPage() {
 
                 profileData = {
                     userId: p.id,
-                    fullName: p.full_name || '',
+                    fullName: smartTitleCase(p.full_name || ''),
                     email: getLink('email') || user.email || '',
                     phone: getLink('phone'),
                     location: getLink('location'),
@@ -490,6 +491,8 @@ export default function EditorPage() {
                     if (error) {
                         console.error('Autosave DB error:', error);
                         toast({ variant: 'destructive', title: 'Save Failed', description: error.message });
+                    } else {
+                        setLastSavedAt(new Date());
                     }
                 }
             }
@@ -544,6 +547,8 @@ export default function EditorPage() {
             if (error) {
                 console.error('SyncArray DB error:', error);
                 toast({ variant: 'destructive', title: 'Save Failed', description: error.message });
+            } else {
+                setLastSavedAt(new Date());
             }
         } catch (e) {
             console.error('SyncArray error:', e);
@@ -648,7 +653,7 @@ export default function EditorPage() {
                 sessionStorage.setItem('parsedResume', JSON.stringify(extractedData));
                 try { localStorage.setItem('parsedResume', JSON.stringify(extractedData)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
                 posthog.capture(EDITOR_EVENTS.CV_PARSE_ANONYMOUS);
-                toast({ title: 'CV Parsed!', description: 'Sign up to publish this profile.' });
+                toast({ title: 'CV Parsed!', description: 'Sign up to put it online.' });
             }
         } catch (error) {
             console.error('Upload Process Error:', error);
@@ -1039,8 +1044,8 @@ export default function EditorPage() {
                 <div className="border-b bg-background shadow-sm">
                     <div className="container mx-auto max-w-4xl px-4 md:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between text-center sm:text-left gap-4">
                         <p className="text-sm text-muted-foreground leading-relaxed max-w-md sm:max-w-none">
-                            <span className="font-semibold text-foreground block sm:inline mb-1 sm:mb-0">Preview is ready!</span>{' '}
-                            <span className="block sm:inline">Sign up to publish your profile and get a shareable link.</span>
+                            <span className="font-semibold text-foreground block sm:inline mb-1 sm:mb-0">Almost done!</span>{' '}
+                            <span className="block sm:inline">Sign up to put your profile online and get your link.</span>
                         </p>
                         <div className="flex items-center justify-center shrink-0">
                             <LoginDialog trigger={
@@ -1056,7 +1061,7 @@ export default function EditorPage() {
                                     };
                                     sessionStorage.setItem('parsedResume', JSON.stringify(snapshot));
                                     try { localStorage.setItem('parsedResume', JSON.stringify(snapshot)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
-                                }}>Publish</Button>
+                                }}>Sign up & share</Button>
                             } />
                         </div>
                     </div>
@@ -1066,7 +1071,7 @@ export default function EditorPage() {
             {/* Local Preview Dialog */}
             <Dialog open={showPreview} onOpenChange={setShowPreview}>
                 <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0">
-                    <DialogTitle className="sr-only">Profile Preview</DialogTitle>
+                    <DialogTitle className="sr-only">See how it looks</DialogTitle>
                     <TemplateModern {...previewData} />
                 </DialogContent>
             </Dialog>
@@ -1159,15 +1164,32 @@ export default function EditorPage() {
             </Dialog>
 
             <main className="flex-1 bg-secondary/30">
+                {/* Guest mode warning banner */}
+                {!user && !isUserLoading && (
+                    <div className="bg-amber-50 dark:bg-amber-950/40 border-b border-amber-200 dark:border-amber-800 px-4 py-2.5 flex items-center justify-center gap-2 text-amber-800 dark:text-amber-200 text-xs md:text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
+                        <span><strong>Guest mode.</strong> Your changes are not saved yet. Sign up to save.</span>
+                    </div>
+                )}
                 <div className="container mx-auto max-w-4xl p-4 md:p-8">
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h1 className="text-2xl md:text-3xl font-bold truncate max-w-[65vw] md:max-w-none">{user ? <><span className="sm:hidden">Welcome!</span><span className="hidden sm:inline">Welcome, {profile.fullName?.split(' ')[0] || ''}!</span></> : 'Your Profile'}</h1>
-                            {!user && <p className="text-muted-foreground text-xs md:text-sm hidden sm:block">Preview anytime, sign up to publish.</p>}
+                            {!user && <p className="text-muted-foreground text-xs md:text-sm hidden sm:block">Sign up when you're ready to put it online.</p>}
                         </div>
                         <div className="flex items-center gap-2 justify-end shrink-0">
-                           <div className="w-5 flex justify-center items-center">
-                               {isSaving && <Loader2 className="animate-spin h-4 w-4 text-muted-foreground" />}
+                           <div className="flex items-center justify-end">
+                               {isSaving ? (
+                                   <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary border border-border text-muted-foreground">
+                                       <Loader2 className="animate-spin h-4 w-4" />
+                                       <span className="text-xs font-medium">Saving…</span>
+                                   </div>
+                               ) : lastSavedAt ? (
+                                   <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 animate-in fade-in duration-300">
+                                       <CheckCircle className="h-4 w-4" />
+                                       <span className="text-xs font-medium">Saved</span>
+                                   </div>
+                               ) : null}
                            </div>
                            {(workItems.length > 0 || educationItems.length > 0) && (
                                 <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
@@ -1180,13 +1202,13 @@ export default function EditorPage() {
                                 slugError || isCheckingSlug ? (
                                     <Button variant="outline" disabled>
                                         <Eye className="mr-2 h-4 w-4" />
-                                        Preview
+                                        View
                                     </Button>
                                 ) : (
                                     <Button variant="outline" asChild>
                                         <Link href={`/${profile.slug}`} prefetch={false} target="_blank">
                                             <Eye className="mr-2 h-4 w-4" />
-                                            Preview
+                                            View
                                         </Link>
                                     </Button>
                                 )
@@ -1215,7 +1237,7 @@ export default function EditorPage() {
                                     window.open(`/preview?channel=${channelId.current}`, '_blank');
                                 }}>
                                     <Eye className="mr-2 h-4 w-4" />
-                                    Preview
+                                    See how it looks
                                 </Button>
                             ) : null}
                         </div>

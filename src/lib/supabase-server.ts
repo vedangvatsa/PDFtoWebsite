@@ -55,10 +55,21 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
     const links = profile.links || [];
     const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || undefined;
 
+    // Normalize ALL CAPS or all lowercase names to Title Case
+    const smartTitleCase = (name: string): string => {
+        if (!name) return name;
+        const isAllCaps = name === name.toUpperCase() && /[A-Z]/.test(name);
+        const isAllLower = name === name.toLowerCase();
+        if (isAllCaps || isAllLower) {
+            return name.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+        }
+        return name;
+    };
+
     return {
         profile: {
             userId: profile.id,
-            fullName: profile.full_name || 'Professional Profile',
+            fullName: smartTitleCase(profile.full_name || '') || 'Professional Profile',
             slug: profile.username || slug,
             email: getLink('email'),
             phone: getLink('phone'),
