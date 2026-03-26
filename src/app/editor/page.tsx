@@ -81,7 +81,7 @@ const ProfileCompleteness = ({ profile, work, education, skills, onNavigate }: {
             { name: "Add your Location", complete: !!profile.location, targetId: 'location' },
             { name: "Add Work Experience", complete: work.some(w => (w.title && w.title.trim() !== '') || (w.company && w.company.trim() !== '') || (w.description && w.description.trim() !== '')), targetId: 'work-experience-section' },
             { name: "Add your Education", complete: education.some(e => (e.institution && e.institution.trim() !== '') || (e.degree && e.degree.trim() !== '')), targetId: 'education-section' },
-            { name: "Add at least one Skill", complete: skills.some(s => typeof s === 'string' ? s.trim() !== '' : !!s), targetId: 'skills-section' }
+            { name: "Add at least one Skill", complete: skills.some(s => { const val = typeof s === 'string' ? s : (s as any)?.name || ''; return typeof val === 'string' && val.trim().length > 0; }), targetId: 'skills-section' }
         ];
         const completeCount = checks.filter(c => c.complete).length;
         const totalCount = checks.length;
@@ -358,7 +358,7 @@ export default function EditorPage() {
         const hasLocation = !!profile.location?.trim();
         const hasWork = workItems.some(w => (w.title && w.title.trim() !== '') || (w.company && w.company.trim() !== ''));
         const hasEdu = educationItems.some(e => (e.institution && e.institution.trim() !== '') || (e.degree && e.degree.trim() !== ''));
-        const hasSkills = skillItems.some(s => typeof s === 'string' ? s.trim() !== '' : !!s);
+        const hasSkills = skillItems.some(s => { const val = typeof s === 'string' ? s : (s as any)?.name || ''; return typeof val === 'string' && val.trim().length > 0; });
         return hasPhoto && hasSummary && hasLocation && hasWork && hasEdu && hasSkills;
     }, [profile, workItems, educationItems, skillItems]);
 
