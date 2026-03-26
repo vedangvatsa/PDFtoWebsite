@@ -177,15 +177,7 @@ function InsightsCard({ slug }: { slug: string }) {
 
     const totalActivity = (data.views || 0) + (data.shares || 0);
 
-    // New users (< 5 views): show share nudge instead of analytics
-    if (totalActivity < 5) {
-        return (
-            <div className="flex items-center gap-2 py-1">
-                <span className="text-[11px] text-muted-foreground/50">📤</span>
-                <span className="text-[11px] text-muted-foreground/60">Share your profile to start getting views</span>
-            </div>
-        );
-    }
+    if (totalActivity < 5) return null;
 
     return (
         <button onClick={() => setExpanded(!expanded)} className="w-full text-left focus:outline-none group">
