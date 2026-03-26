@@ -177,7 +177,19 @@ function InsightsCard({ slug }: { slug: string }) {
 
     const totalActivity = (data.views || 0) + (data.shares || 0);
 
-    if (totalActivity < 5) return null;
+    if (totalActivity < 1) return null;
+
+    // Below 10 views: show teaser
+    if (totalActivity < 10) {
+        return (
+            <div className="flex items-center gap-2 py-1">
+                <span className="text-[10px] text-muted-foreground/40">▸</span>
+                <span className="text-[11px] text-muted-foreground/40">
+                    <span className="text-foreground/50 font-medium">{data.views}</span> views · detailed insights at 10
+                </span>
+            </div>
+        );
+    }
 
     return (
         <button onClick={() => setExpanded(!expanded)} className="w-full text-left focus:outline-none group">
