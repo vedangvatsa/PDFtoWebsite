@@ -35,12 +35,13 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
       // ── Privacy ──
       respect_dnt: false,              // Track everyone (small product)
-      sanitize_properties: (props, event) => {
+      before_send: (event) => {
+        if (!event) return event;
         // Redact email from URLs if present
-        if (props['$current_url']) {
-          props['$current_url'] = props['$current_url'].replace(/email=[^&]+/g, 'email=REDACTED');
+        if (event.properties?.['$current_url']) {
+          event.properties['$current_url'] = event.properties['$current_url'].replace(/email=[^&]+/g, 'email=REDACTED');
         }
-        return props;
+        return event;
       },
 
       loaded: (posthog) => {

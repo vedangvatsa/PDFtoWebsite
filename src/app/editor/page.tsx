@@ -13,17 +13,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, FileUp, CheckCircle, XCircle, Share2, Copy, Link2, Download } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import Header from '@/components/header';
 import { useUser } from '@/auth';
 import { createClient } from '@/utils/supabase/client';
 import { Progress } from '@/components/ui/progress';
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-import { ChartContainer, ChartConfig, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { LoginDialog } from '@/components/login-dialog';
 import TemplateModern from '@/app/[slug]/templates/modern-creative';
 import CustomSectionsEditor from './custom-sections-editor';
@@ -128,38 +128,128 @@ const ProfileCompleteness = ({ profile, work, education, skills, onNavigate }: {
 
 const VIEW_MILESTONES = [10, 50, 100, 500, 1000, 5000];
 
-const last7DaysConfig = { views: { label: "Views", color: "hsl(var(--chart-1))" } } satisfies ChartConfig;
+type InsightsData = {
+    views: number; uniques: number; sparkline: number[];
+    sources: { name: string; count: number }[];
+    countries: { name: string; count: number }[];
+    avgTime: number; shares: number; available: boolean;
+};
 
-function ViewsLast7DaysChart({ userId }: { userId: string }) {
-    // Supabase has no daily views tracking yet, stubbing to 0
-    const [chartData, setChartData] = useState<{ date: string; views: number }[] | null>(null);
+function Sparkline({ data }: { data: number[] }) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        const dpr = window.devicePixelRatio || 1;
+        const w = canvas.offsetWidth, h = canvas.offsetHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, w, h);
+        const max = Math.max(...data, 1);
+        const barW = Math.max(2, (w - (data.length - 1) * 2) / data.length);
+        const gap = 2;
+        data.forEach((v, i) => {
+            const barH = Math.max(2, (v / max) * (h - 4));
+            const x = i * (barW + gap);
+            const y = h - barH - 2;
+            ctx.fillStyle = v > 0 ? 'hsl(var(--primary))' : 'hsl(var(--muted))';
+            ctx.beginPath();
+            ctx.roundRect(x, y, barW, barH, 1.5);
+            ctx.fill();
+        });
+    }, [data]);
+    return <canvas ref={canvasRef} className="w-full h-8" style={{ display: 'block' }} />;
+}
+
+function InsightsCard({ slug }: { slug: string }) {
+    const [data, setData] = useState<InsightsData | null>(null);
+    const [expanded, setExpanded] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const days = [0,1,2,3,4,5,6].map(i => {
-            const d = new Date(); d.setDate(d.getDate() - i);
-            return { date: d.toLocaleDateString('en-US', { weekday: 'short' }), views: 0 };
-        }).reverse();
-        setChartData(days);
-    }, []);
+        if (!slug) { setLoading(false); return; }
+        fetch('/api/analytics/my-profile', { credentials: 'include' })
+            .then(r => r.ok ? r.json() : null)
+            .then(d => { if (d) setData(d); })
+            .catch(() => {})
+            .finally(() => setLoading(false));
+    }, [slug]);
+
+    if (loading) return (
+        <Card className="shadow-sm h-full flex items-center justify-center">
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        </Card>
+    );
+
+    if (!data || !data.available) return (
+        <Card className="shadow-sm h-full flex flex-col justify-center">
+            <CardContent className="pt-4 pb-3">
+                <p className="text-xs text-muted-foreground">Analytics will appear once your profile gets views.</p>
+            </CardContent>
+        </Card>
+    );
 
     return (
-        <Card className="shadow-sm">
-            <CardHeader className="pb-2 pt-4 px-4">
-                <CardTitle className="text-sm">Last 7 Days</CardTitle>
-            </CardHeader>
-            <CardContent className="px-4 pb-3">
-                {chartData ? (
-                    <ChartContainer config={last7DaysConfig} className="h-[120px] w-full">
-                        <BarChart accessibilityLayer data={chartData}>
-                             <CartesianGrid vertical={false} />
-                             <XAxis dataKey="date" tickLine={false} tickMargin={8} axisLine={false} tick={{ fontSize: 10 }} />
-                            <Bar dataKey="views" fill="var(--color-views)" radius={3} />
-                            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                        </BarChart>
-                    </ChartContainer>
-                ) : (
-                    <div className="h-[120px] w-full flex items-center justify-center">
-                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        <Card className="shadow-sm h-full flex flex-col justify-center">
+            <CardContent className="pt-4 pb-3">
+                <button onClick={() => setExpanded(!expanded)} className="w-full text-left focus:outline-none group">
+                    <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Insights</p>
+                        <span className="text-[10px] text-muted-foreground/60 group-hover:text-muted-foreground transition-colors">
+                            {expanded ? '▾ less' : '▸ more'}
+                        </span>
+                    </div>
+                    <div className="flex items-end gap-4">
+                        <div className="flex gap-4 shrink-0">
+                            <div>
+                                <p className="text-lg font-bold leading-none">{data.views}</p>
+                                <p className="text-[10px] text-muted-foreground mt-0.5">views</p>
+                            </div>
+                            <div>
+                                <p className="text-lg font-bold leading-none">{data.uniques}</p>
+                                <p className="text-[10px] text-muted-foreground mt-0.5">unique</p>
+                            </div>
+                            <div>
+                                <p className="text-lg font-bold leading-none">{data.shares}</p>
+                                <p className="text-[10px] text-muted-foreground mt-0.5">shares</p>
+                            </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <Sparkline data={data.sparkline} />
+                            <p className="text-[9px] text-muted-foreground/50 text-right mt-0.5">7 days</p>
+                        </div>
+                    </div>
+                </button>
+                {expanded && (
+                    <div className="mt-3 pt-3 border-t border-border/50 space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                        {data.sources.length > 0 && (
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider w-14 shrink-0">Sources</span>
+                                <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                                    {data.sources.map((s, i) => (
+                                        <span key={i} className="text-xs">{s.name} <span className="text-muted-foreground font-mono">{s.count}</span></span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {data.countries.length > 0 && (
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider w-14 shrink-0">Viewers</span>
+                                <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                                    {data.countries.map((c, i) => (
+                                        <span key={i} className="text-xs">{c.name} <span className="text-muted-foreground font-mono">{c.count}</span></span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {data.avgTime > 0 && (
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider w-14 shrink-0">Avg time</span>
+                                <span className="text-xs">{data.avgTime}s per visit</span>
+                            </div>
+                        )}
                     </div>
                 )}
             </CardContent>
@@ -257,6 +347,17 @@ export default function EditorPage() {
     const [copiedWhatsApp, setCopiedWhatsApp] = useState('');
     const [newLinkType, setNewLinkType] = useState('');
     const [newLinkValue, setNewLinkValue] = useState('');
+
+    // Profile completeness gate — mirrors ProfileCompleteness widget checks
+    const isComplete = useMemo(() => {
+        const hasPhoto = !!profile.avatarUrl;
+        const hasSummary = !!profile.summary?.trim();
+        const hasLocation = !!profile.location?.trim();
+        const hasWork = workItems.some(w => (w.title && w.title.trim() !== '') || (w.company && w.company.trim() !== ''));
+        const hasEdu = educationItems.some(e => (e.institution && e.institution.trim() !== '') || (e.degree && e.degree.trim() !== ''));
+        const hasSkills = skillItems.some(s => typeof s === 'string' ? s.trim() !== '' : !!s);
+        return hasPhoto && hasSummary && hasLocation && hasWork && hasEdu && hasSkills;
+    }, [profile, workItems, educationItems, skillItems]);
 
 
     const fireCelebration = useCallback((slug: string) => {
@@ -949,7 +1050,7 @@ export default function EditorPage() {
     };
 
     const handleAddItem = async (collectionName: 'workExperience' | 'education') => {
-        let newItem: any = (collectionName === 'workExperience') ? { title: '', company: '', startDate: '', endDate: '', description: '' } : { institution: '', degree: '', startDate: '', endDate: '' };
+        let newItem: any = (collectionName === 'workExperience') ? { title: '', company: '', location: '', startDate: '', endDate: '', description: '' } : { institution: '', degree: '', startDate: '', endDate: '' };
         newItem.id = `item-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
         const setter = { workExperience: setWorkItems, education: setEducationItems }[collectionName];
         (setter as any)((prev: any[]) => { const next = [...prev, newItem]; syncArray(collectionName === 'workExperience' ? 'experience' : 'education', next); return next; });
@@ -1015,7 +1116,7 @@ export default function EditorPage() {
             avatarUrl: profile.avatarUrl || '',
             avatarHint: profile.avatarHint || 'person portrait',
         },
-        workExperience: workItems.map(w => ({ id: w.id, title: w.title || '', company: w.company || '', startDate: w.startDate || '', endDate: w.endDate || '', description: w.description || '' })),
+        workExperience: workItems.map(w => ({ id: w.id, title: w.title || '', company: w.company || '', location: w.location || '', startDate: w.startDate || '', endDate: w.endDate || '', description: w.description || '' })),
         education: educationItems.map(e => ({ id: e.id, institution: e.institution || '', degree: e.degree || '', startDate: e.startDate || '', endDate: e.endDate || '' })),
         skills: skillItems,
         customSections: customSections.map(cs => ({
@@ -1191,28 +1292,14 @@ export default function EditorPage() {
                                    </div>
                                ) : null}
                            </div>
-                           {(workItems.length > 0 || educationItems.length > 0) && (
+                           {user && (
                                 <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                     {isGenerating ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : <UploadCloud className="h-4 w-4 mr-1.5" />}
-                                    <span className="text-xs md:text-sm">{isGenerating ? 'Processing...' : 'Update CV'}</span>
+                                    <span className="text-xs md:text-sm">{isGenerating ? 'Processing...' : (workItems.length > 0 || educationItems.length > 0) ? 'Update CV' : 'Upload CV'}</span>
                                     <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isGenerating} />
                                 </label>
                            )}
-                            {user && profile.slug ? (
-                                slugError || isCheckingSlug ? (
-                                    <Button variant="outline" disabled>
-                                        <Eye className="mr-2 h-4 w-4" />
-                                        View
-                                    </Button>
-                                ) : (
-                                    <Button variant="outline" asChild>
-                                        <Link href={`/${profile.slug}`} prefetch={false} target="_blank">
-                                            <Eye className="mr-2 h-4 w-4" />
-                                            View
-                                        </Link>
-                                    </Button>
-                                )
-                            ) : !user ? (
+                            {!user && (
                                 <Button variant="outline" onClick={() => {
                                     const snapshot = {
                                         personalInfo: { 
@@ -1239,7 +1326,7 @@ export default function EditorPage() {
                                     <Eye className="mr-2 h-4 w-4" />
                                     See how it looks
                                 </Button>
-                            ) : null}
+                            )}
                         </div>
                     </div>
 
@@ -1250,15 +1337,12 @@ export default function EditorPage() {
                         
                         {user && (
                             <div className="grid gap-4">
-                                <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-4 lg:gap-6 mb-6">
+                                <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-4 lg:gap-6">
                                     <Card className="shadow-sm h-full flex flex-col justify-center">
                                         <CardContent className="pt-4 pb-3">
                                             <div className="flex justify-between items-center mb-3">
                                                 <div className="flex items-center gap-2">
                                                     <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Public Link</p>
-                                                </div>
-                                                <div className="flex items-center gap-1.5 text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-bold" title="Total profile views">
-                                                    <Eye className="h-3.5 w-3.5" /> {profile.viewCount || 0} views
                                                 </div>
                                             </div>
                                             <div className="flex space-x-2">
@@ -1372,6 +1456,19 @@ export default function EditorPage() {
                                                 </Popover>
                                                 {slugError || isCheckingSlug ? (
                                                     <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm" disabled>Visit</Button>
+                                                ) : !isComplete ? (
+                                                    <TooltipProvider delayDuration={0}>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <span tabIndex={0}>
+                                                                    <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm pointer-events-none" disabled>Visit</Button>
+                                                                </span>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent side="bottom" className="max-w-[220px] text-center">
+                                                                <p className="text-xs">Complete your profile to 100% before visiting it publicly.</p>
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                    </TooltipProvider>
                                                 ) : (
                                                     <Button asChild variant="default" size="sm" className="h-9 shrink-0 shadow-sm">
                                                         <Link href={`/${profile.slug}`} target="_blank" prefetch={false}>Visit</Link>
@@ -1400,6 +1497,7 @@ export default function EditorPage() {
                                     </Card>
                                     <ProfileCompleteness profile={profile} work={workItems} education={educationItems} skills={skillItems} onNavigate={() => {}} />
                                 </div>
+                                <InsightsCard slug={profile.slug || ''} />
                             </div>
                         )}
 
@@ -1515,8 +1613,9 @@ export default function EditorPage() {
                                             <div className="flex gap-2 items-start">
                                                 <div className="flex-1 space-y-2">
                                                     <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
-                                                        <Input name="title" placeholder="Title" value={item.title} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-4 h-8 text-sm" />
-                                                        <Input name="company" placeholder="Company" value={item.company} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-4 h-8 text-sm" />
+                                                        <Input name="title" placeholder="Title" value={item.title} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-3 h-8 text-sm" />
+                                                        <Input name="company" placeholder="Company" value={item.company} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-3 h-8 text-sm" />
+                                                        <Input name="location" placeholder="Location" value={item.location || ''} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-2 h-8 text-sm" />
                                                         <Input name="startDate" placeholder="Start" value={item.startDate} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-1 sm:col-span-1 md:col-span-2 h-8 text-sm" />
                                                         <Input name="endDate" placeholder="End" value={item.endDate || ''} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-1 sm:col-span-1 md:col-span-2 h-8 text-sm" />
                                                     </div>

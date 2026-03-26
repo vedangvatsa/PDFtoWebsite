@@ -429,6 +429,11 @@ export default function TemplateModern(props: ProfileData) {
                           <div>
                             <h3 className="text-sm font-semibold text-foreground">{job.title}</h3>
                             <p className="text-sm text-muted-foreground">{job.company}</p>
+                            {job.location && (
+                              <p className="text-xs text-muted-foreground/70 flex items-center gap-1 mt-0.5">
+                                <MapPin className="h-3 w-3 shrink-0" />{job.location}
+                              </p>
+                            )}
                           </div>
                           <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-400/80 whitespace-nowrap">
                             {job.startDate && job.endDate ? `${job.startDate} — ${job.endDate}` : job.startDate ? `${job.startDate} — Present` : job.endDate || ''}

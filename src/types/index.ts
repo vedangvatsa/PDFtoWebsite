@@ -23,6 +23,7 @@ export type WorkExperience = {
     userProfileId: string;
     company: string;
     title: string;
+    location?: string;
     startDate: string;
     endDate?: string;
     description: string;

@@ -103,6 +103,7 @@ function buildPersonSchema(data: ServerProfileData) {
         '@type': 'Occupation',
         name: job.title,
         ...(job.description ? { description: job.description.slice(0, 500) } : {}),
+        ...(job.location ? { occupationLocation: { '@type': 'City', name: job.location } } : {}),
         estimatedSalary: [],
       })),
     } : {}),

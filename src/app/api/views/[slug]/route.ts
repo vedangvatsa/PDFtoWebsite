@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 
 // We recommend using the service role key for admin privileges in an API route.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
 export async function POST(
   request: NextRequest,
@@ -20,6 +23,33 @@ export async function POST(
   const ua = request.headers.get('user-agent') || '';
   if (/bot|crawl|spider|slurp|mediapartners|facebookexternalhit|linkedinbot|twitterbot|whatsapp|telegram|preview/i.test(ua)) {
     return NextResponse.json({ success: true, bot: true }, { status: 200 });
+  }
+
+  // Skip owner and admin views
+  try {
+    const anonClient = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { cookies: { getAll: () => request.cookies.getAll().map(c => ({ name: c.name, value: c.value })) } }
+    );
+    const { data: { user: viewer } } = await anonClient.auth.getUser();
+    if (viewer) {
+      // Skip admin views
+      if (ADMIN_EMAILS.includes(viewer.email || '')) {
+        return NextResponse.json({ success: true, admin: true }, { status: 200 });
+      }
+      // Skip owner viewing their own profile
+      const { data: ownerProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('username', slug)
+        .single();
+      if (ownerProfile && ownerProfile.id === viewer.id) {
+        return NextResponse.json({ success: true, owner: true }, { status: 200 });
+      }
+    }
+  } catch (_) {
+    // Auth check failed — continue with normal view counting
   }
 
   // Basic deduplication: check for a view cookie to prevent repeated counting

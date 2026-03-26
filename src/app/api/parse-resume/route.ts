@@ -10,7 +10,7 @@ Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks
 {
   "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "website": "", "github": "", "linkedin": "", "additionalLinks": [{ "label": "", "url": "" }] },
   "summary": "",
-  "workExperience": [{ "company": "", "title": "", "startDate": "", "endDate": "", "description": "" }], 
+  "workExperience": [{ "company": "", "title": "", "location": "", "startDate": "", "endDate": "", "description": "" }], 
   "education": [{ "institution": "", "degree": "", "fieldOfStudy": "", "startDate": "", "endDate": "", "description": "" }],
   "skills": [""],
   "customSections": []
@@ -25,6 +25,8 @@ CRITICAL RULES:
 6. LOCATION PRIVACY RULE: Do NOT extract full specific street addresses. ONLY output the generalized "City, Country" (e.g., "San Francisco, USA", "London, UK") for the personal location field!
 7. LINKS RULE: Extract ALL URLs/links found anywhere in the CV. Put GitHub in "github", LinkedIn in "linkedin", and a personal website/portfolio in "website". ALL other links (ResearchGate, Google Scholar, Twitter/X, Behance, Dribbble, Medium, Stack Overflow, Kaggle, ORCID, YouTube, Facebook, Instagram, or any other URL) MUST go into "additionalLinks" with a human-readable "label" (e.g. "ResearchGate", "Google Scholar", "Twitter") and the full "url". Do NOT drop any link!
 8. COMPLETENESS RULE: Count every distinct section heading in the CV. Every one must appear in your output (as workExperience, education, skills, or customSections). If your output has fewer sections than the CV, you are WRONG.
+9. PROMOTIONS RULE: If a candidate held multiple roles or titles at the SAME company (promotions, lateral moves, role changes), you MUST create a SEPARATE workExperience entry for EACH distinct role with its own title, dates, and description. The "company" field MUST be identical across all entries for that company. Example input — "Google: Staff Engineer (2022-Present), Senior Engineer (2020-2022), Engineer (2018-2020)" becomes THREE separate workExperience entries all with company "Google". Look for patterns like multiple titles with date ranges listed under a single company heading, or titles separated by promotion indicators.
+10. WORK LOCATION RULE: For each work experience entry, extract the work location (city, country or city, state) into the "location" field. This is where the job was performed, NOT the candidate's home address. If multiple locations, combine them (e.g. "Dubai & London"). If remote, put "Remote". If hybrid, put "Hybrid, [City]". If not mentioned anywhere in that role's context, leave as empty string. Do NOT guess a location that is not stated or clearly implied. Do NOT put the location inside the description field.
 DO NOT THROW ANY REAL WORK DATA AWAY!`;
 
 // Supported file types

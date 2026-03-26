@@ -12,6 +12,7 @@ export interface ParsedResume {
   workExperience: {
     company: string;
     title: string;
+    location?: string;
     startDate: string;
     endDate?: string;
     description: string;
@@ -543,6 +544,7 @@ function parseJobBlock(block: string[]): ParsedResume['workExperience'][0] | nul
   return {
     title: title || 'Position',
     company: company || 'Company',
+    location: '',
     startDate,
     endDate,
     description: descLines.join('\n'),
@@ -551,9 +553,20 @@ function parseJobBlock(block: string[]): ParsedResume['workExperience'][0] | nul
 
 function parseWorkExperience(lines: string[]): ParsedResume['workExperience'] {
   if (lines.length === 0) return [];
-  return groupIntoJobBlocks(lines)
+  const jobs = groupIntoJobBlocks(lines)
     .map(parseJobBlock)
     .filter((j): j is ParsedResume['workExperience'][0] => j !== null);
+
+  // Forward-fill company for promotion blocks: if a block has the default
+  // placeholder 'Company' but the previous block has a real company name,
+  // inherit it (handles "multiple roles under one company heading" CVs)
+  for (let i = 1; i < jobs.length; i++) {
+    if (jobs[i].company === 'Company' && jobs[i - 1].company !== 'Company') {
+      jobs[i].company = jobs[i - 1].company;
+    }
+  }
+
+  return jobs;
 }
 
 // ─── Education Parser ─────────────────────────────────────────────────────────
