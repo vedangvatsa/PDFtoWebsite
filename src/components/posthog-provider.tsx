@@ -117,7 +117,33 @@ function PostHogPageview() {
       let url = window.origin + pathname
       const search = searchParams?.toString()
       if (search) url += '?' + search
-      ph.capture('$pageview', { $current_url: url })
+
+      // Capture UTM params explicitly so they're never lost
+      const utmSource = searchParams?.get('utm_source')
+      const utmMedium = searchParams?.get('utm_medium')
+      const utmCampaign = searchParams?.get('utm_campaign')
+      const utmTerm = searchParams?.get('utm_term')
+      const utmContent = searchParams?.get('utm_content')
+
+      const pageviewProps: Record<string, string> = { $current_url: url }
+      if (utmSource) pageviewProps.utm_source = utmSource
+      if (utmMedium) pageviewProps.utm_medium = utmMedium
+      if (utmCampaign) pageviewProps.utm_campaign = utmCampaign
+      if (utmTerm) pageviewProps.utm_term = utmTerm
+      if (utmContent) pageviewProps.utm_content = utmContent
+
+      ph.capture('$pageview', pageviewProps)
+
+      // Persist initial traffic source as a user property (set_once = never overwritten)
+      if (utmSource || document.referrer) {
+        ph.setPersonPropertiesForFlags({
+          initial_referrer: document.referrer || 'direct',
+          initial_referring_domain: document.referrer ? new URL(document.referrer).hostname : 'direct',
+          ...(utmSource ? { initial_utm_source: utmSource } : {}),
+          ...(utmMedium ? { initial_utm_medium: utmMedium } : {}),
+          ...(utmCampaign ? { initial_utm_campaign: utmCampaign } : {}),
+        })
+      }
     }
   }, [pathname, searchParams, ph])
 
