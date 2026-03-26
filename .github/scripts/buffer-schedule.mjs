@@ -14,6 +14,7 @@ if (!TOKEN) { console.error('Missing BUFFER_TOKEN'); process.exit(1); }
 const CHANNELS = {
   linkedin:  '69c5268baf47dacb69589bc6',
   instagram: '69c5279caf47dacb6958a000',
+  facebook:  '69c52e07af47dacb6958a9bd',
 };
 const IMG_BASE = 'https://cvin.bio/images/social';
 
@@ -45,6 +46,244 @@ const POSTS = [
   `Sending a PDF:\n✗ Filtered by ATS\n✗ Buried in inbox\n✗ Can't update once sent\n✗ No analytics\n\nSharing a link:\n✓ Bypasses all filters\n✓ Always accessible\n✓ Updates in real time\n✓ Track who viewed\n\nThe difference is one click. cvin.bio`,
   `The job market in 2026:\n\n250 applications per opening.\n7.4 seconds spent on each CV.\n63% of jobs filled through networking.\n85% of applications never reach a human.\n\nNumbers don't lie. Your strategy needs to change. cvin.bio`,
 ];
+
+// Instagram-optimized captions: punchy hook, emojis, shorter body, hashtags
+const IG_POSTS = [
+  `💥 2,000 upvotes on Reddit in one day.\n\nWork of 3 people. $53k. No raise.\nPromised 15%. Got 1.75%.\n\nHe walked out by 10am.\n\n📌 Link in bio → cvin.bio\n\n#careeradvice #quitmyjob #knowyourworth #jobmarket #careertips`,
+  `⏳ 45 min filling forms. 2 interviews. Take-home task.\n\nTwo weeks later: silence.\n\nNot even a rejection.\n\n📌 Link in bio → cvin.bio\n\n#jobhunting #jobsearch2026 #hiring #careerchange #resumetips`,
+  `📋 "Entry level" job:\n→ 3-5 years required\n→ Degree required\n→ Salary: "competitive"\n\nThe listing is broken, not the talent.\n\n📌 Link in bio → cvin.bio\n\n#entrylevel #jobsearch #hiring #careeradvice #jobmarket`,
+  `🚨 Companies say they can't find talent.\n\nThey fired 3. Told 1 to cover it all.\n\nTalent shortage at a 17-year high.\nEngagement at a 10-year low.\n\n📌 Link in bio → cvin.bio\n\n#talentshortage #hiring #workculture #careeradvice #knowyourworth`,
+  `📰 Someone posted a Sunday newspaper job section.\n\nCompletely empty.\n\nWe still hire like it's 1995. PDF → ATS → rejected → silence.\n\n📌 Link in bio → cvin.bio\n\n#resumetips #ats #jobsearch #careeradvice #hiring`,
+  `📊 Annual review results:\n\nManager: "We value you."\nHR: "Budget constraints."\nRaise: 2.1%\nInflation: 3.8%\n\nThat's a pay cut.\n\n📌 Link in bio → cvin.bio\n\n#salary #paycut #careeradvice #knowyourworth #raise`,
+  `🤝 Companies post about psychological safety.\n\nThen ghost you after the final round.\n\nThe interview process IS the culture.\n\n📌 Link in bio → cvin.bio\n\n#ghosting #interviewing #jobsearch #workculture #hiring`,
+  `🪜 "Entry level" used to mean you could learn.\n\nNow: want senior skills, junior pay, zero training.\n\nLet your skills speak louder.\n\n📌 Link in bio → cvin.bio\n\n#entrylevel #juniordev #careeradvice #jobmarket #hiring`,
+  `📉 The talent shortage isn't real.\n\nWhat's real:\n→ Below-market pay\n→ Poor management\n→ No flexibility\n\nTalent moved somewhere better.\n\n📌 Link in bio → cvin.bio\n\n#talentshortage #workculture #careerchange #jobmarket #hiring`,
+  `🤖 72% of resumes are rejected by a bot.\n\nBefore any human sees them.\n\nA link doesn't go through an ATS.\n\n📌 Link in bio → cvin.bio\n\n#ats #resumetips #jobsearch #careeradvice #applicanttracking`,
+  `🗓️ "We'll revisit your compensation in 6 months."\n\nThat was 18 months ago.\n\nVerbal promises are stalling tactics.\n\n📌 Link in bio → cvin.bio\n\n#salary #compensation #careeradvice #knowyourworth #negotiation`,
+  `📞 Recruiter: "Urgent. Great fit."\n\n3 interviews. Then silence.\n\n1 month later: "Still exploring opportunities?"\n\n📌 Link in bio → cvin.bio\n\n#recruiter #ghosting #jobsearch #hiring #interviewtips`,
+  `🎓 Fresh grad: degree + 2 internships + portfolio.\n\nEntry level: 3 years exp.\nJunior: 5 years.\nMid: management exp.\n\nSomeone pulled the ladder up.\n\n📌 Link in bio → cvin.bio\n\n#freshgrad #entrylevel #jobsearch #careeradvice #hiring`,
+  `🏢 "We can't find anyone."\n\nTranslation: nobody will work these hours, for this pay, with this manager.\n\nUnderstaffing is a choice.\n\n📌 Link in bio → cvin.bio\n\n#understaffing #workculture #hiring #careeradvice #jobmarket`,
+  `📄 Your CV goes through:\n1️⃣ Inbox\n2️⃣ ATS filter\n3️⃣ 6-second skim\n4️⃣ The pile\n\nNone of these care about your work.\n\n📌 Link in bio → cvin.bio\n\n#resume #cv #ats #jobsearch #careeradvice`,
+  `📈 Year 1: market rate.\nYear 4: budget freeze.\n\nMeanwhile, new hires get 20% more.\n\nLoyalty is not a career strategy.\n\n📌 Link in bio → cvin.bio\n\n#salary #loyalty #careeradvice #knowyourworth #jobchange`,
+  `💰 The real cost of a bad hire:\n\n$240K per wrong hire\n6 months to realize\n74% of employers admit it\n\nBe impossible to ignore.\n\n📌 Link in bio → cvin.bio\n\n#hiring #recruitment #careeradvice #jobmarket #talentacquisition`,
+  `👀 Where recruiters actually look:\n\n1. LinkedIn — 3 sec\n2. Portfolio — 12 sec\n3. CV — 6 sec\n4. Cover letter — never\n\n📌 Link in bio → cvin.bio\n\n#recruiter #resume #portfolio #careeradvice #jobsearch`,
+  `🏠 Remote work 2021 vs 2026:\n\nThen: Everywhere. Flexible. Trust.\nNow: Hybrid mandatory. RTO.\n\nThe market changed. Your strategy should too.\n\n📌 Link in bio → cvin.bio\n\n#remotework #hybrid #rto #careeradvice #workfromhome`,
+  `🎤 "Tell me about yourself."\n\nWhat they mean: sell yourself in 60 seconds or you're out.\n\nLet your profile speak first.\n\n📌 Link in bio → cvin.bio\n\n#interviewtips #interviewing #jobsearch #careeradvice #hiring`,
+  `📁 CV: sits in a folder.\n🔗 Profile link: works while you sleep.\n\nOne gets lost. One gets shared.\n\n📌 Link in bio → cvin.bio\n\n#resume #cv #portfolio #careeradvice #jobsearch`,
+  `📊 100 applications → 12 callbacks → 4 interviews → 1 offer.\n\nThat's the average.\n\nThe system is broken for you.\n\n📌 Link in bio → cvin.bio\n\n#jobsearch #applications #hiring #careeradvice #jobmarket`,
+  `❌ Why candidates get rejected:\n\n34% No online presence\n28% Generic CV\n22% No portfolio\n16% Other\n\nFix the first impression.\n\n📌 Link in bio → cvin.bio\n\n#resume #portfolio #careeradvice #jobsearch #hiring`,
+  `⏱️ How long companies take to reply:\n\nDay 1 — You apply\nDay 14 — Auto email\nDay 45 — First human\nDay 90 — "We went with someone else"\n\n📌 Link in bio → cvin.bio\n\n#ghosting #hiring #jobsearch #careeradvice #interview`,
+  `📄 PDF vs 🔗 Link:\n\n✗ ATS filter vs ✓ Bypass\n✗ Gets buried vs ✓ Always live\n✗ No updates vs ✓ Real-time\n✗ No data vs ✓ Track views\n\n📌 Link in bio → cvin.bio\n\n#resume #cv #portfolio #careeradvice #jobsearch`,
+  `📈 Job market 2026:\n\n250 applications per opening\n7.4 sec on each CV\n63% filled via networking\n85% never reach a human\n\nYour strategy needs to change.\n\n📌 Link in bio → cvin.bio\n\n#jobmarket #careeradvice #hiring #jobsearch #networking`,
+];
+
+// Facebook-optimized: conversational, longer, questions to drive comments
+const FB_POSTS = [
+  `This went viral on Reddit — 2,000 upvotes in a day.
+
+Someone shared their story: doing the work of 3 people for $53k. No raise in sight.
+
+Manager promised 15%. Annual review came around: 1.75%.
+
+He left his keys on the desk and walked out by 10am. Nobody was surprised.
+
+Has this happened to you or someone you know? Drop a comment.
+
+cvin.bio`,
+  `This is what job hunting actually looks like in 2026:
+
+45 minutes filling out a form that already had your resume. One screening call. Two interviews. A take-home assignment.
+
+Two weeks of silence. No rejection. Just nothing.
+
+Why is this still normal? cvin.bio`,
+  `Saw a real job listing the other day.
+
+"Entry level."
+3-5 years experience required.
+Degree mandatory.
+Salary: competitive.
+
+How is this entry level? The listing is broken, not the people applying.
+
+cvin.bio`,
+  `Companies keep saying they can't find talent.
+
+But here's what actually happened: they fired 3 people and told 1 person to handle everything.
+
+Talent shortage at a 17-year high. Employee engagement at a 10-year low.
+
+See the connection? cvin.bio`,
+  `Someone posted a photo of a Sunday newspaper's job listings section.
+
+Completely empty.
+
+And yet we still hire the same way — send a PDF, let an algorithm scan it, get ghosted. Nothing has changed except who does the rejecting.
+
+cvin.bio`,
+  `Annual review season be like:
+
+Manager: "We really value you."
+HR: "Budget constraints this year."
+The letter: 2.1% raise.
+Actual inflation: 3.8%.
+
+That's not a raise. That's a pay cut with a thank you note.
+
+cvin.bio`,
+  `Companies love to post about psychological safety and great culture.
+
+Then they ghost candidates after the final interview round.
+
+The way you treat candidates IS your culture. People notice.
+
+cvin.bio`,
+  `Remember when "entry level" meant someone would train you?
+
+Now it means: we want someone experienced but we're paying beginner rates and we're not willing to teach.
+
+When did this change? cvin.bio`,
+  `The "talent shortage" isn't about missing talent.
+
+It's about:
+- Below-market pay
+- Bad management
+- Zero flexibility
+
+The people didn't disappear. They found somewhere that treats them better.
+
+cvin.bio`,
+  `Here's a number that should bother everyone: 72% of resumes never reach a human.
+
+ATS software was built to save recruiters time. Now it filters out qualified people before anyone can see them.
+
+Something is broken here. cvin.bio`,
+  `"We'll revisit your compensation in 6 months."
+
+That was a year and a half ago.
+
+Anyone else sitting on a verbal promise that never came through? These aren't commitments. They're delay tactics.
+
+cvin.bio`,
+  `Recruiter calls. Says it's urgent. Perfect fit.
+
+Three interviews in two weeks. Everything looks great.
+
+Then: radio silence for a month.
+
+Followed by: "Hey, are you still looking?"
+
+Yes, this is still happening in 2026. cvin.bio`,
+  `Fresh graduate with a degree, two internships, and a portfolio.
+
+Entry level role: requires 3 years.
+Junior role: 5 years.
+Mid-level: management experience.
+
+Who pulled the ladder up? cvin.bio`,
+  `"We can't find anyone to hire."
+
+Translation: nobody wants these hours, this pay, and this management style.
+
+Understaffing is a business decision. Not a talent problem.
+
+cvin.bio`,
+  `Where your CV actually ends up:
+
+1. Someone's inbox
+2. An ATS keyword filter
+3. A 6-second skim
+4. A pile
+
+None of these steps care about your actual work. Time to rethink the approach.
+
+cvin.bio`,
+  `Quick math on company loyalty:
+
+Year 1: You're at market rate.
+Year 4: "Budget freeze."
+
+Meanwhile, a new hire walks in at 20% above your salary. Day one.
+
+Loyalty doesn't pay. Options do. cvin.bio`,
+  `The actual cost of hiring the wrong person:
+
+$240,000 per bad hire.
+6 months before anyone notices.
+74% of companies say they've made this mistake.
+
+Companies spend more fixing bad hires than finding good ones. cvin.bio`,
+  `This is how much time recruiters actually spend:
+
+LinkedIn profile — 3 seconds
+Portfolio link — 12 seconds
+Your CV — 6 seconds
+Cover letter — they don't read it
+
+A link gets 4x more attention than a PDF. cvin.bio`,
+  `Remote work in 2021: Available everywhere. Flexible hours. Trust-based.
+
+Remote work in 2026: Hybrid mandatory. Screen monitoring software. Return to office memos.
+
+The market changed fast. Has your approach kept up? cvin.bio`,
+  `"Tell me about yourself."
+
+What they actually mean: sell yourself in under 60 seconds or this conversation is over.
+
+The gap between what interviewers ask and what they want is massive.
+
+cvin.bio`,
+  `Your CV sits in a folder somewhere. Maybe someone opens it. Probably not.
+
+A profile link works while you sleep. It's shareable. It's always up to date.
+
+One gets lost. One gets found. cvin.bio`,
+  `The average job search by the numbers:
+
+100 applications sent.
+12 hear back.
+4 get interviews.
+1 gets the offer.
+
+That funnel is brutal. What if your profile did the work for you? cvin.bio`,
+  `Why do candidates actually get rejected?
+
+34% — No online presence
+28% — Generic, copy-paste CV
+22% — No portfolio to show work
+16% — Other reasons
+
+More than half get cut before anyone reads their skills. cvin.bio`,
+  `The actual timeline of a job application:
+
+Day 1 — You apply.
+Day 14 — Automated acknowledgment.
+Day 45 — First human contact.
+Day 90 — "We decided to go with someone else."
+
+3 months for a no. That's not a process. cvin.bio`,
+  `Sending a PDF vs sharing a link:
+
+PDF: Gets filtered. Gets buried. Can't update it. No idea who reads it.
+Link: Bypasses filters. Always accessible. Updates instantly. You see who viewed it.
+
+One click is the difference. cvin.bio`,
+  `The job market in 2026 in four numbers:
+
+250 applications per job opening.
+7.4 seconds spent per resume.
+63% of jobs filled through connections.
+85% of applications never seen by a human.
+
+The old way isn't working anymore. cvin.bio`,
+];
+
+// Pick the right content per platform
+function getPostText(platform, index) {
+  if (platform === 'instagram') return IG_POSTS[index];
+  if (platform === 'facebook') return FB_POSTS[index];
+  return POSTS[index];
+}
 
 async function gql(query) {
   const r = await fetch('https://api.buffer.com/graphql', {
@@ -118,7 +357,7 @@ function generateSchedule(startIndex) {
 
 async function main() {
   // Load state
-  let state = { linkedin: 10, instagram: 10 }; // default: first 10 already scheduled
+  let state = { linkedin: 10, instagram: 10, facebook: 0 }; // default: first 10 already scheduled
   if (fs.existsSync(STATE_FILE)) {
     state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
   }
@@ -143,9 +382,10 @@ async function main() {
       const imageNum = String(i + 1).padStart(2, '0');
       const dueAt = schedule[i - skip];
       if (!dueAt) break;
+      const text = getPostText(platform, i);
       
       try {
-        const result = await schedulePost(channelId, platform, POSTS[i], imageNum, dueAt);
+        const result = await schedulePost(channelId, platform, text, imageNum, dueAt);
         
         if (result.data?.createPost?.post) {
           const time = new Date(dueAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
