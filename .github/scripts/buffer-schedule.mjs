@@ -300,6 +300,8 @@ async function schedulePost(channelId, platform, text, imageNum, dueAt) {
   
   const metadataBlock = platform === 'instagram'
     ? `metadata: { instagram: { type: post, shouldShareToFeed: true } }`
+    : platform === 'facebook'
+    ? `metadata: { facebook: { type: post } }`
     : '';
   
   const query = `mutation {
