@@ -165,8 +165,12 @@ function StructuredText({ text }: { text?: string }) {
 
 
 export default function TemplateModern(props: ProfileData) {
-  const { profile, workExperience, education, customSections } = props;
+  const { profile, workExperience, education, customSections: rawCustomSections } = props;
   const skills = profile.skills || [];
+
+  // Filter out custom sections that duplicate the summary field
+  const SUMMARY_TITLES = /^(professional\s+)?summary|^profile|^objective|^about\s*me|^career\s+(summary|objective)|^executive\s+summary|^overview|^personal\s+statement|^introduction$/i;
+  const customSections = rawCustomSections?.filter(s => !SUMMARY_TITLES.test(s.sectionTitle?.trim() || ''));
 
   const { toast } = useToast();
 
