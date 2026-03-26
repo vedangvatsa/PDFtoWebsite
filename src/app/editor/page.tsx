@@ -182,7 +182,7 @@ function InsightsCard({ slug }: { slug: string }) {
     // Below 10 views: show teaser
     if (totalActivity < 10) {
         return (
-            <div className="flex items-center gap-2 py-1">
+            <div className="flex items-center justify-center gap-2 py-1">
                 <span className="text-[10px] text-muted-foreground/40">▸</span>
                 <span className="text-[11px] text-muted-foreground/40">
                     <span className="text-foreground/50 font-medium">{data.views}</span> views · detailed insights at 10
