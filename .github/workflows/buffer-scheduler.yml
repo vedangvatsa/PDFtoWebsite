@@ -1,0 +1,36 @@
+name: Buffer LinkedIn + Instagram Scheduler
+
+on:
+  schedule:
+    - cron: '0 12 */3 * *'   # Every 3 days at 5:30 PM IST
+  workflow_dispatch:          # Manual trigger
+
+jobs:
+  schedule:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Schedule posts to Buffer
+        env:
+          BUFFER_TOKEN: ${{ secrets.BUFFER_TOKEN }}
+        run: node .github/scripts/buffer-schedule.mjs
+
+      - name: Commit updated state
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/scripts/buffer-state.json
+          git diff --staged --quiet || git commit -m "chore: advance Buffer post index [skip ci]"
+          git push
