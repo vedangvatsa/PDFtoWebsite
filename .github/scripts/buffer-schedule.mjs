@@ -45,6 +45,31 @@ const POSTS = [
   `How long companies take to reply:\n\nDay 1 — You apply.\nDay 14 — Automated acknowledgment.\nDay 45 — First human contact.\nDay 90 — "We went with someone else."\n\n90 days of silence is not a process. It's disrespect.\n\nTake back control. cvin.bio`,
   `Sending a PDF:\n✗ Filtered by ATS\n✗ Buried in inbox\n✗ Can't update once sent\n✗ No analytics\n\nSharing a link:\n✓ Bypasses all filters\n✓ Always accessible\n✓ Updates in real time\n✓ Track who viewed\n\nThe difference is one click. cvin.bio`,
   `The job market in 2026:\n\n250 applications per opening.\n7.4 seconds spent on each CV.\n63% of jobs filled through networking.\n85% of applications never reach a human.\n\nNumbers don't lie. Your strategy needs to change. cvin.bio`,
+  `Someone reported their manager to HR.\n\nHR asked them not to file an official report. "Just a misunderstanding."\n\nTwo weeks later, they were let go.\n\n"Why don't you try to figure that out?" said the HR guy.\n\nNo paper trail. No proof. No protection.\n\nAlways file the report. cvin.bio`,
+  `She got a job offer. And she was devastated.\n\nOut of work for a year. Two interviews finally came through.\n\nThe one she wanted rejected her. The one she dreaded made an offer.\n\nSame commute as her toxic old job. Same role. Same feeling.\n\nBut she took it. Because nothing else came through.\n\nSometimes you take the floor to stop the fall. cvin.bio`,
+  `He quit after 2 days.\n\nHis manager screamed at him during sales calls. Slammed things on the desk. Made him lie to customers.\n\nHis grandfather passed that weekend. Monday morning, the yelling continued.\n\nHe grabbed his stuff and walked out.\n\nManager's advice: "That's not a good look."\n\nNeither is abuse. cvin.bio`,
+  `"I've been rejected from every place in my small town."\n\nEvery restaurant. Every store. Every warehouse.\n\nNot underqualified. Just unlucky.\n\nSome people don't have the luxury of being picky. They just need someone to say yes.\n\nKeep going. Someone will. cvin.bio`,
+  `150 applications. 4 months. 12 first-round interviews.\n\nOne offer. $12,000 less than his current salary.\n\nSame city. Same work. Same cost of living.\n\nStay miserable at $64k or leave for $52k and lose $1,000 a month.\n\nThe market is "take a 19% pay cut to change jobs" bad. cvin.bio`,
+  `His boss scheduled the firing meeting 3 days early. By accident.\n\nHe saw the invite on Teams while on vacation. With his wife. On their anniversary.\n\nFor 3 days he waited. Knowing. Panic attacks. Couldn't sleep.\n\nWhen they finally let him go, they posted his exact job 22 minutes later.\n\nFor 20K less. cvin.bio`,
+  `"Joblessness is one of the worst things that can happen to someone."\n\nCar parked in the same spot every day. Savings draining. 28 years old.\n\nGot a new job. The coworker sabotaged his code. Lied to the CEO.\n\nFired again. Three months of depression.\n\nMore than a year gone. All savings gone.\n\nPlan your safety net. cvin.bio`,
+  `She accepted the offer verbally.\n\nCleared multiple rounds. Did presentations. Was told to expect the contract next week.\n\nInstead, she got an email: "We will not be moving forward due to headcount."\n\n1.5 years out of work. Countless interviews.\n\nNow she has trust issues with job offers.\n\nThe system is broken. cvin.bio`,
+  `"I changed jobs and I hate it."\n\nLeft after 10 years. Took a better-paying role.\n\nUgly office. Cluttered desk. No handover. Predecessor hoarded all information.\n\nThe actual job? Correcting spelling in Word. Sending meeting invites. Taking minutes.\n\nMore money isn't always more life. cvin.bio`,
+  `A company literally taunted its employees. Like dogs.\n\nDangled bonuses. Pulled them back. Set impossible KPIs.\n\n2,700 upvotes. Hundreds of comments saying: "Same."\n\nWhen the company treats you like a game piece, you're allowed to flip the board.\n\nKnow your worth. cvin.bio`,
+  `"Loyalty will earn you respect. Rarely a raise."\n\nHe stayed 4 years. Never missed a day. Always delivered.\n\nMeanwhile, a new hire got 30% more. Day one.\n\nInternal increments stay flat. The only real raise comes from leaving.\n\nLoyalty is a beautiful word. It's just not a pay strategy. cvin.bio`,
+  `The job post said "Permanent WFH."\n\nShe applied because the office was too far. Six months unemployed.\n\nGot an interview. Checked the listing again. WFH was removed.\n\nThey edited it. After people applied.\n\nCompanies lure remote applicants, then switch to onsite.\n\nRead the fine print. Every time. cvin.bio`,
+  `"I miss working. I miss the dignity of having a job."\n\nThat was the whole post. 658 upvotes.\n\nNo rant. No details. Just someone who wanted to feel useful again.\n\nWork isn't just a paycheck. It's purpose.\n\nIf you're in between — your next chapter isn't over. It hasn't started. cvin.bio`,
+  `He left a good job with great work-life balance.\n\nTook a 75% pay increase at a big tech company.\n\nWeek one: fires everywhere. Nights and weekends expected.\n\nHis wife and kids felt it immediately.\n\nHe called his old boss. Asked to come back.\n\nExtra pay isn't worth your peace. cvin.bio`,
+  `Forklift driver. 6 years of experience.\n\nInterviewer said he was the only applicant. Loved his resume.\n\n"HR will set up your orientation."\n\n4 AM the next morning: rejection email.\n\nWhat other candidates? He was the only one.\n\nThe lying never stops. cvin.bio`,
+  `"Is corporate culture just one big performance?"\n\nBrown-nosing. Fake presentations. Forced team-building nobody wants.\n\nHe got promoted from blue-collar to management. Culture shock was brutal.\n\n1,800 people upvoted. Nobody disagreed.\n\nIf the culture is a circus, you don't owe them another act. cvin.bio`,
+  `Company let him go. Said the role was cut.\n\n6 months later, his replacement quit.\n\nHR called: "Would you come back?"\n\nHe said no.\n\nWhere were they when he begged to stay?\n\nCompanies rehire the people they fired. At higher salaries. cvin.bio`,
+  `"I have 4 days to find a job or I'll be removed from my house."\n\n400 applications since February. Double-digit interviews.\n\nLast 3 jobs refused to pay him.\n\n4 days until homelessness.\n\nThe system doesn't just fail some people. It forgets them. cvin.bio`,
+  `"How do you job search while stuck in a toxic role?"\n\nManaging a team. Getting zero support. Publicly called out in meetings.\n\nThen going home and writing cover letters at midnight.\n\nBurnout + job hunting is a full-time job on top of a full-time job.\n\nYou're not weak for struggling. cvin.bio`,
+  `75% of resumes never reach a human.\n\nNot 50%. Not 60%. Three out of four.\n\nYour carefully crafted resume, filtered out by a robot.\n\nA link doesn't get filtered. It gets clicked.\n\nStop competing with bots. cvin.bio`,
+  `Hiring isn't about finding the best person anymore.\n\nIt's about not making a bad decision.\n\nRoles stay open for months. Interview rounds keep growing.\n\nThen companies complain they can't find anyone.\n\nHiring became risk avoidance theater. And everyone loses. cvin.bio`,
+  `Understaffing has become an epidemic.\n\nPharmacies. Hotels. Grocery stores. Schools.\n\nCompanies cut headcount. Told 1 person to do the work of 3.\n\nThen called it a "talent shortage."\n\nYou're not imagining being overworked. It's by design. cvin.bio`,
+  `Job search on LinkedIn:\n\nApply → No response.\nApply → Auto-rejection in 3 minutes.\nApply → "We've decided to move forward with other candidates."\nApply → Ghosted.\n\n12,000 upvotes. Because it's everyone's feed.\n\nLinkedIn isn't broken. The process behind it is. cvin.bio`,
+  `He asked for $58k. They offered $65k.\n\nSaid he was a great fit and wanted to move fast.\n\nAfter 3 months of unemployment. 150+ applications.\n\nGood employers do exist. And when they value you, they show it.\n\nDon't sell yourself short. Keep applying. cvin.bio`,
+  `If Sunday evenings fill you with dread, that's not laziness.\n\nIt's your body telling you the deal isn't right.\n\nThe commute you hate. The manager you avoid. The Slack you mute.\n\nLife is too short to spend 50 weeks dreading Monday.\n\nYour career isn't a life sentence. It's a choice. cvin.bio`,
 ];
 
 // Instagram-optimized captions: punchy hook, emojis, shorter body, hashtags
@@ -75,6 +100,31 @@ const IG_POSTS = [
   `⏱️ How long companies take to reply:\n\nDay 1 — You apply\nDay 14 — Auto email\nDay 45 — First human\nDay 90 — "We went with someone else"\n\n📌 Link in bio → cvin.bio\n\n#ghosting #hiring #jobsearch #careeradvice #interview`,
   `📄 PDF vs 🔗 Link:\n\n✗ ATS filter vs ✓ Bypass\n✗ Gets buried vs ✓ Always live\n✗ No updates vs ✓ Real-time\n✗ No data vs ✓ Track views\n\n📌 Link in bio → cvin.bio\n\n#resume #cv #portfolio #careeradvice #jobsearch`,
   `📈 Job market 2026:\n\n250 applications per opening\n7.4 sec on each CV\n63% filled via networking\n85% never reach a human\n\nYour strategy needs to change.\n\n📌 Link in bio → cvin.bio\n\n#jobmarket #careeradvice #hiring #jobsearch #networking`,
+  `🚨 Reported manager to HR.\n\nHR: "Don't file a report. Just a misunderstanding."\n\n2 weeks later: fired.\n\nNo paper trail. No protection.\n\nAlways. File. The. Report.\n\n📌 Link in bio → cvin.bio\n\n#toxicworkplace #hr #careeradvice #knowyourrights #workplace`,
+  `😔 Got a job offer. Was devastated.\n\nOut of work for a year. 2 interviews came through.\n\nDream job rejected her. The nightmare made an offer.\n\nSame commute as her old toxic job.\n\nShe took it. Nothing else came.\n\n📌 Link in bio → cvin.bio\n\n#jobsearch #career #jobhunting #toxic #careerchange`,
+  `💥 Quit after 2 days.\n\nManager screamed during calls. Slammed things.\n\nGrandfather passed. Monday, yelling continued.\n\nGrabbed his stuff. Walked out.\n\nManager: "Not a good look."\n\nNeither is abuse.\n\n📌 Link in bio → cvin.bio\n\n#quitmyjob #toxicboss #careeradvice #workplace #mentalhealth`,
+  `😞 "Rejected from every place in my small town."\n\nEvery restaurant. Every store. Every warehouse.\n\nNot unqualified. Just unlucky.\n\nKeep going. Someone will say yes.\n\n📌 Link in bio → cvin.bio\n\n#jobsearch #rejection #keepgoing #motivation #careeradvice`,
+  `📉 150 apps. 4 months. 1 offer.\n\n$12,000 LESS than current salary.\n\nSame city. Same work.\n\nStay miserable at $64k or take $52k?\n\n19% pay cut to change jobs. That's 2026.\n\n📌 Link in bio → cvin.bio\n\n#jobmarket #salary #careerchange #jobhunting #paycut`,
+  `😱 Boss scheduled his firing 3 DAYS early.\n\nSaw it on Teams. On vacation. Wedding anniversary.\n\n3 days of panic attacks.\n\nFired. 22 min later: his job reposted for 20K less.\n\n📌 Link in bio → cvin.bio\n\n#layoffs #fired #corporate #toxicworkplace #careeradvice`,
+  `💔 28 years old. Savings gone. Car parked in the same spot.\n\nGot a new job. Coworker sabotaged his code. Lied to CEO.\n\nFired again. 3 months of depression.\n\nMore than a year gone.\n\n📌 Link in bio → cvin.bio\n\n#unemployed #jobless #depression #mentalhealth #careeradvice`,
+  `❌ Accepted offer verbally.\n\nMultiple interview rounds. Presentations.\n\nEmail: "Not moving forward. Headcount issues."\n\n1.5 years out of work.\n\nNow she has trust issues with job offers.\n\n📌 Link in bio → cvin.bio\n\n#offerrescinded #jobsearch #hiring #ghosting #careeradvice`,
+  `😤 "I changed jobs and I hate it."\n\nLeft after 10 years. More money.\n\nNo handover. Predecessor hoarded info.\n\nActual job: fixing spelling in Word. Taking minutes.\n\nMore money ≠ more life.\n\n📌 Link in bio → cvin.bio\n\n#careerchange #regret #jobmarket #workplace #careeradvice`,
+  `🐕 Company taunted employees like dogs.\n\nDangled bonuses → pulled them back.\n\nImpossible KPIs. 2,700 upvotes.\n\nFlip the board.\n\n📌 Link in bio → cvin.bio\n\n#toxicworkplace #workculture #knowyourworth #careeradvice #quitmyjob`,
+  `📊 Stayed 4 years. Never missed a day.\n\nNew hire got 30% more. Day one.\n\n"Loyalty earns respect. Rarely a raise."\n\nThe only real raise comes from leaving.\n\n📌 Link in bio → cvin.bio\n\n#loyalty #salary #careeradvice #knowyourworth #jobchange`,
+  `🏠 Job post: "Permanent WFH."\n\nApplied. Got interview.\n\nChecked listing again. WFH removed.\n\nThey edited it AFTER people applied.\n\nBait. And. Switch.\n\n📌 Link in bio → cvin.bio\n\n#remotework #wfh #workfromhome #baitandswitch #jobsearch`,
+  `🥺 "I miss working. I miss the dignity of having a job."\n\nThat was the whole post. 658 upvotes.\n\nNo rant. Just someone wanting to feel useful.\n\nYour next chapter hasn't started yet.\n\n📌 Link in bio → cvin.bio\n\n#unemployed #jobsearch #dignity #career #motivation`,
+  `💸 Left good WLB for 75% more pay.\n\nWeek 1: fires everywhere. Nights. Weekends.\n\nWife and kids felt it immediately.\n\nCalled old boss. Asked to come back.\n\nExtra pay ≠ peace.\n\n📌 Link in bio → cvin.bio\n\n#worklifebalance #wifeandkids #careerchange #salary #peace`,
+  `🤥 Forklift driver. 6 years exp.\n\nInterviewer: "You're the only applicant."\n"HR will set up orientation."\n\n4 AM: rejection email.\n\n"Other candidates" — he was the only one.\n\n📌 Link in bio → cvin.bio\n\n#interview #lied #jobsearch #hiring #rejection`,
+  `🎭 "Is corporate culture just one big performance?"\n\nBrown-nosing. Fake presentations.\nForced team-building.\n\n1,800 upvotes. Nobody disagreed.\n\nIf it's a circus, you don't owe another act.\n\n📌 Link in bio → cvin.bio\n\n#corporate #workculture #office #careeradvice #toxic`,
+  `🔄 Company cut his role.\n\n6 months later replacement quit.\n\nHR: "Come back?"\n\nHe said no.\n\nWhere were they when he begged to stay?\n\n📌 Link in bio → cvin.bio\n\n#layoffs #boomerang #rehired #careeradvice #knowyourworth`,
+  `🏠 "4 days to find a job or I lose my house."\n\n400 apps. Last 3 jobs didn't pay him.\n\nLegal citizen. Bank account.\n\n4 days until homelessness.\n\nThe system forgets people.\n\n📌 Link in bio → cvin.bio\n\n#homeless #jobsearch #unemployment #help #careeradvice`,
+  `😩 Job searching while stuck in a toxic role.\n\nPublicly called out. Zero support.\n\nCover letters at midnight.\n\nBurnout + job hunting = 2 full-time jobs.\n\nYou're not weak for struggling.\n\n📌 Link in bio → cvin.bio\n\n#burnout #toxicjob #jobsearch #mentalhealth #careerchange`,
+  `🤖 75% of resumes never reach a human.\n\n3 out of 4. Filtered by a robot.\n\nA link doesn't get filtered. It gets clicked.\n\nStop competing with bots.\n\n📌 Link in bio → cvin.bio\n\n#ats #resume #jobsearch #careeradvice #portfolio`,
+  `⚠️ Hiring isn't about finding the best person.\n\nIt's about not making a bad decision.\n\nRoles open for months. Interview rounds growing.\n\nThen: "We can't find anyone."\n\nRisk avoidance theater.\n\n📌 Link in bio → cvin.bio\n\n#hiring #recruitment #jobmarket #careeradvice #interview`,
+  `🏥 Understaffing is now an epidemic.\n\nPharmacies. Hotels. Schools.\n\n1 person doing the work of 3.\n\nThey call it a "talent shortage."\n\nIt's by design.\n\n📌 Link in bio → cvin.bio\n\n#understaffing #workculture #burnout #careeradvice #hiring`,
+  `💀 LinkedIn job search:\n\nApply → No response\nApply → Auto-reject in 3 min\nApply → Ghosted\n\n12,000 upvotes.\n\nLinkedIn isn't broken. The process is.\n\n📌 Link in bio → cvin.bio\n\n#linkedin #jobsearch #ghosting #hiring #careeradvice`,
+  `🎉 Asked for $58k. Offered $65k.\n\n"Great fit. Moving fast."\n\nAfter 3 months unemployed. 150+ apps.\n\nGood employers exist.\n\nDon't sell yourself short.\n\n📌 Link in bio → cvin.bio\n\n#salary #joboffer #motivation #careeradvice #keepgoing`,
+  `😰 Sunday scaries hitting different?\n\nThe commute you hate. The manager you avoid.\n\nLife's too short to dread Monday 50 weeks a year.\n\nYour career isn't a life sentence.\n\n📌 Link in bio → cvin.bio\n\n#sundayscaries #burnout #careerchange #motivation #mentalhealth`,
 ];
 
 // Facebook-optimized: conversational, longer, questions to drive comments
@@ -276,6 +326,221 @@ One click is the difference. cvin.bio`,
 85% of applications never seen by a human.
 
 The old way isn't working anymore. cvin.bio`,
+  `This was posted on Reddit and went viral.
+
+Someone reported their manager to HR. HR asked them not to file a report — "just a misunderstanding." Two weeks later, they were fired.
+
+When they asked why, the HR guy said: "Why don't you try to figure that out?"
+
+The lesson: always file the official report. Without a paper trail, there's no proof of retaliation.
+
+cvin.bio`,
+  `One of the saddest job posts I've seen:
+
+A woman was out of work for a year. She finally got two interviews. The company she was excited about rejected her. The one she dreaded gave her an offer.
+
+Same commute as her old toxic job. Same type of role. Same sinking feeling.
+
+But she took it. Because after a year of silence, sometimes you just need a floor to stop the fall. What would you have done?
+
+cvin.bio`,
+  `This guy quit after TWO DAYS.
+
+His new manager screamed at him during sales calls. Slammed things on the desk. Told him to lie to customers.
+
+That weekend, his grandfather passed away. Monday morning, the screaming continued.
+
+He grabbed his stuff and walked out. The manager's parting words? "That's not a good look." Neither is workplace abuse.
+
+cvin.bio`,
+  `Someone posted: "I've been rejected from every place in my small town."
+
+Every restaurant. Every store. Every warehouse. All of them said no.
+
+Not because they were unqualified — just unlucky. Some people don't have the luxury of being picky. They just need one yes.
+
+If you're in this spot, keep going. That yes is coming.
+
+cvin.bio`,
+  `This one hit hard.
+
+150 applications. 4 months. 12 first-round interviews. One offer.
+
+The catch? $12,000 less than his current salary. Same city. Same work. Same cost of living.
+
+So his options were: stay miserable at $64k, or take a 19% pay cut to leave.
+
+The job market in 2026 is brutal. But your situation won't change if your strategy doesn't.
+
+cvin.bio`,
+  `A guy's boss accidentally scheduled his firing meeting THREE DAYS early.
+
+He saw the Teams invite while on vacation with his wife — during their wedding anniversary.
+
+For three days he waited. Panic attacks. Couldn't sleep. Couldn't enjoy anything.
+
+When they finally fired him, they posted his exact job listing 22 minutes later. For $20K less.
+
+cvin.bio`,
+  `"Joblessness is one of the worst things that can happen to someone."
+
+This guy was 28. Car parked in the same spot every day. Savings draining.
+
+He got a new job, but his coworker sabotaged his code and lied to the CEO. Three months later, he was fired again.
+
+Over a year gone. All savings gone. Please plan your safety net while you still have one.
+
+cvin.bio`,
+  `She accepted a job offer verbally. Did multiple interview rounds. Even presentations.
+
+Was told to expect the contract next week. Instead, she got an email: "We will not be moving forward due to headcount issues."
+
+She'd been out of work for 1.5 years. Now she says she has trust issues with job offers.
+
+The hiring process is broken when people can't even trust a verbal yes.
+
+cvin.bio`,
+  `"I changed jobs and I hate it."
+
+She left after 10 years for a better-paying role. But the new office was ugly. No handover. Her predecessor hoarded all files.
+
+The actual job? Correcting spelling in Word. Sending meeting invites. Taking minutes.
+
+She went from doing skilled, independent work to being a glorified assistant. More money isn't always more life.
+
+cvin.bio`,
+  `A company literally taunted its employees. Like dogs.
+
+Dangled bonuses and pulled them back. Set impossible KPIs. 2,700 upvotes on Reddit. Hundreds of comments saying "Same."
+
+When the company treats you like a game piece, you're allowed to flip the board. Know your worth and don't let anyone play you.
+
+cvin.bio`,
+  `"Loyalty will earn you respect. Rarely a raise."
+
+This guy stayed for 4 years. Never missed a day. Always delivered.
+
+Meanwhile, a new hire walked in at 30% above his salary. On day one.
+
+Internal raises stay flat. The only real raise comes from leaving. Loyalty is a beautiful word — it's just not a pay strategy.
+
+cvin.bio`,
+  `The job posting said "Permanent Work From Home."
+
+She applied because the office was too far. She'd been unemployed for 6 months.
+
+Got an interview. Checked the listing again. The WFH part was gone. They edited it after people applied.
+
+Companies lure remote applicants, then switch to onsite. Always screenshot the listing.
+
+cvin.bio`,
+  `"I miss working. I miss the dignity of having a job."
+
+That was the entire post. No rant. No details. Just someone who wanted to feel useful again. 658 upvotes.
+
+Work isn't just a paycheck — it's purpose. If you're in between right now, your next chapter isn't over. It hasn't even started yet.
+
+cvin.bio`,
+  `He left a good job with great work-life balance for a 75% pay increase at a big tech company.
+
+Week one: fires everywhere. Expected to work nights and weekends. Skip-level managers hijacking standups.
+
+His wife and kids felt it immediately. He called his old boss and asked to come back.
+
+Extra pay isn't worth your peace.
+
+cvin.bio`,
+  `Forklift driver with 6 years of experience.
+
+The interviewer said he was the only applicant. Loved his resume. "HR will set up your orientation."
+
+4 AM the next morning: rejection email. "We decided to go with other candidates."
+
+What other candidates? He was the only one. The lying in this market is something else.
+
+cvin.bio`,
+  `Someone asked: "Is corporate culture just one big performance and everyone's pretending not to notice?"
+
+Brown-nosing. Fake presentations. Forced team-building nobody wants. Machiavellian games to climb over each other.
+
+1,800 people upvoted. Nobody disagreed. If the culture is a circus, you don't owe them another act.
+
+cvin.bio`,
+  `Company let him go. Said the role was being cut. He begged to stay. Decision was final.
+
+6 months later, his replacement quit. HR called: "Would you come back?"
+
+He said no.
+
+Where were they when he needed them? Companies rehire the people they fired — usually at higher salaries.
+
+cvin.bio`,
+  `"I have four days to find a job or I'll be removed from my house by force."
+
+400 applications since February. Double-digit interviews. Last three jobs either refused to pay or something went wrong.
+
+Legal citizen. Bank account. Four days until homelessness.
+
+The system doesn't just fail some people — it forgets them entirely.
+
+cvin.bio`,
+  `"How do you job search while stuck in a toxic role?"
+
+Managing a team with zero support. Publicly called out in meetings. Blamed when things fail.
+
+Then going home and writing cover letters at midnight.
+
+Burnout plus job hunting is a full-time job on top of a full-time job. You're not weak for struggling.
+
+cvin.bio`,
+  `Here's a stat that should make everyone angry: 75% of resumes never reach a human.
+
+Not 50%. Not 60%. Three out of four. Your carefully crafted resume gets filtered out by a robot.
+
+A link doesn't get filtered. It gets clicked. Maybe it's time to stop competing with bots.
+
+cvin.bio`,
+  `Hiring today isn't about finding the best person — it's about not making a bad decision.
+
+Roles stay open for months. Interview rounds keep multiplying. Strong candidates get filtered out for minor gaps.
+
+Then companies complain they can't find anyone. Hiring became risk avoidance theater, and everyone is losing.
+
+cvin.bio`,
+  `Understaffing has become an epidemic in America.
+
+Pharmacies. Hotels. Grocery stores. Schools. Companies cut headcount and told one person to do the work of three.
+
+Then they called it a "talent shortage." 2,800 upvotes because everyone has lived it.
+
+You're not imagining being overworked. It's by design.
+
+cvin.bio`,
+  `Job search on LinkedIn in one image:
+
+Apply → No response. Apply → Auto-rejection in 3 minutes. Apply → "We've decided to move forward with other candidates." Apply → Ghosted.
+
+12,000 upvotes. Because it's literally everyone's experience.
+
+LinkedIn isn't broken. The process behind it is.
+
+cvin.bio`,
+  `Best story I've read all month:
+
+He asked for $58k. They offered $65k. Said he was a great fit and wanted to move fast.
+
+After 3 months of unemployment and 150+ applications.
+
+Good employers DO exist. And when they value you, they show it. Don't sell yourself short. Keep applying.
+
+cvin.bio`,
+  `If Sunday evenings fill you with dread, that's not laziness. It's your body telling you the deal isn't right.
+
+The commute you hate. The manager you avoid. The Slack you mute at 6pm.
+
+Life is too short to spend 50 weeks a year dreading Monday. Your career isn't a life sentence. It's a choice.
+
+cvin.bio`,
 ];
 
 // Pick the right content per platform
