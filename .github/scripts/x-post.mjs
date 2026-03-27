@@ -281,6 +281,335 @@ The difference is one click. cvin.bio`,
 85% of applications never reach a human.
 
 Numbers don't lie. Your strategy needs to change. cvin.bio`,
+
+  // Post 27 → post_27.png (fired after reporting to HR)
+  `Someone reported their manager to HR.
+
+HR asked them not to file an official report. "Just a misunderstanding."
+
+Two weeks later, they were let go.
+
+"Why don't you try to figure that out?" said the HR guy.
+
+No paper trail. No proof. No protection.
+
+Always file the report. cvin.bio`,
+
+  // Post 28 → post_28.png (offer then devastated)
+  `She got a job offer. And she was devastated.
+
+Out of work for a year. Two interviews finally came through.
+
+The one she wanted rejected her. The one she dreaded made an offer.
+
+Same commute as her toxic old job. Same role. Same feeling.
+
+But she took it. Because nothing else came through.
+
+Sometimes you take the floor to stop the fall. cvin.bio`,
+
+  // Post 29 → post_29.png (quit after 2 days)
+  `He quit after 2 days.
+
+His manager screamed at him during sales calls. Slammed things on the desk. Made him lie to customers.
+
+His grandfather passed that weekend. Monday morning, the yelling continued.
+
+He grabbed his stuff and walked out.
+
+Manager's advice: "That's not a good look."
+
+Neither is abuse. cvin.bio`,
+
+  // Post 30 → post_30.png (rejected from every place)
+  `"I've been rejected from every place in my small town."
+
+Every restaurant. Every store. Every warehouse.
+
+Not underqualified. Just unlucky.
+
+Some people don't have the luxury of being picky. They just need someone to say yes.
+
+Keep going. Someone will. cvin.bio`,
+
+  // Post 31 → post_31.png (150 apps, 12k pay cut)
+  `150 applications. 4 months. 12 first-round interviews.
+
+One offer. $12,000 less than his current salary.
+
+Same city. Same work. Same cost of living.
+
+Stay miserable at $64k or leave for $52k and lose $1,000 a month.
+
+The market is "take a 19% pay cut to change jobs" bad. cvin.bio`,
+
+  // Post 32 → post_32.png (boss scheduled firing 3 days early)
+  `His boss scheduled the firing meeting 3 days early. By accident.
+
+He saw the invite on Teams while on vacation. With his wife. On their anniversary.
+
+For 3 days he waited. Knowing. Panic attacks. Couldn't sleep.
+
+When they finally let him go, they posted his exact job 22 minutes later.
+
+For 20K less. cvin.bio`,
+
+  // Post 33 → post_33.png (joblessness and depression)
+  `"Joblessness is one of the worst things that can happen to someone."
+
+Car parked in the same spot every day. Savings draining. 28 years old.
+
+Got a new job. The coworker sabotaged his code. Lied to the CEO.
+
+Fired again. Three months of depression.
+
+More than a year gone. All savings gone.
+
+Plan your safety net. cvin.bio`,
+
+  // Post 34 → post_34.png (verbal offer pulled)
+  `She accepted the offer verbally.
+
+Cleared multiple rounds. Did presentations. Was told to expect the contract next week.
+
+Instead, she got an email: "We will not be moving forward due to headcount."
+
+1.5 years out of work. Countless interviews.
+
+Now she has trust issues with job offers.
+
+The system is broken. cvin.bio`,
+
+  // Post 35 → post_35.png (changed jobs and hate it)
+  `"I changed jobs and I hate it."
+
+Left after 10 years. Took a better-paying role.
+
+Ugly office. Cluttered desk. No handover. Predecessor hoarded all information.
+
+The actual job? Correcting spelling in Word. Sending meeting invites. Taking minutes.
+
+She went from doing skilled work to being a glorified assistant.
+
+More money isn't always more life. cvin.bio`,
+
+  // Post 36 → post_36.png (company taunted employees)
+  `A company literally taunted its employees. Like dogs.
+
+Dangled bonuses. Pulled them back. Set impossible KPIs.
+
+2,700 upvotes. Hundreds of comments saying: "Same."
+
+When the company treats you like a game piece, you're allowed to flip the board.
+
+Know your worth. cvin.bio`,
+
+  // Post 37 → post_37.png (loyalty never pays)
+  `"Loyalty will earn you respect. Rarely a raise."
+
+He stayed 4 years. Never missed a day. Always delivered.
+
+Meanwhile, a new hire got 30% more. Day one.
+
+Internal increments stay flat. The only real raise comes from leaving.
+
+Loyalty is a beautiful word. It's just not a pay strategy. cvin.bio`,
+
+  // Post 38 → post_38.png (remote job bait and switch)
+  `The job post said "Permanent WFH."
+
+She applied because the office was too far. Six months unemployed.
+
+Got an interview. Checked the listing again. WFH was removed.
+
+They edited it. After people applied.
+
+Companies lure remote applicants, then switch to onsite.
+
+Read the fine print. Every time. cvin.bio`,
+
+  // Post 39 → post_39.png (I miss working)
+  `"I miss working. I miss the dignity of having a job."
+
+That was the whole post. 658 upvotes.
+
+No rant. No details. Just someone who wanted to feel useful again.
+
+Work isn't just a paycheck. It's purpose.
+
+If you're in between — your next chapter isn't over. It hasn't started. cvin.bio`,
+
+  // Post 40 → post_40.png (left good WLB for chaos)
+  `He left a good job with great work-life balance.
+
+Took a 75% pay increase at a big tech company.
+
+Week one: fires everywhere. Nights and weekends expected. Skip-level manager hijacking standups.
+
+His wife and kids felt it immediately.
+
+He called his old boss. Asked to come back.
+
+Extra pay isn't worth your peace. cvin.bio`,
+
+  // Post 41 → post_41.png (interview went great then rejected)
+  `Forklift driver. 6 years of experience.
+
+Interviewer said he was the only applicant. Loved his resume.
+
+"HR will set up your orientation."
+
+4 AM the next morning: rejection email.
+
+"We decided to go with other candidates."
+
+What other candidates? He was the only one.
+
+The lying never stops. cvin.bio`,
+
+  // Post 42 → post_42.png (corporate performance theater)
+  `"Is corporate culture just one big performance?"
+
+Brown-nosing. Fake presentations. Forced team-building nobody wants.
+
+He got promoted from blue-collar to management. Culture shock was brutal.
+
+Zero respect for different personalities. Machiavellian games.
+
+1,800 people upvoted. Nobody disagreed.
+
+If the culture is a circus, you don't owe them another act. cvin.bio`,
+
+  // Post 43 → post_43.png (hired back at higher salary)
+  `Company let him go. Said the role was cut.
+
+6 months later, his replacement quit.
+
+HR called: "Would you come back?"
+
+He said no.
+
+Where were they when he begged to stay?
+
+28% of new hires are boomerangs. Companies rehire the people they fired.
+
+At higher salaries. cvin.bio`,
+
+  // Post 44 → post_44.png (4 days to find a job)
+  `"I have 4 days to find a job or I'll be removed from my house."
+
+400 applications since February. Double-digit interviews.
+
+Last 3 jobs refused to pay him or had something happen.
+
+Legal citizen. Bank account. Still not getting paid.
+
+4 days until homelessness.
+
+The system doesn't just fail some people. It forgets them. cvin.bio`,
+
+  // Post 45 → post_45.png (toxic job searching while burnt out)
+  `"How do you job search while stuck in a toxic role?"
+
+Managing a team. Coaching low performers. Getting zero support.
+
+Publicly called out in meetings. Blamed when things fail.
+
+Then going home and writing cover letters at midnight.
+
+Burnout + job hunting is a full-time job on top of a full-time job.
+
+You're not weak for struggling. cvin.bio`,
+
+  // Post 46 → post_46.png (75% of resumes never seen)
+  `75% of resumes never reach a human.
+
+Not 50%. Not 60%. Three out of four.
+
+Your carefully crafted resume, filtered out by a robot.
+
+The CEO of GlobalWork confirmed it last week.
+
+A link doesn't get filtered. It gets clicked.
+
+Stop competing with bots. cvin.bio`,
+
+  // Post 47 → post_47.png (hiring is risk avoidance)
+  `Hiring isn't about finding the best person anymore.
+
+It's about not making a bad decision.
+
+Roles stay open for months. Interview rounds keep growing. Strong candidates get filtered for minor gaps.
+
+Then companies complain they can't find anyone.
+
+Hiring became risk avoidance theater. And everyone loses. cvin.bio`,
+
+  // Post 48 → post_48.png (understaffing epidemic)
+  `Understaffing has become an epidemic.
+
+Pharmacies. Hotels. Grocery stores. Schools.
+
+Companies cut headcount. Told 1 person to do the work of 3.
+
+Then called it a "talent shortage."
+
+2,800 upvotes. Because everyone has lived it.
+
+You're not imagining being overworked. It's by design. cvin.bio`,
+
+  // Post 49 → post_49.png (job search LinkedIn meme)
+  `Job search on LinkedIn:
+
+Apply → No response.
+Apply → Auto-rejection in 3 minutes.
+Apply → "We've decided to move forward with other candidates."
+Apply → Ghosted.
+
+12,000 upvotes. Because it's everyone's feed.
+
+LinkedIn isn't broken. The process behind it is. cvin.bio`,
+
+  // Post 50 → post_50.png (last day dignity)
+  `His last day at the company.
+
+He cleaned his desk. Returned his badge. Thanked his team.
+
+Nobody from management said goodbye. HR sent a form.
+
+After 4 years, he walked out the same door he walked in.
+
+Invisible.
+
+Companies talk about culture. Then treat exits like admin tasks.
+
+You deserve a proper goodbye. cvin.bio`,
+
+  // Post 51 → post_51.png (offered more than asked)
+  `He asked for $58k. They offered $65k.
+
+Said he was a great fit and wanted to move fast.
+
+After 3 months of unemployment. 150+ applications.
+
+Good employers do exist. And when they value you, they show it.
+
+Don't sell yourself short. Someone will pay what you're worth.
+
+Keep applying. cvin.bio`,
+
+  // Post 52 → post_52.png (Sunday scaries)
+  `If Sunday evenings fill you with dread, that's not laziness.
+
+It's your body telling you the deal isn't right.
+
+The commute you hate. The manager you avoid. The Slack you mute.
+
+Life is too short to spend 50 weeks dreading Monday.
+
+Your career isn't a life sentence. It's a choice.
+
+Make a different one. cvin.bio`,
 ];
 
 // ── OAuth 1.0a ────────────────────────────────────────────────────────────
@@ -379,7 +708,18 @@ async function main() {
   let state = { index: 0, lastPostedAt: null };
   if (fs.existsSync(STATE_FILE)) state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
 
-  // Stop if all 16 posts exhausted (don't cycle)
+  // Cooldown: skip if last post was less than 4 hours ago (prevents duplicates from overlapping runs)
+  if (state.lastPostedAt) {
+    const elapsed = Date.now() - new Date(state.lastPostedAt).getTime();
+    const COOLDOWN_MS = 4 * 60 * 60 * 1000; // 4 hours
+    if (elapsed < COOLDOWN_MS) {
+      const mins = Math.round(elapsed / 60000);
+      console.log(`⏳ Cooldown: last post was ${mins}m ago (need ${COOLDOWN_MS / 60000}m gap). Skipping.`);
+      process.exit(0);
+    }
+  }
+
+  // Stop if all posts exhausted (don't cycle)
   if (state.index >= POSTS.length) {
     console.log(`✅ All ${POSTS.length} posts published. Waiting for more content to be added.`);
     process.exit(0);
