@@ -1252,18 +1252,11 @@ export default function EditorPage() {
                            {user && (
                                 <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                     {isGenerating ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : <UploadCloud className="h-4 w-4 mr-1.5" />}
-                                    <span className="text-xs md:text-sm">{isGenerating ? 'Processing...' : (workItems.length > 0 || educationItems.length > 0) ? 'Update CV' : 'Upload CV'}</span>
+                                    <span className="text-xs md:text-sm">{isGenerating ? 'Processing...' : 'Update CV'}</span>
                                     <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isGenerating} />
                                 </label>
                            )}
-                            {user && profile.slug && (
-                                <Button variant="default" size="sm" asChild>
-                                    <Link href={`/${profile.slug}`} target="_blank">
-                                        <Eye className="mr-1.5 h-4 w-4" />
-                                        <span className="text-xs md:text-sm">View Profile</span>
-                                    </Link>
-                                </Button>
-                            )}
+
                             {!user && (
                                 <Button variant="outline" onClick={() => {
                                     const snapshot = {
@@ -1326,7 +1319,7 @@ export default function EditorPage() {
                                                             size="icon" 
                                                             className="h-9 w-9 shrink-0 bg-primary/10 text-primary hover:bg-primary/20" 
                                                             title="Share Profile"
-                                                            disabled={!!slugError || isCheckingSlug}
+                                                            disabled={!!slugError || isCheckingSlug || !isComplete}
                                                         >
                                                             <Share2 className="h-4 w-4" />
                                                         </Button>
@@ -1446,7 +1439,7 @@ export default function EditorPage() {
                                                 <p className="text-[10px] text-red-500 mt-2 font-medium">❌ {slugError}</p>
                                             ) : slugSuccess ? (
                                                 <p className="text-[10px] text-green-600 mt-2 font-medium">✅ This URL is available!</p>
-                                            ) : profile.slug ? (
+                                            ) : profile.slug && isComplete ? (
                                                 <div className="mt-2.5 space-y-2">
                                                     <p className="text-[10px] text-green-600 flex items-center gap-1">
                                                         <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
@@ -1457,6 +1450,8 @@ export default function EditorPage() {
                                                     </p>
 
                                                 </div>
+                                            ) : profile.slug && !isComplete ? (
+                                                <p className="text-[10px] text-muted-foreground mt-2">Complete your profile to 100% to go live.</p>
                                             ) : null}
                                         </CardContent>
                                     </Card>
