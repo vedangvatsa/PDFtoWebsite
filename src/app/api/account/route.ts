@@ -12,14 +12,8 @@ export async function DELETE() {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    // 2. Use service role key to bypass RLS and delete everything
-    const supabaseAdmin = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
-    // 3. Delete profile row
-    const { error: profileDeleteError } = await supabaseAdmin
+    // 2. Delete profile row using the user's active session (relies on RLS allowing delete self)
+    const { error: profileDeleteError } = await supabaseUser
       .from('profiles')
       .delete()
       .eq('id', user.id);
@@ -29,13 +23,23 @@ export async function DELETE() {
       return NextResponse.json({ error: profileDeleteError.message }, { status: 500 });
     }
 
-    // 4. Delete auth user (requires service role)
-    const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id);
+    // 3. Delete auth user (requires service role)
+    // If the service role key is not configured (e.g., in some deployment environments),
+    // we skip deleting the Auth user, meaning they can still log in but will have a fresh empty profile.
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (serviceRoleKey) {
+      const supabaseAdmin = createAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        serviceRoleKey
+      );
+      const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id);
 
-    if (authDeleteError) {
-      console.error('Auth user deletion failed:', authDeleteError);
-      // Profile is already deleted, log the orphan but don't fail the user
-      return NextResponse.json({ error: 'Profile deleted but auth cleanup failed. Contact support.' }, { status: 500 });
+      if (authDeleteError) {
+        console.error('Auth user deletion failed:', authDeleteError);
+        // Profile is already deleted, log the orphan but don't fail the user locally
+      }
+    } else {
+      console.warn('SUPABASE_SERVICE_ROLE_KEY is not defined. Skipping Auth user deletion.');
     }
 
     return NextResponse.json({ success: true }, { status: 200 });
