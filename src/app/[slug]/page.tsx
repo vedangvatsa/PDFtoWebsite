@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (post) {
     return {
-      title: `${post.title} | CVin.Bio`,
+      title: post.title,
       description: post.excerpt,
       alternates: { canonical: canonicalUrl },
       openGraph: {
