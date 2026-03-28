@@ -90,26 +90,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/mobile-responsive-cv" className={link}>Why mobile responsiveness is the new status quo</Link></li>
           <li><Link href="/cv-web-link" className={link}>How clean URLs build your professional brand</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -176,26 +156,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/tech-resume-keywords" className={link}>How visual hierarchy impacts recruiter scanning</Link></li>
           <li><Link href="/cv-attachments" className={link}>Why email attachments are a security and UX risk</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -262,29 +222,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/stand-out-inbox" className={link}>How to use clean URLs to stand out in a crowded inbox</Link></li>
           <li><Link href="/update-cv-anytime" className={link}>The hidden benefit of being able to fix typos in real time</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -348,21 +285,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/pdf-breaks-ats" className={link}>Analysis: Why complex PDFs break recruiter algorithms</Link></li>
           <li><Link href="/tech-resume-keywords" className={link}>Guide: Mapping visual hierarchy for technical recruiters</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -434,26 +356,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/cv-web-link" className={link}>How URLs change your professional perception</Link></li>
           <li><Link href="/cv-attachments" className={link}>Stop sending attachments: The technical case against PDFs</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -518,31 +420,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/bypass-ats" className={link}>The guide to bypassing ATS formatting destruction</Link></li>
           <li><Link href="/mobile-responsive-cv" className={link}>Why your resume must be mobile-responsive in 2026</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -607,30 +484,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/mobile-responsive-cv" className={link}>Designing for the tiny screen: Mobile responsiveness guide</Link></li>
           <li><Link href="/stand-out-inbox" className={link}>Standing out in the inbox: Using preview cards and URLs</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -689,36 +542,6 @@ export const blogPosts: BlogPost[] = [
           <li><Link href="/cv-attachments" className={link}>Ditching PDFs and mastering the psychological advantage</Link></li>
           <li><Link href="/tech-resume-keywords" className={link}>How to optimize your profile hierarchy for fast scans</Link></li>
         </ul>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Z Pattern Reality</h3>
-  <p>A senior recruiter will typically spend less than thirty seconds looking at your profile before deciding if you move to the interview phase. They use a rapid visual scanning pattern to process dense information efficiently.</p>
-  <p>They quickly sweep the top banner then drag their eyes down the left margin looking for recognizable company names and core technical keywords before jumping to the bottom. If you do not hook them immediately they simply close the tab.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>Never hide crucial programming languages in the middle of a dense paragraph.</li>
-    <li>Always respect the left margin by starting bullet points with massive impact verbs.</li>
-    <li>Assume no human will ever read your history sequentially word for word.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Z Pattern Reality</h3>
-  <p>A senior recruiter will typically spend less than thirty seconds looking at your profile before deciding if you move to the interview phase. They use a rapid visual scanning pattern to process dense information efficiently.</p>
-  <p>They quickly sweep the top banner then drag their eyes down the left margin looking for recognizable company names and core technical keywords before jumping to the bottom. If you do not hook them immediately they simply close the tab.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>Never hide crucial programming languages in the middle of a dense paragraph.</li>
-    <li>Always respect the left margin by starting bullet points with massive impact verbs.</li>
-    <li>Assume no human will ever read your history sequentially word for word.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Z Pattern Reality</h3>
-  <p>A senior recruiter will typically spend less than thirty seconds looking at your profile before deciding if you move to the interview phase. They use a rapid visual scanning pattern to process dense information efficiently.</p>
-  <p>They quickly sweep the top banner then drag their eyes down the left margin looking for recognizable company names and core technical keywords before jumping to the bottom. If you do not hook them immediately they simply close the tab.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>Never hide crucial programming languages in the middle of a dense paragraph.</li>
-    <li>Always respect the left margin by starting bullet points with massive impact verbs.</li>
-    <li>Assume no human will ever read your history sequentially word for word.</li>
-  </ul></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -763,26 +586,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Space Is Your Most Valuable Asset</h2>
         <p>The top quarter of your application is the most expensive real estate you own. This is the only section that every single recruiter is guaranteed to read. If you waste that prime space talking about your personal journey you force the reader to scroll down just to find out if you even know the required coding languages.</p>
         <p>Never make a tired manager hunt for your core skills. Put your value plainly at the top and let your accomplishments speak for themselves.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -822,26 +625,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Brevity Signals Leadership</h2>
         <p>Senior leaders speak in short sentences. They do not waffle or hide behind giant walls of text. When you submit a profile filled with sprawling paragraphs you accidentally signal that you are a junior employee who lacks executive presence.</p>
         <p>Writing short punchy job details proves you respect the time of the reader. It shows you can distill months of chaotic project work into a single line of pure business value. That exact communication skill is what gets you promoted during an interview.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -881,29 +664,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Overcoming Non Disclosure Agreements</h2>
         <p>Many hardware developers and defense contractors work under strict legal silence. They cannot even mention the name of the projects they build. If you face this barrier you must focus entirely on the scale of the environments you managed.</p>
         <p>You can honestly write that you maintained zero downtime across a massive distributed network of secure environments. You replace the secret project details with extreme operational reliability metrics. Reliability is a universal language that every hiring manager understands instantly.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -943,21 +703,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Grouping Micro Experiences</h2>
         <p>If you spent three miserable years jumping between highly unstable early stage startups that kept running out of money you should not list them individually. An endless list of tiny jobs looks visually chaotic and screams career instability.</p>
         <p>Instead group all of those short sprint startups together. Call yourself an Independent Startup Consultant for that three year block. Underneath that overarching title you can confidently list the three different apps you built. This entirely smooths out the visual timeline and upgrades your title to an authoritative advisor level.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -993,26 +738,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Aggressive Self Pruning is Crucial</h2>
         <p>You must ruthlessly delete any tool from your list that you cannot confidently discuss for at least ten minutes during a high pressure technical interview. Candidates often list legacy languages they touched once five years ago just to make the list look longer and more impressive.</p>
         <p>Claiming ancient technologies you barely remember only sets you up for a fatal technical screening round. The interviewer will spot the lie and drill aggressively into your weak spot. Always prioritize a short list of absolute mastery over a long list of dangerous fakes.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1048,31 +773,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Documentation is Scalable Empathy</h2>
         <p>One of the strongest and most overlooked forms of teamwork in modern business is written documentation. Writing code only helps the company today but mapping out a robust internal knowledge base helps the entire technical organization for the next five years. You must treat your internal wikis and onboarding manuals as high leverage team accomplishments.</p>
         <p>State clearly that you authored the engineering deployment standard operating procedure that the entire technical department now uses daily to push code safely. That single bullet point screams to the recruiter that you care deeply about your peers and proactively work to make their lives infinitely easier. Documentation proves you possess elite organizational empathy.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1108,30 +808,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Embrace Blank Space</h2>
         <p>Dense walls of text actively repel human eyes. When a tired manager sees a giant block of unbroken words their brain immediately assumes the reading task is too difficult and they start skimming. You must treat whitespace as a luxurious design asset.</p>
         <p>Use very tight spacing. Break concepts apart. Limit yourself strictly to one sentence per bullet point. This visual breathing room forces the eye to naturally stop and ingest the information rather than sliding hopelessly over a massive block of gray text.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1167,36 +843,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Controlling the Interview Narrative</h2>
         <p>Once you proudly label the gap on your profile it becomes a strength rather than a scary secret. When you inevitably get asked about the time off during the phone screen you can answer directly without any nervous fumbling.</p>
         <p>Simply state that you took targeted time away to handle family matters or travel and quickly pivot back to your readiness. Saying you stepped away but are now fully energized and aggressively seeking a high ownership role signals immense personal stability. Managers love hiring stable people who know exactly what they want.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Z Pattern Reality</h3>
-  <p>A senior recruiter will typically spend less than thirty seconds looking at your profile before deciding if you move to the interview phase. They use a rapid visual scanning pattern to process dense information efficiently.</p>
-  <p>They quickly sweep the top banner then drag their eyes down the left margin looking for recognizable company names and core technical keywords before jumping to the bottom. If you do not hook them immediately they simply close the tab.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>Never hide crucial programming languages in the middle of a dense paragraph.</li>
-    <li>Always respect the left margin by starting bullet points with massive impact verbs.</li>
-    <li>Assume no human will ever read your history sequentially word for word.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Z Pattern Reality</h3>
-  <p>A senior recruiter will typically spend less than thirty seconds looking at your profile before deciding if you move to the interview phase. They use a rapid visual scanning pattern to process dense information efficiently.</p>
-  <p>They quickly sweep the top banner then drag their eyes down the left margin looking for recognizable company names and core technical keywords before jumping to the bottom. If you do not hook them immediately they simply close the tab.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>Never hide crucial programming languages in the middle of a dense paragraph.</li>
-    <li>Always respect the left margin by starting bullet points with massive impact verbs.</li>
-    <li>Assume no human will ever read your history sequentially word for word.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Z Pattern Reality</h3>
-  <p>A senior recruiter will typically spend less than thirty seconds looking at your profile before deciding if you move to the interview phase. They use a rapid visual scanning pattern to process dense information efficiently.</p>
-  <p>They quickly sweep the top banner then drag their eyes down the left margin looking for recognizable company names and core technical keywords before jumping to the bottom. If you do not hook them immediately they simply close the tab.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>Never hide crucial programming languages in the middle of a dense paragraph.</li>
-    <li>Always respect the left margin by starting bullet points with massive impact verbs.</li>
-    <li>Assume no human will ever read your history sequentially word for word.</li>
-  </ul></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1232,26 +878,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Proving Extreme Velocity</h2>
         <p>Because the primary fear regarding academics is sluggish perfectionism you must constantly highlight your speed. Dedicate a massive section of your profile to a specific moment where you abandoned theory and built a dirty script overnight just to hit a brutal deadline. Prove that you know when to be a meticulous scientist and when to be a fast shipping hacker.</p>
         <p>Highlight moments where you collaborated with external departments or presented data to non technical audiences. Showing that you can explain complex algorithms to business majors instantly elevates your corporate value and completely separates you from the stereotype of the isolated researcher.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1287,26 +913,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Replacing Graphics with Architecture</h2>
         <p>Instead of drawing colorful abstract shapes you must prove your mastery purely through the architecture of your past projects. The hiring manager will know your Python skills are absolute perfection if they read a bullet point explaining how you wrote a concurrent Python script that parses millions of financial records daily without dropping a single packet.</p>
         <p>Competence is proven naturally within the context of the work you deliver. The moment you strip away the silly graphic ratings and force your project history to carry the weight of validation you instantly elevate yourself from a junior applicant to a serious technical operator.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1342,29 +948,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Simplicity Survives the Machine</h2>
         <p>While the reading comprehension of parsing bots has evolved incredibly fast their ability to unentangle chaotic visual layouts remains surprisingly terrible. Complex multi column designs intricate grid graphics and overlapping text boxes constantly cause the extraction engines to scramble your sentences into total gibberish.</p>
         <p>You must completely surrender your desire to create a visually wild document. Using a rigorously clean linear website link or a dead simple text structure guarantees that the language model ingests every single syllable of your history in perfect sequential order giving you the absolute highest possible match score.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1400,21 +983,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Avoid the Guru Trap</h2>
         <p>Never under any circumstances list yourself as an AI Thought Leader. The technology is evolving so violently fast that anyone claiming absolute mastery of the entire ecosystem is instantly flagged as a liar by technical recruiters. We respect humility and brutal pragmatism over grandiose titles.</p>
         <p>State clearly that you are aggressively and consistently learning how to use new developer tools to ship code faster. This framing proves you possess the hunger required to adapt to the shifting landscape while firmly keeping your feet planted in the reality of building functional products.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Front Loading the Bullet</h3>
-  <p>You must completely restructure your bullet points for extreme visual impact. Every single sentence must be aggressively front loaded. This means you mathematically pull the highest value piece of information directly to the very first few words.</p>
-  <p>Do not write that you collaborated with a diverse team of software engineers over a period of six months to successfully launch a new Python microservice. That buries the word Python way too deep. Write it differently. Launched Python microservice with five engineers in under six months.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1450,26 +1018,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Public Collaboration Artifacts</h2>
         <p>Submitting code to massive open source libraries is universally recognized as the ultimate proof of elite software engineering. When you link to a public system where your isolated code branch was heavily scrutinized reviewed and eventually merged by senior engineers working at major corporations you establish unassailable technical credibility.</p>
         <p>Even linking to a deeply technical conversation where you methodically helped a stranger debug a complex race condition dramatically boosts your hiring profile. We want to hire developers who communicate complex technical architecture clearly in plain public view. Your public internet artifacts are your actual profile.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Eradicating Corporate Fluff</h3>
-  <p>You must adopt a zero tolerance policy for generic corporate speech. If a sentence on your digital profile can be identically claimed by an incompetent junior employee you must permanently delete it instantly.</p>
-  <p>Writing that you are a strong communicator is fundamentally useless because the worst employee on earth confidently claims the exact same thing. Stop reviewing your own personality and start providing hard historical evidence of your interpersonal mechanics.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1505,31 +1053,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Bootcamps are Tools Not Diplomas</h2>
         <p>If you utilized an accelerated coding bootcamp to transition into the industry you must treat it appropriately. A twelve week camp is a phenomenal acceleration tool but it is absolutely not a replacement for a university degree and you should not format it like one. List the dense technical curriculum you survived but immediately follow it with the standalone applications you built outside of their guided tutorials.</p>
         <p>Hiring managers want to see that you have completely broken away from the scripted safety of the bootcamp environment. Prove that you can fly solo without a famous instructor holding your hand.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Ruthless Pruning Mechanics</h3>
-  <p>Expanding your digital profile does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today.</p>
-  <p>Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your most recent career victories. Treat your expanded real estate with immense respect.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>Visual Breathing Space</h3>
-  <p>Human eyes natively recoil from giant unbroken gray blocks of words. When a recruiter encounters a massive paragraph block describing a job history their brain automatically registers it as aggressive mental homework.</p>
-  <p>To completely beat this optical trap you must explicitly engineer massive amounts of clean white space into your history structures. Treat empty pixels as a luxurious design asset that forces the reader to pause.</p>
-  <ul className="list-disc pl-6 space-y-3 dark:text-zinc-400 my-4">
-    <li>End every single bullet point definitively after one complete sentence.</li>
-    <li>Never stretch a singular technical concept across multiple broken text lines.</li>
-    <li>Ensure massive margins exist between isolated professional roles.</li>
-  </ul></div>
-          </div>
-        </div>
       </div>
     )
   },
@@ -1565,30 +1088,6 @@ export const blogPosts: BlogPost[] = [
         <h2 className={h2}>Ruthless Pruning is Still Required</h2>
         <p>Expanding your digital footprint does not give you permission to hoard ancient irrelevant data. You must still aggressively delete the bizarre side jobs you held a decade ago that possess absolutely zero intersection with the role you want today. Giving yourself permission to use more vertical space simply means you are dedicating that premium space entirely to fully unpacking the technical complexity of your three most recent and massive career victories.</p>
         <p>Treat your expanded real estate with immense respect. Every extra line you take must mathematically justify its existence by delivering a highly specific quantifiable business outcome.</p>
-      
-        <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800 not-prose">
-          <h2 className={h2}>Universal Recruiting Principles</h2>
-          <div className="flex flex-col gap-12 mt-8">
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Dilution Effect</h3>
-  <p>There is an unbreakable psychological rule called the dilution effect. Every weak mundane bullet point you add to your history actively subtracts mathematical weight from your strongest achievements.</p>
-  <p>If bullet number one states that you built a predictive neural network you look incredible. But if bullet number eight states that you actively managed Jira tickets your overall perceived value instantly drops back down to average. You must fiercely delete the noise.</p>
-  <div className={callout}>
-    <h3 className={h3}>The Deletion Test</h3>
-    <p>Ask yourself if a totally average person with your exact job title would also do this task. If the answer is yes you must completely delete it.</p>
-  </div></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Mathematics of Value</h3>
-  <p>Almost every piece of modern career advice demands that you attach a massive dollar sign to your work history. This is incredibly frustrating for engineers who have absolutely zero access to the financial dashboard.</p>
-  <p>If you cannot mathematically measure corporate money you must measure the physics of the system. You measure raw speed and server volume instead.</p>
-  <p>Did your code reduce the API latency from two seconds down to two hundred milliseconds. Did you migrate a legacy frontend application that successfully served a sudden spike of three million users without crashing. These are massive achievements.</p></div>
-            <div className="flex flex-col gap-4 text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed tracking-normal"><h3 className={h3}>The Parsing Bot Barrier</h3>
-  <p>Enterprise recruiting software is powered by advanced large language models that read and comprehend the contextual narrative of your career history. These new smart systems actively detect semantic disjoints.</p>
-  <p>If you paste a massive list of cloud certifications at the bottom of the page the AI immediately realizes you never actually wrote a single intelligent sentence about using them. You must deeply integrate keywords into actual business case studies.</p>
-  <div className={callout}>
-    <h3 className={h3}>Action Adjacency</h3>
-    <p>Always physically position your technical tools immediately next to a clear business action to maximize your algorithmic relevance score.</p>
-  </div></div>
-          </div>
-        </div>
       </div>
     )
   }
