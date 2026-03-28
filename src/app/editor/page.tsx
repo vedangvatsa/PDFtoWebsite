@@ -1256,6 +1256,14 @@ export default function EditorPage() {
                                     <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isGenerating} />
                                 </label>
                            )}
+                            {user && profile.slug && (
+                                <Button variant="default" size="sm" asChild>
+                                    <Link href={`/${profile.slug}`} target="_blank">
+                                        <Eye className="mr-1.5 h-4 w-4" />
+                                        <span className="text-xs md:text-sm">View Profile</span>
+                                    </Link>
+                                </Button>
+                            )}
                             {!user && (
                                 <Button variant="outline" onClick={() => {
                                     const snapshot = {
@@ -1288,7 +1296,7 @@ export default function EditorPage() {
                     </div>
 
                     <div className="space-y-4">
-                        {(workItems.length === 0 && educationItems.length === 0 && skillItems.length === 0 && customSections.length === 0) && (
+                        {!user && (workItems.length === 0 && educationItems.length === 0 && skillItems.length === 0 && customSections.length === 0) && (
                             <ResumeUploadPrompt onFileChange={handleFileChange} isGenerating={isGenerating} />
                         )}
                         
