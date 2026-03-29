@@ -4,10 +4,12 @@ import { createClient } from '@supabase/supabase-js';
 // 1x1 transparent GIF
 const PIXEL = Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64');
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -18,7 +20,7 @@ export async function GET(request: Request) {
 
   // Store to Supabase (fire-and-forget, don't block response)
   const decodedEmail = decodeURIComponent(email);
-  supabase.from('email_events').insert({
+  getSupabase().from('email_events').insert({
     action,
     campaign: cid,
     email: decodedEmail,
