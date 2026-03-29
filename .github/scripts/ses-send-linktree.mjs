@@ -21,9 +21,9 @@ if (!ACCESS_KEY || !SECRET_KEY) {
 
 // ── A/B/C Subjects ──────────────────────────────────────────────────
 const VARIANTS = [
-  { id: 'A', subject: 'free week in a startup island', campaign: 'ns_linktree_a' },
-  { id: 'B', subject: 'startup island',                campaign: 'ns_linktree_b' },
-  { id: 'C', subject: '1 month. 1 island.',            campaign: 'ns_linktree_c' },
+  { id: 'A', subject: 'a week on a startup island',     campaign: 'ns_linktree_a' },
+  { id: 'B', subject: 'startup island',                 campaign: 'ns_linktree_b' },
+  { id: 'C', subject: '1 month. 1 island.',             campaign: 'ns_linktree_c' },
 ];
 
 // ── File paths ──────────────────────────────────────────────────────
@@ -60,28 +60,17 @@ function getVariant(index) {
 
 // ── Text body per variant ───────────────────────────────────────────
 function getTextBody(variant, email) {
-  return `Network School is a startup society for remote workers, tech founders, and content creators. Located on an island off the coast of Singapore.
+  return `Network School is a startup society on an island off the coast of Singapore — coworking, serviced rooms, healthy meals, gym, content studio, workshops, and more.
 
-Selected applicants are eligible to receive a free 1-week stay when accepted into a month-long cohort at Network School.
-
-What you get: serviced room, healthy meals, 24/7 coworking, gym, world-class speakers, content studio, workshops, fitness classes, and a makerspace.
+Selected applicants receive a complimentary 1-week stay when accepted into a month-long cohort.
 
 Apply: https://cvin.bio/api/email-track?action=click&cid=${variant.campaign}&email=${encodeURIComponent(email)}&url=${encodeURIComponent('https://ns.com/hashtagweb3/apply?utm_source=hashtagweb3&utm_medium=email')}
 
----
-
-hashtagweb3.com - curated web3 jobs from companies actually hiring. No ghost listings.
-
-New roles drop daily on Telegram: https://t.me/web3hiring
+We also run hashtagweb3.com — a curated feed of web3 jobs from companies actually hiring. 60k+ subscribers on Telegram.
 
 ---
-
-When you apply - stop sending PDFs. A link gets opened. A PDF gets ignored.
-Turn your CV into a live link: https://cvin.bio?utm_source=hashtagweb3&utm_medium=email&utm_campaign=${variant.campaign}
-
----
-
-Hashtag Web3 - hashtagweb3.com
+Hashtag Web3 · 1 Changi Business Park Central 1, Singapore 486036
+You received this because your email was listed on a public professional profile.
 Unsubscribe: https://hashtagweb3.com/unsubscribe?email=${encodeURIComponent(email)}`;
 }
 
@@ -92,20 +81,12 @@ function personalizeHtml(variant, email) {
 
   let html = TEMPLATE;
 
-  // Replace open tracking pixel with variant-specific campaign
-  html = html.replace(
-    /cid=ns_announcement/g,
-    `cid=${variant.campaign}`
-  );
+  // Replace campaign tags
+  html = html.replace(/cid=ns_announcement/g, `cid=${variant.campaign}`);
+  html = html.replace(/utm_campaign=ns_announcement/g, `utm_campaign=${variant.campaign}`);
 
-  // Also fix any existing campaign tags
-  html = html.replace(
-    /utm_campaign=ns_announcement/g,
-    `utm_campaign=${variant.campaign}`
-  );
-
-  // Replace email placeholder
-  html = html.replace(/\{\{EMAIL\}\}/g, encodedEmail);
+  // Replace email placeholder for unsubscribe link
+  html = html.replace(/%%EMAIL%%/g, encodedEmail);
 
   // Wrap Apply CTA with click tracker
   html = html.replace(
@@ -113,18 +94,10 @@ function personalizeHtml(variant, email) {
     `$1${trackBase}?action=click&cid=${variant.campaign}&email=${encodedEmail}&url=${encodeURIComponent('https://ns.com/hashtagweb3/apply?utm_source=hashtagweb3&utm_medium=email')}$3`
   );
 
-  // Wrap cvin.bio CTA with click tracker
-  html = html.replace(
-    /(href=")([^"]*cvin\.bio[^"]*ns_announcement[^"]*)(")/,
-    `$1${trackBase}?action=click&cid=${variant.campaign}&email=${encodedEmail}&url=${encodeURIComponent('https://cvin.bio?utm_source=hashtagweb3&utm_medium=email&utm_campaign=' + variant.campaign)}$3`
+  // Add open pixel at bottom
+  html = html.replace('</body>',
+    `<img src="${trackBase}?action=open&cid=${variant.campaign}&email=${encodedEmail}" width="1" height="1" style="display:none;" alt="">\n</body>`
   );
-
-  // Ensure open pixel exists at bottom
-  if (!html.includes(`cid=${variant.campaign}&email=`)) {
-    html = html.replace('</body>',
-      `<img src="${trackBase}?action=open&cid=${variant.campaign}&email=${encodedEmail}" width="1" height="1" style="display:none;" alt="">\n</body>`
-    );
-  }
 
   return html;
 }
