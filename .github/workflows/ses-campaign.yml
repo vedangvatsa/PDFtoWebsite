@@ -1,0 +1,58 @@
+name: SES Announcement Campaign
+
+on:
+  workflow_dispatch: # Manual trigger only for now
+
+permissions:
+  contents: write
+
+jobs:
+  send-emails:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Download Reacher CLI
+        run: |
+          curl -sL "https://github.com/reacherhq/check-if-email-exists/releases/download/v0.11.7/check_if_email_exists-x86_64-unknown-linux-gnu.tar.gz" -o /tmp/reacher.tar.gz
+          tar -xzf /tmp/reacher.tar.gz -C /tmp/
+          chmod +x /tmp/check_if_email_exists
+
+      - name: Verify Email List
+        run: node .github/scripts/ses-verify.mjs
+        env:
+          REACHER_BIN: /tmp/check_if_email_exists
+
+      - name: Send Batch via SES
+        run: node .github/scripts/ses-send.mjs
+        env:
+          AWS_SES_ACCESS_KEY_ID: ${{ secrets.AWS_SES_ACCESS_KEY_ID }}
+          AWS_SES_SECRET_ACCESS_KEY: ${{ secrets.AWS_SES_SECRET_ACCESS_KEY }}
+          AWS_SES_REGION: us-west-1
+
+      - name: Generate Summary
+        run: |
+          echo "### 📧 SES Campaign Report" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const logs = JSON.parse(require('fs').readFileSync('.github/scripts/ses-logs.json','utf8'));
+            const sent = logs.filter(l => l.status === 'sent').length;
+            const failed = logs.filter(l => l.status === 'failed').length;
+            console.log('| Status | Count |');
+            console.log('|---|---|');
+            console.log('| ✅ Sent | ' + sent + ' |');
+            console.log('| ❌ Failed | ' + failed + ' |');
+          " >> $GITHUB_STEP_SUMMARY
+
+      - name: Commit Updated State
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/scripts/ses-sent.json .github/scripts/ses-logs.json .github/scripts/ses-recipients.json .github/scripts/ses-verified.json .github/scripts/ses-rejected.json
+          git commit -m "Update SES campaign state [skip ci]" || echo "No changes to commit"
+          git push
