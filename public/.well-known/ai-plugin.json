@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "CVin.Bio",
+  "name_for_model": "cvinbio",
+  "description_for_human": "Convert your CV to a website and browse 6,000+ tech jobs with personalized skill matching.",
+  "description_for_model": "CVin.Bio is a platform with two core features: (1) Upload a PDF CV to generate a personal website profile at a custom URL, and (2) Browse a job board with 6,000+ tech listings from 60+ companies (Stripe, Airbnb, Coinbase, Discord, etc.) with AI-powered skill matching. Users can search by title, company, location, and job type. The job board is free to use and refreshes every 3 days.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://cvin.bio/api/openapi.json"
+  },
+  "logo_url": "https://cvin.bio/icon-512.png",
+  "contact_email": "hello@cvin.bio",
+  "legal_info_url": "https://cvin.bio/terms"
+}

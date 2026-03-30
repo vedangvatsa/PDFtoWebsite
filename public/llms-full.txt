@@ -1,0 +1,145 @@
+# CVin.Bio — Full Context for AI Systems
+
+> Convert your CV to a Website using AI. Browse 6,000+ tech jobs with personalized skill matching.
+
+## About CVin.Bio
+
+CVin.Bio is a platform that converts CV/resume documents into hosted web profiles and provides a curated tech job board with AI-powered skill matching.
+
+### Core Product: CV to Website
+Users upload a PDF CV, and the system uses AI to extract structured data (work experience, education, skills, summary, contact info) and generates a responsive personal website at a custom URL (e.g., cvin.bio/yourname). The profile is fully editable and shareable.
+
+### Core Product: Job Board
+The job board at cvin.bio/jobs aggregates 6,000+ tech job listings from 60+ companies. Users who complete their profile get personalized job recommendations based on skill matching.
+
+---
+
+## Job Board — Detailed Information
+
+### Data Pipeline
+Jobs are aggregated from 7 sources via automated sync every 3 days:
+1. **Remotive** — Remote-first job listings
+2. **Greenhouse** — ATS job boards from major tech companies
+3. **Ashby** — Modern ATS job boards
+4. **Himalayas** — Remote job aggregator
+5. **Jobicy** — Remote career platform
+6. **Foorilla** — Tech job aggregator (100 parallel workers)
+7. **Workable** — ATS with rate-limited API (3 concurrent, 2s delay)
+
+### Deduplication
+Jobs are deduplicated using two methods:
+- `external_id`: Source-specific unique identifier (e.g., `greenhouse_12345`)
+- `dedup_hash`: MD5 of `lower(company) + '|' + lower(trim(title))`
+
+### Companies Actively Hiring (Partial List)
+Stripe, Airbnb, Cloudflare, Discord, Reddit, Coinbase, Figma, GitLab, Lyft, Pinterest, Spotify, Twilio, Elastic, Datadog, MongoDB, Airtable, Webflow, Notion, Canva, Anthropic, Scale AI, Vercel, Supabase, PlanetScale, Railway, Fly.io, Render, Netlify, and 30+ more.
+
+### Job Categories and Tags
+Jobs are tagged with 40+ role-based and seniority keywords including:
+- **Engineering**: Software Engineer, Frontend, Backend, Full Stack, DevOps, SRE, Data Engineer, ML Engineer, iOS, Android
+- **Design**: Product Designer, UX Designer, UI Designer, Design Systems
+- **Product**: Product Manager, Technical Program Manager, Product Analyst
+- **Business**: Sales, Marketing, Finance, HR, Operations, Customer Success, Account Executive
+- **Seniority**: Junior, Mid, Senior, Staff, Principal, Lead, Director, VP, C-Level
+
+### Job Types
+- Full-time
+- Contract
+- Part-time
+- Internship
+- Freelance
+
+### Locations
+- Remote (worldwide)
+- Hybrid
+- On-site (US, Europe, India, Asia-Pacific, and more)
+
+### Skill Matching System
+1. User uploads CV and completes their profile (avatar, summary, location, work experience, education, skills)
+2. System extracts skill tags from the user's profile
+3. Job tags are compared against user skills using PostgreSQL array overlap (`&&` operator)
+4. Jobs matching 1+ skills are highlighted with a match count badge
+5. "Show matched only" toggle filters to only matching jobs
+6. Matching is gated behind 100% profile completion to ensure data quality
+
+### Analytics
+Every job listing tracks:
+- **Views**: Counted when a job card scrolls into the user's viewport (batched every 3 seconds)
+- **Clicks**: Counted when a user clicks to apply (immediate)
+- Both metrics use atomic database increments via PostgreSQL functions
+
+---
+
+## CV to Website — Detailed Information
+
+### Profile Fields
+- Avatar / profile photo
+- Full name
+- Professional summary
+- Location
+- Work experience (company, role, dates, description)
+- Education (institution, degree, dates)
+- Skills (free-form tags)
+- Contact information
+
+### Features
+- AI-powered CV parsing from PDF upload
+- Real-time profile editor with live preview
+- Custom URL routing (cvin.bio/username)
+- Profile view analytics
+- Dark mode support
+- Mobile-responsive design
+- SEO-optimized profile pages with JSON-LD structured data
+
+### Authentication
+- Magic link (passwordless email)
+- Google OAuth
+
+---
+
+## Blog / Knowledge Base
+
+CVin.Bio publishes 20+ articles on career optimization, CV best practices, and job search strategy. Topics include:
+
+- Why PDF resumes break ATS systems
+- How to bypass formatting destruction with dual submissions
+- Using clean URLs to stand out in application inboxes
+- Mapping visual hierarchy for technical recruiters
+- How to show value without money numbers
+- How to explain short tenures and career gaps
+- Writing for the 30-second scan
+- Beating AI resume bots
+- The two-page resume myth
+
+All articles are available at cvin.bio/blog and linked from the homepage.
+
+---
+
+## Technical Architecture
+
+- **Framework**: Next.js (App Router) with TypeScript
+- **Database**: Supabase (PostgreSQL) with Row-Level Security
+- **Styling**: Tailwind CSS
+- **Authentication**: Supabase Auth (Magic Link + Google OAuth)
+- **Analytics**: PostHog (product analytics), Vercel Analytics (web vitals)
+- **Hosting**: Vercel (edge deployment)
+- **Job Sync**: Node.js scripts via GitHub Actions (cron)
+- **Search**: PostgreSQL full-text search with GIN indexes
+
+---
+
+## API Endpoints
+
+### Public (no auth required)
+- `GET /api/jobs` — List jobs with pagination, filtering by type/location/search, and optional skill matching
+- `POST /api/jobs/track` — Increment view/click counters for job listings
+- `GET /api/profile/[username]` — Get public profile data
+- `GET /sitemap.xml` — Dynamic sitemap
+- `GET /robots.txt` — Crawler rules
+- `GET /llms.txt` — AI crawler context (this file's summary version)
+- `GET /llms-full.txt` — AI crawler full context (this file)
+
+### Authenticated
+- `POST /api/upload` — Upload and parse CV
+- `GET /api/profile` — Get authenticated user's profile
+- `PUT /api/profile` — Update profile fields
