@@ -24,6 +24,8 @@ interface Job {
   published_at: string | null;
   matched_skills: string[];
   match_count: number;
+  match_score: number;
+  match_signals: string[];
 }
 
 interface JobsResponse {
@@ -371,10 +373,11 @@ export default function JobsPage() {
                     <h3 className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
                       {job.title}
                     </h3>
-                    {job.match_count > 0 && (
-                      <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+                    {job.match_score > 0 && (
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold shrink-0" title={job.match_signals.join(' · ')}
+                        style={{ color: job.match_score >= 50 ? '#059669' : job.match_score >= 25 ? '#d97706' : '#6b7280' }}>
                         <Target className="h-2.5 w-2.5" />
-                        {job.match_count}
+                        {job.match_score}%
                       </span>
                     )}
                   </div>
