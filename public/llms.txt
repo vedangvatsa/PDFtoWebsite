@@ -32,6 +32,28 @@ CVin.Bio is a utility that converts CV documents into hosted web profiles. Users
 - [Why College Degrees Matter Less Now](/college-degrees-matter-less) - Big tech companies are switching to skills based hiring. Learn how to hide your lack of a famous degree behind massive project wins.
 - [The Two Page Resume Myth](/two-page-resume-myth) - People stress too much about fitting everything on a single piece of paper. A clean two page web profile actually works much better.
 
+## Job Board
+
+CVin.Bio hosts a job board at [/jobs](https://cvin.bio/jobs) aggregating 6,000+ tech job listings from 60+ companies.
+
+### Data Sources
+Jobs are aggregated from 7 sources: Remotive, Greenhouse, Ashby, Himalayas, Jobicy, Foorilla, and Workable. The job board refreshes every 3 days via automated sync.
+
+### Companies Hiring
+Stripe, Airbnb, Cloudflare, Discord, Reddit, Coinbase, Figma, GitLab, Lyft, Pinterest, Spotify, Twilio, Elastic, Datadog, MongoDB, Airtable, and 50+ more.
+
+### Job Types Available
+Full-time, contract, part-time, internship, and freelance positions. Locations include remote, hybrid, and on-site across US, Europe, India, and worldwide.
+
+### Personalized Skill Matching
+Users who upload their CV and complete their profile receive personalized job matches. The system extracts skills from the user's profile and matches them against job tags using array overlap. Users can toggle "Show matched only" to filter to relevant jobs. Skill matching is gated behind 100% profile completion to ensure data quality.
+
+### How to Use
+1. Visit https://cvin.bio/jobs
+2. Browse or search by title, company, location, or job type
+3. Upload your CV for personalized skill-based matching
+4. Click any job to apply directly on the company's careers page
+
 ## Features
 
 - CV upload and automated website generation mapping.
