@@ -49,23 +49,21 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
         {children}
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-1">
           <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
             <Link href="/jobs">Jobs</Link>
           </Button>
           {!isUserLoading && user && (
-              <TooltipProvider>
-                <div className="flex items-center gap-1">
-                  {pathname !== '/editor' && (
-                    <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
-                      <Link href="/editor">Editor</Link>
-                    </Button>
-                  )}
-                  <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
-                    Logout
+              <>
+                {pathname !== '/editor' && (
+                  <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+                    <Link href="/editor">Editor</Link>
                   </Button>
-                </div>
-              </TooltipProvider>
+                )}
+                <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+                  Logout
+                </Button>
+              </>
           )}
           <ThemeToggle />
         </div>
