@@ -373,11 +373,19 @@ export default function JobsPage() {
                     <h3 className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
                       {job.title}
                     </h3>
-                    {job.match_score > 0 && (
-                      <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold shrink-0" title={job.match_signals.join(' · ')}
-                        style={{ color: job.match_score >= 50 ? '#059669' : job.match_score >= 25 ? '#d97706' : '#6b7280' }}>
-                        <Target className="h-2.5 w-2.5" />
-                        {job.match_score}%
+                    {job.match_score >= 50 && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded-full" title={job.match_signals.join(' · ')}>
+                        <Sparkles className="h-2.5 w-2.5" />Great match
+                      </span>
+                    )}
+                    {job.match_score >= 25 && job.match_score < 50 && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-600 dark:text-amber-400 shrink-0 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded-full" title={job.match_signals.join(' · ')}>
+                        <Target className="h-2.5 w-2.5" />Good match
+                      </span>
+                    )}
+                    {job.match_score > 0 && job.match_score < 25 && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-zinc-400 dark:text-zinc-500 shrink-0" title={job.match_signals.join(' · ')}>
+                        <Target className="h-2.5 w-2.5" />Partial
                       </span>
                     )}
                   </div>
