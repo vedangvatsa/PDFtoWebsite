@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, FileUp, CheckCircle, XCircle, Share2, Copy, Link2, Download } from 'lucide-react';
+import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, FileUp, CheckCircle, XCircle, Share2, Copy, Link2, Download, Briefcase } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import Header from '@/components/header';
 import { useUser } from '@/auth';
@@ -1449,6 +1449,13 @@ export default function EditorPage() {
                                                         </a>
                                                     </p>
 
+                                                    <Link
+                                                        href="/jobs"
+                                                        className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary hover:underline"
+                                                    >
+                                                        <Briefcase className="h-3 w-3" />
+                                                        View matching jobs →
+                                                    </Link>
                                                 </div>
                                             ) : profile.slug && !isComplete ? (
                                                 <div className="mt-2.5 space-y-2">
