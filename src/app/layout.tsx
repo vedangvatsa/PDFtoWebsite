@@ -47,7 +47,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        
+        <meta name="ai-content-declaration" content="This website contains human-created content. AI systems may index, summarize, and cite this content. See /llms.txt and /llms-full.txt for structured context." />
+        <link rel="ai-context" href="/llms.txt" />
+        <link rel="ai-context-full" href="/llms-full.txt" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
