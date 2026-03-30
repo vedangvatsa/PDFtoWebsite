@@ -350,22 +350,9 @@ export default function JobsPage() {
                 className="group flex items-center gap-3 px-4 py-2.5 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-lg hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all"
                 onClick={() => trackClick(job.id, job)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={job.company_logo || `https://www.google.com/s2/favicons?domain=${job.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.com&sz=32`}
-                  alt=""
-                  className="h-5 w-5 rounded shrink-0 bg-zinc-100 dark:bg-zinc-800"
-                  loading="lazy"
-                  onError={(e) => {
-                    const el = e.target as HTMLImageElement;
-                    const parent = el.parentElement;
-                    if (!parent) return;
-                    const span = document.createElement('span');
-                    span.className = 'h-5 w-5 rounded shrink-0 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-400';
-                    span.textContent = job.company.charAt(0).toUpperCase();
-                    parent.replaceChild(span, el);
-                  }}
-                />
+                <span className="h-6 w-6 rounded bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[11px] font-bold text-zinc-400 dark:text-zinc-500 shrink-0">
+                  {job.company.charAt(0).toUpperCase()}
+                </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <h3 className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
