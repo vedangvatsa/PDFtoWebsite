@@ -122,7 +122,7 @@ export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
             </p>
 
             <p className="text-[11px] text-center text-muted-foreground px-2">
-              By continuing, you agree to our <a href="/terms" target="_blank" className="underline hover:text-foreground">Terms</a> and <a href="/privacy" target="_blank" className="underline hover:text-foreground">Privacy Policy</a>.
+              By continuing, you agree to our <a href="/terms" target="_blank" className="underline hover:text-foreground">Terms & Privacy Policy</a>.
             </p>
           </div>
         )}

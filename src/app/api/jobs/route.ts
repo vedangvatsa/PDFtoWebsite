@@ -32,16 +32,11 @@ export async function GET(request: NextRequest) {
         .eq('id', user.id)
         .single();
       userSkills = profile?.skills || [];
-      // Check profile completion (same 6 criteria as editor)
+      // Profile is "complete" for matching if they have a summary and skills
       if (profile) {
-        const hasAvatar = !!profile.profile_picture_url;
         const hasSummary = !!profile.about;
-        const links = profile.links || [];
-        const hasLocation = links.some((l: any) => l.type === 'location' && l.value);
-        const hasWork = Array.isArray(profile.experience) && profile.experience.some((w: any) => w.title || w.company);
-        const hasEdu = Array.isArray(profile.education) && profile.education.some((e: any) => e.institution || e.degree);
         const hasSkills = userSkills.length > 0;
-        profileComplete = hasAvatar && hasSummary && hasLocation && hasWork && hasEdu && hasSkills;
+        profileComplete = hasSummary && hasSkills;
       }
     }
   } catch (_) {
