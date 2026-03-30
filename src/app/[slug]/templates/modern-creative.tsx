@@ -136,8 +136,12 @@ function StructuredText({ text }: { text?: string }) {
         blocks.push({ type: 'bullet', lines: [line] });
       }
     } else {
-      // Plain paragraph — always start its own block
-      blocks.push({ type: 'para', lines: [line] });
+      // Plain paragraph — merge with previous para block if exists
+      if (blocks.length > 0 && blocks[blocks.length - 1].type === 'para') {
+        blocks[blocks.length - 1].lines.push(line);
+      } else {
+        blocks.push({ type: 'para', lines: [line] });
+      }
     }
   }
 
@@ -157,7 +161,7 @@ function StructuredText({ text }: { text?: string }) {
         }
         return (
           <p key={bi} className="text-xs text-muted-foreground leading-relaxed">
-            <LinkifiedLine text={block.lines[0]} />
+            <LinkifiedLine text={block.lines.join(' ')} />
           </p>
         );
       })}
