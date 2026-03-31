@@ -4,19 +4,17 @@ import { Resend } from 'resend';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
-const reports: Record<string, { title: string; path: string; fullPath: string; tagline: string; pdf: string }> = {
+const reports: Record<string, { title: string; path: string; fullPath: string; tagline: string }> = {
   'remote-talent': {
     title: 'The Remote Talent Report 2026',
     path: '/remote-talent-report',
     fullPath: '/remote-talent-report',
-    pdf: '/reports/CVin-Bio-Remote-Talent-Report-2026.pdf',
     tagline: '34 million Americans work remotely. Companies offering flexibility see 3x larger candidate pools.',
   },
   'layoffs': {
     title: 'The Tech Layoffs Report 2026',
     path: '/layoffs-report',
     fullPath: '/layoffs-report?access=confirmed',
-    pdf: '/reports/CVin-Bio-Tech-Layoffs-Report-2026.pdf',
     tagline: '750,000+ tech workers displaced since 2020. Who is cutting, why, and what happens next.',
   },
 };
@@ -25,7 +23,6 @@ function buildUserEmail(reportKey: string, recipientEmail: string) {
   const r = reports[reportKey] || reports['remote-talent'];
   const reportUrl = `${siteUrl}${r.path}`;
   const fullReportUrl = `${siteUrl}${r.fullPath}`;
-  const pdfUrl = `${siteUrl}${r.pdf}`;
 
   return `
 <!DOCTYPE html>
@@ -61,18 +58,7 @@ function buildUserEmail(reportKey: string, recipientEmail: string) {
                  </td>
                </tr>
              </table>
-            <table cellpadding="0" cellspacing="0" style="margin:0 auto 20px;">
-              <tr>
-                <td style="border:1px solid #e4e4e7;border-radius:8px;padding:12px 28px;">
-                  <a href="${pdfUrl}" target="_blank" style="font-size:13px;font-weight:500;color:#3f3f46;text-decoration:none;display:inline-block;">
-                    &#128196; Download PDF
-                  </a>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:0 0 8px;font-size:12px;color:#a1a1aa;text-align:center;">
-              Or read online: <a href="${fullReportUrl}" style="color:#71717a;">${fullReportUrl}</a>
-            </p>
+
           </td>
         </tr>
         <!-- Divider -->
