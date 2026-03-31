@@ -1224,7 +1224,7 @@ export default function EditorPage() {
                             <h1 className="text-2xl md:text-3xl font-bold truncate max-w-[65vw] md:max-w-none">{user ? <><span className="sm:hidden">Welcome!</span><span className="hidden sm:inline">Welcome, {profile.fullName?.split(' ')[0] || ''}!</span></> : 'Your Profile'}</h1>
                             {!user && <p className="text-muted-foreground text-xs md:text-sm hidden sm:block">Sign up when you're ready to put it online.</p>}
                         </div>
-                        <div className="flex items-center gap-2 justify-end shrink-0">
+                        <div className="flex items-center gap-1.5 md:gap-2 justify-end shrink-0">
                            <div className="flex items-center justify-end">
                                {isSaving ? (
                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary border border-border text-muted-foreground">
@@ -1232,9 +1232,9 @@ export default function EditorPage() {
                                        <span className="text-xs font-medium">Saving…</span>
                                    </div>
                                ) : lastSavedAt ? (
-                                   <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 animate-in fade-in duration-300">
+                                   <div className="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 animate-in fade-in duration-300">
                                        <CheckCircle className="h-4 w-4" />
-                                       <span className="text-xs font-medium">Saved</span>
+                                       <span className="text-xs font-medium hidden sm:inline">Saved</span>
                                    </div>
                                ) : null}
                            </div>
@@ -1246,9 +1246,9 @@ export default function EditorPage() {
                                 </label>
                            )}
                            {user && (
-                                <Link href="/jobs" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">
-                                    <Briefcase className="h-4 w-4 mr-1.5" />
-                                    <span className="text-xs md:text-sm">Jobs</span>
+                                <Link href="/jobs" title="View Jobs" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 md:w-auto md:px-3">
+                                    <Briefcase className="h-4 w-4 md:mr-1.5" />
+                                    <span className="text-xs md:text-sm hidden md:inline">Jobs</span>
                                 </Link>
                            )}
 
