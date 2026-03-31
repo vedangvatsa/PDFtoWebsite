@@ -12,44 +12,117 @@ export default function robots(): MetadataRoute.Robots {
       // Explicitly welcome AI agent crawlers to index public profiles
       {
         userAgent: [
-          // OpenAI
+          // ── AI Model Training & Search ──
           'GPTBot',
           'ChatGPT-User',
           'OAI-SearchBot',
-          // Anthropic
           'ClaudeBot',
           'Claude-Web',
           'Claude-SearchBot',
-          // Google
-          'Googlebot',
-          'GoogleOther',
           'Google-Extended',
-          // Perplexity
           'PerplexityBot',
           'Perplexity-User',
-          // Meta
           'Meta-ExternalAgent',
-          'facebookexternalhit',
-          // Apple
-          'Applebot',
-          'Applebot-Extended',
-          // Amazon
-          'Amazonbot',
-          // ByteDance
+          'Meta-ExternalFetcher',
           'Bytespider',
-          // Hugging Face
-          'HuggingFaceBot',
-          // Common Crawl
           'CCBot',
-          // Microsoft
+          'cohere-ai',
+          'AI2Bot',
+          'Diffbot',
+          'Timpibot',
+          'VelenPublicWebCrawler',
+          'Kangaroo Bot',
+          'anthropic-ai',
+          'Scrapy',
+          'iaskspider',
+          'YouBot',
+          'PanguBot',
+          'GPTBot-Extended',
+          'Sidetrade indexer bot',
+          'AwarioSmartBot',
+          'DataForSeoBot',
+          'img2dataset',
+          'Nicecrawler',
+          'omgili',
+          'omgilibot',
+          'Webzio-Extended',
+          'ICC-Crawler',
+          'Neevabot',
+          'ISSCyberRiskCrawler',
+
+          // ── Search Engines ──
+          'Googlebot',
+          'Googlebot-Image',
+          'Googlebot-Video',
+          'Googlebot-News',
+          'GoogleOther',
+          'Storebot-Google',
           'Bingbot',
           'BingPreview',
-          // Cohere
-          'cohere-ai',
-          // AI2
-          'AI2Bot',
-          // You.com
-          'YouBot',
+          'msnbot',
+          'adidxbot',
+          'DuckDuckBot',
+          'YandexBot',
+          'YandexImages',
+          'YandexMobileBot',
+          'Baiduspider',
+          'Slurp',
+          'Sogou',
+          'Exabot',
+          'ia_archiver',
+          'Qwantify',
+          'PetalBot',
+          'Mojeek',
+          'Seznam',
+          'SeznamBot',
+          'Naver',
+          'NaverBot',
+          'Yeti',
+
+          // ── Social & Link Preview ──
+          'facebookexternalhit',
+          'Facebot',
+          'Twitterbot',
+          'LinkedInBot',
+          'Slackbot',
+          'Slackbot-LinkExpanding',
+          'WhatsApp',
+          'TelegramBot',
+          'Discordbot',
+          'Pinterestbot',
+          'redditbot',
+          'SkypeUriPreview',
+          'vkShare',
+          'Embedly',
+          'Quora-Bot',
+
+          // ── Apple & Amazon ──
+          'Applebot',
+          'Applebot-Extended',
+          'Amazonbot',
+
+          // ── Hugging Face & Research ──
+          'HuggingFaceBot',
+          'ia_archiver',
+
+          // ── SEO & Analytics ──
+          'AhrefsBot',
+          'SemrushBot',
+          'MJ12bot',
+          'DotBot',
+          'Screaming Frog SEO Spider',
+          'rogerbot',
+          'SiteAuditBot',
+
+          // ── Archive & Academic ──
+          'archive.org_bot',
+          'Wayback',
+          'ScholarBot',
+
+          // ── Feed & Content ──
+          'Feedly',
+          'Feedspot',
+          'NewsBlur',
         ],
         allow: '/',
         disallow: ['/editor', '/api/', '/admin'],

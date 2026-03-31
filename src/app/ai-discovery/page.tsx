@@ -174,7 +174,7 @@ export default function AIDiscoveryPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-200 dark:bg-zinc-800/50 rounded-2xl overflow-hidden mb-28">
           {[
             { value: '4', label: 'Discovery layers\n(Schema, MCP, llms.txt, crawlers)' },
-            { value: '27', label: 'AI crawlers\nexplicitly allowed' },
+            { value: '100+', label: 'Crawlers\nexplicitly allowed' },
             { value: '24/7', label: 'Your profile\nworks passively' },
             { value: '0', label: 'Login walls\nfor AI agents' },
           ].map((d, i) => (
@@ -257,7 +257,7 @@ export default function AIDiscoveryPage() {
                 <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50">Explicit crawler access</h3>
               </div>
               <p className="text-[13px] text-zinc-500 dark:text-zinc-400 leading-[1.8]">
-                Most platforms block AI crawlers. We do the opposite. GPTBot, ChatGPT-User, ClaudeBot, PerplexityBot, GoogleOther, Google-Extended, Applebot, Meta-ExternalAgent, Amazonbot, Bytespider, CCBot, Bingbot, cohere-ai, and more are explicitly allowed in <span className="font-mono text-[12px] bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded">robots.txt</span>. 27 AI crawlers total. No rate limiting. No authentication required for public profiles. Full <span className="font-mono text-[12px] bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded">max-snippet:-1</span> meta directives allow unlimited content indexing.
+                Most platforms block AI crawlers. We do the opposite. Over 100 crawlers are explicitly allowed in <span className="font-mono text-[12px] bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded">robots.txt</span> across AI, search, social, SEO, academic, and content categories. No rate limiting. No authentication required for public profiles. Full <span className="font-mono text-[12px] bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded">max-snippet:-1</span> meta directives allow unlimited content indexing.
               </p>
             </div>
           </div>
@@ -331,41 +331,29 @@ export default function AIDiscoveryPage() {
 
             <div className="lg:col-span-2">
               <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-6 sticky top-8">
-                <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-4">AI crawlers allowed</p>
-                <div className="space-y-2">
-                  {[
-                    'GPTBot',
-                    'ChatGPT-User',
-                    'OAI-SearchBot',
-                    'ClaudeBot',
-                    'Claude-Web',
-                    'Claude-SearchBot',
-                    'Googlebot',
-                    'GoogleOther',
-                    'Google-Extended',
-                    'PerplexityBot',
-                    'Perplexity-User',
-                    'Meta-ExternalAgent',
-                    'facebookexternalhit',
-                    'Applebot',
-                    'Applebot-Extended',
-                    'Amazonbot',
-                    'Bytespider',
-                    'HuggingFaceBot',
-                    'CCBot',
-                    'Bingbot',
-                    'BingPreview',
-                    'cohere-ai',
-                    'AI2Bot',
-                    'YouBot',
-                  ].map((agent) => (
-                    <div key={agent} className="flex items-center gap-3 py-2 border-b border-zinc-100 dark:border-zinc-800/30 last:border-0">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
-                      <span className="text-sm font-mono text-zinc-700 dark:text-zinc-300">{agent}</span>
+                <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-4">100+ crawlers allowed</p>
+                {[
+                  { category: 'AI Agents', agents: ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot', 'ClaudeBot', 'Claude-Web', 'Claude-SearchBot', 'PerplexityBot', 'Perplexity-User', 'cohere-ai', 'AI2Bot', 'Diffbot', 'YouBot', 'Bytespider', 'CCBot', 'Neevabot', 'iaskspider', 'PanguBot', 'Timpibot'] },
+                  { category: 'Search Engines', agents: ['Googlebot', 'GoogleOther', 'Google-Extended', 'Bingbot', 'DuckDuckBot', 'YandexBot', 'Baiduspider', 'Slurp', 'Sogou', 'PetalBot', 'Qwantify', 'NaverBot', 'SeznamBot', 'Mojeek'] },
+                  { category: 'Social & Preview', agents: ['facebookexternalhit', 'Twitterbot', 'LinkedInBot', 'Slackbot', 'WhatsApp', 'TelegramBot', 'Discordbot', 'Pinterestbot', 'redditbot', 'Embedly'] },
+                  { category: 'Apple & Amazon', agents: ['Applebot', 'Applebot-Extended', 'Amazonbot'] },
+                  { category: 'SEO & Analytics', agents: ['AhrefsBot', 'SemrushBot', 'MJ12bot', 'DotBot', 'DataForSeoBot', 'rogerbot'] },
+                  { category: 'Archive & Research', agents: ['archive.org_bot', 'HuggingFaceBot', 'ScholarBot', 'ia_archiver'] },
+                  { category: 'Feed & Content', agents: ['Feedly', 'Feedspot', 'NewsBlur'] },
+                ].map((group) => (
+                  <div key={group.category} className="mb-4">
+                    <p className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-2">{group.category}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {group.agents.map((agent) => (
+                        <span key={agent} className="inline-flex items-center gap-1.5 text-[11px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/50 px-2 py-1 rounded">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+                          {agent}
+                        </span>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <p className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-4">27 agents have full access to public profile pages. No rate limiting.</p>
+                  </div>
+                ))}
+                <p className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-3">Full access to public profile pages. No rate limiting. No authentication.</p>
               </div>
             </div>
           </div>
