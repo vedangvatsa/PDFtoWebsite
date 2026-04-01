@@ -8,7 +8,7 @@ const reports: Record<string, { title: string; path: string; fullPath: string; t
   'remote-talent': {
     title: 'The Remote Talent Report 2026',
     path: '/remote-talent-report',
-    fullPath: '/remote-talent-report',
+    fullPath: '/remote-talent-report?access=confirmed',
     tagline: '34 million Americans work remotely. Companies offering flexibility see 3x larger candidate pools.',
   },
   'layoffs': {
