@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
+
+const STORAGE_KEY = 'remote-talent-report-unlocked';
 
 /* ─── INLINE CITE ─── */
 function Cite({ href, children }: { href: string; children: React.ReactNode }) {
@@ -281,6 +283,25 @@ function OfficeVsRemoteIllustration() {
 
 /* ─── MAIN PAGE ─── */
 export default function RemoteTalentReport() {
+  const [unlocked, setUnlocked] = useState(false);
+  const [checkingAccess, setCheckingAccess] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('access')) {
+      try { localStorage.setItem(STORAGE_KEY, 'true'); } catch {}
+      setUnlocked(true);
+      setCheckingAccess(false);
+      return;
+    }
+    try {
+      if (localStorage.getItem(STORAGE_KEY) === 'true') {
+        setUnlocked(true);
+      }
+    } catch {}
+    setCheckingAccess(false);
+  }, []);
+
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors duration-200 flex flex-col">
       <Header />
@@ -352,6 +373,44 @@ export default function RemoteTalentReport() {
           </Sources>
         </section>
 
+        {/* ═══════════════════════════════════════════════════════════
+            EMAIL GATE — blur + overlay for gated content
+        ═══════════════════════════════════════════════════════════ */}
+        {!unlocked && !checkingAccess && (
+          <div className="relative mb-28">
+            {/* Blurred preview of gated content */}
+            <div className="select-none pointer-events-none" aria-hidden="true" style={{ filter: 'blur(6px)', opacity: 0.4 }}>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-5">Remote hiring is concentrated in specific industries</h2>
+              <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85] mb-5">
+                Technology, finance, and professional services account for the vast majority of remote job postings. Within tech the distribution is heavily skewed toward engineering, product management, and design roles...
+              </p>
+              <div className="grid grid-cols-2 gap-10 mb-8">
+                <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-8 h-48" />
+                <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-8 h-48" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-5">Remote roles now pay more, not less</h2>
+              <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85]">
+                Several 2026 compensation studies show fully remote roles commanding a 6% to 7% salary premium over equivalent on-site positions...
+              </p>
+            </div>
+            {/* Gate overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-transparent via-[#fafafa]/90 dark:via-black/90 to-[#fafafa] dark:to-black">
+              <div className="w-full max-w-lg px-6">
+                <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 text-center shadow-lg">
+                  <h3 className="text-xl font-serif font-bold text-zinc-900 dark:text-zinc-50 mb-3">Read the full report</h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 leading-relaxed">Enter your email to unlock the complete report with compensation data, RTO analysis, and predictions.</p>
+                  <EmailCapture position="gate" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════
+            GATED CONTENT — only visible after email confirmation
+        ═══════════════════════════════════════════════════════════ */}
+        {unlocked && (
+          <>
         {/* ─── SECTION 2: INDUSTRIES ─── */}
         <section className="mb-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
@@ -587,6 +646,9 @@ export default function RemoteTalentReport() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
           </Link>
         </div>
+
+          </>
+        )}
 
       </main>
       <MicroFooter />
