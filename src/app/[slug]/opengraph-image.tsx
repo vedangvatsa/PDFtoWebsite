@@ -3,11 +3,10 @@ import { getProfileBySlug } from '@/lib/supabase-server';
 import { blogMetadata } from '@/lib/blog-metadata';
 
 export const runtime = 'nodejs';
-export const revalidate = 0; // Caching is handled conditionally per-response below
 
 export const alt = 'CVin.Bio SEO Preview';
 export const size = { width: 1200, height: 630 };
-export const contentType = 'image/jpeg';
+export const contentType = 'image/png';
 
 export default async function Image(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
@@ -39,7 +38,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
           </div>
 
         </div>
-      ), { ...size }
+      ), { ...size, headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' } }
     );
   }
 
