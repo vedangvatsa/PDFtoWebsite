@@ -20,6 +20,7 @@ type Analytics = {
     usersUpdatedLast7d: number; zeroViewProfiles: number;
     avgSkillsPerUser: number; totalLinksCount: number;
     totalWorkEntries: number; totalEduEntries: number;
+    totalJobs: number;
   };
   signupTrend: { date: string; count: number }[];
   topProfiles: { name: string; slug: string; views: number }[];
@@ -34,7 +35,7 @@ type Analytics = {
   authProviders: { provider: string; count: number }[];
   recentUsers: {
     email: string; name: string; slug: string; views: number;
-    provider: string; createdAt: string; hasPhoto: boolean; hasResume: boolean;
+    provider: string; createdAt: string; lastSignIn: string | null; hasPhoto: boolean; hasResume: boolean;
   }[];
   productTimeline: { date: string; tag: string; title: string; desc: string }[];
   contactSubmissions: { id: string; email: string; purpose: string; message: string; is_read: boolean; created_at: string }[];
@@ -45,6 +46,7 @@ type Analytics = {
     topPages: { page: string; views: number; uniques: number }[] | null;
     topReferrers: { referrer: string; visits: number }[] | null;
     deviceTypes: { device: string; cnt: number }[] | null;
+    osTypes: { os: string; cnt: number }[] | null;
     topCountries: { country: string; visits: number }[] | null;
     topBrowsers: { browser: string; cnt: number }[] | null;
     profileViewsTrend: { day: string; views: number; unique_viewers: number }[] | null;
@@ -53,6 +55,7 @@ type Analytics = {
     shareEvents: { event: string; cnt: number }[] | null;
     pageviewsWoW: { this_week: number; last_week: number } | null;
     activeToday: number;
+    jobClicksTotal: number;
   };
 };
 
@@ -183,6 +186,10 @@ export default function AdminPage() {
             )}
             <Stat v={ph.available ? ph.activeToday : kpis.usersUpdatedLast7d} label={ph.available ? 'Active today' : 'Active (7d)'} />
             <Stat v={kpis.totalParses} label="CV parses" />
+            <Stat v={kpis.totalJobs} label="Active jobs" sub="Supabase" />
+            {ph.available && ph.jobClicksTotal !== undefined && (
+              <Stat v={ph.jobClicksTotal} label="Job apply clicks" sub="Last 30 days" />
+            )}
             <Stat v={kpis.zeroViewProfiles} label="Zero-view profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
           </div>
         </Section>
@@ -284,9 +291,9 @@ export default function AdminPage() {
         )}
 
         {/* ═══ GEOGRAPHY & DEVICES (PostHog) ═══ */}
-        {ph.available && (ph.topCountries || ph.deviceTypes || ph.topBrowsers) && (
+        {ph.available && (ph.topCountries || ph.deviceTypes || ph.osTypes || ph.topBrowsers) && (
           <Section title="Audience (7 days)" badge="PostHog">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Countries */}
               {ph.topCountries && ph.topCountries.length > 0 && (
                 <div>
@@ -313,6 +320,25 @@ export default function AdminPage() {
                         <div key={i} className="flex items-center gap-2">
                           <DeviceIcon type={d.device} />
                           <span className="text-sm flex-1">{d.device || 'Unknown'}</span>
+                          <span className="text-xs text-muted-foreground font-mono">{pct}%</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {/* OSes */}
+              {ph.osTypes && ph.osTypes.length > 0 && (
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-3">OS</p>
+                  <div className="space-y-2">
+                    {ph.osTypes.map((o, i) => {
+                      const total = ph.osTypes!.reduce((s, x) => s + x.cnt, 0);
+                      const pct = total > 0 ? Math.round((o.cnt / total) * 100) : 0;
+                      return (
+                        <div key={i} className="flex items-center gap-2">
+                          <Monitor className="h-3.5 w-3.5 text-muted-foreground" />
+                          <span className="text-sm flex-1">{o.os || 'Unknown'}</span>
                           <span className="text-xs text-muted-foreground font-mono">{pct}%</span>
                         </div>
                       );
@@ -466,6 +492,7 @@ export default function AdminPage() {
                   <div className="flex flex-wrap gap-x-4 gap-y-0.5 mt-1 text-[11px] text-muted-foreground/70">
                     {u.slug && <a href={`https://cvin.bio/${u.slug}`} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2">/{u.slug}</a>}
                     <span>{u.views} views</span>
+                    {u.lastSignIn && <span>Last active: {new Date(u.lastSignIn).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>}
                     <span>{u.hasPhoto ? 'Photo ✓' : 'No photo'}</span>
                     <span>{u.hasResume ? 'CV ✓' : 'No CV'}</span>
                   </div>
@@ -524,6 +551,57 @@ export default function AdminPage() {
             </div>
           </Section>
         )}
+
+        {/* ═══ DATA SCIENCE INSIGHTS ═══ */}
+        <Section title="Data Science Insights" badge="Auto-generated">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="p-5 rounded-xl border border-border/50 bg-green-500/5">
+              <h3 className="text-sm font-semibold flex items-center gap-2 text-green-700 dark:text-green-400 mb-4">
+                <TrendingUp className="h-4 w-4" /> What's Working
+              </h3>
+              <ul className="space-y-3">
+                {(() => {
+                  const items = [];
+                  const cvRatio = kpis.totalParses > 0 ? (kpis.totalUsers / kpis.totalParses) : 0;
+                  if (cvRatio > 0.4) items.push(<li key="cv" className="text-sm text-muted-foreground"><strong>Strong CV Conversion:</strong> {(cvRatio * 100).toFixed(0)}% of people who parse a CV map it to a saved account. This implies the parse quality and editor experience retain high trust.</li>);
+                  if (ph.pageviewsWoW && ph.pageviewsWoW.this_week > ph.pageviewsWoW.last_week) items.push(<li key="wow" className="text-sm text-muted-foreground"><strong>Traffic Growth:</strong> Pageviews grew week-over-week. Social media scripts and SEO indexing are driving net new eyes to the platform.</li>);
+                  const topRef = ph.topReferrers?.[0];
+                  if (topRef) items.push(<li key="ref" className="text-sm text-muted-foreground"><strong>Primary Funnel:</strong> <em>{topRef.referrer}</em> is providing the most consistent incoming traffic, making it the most strategic channel.</li>);
+                  const viewsRatio = kpis.totalUsers > 0 ? kpis.totalViews / kpis.totalUsers : 0;
+                  if (viewsRatio > 2) items.push(<li key="views" className="text-sm text-muted-foreground"><strong>Profile Engagement:</strong> Accounts get an average of {Math.round(viewsRatio)} views, demonstrating value creation for job seekers once they publish.</li>);
+                  const completionRate = kpis.totalUsers > 0 ? (completeness.hasSkills / kpis.totalUsers) : 0;
+                  if (completionRate > 0.6) items.push(<li key="comp" className="text-sm text-muted-foreground"><strong>Data Richness:</strong> {(completionRate * 100).toFixed(0)}% of user profiles have skill embeddings, providing a solid foundation for robust AI job matching models.</li>);
+                  if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">Gathering more data to find strong positive signals.</li>);
+                  return items;
+                })()}
+              </ul>
+            </div>
+            
+            <div className="p-5 rounded-xl border border-border/50 bg-red-500/5">
+              <h3 className="text-sm font-semibold flex items-center gap-2 text-red-700 dark:text-red-400 mb-4">
+                <TrendingDown className="h-4 w-4" /> Potential Drop-offs
+              </h3>
+              <ul className="space-y-3">
+                {(() => {
+                  const items = [];
+                  const zeroViewsRate = kpis.totalUsers > 0 ? (kpis.zeroViewProfiles / kpis.totalUsers) : 0;
+                  if (zeroViewsRate > 0.4) items.push(<li key="zero" className="text-sm text-muted-foreground"><strong>Ghost Profiles:</strong> {(zeroViewsRate * 100).toFixed(0)}% of profiles have 0 views. Users might be signing up but struggling to distribute their link or not utilizing the social share buttons.</li>);
+                  const jobInterest = (ph.jobClicksTotal && kpis.totalJobs) ? true : false;
+                  if (jobInterest && ph.jobClicksTotal < 20) items.push(<li key="jobs" className="text-sm text-muted-foreground"><strong>Job Interactions:</strong> Very low outbound clicks on Jobs ({ph.jobClicksTotal}). Ensure the jobs matching algorithm is surfacing relevant roles, or test adding the job feed directly inside the editor dashboard.</li>);
+                  const desktopVol = ph.deviceTypes?.find(d => d.device.toLowerCase() === 'desktop')?.cnt || 0;
+                  const mobileVol = ph.deviceTypes?.find(d => d.device.toLowerCase() === 'mobile')?.cnt || 0;
+                  if (mobileVol > desktopVol * 1.5) items.push(<li key="mobile" className="text-sm text-muted-foreground"><strong>Mobile Imbalance:</strong> Mobile traffic vastly outpaces desktop, but CV uploads are typically a desktop-heavy action. Ensure your cloud-drive integrations (Google Drive/Dropbox) on mobile are frictionless.</li>);
+                  const directRef = ph.topReferrers?.find(r => r.referrer === 'Direct')?.visits || 0;
+                  const refTotal = ph.topReferrers?.reduce((a,b) => a+b.visits, 0) || 1;
+                  if (directRef / refTotal > 0.8) items.push(<li key="direct" className="text-sm text-muted-foreground"><strong>Referral Risk:</strong> Highly reliant on direct/dark-social traffic. Backlinks from technical job boards or SEO articles might be underperforming.</li>);
+                  
+                  if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">No major negative signals detected currently.</li>);
+                  return items;
+                })()}
+              </ul>
+            </div>
+          </div>
+        </Section>
 
         {/* ═══ PostHog config notice ═══ */}
         {!ph.available && (
