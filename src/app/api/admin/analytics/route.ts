@@ -99,6 +99,9 @@ export async function GET(request: NextRequest) {
     let contactRes: any = { data: null };
     try { contactRes = await supabase.from('contact_submissions').select('id, email, purpose, message, is_read, created_at').order('created_at', { ascending: false }).limit(50); } catch { /* table may not exist */ }
 
+    let jobsRes: any = { count: 0 };
+    try { jobsRes = await supabase.from('jobs').select('*', { count: 'exact', head: true }); } catch { /* table may not exist */ }
+
     let authUsers: any[] = [];
     if (serviceKey) {
       try {
@@ -128,6 +131,8 @@ export async function GET(request: NextRequest) {
       phActiveUsersToday,
       phCvParsesTotal,
       phCvParsesByDay,
+      phJobClicksTotal,
+      phOsTypes,
     ] = await Promise.all([
       // 1. Pageviews by day (last 30 days)
       hogql(`
@@ -331,6 +336,26 @@ export async function GET(request: NextRequest) {
           AND timestamp >= now() - interval 14 day
         GROUP BY day ORDER BY day
       `, 'admin_cv_parses_by_day'),
+
+      // 16. Total Job Clicks
+      hogql(`
+        SELECT count() AS total
+        FROM events
+        WHERE event = 'job_clicked'
+          AND timestamp >= now() - interval 30 day
+      `, 'admin_job_clicks_total'),
+
+      // 17. OS Types breakdown
+      hogql(`
+        SELECT
+          properties.$os AS os,
+          count() AS cnt
+        FROM events
+        WHERE event = '$pageview'
+          AND timestamp >= now() - interval 7 day
+        GROUP BY os
+        ORDER BY cnt DESC
+      `, 'admin_os_types'),
     ]);
 
     // ── Supabase KPIs (existing) ─────────────────────────────────────────
@@ -344,6 +369,7 @@ export async function GET(request: NextRequest) {
     const usersWithCustomSections = profiles.filter((p: any) => Array.isArray(p.custom_sections) && p.custom_sections.length > 0).length;
     const usersWithLinks = profiles.filter((p: any) => Array.isArray(p.links) && p.links.length > 0).length;
     const avgViews = totalUsers > 0 ? Math.round(totalViews / totalUsers) : 0;
+    const totalJobs = jobsRes.count || 0;
 
     // ── Signup trend ──
     const signupsByDay: Record<string, number> = {};
@@ -443,6 +469,7 @@ export async function GET(request: NextRequest) {
             views: profile?.views || 0,
             provider: u.app_metadata?.provider || 'unknown',
             createdAt: u.created_at,
+            lastSignIn: u.last_sign_in_at || null,
             hasPhoto: !!(profile?.profile_picture_url && profile.profile_picture_url.trim()),
             hasResume: Array.isArray(profile?.experience) && profile.experience.length > 0,
           };
@@ -461,6 +488,7 @@ export async function GET(request: NextRequest) {
             views: p.views || 0,
             provider: 'google',
             createdAt: p.created_at,
+            lastSignIn: p.updated_at || null,
             hasPhoto: !!(p.profile_picture_url && p.profile_picture_url.trim()),
             hasResume: Array.isArray(p.experience) && p.experience.length > 0,
           };
@@ -528,6 +556,7 @@ export async function GET(request: NextRequest) {
         totalLinksCount,
         totalWorkEntries,
         totalEduEntries,
+        totalJobs,
       },
       signupTrend,
       topProfiles,
@@ -545,6 +574,7 @@ export async function GET(request: NextRequest) {
         topPages: phTopPages,
         topReferrers: (phTopReferrers || []).map((r: any) => ({ ...r, referrer: friendlySource(r.referrer) })),
         deviceTypes: phDeviceTypes,
+        osTypes: phOsTypes,
         topCountries: phTopCountries,
         topBrowsers: phTopBrowsers,
         profileViewsTrend: phProfileViews,
@@ -553,6 +583,7 @@ export async function GET(request: NextRequest) {
         shareEvents: phShareEvents,
         pageviewsWoW: phPageviewsTotal?.[0] || null,
         activeToday: phActiveUsersToday?.[0]?.active_today || 0,
+        jobClicksTotal: phJobClicksTotal?.[0]?.total || 0,
       },
     });
   } catch (error) {
