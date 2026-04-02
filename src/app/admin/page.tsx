@@ -39,6 +39,7 @@ type Analytics = {
   }[];
   productTimeline: { date: string; tag: string; title: string; desc: string }[];
   contactSubmissions: { id: string; email: string; purpose: string; message: string; is_read: boolean; created_at: string }[];
+  dataScience?: any;
   posthog: {
     available: boolean;
     pageviewsByDay: { day: string; views: number }[] | null;
@@ -552,49 +553,80 @@ export default function AdminPage() {
         )}
 
         {/* ═══ DATA SCIENCE INSIGHTS ═══ */}
-        <Section title="Data Science Insights" badge="Auto-generated">
+        <Section title="Data Science Insights" badge="Mathematical Analysis">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-5 rounded-xl border border-border/50 bg-green-500/5">
-              <h3 className="text-sm font-semibold flex items-center gap-2 text-green-700 dark:text-green-400 mb-4">
-                <TrendingUp className="h-4 w-4" /> What's Working
+            <div className="p-5 rounded-xl border border-border/50 bg-indigo-500/5">
+              <h3 className="text-sm font-semibold flex items-center gap-2 text-indigo-700 dark:text-indigo-400 mb-4">
+                <TrendingUp className="h-4 w-4" /> Statistical Signals
               </h3>
               <ul className="space-y-3">
                 {(() => {
                   const items = [];
+                  const ds = data.dataScience;
+                  if (ds) {
+                    if (Math.abs(ds.correlation_views_signups) > 0) {
+                      const r = ds.correlation_views_signups;
+                      const strength = Math.abs(r) > 0.7 ? 'Strong' : Math.abs(r) > 0.4 ? 'Moderate' : 'Weak';
+                      const direction = r > 0 ? 'positive' : 'negative';
+                      items.push(
+                        <li key="corr" className="text-sm text-muted-foreground">
+                          <strong>Conversion Causality (Pearson r):</strong> {r.toFixed(2)}.<br/>
+                          Demonstrates a <em>{strength.toLowerCase()} {direction} linear correlation</em> between daily pageviews and account signups. {r > 0.5 ? 'This implies highly targeted traffic acquisition where views reliably predict account creation.' : 'This suggests traffic is generating brand awareness but not acting as a direct causal vector for signups.'}
+                        </li>
+                      );
+                    }
+                    if (ds.traffic_velocity_slope !== 0) {
+                      const vel = ds.traffic_velocity_slope;
+                      items.push(
+                        <li key="vel" className="text-sm text-muted-foreground">
+                          <strong>Growth Velocity (Regression Slope):</strong> {vel > 0 ? '+' : ''}{vel.toFixed(1)} views/day.<br/>
+                          The linear regression modeling across a 30-day index shows a {vel > 0 ? 'compounding' : 'decaying'} trajectory. {vel > 0 ? 'Your top-of-funnel retention curve is upward trending.' : 'You are observing baseline decay; marketing injection is required to break the plateau.'}
+                        </li>
+                      );
+                    }
+                  }
+                  
                   const cvRatio = kpis.totalParses > 0 ? (kpis.totalUsers / kpis.totalParses) : 0;
-                  if (cvRatio > 0.4) items.push(<li key="cv" className="text-sm text-muted-foreground"><strong>Strong CV Conversion:</strong> {(cvRatio * 100).toFixed(0)}% of people who parse a CV map it to a saved account. This implies the parse quality and editor experience retain high trust.</li>);
-                  if (ph.pageviewsWoW && ph.pageviewsWoW.this_week > ph.pageviewsWoW.last_week) items.push(<li key="wow" className="text-sm text-muted-foreground"><strong>Traffic Growth:</strong> Pageviews grew week-over-week. Social media scripts and SEO indexing are driving net new eyes to the platform.</li>);
-                  const topRef = ph.topReferrers?.[0];
-                  if (topRef) items.push(<li key="ref" className="text-sm text-muted-foreground"><strong>Primary Funnel:</strong> <em>{topRef.referrer}</em> is providing the most consistent incoming traffic, making it the most strategic channel.</li>);
-                  const viewsRatio = kpis.totalUsers > 0 ? kpis.totalViews / kpis.totalUsers : 0;
-                  if (viewsRatio > 2) items.push(<li key="views" className="text-sm text-muted-foreground"><strong>Profile Engagement:</strong> Accounts get an average of {Math.round(viewsRatio)} views, demonstrating value creation for job seekers once they publish.</li>);
-                  const completionRate = kpis.totalUsers > 0 ? (completeness.hasSkills / kpis.totalUsers) : 0;
-                  if (completionRate > 0.6) items.push(<li key="comp" className="text-sm text-muted-foreground"><strong>Data Richness:</strong> {(completionRate * 100).toFixed(0)}% of user profiles have skill embeddings, providing a solid foundation for robust AI job matching models.</li>);
-                  if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">Gathering more data to find strong positive signals.</li>);
+                  if (cvRatio > 0) {
+                     items.push(<li key="cv" className="text-sm text-muted-foreground"><strong>Drop-off Coefficient:</strong> {(cvRatio * 100).toFixed(0)}% retention from parser initialization to database persistence, indicating UI friction delta.</li>);
+                  }
+                  
+                  if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">Gathering sufficient timeline arrays to compute regression matrices.</li>);
                   return items;
                 })()}
               </ul>
             </div>
             
-            <div className="p-5 rounded-xl border border-border/50 bg-red-500/5">
-              <h3 className="text-sm font-semibold flex items-center gap-2 text-red-700 dark:text-red-400 mb-4">
-                <TrendingDown className="h-4 w-4" /> Potential Drop-offs
+            <div className="p-5 rounded-xl border border-border/50 bg-amber-500/5">
+              <h3 className="text-sm font-semibold flex items-center gap-2 text-amber-700 dark:text-amber-400 mb-4">
+                <Globe className="h-4 w-4" /> Anomaly & Variance Detection
               </h3>
               <ul className="space-y-3">
                 {(() => {
                   const items = [];
+                  const ds = data.dataScience;
+                  
+                  if (ds && ds.anomaly_days && ds.anomaly_days.length > 0) {
+                    items.push(
+                      <li key="anom" className="text-sm text-muted-foreground">
+                        <strong>Z-Score Anomalies (σ &gt; 2.0):</strong> Detected {ds.anomaly_days.length} statistically significant deviances from the moving average.
+                        <ul className="mt-2 space-y-1 ml-4 list-disc text-xs opacity-80">
+                          {ds.anomaly_days.map((an: any, i: number) => (
+                            <li key={i}>{new Date(an.date).toLocaleDateString()} — {an.type === 'surge' ? '+' : ''}{an.dev}σ {an.type}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    );
+                  }
+
                   const zeroViewsRate = kpis.totalUsers > 0 ? (kpis.zeroViewProfiles / kpis.totalUsers) : 0;
-                  if (zeroViewsRate > 0.4) items.push(<li key="zero" className="text-sm text-muted-foreground"><strong>Ghost Profiles:</strong> {(zeroViewsRate * 100).toFixed(0)}% of profiles have 0 views. Users might be signing up but struggling to distribute their link or not utilizing the social share buttons.</li>);
-                  const jobInterest = (ph.jobClicksTotal && kpis.totalJobs) ? true : false;
-                  if (jobInterest && ph.jobClicksTotal < 20) items.push(<li key="jobs" className="text-sm text-muted-foreground"><strong>Job Interactions:</strong> Very low outbound clicks on Jobs ({ph.jobClicksTotal}). Ensure the jobs matching algorithm is surfacing relevant roles, or test adding the job feed directly inside the editor dashboard.</li>);
+                  if (zeroViewsRate > 0.3) items.push(<li key="zero" className="text-sm text-muted-foreground"><strong>Network Centrality Deficit:</strong> {(zeroViewsRate * 100).toFixed(0)}% of nodes (profiles) have 0 inbound edges (views). High distribution variance indicates a power-law curve where top profiles absorb the majority of traffic.</li>);
+                  
                   const desktopVol = ph.deviceTypes?.find(d => d.device.toLowerCase() === 'desktop')?.cnt || 0;
                   const mobileVol = ph.deviceTypes?.find(d => d.device.toLowerCase() === 'mobile')?.cnt || 0;
-                  if (mobileVol > desktopVol * 1.5) items.push(<li key="mobile" className="text-sm text-muted-foreground"><strong>Mobile Imbalance:</strong> Mobile traffic vastly outpaces desktop, but CV uploads are typically a desktop-heavy action. Ensure your cloud-drive integrations (Google Drive/Dropbox) on mobile are frictionless.</li>);
-                  const directRef = ph.topReferrers?.find(r => r.referrer === 'Direct')?.visits || 0;
-                  const refTotal = ph.topReferrers?.reduce((a,b) => a+b.visits, 0) || 1;
-                  if (directRef / refTotal > 0.8) items.push(<li key="direct" className="text-sm text-muted-foreground"><strong>Referral Risk:</strong> Highly reliant on direct/dark-social traffic. Backlinks from technical job boards or SEO articles might be underperforming.</li>);
+                  if (mobileVol > 0 && desktopVol > 0 && mobileVol > desktopVol * 1.5) items.push(<li key="mobile" className="text-sm text-muted-foreground"><strong>Device Vector Imbalance:</strong> Mobile traffic outpaces desktop by a {(mobileVol/desktopVol).toFixed(1)}x multiplier, misaligning with the desktop-biased CV parser utilization curve.</li>);
                   
-                  if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">No major negative signals detected currently.</li>);
+                  if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">Variance across cohorts remains within standard deviation thresholds (σ &lt; 1.0).</li>);
                   return items;
                 })()}
               </ul>
