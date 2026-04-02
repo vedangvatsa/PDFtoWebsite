@@ -68,6 +68,31 @@ async function hogql(query: string, name?: string): Promise<any[] | null> {
   }
 }
 
+// ── Data Science Statistical Methods ──
+function calculatePearson(x: number[], y: number[]) {
+  const n = x.length;
+  if(n === 0 || n !== y.length) return 0;
+  const sumX = x.reduce((a,b)=>a+b, 0), sumY = y.reduce((a,b)=>a+b, 0);
+  const sumXY = x.reduce((a,v,i)=>a+v*y[i], 0);
+  const sumX2 = x.reduce((a,b)=>a+b*b, 0), sumY2 = y.reduce((a,b)=>a+b*b, 0);
+  const num = (n*sumXY) - (sumX*sumY);
+  const den = Math.sqrt((n*sumX2 - sumX*sumX) * (n*sumY2 - sumY*sumY));
+  if (den === 0) return 0;
+  return num / den;
+}
+
+function calculateLinearRegression(y: number[]) {
+  const n = y.length;
+  if(n < 2) return { slope: 0, intercept: 0 };
+  const x = Array.from({length: n}, (_,i)=>i);
+  const sumX = x.reduce((a,b)=>a+b,0), sumY = y.reduce((a,b)=>a+b,0);
+  const sumXY = x.reduce((a,v,i)=>a+v*y[i],0);
+  const sumX2 = x.reduce((a,b)=>a+b*b,0);
+  const slope = (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX);
+  const intercept = (sumY - slope*sumX) / n;
+  return { slope, intercept };
+}
+
 export async function GET(request: NextRequest) {
   try {
     // 1. Auth check — verify token from Authorization header
@@ -520,6 +545,42 @@ export async function GET(request: NextRequest) {
     const totalWorkEntries = profiles.reduce((sum: number, p: any) => sum + (Array.isArray(p.experience) ? p.experience.length : 0), 0);
     const totalEduEntries = profiles.reduce((sum: number, p: any) => sum + (Array.isArray(p.education) ? p.education.length : 0), 0);
 
+    // ── Data Science Analysis Engine ──
+    // Correlate Signups with Pageviews
+    let correlation_views_signups = 0;
+    let traffic_velocity_slope = 0;
+    let anomaly_days: { date: string, type: 'surge' | 'drop', dev: number }[] = [];
+    if (phPageviewsByDay && phPageviewsByDay.length > 5 && signupTrend.length > 0) {
+      const viewsMap = new Map(phPageviewsByDay.map((row: any) => [row.day, row.views]));
+      const signupsMap = new Map(signupTrend.map((row) => [row.date, row.count]));
+      const sharedDates = Array.from(viewsMap.keys()).filter(d => signupsMap.has(d)).sort();
+      
+      const viewsData = sharedDates.map(d => viewsMap.get(d) as number);
+      const signupsData = sharedDates.map(d => signupsMap.get(d) as number);
+      correlation_views_signups = calculatePearson(viewsData, signupsData);
+      
+      // Traffic regression (velocity)
+      const slopeAnalysis = calculateLinearRegression(viewsData);
+      traffic_velocity_slope = slopeAnalysis.slope;
+
+      // Anomaly detection (Z-Score)
+      const meanV = viewsData.reduce((a,b)=>a+b,0)/viewsData.length;
+      const stdV = Math.sqrt(viewsData.reduce((a,b)=>a+Math.pow(b-meanV,2),0)/viewsData.length) || 1;
+      sharedDates.forEach(d => {
+        const v = viewsMap.get(d) as number;
+        const z = (v - meanV) / stdV;
+        if (Math.abs(z) > 2) {
+          anomaly_days.push({ date: d, type: z > 0 ? 'surge' : 'drop', dev: Math.round(z * 10) / 10 });
+        }
+      });
+    }
+
+    const dataScience = {
+      correlation_views_signups,
+      traffic_velocity_slope,
+      anomaly_days,
+    };
+
     // ── Product Timeline ──
     const productTimeline = [
       { date: '2026-03-26', tag: 'analytics', title: 'PostHog Deep Analytics for Admin', desc: 'Pageviews, referrers, countries, devices, funnel events, share analytics, profile engagement — all from PostHog HogQL' },
@@ -572,6 +633,7 @@ export async function GET(request: NextRequest) {
       recentUsers,
       productTimeline,
       contactSubmissions,
+      dataScience,
       // ── PostHog analytics (null if key not configured) ──
       posthog: {
         available: !!(PH_API_KEY && PH_PROJECT_ID),
