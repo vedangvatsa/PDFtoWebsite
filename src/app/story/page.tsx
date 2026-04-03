@@ -307,19 +307,19 @@ export default function StoryPage() {
         {/* ═══════ SECTION 2: THE PROBLEM ═══════ */}
         <section className="mb-28">
           <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-[0.2em] mb-6">The problem</p>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-5">Hiring AI talent costs too much, takes too long, and produces poor signal</h2>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-5">Hiring talent costs too much, takes too long, and produces poor signal</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             <div>
               <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85] mb-5">
-                Average U.S. cost per hire is <Cite href="https://www.shrm.org/topics-tools/news/talent-acquisition">$4,800</Cite>. For AI roles, recruiters charge <Cite href="https://www.techneeds.com/">15-30% of first-year salary</Cite>, pushing a single senior hire to $40-60K in fees. AI/ML roles take <Cite href="https://www.roberthalf.com/us/en/insights/salary-guide">89+ days to fill</Cite>.
+                Average U.S. cost per hire is <Cite href="https://www.shrm.org/topics-tools/news/talent-acquisition">$4,800</Cite>. For specialized roles, recruiters charge <Cite href="https://www.techneeds.com/">15-30% of first-year salary</Cite>, pushing a single senior hire to $40-60K in fees. Specialized tech roles take <Cite href="https://www.roberthalf.com/us/en/insights/salary-guide">89+ days to fill</Cite>.
               </p>
               <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85]">
-                The core issue is signal. A search for &quot;AI engineer&quot; on LinkedIn returns interns and principal architects alike. Existing platforms match on keywords, not capability depth.
+                The core issue is signal. A search for &quot;engineer&quot; on LinkedIn returns interns and principal architects alike. Existing platforms match on keywords, not capability depth. The problem is worst in AI and emerging tech, but it applies to every specialized role.
               </p>
             </div>
             <div>
               <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-8">
-                <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-6 text-center">Cost of one AI engineering hire via recruiter</p>
+                <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-6 text-center">Cost of one senior engineering hire via recruiter</p>
                 <CostComparison />
               </div>
             </div>
