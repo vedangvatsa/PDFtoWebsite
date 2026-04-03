@@ -514,7 +514,9 @@ async function fetchLever() {
 // ─── Source: SmartRecruiters (per-company) ───
 const SMARTRECRUITERS_SLUGS = [
   // APAC
-  'Grab',
+  'Grab','DeliveryHero','Wise','Freshworks',
+  // Global with APAC presence
+  'Visa','Canva','ServiceNow',
 ];
 
 async function fetchSmartRecruiters() {
