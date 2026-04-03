@@ -147,7 +147,7 @@ const WORKABLE_SLUGS = [
 // ─── Lever company slugs ───
 const LEVER_SLUGS = [
   // APAC
-  'ninjavan','lalamove','patsnap','immutable','cred','nium',
+  'ninjavan','lalamove','patsnap','immutable','cred','nium','binance',
 ];
 
 // ─── Helpers ───
