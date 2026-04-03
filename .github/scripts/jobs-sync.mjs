@@ -118,7 +118,7 @@ const GREENHOUSE_SLUGS = [
   'shopify','bigcommerce','bolt','faire','klaviyo','attentive',
   'braze','iterable','customer-io','sendgrid',
   // Tier 7 — APAC
-  'xendit','bybit','okx','phonepe',
+  'xendit','bybit','okx','phonepe','agoda','flexport','trivago','mercari',
 ];
 
 // ─── Ashby company slugs ───
