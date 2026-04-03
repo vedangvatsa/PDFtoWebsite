@@ -615,7 +615,7 @@ export default function StoryPage() {
               <div className="space-y-2 mb-6">
                 <p className="text-[13px] text-zinc-500 dark:text-zinc-400 leading-[1.7] flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-600 mt-[7px] shrink-0" />
-                  <span><Cite href="https://veda.ng/media">Speaker</Cite> at IIT Delhi, IIT Kanpur, TUM Munich, ISB Hyderabad, ETH Enugu, India Blockchain Month</span>
+                  <span><Cite href="https://veda.ng/media">Speaker</Cite> at Code Arica Conference, IIT Delhi &amp; Kanpur, TUM Munich, ETH Enugu, Premier AI and Web3 Gala, The Responsible AI Forum, ISB Hyderabad</span>
                 </p>
                 <p className="text-[13px] text-zinc-500 dark:text-zinc-400 leading-[1.7] flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-600 mt-[7px] shrink-0" />
@@ -629,18 +629,6 @@ export default function StoryPage() {
                   <span className="w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-600 mt-[7px] shrink-0" />
                   <span>Recommendation by <Cite href="https://www.youtube.com/watch?v=94aOD3yc2LM">Jack Allison</Cite> (Screenwriter, Oscars 2017). Medal by former Director of Indian PM&apos;s office</span>
                 </p>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {[
-                  'KPMG Consultant',
-                  'Fellow, Royal Society of Arts',
-                  'IIT Alumnus',
-                  'IEEE Published',
-                  'Microsoft for Startups',
-                  'Parliament of India',
-                ].map((tag) => (
-                  <span key={tag} className="px-3 py-1.5 text-[11px] font-medium text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/60 rounded-full">{tag}</span>
-                ))}
               </div>
             </div>
           </div>
