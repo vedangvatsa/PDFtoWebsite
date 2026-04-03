@@ -377,7 +377,7 @@ export default function StoryPage() {
               { n: '1', title: 'Job aggregation engine', points: ['6,000+ listings from 60+ companies', 'Stripe, Anthropic, Airbnb, Coinbase, Cloudflare, Reddit', 'Deduplicated, normalized, tagged with structured skill metadata'] },
               { n: '2', title: 'Structured talent graph', points: ['Every CV upload adds to a queryable professional identity database', 'Skills auto-extracted, normalized, and matched against live listings', 'The graph becomes more valuable with every profile — classic network effect'] },
               { n: '3', title: 'Agent query protocol', points: ['MCP server, llms.txt index, and structured APIs', 'AI agents can search, filter, and retrieve talent programmatically', 'The protocol layer that AI hiring systems standardize around'] },
-              { n: '4', title: 'Agent Hiring Module (planned)', points: ['Embeddable SDK for companies to deploy AI hiring agents', 'Queries our MCP talent endpoint, filters by verified skills', 'Companies integrate once, their AI sources talent 24/7'] },
+              { n: '4', title: 'Agent Hiring Module (planned)', points: ['Embeddable API — companies integrate once, their AI sources talent 24/7', 'Usage-based pricing: per-query and per-seat, like Stripe for hiring', 'Every integration feeds data back into the central talent graph'] },
             ].map((card) => (
               <div key={card.n} className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800/40 bg-white dark:bg-zinc-900/20">
                 <div className="flex items-center gap-3 mb-4">
@@ -557,7 +557,7 @@ export default function StoryPage() {
                 {[
                   { phase: 'Now', items: ['Job aggregation from 60+ companies', 'Structured profile generation from CVs', 'MCP server and AI discovery infrastructure', 'Research-driven content distribution'] },
                   { phase: 'Next phase', items: ['Agent Hiring Module for enterprise integration', 'Employer sourcing dashboard and subscriptions', 'Verified skill assessments'] },
-                  { phase: 'Long-term', items: ['Agent-to-agent hiring protocol', 'White-label agent hiring infrastructure', 'Professional identity layer for all AI-mediated commerce'] },
+                  { phase: 'Long-term', items: ['Open talent protocol — any AI system can query verified professional identities', 'Agent-to-agent hiring: company agents publish requirements, candidate agents respond', 'The identity layer underneath all AI-mediated professional commerce'] },
                 ].map((phase, i) => (
                   <div key={i} className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800/40 bg-white dark:bg-zinc-900/20">
                     <div className="flex items-center gap-3 mb-3">
