@@ -734,15 +734,36 @@ async function fetchFoorilla() {
 
   // Use multiple keyword queries as separate "sessions" to bypass pagination cap
   const KEYWORDS = [
-    '', // default/no filter (first 50)
-    'engineer', 'developer', 'frontend', 'backend', 'fullstack', 'devops',
-    'data', 'machine learning', 'ai', 'python', 'javascript', 'react',
-    'node', 'golang', 'rust', 'java', 'ios', 'android', 'mobile',
-    'cloud', 'aws', 'security', 'design', 'product', 'manager',
-    'marketing', 'sales', 'support', 'analyst', 'qa',
-    'kubernetes', 'docker', 'typescript', 'ruby', 'php', 'c++',
-    'blockchain', 'web3', 'crypto', 'fintech',
-    'remote', 'senior', 'staff', 'lead', 'principal', 'intern',
+    '', // default
+    // Roles
+    'engineer','developer','frontend','backend','fullstack','devops','sre','platform',
+    'data','machine learning','ai','ml','nlp','deep learning','computer vision',
+    'product','designer','ux','ui','design','researcher','scientist',
+    'manager','director','vp','head','lead','principal','staff','senior','junior','intern',
+    'analyst','qa','tester','automation','quality',
+    'marketing','growth','seo','content','copywriter','social media',
+    'sales','account','business development','partnerships','customer success',
+    'support','operations','finance','hr','recruiting','people',
+    'legal','compliance','security','infosec','cybersecurity',
+    // Languages & Frameworks
+    'python','javascript','typescript','react','angular','vue','svelte',
+    'node','golang','go','rust','java','kotlin','swift','scala','elixir',
+    'ruby','rails','php','laravel','c++','c#','.net','sql',
+    'nextjs','remix','nuxt','django','flask','fastapi','spring',
+    // Infra & Cloud
+    'cloud','aws','azure','gcp','kubernetes','docker','terraform','ansible',
+    'linux','networking','database','postgresql','mongodb','redis','kafka',
+    'api','microservices','distributed','infrastructure',
+    // Domains
+    'blockchain','web3','crypto','defi','nft','smart contract','solidity',
+    'fintech','healthtech','edtech','biotech','gaming','ecommerce',
+    'mobile','ios','android','flutter','react native',
+    'embedded','firmware','hardware','robotics','iot',
+    // Misc
+    'remote','hybrid','onsite','contract','freelance','part time',
+    'startup','series','venture','saas','b2b','b2c',
+    'singapore','london','berlin','amsterdam','toronto','sydney','tokyo',
+    'india','europe','asia','apac','latam','africa',
   ];
 
   try {
@@ -777,8 +798,8 @@ async function fetchFoorilla() {
     });
     await workerPool(keywordTasks, 10);
 
-    // Also paginate the default listing for pages 2-5
-    for (let page = 2; page <= 5; page++) {
+    // Also paginate the default listing for pages 2-20
+    for (let page = 2; page <= 20; page++) {
       const res = await fetch(`https://foorilla.com/hiring/jobs/?page=${page}`, { headers: { 'HX-Request': 'true' } });
       if (!res.ok) break;
       const html = await res.text();
