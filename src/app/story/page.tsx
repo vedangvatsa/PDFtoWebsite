@@ -41,7 +41,7 @@ function BigNum({ value, label, href, sub }: { value: string; label: string; hre
   const inner = (
     <div className="text-center">
       <div className="text-5xl sm:text-6xl font-serif font-bold text-zinc-900 dark:text-zinc-50 tracking-tight leading-none">{value}</div>
-      <div className="text-sm text-zinc-500 dark:text-zinc-400 mt-3 leading-relaxed">{label}</div>
+      <div className="text-[13px] text-zinc-500 dark:text-zinc-400 mt-3 leading-relaxed break-words">{label}</div>
       {sub && <div className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-1">{sub}</div>}
     </div>
   );
@@ -112,7 +112,7 @@ function MarketGrowthChart() {
         const y = top + chartH - bH;
         return (<g key={i}><rect x={x} y={y} width={barW} height={bH} rx={4} className={i >= 4 ? 'fill-zinc-300 dark:fill-zinc-700' : 'fill-zinc-900 dark:fill-zinc-100'} /><text x={x + barW / 2} y={y - 8} textAnchor="middle" className="fill-zinc-700 dark:fill-zinc-300 text-[10px] font-semibold" fontFamily="inherit">{d.label}</text><text x={x + barW / 2} y={top + chartH + 28} textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400 text-[10px]" fontFamily="inherit">{d.year}</text></g>);
       })}
-      <text x={totalW - 12} y={top + chartH + 46} textAnchor="end" className="fill-zinc-400 dark:fill-zinc-500 text-[8px]" fontFamily="inherit">*Projected. Sources: Research Nester, Mordor Intelligence</text>
+      <text x={totalW - 12} y={top + chartH + 46} textAnchor="end" className="fill-zinc-400 dark:fill-zinc-500 text-[7px]" fontFamily="inherit">*Projected. Sources: Research Nester, Mordor Intelligence</text>
     </svg>
   );
 }
@@ -246,10 +246,10 @@ export default function StoryPage() {
         {/* ─── BIG NUMBERS ─── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-200 dark:bg-zinc-800/50 rounded-2xl overflow-hidden mb-28">
           {[
-            { value: '$11.8B', label: 'Autonomous agent market, projected 2026', href: 'https://www.researchnester.com/reports/autonomous-ai-agents-market/6660', sub: 'Research Nester' },
-            { value: '143%', label: 'YoY growth in AI engineer job postings, 2025', href: 'https://www.kore1.com/', sub: 'Kore1' },
-            { value: '89+', label: 'Days to fill an AI/ML engineering role', href: 'https://www.roberthalf.com/us/en/insights/salary-guide', sub: 'Robert Half' },
-            { value: '$200K+', label: 'Median total comp, senior AI engineer', href: 'https://www.levels.fyi/2025/', sub: 'Levels.fyi' },
+            { value: '$11.8B', label: 'Autonomous agent market, 2026 projected', href: 'https://www.researchnester.com/reports/autonomous-ai-agents-market/6660', sub: 'Research Nester' },
+            { value: '143%', label: 'YoY growth in AI engineer postings', href: 'https://www.kore1.com/', sub: 'Kore1' },
+            { value: '89+', label: 'Avg days to fill an AI role', href: 'https://www.roberthalf.com/us/en/insights/salary-guide', sub: 'Robert Half' },
+            { value: '$200K+', label: 'Median total comp, senior AI eng.', href: 'https://www.levels.fyi/2025/', sub: 'Levels.fyi' },
           ].map((d, i) => (
             <div key={i} className="bg-[#fafafa] dark:bg-black p-8 sm:p-10">
               <BigNum {...d} />
