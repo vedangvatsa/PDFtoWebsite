@@ -1,4 +1,4 @@
-// Remote Jobs Sync Script — fetches from 8 sources, deduplicates, upserts to Supabase
+// Remote Jobs Sync Script — fetches from 9 sources, deduplicates, upserts to Supabase
 // Run via: node .github/scripts/jobs-sync.mjs
 // Env: SUPABASE_URL, SUPABASE_KEY (service role)
 
@@ -511,6 +511,60 @@ async function fetchLever() {
   return jobs;
 }
 
+// ─── Source: SmartRecruiters (per-company) ───
+const SMARTRECRUITERS_SLUGS = [
+  // APAC
+  'Grab',
+];
+
+async function fetchSmartRecruiters() {
+  console.log('\n── SmartRecruiters ──');
+  const jobs = [];
+
+  for (const slug of SMARTRECRUITERS_SLUGS) {
+    try {
+      let offset = 0;
+      let total = 0;
+      do {
+        const res = await fetch(`https://api.smartrecruiters.com/v1/companies/${slug}/postings?limit=100&offset=${offset}`);
+        if (!res.ok) { console.log(`  ⚠ ${slug}: ${res.status}`); break; }
+        const data = await res.json();
+        total = data.totalFound || 0;
+        for (const j of (data.content || [])) {
+          const loc = j.location || {};
+          const city = loc.city || '';
+          const country = loc.country || '';
+          const location = [city, country].filter(Boolean).join(', ') || 'Remote';
+          jobs.push({
+            source: 'smartrecruiters',
+            external_id: `sr_${slug}_${j.id || j.uuid}`,
+            dedup_hash: dedupHash(j.company?.name || slug, j.name || ''),
+            title: (j.name || '').trim(),
+            company: j.company?.name || slug,
+            company_logo: null,
+            location,
+            job_type: j.typeOfEmployment?.label || null,
+            salary: null,
+            description: null,
+            tags: extractTags(j.name || ''),
+            apply_url: j.ref || `https://careers.smartrecruiters.com/${slug}/${j.id}`,
+            category: j.department?.label || j.function?.label || null,
+            published_at: j.releasedDate || null,
+          });
+        }
+        offset += 100;
+        await sleep(500);
+      } while (offset < total && offset < 1000);
+      console.log(`  ✅ ${slug}: ${Math.min(total, jobs.length)} jobs`);
+    } catch (e) {
+      console.log(`  ⚠ ${slug}: ${e.message}`);
+    }
+  }
+
+  console.log(`  Total: ${jobs.length} jobs from SmartRecruiters`);
+  return jobs;
+}
+
 // ─── Source: Workday (per-company, POST API) ───
 const WORKDAY_BOARDS = [
   { slug: 'propertyguru', host: 'propertyguru.wd105.myworkdayjobs.com', path: 'PropertyGuru', company: 'PropertyGuru' },
@@ -763,11 +817,12 @@ async function main() {
   const ashby = await fetchAshby();
   const workable = await fetchWorkable();
   const lever = await fetchLever();
+  const smartrecruiters = await fetchSmartRecruiters();
   const workday = await fetchWorkday();
   const foorilla = await fetchFoorilla();
 
   // Merge all jobs — priority order (first seen wins dedup via DB constraint)
-  const allJobs = [...remotive, ...himalayas, ...jobicy, ...greenhouse, ...ashby, ...workable, ...lever, ...workday, ...foorilla];
+  const allJobs = [...remotive, ...himalayas, ...jobicy, ...greenhouse, ...ashby, ...workable, ...lever, ...smartrecruiters, ...workday, ...foorilla];
   console.log(`\n📊 Total jobs collected: ${allJobs.length}`);
 
   // Filter out invalid entries
