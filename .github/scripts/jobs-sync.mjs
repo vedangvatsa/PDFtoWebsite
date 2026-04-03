@@ -131,6 +131,14 @@ const ASHBY_SLUGS = [
   'retool','airplane','internal','tooljet','appsmith',
   // APAC
   'airwallex','mindvalley',
+  // AI/ML
+  'openai','perplexity','cohere','cursor','replit',
+  // Cloud/Infra
+  'snowflake','confluent','sentry',
+  // Fintech/HR
+  'plaid','deel','lemonade',
+  // Productivity
+  'clickup','n8n',
 ];
 
 // ─── Workable company slugs ───
