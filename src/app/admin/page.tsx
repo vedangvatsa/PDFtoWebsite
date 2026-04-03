@@ -590,6 +590,31 @@ export default function AdminPage() {
                   if (cvRatio > 0) {
                      items.push(<li key="cv" className="text-sm text-muted-foreground"><strong>Drop-off Coefficient:</strong> {(cvRatio * 100).toFixed(0)}% retention from parser initialization to database persistence, indicating UI friction delta.</li>);
                   }
+
+                  // Engagement Concentration (top profiles vs total)
+                  if (topProfiles.length > 0 && kpis.totalViews > 0) {
+                    const topViewsSum = topProfiles.reduce((s: number, p: any) => s + p.views, 0);
+                    const concentration = topViewsSum / kpis.totalViews;
+                    items.push(<li key="gini" className="text-sm text-muted-foreground"><strong>Engagement Concentration:</strong> Top {topProfiles.length} profiles capture {(concentration * 100).toFixed(0)}% of all views ({topViewsSum.toLocaleString()} of {kpis.totalViews.toLocaleString()}). {concentration > 0.8 ? 'Extreme concentration: a handful of profiles absorb nearly all traffic. Distribution follows a power-law pattern typical of early-stage platforms.' : concentration > 0.5 ? 'Moderate concentration. Views are spreading across profiles but top performers still dominate.' : 'Healthy distribution: views are relatively spread across the user base.'}</li>);
+                  }
+
+                  // Skill Density Distribution
+                  if (kpis.avgSkillsPerUser > 0) {
+                    const skillDensity = kpis.avgSkillsPerUser;
+                    items.push(<li key="skill" className="text-sm text-muted-foreground"><strong>Skill Density Index:</strong> {skillDensity} skills/user average. {skillDensity > 8 ? 'High signal density indicates users are investing effort in structured profiles, improving matching accuracy.' : skillDensity > 4 ? 'Moderate skill density. Profiles contain enough data points for meaningful skill-based filtering.' : 'Low skill density. Consider prompting users to add more skills during onboarding to improve match quality.'}</li>);
+                  }
+
+                  // Profile Freshness Index
+                  const freshnessRate = kpis.totalUsers > 0 ? (kpis.usersUpdatedLast7d / kpis.totalUsers) : 0;
+                  items.push(<li key="fresh" className="text-sm text-muted-foreground"><strong>Profile Freshness Index:</strong> {(freshnessRate * 100).toFixed(0)}% of profiles updated in the last 7 days. {freshnessRate > 0.3 ? 'Healthy recency signal. Active user base is maintaining profile freshness, which directly improves data quality for employer queries.' : freshnessRate > 0.1 ? 'Moderate freshness. Consider re-engagement prompts for dormant profiles to maintain data currency.' : 'Low freshness rate signals a retention gap. Users are creating profiles but not returning to update them.'}</li>);
+
+                  // Signup acceleration (7d vs previous 7d)
+                  if (signupTrend.length >= 14) {
+                    const last7 = signupTrend.slice(-7).reduce((s, d) => s + d.count, 0);
+                    const prev7 = signupTrend.slice(-14, -7).reduce((s, d) => s + d.count, 0);
+                    const accel = prev7 > 0 ? ((last7 - prev7) / prev7 * 100) : (last7 > 0 ? 100 : 0);
+                    items.push(<li key="accel" className="text-sm text-muted-foreground"><strong>Signup Acceleration:</strong> {accel > 0 ? '+' : ''}{accel.toFixed(0)}% week-over-week. {last7} signups this week vs {prev7} prior week. {accel > 20 ? 'Growth is accelerating, indicating effective acquisition channels.' : accel > -10 ? 'Growth is holding steady at the current baseline.' : 'Deceleration detected. Review acquisition channels and referral sources for drop-off.'}</li>);
+                  }
                   
                   if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">Gathering sufficient timeline arrays to compute regression matrices.</li>);
                   return items;
@@ -599,7 +624,7 @@ export default function AdminPage() {
             
             <div className="p-5 rounded-xl border border-border/50 bg-amber-500/5">
               <h3 className="text-sm font-semibold flex items-center gap-2 text-amber-700 dark:text-amber-400 mb-4">
-                <Globe className="h-4 w-4" /> Anomaly & Variance Detection
+                <Globe className="h-4 w-4" /> Anomaly &amp; Variance Detection
               </h3>
               <ul className="space-y-3">
                 {(() => {
@@ -612,7 +637,7 @@ export default function AdminPage() {
                         <strong>Z-Score Anomalies (σ &gt; 2.0):</strong> Detected {ds.anomaly_days.length} statistically significant deviances from the moving average.
                         <ul className="mt-2 space-y-1 ml-4 list-disc text-xs opacity-80">
                           {ds.anomaly_days.map((an: any, i: number) => (
-                            <li key={i}>{new Date(an.date).toLocaleDateString()} — {an.type === 'surge' ? '+' : ''}{an.dev}σ {an.type}</li>
+                            <li key={i}>{new Date(an.date).toLocaleDateString()} - {an.type === 'surge' ? '+' : ''}{an.dev}σ {an.type}</li>
                           ))}
                         </ul>
                       </li>
@@ -624,7 +649,45 @@ export default function AdminPage() {
                   
                   const desktopVol = ph.deviceTypes?.find(d => d.device.toLowerCase() === 'desktop')?.cnt || 0;
                   const mobileVol = ph.deviceTypes?.find(d => d.device.toLowerCase() === 'mobile')?.cnt || 0;
-                  if (mobileVol > 0 && desktopVol > 0 && mobileVol > desktopVol * 1.5) items.push(<li key="mobile" className="text-sm text-muted-foreground"><strong>Device Vector Imbalance:</strong> Mobile traffic outpaces desktop by a {(mobileVol/desktopVol).toFixed(1)}x multiplier, misaligning with the desktop-biased CV parser utilization curve.</li>);
+                  if (mobileVol > 0 && desktopVol > 0) {
+                    const ratio = mobileVol / desktopVol;
+                    items.push(<li key="mobile" className="text-sm text-muted-foreground"><strong>Device Vector Imbalance:</strong> Mobile-to-desktop ratio is {ratio.toFixed(1)}x. {ratio > 1.5 ? 'Mobile traffic significantly outpaces desktop, misaligning with the desktop-biased CV parser utilization curve. Consider mobile-first parsing UX.' : ratio < 0.7 ? 'Desktop-heavy traffic aligns well with CV editing workflows but indicates limited mobile discovery channels.' : 'Balanced device distribution suggests healthy multi-channel acquisition.'}</li>);
+                  }
+
+                  // Content Completeness Skew
+                  const photoRate = kpis.totalUsers > 0 ? (kpis.usersWithPhoto / kpis.totalUsers) : 0;
+                  const expRate = kpis.totalUsers > 0 ? (kpis.usersWithExperience / kpis.totalUsers) : 0;
+                  const eduRate = kpis.totalUsers > 0 ? (kpis.usersWithEducation / kpis.totalUsers) : 0;
+                  const skillRate = kpis.totalUsers > 0 ? (kpis.usersWithSkills / kpis.totalUsers) : 0;
+                  const rates = [photoRate, expRate, eduRate, skillRate];
+                  const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+                  const completenessVariance = Math.sqrt(rates.reduce((a, b) => a + Math.pow(b - avgRate, 2), 0) / rates.length);
+                  items.push(<li key="complete" className="text-sm text-muted-foreground"><strong>Completeness Skew (σ):</strong> {completenessVariance.toFixed(2)} across 4 profile dimensions (photo {(photoRate*100).toFixed(0)}%, experience {(expRate*100).toFixed(0)}%, education {(eduRate*100).toFixed(0)}%, skills {(skillRate*100).toFixed(0)}%). {completenessVariance > 0.2 ? 'High variance suggests users complete some fields but abandon others. Target the lowest-completion field in onboarding prompts.' : 'Low variance indicates consistent profile completion behavior.'}</li>);
+
+                  // Referrer Concentration (HHI)
+                  if (ph.topReferrers && ph.topReferrers.length > 1) {
+                    const totalRefs = ph.topReferrers.reduce((s: number, r: any) => s + r.visits, 0);
+                    if (totalRefs > 0) {
+                      const hhi = ph.topReferrers.reduce((s: number, r: any) => {
+                        const share = r.visits / totalRefs;
+                        return s + share * share;
+                      }, 0);
+                      items.push(<li key="hhi" className="text-sm text-muted-foreground"><strong>Referrer Concentration (HHI):</strong> {(hhi * 10000).toFixed(0)} / 10,000. {hhi > 0.25 ? 'High concentration: traffic depends on 1-2 dominant sources. Diversify acquisition to reduce single-channel risk.' : hhi > 0.15 ? 'Moderate concentration. Primary channels are effective but expansion would reduce dependency risk.' : 'Healthy distribution across multiple referral sources.'}</li>);
+                    }
+                  }
+
+                  // Geographic Concentration
+                  if (ph.topCountries && ph.topCountries.length > 1) {
+                    const totalGeo = ph.topCountries.reduce((s: number, c: any) => s + c.visits, 0);
+                    const topCountryShare = totalGeo > 0 ? (ph.topCountries[0].visits / totalGeo) : 0;
+                    items.push(<li key="geo" className="text-sm text-muted-foreground"><strong>Geographic Concentration:</strong> {ph.topCountries[0].country} accounts for {(topCountryShare * 100).toFixed(0)}% of traffic across {ph.topCountries.length} detected countries. {topCountryShare > 0.6 ? 'Single-market dominance. International expansion would diversify the user base and reduce geographic risk.' : 'Distributed across multiple regions, indicating global appeal.'}</li>);
+                  }
+
+                  // Work-to-Education Ratio
+                  if (kpis.totalWorkEntries > 0 || kpis.totalEduEntries > 0) {
+                    const weRatio = kpis.totalEduEntries > 0 ? (kpis.totalWorkEntries / kpis.totalEduEntries) : kpis.totalWorkEntries;
+                    items.push(<li key="weratio" className="text-sm text-muted-foreground"><strong>Work-to-Education Ratio:</strong> {weRatio.toFixed(1)}x ({kpis.totalWorkEntries} work entries vs {kpis.totalEduEntries} education entries). {weRatio > 3 ? 'Experienced professional user base. Users prioritize work history over credentials, typical of mid-career and senior profiles.' : weRatio > 1.5 ? 'Balanced mix of professional experience and educational background. Healthy distribution for a talent platform.' : 'Education-heavy profiles suggest early-career users or recent graduates dominate the user base.'}</li>);
+                  }
                   
                   if (items.length === 0) items.push(<li key="none" className="text-sm text-muted-foreground">Variance across cohorts remains within standard deviation thresholds (σ &lt; 1.0).</li>);
                   return items;
