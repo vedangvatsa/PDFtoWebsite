@@ -232,7 +232,7 @@ export default function StoryPage() {
               Talent infrastructure<br />for the agentic era
             </h1>
             <p className="text-[17px] text-zinc-500 dark:text-zinc-400 leading-[1.8]">
-              <Cite href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner projects</Cite> that 40% of enterprise applications will embed AI agents by the end of 2026, up from under 5% in 2025. <Cite href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">McKinsey reports</Cite> that 62% of organizations are already experimenting with autonomous systems. Every one of these companies needs to hire engineers who can build them. The recruitment infrastructure for this talent pool does not exist yet. We are building it.
+              CVin.Bio turns any CV into a structured, AI-readable web profile and matches candidates to 6,000+ live job listings. The profile format is built for both humans and AI agents — schema.org markup, MCP integration, and machine-readable skill data. As <Cite href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner projects</Cite> 40% of enterprise apps will embed AI agents by EOY 2026, recruitment infrastructure needs to be machine-queryable from day one. We are building that layer.
             </p>
           </div>
           <div className="hidden lg:block">
@@ -248,8 +248,8 @@ export default function StoryPage() {
           {[
             { value: '$11.8B', label: 'Autonomous agent market, 2026 projected', href: 'https://www.researchnester.com/reports/autonomous-ai-agents-market/6660', sub: 'Research Nester' },
             { value: '143%', label: 'YoY growth in AI engineer postings', href: 'https://www.kore1.com/', sub: 'Kore1' },
-            { value: '89+', label: 'Avg days to fill an AI role', href: 'https://www.roberthalf.com/us/en/insights/salary-guide', sub: 'Robert Half' },
-            { value: '$200K+', label: 'Median total comp, senior AI eng.', href: 'https://www.levels.fyi/2025/', sub: 'Levels.fyi' },
+            { value: '89+', label: 'Avg days to fill a specialist tech role', href: 'https://www.roberthalf.com/us/en/insights/salary-guide', sub: 'Robert Half' },
+            { value: '$200K+', label: 'Median total comp, senior eng.', href: 'https://www.levels.fyi/2025/', sub: 'Levels.fyi' },
           ].map((d, i) => (
             <div key={i} className="bg-[#fafafa] dark:bg-black p-8 sm:p-10">
               <BigNum {...d} />
@@ -325,7 +325,7 @@ export default function StoryPage() {
             </div>
           </div>
 
-          <Callout>For a single $200K AI engineering hire, the recruiter fee alone can exceed $50,000. And it still takes three months.</Callout>
+          <Callout>For a single $200K engineering hire, the recruiter fee alone can exceed $50,000. And it still takes three months.</Callout>
 
           <Sources>
             <Cite href="https://www.shrm.org/topics-tools/news/talent-acquisition">SHRM</Cite> · <Cite href="https://www.techneeds.com/">TechNeeds</Cite> · <Cite href="https://www.roberthalf.com/us/en/insights/salary-guide">Robert Half 2026</Cite> · <Cite href="https://www.levels.fyi/2025/">Levels.fyi</Cite>
