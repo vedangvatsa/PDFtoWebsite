@@ -500,7 +500,7 @@ export default function TechTalentReport() {
                 14.7% of listings require security skills, yet only 1% of roles are dedicated security positions. This is consistent with the <Cite href="https://economicgraph.linkedin.com/">LinkedIn</Cite> trend toward skills-based hiring, where companies want capabilities distributed across teams rather than concentrated in specialist groups.
               </p>
               <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85]">
-                Go appears in 7.5% of listings, Python in 6.4%, SQL in 3.7%. Go&apos;s strength is driven by the infrastructure-heavy companies in our dataset. The Stack Overflow survey still shows JavaScript and Python as the most widely used languages overall.
+                Go appears in 8.9% of listings, Python in 6.4%, SQL in 5.2%. Go&apos;s strength is driven by the infrastructure-heavy companies in our dataset. The Stack Overflow survey still shows JavaScript and Python as the most widely used languages overall.
               </p>
             </div>
             <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-8">
@@ -518,7 +518,7 @@ export default function TechTalentReport() {
               { label: 'Security', value: 14.7, color: '#52525B' },
               { label: 'Growth', value: 14.5, color: '#71717A' },
               { label: 'Infrastructure', value: 12.1, color: '#A1A1AA' },
-              { label: 'Go', value: 7.5, color: '#D4D4D8' },
+              { label: 'Go', value: 8.9, color: '#D4D4D8' },
               { label: 'Python', value: 6.4, color: '#E4E4E7' },
             ]} unit="%" />
           </div>
@@ -532,29 +532,29 @@ export default function TechTalentReport() {
           <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-5">Go is the most tagged language, not Python</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-5">
             <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85] lg:col-span-3">
-              Go appears in 8.1% of tagged listings, ahead of Python (6.4%), SQL (3.8%), and JavaScript (2.6%). This is surprising given that the <Cite href="https://survey.stackoverflow.co/2025/">Stack Overflow survey</Cite> shows JavaScript and Python as the most widely used languages globally. Our dataset&apos;s Go dominance reflects the infrastructure-heavy companies we track, including Cloudflare, Datadog, and CrowdStrike. Java appears in 3.6% of India-based titles, higher than any other region by 3x. TypeScript (2.2%) is approaching JavaScript (2.6%) in tag frequency, which may indicate the migration from JS to TS is nearly complete at these companies. Blockchain and Web3 appear in 0.3% of titles, concentrated at Binance (54% of all blockchain roles), OKX, and Coinbase. Singapore has the highest web3 tag density at 0.5%.
+              Go appears in 8.9% of tagged listings, ahead of Python (6.4%), SQL (5.2%), and JavaScript (1.9%). This is surprising given that the <Cite href="https://survey.stackoverflow.co/2025/">Stack Overflow survey</Cite> shows JavaScript and Python as the most widely used languages globally. Our dataset&apos;s Go dominance reflects the infrastructure-heavy companies we track, including Cloudflare, Datadog, and CrowdStrike. Java appears in 3.9% of listings, with India-based titles showing the highest density. TypeScript (2.1%) has effectively overtaken JavaScript (1.9%) in tag frequency, confirming the migration from JS to TS is now complete at these companies. Blockchain and Web3 appear in 0.3% of titles, concentrated at Binance (54% of all blockchain roles), OKX, and Coinbase. Singapore has the highest web3 tag density at 0.5%.
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-6">
               <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-4">Languages by tag frequency</p>
               <HBar data={[
-                { label: 'Go', value: 8.1, color: '#18181B' },
+                { label: 'Go', value: 8.9, color: '#18181B' },
                 { label: 'Python', value: 6.4, color: '#18181B' },
-                { label: 'SQL', value: 3.8, color: '#18181B' },
-                { label: 'JavaScript', value: 2.6, color: '#18181B' },
-                { label: 'Java', value: 2.4, color: '#18181B' },
-                { label: 'TypeScript', value: 2.2, color: '#18181B' },
+                { label: 'SQL', value: 5.2, color: '#18181B' },
+                { label: 'Java', value: 3.9, color: '#18181B' },
+                { label: 'TypeScript', value: 2.1, color: '#18181B' },
+                { label: 'JavaScript', value: 1.9, color: '#18181B' },
               ]} unit="%" />
             </div>
             <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-6">
               <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-4">Niche but notable</p>
               <HBar data={[
                 { label: 'Rust', value: 0.9, color: '#18181B' },
-                { label: 'Kotlin', value: 0.8, color: '#18181B' },
-                { label: 'C++', value: 0.7, color: '#18181B' },
-                { label: 'C#/.NET', value: 0.5, color: '#18181B' },
-                { label: 'Ruby', value: 0.4, color: '#18181B' },
+                { label: 'Kotlin', value: 0.6, color: '#18181B' },
+                { label: 'Ruby', value: 0.3, color: '#18181B' },
+                { label: 'C#/.NET', value: 0.2, color: '#18181B' },
+                { label: 'C++', value: 0.2, color: '#18181B' },
                 { label: 'Solidity', value: 0.1, color: '#18181B' },
               ]} unit="%" />
             </div>
@@ -906,7 +906,7 @@ export default function TechTalentReport() {
               { n: '03', title: 'AI skills are table stakes', body: '25% of listings require AI/ML. 40% of engineering listings tag AI. Even 23% of sales roles now require AI literacy.' },
               { n: '04', title: 'Entry-level hiring is thin', body: '2.7% of listings target interns or new grads. LinkedIn confirms this is a market-wide pattern. Companies are prioritizing experienced hires.' },
               { n: '05', title: 'Security is embedded, not siloed', body: '14.7% of listings require security skills, but only 2.8% are dedicated security roles. The skill is being distributed across teams.' },
-              { n: '06', title: 'Go is the third language', body: 'Go appears in 8.1% of tagged listings, behind only Python (6.4%) and SQL (3.8%). Cloudflare, Datadog, and similar firms treat it as the default.' },
+              { n: '06', title: 'Go is the top tagged language', body: 'Go appears in 8.9% of tagged listings, ahead of Python (6.4%) and SQL (5.2%). Cloudflare, Datadog, and similar firms treat it as the default.' },
               { n: '07', title: 'Backend is the most remote-friendly spec', body: '23% of backend roles are remote vs 8.6% for AI Engineer roles. Cloud roles have the highest remote rate at 30%.' },
               { n: '08', title: 'Blockchain hiring is alive but concentrated', body: 'Web3 and blockchain appear in 0.3% of titles. Binance alone accounts for 54% of all blockchain roles. Singapore has the highest web3 tag density at 0.5%.' },
             ].map((item, i) => (
