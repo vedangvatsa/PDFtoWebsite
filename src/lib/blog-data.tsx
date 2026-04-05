@@ -41,8 +41,8 @@ export const blogPosts: BlogPost[] = [
       { question: 'What is the Model Context Protocol and why does it matter for recruiting?', answer: 'MCP is an open standard from Anthropic that gives AI agents a standard way to connect to external databases. Recruiting platforms with MCP servers let agents like Claude and ChatGPT search their candidate data using plain language queries.' },
     ],
     author: {
-      name: 'Vedang V.',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
+      name: 'CVin.Bio Team',
+      avatarUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&q=80'
     },
     content: (
       <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
