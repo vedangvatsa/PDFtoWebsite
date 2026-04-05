@@ -4,7 +4,7 @@ export default function MicroFooter() {
   return (
     <footer className="w-full py-6 mt-auto">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-center space-x-4 text-xs text-muted-foreground/60">
-        <Link href="/terms" className="hover:text-muted-foreground transition-colors">Terms &amp; Privacy</Link>
+        <Link href="/terms" className="hover:text-muted-foreground transition-colors">Terms</Link>
         <span>&middot;</span>
         <Link href="/blog" className="hover:text-muted-foreground transition-colors">Insights</Link>
         <span>&middot;</span>
