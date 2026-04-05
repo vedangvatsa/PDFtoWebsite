@@ -36,8 +36,15 @@ export default function Home() {
   const router = useRouter();
   const [isProcessingFile, setIsProcessingFile] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [jobCount, setJobCount] = useState<number | null>(null);
 
   useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    fetch('/api/jobs?limit=1').then(r => r.json()).then(d => {
+      if (d.total) setJobCount(d.total);
+    }).catch(() => {});
+  }, []);
 
   // If user lands here after OAuth with pending resume data, redirect to editor
   useEffect(() => {
@@ -181,7 +188,7 @@ export default function Home() {
                 <span className="text-muted-foreground/30 text-lg mt-1">→</span>
                 <StepIndicator num={2} label="Get a webpage" desc="Ready to share" />
                 <span className="text-muted-foreground/30 text-lg mt-1">→</span>
-                <StepIndicator num={3} label="Get matched" desc="6,000+ jobs" />
+                <StepIndicator num={3} label="Get matched" desc={jobCount ? `${Math.floor(jobCount / 100) * 100}+ jobs` : 'Thousands of jobs'} />
               </div>
             </>
           )}
