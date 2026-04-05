@@ -94,6 +94,13 @@ export default function TermsPage() {
             </p>
           </section>
 
+          <section>
+            <h3 className="text-xl font-bold text-foreground mb-3">8a. Job Board Disclaimer</h3>
+            <p>
+              CVin.Bio is not affiliated with, endorsed by, or sponsored by any of the employers listed on our Job Board. Job listings are aggregated from publicly available career pages and applicant tracking systems. CVin.Bio does not guarantee the accuracy, availability, or completeness of any job listing. Users are encouraged to verify all details directly with the hiring company before applying.
+            </p>
+          </section>
+
           {/* ── Privacy Policy ── */}
           <h2 id="privacy" className="text-2xl font-extrabold text-foreground mb-4 pt-8 border-t scroll-mt-20">Privacy Policy</h2>
 
@@ -101,9 +108,9 @@ export default function TermsPage() {
             <h3 className="text-xl font-bold text-foreground mb-3">9. Information We Collect</h3>
             <ul className="list-disc pl-5 space-y-2 mt-2">
               <li><strong>Personal Information:</strong> When you register an account, we may collect identifiable information such as your name, email address, and authentication data provided by third-party identity providers.</li>
-              <li><strong>Resume and Profile Data:</strong> To help generate your personal website, we may collect information contained within the resumes or CVs you upload. This can include your employment history, educational background, skills, and profile photos.</li>
+              <li><strong>Resume and Profile Data:</strong> When you upload a resume or CV, we process the document using AI-powered parsing to extract structured data including your name, contact details, employment history, educational background, skills, and profile photos. The original uploaded file is not stored permanently; only the extracted structured data is retained in your profile. You certify that any document you upload contains your own information and that you have the right to share it.</li>
               <li><strong>Usage Data:</strong> We might collect automatic information about how you interact with our platform, including IP addresses, browser types, and page views, to help us understand use patterns and improve our service.</li>
-              <li><strong>Cookies and Tracking:</strong> We may use cookies to help maintain your session and authentication status. We strive to avoid employing invasive third-party tracking cookies where possible.</li>
+              <li><strong>Cookies and Tracking:</strong> We use essential cookies to maintain your session and authentication status. We also use PostHog for product analytics, which may set cookies to track anonymized usage patterns. We do not use invasive third-party advertising cookies. You can manage cookie preferences through your browser settings. By continuing to use the Service, you consent to our use of essential and analytics cookies.</li>
             </ul>
           </section>
 
@@ -141,8 +148,11 @@ export default function TermsPage() {
             <h3 className="text-xl font-bold text-foreground mb-3">13. Your Data Rights</h3>
             <ul className="list-disc pl-5 space-y-2 mt-2">
               <li><strong>Access and Modify:</strong> You can edit your work history, skills, links, and personal information whenever you wish via the Editor.</li>
-              <li><strong>Right to Erasure:</strong> You can permanently delete your account. This instantly removes your profile from our active databases.</li>
-              <li><strong>Withdraw Consent:</strong> You can unpublish or delete your profile at any time to withdraw it from public view.</li>
+              <li><strong>Data Export:</strong> You can access all your profile data at any time through your Editor dashboard.</li>
+              <li><strong>Right to Erasure (Right to be Forgotten):</strong> You can permanently delete your account and all associated data at any time. Upon deletion, your profile is immediately removed from public view and all personal data — including parsed resume data, profile information, analytics, and any uploaded media — is permanently purged from our active databases within 30 days. Cached copies in CDN or search engine indexes may take additional time to expire but are not within our control.</li>
+              <li><strong>Withdraw Consent:</strong> You can unpublish or delete your profile at any time to withdraw it from public view and AI agent indexing.</li>
+              <li><strong>Data Portability:</strong> Upon request to hi@cvin.bio, we can provide a machine-readable export of your personal data.</li>
+              <li><strong>Cookie Management:</strong> You can disable non-essential cookies through your browser settings. Disabling essential cookies may affect your ability to use the Service.</li>
             </ul>
           </section>
 
