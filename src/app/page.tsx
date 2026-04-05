@@ -106,15 +106,15 @@ export default function Home() {
   return (
     <div className="flex h-screen flex-col">
       <Header />
-      <main className="flex-1 flex flex-col items-center justify-start pt-[8vh] sm:pt-[10vh] p-4 py-2 sm:py-4">
-        <div className="flex flex-col items-center space-y-4 sm:space-y-6 text-center">
-          <div className="rounded-2xl p-2 sm:p-4 dark:bg-white dark:shadow-md">
+      <main className="flex-1 flex flex-col items-center justify-start pt-[4vh] sm:pt-[10vh] p-4 py-2 sm:py-4">
+        <div className="flex flex-col items-center space-y-2 sm:space-y-6 text-center">
+          <div className="rounded-2xl p-1 sm:p-4 dark:bg-white dark:shadow-md">
             <Image
               src="/images/cvtopdf.png"
               alt="CVin.Bio | Turn your CV into a website"
               width={300}
               height={300}
-              className="mb-0 w-[180px] h-[180px] sm:w-[280px] sm:h-[280px]"
+              className="mb-0 w-[140px] h-[140px] sm:w-[280px] sm:h-[280px]"
               priority
             />
           </div>
@@ -140,7 +140,7 @@ export default function Home() {
           ) : (
             <>
               <div className="w-full max-w-[600px] space-y-3">
-                <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait' : ''}`}>
+                <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-4 sm:p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait' : ''}`}>
                     {isProcessingFile ? (
                         <>
                             <Loader2 className="mr-3 h-6 w-6 animate-spin text-muted-foreground" />
