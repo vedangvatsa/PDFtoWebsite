@@ -226,6 +226,7 @@ export async function GET(request: NextRequest) {
   let query = supabase
     .from('jobs')
     .select('*', { count: 'exact' })
+    .not('company', 'ilike', '%Gopuff%')
     .order('created_at', { ascending: false });
 
   // Filter by job type

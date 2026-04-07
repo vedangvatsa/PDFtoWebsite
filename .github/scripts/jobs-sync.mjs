@@ -109,7 +109,7 @@ const GREENHOUSE_SLUGS = [
   // Tier 4 — Dev tools & infra
   'postman','circleci',
   // Tier 5 — Fintech & crypto
-  'gemini','alchemy','consensys',
+  'gemini','alchemy','consensys','chainlink','uniswap','ethereumfoundation','moonpay','aptoslabs','optimism','arbitrum','dydx','solanafoundation','avalabs',
   // Tier 6 — E-commerce & SaaS
   'faire','klaviyo','attentive','braze','iterable',
   // Tier 7 — APAC
@@ -137,7 +137,7 @@ const ASHBY_SLUGS = [
   'plaid','deel','lemonade',
   // Productivity
   'clickup','n8n',
-  'kraken.com',
+  'kraken.com','paradigm','a16zcrypto',
   // Security/Compliance
   'vanta','drata','semgrep',
   // AI
@@ -148,8 +148,8 @@ const ASHBY_SLUGS = [
   'sanity','livekit','oyster','infisical','stream','statsig','doppler','hightouch','posthog',
   'zapier','benchling','fullstory','airbyte','prefect',
   'coinhako',
-  // Migrated from Greenhouse
-  'opensea','phantom',
+  // Crypto & Migrated from Greenhouse
+  'opensea','phantom','magic','taxbit','nansen',
 ];
 
 // ─── Workable company slugs ───
@@ -493,7 +493,7 @@ async function fetchGreenhouse() {
           category: null,
           published_at: j.first_published || j.updated_at || null,
         }));
-      if (companyJobs.length) console.log(`  ✅ ${slug}: ${companyJobs.length} remote jobs`);
+      if (companyJobs.length) console.log(`  ✅ ${slug}: ${companyJobs.length} jobs`);
       jobs.push(...companyJobs);
     } catch (e) {
       console.log(`  ⚠ ${slug}: ${e.message}`);
@@ -501,7 +501,7 @@ async function fetchGreenhouse() {
     await sleep(500); // Rate limit protection
   }
 
-  console.log(`  Total: ${jobs.length} remote jobs from Greenhouse`);
+  console.log(`  Total: ${jobs.length} jobs from Greenhouse`);
   return jobs;
 }
 
@@ -532,7 +532,7 @@ async function fetchAshby() {
           category: j.department || j.team || null,
           published_at: j.publishedAt || null,
         }));
-      if (companyJobs.length) console.log(`  ✅ ${slug}: ${companyJobs.length} remote jobs`);
+      if (companyJobs.length) console.log(`  ✅ ${slug}: ${companyJobs.length} jobs`);
       jobs.push(...companyJobs);
     } catch (e) {
       console.log(`  ⚠ ${slug}: ${e.message}`);
@@ -540,7 +540,7 @@ async function fetchAshby() {
     await sleep(500);
   }
 
-  console.log(`  Total: ${jobs.length} remote jobs from Ashby`);
+  console.log(`  Total: ${jobs.length} jobs from Ashby`);
   return jobs;
 }
 
