@@ -255,14 +255,39 @@ export async function GET(request: NextRequest) {
     query = query.or(`tags.ov.{${userProfile.skills.join(',')}},${titleFilters}`);
   }
 
-  // Paginate
-  query = query.range(offset, offset + limit - 1);
+  // Fetch a large batch so we have enough to interleave across companies
+  const fetchLimit = limit * 6;
+  query = query.range(offset, offset + fetchLimit - 1);
 
-  const { data: jobs, error, count } = await query;
+  const { data: rawJobs, error, count } = await query;
 
   if (error) {
     console.error('Jobs query error:', error);
     return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 });
+  }
+
+  // Round-robin interleave: group by company, then deal one from each in rotation
+  const buckets: Record<string, any[]> = {};
+  for (const job of (rawJobs || [])) {
+    const key = (job.company || '').toLowerCase();
+    if (!buckets[key]) buckets[key] = [];
+    buckets[key].push(job);
+  }
+  // Sort companies by job count descending so the largest pools get dealt first
+  const companyKeys = Object.keys(buckets).sort((a, b) => buckets[b].length - buckets[a].length);
+  const jobs: any[] = [];
+  let round = 0;
+  while (jobs.length < limit) {
+    let added = false;
+    for (const key of companyKeys) {
+      if (round < buckets[key].length) {
+        jobs.push(buckets[key][round]);
+        added = true;
+        if (jobs.length >= limit) break;
+      }
+    }
+    if (!added) break;
+    round++;
   }
 
   // Calculate match scores per job
