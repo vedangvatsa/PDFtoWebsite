@@ -64,6 +64,24 @@ function timeAgo(dateStr: string | null): string {
   return `${Math.floor(days / 30)}mo ago`;
 }
 
+function organizeJobs(existingJobs: Job[], newJobs: Job[]): Job[] {
+  const result = [...existingJobs];
+  const remaining = [...newJobs];
+
+  while (remaining.length > 0) {
+    const lastCompany = result.length > 0 ? result[result.length - 1].company : null;
+    const idx = remaining.findIndex(j => j.company !== lastCompany);
+    
+    if (idx === -1) {
+      break;
+    }
+    
+    result.push(remaining.splice(idx, 1)[0]);
+  }
+
+  return result;
+}
+
 function JobTypeBadge({ type }: { type: string | null }) {
   if (!type) return null;
   const labels: Record<string, string> = {
@@ -114,9 +132,9 @@ export default function JobsPage() {
       const data: JobsResponse = await res.json();
 
       if (append) {
-        setJobs(prev => [...prev, ...(data.jobs || [])]);
+        setJobs(prev => organizeJobs(prev, data.jobs || []));
       } else {
-        setJobs(data.jobs || []);
+        setJobs(organizeJobs([], data.jobs || []));
       }
       setTotal(data.total || 0);
       setHasMore(data.hasMore ?? false);
@@ -227,16 +245,16 @@ export default function JobsPage() {
           <div className="flex items-center gap-3 mt-3">
             {[
               { name: 'Stripe', domain: 'stripe.com' },
-              { name: 'Airbnb', domain: 'airbnb.com' },
-              { name: 'Cloudflare', domain: 'cloudflare.com' },
+              { name: 'Binance', domain: 'binance.com' },
+              { name: 'Kraken', domain: 'kraken.com' },
               { name: 'Discord', domain: 'discord.com' },
-              { name: 'Reddit', domain: 'reddit.com' },
+              { name: 'Chainlink', domain: 'chain.link' },
               { name: 'Coinbase', domain: 'coinbase.com' },
               { name: 'Figma', domain: 'figma.com' },
-              { name: 'GitLab', domain: 'gitlab.com' },
-              { name: 'Lyft', domain: 'lyft.com' },
-              { name: 'Pinterest', domain: 'pinterest.com' },
-              { name: 'Spotify', domain: 'spotify.com' },
+              { name: 'Uniswap', domain: 'uniswap.org' },
+              { name: 'OpenSea', domain: 'opensea.io' },
+              { name: 'Consensys', domain: 'consensys.net' },
+              { name: 'Solana', domain: 'solana.com' },
             ].map((c, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img key={c.name} src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`} alt={c.name} title={c.name}
