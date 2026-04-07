@@ -46,14 +46,15 @@ export default async function CompaniesPage() {
     page++;
   }
 
-  // Aggregate per company
-  const companyMap: Record<string, { name: string; logo: string | null; count: number; locations: Set<string>; latest: string | null }> = {};
+  // Aggregate per company (case-insensitive to merge Gopuff/GoPuff etc.)
+  const companyMap: Record<string, { name: string; nameCounts: Record<string, number>; logo: string | null; count: number; locations: Set<string>; latest: string | null }> = {};
   allJobs.forEach(job => {
     if (!job.company || job.company.includes('...')) return;
-    const key = job.company;
+    const key = job.company.toLowerCase().trim();
     if (!companyMap[key]) {
-      companyMap[key] = { name: key, logo: job.company_logo, count: 0, locations: new Set(), latest: null };
+      companyMap[key] = { name: job.company, nameCounts: {}, logo: job.company_logo, count: 0, locations: new Set(), latest: null };
     }
+    companyMap[key].nameCounts[job.company] = (companyMap[key].nameCounts[job.company] || 0) + 1;
     companyMap[key].count++;
     if (job.location) {
       const loc = job.location.split(',')[0].trim();
@@ -63,6 +64,10 @@ export default async function CompaniesPage() {
     if (d && (!companyMap[key].latest || d > companyMap[key].latest!)) {
       companyMap[key].latest = d;
     }
+  });
+  // Use the most common casing as display name
+  Object.values(companyMap).forEach(c => {
+    c.name = Object.entries(c.nameCounts).sort((a, b) => b[1] - a[1])[0][0];
   });
 
   const companies = Object.values(companyMap)
