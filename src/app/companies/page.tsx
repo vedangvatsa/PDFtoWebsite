@@ -69,8 +69,21 @@ export default async function CompaniesPage() {
     .sort((a, b) => b.count - a.count);
 
   const totalJobs = companies.reduce((s, c) => s + c.count, 0);
-  const withLogos = companies.filter(c => c.logo).slice(0, 12);
-  const extraLogoCount = companies.filter(c => c.logo).length - withLogos.length;
+
+  // Top companies for logo strip (hardcoded domains for reliability, same as /jobs)
+  const logoStrip = [
+    { name: 'Stripe', domain: 'stripe.com' },
+    { name: 'Anthropic', domain: 'anthropic.com' },
+    { name: 'Cloudflare', domain: 'cloudflare.com' },
+    { name: 'Figma', domain: 'figma.com' },
+    { name: 'GitLab', domain: 'gitlab.com' },
+    { name: 'Coinbase', domain: 'coinbase.com' },
+    { name: 'Discord', domain: 'discord.com' },
+    { name: 'Reddit', domain: 'reddit.com' },
+    { name: 'Airbnb', domain: 'airbnb.com' },
+    { name: 'Pinterest', domain: 'pinterest.com' },
+    { name: 'Lyft', domain: 'lyft.com' },
+  ];
 
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
@@ -83,20 +96,18 @@ export default async function CompaniesPage() {
           </h1>
           {/* Logo strip */}
           <div className="flex items-center gap-3 mt-3">
-            {withLogos.map((c, i) => (
+            {logoStrip.map((c, i) => (
               <Link key={c.name} href={`/${toSlug(c.name)}`} title={c.name} className="shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={c.logo!}
+                  src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`}
                   alt={c.name}
-                  className={`h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0 ${i >= 8 ? 'hidden sm:block' : ''}`}
+                  className={`h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0 ${i >= 7 ? 'hidden sm:block' : ''}`}
                   loading="lazy"
                 />
               </Link>
             ))}
-            {extraLogoCount > 0 && (
-              <span className="text-xs text-zinc-400 shrink-0">+{extraLogoCount} more</span>
-            )}
+            <span className="text-xs text-zinc-400 shrink-0">+{companies.length - logoStrip.length} more</span>
           </div>
           <Link href="/jobs" className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline">
             <Briefcase className="h-4 w-4 text-primary" />
@@ -121,14 +132,13 @@ export default async function CompaniesPage() {
                 href={`/${slug}`}
                 className="group flex items-center gap-3 px-4 py-2.5 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-lg hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all"
               >
-                {logo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={logo} alt={company.name} className="h-5 w-5 rounded shrink-0" loading="lazy" />
-                ) : (
-                  <span className="h-5 w-5 rounded shrink-0 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-400">
-                    {company.name[0].toUpperCase()}
-                  </span>
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`https://www.google.com/s2/favicons?domain=${company.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com&sz=32`}
+                  alt={company.name}
+                  className="h-5 w-5 rounded shrink-0"
+                  loading="lazy"
+                />
                 <div className="flex-1 min-w-0">
                   <h2 className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
                     {company.name}
