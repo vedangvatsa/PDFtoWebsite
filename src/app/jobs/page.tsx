@@ -347,27 +347,33 @@ export default function JobsPage() {
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          <form onSubmit={handleSearch} className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+          <form onSubmit={handleSearch} className="flex-1 relative" role="search">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" aria-hidden="true" />
+            <label htmlFor="job-search-input" className="sr-only">Search jobs by title or company</label>
             <input
+              id="job-search-input"
               type="text"
               placeholder="Search by title or company..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              aria-label="Search jobs by title or company"
               className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </form>
           <div className="relative shrink-0">
+            <label htmlFor="job-location-filter" className="sr-only">Filter by location</label>
             <select
+              id="job-location-filter"
               value={loc}
               onChange={(e) => setLoc(e.target.value)}
+              aria-label="Filter jobs by location"
               className="h-10 pl-3 pr-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer appearance-none"
             >
               {LOCATIONS.map(l => (
                 <option key={l.value} value={l.value}>{l.label}</option>
               ))}
             </select>
-            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-400 pointer-events-none" />
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-400 pointer-events-none" aria-hidden="true" />
           </div>
         </div>
 

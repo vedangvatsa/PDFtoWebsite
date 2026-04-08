@@ -39,10 +39,10 @@ export default function Header({ children }: { children?: React.ReactNode }) {
     }
 
   return (
-    <header className="sticky top-0 z-50 w-full">
-      <div className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-8">
+    <header className="sticky top-0 z-50 w-full" role="banner">
+      <nav className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-8" aria-label="Main navigation">
         <div className="flex items-center space-x-2">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2" aria-label="CVin.Bio home">
             <Icons.logo className="h-6 w-6" />
           </Link>
         </div>
@@ -69,7 +69,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
           )}
           <ThemeToggle />
         </div>
-      </div>
+      </nav>
     </header>
   );
 }
