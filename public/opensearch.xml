@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>CVin.Bio</ShortName>
+  <Description>Search tech jobs and profiles on CVin.Bio</Description>
+  <Url type="text/html" template="https://cvin.bio/jobs?q={searchTerms}"/>
+  <Language>en-US</Language>
+</OpenSearchDescription>
