@@ -75,10 +75,12 @@ export default function BlogCTA() {
         {/* Dropzone */}
         <div className="relative w-full group">
           <input 
+            id="blog-cta-cv-upload"
             type="file" 
             accept=".pdf,.docx,.txt,.rtf" 
             onChange={handleFileChange} 
             disabled={isProcessingFile}
+            aria-label="Upload your CV file"
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10" 
           />
           <div className="w-full h-20 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl flex items-center justify-center bg-white dark:bg-zinc-900 group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/80 transition-colors shadow-sm">

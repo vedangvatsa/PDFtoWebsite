@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         robots: { index: true, follow: true },
       };
     }
-    return { title: 'Profile Not Found' };
+    notFound();
   }
 
   const { profile } = data;
@@ -209,7 +209,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     return (
       <div className="h-screen overflow-y-auto bg-white dark:bg-black selection:bg-primary/10 transition-colors duration-200">
         <Header />
-        <main className="w-full max-w-3xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32">
+        <main id="main-content" className="w-full max-w-3xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32">
           <Link href="/blog" className="inline-flex items-center text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 mb-8 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Articles
           </Link>
@@ -400,7 +400,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchema) }} />
         <Header />
         
-        <main className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-10">
+        <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-10">
           
           {/* Company Header */}
           <div className="flex items-start gap-4 sm:gap-6 mb-8">

@@ -1215,7 +1215,7 @@ export default function EditorPage() {
                 </DialogContent>
             </Dialog>
 
-            <main className="flex-1 bg-secondary/30">
+            <main id="main-content" className="flex-1 bg-secondary/30">
 
 
                 <div className="container mx-auto max-w-4xl p-4 md:p-8">
