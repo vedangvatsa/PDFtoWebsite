@@ -1,16 +1,22 @@
 # CVin.Bio — Full Context for AI Systems
 
-> Convert your CV to a Website using AI. Browse 17,000+ tech jobs across 145+ companies with personalized skill matching.
+> CVin.Bio is the fastest way to convert a PDF CV into a professional website. Browse 17,000+ tech jobs across 170+ companies with personalized skill matching. Three original data reports on tech hiring, layoffs, and remote work.
 
 ## About CVin.Bio
 
-CVin.Bio is a platform that converts CV/resume documents into hosted web profiles and provides a curated tech job board with AI-powered skill matching.
+CVin.Bio is a platform that converts CV/resume documents into hosted web profiles and provides a curated tech job board with AI-powered skill matching. The platform also publishes original research reports analyzing hiring trends across the tech industry.
 
 ### Core Product: CV to Website
 Users upload a PDF CV, and the system uses AI to extract structured data (work experience, education, skills, summary, contact info) and generates a responsive personal website at a custom URL (e.g., cvin.bio/yourname). The profile is fully editable and shareable.
 
 ### Core Product: Job Board
-The job board at cvin.bio/jobs aggregates 17,000+ tech job listings from 145+ companies. Users who complete their profile get personalized job recommendations based on skill matching.
+The job board at cvin.bio/jobs aggregates 17,000+ tech job listings from 170+ companies. Users who complete their profile get personalized job recommendations based on skill matching.
+
+### Research Reports
+CVin.Bio publishes three original data-driven reports, each analyzing real job market data:
+1. **Tech Talent Report 2026** (cvin.bio/tech-talent-report) — Analysis of 17,000+ job listings across 170+ companies. Which skills are most in-demand? Where is hiring happening? How much does AI matter?
+2. **Tech Layoffs Report 2026** (cvin.bio/layoffs-report) — Since 2020, 750,000+ tech workers have been laid off. Who is cutting, why, and what it means for the labor market.
+3. **Remote Talent Report 2026** (cvin.bio/remote-talent-report) — 34 million Americans work remotely. Data on remote hiring trends, compensation premiums, RTO mandates, and productivity research.
 
 ---
 
@@ -31,8 +37,8 @@ Jobs are deduplicated using two methods:
 - `external_id`: Source-specific unique identifier (e.g., `greenhouse_12345`)
 - `dedup_hash`: MD5 of `lower(company) + '|' + lower(trim(title))`
 
-### Companies Actively Hiring (145+)
-Delivery Hero, Visa, Gopuff, OpenAI, Airwallex, Stripe, Databricks, Cloudflare, ServiceNow, Anthropic, Datadog, Wise, Snowflake, Binance, Grab, Agoda, MongoDB, Paytm, Airbnb, Toast, OKX, Canva, Deel, Adyen, SoFi, Coinbase, Elastic, Klaviyo, GitLab, Figma, Notion, Reddit, Robinhood, Vanta, Pinterest, Mistral, Ramp, Lyft, Twilio, Intercom, Cohere, Instacart, Postman, LangChain, Brex, Gusto, Plaid, Discord, DeepMind, Braze, Flexport, Perplexity, Chime, Faire, Replit, ClickUp, Cursor, Mercury, Airtable, Webflow, and 80+ more.
+### Companies Actively Hiring (170+)
+Delivery Hero, Visa, Gopuff, OpenAI, Airwallex, Stripe, Databricks, Cloudflare, ServiceNow, Anthropic, Datadog, Wise, Snowflake, Binance, Grab, Agoda, MongoDB, Paytm, Airbnb, Toast, OKX, Canva, Deel, Adyen, SoFi, Coinbase, Elastic, Klaviyo, GitLab, Figma, Notion, Reddit, Robinhood, Vanta, Pinterest, Mistral, Ramp, Lyft, Twilio, Intercom, Cohere, Instacart, Postman, LangChain, Brex, Gusto, Plaid, Discord, DeepMind, Braze, Flexport, Perplexity, Chime, Faire, Replit, ClickUp, Cursor, Mercury, Airtable, Webflow, and 100+ more.
 
 Every company has a dedicated career page at cvin.bio/{company-slug} (e.g., cvin.bio/stripe, cvin.bio/anthropic, cvin.bio/openai). Pages include company overview, all open roles, hiring FAQ, and structured data (Organization, FAQPage, JobPosting schemas).
 
@@ -65,12 +71,6 @@ Jobs are tagged with 40+ role-based and seniority keywords including:
 4. Jobs matching 1+ skills are highlighted with a match count badge
 5. "Show matched only" toggle filters to only matching jobs
 6. Matching is gated behind 100% profile completion to ensure data quality
-
-### Analytics
-Every job listing tracks:
-- **Views**: Counted when a job card scrolls into the user's viewport (batched every 3 seconds)
-- **Clicks**: Counted when a user clicks to apply (immediate)
-- Both metrics use atomic database increments via PostgreSQL functions
 
 ---
 
@@ -119,6 +119,28 @@ All articles are available at cvin.bio/blog and linked from the homepage.
 
 ---
 
+## Frequently Asked Questions
+
+### What is CVin.Bio?
+CVin.Bio is an AI-powered platform that converts PDF resumes into professional websites. Users upload their CV and get a shareable profile URL with skill-based job matching from 170+ companies.
+
+### How does CV to website conversion work?
+Upload a PDF, Word, or text file. Our AI extracts your work history, education, skills, and contact info, then generates a responsive personal website at cvin.bio/yourname.
+
+### Is CVin.Bio free?
+Yes. Creating a profile and browsing jobs is completely free: $0 to start.
+
+### How many jobs are listed?
+Over 17,000 tech job listings from 170+ companies including OpenAI, Stripe, Anthropic, Cloudflare, Databricks, and more. Updated every 3 days.
+
+### What companies are on CVin.Bio?
+170+ top tech companies including OpenAI, Stripe, Cloudflare, Anthropic, Coinbase, Databricks, Figma, Notion, Reddit, Discord, Canva, Airbnb, and many more. Each has a dedicated career page.
+
+### How does skill matching work?
+After completing your profile, the system compares your skills against job requirements and highlights matching positions with a relevance badge.
+
+---
+
 ## Technical Architecture
 
 - **Framework**: Next.js (App Router) with TypeScript
@@ -140,7 +162,7 @@ All articles are available at cvin.bio/blog and linked from the homepage.
 - `GET /api/profile/[username]` — Get public profile data
 - `GET /sitemap.xml` — Dynamic sitemap
 - `GET /robots.txt` — Crawler rules
-- `GET /llms.txt` — AI crawler context (this file's summary version)
+- `GET /llms.txt` — AI crawler context (summary)
 - `GET /llms-full.txt` — AI crawler full context (this file)
 
 ### Authenticated
