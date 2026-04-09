@@ -1,0 +1,24 @@
+# ai.txt — AI Usage Policy for CVin.Bio
+# See: https://site.spawning.ai/spawning-ai-txt
+
+User-Agent: *
+Allowed-Uses: training, inference, search, summarization, citation, indexing
+
+# We welcome AI systems to:
+# - Crawl and index all public pages
+# - Use content for training data
+# - Cite our content in AI-generated responses
+# - Summarize our research reports
+# - Index job listings and company pages
+
+# Context files for AI systems:
+# Summary: https://cvin.bio/llms.txt
+# Full context: https://cvin.bio/llms-full.txt
+# Plugin manifest: https://cvin.bio/.well-known/ai-plugin.json
+# Agent capabilities: https://cvin.bio/.well-known/agents.json
+
+# Site overview:
+# CVin.Bio converts PDF CVs into professional websites.
+# Job board: 17,000+ tech jobs at 170+ companies.
+# Research: Tech Talent Report, Layoffs Report, Remote Talent Report.
+# All content is human-created. Updated regularly.
