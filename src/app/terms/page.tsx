@@ -11,7 +11,7 @@ export default function TermsPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 mx-auto max-w-3xl px-6 py-16">
+      <main id="main-content" className="flex-1 mx-auto max-w-3xl px-6 py-16">
         <h1 className="text-3xl font-extrabold mb-8 tracking-tight text-foreground">Terms & Privacy</h1>
         <div className="prose prose-base dark:prose-invert space-y-8 text-muted-foreground">
           <p className="text-sm"><strong>Last updated:</strong> March 2026</p>

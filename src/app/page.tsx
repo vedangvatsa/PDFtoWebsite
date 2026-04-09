@@ -113,7 +113,7 @@ export default function Home() {
   return (
     <div className="flex h-screen flex-col">
       <Header />
-      <main className="flex-1 flex flex-col items-center justify-start pt-[8vh] sm:pt-[10vh] p-4 py-2 sm:py-4">
+      <main id="main-content" className="flex-1 flex flex-col items-center justify-start pt-[8vh] sm:pt-[10vh] p-4 py-2 sm:py-4">
         <div className="flex flex-col items-center space-y-4 sm:space-y-6 text-center">
           <div className="rounded-2xl p-2 sm:p-4 dark:bg-white dark:shadow-md">
             <Image

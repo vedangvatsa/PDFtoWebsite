@@ -8,7 +8,7 @@ export default function NotFound() {
     <div className="min-h-screen flex flex-col bg-white dark:bg-black selection:bg-primary/10 transition-colors duration-200">
       <Header />
       
-      <main className="flex-1 w-full max-w-3xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex flex-col justify-center items-center">
+      <main id="main-content" className="flex-1 w-full max-w-3xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex flex-col justify-center items-center">
         
         <div className="mb-12 text-center">
           <div className="w-16 h-16 mx-auto rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-center mb-6 transition-colors">

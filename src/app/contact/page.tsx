@@ -52,7 +52,7 @@ export default function ContactPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center p-4">
+      <main id="main-content" className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
 
           {sent ? (
