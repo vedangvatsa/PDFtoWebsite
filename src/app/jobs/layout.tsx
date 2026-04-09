@@ -11,13 +11,13 @@ export const metadata: Metadata = {
     description: 'Search open roles at OpenAI, Stripe, Cloudflare, Anthropic, Databricks, and 170+ top tech companies. Updated daily.',
     url: `${siteUrl}/jobs`,
     type: 'website',
-    images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio Tech Jobs' }],
+    images: [{ url: `${siteUrl}/jobs/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio Tech Jobs' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Browse 17,000+ Tech Jobs',
     description: 'Search open roles at top tech companies. Updated daily.',
-    images: [`${siteUrl}/opengraph-image`],
+    images: [`${siteUrl}/jobs/opengraph-image`],
   },
   alternates: { canonical: `${siteUrl}/jobs` },
 };
