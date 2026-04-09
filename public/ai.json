@@ -1,0 +1,9 @@
+{
+  "allow": {
+    "training": true,
+    "indexing": true,
+    "search": true,
+    "inference": true,
+    "crawlers": ["*"]
+  }
+}
