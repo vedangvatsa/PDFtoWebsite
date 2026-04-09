@@ -4,145 +4,400 @@
       "id": "t001",
       "topic": "free-ai-courses-2026",
       "tweets": [
-        "10 free AI courses that are actually worth your time in 2026.\n\nNot mass-produced certificate farms. These are the ones hiring managers recognize.\n\nBookmark this. You'll need it. 🧵👇",
-        "1/ Machine Learning by Andrew Ng (Coursera)\n\nStill the gold standard. 60 hours. Self-paced.\n\nCovers regression, neural networks, recommender systems. Updated for 2026 with transformer fundamentals.\n\nFree to audit: coursera.org/learn/machine-learning-course",
-        "2/ fast.ai — Practical Deep Learning for Coders\n\nTop-down approach. You build first, understand theory later.\n\n7 lessons. Free. No prerequisites beyond basic Python.\n\nJeremy Howard teaches you to train models in the first 30 minutes.\n\ncourse.fast.ai",
-        "3/ CS50 Introduction to AI with Python (Harvard/edX)\n\nSearch algorithms, knowledge, ML, neural networks, NLP.\n\n12 weeks. Free to audit.\n\nHarvard quality without Harvard debt.\n\nSearch \"CS50 AI\" on edX.",
-        "4/ Google AI Essentials (Coursera)\n\nGoogle's own intro to AI course. 10 hours.\n\nPrompt engineering, responsible AI, applied use cases.\n\nBeginner friendly. Free certificate if you qualify for financial aid.\n\ncoursera.org/learn/google-ai-essentials",
-        "5/ DeepLearning.AI — Generative AI for Everyone\n\nAndrew Ng again. But this one is for non-engineers.\n\nCovers how LLMs work, what they can/can't do, and how to evaluate AI projects.\n\n3 hours total. Free to audit.\n\ncoursera.org/learn/generative-ai-for-everyone",
-        "6/ Hugging Face NLP Course\n\nHands-on transformers course. Build real NLP pipelines.\n\nTokenization, fine-tuning, model evaluation.\n\nFree. Open source. Updated monthly.\n\nhuggingface.co/learn/nlp-course",
-        "7/ MIT 6.S191 — Introduction to Deep Learning\n\nMIT's official deep learning course. Full video lectures on YouTube.\n\nTensorFlow based. Covers CNNs, RNNs, GANs, reinforcement learning.\n\nFree forever.\n\nintrotodeeplearning.com",
-        "8/ Stanford CS229 — Machine Learning (Full Course on YouTube)\n\nThe Stanford ML course that started it all.\n\n20 lectures. Andrew Ng era.\n\nMore math-heavy than Coursera version. Great if you want the theory depth.\n\nFree on YouTube.",
-        "9/ Kaggle Learn — Intro to ML, Deep Learning, NLP\n\nBite-sized interactive courses. Each takes 4 hours.\n\nYou write code directly in your browser. No setup.\n\nPerfect for weekend learning.\n\nkaggle.com/learn",
-        "10/ Elements of AI (University of Helsinki)\n\n750,000+ students enrolled. Covers AI fundamentals without code.\n\nPhilosophy, probability, machine learning basics.\n\nGenuinely enjoyable. Free.\n\nelementsofai.com",
-        "That's the list. Bookmark it. Share it with someone who needs it.\n\nIf you're building skills to stand out in the job market, start with a profile that actually represents you.\n\ncvin.bio"
+        {
+          "text": "10 free AI courses that are actually worth your time in 2026.\n\nNot mass-produced certificate farms. These are the ones hiring managers recognize.\n\nBookmark this. You'll need it. 🧵👇",
+          "img": ".github/images/threads/t01_01.png"
+        },
+        {
+          "text": "1/ Machine Learning by Andrew Ng (Coursera)\n\nStill the gold standard. 60 hours. Self-paced.\n\nCovers regression, neural networks, recommender systems. Updated for 2026 with transformer fundamentals.\n\nFree to audit: coursera.org/learn/machine-learning-course",
+          "img": ".github/images/threads/t01_02.png"
+        },
+        {
+          "text": "2/ fast.ai — Practical Deep Learning for Coders\n\nTop-down approach. You build first, understand theory later.\n\n7 lessons. Free. No prerequisites beyond basic Python.\n\nJeremy Howard teaches you to train models in the first 30 minutes.\n\ncourse.fast.ai",
+          "img": ".github/images/threads/t01_03.png"
+        },
+        {
+          "text": "3/ CS50 Introduction to AI with Python (Harvard/edX)\n\nSearch algorithms, knowledge, ML, neural networks, NLP.\n\n12 weeks. Free to audit.\n\nHarvard quality without Harvard debt.\n\nSearch \"CS50 AI\" on edX.",
+          "img": ".github/images/threads/t01_04.png"
+        },
+        {
+          "text": "4/ Google AI Essentials (Coursera)\n\nGoogle's own intro to AI course. 10 hours.\n\nPrompt engineering, responsible AI, applied use cases.\n\nBeginner friendly. Free certificate if you qualify for financial aid.\n\ncoursera.org/learn/google-ai-essentials",
+          "img": ".github/images/threads/t01_05.png"
+        },
+        {
+          "text": "5/ DeepLearning.AI — Generative AI for Everyone\n\nAndrew Ng again. But this one is for non-engineers.\n\nCovers how LLMs work, what they can/can't do, and how to evaluate AI projects.\n\n3 hours total. Free to audit.\n\ncoursera.org/learn/generative-ai-for-everyone",
+          "img": ".github/images/threads/t01_06.png"
+        },
+        {
+          "text": "6/ Hugging Face NLP Course\n\nHands-on transformers course. Build real NLP pipelines.\n\nTokenization, fine-tuning, model evaluation.\n\nFree. Open source. Updated monthly.\n\nhuggingface.co/learn/nlp-course",
+          "img": ".github/images/threads/t01_07.png"
+        },
+        {
+          "text": "7/ MIT 6.S191 — Introduction to Deep Learning\n\nMIT's official deep learning course. Full video lectures on YouTube.\n\nTensorFlow based. Covers CNNs, RNNs, GANs, reinforcement learning.\n\nFree forever.\n\nintrotodeeplearning.com",
+          "img": ".github/images/threads/t01_08.png"
+        },
+        {
+          "text": "8/ Stanford CS229 — Machine Learning (Full Course on YouTube)\n\nThe Stanford ML course that started it all.\n\n20 lectures. Andrew Ng era.\n\nMore math-heavy than Coursera version. Great if you want the theory depth.\n\nFree on YouTube.",
+          "img": ".github/images/threads/t01_09.png"
+        },
+        {
+          "text": "9/ Kaggle Learn — Intro to ML, Deep Learning, NLP\n\nBite-sized interactive courses. Each takes 4 hours.\n\nYou write code directly in your browser. No setup.\n\nPerfect for weekend learning.\n\nkaggle.com/learn",
+          "img": ".github/images/threads/t01_10.png"
+        },
+        {
+          "text": "10/ Elements of AI (University of Helsinki)\n\n750,000+ students enrolled. Covers AI fundamentals without code.\n\nPhilosophy, probability, machine learning basics.\n\nGenuinely enjoyable. Free.\n\nelementsofai.com",
+          "img": ".github/images/threads/t01_11.png"
+        },
+        {
+          "text": "That's the list. Bookmark it. Share it with someone who needs it.\n\nIf you're building skills to stand out in the job market, start with a profile that actually represents you.\n\ncvin.bio",
+          "img": ".github/images/threads/t01_12.png"
+        }
       ]
     },
     {
       "id": "t002",
       "topic": "free-blockchain-certs",
       "tweets": [
-        "Every free blockchain certification you can get right now.\n\nNo paid bootcamps. No $2,000 courses. Just free, legit programs from actual protocols.\n\nSave this thread. 🧵👇",
-        "1/ Alchemy University — Ethereum Developer Bootcamp\n\nFull Solidity curriculum. Build smart contracts from scratch.\n\n6 weeks. Completely free. Certificate on completion.\n\nUsed by 100,000+ developers.\n\nuniversity.alchemy.com",
-        "2/ Chainlink Developer Bootcamp\n\nLearn to build hybrid smart contracts with oracles.\n\nCovers Chainlink VRF, Price Feeds, Automation.\n\nFree. Live cohorts with mentorship.\n\nchain.link/bootcamp",
-        "3/ Solana Bootcamp by Solana Foundation\n\nRust + Anchor framework. Build programs on Solana.\n\nProject-based learning. Free.\n\nThe fastest blockchain to build on, with the best docs.\n\nsolana.com/developers",
-        "4/ Consensys Academy — Blockchain Developer Program\n\nEthereum fundamentals, Solidity, Truffle, smart contract security.\n\nSelf-paced. Free tier available.\n\nFrom the team that built MetaMask.\n\nconsensys.io/academy",
-        "5/ Web3 University (by Alchemy)\n\nTutorial-style courses. Build an NFT minting dapp, DeFi protocols, DAOs.\n\nEach project takes 1-3 hours. Free.\n\nweb3.university",
-        "6/ Cyfrin Updraft (by Patrick Collins)\n\nThe most comprehensive Solidity course available. Free.\n\n32 hours of content. Foundry-based. Security-focused.\n\nPatrick Collins is the best Solidity teacher on the internet.\n\nupdraft.cyfrin.io",
-        "7/ Polkadot Blockchain Academy\n\nFree online materials covering Substrate, Rust, parachain development.\n\nMore advanced. Great if you want multi-chain expertise.\n\npolkadot.network/development/blockchain-academy",
-        "These certifications are recognized by companies hiring in Web3 right now.\n\nWe track 17,000+ tech jobs including Web3 roles. Browse them here:\n\ncvin.bio/jobs"
+        {
+          "text": "Every free blockchain certification you can get right now.\n\nNo paid bootcamps. No $2,000 courses. Just free, legit programs from actual protocols.\n\nSave this thread. 🧵👇",
+          "img": ".github/images/threads/t02_01.png"
+        },
+        {
+          "text": "1/ Alchemy University — Ethereum Developer Bootcamp\n\nFull Solidity curriculum. Build smart contracts from scratch.\n\n6 weeks. Completely free. Certificate on completion.\n\nUsed by 100,000+ developers.\n\nuniversity.alchemy.com",
+          "img": ".github/images/threads/t02_02.png"
+        },
+        {
+          "text": "2/ Chainlink Developer Bootcamp\n\nLearn to build hybrid smart contracts with oracles.\n\nCovers Chainlink VRF, Price Feeds, Automation.\n\nFree. Live cohorts with mentorship.\n\nchain.link/bootcamp",
+          "img": ".github/images/threads/t02_03.png"
+        },
+        {
+          "text": "3/ Solana Bootcamp by Solana Foundation\n\nRust + Anchor framework. Build programs on Solana.\n\nProject-based learning. Free.\n\nThe fastest blockchain to build on, with the best docs.\n\nsolana.com/developers",
+          "img": ".github/images/threads/t02_04.png"
+        },
+        {
+          "text": "4/ Consensys Academy — Blockchain Developer Program\n\nEthereum fundamentals, Solidity, Truffle, smart contract security.\n\nSelf-paced. Free tier available.\n\nFrom the team that built MetaMask.\n\nconsensys.io/academy",
+          "img": ".github/images/threads/t02_05.png"
+        },
+        {
+          "text": "5/ Web3 University (by Alchemy)\n\nTutorial-style courses. Build an NFT minting dapp, DeFi protocols, DAOs.\n\nEach project takes 1-3 hours. Free.\n\nweb3.university",
+          "img": ".github/images/threads/t02_06.png"
+        },
+        {
+          "text": "6/ Cyfrin Updraft (by Patrick Collins)\n\nThe most comprehensive Solidity course available. Free.\n\n32 hours of content. Foundry-based. Security-focused.\n\nPatrick Collins is the best Solidity teacher on the internet.\n\nupdraft.cyfrin.io",
+          "img": ".github/images/threads/t02_07.png"
+        },
+        {
+          "text": "7/ Polkadot Blockchain Academy\n\nFree online materials covering Substrate, Rust, parachain development.\n\nMore advanced. Great if you want multi-chain expertise.\n\npolkadot.network/development/blockchain-academy",
+          "img": ".github/images/threads/t02_08.png"
+        },
+        {
+          "text": "These certifications are recognized by companies hiring in Web3 right now.\n\nWe track 17,000+ tech jobs including Web3 roles. Browse them here:\n\ncvin.bio/jobs",
+          "img": ".github/images/threads/t02_09.png"
+        }
       ]
     },
     {
       "id": "t003",
       "topic": "python-30-day-roadmap",
       "tweets": [
-        "How to learn Python in 30 days.\n\nNot \"watch 400 hours of tutorials.\" An actual roadmap with free resources for each week.\n\nI've seen people follow this and land junior dev roles.\n\nSave this. 🧵👇",
-        "Week 1: Fundamentals\n\n→ Variables, data types, loops, conditionals\n→ Functions, scope, basic error handling\n\nUse: Python.org official tutorial (free)\nPractice: Exercism.org Python track (free)\n\nSpend 2-3 hours/day. Don't skip the exercises.",
-        "Week 2: Data Structures + Problem Solving\n\n→ Lists, dicts, sets, tuples\n→ List comprehensions, slicing\n→ File I/O, JSON handling\n\nUse: Automate the Boring Stuff (free online)\nPractice: LeetCode Easy problems in Python\n\nBuild something small: a to-do CLI app.",
-        "Week 3: Libraries + Real Projects\n\n→ requests, BeautifulSoup (web scraping)\n→ pandas (data analysis)\n→ Flask or FastAPI (web APIs)\n\nProject: Build a web scraper that saves data to CSV.\nProject: Build a REST API with 3 endpoints.\n\nPut both on GitHub.",
-        "Week 4: Portfolio + Job Readiness\n\n→ Git basics (commit, push, branch, PR)\n→ Write a README for each project\n→ Deploy one project (Render, Railway, or Vercel)\n→ Build a simple portfolio page\n\nApply to 10 junior Python roles. Don't wait until you feel ready.",
-        "Resources that are 100% free:\n\n→ python.org/tutorial\n→ automatetheboringstuff.com\n→ exercism.org\n→ realpython.com (many free articles)\n→ freecodecamp.org Python course on YouTube\n→ kaggle.com/learn (Python + Pandas)\n\nNo excuses. Just start.",
-        "The biggest mistake people make: tutorial hell.\n\nStop watching. Start building. Break things. Google the error. Fix it.\n\nThat's how every professional developer learned.\n\nShare this with someone who's been \"planning to learn Python\" for months.\n\ncvin.bio"
+        {
+          "text": "How to learn Python in 30 days.\n\nNot \"watch 400 hours of tutorials.\" An actual roadmap with free resources for each week.\n\nI've seen people follow this and land junior dev roles.\n\nSave this. 🧵👇",
+          "img": ".github/images/threads/t03_01.png"
+        },
+        {
+          "text": "Week 1: Fundamentals\n\n→ Variables, data types, loops, conditionals\n→ Functions, scope, basic error handling\n\nUse: Python.org official tutorial (free)\nPractice: Exercism.org Python track (free)\n\nSpend 2-3 hours/day. Don't skip the exercises.",
+          "img": ".github/images/threads/t03_02.png"
+        },
+        {
+          "text": "Week 2: Data Structures + Problem Solving\n\n→ Lists, dicts, sets, tuples\n→ List comprehensions, slicing\n→ File I/O, JSON handling\n\nUse: Automate the Boring Stuff (free online)\nPractice: LeetCode Easy problems in Python\n\nBuild something small: a to-do CLI app.",
+          "img": ".github/images/threads/t03_03.png"
+        },
+        {
+          "text": "Week 3: Libraries + Real Projects\n\n→ requests, BeautifulSoup (web scraping)\n→ pandas (data analysis)\n→ Flask or FastAPI (web APIs)\n\nProject: Build a web scraper that saves data to CSV.\nProject: Build a REST API with 3 endpoints.\n\nPut both on GitHub.",
+          "img": ".github/images/threads/t03_04.png"
+        },
+        {
+          "text": "Week 4: Portfolio + Job Readiness\n\n→ Git basics (commit, push, branch, PR)\n→ Write a README for each project\n→ Deploy one project (Render, Railway, or Vercel)\n→ Build a simple portfolio page\n\nApply to 10 junior Python roles. Don't wait until you feel ready.",
+          "img": ".github/images/threads/t03_05.png"
+        },
+        {
+          "text": "Resources that are 100% free:\n\n→ python.org/tutorial\n→ automatetheboringstuff.com\n→ exercism.org\n→ realpython.com (many free articles)\n→ freecodecamp.org Python course on YouTube\n→ kaggle.com/learn (Python + Pandas)\n\nNo excuses. Just start.",
+          "img": ".github/images/threads/t03_06.png"
+        },
+        {
+          "text": "The biggest mistake people make: tutorial hell.\n\nStop watching. Start building. Break things. Google the error. Fix it.\n\nThat's how every professional developer learned.\n\nShare this with someone who's been \"planning to learn Python\" for months.\n\ncvin.bio",
+          "img": ".github/images/threads/t03_07.png"
+        }
       ]
     },
     {
       "id": "t004",
       "topic": "free-dev-tools-2026",
       "tweets": [
-        "7 free tools that replaced a $500/month subscription stack for me.\n\nI'm not joking. Every one of these is free or has a generous free tier.\n\nSave this. Your wallet will thank you. 🧵👇",
-        "1/ Cursor — AI-powered code editor\n\nFree tier gives you autocomplete + chat with your codebase.\n\nReplaces: GitHub Copilot ($10/mo)\n\ncursor.com",
-        "2/ Supabase — Backend as a Service\n\nPostgres database, auth, storage, realtime, edge functions.\n\nFree tier: 500MB database, 1GB storage, 50,000 monthly active users.\n\nReplaces: Firebase + Auth0 ($25+/mo)\n\nsupabase.com",
-        "3/ Vercel — Frontend deployment\n\nDeploy React/Next.js with zero config. Free SSL, CDN, preview deploys.\n\nFree for personal projects and hobby use.\n\nReplaces: Heroku + Netlify paid tiers ($7+/mo)\n\nvercel.com",
-        "4/ Excalidraw — Whiteboard for diagrams\n\nClean, hand-drawn style diagrams. Real-time collaboration.\n\nCompletely free. Open source.\n\nReplaces: Miro, Figma for diagramming ($12+/mo)\n\nexcalidraw.com",
-        "5/ Plausible/Umami — Privacy-first analytics\n\nUmami is self-hosted, 100% free. Plausible has a paid plan but Umami doesn't.\n\nReplaces: Google Analytics (free but privacy-invasive) or Mixpanel ($25+/mo)\n\numami.is",
-        "6/ Resend — Email API\n\nBeautiful developer experience. React Email for templates.\n\n3,000 emails/month free. Way simpler than SendGrid.\n\nReplaces: SendGrid/Mailgun on paid tiers\n\nresend.com",
-        "7/ Linear — Project management\n\nFree for teams up to 250 issues. Fastest PM tool I've ever used.\n\nReplaces: Jira ($7.75/user/mo) and the suffering that comes with it.\n\nlinear.app",
-        "Total savings: $500+/month\n\nThe best tools in 2026 are either free or have free tiers good enough for 90% of use cases.\n\nShare this with a founder or freelancer who's overpaying for SaaS.\n\ncvin.bio"
+        {
+          "text": "7 free tools that replaced a $500/month subscription stack for me.\n\nI'm not joking. Every one of these is free or has a generous free tier.\n\nSave this. Your wallet will thank you. 🧵👇",
+          "img": ".github/images/threads/t04_01.png"
+        },
+        {
+          "text": "1/ Cursor — AI-powered code editor\n\nFree tier gives you autocomplete + chat with your codebase.\n\nReplaces: GitHub Copilot ($10/mo)\n\ncursor.com",
+          "img": ".github/images/threads/t04_02.png"
+        },
+        {
+          "text": "2/ Supabase — Backend as a Service\n\nPostgres database, auth, storage, realtime, edge functions.\n\nFree tier: 500MB database, 1GB storage, 50,000 monthly active users.\n\nReplaces: Firebase + Auth0 ($25+/mo)\n\nsupabase.com",
+          "img": ".github/images/threads/t04_03.png"
+        },
+        {
+          "text": "3/ Vercel — Frontend deployment\n\nDeploy React/Next.js with zero config. Free SSL, CDN, preview deploys.\n\nFree for personal projects and hobby use.\n\nReplaces: Heroku + Netlify paid tiers ($7+/mo)\n\nvercel.com",
+          "img": ".github/images/threads/t04_04.png"
+        },
+        {
+          "text": "4/ Excalidraw — Whiteboard for diagrams\n\nClean, hand-drawn style diagrams. Real-time collaboration.\n\nCompletely free. Open source.\n\nReplaces: Miro, Figma for diagramming ($12+/mo)\n\nexcalidraw.com",
+          "img": ".github/images/threads/t04_05.png"
+        },
+        {
+          "text": "5/ Plausible/Umami — Privacy-first analytics\n\nUmami is self-hosted, 100% free. Plausible has a paid plan but Umami doesn't.\n\nReplaces: Google Analytics (free but privacy-invasive) or Mixpanel ($25+/mo)\n\numami.is",
+          "img": ".github/images/threads/t04_06.png"
+        },
+        {
+          "text": "6/ Resend — Email API\n\nBeautiful developer experience. React Email for templates.\n\n3,000 emails/month free. Way simpler than SendGrid.\n\nReplaces: SendGrid/Mailgun on paid tiers\n\nresend.com",
+          "img": ".github/images/threads/t04_07.png"
+        },
+        {
+          "text": "7/ Linear — Project management\n\nFree for teams up to 250 issues. Fastest PM tool I've ever used.\n\nReplaces: Jira ($7.75/user/mo) and the suffering that comes with it.\n\nlinear.app",
+          "img": ".github/images/threads/t04_08.png"
+        },
+        {
+          "text": "Total savings: $500+/month\n\nThe best tools in 2026 are either free or have free tiers good enough for 90% of use cases.\n\nShare this with a founder or freelancer who's overpaying for SaaS.\n\ncvin.bio",
+          "img": ".github/images/threads/t04_09.png"
+        }
       ]
     },
     {
       "id": "t005",
       "topic": "10-github-repos",
       "tweets": [
-        "10 GitHub repos every developer should star right now.\n\nNot viral repos with zero utility. Actual tools that save you hours every week.\n\n🧵👇",
-        "1/ build-your-own-x\n\nStep-by-step guides to build your own: database, blockchain, Docker, Git, search engine, web server.\n\nThe best way to understand how things work.\n\n⭐ 340K+ stars\ngithub.com/codecrafters-io/build-your-own-x",
-        "2/ free-programming-books\n\n📚 Thousands of free books and resources organized by language.\n\nPython, Rust, Go, JS, data science, DevOps, security.\n\nThe internet's best-kept secret education library.\n\n⭐ 350K+ stars\ngithub.com/EbookFoundation/free-programming-books",
-        "3/ system-design-primer\n\nEverything you need for system design interviews.\n\nLoad balancing, caching, databases, microservices.\n\nDiagrams + explanations + Anki cards.\n\n⭐ 290K+ stars\ngithub.com/donnemartin/system-design-primer",
-        "4/ project-based-learning\n\nLearn by building projects in 20+ languages.\n\nWeb apps, games, ML models, CLI tools.\n\nBetter than any tutorial playlist.\n\n⭐ 220K+ stars\ngithub.com/practical-tutorials/project-based-learning",
-        "5/ developer-roadmap\n\nVisual roadmaps for frontend, backend, DevOps, AI, blockchain.\n\nUpdated monthly. Shows you exactly what to learn next.\n\n⭐ 310K+ stars\nroadmap.sh",
-        "6/ awesome-selfhosted\n\n2,000+ self-hostable alternatives to commercial services.\n\nEmail, analytics, CMS, chat, storage.\n\nNever pay for SaaS again.\n\n⭐ 220K+ stars\ngithub.com/awesome-selfhosted/awesome-selfhosted",
-        "7/ public-apis\n\n1,400+ free APIs you can use in your projects.\n\nWeather, crypto, news, music, maps, AI.\n\nPerfect for portfolio projects.\n\n⭐ 330K+ stars\ngithub.com/public-apis/public-apis",
-        "8/ tech-interview-handbook\n\nAlgorithms, behavioral questions, resume tips, negotiation advice.\n\nBy an ex-Meta engineer.\n\n⭐ 125K+ stars\ntechinterviewhandbook.org",
-        "9/ 30-seconds-of-code\n\nShort code snippets for JS, Python, React, CSS.\n\nQuick reference for common patterns.\n\n⭐ 122K+ stars\n30secondsofcode.org",
-        "10/ the-book-of-secret-knowledge\n\nTerminal tools, one-liners, web tools, cheatsheets, security tools.\n\nThe Swiss army knife of developer resources.\n\n⭐ 160K+ stars\ngithub.com/trimstray/the-book-of-secret-knowledge",
-        "Star them all. Refer back when you need them.\n\nBuilding skills is step one. Showing them is step two.\n\ncvin.bio"
+        {
+          "text": "10 GitHub repos every developer should star right now.\n\nNot viral repos with zero utility. Actual tools that save you hours every week.\n\n🧵👇",
+          "img": ".github/images/threads/t05_01.png"
+        },
+        {
+          "text": "1/ build-your-own-x\n\nStep-by-step guides to build your own: database, blockchain, Docker, Git, search engine, web server.\n\nThe best way to understand how things work.\n\n⭐ 340K+ stars\ngithub.com/codecrafters-io/build-your-own-x",
+          "img": ".github/images/threads/t05_02.png"
+        },
+        {
+          "text": "2/ free-programming-books\n\n📚 Thousands of free books and resources organized by language.\n\nPython, Rust, Go, JS, data science, DevOps, security.\n\nThe internet's best-kept secret education library.\n\n⭐ 350K+ stars\ngithub.com/EbookFoundation/free-programming-books",
+          "img": ".github/images/threads/t05_03.png"
+        },
+        {
+          "text": "3/ system-design-primer\n\nEverything you need for system design interviews.\n\nLoad balancing, caching, databases, microservices.\n\nDiagrams + explanations + Anki cards.\n\n⭐ 290K+ stars\ngithub.com/donnemartin/system-design-primer",
+          "img": ".github/images/threads/t05_04.png"
+        },
+        {
+          "text": "4/ project-based-learning\n\nLearn by building projects in 20+ languages.\n\nWeb apps, games, ML models, CLI tools.\n\nBetter than any tutorial playlist.\n\n⭐ 220K+ stars\ngithub.com/practical-tutorials/project-based-learning",
+          "img": ".github/images/threads/t05_05.png"
+        },
+        {
+          "text": "5/ developer-roadmap\n\nVisual roadmaps for frontend, backend, DevOps, AI, blockchain.\n\nUpdated monthly. Shows you exactly what to learn next.\n\n⭐ 310K+ stars\nroadmap.sh",
+          "img": ".github/images/threads/t05_06.png"
+        },
+        {
+          "text": "6/ awesome-selfhosted\n\n2,000+ self-hostable alternatives to commercial services.\n\nEmail, analytics, CMS, chat, storage.\n\nNever pay for SaaS again.\n\n⭐ 220K+ stars\ngithub.com/awesome-selfhosted/awesome-selfhosted",
+          "img": ".github/images/threads/t05_07.png"
+        },
+        {
+          "text": "7/ public-apis\n\n1,400+ free APIs you can use in your projects.\n\nWeather, crypto, news, music, maps, AI.\n\nPerfect for portfolio projects.\n\n⭐ 330K+ stars\ngithub.com/public-apis/public-apis",
+          "img": ".github/images/threads/t05_08.png"
+        },
+        {
+          "text": "8/ tech-interview-handbook\n\nAlgorithms, behavioral questions, resume tips, negotiation advice.\n\nBy an ex-Meta engineer.\n\n⭐ 125K+ stars\ntechinterviewhandbook.org",
+          "img": ".github/images/threads/t05_09.png"
+        },
+        {
+          "text": "9/ 30-seconds-of-code\n\nShort code snippets for JS, Python, React, CSS.\n\nQuick reference for common patterns.\n\n⭐ 122K+ stars\n30secondsofcode.org",
+          "img": ".github/images/threads/t05_10.png"
+        },
+        {
+          "text": "10/ the-book-of-secret-knowledge\n\nTerminal tools, one-liners, web tools, cheatsheets, security tools.\n\nThe Swiss army knife of developer resources.\n\n⭐ 160K+ stars\ngithub.com/trimstray/the-book-of-secret-knowledge",
+          "img": ".github/images/threads/t05_11.png"
+        },
+        {
+          "text": "Star them all. Refer back when you need them.\n\nBuilding skills is step one. Showing them is step two.\n\ncvin.bio",
+          "img": ".github/images/threads/t05_12.png"
+        }
       ]
     },
     {
       "id": "t006",
       "topic": "remote-job-red-flags",
       "tweets": [
-        "Remote job hunting in 2026 — a complete guide.\n\nWhere to actually find remote jobs. Red flags to avoid. How to negotiate.\n\nEverything I wish someone told me.\n\n🧵👇",
-        "Where to find real remote jobs:\n\n→ We Work Remotely\n→ Remote OK\n→ Himalayas\n→ Remotive\n→ AngelList/Wellfound\n→ cvin.bio/jobs (we track 17,000+ roles)\n\nAvoid: LinkedIn \"remote\" posts that say \"must be in NYC\" in the description.",
-        "Red flags in remote job listings:\n\n→ \"Must overlap 8 hours with US timezone\" = not remote\n→ No salary range = lowball incoming\n→ \"Startup culture\" in remote context = always online\n→ \"Camera on\" for daily standups = surveillance\n→ No async tools mentioned = office worker at home",
-        "How to stand out applying remotely:\n\n1/ Record a 60-second Loom intro\n2/ Show timezone overlap in your cover note\n3/ Mention async tools you use (Notion, Linear, Slack)\n4/ Include a link to your work, not a PDF\n\nVideo cuts through 500+ applications.",
-        "Negotiating remote compensation:\n\n→ Never accept the first offer\n→ Ask \"Is this adjusted for location?\"\n→ If they adjust for cost of living, negotiate perks instead\n→ Get the remote policy in writing\n\n\"Permanent remote\" means nothing without a contract clause.",
-        "Remote work truth in 2026:\n\n63% of companies use hybrid as default.\nFully remote roles dropped 23% YoY.\nBut remote-first companies grow faster.\n\nThe filter: apply to remote-first, not \"allows remote.\"\n\nMore data:\ncvin.bio/remote-talent-report"
+        {
+          "text": "Remote job hunting in 2026 — a complete guide.\n\nWhere to actually find remote jobs. Red flags to avoid. How to negotiate.\n\nEverything I wish someone told me.\n\n🧵👇",
+          "img": ".github/images/threads/t06_01.png"
+        },
+        {
+          "text": "Where to find real remote jobs:\n\n→ We Work Remotely\n→ Remote OK\n→ Himalayas\n→ Remotive\n→ AngelList/Wellfound\n→ cvin.bio/jobs (we track 17,000+ roles)\n\nAvoid: LinkedIn \"remote\" posts that say \"must be in NYC\" in the description.",
+          "img": ".github/images/threads/t06_02.png"
+        },
+        {
+          "text": "Red flags in remote job listings:\n\n→ \"Must overlap 8 hours with US timezone\" = not remote\n→ No salary range = lowball incoming\n→ \"Startup culture\" in remote context = always online\n→ \"Camera on\" for daily standups = surveillance\n→ No async tools mentioned = office worker at home",
+          "img": ".github/images/threads/t06_03.png"
+        },
+        {
+          "text": "How to stand out applying remotely:\n\n1/ Record a 60-second Loom intro\n2/ Show timezone overlap in your cover note\n3/ Mention async tools you use (Notion, Linear, Slack)\n4/ Include a link to your work, not a PDF\n\nVideo cuts through 500+ applications.",
+          "img": ".github/images/threads/t06_04.png"
+        },
+        {
+          "text": "Negotiating remote compensation:\n\n→ Never accept the first offer\n→ Ask \"Is this adjusted for location?\"\n→ If they adjust for cost of living, negotiate perks instead\n→ Get the remote policy in writing\n\n\"Permanent remote\" means nothing without a contract clause.",
+          "img": ".github/images/threads/t06_05.png"
+        },
+        {
+          "text": "Remote work truth in 2026:\n\n63% of companies use hybrid as default.\nFully remote roles dropped 23% YoY.\nBut remote-first companies grow faster.\n\nThe filter: apply to remote-first, not \"allows remote.\"\n\nMore data:\ncvin.bio/remote-talent-report",
+          "img": ".github/images/threads/t06_06.png"
+        }
       ]
     },
     {
       "id": "t007",
       "topic": "ai-tools-for-job-search",
       "tweets": [
-        "7 AI tools that will 10x your job search in 2026.\n\nNot hype. These actually work.\n\nEvery job seeker should be using at least 3 of these.\n\n🧵👇",
-        "1/ ChatGPT/Claude for cover letters\n\nPaste the job description + your resume.\n\nPrompt: \"Write a cover letter for [role] at [company]. Match tone to their careers page.\"\n\n30 seconds vs 30 minutes.",
-        "2/ Teal — Job application tracker\n\nAI-powered board that tracks applications, tailors your resume, and highlights keyword matches.\n\nFree basic plan.\n\ntealhq.com",
-        "3/ Jobscan — ATS resume optimizer\n\nPaste your resume + job description. It tells you exactly which keywords to add.\n\nCompatibility score before you apply.\n\n5 free scans/month.\n\njobscan.co",
-        "4/ Otta — Smart job matching\n\nSet your preferences once. Get matched to roles from top companies.\n\nNo spam. No recruiter messages. Just relevant jobs.\n\nFree.\n\notta.com",
-        "5/ Huntr — Job search CRM\n\nKanban board for your job search. Track applications, contacts, interviews.\n\nChrome extension auto-saves jobs from any board.\n\nFree.\n\nhuntr.co",
-        "6/ Interview Warmup by Google\n\nAI-powered mock interviews. Speaks your answers back to you.\n\nAnalyzes filler words, answer structure, talking points.\n\nCompletely free.\n\ngrow.google/certificates/interview-warmup",
-        "7/ CVin.Bio — Live profile link\n\nDrop any resume format. Get a live URL that works like a web portfolio.\n\nBypass ATS entirely. Track who views your profile.\n\nFree.\n\ncvin.bio",
-        "The job market is harder than ever. But the tools available are better than ever.\n\nUse them. Share this with someone still doing it the old way."
+        {
+          "text": "7 AI tools that will 10x your job search in 2026.\n\nNot hype. These actually work.\n\nEvery job seeker should be using at least 3 of these.\n\n🧵👇",
+          "img": ".github/images/threads/t07_01.png"
+        },
+        {
+          "text": "1/ ChatGPT/Claude for cover letters\n\nPaste the job description + your resume.\n\nPrompt: \"Write a cover letter for [role] at [company]. Match tone to their careers page.\"\n\n30 seconds vs 30 minutes.",
+          "img": ".github/images/threads/t07_02.png"
+        },
+        {
+          "text": "2/ Teal — Job application tracker\n\nAI-powered board that tracks applications, tailors your resume, and highlights keyword matches.\n\nFree basic plan.\n\ntealhq.com",
+          "img": ".github/images/threads/t07_03.png"
+        },
+        {
+          "text": "3/ Jobscan — ATS resume optimizer\n\nPaste your resume + job description. It tells you exactly which keywords to add.\n\nCompatibility score before you apply.\n\n5 free scans/month.\n\njobscan.co",
+          "img": ".github/images/threads/t07_04.png"
+        },
+        {
+          "text": "4/ Otta — Smart job matching\n\nSet your preferences once. Get matched to roles from top companies.\n\nNo spam. No recruiter messages. Just relevant jobs.\n\nFree.\n\notta.com",
+          "img": ".github/images/threads/t07_05.png"
+        },
+        {
+          "text": "5/ Huntr — Job search CRM\n\nKanban board for your job search. Track applications, contacts, interviews.\n\nChrome extension auto-saves jobs from any board.\n\nFree.\n\nhuntr.co",
+          "img": ".github/images/threads/t07_06.png"
+        },
+        {
+          "text": "6/ Interview Warmup by Google\n\nAI-powered mock interviews. Speaks your answers back to you.\n\nAnalyzes filler words, answer structure, talking points.\n\nCompletely free.\n\ngrow.google/certificates/interview-warmup",
+          "img": ".github/images/threads/t07_07.png"
+        },
+        {
+          "text": "7/ CVin.Bio — Live profile link\n\nDrop any resume format. Get a live URL that works like a web portfolio.\n\nBypass ATS entirely. Track who views your profile.\n\nFree.\n\ncvin.bio",
+          "img": ".github/images/threads/t07_08.png"
+        },
+        {
+          "text": "The job market is harder than ever. But the tools available are better than ever.\n\nUse them. Share this with someone still doing it the old way.",
+          "img": ".github/images/threads/t07_09.png"
+        }
       ]
     },
     {
       "id": "t008",
       "topic": "how-ats-actually-works",
       "tweets": [
-        "You applied to 150 jobs and got 0 interviews.\n\nIt's not your experience. It's your PDF.\n\nWe built a CV parsing engine. Here's exactly what happens when you upload your resume to an ATS. 🧵👇",
-        "1/ The Two-Column Collapse\n\nOlder systems parse PDFs top-to-bottom, left-to-right. They don't understand columns.\n\nIf 'Skills' is next to 'Work History', the ATS mashes them into garbled text.\n\nInstant rejection. Before a human ever sees it.",
-        "2/ Invisible SVG Contact Info\n\nCustom vector icons (mail icon, phone icon) instead of raw text? OCR libraries skip them.\n\nWithout 'Email:' as a text anchor, parsers fail to map the string.\n\nYour email literally disappears from the database.",
-        "3/ Keyword Matching is Boolean\n\nLegacy ATS scoring is exact string matching. Not an LLM.\n\n'Node.js' vs 'NodeJS' = different keywords. Your score drops.\n\nWe had to build fuzzy-matching arrays mapping 40+ variations just to handle this.",
-        "4/ DOCX is a ZIP of XML\n\nUpload .docx = upload an XML tree. Complex nested tables = deeply layered XML.\n\nIf the expected node path fails, the parser throws a silent error.\n\nThe recruiter sees: empty fields.",
-        "5/ The Real Numbers\n\n75% of resumes never reach a human.\nAverage time on each resume: 7.4 seconds.\n85% of Fortune 500 companies use ATS.\n\nThe filter wasn't built to find the best candidates. It was built to reduce volume. You are collateral damage.",
-        "The fix: stop trusting the black box.\n\nSend a structured, live URL instead of a PDF.\n\nNo parsing. No garbled text. No silent failures.\n\nGet your free profile link:\n\ncvin.bio"
+        {
+          "text": "You applied to 150 jobs and got 0 interviews.\n\nIt's not your experience. It's your PDF.\n\nWe built a CV parsing engine. Here's exactly what happens when you upload your resume to an ATS. 🧵👇",
+          "img": ".github/images/threads/t08_01.png"
+        },
+        {
+          "text": "1/ The Two-Column Collapse\n\nOlder systems parse PDFs top-to-bottom, left-to-right. They don't understand columns.\n\nIf 'Skills' is next to 'Work History', the ATS mashes them into garbled text.\n\nInstant rejection. Before a human ever sees it.",
+          "img": ".github/images/threads/t08_02.png"
+        },
+        {
+          "text": "2/ Invisible SVG Contact Info\n\nCustom vector icons (mail icon, phone icon) instead of raw text? OCR libraries skip them.\n\nWithout 'Email:' as a text anchor, parsers fail to map the string.\n\nYour email literally disappears from the database.",
+          "img": ".github/images/threads/t08_03.png"
+        },
+        {
+          "text": "3/ Keyword Matching is Boolean\n\nLegacy ATS scoring is exact string matching. Not an LLM.\n\n'Node.js' vs 'NodeJS' = different keywords. Your score drops.\n\nWe had to build fuzzy-matching arrays mapping 40+ variations just to handle this.",
+          "img": ".github/images/threads/t08_04.png"
+        },
+        {
+          "text": "4/ DOCX is a ZIP of XML\n\nUpload .docx = upload an XML tree. Complex nested tables = deeply layered XML.\n\nIf the expected node path fails, the parser throws a silent error.\n\nThe recruiter sees: empty fields.",
+          "img": ".github/images/threads/t08_05.png"
+        },
+        {
+          "text": "5/ The Real Numbers\n\n75% of resumes never reach a human.\nAverage time on each resume: 7.4 seconds.\n85% of Fortune 500 companies use ATS.\n\nThe filter wasn't built to find the best candidates. It was built to reduce volume. You are collateral damage.",
+          "img": ".github/images/threads/t08_06.png"
+        },
+        {
+          "text": "The fix: stop trusting the black box.\n\nSend a structured, live URL instead of a PDF.\n\nNo parsing. No garbled text. No silent failures.\n\nGet your free profile link:\n\ncvin.bio",
+          "img": ".github/images/threads/t08_07.png"
+        }
       ]
     },
     {
       "id": "t009",
       "topic": "web3-career-guide",
       "tweets": [
-        "How to break into Web3 in 2026 — even with zero blockchain experience.\n\nSalaries, skills, where to look, and what to learn first.\n\nNo fluff. Just the path.\n\n🧵👇",
-        "Web3 roles:\n\n→ Smart contract dev (Solidity, Rust)\n→ Frontend (React + ethers.js)\n→ Protocol engineer\n→ DevRel\n→ Security auditor\n→ Community manager\n→ Product manager\n→ On-chain analyst\n\nYou don't need to be a Solidity wizard for all of these.",
-        "Salary benchmarks (2026 data):\n\n→ Junior Solidity dev: $80-120K\n→ Senior smart contract eng: $150-250K\n→ Protocol engineer: $200-350K\n→ Security auditor: $180-300K\n→ DevRel: $100-180K\n→ Community manager: $60-100K\n\nWeb3 still pays 20-40% above Web2 for equivalent seniority.",
-        "Where to find Web3 jobs:\n\n→ cvin.bio/jobs — we track thousands of roles\n→ crypto.jobs\n→ web3.career\n→ Wellfound (crypto filter)\n→ Protocol-specific job boards (Solana, Ethereum, Polkadot)\n\nFollow project Discord channels. Many roles are posted there first.",
-        "If you know JavaScript/TypeScript:\n\nWeek 1: Solidity basics (CryptoZombies.io)\nWeek 2: Build + deploy a smart contract (Remix IDE)\nWeek 3: Connect frontend to contract (ethers.js)\nWeek 4: Deploy to testnet. Write tests. Push to GitHub.\n\nPortfolio project done.",
-        "If you don't code at all:\n\nWeb3 still needs:\n→ Community managers (manage Discord/Telegram)\n→ Content writers (documentation, blogs)\n→ Analysts (Dune Analytics, Nansen)\n→ Marketing (growth, partnerships)\n\nLearn the ecosystem. Contribute to DAOs. Build in public.",
-        "The meta-advice:\n\n1/ Build in public. Tweet what you're learning.\n2/ Contribute to open source protocols.\n3/ Attend free hackathons (ETHGlobal, Solana Hackhouse).\n4/ The community is small. People notice contributors.\n\nStand out with a profile that shows your Web3 work:\n\ncvin.bio"
+        {
+          "text": "How to break into Web3 in 2026 — even with zero blockchain experience.\n\nSalaries, skills, where to look, and what to learn first.\n\nNo fluff. Just the path.\n\n🧵👇",
+          "img": ".github/images/threads/t09_01.png"
+        },
+        {
+          "text": "Web3 roles:\n\n→ Smart contract dev (Solidity, Rust)\n→ Frontend (React + ethers.js)\n→ Protocol engineer\n→ DevRel\n→ Security auditor\n→ Community manager\n→ Product manager\n→ On-chain analyst\n\nYou don't need to be a Solidity wizard for all of these.",
+          "img": ".github/images/threads/t09_02.png"
+        },
+        {
+          "text": "Salary benchmarks (2026 data):\n\n→ Junior Solidity dev: $80-120K\n→ Senior smart contract eng: $150-250K\n→ Protocol engineer: $200-350K\n→ Security auditor: $180-300K\n→ DevRel: $100-180K\n→ Community manager: $60-100K\n\nWeb3 still pays 20-40% above Web2 for equivalent seniority.",
+          "img": ".github/images/threads/t09_03.png"
+        },
+        {
+          "text": "Where to find Web3 jobs:\n\n→ cvin.bio/jobs — we track thousands of roles\n→ crypto.jobs\n→ web3.career\n→ Wellfound (crypto filter)\n→ Protocol-specific job boards (Solana, Ethereum, Polkadot)\n\nFollow project Discord channels. Many roles are posted there first.",
+          "img": ".github/images/threads/t09_04.png"
+        },
+        {
+          "text": "If you know JavaScript/TypeScript:\n\nWeek 1: Solidity basics (CryptoZombies.io)\nWeek 2: Build + deploy a smart contract (Remix IDE)\nWeek 3: Connect frontend to contract (ethers.js)\nWeek 4: Deploy to testnet. Write tests. Push to GitHub.\n\nPortfolio project done.",
+          "img": ".github/images/threads/t09_05.png"
+        },
+        {
+          "text": "If you don't code at all:\n\nWeb3 still needs:\n→ Community managers (manage Discord/Telegram)\n→ Content writers (documentation, blogs)\n→ Analysts (Dune Analytics, Nansen)\n→ Marketing (growth, partnerships)\n\nLearn the ecosystem. Contribute to DAOs. Build in public.",
+          "img": ".github/images/threads/t09_06.png"
+        },
+        {
+          "text": "The meta-advice:\n\n1/ Build in public. Tweet what you're learning.\n2/ Contribute to open source protocols.\n3/ Attend free hackathons (ETHGlobal, Solana Hackhouse).\n4/ The community is small. People notice contributors.\n\nStand out with a profile that shows your Web3 work:\n\ncvin.bio",
+          "img": ".github/images/threads/t09_07.png"
+        }
       ]
     },
     {
       "id": "t010",
       "topic": "interview-prep-megathread",
       "tweets": [
-        "Interview prep megathread.\n\nFree resources for technical interviews, behavioral interviews, system design, and salary negotiation.\n\nEverything you need. Zero cost.\n\n🧵👇",
-        "Technical interviews:\n\n→ NeetCode.io — 150 curated problems by pattern\n→ Blind 75 / Grind 75 lists\n→ LeetCode free tier (2,000+ problems)\n→ HackerRank Interview Prep Kit\n\nDo 2-3 problems/day for 30 days.\nNot 20/day for 3 days.",
-        "System design:\n\n→ system-design-primer (GitHub, 290K stars)\n→ ByteByteGo YouTube channel (free)\n→ Designing Data-Intensive Applications (the bible)\n→ interviewing.io blog (free deep dives)\n\nPractice talking through designs out loud. Record yourself.",
-        "Behavioral interviews:\n\n→ STAR method: Situation, Task, Action, Result\n→ Prep 5 stories: conflict, failure, leadership, ambiguity, impact\n→ Amazon Leadership Principles\n→ Interview Warmup by Google (free AI mock)\n\nBehavioral rounds eliminate more candidates than technical ones.",
-        "Salary negotiation:\n\n→ levels.fyi for comp data\n→ Never say a number first\n→ Ask \"What is the comp band for this level?\"\n→ Always negotiate. 85% expect it.\n→ If non-negotiable, negotiate start date or equity\n\nHighest ROI 15 min of your career.",
-        "Mock interviews:\n\n→ Pramp — free peer-to-peer practice\n→ interviewing.io — anonymous with FAANG engineers\n→ Interview Warmup by Google — AI feedback\n→ Record yourself on Loom\n\n#1 reason people fail: nerves. Practice fixes nerves.",
-        "This thread alone replaces a $2,000 bootcamp.\n\nBookmark it. Share it with someone preparing for interviews.\n\nAnd make sure your profile is ready before the recruiter Googles you.\n\ncvin.bio"
+        {
+          "text": "Interview prep megathread.\n\nFree resources for technical interviews, behavioral interviews, system design, and salary negotiation.\n\nEverything you need. Zero cost.\n\n🧵👇",
+          "img": ".github/images/threads/t10_01.png"
+        },
+        {
+          "text": "Technical interviews:\n\n→ NeetCode.io — 150 curated problems by pattern\n→ Blind 75 / Grind 75 lists\n→ LeetCode free tier (2,000+ problems)\n→ HackerRank Interview Prep Kit\n\nDo 2-3 problems/day for 30 days.\nNot 20/day for 3 days.",
+          "img": ".github/images/threads/t10_02.png"
+        },
+        {
+          "text": "System design:\n\n→ system-design-primer (GitHub, 290K stars)\n→ ByteByteGo YouTube channel (free)\n→ Designing Data-Intensive Applications (the bible)\n→ interviewing.io blog (free deep dives)\n\nPractice talking through designs out loud. Record yourself.",
+          "img": ".github/images/threads/t10_03.png"
+        },
+        {
+          "text": "Behavioral interviews:\n\n→ STAR method: Situation, Task, Action, Result\n→ Prep 5 stories: conflict, failure, leadership, ambiguity, impact\n→ Amazon Leadership Principles\n→ Interview Warmup by Google (free AI mock)\n\nBehavioral rounds eliminate more candidates than technical ones.",
+          "img": ".github/images/threads/t10_04.png"
+        },
+        {
+          "text": "Salary negotiation:\n\n→ levels.fyi for comp data\n→ Never say a number first\n→ Ask \"What is the comp band for this level?\"\n→ Always negotiate. 85% expect it.\n→ If non-negotiable, negotiate start date or equity\n\nHighest ROI 15 min of your career.",
+          "img": ".github/images/threads/t10_05.png"
+        },
+        {
+          "text": "Mock interviews:\n\n→ Pramp — free peer-to-peer practice\n→ interviewing.io — anonymous with FAANG engineers\n→ Interview Warmup by Google — AI feedback\n→ Record yourself on Loom\n\n#1 reason people fail: nerves. Practice fixes nerves.",
+          "img": ".github/images/threads/t10_06.png"
+        },
+        {
+          "text": "This thread alone replaces a $2,000 bootcamp.\n\nBookmark it. Share it with someone preparing for interviews.\n\nAnd make sure your profile is ready before the recruiter Googles you.\n\ncvin.bio",
+          "img": ".github/images/threads/t10_07.png"
+        }
       ]
     }
   ],
