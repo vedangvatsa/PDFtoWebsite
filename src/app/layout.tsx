@@ -39,6 +39,7 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true, 'max-image-preview': 'large' as const, 'max-video-preview': -1 },
   alternates: { canonical: siteUrl },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
