@@ -1,0 +1,10 @@
+{
+  "protocol_version": "A2A-1.0",
+  "agent_name": "CVin.Bio Services",
+  "operator": "CVin.Bio",
+  "description": "Tech job board and CV to website conversion service.",
+  "capabilities": ["search_jobs", "view_profiles", "read_reports"],
+  "endpoints": {
+    "api": "https://cvin.bio/api/jobs"
+  }
+}
