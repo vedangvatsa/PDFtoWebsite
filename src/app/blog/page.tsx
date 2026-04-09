@@ -31,7 +31,7 @@ export default function BlogPage() {
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
-      <main className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
+      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
         <div className="flex flex-col mb-16">
           <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 transition-colors">Articles & Insights</h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 transition-colors">Actionable career advice, resume strategies, and insights to help you land your next big role.</p>
