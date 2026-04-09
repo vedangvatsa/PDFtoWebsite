@@ -2,14 +2,19 @@ name: Social Media Scheduler (X + Bluesky + Blogger)
 
 on:
   schedule:
-    - cron: '30 19 * * *'   # 01:00 IST
-    - cron: '30 3 * * *'    # 09:00 IST
-    - cron: '30 11 * * *'   # 17:00 IST
-  workflow_dispatch:        # manual trigger for testing
+    - cron: '30 3 * * *'     # 09:00 IST — Morning thread
+    - cron: '0 10 * * *'     # 15:30 IST — Afternoon insight
+    - cron: '0 16 * * *'     # 21:30 IST — Evening engagement
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: 'Content slot to post (thread, insight, engagement)'
+        required: false
+        default: 'engagement'
 
 concurrency:
-  group: social-poster
-  cancel-in-progress: false
+  group: social-poster-${{ github.event.schedule || 'manual' }}
+  cancel-in-progress: true
 
 jobs:
   post:
@@ -18,49 +23,88 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo (full history)
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: Post to X
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Determine content slot
+        id: slot
+        run: |
+          if [ -n "${{ github.event.inputs.slot }}" ]; then
+            echo "slot=${{ github.event.inputs.slot }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.schedule }}" = "30 3 * * *" ]; then
+            echo "slot=thread" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.schedule }}" = "0 10 * * *" ]; then
+            echo "slot=insight" >> $GITHUB_OUTPUT
+          else
+            echo "slot=engagement" >> $GITHUB_OUTPUT
+          fi
+          echo "Content slot: $(cat $GITHUB_OUTPUT)"
+
+      - name: Post to X and commit state
         continue-on-error: true
         env:
           X_CONSUMER_KEY:        ${{ secrets.X_CONSUMER_KEY }}
           X_CONSUMER_SECRET:     ${{ secrets.X_CONSUMER_SECRET }}
           X_ACCESS_TOKEN:        ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
-        run: node .github/scripts/x-post.mjs
+          X_POST_SLOT:           ${{ steps.slot.outputs.slot }}
+        run: |
+          echo "🎯 Posting slot: $X_POST_SLOT"
+          node .github/scripts/x-post.mjs
+          git add .github/scripts/x-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: advance X $X_POST_SLOT index [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
 
-      - name: Post to Bluesky
+      - name: Post to Bluesky and commit state
         continue-on-error: true
+        if: steps.slot.outputs.slot == 'engagement'
         env:
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
-        run: node .github/scripts/bsky-post.mjs
+        run: |
+          node .github/scripts/bsky-post.mjs
+          git add .github/scripts/bsky-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: advance Bluesky post index [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
 
-      - name: Post to Blogger
+      - name: Post to Blogger and commit state
         continue-on-error: true
+        if: steps.slot.outputs.slot == 'thread'
         env:
           BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
-        run: node .github/scripts/blogger-post.mjs
+        run: |
+          node .github/scripts/blogger-post.mjs
+          git add .github/scripts/blogger-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: advance Blogger post index [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
 
       - name: Sync remote jobs
+        if: steps.slot.outputs.slot == 'thread'
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node .github/scripts/jobs-sync.mjs
-
-      - name: Commit updated state
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/scripts/x-state.json .github/scripts/bsky-state.json .github/scripts/blogger-state.json
-          git diff --staged --quiet || git commit -m "chore: advance post index [skip ci]"
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push && break || sleep 5
-          done
