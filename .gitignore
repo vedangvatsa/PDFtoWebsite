@@ -44,3 +44,6 @@ next-env.d.ts
 mcp-package/node_modules
 .mcpregistry_github_token
 .mcpregistry_registry_token
+
+# lockfiles
+.github/scripts/.x-post.lock

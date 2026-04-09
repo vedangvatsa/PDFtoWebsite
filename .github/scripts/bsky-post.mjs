@@ -158,16 +158,25 @@ async function createPost(session, text, imageBlob) {
 
 // ── Main ──────────────────────────────────────────────────────────────────
 async function main() {
+  // Pull latest state from git first
+  try {
+    const { execSync } = await import('child_process');
+    execSync('git pull --rebase origin main', { cwd: path.join(__dirname, '../..'), stdio: 'pipe' });
+    console.log('📥 Pulled latest state from git');
+  } catch (e) {
+    console.warn('⚠️ Git pull failed, proceeding with checkout state:', e.message);
+  }
+
   let state = { index: 0, lastPostedAt: null };
   if (fs.existsSync(STATE_FILE)) state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
 
-  // Cooldown: skip if last post was less than 4 hours ago (prevents duplicates from overlapping runs)
+  // Cooldown: skip if posted recently (20h gap for 1x/day schedule)
   if (state.lastPostedAt) {
     const elapsed = Date.now() - new Date(state.lastPostedAt).getTime();
-    const COOLDOWN_MS = 4 * 60 * 60 * 1000; // 4 hours
+    const COOLDOWN_MS = 20 * 60 * 60 * 1000; // 20 hours
     if (elapsed < COOLDOWN_MS) {
-      const mins = Math.round(elapsed / 60000);
-      console.log(`⏳ Cooldown: last post was ${mins}m ago (need ${COOLDOWN_MS / 60000}m gap). Skipping.`);
+      const hrs = (elapsed / 3600000).toFixed(1);
+      console.log(`⏳ Cooldown: last post was ${hrs}h ago (need 20h gap). Skipping.`);
       process.exit(0);
     }
   }
