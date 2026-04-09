@@ -314,7 +314,8 @@ async function postThread(state, content) {
   console.log(`🧵 [threads] Posting thread #${idx + 1}/${threads.length}: "${thread.topic}" (${tweets.length} tweets)`);
 
   // Pre-flight: check if thread opener is already on timeline
-  const firstLine = tweets[0].split('\n')[0].trim().substring(0, 50);
+  const firstTweetText = typeof tweets[0] === 'string' ? tweets[0] : tweets[0].text;
+  const firstLine = firstTweetText.split('\n')[0].trim().substring(0, 50);
   try {
     const recent = await fetchUserTimeline();
     if (recent.status === 200 && recent.body.data) {
