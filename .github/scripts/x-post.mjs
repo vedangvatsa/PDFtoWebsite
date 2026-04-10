@@ -236,6 +236,26 @@ async function runPost() {
   }
 }
 
+// ── Safely truncate while preserving trailing URLs ────────────────────────
+function safelyTruncate(text, limit = 280) {
+  if (text.length <= limit) return text;
+  
+  // Find a URL at the very end of the string
+  const urlMatch = text.match(/\n(https?:\/\/[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?)$/i);
+  if (!urlMatch) {
+    return text.substring(0, limit - 1).replace(/\n[^\n]*$/, '') + '…';
+  }
+  
+  const url = urlMatch[1];
+  const urlChunk = '\n\n' + url;
+  const rawText = text.slice(0, text.length - urlMatch[0].length).trim();
+  
+  const allowedLength = limit - urlChunk.length - 1; // 1 for ellipsis
+  const truncatedText = rawText.substring(0, allowedLength).replace(/\n[^\n]*$/, '') + '…';
+  
+  return truncatedText + urlChunk;
+}
+
 // ── Post a single tweet (insights / engagement) ──────────────────────────
 async function postSingle(state, content, slotKey) {
   const items = content[slotKey] || content.engagement;
@@ -248,9 +268,7 @@ async function postSingle(state, content, slotKey) {
 
   const item = items[idx];
   let text = item.text.trim();
-  if (text.length > 270) {
-    text = text.substring(0, 270).replace(/\n[^\n]*$/, '') + '…';
-  }
+  text = safelyTruncate(text, 280);
 
   console.log(`📝 [${slotKey}] Posting #${idx + 1}/${items.length}: "${text.substring(0, 60)}..."`);
 
@@ -343,10 +361,7 @@ async function postThread(state, content) {
       tweetText = tweetText.text;
     }
 
-    // Trim to character limit
-    if (tweetText.length > 270) {
-      tweetText = tweetText.substring(0, 270).replace(/\n[^\n]*$/, '') + '…';
-    }
+    tweetText = safelyTruncate(tweetText, 280);
 
     console.log(`  Tweet ${i + 1}/${tweets.length}: "${tweetText.substring(0, 50)}..."`);
 
