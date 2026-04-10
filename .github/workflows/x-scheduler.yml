@@ -34,6 +34,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Install dependencies
+        run: npm install dotenv @supabase/supabase-js
+
       - name: Configure git
         run: |
           git config user.name  "github-actions[bot]"
