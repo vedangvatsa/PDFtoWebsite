@@ -12,21 +12,24 @@ const PH_HOST = 'https://us.posthog.com';
 /** Map raw referrer domains to friendly names */
 const SOURCE_MAP: Record<string, string> = {
   '$direct': 'Direct', '': 'Direct', 'direct': 'Direct',
-  'www.google.com': 'Google', 'google.com': 'Google',
-  'www.linkedin.com': 'LinkedIn', 'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn',
-  'www.facebook.com': 'Facebook', 'facebook.com': 'Facebook', 'm.facebook.com': 'Facebook', 'l.facebook.com': 'Facebook',
+  'www.google.com': 'Google', 'google.com': 'Google', 'search.google.com': 'Google',
+  'accounts.google.com': 'Google Auth', 'com.google.android.googlequicksearchbox': 'Google App',
+  'www.linkedin.com': 'LinkedIn', 'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn', 'com.linkedin.android': 'LinkedIn',
+  'www.facebook.com': 'Facebook', 'facebook.com': 'Facebook', 'm.facebook.com': 'Facebook', 'l.facebook.com': 'Facebook', 'lm.facebook.com': 'Facebook',
   'www.instagram.com': 'Instagram', 'instagram.com': 'Instagram', 'l.instagram.com': 'Instagram',
   'twitter.com': 'X', 'x.com': 'X', 't.co': 'X',
   'www.reddit.com': 'Reddit', 'reddit.com': 'Reddit',
   'wa.me': 'WhatsApp', 'web.whatsapp.com': 'WhatsApp', 'whatsapp.com': 'WhatsApp',
-  't.me': 'Telegram', 'web.telegram.org': 'Telegram',
+  't.me': 'Telegram', 'web.telegram.org': 'Telegram', 'org.telegram.messenger.web': 'Telegram',
   'bsky.app': 'Bluesky',
   'www.tumblr.com': 'Tumblr', 'tumblr.com': 'Tumblr',
   'dev.to': 'Dev.to', 'hashnode.com': 'Hashnode',
   'www.youtube.com': 'YouTube', 'youtube.com': 'YouTube', 'youtu.be': 'YouTube',
   'github.com': 'GitHub', 'www.github.com': 'GitHub',
-  'mail.google.com': 'Gmail',
+  'mail.google.com': 'Gmail', 'com.google.android.gm': 'Gmail',
   'outlook.live.com': 'Outlook', 'outlook.office.com': 'Outlook',
+  'search.brave.com': 'Brave Search', 'bing.com': 'Bing', 'cn.bing.com': 'Bing',
+  'cvin.bio': 'Internal', 'temp-mail.org': 'Email', 'substack.com': 'Substack',
 };
 function friendlySource(raw: string): string {
   if (!raw) return 'Direct';
@@ -210,7 +213,7 @@ export async function GET(request: NextRequest) {
           AND timestamp >= now() - interval 7 day
         GROUP BY referrer
         ORDER BY visits DESC
-        LIMIT 25
+        LIMIT 100
       `, 'admin_top_referrers'),
 
       // 5. Device type breakdown (last 7 days)
@@ -643,7 +646,18 @@ export async function GET(request: NextRequest) {
         pageviewsByDay: phPageviewsByDay,
         uniqueVisitors: phUniqueVisitors?.[0] || null,
         topPages: phTopPages,
-        topReferrers: (phTopReferrers || []).map((r: any) => ({ ...r, referrer: friendlySource(r.referrer) })),
+        topReferrers: (() => {
+          if (!phTopReferrers) return [];
+          const agg: Record<string, number> = {};
+          phTopReferrers.forEach((r: any) => {
+            const name = friendlySource(r.referrer);
+            agg[name] = (agg[name] || 0) + r.visits;
+          });
+          return Object.entries(agg)
+            .map(([referrer, visits]) => ({ referrer, visits }))
+            .sort((a, b) => b.visits - a.visits)
+            .slice(0, 25);
+        })(),
         deviceTypes: phDeviceTypes,
         osTypes: phOsTypes,
         topCountries: phTopCountries,
