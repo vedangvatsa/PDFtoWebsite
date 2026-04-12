@@ -11,6 +11,10 @@ on:
         description: 'Content slot to post (thread, insight, engagement)'
         required: false
         default: 'engagement'
+      sync_only:
+        description: 'Only run the job sync (skip posting)'
+        type: boolean
+        default: false
 
 concurrency:
   group: social-poster-${{ github.event.schedule || 'manual' }}
@@ -106,7 +110,7 @@ jobs:
           fi
 
       - name: Sync remote jobs
-        if: steps.slot.outputs.slot == 'thread'
+        if: steps.slot.outputs.slot == 'thread' || github.event.inputs.sync_only == 'true'
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
