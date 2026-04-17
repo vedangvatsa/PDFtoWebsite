@@ -28,12 +28,46 @@ const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
-function escapeHTML(text) {
+function decodeHTML(text) {
   if (!text) return '';
   return text
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+function escapeHTML(text) {
+  if (!text) return '';
+  // Decode first to prevent double-encoding, then re-escape
+  const decoded = decodeHTML(text);
+  return decoded
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function cleanCompany(name) {
+  if (!name) return '';
+  let clean = decodeHTML(name);
+  // Strip legal suffixes and subsidiary labels
+  clean = clean
+    .replace(/\s*(,?\s*(Inc\.?|LLC|Ltd\.?|Corp\.?|GmbH|S\.?R\.?L\.?|Pty\.?|Co\.?|PLC|AG|SE))+\.?\s*$/i, '')
+    .replace(/\s+(Infrastructure|Technology|Technologies|Solutions|Services|Digital|Software|Global|Group|International)\s*&.*$/i, '')
+    .replace(/\s*\(.*\)\s*$/, '')
+    .trim();
+  return clean || decodeHTML(name);
+}
+
+function cleanTitle(title) {
+  if (!title) return '';
+  let clean = decodeHTML(title);
+  // Remove parenthetical qualifiers like "(United States/Spanish speakers)"
+  clean = clean.replace(/\s*\(.*\)\s*$/, '');
+  // Remove department suffixes like " - Product" or " - SEO"
+  clean = clean.replace(/\s+-\s+[A-Z][a-zA-Z\s&/]*$/, '');
+  return clean.trim() || decodeHTML(title);
 }
 
 function truncate(text, max = 60) {
@@ -148,8 +182,8 @@ function formatJobsMessage(jobs) {
   const lines = [];
 
   for (const job of jobs) {
-    const title = truncate(job.title, 60);
-    const company = escapeHTML(job.company);
+    const title = truncate(cleanTitle(job.title), 60);
+    const company = escapeHTML(cleanCompany(job.company));
     const url = escapeHTML(job.apply_url);
 
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
