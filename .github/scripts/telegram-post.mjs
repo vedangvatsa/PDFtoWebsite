@@ -48,6 +48,58 @@ function escapeHTML(text) {
     .replace(/>/g, '&gt;');
 }
 
+// Known brands whose casing can't be derived from title case
+const BRAND_CASE = {
+  'deepl': 'DeepL',
+  'deepmind': 'DeepMind',
+  'openai': 'OpenAI',
+  'mongodb': 'MongoDB',
+  'webflow': 'Webflow',
+  'clickup': 'ClickUp',
+  'linkedin': 'LinkedIn',
+  'github': 'GitHub',
+  'gitlab': 'GitLab',
+  'bitgo': 'BitGo',
+  'coinbase': 'Coinbase',
+  'okx': 'OKX',
+  'bybit': 'Bybit',
+  'sofi': 'SoFi',
+  'postman': 'Postman',
+  'langchain': 'LangChain',
+  'datadog': 'Datadog',
+  'snowflake': 'Snowflake',
+  'hashicorp': 'HashiCorp',
+  'devrev': 'DevRev',
+  'airbnb': 'Airbnb',
+  'infobip': 'Infobip',
+  'hubspot': 'HubSpot',
+  'shopify': 'Shopify',
+  'cloudflare': 'Cloudflare',
+  'nerdwallet': 'NerdWallet',
+  'mckinsey': 'McKinsey',
+  'descript': 'Descript',
+  'synthesia': 'Synthesia',
+  'pinecone': 'Pinecone',
+  'deepgram': 'Deepgram',
+  'supabase': 'Supabase',
+  'perplexity': 'Perplexity',
+  'replit': 'Replit',
+  'taskrabbit': 'TaskRabbit',
+  'servicenow': 'ServiceNow',
+  'airwallex': 'Airwallex',
+  'gopuff': 'Gopuff',
+};
+
+function titleCase(str) {
+  if (!str) return '';
+  // Don't title-case ALL-CAPS acronyms (e.g. "OKX", "AWS")
+  if (str === str.toUpperCase() && str.length <= 5) return str;
+  return str
+    .split(/\s+/)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
 function cleanCompany(name) {
   if (!name) return '';
   let clean = decodeHTML(name);
@@ -58,6 +110,14 @@ function cleanCompany(name) {
     .replace(/\s*\(.*?\)/g, '')
     .replace(/\s+\d+$/, '') // Strip trailing numbers like "Shopback 2"
     .trim();
+  // Fix capitalization: check brand map first, then title-case
+  const key = clean.toLowerCase();
+  if (BRAND_CASE[key]) {
+    clean = BRAND_CASE[key];
+  } else if (clean === clean.toLowerCase()) {
+    // Only title-case if the name is all-lowercase (don't touch mixed case like "ServiceNow")
+    clean = titleCase(clean);
+  }
   // Break domain-like names so Telegram doesn't auto-link (e.g. Expatfile.tax)
   if (clean.includes('.')) {
     clean = clean.replace(/\.([a-z]{2,6})$/i, '\u200B.$1');
