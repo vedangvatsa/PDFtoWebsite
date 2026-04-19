@@ -586,6 +586,9 @@ export async function GET(request: NextRequest) {
 
     // ── Product Timeline ──
     const productTimeline = [
+      { date: '2026-04-19', tag: 'pipeline', title: 'Brand Capitalization Engine', desc: 'Implemented an automated casing dictionary combined with smart title-case fallback to mathematically ensure correct noun capitalization for companies pushed to Telegram.' },
+      { date: '2026-04-18', tag: 'jobs', title: 'Automated Telegram Automation', desc: 'Activated fully automated daily Telegram broadcasts of tech jobs to @techjobsdaily, integrating smart subset selection and dataset caching.' },
+      { date: '2026-04-18', tag: 'ai', title: 'Agentic Web Discovery Integration', desc: 'Enabled strict zero-shot machine communication protocols via WebMCP, LLMs.txt markdown negotiation, A2A agent cards, and custom LLM content signals.' },
       { date: '2026-04-07', tag: 'jobs', title: 'Dynamic Job Interleaving Algorithm', desc: 'Rewrote the job grid clustering logic to guarantee visual diversity by preventing consecutive job cards from the same company in 2D layouts.' },
       { date: '2026-04-07', tag: 'jobs', title: 'Crypto Native Job Sourcing', desc: 'Added expansive sourcing pipeline to automatically aggregate jobs from top blockchain and crypto targets via Greenhouse, Ashby, and Lever APIs (Binance, OpenSea, Chainlink, Uniswap, Solana, Avalon, Paradigm, etc).' },
       { date: '2026-04-07', tag: 'safety', title: 'Quality Exclusions System', desc: 'Implemented persistent backend entity filter logic to permanently exclude noisy companies (e.g. Gopuff) from the central job board.' },
