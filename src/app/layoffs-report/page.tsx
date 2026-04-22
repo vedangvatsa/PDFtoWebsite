@@ -296,8 +296,8 @@ export default function LayoffsReport() {
   const [unlocked, setUnlocked] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
   const { stats } = useReportStats();
-  const jobCount = stats ? `${Math.floor(stats.totalJobs / 1000).toLocaleString()},000+` : '17,000+';
-  const companyCount = stats ? `${stats.totalCompanies}+` : '170+';
+  const jobCount = stats ? `${Math.floor(stats.totalJobs / 1000).toLocaleString()},000+` : '19,000+';
+  const companyCount = stats ? `${stats.totalCompanies}+` : '490+';
 
   useEffect(() => {
     // Check URL params for access token (from email link)

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: 'CVin.Bio — Convert Your CV to a Website',
     template: '%s | CVin.Bio',
   },
-  description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from 170+ top companies.',
+  description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from hundreds of top companies.',
   keywords: ['ai cv builder', 'cv to website', 'cv link', 'digital cv', 'online portfolio', 'professional bio', 'CVin.Bio'],
   authors: [{ name: 'CVin.Bio' }],
   creator: 'CVin.Bio',
@@ -64,7 +64,7 @@ export default function RootLayout({
               '@type': 'WebSite',
               name: 'CVin.Bio',
               url: siteUrl,
-              description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from 170+ top companies.',
+              description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from hundreds of top companies.',
               potentialAction: {
                 '@type': 'SearchAction',
                 target: { '@type': 'EntryPoint', urlTemplate: `${siteUrl}/{search_term_string}` },
@@ -104,7 +104,7 @@ export default function RootLayout({
               applicationCategory: 'BusinessApplication',
               operatingSystem: 'All',
               url: siteUrl,
-              description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from 170+ top companies.',
+              description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from hundreds of top companies.',
               offers: {
                 '@type': 'Offer',
                 price: '0',

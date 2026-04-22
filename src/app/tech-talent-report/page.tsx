@@ -327,13 +327,13 @@ function SkillRadarChart() {
 
 export default function TechTalentReport() {
   const { stats } = useReportStats();
-  const totalJobs = stats ? stats.totalJobs.toLocaleString() : '17,836';
-  const totalCompanies = stats ? `${stats.totalCompanies}` : '171';
+  const totalJobs = stats ? stats.totalJobs.toLocaleString() : '19,172';
+  const totalCompanies = stats ? `${stats.totalCompanies}` : '490';
   const aiPercent = stats ? `${stats.aiPercent}%` : '7%';
   const aiCount = stats ? stats.aiJobs.toLocaleString() : '1,183';
   const remotePercent = stats ? `${100 - stats.remotePercent}%` : '87%';
   const remoteOnlyPercent = stats ? `${stats.remotePercent}%` : '13%';
-  const jobCount = stats ? `${Math.floor(stats.totalJobs / 1000).toLocaleString()},000+` : '17,000+';
+  const jobCount = stats ? `${Math.floor(stats.totalJobs / 1000).toLocaleString()},000+` : '19,000+';
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors duration-200 flex flex-col">
       <Header />
