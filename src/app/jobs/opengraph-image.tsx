@@ -20,81 +20,83 @@ export default async function Image() {
 
   let jobsCountText = '19,000+';
   if (count) {
-    jobsCountText = count.toLocaleString();
+    jobsCountText = `${Math.floor(count / 1000).toLocaleString()},000+`;
   }
+
+  const { data: companies } = await supabase
+    .from('jobs')
+    .select('company')
+    .not('company', 'ilike', '%Gopuff%');
+  let companyCount = '490+';
+  if (companies) {
+    const unique = new Set(companies.map((c: { company: string }) => c.company));
+    companyCount = `${unique.size}+`;
+  }
+
+  const cards = [
+    { company: 'OpenAI', title: 'Research Scientist' },
+    { company: 'Stripe', title: 'Software Engineer' },
+    { company: 'Cloudflare', title: 'Engineering Manager' },
+    { company: 'Anthropic', title: 'AI Safety Researcher' },
+    { company: 'Coinbase', title: 'Backend Engineer' },
+    { company: 'Airbnb', title: 'Product Manager' },
+  ];
 
   return new ImageResponse(
     (
-      <div 
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          justifyContent: 'space-between', 
-          width: '100%', 
-          height: '100%', 
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          height: '100%',
           backgroundColor: '#fafafa',
-          color: '#09090b', 
           fontFamily: 'sans-serif',
-          padding: '80px 100px',
+          padding: '60px 80px',
+          justifyContent: 'space-between',
         }}
       >
-        {/* Left Side: Title and Stats */}
-        <div style={{ display: 'flex', flexDirection: 'column', width: '45%', gap: 24 }}>
-          <div style={{ display: 'flex', fontSize: 90, fontWeight: 800, letterSpacing: '-0.04em', color: '#09090b', lineHeight: 1.1 }}>
-            Job Board
-          </div>
-          
-          <div style={{ display: 'flex', fontSize: 36, fontWeight: 500, color: '#71717a', letterSpacing: '-0.01em', marginTop: 10 }}>
-            {jobsCountText} remote tech jobs
-          </div>
+        {/* Top: Label */}
+        <div style={{ display: 'flex', fontSize: 14, fontWeight: 600, color: '#a1a1aa', letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
+          CVin.Bio
+        </div>
 
-          <div style={{ display: 'flex', fontSize: 24, fontWeight: 700, color: '#a1a1aa', marginTop: 'auto', marginBottom: 0 }}>
-            CVin.Bio
+        {/* Middle: Title + Stats */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+            Tech Job Board
+          </div>
+          <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#71717a', gap: 24 }}>
+            <span>{jobsCountText} jobs</span>
+            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span>{companyCount} companies</span>
+            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span>Updated daily</span>
           </div>
         </div>
 
-        {/* Right Side: Grid of Job Cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', width: '50%', gap: 16 }}>
-          
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 16 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', width: '48%', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 18, color: '#71717a', fontWeight: 600 }}>Stripe</div>
-              <div style={{ fontSize: 22, color: '#09090b', fontWeight: 700, marginTop: 4 }}>Software Engineer, AI</div>
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', width: '48%', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 18, color: '#71717a', fontWeight: 600 }}>Airbnb</div>
-              <div style={{ fontSize: 22, color: '#09090b', fontWeight: 700, marginTop: 4 }}>Product Manager</div>
-            </div>
+        {/* Bottom: Job card grid — 2 rows × 3 cols */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
+            {cards.slice(0, 3).map((c) => (
+              <div key={c.company} style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
+                <div style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>{c.company}</div>
+                <div style={{ fontSize: 20, color: '#09090b', fontWeight: 700, marginTop: 4 }}>{c.title}</div>
+              </div>
+            ))}
           </div>
-
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 16 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', width: '48%', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 18, color: '#71717a', fontWeight: 600 }}>Discord</div>
-              <div style={{ fontSize: 22, color: '#09090b', fontWeight: 700, marginTop: 4 }}>Senior Data Scientist</div>
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', width: '48%', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 18, color: '#71717a', fontWeight: 600 }}>OpenAI</div>
-              <div style={{ fontSize: 22, color: '#09090b', fontWeight: 700, marginTop: 4 }}>Research Scientist</div>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
+            {cards.slice(3, 6).map((c) => (
+              <div key={c.company} style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
+                <div style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>{c.company}</div>
+                <div style={{ fontSize: 20, color: '#09090b', fontWeight: 700, marginTop: 4 }}>{c.title}</div>
+              </div>
+            ))}
           </div>
-
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 16 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', width: '48%', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 18, color: '#71717a', fontWeight: 600 }}>Figma</div>
-              <div style={{ fontSize: 22, color: '#09090b', fontWeight: 700, marginTop: 4 }}>Engineering Manager</div>
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', width: '48%', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 18, color: '#71717a', fontWeight: 600 }}>Coinbase</div>
-              <div style={{ fontSize: 22, color: '#09090b', fontWeight: 700, marginTop: 4 }}>Frontend Developer</div>
-            </div>
-          </div>
-
         </div>
 
+        {/* Bottom bar */}
+        <div style={{ display: 'flex', width: '100%', height: 4, backgroundColor: '#09090b', borderRadius: 2 }} />
       </div>
     ),
     { ...size }
