@@ -393,7 +393,7 @@ export default function StoryPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
-              { n: '1', title: 'Candidate acquisition', points: ['Free CV-to-website tool with no sign-up friction', '17,000+ skill-matched jobs from 170+ companies', 'Candidates upload once, get matched to relevant roles automatically'] },
+              { n: '1', title: 'Candidate acquisition', points: ['Free CV-to-website tool with no sign-up friction', 'Skill-matched jobs aggregated from top tech companies', 'Candidates upload once, get matched to relevant roles automatically'] },
               { n: '2', title: 'Structured talent database', points: ['Every upload extracts and normalizes skills, work history, and credentials', 'Matching quality improves as the database grows', 'Employers search by parsed skill and experience, not keyword guessing'] },
               { n: '3', title: 'Employer query layer', points: ['Companies search talent by actual capability, not self-reported keywords', 'Integrated into existing hiring workflows via API', 'Priced at a fraction of recruiter fees'] },
               { n: '4', title: 'Agent Hiring Module (planned)', points: ['Embeddable API for companies to query the talent database programmatically', 'AI hiring agents search, filter, and retrieve candidates on demand', 'Usage-based pricing per query and per seat'] },
@@ -562,7 +562,7 @@ export default function StoryPage() {
               { n: '01', title: 'Agent frameworks are going to production', body: 'LangChain, CrewAI, AutoGen, Semantic Kernel all graduated to enterprise in 2025. Every adopter needs engineers who understand tool calling, memory architectures, and agent behavior.' },
               { n: '02', title: 'AI reads every resume first', body: 'Recruiter bots and ATS agents now encounter profiles before humans do. Profiles that are not machine-readable get filtered out. We provide the format these systems consume.' },
               { n: '03', title: 'MCP enables a new category', body: 'Anthropic\'s Model Context Protocol standardized how AI assistants query external tools. We are among the first to expose a live MCP server for talent search.' },
-              { n: '04', title: 'The recruiter model is fragile', body: 'Recruiters charge 20-30% of salary and rely on LinkedIn boolean searches. For a $200K hire, that is $40-60K. Structured discovery replaces this entirely.' },
+              { n: '04', title: 'The recruiter model is fragile', body: 'Recruiters charge a percentage of salary and rely on LinkedIn boolean searches. Structured discovery at a fraction of the cost is now technically feasible.' },
             ].map((item) => (
               <div key={item.n} className="flex gap-5">
                 <span className="text-4xl font-serif font-bold text-zinc-200 dark:text-zinc-800 shrink-0 leading-none pt-0.5">{item.n}</span>
@@ -619,7 +619,7 @@ export default function StoryPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-zinc-200 dark:bg-zinc-800/50 rounded-2xl overflow-hidden">
             {[
-              { phase: 'Now', items: ['Job aggregation from 170+ companies', 'Structured profile generation from CVs', 'MCP server and AI discovery infrastructure', 'Research-driven content distribution'] },
+              { phase: 'Now', items: ['Multi-source job aggregation pipeline', 'Structured profile generation from CVs', 'MCP server and AI discovery infrastructure', 'Research-driven content distribution'] },
               { phase: 'Next', items: ['Agent Hiring Module for enterprise integration', 'Employer sourcing dashboard and subscriptions', 'Verified skill assessments', 'Companies\' AI agents source talent via our API'] },
               { phase: 'Long-term', items: ['Open talent protocol for any AI system', 'Agent-to-agent hiring: company agents publish requirements, candidate agents respond', 'The identity layer for AI-mediated professional commerce'] },
             ].map((phase, i) => (
