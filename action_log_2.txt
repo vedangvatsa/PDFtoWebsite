@@ -1,0 +1,293 @@
+post	Set up job	﻿2026-04-10T05:37:41.5172033Z Current runner version: '2.333.1'
+post	Set up job	2026-04-10T05:37:41.5253471Z ##[group]Runner Image Provisioner
+post	Set up job	2026-04-10T05:37:41.5255423Z Hosted Compute Agent
+post	Set up job	2026-04-10T05:37:41.5256520Z Version: 20260213.493
+post	Set up job	2026-04-10T05:37:41.5257611Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+post	Set up job	2026-04-10T05:37:41.5259052Z Build Date: 2026-02-13T00:28:41Z
+post	Set up job	2026-04-10T05:37:41.5260299Z Worker ID: {74f3c756-31da-4ad5-8131-d71457cf0a9f}
+post	Set up job	2026-04-10T05:37:41.5261604Z Azure Region: westus3
+post	Set up job	2026-04-10T05:37:41.5262651Z ##[endgroup]
+post	Set up job	2026-04-10T05:37:41.5265315Z ##[group]Operating System
+post	Set up job	2026-04-10T05:37:41.5266489Z Ubuntu
+post	Set up job	2026-04-10T05:37:41.5267358Z 24.04.4
+post	Set up job	2026-04-10T05:37:41.5268187Z LTS
+post	Set up job	2026-04-10T05:37:41.5269217Z ##[endgroup]
+post	Set up job	2026-04-10T05:37:41.5270157Z ##[group]Runner Image
+post	Set up job	2026-04-10T05:37:41.5271189Z Image: ubuntu-24.04
+post	Set up job	2026-04-10T05:37:41.5272341Z Version: 20260406.80.1
+post	Set up job	2026-04-10T05:37:41.5274290Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260406.80/images/ubuntu/Ubuntu2404-Readme.md
+post	Set up job	2026-04-10T05:37:41.5297970Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260406.80
+post	Set up job	2026-04-10T05:37:41.5299670Z ##[endgroup]
+post	Set up job	2026-04-10T05:37:41.5301717Z ##[group]GITHUB_TOKEN Permissions
+post	Set up job	2026-04-10T05:37:41.5304788Z Contents: write
+post	Set up job	2026-04-10T05:37:41.5346112Z Metadata: read
+post	Set up job	2026-04-10T05:37:41.5347158Z ##[endgroup]
+post	Set up job	2026-04-10T05:37:41.5350580Z Secret source: Actions
+post	Set up job	2026-04-10T05:37:41.5351819Z Prepare workflow directory
+post	Set up job	2026-04-10T05:37:41.5911098Z Prepare all required actions
+post	Set up job	2026-04-10T05:37:41.5971897Z Getting action download info
+post	Set up job	2026-04-10T05:37:42.1789445Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+post	Set up job	2026-04-10T05:37:42.3247017Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+post	Set up job	2026-04-10T05:37:42.5773248Z Complete job name: post
+post	Checkout repo (full history)	﻿2026-04-10T05:37:42.7202275Z ##[group]Run actions/checkout@v4
+post	Checkout repo (full history)	2026-04-10T05:37:42.7203304Z with:
+post	Checkout repo (full history)	2026-04-10T05:37:42.7204095Z   token: ***
+post	Checkout repo (full history)	2026-04-10T05:37:42.7204613Z   fetch-depth: 0
+post	Checkout repo (full history)	2026-04-10T05:37:42.7205400Z   repository: vedangvatsa123/PDFtoWebsite
+post	Checkout repo (full history)	2026-04-10T05:37:42.7206074Z   ssh-strict: true
+post	Checkout repo (full history)	2026-04-10T05:37:42.7206566Z   ssh-user: git
+post	Checkout repo (full history)	2026-04-10T05:37:42.7207078Z   persist-credentials: true
+post	Checkout repo (full history)	2026-04-10T05:37:42.7207644Z   clean: true
+post	Checkout repo (full history)	2026-04-10T05:37:42.7208150Z   sparse-checkout-cone-mode: true
+post	Checkout repo (full history)	2026-04-10T05:37:42.7208762Z   fetch-tags: false
+post	Checkout repo (full history)	2026-04-10T05:37:42.7209275Z   show-progress: true
+post	Checkout repo (full history)	2026-04-10T05:37:42.7209802Z   lfs: false
+post	Checkout repo (full history)	2026-04-10T05:37:42.7210278Z   submodules: false
+post	Checkout repo (full history)	2026-04-10T05:37:42.7210798Z   set-safe-directory: true
+post	Checkout repo (full history)	2026-04-10T05:37:42.7211642Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:42.8570276Z Syncing repository: vedangvatsa123/PDFtoWebsite
+post	Checkout repo (full history)	2026-04-10T05:37:42.8572558Z ##[group]Getting Git version info
+post	Checkout repo (full history)	2026-04-10T05:37:42.8573493Z Working directory is '/home/runner/work/PDFtoWebsite/PDFtoWebsite'
+post	Checkout repo (full history)	2026-04-10T05:37:42.8574808Z [command]/usr/bin/git version
+post	Checkout repo (full history)	2026-04-10T05:37:43.1609877Z git version 2.53.0
+post	Checkout repo (full history)	2026-04-10T05:37:43.1651272Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:43.1676354Z Temporarily overriding HOME='/home/runner/work/_temp/0d5fb1f7-9797-4e8d-9009-a60758103920' before making global git config changes
+post	Checkout repo (full history)	2026-04-10T05:37:43.1680161Z Adding repository directory to the temporary git global config as a safe directory
+post	Checkout repo (full history)	2026-04-10T05:37:43.1693145Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/PDFtoWebsite/PDFtoWebsite
+post	Checkout repo (full history)	2026-04-10T05:37:43.2032513Z Deleting the contents of '/home/runner/work/PDFtoWebsite/PDFtoWebsite'
+post	Checkout repo (full history)	2026-04-10T05:37:43.2044709Z ##[group]Initializing the repository
+post	Checkout repo (full history)	2026-04-10T05:37:43.2062145Z [command]/usr/bin/git init /home/runner/work/PDFtoWebsite/PDFtoWebsite
+post	Checkout repo (full history)	2026-04-10T05:37:43.2540598Z hint: Using 'master' as the name for the initial branch. This default branch name
+post	Checkout repo (full history)	2026-04-10T05:37:43.2544381Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+post	Checkout repo (full history)	2026-04-10T05:37:43.2560009Z hint: to use in all of your new repositories, which will suppress this warning,
+post	Checkout repo (full history)	2026-04-10T05:37:43.2563242Z hint: call:
+post	Checkout repo (full history)	2026-04-10T05:37:43.2573571Z hint:
+post	Checkout repo (full history)	2026-04-10T05:37:43.2575455Z hint: 	git config --global init.defaultBranch <name>
+post	Checkout repo (full history)	2026-04-10T05:37:43.2580035Z hint:
+post	Checkout repo (full history)	2026-04-10T05:37:43.2581882Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+post	Checkout repo (full history)	2026-04-10T05:37:43.2585594Z hint: 'development'. The just-created branch can be renamed via this command:
+post	Checkout repo (full history)	2026-04-10T05:37:43.2588451Z hint:
+post	Checkout repo (full history)	2026-04-10T05:37:43.2590211Z hint: 	git branch -m <name>
+post	Checkout repo (full history)	2026-04-10T05:37:43.2592025Z hint:
+post	Checkout repo (full history)	2026-04-10T05:37:43.2594527Z hint: Disable this message with "git config set advice.defaultBranchName false"
+post	Checkout repo (full history)	2026-04-10T05:37:43.2599214Z Initialized empty Git repository in /home/runner/work/PDFtoWebsite/PDFtoWebsite/.git/
+post	Checkout repo (full history)	2026-04-10T05:37:43.2607129Z [command]/usr/bin/git remote add origin https://github.com/vedangvatsa123/PDFtoWebsite
+post	Checkout repo (full history)	2026-04-10T05:37:43.2981401Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:43.2988215Z ##[group]Disabling automatic garbage collection
+post	Checkout repo (full history)	2026-04-10T05:37:43.2996920Z [command]/usr/bin/git config --local gc.auto 0
+post	Checkout repo (full history)	2026-04-10T05:37:43.3052658Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:43.3055884Z ##[group]Setting up auth
+post	Checkout repo (full history)	2026-04-10T05:37:43.3067304Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+post	Checkout repo (full history)	2026-04-10T05:37:43.3106775Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+post	Checkout repo (full history)	2026-04-10T05:37:43.8087479Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+post	Checkout repo (full history)	2026-04-10T05:37:43.8135746Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+post	Checkout repo (full history)	2026-04-10T05:37:43.8380671Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+post	Checkout repo (full history)	2026-04-10T05:37:43.8389454Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+post	Checkout repo (full history)	2026-04-10T05:37:43.8643042Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+post	Checkout repo (full history)	2026-04-10T05:37:44.1975791Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:44.1986152Z ##[group]Fetching the repository
+post	Checkout repo (full history)	2026-04-10T05:37:44.2005363Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+post	Checkout repo (full history)	2026-04-10T05:37:46.7203515Z From https://github.com/vedangvatsa123/PDFtoWebsite
+post	Checkout repo (full history)	2026-04-10T05:37:46.7204764Z  * [new branch]      main       -> origin/main
+post	Checkout repo (full history)	2026-04-10T05:37:46.7208316Z  * [new branch]      vercel/install-vercel-speed-insights-3wdorc -> origin/vercel/install-vercel-speed-insights-3wdorc
+post	Checkout repo (full history)	2026-04-10T05:37:46.7210513Z  * [new branch]      vercel/install-vercel-speed-insights-xy9li4 -> origin/vercel/install-vercel-speed-insights-xy9li4
+post	Checkout repo (full history)	2026-04-10T05:37:46.7254870Z [command]/usr/bin/git branch --list --remote origin/main
+post	Checkout repo (full history)	2026-04-10T05:37:46.7285446Z   origin/main
+post	Checkout repo (full history)	2026-04-10T05:37:46.7295824Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+post	Checkout repo (full history)	2026-04-10T05:37:46.7322271Z ccd62967a64f5137a6aea68fc9036f4be2d5bd49
+post	Checkout repo (full history)	2026-04-10T05:37:46.7327375Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:46.7328473Z ##[group]Determining the checkout info
+post	Checkout repo (full history)	2026-04-10T05:37:46.7329788Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:46.7335653Z [command]/usr/bin/git sparse-checkout disable
+post	Checkout repo (full history)	2026-04-10T05:37:46.7383781Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+post	Checkout repo (full history)	2026-04-10T05:37:46.7419968Z ##[group]Checking out the ref
+post	Checkout repo (full history)	2026-04-10T05:37:46.7426069Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+post	Checkout repo (full history)	2026-04-10T05:37:46.9680108Z Switched to a new branch 'main'
+post	Checkout repo (full history)	2026-04-10T05:37:46.9683543Z branch 'main' set up to track 'origin/main'.
+post	Checkout repo (full history)	2026-04-10T05:37:46.9725775Z ##[endgroup]
+post	Checkout repo (full history)	2026-04-10T05:37:46.9795833Z [command]/usr/bin/git log -1 --format=%H
+post	Checkout repo (full history)	2026-04-10T05:37:46.9808089Z ccd62967a64f5137a6aea68fc9036f4be2d5bd49
+post	Setup Node.js	﻿2026-04-10T05:37:47.0074438Z ##[group]Run actions/setup-node@v4
+post	Setup Node.js	2026-04-10T05:37:47.0074784Z with:
+post	Setup Node.js	2026-04-10T05:37:47.0075289Z   node-version: 22
+post	Setup Node.js	2026-04-10T05:37:47.0075654Z   always-auth: false
+post	Setup Node.js	2026-04-10T05:37:47.0075892Z   check-latest: false
+post	Setup Node.js	2026-04-10T05:37:47.0076279Z   token: ***
+post	Setup Node.js	2026-04-10T05:37:47.0076484Z ##[endgroup]
+post	Setup Node.js	2026-04-10T05:37:47.1993037Z Found in cache @ /opt/hostedtoolcache/node/22.22.2/x64
+post	Setup Node.js	2026-04-10T05:37:47.2008875Z ##[group]Environment details
+post	Setup Node.js	2026-04-10T05:37:47.6188825Z node: v22.22.2
+post	Setup Node.js	2026-04-10T05:37:47.6193159Z npm: 10.9.7
+post	Setup Node.js	2026-04-10T05:37:47.6201294Z yarn: 1.22.22
+post	Setup Node.js	2026-04-10T05:37:47.6204913Z ##[endgroup]
+post	Install dependencies	﻿2026-04-10T05:37:47.6298562Z ##[group]Run npm install dotenv @supabase/supabase-js
+post	Install dependencies	2026-04-10T05:37:47.6299044Z [36;1mnpm install dotenv @supabase/supabase-js[0m
+post	Install dependencies	2026-04-10T05:37:47.6331830Z shell: /usr/bin/bash -e {0}
+post	Install dependencies	2026-04-10T05:37:47.6332127Z ##[endgroup]
+post	Install dependencies	2026-04-10T05:37:56.0970303Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+post	Install dependencies	2026-04-10T05:38:20.8272689Z 
+post	Install dependencies	2026-04-10T05:38:20.8276452Z added 631 packages, and audited 632 packages in 33s
+post	Install dependencies	2026-04-10T05:38:20.8283900Z 
+post	Install dependencies	2026-04-10T05:38:20.8284545Z 91 packages are looking for funding
+post	Install dependencies	2026-04-10T05:38:20.8285665Z   run `npm fund` for details
+post	Install dependencies	2026-04-10T05:38:20.8385714Z 
+post	Install dependencies	2026-04-10T05:38:20.8406376Z 7 vulnerabilities (3 moderate, 4 high)
+post	Install dependencies	2026-04-10T05:38:20.8425925Z 
+post	Install dependencies	2026-04-10T05:38:20.8426593Z To address issues that do not require attention, run:
+post	Install dependencies	2026-04-10T05:38:20.8435698Z   npm audit fix
+post	Install dependencies	2026-04-10T05:38:20.8448715Z 
+post	Install dependencies	2026-04-10T05:38:20.8450737Z Some issues need review, and may require choosing
+post	Install dependencies	2026-04-10T05:38:20.8451602Z a different dependency.
+post	Install dependencies	2026-04-10T05:38:20.8452088Z 
+post	Install dependencies	2026-04-10T05:38:20.8452430Z Run `npm audit` for details.
+post	Configure git	﻿2026-04-10T05:38:20.9183842Z ##[group]Run git config user.name  "github-actions[bot]"
+post	Configure git	2026-04-10T05:38:20.9184345Z [36;1mgit config user.name  "github-actions[bot]"[0m
+post	Configure git	2026-04-10T05:38:20.9184827Z [36;1mgit config user.email "41898282+github-actions[bot]@users.noreply.github.com"[0m
+post	Configure git	2026-04-10T05:38:20.9206798Z shell: /usr/bin/bash -e {0}
+post	Configure git	2026-04-10T05:38:20.9207065Z ##[endgroup]
+post	Determine content slot	﻿2026-04-10T05:38:20.9341035Z ##[group]Run if [ -n "" ]; then
+post	Determine content slot	2026-04-10T05:38:20.9341386Z [36;1mif [ -n "" ]; then[0m
+post	Determine content slot	2026-04-10T05:38:20.9341660Z [36;1m  echo "slot=" >> $GITHUB_OUTPUT[0m
+post	Determine content slot	2026-04-10T05:38:20.9341973Z [36;1melif [ "30 3 * * *" = "30 3 * * *" ]; then[0m
+post	Determine content slot	2026-04-10T05:38:20.9342291Z [36;1m  echo "slot=thread" >> $GITHUB_OUTPUT[0m
+post	Determine content slot	2026-04-10T05:38:20.9342596Z [36;1melif [ "30 3 * * *" = "0 10 * * *" ]; then[0m
+post	Determine content slot	2026-04-10T05:38:20.9342903Z [36;1m  echo "slot=insight" >> $GITHUB_OUTPUT[0m
+post	Determine content slot	2026-04-10T05:38:20.9343185Z [36;1melse[0m
+post	Determine content slot	2026-04-10T05:38:20.9343424Z [36;1m  echo "slot=engagement" >> $GITHUB_OUTPUT[0m
+post	Determine content slot	2026-04-10T05:38:20.9343727Z [36;1mfi[0m
+post	Determine content slot	2026-04-10T05:38:20.9343984Z [36;1mecho "Content slot: $(cat $GITHUB_OUTPUT)"[0m
+post	Determine content slot	2026-04-10T05:38:20.9366002Z shell: /usr/bin/bash -e {0}
+post	Determine content slot	2026-04-10T05:38:20.9366280Z ##[endgroup]
+post	Determine content slot	2026-04-10T05:38:20.9426482Z Content slot: slot=thread
+post	Post to X and commit state	﻿2026-04-10T05:38:20.9485698Z ##[group]Run echo "🎯 Posting slot: $X_POST_SLOT"
+post	Post to X and commit state	2026-04-10T05:38:20.9486158Z [36;1mecho "🎯 Posting slot: $X_POST_SLOT"[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9486473Z [36;1mnode .github/scripts/x-post.mjs[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9486778Z [36;1mgit add .github/scripts/x-state.json[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9487109Z [36;1mif ! git diff --staged --quiet; then[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9487586Z [36;1m  git commit -m "chore: advance X $X_POST_SLOT index [skip ci]"[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9487986Z [36;1m  for i in 1 2 3 4 5; do[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9488357Z [36;1m    git pull --rebase origin main && git push && break || sleep $((i * 3))[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9488743Z [36;1m  done[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9488934Z [36;1mfi[0m
+post	Post to X and commit state	2026-04-10T05:38:20.9510545Z shell: /usr/bin/bash -e {0}
+post	Post to X and commit state	2026-04-10T05:38:20.9510992Z env:
+post	Post to X and commit state	2026-04-10T05:38:20.9511367Z   X_CONSUMER_KEY: ***
+post	Post to X and commit state	2026-04-10T05:38:20.9511745Z   X_CONSUMER_SECRET: ***
+post	Post to X and commit state	2026-04-10T05:38:20.9512079Z   X_ACCESS_TOKEN: ***
+post	Post to X and commit state	2026-04-10T05:38:20.9512429Z   X_ACCESS_TOKEN_SECRET: ***
+post	Post to X and commit state	2026-04-10T05:38:20.9512725Z   X_POST_SLOT: thread
+post	Post to X and commit state	2026-04-10T05:38:20.9512950Z ##[endgroup]
+post	Post to X and commit state	2026-04-10T05:38:20.9560952Z 🎯 Posting slot: thread
+post	Post to X and commit state	2026-04-10T05:38:21.1716206Z ⚠️ Git pull failed: Command failed: git pull --rebase origin main
+post	Post to X and commit state	2026-04-10T05:38:21.1717717Z 🧵 [threads] Posting thread #1/10: "free-ai-courses-2026" (12 tweets)
+post	Post to X and commit state	2026-04-10T05:38:21.1760678Z error: cannot pull with rebase: You have unstaged changes.
+post	Post to X and commit state	2026-04-10T05:38:21.1764789Z error: Please commit or stash them.
+post	Post to X and commit state	2026-04-10T05:38:21.1765852Z 
+post	Post to X and commit state	2026-04-10T05:38:21.5299782Z   Tweet 1/12: "10 free AI courses that are actually worth your ti..."
+post	Post to X and commit state	2026-04-10T05:38:22.1848367Z   🖼️ Media: 2042477263418163200
+post	Post to X and commit state	2026-04-10T05:38:22.5787900Z   ✅ Tweet 1 posted (2042477265939022069)
+post	Post to X and commit state	2026-04-10T05:38:24.5812860Z   Tweet 2/12: "1/ Machine Learning by Andrew Ng (Coursera)
+post	Post to X and commit state	2026-04-10T05:38:24.5814100Z 
+post	Post to X and commit state	2026-04-10T05:38:24.5814641Z Still..."
+post	Post to X and commit state	2026-04-10T05:38:25.3402148Z   🖼️ Media: 2042477276001157121
+post	Post to X and commit state	2026-04-10T05:38:25.8456428Z   ✅ Tweet 2 posted (2042477279297909108)
+post	Post to X and commit state	2026-04-10T05:38:27.8467632Z   Tweet 3/12: "2/ fast.ai - Practical Deep Learning for Coders
+post	Post to X and commit state	2026-04-10T05:38:27.8468547Z 
+post	Post to X and commit state	2026-04-10T05:38:27.8469063Z T..."
+post	Post to X and commit state	2026-04-10T05:38:28.5970014Z   🖼️ Media: 2042477289691389952
+post	Post to X and commit state	2026-04-10T05:38:29.1381687Z   ✅ Tweet 3 posted (2042477292916781303)
+post	Post to X and commit state	2026-04-10T05:38:31.1385385Z   Tweet 4/12: "3/ CS50 Introduction to AI with Python (Harvard/ed..."
+post	Post to X and commit state	2026-04-10T05:38:31.8771864Z   🖼️ Media: 2042477303515787264
+post	Post to X and commit state	2026-04-10T05:38:32.4433436Z   ✅ Tweet 4 posted (2042477306699268349)
+post	Post to X and commit state	2026-04-10T05:38:34.4440141Z   Tweet 5/12: "4/ Google AI Essentials (Coursera)
+post	Post to X and commit state	2026-04-10T05:38:34.4440978Z 
+post	Post to X and commit state	2026-04-10T05:38:34.4441566Z Google's own i..."
+post	Post to X and commit state	2026-04-10T05:38:35.0868674Z   🖼️ Media: 2042477317365370880
+post	Post to X and commit state	2026-04-10T05:38:35.4611621Z   ✅ Tweet 5 posted (2042477320171401297)
+post	Post to X and commit state	2026-04-10T05:38:37.4617692Z   Tweet 6/12: "5/ DeepLearning.AI - Generative AI for Everyone
+post	Post to X and commit state	2026-04-10T05:38:37.4618811Z 
+post	Post to X and commit state	2026-04-10T05:38:37.4619327Z A..."
+post	Post to X and commit state	2026-04-10T05:38:38.2363479Z   🖼️ Media: 2042477330036391936
+post	Post to X and commit state	2026-04-10T05:38:38.9629548Z   ✅ Tweet 6 posted (2042477333437882661)
+post	Post to X and commit state	2026-04-10T05:38:40.9634204Z   Tweet 7/12: "6/ Hugging Face NLP Course
+post	Post to X and commit state	2026-04-10T05:38:40.9635518Z 
+post	Post to X and commit state	2026-04-10T05:38:40.9637821Z Hands-on transformers ..."
+post	Post to X and commit state	2026-04-10T05:38:41.7731773Z   🖼️ Media: 2042477344712245248
+post	Post to X and commit state	2026-04-10T05:38:42.3129235Z   ✅ Tweet 7 posted (2042477348206100829)
+post	Post to X and commit state	2026-04-10T05:38:44.3131690Z   Tweet 8/12: "7/ MIT 6.S191 - Introduction to Deep Learning
+post	Post to X and commit state	2026-04-10T05:38:44.3136920Z 
+post	Post to X and commit state	2026-04-10T05:38:44.3139071Z MIT..."
+post	Post to X and commit state	2026-04-10T05:38:45.0708979Z   🖼️ Media: 2042477358721220610
+post	Post to X and commit state	2026-04-10T05:38:45.6603677Z   ✅ Tweet 8 posted (2042477362064081085)
+post	Post to X and commit state	2026-04-10T05:38:47.6608654Z   Tweet 9/12: "8/ Stanford CS229 - Machine Learning (Full Course ..."
+post	Post to X and commit state	2026-04-10T05:38:48.4928673Z   🖼️ Media: 2042477372805693441
+post	Post to X and commit state	2026-04-10T05:38:49.1611684Z   ✅ Tweet 9 posted (2042477376429572474)
+post	Post to X and commit state	2026-04-10T05:38:51.1623227Z   Tweet 10/12: "9/ Kaggle Learn - Intro to ML, Deep Learning, NLP
+post	Post to X and commit state	2026-04-10T05:38:51.1624971Z ..."
+post	Post to X and commit state	2026-04-10T05:38:51.8676729Z   🖼️ Media: 2042477387439620099
+post	Post to X and commit state	2026-04-10T05:38:52.5032997Z   ✅ Tweet 10 posted (2042477390547587431)
+post	Post to X and commit state	2026-04-10T05:38:54.5037780Z   Tweet 11/12: "10/ Elements of AI (University of Helsinki)
+post	Post to X and commit state	2026-04-10T05:38:54.5038836Z 
+post	Post to X and commit state	2026-04-10T05:38:54.5039627Z 750,0..."
+post	Post to X and commit state	2026-04-10T05:38:55.2552770Z   🖼️ Media: 2042477401448595459
+post	Post to X and commit state	2026-04-10T05:38:55.7905854Z   ✅ Tweet 11 posted (2042477404745314524)
+post	Post to X and commit state	2026-04-10T05:38:57.7909744Z   Tweet 12/12: "That's the list. Bookmark it. Share it with someon..."
+post	Post to X and commit state	2026-04-10T05:38:58.3756926Z   🖼️ Media: 2042477415281401856
+post	Post to X and commit state	2026-04-10T05:38:58.7372411Z   ✅ Tweet 12 posted (2042477417839935626)
+post	Post to X and commit state	2026-04-10T05:38:58.7377368Z 🧵 Thread "free-ai-courses-2026" posted (12/12 tweets)
+post	Post to X and commit state	2026-04-10T05:38:58.7546566Z [main f19c911] chore: advance X thread index [skip ci]
+post	Post to X and commit state	2026-04-10T05:38:58.7547893Z  1 file changed, 33 insertions(+), 6 deletions(-)
+post	Post to X and commit state	2026-04-10T05:38:58.7586529Z error: cannot pull with rebase: You have unstaged changes.
+post	Post to X and commit state	2026-04-10T05:38:58.7589487Z error: Please commit or stash them.
+post	Post to X and commit state	2026-04-10T05:39:01.7647577Z error: cannot pull with rebase: You have unstaged changes.
+post	Post to X and commit state	2026-04-10T05:39:01.7649012Z error: Please commit or stash them.
+post	Post to X and commit state	2026-04-10T05:39:07.7699562Z error: cannot pull with rebase: You have unstaged changes.
+post	Post to X and commit state	2026-04-10T05:39:07.7701327Z error: Please commit or stash them.
+post	Post to X and commit state	2026-04-10T05:39:16.7750613Z error: cannot pull with rebase: You have unstaged changes.
+post	Post to X and commit state	2026-04-10T05:39:16.7752358Z error: Please commit or stash them.
+post	Post to X and commit state	2026-04-10T05:39:28.7799408Z error: cannot pull with rebase: You have unstaged changes.
+post	Post to X and commit state	2026-04-10T05:39:28.7801226Z error: Please commit or stash them.
+post	Post to Blogger and commit state	﻿2026-04-10T05:39:43.7866667Z ##[group]Run node .github/scripts/blogger-post.mjs
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7867117Z [36;1mnode .github/scripts/blogger-post.mjs[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7867486Z [36;1mgit add .github/scripts/blogger-state.json[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7867821Z [36;1mif ! git diff --staged --quiet; then[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7868202Z [36;1m  git commit -m "chore: advance Blogger post index [skip ci]"[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7868576Z [36;1m  for i in 1 2 3 4 5; do[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7868943Z [36;1m    git pull --rebase origin main && git push && break || sleep $((i * 3))[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7869332Z [36;1m  done[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7869519Z [36;1mfi[0m
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7890525Z shell: /usr/bin/bash -e {0}
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7890778Z env:
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7891604Z   BLOGGER_REFRESH_TOKEN: ***
+post	Post to Blogger and commit state	2026-04-10T05:39:43.7891859Z ##[endgroup]
+post	Post to Blogger and commit state	2026-04-10T05:39:43.8280466Z Publishing #22/23: "Why College Degrees Matter Less Now"
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9352269Z Error: {
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9352928Z   "error": "invalid_grant",
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9353695Z   "error_description": "Token has been expired or revoked."
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9354437Z }
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9355846Z     at IncomingMessage.<anonymous> (file:///home/runner/work/PDFtoWebsite/PDFtoWebsite/.github/scripts/blogger-post.mjs:61:61)
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9358829Z     at IncomingMessage.emit (node:events:531:35)
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9359924Z     at endReadableNT (node:internal/streams/readable:1698:12)
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9360919Z     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+post	Post to Blogger and commit state	2026-04-10T05:39:43.9412239Z ##[error]Process completed with exit code 1.
+post	Sync remote jobs	﻿2026-04-10T05:39:43.9463097Z ##[group]Run node .github/scripts/jobs-sync.mjs
+post	Sync remote jobs	2026-04-10T05:39:43.9463490Z [36;1mnode .github/scripts/jobs-sync.mjs[0m
+post	Sync remote jobs	2026-04-10T05:39:43.9484269Z shell: /usr/bin/bash -e {0}
+post	Sync remote jobs	2026-04-10T05:39:43.9484532Z env:
+post	Sync remote jobs	2026-04-10T05:39:43.9484717Z   SUPABASE_URL: 
+post	Sync remote jobs	2026-04-10T05:39:43.9484918Z   SUPABASE_KEY: 
+post	Sync remote jobs	2026-04-10T05:39:43.9485463Z ##[endgroup]
+post	Sync remote jobs	2026-04-10T05:39:44.0028876Z Missing SUPABASE_URL or SUPABASE_KEY
+post	Sync remote jobs	2026-04-10T05:39:44.0087930Z ##[error]Process completed with exit code 1.
+post	Post Checkout repo (full history)	﻿2026-04-10T05:39:44.0198871Z Post job cleanup.
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1171839Z [command]/usr/bin/git version
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1229332Z git version 2.53.0
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1285872Z Temporarily overriding HOME='/home/runner/work/_temp/0e39d8d1-5d60-4292-b323-b378a85a300c' before making global git config changes
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1287513Z Adding repository directory to the temporary git global config as a safe directory
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1294336Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/PDFtoWebsite/PDFtoWebsite
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1344219Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1382335Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1606907Z fatal: No url found for submodule path 'X-Followers-Extraction' in .gitmodules
+post	Post Checkout repo (full history)	2026-04-10T05:39:44.1654828Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+post	Complete job	﻿2026-04-10T05:39:44.1756207Z Cleaning up orphan processes
+post	Complete job	2026-04-10T05:39:44.2052795Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-node@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
