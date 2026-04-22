@@ -1,0 +1,198 @@
+post	UNKNOWN STEP	﻿2026-04-09T20:11:15.0362544Z Current runner version: '2.333.1'
+post	UNKNOWN STEP	2026-04-09T20:11:15.0397432Z ##[group]Runner Image Provisioner
+post	UNKNOWN STEP	2026-04-09T20:11:15.0398665Z Hosted Compute Agent
+post	UNKNOWN STEP	2026-04-09T20:11:15.0399546Z Version: 20260213.493
+post	UNKNOWN STEP	2026-04-09T20:11:15.0401235Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+post	UNKNOWN STEP	2026-04-09T20:11:15.0402429Z Build Date: 2026-02-13T00:28:41Z
+post	UNKNOWN STEP	2026-04-09T20:11:15.0403478Z Worker ID: {de261a30-efc0-48dc-aad3-feda40029dc2}
+post	UNKNOWN STEP	2026-04-09T20:11:15.0404757Z Azure Region: centralus
+post	UNKNOWN STEP	2026-04-09T20:11:15.0405663Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:15.0408058Z ##[group]Operating System
+post	UNKNOWN STEP	2026-04-09T20:11:15.0409152Z Ubuntu
+post	UNKNOWN STEP	2026-04-09T20:11:15.0410328Z 24.04.4
+post	UNKNOWN STEP	2026-04-09T20:11:15.0412858Z LTS
+post	UNKNOWN STEP	2026-04-09T20:11:15.0413747Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:15.0414663Z ##[group]Runner Image
+post	UNKNOWN STEP	2026-04-09T20:11:15.0415880Z Image: ubuntu-24.04
+post	UNKNOWN STEP	2026-04-09T20:11:15.0416878Z Version: 20260406.80.1
+post	UNKNOWN STEP	2026-04-09T20:11:15.0419101Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260406.80/images/ubuntu/Ubuntu2404-Readme.md
+post	UNKNOWN STEP	2026-04-09T20:11:15.0442385Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260406.80
+post	UNKNOWN STEP	2026-04-09T20:11:15.0444267Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:15.0446120Z ##[group]GITHUB_TOKEN Permissions
+post	UNKNOWN STEP	2026-04-09T20:11:15.0449099Z Contents: write
+post	UNKNOWN STEP	2026-04-09T20:11:15.0450500Z Metadata: read
+post	UNKNOWN STEP	2026-04-09T20:11:15.0451507Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:15.0454827Z Secret source: Actions
+post	UNKNOWN STEP	2026-04-09T20:11:15.0456280Z Prepare workflow directory
+post	UNKNOWN STEP	2026-04-09T20:11:15.1644902Z Prepare all required actions
+post	UNKNOWN STEP	2026-04-09T20:11:15.1774624Z Getting action download info
+post	UNKNOWN STEP	2026-04-09T20:11:15.6407864Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+post	UNKNOWN STEP	2026-04-09T20:11:16.9728515Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+post	UNKNOWN STEP	2026-04-09T20:11:17.4042972Z Complete job name: post
+post	UNKNOWN STEP	2026-04-09T20:11:17.4720823Z ##[group]Run actions/checkout@v4
+post	UNKNOWN STEP	2026-04-09T20:11:17.4721500Z with:
+post	UNKNOWN STEP	2026-04-09T20:11:17.4722011Z   token: ***
+post	UNKNOWN STEP	2026-04-09T20:11:17.4722322Z   repository: vedangvatsa123/PDFtoWebsite
+post	UNKNOWN STEP	2026-04-09T20:11:17.4722666Z   ssh-strict: true
+post	UNKNOWN STEP	2026-04-09T20:11:17.4722920Z   ssh-user: git
+post	UNKNOWN STEP	2026-04-09T20:11:17.4723190Z   persist-credentials: true
+post	UNKNOWN STEP	2026-04-09T20:11:17.4723485Z   clean: true
+post	UNKNOWN STEP	2026-04-09T20:11:17.4723755Z   sparse-checkout-cone-mode: true
+post	UNKNOWN STEP	2026-04-09T20:11:17.4724080Z   fetch-depth: 1
+post	UNKNOWN STEP	2026-04-09T20:11:17.4724329Z   fetch-tags: false
+post	UNKNOWN STEP	2026-04-09T20:11:17.4724584Z   show-progress: true
+post	UNKNOWN STEP	2026-04-09T20:11:17.4724845Z   lfs: false
+post	UNKNOWN STEP	2026-04-09T20:11:17.4725094Z   submodules: false
+post	UNKNOWN STEP	2026-04-09T20:11:17.4725361Z   set-safe-directory: true
+post	UNKNOWN STEP	2026-04-09T20:11:17.4725866Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:17.5873643Z Syncing repository: vedangvatsa123/PDFtoWebsite
+post	UNKNOWN STEP	2026-04-09T20:11:17.5875678Z ##[group]Getting Git version info
+post	UNKNOWN STEP	2026-04-09T20:11:17.5876781Z Working directory is '/home/runner/work/PDFtoWebsite/PDFtoWebsite'
+post	UNKNOWN STEP	2026-04-09T20:11:17.5878135Z [command]/usr/bin/git version
+post	UNKNOWN STEP	2026-04-09T20:11:17.5943364Z git version 2.53.0
+post	UNKNOWN STEP	2026-04-09T20:11:17.5971478Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:17.5987967Z Temporarily overriding HOME='/home/runner/work/_temp/237ebb2f-4058-4226-a75e-f83660bec1ce' before making global git config changes
+post	UNKNOWN STEP	2026-04-09T20:11:17.5990319Z Adding repository directory to the temporary git global config as a safe directory
+post	UNKNOWN STEP	2026-04-09T20:11:17.5995329Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/PDFtoWebsite/PDFtoWebsite
+post	UNKNOWN STEP	2026-04-09T20:11:17.6040764Z Deleting the contents of '/home/runner/work/PDFtoWebsite/PDFtoWebsite'
+post	UNKNOWN STEP	2026-04-09T20:11:17.6045344Z ##[group]Initializing the repository
+post	UNKNOWN STEP	2026-04-09T20:11:17.6050661Z [command]/usr/bin/git init /home/runner/work/PDFtoWebsite/PDFtoWebsite
+post	UNKNOWN STEP	2026-04-09T20:11:17.6158608Z hint: Using 'master' as the name for the initial branch. This default branch name
+post	UNKNOWN STEP	2026-04-09T20:11:17.6160389Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+post	UNKNOWN STEP	2026-04-09T20:11:17.6170991Z hint: to use in all of your new repositories, which will suppress this warning,
+post	UNKNOWN STEP	2026-04-09T20:11:17.6172444Z hint: call:
+post	UNKNOWN STEP	2026-04-09T20:11:17.6173008Z hint:
+post	UNKNOWN STEP	2026-04-09T20:11:17.6174051Z hint: 	git config --global init.defaultBranch <name>
+post	UNKNOWN STEP	2026-04-09T20:11:17.6175887Z hint:
+post	UNKNOWN STEP	2026-04-09T20:11:17.6176815Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+post	UNKNOWN STEP	2026-04-09T20:11:17.6177961Z hint: 'development'. The just-created branch can be renamed via this command:
+post	UNKNOWN STEP	2026-04-09T20:11:17.6178899Z hint:
+post	UNKNOWN STEP	2026-04-09T20:11:17.6179490Z hint: 	git branch -m <name>
+post	UNKNOWN STEP	2026-04-09T20:11:17.6180503Z hint:
+post	UNKNOWN STEP	2026-04-09T20:11:17.6181409Z hint: Disable this message with "git config set advice.defaultBranchName false"
+post	UNKNOWN STEP	2026-04-09T20:11:17.6182904Z Initialized empty Git repository in /home/runner/work/PDFtoWebsite/PDFtoWebsite/.git/
+post	UNKNOWN STEP	2026-04-09T20:11:17.6219437Z [command]/usr/bin/git remote add origin https://github.com/vedangvatsa123/PDFtoWebsite
+post	UNKNOWN STEP	2026-04-09T20:11:17.6229364Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:17.6231010Z ##[group]Disabling automatic garbage collection
+post	UNKNOWN STEP	2026-04-09T20:11:17.6234986Z [command]/usr/bin/git config --local gc.auto 0
+post	UNKNOWN STEP	2026-04-09T20:11:17.6266286Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:17.6267443Z ##[group]Setting up auth
+post	UNKNOWN STEP	2026-04-09T20:11:17.6274193Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+post	UNKNOWN STEP	2026-04-09T20:11:17.6306823Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+post	UNKNOWN STEP	2026-04-09T20:11:17.6609762Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+post	UNKNOWN STEP	2026-04-09T20:11:17.6642714Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+post	UNKNOWN STEP	2026-04-09T20:11:17.6875037Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+post	UNKNOWN STEP	2026-04-09T20:11:17.6907681Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+post	UNKNOWN STEP	2026-04-09T20:11:17.7161323Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+post	UNKNOWN STEP	2026-04-09T20:11:17.7197975Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:17.7199304Z ##[group]Fetching the repository
+post	UNKNOWN STEP	2026-04-09T20:11:17.7207642Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5e05b47d68407e7a6d2500613361f1d9856c1271:refs/remotes/origin/main
+post	UNKNOWN STEP	2026-04-09T20:11:19.3105049Z From https://github.com/vedangvatsa123/PDFtoWebsite
+post	UNKNOWN STEP	2026-04-09T20:11:19.3106998Z  * [new ref]         5e05b47d68407e7a6d2500613361f1d9856c1271 -> origin/main
+post	UNKNOWN STEP	2026-04-09T20:11:19.3141500Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:19.3142892Z ##[group]Determining the checkout info
+post	UNKNOWN STEP	2026-04-09T20:11:19.3144292Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:19.3149556Z [command]/usr/bin/git sparse-checkout disable
+post	UNKNOWN STEP	2026-04-09T20:11:19.3208097Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+post	UNKNOWN STEP	2026-04-09T20:11:19.3271148Z ##[group]Checking out the ref
+post	UNKNOWN STEP	2026-04-09T20:11:19.3290904Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+post	UNKNOWN STEP	2026-04-09T20:11:19.4924165Z Switched to a new branch 'main'
+post	UNKNOWN STEP	2026-04-09T20:11:19.4927037Z branch 'main' set up to track 'origin/main'.
+post	UNKNOWN STEP	2026-04-09T20:11:19.4942602Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:19.4982676Z [command]/usr/bin/git log -1 --format=%H
+post	UNKNOWN STEP	2026-04-09T20:11:19.5007550Z 5e05b47d68407e7a6d2500613361f1d9856c1271
+post	UNKNOWN STEP	2026-04-09T20:11:19.5235487Z ##[group]Run actions/setup-node@v4
+post	UNKNOWN STEP	2026-04-09T20:11:19.5235849Z with:
+post	UNKNOWN STEP	2026-04-09T20:11:19.5236050Z   node-version: 22
+post	UNKNOWN STEP	2026-04-09T20:11:19.5236270Z   always-auth: false
+post	UNKNOWN STEP	2026-04-09T20:11:19.5236494Z   check-latest: false
+post	UNKNOWN STEP	2026-04-09T20:11:19.5236834Z   token: ***
+post	UNKNOWN STEP	2026-04-09T20:11:19.5237037Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:19.7379558Z Found in cache @ /opt/hostedtoolcache/node/22.22.2/x64
+post	UNKNOWN STEP	2026-04-09T20:11:19.7388166Z ##[group]Environment details
+post	UNKNOWN STEP	2026-04-09T20:11:20.1967549Z node: v22.22.2
+post	UNKNOWN STEP	2026-04-09T20:11:20.1968855Z npm: 10.9.7
+post	UNKNOWN STEP	2026-04-09T20:11:20.1970164Z yarn: 1.22.22
+post	UNKNOWN STEP	2026-04-09T20:11:20.1977408Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:20.2104897Z ##[group]Run node .github/scripts/x-post.mjs
+post	UNKNOWN STEP	2026-04-09T20:11:20.2105308Z [36;1mnode .github/scripts/x-post.mjs[0m
+post	UNKNOWN STEP	2026-04-09T20:11:20.2138398Z shell: /usr/bin/bash -e {0}
+post	UNKNOWN STEP	2026-04-09T20:11:20.2138715Z env:
+post	UNKNOWN STEP	2026-04-09T20:11:20.2139048Z   X_CONSUMER_KEY: ***
+post	UNKNOWN STEP	2026-04-09T20:11:20.2139422Z   X_CONSUMER_SECRET: ***
+post	UNKNOWN STEP	2026-04-09T20:11:20.2139765Z   X_ACCESS_TOKEN: ***
+post	UNKNOWN STEP	2026-04-09T20:11:20.2140639Z   X_ACCESS_TOKEN_SECRET: ***
+post	UNKNOWN STEP	2026-04-09T20:11:20.2140885Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:20.6333316Z 📥 Pulled latest state from git
+post	UNKNOWN STEP	2026-04-09T20:11:20.6334372Z Posting X #29/67
+post	UNKNOWN STEP	2026-04-09T20:11:20.6335157Z Image: post_29.png
+post	UNKNOWN STEP	2026-04-09T20:11:20.6336011Z Preview: He quit after 2 days.
+post	UNKNOWN STEP	2026-04-09T20:11:20.6336557Z 
+post	UNKNOWN STEP	2026-04-09T20:11:20.6337284Z His manager screamed at him during sales calls. Slammed t...
+post	UNKNOWN STEP	2026-04-09T20:11:20.9934805Z Media upload 200: {"media_id":2042334569597186048,"media_id_string":"2042334569597186048","size":54988,"expires_after_secs":86400,"image":{"image_type":"image\/jpeg","w
+post	UNKNOWN STEP	2026-04-09T20:11:20.9943835Z Media ID: 2042334569597186048
+post	UNKNOWN STEP	2026-04-09T20:11:21.2953268Z ✅ Tweet #29 posted at 2026-04-09T20:11:21.291Z
+post	UNKNOWN STEP	2026-04-09T20:11:21.3030762Z ##[group]Run node .github/scripts/bsky-post.mjs
+post	UNKNOWN STEP	2026-04-09T20:11:21.3031199Z [36;1mnode .github/scripts/bsky-post.mjs[0m
+post	UNKNOWN STEP	2026-04-09T20:11:21.3052325Z shell: /usr/bin/bash -e {0}
+post	UNKNOWN STEP	2026-04-09T20:11:21.3052660Z env:
+post	UNKNOWN STEP	2026-04-09T20:11:21.3052974Z   BSKY_APP_PASSWORD: ***
+post	UNKNOWN STEP	2026-04-09T20:11:21.3053206Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:21.3401344Z 🦋 Bluesky poster — posting #23 of 66
+post	UNKNOWN STEP	2026-04-09T20:11:21.6442236Z 🔑 Authenticated as cvinbio.bsky.social
+post	UNKNOWN STEP	2026-04-09T20:11:22.0921441Z 🖼️ Image uploaded: post_23.png
+post	UNKNOWN STEP	2026-04-09T20:11:22.3232991Z ✅ Posted! URI: at://did:plc:nydvolb53qke6ncsew4wd27m/app.bsky.feed.post/3mj3mjgig2o22
+post	UNKNOWN STEP	2026-04-09T20:11:22.3234190Z 💾 State saved: next post is #24
+post	UNKNOWN STEP	2026-04-09T20:11:22.3304520Z ##[group]Run node .github/scripts/blogger-post.mjs
+post	UNKNOWN STEP	2026-04-09T20:11:22.3304962Z [36;1mnode .github/scripts/blogger-post.mjs[0m
+post	UNKNOWN STEP	2026-04-09T20:11:22.3326531Z shell: /usr/bin/bash -e {0}
+post	UNKNOWN STEP	2026-04-09T20:11:22.3326781Z env:
+post	UNKNOWN STEP	2026-04-09T20:11:22.3327488Z   BLOGGER_REFRESH_TOKEN: ***
+post	UNKNOWN STEP	2026-04-09T20:11:22.3327742Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:22.3737237Z Publishing #22/23: "Why College Degrees Matter Less Now"
+post	UNKNOWN STEP	2026-04-09T20:11:22.4985901Z Error: {
+post	UNKNOWN STEP	2026-04-09T20:11:22.4986754Z   "error": "invalid_grant",
+post	UNKNOWN STEP	2026-04-09T20:11:22.4987535Z   "error_description": "Token has been expired or revoked."
+post	UNKNOWN STEP	2026-04-09T20:11:22.4988479Z }
+post	UNKNOWN STEP	2026-04-09T20:11:22.4993542Z     at IncomingMessage.<anonymous> (file:///home/runner/work/PDFtoWebsite/PDFtoWebsite/.github/scripts/blogger-post.mjs:61:61)
+post	UNKNOWN STEP	2026-04-09T20:11:22.4994676Z     at IncomingMessage.emit (node:events:531:35)
+post	UNKNOWN STEP	2026-04-09T20:11:22.4995396Z     at endReadableNT (node:internal/streams/readable:1698:12)
+post	UNKNOWN STEP	2026-04-09T20:11:22.4996398Z     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5041496Z ##[error]Process completed with exit code 1.
+post	UNKNOWN STEP	2026-04-09T20:11:22.5088920Z ##[group]Run node .github/scripts/jobs-sync.mjs
+post	UNKNOWN STEP	2026-04-09T20:11:22.5089299Z [36;1mnode .github/scripts/jobs-sync.mjs[0m
+post	UNKNOWN STEP	2026-04-09T20:11:22.5110187Z shell: /usr/bin/bash -e {0}
+post	UNKNOWN STEP	2026-04-09T20:11:22.5110441Z env:
+post	UNKNOWN STEP	2026-04-09T20:11:22.5110624Z   SUPABASE_URL: 
+post	UNKNOWN STEP	2026-04-09T20:11:22.5110820Z   SUPABASE_KEY: 
+post	UNKNOWN STEP	2026-04-09T20:11:22.5111011Z ##[endgroup]
+post	UNKNOWN STEP	2026-04-09T20:11:22.5455658Z node:internal/modules/package_json_reader:314
+post	UNKNOWN STEP	2026-04-09T20:11:22.5456918Z   throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+post	UNKNOWN STEP	2026-04-09T20:11:22.5458148Z         ^
+post	UNKNOWN STEP	2026-04-09T20:11:22.5458614Z 
+post	UNKNOWN STEP	2026-04-09T20:11:22.5460485Z Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'dotenv' imported from /home/runner/work/PDFtoWebsite/PDFtoWebsite/.github/scripts/jobs-sync.mjs
+post	UNKNOWN STEP	2026-04-09T20:11:22.5463156Z     at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5464525Z     at packageResolve (node:internal/modules/esm/resolve:768:81)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5466367Z     at moduleResolve (node:internal/modules/esm/resolve:855:18)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5467532Z     at defaultResolve (node:internal/modules/esm/resolve:985:11)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5468993Z     at #cachedDefaultResolve (node:internal/modules/esm/loader:731:20)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5470443Z     at ModuleLoader.resolve (node:internal/modules/esm/loader:708:38)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5472048Z     at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:310:38)
+post	UNKNOWN STEP	2026-04-09T20:11:22.5474688Z     at ModuleJob._link (node:internal/modules/esm/module_job:182:49) {
+post	UNKNOWN STEP	2026-04-09T20:11:22.5475603Z   code: 'ERR_MODULE_NOT_FOUND'
+post	UNKNOWN STEP	2026-04-09T20:11:22.5476516Z }
+post	UNKNOWN STEP	2026-04-09T20:11:22.5476990Z 
+post	UNKNOWN STEP	2026-04-09T20:11:22.5477741Z Node.js v22.22.2
+post	UNKNOWN STEP	2026-04-09T20:11:22.5491863Z ##[error]Process completed with exit code 1.
+post	UNKNOWN STEP	2026-04-09T20:11:22.5585757Z Post job cleanup.
+post	UNKNOWN STEP	2026-04-09T20:11:22.6551109Z [command]/usr/bin/git version
+post	UNKNOWN STEP	2026-04-09T20:11:22.6592803Z git version 2.53.0
+post	UNKNOWN STEP	2026-04-09T20:11:22.6641747Z Temporarily overriding HOME='/home/runner/work/_temp/6093b486-ad4c-42b8-b69a-1eb84039d68b' before making global git config changes
+post	UNKNOWN STEP	2026-04-09T20:11:22.6643807Z Adding repository directory to the temporary git global config as a safe directory
+post	UNKNOWN STEP	2026-04-09T20:11:22.6649521Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/PDFtoWebsite/PDFtoWebsite
+post	UNKNOWN STEP	2026-04-09T20:11:22.6694352Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+post	UNKNOWN STEP	2026-04-09T20:11:22.6729596Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+post	UNKNOWN STEP	2026-04-09T20:11:22.6952774Z fatal: No url found for submodule path 'X-Followers-Extraction' in .gitmodules
+post	UNKNOWN STEP	2026-04-09T20:11:22.6998692Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+post	UNKNOWN STEP	2026-04-09T20:11:22.7081230Z Cleaning up orphan processes
+post	UNKNOWN STEP	2026-04-09T20:11:22.7321038Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-node@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
