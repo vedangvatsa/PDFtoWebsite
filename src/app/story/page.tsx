@@ -67,6 +67,21 @@ function Sources({ children }: { children: React.ReactNode }) {
   );
 }
 
+/* ─── COLLAPSIBLE DETAIL BLOCK ─── */
+function Reveal({ label = 'View details', children }: { label?: string; children: React.ReactNode }) {
+  return (
+    <details className="group">
+      <summary className="cursor-pointer text-[13px] font-medium text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors select-none inline-flex items-center gap-1.5 py-3">
+        <svg className="w-3.5 h-3.5 transition-transform duration-200 group-open:rotate-90" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        {label}
+      </summary>
+      <div className="pt-4">
+        {children}
+      </div>
+    </details>
+  );
+}
+
 /* ─── HORIZONTAL BAR ─── */
 function HBar({ data, unit = '' }: { data: { label: string; value: number; color: string }[]; unit?: string }) {
   const max = Math.max(...data.map(d => d.value));
@@ -276,6 +291,26 @@ export default function StoryPage() {
           ))}
         </div>
 
+        {/* ─── EXECUTIVE SUMMARY ─── */}
+        <div className="mb-28 p-8 sm:p-10 rounded-2xl border border-zinc-200 dark:border-zinc-800/40 bg-white dark:bg-zinc-900/20">
+          <p className="text-[10px] font-semibold text-zinc-400 uppercase tracking-[0.2em] mb-6">The pitch in 60 seconds</p>
+          <ol className="space-y-3 list-none m-0 p-0">
+            {[
+              '$640B recruitment market. No platform gives AI agents structured access to talent data.',
+              'Competitors raised $900M+ to automate recruiters. None make candidates queryable by AI.',
+              'CVin.Bio turns any CV into a structured, machine-readable profile. 329 users. 17K+ jobs from 170+ companies. MCP server live.',
+              'Revenue from featured listings, sourcing subscriptions, placement fees, and an agent hiring SDK.',
+              'Founder previously built a 120K community with 55M views. Microsoft for Startups alum. 25 publications.',
+              'Pre-seed raise to go from working product to first revenue.',
+            ].map((line, i) => (
+              <li key={i} className="text-[15px] text-zinc-600 dark:text-zinc-300 leading-[1.7] flex items-start gap-3">
+                <span className="text-[13px] font-bold text-zinc-300 dark:text-zinc-600 mt-0.5 shrink-0 font-serif">{i + 1}.</span>
+                {line}
+              </li>
+            ))}
+          </ol>
+        </div>
+
         {/* ═══════ SECTION 1: THE OPPORTUNITY ═══════ */}
         <section className="mb-28">
           <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-[0.2em] mb-6">The opportunity</p>
@@ -391,6 +426,7 @@ export default function StoryPage() {
             </div>
           </div>
 
+          <Reveal label="Platform layers in detail">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               { n: '1', title: 'Candidate acquisition', points: ['Free CV-to-website tool with no sign-up friction', '17,000+ skill-matched jobs from 170+ companies', 'Candidates upload once, get matched to relevant roles automatically'] },
@@ -414,6 +450,7 @@ export default function StoryPage() {
               </div>
             ))}
           </div>
+          </Reveal>
         </section>
 
         {/* ═══════ SECTION 5: COMPETITION ═══════ */}
@@ -435,6 +472,7 @@ export default function StoryPage() {
             </div>
           </div>
 
+          <Reveal label="Detailed competitor breakdown">
           {/* ── TIER 1: Horizontal Incumbents ── */}
           <div className="mb-10">
             <p className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em] font-semibold mb-4">Tier 1 · Horizontal job platforms</p>
@@ -499,6 +537,7 @@ export default function StoryPage() {
               ))}
             </div>
           </div>
+          </Reveal>
 
           <Callout>Every AI sourcing tool automates the recruiter. None of them make the candidate queryable. That is the layer we build.</Callout>
 
@@ -511,6 +550,7 @@ export default function StoryPage() {
         <section className="mb-28">
           <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-[0.2em] mb-6">Business model</p>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-8">Three revenue streams aligned with the hiring funnel</h2>
+          <Reveal label="Revenue model details">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
             <div className="space-y-8">
               {[
@@ -551,6 +591,7 @@ export default function StoryPage() {
               </div>
             </div>
           </div>
+          </Reveal>
         </section>
 
         {/* ═══════ SECTION 7: WHY NOW ═══════ */}
