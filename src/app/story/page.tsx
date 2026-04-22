@@ -251,7 +251,7 @@ export default function StoryPage() {
               Talent infrastructure<br />for the agentic era
             </h1>
             <p className="text-[17px] text-zinc-500 dark:text-zinc-400 leading-[1.8]">
-              CVin.Bio turns any CV into a live website. Every profile is structured so that both humans and AI systems can read it. Candidates get a free professional URL and skill-matched jobs from 170+ companies. Employers get a searchable talent database filtered by verified skills, not keywords. <Cite href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner projects</Cite> 40% of enterprise apps will embed AI agents by EOY 2026. The hiring infrastructure needs to be ready for that.
+              CVin.Bio turns any CV into a live website. Every profile is structured so that both humans and AI systems can read it. Candidates get a free professional URL and skill-matched jobs from 170+ companies. Employers get a searchable talent database filtered by structured skill data, not keywords. <Cite href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner projects</Cite> 40% of enterprise apps will embed AI agents by EOY 2026. The hiring infrastructure needs to be ready for that.
             </p>
           </div>
           <div className="hidden lg:block">
@@ -394,7 +394,7 @@ export default function StoryPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               { n: '1', title: 'Candidate acquisition', points: ['Free CV-to-website tool with no sign-up friction', '17,000+ skill-matched jobs from 170+ companies', 'Candidates upload once, get matched to relevant roles automatically'] },
-              { n: '2', title: 'Structured talent database', points: ['Every upload extracts and normalizes skills, work history, and credentials', 'Matching quality improves as the database grows', 'Employers search by verified skill and experience, not keyword guessing'] },
+              { n: '2', title: 'Structured talent database', points: ['Every upload extracts and normalizes skills, work history, and credentials', 'Matching quality improves as the database grows', 'Employers search by parsed skill and experience, not keyword guessing'] },
               { n: '3', title: 'Employer query layer', points: ['Companies search talent by actual capability, not self-reported keywords', 'Integrated into existing hiring workflows via API', 'Priced at a fraction of recruiter fees'] },
               { n: '4', title: 'Agent Hiring Module (planned)', points: ['Embeddable API for companies to query the talent database programmatically', 'AI hiring agents search, filter, and retrieve candidates on demand', 'Usage-based pricing per query and per seat'] },
             ].map((card) => (
@@ -483,7 +483,7 @@ export default function StoryPage() {
             <p className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em] font-semibold mb-3">Our category · Talent infrastructure</p>
             <h4 className="text-lg font-serif font-bold text-white dark:text-zinc-900 mb-3">CVin.Bio</h4>
             <p className="text-[14px] text-zinc-300 dark:text-zinc-600 leading-[1.8] mb-4">
-              Not a sourcing tool. Not a job board. A structured talent protocol where every profile is machine-readable, every skill is verified against work history, and AI agents can query candidates directly via MCP. The platform creates the data layer that every recruiter, ATS, and AI agent will eventually need to read from.
+              Not a sourcing tool. Not a job board. A structured talent protocol where every profile is machine-readable, skills are extracted and normalized from real work history, and AI agents can query candidates directly via MCP. The platform creates the data layer that every recruiter, ATS, and AI agent will eventually need to read from.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
@@ -614,7 +614,7 @@ export default function StoryPage() {
           <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-[0.2em] mb-6">Vision</p>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-8">The infrastructure layer for agent-mediated hiring</h2>
           <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85] mb-10 max-w-3xl">
-            The recruiter workflow (search, scroll, email) was designed for humans. When AI assistants can query a structured talent endpoint, filter by verified skills, and initiate outreach autonomously, that workflow becomes an API call. We are building the protocol layer.
+            The recruiter workflow (search, scroll, email) was designed for humans. When AI assistants can query a structured talent endpoint, filter by extracted skills, and initiate outreach autonomously, that workflow becomes an API call. We are building the protocol layer.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-zinc-200 dark:bg-zinc-800/50 rounded-2xl overflow-hidden">
