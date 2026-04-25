@@ -1144,9 +1144,18 @@ async function main() {
   console.log(`\n📊 Total jobs collected: ${allJobs.length}`);
 
   // Filter out invalid entries and bad data
+  const BLOCKED_COMPANIES = ['impuls hrk'];
+  const BLOCKED_TITLE_WORDS = ['(m/w/d)', 'm/w/d', 'w/m/d', 'entwickler', 'mitarbeiter', 'gesucht', 'du liebst', 'werde unser', 'praktikum'];
+
   const validJobs = allJobs.filter(j => {
     if (!j.title || !j.company || !j.apply_url) return false;
     if (j.company.includes('...') || j.company.length <= 2) return false;
+    
+    if (BLOCKED_COMPANIES.includes(j.company.toLowerCase().trim())) return false;
+    
+    const lowerTitle = j.title.toLowerCase();
+    if (BLOCKED_TITLE_WORDS.some(w => lowerTitle.includes(w))) return false;
+
     // Reject non-Latin titles (CJK, Cyrillic, Czech diacritics, etc.)
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(j.title)) return false;
     return true;
