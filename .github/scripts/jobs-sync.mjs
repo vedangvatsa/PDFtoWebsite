@@ -1156,11 +1156,38 @@ async function main() {
     const lowerTitle = j.title.toLowerCase();
     if (BLOCKED_TITLE_WORDS.some(w => lowerTitle.includes(w))) return false;
 
+    // Reject titles that start with numeric IDs (e.g. "55475267629 - Product Development...")
+    if (/^\d{5,}/.test(j.title.trim())) return false;
+
     // Reject non-Latin titles (CJK, Cyrillic, Czech diacritics, etc.)
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(j.title)) return false;
     return true;
   });
   console.log(`   Valid jobs: ${validJobs.length} (filtered ${allJobs.length - validJobs.length} bad)`);
+
+  // ── Title normalization ──
+  for (const job of validJobs) {
+    let t = job.title;
+
+    // 1. Decode HTML entities (e.g. &amp; → &, &lt; → <)
+    t = t.replace(/&amp;/gi, '&')
+         .replace(/&lt;/gi, '<')
+         .replace(/&gt;/gi, '>')
+         .replace(/&quot;/gi, '"')
+         .replace(/&#39;/gi, "'")
+         .replace(/&nbsp;/gi, ' ');
+
+    // 2. Trim noisy suffixes: cut at first " - ", " / ", or " (" if the core part is ≥20 chars
+    const match = t.match(/^(.{20,}?)\s*[\-\/]\s+.+/) || t.match(/^(.{20,}?)\s*\(.+/);
+    if (match) {
+      t = match[1].trim();
+    }
+
+    // 3. Clean up extra whitespace
+    t = t.replace(/\s+/g, ' ').trim();
+
+    job.title = t;
+  }
 
   // Stamp synced_at on every record
   const now = new Date().toISOString();
