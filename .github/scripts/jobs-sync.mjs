@@ -336,7 +336,7 @@ async function supabaseUpsert(jobs) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 30000);
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs`, {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id`, {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_KEY,

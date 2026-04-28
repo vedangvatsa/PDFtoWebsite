@@ -128,7 +128,7 @@ export default function Home() {
 
           <div className="space-y-3">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-balance">
-              The CV format built for AI agents
+              CV format for AI agents
             </h1>
             <Link href="/ai-discovery" className="inline-block text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors">
               Get an AI-ready profile and auto-match with {jobCount ? `${Math.floor(jobCount / 100) * 100}+` : '25,000+'} jobs
