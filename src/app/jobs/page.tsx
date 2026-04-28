@@ -427,14 +427,14 @@ export default function JobsPage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={job.company_logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`}
+                  src={job.company_logo || `https://logo.clearbit.com/${job.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`}
                   alt={`${job.company} logo`}
                   className="h-5 w-5 rounded shrink-0 object-cover"
                   loading="lazy"
                   onError={(e) => {
                     const el = e.target as HTMLImageElement;
                     el.onerror = null; // Prevent infinite loop
-                    el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company.charAt(0))}&background=e4e4e7&color=52525b&size=128`;
+                    el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`;
                   }}
                 />
                 <div className="flex-1 min-w-0">
