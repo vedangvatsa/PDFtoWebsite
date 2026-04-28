@@ -135,65 +135,67 @@ export default function Home() {
             </Link>
           </div>
 
-          {(!mounted || isUserLoading) ? (
-             <div className="w-full max-w-[600px] min-h-[180px]" />
-          ) : user ? (
-             <div className="w-full max-w-[600px] min-h-[180px] flex flex-col items-center justify-center">
-                <Button size="lg" className="w-full mt-2" asChild>
-                    <Link href="/editor">Go to Your Editor</Link>
-                </Button>
-                <p className="mt-2 text-sm text-muted-foreground">
-                    Welcome, {user.user_metadata?.full_name?.split(' ')[0] || user.email}!
-                </p>
-            </div>
-          ) : (
-            <>
-              <div className="w-full max-w-[600px] space-y-3">
-                <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait' : ''}`}>
-                    {isProcessingFile ? (
-                        <>
-                            <Loader2 className="mr-3 h-6 w-6 animate-spin text-muted-foreground" />
-                            <span className="text-sm text-muted-foreground">Processing file...</span>
-                        </>
-                    ) : (
-                       <>
-                            <UploadCloud className="mr-3 h-6 w-6 text-muted-foreground" />
-                            <span className="text-sm text-muted-foreground">
-                                Upload your CV
-                            </span>
-                       </>
-                    )}
-                    <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isProcessingFile} />
-                </label>
+          <div className="w-full max-w-[600px] min-h-[320px] flex flex-col justify-center">
+            {(!mounted || isUserLoading) ? (
+              <div className="w-full h-full" />
+            ) : user ? (
+              <div className="w-full flex flex-col items-center justify-center">
+                  <Button size="lg" className="w-full mt-2" asChild>
+                      <Link href="/editor">Go to Your Editor</Link>
+                  </Button>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                      Welcome, {user.user_metadata?.full_name?.split(' ')[0] || user.email}!
+                  </p>
+              </div>
+            ) : (
+              <>
+                <div className="w-full space-y-3">
+                  <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait' : ''}`}>
+                      {isProcessingFile ? (
+                          <>
+                              <Loader2 className="mr-3 h-6 w-6 animate-spin text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">Processing file...</span>
+                          </>
+                      ) : (
+                         <>
+                              <UploadCloud className="mr-3 h-6 w-6 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">
+                                  Upload your CV
+                              </span>
+                         </>
+                      )}
+                      <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isProcessingFile} />
+                  </label>
 
-                <div className="flex items-center gap-3">
-                  <div className="h-px flex-1 bg-border" />
-                  <span className="text-xs text-muted-foreground uppercase">or</span>
-                  <div className="h-px flex-1 bg-border" />
+                  <div className="flex items-center gap-3">
+                    <div className="h-px flex-1 bg-border" />
+                    <span className="text-xs text-muted-foreground uppercase">or</span>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+
+                  <Button variant="outline" size="lg" className="w-full" asChild>
+                    <Link href="/editor">
+                      <Edit className="mr-2 h-4 w-4" />
+                      Enter details manually
+                    </Link>
+                  </Button>
+
+                  <p className="text-sm text-muted-foreground text-center pb-2">
+                    Already have an account?{' '}
+                    <LoginDialog />
+                  </p>
                 </div>
 
-                <Button variant="outline" size="lg" className="w-full" asChild>
-                  <Link href="/editor">
-                    <Edit className="mr-2 h-4 w-4" />
-                    Enter details manually
-                  </Link>
-                </Button>
-
-                <p className="text-sm text-muted-foreground text-center">
-                  Already have an account?{' '}
-                  <LoginDialog />
-                </p>
-              </div>
-
-              <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start w-full max-w-[600px] text-muted-foreground pt-4 px-2">
-                <StepIndicator num={1} label="Drop your CV" desc="Any format" />
-                <span className="text-muted-foreground/30 text-lg mt-1">→</span>
-                <StepIndicator num={2} label="Get a webpage" desc="Ready to share" />
-                <span className="text-muted-foreground/30 text-lg mt-1">→</span>
-                <StepIndicator num={3} label="Get matched" desc={jobCount ? `${Math.floor(jobCount / 100) * 100}+ jobs` : 'Thousands of jobs'} />
-              </div>
-            </>
-          )}
+                <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start w-full text-muted-foreground pt-4 px-2">
+                  <StepIndicator num={1} label="Drop your CV" desc="Any format" />
+                  <span className="text-muted-foreground/30 text-lg mt-1 text-center">→</span>
+                  <StepIndicator num={2} label="Get a webpage" desc="Ready to share" />
+                  <span className="text-muted-foreground/30 text-lg mt-1 text-center">→</span>
+                  <StepIndicator num={3} label="Get matched" desc={jobCount ? `${Math.floor(jobCount / 100) * 100}+ jobs` : 'Thousands of jobs'} />
+                </div>
+              </>
+            )}
+          </div>
 
         </div>
       </main>
