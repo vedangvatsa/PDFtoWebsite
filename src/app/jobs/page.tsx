@@ -494,12 +494,12 @@ export default function JobsPage() {
                 <X className="h-5 w-5" />
               </button>
               
-              <h3 className="text-2xl font-bold text-center text-zinc-900 dark:text-zinc-50 mb-2 tracking-tight text-amber-600 dark:text-amber-500">
-                Warning: AI screening active.
+              <h3 className="text-2xl font-bold text-center text-zinc-900 dark:text-zinc-50 mb-2 tracking-tight">
+                Let jobs find you.
               </h3>
               
               <p className="text-sm text-center text-zinc-500 dark:text-zinc-400 mb-8 max-w-xs mx-auto">
-                Generate an AI agent-ready profile from your CV to bypass ATS filters and stand out.
+                Drop your CV to see instant matches and make yourself discoverable to AI agents.
               </p>
               
               <div className="flex flex-col gap-3">
