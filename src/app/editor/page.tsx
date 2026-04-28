@@ -944,7 +944,6 @@ export default function EditorPage() {
     };
     
     const handleProfileBlur = async (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (!user) return;
         let { name, value } = e.target;
         
         if (name === 'website') {
@@ -958,6 +957,7 @@ export default function EditorPage() {
         if (['email', 'phone', 'location', 'website', 'github', 'linkedin'].includes(name)) {
             const nextProfile = { ...profile, [name]: value };
             setProfile(nextProfile);
+            if (!user) return;
             // Build links from current React state (not DB) to avoid race conditions
             // Only fetch additional links (non-core) from DB — these don't change during editing
             (async () => {
@@ -983,12 +983,16 @@ export default function EditorPage() {
         } else if (name === 'slug' && value !== initialSlug) {
             if (slugError) return; // Wait until they fix the error before saving
             setSlugSuccess(false);
-            await autoSave('profile', user.id, { slug: value });
             setInitialSlug(value);
-            posthog.capture(EDITOR_EVENTS.SLUG_CHANGED, { new_slug: value });
-            toast({ title: 'URL Updated!', description: isComplete ? 'Your new link is ready.' : 'Complete your profile to 100% to go live.' });
+            if (user) {
+                await autoSave('profile', user.id, { slug: value });
+                posthog.capture(EDITOR_EVENTS.SLUG_CHANGED, { new_slug: value });
+                toast({ title: 'URL Updated!', description: isComplete ? 'Your new link is ready.' : 'Complete your profile to 100% to go live.' });
+            }
         } else {
-            autoSave('profile', user.id, { [name]: value });
+            if (user) {
+                autoSave('profile', user.id, { [name]: value });
+            }
         }
     };
 
@@ -1285,177 +1289,185 @@ export default function EditorPage() {
                             <ResumeUploadPrompt onFileChange={handleFileChange} isGenerating={isGenerating} />
                         )}
                         
-                        {user && (
-                            <div className="grid gap-4">
-                                <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-4 lg:gap-6">
-                                    <Card className="shadow-sm h-full flex flex-col justify-center">
-                                        <CardContent className="pt-4 pb-3">
-                                            <div className="flex justify-between items-center mb-3">
-                                                <div className="flex items-center gap-2">
-                                                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Public Link</p>
-                                                </div>
+                        <div className="grid gap-4">
+                            <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-4 lg:gap-6">
+                                <Card className="shadow-sm h-full flex flex-col justify-center">
+                                    <CardContent className="pt-4 pb-3">
+                                        <div className="flex justify-between items-center mb-3">
+                                            <div className="flex items-center gap-2">
+                                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Public Link</p>
                                             </div>
-                                            <div className="flex space-x-2">
-                                                <Input 
-                                                    id="slug" 
-                                                    name="slug" 
-                                                    value={profile.slug || ''} 
-                                                    onChange={handleProfileChange} 
-                                                    onBlur={handleProfileBlur} 
-                                                    className={`h-9 font-medium ${slugError ? 'border-red-500 focus-visible:ring-red-500 text-red-600' : slugSuccess ? 'border-green-500 focus-visible:ring-green-500 text-green-700' : ''}`} 
-                                                />
-                                                <Popover>
-                                                    <PopoverTrigger asChild>
-                                                        <Button 
-                                                            variant="secondary" 
-                                                            size="icon" 
-                                                            className="h-9 w-9 shrink-0 bg-primary/10 text-primary hover:bg-primary/20" 
-                                                            title="Share Profile"
-                                                            disabled={!!slugError || isCheckingSlug || !isComplete}
-                                                        >
-                                                            <Share2 className="h-4 w-4" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-56 p-2" align="end" sideOffset={8}>
-                                                        {(() => {
-                                                            const url = `https://cvin.bio/${profile.slug}`;
-                                                            const chatMsg = `My CV is a link now.\nhttps://cvin.bio/${profile.slug}`;
-                                                            const socialMsg = `Stopped attaching my CV. Here's the link.\nhttps://cvin.bio/${profile.slug}`;
-                                                            const downloadStoryCard = async () => {
-                                                                const W = 1080, H = 1920;
-                                                                const canvas = document.createElement('canvas');
-                                                                canvas.width = W; canvas.height = H;
-                                                                const ctx = canvas.getContext('2d');
-                                                                if (!ctx) return;
-                                                                // roundRect polyfill
-                                                                const rr = (x: number, y: number, w: number, h: number, r: number) => { ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath(); };
-                                                                // Solid background first
-                                                                ctx.fillStyle = '#0f0d2e'; ctx.fillRect(0, 0, W, H);
-                                                                const grad = ctx.createLinearGradient(0, 0, W, H);
-                                                                grad.addColorStop(0, '#0f0d2e'); grad.addColorStop(0.45, '#2d2b7a'); grad.addColorStop(1, '#3b1f6e');
-                                                                ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
-                                                                ctx.fillStyle = 'rgba(255,255,255,0.04)';
-                                                                for (let x = 80; x < W; x += 90) for (let y = 80; y < H; y += 90) { ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill(); }
-                                                                try { await document.fonts.load('bold 96px Inter'); } catch (_) {}
-                                                                const font = document.fonts.check('bold 96px Inter') ? 'Inter' : '-apple-system,BlinkMacSystemFont,sans-serif';
-                                                                ctx.fillStyle = 'rgba(165,180,252,0.8)'; ctx.font = `500 46px ${font}`; ctx.textAlign = 'center';
-                                                                ctx.fillText('CVin.Bio', W / 2, 180);
-                                                                ctx.strokeStyle = 'rgba(129,140,248,0.3)'; ctx.lineWidth = 1.5;
-                                                                ctx.beginPath(); ctx.moveTo(240, 220); ctx.lineTo(840, 220); ctx.stroke();
-                                                                // Load photo via same-origin proxy
-                                                                const hasPhoto = !!profile.avatarUrl && !profile.avatarUrl.includes('picsum.photos');
-                                                                const photoRadius = 170; const photoCY = 620;
-                                                                const nameCY = hasPhoto ? 880 : 760;
-                                                                if (hasPhoto) {
-                                                                    await new Promise<void>(resolve => {
-                                                                        const img = new window.Image();
-                                                                        img.onload = () => { const cx = W/2; ctx.save(); ctx.shadowColor='rgba(129,140,248,0.7)'; ctx.shadowBlur=50; ctx.beginPath(); ctx.arc(cx,photoCY,photoRadius+8,0,Math.PI*2); ctx.fillStyle='rgba(99,102,241,0.25)'; ctx.fill(); ctx.restore(); ctx.beginPath(); ctx.arc(cx,photoCY,photoRadius+5,0,Math.PI*2); ctx.strokeStyle='rgba(165,180,252,0.7)'; ctx.lineWidth=4; ctx.stroke(); ctx.save(); ctx.beginPath(); ctx.arc(cx,photoCY,photoRadius,0,Math.PI*2); ctx.clip(); ctx.drawImage(img,cx-photoRadius,photoCY-photoRadius,photoRadius*2,photoRadius*2); ctx.restore(); resolve(); };
-                                                                        img.onerror = () => resolve();
-                                                                        img.src = `/api/avatar/${profile.slug}`;
-                                                                    });
-                                                                }
-                                                                const name = profile.fullName || '';
-                                                                ctx.fillStyle = 'rgba(255,255,255,0.97)'; let fs = 108; ctx.font = `bold ${fs}px ${font}`;
-                                                                while (ctx.measureText(name).width > 920 && fs > 56) { fs -= 4; ctx.font = `bold ${fs}px ${font}`; }
-                                                                ctx.fillText(name, W / 2, nameCY);
-                                                                const urlText = `cvin.bio/${profile.slug}`;
-                                                                const pillY = nameCY + 110;
-                                                                ctx.fillStyle = 'rgba(99,102,241,0.2)'; ctx.strokeStyle = 'rgba(165,180,252,0.4)'; ctx.lineWidth = 2;
-                                                                rr(120, pillY, 840, 130, 28); ctx.fill(); ctx.stroke();
-                                                                let ufs = 76; ctx.font = `bold ${ufs}px ${font}`;
-                                                                while (ctx.measureText(urlText).width > 780 && ufs > 44) { ufs -= 4; ctx.font = `bold ${ufs}px ${font}`; }
-                                                                ctx.fillStyle = 'white'; ctx.fillText(urlText, W / 2, pillY + 82);
-                                                                try { const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `cvin-${profile.slug}.png`; a.click(); } catch(e) { console.error('Story card export', e); }
-                                                            };
-                                                            return (
-                                                                <div className="flex flex-col gap-0.5">
-                                                                    <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(chatMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
-                                                                        <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#25D366] shrink-0" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                                                                        WhatsApp
-                                                                    </button>
-                                                                    <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(socialMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
-                                                                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-foreground shrink-0" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                                                                        X / Twitter
-                                                                    </button>
-                                                                    <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_LINKEDIN, { slug: profile.slug }); window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank'); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
-                                                                        <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#0A66C2] shrink-0" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                                                                        LinkedIn
-                                                                    </button>
-                                                                    <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_FACEBOOK, { slug: profile.slug }); window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank'); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
-                                                                        <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#1877F2] shrink-0" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                                                        Facebook
-                                                                    </button>
-                                                                    <div className="h-px bg-border my-1" />
-                                                                    <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_LINK_COPIED, { slug: profile.slug }); navigator.clipboard.writeText(url); toast({ title: 'Link copied!' }); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
-                                                                        <Link2 className="h-4 w-4 shrink-0" />
-                                                                        Copy link
-                                                                    </button>
-                                                                    <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_MESSAGE_COPIED, { slug: profile.slug }); navigator.clipboard.writeText(chatMsg); toast({ title: 'Message copied!', description: 'Paste it anywhere to share.' }); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
-                                                                        <Copy className="h-4 w-4 shrink-0" />
-                                                                        Copy with message
-                                                                    </button>
-                                                                    <div className="h-px bg-border my-1" />
-                                                                    <button onClick={downloadStoryCard} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
-                                                                        <Download className="h-4 w-4 shrink-0 text-indigo-500" />
-                                                                        Story card <span className="text-[10px] text-muted-foreground ml-1">IG · TikTok</span>
-                                                                    </button>
-                                                                </div>
-                                                            );
-                                                        })()}
-                                                    </PopoverContent>
-                                                </Popover>
-                                                {slugError || isCheckingSlug ? (
-                                                    <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm" disabled>Visit</Button>
-                                                ) : !isComplete ? (
-                                                    <TooltipProvider delayDuration={0}>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <span tabIndex={0}>
-                                                                    <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm pointer-events-none" disabled>Visit</Button>
-                                                                </span>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent side="bottom" className="max-w-[220px] text-center">
-                                                                <p className="text-xs">Complete your profile to 100% before visiting it publicly.</p>
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
-                                                ) : (
-                                                    <Button asChild variant="default" size="sm" className="h-9 shrink-0 shadow-sm">
-                                                        <Link href={`/${profile.slug}`} target="_blank" prefetch={false}>Visit</Link>
+                                        </div>
+                                        <div className="flex space-x-2">
+                                            <Input 
+                                                id="slug" 
+                                                name="slug" 
+                                                value={profile.slug || ''} 
+                                                onChange={handleProfileChange} 
+                                                onBlur={handleProfileBlur} 
+                                                className={`h-9 font-medium ${slugError ? 'border-red-500 focus-visible:ring-red-500 text-red-600' : slugSuccess ? 'border-green-500 focus-visible:ring-green-500 text-green-700' : ''}`} 
+                                            />
+                                            {user ? (
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button 
+                                                        variant="secondary" 
+                                                        size="icon" 
+                                                        className="h-9 w-9 shrink-0 bg-primary/10 text-primary hover:bg-primary/20" 
+                                                        title="Share Profile"
+                                                        disabled={!!slugError || isCheckingSlug || !isComplete}
+                                                    >
+                                                        <Share2 className="h-4 w-4" />
                                                     </Button>
-                                                )}
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-56 p-2" align="end" sideOffset={8}>
+                                                    {(() => {
+                                                        const url = `https://cvin.bio/${profile.slug}`;
+                                                        const chatMsg = `My CV is a link now.\nhttps://cvin.bio/${profile.slug}`;
+                                                        const socialMsg = `Stopped attaching my CV. Here's the link.\nhttps://cvin.bio/${profile.slug}`;
+                                                        const downloadStoryCard = async () => {
+                                                            const W = 1080, H = 1920;
+                                                            const canvas = document.createElement('canvas');
+                                                            canvas.width = W; canvas.height = H;
+                                                            const ctx = canvas.getContext('2d');
+                                                            if (!ctx) return;
+                                                            // roundRect polyfill
+                                                            const rr = (x: number, y: number, w: number, h: number, r: number) => { ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath(); };
+                                                            // Solid background first
+                                                            ctx.fillStyle = '#0f0d2e'; ctx.fillRect(0, 0, W, H);
+                                                            const grad = ctx.createLinearGradient(0, 0, W, H);
+                                                            grad.addColorStop(0, '#0f0d2e'); grad.addColorStop(0.45, '#2d2b7a'); grad.addColorStop(1, '#3b1f6e');
+                                                            ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+                                                            ctx.fillStyle = 'rgba(255,255,255,0.04)';
+                                                            for (let x = 80; x < W; x += 90) for (let y = 80; y < H; y += 90) { ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill(); }
+                                                            try { await document.fonts.load('bold 96px Inter'); } catch (_) {}
+                                                            const font = document.fonts.check('bold 96px Inter') ? 'Inter' : '-apple-system,BlinkMacSystemFont,sans-serif';
+                                                            ctx.fillStyle = 'rgba(165,180,252,0.8)'; ctx.font = `500 46px ${font}`; ctx.textAlign = 'center';
+                                                            ctx.fillText('CVin.Bio', W / 2, 180);
+                                                            ctx.strokeStyle = 'rgba(129,140,248,0.3)'; ctx.lineWidth = 1.5;
+                                                            ctx.beginPath(); ctx.moveTo(240, 220); ctx.lineTo(840, 220); ctx.stroke();
+                                                            // Load photo via same-origin proxy
+                                                            const hasPhoto = !!profile.avatarUrl && !profile.avatarUrl.includes('picsum.photos');
+                                                            const photoRadius = 170; const photoCY = 620;
+                                                            const nameCY = hasPhoto ? 880 : 760;
+                                                            if (hasPhoto) {
+                                                                await new Promise<void>(resolve => {
+                                                                    const img = new window.Image();
+                                                                    img.onload = () => { const cx = W/2; ctx.save(); ctx.shadowColor='rgba(129,140,248,0.7)'; ctx.shadowBlur=50; ctx.beginPath(); ctx.arc(cx,photoCY,photoRadius+8,0,Math.PI*2); ctx.fillStyle='rgba(99,102,241,0.25)'; ctx.fill(); ctx.restore(); ctx.beginPath(); ctx.arc(cx,photoCY,photoRadius+5,0,Math.PI*2); ctx.strokeStyle='rgba(165,180,252,0.7)'; ctx.lineWidth=4; ctx.stroke(); ctx.save(); ctx.beginPath(); ctx.arc(cx,photoCY,photoRadius,0,Math.PI*2); ctx.clip(); ctx.drawImage(img,cx-photoRadius,photoCY-photoRadius,photoRadius*2,photoRadius*2); ctx.restore(); resolve(); };
+                                                                    img.onerror = () => resolve();
+                                                                    img.src = `/api/avatar/${profile.slug}`;
+                                                                });
+                                                            }
+                                                            const name = profile.fullName || '';
+                                                            ctx.fillStyle = 'rgba(255,255,255,0.97)'; let fs = 108; ctx.font = `bold ${fs}px ${font}`;
+                                                            while (ctx.measureText(name).width > 920 && fs > 56) { fs -= 4; ctx.font = `bold ${fs}px ${font}`; }
+                                                            ctx.fillText(name, W / 2, nameCY);
+                                                            const urlText = `cvin.bio/${profile.slug}`;
+                                                            const pillY = nameCY + 110;
+                                                            ctx.fillStyle = 'rgba(99,102,241,0.2)'; ctx.strokeStyle = 'rgba(165,180,252,0.4)'; ctx.lineWidth = 2;
+                                                            rr(120, pillY, 840, 130, 28); ctx.fill(); ctx.stroke();
+                                                            let ufs = 76; ctx.font = `bold ${ufs}px ${font}`;
+                                                            while (ctx.measureText(urlText).width > 780 && ufs > 44) { ufs -= 4; ctx.font = `bold ${ufs}px ${font}`; }
+                                                            ctx.fillStyle = 'white'; ctx.fillText(urlText, W / 2, pillY + 82);
+                                                            try { const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `cvin-${profile.slug}.png`; a.click(); } catch(e) { console.error('Story card export', e); }
+                                                        };
+                                                        return (
+                                                            <div className="flex flex-col gap-0.5">
+                                                                <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(chatMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                    <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#25D366] shrink-0" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                                                    WhatsApp
+                                                                </button>
+                                                                <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(socialMsg)}`, '_blank')} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-foreground shrink-0" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                                                    X / Twitter
+                                                                </button>
+                                                                <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_LINKEDIN, { slug: profile.slug }); window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank'); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                    <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#0A66C2] shrink-0" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                                                    LinkedIn
+                                                                </button>
+                                                                <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_FACEBOOK, { slug: profile.slug }); window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank'); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                    <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#1877F2] shrink-0" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                                                    Facebook
+                                                                </button>
+                                                                <div className="h-px bg-border my-1" />
+                                                                <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_LINK_COPIED, { slug: profile.slug }); navigator.clipboard.writeText(url); toast({ title: 'Link copied!' }); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                    <Link2 className="h-4 w-4 shrink-0" />
+                                                                    Copy link
+                                                                </button>
+                                                                <button onClick={() => { posthog.capture(EDITOR_EVENTS.SHARE_MESSAGE_COPIED, { slug: profile.slug }); navigator.clipboard.writeText(chatMsg); toast({ title: 'Message copied!', description: 'Paste it anywhere to share.' }); }} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                    <Copy className="h-4 w-4 shrink-0" />
+                                                                    Copy with message
+                                                                </button>
+                                                                <div className="h-px bg-border my-1" />
+                                                                <button onClick={downloadStoryCard} className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-left text-sm">
+                                                                    <Download className="h-4 w-4 shrink-0 text-indigo-500" />
+                                                                    Story card <span className="text-[10px] text-muted-foreground ml-1">IG · TikTok</span>
+                                                                </button>
+                                                            </div>
+                                                        );
+                                                    })()}
+                                                </PopoverContent>
+                                            </Popover>
+                                            ) : (
+                                                <LoginDialog trigger={
+                                                    <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm animate-pulse bg-primary">
+                                                        Claim URL
+                                                    </Button>
+                                                } />
+                                            )}
+                                            {!user ? null : slugError || isCheckingSlug ? (
+                                                <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm" disabled>Visit</Button>
+                                            ) : !isComplete ? (
+                                                <TooltipProvider delayDuration={0}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <span tabIndex={0}>
+                                                                <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm pointer-events-none" disabled>Visit</Button>
+                                                            </span>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="bottom" className="max-w-[220px] text-center">
+                                                            <p className="text-xs">Complete your profile to 100% before visiting it publicly.</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            ) : (
+                                                <Button asChild variant="default" size="sm" className="h-9 shrink-0 shadow-sm">
+                                                    <Link href={`/${profile.slug}`} target="_blank" prefetch={false}>Visit</Link>
+                                                </Button>
+                                            )}
+                                        </div>
+                                        {!user ? (
+                                            <p className="text-[10px] text-primary mt-2 font-medium">Claim your custom link before someone else takes it.</p>
+                                        ) : isCheckingSlug ? (
+                                            <p className="text-[10px] text-muted-foreground mt-2 font-medium animate-pulse">Checking availability...</p>
+                                        ) : slugError ? (
+                                            <p className="text-[10px] text-red-500 mt-2 font-medium">❌ {slugError}</p>
+                                        ) : slugSuccess ? (
+                                            <p className="text-[10px] text-green-600 mt-2 font-medium">✅ This URL is available!</p>
+                                        ) : profile.slug && isComplete ? (
+                                            <div className="mt-2.5 space-y-2">
+                                                <p className="text-[10px] text-green-600 flex items-center gap-1">
+                                                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                                                    Live at{' '}
+                                                    <a href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-700 truncate max-w-[200px]">
+                                                        {`${(process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/^https?:\/\//, '')}/${profile.slug}`}
+                                                    </a>
+                                                </p>
                                             </div>
-                                            {isCheckingSlug ? (
-                                                <p className="text-[10px] text-muted-foreground mt-2 font-medium animate-pulse">Checking availability...</p>
-                                            ) : slugError ? (
-                                                <p className="text-[10px] text-red-500 mt-2 font-medium">❌ {slugError}</p>
-                                            ) : slugSuccess ? (
-                                                <p className="text-[10px] text-green-600 mt-2 font-medium">✅ This URL is available!</p>
-                                            ) : profile.slug && isComplete ? (
-                                                <div className="mt-2.5 space-y-2">
-                                                    <p className="text-[10px] text-green-600 flex items-center gap-1">
-                                                        <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                                                        Live at{' '}
-                                                        <a href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-700 truncate max-w-[200px]">
-                                                            {`${(process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/^https?:\/\//, '')}/${profile.slug}`}
-                                                        </a>
-                                                    </p>
-                                                </div>
-                                            ) : profile.slug && !isComplete ? (
-                                                <div className="mt-2.5 space-y-2">
-                                                    <p className="text-[10px] text-red-500 flex items-center gap-1">
-                                                        <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-500" />
-                                                        Not live yet · complete your profile to go live
-                                                    </p>
-                                                </div>
-                                            ) : null}
-                                        </CardContent>
-                                    </Card>
-                                    <ProfileCompleteness profile={profile} work={workItems} education={educationItems} skills={skillItems} onNavigate={() => {}} onCompleteChange={setIsComplete} />
-                                </div>
-                                <InsightsCard slug={profile.slug || ''} />
+                                        ) : profile.slug && !isComplete ? (
+                                            <div className="mt-2.5 space-y-2">
+                                                <p className="text-[10px] text-red-500 flex items-center gap-1">
+                                                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-500" />
+                                                    Not live yet · complete your profile to go live
+                                                </p>
+                                            </div>
+                                        ) : null}
+                                    </CardContent>
+                                </Card>
+                                <ProfileCompleteness profile={profile} work={workItems} education={educationItems} skills={skillItems} onNavigate={() => {}} onCompleteChange={setIsComplete} />
                             </div>
-                        )}
+                            {user && <InsightsCard slug={profile.slug || ''} />}
+                        </div>
 
                         <div className="space-y-3">
                             <Card className="shadow-sm">
