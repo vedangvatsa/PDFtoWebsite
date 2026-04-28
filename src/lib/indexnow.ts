@@ -3,7 +3,7 @@
  * https://www.indexnow.org/documentation
  */
 
-const INDEXNOW_KEY = '6db32ca940dd46cab89375c221953bd6';
+const INDEXNOW_KEY = process.env.INDEXNOW_KEY || '6db32ca940dd46cab89375c221953bd6';
 const SITE_HOST = 'cvin.bio';
 
 export async function submitToIndexNow(urls: string | string[]): Promise<void> {
