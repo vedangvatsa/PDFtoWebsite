@@ -431,9 +431,16 @@ export default function JobsPage() {
                   alt={`${job.company} logo`}
                   className="h-5 w-5 rounded shrink-0 object-cover"
                   loading="lazy"
+                  onLoad={(e) => {
+                    const el = e.target as HTMLImageElement;
+                    // Google Favicon returns a tiny 16x16 globe for unknown domains even when sz=128
+                    if (!job.company_logo && el.naturalWidth <= 16) {
+                      el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`;
+                    }
+                  }}
                   onError={(e) => {
                     const el = e.target as HTMLImageElement;
-                    el.onerror = null; // Prevent infinite loop
+                    el.onerror = null;
                     el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`;
                   }}
                 />
