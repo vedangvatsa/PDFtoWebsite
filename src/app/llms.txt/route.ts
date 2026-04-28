@@ -69,8 +69,45 @@ export async function GET() {
         lines.push(`- [${name}](${siteUrl}/${p.username}): ${description}`);
       }
     }
+
+    // Dynamic company page URLs
+    lines.push('');
+    lines.push('## Company Careers');
+    lines.push('');
+    lines.push('> These pages contain live job openings, hiring locations, required skills, and FAQ for specific tech companies.');
+    lines.push('');
+
+    let allJobs: any[] = [];
+    let page = 0;
+    while (page < 10) { // Limit to top 10000 jobs for llms.txt speed
+      const { data } = await supabase
+        .from('jobs')
+        .select('company')
+        .range(page * 1000, (page + 1) * 1000 - 1);
+      if (!data || data.length === 0) break;
+      allJobs.push(...data);
+      if (data.length < 1000) break;
+      page++;
+    }
+
+    const companyNames = new Set<string>();
+    allJobs.forEach(j => {
+      if (j.company && !j.company.includes('...')) companyNames.add(j.company);
+    });
+
+    const toSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+    const seenSlugs = new Set<string>();
+
+    companyNames.forEach(name => {
+      const slug = toSlug(name);
+      if (!seenSlugs.has(slug)) {
+        seenSlugs.add(slug);
+        lines.push(`- [${name}](${siteUrl}/${slug}): Open roles, remote data, and hiring FAQs for ${name}.`);
+      }
+    });
+
   } catch (e) {
-    lines.push('- Error loading profiles');
+    lines.push('- Error loading data');
   }
 
   lines.push('');
