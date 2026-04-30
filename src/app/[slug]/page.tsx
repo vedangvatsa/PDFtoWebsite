@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { getProfileBySlug, type ServerProfileData } from '@/lib/supabase-server';
 import ProfilePageClient from './profile-page-client';
 import Header from '@/components/header';
+import { normalizeLocation } from '@/lib/normalize-location';
 import MicroFooter from '@/components/micro-footer';
 import BlogCTA from '@/components/blog-cta';
 import Link from 'next/link';
@@ -332,7 +333,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     const locCount: Record<string, number> = {};
     const catCount: Record<string, number> = {};
     jobs.forEach((j: any) => {
-      const loc = (j.location || 'Unspecified').split(',')[0].trim();
+      const loc = normalizeLocation(j.location || 'Unspecified');
       locCount[loc] = (locCount[loc] || 0) + 1;
       const cat = j.category || 'General';
       catCount[cat] = (catCount[cat] || 0) + 1;
@@ -438,7 +439,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
 
           {/* Company About — verified data from Wikipedia/website cache */}
           {(() => {
-            const topLocations = [...new Set(jobs.map((j: any) => j.location?.split(',')[0]?.trim()).filter(Boolean))].slice(0, 5);
+            const topLocations = [...new Set(jobs.map((j: any) => normalizeLocation(j.location)).filter(l => l && l !== 'Remote'))].slice(0, 5);
 
             // Load cached descriptions (pre-generated from Wikipedia + website meta tags)
             let cachedDesc = '';
@@ -522,7 +523,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                     {job.location && (
                       <>
                         <span className="shrink-0 text-zinc-300 dark:text-zinc-600">·</span>
-                        <span className="truncate max-w-[40%]">{job.location}</span>
+                        <span className="truncate max-w-[40%]">{normalizeLocation(job.location)}</span>
                       </>
                     )}
                     <span className="shrink-0 text-zinc-300 dark:text-zinc-600">·</span>

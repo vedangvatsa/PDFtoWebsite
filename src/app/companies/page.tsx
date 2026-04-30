@@ -3,6 +3,7 @@ import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
 import { Building2, Briefcase } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
+import { normalizeLocation } from '@/lib/normalize-location';
 import type { Metadata } from 'next';
 
 const supabase = createClient(
@@ -151,9 +152,8 @@ export default async function CompaniesPage() {
     companyMap[key].nameCounts[normalized] = (companyMap[key].nameCounts[normalized] || 0) + 1;
     companyMap[key].count++;
     if (job.location) {
-      const loc = job.location.split(',')[0].trim();
-      // Filter out URL fragments and garbage location values
-      if (loc && loc.length < 40 && !loc.includes('/') && !loc.includes('http') && !/^[a-z]+-[a-z]+-[a-z]/.test(loc)) companyMap[key].locations.add(loc);
+      const loc = normalizeLocation(job.location);
+      if (loc && loc !== 'Remote' && loc !== 'Hybrid') companyMap[key].locations.add(loc);
     }
     const d = job.published_at || job.created_at;
     if (d && (!companyMap[key].latest || d > companyMap[key].latest!)) {
