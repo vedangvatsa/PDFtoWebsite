@@ -2063,10 +2063,9 @@ async function main() {
 
   // ── PHASE 1: High-value sources (parallel, 50 concurrent each) ──
   console.log('\n═══ Phase 1: Core sources ═══');
-  const [remoteok, remotive, arbeitnow, wwr, himalayas, jobicy, greenhouse, ashby, workable, lever, smartrecruiters, workday] = await Promise.all([
+  const [remoteok, remotive, wwr, himalayas, jobicy, greenhouse, ashby, workable, lever, smartrecruiters, workday] = await Promise.all([
     fetchRemoteOK(),
     fetchRemotive(),
-    fetchArbeitnow(),
     fetchWeWorkRemotely(),
     fetchHimalayas(),
     fetchJobicy(),
@@ -2078,7 +2077,7 @@ async function main() {
     fetchWorkday(),
   ]);
 
-  const phase1Jobs = [...remoteok, ...remotive, ...arbeitnow, ...wwr, ...himalayas, ...jobicy, ...greenhouse, ...ashby, ...workable, ...lever, ...smartrecruiters, ...workday];
+  const phase1Jobs = [...remoteok, ...remotive, ...wwr, ...himalayas, ...jobicy, ...greenhouse, ...ashby, ...workable, ...lever, ...smartrecruiters, ...workday];
   console.log(`\n📊 Phase 1 collected: ${phase1Jobs.length} jobs`);
 
   // Process and upsert Phase 1 immediately
