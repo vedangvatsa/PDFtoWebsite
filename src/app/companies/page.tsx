@@ -86,17 +86,20 @@ const NAME_MAP: Record<string, string> = {
 };
 
 export default async function CompaniesPage() {
-  // Fetch all jobs to compute per-company stats
+  // Fetch all jobs to compute per-company stats — paginate aggressively
   let allJobs: any[] = [];
   let page = 0;
-  while (true) {
-    const { data } = await supabase
+  const PAGE_SIZE = 1000;
+  const MAX_PAGES = 100; // Safety limit
+  while (page < MAX_PAGES) {
+    const { data, error } = await supabase
       .from('jobs')
       .select('company, company_logo, location, published_at, created_at')
-      .range(page * 1000, (page + 1) * 1000 - 1);
-    if (!data || data.length === 0) break;
+      .order('created_at', { ascending: false })
+      .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
+    if (error || !data || data.length === 0) break;
     allJobs.push(...data);
-    if (data.length < 1000) break;
+    if (data.length < PAGE_SIZE) break;
     page++;
   }
 
@@ -132,7 +135,7 @@ export default async function CompaniesPage() {
 
   const totalJobs = companies.reduce((s, c) => s + c.count, 0);
 
-  // Top companies for logo strip (hardcoded domains for reliability, same as /jobs)
+  // Top companies for logo strip (hardcoded domains for reliability)
   const logoStrip = [
     { name: 'Stripe', domain: 'stripe.com' },
     { name: 'Anthropic', domain: 'anthropic.com' },
@@ -143,8 +146,8 @@ export default async function CompaniesPage() {
     { name: 'Discord', domain: 'discord.com' },
     { name: 'Reddit', domain: 'reddit.com' },
     { name: 'Airbnb', domain: 'airbnb.com' },
-    { name: 'Pinterest', domain: 'pinterest.com' },
-    { name: 'Lyft', domain: 'lyft.com' },
+    { name: 'Spotify', domain: 'spotify.com' },
+    { name: 'Netflix', domain: 'netflix.com' },
   ];
 
   return (
