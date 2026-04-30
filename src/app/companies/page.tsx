@@ -56,13 +56,37 @@ function domainFor(name: string): string {
   return DOMAIN_MAP[key] || key.replace(/[^a-z0-9]/g, '') + '.com';
 }
 
+// Junk/test company names to exclude entirely
+const BLOCKLIST = new Set([
+  'leverdemo 8', 'getwingapp', 'leverdemo', 'test company', 'demo company',
+  'smart working solutions', 'confidential', '10xteam', 'careers - think digitally',
+  'careers.azx.io', 'brook hiddink - highticket.io',
+]);
+
 // Normalize variant company names to canonical form
 const NAME_MAP: Record<string, string> = {
-  // Merge variants
+  // Cross-source duplicates (same company, different name)
+  'doordash usa': 'DoorDash', 'doordash': 'DoorDash',
+  'shopback 2': 'ShopBack', 'shopback': 'ShopBack',
+  'brillio 2': 'Brillio', 'brillio': 'Brillio',
+  'lyrahealth': 'Lyra Health', 'lyra health': 'Lyra Health',
+  'ciandt': 'CI&T', 'ci&t': 'CI&T',
+  'hadrian-automation': 'Hadrian', 'hadrian': 'Hadrian',
+  'relativity space': 'Relativity', 'relativity': 'Relativity',
+  'scale ai': 'Scale AI', 'scale': 'Scale AI',
+  'unity technologies': 'Unity', 'unity': 'Unity',
+  'base-power': 'Base Power', 'heidihealth.com.au': 'Heidi Health',
+  'roadsurfer.com': 'Roadsurfer', 'the-exploration-company': 'The Exploration Company',
+  'finni-health': 'Finni Health', 'apex-technology-inc': 'Apex Technology',
+  'northwoodspace': 'Northwood Space', 'horizon3ai': 'Horizon3.ai',
+  'marianaminerals': 'Mariana Minerals', 'vertical-aerospace': 'Vertical Aerospace',
+
+  // GovTech / suffixed
   'govtech singapore': 'GovTech', 'govtech ': 'GovTech',
-  'shopback 2': 'ShopBack', 'amplitude ': 'Amplitude',
-  'gopuff': 'Gopuff', 'kraken.com': 'Kraken',
+  'amplitude ': 'Amplitude',
+  'kraken.com': 'Kraken', 'kraken': 'Kraken',
   'chime financial, inc': 'Chime', 'gusto, inc.': 'Gusto',
+
   // Official capitalizations for lowercase DB entries
   'openai': 'OpenAI', 'airwallex': 'Airwallex', 'snowflake': 'Snowflake',
   'deel': 'Deel', 'notion': 'Notion', 'vanta': 'Vanta', 'ramp': 'Ramp',
@@ -83,6 +107,17 @@ const NAME_MAP: Record<string, string> = {
   'clerk': 'Clerk', 'axiom': 'Axiom', 'inngest': 'Inngest',
   'causal': 'Causal', 'doppler': 'Doppler', 'hightouch': 'Hightouch',
   'huggingface': 'Hugging Face', 'consensys': 'ConsenSys',
+  'gopuff': 'Gopuff', 'spotify': 'Spotify', 'deliveroo': 'Deliveroo',
+  'okta': 'Okta', 'klaviyo': 'Klaviyo', 'robinhood': 'Robinhood',
+  'jfrog': 'JFrog', 'handshake': 'Handshake', 'palantir': 'Palantir',
+  'lyft': 'Lyft', 'coinbase': 'Coinbase', 'hostinger': 'Hostinger',
+  'instacart': 'Instacart', 'remote': 'Remote', 'dropbox': 'Dropbox',
+  'duolingo': 'Duolingo', 'cribl': 'Cribl', 'databricks': 'Databricks',
+  'harvey': 'Harvey', 'everai': 'EverAI', 'applied': 'Applied',
+  'illumio': 'Illumio', 'instructure': 'Instructure', 'deepl': 'DeepL',
+  'siteminder': 'SiteMinder', 'gamma': 'Gamma', 'lovable': 'Lovable',
+  'floqast': 'FloQast', 'elfbeauty': 'e.l.f. Beauty',
+  'swordhealth': 'Sword Health', 'rothys': 'Rothy\'s',
 };
 
 export default async function CompaniesPage() {
@@ -106,7 +141,7 @@ export default async function CompaniesPage() {
   // Aggregate per company (case-insensitive to merge Gopuff/GoPuff etc.)
   const companyMap: Record<string, { name: string; nameCounts: Record<string, number>; logo: string | null; count: number; locations: Set<string>; latest: string | null }> = {};
   allJobs.forEach(job => {
-    if (!job.company || job.company.includes('...')) return;
+    if (!job.company || job.company.includes('...') || BLOCKLIST.has(job.company.toLowerCase().trim())) return;
     // Normalize variant names
     const normalized = NAME_MAP[job.company.toLowerCase().trim()] || job.company;
     const key = normalized.toLowerCase().trim();
