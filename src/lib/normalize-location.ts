@@ -46,10 +46,14 @@ const EXACT_MAP: Record<string, string> = {
   'emea': 'EMEA',
   'europe': 'Europe',
   'latam': 'Latin America',
-  'united states': 'United States',
+  'united states': 'USA',
   'united kingdom': 'United Kingdom',
-  'usa': 'United States',
-  'u.s.': 'United States',
+  'usa': 'USA',
+  'u.s.': 'USA',
+  'india': 'India',
+  'brazil': 'Brazil',
+  'canada': 'Canada',
+  'philippines': 'Philippines',
   'bengaluru': 'Bangalore',
   'bengaluru, india': 'Bangalore',
   'bengaluru, in': 'Bangalore',
@@ -58,40 +62,54 @@ const EXACT_MAP: Record<string, string> = {
   'bangalore, karnataka, india': 'Bangalore',
 };
 
-// City name patterns → canonical city name
+// City name patterns → canonical name
+// US cities all collapse to "USA"
 const CITY_PATTERNS: [RegExp, string][] = [
-  // US cities
-  [/^san francisco/i, 'San Francisco'],
-  [/^new york|^nyc/i, 'New York'],
-  [/^los angeles/i, 'Los Angeles'],
-  [/^boston/i, 'Boston'],
-  [/^austin/i, 'Austin'],
-  [/^seattle/i, 'Seattle'],
-  [/^chicago/i, 'Chicago'],
-  [/^denver/i, 'Denver'],
-  [/^palo alto/i, 'Palo Alto'],
-  [/^mountain view/i, 'Mountain View'],
-  [/^sunnyvale/i, 'Sunnyvale'],
-  [/^menlo park/i, 'Menlo Park'],
-  [/^san mateo/i, 'San Mateo'],
-  [/^san jose/i, 'San Jose'],
-  [/^washington,?\s*d\.?c\.?/i, 'Washington, DC'],
-  [/^portland/i, 'Portland'],
-  [/^atlanta/i, 'Atlanta'],
-  [/^miami/i, 'Miami'],
-  [/^dallas/i, 'Dallas'],
-  [/^san diego/i, 'San Diego'],
-  [/^pittsburgh/i, 'Pittsburgh'],
-  [/^redwood city/i, 'Redwood City'],
-  [/^foster city/i, 'Foster City'],
-  [/^salt lake city/i, 'Salt Lake City'],
-  [/^santa monica/i, 'Santa Monica'],
-  [/^irvine/i, 'Irvine'],
-  [/^raleigh/i, 'Raleigh'],
-  [/^ann arbor/i, 'Ann Arbor'],
-  [/^scottsdale/i, 'Scottsdale'],
-  [/^phoenix/i, 'Phoenix'],
-  [/^minneapolis/i, 'Minneapolis'],
+  // US cities → all "USA"
+  [/^san francisco/i, 'USA'],
+  [/^new york|^nyc/i, 'USA'],
+  [/^los angeles/i, 'USA'],
+  [/^boston/i, 'USA'],
+  [/^austin/i, 'USA'],
+  [/^seattle/i, 'USA'],
+  [/^chicago/i, 'USA'],
+  [/^denver/i, 'USA'],
+  [/^palo alto/i, 'USA'],
+  [/^mountain view/i, 'USA'],
+  [/^sunnyvale/i, 'USA'],
+  [/^menlo park/i, 'USA'],
+  [/^san mateo/i, 'USA'],
+  [/^san jose/i, 'USA'],
+  [/^washington,?\s*d\.?c\.?/i, 'USA'],
+  [/^portland/i, 'USA'],
+  [/^atlanta/i, 'USA'],
+  [/^miami/i, 'USA'],
+  [/^dallas/i, 'USA'],
+  [/^san diego/i, 'USA'],
+  [/^pittsburgh/i, 'USA'],
+  [/^redwood city/i, 'USA'],
+  [/^foster city/i, 'USA'],
+  [/^salt lake city/i, 'USA'],
+  [/^santa monica/i, 'USA'],
+  [/^irvine/i, 'USA'],
+  [/^raleigh/i, 'USA'],
+  [/^ann arbor/i, 'USA'],
+  [/^scottsdale/i, 'USA'],
+  [/^phoenix/i, 'USA'],
+  [/^minneapolis/i, 'USA'],
+  [/^long beach/i, 'USA'],
+  [/^everett/i, 'USA'],
+  [/^charlotte/i, 'USA'],
+  [/^nashville/i, 'USA'],
+  [/^columbus/i, 'USA'],
+  [/^indianapolis/i, 'USA'],
+  [/^detroit/i, 'USA'],
+  [/^sacramento/i, 'USA'],
+  [/^oakland/i, 'USA'],
+  [/^cupertino/i, 'USA'],
+  [/^santa clara/i, 'USA'],
+  [/^burlingame/i, 'USA'],
+  [/^bellevue/i, 'USA'],
 
   // International cities
   [/^london/i, 'London'],
@@ -166,13 +184,13 @@ export function normalizeLocation(raw: string): string {
     if (!rest) return 'Remote';
     // Normalize the country/region after "Remote"
     const country = COUNTRY_CODES[rest.toLowerCase()] || rest;
-    if (/^u\.?s\.?a?\.?$|^united states$/i.test(country)) return 'Remote (US)';
+    if (/^u\.?s\.?a?\.?$|^united states$/i.test(country)) return 'Remote (USA)';
     return `Remote (${country})`;
   }
   // "United States - Remote" / "US Remote" etc.
   if (/remote$/i.test(loc) || /^remote/i.test(loc)) {
     const cleaned = loc.replace(/[\s\-–]*remote[\s\-–]*/gi, '').trim();
-    if (!cleaned || /^u\.?s\.?a?\.?$|^united states$/i.test(cleaned)) return 'Remote (US)';
+    if (!cleaned || /^u\.?s\.?a?\.?$|^united states$/i.test(cleaned)) return 'Remote (USA)';
     return `Remote (${cleaned})`;
   }
 
@@ -203,11 +221,14 @@ export function normalizeLocation(raw: string): string {
     // "Singapore, Singapore" / "Singapore, sg" → "Singapore"
     if (city.toLowerCase() === qualifier || COUNTRY_CODES[qualifier] === city) return city;
 
-    // "City, CA" → just "City" if it's a known city
+    // "City, CA" / "City, TX" etc. → "USA" (any US state code)
     if (US_STATES[qualifier]) {
-      for (const [pattern, canonicalCity] of CITY_PATTERNS) {
-        if (pattern.test(city)) return canonicalCity;
-      }
+      return 'USA';
+    }
+
+    // "City, USA" / "City, United States"
+    if (/^usa?$|^united states$/i.test(qualifier)) {
+      return 'USA';
     }
 
     // "City, country code" → "City"
