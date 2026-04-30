@@ -6,6 +6,29 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// ── Company name normalization (merge cross-source variants) ──
+const COMPANY_NAME_MAP: Record<string, string> = {
+  'doordash usa': 'doordash', 'shopback 2': 'shopback', 'brillio 2': 'brillio',
+  'lyrahealth': 'lyra health', 'ciandt': 'ci&t', 'ci&t': 'ci&t',
+  'hadrian-automation': 'hadrian', 'relativity space': 'relativity',
+  'unity technologies': 'unity', 'scale ai': 'scale ai',
+  'base-power': 'base power', 'heidihealth.com.au': 'heidi health',
+  'roadsurfer.com': 'roadsurfer', 'the-exploration-company': 'the exploration company',
+  'finni-health': 'finni health', 'apex-technology-inc': 'apex technology',
+  'northwoodspace': 'northwood space', 'horizon3ai': 'horizon3.ai',
+  'govtech singapore': 'govtech', 'kraken.com': 'kraken',
+  'chime financial, inc': 'chime', 'gusto, inc.': 'gusto',
+};
+const COMPANY_BLOCKLIST = new Set([
+  'leverdemo 8', 'getwingapp', 'leverdemo', 'test company', 'demo company',
+  'smart working solutions', 'confidential', '10xteam', 'careers - think digitally',
+  'careers.azx.io', 'brook hiddink - highticket.io',
+]);
+function normalizeCompany(name: string): string {
+  const key = (name || '').toLowerCase().trim();
+  return COMPANY_NAME_MAP[key] || key;
+}
+
 // ── Non-English title detection ──
 // Matches titles that are clearly non-English (German, French, Spanish, etc.)
 const NON_ENGLISH_PATTERNS = [
@@ -300,12 +323,17 @@ export async function GET(request: NextRequest) {
   }
 
   // Filter out non-English titles
-  const englishFiltered = (rawJobs || []).filter(job => !isNonEnglishTitle(job.title));
+  const englishFiltered = (rawJobs || []).filter(job => {
+    if (isNonEnglishTitle(job.title)) return false;
+    // Block junk company names
+    if (COMPANY_BLOCKLIST.has((job.company || '').toLowerCase().trim())) return false;
+    return true;
+  });
 
-  // Deduplicate by company+title (cross-source dupes from Greenhouse+Ashby etc.)
+  // Deduplicate by normalized company+title (cross-source dupes)
   const seen = new Set<string>();
   const englishJobs = englishFiltered.filter(job => {
-    const key = `${(job.company || '').toLowerCase().trim()}::${(job.title || '').toLowerCase().trim()}`;
+    const key = `${normalizeCompany(job.company)}::${(job.title || '').toLowerCase().trim()}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -336,7 +364,7 @@ export async function GET(request: NextRequest) {
   const catBuckets: Record<string, Record<string, any[]>> = {};
   for (const job of englishJobs) {
     const cat = guessCategory(job);
-    const co = (job.company || '').toLowerCase();
+    const co = normalizeCompany(job.company);
     if (!catBuckets[cat]) catBuckets[cat] = {};
     if (!catBuckets[cat][co]) catBuckets[cat][co] = [];
     catBuckets[cat][co].push(job);
