@@ -1,0 +1,33 @@
+📊 Fetching ALL job data from DB (descriptions + apply_urls)...
+  ... fetched 10000 rows
+  ... fetched 20000 rows
+  ... fetched 30000 rows
+  ... fetched 40000 rows
+  Fetched 48000 jobs → 2423 unique companies
+  878 have domains from apply_url
+  2138 have job descriptions
+
+  2197 need enrichment (226 cached)
+
+📝 Phase 1: Extracting from job descriptions (no HTTP needed)...
+  ✅ 1146 companies from job descriptions
+  ⏩ 1051 need external fetch
+
+🌐 Phase 2: Fetching from websites + Wikipedia (100 parallel)...
+  ⏳ 100/1051 in 31.1s | web:6 wiki:0 miss:94
+  ⏳ 200/1051 in 61.1s | web:6 wiki:0 miss:194
+  ⏳ 300/1051 in 91.2s | web:6 wiki:0 miss:294
+  ⏳ 400/1051 in 121.2s | web:6 wiki:0 miss:394
+  ⏳ 500/1051 in 151.3s | web:6 wiki:0 miss:494
+  💾 Saved (1412 total)
+  ⏳ 600/1051 in 181.4s | web:6 wiki:0 miss:594
+  ⏳ 700/1051 in 211.4s | web:6 wiki:0 miss:694
+  ⏳ 800/1051 in 241.5s | web:6 wiki:0 miss:794
+  ⏳ 900/1051 in 271.5s | web:6 wiki:0 miss:894
+  ⏳ 1000/1051 in 301.6s | web:6 wiki:0 miss:994
+  💾 Saved (1412 total)
+  ⏳ 1051/1051 in 331.6s | web:6 wiki:0 miss:1045
+
+✅ Done! 1412/2423 companies enriched (58%)
+   Job Desc: 1146 | Website: 6 | Wikipedia: 0 | Missing: 1045
+   Saved to: /Users/vedang/PDFtoWebsite/src/lib/company-descriptions.json

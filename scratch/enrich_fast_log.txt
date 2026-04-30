@@ -1,0 +1,40 @@
+📊 Fetching unique companies from DB...
+  Found 3311 unique companies
+  3051 need enrichment (260 cached)
+
+🚀 Running 3051 lookups with 1000 parallel workers...
+
+  ⏳ 100/3051 (web:0 wiki:0 miss:100)
+  ⏳ 200/3051 (web:0 wiki:0 miss:200)
+  ⏳ 300/3051 (web:0 wiki:0 miss:300)
+  ⏳ 400/3051 (web:0 wiki:0 miss:400)
+  ⏳ 500/3051 (web:0 wiki:0 miss:500)
+  ⏳ 600/3051 (web:0 wiki:0 miss:600)
+  ⏳ 700/3051 (web:0 wiki:0 miss:700)
+  ⏳ 800/3051 (web:0 wiki:0 miss:800)
+  ⏳ 900/3051 (web:0 wiki:0 miss:900)
+  ⏳ 1000/3051 (web:0 wiki:0 miss:1000)
+  ⏳ 1100/3051 (web:0 wiki:0 miss:1100)
+  ⏳ 1200/3051 (web:0 wiki:0 miss:1200)
+  ⏳ 1300/3051 (web:0 wiki:0 miss:1300)
+  ⏳ 1400/3051 (web:0 wiki:0 miss:1400)
+  ⏳ 1500/3051 (web:0 wiki:0 miss:1500)
+  ⏳ 1600/3051 (web:0 wiki:0 miss:1600)
+  ⏳ 1700/3051 (web:0 wiki:0 miss:1700)
+  ⏳ 1800/3051 (web:0 wiki:0 miss:1800)
+  ⏳ 1900/3051 (web:0 wiki:0 miss:1900)
+  ⏳ 2000/3051 (web:0 wiki:0 miss:2000)
+  ⏳ 2100/3051 (web:0 wiki:0 miss:2100)
+  ⏳ 2200/3051 (web:0 wiki:0 miss:2200)
+  ⏳ 2300/3051 (web:0 wiki:0 miss:2300)
+  ⏳ 2400/3051 (web:0 wiki:0 miss:2400)
+  ⏳ 2500/3051 (web:0 wiki:0 miss:2500)
+  ⏳ 2600/3051 (web:0 wiki:0 miss:2600)
+  ⏳ 2700/3051 (web:0 wiki:0 miss:2700)
+  ⏳ 2800/3051 (web:0 wiki:0 miss:2800)
+  ⏳ 2900/3051 (web:0 wiki:0 miss:2900)
+  ⏳ 3000/3051 (web:0 wiki:0 miss:3000)
+
+✅ Done! 260 total companies enriched
+   Website: 0 | Wikipedia: 0 | Missing: 3051
+   Saved to: /Users/vedang/PDFtoWebsite/src/lib/company-descriptions.json
