@@ -292,8 +292,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 });
   }
 
-  // Filter out non-English titles before interleaving
-  const englishJobs = (rawJobs || []).filter(job => !isNonEnglishTitle(job.title));
+  // Clean titles: strip bracketed prefixes like [PIP], [REMOTE], [NYC], etc.
+  for (const job of (rawJobs || [])) {
+    if (job.title) {
+      job.title = job.title.replace(/^\s*\[[^\]]*\]\s*/g, '').trim();
+    }
+  }
+
+  // Filter out non-English titles
+  const englishFiltered = (rawJobs || []).filter(job => !isNonEnglishTitle(job.title));
+
+  // Deduplicate by company+title (cross-source dupes from Greenhouse+Ashby etc.)
+  const seen = new Set<string>();
+  const englishJobs = englishFiltered.filter(job => {
+    const key = `${(job.company || '').toLowerCase().trim()}::${(job.title || '').toLowerCase().trim()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 
   // Round-robin interleave: group by company, then deal one from each in rotation
   const buckets: Record<string, any[]> = {};
