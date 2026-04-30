@@ -101,6 +101,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: { canonical: canonicalUrl },
     openGraph: {
       type: 'profile',
+      siteName: 'CVin.Bio',
       url: canonicalUrl,
       title,
       description,

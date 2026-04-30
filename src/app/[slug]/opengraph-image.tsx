@@ -65,12 +65,8 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
     ? (profile.avatarUrl.startsWith('http') ? profile.avatarUrl : `${siteUrl}/api/avatar/${slug}`)
     : null;
 
-  // Cache strategy:
-  // - Has avatar → stable, cache 15 min to reduce DB hits
-  // - No avatar  → cache 60s (short but not zero): limits cost while still picking up new uploads quickly
-  const cacheHeader = avatarUrl
-    ? 'public, max-age=900, stale-while-revalidate=3600'
-    : 'public, max-age=60, stale-while-revalidate=120';
+  // Cache strategy: long cache to prevent WhatsApp/Telegram crawler timeouts on cold starts
+  const cacheHeader = 'public, max-age=3600, stale-while-revalidate=86400';
 
   return new ImageResponse(
     (
