@@ -222,34 +222,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Job not found' }, { status: 404 });
     }
 
-    let status = 'redirect';
-    let method = 'redirect';
-    let atsResponse: any = null;
-    let errorMessage: string | null = null;
-
-    // Route to the correct ATS handler
-    const applyUrl = job.apply_url || '';
-
-    if (job.source === 'lever') {
-      const parsed = parseLeverUrl(applyUrl);
-      if (parsed) {
-        method = 'api';
-        const result = await submitLever(parsed.company, parsed.postingId, userData);
-        status = result.success ? 'submitted' : 'failed';
-        errorMessage = result.error || null;
-        atsResponse = { method: 'lever_form', ...result };
-      }
-    } else if (job.source === 'ashby') {
-      const parsed = parseAshbyUrl(applyUrl);
-      if (parsed) {
-        method = 'api';
-        const result = await submitAshby(parsed.company, parsed.jobId, userData);
-        status = result.success ? 'submitted' : 'failed';
-        errorMessage = result.error || null;
-        atsResponse = { method: 'ashby_api', ...result };
-      }
-    }
-    // Greenhouse and others: redirect (user opens apply URL)
+    // All ATS sources use tracked redirect — server-side form submission
+    // is blocked by all major ATS providers (Lever, Ashby, Greenhouse)
 
     // Record the application
     const { error: insertError } = await supabase.from('applications').insert({
@@ -259,10 +233,8 @@ export async function POST(req: NextRequest) {
       company: job.company,
       source: job.source,
       apply_url: job.apply_url,
-      status,
-      method,
-      ats_response: atsResponse,
-      error_message: errorMessage,
+      status: 'redirect',
+      method: 'redirect',
     });
 
     if (insertError) {
@@ -273,11 +245,9 @@ export async function POST(req: NextRequest) {
     recordApply(userId);
 
     return NextResponse.json({
-      success: status === 'submitted' || status === 'redirect',
-      status,
-      method,
-      apply_url: status === 'redirect' ? job.apply_url : undefined,
-      error: errorMessage,
+      success: true,
+      status: 'redirect',
+      apply_url: job.apply_url,
     });
 
   } catch (e: any) {
