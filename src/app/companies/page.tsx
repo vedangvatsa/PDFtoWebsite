@@ -11,7 +11,7 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const revalidate = 300; // ISR: rebuild every 5 minutes
+export const revalidate = 3600; // ISR: rebuild every 1 hour (heavy page)
 
 export const metadata: Metadata = {
   title: 'Companies Hiring Now | CVin.Bio',
@@ -126,7 +126,7 @@ export default async function CompaniesPage() {
   let allJobs: any[] = [];
   let page = 0;
   const PAGE_SIZE = 1000;
-  const MAX_PAGES = 100; // Safety limit
+  const MAX_PAGES = 40; // Cap at 40K rows — sufficient for all unique companies
   while (page < MAX_PAGES) {
     const { data, error } = await supabase
       .from('jobs')

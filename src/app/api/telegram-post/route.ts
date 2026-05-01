@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
 
   const { data: jobs, error } = await supabase
     .from('jobs')
-    .select('*')
+    .select('id, title, company, location, job_type, salary, tags, apply_url, published_at')
     .gte('published_at', twentyFourHoursAgo)
     .is('telegram_posted_at', null)
     .not('company', 'ilike', '%Gopuff%')

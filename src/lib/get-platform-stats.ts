@@ -31,15 +31,17 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  // Get job count
+  // Get job count (head-only, no data transfer)
   const { count: totalJobs } = await supabase
     .from('jobs')
-    .select('*', { count: 'exact', head: true });
+    .select('id', { count: 'exact', head: true });
 
-  // Get unique companies (paginated)
+  // Get unique companies — use a paginated scan but only fetch the company column
+  // Cap at 30 pages (30K rows) since we only need an approximate unique count
   const companySet = new Set<string>();
   let page = 0;
-  while (true) {
+  const MAX_COMPANY_PAGES = 30;
+  while (page < MAX_COMPANY_PAGES) {
     const { data } = await supabase
       .from('jobs')
       .select('company')

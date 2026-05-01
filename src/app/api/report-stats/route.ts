@@ -17,10 +17,11 @@ export async function GET() {
     });
   }
 
-  // Fetch all jobs
+  // Fetch jobs (capped at 30K rows for speed — sufficient for stats)
   const allJobs: any[] = [];
   let page = 0;
-  while (true) {
+  const MAX_PAGES = 30;
+  while (page < MAX_PAGES) {
     const { data } = await supabase
       .from('jobs')
       .select('company, location, tags, title, job_type')
