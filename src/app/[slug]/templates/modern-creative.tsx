@@ -76,13 +76,21 @@ const LINK_ICON_MAP: Record<string, { icon: React.ComponentType<any>; color: str
   'vimeo': { icon: Tv, color: '#1AB7EA' },
 };
 
-function getLinkIcon(type: string): { Icon: React.ComponentType<any>; color: string } {
+function getLinkIcon(type: string, url?: string): { Icon?: React.ComponentType<any>; color: string; faviconUrl?: string } {
   const key = type.toLowerCase().replace(/\s+/g, '-');
   const match = LINK_ICON_MAP[key];
   if (match) return { Icon: match.icon, color: match.color };
   // Try partial matching for labels like "Google Scholar Profile"
   for (const [k, v] of Object.entries(LINK_ICON_MAP)) {
     if (key.includes(k)) return { Icon: v.icon, color: v.color };
+  }
+  // For unknown types, extract domain and use favicon
+  if (url) {
+    try {
+      const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+      const domain = new URL(fullUrl).hostname;
+      return { color: '#4285F4', faviconUrl: `https://www.google.com/s2/favicons?domain=${domain}&sz=32` };
+    } catch {}
   }
   return { Icon: Globe, color: '#4285F4' };
 }
@@ -402,7 +410,7 @@ export default function TemplateModern(props: ProfileData) {
                 )}
                 {/* Additional links (ResearchGate, Google Scholar, Twitter, etc.) */}
                 {profile.links?.filter((l: any) => !['email', 'phone', 'location', 'website', 'github', 'linkedin'].includes(l.type)).map((link: any, idx: number) => {
-                  const { Icon, color } = getLinkIcon(link.type);
+                  const { Icon, color, faviconUrl } = getLinkIcon(link.type, link.value);
                   const label = link.type.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
                   return (
                     <a
@@ -413,7 +421,11 @@ export default function TemplateModern(props: ProfileData) {
                       title={label}
                       className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
                     >
-                      <Icon className="h-4 w-4" style={{ color }} />
+                      {faviconUrl ? (
+                        <img src={faviconUrl} alt={label} className="h-4 w-4 rounded-sm" loading="lazy" />
+                      ) : Icon ? (
+                        <Icon className="h-4 w-4" style={{ color }} />
+                      ) : null}
                     </a>
                   );
                 })}
