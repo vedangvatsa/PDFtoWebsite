@@ -337,12 +337,133 @@
     return { filled, skipped };
   }
 
+  // ── Detect custom questions (textareas with question-like labels) ──
+  function detectCustomQuestions() {
+    const textareas = document.querySelectorAll('textarea');
+    const questions = [];
+
+    for (const ta of textareas) {
+      if (ta.offsetParent === null || ta.disabled || ta.readOnly) continue;
+      if (ta.value && ta.value.trim() !== '') continue;
+
+      const fieldInfo = getFieldSignals(ta);
+      // Check if this is already handled by a standard matcher
+      let isStandard = false;
+      for (const matcher of FIELD_MAP) {
+        if (matchField(fieldInfo, matcher)) {
+          isStandard = true;
+          break;
+        }
+      }
+      if (isStandard) continue;
+
+      // Find the question text from labels or nearby elements
+      let questionText = '';
+
+      // Try label[for]
+      if (ta.id) {
+        const label = document.querySelector(`label[for="${ta.id}"]`);
+        if (label) questionText = label.textContent.trim();
+      }
+      // Try parent label
+      if (!questionText) {
+        const parentLabel = ta.closest('label');
+        if (parentLabel) questionText = parentLabel.textContent.trim();
+      }
+      // Try nearby heading or label in container
+      if (!questionText) {
+        const container = ta.closest('.field, .form-group, .form-field, [class*="field"], [class*="question"], [class*="form"]');
+        if (container) {
+          const label = container.querySelector('label, .label, h3, h4, [class*="label"], [class*="question"]');
+          if (label) questionText = label.textContent.trim();
+        }
+      }
+      // Try previous sibling
+      if (!questionText) {
+        let prev = ta.previousElementSibling;
+        while (prev && !questionText) {
+          if (['LABEL', 'H3', 'H4', 'P', 'SPAN', 'DIV'].includes(prev.tagName)) {
+            const text = prev.textContent.trim();
+            if (text.length > 5 && text.length < 500) questionText = text;
+          }
+          prev = prev.previousElementSibling;
+        }
+      }
+
+      if (questionText && questionText.length > 5) {
+        questions.push({ element: ta, question: questionText });
+      }
+    }
+
+    return questions;
+  }
+
+  // ── Extract job context from page ──
+  function getJobContext() {
+    const title = document.title || '';
+    let jobTitle = '';
+    let company = '';
+
+    // Try common patterns in title
+    const titleParts = title.split(/[|\-–—]/);
+    if (titleParts.length > 1) {
+      jobTitle = titleParts[0].trim();
+      company = titleParts[titleParts.length - 1].trim();
+    }
+
+    // Try h1
+    const h1 = document.querySelector('h1');
+    if (h1 && !jobTitle) jobTitle = h1.textContent.trim();
+
+    // Try common selectors for company name
+    const companyEl = document.querySelector('[class*="company"], [data-company], .employer');
+    if (companyEl && !company) company = companyEl.textContent.trim();
+
+    return { jobTitle, company };
+  }
+
+  // ── AI fill for custom questions ──
+  async function fillWithAI(username) {
+    const questions = detectCustomQuestions();
+    if (questions.length === 0) return { aiFilled: 0, aiTotal: 0 };
+
+    const { jobTitle, company } = getJobContext();
+    let aiFilled = 0;
+
+    for (const { element, question } of questions) {
+      try {
+        const res = await fetch('https://cvin.bio/api/autofill-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, question, jobTitle, company }),
+        });
+
+        if (res.ok) {
+          const { answer } = await res.json();
+          if (answer) {
+            setNativeValue(element, answer);
+            flashField(element);
+            aiFilled++;
+          }
+        }
+      } catch (e) {
+        console.warn('AI fill failed for:', question, e);
+      }
+    }
+
+    return { aiFilled, aiTotal: questions.length };
+  }
+
   // ── Listen for messages from popup ──
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.action === 'FILL_FORM' && msg.profile) {
       const result = fillForm(msg.profile);
       sendResponse(result);
     }
-    return true; // async response
+    if (msg.action === 'FILL_AI' && msg.username) {
+      fillWithAI(msg.username).then(sendResponse);
+      return true; // async
+    }
+    return true;
   });
 })();
