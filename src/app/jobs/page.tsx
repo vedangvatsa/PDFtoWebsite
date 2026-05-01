@@ -259,23 +259,22 @@ export default function JobsPage() {
         body: JSON.stringify({
           jobId: job.id,
           userId: user.id,
-          userData: { ...applyUserData, isPro: false },
+          userData: applyUserData,
         }),
       });
       const data = await res.json();
-      if (data.status === 'redirect' || data.apply_url) {
-        // Server-side apply not available for this ATS — redirect
-        window.open(data.apply_url || addUTM(job.apply_url), '_blank');
+      if (res.ok && data.success) {
+        window.open(addUTM(data.apply_url || job.apply_url), '_blank');
         setAppliedJobs(prev => new Set(prev).add(job.id));
-        toast({ title: 'Application tracked', description: `Opened ${job.company} apply page.` });
-      } else if (data.success) {
+        toast({ title: '✓ Application tracked', description: `Opened ${job.company} apply page.` });
+      } else if (res.status === 409) {
+        // Already applied
         setAppliedJobs(prev => new Set(prev).add(job.id));
-        posthog.capture('quick_apply_success', { job_id: job.id, company: job.company });
-        toast({ title: '✓ Applied!', description: `Application sent to ${job.company}.` });
-      } else {
-        // Fallback to redirect
         window.open(addUTM(job.apply_url), '_blank');
-        toast({ variant: 'destructive', title: 'Auto-apply failed', description: data.error || 'Opened apply page instead.' });
+        toast({ title: 'Already applied', description: `Opening ${job.company} again.` });
+      } else {
+        // Rate limited or other error — still open the page
+        window.open(addUTM(job.apply_url), '_blank');
       }
     } catch {
       window.open(addUTM(job.apply_url), '_blank');
