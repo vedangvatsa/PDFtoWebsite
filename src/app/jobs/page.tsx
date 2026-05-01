@@ -486,34 +486,8 @@ export default function JobsPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      // Quick apply via API
-                      const applyBtn = e.currentTarget;
-                      applyBtn.disabled = true;
-                      applyBtn.textContent = '...';
-                      fetch('/api/apply', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          jobId: job.id,
-                          userId: 'anonymous', // Will be replaced with auth
-                          userData: { fullName: 'Quick Apply', email: 'user@cvin.bio', isPro: false },
-                        }),
-                      })
-                        .then(r => r.json())
-                        .then(data => {
-                          if (data.success) {
-                            applyBtn.textContent = '✓';
-                            applyBtn.className = applyBtn.className.replace('text-primary', 'text-emerald-500');
-                          } else {
-                            // Fallback to redirect
-                            window.open(addUTM(job.apply_url), '_blank');
-                            applyBtn.textContent = '→';
-                          }
-                        })
-                        .catch(() => {
-                          window.open(addUTM(job.apply_url), '_blank');
-                          applyBtn.textContent = '→';
-                        });
+                      trackClick(job.id, job);
+                      window.open(addUTM(job.apply_url), '_blank');
                     }}
                     className="text-[10px] font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-2 py-0.5 rounded-full shrink-0 transition-all opacity-0 group-hover:opacity-100"
                     title="Quick Apply with CVin.Bio"
