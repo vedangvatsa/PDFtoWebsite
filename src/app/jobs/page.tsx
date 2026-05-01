@@ -583,7 +583,7 @@ export default function JobsPage() {
                     )}
                   </div>
                 </div>
-                {(job.source === 'lever' || job.source === 'ashby') ? (
+                {(['lever', 'ashby', 'greenhouse', 'smartrecruiters'].includes(job.source)) ? (
                   appliedJobs.has(job.id) ? (
                     <span className="text-[10px] font-semibold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full shrink-0">✓ Applied</span>
                   ) : (

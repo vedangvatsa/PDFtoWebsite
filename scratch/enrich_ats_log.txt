@@ -1,0 +1,28 @@
+📊 Fetching missing companies from DB...
+  1784 missing companies with ATS page URLs
+
+  ⏳ 100/1784 in 6.0s | hits:9 miss:91
+  ⏳ 200/1784 in 12.2s | hits:26 miss:174
+  ⏳ 300/1784 in 18.2s | hits:28 miss:272
+  ⏳ 400/1784 in 24.2s | hits:28 miss:372
+  ⏳ 500/1784 in 30.3s | hits:28 miss:472
+  💾 Saved (1440 total)
+  ⏳ 600/1784 in 36.3s | hits:28 miss:572
+  ⏳ 700/1784 in 42.3s | hits:28 miss:672
+  ⏳ 800/1784 in 48.3s | hits:28 miss:772
+  ⏳ 900/1784 in 54.4s | hits:28 miss:872
+  ⏳ 1000/1784 in 60.4s | hits:28 miss:972
+  💾 Saved (1440 total)
+  ⏳ 1100/1784 in 66.4s | hits:28 miss:1072
+  ⏳ 1200/1784 in 72.5s | hits:28 miss:1172
+  ⏳ 1300/1784 in 78.5s | hits:28 miss:1272
+  ⏳ 1400/1784 in 84.5s | hits:28 miss:1372
+  ⏳ 1500/1784 in 90.5s | hits:28 miss:1472
+  💾 Saved (1440 total)
+  ⏳ 1600/1784 in 96.5s | hits:28 miss:1572
+  ⏳ 1700/1784 in 102.6s | hits:28 miss:1672
+  ⏳ 1784/1784 in 108.6s | hits:28 miss:1756
+
+✅ Done! 1440 total companies enriched
+   ATS pages hit: 28 | Miss: 1756
+   Saved to: /Users/vedang/PDFtoWebsite/src/lib/company-descriptions.json
