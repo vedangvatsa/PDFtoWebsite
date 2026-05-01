@@ -582,9 +582,21 @@ export default function EditorPage() {
     }, [user, profile.email, profile.phone, profile.location, profile.website, profile.github, profile.linkedin, autoSave]);
 
     const addExtraLink = useCallback(() => {
-        const t = newLinkType.trim().toLowerCase().replace(/\s+/g, '-');
+        let t = newLinkType.trim().toLowerCase().replace(/\s+/g, '-');
         const v = newLinkValue.trim();
-        if (!t || !v) return;
+        if (!v) return;
+        // If no label provided, try to infer from URL domain
+        if (!t) {
+            try {
+                const fullUrl = v.startsWith('http') ? v : `https://${v}`;
+                const hostname = new URL(fullUrl).hostname.replace('www.', '');
+                // Extract a clean label from the domain (e.g., "scholar.google.com" → "google-scholar")
+                const parts = hostname.split('.');
+                t = parts.length > 2 ? `${parts[0]}-${parts[1]}` : parts[0];
+            } catch {
+                t = 'other';
+            }
+        }
         const current = (profile.links || []).filter((l: any) => !CORE_LINK_TYPES_SET.has(l.type));
         saveExtraLinks([...current, { type: t, value: v }]);
         setNewLinkType('');
@@ -1444,7 +1456,7 @@ export default function EditorPage() {
                                             <p className="text-[10px] text-red-500 mt-2 font-medium">❌ {slugError}</p>
                                         ) : slugSuccess ? (
                                             <p className="text-[10px] text-green-600 mt-2 font-medium">✅ This URL is available!</p>
-                                        ) : profile.slug && isComplete ? (
+                                        ) : profile.slug ? (
                                             <div className="mt-2.5 space-y-2">
                                                 <p className="text-[10px] text-green-600 flex items-center gap-1">
                                                     <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
@@ -1453,13 +1465,9 @@ export default function EditorPage() {
                                                         {`${(process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/^https?:\/\//, '')}/${profile.slug}`}
                                                     </a>
                                                 </p>
-                                            </div>
-                                        ) : profile.slug && !isComplete ? (
-                                            <div className="mt-2.5 space-y-2">
-                                                <p className="text-[10px] text-red-500 flex items-center gap-1">
-                                                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-500" />
-                                                    Not live yet · complete your profile to go live
-                                                </p>
+                                                {!isComplete && (
+                                                    <p className="text-[10px] text-muted-foreground">Complete your profile to improve your score</p>
+                                                )}
                                             </div>
                                         ) : null}
                                     </CardContent>
@@ -1539,7 +1547,7 @@ export default function EditorPage() {
                                                 {/* Add link row */}
                                                 <div className="flex gap-1.5">
                                                     <Input
-                                                        placeholder="Choose"
+                                                        placeholder="Label"
                                                         value={newLinkType}
                                                         onChange={e => setNewLinkType(e.target.value)}
                                                         onKeyDown={e => e.key === 'Enter' && addExtraLink()}
@@ -1547,18 +1555,47 @@ export default function EditorPage() {
                                                         list="platform-suggestions"
                                                     />
                                                     <datalist id="platform-suggestions">
-                                                        {['twitter','instagram','tiktok','youtube','facebook','threads','snapchat','telegram','discord','dribbble','behance','figma','medium','substack','stackoverflow','gitlab','codepen','leetcode','hackerrank','bluesky','mastodon','notion','spotify','soundcloud'].map(p => (
+                                                        {['twitter','instagram','youtube','medium','substack','google-scholar','researchgate','dribbble','behance','other'].map(p => (
                                                             <option key={p} value={p} />
                                                         ))}
                                                     </datalist>
                                                     <Input
-                                                        placeholder="URL or username"
+                                                        placeholder="Paste URL"
                                                         value={newLinkValue}
-                                                        onChange={e => setNewLinkValue(e.target.value)}
+                                                        onChange={e => {
+                                                            const url = e.target.value;
+                                                            setNewLinkValue(url);
+                                                            // Auto-detect platform from URL
+                                                            if (url && !newLinkType) {
+                                                                const domainMap: Record<string, string> = {
+                                                                    'twitter.com': 'twitter', 'x.com': 'twitter',
+                                                                    'instagram.com': 'instagram', 'youtube.com': 'youtube',
+                                                                    'facebook.com': 'facebook', 'tiktok.com': 'tiktok',
+                                                                    'linkedin.com': 'linkedin', 'github.com': 'github',
+                                                                    'dribbble.com': 'dribbble', 'behance.net': 'behance',
+                                                                    'medium.com': 'medium', 'substack.com': 'substack',
+                                                                    'scholar.google.com': 'google-scholar', 'scholar.google.co.in': 'google-scholar',
+                                                                    'researchgate.net': 'researchgate', 'orcid.org': 'orcid',
+                                                                    'stackoverflow.com': 'stackoverflow', 'gitlab.com': 'gitlab',
+                                                                    'figma.com': 'figma', 'notion.so': 'notion',
+                                                                    'open.spotify.com': 'spotify', 'soundcloud.com': 'soundcloud',
+                                                                    'discord.gg': 'discord', 't.me': 'telegram',
+                                                                    'bsky.app': 'bluesky', 'mastodon.social': 'mastodon',
+                                                                    'threads.net': 'threads', 'twitch.tv': 'twitch',
+                                                                };
+                                                                try {
+                                                                    const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+                                                                    const hostname = new URL(fullUrl).hostname.replace('www.', '');
+                                                                    // Try exact match, then parent domain
+                                                                    const detected = domainMap[hostname] || Object.entries(domainMap).find(([d]) => hostname.endsWith(d))?.[1];
+                                                                    if (detected) setNewLinkType(detected);
+                                                                } catch {}
+                                                            }
+                                                        }}
                                                         onKeyDown={e => e.key === 'Enter' && addExtraLink()}
                                                         className="h-9 text-sm flex-1"
                                                     />
-                                                    <Button size="sm" onClick={addExtraLink} disabled={!newLinkType.trim() || !newLinkValue.trim()} className="h-9 shrink-0">
+                                                    <Button size="sm" onClick={addExtraLink} disabled={!newLinkValue.trim()} className="h-9 shrink-0">
                                                         <PlusCircle className="h-4 w-4" />
                                                     </Button>
                                                 </div>
