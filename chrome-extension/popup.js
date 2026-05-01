@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (e.key === 'Enter') handleConnect();
   });
   $('fill-btn').addEventListener('click', handleFill);
+  $('ai-btn').addEventListener('click', handleAI);
   $('disconnect-btn').addEventListener('click', handleDisconnect);
 });
 
@@ -144,10 +145,54 @@ async function handleFill() {
 
   $('fill-btn').disabled = false;
   $('fill-btn').innerHTML = `
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
     </svg>
-    Fill This Page
+    Auto-Fill
+  `;
+}
+
+// ── AI Fill ──
+async function handleAI() {
+  const stored = await chrome.storage.local.get(['cvinbio_username']);
+  if (!stored.cvinbio_username) return;
+
+  $('ai-btn').disabled = true;
+  $('ai-btn').textContent = 'Generating...';
+
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const result = await chrome.tabs.sendMessage(tab.id, {
+      action: 'FILL_AI',
+      username: stored.cvinbio_username,
+    });
+
+    const resultEl = $('fill-result');
+    resultEl.classList.remove('hidden');
+
+    if (result && result.aiFilled > 0) {
+      resultEl.className = 'fill-result success';
+      resultEl.innerHTML = `✨ AI answered <strong>${result.aiFilled}</strong> of ${result.aiTotal} question${result.aiTotal > 1 ? 's' : ''}`;
+    } else if (result && result.aiTotal === 0) {
+      resultEl.className = 'fill-result partial';
+      resultEl.innerHTML = 'No custom questions found on this page.';
+    } else {
+      resultEl.className = 'fill-result partial';
+      resultEl.innerHTML = 'AI could not generate answers. Try again.';
+    }
+  } catch (err) {
+    const resultEl = $('fill-result');
+    resultEl.classList.remove('hidden');
+    resultEl.className = 'fill-result partial';
+    resultEl.innerHTML = 'Could not access this page. Try refreshing.';
+  }
+
+  $('ai-btn').disabled = false;
+  $('ai-btn').innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.4l-6.4 4.8 2.4-7.2-6-4.8h7.6z"/>
+    </svg>
+    AI Answer
   `;
 }
 
