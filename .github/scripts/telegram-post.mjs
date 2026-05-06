@@ -8,6 +8,58 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
+// ─── Banned Jobs Filter (must match jobs-sync.mjs) ───
+const BANNED_PATTERNS = [
+  '\\btherapists?\\b', '\\bpsychiatric\\b', '\\bpsychiatrist\\b', '\\bnurse\\b',
+  '\\bphysician\\b', '\\bmedical assistant\\b', '\\bphlebotomist\\b',
+  '\\bbehavior technician\\b', '\\brbt\\b', '\\bretail ambassador\\b',
+  '\\bstore (opening|associate|manager|lead|director)\\b', '\\bbarista\\b',
+  '\\bjanitor\\b', '\\bcashier\\b', '\\bbookkeeper\\b', '\\bhvac\\b',
+  '\\bplumbing\\b', '\\bplumber\\b', '\\bwarehouse\\b',
+  '\\bdelivery driver\\b', '\\btruck driver\\b', '\\bteacher\\b', '\\btutor\\b',
+  '\\bcaregiver\\b', '\\bnanny\\b', '\\bhousekeeper\\b', '\\bcleaner\\b',
+  '\\bdentist\\b', '\\bdental\\b', '\\bpharmacist\\b', '\\bpharmacy\\b',
+  '\\bparamedic\\b', '\\bsurgeon\\b', '\\bclinician\\b', '\\boptometrist\\b',
+  '\\bveterinarian\\b', '\\bveterinary\\b', '\\bmassage\\b', '\\besthetician\\b',
+  '\\bsalon\\b', '\\bspa\\b', '\\bfitness instructor\\b', '\\bpersonal trainer\\b',
+  '\\bpastor\\b', '\\bclergy\\b', '\\bmechanic\\b', '\\bforklift\\b',
+  '\\bbartender\\b', '\\bwaiter\\b', '\\bwaitress\\b', '\\bchef\\b', '\\bcook\\b',
+  '\\bdishwasher\\b', '\\bbusser\\b', '\\bhostess\\b', '\\bcounselor\\b',
+  '\\bpainter\\b', '\\bcarpenter\\b', '\\belectrician\\b', '\\bwelder\\b',
+  '\\bmason\\b', '\\bconstruction\\b', '\\bsecurity guard\\b', '\\bbouncer\\b',
+  '\\bkeyholder\\b', '\\bretail\\b', '\\bdispensary\\b',
+  '\\bpsychologist\\b', '\\bdashmart\\b',
+  '\\bshift (supervisor|leader|manager)\\b', '\\bcall center\\b',
+  '\\bsoldering\\b', '\\bmanufacturing\\b', '\\brobot operator\\b',
+  '\\bequipment operator\\b', '\\bassembl\\w*\\b', '\\bfactory\\b',
+  '\\bdispatcher\\b', '\\bdriver\\b', '\\bdelivery\\b',
+  '\\binventory\\b', '\\breceiving\\b', '\\bfulfillment\\b',
+  '\\btechnician\\b', '\\bbrand ambassador\\b', '\\bpart.time\\b',
+  '\\bseasonal\\b', '\\b1099\\b',
+  // Additional patterns for junk that was slipping through
+  '\\bforeman\\b', '\\bforewoman\\b', '\\bjourneyman\\b',
+  '\\banimal\\b', '\\bhusbandry\\b', '\\binfusion\\b', '\\bmicrobiology\\b',
+  '\\blaboratory tech\\b', '\\blab tech\\b',
+  '\\bfield service\\b', '\\bfield tech\\b',
+  '\\bshop tech\\b', '\\bservice tech\\b',
+  '\\binstaller\\b', '\\bfabricator\\b', '\\bmaintenance\\b',
+  '\\broofing\\b', '\\bpaving\\b', '\\bexcavat\\b', '\\blandscap\\b',
+  '\\bpipefitter\\b', '\\bironworker\\b', '\\bscaffold\\b',
+  '\\bconcrete\\b', '\\bdrywall\\b', '\\binsulation\\b',
+  '\\bsales rep\\b', '\\bsales associate\\b',
+  '\\bstore manager\\b', '\\bassistant.*manager\\b',
+  '\\bRN\\b', '\\bLPN\\b', '\\bCNA\\b', '\\bEMT\\b',
+  '\\bcustodian\\b', '\\bgroundskeeper\\b',
+  // Round 3
+  '\\bproduction\\b', '\\boperator\\b', '\\bpilot\\b', '\\bsurvey\\b',
+  '\\bsupply chain\\b', '\\bgrounds\\b', '\\bline tech\\b',
+  '\\bcurb\\b', '\\bpowerline\\b', '\\bice cream\\b',
+  '\\bhelicopter\\b', '\\bautocad\\b',
+  '\\boriginations?\\b', '\\bmetal\\b', '\\bprep\\b',
+  '\\btelemedicine\\b',
+];
+const BANNED_REGEX = new RegExp(BANNED_PATTERNS.join('|'), 'i');
+
 const BOT_TOKEN  = process.env.TELEGRAM_BOT_TOKEN;
 const CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID;
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -128,8 +180,10 @@ function cleanCompany(name) {
 function cleanTitle(title) {
   if (!title) return '';
   let clean = decodeHTML(title);
-  // Remove ALL parenthetical content
+  // Remove ALL parenthetical content (closed parens)
   clean = clean.replace(/\s*\(.*?\)/g, '');
+  // Remove unclosed parentheticals like "(React Native" with no closing )
+  clean = clean.replace(/\s*\([^)]*$/, '');
   // Remove everything after separators (hyphen/en-dash with >=1 space, or any em-dash/pipe)
   clean = clean.replace(/(?:\s+[-–]\s*|\s*[-–]\s+|—|\|).*$/, '');
   // Remove comma-separated department qualifiers like ", Brand & Communications"
@@ -143,11 +197,15 @@ function truncate(text, max = 60) {
 }
 
 // ── Fetch unposted jobs from Supabase ────────────────────────────────────
+// Only fetch from curated sources — BambooHR excluded (unfiltered junk)
+const TELEGRAM_ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'remoteok'];
 
 async function fetchUnpostedJobs() {
+  const sourceFilter = TELEGRAM_ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
   const params = new URLSearchParams({
-    select: 'id,title,company,location,apply_url',
+    select: 'id,title,company,location,apply_url,source',
     'telegram_posted_at': 'is.null',
+    'source': `in.(${sourceFilter})`,
     order: 'created_at.desc',
     limit: String(FETCH_LIMIT),
   });
@@ -182,16 +240,45 @@ function shuffle(arr) {
   return a;
 }
 
+// ── Priority companies — big names drive reshares ────────────────────────
+const PRIORITY_COMPANIES = new Set([
+  'airbnb','anthropic','stripe','coinbase','databricks','discord','dropbox','figma',
+  'gitlab','google','meta','microsoft','apple','amazon','netflix','openai','shopify',
+  'slack','snap','spotify','square','tiktok','uber','vercel','cloudflare','datadog',
+  'twilio','reddit','pinterest','linkedin','oracle','salesforce','adobe','nvidia',
+  'palantir','robinhood','ripple','binance','plaid','brex','ramp','mercury','chime',
+  'affirm','klarna','revolut','wise','deel','remote','notion','linear','retool',
+  'supabase','mongodb','elastic','grafana','hashicorp','confluent','snowflake',
+  'github','atlassian','canva','asana','airtable','monday','hubspot','zendesk',
+  'intercom','twitch','epic games','unity','riot games','duolingo','instacart',
+  'doordash','lyft','waymo','cruise','nuro','postman','deepmind','stability ai',
+  'cohere','mistral','scale ai','coreweave','lambda','perplexity','cursor','replit',
+  'warp','raycast','sentry','pagerduty','okta','crowdstrike','zscaler','1password',
+  'livekit','elevenlabs','midjourney','hugging face','runway','character',
+  'uniswap','alchemy','chainalysis','fireblocks','consensys','phantom','opensea',
+  'wealthsimple','monzo','nubank','mercari','flexport','faire','toast',
+]);
+
+function isHighProfileCompany(company) {
+  const c = company.toLowerCase().trim();
+  for (const p of PRIORITY_COMPANIES) {
+    if (c.includes(p) || p.includes(c)) return true;
+  }
+  return false;
+}
+
 function pickJobs(jobs, limit) {
   const seen = new Set();
-  const remote = [];
-  const nonRemote = [];
+  const priority = [];
+  const regular = [];
   const overflow = []; // extra jobs from same companies if we need to fill
 
   for (const job of jobs) {
     // Skip bad data: truncated names, non-English titles
     if (!job.company || job.company.includes('...') || job.company.length <= 2) continue;
     if (!job.title || /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) continue;
+    // Skip non-tech/non-business jobs
+    if (BANNED_REGEX.test(job.title)) continue;
 
     const key = job.company.toLowerCase().trim();
     if (seen.has(key)) {
@@ -200,25 +287,20 @@ function pickJobs(jobs, limit) {
     }
     seen.add(key);
 
-    if (isRemote(job.location)) {
-      remote.push(job);
+    if (isHighProfileCompany(job.company)) {
+      priority.push(job);
     } else {
-      nonRemote.push(job);
+      regular.push(job);
     }
   }
 
-  // Guarantee at least 2 remote, fill rest with non-remote
-  const minRemote = Math.min(2, remote.length);
-  const picked = remote.slice(0, minRemote);
-  const remaining = limit - picked.length;
-
-  // Fill with non-remote first, then overflow remote
-  picked.push(...nonRemote.slice(0, remaining));
+  // Priority companies go first, then fill with regular
+  const picked = [...priority.slice(0, limit)];
   if (picked.length < limit) {
-    picked.push(...remote.slice(minRemote, minRemote + (limit - picked.length)));
+    picked.push(...regular.slice(0, limit - picked.length));
   }
 
-  // If still under limit, backfill with extra jobs from same companies
+  // If still under limit, backfill with overflow
   if (picked.length < limit) {
     picked.push(...shuffle(overflow).slice(0, limit - picked.length));
   }
