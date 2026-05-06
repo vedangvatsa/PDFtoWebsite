@@ -133,12 +133,14 @@ export default function NewsPage() {
           </h1>
           <div className="flex items-center gap-3">
             {[
+              { name: 'Techmeme', domain: 'techmeme.com' },
               { name: 'TechCrunch', domain: 'techcrunch.com' },
               { name: 'The Verge', domain: 'theverge.com' },
               { name: 'Hacker News', domain: 'news.ycombinator.com' },
               { name: 'Ars Technica', domain: 'arstechnica.com' },
-              { name: 'Wired', domain: 'wired.com' },
+              { name: 'Bloomberg', domain: 'bloomberg.com' },
               { name: 'VentureBeat', domain: 'venturebeat.com' },
+              { name: 'Wired', domain: 'wired.com' },
               { name: 'MIT Tech Review', domain: 'technologyreview.com' },
               { name: 'The Information', domain: 'theinformation.com' },
             ].map((s) => (
@@ -228,7 +230,7 @@ export default function NewsPage() {
                 />
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
+                  <h3 className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                     {item.title}
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400 min-w-0">
