@@ -55,6 +55,11 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               <Link href="/jobs">Jobs</Link>
             </Button>
           )}
+          {pathname !== '/news' && (
+            <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+              <Link href="/news">News</Link>
+            </Button>
+          )}
           {!isUserLoading && user && (
               <>
                 {pathname !== '/editor' && (
