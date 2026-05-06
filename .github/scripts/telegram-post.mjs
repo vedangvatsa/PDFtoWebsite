@@ -184,8 +184,8 @@ function cleanTitle(title) {
   clean = clean.replace(/\s*\(.*?\)/g, '');
   // Remove unclosed parentheticals like "(React Native" with no closing )
   clean = clean.replace(/\s*\([^)]*$/, '');
-  // Remove everything after separators (hyphen/en-dash with >=1 space, or any em-dash/pipe)
-  clean = clean.replace(/(?:\s+[-–]\s*|\s*[-–]\s+|—|\|).*$/, '');
+  // Remove everything after separators (hyphen/en-dash with >=1 space, em-dash, pipe, or colon)
+  clean = clean.replace(/(?:\s+[-–]\s*|\s*[-–]\s+|—|\||\s*:\s).*$/, '');
   // Remove comma-separated department qualifiers like ", Brand & Communications"
   clean = clean.replace(/,\s+[A-Z][a-zA-Z\s&/]+$/, '');
   return clean.trim() || decodeHTML(title);
