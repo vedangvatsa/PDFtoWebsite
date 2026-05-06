@@ -105,7 +105,15 @@ const LIFESTYLE_RE = /\b(mattress|bed\s*frame|pillow|blender|mixer|soundbar|vacu
 
 function isJunk(item: NewsItem): boolean {
   const text = `${item.title} ${item.description}`;
-  return PROMO_RE.test(text) || LIFESTYLE_RE.test(text);
+  if (PROMO_RE.test(text) || LIFESTYLE_RE.test(text)) return true;
+
+  // Curated sources always pass (already editor-filtered)
+  const curated = ['Techmeme', 'The Information', 'Bloomberg Tech'];
+  if (curated.includes(item.source)) return false;
+
+  // Other sources must contain at least one tech-relevant signal
+  const TECH_SIGNAL = /\b(ai\b|artificial intelligence|machine learning|llm|gpt|openai|anthropic|google|apple|microsoft|meta|amazon|nvidia|tesla|startup|funding|venture|ipo|acquisition|valuation|revenue|billion|million|software|hardware|chip|semiconductor|data|cloud|cyber|security|privacy|hack|breach|open.?source|developer|engineer|programming|api|saas|platform|robot|autonomous|self.?driving|crypto|bitcoin|blockchain|web3|token|defi|nft|social media|app|mobile|browser|search|ads|regulation|antitrust|lawsuit|congress|fcc|ftc|eu\b|gdpr|deepfake|quantum|biotech|spacex|rocket|satellite|drone|vr\b|ar\b|headset|wearable|gaming|console|gpu|cpu|server|database|linux|windows|android|ios|iphone|pixel|galaxy|intel|amd|qualcomm|broadcom|tsmc|samsung|huawei|bytedance|tiktok|snapchat|x\.com|twitter|reddit|discord|slack|zoom|teams|notion|figma|github|gitlab|docker|kubernetes|aws|azure|gcp|vercel|cloudflare|stripe|plaid|fintech|neobank|payment)\b/i;
+  return !TECH_SIGNAL.test(text);
 }
 
 // ── Title-based dedup (same story from multiple sources) ──
