@@ -92,6 +92,59 @@ const KEYWORD_LABELS = [
   'Frontend','Backend','Full Stack','Full Stack',
 ];
 
+// ─── Banned Jobs Filter ───
+const BANNED_PATTERNS = [
+  '\\btherapists?\\b', '\\bpsychiatric\\b', '\\bpsychiatrist\\b', '\\bnurse\\b',
+  '\\bphysician\\b', '\\bmedical assistant\\b', '\\bphlebotomist\\b',
+  '\\bbehavior technician\\b', '\\brbt\\b', '\\bretail ambassador\\b',
+  '\\bstore (opening|associate|manager|lead|director)\\b', '\\bbarista\\b',
+  '\\bjanitor\\b', '\\bcashier\\b', '\\bbookkeeper\\b', '\\bhvac\\b',
+  '\\bplumbing\\b', '\\bplumber\\b', '\\bwarehouse\\b',
+  '\\bdelivery driver\\b', '\\btruck driver\\b', '\\bteacher\\b', '\\btutor\\b',
+  '\\bcaregiver\\b', '\\bnanny\\b', '\\bhousekeeper\\b', '\\bcleaner\\b',
+  '\\bdentist\\b', '\\bdental\\b', '\\bpharmacist\\b', '\\bpharmacy\\b',
+  '\\bparamedic\\b', '\\bsurgeon\\b', '\\bclinician\\b', '\\boptometrist\\b',
+  '\\bveterinarian\\b', '\\bveterinary\\b', '\\bmassage\\b', '\\besthetician\\b',
+  '\\bsalon\\b', '\\bspa\\b', '\\bfitness instructor\\b', '\\bpersonal trainer\\b',
+  '\\bpastor\\b', '\\bclergy\\b', '\\bmechanic\\b', '\\bforklift\\b',
+  '\\bbartender\\b', '\\bwaiter\\b', '\\bwaitress\\b', '\\bchef\\b', '\\bcook\\b',
+  '\\bdishwasher\\b', '\\bbusser\\b', '\\bhostess\\b', '\\bcounselor\\b',
+  '\\bpainter\\b', '\\bcarpenter\\b', '\\belectrician\\b', '\\bwelder\\b',
+  '\\bmason\\b', '\\bconstruction\\b', '\\bsecurity guard\\b', '\\bbouncer\\b',
+  '\\bkeyholder\\b', '\\bretail\\b', '\\bdispensary\\b',
+  '\\bpsychologist\\b', '\\bdashmart\\b',
+  '\\bshift (supervisor|leader|manager)\\b', '\\bcall center\\b',
+  '\\bsoldering\\b', '\\bmanufacturing\\b', '\\brobot operator\\b',
+  '\\bequipment operator\\b', '\\bassembl\\w*\\b', '\\bfactory\\b',
+  '\\bdispatcher\\b', '\\bdriver\\b', '\\bdelivery\\b',
+  '\\binventory\\b', '\\breceiving\\b', '\\bfulfillment\\b',
+  '\\btechnician\\b', '\\bbrand ambassador\\b', '\\bpart.time\\b',
+  '\\bseasonal\\b', '\\b1099\\b',
+  // Additional patterns for junk slipping through
+  '\\bforeman\\b', '\\bforewoman\\b', '\\bjourneyman\\b',
+  '\\banimal\\b', '\\bhusbandry\\b', '\\binfusion\\b', '\\bmicrobiology\\b',
+  '\\blaboratory tech\\b', '\\blab tech\\b',
+  '\\bfield service\\b', '\\bfield tech\\b',
+  '\\bshop tech\\b', '\\bservice tech\\b',
+  '\\binstaller\\b', '\\bfabricator\\b', '\\bmaintenance\\b',
+  '\\broofing\\b', '\\bpaving\\b', '\\bexcavat\\b', '\\blandscap\\b',
+  '\\bpipefitter\\b', '\\bironworker\\b', '\\bscaffold\\b',
+  '\\bconcrete\\b', '\\bdrywall\\b', '\\binsulation\\b',
+  '\\bsales rep\\b', '\\bsales associate\\b',
+  '\\bstore manager\\b', '\\bassistant.*manager\\b',
+  '\\bRN\\b', '\\bLPN\\b', '\\bCNA\\b', '\\bEMT\\b',
+  '\\bcustodian\\b', '\\bgroundskeeper\\b',
+  // Round 3 — still slipping through
+  '\\bproduction\\b', '\\boperator\\b', '\\bpilot\\b', '\\bsurvey\\b',
+  '\\bsupply chain\\b', '\\bgrounds\\b', '\\bline tech\\b',
+  '\\bcurb\\b', '\\bpowerline\\b', '\\bice cream\\b',
+  '\\bhelicopter\\b', '\\bautocad\\b',
+  '\\boriginations?\\b', '\\bmetal\\b', '\\bprep\\b',
+  '\\btelemedicine\\b',
+];
+const BANNED_REGEX = new RegExp(BANNED_PATTERNS.join('|'), 'i');
+
+
 // ─── Greenhouse company slugs to fetch ───
 const GREENHOUSE_SLUGS = [
   'adyen','affirm','agoda','airbnb','airtable','anthropic','aptoslabs','asana',
@@ -328,7 +381,7 @@ const LEVER_SLUGS = [
   'hive','hostinger','houzz','imentor','immutable','imo-online','includedhealth','inductivehealth',
   'influur','investorflow','ioconnectservices.com','ion','ivo','jobandtalent','jumpcloud','kabam',
   'kepler','kiddom','klivvr','kpler','kraken123','kubra','labelbox','ladders',
-  'lalamove','lamudi','lendbuzz','levelai','levelup','lever','leverdemo-8','loadsmart',
+  'lalamove','lamudi','lendbuzz','levelai','levelup','lever','loadsmart',
   'logz','lucidworks','lumivero','lumotive','lyrahealth','mactores','mahmee','masterycharter',
   'matchgroup','matillion','meesho','megaport','mendix','merklescience','metabase','metaprise.ai',
   'metopera','metr','mindbloom','mindtickle','mistral','nava','neighbor','netomi',
@@ -412,14 +465,21 @@ async function fetchExistingKeys() {
 
 async function supabaseUpsert(jobs) {
   // Deduplicate by external_id in-memory (prefer external_id over dedup_hash)
+  // Also discard jobs matching the BANNED_REGEX
   const seen = new Map();
+  let bannedCount = 0;
   for (const job of jobs) {
+    if (job.title && BANNED_REGEX.test(job.title)) {
+      bannedCount++;
+      continue;
+    }
     const key = job.external_id || job.dedup_hash;
     if (!seen.has(key)) {
       seen.set(key, job);
     }
   }
   const unique = [...seen.values()];
+  console.log(`   Dropped ${bannedCount} banned/irrelevant jobs.`);
   console.log(`   After in-memory dedup: ${unique.length} unique jobs`);
 
   // Pre-fetch existing keys to skip duplicates client-side
