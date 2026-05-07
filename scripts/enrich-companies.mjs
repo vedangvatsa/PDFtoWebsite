@@ -101,7 +101,21 @@ function extractDomain(applyUrl) {
   try {
     const url = new URL(applyUrl);
     const host = url.hostname.replace(/^www\./, '');
-    if (ATS_DOMAINS.has(host)) return null;
+    
+    // ATS domains: extract company slug from path → try as .com domain
+    if (ATS_DOMAINS.has(host)) {
+      const pathSlug = url.pathname.split('/').filter(Boolean)[0];
+      if (pathSlug && pathSlug.length > 2) return `${pathSlug}.com`;
+      return null;
+    }
+    
+    // BambooHR: {company}.bamboohr.com → try {company}.com
+    if (host.endsWith('.bamboohr.com')) {
+      const sub = host.replace('.bamboohr.com', '');
+      if (sub.length > 2) return `${sub}.com`;
+      return null;
+    }
+    
     const parts = host.split('.');
     if (parts.length >= 3 && ['careers', 'jobs', 'hire', 'apply', 'work'].includes(parts[0])) {
       return parts.slice(1).join('.');
@@ -149,7 +163,18 @@ async function fetchMeta(url) {
 }
 
 async function fetchWikipedia(companyName) {
-  for (const query of [companyName, `${companyName} (company)`]) {
+  // Generate query variants: "Shieldai" → ["Shieldai", "Shield AI", "Shield Ai"]
+  const spaced = companyName.replace(/([a-z])([A-Z])/g, '$1 $2'); // camelCase split
+  const titleCase = companyName.replace(/\b\w/g, c => c.toUpperCase());
+  const queries = new Set([
+    companyName,
+    spaced,
+    titleCase,
+    `${companyName} (company)`,
+    `${spaced} (company)`,
+  ]);
+  
+  for (const query of queries) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000);
@@ -162,8 +187,9 @@ async function fetchWikipedia(companyName) {
       const data = await res.json();
       if (data.type === 'disambiguation' || !data.extract) continue;
       const ext = data.extract.toLowerCase();
-      const name = companyName.toLowerCase();
-      if (!ext.includes(name) && !ext.includes(name.replace(/\s/g, ''))) continue;
+      const nameLC = companyName.toLowerCase();
+      const spacedLC = spaced.toLowerCase();
+      if (!ext.includes(nameLC) && !ext.includes(nameLC.replace(/\s/g, '')) && !ext.includes(spacedLC)) continue;
       if (/^Year \d|^In \d|was born|is a municipality|is a village|is a city|is a town|is a census/.test(data.extract)) continue;
       const sentences = data.extract.match(/[^.!?]+[.!?]+/g) || [data.extract];
       let desc = sentences.slice(0, 3).join(' ').trim();
