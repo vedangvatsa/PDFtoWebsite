@@ -33,39 +33,46 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 }
 
 const JOBS_PER_POST = 5;
-const FETCH_LIMIT = 1000;
+const FETCH_LIMIT = 3000;
 const DEDUP_FILE = resolve(__dirname, '.telegram-ai-jobs-posted.json');
 const DEDUP_MAX = 500;
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-// ─── Famous AI companies (only these get posted) ─────────────────────────────
-const AI_COMPANIES = new Set([
-  // Frontier labs
-  'openai', 'anthropic', 'deepmind', 'google deepmind', 'meta', 'xai',
+// ─── Pure AI companies (ALL roles are AI-relevant, skip title filter) ────────
+const PURE_AI_COMPANIES = new Set([
+  'openai', 'anthropic', 'deepmind', 'google deepmind', 'xai',
   'mistral', 'cohere', 'inflection', 'character', 'reka', 'aleph alpha',
   'stability ai', 'midjourney',
-  // AI infrastructure
-  'nvidia', 'databricks', 'scale ai', 'coreweave', 'lambda',
   'cerebras', 'groq', 'sambanova', 'tenstorrent', 'graphcore', 'd-matrix',
   'together ai', 'fireworks', 'anyscale', 'modal', 'baseten', 'replicate',
   'hugging face', 'weights & biases', 'wandb', 'langchain', 'pinecone',
   'weaviate', 'vectara', 'unstructured', 'arize',
-  // AI applications
   'cursor', 'perplexity', 'replit', 'jasper', 'grammarly', 'descript',
   'elevenlabs', 'synthesia', 'heygen', 'runway', 'pika', 'ideogram',
   'suno', 'udio', 'livekit', 'deepgram', 'moveworks', 'cresta',
   'cognition', 'sierra', 'poolside', 'contextual ai', 'tavus',
   'abnormal security', 'observe ai', 'c3 ai', 'datarobot', 'snorkel',
-  // AI robotics / AV / frontier
+  'coreweave', 'lambda', 'databricks', 'scale ai', 'nvidia',
   'waymo', 'cruise', 'nuro', 'figure', 'skydio', 'shield ai',
   'physical intelligence', 'sanctuary ai', 'insitro', 'pathai',
-  // Big tech AI divisions
+]);
+
+// Big tech — only post if the title mentions AI/ML
+const BIG_TECH_COMPANIES = new Set([
   'google', 'apple', 'microsoft', 'amazon', 'meta', 'tesla',
 ]);
 
-function isAICompany(company) {
+function isPureAICompany(company) {
   const c = company.toLowerCase().trim();
-  for (const name of AI_COMPANIES) {
+  for (const name of PURE_AI_COMPANIES) {
+    if (c.includes(name) || name.includes(c)) return true;
+  }
+  return false;
+}
+
+function isBigTech(company) {
+  const c = company.toLowerCase().trim();
+  for (const name of BIG_TECH_COMPANIES) {
     if (c.includes(name) || name.includes(c)) return true;
   }
   return false;
@@ -75,7 +82,64 @@ function isAICompany(company) {
 const AI_TITLE_RE = /\b(ai\b|artificial intelligence|machine learning|ml\b|deep learning|llm|nlp\b|natural language|computer vision|cv\b|generative|gen\s*ai|foundation model|large language|diffusion|transformer|neural|reinforcement learning|rl\b|speech|perception|autonomy|autonomous|robotics|data scien|research scien|research engineer|applied scien|ml engineer|ml ops|mlops|ai engineer|ai research|ai product|ai safety|alignment|model (train|eval|deploy|infra)|prompt engineer|inference|gpu|cuda|pytorch|tensorflow|jax\b|model.*engineer|train.*engineer)/i;
 
 // ─── Skip patterns (non-tech roles) ──────────────────────────────────────────
-const SKIP_RE = /\b(intern|co-?op|contractor|part.time|bounty|mechanic|nurse|driver|warehouse|retail|janitor|cashier|barista|therapist|physician|dentist|pharmacist|veterinarian|cook|chef|welder|carpenter|electrician|plumber|hvac|maintenance|technician|assembl|production|operator|seasonal|1099|security guard|dispatcher|delivery|forklift|custodian)\b/i;
+// ─── Skip patterns — same as tech jobs channel (telegram-post.mjs) ───────────
+const BANNED_PATTERNS = [
+  '\\btherapists?\\b', '\\bpsychiatric\\b', '\\bpsychiatrist\\b', '\\bnurse\\b',
+  '\\bphysician\\b', '\\bmedical assistant\\b', '\\bphlebotomist\\b',
+  '\\bbehavior technician\\b', '\\brbt\\b', '\\bretail ambassador\\b',
+  '\\bstore (opening|associate|manager|lead|director)\\b', '\\bbarista\\b',
+  '\\bjanitor\\b', '\\bcashier\\b', '\\bbookkeeper\\b', '\\bhvac\\b',
+  '\\bplumbing\\b', '\\bplumber\\b', '\\bwarehouse\\b',
+  '\\bdelivery driver\\b', '\\btruck driver\\b', '\\bteacher\\b', '\\btutor\\b',
+  '\\bcaregiver\\b', '\\bnanny\\b', '\\bhousekeeper\\b', '\\bcleaner\\b',
+  '\\bdentist\\b', '\\bdental\\b', '\\bpharmacist\\b', '\\bpharmacy\\b',
+  '\\bparamedic\\b', '\\bsurgeon\\b', '\\bclinician\\b', '\\boptometrist\\b',
+  '\\bveterinarian\\b', '\\bveterinary\\b', '\\bmassage\\b', '\\besthetician\\b',
+  '\\bsalon\\b', '\\bspa\\b', '\\bfitness instructor\\b', '\\bpersonal trainer\\b',
+  '\\bpastor\\b', '\\bclergy\\b', '\\bmechanic\\b', '\\bforklift\\b',
+  '\\bbartender\\b', '\\bwaiter\\b', '\\bwaitress\\b', '\\bchef\\b', '\\bcook\\b',
+  '\\bdishwasher\\b', '\\bbusser\\b', '\\bhostess\\b', '\\bcounselor\\b',
+  '\\bpainter\\b', '\\bcarpenter\\b', '\\belectrician\\b', '\\bwelder\\b',
+  '\\bmason\\b', '\\bconstruction\\b', '\\bsecurity guard\\b', '\\bbouncer\\b',
+  '\\bkeyholder\\b', '\\bretail\\b', '\\bdispensary\\b',
+  '\\bpsychologist\\b', '\\bdashmart\\b',
+  '\\bshift (supervisor|leader|manager)\\b', '\\bcall center\\b',
+  '\\bsoldering\\b', '\\bmanufacturing\\b', '\\brobot operator\\b',
+  '\\bequipment operator\\b', '\\bassembl\\w*\\b', '\\bfactory\\b',
+  '\\bdispatcher\\b', '\\bdriver\\b', '\\bdelivery\\b',
+  '\\binventory\\b', '\\breceiving\\b', '\\bfulfillment\\b',
+  '\\btechnician\\b', '\\bbrand ambassador\\b', '\\bpart.time\\b',
+  '\\bseasonal\\b', '\\b1099\\b',
+  '\\bforeman\\b', '\\bforewoman\\b', '\\bjourneyman\\b',
+  '\\banimal\\b', '\\bhusbandry\\b', '\\binfusion\\b', '\\bmicrobiology\\b',
+  '\\blaboratory tech\\b', '\\blab tech\\b',
+  '\\bfield service\\b', '\\bfield tech\\b',
+  '\\bshop tech\\b', '\\bservice tech\\b',
+  '\\binstaller\\b', '\\bfabricator\\b', '\\bmaintenance\\b',
+  '\\broofing\\b', '\\bpaving\\b', '\\bexcavat\\b', '\\blandscap\\b',
+  '\\bpipefitter\\b', '\\bironworker\\b', '\\bscaffold\\b',
+  '\\bconcrete\\b', '\\bdrywall\\b', '\\binsulation\\b',
+  '\\bsales rep\\b', '\\bsales associate\\b',
+  '\\bstore manager\\b', '\\bassistant.*manager\\b',
+  '\\bRN\\b', '\\bLPN\\b', '\\bCNA\\b', '\\bEMT\\b',
+  '\\bcustodian\\b', '\\bgroundskeeper\\b',
+  '\\bproduction\\b', '\\boperator\\b', '\\bpilot\\b', '\\bsurvey\\b',
+  '\\bsupply chain\\b', '\\bgrounds\\b', '\\bline tech\\b',
+  '\\bcurb\\b', '\\bpowerline\\b', '\\bice cream\\b',
+  '\\bhelicopter\\b', '\\bautocad\\b',
+  '\\boriginations?\\b', '\\bmetal\\b', '\\bprep\\b',
+  '\\btelemedicine\\b',
+  // Extra: non-tech roles at AI companies
+  '\\bintern\\b', '\\bco-?op\\b', '\\bbounty\\b',
+  '\\bcustomer support\\b', '\\bcustomer service\\b',
+  '\\blegal counsel\\b', '\\bcounsel\\b', '\\battorney\\b', '\\blawyer\\b',
+  '\\bparalegal\\b', '\\boffice manager\\b', '\\breceptionist\\b',
+  '\\bexecutive assistant\\b', '\\badmin assistant\\b',
+  '\\baccountant\\b', '\\bpayroll\\b', '\\bbenefits\\b',
+  '\\bjunior recruiter\\b', '\\brecruiting coordinator\\b',
+  '\\bfacilities\\b', '\\bjanitorial\\b', '\\bcatering\\b',
+];
+const SKIP_RE = new RegExp(BANNED_PATTERNS.join('|'), 'i');
 
 // ─── Dedup tracking ──────────────────────────────────────────────────────────
 function loadPosted() {
@@ -194,19 +258,25 @@ function pickJobs(jobs, postedUrls) {
   const companySeen = new Set();
   const picked = [];
 
-  // Filter → AI company + AI title + not skipped + not already posted
+  // Filter → must be AI company + relevant title + not skipped
   const candidates = shuffle(jobs).filter(job => {
     if (!job.company || !job.title || !job.apply_url) return false;
     if (postedSet.has(job.apply_url)) return false;
     if (SKIP_RE.test(job.title)) return false;
-    if (!isAICompany(job.company)) return false;
-    if (!AI_TITLE_RE.test(job.title)) return false;
     // Skip non-English titles
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) return false;
-    return true;
+
+    // Pure AI companies → all roles are relevant
+    if (isPureAICompany(job.company)) return true;
+    // Big tech → only if title mentions AI/ML
+    if (isBigTech(job.company) && AI_TITLE_RE.test(job.title)) return true;
+
+    return false;
   });
 
-  // One per company first
+  console.log(`  Candidates after filter: ${candidates.length}`);
+
+  // Strictly one per company — never allow duplicates
   for (const job of candidates) {
     if (picked.length >= JOBS_PER_POST) break;
     const key = job.company.toLowerCase().trim();
@@ -215,28 +285,35 @@ function pickJobs(jobs, postedUrls) {
     picked.push(job);
   }
 
-  // If still under limit, allow duplicates from different companies
-  if (picked.length < JOBS_PER_POST) {
-    for (const job of candidates) {
-      if (picked.length >= JOBS_PER_POST) break;
-      if (picked.some(p => p.apply_url === job.apply_url)) continue;
-      picked.push(job);
-    }
-  }
-
   return picked;
 }
 
 // ─── Format Telegram message (same style as tech jobs channel) ───────────────
+
+function cleanTitle(title) {
+  if (!title) return '';
+  let clean = decodeHTML(title);
+  clean = clean.replace(/\s*\(.*?\)/g, '');
+  clean = clean.replace(/\s*\([^)]*$/, '');
+  clean = clean.replace(/(?:\s+[-–]\s*|\s*[-–]\s+|—|\||\s*:\s).*$/, '');
+  clean = clean.replace(/,\s+[A-Z][a-zA-Z\s&/\-]+$/, '');
+  return clean.trim() || decodeHTML(title);
+}
+
+function truncate(text, max = 60) {
+  if (!text || text.length <= max) return text || '';
+  return text.substring(0, max - 1) + '…';
+}
+
 function formatMessage(jobs) {
   const lines = [];
 
   for (const job of jobs) {
-    const title = escapeHTML(decodeHTML(job.title));
+    const title = truncate(cleanTitle(job.title), 60);
     const company = escapeHTML(cleanCompany(job.company));
     const url = escapeHTML(job.apply_url);
 
-    lines.push(`• ${company} is hiring <a href="${url}">${title}</a>`);
+    lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
   }
 
   lines.push('');
