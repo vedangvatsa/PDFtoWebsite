@@ -227,22 +227,20 @@ function pickJobs(jobs, postedUrls) {
   return picked;
 }
 
-// ─── Format Telegram message ─────────────────────────────────────────────────
+// ─── Format Telegram message (same style as tech jobs channel) ───────────────
 function formatMessage(jobs) {
   const lines = [];
 
   for (const job of jobs) {
     const title = escapeHTML(decodeHTML(job.title));
     const company = escapeHTML(cleanCompany(job.company));
-    const location = escapeHTML(cleanLocation(job.location));
     const url = escapeHTML(job.apply_url);
 
-    lines.push(`<a href="${url}"><b>${title}</b></a>`);
-    lines.push(`${company} · ${location}`);
-    lines.push('');
+    lines.push(`• ${company} is hiring <a href="${url}">${title}</a>`);
   }
 
-  lines.push('_');
+  lines.push('');
+  lines.push('—');
   lines.push('AI Discussion Group: t.me/hashtag_ai');
 
   return lines.join('\n');
