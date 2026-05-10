@@ -37,16 +37,14 @@ function saveState(state) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
-// ── Facebook Page Post ────────────────────────────────────────────────────
+// ── Facebook Page Post (returns public image URL for IG/Threads) ──────────
 async function postToFacebook(text, imagePath) {
   if (!META_PAGE_ID || !META_PAGE_TOKEN) {
     console.log('⏭️  Facebook: no credentials, skipping');
-    return false;
+    return { ok: false, imageUrl: null };
   }
 
   try {
-    let url, body;
-
     if (imagePath && fs.existsSync(imagePath)) {
       // Post with image
       const imageData = fs.readFileSync(imagePath);
@@ -55,35 +53,48 @@ async function postToFacebook(text, imagePath) {
       formData.append('source', new Blob([imageData], { type: 'image/jpeg' }), path.basename(imagePath));
       formData.append('access_token', META_PAGE_TOKEN);
 
-      url = `${GRAPH_URL}/${META_PAGE_ID}/photos`;
+      const url = `${GRAPH_URL}/${META_PAGE_ID}/photos`;
       const res = await fetch(url, { method: 'POST', body: formData });
       const data = await res.json();
 
       if (data.id) {
         console.log(`✅ Facebook: posted photo ${data.id}`);
-        return true;
+
+        // Get the public URL of the uploaded photo for IG/Threads
+        let imageUrl = null;
+        try {
+          const imgRes = await fetch(`${GRAPH_URL}/${data.id}?fields=images&access_token=${META_PAGE_TOKEN}`);
+          const imgData = await imgRes.json();
+          if (imgData.images && imgData.images.length > 0) {
+            // Pick the largest image
+            imageUrl = imgData.images[0].source;
+            console.log(`🔗 Facebook CDN URL obtained for IG/Threads`);
+          }
+        } catch (e) { console.warn('⚠️  Could not get FB image URL:', e.message); }
+
+        return { ok: true, imageUrl };
       } else {
         console.error('❌ Facebook photo error:', JSON.stringify(data));
-        return false;
+        return { ok: false, imageUrl: null };
       }
     } else {
       // Text-only post
-      url = `${GRAPH_URL}/${META_PAGE_ID}/feed`;
+      const url = `${GRAPH_URL}/${META_PAGE_ID}/feed`;
       const params = new URLSearchParams({ message: text, access_token: META_PAGE_TOKEN });
       const res = await fetch(url, { method: 'POST', body: params });
       const data = await res.json();
 
       if (data.id) {
         console.log(`✅ Facebook: posted ${data.id}`);
-        return true;
+        return { ok: true, imageUrl: null };
       } else {
         console.error('❌ Facebook error:', JSON.stringify(data));
-        return false;
+        return { ok: false, imageUrl: null };
       }
     }
   } catch (e) {
     console.error('❌ Facebook exception:', e.message);
-    return false;
+    return { ok: false, imageUrl: null };
   }
 }
 
@@ -220,7 +231,6 @@ async function main() {
 
   // Resolve image path
   let imagePath = null;
-  let imageUrl = null;
   if (item.img) {
     imagePath = item.img.startsWith('/') ? item.img : path.join(IMAGES_DIR, item.img);
     if (!fs.existsSync(imagePath)) {
@@ -229,25 +239,18 @@ async function main() {
     }
   }
 
-  // For Instagram/Threads, images need to be publicly accessible URLs
-  // We'll upload to Facebook first and use that URL, or skip IG/Threads for local images
-  // For now, post to Facebook (supports direct upload), skip IG/Threads if no public URL
+  // 1. Post to Facebook first — get public CDN URL from the uploaded photo
+  const fb = await postToFacebook(text, imagePath);
+  const imageUrl = fb.imageUrl;  // public FB CDN URL for IG/Threads
 
-  // Post to Facebook
-  const fbOk = await postToFacebook(text, imagePath);
+  // 2. Post to Instagram using FB CDN URL
+  await postToInstagram(text, imageUrl);
 
-  // Post to Instagram (needs public image URL — skip for now if only local)
-  if (imageUrl) {
-    await postToInstagram(text, imageUrl);
-  } else {
-    console.log('⏭️  Instagram: skipping (needs public image URL, will add CDN support)');
-  }
-
-  // Post to Threads
+  // 3. Post to Threads using FB CDN URL
   await postToThreads(text, imageUrl);
 
   // Advance index if at least Facebook succeeded
-  if (fbOk) {
+  if (fb.ok) {
     state.facebook.index = idx + 1;
     state.instagram.index = idx + 1;
     state.threads.index = idx + 1;
