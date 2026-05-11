@@ -7,7 +7,7 @@ import { createClient } from '@/utils/supabase/client';
 import Header from '@/components/header';
 import { ChartContainer, ChartConfig, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Area, AreaChart } from 'recharts';
-import { Loader2, TrendingUp, TrendingDown, Minus, Globe, Monitor, Smartphone, Tablet, Share2, MessageCircle, Heart, Eye, Repeat2, Bookmark, Send } from 'lucide-react';
+import { Loader2, TrendingUp, TrendingDown, Minus, Globe, Monitor, Smartphone, Tablet, Share2, Send } from 'lucide-react';
 
 const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
@@ -202,15 +202,9 @@ export default function AdminPage() {
         {socialData && (
           <Section title="Social Media" badge="Live">
             {/* Platform KPIs Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-8 gap-y-6 mb-8">
-              {/* X (Twitter) */}
-              {socialData.x?.live?.user?.public_metrics && (
-                <>
-                  <Stat v={socialData.x.live.user.public_metrics.followers_count || 0} label="X Followers" />
-                  <Stat v={socialData.x.live.tweetMetrics?.totalImpressions || 0} label="Impressions" sub="Last 100 tweets" />
-                  <Stat v={socialData.x.live.tweetMetrics?.totalLikes || 0} label="Likes" sub="Last 100 tweets" />
-                </>
-              )}
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6 mb-8">
+              {/* X (Twitter) — queue-based stats only (API is paid) */}
+              <Stat v={(socialData.x?.queue?.threads?.posted || 0) + (socialData.x?.queue?.insights?.posted || 0) + (socialData.x?.queue?.engagement?.posted || 0)} label="X Posts" sub="Threads + Insights + Engagement" />
               {/* Bluesky */}
               {socialData.bluesky?.live && (
                 <>
@@ -220,6 +214,7 @@ export default function AdminPage() {
               )}
               {/* Totals */}
               <Stat v={socialData.summary?.totalPostsAcrossPlatforms || 0} label="Total posts" sub="All platforms" />
+              <Stat v={socialData.summary?.totalTweetsInThreads || 0} label="Thread tweets" sub="X only" />
               <Stat v={socialData.summary?.activePlatforms || 0} label="Active platforms" />
             </div>
 
@@ -295,45 +290,6 @@ export default function AdminPage() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Top Tweets */}
-            {socialData.x?.live?.tweetMetrics?.topTweets && socialData.x.live.tweetMetrics.topTweets.length > 0 && (
-              <div>
-                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-3">Top Performing Tweets</p>
-                <div className="space-y-3">
-                  {socialData.x.live.tweetMetrics.topTweets.map((tweet: any, i: number) => (
-                    <div key={i} className="flex items-start gap-3 pb-3 border-b border-border/30 last:border-0 last:pb-0">
-                      <span className="text-xs text-muted-foreground w-4 shrink-0 text-right pt-0.5">{i + 1}</span>
-                      <div className="flex-1 min-w-0">
-                        <a href={`https://x.com/cvinbio/status/${tweet.id}`} target="_blank" rel="noopener noreferrer" className="text-sm leading-snug hover:underline underline-offset-2 line-clamp-2">
-                          {tweet.text}
-                        </a>
-                        <div className="flex items-center gap-4 mt-1.5 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1"><Eye className="h-3 w-3" />{(tweet.impressions || 0).toLocaleString()}</span>
-                          <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{tweet.likes}</span>
-                          <span className="flex items-center gap-1"><Repeat2 className="h-3 w-3" />{tweet.retweets}</span>
-                          <span className="flex items-center gap-1"><MessageCircle className="h-3 w-3" />{tweet.replies}</span>
-                          <span className="flex items-center gap-1"><Bookmark className="h-3 w-3" />{tweet.bookmarks}</span>
-                          {tweet.createdAt && <span className="ml-auto text-muted-foreground/50">{new Date(tweet.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* X Engagement Summary Row */}
-            {socialData.x?.live?.tweetMetrics && (
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-8 gap-y-4 mt-6 pt-4 border-t border-border/30">
-                <div><p className="text-lg font-bold">{(socialData.x.live.tweetMetrics.totalImpressions || 0).toLocaleString()}</p><p className="text-xs text-muted-foreground">Total impressions</p></div>
-                <div><p className="text-lg font-bold">{socialData.x.live.tweetMetrics.totalLikes || 0}</p><p className="text-xs text-muted-foreground">Total likes</p></div>
-                <div><p className="text-lg font-bold">{socialData.x.live.tweetMetrics.totalRetweets || 0}</p><p className="text-xs text-muted-foreground">Total retweets</p></div>
-                <div><p className="text-lg font-bold">{socialData.x.live.tweetMetrics.totalReplies || 0}</p><p className="text-xs text-muted-foreground">Total replies</p></div>
-                <div><p className="text-lg font-bold">{socialData.x.live.tweetMetrics.totalBookmarks || 0}</p><p className="text-xs text-muted-foreground">Total bookmarks</p></div>
-              </div>
-            )}
           </Section>
         )}
 
