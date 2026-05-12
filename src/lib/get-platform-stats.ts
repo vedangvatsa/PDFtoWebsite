@@ -1,25 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
-
-/**
- * Server-side utility to get live platform stats.
- * Used by /story, /llms.txt, and any server component that needs current numbers.
- * Results are cached in-memory for 5 minutes to avoid hammering the DB.
- */
-
-let cache: { data: PlatformStats; ts: number } | null = null;
-const CACHE_TTL = 5 * 60 * 1000;
+import { unstable_cache } from 'next/cache';
 
 export interface PlatformStats {
   totalJobs: number;
   totalCompanies: number;
   totalUsers: number;
-  /** e.g. "19,000+" */
   jobCountDisplay: string;
-  /** e.g. "490+" */
   companyCountDisplay: string;
-  /** e.g. "329" */
   userCountDisplay: string;
 }
+
+let cache: { data: PlatformStats; ts: number } | null = null;
+const CACHE_TTL = 5 * 60 * 1000;
 
 export async function getPlatformStats(): Promise<PlatformStats> {
   if (cache && Date.now() - cache.ts < CACHE_TTL) {
@@ -36,13 +28,11 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     .from('jobs')
     .select('id', { count: 'exact', head: true });
 
-  // Get unique companies — use a paginated scan but only fetch the company column
-  // Cap at 30 pages (30K rows) since we only need an approximate unique count
+  // Get unique companies — use a paginated scan
   const companySet = new Set<string>();
   let page = 0;
-  const isBuild = process.env.IS_NEXT_BUILD === '1';
-  const MAX_COMPANY_PAGES = isBuild ? 2 : 30;
-  while (page < MAX_COMPANY_PAGES) {
+  const maxPages = process.env.NEXT_IS_BUILD_PHASE === '1' ? 2 : 40;
+  while (page < maxPages) {
     const { data } = await supabase
       .from('jobs')
       .select('company')
@@ -66,7 +56,6 @@ export async function getPlatformStats(): Promise<PlatformStats> {
   const companies = companySet.size;
   const users = totalUsers || 0;
 
-  // Format display strings: round down to nearest 1000 for jobs
   const jobThousands = Math.floor(jobs / 1000);
   const jobCountDisplay = `${jobThousands.toLocaleString()},000+`;
   const companyCountDisplay = `${companies}+`;
