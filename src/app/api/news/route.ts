@@ -118,10 +118,10 @@ function parseRSS(xml: string, source: string, icon: string): NewsItem[] {
 // ── Content quality filters ──
 
 // Promotional / buying guide / review patterns
-const PROMO_RE = /\b(best\s+\w+|buying guide|gift guide|deals?\s+(of|this|today)|coupon|discount|promo code|affiliate|tested\s+in\s+our|our\s+top\s+(pick|recommendation)|percent\s+off|%\s+off|\$\d+\s+off|where\s+to\s+buy|review:|\breview\b.*\bresults\b|mixed results|we tested|we recommend|top picks|editor.?s choice|how\s+to\s+choose)\b/i;
+const PROMO_RE = /\b(best\s+\w+|buying guide|gift guide|deals?\s+(of|this|today)|coupon|discount|promo code|affiliate|tested\s+in\s+our|our\s+top\s+(pick|recommendation)|percent\s+off|%\s+off|\$\d+\s+off|where\s+to\s+buy|review:|\breview\b.*\bresults\b|mixed results|we tested|we recommend|top picks|editor.?s choice|how\s+to\s+choose|cheaper|cheapest|price drop|on sale)\b/i;
 
 // Lifestyle / consumer product topics
-const LIFESTYLE_RE = /\b(mattress|bed\s*frame|pillow|blender|mixer|soundbar|vacuum|air\s+fryer|coffee\s+maker|headphone|earbud|smartwatch|fitness\s+tracker|luggage|backpack|skin\s*care|moisturizer|shampoo|sunscreen|supplement|vitamin|recipe|cookbook|diet\s+plan|meal\s+kit|cleaning|laundry|dishwasher|refrigerator|washer|dryer|air\s+purifier|humidifier|space\s+heater|lawn\s+mower|grill|fire\s+pit|patio|outdoor\s+furniture|garden|pet\s+food|dog\s+bed|cat\s+litter|water\s+leak|leak\s+detector|shower|faucet|toilet|knitting|crochet|sewing|fashion|outfit|sneaker|shoe|makeup|fragrance|perfume|candle|home\s+decor|rug|curtain|bedding|comforter|duvet|speaker\s+review)\b/i;
+const LIFESTYLE_RE = /\b(mattress|bed\s*frame|pillow|blender|mixer|soundbar|vacuum|roomba|robot\s+vacuum|air\s+fryer|coffee\s+maker|headphone|earbud|smartwatch|fitness\s+tracker|luggage|backpack|skin\s*care|moisturizer|shampoo|sunscreen|supplement|vitamin|recipe|cookbook|diet\s+plan|meal\s+kit|cleaning|laundry|dishwasher|refrigerator|washer|dryer|air\s+purifier|humidifier|space\s+heater|lawn\s+mower|grill|fire\s+pit|patio|outdoor\s+furniture|garden|pet\s+food|dog\s+bed|cat\s+litter|water\s+leak|leak\s+detector|shower|faucet|toilet|knitting|crochet|sewing|fashion|outfit|sneaker|shoe|makeup|fragrance|perfume|candle|home\s+decor|rug|curtain|bedding|comforter|duvet|speaker\s+review)\b/i;
 
 function isJunk(item: NewsItem): boolean {
   const text = `${item.title} ${item.description}`;
