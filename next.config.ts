@@ -3,6 +3,7 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  staticPageGenerationTimeout: 300,
 
   // Use slim PostHog build — strips replay, surveys, toolbar
   turbopack: {
