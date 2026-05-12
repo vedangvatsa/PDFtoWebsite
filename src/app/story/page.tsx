@@ -4,6 +4,8 @@ import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
 import { getPlatformStats } from '@/lib/get-platform-stats';
 
+export const dynamic = 'force-dynamic';
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
