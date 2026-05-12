@@ -23,10 +23,14 @@ export default async function Image() {
     jobsCountText = `${Math.floor(count / 1000).toLocaleString()},000+`;
   }
 
+  const isBuild = process.env.NEXT_IS_BUILD_PHASE === '1';
+
   const { data: companies } = await supabase
     .from('jobs')
     .select('company')
-    .not('company', 'ilike', '%Gopuff%');
+    .not('company', 'ilike', '%Gopuff%')
+    .limit(isBuild ? 100 : 1000);
+    
   let companyCount = '490+';
   if (companies) {
     const unique = new Set(companies.map((c: { company: string }) => c.company));

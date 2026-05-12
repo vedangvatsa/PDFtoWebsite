@@ -2,7 +2,8 @@ import type { MetadataRoute } from 'next';
 import { blogPosts } from '@/lib/blog-data';
 import { createClient } from '@supabase/supabase-js';
 
-export const revalidate = 86400; // Cache sitemap for 24 hours
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
@@ -140,47 +141,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Sitemap: failed to fetch profiles', e);
   }
 
-  // Dynamic company page URLs
+  // Dynamic company page URLs — single capped query, no pagination loop
   let companyEntries: MetadataRoute.Sitemap = [];
   try {
-    let allJobs: any[] = [];
-    let page = 0;
-    const isBuild = process.env.IS_NEXT_BUILD === '1';
-    const maxPages = isBuild ? 2 : 40;
-    while (page < maxPages) {
-      const { data } = await supabase
-        .from('jobs')
-        .select('company')
-        .range(page * 1000, (page + 1) * 1000 - 1);
-      if (!data || data.length === 0) break;
-      allJobs.push(...data);
-      if (data.length < 1000) break;
-      page++;
-    }
-    const companyCounts: Record<string, number> = {};
-    allJobs.forEach(j => {
-      if (j.company && !j.company.includes('...')) {
-        const key = j.company.toLowerCase().trim();
-        companyCounts[key] = (companyCounts[key] || 0) + 1;
-      }
-    });
-    const toSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
-    const seenSlugs = new Set<string>();
-    // Only include companies with 3+ jobs (avoid thin-content pages in sitemap)
-    Object.entries(companyCounts)
-      .filter(([, count]) => count >= 3)
-      .forEach(([name]) => {
-        const slug = toSlug(name);
-        if (!seenSlugs.has(slug)) {
-          seenSlugs.add(slug);
-          companyEntries.push({
-            url: `${siteUrl}/${slug}`,
-            lastModified: new Date(),
-            changeFrequency: 'daily' as const,
-            priority: 0.8,
-          });
+    const { data: allJobs } = await supabase
+      .from('jobs')
+      .select('company')
+      .limit(10000);
+
+    if (allJobs) {
+      const companyCounts: Record<string, number> = {};
+      allJobs.forEach(j => {
+        if (j.company && !j.company.includes('...')) {
+          const key = j.company.toLowerCase().trim();
+          companyCounts[key] = (companyCounts[key] || 0) + 1;
         }
       });
+      const toSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+      const seenSlugs = new Set<string>();
+      Object.entries(companyCounts)
+        .filter(([, count]) => count >= 3)
+        .forEach(([name]) => {
+          const slug = toSlug(name);
+          if (!seenSlugs.has(slug)) {
+            seenSlugs.add(slug);
+            companyEntries.push({
+              url: `${siteUrl}/${slug}`,
+              lastModified: new Date(),
+              changeFrequency: 'daily' as const,
+              priority: 0.8,
+            });
+          }
+        });
+    }
   } catch (e) {
     console.error('Sitemap: failed to fetch companies', e);
   }

@@ -1,113 +1,117 @@
+import type { NextConfig } from 'next';
+import { PHASE_PRODUCTION_BUILD } from 'next/constants';
 
-import type {NextConfig} from 'next';
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  staticPageGenerationTimeout: 300,
-
-  // Use slim PostHog build — strips replay, surveys, toolbar
-  turbopack: {
-    resolveAlias: {
-      'posthog-js': 'posthog-js/dist/module.no-external.js',
+const nextConfigFn = (phase: string): NextConfig => {
+  const isBuild = phase === PHASE_PRODUCTION_BUILD;
+  
+  return {
+    /* config options here */
+    staticPageGenerationTimeout: 300,
+    env: {
+      NEXT_IS_BUILD_PHASE: isBuild ? '1' : '0',
     },
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
+    // Use slim PostHog build — strips replay, surveys, toolbar
+    turbopack: {
+      resolveAlias: {
+        'posthog-js': 'posthog-js/dist/module.no-external.js',
       },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-  },
-  // This is needed to allow cross-origin requests in development.
-  // The development environment runs in a container, and the preview
-  // is served from a different origin.
-  allowedDevOrigins: ['https://*.cloudworkstations.dev'],
-
-  // PostHog reverse proxy — bypasses ad blockers for ~30% more events
-  skipTrailingSlashRedirect: true,
-
-  // Security headers — fixes SEOmator security audit failures
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
-          // Agentic Web — Link headers for discoverability
-          {
-            key: 'Link',
-            value: [
-              '</llms.txt>; rel="ai-context"; type="text/plain"',
-              '</llms-full.txt>; rel="ai-context-full"; type="text/plain"',
-              '</sitemap.xml>; rel="sitemap"; type="application/xml"',
-              '</.well-known/api-catalog>; rel="api-catalog"',
-              '</.well-known/agents.json>; rel="agents"; type="application/json"',
-              '</.well-known/agent-card.json>; rel="agent-card"; type="application/json"',
-              '</.well-known/mcp.json>; rel="mcp-server"; type="application/json"',
-            ].join(', '),
-          },
-          // Agentic Web — Content Signals
-          { key: 'X-Robots-Tag', value: 'all, max-snippet:-1, max-image-preview:large, max-video-preview:-1' },
-          { key: 'X-AI-Usage', value: 'indexing=yes, search=yes, inference=yes, citation=yes' },
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://*.vercel-scripts.com https://*.vercel-analytics.com",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https: http:",
-              "connect-src 'self' https://us.i.posthog.com https://*.supabase.co https://*.vercel-analytics.com wss://*.supabase.co",
-              "frame-ancestors 'self'",
-              "base-uri 'self'",
-              "form-action 'self'",
-            ].join('; '),
-          },
-        ],
-      },
-    ];
-  },
-
-  async rewrites() {
-    return [
-      {
-        source: '/ingest/static/:path*',
-        destination: 'https://us-assets.i.posthog.com/static/:path*',
-      },
-      {
-        source: '/ingest/:path*',
-        destination: 'https://us.i.posthog.com/:path*',
-      },
-      {
-        source: '/ingest/decide',
-        destination: 'https://us.i.posthog.com/decide',
-      },
-    ];
-  },
+    },
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'placehold.co',
+          port: '',
+          pathname: '/**',
+        },
+        {
+          protocol: 'https',
+          hostname: 'images.unsplash.com',
+          port: '',
+          pathname: '/**',
+        },
+        {
+          protocol: 'https',
+          hostname: 'picsum.photos',
+          port: '',
+          pathname: '/**',
+        },
+        {
+          protocol: 'https',
+          hostname: 'lh3.googleusercontent.com',
+          port: '',
+          pathname: '/**',
+        },
+      ],
+    },
+    // This is needed to allow cross-origin requests in development.
+    allowedDevOrigins: ['https://*.cloudworkstations.dev'],
+  
+    // PostHog reverse proxy — bypasses ad blockers for ~30% more events
+    skipTrailingSlashRedirect: true,
+  
+    // Security headers — fixes SEOmator security audit failures
+    async headers() {
+      return [
+        {
+          source: '/(.*)',
+          headers: [
+            { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+            { key: 'X-Content-Type-Options', value: 'nosniff' },
+            { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+            { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
+            // Agentic Web — Link headers for discoverability
+            {
+              key: 'Link',
+              value: [
+                '</llms.txt>; rel="ai-context"; type="text/plain"',
+                '</llms-full.txt>; rel="ai-context-full"; type="text/plain"',
+                '</sitemap.xml>; rel="sitemap"; type="application/xml"',
+                '</.well-known/api-catalog>; rel="api-catalog"',
+                '</.well-known/agents.json>; rel="agents"; type="application/json"',
+                '</.well-known/agent-card.json>; rel="agent-card"; type="application/json"',
+                '</.well-known/mcp.json>; rel="mcp-server"; type="application/json"',
+              ].join(', '),
+            },
+            // Agentic Web — Content Signals
+            { key: 'X-Robots-Tag', value: 'all, max-snippet:-1, max-image-preview:large, max-video-preview:-1' },
+            { key: 'X-AI-Usage', value: 'indexing=yes, search=yes, inference=yes, citation=yes' },
+            {
+              key: 'Content-Security-Policy',
+              value: [
+                "default-src 'self'",
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://*.vercel-scripts.com https://*.vercel-analytics.com",
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+                "font-src 'self' https://fonts.gstatic.com",
+                "img-src 'self' data: blob: https: http:",
+                "connect-src 'self' https://us.i.posthog.com https://*.supabase.co https://*.vercel-analytics.com wss://*.supabase.co",
+                "frame-ancestors 'self'",
+                "base-uri 'self'",
+                "form-action 'self'",
+              ].join('; '),
+            },
+          ],
+        },
+      ];
+    },
+  
+    async rewrites() {
+      return [
+        {
+          source: '/ingest/static/:path*',
+          destination: 'https://us-assets.i.posthog.com/static/:path*',
+        },
+        {
+          source: '/ingest/:path*',
+          destination: 'https://us.i.posthog.com/:path*',
+        },
+        {
+          source: '/ingest/decide',
+          destination: 'https://us.i.posthog.com/decide',
+        },
+      ];
+    },
+  };
 };
 
-export default nextConfig;
+export default nextConfigFn;

@@ -3,7 +3,7 @@ import { getPlatformStats } from '@/lib/get-platform-stats';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   const stats = await getPlatformStats();
