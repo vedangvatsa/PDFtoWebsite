@@ -126,7 +126,8 @@ export default async function CompaniesPage() {
   let allJobs: any[] = [];
   let page = 0;
   const PAGE_SIZE = 1000;
-  const MAX_PAGES = 40; // Cap at 40K rows — sufficient for all unique companies
+  const isBuild = process.env.npm_lifecycle_event === 'build';
+  const MAX_PAGES = isBuild ? 2 : 40; // Cap at 40K rows — sufficient for all unique companies
   while (page < MAX_PAGES) {
     const { data, error } = await supabase
       .from('jobs')
