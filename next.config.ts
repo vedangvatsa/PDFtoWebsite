@@ -10,9 +10,9 @@ const nextConfigFn = (phase: string): NextConfig => {
     env: {
       NEXT_IS_BUILD_PHASE: isBuild ? '1' : '0',
     },
-    // Exclude heavy client-only packages from ALL serverless function NFT bundles.
-    // This is the correct Next.js approach (not vercel.json excludeFiles).
-    // lucide-react=42MB, posthog-js=35MB — both are client-only and must not be in server lambdas.
+    // Exclude heavy files from ALL serverless function NFT bundles.
+    // The admin/social route uses process.cwd() which causes NFT to trace
+    // the entire project root — pulling in 465MB of CSVs, videos, and databases.
     outputFileTracingExcludes: {
       '*': [
         'node_modules/lucide-react/**',
@@ -22,6 +22,14 @@ const nextConfigFn = (phase: string): NextConfig => {
         'node_modules/next/dist/compiled/terser/**',
         'node_modules/next/dist/compiled/webpack/**',
         'node_modules/next/dist/server/lib/squoosh/**',
+        'scripts/**',
+        'scratch/**',
+        'public/images/social/**',
+        'X-Followers-Extraction/**',
+        'check_if_email_exists',
+        '**/*.csv',
+        '**/*.db',
+        '**/*.mp4',
       ],
     },
     // Use slim PostHog build — strips replay, surveys, toolbar
