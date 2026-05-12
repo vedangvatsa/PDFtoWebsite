@@ -40,7 +40,8 @@ export async function getPlatformStats(): Promise<PlatformStats> {
   // Cap at 30 pages (30K rows) since we only need an approximate unique count
   const companySet = new Set<string>();
   let page = 0;
-  const MAX_COMPANY_PAGES = 30;
+  const isBuild = process.env.npm_lifecycle_event === 'build';
+  const MAX_COMPANY_PAGES = isBuild ? 2 : 30;
   while (page < MAX_COMPANY_PAGES) {
     const { data } = await supabase
       .from('jobs')

@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { blogPosts } from '@/lib/blog-data';
 import { createClient } from '@supabase/supabase-js';
 
+export const revalidate = 86400; // Cache sitemap for 24 hours
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -143,7 +145,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     let allJobs: any[] = [];
     let page = 0;
-    while (true) {
+    const isBuild = process.env.npm_lifecycle_event === 'build';
+    const maxPages = isBuild ? 2 : 40;
+    while (page < maxPages) {
       const { data } = await supabase
         .from('jobs')
         .select('company')
