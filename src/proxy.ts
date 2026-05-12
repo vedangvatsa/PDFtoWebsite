@@ -7,7 +7,7 @@ import { NextResponse, type NextRequest } from 'next/server';
  * markdown equivalents (llms.txt / llms-full.txt). This follows the Agentic Web
  * "Markdown negotiation" standard so bots get structured content automatically.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const accept = request.headers.get('accept') || '';
   const pathname = request.nextUrl.pathname;
 
