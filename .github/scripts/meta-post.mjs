@@ -21,8 +21,36 @@ const META_PAGE_TOKEN = process.env.META_PAGE_TOKEN;
 const META_IG_USER_ID = process.env.META_IG_USER_ID;       // optional
 const THREADS_USER_ID = process.env.THREADS_USER_ID;         // optional
 const THREADS_TOKEN   = process.env.THREADS_ACCESS_TOKEN;    // optional
+const IMGBB_API_KEY   = process.env.IMGBB_API_KEY;           // free image host
 
 const GRAPH_URL = 'https://graph.facebook.com/v21.0';
+
+// ── Free image hosting via imgbb.com ─────────────────────────────────────
+async function uploadToImgBB(filePath) {
+  if (!IMGBB_API_KEY || !filePath) return null;
+  try {
+    const imageData = fs.readFileSync(filePath).toString('base64');
+    const formData = new URLSearchParams();
+    formData.append('key', IMGBB_API_KEY);
+    formData.append('image', imageData);
+    formData.append('name', path.basename(filePath, path.extname(filePath)));
+
+    const res = await fetch('https://api.imgbb.com/1/upload', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.success && data.data?.url) {
+      console.log(`📸 imgbb: uploaded → ${data.data.url}`);
+      return data.data.url;
+    }
+    console.error('❌ imgbb upload failed:', JSON.stringify(data));
+    return null;
+  } catch (e) {
+    console.error('❌ imgbb exception:', e.message);
+    return null;
+  }
+}
 
 // ── State ─────────────────────────────────────────────────────────────────
 function loadState() {
@@ -258,16 +286,18 @@ async function main() {
   
   const isVideo = imagePath && imagePath.endsWith('.mp4');
 
-  // Build a public URL for Threads/Instagram independently of Facebook CDN
-  // Threads needs a publicly accessible URL — use the site's own domain
+  // Upload image to free hosting (imgbb) so Threads/Instagram get a reliable public URL
   let publicMediaUrl = null;
-  if (item.img) {
+  if (imagePath && !isVideo) {
+    publicMediaUrl = await uploadToImgBB(imagePath);
+  } else if (isVideo && item.img) {
+    // Videos can't go on imgbb — use public site URL as fallback
     const imgPath = item.img.startsWith('/') ? item.img : `/images/social/${item.img}`;
     publicMediaUrl = `https://cvin.bio${imgPath}`;
   }
-  // Prefer FB CDN for Instagram (better compatibility), fallback to public URL
+  // Prefer FB CDN for Instagram (better compat), fallback to imgbb
   const igMediaUrl = fb.imageUrl || publicMediaUrl;
-  // Always use public URL for Threads (FB CDN URLs are often restricted)
+  // Always use imgbb for Threads (FB CDN URLs are restricted)
   const threadsMediaUrl = publicMediaUrl;
 
   await postToInstagram(text, igMediaUrl, isVideo);

@@ -96,6 +96,7 @@ jobs:
           META_IG_USER_ID:       ${{ secrets.META_IG_USER_ID }}
           THREADS_USER_ID:       ${{ secrets.THREADS_USER_ID }}
           THREADS_ACCESS_TOKEN:  ${{ secrets.THREADS_ACCESS_TOKEN }}
+          IMGBB_API_KEY:         ${{ secrets.IMGBB_API_KEY }}
         run: |
           node .github/scripts/meta-post.mjs
           git add .github/scripts/meta-state.json
