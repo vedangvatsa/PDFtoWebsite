@@ -21,33 +21,34 @@ const META_PAGE_TOKEN = process.env.META_PAGE_TOKEN;
 const META_IG_USER_ID = process.env.META_IG_USER_ID;       // optional
 const THREADS_USER_ID = process.env.THREADS_USER_ID;         // optional
 const THREADS_TOKEN   = process.env.THREADS_ACCESS_TOKEN;    // optional
-const IMGBB_API_KEY   = process.env.IMGBB_API_KEY;           // free image host
 
 const GRAPH_URL = 'https://graph.facebook.com/v21.0';
 
-// ── Free image hosting via imgbb.com ─────────────────────────────────────
-async function uploadToImgBB(filePath) {
-  if (!IMGBB_API_KEY || !filePath) return null;
+// ── Free image hosting via catbox.moe (no API key needed) ────────────────
+async function uploadToImageHost(filePath) {
+  if (!filePath) return null;
   try {
-    const imageData = fs.readFileSync(filePath).toString('base64');
-    const formData = new URLSearchParams();
-    formData.append('key', IMGBB_API_KEY);
-    formData.append('image', imageData);
-    formData.append('name', path.basename(filePath, path.extname(filePath)));
+    const fileData = fs.readFileSync(filePath);
+    const ext = path.extname(filePath).slice(1) || 'png';
+    const mimeType = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : `image/${ext}`;
+    
+    const formData = new FormData();
+    formData.append('reqtype', 'fileupload');
+    formData.append('fileToUpload', new Blob([fileData], { type: mimeType }), path.basename(filePath));
 
-    const res = await fetch('https://api.imgbb.com/1/upload', {
+    const res = await fetch('https://catbox.moe/user/api.php', {
       method: 'POST',
       body: formData,
     });
-    const data = await res.json();
-    if (data.success && data.data?.url) {
-      console.log(`📸 imgbb: uploaded → ${data.data.url}`);
-      return data.data.url;
+    const url = (await res.text()).trim();
+    if (url.startsWith('https://')) {
+      console.log(`📸 catbox.moe: uploaded → ${url}`);
+      return url;
     }
-    console.error('❌ imgbb upload failed:', JSON.stringify(data));
+    console.error('❌ catbox.moe upload failed:', url);
     return null;
   } catch (e) {
-    console.error('❌ imgbb exception:', e.message);
+    console.error('❌ catbox.moe exception:', e.message);
     return null;
   }
 }
@@ -289,7 +290,7 @@ async function main() {
   // Upload image to free hosting (imgbb) so Threads/Instagram get a reliable public URL
   let publicMediaUrl = null;
   if (imagePath && !isVideo) {
-    publicMediaUrl = await uploadToImgBB(imagePath);
+    publicMediaUrl = await uploadToImageHost(imagePath);
   } else if (isVideo && item.img) {
     // Videos can't go on imgbb — use public site URL as fallback
     const imgPath = item.img.startsWith('/') ? item.img : `/images/social/${item.img}`;
