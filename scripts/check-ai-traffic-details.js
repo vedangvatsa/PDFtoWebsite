@@ -1,5 +1,5 @@
 const POSTHOG_PROJECT_ID = '356601';
-const POSTHOG_PERSONAL_API_KEY = '***REMOVED***';
+const POSTHOG_PERSONAL_API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
 
 async function checkAISearch() {
   const query = `
