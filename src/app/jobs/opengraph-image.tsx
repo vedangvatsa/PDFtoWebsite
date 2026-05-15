@@ -18,9 +18,9 @@ export default async function Image() {
     .select('*', { count: 'exact', head: true })
     .not('company', 'ilike', '%Gopuff%');
 
-  let jobsCountText = '68,000+';
+  let jobsCountText = '68,606';
   if (count) {
-    jobsCountText = `${Math.floor(count / 1000).toLocaleString()},000+`;
+    jobsCountText = count.toLocaleString();
   }
 
   const isBuild = process.env.NEXT_IS_BUILD_PHASE === '1';
