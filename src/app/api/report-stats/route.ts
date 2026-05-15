@@ -32,7 +32,13 @@ export async function GET() {
     page++;
   }
 
-  const totalJobs = allJobs.length;
+  // Dynamically fetch the exact total number of jobs
+  const { count: exactJobCount } = await supabase
+    .from('jobs')
+    .select('*', { count: 'exact', head: true });
+
+  const totalJobs = exactJobCount || allJobs.length;
+  const sampleSize = allJobs.length;
 
   // Unique companies
   const companySet = new Set<string>();
@@ -54,13 +60,13 @@ export async function GET() {
 
   // Remote stats
   const remoteJobs = allJobs.filter(j => j.location?.toLowerCase().includes('remote')).length;
-  const remotePercent = Math.round((remoteJobs / totalJobs) * 100);
+  const remotePercent = Math.round((remoteJobs / sampleSize) * 100);
 
   // AI/ML roles
   const aiJobs = allJobs.filter(j =>
     j.title?.toLowerCase().match(/\b(ai|ml|machine learning|llm|genai|deep learning|nlp|computer vision)\b/)
   ).length;
-  const aiPercent = Math.round((aiJobs / totalJobs) * 100);
+  const aiPercent = Math.round((aiJobs / sampleSize) * 100);
 
   // Top locations
   const locationCounts: Record<string, number> = {};
