@@ -8,7 +8,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image() {
-  let jobCount = '68,000+';
+  let jobCount = '68,606';
   let companyCount = '2,000+';
 
   try {
@@ -21,7 +21,7 @@ export default async function Image() {
       .select('*', { count: 'exact', head: true })
       .not('company', 'ilike', '%Gopuff%');
     if (count) {
-      jobCount = `${Math.floor(count / 1000).toLocaleString()},000+`;
+      jobCount = count.toLocaleString();
     }
     const isBuild = process.env.NEXT_IS_BUILD_PHASE === '1';
     const { data: companies } = await supabase

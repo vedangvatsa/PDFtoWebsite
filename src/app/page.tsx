@@ -131,7 +131,7 @@ export default function Home() {
               CV format for AI agents
             </h1>
             <Link href="/ai-discovery" className="inline-block text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors">
-              Get an AI-ready profile and auto-match with {jobCount ? `${Math.floor(jobCount / 100) * 100}+` : '68,000+'} jobs
+              Get an AI-ready profile and auto-match with {jobCount ? jobCount.toLocaleString() : '68,606'} jobs
             </Link>
           </div>
 
@@ -191,7 +191,7 @@ export default function Home() {
                   <span className="text-muted-foreground/30 text-lg mt-1 text-center">→</span>
                   <StepIndicator num={2} label="Get a webpage" desc="Ready to share" />
                   <span className="text-muted-foreground/30 text-lg mt-1 text-center">→</span>
-                  <StepIndicator num={3} label="Get matched" desc={jobCount ? `${Math.floor(jobCount / 100) * 100}+ jobs` : 'Thousands of jobs'} />
+                  <StepIndicator num={3} label="Get matched" desc={jobCount ? `${jobCount.toLocaleString()} jobs` : 'Thousands of jobs'} />
                 </div>
               </>
             )}
