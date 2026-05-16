@@ -334,10 +334,6 @@ function formatMessage(jobs) {
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
   }
 
-  lines.push('');
-  lines.push('—');
-  lines.push('AI Discussion Group: t.me/hashtag_ai');
-
   return lines.join('\n');
 }
 
@@ -351,6 +347,11 @@ async function sendTelegram(text) {
       text,
       parse_mode: 'HTML',
       disable_web_page_preview: true,
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: 'Web3 Jobs', url: 'https://t.me/web3hiring' }],
+        ],
+      },
     }),
   });
 
