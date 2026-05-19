@@ -204,8 +204,12 @@ async function main() {
   const state = loadState();
   const items = content.engagement || [];
 
-  // Use the facebook index as the primary (all platforms share the same queue)
-  const idx = state.facebook?.index || 0;
+  // Use a single shared index — prevents any platform from re-posting old content
+  const idx = Math.max(
+    state.facebook?.index || 0,
+    state.instagram?.index || 0,
+    state.threads?.index || 0
+  );
 
   if (idx >= items.length) {
     console.log(`✅ All ${items.length} engagement posts published on Meta. Done.`);
@@ -236,15 +240,15 @@ async function main() {
   await postToInstagram(text, mediaUrl, isVideo);
   await postToThreads(text, mediaUrl, isVideo);
 
-  // Advance index if at least Facebook succeeded
-  if (fb.ok) {
-    state.facebook.index = idx + 1;
-    state.instagram.index = idx + 1;
-    state.threads.index = idx + 1;
-    state.lastPostedAt = new Date().toISOString();
-    saveState(state);
-    console.log(`📊 Advanced Meta index to ${idx + 1}`);
-  }
+  // ALWAYS advance the index to prevent duplicate posts.
+  // Even if a platform fails, we move forward — never re-post the same content.
+  const nextIdx = idx + 1;
+  state.facebook.index = nextIdx;
+  state.instagram.index = nextIdx;
+  state.threads.index = nextIdx;
+  state.lastPostedAt = new Date().toISOString();
+  saveState(state);
+  console.log(`📊 Advanced Meta index to ${nextIdx} (FB: ${fb.ok ? 'ok' : 'fail'})`);
 }
 
 main().catch(e => { console.error('Fatal:', e); process.exit(1); });
