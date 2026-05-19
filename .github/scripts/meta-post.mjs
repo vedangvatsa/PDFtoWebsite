@@ -234,8 +234,19 @@ async function main() {
   const fb = await postToFacebook(text, imagePath);
   
   const isVideo = imagePath && imagePath.endsWith('.mp4');
-  // For video, we use the public URL directly from the repo. For images, we use FB's CDN link.
-  const mediaUrl = isVideo ? `https://cvin.bio${item.img}` : fb.imageUrl;
+
+  // Build a public URL for the image that Threads/Instagram can fetch directly.
+  // Primary: Facebook CDN link (highest quality). Fallback: GitHub raw URL (always available).
+  let mediaUrl = null;
+  if (isVideo) {
+    mediaUrl = `https://cvin.bio${item.img}`;
+  } else if (fb.imageUrl) {
+    mediaUrl = fb.imageUrl;
+  } else if (item.img) {
+    // GitHub raw URL — always public, always available
+    const imgRelPath = item.img.startsWith('/') ? item.img.slice(1) : `.github/images/${item.img}`;
+    mediaUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/${imgRelPath}`;
+  }
 
   await postToInstagram(text, mediaUrl, isVideo);
   await postToThreads(text, mediaUrl, isVideo);
