@@ -198,6 +198,33 @@ async function postToThreads(text, mediaUrl, isVideo = false) {
   }
 }
 
+// ── Upload image to Telegra.ph (free, no API key) ────────────────────────
+async function uploadToTelegraph(filePath) {
+  try {
+    const fileData = fs.readFileSync(filePath);
+    const ext = path.extname(filePath).toLowerCase();
+    const mimeTypes = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif' };
+    const mime = mimeTypes[ext] || 'image/jpeg';
+
+    const formData = new FormData();
+    formData.append('file', new Blob([fileData], { type: mime }), path.basename(filePath));
+
+    const res = await fetch('https://telegra.ph/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (Array.isArray(data) && data[0]?.src) {
+      const publicUrl = `https://telegra.ph${data[0].src}`;
+      console.log(`📸 Telegraph: uploaded → ${publicUrl}`);
+      return publicUrl;
+    }
+    console.warn('⚠️ Telegraph upload failed:', JSON.stringify(data));
+    return null;
+  } catch (e) {
+    console.warn('⚠️ Telegraph upload error:', e.message);
+    return null;
+  }
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────
 async function main() {
   const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf-8'));
@@ -230,36 +257,35 @@ async function main() {
     }
   }
 
-  // 1. Post to Facebook first — get public CDN URL from the uploaded photo
-  const fb = await postToFacebook(text, imagePath);
-  
+  // Upload image to Telegraph first for a reliable public URL
+  let telegraphUrl = null;
   const isVideo = imagePath && imagePath.endsWith('.mp4');
+  if (imagePath && !isVideo) {
+    telegraphUrl = await uploadToTelegraph(imagePath);
+  }
 
-  // Build a public URL for the image that Threads/Instagram can fetch directly.
-  // Primary: Facebook CDN link (highest quality). Fallback: GitHub raw URL (always available).
+  // 1. Post to Facebook (file upload)
+  const fb = await postToFacebook(text, imagePath);
+
+  // Build media URL: FB CDN > Telegraph > null
   let mediaUrl = null;
   if (isVideo) {
     mediaUrl = `https://cvin.bio${item.img}`;
-  } else if (fb.imageUrl) {
-    mediaUrl = fb.imageUrl;
-  } else if (item.img) {
-    // GitHub raw URL — always public, always available
-    const imgRelPath = item.img.startsWith('/') ? item.img.slice(1) : `.github/images/${item.img}`;
-    mediaUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/${imgRelPath}`;
+  } else {
+    mediaUrl = fb.imageUrl || telegraphUrl;
   }
 
   await postToInstagram(text, mediaUrl, isVideo);
   await postToThreads(text, mediaUrl, isVideo);
 
   // ALWAYS advance the index to prevent duplicate posts.
-  // Even if a platform fails, we move forward — never re-post the same content.
   const nextIdx = idx + 1;
   state.facebook.index = nextIdx;
   state.instagram.index = nextIdx;
   state.threads.index = nextIdx;
   state.lastPostedAt = new Date().toISOString();
   saveState(state);
-  console.log(`📊 Advanced Meta index to ${nextIdx} (FB: ${fb.ok ? 'ok' : 'fail'})`);
+  console.log(`📊 Advanced Meta index to ${nextIdx} (FB: ${fb.ok ? 'ok' : 'fail'}, img: ${mediaUrl ? 'yes' : 'no'})`);
 }
 
 main().catch(e => { console.error('Fatal:', e); process.exit(1); });
