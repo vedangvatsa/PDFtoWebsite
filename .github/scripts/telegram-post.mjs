@@ -369,10 +369,6 @@ function formatJobsMessage(jobs) {
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
   }
 
-  lines.push('');
-  lines.push('—');
-  lines.push('Turn your CV into a Website: <a href="https://cvin.bio?utm_source=social&utm_medium=telegram">cvin.bio</a>');
-
   return lines.join('\n');
 }
 
@@ -387,6 +383,11 @@ async function sendTelegramMessage(text) {
       text,
       parse_mode: 'HTML',
       disable_web_page_preview: true,
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: 'Turn your CV into a Website', url: 'https://cvin.bio?utm_source=social&utm_medium=telegram' }],
+        ],
+      },
     }),
   });
 
