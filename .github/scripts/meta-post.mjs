@@ -48,10 +48,10 @@ async function postToFacebook(text, imagePath) {
       
       if (isVideo) {
         formData.append('description', text);
-        formData.append('source', new Blob([fileData], { type: 'video/mp4' }), require('path').basename(imagePath));
+        formData.append('source', new Blob([fileData], { type: 'video/mp4' }), path.basename(imagePath));
       } else {
         formData.append('message', text);
-        formData.append('source', new Blob([fileData], { type: 'image/jpeg' }), require('path').basename(imagePath));
+        formData.append('source', new Blob([fileData], { type: 'image/jpeg' }), path.basename(imagePath));
       }
       formData.append('access_token', META_PAGE_TOKEN);
 

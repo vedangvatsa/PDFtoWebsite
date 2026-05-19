@@ -12,11 +12,11 @@ const HANDLE = 'cvinbio.bsky.social';
 const APP_PASSWORD = process.env.BSKY_APP_PASSWORD;
 if (!APP_PASSWORD) { console.error('Missing BSKY_APP_PASSWORD'); process.exit(1); }
 
-const IMG_DIR = path.join(__dirname, '../../public/images/social');
+const IMAGES_DIR = path.join(__dirname, '../images');
 
-const CONTENT_FILE = path.join(__dirname, 'buffer-content.json');
-const bufferContent = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
-const POSTS = bufferContent.linkedin;
+const CONTENT_FILE = path.join(__dirname, 'x-content.json');
+const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
+const POSTS = content.engagement || [];
 
 // ── AT Protocol helpers ───────────────────────────────────────────────────
 async function createSession() {
@@ -121,23 +121,26 @@ async function main() {
     process.exit(0);
   }
 
+  const item = POSTS[state.index];
+  const text = typeof item === 'string' ? item : item.text.trim();
   console.log(`🦋 Bluesky poster — posting #${state.index + 1} of ${POSTS.length}`);
 
   const session = await createSession();
   console.log(`🔑 Authenticated as ${session.handle}`);
 
-  const text = POSTS[state.index];
-  const imgNum = String(state.index + 1).padStart(2, '0');
-  let imgPath = path.join(__dirname, '../../public/images/social', `post_${imgNum}.png`);
-  if (imgPath.endsWith('.mp4')) { console.warn('⚠️ Bluesky script does not support video upload, skipping...'); imgPath = null; }
-  if (imgPath && !fs.existsSync(imgPath)) {
-    imgPath = path.join(__dirname, '..', 'images', `post_${imgNum}.png`);
-  }
-
+  // Resolve image from x-content.json item
   let imageBlob = null;
-  if (fs.existsSync(imgPath)) {
-    imageBlob = await uploadImage(session, imgPath);
-    console.log(`🖼️ Image uploaded: post_${imgNum}.png`);
+  const imgRef = typeof item === 'object' ? item.img : null;
+  if (imgRef) {
+    let imgPath = imgRef.startsWith('/') ? imgRef : path.join(IMAGES_DIR, imgRef);
+    if (imgPath.endsWith('.mp4')) {
+      console.warn('⚠️ Bluesky does not support video, skipping media');
+    } else if (fs.existsSync(imgPath)) {
+      imageBlob = await uploadImage(session, imgPath);
+      console.log(`🖼️ Image uploaded: ${path.basename(imgPath)}`);
+    } else {
+      console.warn(`⚠️ Image not found: ${imgPath}`);
+    }
   }
 
   const result = await createPost(session, text, imageBlob);
