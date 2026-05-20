@@ -198,8 +198,8 @@ async function postToThreads(text, mediaUrl, isVideo = false) {
   }
 }
 
-// ── Upload image to Telegra.ph (free, no API key) ────────────────────────
-async function uploadToTelegraph(filePath) {
+// ── Upload image to Catbox.moe (free, no API key, highly reliable fallback) ────────────────────────
+async function uploadToCatbox(filePath) {
   try {
     const fileData = fs.readFileSync(filePath);
     const ext = path.extname(filePath).toLowerCase();
@@ -207,20 +207,22 @@ async function uploadToTelegraph(filePath) {
     const mime = mimeTypes[ext] || 'image/jpeg';
 
     const formData = new FormData();
-    formData.append('file', new Blob([fileData], { type: mime }), path.basename(filePath));
+    formData.append('reqtype', 'fileupload');
+    
+    const file = new File([fileData], path.basename(filePath), { type: mime });
+    formData.append('fileToUpload', file);
 
-    const res = await fetch('https://telegra.ph/upload', { method: 'POST', body: formData });
-    const data = await res.json();
+    const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: formData });
+    const data = await res.text();
 
-    if (Array.isArray(data) && data[0]?.src) {
-      const publicUrl = `https://telegra.ph${data[0].src}`;
-      console.log(`📸 Telegraph: uploaded → ${publicUrl}`);
-      return publicUrl;
+    if (data && data.startsWith('https://')) {
+      console.log(`📸 Catbox: uploaded → ${data}`);
+      return data.trim();
     }
-    console.warn('⚠️ Telegraph upload failed:', JSON.stringify(data));
+    console.warn('⚠️ Catbox upload failed:', data);
     return null;
   } catch (e) {
-    console.warn('⚠️ Telegraph upload error:', e.message);
+    console.warn('⚠️ Catbox upload error:', e.message);
     return null;
   }
 }
@@ -257,22 +259,22 @@ async function main() {
     }
   }
 
-  // Upload image to Telegraph first for a reliable public URL
-  let telegraphUrl = null;
+  // Upload image to Catbox first for a reliable public URL
+  let catboxUrl = null;
   const isVideo = imagePath && imagePath.endsWith('.mp4');
   if (imagePath && !isVideo) {
-    telegraphUrl = await uploadToTelegraph(imagePath);
+    catboxUrl = await uploadToCatbox(imagePath);
   }
 
   // 1. Post to Facebook (file upload)
   const fb = await postToFacebook(text, imagePath);
 
-  // Build media URL: FB CDN > Telegraph > null
+  // Build media URL: FB CDN > Catbox > null
   let mediaUrl = null;
   if (isVideo) {
     mediaUrl = `https://cvin.bio${item.img}`;
   } else {
-    mediaUrl = fb.imageUrl || telegraphUrl;
+    mediaUrl = fb.imageUrl || catboxUrl;
   }
 
   await postToInstagram(text, mediaUrl, isVideo);
