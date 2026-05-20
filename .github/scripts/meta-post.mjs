@@ -198,35 +198,6 @@ async function postToThreads(text, mediaUrl, isVideo = false) {
   }
 }
 
-// ── Upload image to Catbox.moe (free, no API key, highly reliable fallback) ────────────────────────
-async function uploadToCatbox(filePath) {
-  try {
-    const fileData = fs.readFileSync(filePath);
-    const ext = path.extname(filePath).toLowerCase();
-    const mimeTypes = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif' };
-    const mime = mimeTypes[ext] || 'image/jpeg';
-
-    const formData = new FormData();
-    formData.append('reqtype', 'fileupload');
-    
-    const file = new File([fileData], path.basename(filePath), { type: mime });
-    formData.append('fileToUpload', file);
-
-    const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: formData });
-    const data = await res.text();
-
-    if (data && data.startsWith('https://')) {
-      console.log(`📸 Catbox: uploaded → ${data}`);
-      return data.trim();
-    }
-    console.warn('⚠️ Catbox upload failed:', data);
-    return null;
-  } catch (e) {
-    console.warn('⚠️ Catbox upload error:', e.message);
-    return null;
-  }
-}
-
 // ── Main ──────────────────────────────────────────────────────────────────
 async function main() {
   const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf-8'));
@@ -259,22 +230,19 @@ async function main() {
     }
   }
 
-  // Upload image to Catbox first for a reliable public URL
-  let catboxUrl = null;
+  // Construct public raw GitHub URL for Instagram/Threads fallback
   const isVideo = imagePath && imagePath.endsWith('.mp4');
-  if (imagePath && !isVideo) {
-    catboxUrl = await uploadToCatbox(imagePath);
-  }
+  const githubUrl = imagePath && !isVideo ? `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${path.basename(imagePath)}` : null;
 
   // 1. Post to Facebook (file upload)
   const fb = await postToFacebook(text, imagePath);
 
-  // Build media URL: FB CDN > Catbox > null
+  // Build media URL: FB CDN > GitHub Raw > null
   let mediaUrl = null;
   if (isVideo) {
     mediaUrl = `https://cvin.bio${item.img}`;
   } else {
-    mediaUrl = fb.imageUrl || catboxUrl;
+    mediaUrl = fb.imageUrl || githubUrl;
   }
 
   await postToInstagram(text, mediaUrl, isVideo);
