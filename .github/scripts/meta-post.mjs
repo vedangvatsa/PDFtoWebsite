@@ -232,7 +232,8 @@ async function main() {
 
   // Construct public raw GitHub URL for Instagram/Threads fallback
   const isVideo = imagePath && imagePath.endsWith('.mp4');
-  const githubUrl = imagePath && !isVideo ? `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${path.basename(imagePath)}` : null;
+  const relativeImgPath = item.img ? (item.img.startsWith('/') ? item.img.substring(1) : item.img) : '';
+  const githubUrl = imagePath && !isVideo ? `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${relativeImgPath}` : null;
 
   // 1. Post to Facebook (file upload)
   const fb = await postToFacebook(text, imagePath);
