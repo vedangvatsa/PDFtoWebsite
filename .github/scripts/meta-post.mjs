@@ -200,9 +200,29 @@ async function postToThreads(text, mediaUrl, isVideo = false) {
 
 // ── Main ──────────────────────────────────────────────────────────────────
 async function main() {
+  // Pull latest state from git first to avoid index mismatch
+  try {
+    const { execSync } = await import('child_process');
+    execSync('git pull --rebase origin main', { cwd: path.join(__dirname, '../..'), stdio: 'pipe' });
+    console.log('📥 Pulled latest state from git');
+  } catch (e) {
+    console.warn('⚠️ Git pull failed, proceeding with checkout state:', e.message);
+  }
+
   const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf-8'));
   const state = loadState();
   const items = content.engagement || [];
+
+  // Cooldown: skip if posted recently (20h gap for 1x/day schedule)
+  if (state.lastPostedAt) {
+    const elapsed = Date.now() - new Date(state.lastPostedAt).getTime();
+    const COOLDOWN_MS = 20 * 60 * 60 * 1000; // 20 hours
+    if (elapsed < COOLDOWN_MS) {
+      const hrs = (elapsed / 3600000).toFixed(1);
+      console.log(`⏳ Meta Cooldown: last post was ${hrs}h ago (need 20h gap). Skipping.`);
+      process.exit(0);
+    }
+  }
 
   // Use a single shared index — prevents any platform from re-posting old content
   const idx = Math.max(
