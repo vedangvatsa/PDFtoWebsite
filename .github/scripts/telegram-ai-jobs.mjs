@@ -335,7 +335,7 @@ function formatMessage(jobs) {
   }
 
   let text = lines.join('\n');
-  text += `\n\n_\n<a href="https://t.me/web3hiring">Web3 Jobs</a>`;
+  text += `\n\n_\nWeb3 Jobs: <a href="https://t.me/web3hiring">t.me/web3hiring</a>`;
   return text;
 }
 
