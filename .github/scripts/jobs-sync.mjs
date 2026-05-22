@@ -464,13 +464,62 @@ async function fetchExistingKeys() {
   return { allHashes, allExternalIds };
 }
 
+function isProbablyEnglish(title) {
+  if (!title) return true;
+
+  // 1. Block non-Latin scripts completely (Cyrillic, Chinese, Japanese, Korean, Arabic)
+  const nonLatinRegex = /[\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Arabic}]/gu;
+  if (nonLatinRegex.test(title)) {
+    return false;
+  }
+
+  // 2. Common non-English job title role keywords
+  const nonEnglishKeywords = [
+    // French
+    'développeur', 'développeuse', 'logiciel', 'logiciels', 'ingénieur', 'ingénieure', 'ingénieurs',
+    'alternance', 'alternant', 'alternante', 'stagiaire', 'stagiaires', 'concepteur', 'conceptrice',
+    'chef de', 'stage de', 'chargé de', 'chargée de', 'collaborateur', 'collaboratrice',
+    // Spanish / Portuguese
+    'desarrollador', 'desarrolladora', 'desarrolladores', 'desenvolvedor', 'desenvolvedora', 'desenvolvedores',
+    'ingeniero', 'ingeniera', 'ingenieros', 'ingenieras', 'engenheiro', 'engenheira', 'engenheiros', 'engenheiras',
+    'estagiário', 'estagiária', 'estagio', 'becario', 'becaria', 'prácticas', 'practicas',
+    // German
+    'entwickler', 'entwicklerin', 'entwicklers', 'softwareentwickler', 'softwareentwicklerin',
+    'ingenieur', 'ingenieurin', 'praktikant', 'praktikantin', 'praktikum', 'werkstudent', 'werkstudentin',
+    'leiter', 'leiterin', 'mitarbeiter',
+    // Italian
+    'sviluppatore', 'sviluppatrice', 'sviluppatori', 'ingegnere',
+    // Dutch
+    'ontwikkelaar', 'ontwikkelaars', 'stagiair', 'stagiairs', 'stagiaire'
+  ];
+
+  // Normalize by removing diacritics
+  const normalizedTitle = title
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  const normalizedNonEnglishKeywords = nonEnglishKeywords.map(w => 
+    w.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  );
+
+  for (const word of normalizedNonEnglishKeywords) {
+    const regex = new RegExp(`\\b${word}\\b`, 'i');
+    if (regex.test(normalizedTitle)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 async function supabaseUpsert(jobs) {
   // Deduplicate by external_id in-memory (prefer external_id over dedup_hash)
-  // Also discard jobs matching the BANNED_REGEX
+  // Also discard jobs matching the BANNED_REGEX or non-English titles
   const seen = new Map();
   let bannedCount = 0;
   for (const job of jobs) {
-    if (job.title && BANNED_REGEX.test(job.title)) {
+    if (job.title && (BANNED_REGEX.test(job.title) || !isProbablyEnglish(job.title))) {
       bannedCount++;
       continue;
     }
@@ -480,7 +529,7 @@ async function supabaseUpsert(jobs) {
     }
   }
   const unique = [...seen.values()];
-  console.log(`   Dropped ${bannedCount} banned/irrelevant jobs.`);
+  console.log(`   Dropped ${bannedCount} banned/irrelevant/non-English jobs.`);
   console.log(`   After in-memory dedup: ${unique.length} unique jobs`);
 
   // Pre-fetch existing keys to skip duplicates client-side
