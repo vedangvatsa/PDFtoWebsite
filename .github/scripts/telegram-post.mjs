@@ -438,13 +438,13 @@ function formatJobsMessage(jobs, category) {
 
   let header = '';
   if (category === 'developer') {
-    header = '💻 <b>Engineering & IT Jobs</b>';
+    header = '<b>Engineering & IT Jobs</b>';
   } else if (category === 'product') {
-    header = '🎨 <b>Product, Design & Data Jobs</b>';
+    header = '<b>Product, Design & Data Jobs</b>';
   } else if (category === 'business') {
-    header = '📈 <b>Business, Sales & Growth Jobs</b>';
+    header = '<b>Business, Sales & Growth Jobs</b>';
   } else {
-    header = '📢 <b>Featured Tech & Business Jobs</b>';
+    header = '<b>Featured Tech & Business Jobs</b>';
   }
 
   let text = header + '\n\n' + lines.join('\n');
