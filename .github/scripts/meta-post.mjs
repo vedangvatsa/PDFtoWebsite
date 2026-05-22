@@ -223,7 +223,14 @@ async function main() {
   // Resolve image path
   let imagePath = null;
   if (item.img) {
-    imagePath = item.img.startsWith('/') ? item.img : path.join(IMAGES_DIR, item.img);
+    if (item.img.startsWith('/')) {
+      imagePath = item.img;
+    } else if (item.img.startsWith('.github/')) {
+      const REPO_ROOT = path.join(__dirname, '../..');
+      imagePath = path.join(REPO_ROOT, item.img);
+    } else {
+      imagePath = path.join(IMAGES_DIR, item.img);
+    }
     if (!fs.existsSync(imagePath)) {
       console.warn(`⚠️  Image not found: ${imagePath}`);
       imagePath = null;
@@ -232,7 +239,13 @@ async function main() {
 
   // Construct public raw GitHub URL for Instagram/Threads fallback
   const isVideo = imagePath && imagePath.endsWith('.mp4');
-  const relativeImgPath = item.img ? (item.img.startsWith('/') ? item.img.substring(1) : item.img) : '';
+  let relativeImgPath = '';
+  if (item.img) {
+    relativeImgPath = item.img.startsWith('/') ? item.img.substring(1) : item.img;
+    if (relativeImgPath.startsWith('.github/images/')) {
+      relativeImgPath = relativeImgPath.substring('.github/images/'.length);
+    }
+  }
   const githubUrl = imagePath && !isVideo ? `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${relativeImgPath}` : null;
 
   // 1. Post to Facebook (file upload)
