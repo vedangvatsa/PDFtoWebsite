@@ -132,7 +132,15 @@ async function main() {
   let imageBlob = null;
   const imgRef = typeof item === 'object' ? item.img : null;
   if (imgRef) {
-    let imgPath = imgRef.startsWith('/') ? imgRef : path.join(IMAGES_DIR, imgRef);
+    let imgPath;
+    if (imgRef.startsWith('/')) {
+      imgPath = imgRef;
+    } else if (imgRef.startsWith('.github/')) {
+      const REPO_ROOT = path.join(__dirname, '../..');
+      imgPath = path.join(REPO_ROOT, imgRef);
+    } else {
+      imgPath = path.join(IMAGES_DIR, imgRef);
+    }
     if (imgPath.endsWith('.mp4')) {
       console.warn('⚠️ Bluesky does not support video, skipping media');
     } else if (fs.existsSync(imgPath)) {
