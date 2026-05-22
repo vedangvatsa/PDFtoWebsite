@@ -277,6 +277,33 @@ const PRIORITY_COMPANIES = new Set([
   'plaid','ramp','deel','n26','trade republic','lemonade',
 ]);
 
+// ─── Categories Filter Regexes ───────────────────────────────────────────
+const TECH_RE = /\b(engineer|developer|programmer|architect|frontend|backend|fullstack|devops|sre|security|cyber|infrastructure|qa|test|compiler|systems|firmware|hardware|machine learning|ml|ai|artificial intelligence|deep learning|data scientist|data science|data eng|data tech|database|db\b|it\b|information technology|tech\b|technology|support engineer|system admin|network|cloud)\b/i;
+
+const PRODUCT_RE = /\b(product manager|pm\b|project manager|scrum|product owner|agile|delivery manager|designer|design\b|ux\b|ui\b|creative|art\b|illustrator|graphic|user research|data analyst|analytics|analyst|business analyst|bi analyst|intelligence analyst|strategist|strategy)\b/i;
+
+const BUSINESS_RE = /\b(sales|business development|bd\b|account manager|account executive|ae\b|marketing|growth|seo|copywriter|content|brand|social media|pmm|advertising|pr\b|public relations|customer success|support specialist|operations|ops|finance|accounting|accountant|audit|payroll|billing|tax|treasury|controller|recruiter|hr|talent|people|culture|legal|compliance|counsel|lawyer|attorney|office|admin|exec|chief|ceo|cfo|coo|cro|president|director|manager|buyer|procurement|supply chain|logistics)\b/i;
+
+function getCategoryRegex(category) {
+  if (category === 'developer') return TECH_RE;
+  if (category === 'product') return PRODUCT_RE;
+  if (category === 'business') return BUSINESS_RE;
+  return null;
+}
+
+function getAutomaticCategory() {
+  const options = { timeZone: 'Asia/Singapore', hour: 'numeric', hour12: false };
+  const sgtHour = parseInt(new Intl.DateTimeFormat('en-US', options).format(new Date()), 10);
+  console.log(`  Current SGT Hour: ${sgtHour}`);
+  if (sgtHour >= 8 && sgtHour < 15) {
+    return 'developer';
+  } else if (sgtHour >= 15 && sgtHour < 23) {
+    return 'product';
+  } else {
+    return 'business';
+  }
+}
+
 function isHighProfileCompany(company) {
   const c = company.toLowerCase().trim();
   for (const p of PRIORITY_COMPANIES) {
@@ -285,19 +312,33 @@ function isHighProfileCompany(company) {
   return false;
 }
 
-function pickJobs(jobs, limit) {
+function pickJobs(jobs, limit, category) {
   const seen = new Set();
   const priority = [];
   const regular = [];
   const overflow = []; // extra jobs from same companies if we need to fill
 
+  const catRegex = getCategoryRegex(category);
+
+  // Segregate jobs based on category
+  const matchingJobs = [];
+  const nonMatchingJobs = [];
+
   for (const job of jobs) {
     // Skip bad data: truncated names, non-English titles
     if (!job.company || job.company.includes('...') || job.company.length <= 2) continue;
     if (!job.title || /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) continue;
-    // Skip non-tech/non-business jobs
     if (BANNED_REGEX.test(job.title)) continue;
 
+    if (catRegex && catRegex.test(job.title)) {
+      matchingJobs.push(job);
+    } else {
+      nonMatchingJobs.push(job);
+    }
+  }
+
+  // Pick category matching jobs first
+  for (const job of matchingJobs) {
     const key = job.company.toLowerCase().trim();
     if (seen.has(key)) {
       overflow.push(job); // save for backfill
@@ -312,10 +353,36 @@ function pickJobs(jobs, limit) {
     }
   }
 
-  // Priority companies go first, then fill with regular
   const picked = [...priority.slice(0, limit)];
   if (picked.length < limit) {
     picked.push(...regular.slice(0, limit - picked.length));
+  }
+
+  // Smart fallback: If we don't have 10 matching jobs, backfill with other categories
+  if (picked.length < limit) {
+    console.log(`  Category [${category}] has only ${picked.length} jobs. Backfilling with other categories.`);
+    const backfillPriority = [];
+    const backfillRegular = [];
+
+    for (const job of nonMatchingJobs) {
+      const key = job.company.toLowerCase().trim();
+      if (seen.has(key)) {
+        overflow.push(job);
+        continue;
+      }
+      seen.add(key);
+
+      if (isHighProfileCompany(job.company)) {
+        backfillPriority.push(job);
+      } else {
+        backfillRegular.push(job);
+      }
+    }
+
+    picked.push(...backfillPriority.slice(0, limit - picked.length));
+    if (picked.length < limit) {
+      picked.push(...backfillRegular.slice(0, limit - picked.length));
+    }
   }
 
   // If still under limit, backfill with overflow
@@ -358,7 +425,7 @@ async function markJobsPosted(jobIds) {
 
 // ── Format the Telegram message ──────────────────────────────────────────
 
-function formatJobsMessage(jobs) {
+function formatJobsMessage(jobs, category) {
   const lines = [];
 
   for (const job of jobs) {
@@ -369,7 +436,18 @@ function formatJobsMessage(jobs) {
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
   }
 
-  let text = lines.join('\n');
+  let header = '';
+  if (category === 'developer') {
+    header = '💻 <b>Engineering & IT Jobs</b>';
+  } else if (category === 'product') {
+    header = '🎨 <b>Product, Design & Data Jobs</b>';
+  } else if (category === 'business') {
+    header = '📈 <b>Business, Sales & Growth Jobs</b>';
+  } else {
+    header = '📢 <b>Featured Tech & Business Jobs</b>';
+  }
+
+  let text = header + '\n\n' + lines.join('\n');
   text += `\n\n_\nTurn your CV into a Website: <a href="https://cvin.bio?utm_source=social&amp;utm_medium=telegram">cvin.bio</a>`;
   return text;
 }
@@ -403,6 +481,26 @@ async function main() {
   console.log('Telegram Job Poster');
   console.log(`  Channel: ${CHANNEL_ID}`);
 
+  // Parse command-line argument --category <val> (supports --category=val or --category val)
+  const catArg = process.argv.find(arg => arg.startsWith('--category'));
+  let category = null;
+  if (catArg) {
+    if (catArg.includes('=')) {
+      category = catArg.split('=')[1];
+    } else {
+      const idx = process.argv.indexOf('--category');
+      if (idx !== -1 && process.argv[idx + 1]) {
+        category = process.argv[idx + 1];
+      }
+    }
+  }
+
+  if (!category) {
+    category = getAutomaticCategory();
+  }
+
+  console.log(`  Category: ${category}`);
+
   // 1. Fetch unposted jobs (grab extra for dedup headroom)
   const allJobs = await fetchUnpostedJobs();
 
@@ -411,20 +509,20 @@ async function main() {
     return;
   }
 
-  // 2. Shuffle for source diversity, then pick: 2+ remote, 1 per company
-  const jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST);
+  // 2. Shuffle for source diversity, then pick category-matching remote-preferred roles
+  const jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST, category);
   const remoteCount = jobs.filter(j => isRemote(j.location)).length;
   console.log(`  ${allJobs.length} unposted -> ${jobs.length} picked (${remoteCount} remote)`);
 
   // 3. Format and send
-  const message = formatJobsMessage(jobs);
+  const message = formatJobsMessage(jobs, category);
   console.log(`  Message: ${message.length} chars`);
 
   if (message.length > 4096) {
     const half = Math.ceil(jobs.length / 2);
-    await sendTelegramMessage(formatJobsMessage(jobs.slice(0, half)));
+    await sendTelegramMessage(formatJobsMessage(jobs.slice(0, half), category));
     await new Promise(r => setTimeout(r, 1000));
-    await sendTelegramMessage(formatJobsMessage(jobs.slice(half)));
+    await sendTelegramMessage(formatJobsMessage(jobs.slice(half), category));
     console.log('  Posted in 2 batches');
   } else {
     const result = await sendTelegramMessage(message);
