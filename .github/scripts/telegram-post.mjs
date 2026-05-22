@@ -370,7 +370,7 @@ function formatJobsMessage(jobs) {
   }
 
   let text = lines.join('\n');
-  text += `\n\n_\n<a href="https://cvin.bio?utm_source=social&amp;utm_medium=telegram">Turn your CV into a Website</a>`;
+  text += `\n\n_\nTurn your CV into a Website: <a href="https://cvin.bio?utm_source=social&amp;utm_medium=telegram">cvin.bio</a>`;
   return text;
 }
 
