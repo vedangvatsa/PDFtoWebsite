@@ -360,7 +360,7 @@ export async function GET(request: NextRequest) {
       hogql(`
         SELECT count() AS total
         FROM events
-        WHERE event = 'editor_cv_parse_started'
+        WHERE event IN ('editor_cv_parse_started', 'landing_cv_upload_completed', 'jobs_interstitial_upload_cv_completed')
           AND timestamp >= now() - interval 30 day
       `, 'admin_cv_parses_total'),
 
@@ -368,7 +368,7 @@ export async function GET(request: NextRequest) {
       hogql(`
         SELECT toDate(timestamp) AS day, count() AS cnt
         FROM events
-        WHERE event = 'editor_cv_parse_started'
+        WHERE event IN ('editor_cv_parse_started', 'landing_cv_upload_completed', 'jobs_interstitial_upload_cv_completed')
           AND timestamp >= now() - interval 14 day
         GROUP BY day ORDER BY day
       `, 'admin_cv_parses_by_day'),
@@ -452,7 +452,8 @@ export async function GET(request: NextRequest) {
       parseTrend = Object.entries(parsesByDay).map(([date, count]) => ({ date, count }));
     } else {
       const parsesByDay: Record<string, number> = {};
-      for (let i = daysSinceFirst; i >= 0; i--) {
+      const limitDays = Math.min(daysSinceFirst, 30);
+      for (let i = limitDays; i >= 0; i--) {
         const d = new Date(now);
         d.setDate(d.getDate() - i);
         parsesByDay[d.toISOString().split('T')[0]] = 0;
@@ -669,8 +670,14 @@ export async function GET(request: NextRequest) {
         topBrowsers: phTopBrowsers,
         profileViewsTrend: phProfileViews,
         avgTimeOnProfile: phAvgTimeOnProfile?.[0] || null,
-        funnelEvents: phFunnelEvents,
-        shareEvents: phShareEvents,
+        funnelEvents: phFunnelEvents || [
+          { event: 'db_total_parses', cnt: totalParses, unique_users: totalParses },
+          { event: 'db_registered_profiles', cnt: totalUsers, unique_users: totalUsers },
+          { event: 'db_profiles_with_skills', cnt: usersWithSkills, unique_users: usersWithSkills },
+          { event: 'db_profiles_with_experience', cnt: usersWithExperience, unique_users: usersWithExperience },
+          { event: 'db_profiles_with_photo', cnt: usersWithPhoto, unique_users: usersWithPhoto },
+        ],
+        shareEvents: phShareEvents || [],
         pageviewsWoW: phPageviewsTotal?.[0] || null,
         activeToday: phActiveUsersToday?.[0]?.active_today || 0,
         jobClicksTotal: phJobClicksTotal?.[0]?.total || 0,

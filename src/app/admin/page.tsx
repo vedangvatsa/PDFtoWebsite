@@ -120,7 +120,7 @@ function Section({ title, children, badge }: { title: string; children: React.Re
 // Pretty event name: editor_cv_parse_started → CV Parse Started
 function prettyEvent(event: string): string {
   return event
-    .replace(/^(landing_|auth_|editor_|profile_|user_)/, '')
+    .replace(/^(landing_|auth_|editor_|profile_|user_|db_)/, '')
     .replace(/_/g, ' ')
     .replace(/\b\w/g, l => l.toUpperCase());
 }
@@ -131,6 +131,21 @@ function DeviceIcon({ type }: { type: string }) {
   if (t === 'mobile') return <Smartphone className="h-3.5 w-3.5" />;
   if (t === 'tablet') return <Tablet className="h-3.5 w-3.5" />;
   return <Monitor className="h-3.5 w-3.5" />;
+}
+
+// PostHog Placeholder Card
+function PostHogPlaceholder({ title }: { title: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center text-center p-8 rounded-xl border border-dashed border-border/80 bg-card/40 backdrop-blur-sm min-h-[180px] w-full">
+      <div className="h-10 w-10 rounded-full bg-indigo-500/10 flex items-center justify-center mb-4">
+        <Globe className="h-5 w-5 text-indigo-500" />
+      </div>
+      <h4 className="text-sm font-semibold text-foreground mb-1">{title}</h4>
+      <p className="text-xs text-muted-foreground max-w-sm">
+        Web traffic analytics are powered by PostHog. Configure <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">POSTHOG_PERSONAL_API_KEY</code> and <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">POSTHOG_PROJECT_ID</code> in <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-indigo-500">.env.local</code> to enable real-time tracking, geo-location, and device telemetry.
+      </p>
+    </div>
+  );
 }
 
 export default function AdminPage() {
@@ -188,13 +203,15 @@ export default function AdminPage() {
             ) : (
               <Stat v={kpis.totalViews} label="Total views" sub={`avg ${kpis.avgViews} · median ${kpis.medianViews}`} />
             )}
-            {ph.available && ph.uniqueVisitors && (
+            {ph.available && ph.uniqueVisitors ? (
               <WoWStat v={ph.uniqueVisitors.this_week} label="Unique visitors (7d)" thisWeek={ph.uniqueVisitors.this_week} lastWeek={ph.uniqueVisitors.last_week} />
+            ) : (
+              <Stat v="N/A" label="Unique visitors (7d)" sub="PostHog offline" />
             )}
             <Stat v={ph.available ? ph.activeToday : kpis.usersUpdatedLast7d} label={ph.available ? 'Active today' : 'Active (7d)'} />
             <Stat v={kpis.totalParses} label="CV parses" />
             <Stat v={kpis.totalJobs} label="Active jobs" sub="Supabase" />
-            <Stat v={ph.available && ph.jobClicksTotal !== undefined ? ph.jobClicksTotal : 0} label="Job apply clicks" sub="Last 30 days" />
+            <Stat v={ph.available && ph.jobClicksTotal !== undefined ? ph.jobClicksTotal : 'N/A'} label="Job apply clicks" sub={ph.available ? "Last 30 days" : "PostHog offline"} />
             <Stat v={kpis.zeroViewProfiles} label="Zero-view profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
           </div>
         </Section>
@@ -297,8 +314,8 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* ═══ PAGEVIEWS CHART (PostHog) ═══ */}
-          {ph.available && ph.pageviewsByDay && ph.pageviewsByDay.length > 0 && (
-            <Section title="Pageviews (30 days)" badge="PostHog">
+          <Section title="Pageviews (30 days)" badge={ph.available ? "PostHog" : "Offline"}>
+            {ph.available && ph.pageviewsByDay && ph.pageviewsByDay.length > 0 ? (
               <ChartContainer config={viewsConfig} className="h-[180px] w-full">
                 <AreaChart data={ph.pageviewsByDay}>
                   <defs><linearGradient id="pvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity={0.12}/><stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity={0}/></linearGradient></defs>
@@ -309,8 +326,10 @@ export default function AdminPage() {
                   <ChartTooltip content={<ChartTooltipContent />} />
                 </AreaChart>
               </ChartContainer>
-            </Section>
-          )}
+            ) : (
+              <PostHogPlaceholder title="Pageviews Trend Chart" />
+            )}
+          </Section>
 
           {/* ═══ SIGNUPS CHART (Supabase) ═══ */}
           <Section title="Signups">
@@ -327,24 +346,26 @@ export default function AdminPage() {
           </Section>
         </div>
 
-        {/* ═══ PROFILE ENGAGEMENT (PostHog) ═══ */}
-        {ph.available && ph.profileViewsTrend && ph.profileViewsTrend.length > 0 && (
-          <Section title="Profile engagement (30 days)" badge="PostHog">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4 mb-6">
+        {/* ═══ PROFILE ENGAGEMENT (PostHog / Supabase) ═══ */}
+        <Section title="Profile engagement (30 days)" badge={ph.available ? "PostHog" : "Supabase Only"}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4 mb-6">
+            <Stat
+              v={ph.available && ph.profileViewsTrend ? ph.profileViewsTrend.reduce((s, d) => s + d.views, 0) : kpis.totalViews}
+              label={ph.available ? "Profile views" : "Supabase Views (All-time)"}
+              sub={ph.available && ph.profileViewsTrend ? `${ph.profileViewsTrend.reduce((s, d) => s + d.unique_viewers, 0)} unique` : `avg ${kpis.avgViews} · median ${kpis.medianViews}`}
+            />
+            {ph.available && ph.avgTimeOnProfile ? (
               <Stat
-                v={ph.profileViewsTrend.reduce((s, d) => s + d.views, 0)}
-                label="Profile views"
-                sub={`${ph.profileViewsTrend.reduce((s, d) => s + d.unique_viewers, 0)} unique`}
+                v={`${Math.round(ph.avgTimeOnProfile.avg_seconds || 0)}s`}
+                label="Avg. time on profile"
+                sub={`max ${Math.round(ph.avgTimeOnProfile.max_seconds || 0)}s · ${ph.avgTimeOnProfile.sample_size} samples`}
               />
-              {ph.avgTimeOnProfile && (
-                <Stat
-                  v={`${Math.round(ph.avgTimeOnProfile.avg_seconds || 0)}s`}
-                  label="Avg. time on profile"
-                  sub={`max ${Math.round(ph.avgTimeOnProfile.max_seconds || 0)}s · ${ph.avgTimeOnProfile.sample_size} samples`}
-                />
-              )}
-              <Stat v={kpis.totalViews} label="Supabase views (all-time)" sub={`avg ${kpis.avgViews} · median ${kpis.medianViews}`} />
-            </div>
+            ) : (
+              <Stat v={kpis.zeroViewProfiles} label="Zero-view profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
+            )}
+            <Stat v={kpis.usersUpdatedLast7d} label="Active profiles (7d)" sub="Recently updated in Supabase" />
+          </div>
+          {ph.available && ph.profileViewsTrend && ph.profileViewsTrend.length > 0 ? (
             <ChartContainer config={viewsConfig} className="h-[160px] w-full">
               <BarChart data={ph.profileViewsTrend}>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" className="stroke-border" />
@@ -354,12 +375,14 @@ export default function AdminPage() {
                 <ChartTooltip content={<ChartTooltipContent />} />
               </BarChart>
             </ChartContainer>
-          </Section>
-        )}
+          ) : (
+            <PostHogPlaceholder title="Real-Time Profile Views Trend" />
+          )}
+        </Section>
 
         {/* ═══ TRAFFIC SOURCES (PostHog) ═══ */}
-        {ph.available && ph.topReferrers && ph.topReferrers.length > 0 && (
-          <Section title="Traffic sources (7 days)" badge="PostHog">
+        <Section title="Traffic sources (7 days)" badge={ph.available ? "PostHog" : "Offline"}>
+          {ph.available && ph.topReferrers && ph.topReferrers.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
               {ph.topReferrers.map((r, i) => {
                 const maxR = ph.topReferrers![0].visits;
@@ -379,12 +402,14 @@ export default function AdminPage() {
                 );
               })}
             </div>
-          </Section>
-        )}
+          ) : (
+            <PostHogPlaceholder title="Referrer Tracking" />
+          )}
+        </Section>
 
         {/* ═══ TOP PAGES (PostHog) ═══ */}
-        {ph.available && ph.topPages && ph.topPages.length > 0 && (
-          <Section title="Top pages (7 days)" badge="PostHog">
+        <Section title="Top pages (7 days)" badge={ph.available ? "PostHog" : "Offline"}>
+          {ph.available && ph.topPages && ph.topPages.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
               {ph.topPages.slice(0, 15).map((p, i) => {
                 const maxP = ph.topPages![0].views;
@@ -404,12 +429,14 @@ export default function AdminPage() {
                 );
               })}
             </div>
-          </Section>
-        )}
+          ) : (
+            <PostHogPlaceholder title="Top Pages & Pathnames" />
+          )}
+        </Section>
 
         {/* ═══ GEOGRAPHY & DEVICES (PostHog) ═══ */}
-        {ph.available && (ph.topCountries || ph.deviceTypes || ph.osTypes || ph.topBrowsers) && (
-          <Section title="Audience (7 days)" badge="PostHog">
+        <Section title="Audience (7 days)" badge={ph.available ? "PostHog" : "Offline"}>
+          {ph.available && (ph.topCountries || ph.deviceTypes || ph.osTypes || ph.topBrowsers) ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Countries */}
               {ph.topCountries && ph.topCountries.length > 0 && (
@@ -478,12 +505,14 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
-          </Section>
-        )}
+          ) : (
+            <PostHogPlaceholder title="Geographic & Device Telemetry" />
+          )}
+        </Section>
 
-        {/* ═══ CONVERSION FUNNEL (PostHog) ═══ */}
-        {ph.available && ph.funnelEvents && ph.funnelEvents.length > 0 && (
-          <Section title="Event funnel (30 days)" badge="PostHog">
+        {/* ═══ CONVERSION FUNNEL (PostHog / Supabase Fallback) ═══ */}
+        {ph.funnelEvents && ph.funnelEvents.length > 0 && (
+          <Section title={ph.available ? "Event funnel (30 days)" : "Database Conversion Funnel"} badge={ph.available ? "PostHog" : "Supabase"}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               {ph.funnelEvents.map((e, i) => {
                 const maxE = ph.funnelEvents![0].cnt;
@@ -492,10 +521,13 @@ export default function AdminPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline justify-between gap-2 mb-0.5">
                         <span className="text-sm truncate">{prettyEvent(e.event)}</span>
-                        <span className="text-xs text-muted-foreground shrink-0 font-mono">{e.cnt} <span className="text-muted-foreground/50">({e.unique_users}u)</span></span>
+                        <span className="text-xs text-muted-foreground shrink-0 font-mono">
+                          {e.cnt} 
+                          {ph.available && <span className="text-muted-foreground/50"> ({e.unique_users}u)</span>}
+                        </span>
                       </div>
                       <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                        <div className="h-full rounded-full bg-indigo-500/50" style={{ width: `${(e.cnt / maxE) * 100}%` }} />
+                        <div className="h-full rounded-full bg-indigo-500/50" style={{ width: `${maxE > 0 ? (e.cnt / maxE) * 100 : 0}%` }} />
                       </div>
                     </div>
                   </div>
@@ -506,8 +538,8 @@ export default function AdminPage() {
         )}
 
         {/* ═══ SHARE ANALYTICS (PostHog) ═══ */}
-        {ph.available && ph.shareEvents && ph.shareEvents.length > 0 && (
-          <Section title="Sharing (30 days)" badge="PostHog">
+        <Section title="Sharing (30 days)" badge={ph.available ? "PostHog" : "Offline"}>
+          {ph.available && ph.shareEvents && ph.shareEvents.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-8 gap-y-4">
               {ph.shareEvents.map((e, i) => (
                 <div key={i} className="py-1">
@@ -516,8 +548,10 @@ export default function AdminPage() {
                 </div>
               ))}
             </div>
-          </Section>
-        )}
+          ) : (
+            <PostHogPlaceholder title="Social Sharing Triggers" />
+          )}
+        </Section>
 
         {/* ═══ PROFILE COMPLETENESS (Supabase) ═══ */}
         <Section title="Profile completeness">

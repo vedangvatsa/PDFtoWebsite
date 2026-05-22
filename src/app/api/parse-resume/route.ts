@@ -81,7 +81,6 @@ async function isUserRateLimited(userId: string): Promise<boolean> {
 }
 
 async function logParseEvent(userId: string | null, ip: string): Promise<void> {
-  if (!userId) return;
   try {
     const supabaseAdmin = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
