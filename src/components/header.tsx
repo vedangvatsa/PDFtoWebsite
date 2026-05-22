@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Icons } from "./icons";
-import { ThemeToggle } from "./theme-toggle";
 import { Button } from "./ui/button";
 import { useUser } from "@/auth";
 import { createClient } from '@/utils/supabase/client';
@@ -72,7 +71,6 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                 </Button>
               </>
           )}
-          <ThemeToggle />
         </div>
       </nav>
     </header>

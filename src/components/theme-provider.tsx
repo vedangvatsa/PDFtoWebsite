@@ -25,40 +25,20 @@ const ThemeContext = React.createContext<
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  defaultTheme = "light",
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = React.useState(
-    () =>
-      (typeof window !== "undefined" && localStorage.getItem(storageKey)) ||
-      defaultTheme
-  )
-
   React.useEffect(() => {
     const root = window.document.documentElement
-    root.classList.remove("light", "dark")
+    root.classList.remove("dark")
+    root.classList.add("light")
+  }, [])
 
-    let systemTheme = defaultTheme
-    if (defaultTheme === "system") {
-      systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-    }
-
-    const currentTheme = theme === "system" ? systemTheme : theme
-    root.classList.add(currentTheme)
-  }, [theme, defaultTheme])
-
-  const value = {
-    theme,
-    setTheme: (theme: string) => {
-      if (typeof window !== "undefined") {
-        localStorage.setItem(storageKey, theme)
-      }
-      setTheme(theme)
-    },
-  }
+  const value = React.useMemo(() => ({
+    theme: "light",
+    setTheme: () => {},
+  }), [])
 
   return (
     <ThemeContext.Provider {...props} value={value}>
