@@ -369,7 +369,9 @@ function formatJobsMessage(jobs) {
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
   }
 
-  return lines.join('\n');
+  let text = lines.join('\n');
+  text += `\n\n_\n<a href="https://cvin.bio?utm_source=social&amp;utm_medium=telegram">Turn your CV into a Website</a>`;
+  return text;
 }
 
 // ── Send message via Telegram Bot API ────────────────────────────────────
@@ -383,11 +385,6 @@ async function sendTelegramMessage(text) {
       text,
       parse_mode: 'HTML',
       disable_web_page_preview: true,
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: 'Turn your CV into a Website', url: 'https://cvin.bio?utm_source=social&utm_medium=telegram' }],
-        ],
-      },
     }),
   });
 
