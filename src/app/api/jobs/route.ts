@@ -276,10 +276,11 @@ export async function GET(request: NextRequest) {
   }
 
   // Build query — select only needed columns (skip description to reduce payload)
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   let query = supabase
     .from('jobs')
     .select('id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at', { count: 'estimated' })
-    .not('company', 'ilike', '%Gopuff%')
+    .gt('created_at', thirtyDaysAgo)
     .order('published_at', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false });
 
@@ -329,8 +330,9 @@ export async function GET(request: NextRequest) {
   // Filter out non-English titles
   const englishFiltered = (rawJobs || []).filter(job => {
     if (isNonEnglishTitle(job.title)) return false;
-    // Block junk company names
-    if (COMPANY_BLOCKLIST.has((job.company || '').toLowerCase().trim())) return false;
+    // Block junk company names & Gopuff (to avoid expensive wildcard database queries)
+    const companyLower = (job.company || '').toLowerCase().trim();
+    if (COMPANY_BLOCKLIST.has(companyLower) || companyLower.includes('gopuff')) return false;
     return true;
   });
 
