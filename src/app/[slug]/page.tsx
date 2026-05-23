@@ -50,14 +50,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const data = await getProfileBySlug(slug);
   if (!data) {
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
-    const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).limit(1);
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
     if (jobs && jobs.length > 0) {
       const { getCompanyMeta } = await import('@/lib/company-data');
       const meta = getCompanyMeta(slug);
       const companyDisplay = jobs[0].company || slug.replace(/-/g, ' ');
 
       // Count total jobs for richer description
-      const { count } = await supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`);
+      const { count } = await supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo);
       const jobCount = count || 0;
 
       const title = `${companyDisplay} Careers — ${jobCount} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}) | CVin.Bio`;
@@ -279,10 +280,12 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   const data = await getProfileBySlug(slug);
   if (!data) {
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: jobs } = await supabaseForCompany
       .from('jobs')
       .select('id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary')
       .ilike('company', `${decodedSearch}%`)
+      .gt('created_at', thirtyDaysAgo)
       .limit(100);
 
     if (!jobs || jobs.length === 0) {
