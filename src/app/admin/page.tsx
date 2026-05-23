@@ -196,23 +196,26 @@ export default function AdminPage() {
 
         {/* ═══ REAL-TIME KPIs (PostHog + Supabase) ═══ */}
         <Section title="Overview">
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-8 gap-y-6">
+          <div className={`grid grid-cols-2 sm:grid-cols-3 ${ph.available ? 'lg:grid-cols-8' : 'lg:grid-cols-6'} gap-x-8 gap-y-6`}>
             <Stat v={kpis.totalUsers} label="Users" />
-            {ph.available && ph.pageviewsWoW ? (
-              <WoWStat v={ph.pageviewsWoW.this_week} label="Pageviews (7d)" thisWeek={ph.pageviewsWoW.this_week} lastWeek={ph.pageviewsWoW.last_week} />
-            ) : (
-              <Stat v={kpis.totalViews} label="Total views" sub={`avg ${kpis.avgViews} · median ${kpis.medianViews}`} />
+            <Stat v={kpis.totalViews} label="Total Views" sub={`avg ${kpis.avgViews} · median ${kpis.medianViews}`} />
+            <Stat v={kpis.totalParses} label="CV Parses" />
+            <Stat v={kpis.totalJobs} label="Active Jobs" />
+            <Stat v={kpis.usersUpdatedLast7d} label="Active Profiles (7d)" />
+            <Stat v={kpis.zeroViewProfiles} label="Zero-View Profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
+
+            {ph.available && (
+              <>
+                {ph.pageviewsWoW && (
+                  <WoWStat v={ph.pageviewsWoW.this_week} label="Pageviews (7d)" thisWeek={ph.pageviewsWoW.this_week} lastWeek={ph.pageviewsWoW.last_week} />
+                )}
+                {ph.uniqueVisitors && (
+                  <WoWStat v={ph.uniqueVisitors.this_week} label="Unique Visitors (7d)" thisWeek={ph.uniqueVisitors.this_week} lastWeek={ph.uniqueVisitors.last_week} />
+                )}
+                <Stat v={ph.activeToday} label="Active Today" />
+                <Stat v={ph.jobClicksTotal} label="Job Apply Clicks" sub="Last 30 days" />
+              </>
             )}
-            {ph.available && ph.uniqueVisitors ? (
-              <WoWStat v={ph.uniqueVisitors.this_week} label="Unique visitors (7d)" thisWeek={ph.uniqueVisitors.this_week} lastWeek={ph.uniqueVisitors.last_week} />
-            ) : (
-              <Stat v="N/A" label="Unique visitors (7d)" sub="PostHog offline" />
-            )}
-            <Stat v={ph.available ? ph.activeToday : kpis.usersUpdatedLast7d} label={ph.available ? 'Active today' : 'Active (7d)'} />
-            <Stat v={kpis.totalParses} label="CV parses" />
-            <Stat v={kpis.totalJobs} label="Active jobs" sub="Supabase" />
-            <Stat v={ph.available && ph.jobClicksTotal !== undefined ? ph.jobClicksTotal : 'N/A'} label="Job apply clicks" sub={ph.available ? "Last 30 days" : "PostHog offline"} />
-            <Stat v={kpis.zeroViewProfiles} label="Zero-view profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
           </div>
         </Section>
 
@@ -314,8 +317,8 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* ═══ PAGEVIEWS CHART (PostHog) ═══ */}
-          <Section title="Pageviews (30 days)" badge={ph.available ? "PostHog" : "Offline"}>
-            {ph.available && ph.pageviewsByDay && ph.pageviewsByDay.length > 0 ? (
+          <Section title="Pageviews (30 days)" badge={ph.available ? "PostHog" : "Supabase"}>
+            {ph.pageviewsByDay && ph.pageviewsByDay.length > 0 ? (
               <ChartContainer config={viewsConfig} className="h-[180px] w-full">
                 <AreaChart data={ph.pageviewsByDay}>
                   <defs><linearGradient id="pvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity={0.12}/><stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity={0}/></linearGradient></defs>
@@ -326,9 +329,7 @@ export default function AdminPage() {
                   <ChartTooltip content={<ChartTooltipContent />} />
                 </AreaChart>
               </ChartContainer>
-            ) : (
-              <PostHogPlaceholder title="Pageviews Trend Chart" />
-            )}
+            ) : null}
           </Section>
 
           {/* ═══ SIGNUPS CHART (Supabase) ═══ */}
@@ -347,14 +348,14 @@ export default function AdminPage() {
         </div>
 
         {/* ═══ PROFILE ENGAGEMENT (PostHog / Supabase) ═══ */}
-        <Section title="Profile engagement (30 days)" badge={ph.available ? "PostHog" : "Supabase Only"}>
+        <Section title="Profile engagement (30 days)" badge={ph.available ? "PostHog" : "Supabase"}>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4 mb-6">
             <Stat
-              v={ph.available && ph.profileViewsTrend ? ph.profileViewsTrend.reduce((s, d) => s + d.views, 0) : kpis.totalViews}
-              label={ph.available ? "Profile views" : "Supabase Views (All-time)"}
-              sub={ph.available && ph.profileViewsTrend ? `${ph.profileViewsTrend.reduce((s, d) => s + d.unique_viewers, 0)} unique` : `avg ${kpis.avgViews} · median ${kpis.medianViews}`}
+              v={ph.profileViewsTrend ? ph.profileViewsTrend.reduce((s, d) => s + d.views, 0) : kpis.totalViews}
+              label={ph.available ? "Profile views" : "Profile views (30d)"}
+              sub={ph.profileViewsTrend ? `${ph.profileViewsTrend.reduce((s, d) => s + d.unique_viewers, 0)} unique` : `avg ${kpis.avgViews} · median ${kpis.medianViews}`}
             />
-            {ph.available && ph.avgTimeOnProfile ? (
+            {ph.avgTimeOnProfile ? (
               <Stat
                 v={`${Math.round(ph.avgTimeOnProfile.avg_seconds || 0)}s`}
                 label="Avg. time on profile"
@@ -365,7 +366,7 @@ export default function AdminPage() {
             )}
             <Stat v={kpis.usersUpdatedLast7d} label="Active profiles (7d)" sub="Recently updated in Supabase" />
           </div>
-          {ph.available && ph.profileViewsTrend && ph.profileViewsTrend.length > 0 ? (
+          {ph.profileViewsTrend && ph.profileViewsTrend.length > 0 && (
             <ChartContainer config={viewsConfig} className="h-[160px] w-full">
               <BarChart data={ph.profileViewsTrend}>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" className="stroke-border" />
@@ -375,17 +376,15 @@ export default function AdminPage() {
                 <ChartTooltip content={<ChartTooltipContent />} />
               </BarChart>
             </ChartContainer>
-          ) : (
-            <PostHogPlaceholder title="Real-Time Profile Views Trend" />
           )}
         </Section>
 
         {/* ═══ TRAFFIC SOURCES (PostHog) ═══ */}
-        <Section title="Traffic sources (7 days)" badge={ph.available ? "PostHog" : "Offline"}>
-          {ph.available && ph.topReferrers && ph.topReferrers.length > 0 ? (
+        <Section title="Traffic sources (7 days)" badge={ph.available ? "PostHog" : "Supabase"}>
+          {ph.topReferrers && ph.topReferrers.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
               {ph.topReferrers.map((r, i) => {
-                const maxR = ph.topReferrers![0].visits;
+                const maxR = ph.topReferrers![0].visits || 1;
                 return (
                   <div key={i} className="flex items-center gap-3">
                     <Globe className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -402,17 +401,15 @@ export default function AdminPage() {
                 );
               })}
             </div>
-          ) : (
-            <PostHogPlaceholder title="Referrer Tracking" />
           )}
         </Section>
 
         {/* ═══ TOP PAGES (PostHog) ═══ */}
-        <Section title="Top pages (7 days)" badge={ph.available ? "PostHog" : "Offline"}>
-          {ph.available && ph.topPages && ph.topPages.length > 0 ? (
+        <Section title="Top pages (7 days)" badge={ph.available ? "PostHog" : "Supabase"}>
+          {ph.topPages && ph.topPages.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
               {ph.topPages.slice(0, 15).map((p, i) => {
-                const maxP = ph.topPages![0].views;
+                const maxP = ph.topPages![0].views || 1;
                 return (
                   <div key={i} className="flex items-center gap-3">
                     <span className="text-xs text-muted-foreground w-4 text-right shrink-0">{i + 1}</span>
@@ -429,14 +426,12 @@ export default function AdminPage() {
                 );
               })}
             </div>
-          ) : (
-            <PostHogPlaceholder title="Top Pages & Pathnames" />
           )}
         </Section>
 
         {/* ═══ GEOGRAPHY & DEVICES (PostHog) ═══ */}
-        <Section title="Audience (7 days)" badge={ph.available ? "PostHog" : "Offline"}>
-          {ph.available && (ph.topCountries || ph.deviceTypes || ph.osTypes || ph.topBrowsers) ? (
+        <Section title="Audience (7 days)" badge={ph.available ? "PostHog" : "Supabase"}>
+          {ph.topCountries || ph.deviceTypes || ph.osTypes || ph.topBrowsers ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Countries */}
               {ph.topCountries && ph.topCountries.length > 0 && (
@@ -505,9 +500,7 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
-          ) : (
-            <PostHogPlaceholder title="Geographic & Device Telemetry" />
-          )}
+          ) : null}
         </Section>
 
         {/* ═══ CONVERSION FUNNEL (PostHog / Supabase Fallback) ═══ */}
@@ -538,8 +531,8 @@ export default function AdminPage() {
         )}
 
         {/* ═══ SHARE ANALYTICS (PostHog) ═══ */}
-        <Section title="Sharing (30 days)" badge={ph.available ? "PostHog" : "Offline"}>
-          {ph.available && ph.shareEvents && ph.shareEvents.length > 0 ? (
+        <Section title="Sharing (30 days)" badge={ph.available ? "PostHog" : "Supabase"}>
+          {ph.shareEvents && ph.shareEvents.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-8 gap-y-4">
               {ph.shareEvents.map((e, i) => (
                 <div key={i} className="py-1">
@@ -548,8 +541,6 @@ export default function AdminPage() {
                 </div>
               ))}
             </div>
-          ) : (
-            <PostHogPlaceholder title="Social Sharing Triggers" />
           )}
         </Section>
 
