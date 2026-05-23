@@ -239,9 +239,11 @@ const ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'remoteok']
 
 async function fetchJobs() {
   const sourceFilter = ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
   const params = new URLSearchParams({
     select: 'id,title,company,location,apply_url,source',
     'source': `in.(${sourceFilter})`,
+    'created_at': `gt.${sevenDaysAgo}`,
     order: 'created_at.desc',
     limit: String(FETCH_LIMIT),
   });
