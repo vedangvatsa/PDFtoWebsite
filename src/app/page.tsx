@@ -136,7 +136,7 @@ export default function Home() {
           </div>
 
           <div className="w-full max-w-[600px] min-h-[320px] flex flex-col justify-center">
-            {(!mounted || isUserLoading) ? (
+            {!mounted ? (
               <div className="w-full h-full" />
             ) : user ? (
               <div className="w-full flex flex-col items-center justify-center">
