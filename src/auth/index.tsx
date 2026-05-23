@@ -19,10 +19,17 @@ export function SupabaseClientProvider({ children }: { children: React.ReactNode
   const supabase = createClient();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-      setLoading(false);
-    });
+    supabase.auth.getUser()
+      .then(({ data }) => {
+        setUser(data.user);
+      })
+      .catch((err) => {
+        console.error('Supabase auth retrieval failed:', err);
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
