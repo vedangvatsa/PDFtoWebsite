@@ -240,36 +240,42 @@ async function main() {
   const text = item.text.trim();
   console.log(`\n📝 Meta Post #${idx + 1}/${items.length}: "${text.substring(0, 60)}..."`);
 
-  // Resolve image path
+  // Resolve image path (strictly required)
+  if (!item.img) {
+    console.error('❌ Error: No image defined for this Meta engagement post. Aborting.');
+    process.exit(1);
+  }
+
   let imagePath = null;
-  if (item.img) {
-    if (item.img.startsWith('/')) {
-      imagePath = item.img;
-    } else if (item.img.startsWith('.github/')) {
-      const REPO_ROOT = path.join(__dirname, '../..');
-      imagePath = path.join(REPO_ROOT, item.img);
-    } else {
-      imagePath = path.join(IMAGES_DIR, item.img);
-    }
-    if (!fs.existsSync(imagePath)) {
-      console.warn(`⚠️  Image not found: ${imagePath}`);
-      imagePath = null;
-    }
+  if (item.img.startsWith('/')) {
+    imagePath = item.img;
+  } else if (item.img.startsWith('.github/')) {
+    const REPO_ROOT = path.join(__dirname, '../..');
+    imagePath = path.join(REPO_ROOT, item.img);
+  } else {
+    imagePath = path.join(IMAGES_DIR, item.img);
+  }
+
+  if (!fs.existsSync(imagePath)) {
+    console.error(`❌ Error: Required image not found on disk: ${imagePath}`);
+    process.exit(1);
   }
 
   // Construct public raw GitHub URL for Instagram/Threads fallback
-  const isVideo = imagePath && imagePath.endsWith('.mp4');
+  const isVideo = imagePath.endsWith('.mp4');
   let relativeImgPath = '';
-  if (item.img) {
-    relativeImgPath = item.img.startsWith('/') ? item.img.substring(1) : item.img;
-    if (relativeImgPath.startsWith('.github/images/')) {
-      relativeImgPath = relativeImgPath.substring('.github/images/'.length);
-    }
+  relativeImgPath = item.img.startsWith('/') ? item.img.substring(1) : item.img;
+  if (relativeImgPath.startsWith('.github/images/')) {
+    relativeImgPath = relativeImgPath.substring('.github/images/'.length);
   }
-  const githubUrl = imagePath && !isVideo ? `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${relativeImgPath}` : null;
+  const githubUrl = !isVideo ? `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${relativeImgPath}` : null;
 
   // 1. Post to Facebook (file upload)
   const fb = await postToFacebook(text, imagePath);
+  if (!fb.ok) {
+    console.error('❌ Error: Facebook image upload failed. Aborting Meta posting pipeline to prevent partial text-only publish.');
+    process.exit(1);
+  }
 
   // Build media URL: FB CDN > GitHub Raw > null
   let mediaUrl = null;
@@ -279,17 +285,33 @@ async function main() {
     mediaUrl = fb.imageUrl || githubUrl;
   }
 
-  await postToInstagram(text, mediaUrl, isVideo);
-  await postToThreads(text, mediaUrl, isVideo);
+  if (!mediaUrl) {
+    console.error('❌ Error: Could not resolve a valid public media URL for Instagram/Threads. Aborting.');
+    process.exit(1);
+  }
 
-  // ALWAYS advance the index to prevent duplicate posts.
+  // 2. Post to Instagram
+  const igOk = await postToInstagram(text, mediaUrl, isVideo);
+  if (!igOk) {
+    console.error('❌ Error: Instagram image publishing failed. Aborting pipeline.');
+    process.exit(1);
+  }
+
+  // 3. Post to Threads
+  const threadsOk = await postToThreads(text, mediaUrl, isVideo);
+  if (!threadsOk) {
+    console.error('❌ Error: Threads image publishing failed. Aborting pipeline.');
+    process.exit(1);
+  }
+
+  // ALWAYS advance the index only after ALL platforms succeeded.
   const nextIdx = idx + 1;
   state.facebook.index = nextIdx;
   state.instagram.index = nextIdx;
   state.threads.index = nextIdx;
   state.lastPostedAt = new Date().toISOString();
   saveState(state);
-  console.log(`📊 Advanced Meta index to ${nextIdx} (FB: ${fb.ok ? 'ok' : 'fail'}, img: ${mediaUrl ? 'yes' : 'no'})`);
+  console.log(`📊 Successfully posted to Facebook, Instagram, and Threads! Advanced Meta index to ${nextIdx}`);
 }
 
 main().catch(e => { console.error('Fatal:', e); process.exit(1); });

@@ -291,26 +291,39 @@ async function postSingle(state, content, slotKey) {
     }
   } catch (e) { console.warn('Timeline check failed:', e.message); }
 
-  // Upload image if present
+  // Upload image if present (required for all single engagement posts)
   let mediaId = null;
-  if (item.img) {
-    try {
-      // Resolve image path: absolute, repo-relative (.github/...), or IMAGES_DIR-relative
-      let imgPath;
-      if (item.img.startsWith('/')) {
-        imgPath = item.img;
-      } else if (item.img.startsWith('.github/')) {
-        imgPath = path.join(REPO_ROOT, item.img);
-      } else {
-        // Covers both filenames (post_29.png) and subdirs (memes/foo.jpeg)
-        imgPath = path.join(IMAGES_DIR, item.img);
-      }
-      mediaId = await uploadMedia(imgPath);
-      if (mediaId) console.log('🖼️ Media uploaded:', mediaId);
-      else console.warn('⚠️ No media ID returned — posting without image');
-    } catch (e) { console.warn('Image upload failed:', e.message); }
-  } else {
-    console.log('📝 No image for this post');
+  if (!item.img) {
+    console.error('❌ Error: No image defined for this engagement post. Aborting.');
+    process.exit(1);
+  }
+
+  try {
+    // Resolve image path: absolute, repo-relative (.github/...), or IMAGES_DIR-relative
+    let imgPath;
+    if (item.img.startsWith('/')) {
+      imgPath = item.img;
+    } else if (item.img.startsWith('.github/')) {
+      imgPath = path.join(REPO_ROOT, item.img);
+    } else {
+      imgPath = path.join(IMAGES_DIR, item.img);
+    }
+
+    if (!fs.existsSync(imgPath)) {
+      console.error(`❌ Error: Required image not found on disk: ${imgPath}`);
+      process.exit(1);
+    }
+
+    mediaId = await uploadMedia(imgPath);
+    if (mediaId) {
+      console.log('🖼️ Media uploaded successfully to Twitter:', mediaId);
+    } else {
+      console.error('❌ Error: No media ID returned — aborting to prevent text-only tweet.');
+      process.exit(1);
+    }
+  } catch (e) {
+    console.error('❌ Error: Twitter image upload failed:', e.message);
+    process.exit(1);
   }
 
   const result = await postTweet(text, mediaId);
