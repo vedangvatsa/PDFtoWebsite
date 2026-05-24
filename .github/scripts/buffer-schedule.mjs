@@ -41,8 +41,8 @@ async function schedulePost(channelId, text, imgRef, dueAt) {
   const escapedText = text.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n');
   
   const assetsBlock = isVideo 
-    ? `assets: { video: { url: "${mediaUrl}" } }`
-    : `assets: { images: [{ url: "${mediaUrl}" }] }`;
+    ? `assets: [{ video: { url: "${mediaUrl}" } }]`
+    : `assets: [{ image: { url: "${mediaUrl}" } }]`;
   
   const query = `mutation {
     createPost(input: {
