@@ -30,19 +30,28 @@ async function gql(query) {
   return r.json();
 }
 
-async function uploadToPixelDrain(filePath) {
+async function uploadImage(filePath) {
   const fileData = fs.readFileSync(filePath);
-  const filename = encodeURIComponent(path.basename(filePath));
-
-  const res = await fetch(`https://pixeldrain.com/api/file/${filename}`, {
-    method: 'PUT',
-    body: fileData
-  });
+  const filename = path.basename(filePath);
   
-  if (!res.ok) throw new Error(`PixelDrain PUT upload failed: ${res.status}`);
-  const data = await res.json();
-  if (!data.id) throw new Error('PixelDrain did not return file ID');
-  return `https://pixeldrain.com/api/file/${data.id}`;
+  // Try 0x0.st (simple, no auth needed)
+  try {
+    console.log(`   📤 Uploading ${filename} to 0x0.st...`);
+    const formData = new FormData();
+    formData.append('file', new Blob([fileData]), filename);
+    const res = await fetch('https://0x0.st', { method: 'POST', body: formData });
+    if (res.ok) {
+      const url = (await res.text()).trim();
+      console.log(`   🔗 0x0.st URL: ${url}`);
+      return url;
+    }
+  } catch (e) { console.warn(`   ⚠️ 0x0.st failed: ${e.message}`); }
+  
+  // Fallback: raw GitHub URL (may be blocked by some platforms)
+  const relativePath = filePath.substring(filePath.indexOf('.github/'));
+  const rawUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/${relativePath}`;
+  console.log(`   🔗 Fallback to raw GitHub URL: ${rawUrl}`);
+  return rawUrl;
 }
 
 async function schedulePost(channelId, text, imgPath, dueAt) {
@@ -53,10 +62,7 @@ async function schedulePost(channelId, text, imgPath, dueAt) {
     const relativePath = imgPath.substring(imgPath.indexOf('/images/'));
     mediaUrl = `https://cvin.bio${relativePath}`;
   } else {
-    // Upload image to PixelDrain to bypass raw.githubusercontent / jsDelivr user-agent block on Buffer
-    console.log(`   📤 Uploading ${path.basename(imgPath)} to PixelDrain...`);
-    mediaUrl = await uploadToPixelDrain(imgPath);
-    console.log(`   🔗 Direct PixelDrain URL: ${mediaUrl}`);
+    mediaUrl = await uploadImage(imgPath);
   }
   
   const escapedText = text.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n');
