@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '0 12 */3 * *'   # Every 3 days at 5:30 PM IST
   workflow_dispatch:          # Manual trigger
+    inputs:
+      clear_queue:
+        description: 'Clear all pending posts in the Buffer queue before scheduling'
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   schedule:
@@ -21,6 +27,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Clear Buffer Queue
+        if: ${{ github.event.inputs.clear_queue == 'true' }}
+        env:
+          BUFFER_TOKEN: ${{ secrets.BUFFER_TOKEN }}
+        run: node scripts/clear-buffer.mjs
 
       - name: Schedule posts to Buffer
         env:
