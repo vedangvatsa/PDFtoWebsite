@@ -30,22 +30,14 @@ async function gql(query) {
 
 async function uploadToPixelDrain(filePath) {
   const fileData = fs.readFileSync(filePath);
-  const ext = path.extname(filePath).toLowerCase();
-  const mimeTypes = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif' };
-  const mime = mimeTypes[ext] || 'image/jpeg';
+  const filename = encodeURIComponent(path.basename(filePath));
 
-  const formData = new FormData();
-  formData.append('anonymous', 'true');
-  
-  const file = new File([fileData], path.basename(filePath), { type: mime });
-  formData.append('file', file);
-
-  const res = await fetch('https://pixeldrain.com/api/file', {
-    method: 'POST',
-    body: formData
+  const res = await fetch(`https://pixeldrain.com/api/file/${filename}`, {
+    method: 'PUT',
+    body: fileData
   });
   
-  if (!res.ok) throw new Error(`PixelDrain upload failed: ${res.status}`);
+  if (!res.ok) throw new Error(`PixelDrain PUT upload failed: ${res.status}`);
   const data = await res.json();
   if (!data.id) throw new Error('PixelDrain did not return file ID');
   return `https://pixeldrain.com/api/file/${data.id}`;
