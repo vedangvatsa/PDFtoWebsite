@@ -268,7 +268,7 @@ async function main() {
   if (relativeImgPath.startsWith('.github/images/')) {
     relativeImgPath = relativeImgPath.substring('.github/images/'.length);
   }
-  const githubUrl = !isVideo ? `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${relativeImgPath}` : null;
+  const githubUrl = !isVideo ? `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relativeImgPath}` : null;
 
   // 1. Post to Facebook (file upload)
   const fb = await postToFacebook(text, imagePath);

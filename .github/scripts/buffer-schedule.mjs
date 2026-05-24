@@ -36,7 +36,7 @@ async function schedulePost(channelId, text, imgRef, dueAt) {
   }
   const mediaUrl = isVideo 
     ? `https://cvin.bio${imgRef}`
-    : `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${relativeImgPath}`;
+    : `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relativeImgPath}`;
   
   const escapedText = text.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n');
   
