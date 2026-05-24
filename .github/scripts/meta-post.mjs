@@ -213,13 +213,13 @@ async function main() {
   const state = loadState();
   const items = content.engagement || [];
 
-  // Cooldown: skip if posted recently (20h gap for 1x/day schedule)
+  // Cooldown: skip if posted recently (7h gap for 3x/day schedule)
   if (state.lastPostedAt) {
     const elapsed = Date.now() - new Date(state.lastPostedAt).getTime();
-    const COOLDOWN_MS = 20 * 60 * 60 * 1000; // 20 hours
+    const COOLDOWN_MS = 7 * 60 * 60 * 1000; // 7 hours
     if (elapsed < COOLDOWN_MS) {
       const hrs = (elapsed / 3600000).toFixed(1);
-      console.log(`⏳ Meta Cooldown: last post was ${hrs}h ago (need 20h gap). Skipping.`);
+      console.log(`⏳ Meta Cooldown: last post was ${hrs}h ago (need 7h gap). Skipping.`);
       process.exit(0);
     }
   }

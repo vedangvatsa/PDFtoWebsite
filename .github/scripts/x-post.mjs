@@ -212,14 +212,14 @@ async function runPost() {
   if (!state.insights)     state.insights = { index: 0 };
   if (!state.engagement)   state.engagement = { index: 0 };
 
-  // Cooldown per slot: 20h gap
+  // Cooldown per slot: 7h gap (3 posts/day with 6 cron runs every 4h)
   const slotLastPosted = state.lastPostedAt[SLOT];
   if (slotLastPosted) {
     const elapsed = Date.now() - new Date(slotLastPosted).getTime();
-    const COOLDOWN_MS = 20 * 60 * 60 * 1000;
+    const COOLDOWN_MS = 7 * 60 * 60 * 1000;
     if (elapsed < COOLDOWN_MS) {
       const hrs = (elapsed / 3600000).toFixed(1);
-      console.log(`⏳ [${SLOT}] Cooldown: last post ${hrs}h ago (need 20h). Skipping.`);
+      console.log(`⏳ [${SLOT}] Cooldown: last post ${hrs}h ago (need 7h). Skipping.`);
       process.exit(0);
     }
   }
