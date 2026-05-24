@@ -131,28 +131,46 @@ async function main() {
   // Resolve image from x-content.json item
   let imageBlob = null;
   const imgRef = typeof item === 'object' ? item.img : null;
-  if (imgRef) {
-    let imgPath;
-    if (imgRef.startsWith('/')) {
-      imgPath = imgRef;
-    } else if (imgRef.startsWith('.github/')) {
-      const REPO_ROOT = path.join(__dirname, '../..');
-      imgPath = path.join(REPO_ROOT, imgRef);
-    } else {
-      imgPath = path.join(IMAGES_DIR, imgRef);
-    }
-    if (imgPath.endsWith('.mp4')) {
-      console.warn('⚠️ Bluesky does not support video, skipping media');
-    } else if (fs.existsSync(imgPath)) {
-      imageBlob = await uploadImage(session, imgPath);
-      console.log(`🖼️ Image uploaded: ${path.basename(imgPath)}`);
-    } else {
-      console.warn(`⚠️ Image not found: ${imgPath}`);
-    }
+  if (!imgRef) {
+    console.error('❌ Error: No image reference defined for this engagement post. Aborting.');
+    process.exit(1);
+  }
+
+  let imgPath;
+  if (imgRef.startsWith('/')) {
+    imgPath = imgRef;
+  } else if (imgRef.startsWith('.github/')) {
+    const REPO_ROOT = path.join(__dirname, '../..');
+    imgPath = path.join(REPO_ROOT, imgRef);
+  } else {
+    imgPath = path.join(IMAGES_DIR, imgRef);
+  }
+
+  if (imgPath.endsWith('.mp4')) {
+    console.error('❌ Error: Bluesky does not support video, and all engagement posts MUST have a valid image.');
+    process.exit(1);
+  }
+
+  if (!fs.existsSync(imgPath)) {
+    console.error(`❌ Error: Required image not found: ${imgPath}`);
+    process.exit(1);
+  }
+
+  try {
+    imageBlob = await uploadImage(session, imgPath);
+    console.log(`🖼️ Image uploaded successfully: ${path.basename(imgPath)}`);
+  } catch (e) {
+    console.error('❌ Error: Image upload to Bluesky failed:', e.message);
+    process.exit(1);
+  }
+
+  if (!imageBlob) {
+    console.error('❌ Error: No image blob returned — aborting to prevent text-only publish.');
+    process.exit(1);
   }
 
   const result = await createPost(session, text, imageBlob);
-  console.log(`✅ Posted! URI: ${result.uri}`);
+  console.log(`✅ Posted to Bluesky! URI: ${result.uri}`);
 
   state.index++;
   state.lastPostedAt = new Date().toISOString();
