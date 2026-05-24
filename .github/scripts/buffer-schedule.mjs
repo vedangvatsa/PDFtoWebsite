@@ -63,7 +63,7 @@ async function schedulePost(channelId, text, imgRef, dueAt) {
   return gql(query);
 }
 
-// 6 posts/day: 00:30, 04:30, 08:30, 12:30, 16:30, 20:30 UTC
+// 3 posts/day (8h gap): 00:30, 08:30, 16:30 UTC
 function generateSchedule(startIndex) {
   const now = new Date();
   // Start from tomorrow
@@ -73,11 +73,8 @@ function generateSchedule(startIndex) {
   
   const slots = [
     { h: 0, m: 30, prevDay: false },
-    { h: 4, m: 30, prevDay: false },
     { h: 8, m: 30, prevDay: false },
-    { h: 12, m: 30, prevDay: false },
     { h: 16, m: 30, prevDay: false },
-    { h: 20, m: 30, prevDay: false },
   ];
   const dates = [];
   let slotIdx = 0;
