@@ -10,6 +10,11 @@ on:
         type: boolean
         required: false
         default: false
+      max_posts:
+        description: 'Maximum number of posts to schedule in this run (0 = all remaining)'
+        type: number
+        required: false
+        default: 0
 
 jobs:
   schedule:
@@ -37,6 +42,7 @@ jobs:
       - name: Schedule posts to Buffer
         env:
           BUFFER_TOKEN: ${{ secrets.BUFFER_TOKEN }}
+          MAX_POSTS: ${{ github.event.inputs.max_posts || '0' }}
         run: node .github/scripts/buffer-schedule.mjs
 
 

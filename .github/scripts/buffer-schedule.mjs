@@ -11,8 +11,10 @@ const STATE_FILE = path.join(__dirname, 'buffer-state.json');
 const TOKEN = process.env.BUFFER_TOKEN;
 if (!TOKEN) { console.error('Missing BUFFER_TOKEN'); process.exit(1); }
 
+const MAX_POSTS = (process.env.MAX_POSTS && parseInt(process.env.MAX_POSTS, 10) > 0) ? parseInt(process.env.MAX_POSTS, 10) : Infinity;
+
 const CHANNELS = {
-  linkedin:  '69c5268baf47dacb69589bc6',
+  linkedin:  '6a134180c687a22dd420e089',  // cvinbio page on Web3-Jobs Buffer account
 };
 
 const CONTENT_FILE = path.join(__dirname, 'x-content.json');
@@ -152,8 +154,9 @@ async function main() {
   console.log(`\n── LINKEDIN (starting from #${skip + 1}) ──`);
   
   let scheduled = 0;
+  const maxToSchedule = Math.min(POSTS.length, skip + MAX_POSTS);
   
-  for (let i = skip; i < POSTS.length; i++) {
+  for (let i = skip; i < maxToSchedule; i++) {
     const item = POSTS[i];
     const text = item.text.trim();
     const imgRef = item.img;
