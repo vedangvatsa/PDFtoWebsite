@@ -54,7 +54,7 @@ async function uploadImage(filePath) {
   return rawUrl;
 }
 
-async function schedulePost(channelId, text, imgPath, dueAt) {
+async function schedulePost(channelId, text, imgPath, dueAt, altText) {
   const isVideo = imgPath.endsWith('.mp4');
   let mediaUrl;
   
@@ -66,10 +66,13 @@ async function schedulePost(channelId, text, imgPath, dueAt) {
   }
   
   const escapedText = text.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n');
+  const escapedAlt = altText ? altText.replace(/\\/g, '\\\\').replace(/"/g, '\\"') : '';
   
   const assetsBlock = isVideo 
     ? `assets: [{ video: { url: "${mediaUrl}" } }]`
-    : `assets: [{ image: { url: "${mediaUrl}" } }]`;
+    : escapedAlt
+      ? `assets: [{ image: { url: "${mediaUrl}", altText: "${escapedAlt}" } }]`
+      : `assets: [{ image: { url: "${mediaUrl}" } }]`;
   
   const query = `mutation {
     createPost(input: {
@@ -191,7 +194,8 @@ async function main() {
     }
     
     try {
-      const result = await schedulePost(channelId, text, imgPath, dueAt);
+      const altText = item.alt || '';
+      const result = await schedulePost(channelId, text, imgPath, dueAt, altText);
       
       if (result.data?.createPost?.post) {
         const time = new Date(dueAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
