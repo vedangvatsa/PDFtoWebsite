@@ -28,15 +28,42 @@ async function gql(query) {
   return r.json();
 }
 
-async function schedulePost(channelId, text, imgRef, dueAt) {
-  const isVideo = imgRef.endsWith('.mp4');
-  let relativeImgPath = imgRef.startsWith('/') ? imgRef.substring(1) : imgRef;
-  if (relativeImgPath.startsWith('.github/images/')) {
-    relativeImgPath = relativeImgPath.substring('.github/images/'.length);
+async function uploadToPixelDrain(filePath) {
+  const fileData = fs.readFileSync(filePath);
+  const ext = path.extname(filePath).toLowerCase();
+  const mimeTypes = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif' };
+  const mime = mimeTypes[ext] || 'image/jpeg';
+
+  const formData = new FormData();
+  formData.append('anonymous', 'true');
+  
+  const file = new File([fileData], path.basename(filePath), { type: mime });
+  formData.append('file', file);
+
+  const res = await fetch('https://pixeldrain.com/api/file', {
+    method: 'POST',
+    body: formData
+  });
+  
+  if (!res.ok) throw new Error(`PixelDrain upload failed: ${res.status}`);
+  const data = await res.json();
+  if (!data.id) throw new Error('PixelDrain did not return file ID');
+  return `https://pixeldrain.com/api/file/${data.id}`;
+}
+
+async function schedulePost(channelId, text, imgPath, dueAt) {
+  const isVideo = imgPath.endsWith('.mp4');
+  let mediaUrl;
+  
+  if (isVideo) {
+    const relativePath = imgPath.substring(imgPath.indexOf('/images/'));
+    mediaUrl = `https://cvin.bio${relativePath}`;
+  } else {
+    // Upload image to PixelDrain to bypass raw.githubusercontent / jsDelivr user-agent block on Buffer
+    console.log(`   📤 Uploading ${path.basename(imgPath)} to PixelDrain...`);
+    mediaUrl = await uploadToPixelDrain(imgPath);
+    console.log(`   🔗 Direct PixelDrain URL: ${mediaUrl}`);
   }
-  const mediaUrl = isVideo 
-    ? `https://cvin.bio${imgRef}`
-    : `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relativeImgPath}`;
   
   const escapedText = text.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n');
   
@@ -163,7 +190,7 @@ async function main() {
     }
     
     try {
-      const result = await schedulePost(channelId, text, imgRef, dueAt);
+      const result = await schedulePost(channelId, text, imgPath, dueAt);
       
       if (result.data?.createPost?.post) {
         const time = new Date(dueAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
