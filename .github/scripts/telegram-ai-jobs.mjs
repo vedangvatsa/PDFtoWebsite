@@ -65,7 +65,7 @@ const BIG_TECH_COMPANIES = new Set([
 function isPureAICompany(company) {
   const c = company.toLowerCase().trim();
   for (const name of PURE_AI_COMPANIES) {
-    if (c.includes(name) || name.includes(c)) return true;
+    if (c === name) return true;
   }
   return false;
 }
@@ -73,7 +73,7 @@ function isPureAICompany(company) {
 function isBigTech(company) {
   const c = company.toLowerCase().trim();
   for (const name of BIG_TECH_COMPANIES) {
-    if (c.includes(name) || name.includes(c)) return true;
+    if (c.includes(name)) return true;
   }
   return false;
 }
