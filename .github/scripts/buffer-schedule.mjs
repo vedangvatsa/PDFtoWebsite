@@ -33,28 +33,46 @@ async function gql(query) {
 async function uploadImage(filePath) {
   const fileData = fs.readFileSync(filePath);
   const filename = path.basename(filePath);
+  const ext = path.extname(filename).toLowerCase();
+  const mimeType = ext === '.png' ? 'image/png' : ext === '.jpeg' ? 'image/jpeg' : 'image/jpeg';
   
-  // Try 0x0.st (simple, no auth needed)
+  // Primary: Telegra.ph upload (simple, permanent, publicly accessible)
   try {
-    console.log(`   📤 Uploading ${filename} to 0x0.st...`);
+    console.log(`   📤 Uploading ${filename} to telegra.ph...`);
     const formData = new FormData();
-    formData.append('file', new Blob([fileData]), filename);
-    const res = await fetch('https://0x0.st', { method: 'POST', body: formData });
+    formData.append('file', new Blob([fileData], { type: mimeType }), filename);
+    const res = await fetch('https://telegra.ph/upload', { method: 'POST', body: formData });
+    if (res.ok) {
+      const data = await res.json();
+      if (data[0] && data[0].src) {
+        const url = `https://telegra.ph${data[0].src}`;
+        console.log(`   🔗 telegra.ph URL: ${url}`);
+        return url;
+      }
+    }
+    console.warn(`   ⚠️ telegra.ph returned unexpected response`);
+  } catch (e) { console.warn(`   ⚠️ telegra.ph failed: ${e.message}`); }
+  
+  // Fallback: catbox.moe
+  try {
+    console.log(`   📤 Trying catbox.moe...`);
+    const formData = new FormData();
+    formData.append('reqtype', 'fileupload');
+    formData.append('fileToUpload', new Blob([fileData], { type: mimeType }), filename);
+    const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: formData });
     if (res.ok) {
       const url = (await res.text()).trim();
-      console.log(`   🔗 0x0.st URL: ${url}`);
-      return url;
+      if (url.startsWith('http')) {
+        console.log(`   🔗 catbox URL: ${url}`);
+        return url;
+      }
     }
-  } catch (e) { console.warn(`   ⚠️ 0x0.st failed: ${e.message}`); }
+  } catch (e) { console.warn(`   ⚠️ catbox failed: ${e.message}`); }
   
-  // Fallback: raw GitHub URL (may be blocked by some platforms)
-  const relativePath = filePath.substring(filePath.indexOf('.github/'));
-  const rawUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/${relativePath}`;
-  console.log(`   🔗 Fallback to raw GitHub URL: ${rawUrl}`);
-  return rawUrl;
+  throw new Error(`All image upload methods failed for ${filename}`);
 }
 
-async function schedulePost(channelId, text, imgPath, dueAt, altText) {
+async function schedulePost(channelId, text, imgPath, altText) {
   const isVideo = imgPath.endsWith('.mp4');
   let mediaUrl;
   
@@ -70,17 +88,14 @@ async function schedulePost(channelId, text, imgPath, dueAt, altText) {
   
   const assetsBlock = isVideo 
     ? `assets: [{ video: { url: "${mediaUrl}" } }]`
-    : escapedAlt
-      ? `assets: [{ image: { url: "${mediaUrl}", altText: "${escapedAlt}" } }]`
-      : `assets: [{ image: { url: "${mediaUrl}" } }]`;
+    : `assets: [{ image: { url: "${mediaUrl}" } }]`;
   
   const query = `mutation {
     createPost(input: {
       channelId: "${channelId}"
       text: "${escapedText}"
-      mode: customScheduled
+      mode: addToQueue
       schedulingType: automatic
-      dueAt: "${dueAt}"
       ${assetsBlock}
     }) {
       ... on PostActionSuccess { post { id dueAt } }
@@ -159,8 +174,7 @@ async function main() {
   const channelId = CHANNELS.linkedin;
   const skip = state.linkedin;
   
-  const schedule = generateSchedule(skip);
-  console.log(`\n── LINKEDIN (starting from #${skip + 1}) ──`);
+  console.log(`\n── LINKEDIN (starting from #${skip + 1}, using Buffer queue slots) ──`);
   
   let scheduled = 0;
   const maxToSchedule = Math.min(POSTS.length, skip + MAX_POSTS);
@@ -169,8 +183,6 @@ async function main() {
     const item = POSTS[i];
     const text = item.text.trim();
     const imgRef = item.img;
-    const dueAt = schedule[i - skip];
-    if (!dueAt) break;
     
     // Resolve image path locally to check existence
     if (!imgRef) {
@@ -195,21 +207,28 @@ async function main() {
     
     try {
       const altText = item.alt || '';
-      const result = await schedulePost(channelId, text, imgPath, dueAt, altText);
+      const result = await schedulePost(channelId, text, imgPath, altText);
       
       if (result.data?.createPost?.post) {
-        const time = new Date(dueAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+        const slotTime = result.data.createPost.post.dueAt;
+        const time = slotTime ? new Date(slotTime).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : 'queued';
         console.log(`✅ #${i + 1} → ${time}`);
         scheduled++;
         state.linkedin = i + 1;
       } else {
         const err = result.data?.createPost?.message || result.errors?.[0]?.message || 'Unknown';
+        if (err.includes('Too many requests') || err.includes('rate') || err.includes('RATE_LIMIT')) {
+          console.log(`⏳ #${i + 1} → Rate limited (24h window). Will retry next cron run.`);
+          break;
+        }
         console.log(`❌ #${i + 1} → ${err}`);
         if (err.includes('limit') || err.includes('Limit')) {
           console.log(`⏸ Hit limit for LinkedIn. Will continue next run.`);
           break;
         }
       }
+      // Delay between posts to avoid rate limiting
+      await new Promise(r => setTimeout(r, 2000));
     } catch (e) {
       console.log(`❌ #${i + 1} → ${e.message}`);
       process.exit(1); // Abort to prevent text-only fallback or out-of-order scheduling
