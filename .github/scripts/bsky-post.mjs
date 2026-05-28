@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STATE_FILE = path.join(__dirname, 'bsky-state.json');
 
-const HANDLE = 'cvinbio.bsky.social';
+const HANDLE = 'cv-in-bio.bsky.social';
 const APP_PASSWORD = process.env.BSKY_APP_PASSWORD;
 if (!APP_PASSWORD) { console.error('Missing BSKY_APP_PASSWORD'); process.exit(1); }
 
