@@ -270,11 +270,34 @@ async function main() {
   }
   const githubUrl = !isVideo ? `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relativeImgPath}` : null;
 
-  // 1. Post to Facebook (file upload)
-  const fb = await postToFacebook(text, imagePath);
-  if (!fb.ok) {
-    console.error('❌ Error: Facebook image upload failed. Aborting Meta posting pipeline to prevent partial text-only publish.');
+  // Determine configured platforms
+  const hasFacebook = !!(META_PAGE_ID && META_PAGE_TOKEN);
+  const hasInstagram = !!(META_IG_USER_ID && META_PAGE_TOKEN);
+  const hasThreads = !!(THREADS_USER_ID && THREADS_TOKEN);
+
+  console.log(`🔌 Platform Status: Facebook: ${hasFacebook ? 'Configured' : 'Skipped'}, Instagram: ${hasInstagram ? 'Configured' : 'Skipped'}, Threads: ${hasThreads ? 'Configured' : 'Skipped'}`);
+
+  if (!hasFacebook && !hasInstagram && !hasThreads) {
+    console.error('❌ Error: No Meta platforms are configured. Aborting.');
     process.exit(1);
+  }
+
+  let facebookSuccess = false;
+  let instagramSuccess = false;
+  let threadsSuccess = false;
+  let fbImageUrl = null;
+
+  // 1. Post to Facebook
+  if (hasFacebook) {
+    console.log('📤 Posting to Facebook...');
+    const fb = await postToFacebook(text, imagePath);
+    if (fb.ok) {
+      facebookSuccess = true;
+      fbImageUrl = fb.imageUrl;
+      console.log('✅ Facebook post succeeded');
+    } else {
+      console.error('❌ Facebook post failed');
+    }
   }
 
   // Build media URL: FB CDN > GitHub Raw > null
@@ -282,36 +305,55 @@ async function main() {
   if (isVideo) {
     mediaUrl = `https://cvin.bio${item.img}`;
   } else {
-    mediaUrl = fb.imageUrl || githubUrl;
-  }
-
-  if (!mediaUrl) {
-    console.error('❌ Error: Could not resolve a valid public media URL for Instagram/Threads. Aborting.');
-    process.exit(1);
+    mediaUrl = fbImageUrl || githubUrl;
   }
 
   // 2. Post to Instagram
-  const igOk = await postToInstagram(text, mediaUrl, isVideo);
-  if (!igOk) {
-    console.error('❌ Error: Instagram image publishing failed. Aborting pipeline.');
-    process.exit(1);
+  if (hasInstagram) {
+    if (!mediaUrl) {
+      console.error('❌ Instagram: Cannot post without a public media URL. Skipping.');
+    } else {
+      console.log('📤 Posting to Instagram...');
+      const igOk = await postToInstagram(text, mediaUrl, isVideo);
+      if (igOk) {
+        instagramSuccess = true;
+        console.log('✅ Instagram post succeeded');
+      } else {
+        console.error('❌ Instagram post failed');
+      }
+    }
   }
 
   // 3. Post to Threads
-  const threadsOk = await postToThreads(text, mediaUrl, isVideo);
-  if (!threadsOk) {
-    console.error('❌ Error: Threads image publishing failed. Aborting pipeline.');
-    process.exit(1);
+  if (hasThreads) {
+    console.log('📤 Posting to Threads...');
+    const threadsOk = await postToThreads(text, mediaUrl, isVideo);
+    if (threadsOk) {
+      threadsSuccess = true;
+      console.log('✅ Threads post succeeded');
+    } else {
+      console.error('❌ Threads post failed');
+    }
   }
 
-  // ALWAYS advance the index only after ALL platforms succeeded.
-  const nextIdx = idx + 1;
-  state.facebook.index = nextIdx;
-  state.instagram.index = nextIdx;
-  state.threads.index = nextIdx;
-  state.lastPostedAt = new Date().toISOString();
-  saveState(state);
-  console.log(`📊 Successfully posted to Facebook, Instagram, and Threads! Advanced Meta index to ${nextIdx}`);
+  // Check if at least one attempted platform succeeded
+  const anySuccess = facebookSuccess || instagramSuccess || threadsSuccess;
+  
+  if (anySuccess) {
+    const nextIdx = idx + 1;
+    
+    // Update shared queue indices
+    state.facebook.index = nextIdx;
+    state.instagram.index = nextIdx;
+    state.threads.index = nextIdx;
+    state.lastPostedAt = new Date().toISOString();
+    saveState(state);
+    
+    console.log(`📊 Successfully posted! Advanced shared Meta index to ${nextIdx}`);
+  } else {
+    console.error('❌ Error: All configured Meta platforms failed to publish. Aborting.');
+    process.exit(1);
+  }
 }
 
 main().catch(e => { console.error('Fatal:', e); process.exit(1); });
