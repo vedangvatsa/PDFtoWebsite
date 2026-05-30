@@ -1,12 +1,20 @@
 {
   "name": "CVin.Bio Agent",
   "description": "Professional identity platform and job board. Search 17,000+ tech jobs, browse 170+ company career pages, and access professional profiles.",
-  "url": "https://cvin.bio",
+  "url": "https://cvin.bio/api/rpc",
   "version": "1.0.0",
-  "protocol_version": "0.2.1",
+  "protocolVersion": "1.0",
+  "protocol_version": "1.0",
   "provider": {
+    "name": "CVin.Bio",
     "organization": "CVin.Bio",
-    "url": "https://cvin.bio"
+    "url": "https://cvin.bio",
+    "legalEntity": {
+      "name": "CVin.Bio",
+      "registry": "KvK",
+      "registrationNumber": "85739174",
+      "country": "NL"
+    }
   },
   "capabilities": {
     "streaming": false,

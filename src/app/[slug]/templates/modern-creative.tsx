@@ -124,6 +124,53 @@ function stripBulletPrefix(line: string): string {
   return line.replace(/^(\s*)(●|•|-|\*|\d+\.)\s+/, '').trim();
 }
 
+// Split a long text blob into 2-3 paragraphs (max 2 breaks) at sentence boundaries
+function splitIntoParas(text: string): string[] {
+  if (text.length <= 400) return [text];
+
+  let safe = text;
+  const replacements: string[] = [];
+
+  // 1. Protect URLs from being treated as sentence ends (e.g. "github.com/user. Published")
+  safe = safe.replace(/(?:https?:\/\/|www\.)\S+/gi, (match) => {
+    replacements.push(match);
+    return `__REPL${replacements.length - 1}__`;
+  });
+
+  // 2. Protect common abbreviations (Dr., Mr., Inc., e.g., i.e., etc.)
+  const abbrevs = /\b(Dr|Mr|Mrs|Ms|Prof|Gen|Gov|Sr|Jr|Inc|Ltd|Corp|Co|No|vs|Vol|Dept|Univ|St|Sgt|Capt|Col|Maj|Rev|Ave|Blvd|Mt|Ft|approx|est|al|etc|i\.e|e\.g)\.\s/gi;
+  safe = safe.replace(abbrevs, (match) => {
+    replacements.push(match);
+    return `__REPL${replacements.length - 1}__`;
+  });
+
+  // 3. Split at real sentence boundaries:
+  //    period/exclamation/question → space → uppercase letter followed by lowercase
+  //    (requires [A-Z][a-z] to avoid splitting before ALL-CAPS words like "DEPLOYED", "AWS")
+  const sentenceBreak = /(?<=[.!?])\s+(?=[A-Z][a-z])/g;
+  const sentences = safe.split(sentenceBreak);
+
+  // Restore all protected tokens
+  const restore = (s: string) => s.replace(/__REPL(\d+)__/g, (_, i) => replacements[parseInt(i)]);
+
+  if (sentences.length < 2) return [text]; // nothing to split
+
+  // For exactly 2 sentences, split into 2 paras if both are substantial
+  if (sentences.length === 2) {
+    return sentences.map(s => restore(s.trim()));
+  }
+
+  // 3+ sentences: 2 paras for moderate text, 3 paras for very long text (>900 chars with 5+ sentences)
+  const numParas = text.length > 900 && sentences.length >= 5 ? 3 : 2;
+  const targetPerPara = Math.ceil(sentences.length / numParas);
+  const paras: string[] = [];
+  for (let i = 0; i < sentences.length; i += targetPerPara) {
+    const chunk = sentences.slice(i, i + targetPerPara).join(' ').trim();
+    if (chunk) paras.push(restore(chunk));
+  }
+  return paras.length > 0 ? paras : [text];
+}
+
 function StructuredText({ text }: { text?: string }) {
   if (!text) return null;
 
@@ -134,7 +181,13 @@ function StructuredText({ text }: { text?: string }) {
 
   for (const raw of lines) {
     const line = raw.trim();
-    if (!line) continue; // skip blank lines between sections
+    if (!line) {
+      // Blank line = explicit paragraph break — start a new para block
+      if (blocks.length > 0 && blocks[blocks.length - 1].type === 'para') {
+        blocks.push({ type: 'para', lines: [] });
+      }
+      continue;
+    }
 
     if (isBulletLine(line)) {
       // Append to existing bullet block or start a new one
@@ -144,25 +197,27 @@ function StructuredText({ text }: { text?: string }) {
         blocks.push({ type: 'bullet', lines: [line] });
       }
     } else {
-      // Continuation line — append to whatever block came before
-      if (blocks.length > 0) {
-        const last = blocks[blocks.length - 1];
-        if (last.type === 'bullet') {
-          // Continuation of last bullet item — join with space
-          last.lines[last.lines.length - 1] += ' ' + line;
-        } else {
-          // Continuation of paragraph
-          last.lines.push(line);
-        }
+      // Non-bullet line
+      const last = blocks.length > 0 ? blocks[blocks.length - 1] : null;
+      if (last?.type === 'para') {
+        last.lines.push(line);
       } else {
+        // After bullets or at start — new paragraph block
         blocks.push({ type: 'para', lines: [line] });
       }
     }
   }
 
+  // Remove empty para blocks (from consecutive blank lines)
+  const cleanBlocks = blocks.filter(b => b.lines.length > 0);
+
+  // Count para blocks — if user already added line breaks (2+ para blocks), skip auto-splitting
+  const paraBlockCount = cleanBlocks.filter(b => b.type === 'para').length;
+  const shouldAutoSplit = paraBlockCount <= 1;
+
   return (
-    <div className="space-y-1.5">
-      {blocks.map((block, bi) => {
+    <div className="space-y-2.5">
+      {cleanBlocks.map((block, bi) => {
         if (block.type === 'bullet') {
           return (
             <ul key={bi} className="list-disc list-outside ml-4 space-y-0.5">
@@ -174,10 +229,17 @@ function StructuredText({ text }: { text?: string }) {
             </ul>
           );
         }
+        const fullText = block.lines.join(' ');
+        // Only auto-split if user didn't already add their own line breaks
+        const paras = shouldAutoSplit ? splitIntoParas(fullText) : [fullText];
         return (
-          <p key={bi} className="text-xs text-muted-foreground leading-relaxed">
-            <LinkifiedLine text={block.lines.join(' ')} />
-          </p>
+          <React.Fragment key={bi}>
+            {paras.map((para, pi) => (
+              <p key={pi} className="text-xs text-muted-foreground leading-relaxed">
+                <LinkifiedLine text={para} />
+              </p>
+            ))}
+          </React.Fragment>
         );
       })}
     </div>
@@ -381,7 +443,8 @@ export default function TemplateModern(props: ProfileData) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
+                    aria-label={`Website: ${profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}`}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                   >
                     <Globe className="h-4 w-4 text-[#4285F4]" />
                   </a>
@@ -392,7 +455,8 @@ export default function TemplateModern(props: ProfileData) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={profile.github.replace(/^(?:https?:\/\/)?(?:www\.)?github\.com\//i, '').replace(/\/$/, '')}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
+                    aria-label={`GitHub: ${profile.github.replace(/^(?:https?:\/\/)?(?:www\.)?github\.com\//i, '').replace(/\/$/, '')}`}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                   >
                     <Github className="h-4 w-4 text-[#181717] dark:text-[#f0f6fc]" />
                   </a>
@@ -403,7 +467,8 @@ export default function TemplateModern(props: ProfileData) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={profile.linkedin.replace(/^(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, '')}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
+                    aria-label={`LinkedIn: ${profile.linkedin.replace(/^(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, '')}`}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                   >
                     <Linkedin className="h-4 w-4 text-[#0A66C2]" />
                   </a>
@@ -419,7 +484,8 @@ export default function TemplateModern(props: ProfileData) {
                       target="_blank"
                       rel="noopener noreferrer"
                       title={label}
-                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors"
+                      aria-label={label}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                     >
                       {faviconUrl ? (
                         <img src={faviconUrl} alt={label} className="h-4 w-4 rounded-sm" loading="lazy" />

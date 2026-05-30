@@ -28,6 +28,7 @@ CRITICAL RULES:
 9. PROMOTIONS RULE: If a candidate held multiple roles or titles at the SAME company (promotions, lateral moves, role changes), you MUST create a SEPARATE workExperience entry for EACH distinct role with its own title, dates, and description. The "company" field MUST be identical across all entries for that company. Example input — "Google: Staff Engineer (2022-Present), Senior Engineer (2020-2022), Engineer (2018-2020)" becomes THREE separate workExperience entries all with company "Google". Look for patterns like multiple titles with date ranges listed under a single company heading, or titles separated by promotion indicators.
 10. WORK LOCATION RULE: For each work experience entry, extract the work location (city, country or city, state) into the "location" field. This is where the job was performed, NOT the candidate's home address. If multiple locations, combine them (e.g. "Dubai & London"). If remote, put "Remote". If hybrid, put "Hybrid, [City]". If not mentioned anywhere in that role's context, leave as empty string. Do NOT guess a location that is not stated or clearly implied. Do NOT put the location inside the description field.
 11. SKILLS SEGREGATION RULE: The "skills" field MUST be a flat array of individual, short, clean, distinct keywords or brief tech/business skill phrases (e.g., "React", "SQL", "Product Discovery"). If the resume groups skills under category lines or lists them as long comma-separated lines (e.g., "Product Management: Product Discovery, PRDs", "Languages: JavaScript, TypeScript"), you MUST segregate them. Split these categories into individual, separate strings in the "skills" array (e.g., ["Product Management", "Product Discovery", "PRDs", "JavaScript", "TypeScript"]). Do NOT include trailing commas, colons, or category prefixes within the individual skill strings, and NEVER output an entire long multi-skill line or category block as a single array element!
+12. SKILLS CAP RULE: Output AT MOST 30 skills. Only include actual technical skills, tools, methodologies, and core competencies that the candidate would list in a "Skills" section. Do NOT extract project topics, domain-specific nouns from job descriptions, or industry verticals as skills. For example, "Hyperledger Fabric" is a skill, but "rural road verification" or "birth and death registration" are project topics, NOT skills. Prioritize hard skills and widely-recognized competencies over vague or overly-specific phrases.
 DO NOT THROW ANY REAL WORK DATA AWAY!`;
 
 // Supported file types
@@ -336,6 +337,12 @@ export async function POST(request: NextRequest) {
       }
       
       if (!aiStructuredData && lastError) throw lastError;
+
+      // Post-processing: cap skills at 30 to prevent bloated profiles
+      if (Array.isArray(aiStructuredData?.skills) && aiStructuredData.skills.length > 30) {
+        console.warn(`Skills cap: truncating ${aiStructuredData.skills.length} skills to 30`);
+        aiStructuredData.skills = aiStructuredData.skills.slice(0, 30);
+      }
 
     } catch (aiError) {
       console.warn("AI extraction failed after retries, attempting regex fallback...", aiError);
