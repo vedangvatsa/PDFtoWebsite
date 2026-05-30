@@ -106,3 +106,16 @@ jobs:
             done
           fi
 
+      - name: Refill Buffer queue (LinkedIn)
+        continue-on-error: true
+        env:
+          BUFFER_ACCESS_TOKEN: ${{ secrets.BUFFER_ACCESS_TOKEN }}
+        run: |
+          node .github/scripts/buffer-linkedin.mjs
+          git add .github/scripts/buffer-linkedin-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update Buffer LinkedIn state [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
