@@ -224,51 +224,17 @@ async function main() {
     }
   }
 
-  // Use a single shared index — prevents any platform from re-posting old content
-  const idx = Math.max(
-    state.facebook?.index || 0,
-    state.instagram?.index || 0,
-    state.threads?.index || 0
-  );
+  // Each platform tracks its own index so failed platforms can retry
+  const fbIdx = state.facebook?.index || 0;
+  const igIdx = state.instagram?.index || 0;
+  const thIdx = state.threads?.index || 0;
 
-  if (idx >= items.length) {
-    console.log(`✅ All ${items.length} engagement posts published on Meta. Done.`);
+  if (fbIdx >= items.length && igIdx >= items.length && thIdx >= items.length) {
+    console.log(`✅ All ${items.length} engagement posts published on all Meta platforms. Done.`);
     process.exit(0);
   }
 
-  const item = items[idx];
-  const text = item.text.trim();
-  console.log(`\n📝 Meta Post #${idx + 1}/${items.length}: "${text.substring(0, 60)}..."`);
-
-  // Resolve image path (strictly required)
-  if (!item.img) {
-    console.error('❌ Error: No image defined for this Meta engagement post. Aborting.');
-    process.exit(1);
-  }
-
-  let imagePath = null;
-  if (item.img.startsWith('/')) {
-    imagePath = item.img;
-  } else if (item.img.startsWith('.github/')) {
-    const REPO_ROOT = path.join(__dirname, '../..');
-    imagePath = path.join(REPO_ROOT, item.img);
-  } else {
-    imagePath = path.join(IMAGES_DIR, item.img);
-  }
-
-  if (!fs.existsSync(imagePath)) {
-    console.error(`❌ Error: Required image not found on disk: ${imagePath}`);
-    process.exit(1);
-  }
-
-  // Construct public raw GitHub URL for Instagram/Threads fallback
-  const isVideo = imagePath.endsWith('.mp4');
-  let relativeImgPath = '';
-  relativeImgPath = item.img.startsWith('/') ? item.img.substring(1) : item.img;
-  if (relativeImgPath.startsWith('.github/images/')) {
-    relativeImgPath = relativeImgPath.substring('.github/images/'.length);
-  }
-  const githubUrl = !isVideo ? `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relativeImgPath}` : null;
+  console.log(`📊 Platform indices — FB: ${fbIdx}, IG: ${igIdx}, Threads: ${thIdx}`);
 
   // Determine configured platforms
   const hasFacebook = !!(META_PAGE_ID && META_PAGE_TOKEN);
@@ -282,76 +248,127 @@ async function main() {
     process.exit(1);
   }
 
-  let facebookSuccess = false;
-  let instagramSuccess = false;
-  let threadsSuccess = false;
-  let fbImageUrl = null;
-
-  // 1. Post to Facebook
-  if (hasFacebook) {
-    console.log('📤 Posting to Facebook...');
-    const fb = await postToFacebook(text, imagePath);
-    if (fb.ok) {
-      facebookSuccess = true;
-      fbImageUrl = fb.imageUrl;
-      console.log('✅ Facebook post succeeded');
+  // Helper to resolve image for a given content item
+  function resolveMedia(item) {
+    let imagePath = null;
+    if (item.img.startsWith('/')) {
+      imagePath = item.img;
+    } else if (item.img.startsWith('.github/')) {
+      const REPO_ROOT = path.join(__dirname, '../..');
+      imagePath = path.join(REPO_ROOT, item.img);
     } else {
-      console.error('❌ Facebook post failed');
+      imagePath = path.join(IMAGES_DIR, item.img);
     }
+    const isVideo = imagePath?.endsWith('.mp4') || false;
+    let relativeImgPath = item.img.startsWith('/') ? item.img.substring(1) : item.img;
+    if (relativeImgPath.startsWith('.github/images/')) {
+      relativeImgPath = relativeImgPath.substring('.github/images/'.length);
+    }
+    const githubUrl = !isVideo ? `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relativeImgPath}` : null;
+    return { imagePath, isVideo, githubUrl };
   }
 
-  // Build media URL: FB CDN > GitHub Raw > null
-  let mediaUrl = null;
-  if (isVideo) {
-    mediaUrl = `https://cvin.bio${item.img}`;
-  } else {
-    mediaUrl = fbImageUrl || githubUrl;
-  }
+  let anySuccess = false;
 
-  // 2. Post to Instagram
-  if (hasInstagram) {
-    if (!mediaUrl) {
-      console.error('❌ Instagram: Cannot post without a public media URL. Skipping.');
+  // 1. Post to Facebook (at its own index)
+  if (hasFacebook && fbIdx < items.length) {
+    const fbItem = items[fbIdx];
+    const fbText = fbItem.text.trim();
+    console.log(`\n📝 Facebook Post #${fbIdx + 1}/${items.length}: "${fbText.substring(0, 60)}..."`);
+
+    if (!fbItem.img) {
+      console.error('  ❌ No image for this post. Skipping.');
     } else {
-      console.log('📤 Posting to Instagram...');
-      const igOk = await postToInstagram(text, mediaUrl, isVideo);
-      if (igOk) {
-        instagramSuccess = true;
-        console.log('✅ Instagram post succeeded');
+      const { imagePath } = resolveMedia(fbItem);
+      if (!fs.existsSync(imagePath)) {
+        console.error(`  ❌ Image not found: ${imagePath}`);
       } else {
-        console.error('❌ Instagram post failed');
+        console.log('  📤 Posting to Facebook...');
+        const fb = await postToFacebook(fbText, imagePath);
+        if (fb.ok) {
+          state.facebook.index = fbIdx + 1;
+          anySuccess = true;
+          console.log(`  ✅ Facebook index → ${fbIdx + 1}`);
+        } else {
+          console.error('  ❌ Facebook post failed (will retry next run)');
+        }
       }
     }
+  } else if (hasFacebook) {
+    console.log('  Facebook: all posts published ✅');
   }
 
-  // 3. Post to Threads
-  if (hasThreads) {
-    console.log('📤 Posting to Threads...');
-    const threadsOk = await postToThreads(text, mediaUrl, isVideo);
-    if (threadsOk) {
-      threadsSuccess = true;
-      console.log('✅ Threads post succeeded');
+  // 2. Post to Instagram (at its own index)
+  if (hasInstagram && igIdx < items.length) {
+    const igItem = items[igIdx];
+    const igText = igItem.text.trim();
+    console.log(`\n📝 Instagram Post #${igIdx + 1}/${items.length}: "${igText.substring(0, 60)}..."`);
+
+    if (!igItem.img) {
+      console.error('  ❌ No image for this post. Skipping.');
     } else {
-      console.error('❌ Threads post failed');
+      const { imagePath, isVideo, githubUrl } = resolveMedia(igItem);
+      if (!fs.existsSync(imagePath)) {
+        console.error(`  ❌ Image not found: ${imagePath}`);
+      } else {
+        // For IG, we need a public URL — try uploading to FB first for CDN URL, or use GitHub
+        let mediaUrl = null;
+        if (isVideo) {
+          mediaUrl = `https://cvin.bio${igItem.img}`;
+        } else {
+          // Try to get a public URL from GitHub CDN
+          mediaUrl = githubUrl;
+        }
+        if (!mediaUrl) {
+          console.error('  ❌ No public media URL available. Skipping.');
+        } else {
+          console.log('  📤 Posting to Instagram...');
+          const igOk = await postToInstagram(igText, mediaUrl, isVideo);
+          if (igOk) {
+            state.instagram.index = igIdx + 1;
+            anySuccess = true;
+            console.log(`  ✅ Instagram index → ${igIdx + 1}`);
+          } else {
+            console.error('  ❌ Instagram post failed (will retry next run)');
+          }
+        }
+      }
     }
+  } else if (hasInstagram) {
+    console.log('  Instagram: all posts published ✅');
   }
 
-  // Check if at least one attempted platform succeeded
-  const anySuccess = facebookSuccess || instagramSuccess || threadsSuccess;
-  
+  // 3. Post to Threads (at its own index)
+  if (hasThreads && thIdx < items.length) {
+    const thItem = items[thIdx];
+    const thText = thItem.text.trim();
+    console.log(`\n📝 Threads Post #${thIdx + 1}/${items.length}: "${thText.substring(0, 60)}..."`);
+
+    if (!thItem.img) {
+      console.error('  ❌ No image for this post. Skipping.');
+    } else {
+      const { imagePath, isVideo, githubUrl } = resolveMedia(thItem);
+      let mediaUrl = isVideo ? `https://cvin.bio${thItem.img}` : githubUrl;
+      console.log('  📤 Posting to Threads...');
+      const thOk = await postToThreads(thText, mediaUrl, isVideo);
+      if (thOk) {
+        state.threads.index = thIdx + 1;
+        anySuccess = true;
+        console.log(`  ✅ Threads index → ${thIdx + 1}`);
+      } else {
+        console.error('  ❌ Threads post failed (will retry next run)');
+      }
+    }
+  } else if (hasThreads) {
+    console.log('  Threads: all posts published ✅');
+  }
+
   if (anySuccess) {
-    const nextIdx = idx + 1;
-    
-    // Update shared queue indices
-    state.facebook.index = nextIdx;
-    state.instagram.index = nextIdx;
-    state.threads.index = nextIdx;
     state.lastPostedAt = new Date().toISOString();
     saveState(state);
-    
-    console.log(`📊 Successfully posted! Advanced shared Meta index to ${nextIdx}`);
+    console.log(`\n📊 Post complete! FB:${state.facebook.index} IG:${state.instagram.index} TH:${state.threads.index}`);
   } else {
-    console.error('❌ Error: All configured Meta platforms failed to publish. Aborting.');
+    console.error('\n❌ All configured Meta platforms failed to publish. Aborting.');
     process.exit(1);
   }
 }
