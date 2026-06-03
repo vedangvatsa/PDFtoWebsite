@@ -9,12 +9,9 @@ import BlogCTA from '@/components/blog-cta';
 import Link from 'next/link';
 import { ArrowLeft, Briefcase, MapPin, Monitor, Clock, ExternalLink, Github, Linkedin, Twitter, Globe } from 'lucide-react';
 import { blogPosts } from '@/lib/blog-data';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 
-const supabaseForCompany = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabaseForCompany = supabaseAdmin;
 
 export const revalidate = 300; // ISR: rebuild every 5 minutes
 export type ProfileData = ServerProfileData;

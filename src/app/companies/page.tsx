@@ -2,14 +2,11 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
 import { Building2, Briefcase } from 'lucide-react';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { normalizeLocation } from '@/lib/normalize-location';
 import type { Metadata } from 'next';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = supabaseAdmin;
 
 export const revalidate = 3600; // ISR: rebuild every 1 hour (heavy page)
 

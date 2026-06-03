@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { unstable_cache } from 'next/cache';
 
 export interface PlatformStats {
@@ -18,10 +18,7 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     return cache.data;
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = supabaseAdmin;
 
   // Get job count (head-only, no data transfer)
   const { count: totalJobs } = await supabase

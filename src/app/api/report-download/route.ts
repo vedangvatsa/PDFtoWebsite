@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { Resend } from 'resend';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
@@ -75,10 +75,7 @@ export async function POST(request: NextRequest) {
     const reportKey = (report && reports[report]) ? report : 'remote-talent';
     const r = reports[reportKey];
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const supabase = createAdminClient(supabaseUrl, serviceKey || anonKey);
+    const supabase = supabaseAdmin;
 
     const { error: insertError } = await supabase
       .from('contact_submissions')
