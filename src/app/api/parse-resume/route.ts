@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createClient } from '@/utils/supabase/server';
 import pdf from 'pdf-parse';
 import mammoth from 'mammoth';
@@ -65,10 +65,6 @@ function isRateLimited(ip: string): boolean {
 
 async function isUserRateLimited(userId: string): Promise<boolean> {
   try {
-    const supabaseAdmin = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
     const oneHourAgo = new Date(Date.now() - RATE_WINDOW_MS).toISOString();
     const { count } = await supabaseAdmin
       .from('parse_logs')
@@ -83,10 +79,6 @@ async function isUserRateLimited(userId: string): Promise<boolean> {
 
 async function logParseEvent(userId: string | null, ip: string): Promise<void> {
   try {
-    const supabaseAdmin = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
     await supabaseAdmin.from('parse_logs').insert({ user_id: userId, ip });
   } catch {
     // Non-fatal
@@ -369,11 +361,6 @@ export async function POST(request: NextRequest) {
       const { data: { user } } = await supabaseUserClient.auth.getUser();
 
       if (user && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        const supabaseAdmin = createAdminClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.SUPABASE_SERVICE_ROLE_KEY
-        );
-
         // 1. Prioritize keeping their existing URL stable if they already have one
         const { data: currentProfile } = await supabaseAdmin
           .from('profiles')

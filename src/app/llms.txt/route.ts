@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { getPlatformStats } from '@/lib/get-platform-stats';
 
 export const dynamic = 'force-dynamic';
@@ -31,10 +31,7 @@ export async function GET() {
   ];
 
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabase = supabaseAdmin;
 
     const { data: profiles } = await supabase
       .from('profiles')

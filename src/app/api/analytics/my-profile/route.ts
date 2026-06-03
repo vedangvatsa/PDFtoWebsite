@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 
 // ── PostHog HogQL helper ────────────────────────────────────────────────────
 const PH_API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
@@ -69,10 +69,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get this user's profile slug
-    const supabase = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabase = supabaseAdmin;
     const { data: profile } = await supabase.from('profiles').select('username, views').eq('id', user.id).single();
     if (!profile?.username) {
       return NextResponse.json({ error: 'No profile' }, { status: 404 });

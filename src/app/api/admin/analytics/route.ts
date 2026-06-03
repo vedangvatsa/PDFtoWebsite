@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 
 export const dynamic = 'force-dynamic';
 
@@ -107,10 +107,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No token provided', debug: 'Authorization header missing' }, { status: 403 });
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const supabase = createAdminClient(supabaseUrl, serviceKey || anonKey);
+    const supabase = supabaseAdmin;
 
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
@@ -133,7 +130,7 @@ export async function GET(request: NextRequest) {
     try { jobsRes = await supabase.from('jobs').select('*', { count: 'exact', head: true }); } catch { /* table may not exist */ }
 
     let authUsers: any[] = [];
-    if (serviceKey) {
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
       try {
         const authUsersRes = await supabase.auth.admin.listUsers({ perPage: 1000 });
         authUsers = authUsersRes.data?.users || [];

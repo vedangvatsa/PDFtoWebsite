@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 
 export const runtime = 'edge';
 
@@ -12,10 +12,7 @@ export default async function Image() {
   let companyCount = '2,000+';
 
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabase = supabaseAdmin;
     const { count } = await supabase
       .from('jobs')
       .select('*', { count: 'exact', head: true })

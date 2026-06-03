@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { Resend } from 'resend';
 
 const VALID_PURPOSES = ['feedback', 'partnership', 'support', 'bug-report', 'feature-request', 'other'];
@@ -37,10 +37,7 @@ export async function POST(request: NextRequest) {
     const purposeLabel = PURPOSE_LABELS[purpose] || purpose;
 
     // 1. Save to Supabase
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const supabase = createAdminClient(supabaseUrl, serviceKey || anonKey);
+    const supabase = supabaseAdmin;
 
     const { error: insertError } = await supabase
       .from('contact_submissions')

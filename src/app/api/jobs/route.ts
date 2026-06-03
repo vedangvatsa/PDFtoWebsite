@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createServerClient } from '@supabase/ssr';
 import { normalizeLocation as normalizeLocationDisplay } from '@/lib/normalize-location';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = supabaseAdmin;
 
 // ── Company name normalization (merge cross-source variants) ──
 const COMPANY_NAME_MAP: Record<string, string> = {

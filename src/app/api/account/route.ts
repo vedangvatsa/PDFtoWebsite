@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createClient } from '@/utils/supabase/server';
 
 export async function DELETE() {
@@ -26,20 +26,11 @@ export async function DELETE() {
     // 3. Delete auth user (requires service role)
     // If the service role key is not configured (e.g., in some deployment environments),
     // we skip deleting the Auth user, meaning they can still log in but will have a fresh empty profile.
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (serviceRoleKey) {
-      const supabaseAdmin = createAdminClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        serviceRoleKey
-      );
-      const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id);
+    const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id);
 
-      if (authDeleteError) {
-        console.error('Auth user deletion failed:', authDeleteError);
-        // Profile is already deleted, log the orphan but don't fail the user locally
-      }
-    } else {
-      console.warn('SUPABASE_SERVICE_ROLE_KEY is not defined. Skipping Auth user deletion.');
+    if (authDeleteError) {
+      console.error('Auth user deletion failed:', authDeleteError);
+      // Profile is already deleted, log the orphan but don't fail the user locally
     }
 
     return NextResponse.json({ success: true }, { status: 200 });

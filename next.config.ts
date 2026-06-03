@@ -25,8 +25,6 @@ const nextConfigFn = (phase: string): NextConfig => {
         'scripts/**',
         'scratch/**',
         'public/images/social/**',
-        'X-Followers-Extraction/**',
-        'check_if_email_exists',
         '**/*.csv',
         '**/*.db',
         '**/*.mp4',
