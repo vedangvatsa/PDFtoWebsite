@@ -22,7 +22,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'remote',
     title: 'Best Methods to Format Remote Work Experience on a CV',
     excerpt: 'Vague location labels confuse payroll and timezone alignment. Discover the formatting rules that highlight your autonomy and async values.',
-    date: 'Jun 13, 2026',
+    date: 'Feb 13, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -46,7 +46,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'open-source',
     title: 'Best Ways to Showcase Open Source Contributions on your CV',
     excerpt: 'Generic links to massive code repositories are invisible. Learn how to highlight specific merged pull requests and quantify your impact.',
-    date: 'Jun 11, 2026',
+    date: 'Feb 11, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -70,7 +70,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'projects',
     title: 'Best Personal Projects to Put on a Software CV',
     excerpt: 'Weather apps and simple clones do not prove software capability. Build and host production-grade tools that showcase real performance metrics.',
-    date: 'Jun 09, 2026',
+    date: 'Feb 09, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -94,7 +94,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'summaries',
     title: 'Best Ways to Write Technical Summaries for Senior Roles',
     excerpt: 'Vague leadership objectives are useless. Use this rigid three-sentence formula to prove your systems and scale engineering value immediately.',
-    date: 'Jun 07, 2026',
+    date: 'Feb 07, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -118,7 +118,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'design',
     title: 'Best CV Design Principles for Software Engineers',
     excerpt: 'Automated parsers and busy hiring managers reject complex layouts. Learn the mathematical design rules that keep your profile readable.',
-    date: 'Jun 05, 2026',
+    date: 'Feb 05, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -142,7 +142,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'freelance',
     title: 'Best Freelance Portfolio Formatting Tips for Software Engineers',
     excerpt: 'Stop presenting your freelance work as a messy list of temporary tasks. Learn how to structure contract projects like high-impact product entries.',
-    date: 'Jun 23, 2026',
+    date: 'Feb 23, 2026',
     faqs: [
       { question: 'How do I format freelance work to prevent looking like a job hopper?', answer: 'Create a single company entry for your freelance business. Group all your client projects as nested details under this main heading.' },
       { question: 'How do I list client work if I signed an agreement of non disclosure?', answer: 'Describe the client by their industry and size rather than naming them. Focus on the technical challenges and architecture you built.' },
@@ -157,7 +157,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'replacements',
     title: 'Best Career Objective Replacements that Recruiters Value',
     excerpt: 'Stop wasting the top of your CV on generic career objective statements. Learn how to write value propositions that highlight actual skills and metrics.',
-    date: 'Jun 21, 2026',
+    date: 'Feb 21, 2026',
     faqs: [
       { question: 'Why are career objectives considered outdated?', answer: 'Career objectives focus on what you want from the employer. Recruiters want to know what you can do for them. Replace it with a statement of value.' },
       { question: 'How long should my introductory summary be?', answer: 'Keep it under three sentences or sixty words. A short summary is easy to scan and encourages the recruiter to read your history.' },
@@ -172,7 +172,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'fonts',
     title: 'Best Fonts for ATS Readability and Modern Screen Rendering',
     excerpt: 'Stop using decorative fonts that confuse parsers and strain human eyes. Learn which sans serif and serif options guarantee readability on screens and systems.',
-    date: 'Jun 19, 2026',
+    date: 'Feb 19, 2026',
     faqs: [
       { question: 'What is the safest font family to use for applications?', answer: 'Standard sans serif fonts like Arial or Calibri are the safest choice. They are preinstalled on almost all devices and parse perfectly in scanning tools.' },
       { question: 'Can I use custom web fonts for my online profile?', answer: 'Yes. Web browsers can load modern fonts like Inter or Roboto cleanly. But you should ensure you use a reliable system font stack as a backup.' },
@@ -187,7 +187,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'spacing',
     title: 'Best CV Spacing and Margin Standards for a Professional Look',
     excerpt: 'Stop squeezing your content onto a single page with tiny margins. Learn the spacing standards that make your CV readable and inviting on digital screens.',
-    date: 'Jun 17, 2026',
+    date: 'Feb 17, 2026',
     faqs: [
       { question: 'What margins should I use for a readable layout?', answer: 'You should use margins of at least three quarters of an inch on all sides. This creates a clean frame and prevents the text from looking cramped.' },
       { question: 'Is single line spacing acceptable for digital reading?', answer: 'No. Single spacing makes text blocks too dense and causes eye strain. Use a line height of one point two or higher to keep your content readable.' },
@@ -202,7 +202,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'promotions',
     title: 'Best Ways to Highlight Internal Promotions on a CV',
     excerpt: 'Stop dividing your internal career growth into separate entries. Learn how to structure promotions under a single company heading to show continuous tenure.',
-    date: 'Jun 15, 2026',
+    date: 'Feb 15, 2026',
     faqs: [
       { question: 'Why should I not list internal promotions as separate jobs?', answer: 'Listing internal promotions as separate jobs makes your timeline look fragmented. A recruiter skimming your profile might assume you change companies too frequently.' },
       { question: 'How do I show different dates for my promoted roles?', answer: 'You can stack the job titles chronologically under a single company heading. Assign specific dates to each individual title to maintain absolute clarity.' },
@@ -729,7 +729,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'readme',
     title: 'Best GitHub Profile README Tips for Job Hunters',
     excerpt: 'A cluttered GitHub page hides your best work. Here is how to write a profile README that acts as a landing page for recruiters and technical managers.',
-    date: 'Jun 25, 2026',
+    date: 'Feb 25, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -753,7 +753,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'ssg',
     title: 'Best Static Site Generators for Developer Portfolios',
     excerpt: 'A portfolio website should be blazing fast and hostable anywhere. We compare the best static site generators for developers who want total control over their professional footprint.',
-    date: 'Jun 27, 2026',
+    date: 'Feb 27, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -777,7 +777,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'code-samples',
     title: 'Best Ways to Display Code Samples to Recruiters',
     excerpt: 'Sending raw files or pasting massive text blocks confuses evaluators. Learn how to package your code samples so recruiters and hiring managers can review your work in seconds.',
-    date: 'Jun 29, 2026',
+    date: 'Mar 01, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -801,7 +801,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'domains',
     title: 'Best Domain Names for Developer Portfolios and Web Resumes',
     excerpt: 'Your domain name is your personal brand address on the internet. We look at the best domain extensions and naming patterns for software engineers.',
-    date: 'Jul 01, 2026',
+    date: 'Mar 03, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -825,7 +825,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'alternatives',
     title: 'Best Alternatives to PDF CVs for Frontend Developers',
     excerpt: 'Flat PDF documents cannot show interactive frontend work. Discover the best alternatives that let you present your user interface skills in a live environment.',
-    date: 'Jul 03, 2026',
+    date: 'Mar 05, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -849,7 +849,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'system-design',
     title: 'Best Ways to Prove System Design Skills on a CV',
     excerpt: 'Learn how to show database scaling, partition strategies, and performance metrics on your CV without using generic whiteboards.',
-    date: 'Jul 05, 2026',
+    date: 'Mar 07, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -873,7 +873,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'hosting',
     title: 'Best Practices for Hosting Personal Projects for Job Hunts',
     excerpt: 'A slow or broken project destroys job opportunities. Discover the best hosting tools and strategies to keep your code fast and live.',
-    date: 'Jul 07, 2026',
+    date: 'Mar 09, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -897,7 +897,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'databases',
     title: 'Best Ways to List Databases and Infrastructure Skills',
     excerpt: 'Avoid lazy skills blocks listing database names. Prove database expertise by explaining indexing choices, connection pooling, and replication scale.',
-    date: 'Jul 09, 2026',
+    date: 'Mar 11, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -921,7 +921,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'junior',
     title: 'Best Portfolio Sections for Junior Developers to Include',
     excerpt: 'Bootcamp clones and generic todo apps fail to impress. Discover the high impact sections that prove you can write commercial software.',
-    date: 'Jul 11, 2026',
+    date: 'Mar 13, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -945,7 +945,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'interactive',
     title: 'Best Interactive Resumes for UI and UX Designers',
     excerpt: 'Static PDF documents limit your presentation. Discover how interactive layouts and responsive web profiles capture attention.',
-    date: 'Jul 13, 2026',
+    date: 'Mar 15, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -969,7 +969,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'prompts',
     title: 'Best LLM Resume Screening Prompts and How to Beat Them',
     excerpt: 'Large language models reject eighty percent of applications in seconds. Discover the exact prompts managers use and how to align your experience.',
-    date: 'Jul 25, 2026',
+    date: 'Mar 27, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -993,7 +993,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'education',
     title: 'Best Ways to Format Education and Bootcamps for ATS',
     excerpt: 'Mixing short courses with academic degrees confuses automated parsers. Learn the formatting rules that keep your educational history clear.',
-    date: 'Jul 27, 2026',
+    date: 'Mar 29, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -1017,7 +1017,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'platforms',
     title: 'Best Strategies for Navigating Different ATS Platforms',
     excerpt: 'Workday, Greenhouse, and Lever process applications differently. Discover the navigation strategies that protect your formatting.',
-    date: 'Jul 29, 2026',
+    date: 'Mar 31, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -1041,7 +1041,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'optimization',
     title: 'Best Keyword Optimization Tools for Technical CVs',
     excerpt: 'Traditional keyword scanners promote stuffing that ruins readability. Learn the modern tools and methods that match semantic systems.',
-    date: 'Jul 31, 2026',
+    date: 'Apr 02, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -1065,7 +1065,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'alignment',
     title: 'Best Ways to Align Skills with Job Descriptions Safely',
     excerpt: 'Faking skills on a CV leads to immediate interview failure. Discover the conceptual mapping strategies that prove your capabilities honestly.',
-    date: 'Aug 02, 2026',
+    date: 'Apr 04, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -1089,7 +1089,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'test-ats',
     title: 'Best Ways to Test Your Resume for ATS Parsing Errors',
     excerpt: 'Automated tracking systems scramble layout structures without warning. Learn how to test your document using raw text and API audits to ensure visibility.',
-    date: 'Jul 15, 2026',
+    date: 'Mar 17, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -1113,7 +1113,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'headings',
     title: 'Best ATS-Friendly Section Headings to Avoid Parser Bugs',
     excerpt: 'Creative titles like My Career Milestones confuse scanning software dictionaries. Learn the standard headings that ensure your experience is mapped correctly.',
-    date: 'Jul 17, 2026',
+    date: 'Mar 19, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -1137,7 +1137,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'acronyms',
     title: 'Best Methods to Use Tech Acronyms for Search Crawlers',
     excerpt: 'Recruiters query databases using both abbreviations and expanded terms. Discover how the expansion technique helps you match all search queries safely.',
-    date: 'Jul 19, 2026',
+    date: 'Mar 21, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -1161,7 +1161,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'truncation',
     title: 'Best Ways to Avoid Parser Truncation on Enterprise Systems',
     excerpt: 'Legacy databases silently cut off candidate profiles that exceed storage limits. Learn how to write dense bullet points and use web links to protect your history.',
-    date: 'Jul 21, 2026',
+    date: 'Mar 23, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -1185,7 +1185,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'parsers',
     title: 'Best Resume Parsing APIs and How Recruiters Use Them',
     excerpt: 'Applicant tracking systems use parser APIs to extract structured JSON data. Learn how Sovren and Affinda score profiles and how to optimize your layout.',
-    date: 'Jul 23, 2026',
+    date: 'Mar 25, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -1209,7 +1209,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'subjects',
     title: 'Best Cold Email Subject Lines for Software Developers',
     excerpt: 'If your email subject line looks like an automated template, it goes straight to the trash. Learn how to write short, value-first subject lines that get opened.',
-    date: 'Aug 04, 2026',
+    date: 'Apr 06, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -1233,7 +1233,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'referrals',
     title: 'Best LinkedIn DM Templates for Getting Referrals',
     excerpt: 'Asking a stranger for a referral immediately is a high-risk request. Learn how to build trust with short, value-first messages and a clean web profile link.',
-    date: 'Aug 06, 2026',
+    date: 'Apr 08, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -1257,7 +1257,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'follow-up',
     title: 'Best Ways to Follow Up After Tech Interviews',
     excerpt: 'The silence after a technical interview is normal. Discover how to follow up with value-add updates and code fixes instead of generic thank-you notes.',
-    date: 'Aug 08, 2026',
+    date: 'Apr 10, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -1281,7 +1281,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'managers',
     title: 'Best Methods to Find Hiring Managers on Twitter and LinkedIn',
     excerpt: 'Job portals are black holes where applications go to die. Bypassing the algorithms by finding and pitching hiring managers directly is the key to landing interviews.',
-    date: 'Aug 10, 2026',
+    date: 'Apr 12, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -1305,7 +1305,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'communities',
     title: 'Best Communities for Finding the Hidden Job Market',
     excerpt: 'The best engineering roles are filled in private communities before they ever reach public boards. Learn where developers hang out and how to join the discussion.',
-    date: 'Aug 12, 2026',
+    date: 'Apr 14, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -1329,7 +1329,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'feedback',
     title: 'Best Ways to Request Portfolio Feedback from Senior Engineers',
     excerpt: 'Stop sending senior developers vague requests for review. Discover the structured template that gets busy engineers to critique your projects.',
-    date: 'Aug 14, 2026',
+    date: 'Apr 16, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -1353,7 +1353,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'pitches',
     title: 'Best Elevator Pitches for Technical Meetups and Hackathons',
     excerpt: 'Rambling about your career history kills interest. Learn the forty-second structure that highlights real system wins and invites collaboration.',
-    date: 'Aug 16, 2026',
+    date: 'Apr 18, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -1377,7 +1377,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'salary',
     title: 'Best Strategies for Handling Early Salary Questions',
     excerpt: 'Giving a salary number too early locks you into a low rate. Discover how to deflect the question and force recruiters to share their budget first.',
-    date: 'Aug 18, 2026',
+    date: 'Apr 20, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -1401,7 +1401,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'contracts',
     title: 'Best Methods to Negotiate Remote Software Contracts',
     excerpt: 'Signing remote contracts without reviewing the legal clauses is highly risky. Learn how to restrict IP assignment and timezone overlap safely.',
-    date: 'Aug 20, 2026',
+    date: 'Apr 22, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -1425,7 +1425,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'questions',
     title: 'Best Questions to Ask Interviewers in Tech Roles',
     excerpt: 'Saying you have no questions at the end of an interview shows a lack of interest. Learn the questions that prove you understand systems and scale.',
-    date: 'Aug 22, 2026',
+    date: 'Apr 24, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -1449,7 +1449,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'web-elements',
     title: 'Best Interactive Elements for Web-Based CVs',
     excerpt: 'Adding interactive elements to your web CV can grab recruiter attention. Learn which dynamic features prove your skills and which ones just add friction.',
-    date: 'Sep 03, 2026',
+    date: 'May 06, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -1473,7 +1473,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'load-time',
     title: 'Best Page Load Times for Portfolios and How to Optimize Them',
     excerpt: 'A slow portfolio site destroys your chances before a recruiter even sees your code. Discover the target load times and modern optimization steps that keep your site fast.',
-    date: 'Sep 05, 2026',
+    date: 'May 08, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -1497,7 +1497,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'passwords',
     title: 'Best Ways to Password-Protect Sensitive Portfolio Projects',
     excerpt: 'NDA-bound projects and corporate work cannot be shared publicly. Discover how to password-protect sensitive projects without adding friction for busy recruiters.',
-    date: 'Sep 07, 2026',
+    date: 'May 10, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -1521,7 +1521,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'printing',
     title: 'Best Methods to Print Web Resumes to PDF Cleanly',
     excerpt: 'Archaic application systems still demand PDF files. Discover the CSS print styling methods that export your interactive web CV to a clean PDF.',
-    date: 'Sep 09, 2026',
+    date: 'May 12, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -1545,7 +1545,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'branding',
     title: 'Best Custom Domains for Personal Job Branding',
     excerpt: 'Generic email hosting domains look unprofessional. Discover how choosing and configuring a custom domain enhances your personal branding and job search.',
-    date: 'Sep 11, 2026',
+    date: 'May 14, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
@@ -1569,7 +1569,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'slack',
     title: 'Best Ways to Share Your CV on Slack Communities',
     excerpt: 'Sending a PDF file to a crowded Slack channel makes your experience invisible. Learn how to format your introduction and share a live web link that gets clicked.',
-    date: 'Aug 24, 2026',
+    date: 'Apr 26, 2026',
     author: {
       name: 'Sarah M.',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'
@@ -1593,7 +1593,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'layouts',
     title: 'Best Mobile CV Layouts for Fast Recruiter Clicks',
     excerpt: 'Recruiters scan candidates on their mobile screens during meetings and commutes. Discover how to structure your vertical layout to capture clicks in seconds.',
-    date: 'Aug 26, 2026',
+    date: 'Apr 28, 2026',
     author: {
       name: 'Daniel R.',
       avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'
@@ -1617,7 +1617,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'confidential',
     title: 'Best Ways to Handle Confidential Projects on a Public CV',
     excerpt: 'Working under strict non-disclosure agreements can leave holes in your CV. Discover the professional methods to describe high-impact system designs without breaking legal promises.',
-    date: 'Aug 28, 2026',
+    date: 'Apr 30, 2026',
     author: {
       name: 'Priya K.',
       avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'
@@ -1641,7 +1641,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'metrics',
     title: 'Best Analytics Metrics to Track on Your Web Resume',
     excerpt: 'Static CVs give you zero feedback on recruiter engagement. Learn which web analytics metrics to track on your interactive profile to optimize your applications.',
-    date: 'Aug 30, 2026',
+    date: 'May 02, 2026',
     author: {
       name: 'Tomás R.',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'
@@ -1665,7 +1665,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'qr-code',
     title: 'Best Ways to Use QR Codes for Print and Presentation Resumes',
     excerpt: 'A printed CV is a static medium that cannot show interactive code or live sites. Discover the best practices for embedding QR codes that bridge paper to production.',
-    date: 'Sep 01, 2026',
+    date: 'May 04, 2026',
     author: {
       name: 'Alex P.',
       avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'
