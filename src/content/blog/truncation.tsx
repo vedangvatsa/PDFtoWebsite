@@ -132,13 +132,13 @@ export default function ArticleContent() {
       <p>For more advice on layout design and concise formatting read these detailed guides.</p>
       
       <p>
-        Learn how to format your page by checking <Link href="/blog/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+        Learn how to format your page by checking <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
       </p>
       <p>
-        Understand how to edit your bullets by reading <Link href="/blog/bullets" className={link}>How Long Should Bullets Be</Link>.
+        Understand how to edit your bullets by reading <Link href="/bullets" className={link}>How Long Should Bullets Be</Link>.
       </p>
       <p>
-        Discover how to share your profile by reading <Link href="/blog/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
+        Discover how to share your profile by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
       </p>
     </div>
   );

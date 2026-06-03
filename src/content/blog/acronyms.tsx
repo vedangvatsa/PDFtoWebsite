@@ -123,13 +123,13 @@ export default function ArticleContent() {
       <p>For more advice on keyword strategy and technical presentation read these detailed articles.</p>
       
       <p>
-        Learn which keywords recruiters look for by reading <Link href="/blog/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
+        Learn which keywords recruiters look for by reading <Link href="/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
       </p>
       <p>
-        Understand how recruiters scan your technical history by reading <Link href="/blog/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
+        Understand how recruiters scan your technical history by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
       </p>
       <p>
-        Discover how to avoid listing fake details by reading <Link href="/blog/trust" className={link}>Stop Faking Your Skills List</Link>.
+        Discover how to avoid listing fake details by reading <Link href="/trust" className={link}>Stop Faking Your Skills List</Link>.
       </p>
     </div>
   );

@@ -132,13 +132,13 @@ export default function ArticleContent() {
       <p>For more advice on print optimization and PDF compatibility read these detailed articles.</p>
       
       <p>
-        Learn how to export web pages cleanly by reading <Link href="/blog/printing" className={link}>Best Methods to Print Web CVs to PDF Cleanly</Link>.
+        Learn how to export web pages cleanly by reading <Link href="/printing" className={link}>Best Methods to Print Web CVs to PDF Cleanly</Link>.
       </p>
       <p>
-        Understand why complex layouts break parsing code by reading <Link href="/blog/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
+        Understand why complex layouts break parsing code by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
       </p>
       <p>
-        Explore the advantages of sharing web links by reading <Link href="/blog/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
+        Explore the advantages of sharing web links by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
       </p>
     </div>
   );

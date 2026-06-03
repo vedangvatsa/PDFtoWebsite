@@ -102,13 +102,13 @@ export default function ArticleContent() {
       <p>For more advice on building fast and reliable developer portfolios read these detailed guides.</p>
       
       <p>
-        Learn how to choose the right static site generator by reading <Link href="/blog/ssg" className={link}>Best Static Site Generators for Developer Portfolios</Link>.
+        Learn how to choose the right static site generator by reading <Link href="/ssg" className={link}>Best Static Site Generators for Developer Portfolios</Link>.
       </p>
       <p>
-        Discover the best hosting options for your projects by reading <Link href="/blog/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
+        Discover the best hosting options for your projects by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
       </p>
       <p>
-        Explore top platforms for hosting your profile by reading <Link href="/blog/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
+        Explore top platforms for hosting your profile by reading <Link href="/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
       </p>
     </div>
   );

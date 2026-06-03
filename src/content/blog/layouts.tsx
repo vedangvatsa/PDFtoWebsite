@@ -145,13 +145,13 @@ export default function ArticleContent() {
       <p>For more advice on mobile optimization and visual hierarchy read these detailed articles.</p>
       
       <p>
-        Understand the importance of responsive design by reading <Link href="/blog/mobile" className={link}>Why Your CV Must Be Mobile Responsive</Link>.
+        Understand the importance of responsive design by reading <Link href="/mobile" className={link}>Why Your CV Must Be Mobile Responsive</Link>.
       </p>
       <p>
-        Learn how to layout keywords on your page by reading <Link href="/blog/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
+        Learn how to layout keywords on your page by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
       </p>
       <p>
-        Explore fundamental design layout rules by reading <Link href="/blog/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
+        Explore fundamental design layout rules by reading <Link href="/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
       </p>
     </div>
   );
