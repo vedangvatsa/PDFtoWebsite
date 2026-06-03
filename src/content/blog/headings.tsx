@@ -30,53 +30,86 @@ export default function ArticleContent() {
 
       <p>Stick to standard names for every major section of your document. Use Experience for your employment history. Use Education for your academic degrees and Skills for your programming languages.</p>
 
-      {/* SVG Diagram showing Section Classifier Workflow */}
+      {/* SVG: Standard vs. creative headings — ATS recognition table */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Section Classifier Workflow">
-          <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
-          
-          {/* Box 1 */}
-          <rect x="30" y="50" width="180" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="120" y="85" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Raw Heading Input</text>
-          <text x="120" y="105" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">My Professional Journey</text>
+        <svg viewBox="0 0 700 400" className="w-full h-auto" role="img" aria-label="Reference table comparing standard resume section headings that ATS systems recognize versus creative headings that fail to parse">
+          <style>{`
+            .hd-title { font: 600 13px system-ui, sans-serif; }
+            .hd-label { font: 500 11px system-ui, sans-serif; }
+            .hd-small { font: 400 10px system-ui, sans-serif; }
+            .hd-badge { font: 700 8px system-ui, sans-serif; letter-spacing: 0.05em; }
+          `}</style>
 
-          {/* Connection 1 */}
-          <line x1="210" y1="85" x2="270" y2="85" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="262" y="90" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Left: Standard headings that work */}
+          <text x="170" y="22" textAnchor="middle" className="hd-title fill-emerald-600 dark:fill-emerald-400">✓ Standard Headings (ATS Safe)</text>
 
-          {/* Box 2 */}
-          <rect x="280" y="50" width="180" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="370" y="85" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Dictionary Lookup</text>
-          <text x="370" y="105" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Compares standard lists</text>
+          <rect x="20" y="38" width="310" height="340" rx="8" className="fill-emerald-50/30 dark:fill-emerald-950/10 stroke-emerald-200 dark:stroke-emerald-800" strokeWidth="1.5" />
 
-          {/* Connection 2 */}
-          <line x1="370" y1="120" x2="370" y2="180" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="365" y="175" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16" transform="rotate(90 370 175)">→</text>
+          {/* Standard heading entries */}
+          <rect x="35" y="52" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <text x="50" y="74" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Work Experience</text>
+          <text x="270" y="74" className="hd-badge fill-emerald-600 dark:fill-emerald-400">✓ PARSED</text>
 
-          {/* Classifier Decision */}
-          <rect x="280" y="190" width="180" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="370" y="225" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Classification Decision</text>
-          <text x="370" y="245" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Determine match quality</text>
+          <rect x="35" y="96" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <text x="50" y="118" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Technical Skills</text>
+          <text x="270" y="118" className="hd-badge fill-emerald-600 dark:fill-emerald-400">✓ PARSED</text>
 
-          {/* Arrow Left (No Match) */}
-          <line x1="280" y1="225" x2="160" y2="225" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="168" y="230" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16" transform="rotate(180 165 225)">→</text>
-          <text x="210" y="215" textAnchor="middle" className="fill-red-500 font-semibold" fontSize="11">No Match</text>
+          <rect x="35" y="140" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <text x="50" y="162" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Education</text>
+          <text x="270" y="162" className="hd-badge fill-emerald-600 dark:fill-emerald-400">✓ PARSED</text>
 
-          {/* Box Left */}
-          <rect x="20" y="190" width="130" height="70" rx="6" className="fill-red-50 dark:fill-red-950/20 stroke-red-200 dark:stroke-red-900" strokeWidth="2" />
-          <text x="85" y="225" textAnchor="middle" className="fill-red-900 dark:fill-red-300 font-semibold" fontSize="13">Miscellaneous Box</text>
-          <text x="85" y="245" textAnchor="middle" className="fill-red-700 dark:fill-red-400" fontSize="11">Data is lost</text>
+          <rect x="35" y="184" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <text x="50" y="206" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Projects</text>
+          <text x="270" y="206" className="hd-badge fill-emerald-600 dark:fill-emerald-400">✓ PARSED</text>
 
-          {/* Arrow Right (Match) */}
-          <line x1="460" y1="225" x2="540" y2="225" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="532" y="230" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
-          <text x="500" y="215" textAnchor="middle" className="fill-emerald-500 font-semibold" fontSize="11">Match</text>
+          <rect x="35" y="228" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <text x="50" y="250" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Certifications</text>
+          <text x="270" y="250" className="hd-badge fill-emerald-600 dark:fill-emerald-400">✓ PARSED</text>
 
-          {/* Box Right */}
-          <rect x="550" y="190" width="130" height="70" rx="6" className="fill-emerald-50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-900" strokeWidth="2" />
-          <text x="615" y="225" textAnchor="middle" className="fill-emerald-900 dark:fill-emerald-300 font-semibold" fontSize="13">Work History Block</text>
-          <text x="615" y="245" textAnchor="middle" className="fill-emerald-700 dark:fill-emerald-400" fontSize="11">Data is searchable</text>
+          <rect x="35" y="272" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <text x="50" y="294" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Summary</text>
+          <text x="270" y="294" className="hd-badge fill-emerald-600 dark:fill-emerald-400">✓ PARSED</text>
+
+          <text x="175" y="332" textAnchor="middle" className="hd-small fill-emerald-600 dark:fill-emerald-400">Parser maps data to the correct</text>
+          <text x="175" y="346" textAnchor="middle" className="hd-small fill-emerald-600 dark:fill-emerald-400">searchable fields in the database</text>
+          <text x="175" y="368" textAnchor="middle" className="hd-badge fill-emerald-700 dark:fill-emerald-400">RESULT: PROFILE IS SEARCHABLE</text>
+
+          {/* Right: Creative headings that fail */}
+          <text x="530" y="22" textAnchor="middle" className="hd-title fill-red-500 dark:fill-red-400">✗ Creative Headings (ATS Fails)</text>
+
+          <rect x="370" y="38" width="310" height="340" rx="8" className="fill-red-50/30 dark:fill-red-950/10 stroke-red-200 dark:stroke-red-800" strokeWidth="1.5" />
+
+          {/* Creative heading entries */}
+          <rect x="385" y="52" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-red-200 dark:stroke-red-800" strokeWidth="1" />
+          <text x="400" y="74" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">My Professional Journey</text>
+          <text x="620" y="74" className="hd-badge fill-red-500 dark:fill-red-400">✗ MISSED</text>
+
+          <rect x="385" y="96" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-red-200 dark:stroke-red-800" strokeWidth="1" />
+          <text x="400" y="118" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">What I Know Best</text>
+          <text x="620" y="118" className="hd-badge fill-red-500 dark:fill-red-400">✗ MISSED</text>
+
+          <rect x="385" y="140" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-red-200 dark:stroke-red-800" strokeWidth="1" />
+          <text x="400" y="162" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Where I Studied</text>
+          <text x="620" y="162" className="hd-badge fill-red-500 dark:fill-red-400">✗ MISSED</text>
+
+          <rect x="385" y="184" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-red-200 dark:stroke-red-800" strokeWidth="1" />
+          <text x="400" y="206" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Things I Have Built</text>
+          <text x="620" y="206" className="hd-badge fill-red-500 dark:fill-red-400">✗ MISSED</text>
+
+          <rect x="385" y="228" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-red-200 dark:stroke-red-800" strokeWidth="1" />
+          <text x="400" y="250" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">📜 Credentials</text>
+          <text x="620" y="250" className="hd-badge fill-red-500 dark:fill-red-400">✗ MISSED</text>
+
+          <rect x="385" y="272" width="280" height="36" rx="4" className="fill-white dark:fill-zinc-900 stroke-red-200 dark:stroke-red-800" strokeWidth="1" />
+          <text x="400" y="294" className="hd-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Career Milestones & Impact</text>
+          <text x="620" y="294" className="hd-badge fill-red-500 dark:fill-red-400">✗ MISSED</text>
+
+          <text x="525" y="332" textAnchor="middle" className="hd-small fill-red-500 dark:fill-red-400">All content dumped into a single</text>
+          <text x="525" y="346" textAnchor="middle" className="hd-small fill-red-500 dark:fill-red-400">"miscellaneous" field — unsearchable</text>
+          <text x="525" y="368" textAnchor="middle" className="hd-badge fill-red-500 dark:fill-red-400">RESULT: PROFILE IS INVISIBLE</text>
+
+          {/* Divider */}
+          <line x1="350" y1="22" x2="350" y2="385" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" strokeDasharray="4 4" />
         </svg>
       </div>
 

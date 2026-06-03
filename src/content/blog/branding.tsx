@@ -41,33 +41,105 @@ export default function ArticleContent() {
 
       <p>Use DNS propagation checkers to verify your configurations globally. It can take up to twenty-four hours for DNS changes to spread across the web. Ensure your site is fully accessible before sending links to employers.</p>
 
-      {/* SVG Diagram showing DNS Routing */}
+      {/* SVG Diagram: Unbranded vs. Branded portfolio identity */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of DNS Routing for Custom Portfolio Domains">
-          <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
-          
-          {/* Box 1 */}
-          <rect x="40" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="120" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Recruiter Input</text>
-          <text x="120" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Types custom domain</text>
+        <svg viewBox="0 0 700 380" className="w-full h-auto" role="img" aria-label="Before and after comparison showing an unbranded generic portfolio versus a branded portfolio with custom domain, colors, and typography">
+          <style>{`
+            .br-title { font: 600 13px system-ui, sans-serif; }
+            .br-label { font: 500 11px system-ui, sans-serif; }
+            .br-small { font: 400 10px system-ui, sans-serif; }
+            .br-code { font: 500 9px 'SF Mono', 'Fira Code', monospace; }
+            .br-badge { font: 700 8px system-ui, sans-serif; letter-spacing: 0.05em; }
+          `}</style>
 
-          {/* Connection 1 */}
-          <line x1="200" y1="175" x2="260" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="252" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Left: Unbranded */}
+          <text x="160" y="22" textAnchor="middle" className="br-title fill-red-500 dark:fill-red-400">❌ Unbranded Portfolio</text>
+          <rect x="20" y="36" width="300" height="320" rx="8" className="fill-zinc-50 dark:fill-zinc-800/40 stroke-red-200 dark:stroke-red-800" strokeWidth="1.5" />
 
-          {/* Box 2 */}
-          <rect x="270" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="350" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">DNS Lookup</text>
-          <text x="350" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Resolves domain to IP</text>
+          {/* URL bar */}
+          <rect x="35" y="50" width="270" height="22" rx="4" className="fill-white dark:fill-zinc-900 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="45" y="65" className="br-code fill-zinc-400 dark:fill-zinc-500">jsmith2847.github.io/portfolio</text>
+          <text x="235" y="65" className="br-badge fill-red-400 dark:fill-red-500">GENERIC</text>
 
-          {/* Connection 2 */}
-          <line x1="430" y1="175" x2="490" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="482" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Generic page */}
+          <rect x="35" y="80" width="270" height="180" rx="4" className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
+          <rect x="35" y="80" width="270" height="24" rx="4" className="fill-zinc-100 dark:fill-zinc-800" />
+          <rect x="35" y="100" width="270" height="4" className="fill-zinc-100 dark:fill-zinc-800" />
+          <text x="45" y="96" className="br-small fill-zinc-400 dark:fill-zinc-500">Portfolio    Resume    Contact</text>
 
-          {/* Box 3 */}
-          <rect x="500" y="140" width="160" height="70" rx="6" className="fill-emerald-50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-900" strokeWidth="2" />
-          <text x="580" y="175" textAnchor="middle" className="fill-emerald-900 dark:fill-emerald-300 font-semibold" fontSize="13">Hosting Server</text>
-          <text x="580" y="195" textAnchor="middle" className="fill-emerald-700 dark:fill-emerald-400" fontSize="11">Sends CV page</text>
+          <text x="170" y="125" textAnchor="middle" className="br-label fill-zinc-900 dark:fill-zinc-100" fontWeight="600">John Smith</text>
+          <text x="170" y="140" textAnchor="middle" className="br-small fill-zinc-500 dark:fill-zinc-400">Developer</text>
+          <rect x="50" y="150" width="240" height="6" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
+          <rect x="50" y="162" width="200" height="6" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
+          <rect x="50" y="174" width="220" height="6" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
+
+          {/* Default colors indicator */}
+          <text x="50" y="200" className="br-badge fill-zinc-400 dark:fill-zinc-500">COLORS</text>
+          <rect x="100" y="192" width="16" height="12" rx="2" className="fill-blue-500" />
+          <rect x="120" y="192" width="16" height="12" rx="2" className="fill-zinc-400" />
+          <rect x="140" y="192" width="16" height="12" rx="2" className="fill-white stroke-zinc-300" strokeWidth="1" />
+          <text x="164" y="202" className="br-small fill-red-400 dark:fill-red-500">Browser defaults</text>
+
+          {/* No favicon */}
+          <text x="50" y="225" className="br-badge fill-zinc-400 dark:fill-zinc-500">FAVICON</text>
+          <rect x="100" y="215" width="14" height="14" rx="2" className="fill-zinc-200 dark:fill-zinc-700 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="120" y="226" className="br-small fill-red-400 dark:fill-red-500">Missing</text>
+
+          {/* No OG */}
+          <text x="50" y="248" className="br-badge fill-zinc-400 dark:fill-zinc-500">LINK PREVIEW</text>
+          <rect x="50" y="253" width="240" height="30" rx="3" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
+          <text x="60" y="272" className="br-small fill-zinc-400 dark:fill-zinc-500">jsmith2847.github.io — No preview</text>
+
+          <text x="160" y="305" textAnchor="middle" className="br-badge fill-red-400 dark:fill-red-500">LOOKS LIKE EVERY OTHER PORTFOLIO</text>
+          <text x="160" y="320" textAnchor="middle" className="br-small fill-zinc-500 dark:fill-zinc-400">Zero recognition · Forgotten in seconds</text>
+
+          {/* Right: Branded */}
+          <text x="530" y="22" textAnchor="middle" className="br-title fill-emerald-600 dark:fill-emerald-400">✓ Branded Portfolio</text>
+          <rect x="380" y="36" width="300" height="320" rx="8" className="fill-emerald-50/30 dark:fill-emerald-950/10 stroke-emerald-200 dark:stroke-emerald-800" strokeWidth="1.5" />
+
+          {/* URL bar with custom domain */}
+          <rect x="395" y="50" width="270" height="22" rx="4" className="fill-white dark:fill-zinc-900 stroke-emerald-300 dark:stroke-emerald-600" strokeWidth="1" />
+          <text x="405" y="65" className="br-code fill-zinc-700 dark:fill-zinc-300">🔒 janedev.io</text>
+          <text x="530" y="65" className="br-badge fill-emerald-600 dark:fill-emerald-400">CUSTOM DOMAIN</text>
+
+          {/* Branded page */}
+          <rect x="395" y="80" width="270" height="180" rx="4" className="fill-zinc-900 dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <rect x="395" y="80" width="270" height="24" rx="4" className="fill-zinc-800 dark:fill-zinc-800" />
+          <rect x="395" y="100" width="270" height="4" className="fill-zinc-800 dark:fill-zinc-800" />
+          <circle cx="410" cy="92" r="5" className="fill-emerald-500" />
+          <text x="420" y="96" className="br-small fill-zinc-300">JD    Work    About</text>
+
+          <text x="530" y="125" textAnchor="middle" className="br-label fill-white" fontWeight="700">Jane Developer</text>
+          <text x="530" y="140" textAnchor="middle" className="br-small fill-emerald-400">Full-Stack Engineer · React · Go</text>
+          <rect x="410" y="150" width="240" height="6" rx="2" className="fill-zinc-700" />
+          <rect x="410" y="162" width="200" height="6" rx="2" className="fill-zinc-700" />
+          <rect x="410" y="174" width="220" height="6" rx="2" className="fill-zinc-700" />
+
+          {/* Custom colors */}
+          <text x="410" y="200" className="br-badge fill-zinc-400">COLORS</text>
+          <rect x="460" y="192" width="16" height="12" rx="2" className="fill-emerald-500" />
+          <rect x="480" y="192" width="16" height="12" rx="2" className="fill-zinc-900" />
+          <rect x="500" y="192" width="16" height="12" rx="2" className="fill-zinc-100" />
+          <text x="524" y="202" className="br-small fill-emerald-500 dark:fill-emerald-400">Curated palette</text>
+
+          {/* Custom favicon */}
+          <text x="410" y="225" className="br-badge fill-zinc-400">FAVICON</text>
+          <rect x="460" y="215" width="14" height="14" rx="2" className="fill-emerald-500" />
+          <text x="467" y="225" textAnchor="middle" className="fill-white" style={{fontSize: '8px', fontWeight: 700}}>JD</text>
+          <text x="480" y="226" className="br-small fill-emerald-500 dark:fill-emerald-400">Custom logo</text>
+
+          {/* OG preview */}
+          <text x="410" y="248" className="br-badge fill-zinc-400">LINK PREVIEW</text>
+          <rect x="410" y="253" width="240" height="30" rx="3" className="fill-emerald-50 dark:fill-emerald-900/30 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <rect x="414" y="257" width="22" height="22" rx="2" className="fill-emerald-200 dark:fill-emerald-800" />
+          <text x="442" y="268" className="br-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">Jane Developer — Portfolio</text>
+          <text x="442" y="280" className="br-code fill-zinc-500 dark:fill-zinc-400">Full-stack engineer with 6 years...</text>
+
+          <text x="530" y="305" textAnchor="middle" className="br-badge fill-emerald-600 dark:fill-emerald-400">INSTANTLY RECOGNIZABLE IDENTITY</text>
+          <text x="530" y="320" textAnchor="middle" className="br-small fill-zinc-500 dark:fill-zinc-400">Professional · Memorable · Shareable</text>
+
+          {/* Divider */}
+          <line x1="355" y1="22" x2="355" y2="365" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" strokeDasharray="4 4" />
         </svg>
       </div>
 

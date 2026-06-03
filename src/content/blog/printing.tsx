@@ -39,33 +39,87 @@ export default function ArticleContent() {
 
       <p>Adjust your font sizes slightly to match standard document scale. Printed text looks larger than screen text and requires more breathing room. Use relative units to keep your layout responsive during rendering.</p>
 
-      {/* SVG Diagram showing PDF Printing Flow */}
+      {/* SVG Diagram: Before/After Print CSS comparison */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Web to PDF Printing Engine">
-          <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
-          
-          {/* Box 1 */}
-          <rect x="40" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="120" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Interactive Web CV</text>
-          <text x="120" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Rich styles & state</text>
+        <svg viewBox="0 0 700 420" className="w-full h-auto" role="img" aria-label="Before and after comparison showing how @media print CSS transforms a web resume into a clean PDF">
+          <style>{`
+            .print-title { font: 600 13px system-ui, sans-serif; }
+            .print-label { font: 500 11px system-ui, sans-serif; }
+            .print-small { font: 400 10px system-ui, sans-serif; }
+            .print-code { font: 500 10px 'SF Mono', 'Fira Code', monospace; }
+            .print-badge { font: 700 9px system-ui, sans-serif; letter-spacing: 0.05em; }
+          `}</style>
 
-          {/* Connection 1 */}
-          <line x1="200" y1="175" x2="260" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="252" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Left: Without print CSS */}
+          <text x="160" y="22" textAnchor="middle" className="print-title fill-red-500 dark:fill-red-400">❌ Printed Without @media print</text>
+          <rect x="20" y="34" width="300" height="340" rx="8" className="fill-zinc-800 dark:fill-zinc-700 stroke-red-300 dark:stroke-red-700" strokeWidth="1.5" />
 
-          {/* Box 2 */}
-          <rect x="270" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="350" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Media Print CSS</text>
-          <text x="350" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Overrides screen style</text>
+          {/* Dark navbar still visible */}
+          <rect x="20" y="34" width="300" height="28" rx="8" className="fill-zinc-900 dark:fill-zinc-800" />
+          <rect x="20" y="50" width="300" height="12" className="fill-zinc-900 dark:fill-zinc-800" />
+          <text x="35" y="52" className="print-small fill-zinc-400 dark:fill-zinc-500">Home    About    Projects    Contact    ☾</text>
 
-          {/* Connection 2 */}
-          <line x1="430" y1="175" x2="490" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="482" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Content on dark background = invisible */}
+          <text x="35" y="85" className="print-label fill-zinc-400 dark:fill-zinc-500">Jane Developer</text>
+          <rect x="35" y="95" width="200" height="7" rx="2" className="fill-zinc-600 dark:fill-zinc-600" />
+          <rect x="35" y="108" width="170" height="7" rx="2" className="fill-zinc-600 dark:fill-zinc-600" />
+          <text x="200" y="85" className="print-badge fill-red-400 dark:fill-red-500">← WASTES INK</text>
 
-          {/* Box 3 */}
-          <rect x="500" y="140" width="160" height="70" rx="6" className="fill-emerald-50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-900" strokeWidth="2" />
-          <text x="580" y="175" textAnchor="middle" className="fill-emerald-900 dark:fill-emerald-300 font-semibold" fontSize="13">Clean PDF File</text>
-          <text x="580" y="195" textAnchor="middle" className="fill-emerald-700 dark:fill-emerald-400" fontSize="11">Linearized layout</text>
+          {/* Broken 2-col grid */}
+          <rect x="35" y="130" width="130" height="90" rx="4" className="fill-zinc-700 dark:fill-zinc-600 stroke-zinc-600 dark:stroke-zinc-500" strokeWidth="1" />
+          <rect x="175" y="130" width="130" height="90" rx="4" className="fill-zinc-700 dark:fill-zinc-600 stroke-zinc-600 dark:stroke-zinc-500" strokeWidth="1" />
+          <text x="100" y="160" textAnchor="middle" className="print-small fill-zinc-400 dark:fill-zinc-500">Project A</text>
+          <text x="240" y="160" textAnchor="middle" className="print-small fill-zinc-400 dark:fill-zinc-500">Project B</text>
+          <text x="170" y="245" textAnchor="middle" className="print-badge fill-red-400 dark:fill-red-500">GRID BREAKS ON PAPER</text>
+
+          {/* Page split indicator */}
+          <line x1="20" y1="260" x2="320" y2="260" className="stroke-red-400 dark:stroke-red-500" strokeWidth="1.5" strokeDasharray="6 4" />
+          <text x="170" y="275" textAnchor="middle" className="print-badge fill-red-400 dark:fill-red-500">⚠ PAGE BREAK SPLITS CONTENT</text>
+
+          {/* Orphaned content after split */}
+          <rect x="35" y="290" width="270" height="7" rx="2" className="fill-zinc-600 dark:fill-zinc-600" />
+          <rect x="35" y="303" width="230" height="7" rx="2" className="fill-zinc-600 dark:fill-zinc-600" />
+          <text x="35" y="340" className="print-small fill-zinc-400 dark:fill-zinc-500">© 2024 · Built with Next.js</text>
+          <text x="200" y="340" className="print-badge fill-red-400 dark:fill-red-500">← FOOTER PRINTS</text>
+
+          {/* Right: With proper print CSS */}
+          <text x="530" y="22" textAnchor="middle" className="print-title fill-emerald-600 dark:fill-emerald-400">✓ Printed With @media print</text>
+          <rect x="380" y="34" width="300" height="340" rx="8" className="fill-white dark:fill-zinc-100 stroke-emerald-300 dark:stroke-emerald-600" strokeWidth="1.5" />
+
+          {/* Clean header — no nav */}
+          <text x="395" y="60" className="print-label fill-zinc-900 dark:fill-zinc-900" fontWeight="700">Jane Developer</text>
+          <text x="395" y="75" className="print-small fill-zinc-600 dark:fill-zinc-600">Full-Stack Engineer · jane.dev · github.com/jane</text>
+          <text x="610" y="60" className="print-badge fill-emerald-600 dark:fill-emerald-600">NAV HIDDEN</text>
+
+          {/* Clean single-column content */}
+          <text x="395" y="100" className="print-badge fill-zinc-700 dark:fill-zinc-700">EXPERIENCE</text>
+          <text x="395" y="115" className="print-small fill-zinc-900 dark:fill-zinc-900" fontWeight="600">Senior Engineer · Acme Corp</text>
+          <rect x="395" y="122" width="260" height="6" rx="2" className="fill-zinc-200 dark:fill-zinc-300" />
+          <rect x="395" y="133" width="240" height="6" rx="2" className="fill-zinc-200 dark:fill-zinc-300" />
+          <rect x="395" y="144" width="250" height="6" rx="2" className="fill-zinc-200 dark:fill-zinc-300" />
+
+          {/* break-inside: avoid shown */}
+          <rect x="390" y="163" width="275" height="80" rx="4" className="fill-emerald-50 dark:fill-emerald-100 stroke-emerald-200 dark:stroke-emerald-300" strokeWidth="1" strokeDasharray="4 3" />
+          <text x="395" y="180" className="print-badge fill-emerald-700 dark:fill-emerald-700">PROJECTS — break-inside: avoid</text>
+          <text x="400" y="198" className="print-small fill-zinc-800 dark:fill-zinc-800" fontWeight="600">Payment Dashboard</text>
+          <rect x="400" y="205" width="250" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-300" />
+          <text x="400" y="225" className="print-small fill-zinc-800 dark:fill-zinc-800" fontWeight="600">API Gateway</text>
+          <rect x="400" y="232" width="240" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-300" />
+
+          {/* Links exposed */}
+          <text x="395" y="265" className="print-badge fill-zinc-700 dark:fill-zinc-700">LINKS</text>
+          <text x="395" y="280" className="print-small fill-zinc-700 dark:fill-zinc-700">Portfolio → jane.dev</text>
+          <text x="395" y="294" className="print-small fill-zinc-700 dark:fill-zinc-700">GitHub → github.com/jane</text>
+          <text x="610" y="280" className="print-badge fill-emerald-600 dark:fill-emerald-600">URLs SHOWN</text>
+
+          {/* Key CSS rules at bottom */}
+          <rect x="395" y="310" width="265" height="50" rx="4" className="fill-zinc-100 dark:fill-zinc-200" />
+          <text x="405" y="325" className="print-code fill-zinc-600 dark:fill-zinc-700">@media print {'{'}</text>
+          <text x="415" y="338" className="print-code fill-zinc-600 dark:fill-zinc-700">nav, footer {'{'} display: none {'}'}</text>
+          <text x="415" y="351" className="print-code fill-zinc-600 dark:fill-zinc-700">body {'{'} background: #fff {'}'} {'}'}</text>
+
+          {/* Divider */}
+          <line x1="355" y1="25" x2="355" y2="390" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" strokeDasharray="4 4" />
         </svg>
       </div>
 

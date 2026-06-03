@@ -39,33 +39,118 @@ export default function ArticleContent() {
 
       <p>This approach gives you complete control over who views your work. You can generate different tokens for different applications and track which companies actually click the links. You can also revoke specific tokens after your application process finishes.</p>
 
-      {/* SVG Diagram showing Token Authentication Flow */}
+      {/* SVG Diagram: Three access control strategies compared */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Token-Based Portfolio Project Access">
-          <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
-          
-          {/* Box 1 */}
-          <rect x="40" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="120" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Hiring Link</text>
-          <text x="120" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">portfolio.com?token=abc</text>
+        <svg viewBox="0 0 700 400" className="w-full h-auto" role="img" aria-label="Comparison of three portfolio access control methods: static encryption, token URLs, and server authentication">
+          <style>{`
+            .pw-title { font: 600 12px system-ui, sans-serif; }
+            .pw-label { font: 500 10px system-ui, sans-serif; }
+            .pw-small { font: 400 9px system-ui, sans-serif; }
+            .pw-code { font: 500 9px 'SF Mono', 'Fira Code', monospace; }
+            .pw-badge { font: 700 8px system-ui, sans-serif; letter-spacing: 0.05em; }
+          `}</style>
 
-          {/* Connection 1 */}
-          <line x1="200" y1="175" x2="260" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="252" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Column 1: Static Encryption */}
+          <text x="115" y="22" textAnchor="middle" className="pw-title fill-amber-600 dark:fill-amber-400">Static Encryption</text>
+          <text x="115" y="36" textAnchor="middle" className="pw-badge fill-zinc-400 dark:fill-zinc-500">ZERO SERVER COST</text>
 
-          {/* Box 2 */}
-          <rect x="270" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="350" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Token Validation</text>
-          <text x="350" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Checks URL parameters</text>
+          <rect x="15" y="48" width="200" height="330" rx="8" className="fill-zinc-50 dark:fill-zinc-800/40 stroke-amber-200 dark:stroke-amber-800" strokeWidth="1.5" />
 
-          {/* Connection 2 */}
-          <line x1="430" y1="175" x2="490" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="482" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Password prompt mock */}
+          <rect x="30" y="64" width="170" height="100" rx="6" className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
+          <text x="115" y="82" textAnchor="middle" className="pw-label fill-zinc-900 dark:fill-zinc-100">🔒 Protected Project</text>
+          <text x="115" y="98" textAnchor="middle" className="pw-small fill-zinc-500 dark:fill-zinc-400">Enter password to view</text>
+          <rect x="45" y="108" width="140" height="20" rx="4" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="55" y="122" className="pw-code fill-zinc-400 dark:fill-zinc-500">••••••••</text>
+          <rect x="75" y="134" width="80" height="20" rx="4" className="fill-amber-100 dark:fill-amber-900/30 stroke-amber-300 dark:stroke-amber-700" strokeWidth="1" />
+          <text x="115" y="148" textAnchor="middle" className="pw-badge fill-amber-700 dark:fill-amber-300">DECRYPT</text>
 
-          {/* Box 3 */}
-          <rect x="500" y="140" width="160" height="70" rx="6" className="fill-emerald-50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-900" strokeWidth="2" />
-          <text x="580" y="175" textAnchor="middle" className="fill-emerald-900 dark:fill-emerald-300 font-semibold" fontSize="13">Revealed Project</text>
-          <text x="580" y="195" textAnchor="middle" className="fill-emerald-700 dark:fill-emerald-400" fontSize="11">Loads system diagram</text>
+          {/* How it works */}
+          <text x="30" y="188" className="pw-badge fill-zinc-500 dark:fill-zinc-400">HOW IT WORKS</text>
+          <text x="30" y="204" className="pw-small fill-zinc-600 dark:fill-zinc-400">1. HTML encrypted at build time</text>
+          <text x="30" y="218" className="pw-small fill-zinc-600 dark:fill-zinc-400">2. Browser decrypts client-side</text>
+          <text x="30" y="232" className="pw-small fill-zinc-600 dark:fill-zinc-400">3. No server required</text>
+
+          {/* Pros/Cons */}
+          <text x="30" y="258" className="pw-badge fill-emerald-600 dark:fill-emerald-400">PROS</text>
+          <text x="30" y="272" className="pw-small fill-zinc-600 dark:fill-zinc-400">✓ Free hosting (GitHub Pages)</text>
+          <text x="30" y="286" className="pw-small fill-zinc-600 dark:fill-zinc-400">✓ No backend needed</text>
+
+          <text x="30" y="310" className="pw-badge fill-red-500 dark:fill-red-400">CONS</text>
+          <text x="30" y="324" className="pw-small fill-zinc-600 dark:fill-zinc-400">✗ Password can be shared</text>
+          <text x="30" y="338" className="pw-small fill-zinc-600 dark:fill-zinc-400">✗ Recruiter must type it</text>
+
+          <text x="115" y="365" textAnchor="middle" className="pw-badge fill-amber-600 dark:fill-amber-400">FRICTION: MEDIUM</text>
+
+          {/* Column 2: Token URLs */}
+          <text x="350" y="22" textAnchor="middle" className="pw-title fill-emerald-600 dark:fill-emerald-400">Token-Based URL</text>
+          <text x="350" y="36" textAnchor="middle" className="pw-badge fill-zinc-400 dark:fill-zinc-500">ZERO FRICTION ACCESS</text>
+
+          <rect x="250" y="48" width="200" height="330" rx="8" className="fill-emerald-50/50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-800" strokeWidth="1.5" />
+
+          {/* URL bar mock */}
+          <rect x="265" y="64" width="170" height="100" rx="6" className="fill-white dark:fill-zinc-900 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <rect x="275" y="74" width="150" height="16" rx="3" className="fill-zinc-100 dark:fill-zinc-800" />
+          <text x="280" y="85" className="pw-code fill-zinc-500 dark:fill-zinc-400">portfolio.dev/work</text>
+          <text x="280" y="100" className="pw-code fill-emerald-600 dark:fill-emerald-400">?token=f8a2c9e1</text>
+          <text x="350" y="120" textAnchor="middle" className="pw-label fill-zinc-900 dark:fill-zinc-100">Project loads instantly</text>
+          <text x="350" y="134" textAnchor="middle" className="pw-small fill-zinc-500 dark:fill-zinc-400">Recruiter clicks → sees work</text>
+          <rect x="310" y="140" width="80" height="16" rx="3" className="fill-emerald-100 dark:fill-emerald-900/30" />
+          <text x="350" y="152" textAnchor="middle" className="pw-badge fill-emerald-700 dark:fill-emerald-300">✓ VERIFIED</text>
+
+          {/* How it works */}
+          <text x="265" y="188" className="pw-badge fill-zinc-500 dark:fill-zinc-400">HOW IT WORKS</text>
+          <text x="265" y="204" className="pw-small fill-zinc-600 dark:fill-zinc-400">1. Generate unique token per app</text>
+          <text x="265" y="218" className="pw-small fill-zinc-600 dark:fill-zinc-400">2. Embed token in URL you send</text>
+          <text x="265" y="232" className="pw-small fill-zinc-600 dark:fill-zinc-400">3. Page validates on load</text>
+
+          {/* Pros/Cons */}
+          <text x="265" y="258" className="pw-badge fill-emerald-600 dark:fill-emerald-400">PROS</text>
+          <text x="265" y="272" className="pw-small fill-zinc-600 dark:fill-zinc-400">✓ Zero typing for recruiter</text>
+          <text x="265" y="286" className="pw-small fill-zinc-600 dark:fill-zinc-400">✓ Track who views your work</text>
+
+          <text x="265" y="310" className="pw-badge fill-red-500 dark:fill-red-400">CONS</text>
+          <text x="265" y="324" className="pw-small fill-zinc-600 dark:fill-zinc-400">✗ Links can be forwarded</text>
+          <text x="265" y="338" className="pw-small fill-zinc-600 dark:fill-zinc-400">✗ Needs simple server logic</text>
+
+          <text x="350" y="365" textAnchor="middle" className="pw-badge fill-emerald-600 dark:fill-emerald-400">FRICTION: LOWEST ★</text>
+
+          {/* Column 3: Server Auth */}
+          <text x="585" y="22" textAnchor="middle" className="pw-title fill-violet-600 dark:fill-violet-400">Server Authentication</text>
+          <text x="585" y="36" textAnchor="middle" className="pw-badge fill-zinc-400 dark:fill-zinc-500">FULL ACCESS CONTROL</text>
+
+          <rect x="485" y="48" width="200" height="330" rx="8" className="fill-violet-50/50 dark:fill-violet-950/20 stroke-violet-200 dark:stroke-violet-800" strokeWidth="1.5" />
+
+          {/* Login form mock */}
+          <rect x="500" y="64" width="170" height="100" rx="6" className="fill-white dark:fill-zinc-900 stroke-violet-200 dark:stroke-violet-700" strokeWidth="1" />
+          <text x="585" y="82" textAnchor="middle" className="pw-label fill-zinc-900 dark:fill-zinc-100">Request Access</text>
+          <rect x="515" y="90" width="140" height="16" rx="3" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="520" y="102" className="pw-code fill-zinc-400 dark:fill-zinc-500">work email</text>
+          <rect x="515" y="112" width="140" height="16" rx="3" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="520" y="124" className="pw-code fill-zinc-400 dark:fill-zinc-500">company name</text>
+          <rect x="545" y="134" width="80" height="20" rx="4" className="fill-violet-100 dark:fill-violet-900/30 stroke-violet-300 dark:stroke-violet-700" strokeWidth="1" />
+          <text x="585" y="148" textAnchor="middle" className="pw-badge fill-violet-700 dark:fill-violet-300">SIGN IN</text>
+
+          {/* How it works */}
+          <text x="500" y="188" className="pw-badge fill-zinc-500 dark:fill-zinc-400">HOW IT WORKS</text>
+          <text x="500" y="204" className="pw-small fill-zinc-600 dark:fill-zinc-400">1. Recruiter requests access</text>
+          <text x="500" y="218" className="pw-small fill-zinc-600 dark:fill-zinc-400">2. You approve or deny</text>
+          <text x="500" y="232" className="pw-small fill-zinc-600 dark:fill-zinc-400">3. Time-limited session</text>
+
+          {/* Pros/Cons */}
+          <text x="500" y="258" className="pw-badge fill-emerald-600 dark:fill-emerald-400">PROS</text>
+          <text x="500" y="272" className="pw-small fill-zinc-600 dark:fill-zinc-400">✓ Full audit trail</text>
+          <text x="500" y="286" className="pw-small fill-zinc-600 dark:fill-zinc-400">✓ Revoke access anytime</text>
+
+          <text x="500" y="310" className="pw-badge fill-red-500 dark:fill-red-400">CONS</text>
+          <text x="500" y="324" className="pw-small fill-zinc-600 dark:fill-zinc-400">✗ High friction for recruiters</text>
+          <text x="500" y="338" className="pw-small fill-zinc-600 dark:fill-zinc-400">✗ Needs server + database</text>
+
+          <text x="585" y="365" textAnchor="middle" className="pw-badge fill-violet-600 dark:fill-violet-400">FRICTION: HIGHEST</text>
+
+          {/* Vertical dividers */}
+          <line x1="235" y1="15" x2="235" y2="385" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" strokeDasharray="4 4" />
+          <line x1="470" y1="15" x2="470" y2="385" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" strokeDasharray="4 4" />
         </svg>
       </div>
 

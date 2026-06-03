@@ -32,42 +32,127 @@ export default function ArticleContent() {
 
       <p>These APIs also categorize your skills into distinct tiers like primary skills and secondary skills. The categorizations are based on how frequently you mention a technology in your work history. You must mention your core skills in multiple jobs to ensure they are ranked as primary skills.</p>
 
-      {/* SVG Diagram showing CV Parser API Workflow */}
+      {/* SVG: Resume text → Parser JSON output showing extraction accuracy */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Resume Parser API Workflow">
-          <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
-          
-          {/* Box 1 */}
-          <rect x="30" y="60" width="160" height="80" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="110" y="100" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Candidate Uploads CV</text>
-          <text x="110" y="120" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">PDF or DOCX File</text>
+        <svg viewBox="0 0 700 420" className="w-full h-auto" role="img" aria-label="Side by side comparison of raw resume text versus the structured JSON that a parser API extracts, showing which fields are captured accurately and which are commonly lost">
+          <style>{`
+            .ps-title { font: 600 13px system-ui, sans-serif; }
+            .ps-label { font: 500 11px system-ui, sans-serif; }
+            .ps-small { font: 400 10px system-ui, sans-serif; }
+            .ps-code { font: 500 9px 'SF Mono', 'Fira Code', monospace; }
+            .ps-badge { font: 700 8px system-ui, sans-serif; letter-spacing: 0.05em; }
+          `}</style>
 
-          {/* Connection 1 */}
-          <line x1="190" y1="100" x2="250" y2="100" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="242" y="105" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Left: Raw Resume */}
+          <text x="155" y="22" textAnchor="middle" className="ps-title fill-zinc-900 dark:fill-zinc-100">Raw Resume (PDF)</text>
+          <rect x="15" y="36" width="310" height="360" rx="8" className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1.5" />
 
-          {/* Box 2 */}
-          <rect x="260" y="60" width="180" height="80" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="350" y="100" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Resume Parser API</text>
-          <text x="350" y="120" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">NLP and Entity Tagging</text>
+          {/* Mock resume content */}
+          <text x="30" y="60" className="ps-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Sarah Chen</text>
+          <text x="30" y="76" className="ps-small fill-zinc-500 dark:fill-zinc-400">sarah@email.com · (555) 123-4567</text>
+          <text x="30" y="90" className="ps-small fill-zinc-500 dark:fill-zinc-400">San Francisco, CA · github.com/sarchen</text>
 
-          {/* Connection 2 */}
-          <line x1="440" y1="100" x2="500" y2="100" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="492" y="105" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          <line x1="30" y1="100" x2="310" y2="100" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
 
-          {/* Box 3 */}
-          <rect x="510" y="60" width="160" height="80" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="590" y="100" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">JSON Output payload</text>
-          <text x="590" y="120" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Structured variables</text>
+          <text x="30" y="118" className="ps-badge fill-zinc-500 dark:fill-zinc-400">EXPERIENCE</text>
 
-          {/* Connection Down */}
-          <line x1="590" y1="140" x2="590" y2="200" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="585" y="195" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16" transform="rotate(90 590 195)">→</text>
+          <text x="30" y="136" className="ps-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">Senior Backend Engineer</text>
+          <text x="30" y="150" className="ps-small fill-zinc-500 dark:fill-zinc-400">Acme Corp · Jan 2021 – Present</text>
+          <text x="30" y="164" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Rebuilt payment API handling $4M daily</text>
+          <text x="30" y="178" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Migrated from PostgreSQL to CockroachDB</text>
+          <text x="30" y="192" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Reduced p99 latency from 800ms to 120ms</text>
 
-          {/* Box 4 */}
-          <rect x="430" y="210" width="240" height="80" rx="6" className="fill-emerald-50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-900" strokeWidth="2" />
-          <text x="550" y="250" textAnchor="middle" className="fill-emerald-900 dark:fill-emerald-300 font-semibold" fontSize="13">Recruiter Search Dashboard</text>
-          <text x="550" y="270" textAnchor="middle" className="fill-emerald-700 dark:fill-emerald-400" fontSize="11">Filters by skills and dates</text>
+          <text x="30" y="214" className="ps-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">Software Engineer</text>
+          <text x="30" y="228" className="ps-small fill-zinc-500 dark:fill-zinc-400">StartupX · Mar 2018 – Dec 2020</text>
+          <text x="30" y="242" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Built REST APIs with Go and gRPC</text>
+          <text x="30" y="256" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Deployed services on K8s clusters</text>
+
+          <line x1="30" y1="270" x2="310" y2="270" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
+
+          <text x="30" y="288" className="ps-badge fill-zinc-500 dark:fill-zinc-400">SKILLS</text>
+          <text x="30" y="304" className="ps-small fill-zinc-600 dark:fill-zinc-400">Go · Python · PostgreSQL · Redis · Docker</text>
+          <text x="30" y="318" className="ps-small fill-zinc-600 dark:fill-zinc-400">Kubernetes · gRPC · AWS · Terraform</text>
+
+          <line x1="30" y1="330" x2="310" y2="330" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
+
+          <text x="30" y="348" className="ps-badge fill-zinc-500 dark:fill-zinc-400">EDUCATION</text>
+          <text x="30" y="364" className="ps-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">B.S. Computer Science</text>
+          <text x="30" y="378" className="ps-small fill-zinc-500 dark:fill-zinc-400">UC Berkeley · 2018</text>
+
+          {/* Arrow between panels */}
+          <text x="345" y="200" textAnchor="middle" className="ps-title fill-zinc-400 dark:fill-zinc-500">→</text>
+          <text x="345" y="218" textAnchor="middle" className="ps-badge fill-zinc-400 dark:fill-zinc-500">PARSER</text>
+          <text x="345" y="230" textAnchor="middle" className="ps-badge fill-zinc-400 dark:fill-zinc-500">API</text>
+
+          {/* Right: JSON Output */}
+          <text x="530" y="22" textAnchor="middle" className="ps-title fill-emerald-600 dark:fill-emerald-400">Extracted JSON Output</text>
+          <rect x="375" y="36" width="310" height="360" rx="8" className="fill-zinc-900 dark:fill-zinc-950 stroke-emerald-200 dark:stroke-emerald-800" strokeWidth="1.5" />
+
+          {/* JSON content */}
+          <text x="390" y="58" className="ps-code fill-zinc-500">{'{'}</text>
+
+          <text x="400" y="74" className="ps-code fill-violet-400">"name"</text>
+          <text x="437" y="74" className="ps-code fill-zinc-500">:</text>
+          <text x="447" y="74" className="ps-code fill-emerald-400">"Sarah Chen"</text>
+          <text x="590" y="74" className="ps-badge fill-emerald-500">✓ CORRECT</text>
+
+          <text x="400" y="90" className="ps-code fill-violet-400">"email"</text>
+          <text x="441" y="90" className="ps-code fill-zinc-500">:</text>
+          <text x="451" y="90" className="ps-code fill-emerald-400">"sarah@email.com"</text>
+          <text x="590" y="90" className="ps-badge fill-emerald-500">✓ CORRECT</text>
+
+          <text x="400" y="106" className="ps-code fill-violet-400">"location"</text>
+          <text x="456" y="106" className="ps-code fill-zinc-500">:</text>
+          <text x="466" y="106" className="ps-code fill-emerald-400">"San Francisco, CA"</text>
+          <text x="590" y="106" className="ps-badge fill-emerald-500">✓ CORRECT</text>
+
+          <text x="400" y="128" className="ps-code fill-violet-400">"experience"</text>
+          <text x="472" y="128" className="ps-code fill-zinc-500">: [</text>
+          <text x="410" y="144" className="ps-code fill-zinc-500">{'{'}</text>
+          <text x="420" y="160" className="ps-code fill-violet-400">"title"</text>
+          <text x="454" y="160" className="ps-code fill-zinc-500">:</text>
+          <text x="464" y="160" className="ps-code fill-emerald-400">"Senior Backend Eng"</text>
+          <text x="420" y="176" className="ps-code fill-violet-400">"company"</text>
+          <text x="470" y="176" className="ps-code fill-zinc-500">:</text>
+          <text x="480" y="176" className="ps-code fill-emerald-400">"Acme Corp"</text>
+          <text x="420" y="192" className="ps-code fill-violet-400">"start"</text>
+          <text x="456" y="192" className="ps-code fill-zinc-500">:</text>
+          <text x="466" y="192" className="ps-code fill-emerald-400">"2021-01"</text>
+          <text x="590" y="192" className="ps-badge fill-emerald-500">✓ PARSED</text>
+          <text x="420" y="208" className="ps-code fill-violet-400">"end"</text>
+          <text x="448" y="208" className="ps-code fill-zinc-500">:</text>
+          <text x="458" y="208" className="ps-code fill-amber-400">null</text>
+          <text x="530" y="208" className="ps-badge fill-amber-400">CURRENT ROLE</text>
+          <text x="410" y="224" className="ps-code fill-zinc-500">{'}'}</text>
+
+          <text x="400" y="246" className="ps-code fill-violet-400">"skills"</text>
+          <text x="440" y="246" className="ps-code fill-zinc-500">: {'{'}</text>
+          <text x="420" y="262" className="ps-code fill-violet-400">"primary"</text>
+          <text x="468" y="262" className="ps-code fill-zinc-500">:</text>
+          <text x="478" y="262" className="ps-code fill-emerald-400">["Go","Python"]</text>
+          <text x="420" y="278" className="ps-code fill-violet-400">"secondary"</text>
+          <text x="482" y="278" className="ps-code fill-zinc-500">:</text>
+          <text x="492" y="278" className="ps-code fill-emerald-400">["Docker"]</text>
+          <text x="420" y="294" className="ps-code fill-violet-400">"missed"</text>
+          <text x="464" y="294" className="ps-code fill-zinc-500">:</text>
+          <text x="474" y="294" className="ps-code fill-red-400">["gRPC","K8s"]</text>
+          <text x="590" y="294" className="ps-badge fill-red-400">✗ LOST</text>
+          <text x="410" y="310" className="ps-code fill-zinc-500">{'}'}</text>
+
+          <text x="400" y="330" className="ps-code fill-violet-400">"education"</text>
+          <text x="470" y="330" className="ps-code fill-zinc-500">:</text>
+          <text x="480" y="330" className="ps-code fill-emerald-400">"B.S. CS, UC Berkeley"</text>
+          <text x="590" y="330" className="ps-badge fill-emerald-500">✓ CORRECT</text>
+
+          <text x="400" y="350" className="ps-code fill-violet-400">"years_exp"</text>
+          <text x="470" y="350" className="ps-code fill-zinc-500">:</text>
+          <text x="480" y="350" className="ps-code fill-emerald-400">7</text>
+          <text x="590" y="350" className="ps-badge fill-emerald-500">✓ COMPUTED</text>
+
+          <text x="390" y="370" className="ps-code fill-zinc-500">{'}'}</text>
+
+          {/* Bottom insight */}
+          <text x="350" y="408" textAnchor="middle" className="ps-small fill-zinc-500 dark:fill-zinc-400">Abbreviations like "K8s" and "gRPC" are often missed · Always write full names alongside short forms</text>
         </svg>
       </div>
 
