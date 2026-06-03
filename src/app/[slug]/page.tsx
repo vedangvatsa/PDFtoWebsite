@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getProfileBySlug, type ServerProfileData } from '@/lib/supabase-server';
 import ProfilePageClient from './profile-page-client';
@@ -205,7 +205,57 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   const { slug } = await params;
   
   const post = blogPosts.find(p => p.slug === slug);
+  if (!post) {
+    const legacyRedirects: Record<string, string> = {
+      'best-job-seeker-tools': 'tools',
+      'best-linkedin-alternatives-developers': 'linkedin',
+      'best-career-changer-resume-tips': 'career',
+      'best-ways-prove-skills-no-degree': 'skills',
+      'best-ways-beat-ai-screening': 'screening',
+      'best-things-top-resume': 'top',
+      'best-portfolio-platforms-developers': 'portfolio',
+      'best-resume-keywords-tech': 'keywords',
+      'best-ways-send-resume': 'send',
+      'best-resume-mistakes': 'mistakes',
+      'ai-agents-browsing-resume': 'ai',
+      'cv-attachments': 'attachments',
+      'mobile-responsive-cv': 'mobile',
+      'cv-web-link': 'link',
+      'bypass-ats': 'bypass',
+      'stand-out-inbox': 'inbox',
+      'pdf-breaks-ats': 'pdf',
+      'tech-resume-keywords': 'tech-keywords',
+      'update-cv-anytime': 'update',
+      'objective-statement-death': 'objective',
+      'overstuffing-bullets': 'bullets',
+      'measuring-impact-no-data': 'impact',
+      'short-tenures-tech': 'tenure',
+      'keyword-trust': 'trust',
+      'soft-skills-evidence': 'soft-skills',
+      'the-30-second-scan': 'scan',
+      'gap-explanation': 'gaps',
+      'academic-to-commercial': 'academic',
+      'generic-skill-bars': 'skill-bars',
+      'beat-smart-ai-bots': 'bots',
+      'where-to-put-ai-skills': 'ai-skills',
+      'show-your-code': 'code',
+      'college-degrees-matter-less': 'degrees',
+      'two-page-resume-myth': 'two-pages'
+    };
+    
+    if (legacyRedirects[slug]) {
+      permanentRedirect(`/${legacyRedirects[slug]}`);
+    }
+  }
+
   if (post) {
+    let PostContent: React.ComponentType | null = null;
+    try {
+      const module = await import(`@/content/blog/${post.slug}`);
+      PostContent = module.default;
+    } catch (e) {
+      console.error(`Failed to load content for ${post.slug}:`, e);
+    }
     return (
       <div className="h-screen overflow-y-auto bg-white dark:bg-black selection:bg-primary/10 transition-colors duration-200">
         <Header />
@@ -231,7 +281,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
             </div>
 
             <div className="prose prose-zinc dark:prose-invert prose-lg min-w-full transition-colors mb-16">
-              {post.content}
+              {PostContent ? <PostContent /> : <p>Loading article...</p>}
             </div>
 
             <BlogCTA />
