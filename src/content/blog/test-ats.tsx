@@ -130,13 +130,13 @@ export default function ArticleContent() {
       <p>To learn more about optimizing your document layout check out these helpful guides.</p>
       
       <p>
-        Learn why PDF files often fail in systems by reading <Link href="/blog/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
+        Learn why PDF files often fail in systems by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
       </p>
       <p>
-        Understand how to format your layout by checking <Link href="/blog/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+        Understand how to format your layout by checking <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
       </p>
       <p>
-        Discover how to present your profile by reading <Link href="/blog/bypass" className={link}>Bypassing Formatting Destruction with Dual-Submissions</Link>.
+        Discover how to present your profile by reading <Link href="/bypass" className={link}>Bypassing Formatting Destruction with Dual-Submissions</Link>.
       </p>
     </div>
   );

@@ -98,13 +98,13 @@ export default function ArticleContent() {
       <p>For more advice on layouts and designing profiles that satisfy both human and machine readers read these guides.</p>
       
       <p>
-        Explore why complex structures fail automated scans by reading <Link href="/blog/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
+        Explore why complex structures fail automated scans by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
       </p>
       <p>
-        Learn how to layout your profile for maximum scanning speed by reading <Link href="/blog/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
+        Learn how to layout your profile for maximum scanning speed by reading <Link href="/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
       </p>
       <p>
-        Discover spacing standards for clean layouts by reading <Link href="/blog/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+        Discover spacing standards for clean layouts by reading <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
       </p>
     </div>
   );

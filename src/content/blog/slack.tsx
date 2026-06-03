@@ -155,13 +155,13 @@ export default function ArticleContent() {
       <p>For more advice on sharing your work and finding hidden roles read these detailed articles.</p>
       
       <p>
-        Discover private channels and job markets by reading <Link href="/blog/communities" className={link}>Best Communities for Finding the Hidden Job Market</Link>.
+        Discover private channels and job markets by reading <Link href="/communities" className={link}>Best Communities for Finding the Hidden Job Market</Link>.
       </p>
       <p>
-        Learn how to write to hiring managers by reading <Link href="/blog/send" className={link}>Best Ways to Send Your CV to a Recruiter</Link>.
+        Learn how to write to hiring managers by reading <Link href="/send" className={link}>Best Ways to Send Your CV to a Recruiter</Link>.
       </p>
       <p>
-        Explore the advantages of online profiles by reading <Link href="/blog/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
+        Explore the advantages of online profiles by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
       </p>
     </div>
   );

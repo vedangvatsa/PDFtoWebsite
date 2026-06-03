@@ -100,13 +100,13 @@ export default function ArticleContent() {
       <p>For more advice on protecting your data and managing software contracts read these detailed guides.</p>
       
       <p>
-        Learn how to handle remote employment terms by reading <Link href="/blog/contracts" className={link}>Best Methods to Negotiate Remote Software Contracts</Link>.
+        Learn how to handle remote employment terms by reading <Link href="/contracts" className={link}>Best Methods to Negotiate Remote Software Contracts</Link>.
       </p>
       <p>
-        Understand how to gather feedback on your work by reading <Link href="/blog/feedback" className={link}>Best Ways to Request Portfolio Feedback from Senior Engineers</Link>.
+        Understand how to gather feedback on your work by reading <Link href="/feedback" className={link}>Best Ways to Request Portfolio Feedback from Senior Engineers</Link>.
       </p>
       <p>
-        Discover how to host your personal projects securely by reading <Link href="/blog/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
+        Discover how to host your personal projects securely by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
       </p>
     </div>
   );

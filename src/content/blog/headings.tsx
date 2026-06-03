@@ -142,13 +142,13 @@ export default function ArticleContent() {
       <p>For more advice on formatting your application check out these helpful articles.</p>
       
       <p>
-        Learn how to write effective summaries by reading <Link href="/blog/summaries" className={link}>Best Ways to Write Technical Summaries for Senior Roles</Link>.
+        Learn how to write effective summaries by reading <Link href="/summaries" className={link}>Best Ways to Write Technical Summaries for Senior Roles</Link>.
       </p>
       <p>
-        Understand spacing requirements by reading <Link href="/blog/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+        Understand spacing requirements by reading <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
       </p>
       <p>
-        Discover how to choose the right keywords by reading <Link href="/blog/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
+        Discover how to choose the right keywords by reading <Link href="/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
       </p>
     </div>
   );

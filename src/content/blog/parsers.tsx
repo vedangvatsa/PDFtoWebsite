@@ -121,13 +121,13 @@ export default function ArticleContent() {
       <p>To understand more about automated screening systems check out these helpful guides.</p>
       
       <p>
-        Learn how artificial intelligence is changing recruitment by reading <Link href="/blog/ai" className={link}>AI Agents Are Already Browsing Your Profile</Link>.
+        Learn how artificial intelligence is changing recruitment by reading <Link href="/ai" className={link}>AI Agents Are Already Browsing Your Profile</Link>.
       </p>
       <p>
-        Discover how to bypass automated screeners by reading <Link href="/blog/bots" className={link}>How to Beat Smart AI Bots</Link>.
+        Discover how to bypass automated screeners by reading <Link href="/bots" className={link}>How to Beat Smart AI Bots</Link>.
       </p>
       <p>
-        Understand visual scanning patterns by reading <Link href="/blog/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
+        Understand visual scanning patterns by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
       </p>
     </div>
   );

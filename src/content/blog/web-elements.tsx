@@ -105,13 +105,13 @@ export default function ArticleContent() {
       <p>For more advice on building professional web profiles and portfolios read these detailed guides.</p>
       
       <p>
-        Explore how to choose alternative formats to PDF by reading <Link href="/blog/alternatives" className={link}>Best Alternatives to PDF CVs for Frontend Developers</Link>.
+        Explore how to choose alternative formats to PDF by reading <Link href="/alternatives" className={link}>Best Alternatives to PDF CVs for Frontend Developers</Link>.
       </p>
       <p>
-        Learn how to build interactive resumes for creative roles by reading <Link href="/blog/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
+        Learn how to build interactive resumes for creative roles by reading <Link href="/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
       </p>
       <p>
-        Discover where to publish your live profile by reading <Link href="/blog/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
+        Discover where to publish your live profile by reading <Link href="/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
       </p>
     </div>
   );

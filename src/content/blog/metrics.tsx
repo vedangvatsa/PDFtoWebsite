@@ -138,13 +138,13 @@ export default function ArticleContent() {
       <p>For more advice on building interactive layouts and passing recruiter scans read these detailed articles.</p>
       
       <p>
-        Learn how to build interactive elements by reading <Link href="/blog/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
+        Learn how to build interactive elements by reading <Link href="/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
       </p>
       <p>
-        Understand how applicant tracking systems parse data by reading <Link href="/blog/platforms" className={link}>Best Strategies for Navigating Different ATS Platforms</Link>.
+        Understand how applicant tracking systems parse data by reading <Link href="/platforms" className={link}>Best Strategies for Navigating Different ATS Platforms</Link>.
       </p>
       <p>
-        Discover how to write for fast scans by reading <Link href="/blog/scan" className={link}>Write For the 30 Second Scan</Link>.
+        Discover how to write for fast scans by reading <Link href="/scan" className={link}>Write For the 30 Second Scan</Link>.
       </p>
     </div>
   );

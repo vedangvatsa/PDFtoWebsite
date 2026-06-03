@@ -102,13 +102,13 @@ export default function ArticleContent() {
       <p>For more advice on branding and managing your web presence read these detailed articles.</p>
       
       <p>
-        Learn how to choose domain names for portfolios by reading <Link href="/blog/domains" className={link}>Best Domain Names for Developer Portfolios and Web Resumes</Link>.
+        Learn how to choose domain names for portfolios by reading <Link href="/domains" className={link}>Best Domain Names for Developer Portfolios and Web Resumes</Link>.
       </p>
       <p>
-        Explore how to host your personal projects by reading <Link href="/blog/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
+        Explore how to host your personal projects by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
       </p>
       <p>
-        Discover how clean URLs help you stand out by reading <Link href="/blog/inbox" className={link}>Using Clean URLs to Stand Out in Application Inboxes</Link>.
+        Discover how clean URLs help you stand out by reading <Link href="/inbox" className={link}>Using Clean URLs to Stand Out in Application Inboxes</Link>.
       </p>
     </div>
   );

@@ -256,8 +256,78 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     } catch (e) {
       console.error(`Failed to load content for ${post.slug}:`, e);
     }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
+
+    // BlogPosting Schema
+    const blogPostingSchema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "datePublished": new Date(post.date).toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": post.author.name,
+        "image": post.author.avatarUrl
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "CVin.Bio",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${siteUrl}/icon`
+        }
+      },
+      "mainEntityOfPage": `${siteUrl}/${post.slug}`,
+      "image": `${siteUrl}/${post.slug}/opengraph-image`
+    };
+
+    // FAQPage Schema
+    const faqSchema = post.faqs && post.faqs.length > 0 ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": post.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    } : null;
+
+    // BreadcrumbList Schema
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": siteUrl
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": `${siteUrl}/blog`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": post.title,
+          "item": `${siteUrl}/${post.slug}`
+        }
+      ]
+    };
+
     return (
       <div className="h-screen overflow-y-auto bg-white dark:bg-black selection:bg-primary/10 transition-colors duration-200">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <Header />
         <main id="main-content" className="w-full max-w-3xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32">
           <Link href="/blog" className="inline-flex items-center text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 mb-8 transition-colors">

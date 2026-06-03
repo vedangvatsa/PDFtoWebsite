@@ -132,13 +132,13 @@ export default function ArticleContent() {
       <p>For more advice on formatting freelance work and presenting technical design read these detailed articles.</p>
       
       <p>
-        Learn how to layout consulting contracts by reading <Link href="/blog/freelance" className={link}>Best Freelance Portfolio Formatting Tips for Software Engineers</Link>.
+        Learn how to layout consulting contracts by reading <Link href="/freelance" className={link}>Best Freelance Portfolio Formatting Tips for Software Engineers</Link>.
       </p>
       <p>
-        Understand how to build trust with technical details by reading <Link href="/blog/trust" className={link}>Stop Faking Your Skills List</Link>.
+        Understand how to build trust with technical details by reading <Link href="/trust" className={link}>Stop Faking Your Skills List</Link>.
       </p>
       <p>
-        Discover how to prove architecture design by reading <Link href="/blog/system-design" className={link}>Best Ways to Prove System Design Skills on a CV</Link>.
+        Discover how to prove architecture design by reading <Link href="/system-design" className={link}>Best Ways to Prove System Design Skills on a CV</Link>.
       </p>
     </div>
   );
