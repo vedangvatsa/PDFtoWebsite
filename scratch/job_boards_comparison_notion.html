@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Platform Comparison: CV in Bio & Hashtag Web3</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #1a1a1a;
+            background-color: #ffffff;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 15px;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+        h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 2px;
+            color: #111;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        h2 {
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            color: #111;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 3px;
+        }
+        h3 {
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .section-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        .section-col {
+            flex: 1;
+            min-width: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 5px 0 10px 0;
+        }
+        th, td {
+            border: 1px solid #e5e5e5;
+            padding: 5px 8px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #fafafa;
+            font-weight: 600;
+            color: #444;
+        }
+        a {
+            color: #1f75cb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            padding-left: 15px;
+            margin: 5px 0;
+        }
+        li {
+            margin-bottom: 3px;
+        }
+        blockquote {
+            margin: 8px 0;
+            padding: 6px 12px;
+            border-left: 2.5px solid #222;
+            background-color: #fafafa;
+            font-style: italic;
+            color: #444;
+        }
+        .chart-row {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .chart-box {
+            flex: 1;
+            border: 1px solid #eaeaea;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .chart-title {
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .note {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Platform Comparison: CV in Bio & Hashtag Web3</h1>
+    <div class="subtitle">Comparative analytics dashboard comparing active jobs, talent demographics, reach, and automation pipelines.</div>
+
+    <div class="section-row">
+        <!-- Col 1: Core Volume -->
+        <div class="section-col">
+            <h2>Core Database Volume</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>CV in Bio</th>
+                        <th>Hashtag Web3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Total Active Jobs</strong></td>
+                        <td>73,044</td>
+                        <td>2,736</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unique Companies</strong></td>
+                        <td>2,052</td>
+                        <td>165</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Disclosed Salary</strong></td>
+                        <td>6,701 (14.8%)</td>
+                        <td>139 (5.1%)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Col 2: Seniority Breakdown -->
+        <div class="section-col">
+            <h2>Seniority Level Splits</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Level</th>
+                        <th>CV in Bio</th>
+                        <th>Hashtag Web3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Senior</strong> (28,391 total)</td>
+                        <td>27,026 (59.6%)</td>
+                        <td>1,365 (49.9%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mid</strong> (15,824 total)</td>
+                        <td>15,404 (34.0%)</td>
+                        <td>420 (15.4%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Junior</strong> (3,089 total)</td>
+                        <td>2,912 (6.4%)</td>
+                        <td>177 (6.5%)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="chart-row">
+        <div class="chart-box">
+            <div class="chart-title">Departmental Distribution (%)</div>
+            <canvas id="barChart" height="230"></canvas>
+        </div>
+        <div class="chart-box">
+            <div class="chart-title">Top Tech Skills Focus (%)</div>
+            <canvas id="radarChart" height="230"></canvas>
+        </div>
+    </div>
+
+    <div class="section-row">
+        <!-- Col 1: Operations -->
+        <div class="section-col">
+            <h2>Platform Operations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Hashtag Web3</th>
+                        <th>CV in Bio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Job Scraping</strong></td>
+                        <td>Automated</td>
+                        <td>Automated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Website & Telegram Posting</strong></td>
+                        <td>Automated</td>
+                        <td>Automated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Social Media Posting</strong></td>
+                        <td>Automated</td>
+                        <td>Automated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Client Comm</strong></td>
+                        <td>Manual (scams)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email Alerts</strong></td>
+                        <td>Automated</td>
+                        <td>Automated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Virality</strong></td>
+                        <td>Forwards</td>
+                        <td>Watermarked links</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Error Handling</strong></td>
+                        <td>Manual</td>
+                        <td>Manual</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Col 2: Social Media -->
+        <div class="section-col">
+            <h2>Social Infrastructure</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Channel / Metric</th>
+                        <th>Hashtag Web3</th>
+                        <th>CV in Bio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>LinkedIn Followers</strong></td>
+                        <td><a href="https://www.linkedin.com/company/hashtagweb3" target="_blank">37,000</a></td>
+                        <td><a href="https://www.linkedin.com/company/cvinbio" target="_blank">1,200</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telegram Networking</strong></td>
+                        <td><a href="https://t.me/hashtagweb3" target="_blank">18,000 members</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telegram Job Alerts</strong></td>
+                        <td><a href="https://t.me/web3hiring" target="_blank">62,000 subscribers</a></td>
+                        <td><a href="https://t.me/techjobsdaily" target="_blank">3,500 subscribers</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telegram News Feed</strong></td>
+                        <td><a href="https://t.me/web3newsfeed" target="_blank">11,000 subscribers</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telegram Avg Views</strong></td>
+                        <td>3,000</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alert Notifications On</strong></td>
+                        <td>45.0%</td>
+                        <td>50.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email List</strong></td>
+                        <td>150,000</td>
+                        <td>7,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WhatsApp Groups</strong></td>
+                        <td>26,000</td>
+                        <td>9,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section-row">
+        <!-- Col 1: Functional Share Splits -->
+        <div class="section-col">
+            <h2>Functional Share Splits</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>CV in Bio</th>
+                        <th>Hashtag Web3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Engineering</strong></td>
+                        <td>14,028 (30.9%)</td>
+                        <td>929 (34.0%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operations</strong></td>
+                        <td>7,476 (16.5%)</td>
+                        <td>135 (4.9%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sales / BD</strong></td>
+                        <td>6,245 (13.8%)</td>
+                        <td>222 (8.1%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marketing</strong></td>
+                        <td>2,125 (4.7%)</td>
+                        <td>357 (13.1%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Finance</strong></td>
+                        <td>1,586 (3.5%)</td>
+                        <td>147 (5.4%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Sci / AI</strong></td>
+                        <td>1,413 (3.1%)</td>
+                        <td>184 (6.7%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Design</strong></td>
+                        <td>1,323 (2.9%)</td>
+                        <td>70 (2.6%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Legal & Comp</strong></td>
+                        <td>899 (2.0%)</td>
+                        <td>198 (7.2%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Product Mgmt</strong></td>
+                        <td>2,226 (4.9%)</td>
+                        <td>14 (0.5%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Customer Support</strong></td>
+                        <td>911 (2.0%)</td>
+                        <td>54 (2.0%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>People / HR</strong></td>
+                        <td>858 (1.9%)</td>
+                        <td>43 (1.6%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Eng</strong></td>
+                        <td>431 (1.0%)</td>
+                        <td>53 (1.9%)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="note"><strong>Functional Note:</strong> Engineering leads functional share on both. CV in Bio excels in traditional sales/ops, while Web3 leads in marketing and compliance.</div>
+        </div>
+
+        <!-- Col 2: Skills Focus & High Traffic -->
+        <div class="section-col">
+            <h2>Skills Focus (Top 5)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>CV in Bio</th>
+                        <th>Hashtag Web3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>#1</strong></td>
+                        <td>Python (6,434 / 14.2%)</td>
+                        <td>Python (549 / 20.1%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>#2</strong></td>
+                        <td>Data Analysis (6,400 / 14.1%)</td>
+                        <td>SQL (417 / 15.2%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>#3</strong></td>
+                        <td>Automation (5,983 / 13.2%)</td>
+                        <td>Project Mgmt (416 / 15.2%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>#4</strong></td>
+                        <td>Customer Success (4,484 / 9.9%)</td>
+                        <td>Risk Mgmt (409 / 15.0%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>#5</strong></td>
+                        <td>Machine Learning (4,200 / 9.3%)</td>
+                        <td>AWS (388 / 14.2%)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Top 10 High-Traffic Pages & Utilities</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>CV in Bio (PostHog)</th>
+                        <th>Hashtag Web3 (Google Analytics)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td><a href="https://cvin.bio/" target="_blank">Homepage / Upload Landing Page</a></td>
+                        <td><a href="https://hashtagweb3.com/" target="_blank">Homepage / Job Listings Board</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td><a href="https://cvin.bio/editor" target="_blank">CV Editor / Resume Creator (`/editor`)</a></td>
+                        <td><a href="https://hashtagweb3.com/interview-questions" target="_blank">Web3 Interview Question Bank</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td><a href="https://cvin.bio/jobs" target="_blank">CV Job Feed (`/jobs` variations)</a></td>
+                        <td><a href="https://hashtagweb3.com/salary-calculator" target="_blank">Web3 Salary Calculator</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td><a href="https://cvin.bio/signup" target="_blank">Signup Page (`/signup`)</a></td>
+                        <td><a href="https://hashtagweb3.com/web3-community-manager-career" target="_blank">Good Community Moderator Guide</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td><a href="https://cvin.bio/ronald" target="_blank">Candidate Profile: Ronald</a></td>
+                        <td><a href="https://hashtagweb3.com/resume-builder" target="_blank">Web3 Resume Builder</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td><a href="https://cvin.bio/oscar" target="_blank">Candidate Profile: Oscar</a></td>
+                        <td><a href="https://hashtagweb3.com/web3-career-quiz" target="_blank">Web3 Archetype Assessment</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>7</strong></td>
+                        <td><a href="https://cvin.bio/oleksiiborysenko" target="_blank">Candidate Profile: Oleksii B.</a></td>
+                        <td><a href="https://hashtagweb3.com/what-is-defi" target="_blank">What is DeFi? A Beginner's Guide</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>8</strong></td>
+                        <td><a href="https://cvin.bio/yohannes" target="_blank">Candidate Profile: Yohannes</a></td>
+                        <td><a href="https://hashtagweb3.com/digital-nomad-visas" target="_blank">Digital Nomad Visa List</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>9</strong></td>
+                        <td><a href="https://cvin.bio/news" target="_blank">CV News Feed (`/news`)</a></td>
+                        <td><a href="https://hashtagweb3.com/invoice-generator" target="_blank">Free Invoice Generator</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>10</strong></td>
+                        <td><a href="https://cvin.bio/jeremyyza" target="_blank">Candidate Profile: Jeremyyza</a></td>
+                        <td><a href="https://hashtagweb3.com/news" target="_blank">Web3 News Feed (aggregated)</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>Community Testimonials</h2>
+    <blockquote>
+        <strong>"Their jobs channel is the most effective Web3 job board I’ve come across. Its real-time updates allow me to apply to new roles the moment they are available on the market, significantly improving the visibility of my applications."</strong><br>
+        — <strong>Suki Cheung</strong>, <em>Community Lead, Trust Wallet</em>
+    </blockquote>
+
+    <blockquote>
+        <strong>"We’ve got so many emails from candidates applying for our jobs—there’s a new one every 5 minutes!"</strong><br>
+        — <strong>Kris Lai</strong>, <em>CEO, Scallop</em>
+    </blockquote>
+
+    <blockquote>
+        <strong>"Our agency has been using the job board for the past year, and we’ve tripled our speed in closing roles thanks to their high-quality talent pool."</strong><br>
+        — <strong>Zhanna Manzyk</strong>, <em>CEO, Jaya Talent</em>
+    </blockquote>
+
+    <script>
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+
+        // Clean charcoal/slate theme
+        const colorCvInBio = 'rgba(74, 85, 104, 0.8)'; // Slate
+        const colorCvInBioBorder = 'rgba(74, 85, 104, 1)';
+        const colorWeb3 = 'rgba(26, 32, 44, 0.85)'; // Deep Charcoal
+        const colorWeb3Border = 'rgba(26, 32, 44, 1)';
+
+        // 1. Departmental Distribution Bar Chart
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Eng', 'Ops', 'Sales', 'Mktg', 'Fin', 'AI/Data', 'Des', 'Legal', 'Support', 'HR', 'Prod', 'DataEng'],
+                datasets: [
+                    {
+                        label: 'CV in Bio (%)',
+                        data: [30.9, 16.5, 13.8, 4.7, 3.5, 3.1, 2.9, 2.0, 2.0, 1.9, 4.9, 1.0],
+                        backgroundColor: colorCvInBio,
+                        borderColor: colorCvInBioBorder,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Hashtag Web3 (%)',
+                        data: [34.0, 4.9, 8.1, 13.1, 5.4, 6.7, 2.6, 7.2, 2.0, 1.6, 0.5, 1.9],
+                        backgroundColor: colorWeb3,
+                        borderColor: colorWeb3Border,
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                animation: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 9 } } }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { font: { size: 8 } }
+                    },
+                    x: {
+                        ticks: { font: { size: 8 } }
+                    }
+                }
+            }
+        });
+
+        // 2. Top Skills Radar Chart
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['Python', 'SQL / Data', 'Automation', 'ML / AI', 'Proj Mgmt', 'AWS / Infra'],
+                datasets: [
+                    {
+                        label: 'CV in Bio (%)',
+                        data: [14.2, 14.1, 13.2, 9.3, 6.0, 3.0],
+                        backgroundColor: 'rgba(74, 85, 104, 0.1)',
+                        borderColor: colorCvInBioBorder,
+                        borderWidth: 1.5,
+                        pointRadius: 2
+                    },
+                    {
+                        label: 'Hashtag Web3 (%)',
+                        data: [20.1, 15.2, 5.0, 8.0, 15.2, 14.2],
+                        backgroundColor: 'rgba(26, 32, 44, 0.1)',
+                        borderColor: colorWeb3Border,
+                        borderWidth: 1.5,
+                        pointRadius: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                animation: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 9 } } }
+                },
+                scales: {
+                    r: {
+                        ticks: { display: false },
+                        angleLines: { display: true },
+                        pointLabels: { font: { size: 8 } },
+                        suggestedMin: 0,
+                        suggestedMax: 25
+                    }
+                }
+            }
+        });
+
+        // Instant PNG image conversion to support clean drag/copy-pasting into Notion
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const canvases = document.querySelectorAll('canvas');
+                canvases.forEach(canvas => {
+                    const img = document.createElement('img');
+                    img.src = canvas.toDataURL('image/png');
+                    img.style.width = '100%';
+                    img.style.height = 'auto';
+                    img.style.border = 'none';
+                    img.style.display = 'block';
+                    
+                    const parent = canvas.parentNode;
+                    parent.replaceChild(img, canvas);
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>

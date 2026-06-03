@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CVin.Bio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;color:#18181b;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:13px}
+
+@page{margin:32px 48px;size:letter}
+.section{padding:20px 0 24px;border-bottom:1px solid #f0f0f0;page-break-inside:avoid}
+.section:last-child{border:none}
+h1{font-size:44px;font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:12px}
+h2{font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.2;margin-bottom:10px}
+h3{font-size:14px;font-weight:700;margin-bottom:4px}
+p{font-size:12px;line-height:1.6;color:#3f3f46}
+.tag{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.18em;color:#fff;background:#18181b;padding:3px 10px;border-radius:4px;margin-bottom:10px}
+.stat-grid{display:grid;gap:8px}
+.stat-box{background:#fafafa;border:1px solid #e4e4e7;border-radius:10px;padding:10px 12px;text-align:center}
+.stat-box .num{font-size:22px;font-weight:800;color:#18181b;letter-spacing:-0.02em}
+.stat-box .label{font-size:9px;color:#52525b;margin-top:2px;line-height:1.3}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.four-col{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.card{background:#fafafa;border:1px solid #e4e4e7;border-radius:10px;padding:12px}
+.card h3{font-size:12px;margin-bottom:3px}
+.card p{font-size:11px;line-height:1.45}
+.dark-card{background:#18181b;color:#fff;border-radius:10px;padding:12px}
+.dark-card h3{color:#fff;font-size:12px;margin-bottom:3px}
+.dark-card p{color:#d4d4d8;font-size:11px;line-height:1.45}
+.comp-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f4f4f5;font-size:11px}
+.comp-row:last-child{border:none}
+.comp-name{font-weight:700}
+.rev-row{display:grid;grid-template-columns:32px 1fr;gap:8px;margin-bottom:8px;align-items:start}
+.rev-num{font-size:20px;font-weight:800;color:#e4e4e7;line-height:1}
+.rev-row h3{font-size:12px;margin-bottom:2px}
+.rev-row p{font-size:10px;color:#52525b;line-height:1.4}
+.phase{flex:1;background:#fafafa;border:1px solid #e4e4e7;border-radius:10px;padding:12px}
+.phase h3{font-size:12px;font-weight:700;margin-bottom:6px}
+.phase li{font-size:10px;color:#3f3f46;line-height:1.5;margin-bottom:3px;list-style:none;padding-left:10px;position:relative}
+.phase li::before{content:"";position:absolute;left:0;top:6px;width:3px;height:3px;background:#a1a1aa;border-radius:50%}
+ul.clean{list-style:none;padding:0}
+ul.clean li{font-size:11px;color:#3f3f46;line-height:1.5;padding:2px 0 2px 12px;position:relative}
+ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:3px;height:3px;background:#d4d4d8;border-radius:50%}
+.hero-img{width:100%;border-radius:12px;margin:12px 0}
+.cta{background:#18181b;color:#fff;border-radius:12px;padding:24px 28px;margin-top:12px}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:#a1a1aa}
+.bar{height:6px;border-radius:3px;margin-top:3px;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="section" style="padding-top:32px;padding-bottom:32px;border:none">
+  <div class="tag">April 2026</div>
+  <h1>CVin.Bio</h1>
+  <p style="font-size:16px;color:#52525b;max-width:520px;line-height:1.5">Talent infrastructure for the AI agent economy. Candidates get structured profiles. Employers get agent-queryable search. AI hiring agents get an MCP endpoint.</p>
+  <!-- Architecture flow diagram -->
+  <svg viewBox="0 0 720 100" style="width:100%;margin:20px 0 12px;max-height:100px" xmlns="http://www.w3.org/2000/svg">
+    <style>text{font-family:'Inter',sans-serif;font-size:10px}
+    .box{fill:#fafafa;stroke:#e4e4e7;rx:8}
+    .dark{fill:#18181b;stroke:none;rx:8}
+    .arr{stroke:#d4d4d8;stroke-width:1.5;fill:none;marker-end:url(#ah)}</style>
+    <defs><marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#a1a1aa"/></marker></defs>
+    <!-- Job Seekers -->
+    <rect class="box" x="0" y="10" width="120" height="80"/>
+    <text x="60" y="38" text-anchor="middle" font-weight="700" fill="#18181b" font-size="11">Job Seekers</text>
+    <text x="60" y="52" text-anchor="middle" font-size="9" fill="#52525b">Upload CV</text>
+    <text x="60" y="64" text-anchor="middle" font-size="9" fill="#52525b">Get matched jobs</text>
+    <text x="60" y="76" text-anchor="middle" font-size="9" fill="#52525b">AI-discoverable profile</text>
+    <!-- Arrow 1 -->
+    <line class="arr" x1="125" y1="50" x2="168" y2="50"/>
+    <!-- CVin.Bio Platform -->
+    <rect class="dark" x="173" y="5" width="180" height="90"/>
+    <text x="263" y="28" text-anchor="middle" font-weight="800" fill="#fff" font-size="12">CVin.Bio</text>
+    <text x="263" y="44" text-anchor="middle" font-size="9" fill="#fff">Structured profiles</text>
+    <text x="263" y="56" text-anchor="middle" font-size="9" fill="#fff">68K+ aggregated jobs</text>
+    <text x="263" y="68" text-anchor="middle" font-size="9" fill="#fff">MCP Server</text>
+    <text x="263" y="80" text-anchor="middle" font-size="9" fill="#fff">Skills extraction engine</text>
+    <!-- Arrow 2 -->
+    <line class="arr" x1="358" y1="50" x2="398" y2="30"/>
+    <line class="arr" x1="358" y1="50" x2="398" y2="70"/>
+    <!-- Employers -->
+    <rect class="box" x="403" y="0" width="130" height="44"/>
+    <text x="468" y="18" text-anchor="middle" font-weight="700" fill="#18181b" font-size="11">Employers</text>
+    <text x="468" y="32" text-anchor="middle" font-size="9" fill="#52525b">Sourcing dashboard</text>
+    <!-- AI Agents -->
+    <rect class="box" x="403" y="52" width="130" height="44"/>
+    <text x="468" y="70" text-anchor="middle" font-weight="700" fill="#18181b" font-size="11">AI Hiring Agents</text>
+    <text x="468" y="84" text-anchor="middle" font-size="9" fill="#52525b">Query via MCP API</text>
+    <!-- Arrow 3 -->
+    <line class="arr" x1="538" y1="25" x2="578" y2="40"/>
+    <line class="arr" x1="538" y1="75" x2="578" y2="60"/>
+    <!-- Hire -->
+    <rect x="583" y="25" width="130" height="50" rx="8" fill="#18181b" stroke="none"/>
+    <text x="648" y="48" text-anchor="middle" font-weight="700" fill="#fff" font-size="11">Hire</text>
+    <text x="648" y="62" text-anchor="middle" font-size="9" fill="#fff">Structured · Fast · Cheap</text>
+  </svg>
+  <p style="font-size:11px;color:#a1a1aa">cvin.bio &middot; Vedang Vatsa, Founder</p>
+</div>
+
+<!-- PROBLEM + MARKET -->
+<div class="section">
+  <div class="tag">Problem &amp; Market</div>
+  <h2>The AI agent economy needs hiring infrastructure. None exists.</h2>
+  <div class="two-col" style="margin-top:10px">
+    <div>
+      <p>By 2027, 40% of enterprise apps will embed AI agents (Gartner). AI engineer postings grew 143% YoY. Agent orchestration, RAG pipelines, and autonomous workflows are the fastest-growing job categories.</p>
+      <p style="margin-top:6px">But hiring still runs on keyword matching and recruiter fees. A single senior hire costs $50K+ in fees and takes 89 days. No platform structures talent data so that agents on either side, whether for job seekers or employers, can query it programmatically.</p>
+      <p style="margin-top:6px;font-weight:600;color:#18181b">AI sourcing startups raised $900M+ but all automate the recruiter. None build the structured data layer agents need.</p>
+    </div>
+    <div>
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr">
+        <div class="stat-box"><div class="num">$640B</div><div class="label">Global recruitment</div></div>
+        <div class="stat-box"><div class="num">$17.1B</div><div class="label">LinkedIn revenue/yr</div></div>
+        <div class="stat-box"><div class="num">143%</div><div class="label">YoY AI eng. growth</div></div>
+        <div class="stat-box"><div class="num">$50K+</div><div class="label">Cost per senior hire</div></div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="comp-row"><span class="comp-name">Eightfold AI</span><span>$424M · $2.1B val</span></div>
+        <div class="comp-row"><span class="comp-name">Juicebox AI</span><span>$116M · $850M val</span></div>
+        <div class="comp-row"><span class="comp-name">SeekOut</span><span>$189M raised</span></div>
+        <div class="comp-row"><span class="comp-name">Gem</span><span>$148M raised</span></div>
+        <div class="comp-row"><span class="comp-name">Moonhub + hireEZ</span><span>$89M raised</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUTION -->
+<div class="section">
+  <div class="tag">Solution</div>
+  <h2>Structured talent infrastructure for both sides of hiring</h2>
+  <p style="margin-bottom:10px">Job seekers get machine-readable profiles that AI systems can discover. Employers get structured search that replaces LinkedIn Recruiter. AI hiring agents on both sides get MCP endpoints.</p>
+  <div class="four-col">
+    <div class="card"><h3>🔄 CV Parser</h3><p>Upload a CV, get a shareable profile at cvin.bio/name. Every shared link carries the brand, turning candidates into organic distribution. Built-in viral loop.</p></div>
+    <div class="card"><h3>📊 Job Aggregation</h3><p>68K+ live listings from 2K+ companies via Greenhouse, Ashby, Lever, Workable APIs.</p></div>
+    <div class="card"><h3>🔌 MCP Server</h3><p>Live Model Context Protocol endpoint. AI agents search, filter, retrieve candidates programmatically.</p></div>
+    <div class="card"><h3>🤖 Agent Module</h3><p>Embeddable SDK. Companies' and candidates' AI agents interact via structured talent protocol.</p></div>
+  </div>
+  <!-- Positioning -->
+  <div class="three-col" style="margin-top:12px">
+    <div class="card">
+      <h3 style="color:#a1a1aa;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Job Boards</h3>
+      <p style="font-size:11px;font-weight:500;color:#18181b">LinkedIn, Indeed, ZipRecruiter</p>
+      <p style="font-size:10px;color:#a1a1aa;margin-top:3px">Keywords. No structured data. No agent endpoints. Not built for AI-mediated hiring.</p>
+    </div>
+    <div class="card">
+      <h3 style="color:#a1a1aa;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">AI Sourcing Tools</h3>
+      <p style="font-size:11px;font-weight:500;color:#18181b">Juicebox, Eightfold, SeekOut</p>
+      <p style="font-size:10px;color:#a1a1aa;margin-top:3px">Automate the recruiter's workflow. Dashboard for humans. Candidates are passive data.</p>
+    </div>
+    <div class="dark-card">
+      <h3 style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;color:#71717a">CVin.Bio</h3>
+      <p style="font-size:11px;font-weight:500;color:#fff">Talent protocol for the agent economy</p>
+      <p style="font-size:10px;color:#71717a;margin-top:3px">Both job seekers' and employers' AI agents interact via structured MCP endpoints. The data layer the entire ecosystem will read from.</p>
+    </div>
+  </div>
+</div>
+
+<!-- BUSINESS MODEL + TRACTION -->
+<div class="section">
+  <div class="two-col">
+    <div>
+      <div class="tag">Business Model</div>
+      <h2>Four revenue streams</h2>
+      <div class="rev-row"><div class="rev-num">01</div><div><h3>Featured placements</h3><p>Companies pay to boost roles to skill-matched candidates.</p></div></div>
+      <div class="rev-row"><div class="rev-num">02</div><div><h3>Sourcing subscriptions</h3><p>Per-seat pricing via MCP or web. Replaces LinkedIn Recruiter ($8,999/yr).</p></div></div>
+      <div class="rev-row"><div class="rev-num">03</div><div><h3>Placement success fees</h3><p>Performance-based. Fraction of the 20-30% recruiters charge.</p></div></div>
+      <div class="rev-row"><div class="rev-num">04</div><div><h3>Agent Hiring Module</h3><p>SaaS. Per-query pricing for AI agents on both sides.</p></div></div>
+      <div class="rev-row"><div class="rev-num">05</div><div><h3>AI Talent Finding Engine</h3><p>Replaces traditional ATS. Companies deploy an AI agent that sources, screens, and ranks candidates autonomously from our structured database.</p></div></div>
+      <!-- Unit economics bars -->
+      <div style="margin-top:8px">
+        <div style="display:flex;justify-content:space-between;font-size:10px"><span>Recruiter agency</span><strong>$50,000</strong></div>
+        <div class="bar" style="background:#e4e4e7;width:100%"></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px"><span>LinkedIn Recruiter/yr</span><strong>$8,999</strong></div>
+        <div class="bar" style="background:#a1a1aa;width:18%"></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px"><span>CVin.Bio sourcing/yr</span><strong>$1,200</strong></div>
+        <div class="bar" style="background:#18181b;width:4%;min-width:8px"></div>
+      </div>
+    </div>
+    <div>
+      <div class="tag">Traction</div>
+      <h2>Launched April 2026</h2>
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr">
+        <div class="stat-box"><div class="num">68K+</div><div class="label">Live job listings</div></div>
+        <div class="stat-box"><div class="num">2K+</div><div class="label">Companies tracked</div></div>
+        <div class="stat-box"><div class="num">100+</div><div class="label">AI agents w/ access</div></div>
+        <div class="stat-box"><div class="num">3</div><div class="label">Research reports (gated)</div></div>
+        <div class="stat-box"><div class="num">120K+</div><div class="label">Previous community built</div></div>
+        <div class="stat-box"><div class="num">80M</div><div class="label">LinkedIn views/yr</div></div>
+      </div>
+      <p style="font-size:10px;color:#71717a;margin-top:8px">Sources: OpenAI, Anthropic, Stripe, Airbnb, Coinbase, Cloudflare, Databricks, Snowflake + 2,000 others. MCP server live and operational.</p>
+      <p style="font-size:10px;color:#71717a;margin-top:4px">Entire platform self-built. Self-funded. No external investment to date.</p>
+    </div>
+  </div>
+</div>
+
+<!-- WHY NOW + ROADMAP -->
+<div class="section">
+  <div class="tag">Why Now</div>
+  <h2>The AI agent economy is creating a new hiring paradigm</h2>
+  <div class="four-col" style="margin-top:8px">
+    <div class="card" style="padding:10px"><h3 style="font-size:11px">🔧 Agent frameworks ship</h3><p style="font-size:10px">LangChain, CrewAI, AutoGen hit enterprise. Hiring for agent roles requires new infra.</p></div>
+    <div class="card" style="padding:10px"><h3 style="font-size:11px">🤖 AI reads resumes first</h3><p style="font-size:10px">ATS bots filter before humans see. Non-structured profiles get dropped.</p></div>
+    <div class="card" style="padding:10px"><h3 style="font-size:11px">🔌 MCP enables new category</h3><p style="font-size:10px">Anthropic's protocol standardized how AI queries tools. We expose talent search via MCP.</p></div>
+    <div class="card" style="padding:10px"><h3 style="font-size:11px">💸 Recruiters are fragile</h3><p style="font-size:10px">20-30% salary fees + LinkedIn boolean. Structured discovery costs a fraction.</p></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:12px">
+    <div class="phase"><h3>Now</h3><ul><li>Job aggregation pipeline</li><li>Structured profiles from CVs</li><li>MCP server live</li><li>Content distribution</li></ul></div>
+    <div class="phase"><h3>Next</h3><ul><li>Agent Hiring Module</li><li>Employer dashboard</li><li>Verified skill assessments</li><li>Agent-to-agent matching</li></ul></div>
+    <div class="phase"><h3>Long-term</h3><ul><li>Open talent protocol</li><li>Candidate agents respond to employer agents</li><li>Identity layer for AI hiring</li></ul></div>
+  </div>
+</div>
+
+<!-- FOUNDER -->
+<div class="section">
+  <div class="tag">Founder</div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+    <img src="ved.jpeg" style="width:56px;height:56px;border-radius:50%;object-fit:cover" />
+    <div><h2 style="margin-bottom:2px">Vedang Vatsa</h2><p style="font-size:11px;color:#71717a">IIT Kanpur alumnus · FRSA · 25 publications</p></div>
+  </div>
+  <div class="two-col" style="margin-top:8px">
+    <div>
+      <p style="font-weight:600;color:#18181b;margin-bottom:4px;font-size:11px">Track Record in Jobs & Hiring</p>
+      <ul class="clean">
+        <li><strong>HashtagWeb3.com:</strong> Built one of the largest Web3 job boards. 120K members, 55M post views. Microsoft for Startups.</li>
+        <li><strong>Prosple:</strong> Country Head, Australia's largest early-career job platform. 200K users.</li>
+        <li><strong>KPMG:</strong> Program Manager, Ministry of IT, India.</li>
+        <li><strong>Studio Tesseract:</strong> Co-founded. 30-person team, 27 products, 5 continents.</li>
+        <li><strong>Network School (by Balaji Srinivasan):</strong> Software Engineer.</li>
+        <li>80M yearly LinkedIn post views on original research.</li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-weight:600;color:#18181b;margin-bottom:4px;font-size:11px">Credentials</p>
+      <ul class="clean">
+        <li>IIT Kanpur alumnus, MBA</li>
+        <li>Fellow of the Royal Society of Arts</li>
+        <li>25 peer-reviewed publications (IEEE, SSRN)</li>
+        <li>Invited to Parliament of India</li>
+        <li>Japan's special visa for intellectual figures</li>
+        <li>Favikon Top 50 Fintech Creators</li>
+        <li>Thinkers360 Top 50 Metaverse Thought Leaders</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2 style="font-size:20px">Let's talk.</h2>
+  <div class="three-col" style="margin-top:12px">
+    <div><h3 style="color:#fff;font-size:12px;margin-bottom:4px">Engineering</h3><p style="font-size:10px">Agent Hiring Module SDK. Employer dashboard. Scale to 200K+ listings.</p></div>
+    <div><h3 style="color:#fff;font-size:12px;margin-bottom:4px">Go-to-market</h3><p style="font-size:10px">GTM co-founder. Direct outreach to AI-native companies.</p></div>
+    <div><h3 style="color:#fff;font-size:12px;margin-bottom:4px">Operations</h3><p style="font-size:10px">Infrastructure at scale. Legal framework for data governance.</p></div>
+  </div>
+  <p style="margin-top:16px;font-size:13px;color:#e4e4e7;font-weight:500">The platform is live. This is not a prototype. It is a working product ready to scale.</p>
+  <p style="margin-top:8px;font-size:11px;color:#71717a"><a href="https://cvin.bio" style="color:#a1a1aa">cvin.bio</a> &middot; <a href="mailto:vatsvedang@gmail.com" style="color:#a1a1aa">vatsvedang@gmail.com</a> &middot; <a href="https://linkedin.com/in/vedangvatsa" style="color:#a1a1aa">linkedin.com/in/vedangvatsa</a></p>
+</div>
+
+</body>
+</html>
