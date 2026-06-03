@@ -39,33 +39,105 @@ export default function ArticleContent() {
 
       <p>This element proves your terminal fluency far better than listing command line tools in a skills list. It shows you enjoy building fun systems. Keep the commands simple and handle typos gracefully.</p>
 
-      {/* SVG Diagram showing CV Interaction Flow */}
+      {/* SVG: Interactive technology filter mockup */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Interactive CV State Machine">
-          <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
-          
-          {/* Box 1 */}
-          <rect x="40" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="120" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Recruiter Input</text>
-          <text x="120" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Clicks React filter</text>
+        <svg viewBox="0 0 700 400" className="w-full h-auto" role="img" aria-label="Mockup of an interactive technology filter that highlights matching projects when a skill badge is clicked">
+          <style>{`
+            .we-title { font: 600 13px system-ui, sans-serif; }
+            .we-label { font: 500 11px system-ui, sans-serif; }
+            .we-small { font: 400 10px system-ui, sans-serif; }
+            .we-badge { font: 700 8px system-ui, sans-serif; letter-spacing: 0.05em; }
+            .we-code { font: 500 9px 'SF Mono', 'Fira Code', monospace; }
+          `}</style>
 
-          {/* Connection 1 */}
-          <line x1="200" y1="175" x2="260" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="252" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Filter bar section */}
+          <text x="350" y="22" textAnchor="middle" className="we-title fill-zinc-900 dark:fill-zinc-100">Interactive Technology Filter</text>
+          <text x="350" y="38" textAnchor="middle" className="we-small fill-zinc-500 dark:fill-zinc-400">Click a skill → matching projects highlight, others fade</text>
 
-          {/* Box 2 */}
-          <rect x="270" y="140" width="160" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="350" y="175" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">State Change</text>
-          <text x="350" y="195" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Filters project array</text>
+          {/* Skill badges row */}
+          <rect x="40" y="52" width="620" height="40" rx="6" className="fill-zinc-50 dark:fill-zinc-800/40 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
+          <text x="55" y="68" className="we-badge fill-zinc-400 dark:fill-zinc-500">FILTER BY SKILL</text>
 
-          {/* Connection 2 */}
-          <line x1="430" y1="175" x2="490" y2="175" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="482" y="180" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Active badge: React (selected) */}
+          <rect x="165" y="58" width="60" height="26" rx="13" className="fill-blue-500 stroke-blue-600" strokeWidth="1" />
+          <text x="195" y="75" textAnchor="middle" className="we-badge fill-white">REACT ✓</text>
 
-          {/* Box 3 */}
-          <rect x="500" y="140" width="160" height="70" rx="6" className="fill-emerald-50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-900" strokeWidth="2" />
-          <text x="580" y="175" textAnchor="middle" className="fill-emerald-900 dark:fill-emerald-300 font-semibold" fontSize="13">View Update</text>
-          <text x="580" y="195" textAnchor="middle" className="fill-emerald-700 dark:fill-emerald-400" fontSize="11">Highlights projects</text>
+          {/* Inactive badges */}
+          <rect x="235" y="58" width="40" height="26" rx="13" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="255" y="75" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">GO</text>
+
+          <rect x="285" y="58" width="62" height="26" rx="13" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="316" y="75" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">DOCKER</text>
+
+          <rect x="357" y="58" width="82" height="26" rx="13" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="398" y="75" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">POSTGRESQL</text>
+
+          <rect x="449" y="58" width="62" height="26" rx="13" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="480" y="75" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">PYTHON</text>
+
+          <rect x="521" y="58" width="50" height="26" rx="13" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="546" y="75" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">AWS</text>
+
+          {/* Project 1: MATCHES React */}
+          <rect x="40" y="105" width="300" height="120" rx="6" className="fill-white dark:fill-zinc-900 stroke-blue-300 dark:stroke-blue-600" strokeWidth="2" />
+          <rect x="40" y="105" width="300" height="3" rx="6" className="fill-blue-500" />
+          <text x="55" y="128" className="we-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Payment Dashboard</text>
+          <text x="290" y="128" className="we-badge fill-blue-500 dark:fill-blue-400">MATCH</text>
+          <text x="55" y="145" className="we-small fill-zinc-600 dark:fill-zinc-400">Built real-time dashboard processing $2M daily</text>
+          <text x="55" y="160" className="we-small fill-zinc-600 dark:fill-zinc-400">transactions with live charts and alert systems</text>
+
+          {/* Tech stack badges for project 1 */}
+          <rect x="55" y="172" width="44" height="18" rx="9" className="fill-blue-100 dark:fill-blue-900/30 stroke-blue-300 dark:stroke-blue-700" strokeWidth="1" />
+          <text x="77" y="184" textAnchor="middle" className="we-badge fill-blue-600 dark:fill-blue-400">REACT</text>
+          <rect x="105" y="172" width="38" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="124" y="184" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">D3.js</text>
+          <rect x="149" y="172" width="46" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="172" y="184" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">NODE</text>
+
+          <text x="55" y="212" className="we-badge fill-emerald-600 dark:fill-emerald-400">IMPACT</text>
+          <text x="105" y="212" className="we-small fill-zinc-600 dark:fill-zinc-400">40% faster load · 99.9% uptime</text>
+
+          {/* Project 2: MATCHES React */}
+          <rect x="360" y="105" width="300" height="120" rx="6" className="fill-white dark:fill-zinc-900 stroke-blue-300 dark:stroke-blue-600" strokeWidth="2" />
+          <rect x="360" y="105" width="300" height="3" rx="6" className="fill-blue-500" />
+          <text x="375" y="128" className="we-label fill-zinc-900 dark:fill-zinc-100" fontWeight="700">Healthcare Portal</text>
+          <text x="610" y="128" className="we-badge fill-blue-500 dark:fill-blue-400">MATCH</text>
+          <text x="375" y="145" className="we-small fill-zinc-600 dark:fill-zinc-400">Patient-facing portal with HIPAA-compliant</text>
+          <text x="375" y="160" className="we-small fill-zinc-600 dark:fill-zinc-400">data handling serving 50K monthly users</text>
+
+          <rect x="375" y="172" width="44" height="18" rx="9" className="fill-blue-100 dark:fill-blue-900/30 stroke-blue-300 dark:stroke-blue-700" strokeWidth="1" />
+          <text x="397" y="184" textAnchor="middle" className="we-badge fill-blue-600 dark:fill-blue-400">REACT</text>
+          <rect x="425" y="172" width="72" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="461" y="184" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">TYPESCRIPT</text>
+          <rect x="503" y="172" width="38" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" />
+          <text x="522" y="184" textAnchor="middle" className="we-badge fill-zinc-500 dark:fill-zinc-400">AWS</text>
+
+          <text x="375" y="212" className="we-badge fill-emerald-600 dark:fill-emerald-400">IMPACT</text>
+          <text x="425" y="212" className="we-small fill-zinc-600 dark:fill-zinc-400">WCAG AA · 3s avg load time</text>
+
+          {/* Project 3: FADED (no React match) */}
+          <rect x="40" y="240" width="300" height="100" rx="6" className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" opacity="0.4" />
+          <text x="55" y="263" className="we-label fill-zinc-400 dark:fill-zinc-500" fontWeight="600" opacity="0.5">CLI Build Tool</text>
+          <text x="270" y="263" className="we-badge fill-zinc-300 dark:fill-zinc-600">NO MATCH</text>
+          <text x="55" y="280" className="we-small fill-zinc-300 dark:fill-zinc-600" opacity="0.5">Custom build pipeline for monorepo</text>
+          <rect x="55" y="292" width="28" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" opacity="0.4" />
+          <text x="69" y="304" textAnchor="middle" className="we-badge fill-zinc-300 dark:fill-zinc-600">GO</text>
+          <rect x="89" y="292" width="48" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" opacity="0.4" />
+          <text x="113" y="304" textAnchor="middle" className="we-badge fill-zinc-300 dark:fill-zinc-600">BASH</text>
+
+          {/* Project 4: FADED (no React match) */}
+          <rect x="360" y="240" width="300" height="100" rx="6" className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" opacity="0.4" />
+          <text x="375" y="263" className="we-label fill-zinc-400 dark:fill-zinc-500" fontWeight="600" opacity="0.5">Data Pipeline</text>
+          <text x="590" y="263" className="we-badge fill-zinc-300 dark:fill-zinc-600">NO MATCH</text>
+          <text x="375" y="280" className="we-small fill-zinc-300 dark:fill-zinc-600" opacity="0.5">ETL system for analytics warehouse</text>
+          <rect x="375" y="292" width="52" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" opacity="0.4" />
+          <text x="401" y="304" textAnchor="middle" className="we-badge fill-zinc-300 dark:fill-zinc-600">PYTHON</text>
+          <rect x="433" y="292" width="58" height="18" rx="9" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" opacity="0.4" />
+          <text x="462" y="304" textAnchor="middle" className="we-badge fill-zinc-300 dark:fill-zinc-600">SPARK</text>
+
+          {/* Summary */}
+          <text x="350" y="372" textAnchor="middle" className="we-small fill-zinc-500 dark:fill-zinc-400">Matching projects stay prominent · Non-matching projects fade · Zero layout shift</text>
+          <text x="350" y="390" textAnchor="middle" className="we-badge fill-blue-500 dark:fill-blue-400">SHOWING 2 OF 4 PROJECTS MATCHING "REACT"</text>
         </svg>
       </div>
 

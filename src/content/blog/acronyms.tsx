@@ -30,42 +30,87 @@ export default function ArticleContent() {
 
       <p>This technique also shows that you understand the terms you use. Human recruiters are not always technical. Seeing the full name helps non-technical recruiters match your profile with the job description.</p>
 
-      {/* SVG Diagram showing Search Crawler Parsing Pipeline */}
+      {/* SVG: Acronym expansion reference showing how ATS matches both forms */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Search Crawler Parsing Pipeline">
-          <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
-          
-          {/* Box 1 */}
-          <rect x="30" y="60" width="180" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="120" y="95" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Search Query</text>
-          <text x="120" y="115" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Amazon Web Services</text>
+        <svg viewBox="0 0 700 400" className="w-full h-auto" role="img" aria-label="Reference table showing common tech acronyms, their expansions, and how ATS systems match both the abbreviation and full form">
+          <style>{`
+            .ac-title { font: 600 13px system-ui, sans-serif; }
+            .ac-header { font: 700 9px system-ui, sans-serif; letter-spacing: 0.08em; }
+            .ac-label { font: 600 11px system-ui, sans-serif; }
+            .ac-small { font: 400 10px system-ui, sans-serif; }
+            .ac-code { font: 600 10px 'SF Mono', 'Fira Code', monospace; }
+            .ac-badge { font: 700 8px system-ui, sans-serif; letter-spacing: 0.05em; }
+          `}</style>
 
-          {/* Connection 1 */}
-          <line x1="210" y1="95" x2="270" y2="95" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="262" y="100" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          <text x="350" y="22" textAnchor="middle" className="ac-title fill-zinc-900 dark:fill-zinc-100">ATS Acronym Matching — Write Both Forms</text>
+          <text x="350" y="38" textAnchor="middle" className="ac-small fill-zinc-500 dark:fill-zinc-400">Recruiters search for either form · Only resumes with both get matched</text>
 
-          {/* Box 2 */}
-          <rect x="280" y="60" width="180" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="370" y="95" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Acronym Expansion</text>
-          <text x="370" y="115" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">AWS OR Amazon Web Services</text>
+          {/* Table header */}
+          <rect x="30" y="52" width="640" height="28" rx="6" className="fill-zinc-100 dark:fill-zinc-800" />
+          <text x="75" y="70" textAnchor="middle" className="ac-header fill-zinc-500 dark:fill-zinc-400">ACRONYM</text>
+          <text x="240" y="70" textAnchor="middle" className="ac-header fill-zinc-500 dark:fill-zinc-400">FULL EXPANSION</text>
+          <text x="420" y="70" textAnchor="middle" className="ac-header fill-zinc-500 dark:fill-zinc-400">BEST RESUME USAGE</text>
+          <text x="590" y="70" textAnchor="middle" className="ac-header fill-zinc-500 dark:fill-zinc-400">ATS COVERAGE</text>
 
-          {/* Connection 2 */}
-          <line x1="370" y1="130" x2="370" y2="190" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="365" y="185" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16" transform="rotate(90 370 185)">→</text>
+          {/* Row 1 */}
+          <rect x="30" y="84" width="640" height="36" rx="0" className="fill-white dark:fill-zinc-900/50" />
+          <rect x="45" y="90" width="50" height="22" rx="4" className="fill-blue-100 dark:fill-blue-900/30 stroke-blue-200 dark:stroke-blue-700" strokeWidth="1" />
+          <text x="70" y="105" textAnchor="middle" className="ac-code fill-blue-600 dark:fill-blue-400">AWS</text>
+          <text x="240" y="106" textAnchor="middle" className="ac-small fill-zinc-700 dark:fill-zinc-300">Amazon Web Services</text>
+          <text x="420" y="106" textAnchor="middle" className="ac-small fill-zinc-600 dark:fill-zinc-400">"Deployed on AWS (Amazon Web Services)"</text>
+          <text x="590" y="106" textAnchor="middle" className="ac-badge fill-emerald-600 dark:fill-emerald-400">✓ BOTH FORMS</text>
 
-          {/* Box 3 */}
-          <rect x="280" y="200" width="180" height="70" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
-          <text x="370" y="235" textAnchor="middle" className="fill-zinc-900 dark:fill-zinc-100 font-semibold" fontSize="13">Database Index Scan</text>
-          <text x="370" y="255" textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="11">Searches CV contents</text>
+          {/* Row 2 */}
+          <rect x="30" y="120" width="640" height="36" rx="0" className="fill-zinc-50 dark:fill-zinc-800/30" />
+          <rect x="45" y="126" width="50" height="22" rx="4" className="fill-violet-100 dark:fill-violet-900/30 stroke-violet-200 dark:stroke-violet-700" strokeWidth="1" />
+          <text x="70" y="141" textAnchor="middle" className="ac-code fill-violet-600 dark:fill-violet-400">CI/CD</text>
+          <text x="240" y="142" textAnchor="middle" className="ac-small fill-zinc-700 dark:fill-zinc-300">Continuous Integration / Delivery</text>
+          <text x="420" y="142" textAnchor="middle" className="ac-small fill-zinc-600 dark:fill-zinc-400">"Built CI/CD pipeline with GitHub Actions"</text>
+          <text x="590" y="142" textAnchor="middle" className="ac-badge fill-emerald-600 dark:fill-emerald-400">✓ BOTH FORMS</text>
 
-          {/* Connection 3 */}
-          <line x1="460" y1="235" x2="520" y2="235" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="2" />
-          <text x="512" y="240" className="fill-zinc-400 dark:fill-zinc-500 font-semibold" fontSize="16">→</text>
+          {/* Row 3 */}
+          <rect x="30" y="156" width="640" height="36" rx="0" className="fill-white dark:fill-zinc-900/50" />
+          <rect x="45" y="162" width="50" height="22" rx="4" className="fill-amber-100 dark:fill-amber-900/30 stroke-amber-200 dark:stroke-amber-700" strokeWidth="1" />
+          <text x="70" y="177" textAnchor="middle" className="ac-code fill-amber-600 dark:fill-amber-400">K8s</text>
+          <text x="240" y="178" textAnchor="middle" className="ac-small fill-zinc-700 dark:fill-zinc-300">Kubernetes</text>
+          <text x="420" y="178" textAnchor="middle" className="ac-small fill-zinc-600 dark:fill-zinc-400">"Managed Kubernetes (K8s) clusters"</text>
+          <text x="590" y="178" textAnchor="middle" className="ac-badge fill-emerald-600 dark:fill-emerald-400">✓ BOTH FORMS</text>
 
-          {/* Box 4 */}
-          <rect x="530" y="200" width="140" height="70" rx="6" className="fill-emerald-50 dark:fill-emerald-950/20 stroke-emerald-200 dark:stroke-emerald-900" strokeWidth="2" />
-          <text x="600" y="235" textAnchor="middle" className="fill-emerald-900 dark:fill-emerald-300 font-semibold" fontSize="13">Match Score</text>
-          <text x="600" y="255" textAnchor="middle" className="fill-emerald-700 dark:fill-emerald-400" fontSize="11">Profile is selected</text>
+          {/* Row 4 */}
+          <rect x="30" y="192" width="640" height="36" rx="0" className="fill-zinc-50 dark:fill-zinc-800/30" />
+          <rect x="45" y="198" width="50" height="22" rx="4" className="fill-emerald-100 dark:fill-emerald-900/30 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
+          <text x="70" y="213" textAnchor="middle" className="ac-code fill-emerald-600 dark:fill-emerald-400">REST</text>
+          <text x="240" y="214" textAnchor="middle" className="ac-small fill-zinc-700 dark:fill-zinc-300">Representational State Transfer</text>
+          <text x="420" y="214" textAnchor="middle" className="ac-small fill-zinc-600 dark:fill-zinc-400">"Designed RESTful API endpoints"</text>
+          <text x="590" y="214" textAnchor="middle" className="ac-badge fill-emerald-600 dark:fill-emerald-400">✓ BOTH FORMS</text>
+
+          {/* Row 5 */}
+          <rect x="30" y="228" width="640" height="36" rx="0" className="fill-white dark:fill-zinc-900/50" />
+          <rect x="45" y="234" width="50" height="22" rx="4" className="fill-rose-100 dark:fill-rose-900/30 stroke-rose-200 dark:stroke-rose-700" strokeWidth="1" />
+          <text x="70" y="249" textAnchor="middle" className="ac-code fill-rose-600 dark:fill-rose-400">GCP</text>
+          <text x="240" y="250" textAnchor="middle" className="ac-small fill-zinc-700 dark:fill-zinc-300">Google Cloud Platform</text>
+          <text x="420" y="250" textAnchor="middle" className="ac-small fill-zinc-600 dark:fill-zinc-400">"GCP (Google Cloud Platform) certified"</text>
+          <text x="590" y="250" textAnchor="middle" className="ac-badge fill-emerald-600 dark:fill-emerald-400">✓ BOTH FORMS</text>
+
+          {/* Bad examples section */}
+          <rect x="30" y="280" width="640" height="28" rx="6" className="fill-red-50 dark:fill-red-950/20" />
+          <text x="350" y="298" textAnchor="middle" className="ac-header fill-red-500 dark:fill-red-400">COMMON MISTAKES — ACRONYM ONLY (NO EXPANSION)</text>
+
+          {/* Bad Row 1 */}
+          <rect x="30" y="312" width="310" height="36" rx="0" className="fill-white dark:fill-zinc-900/50 stroke-red-100 dark:stroke-red-900/30" strokeWidth="1" />
+          <text x="50" y="334" className="ac-code fill-red-500 dark:fill-red-400">✗</text>
+          <text x="65" y="334" className="ac-small fill-zinc-600 dark:fill-zinc-400">"Proficient in ML and NLP"</text>
+          <text x="290" y="334" className="ac-badge fill-red-400 dark:fill-red-500">MISSING EXPANSION</text>
+
+          {/* Bad Row 2 */}
+          <rect x="360" y="312" width="310" height="36" rx="0" className="fill-white dark:fill-zinc-900/50 stroke-red-100 dark:stroke-red-900/30" strokeWidth="1" />
+          <text x="380" y="334" className="ac-code fill-red-500 dark:fill-red-400">✗</text>
+          <text x="395" y="334" className="ac-small fill-zinc-600 dark:fill-zinc-400">"Experience with ORM and ETL"</text>
+          <text x="620" y="334" className="ac-badge fill-red-400 dark:fill-red-500">MISSING EXPANSION</text>
+
+          {/* Takeaway */}
+          <text x="350" y="372" textAnchor="middle" className="ac-small fill-zinc-500 dark:fill-zinc-400">ATS keyword search looks for exact text matches · Write "Kubernetes (K8s)" not just "K8s"</text>
+          <text x="350" y="390" textAnchor="middle" className="ac-badge fill-emerald-600 dark:fill-emerald-400">RULE: ALWAYS WRITE THE FULL NAME + ABBREVIATION ON FIRST USE</text>
         </svg>
       </div>
 
