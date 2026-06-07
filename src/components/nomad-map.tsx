@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import {
   Map,
@@ -53,12 +55,68 @@ interface SelectedPoint {
   properties: POI;
 }
 
+const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index: number }) {
+  const qualityDots = Math.min(Math.round(poi.quality / 2), 5);
+  return (
+    <tr className="border-t border-zinc-200/50 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-900/30 transition-colors">
+      <td className="px-4 py-2.5 text-zinc-400 dark:text-zinc-500 text-xs font-mono">{index + 1}</td>
+      <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-50">{poi.name}</td>
+      <td className="px-4 py-2.5">
+        <span
+          className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-white"
+          style={{ backgroundColor: CATEGORY_COLORS[poi.category] || '#666' }}
+        >
+          {CATEGORY_CONFIG[poi.category]?.label || poi.category}
+        </span>
+      </td>
+      <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400">{poi.city}</td>
+      <td className="px-4 py-2.5">
+        {poi.google_rating ? (
+          <div className="flex items-center gap-1">
+            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+            <span className="text-xs font-medium">{poi.google_rating}</span>
+            {poi.google_review_count && (
+              <span className="text-zinc-500 dark:text-zinc-400 text-[10px]">
+                ({poi.google_review_count})
+              </span>
+            )}
+          </div>
+        ) : (
+          <span className="text-zinc-500 dark:text-zinc-400 text-xs"> - </span>
+        )}
+      </td>
+      <td className="px-4 py-2.5">
+        <div className="flex gap-0.5">
+          {Array.from({ length: qualityDots }).map((_, i) => (
+            <span key={i} className="w-2 h-2 rounded-full bg-emerald-500" />
+          ))}
+          {Array.from({ length: 5 - qualityDots }).map((_, i) => (
+            <span key={i} className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700" />
+          ))}
+        </div>
+      </td>
+      <td className="px-4 py-2.5">
+        <div className="flex gap-2">
+          {poi.website && poi.website !== 'https://' && poi.website !== 'http://' && (
+            <a href={poi.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
+              Web
+            </a>
+          )}
+          <a href={poi.osm_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
+            Map
+          </a>
+        </div>
+      </td>
+    </tr>
+  );
+});
+
 export function NomadMap({ data }: { data: POI[] }) {
   const [selectedCity, setSelectedCity] = useState<string>('all');
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(Object.keys(CATEGORY_CONFIG)));
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
-  const [visibleCount, setVisibleCount] = useState(100);
+  const [visibleCount, setVisibleCount] = useState(50);
   const mapRef = useRef<MapRef>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -92,7 +150,7 @@ export function NomadMap({ data }: { data: POI[] }) {
 
   // Reset visible count when filters change
   useEffect(() => {
-    setVisibleCount(100);
+    setVisibleCount(50);
   }, [selectedCity, selectedCategories, searchQuery]);
 
   // Infinite scroll via IntersectionObserver on viewport
@@ -103,7 +161,7 @@ export function NomadMap({ data }: { data: POI[] }) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCount(prev => Math.min(prev + 100, filteredData.length));
+          setVisibleCount(prev => Math.min(prev + 50, filteredData.length));
         }
       },
       { rootMargin: '400px' }
@@ -260,7 +318,7 @@ export function NomadMap({ data }: { data: POI[] }) {
           ref={mapRef}
           center={mapCenter}
           zoom={mapZoom}
-          key={`${selectedCity}-${mapZoom}`}
+          key="nomad-map-stable"
         >
           <MapClusterLayer<POI>
             data={geojsonData}
@@ -394,56 +452,7 @@ export function NomadMap({ data }: { data: POI[] }) {
             </thead>
             <tbody>
               {filteredData.slice(0, visibleCount).map((poi, i) => (
-                <tr key={poi.osm_id} className="border-t border-zinc-200/50 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-900/30 transition-colors">
-                  <td className="px-4 py-2.5 text-zinc-400 dark:text-zinc-500 text-xs font-mono">{i + 1}</td>
-                  <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-50">{poi.name}</td>
-                  <td className="px-4 py-2.5">
-                    <span
-                      className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-white"
-                      style={{ backgroundColor: CATEGORY_COLORS[poi.category] || '#666' }}
-                    >
-                      {CATEGORY_CONFIG[poi.category]?.label || poi.category}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400">{poi.city}</td>
-                  <td className="px-4 py-2.5">
-                    {poi.google_rating ? (
-                      <div className="flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        <span className="text-xs font-medium">{poi.google_rating}</span>
-                        {poi.google_review_count && (
-                          <span className="text-zinc-500 dark:text-zinc-400 text-[10px]">
-                            ({poi.google_review_count})
-                          </span>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="text-zinc-500 dark:text-zinc-400 text-xs"> - </span>
-                    )}
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <div className="flex gap-0.5">
-                      {Array.from({ length: Math.min(Math.round(poi.quality / 2), 5) }).map((_, i) => (
-                        <span key={i} className="w-2 h-2 rounded-full bg-emerald-500" />
-                      ))}
-                      {Array.from({ length: 5 - Math.min(Math.round(poi.quality / 2), 5) }).map((_, i) => (
-                        <span key={i} className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700" />
-                      ))}
-                    </div>
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <div className="flex gap-2">
-                      {poi.website && poi.website !== 'https://' && poi.website !== 'http://' && (
-                        <a href={poi.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
-                          Web
-                        </a>
-                      )}
-                      <a href={poi.osm_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
-                        Map
-                      </a>
-                    </div>
-                  </td>
-                </tr>
+                <TableRow key={poi.osm_id} poi={poi} index={i} />
               ))}
             </tbody>
           </table>

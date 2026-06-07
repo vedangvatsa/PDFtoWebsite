@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 
 const NomadMap = dynamic(
   () => import('@/components/nomad-map').then(m => m.NomadMap),
@@ -69,13 +69,23 @@ function expandData(slim: SlimPOI[]) {
 
 export function NomadMapWrapper() {
   const [data, setData] = useState<any[] | null>(null);
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
-    fetch('/nomad-data-slim.json')
+    const controller = new AbortController();
+    fetch('/nomad-data-slim.json', { signal: controller.signal })
       .then(res => res.json())
-      .then(slim => setData(expandData(slim)))
-      .catch(console.error);
-  }, []);
+      .then(slim => {
+        // Defer heavy expansion to avoid blocking first paint
+        startTransition(() => {
+          setData(expandData(slim));
+        });
+      })
+      .catch(err => {
+        if (err.name !== 'AbortError') console.error(err);
+      });
+    return () => controller.abort();
+  }, [startTransition]);
 
   if (!data) {
     return (
