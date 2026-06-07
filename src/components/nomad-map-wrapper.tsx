@@ -11,25 +11,25 @@ const NomadMap = dynamic(
       <div className="space-y-6">
         {/* Skeleton stats */}
         <div className="flex flex-wrap gap-3 items-center">
-          <div className="h-7 w-24 rounded-full bg-muted animate-pulse" />
-          <div className="h-7 w-20 rounded-full bg-muted animate-pulse" />
-          <div className="h-7 w-24 rounded-full bg-muted animate-pulse" />
+          <div className="h-7 w-24 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-7 w-20 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-7 w-24 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
         </div>
         {/* Skeleton filters */}
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="h-10 w-64 rounded-lg bg-muted animate-pulse" />
-          <div className="h-10 w-64 rounded-lg bg-muted animate-pulse" />
+          <div className="h-10 w-64 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-10 w-64 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
         </div>
         {/* Skeleton category pills */}
         <div className="flex flex-wrap gap-2">
-          <div className="h-8 w-24 rounded-full bg-muted animate-pulse" />
-          <div className="h-8 w-20 rounded-full bg-muted animate-pulse" />
-          <div className="h-8 w-28 rounded-full bg-muted animate-pulse" />
-          <div className="h-8 w-28 rounded-full bg-muted animate-pulse" />
+          <div className="h-8 w-24 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-8 w-20 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-8 w-28 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-8 w-28 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
         </div>
         {/* Skeleton map */}
-        <div className="w-full h-[600px] rounded-lg bg-muted flex items-center justify-center">
-          <p className="text-muted-foreground">Loading map…</p>
+        <div className="w-full h-[600px] rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+          <p className="text-zinc-500 dark:text-zinc-400">Loading map…</p>
         </div>
       </div>
     ),
@@ -82,25 +82,25 @@ export function NomadMapWrapper() {
       <div className="space-y-6">
         {/* Skeleton stats */}
         <div className="flex flex-wrap gap-3 items-center">
-          <div className="h-7 w-24 rounded-full bg-muted animate-pulse" />
-          <div className="h-7 w-20 rounded-full bg-muted animate-pulse" />
-          <div className="h-7 w-24 rounded-full bg-muted animate-pulse" />
+          <div className="h-7 w-24 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-7 w-20 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-7 w-24 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
         </div>
         {/* Skeleton filters */}
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="h-10 w-64 rounded-lg bg-muted animate-pulse" />
-          <div className="h-10 w-64 rounded-lg bg-muted animate-pulse" />
+          <div className="h-10 w-64 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-10 w-64 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
         </div>
         {/* Skeleton category pills */}
         <div className="flex flex-wrap gap-2">
-          <div className="h-8 w-24 rounded-full bg-muted animate-pulse" />
-          <div className="h-8 w-20 rounded-full bg-muted animate-pulse" />
-          <div className="h-8 w-28 rounded-full bg-muted animate-pulse" />
-          <div className="h-8 w-28 rounded-full bg-muted animate-pulse" />
+          <div className="h-8 w-24 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-8 w-20 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-8 w-28 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+          <div className="h-8 w-28 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
         </div>
         {/* Skeleton map */}
-        <div className="w-full h-[600px] rounded-lg bg-muted flex items-center justify-center">
-          <p className="text-muted-foreground">Loading 4,400+ places…</p>
+        <div className="w-full h-[600px] rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+          <p className="text-zinc-500 dark:text-zinc-400">Loading 4,400+ places…</p>
         </div>
       </div>
     );
