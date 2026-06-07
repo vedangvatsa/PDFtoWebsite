@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const { profile } = data;
   const name = profile.fullName;
-  const title = `${name} | Professional Profile`;
+  const title = name;
   const latestRole = data.workExperience[0];
   const roleText = latestRole ? ` | ${latestRole.title} at ${latestRole.company}` : '';
   const description = profile.summary
