@@ -210,19 +210,19 @@ export default function AdminPage() {
 
         {/* ═══ SOCIAL MEDIA STATS ═══ */}
         {socialData && (
-          <Section title="Social Media" badge={socialData.summary?.cacheAge ? `cached ${socialData.summary.cacheAge}m ago` : 'Live'}>
-                       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-8 gap-y-6 mb-8">
+           <Section title="Social Media" badge={socialData.summary?.cacheAge ? `cached ${socialData.summary.cacheAge}m ago` : 'Live'}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-8 gap-y-6 mb-8">
               <Stat v={(socialData.x?.queue?.threads?.posted || 0) + (socialData.x?.queue?.insights?.posted || 0) + (socialData.x?.queue?.engagement?.posted || 0)} label="X Posts" sub="Threads + Insights + Engagement" />
               {socialData.bluesky?.live && (
                 <>
                   <Stat v={socialData.bluesky.live.followersCount || 0} label="BSky Followers" />
-                </>              )}
+                </>
+              )}
               <Stat v={socialData.summary?.totalViews || 0} label="Threads Views" sub="Last 25 posts" />
               <Stat v={socialData.summary?.totalPostsAcrossPlatforms || 0} label="Total posts" sub="All platforms" />
               <Stat v={socialData.summary?.totalEngagement || 0} label="Total engagement" sub="Likes + reposts + comments" />
               <Stat v={socialData.summary?.totalFollowers || 0} label="Total followers" sub="All platforms" />
               <Stat v={socialData.summary?.activePlatforms || 0} label="Active platforms" />
-            </div>orms" />
             </div>
 
             {/* Platform Detail Cards */}
