@@ -8,6 +8,7 @@ import {
   MapControls,
   type MapRef,
 } from '@/components/ui/map';
+import { Badge } from '@/components/ui/badge';
 import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star } from 'lucide-react';
 
 interface POI {
@@ -190,15 +191,15 @@ export function NomadMap({ data }: { data: POI[] }) {
     <div className="space-y-6">
       {/* Stats bar */}
       <div className="flex flex-wrap gap-3 items-center">
-        <span className="inline-flex items-center px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 rounded-full transition-colors">
+        <Badge variant="outline" className="text-sm px-3 py-1">
           {filteredData.length.toLocaleString()} places
-        </span>
-        <span className="inline-flex items-center px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 rounded-full transition-colors">
+        </Badge>
+        <Badge variant="outline" className="text-sm px-3 py-1">
           {cities.length} cities
-        </span>
-        <span className="inline-flex items-center px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 rounded-full transition-colors">
+        </Badge>
+        <Badge variant="outline" className="text-sm px-3 py-1">
           {new Set(data.map(d => d.country)).size} countries
-        </span>
+        </Badge>
       </div>
 
       {/* Filters */}
@@ -208,7 +209,7 @@ export function NomadMap({ data }: { data: POI[] }) {
           <select
             value={selectedCity}
             onChange={(e) => handleCityChange(e.target.value)}
-            className="w-full md:w-auto px-4 py-3 text-sm bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400/40 focus:border-zinc-400 transition-all text-zinc-900 dark:text-zinc-100"
+            className="w-full md:w-auto px-4 py-2.5 rounded-lg border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           >
             <option value="all">All Cities ({data.length.toLocaleString()} places)</option>
             {cities.map(city => (
@@ -225,7 +226,7 @@ export function NomadMap({ data }: { data: POI[] }) {
           placeholder="Search by name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-4 py-3 text-sm bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400/40 focus:border-zinc-400 transition-all placeholder:text-zinc-400 w-full md:w-64 text-zinc-900 dark:text-zinc-100"
+          className="px-4 py-2.5 rounded-lg border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-full md:w-64"
         />
       </div>
 
@@ -239,10 +240,10 @@ export function NomadMap({ data }: { data: POI[] }) {
             <button
               key={key}
               onClick={() => toggleCategory(key)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all border ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
                 active
-                  ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 border-zinc-900 dark:border-zinc-100'
-                  : 'bg-white dark:bg-zinc-900/50 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700'
+                  ? 'bg-foreground text-background border-foreground'
+                  : 'bg-card text-muted-foreground border-border hover:border-foreground/30'
               }`}
             >
               <Icon className="w-3 h-3" />
@@ -254,7 +255,7 @@ export function NomadMap({ data }: { data: POI[] }) {
       </div>
 
       {/* Map */}
-      <div className="w-full h-[600px] rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800/50 shadow-sm">
+      <div className="w-full h-[350px] sm:h-[450px] md:h-[600px] rounded-lg overflow-hidden border shadow-sm">
         <Map
           ref={mapRef}
           center={mapCenter}
@@ -348,7 +349,7 @@ export function NomadMap({ data }: { data: POI[] }) {
                 </div>
 
                 <div className="flex gap-2 pt-1">
-                  {selectedPoint.properties.website && (
+                  {selectedPoint.properties.website && selectedPoint.properties.website !== 'https://' && selectedPoint.properties.website !== 'http://' && (
                     <a
                       href={selectedPoint.properties.website}
                       target="_blank"
@@ -377,24 +378,25 @@ export function NomadMap({ data }: { data: POI[] }) {
       </div>
 
       {/* Listings table */}
-      <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl overflow-hidden">
+      <div className="bg-card border rounded-lg overflow-hidden">
+        <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-zinc-50 dark:bg-zinc-800/50 sticky top-0">
+            <thead className="bg-muted/50 sticky top-0">
               <tr>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">#</th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Name</th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Type</th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">City</th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Rating</th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Quality</th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Links</th>
+                <th className="text-left px-4 py-3 font-medium">#</th>
+                <th className="text-left px-4 py-3 font-medium">Name</th>
+                <th className="text-left px-4 py-3 font-medium">Type</th>
+                <th className="text-left px-4 py-3 font-medium">City</th>
+                <th className="text-left px-4 py-3 font-medium">Rating</th>
+                <th className="text-left px-4 py-3 font-medium">Quality</th>
+                <th className="text-left px-4 py-3 font-medium">Links</th>
               </tr>
             </thead>
             <tbody>
               {filteredData.slice(0, visibleCount).map((poi, i) => (
-                <tr key={poi.osm_id} className="border-t border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
-                  <td className="px-4 py-2.5 text-zinc-400 dark:text-zinc-500 text-xs font-mono">{i + 1}</td>
-                  <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-50">{poi.name}</td>
+                <tr key={poi.osm_id} className="border-t border-border/50 hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-2.5 text-muted-foreground text-xs font-mono">{i + 1}</td>
+                  <td className="px-4 py-2.5 font-medium">{poi.name}</td>
                   <td className="px-4 py-2.5">
                     <span
                       className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-white"
@@ -403,7 +405,7 @@ export function NomadMap({ data }: { data: POI[] }) {
                       {CATEGORY_CONFIG[poi.category]?.label || poi.category}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">{poi.city}</td>
+                  <td className="px-4 py-2.5 text-muted-foreground">{poi.city}</td>
                   <td className="px-4 py-2.5">
                     {poi.google_rating ? (
                       <div className="flex items-center gap-1">
@@ -431,12 +433,12 @@ export function NomadMap({ data }: { data: POI[] }) {
                   </td>
                   <td className="px-4 py-2.5">
                     <div className="flex gap-2">
-                      {poi.website && (
-                        <a href={poi.website} target="_blank" rel="noopener noreferrer" className="text-xs text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-300 underline underline-offset-2 decoration-zinc-300 dark:decoration-zinc-600 transition-colors">
+                      {poi.website && poi.website !== 'https://' && poi.website !== 'http://' && (
+                        <a href={poi.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
                           Web
                         </a>
                       )}
-                      <a href={poi.osm_url} target="_blank" rel="noopener noreferrer" className="text-xs text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-300 underline underline-offset-2 decoration-zinc-300 dark:decoration-zinc-600 transition-colors">
+                      <a href={poi.osm_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
                         Map
                       </a>
                     </div>
@@ -445,13 +447,14 @@ export function NomadMap({ data }: { data: POI[] }) {
               ))}
             </tbody>
           </table>
-          {/* Sentinel for infinite scroll */}
-          {visibleCount < filteredData.length && (
-            <div ref={sentinelRef} className="py-4 text-center text-xs text-muted-foreground">
-              Loading more…
-            </div>
-          )}
-        <p className="text-center text-[11px] text-zinc-400 dark:text-zinc-500 py-3 border-t border-zinc-100 dark:border-zinc-800/50">
+        </div>
+        {/* Sentinel for infinite scroll */}
+        {visibleCount < filteredData.length && (
+          <div ref={sentinelRef} className="py-4 text-center text-xs text-muted-foreground">
+            Loading more…
+          </div>
+        )}
+        <p className="text-center text-xs text-muted-foreground py-2 border-t">
           {Math.min(visibleCount, filteredData.length).toLocaleString()} of {filteredData.length.toLocaleString()} places
         </p>
       </div>
