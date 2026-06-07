@@ -126,8 +126,9 @@ export async function GET(request: NextRequest) {
     let contactRes: any = { data: null };
     try { contactRes = await supabase.from('contact_submissions').select('id, email, purpose, message, is_read, created_at').order('created_at', { ascending: false }).limit(50); } catch { /* table may not exist */ }
 
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     let jobsRes: any = { count: 0 };
-    try { jobsRes = await supabase.from('jobs').select('*', { count: 'exact', head: true }); } catch { /* table may not exist */ }
+    try { jobsRes = await supabase.from('jobs').select('*', { count: 'exact', head: true }).gt('created_at', thirtyDaysAgo); } catch { /* table may not exist */ }
 
     let authUsers: any[] = [];
     if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
