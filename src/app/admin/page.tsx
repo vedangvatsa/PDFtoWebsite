@@ -203,47 +203,37 @@ export default function AdminPage() {
             <Stat v={kpis.totalJobs} label="Active Jobs" />
             <Stat v={kpis.usersUpdatedLast7d} label="Active Profiles (7d)" />
             <Stat v={kpis.zeroViewProfiles} label="Zero-View Profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
-            {ph.pageviewsWoW && (
-              <WoWStat v={ph.pageviewsWoW.this_week} label="Pageviews (7d)" thisWeek={ph.pageviewsWoW.this_week} lastWeek={ph.pageviewsWoW.last_week} />
-            )}
-            {ph.uniqueVisitors && (
-              <WoWStat v={ph.uniqueVisitors.this_week} label="Unique Visitors (7d)" thisWeek={ph.uniqueVisitors.this_week} lastWeek={ph.uniqueVisitors.last_week} />
-            )}
+            <Stat v={ph.activeToday || 0} label="Active Today" />
+            <Stat v={ph.jobClicksTotal || 0} label="Job Apply Clicks" sub="Last 30 days" />
           </div>
         </Section>
 
         {/* ═══ SOCIAL MEDIA STATS ═══ */}
         {socialData && (
-          <Section title="Social Media" badge="Live">
+          <Section title="Social Media" badge={socialData.summary?.cacheAge ? `cached ${socialData.summary.cacheAge}m ago` : 'Live'}>
             {/* Platform KPIs Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6 mb-8">
-              {/* X (Twitter) — queue-based stats only (API is paid) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-8 gap-y-6 mb-8">
               <Stat v={(socialData.x?.queue?.threads?.posted || 0) + (socialData.x?.queue?.insights?.posted || 0) + (socialData.x?.queue?.engagement?.posted || 0)} label="X Posts" sub="Threads + Insights + Engagement" />
-              {/* Bluesky */}
               {socialData.bluesky?.live && (
                 <>
                   <Stat v={socialData.bluesky.live.followersCount || 0} label="BSky Followers" />
                   <Stat v={socialData.bluesky.live.postsCount || 0} label="BSky Posts" />
                 </>
               )}
-              {/* Totals */}
               <Stat v={socialData.summary?.totalPostsAcrossPlatforms || 0} label="Total posts" sub="All platforms" />
-              <Stat v={socialData.summary?.totalTweetsInThreads || 0} label="Thread tweets" sub="X only" />
+              <Stat v={socialData.summary?.totalEngagement || 0} label="Total engagement" sub="Likes + reposts + comments" />
+              <Stat v={socialData.summary?.totalFollowers || 0} label="Total followers" sub="All platforms" />
               <Stat v={socialData.summary?.activePlatforms || 0} label="Active platforms" />
             </div>
 
-            {/* Platform Queue Status */}
+            {/* Platform Detail Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {/* X Queue */}
               <div className="p-4 rounded-xl border border-border/50 bg-card">
                 <div className="flex items-center gap-2 mb-3">
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                   <span className="text-sm font-semibold">X (Twitter)</span>
-                  {socialData.x?.queue?.lastPostedAt?.engagement && (
-                    <span className="text-[10px] text-muted-foreground/50 ml-auto">
-                      Last: {new Date(socialData.x.queue.lastPostedAt.engagement).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  )}
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-semibold ml-auto">Queue only</span>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">Threads</span><span className="font-mono">{socialData.x?.queue?.threads?.posted || 0}/{socialData.x?.queue?.threads?.total || 0}</span></div>
@@ -254,54 +244,100 @@ export default function AdminPage() {
                       <span>Total thread tweets</span><span className="font-mono">{socialData.summary.totalTweetsInThreads}</span>
                     </div>
                   )}
+                  {socialData.x?.queue?.lastPostedAt?.engagement && (
+                    <div className="flex justify-between text-muted-foreground/60 text-xs">
+                      <span>Last posted</span><span className="font-mono">{new Date(socialData.x.queue.lastPostedAt.engagement).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Bluesky Queue */}
+              {/* Bluesky with Engagement */}
               <div className="p-4 rounded-xl border border-border/50 bg-card">
                 <div className="flex items-center gap-2 mb-3">
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 600 530"><path d="M135.72 44.03C202.216 93.951 273.74 195.86 300 249.49c26.262-53.63 97.782-155.54 164.28-205.46C512.26 8.009 590-19.862 590 68.825c0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.38-3.69-10.832-3.708-7.896-.017-2.936-1.193.516-3.707 7.896-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.256 82.697-152.22-67.108 11.421-142.549-7.449-163.25-81.433C20.15 217.613 10 86.536 10 68.824c0-88.687 77.742-60.816 125.72-24.795z"/></svg>
                   <span className="text-sm font-semibold">Bluesky</span>
-                  {socialData.bluesky?.queue?.lastPostedAt && (
-                    <span className="text-[10px] text-muted-foreground/50 ml-auto">
-                      Last: {new Date(socialData.bluesky.queue.lastPostedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  )}
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-500/10 text-green-600 font-semibold ml-auto">Live</span>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">Posts published</span><span className="font-mono">{socialData.bluesky?.queue?.posted || 0}</span></div>
                   {socialData.bluesky?.live && (
+                    <div className="flex justify-between"><span className="text-muted-foreground">Following</span><span className="font-mono">{socialData.bluesky.live.followsCount || 0}</span></div>
+                  )}
+                  {socialData.bluesky?.engagement && (
                     <>
-                      <div className="flex justify-between"><span className="text-muted-foreground">Following</span><span className="font-mono">{socialData.bluesky.live.followsCount || 0}</span></div>
+                      <div className="pt-1 border-t border-border/30 text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider">Engagement (last {socialData.bluesky.engagement.postsAnalyzed} posts)</div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Likes</span><span className="font-mono text-green-600">{socialData.bluesky.engagement.totalLikes}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Reposts</span><span className="font-mono text-blue-500">{socialData.bluesky.engagement.totalReposts}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Replies</span><span className="font-mono text-amber-500">{socialData.bluesky.engagement.totalReplies}</span></div>
                     </>
                   )}
                 </div>
+                {/* Top posts */}
+                {socialData.bluesky?.engagement?.topPosts?.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-border/30 space-y-2">
+                    <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-wider">Top posts</div>
+                    {socialData.bluesky.engagement.topPosts.slice(0, 3).map((p: any, i: number) => (
+                      <div key={i} className="text-xs text-muted-foreground truncate">
+                        <span className="font-mono text-foreground mr-1">{p.likes}♡ {p.reposts}⟳</span>
+                        {p.text}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Meta + Buffer Queue */}
+              {/* Meta (Facebook + Instagram) */}
               <div className="p-4 rounded-xl border border-border/50 bg-card">
                 <div className="flex items-center gap-2 mb-3">
                   <Share2 className="h-4 w-4" />
                   <span className="text-sm font-semibold">Meta + Buffer</span>
-                  {socialData.meta?.queue?.lastPostedAt && (
-                    <span className="text-[10px] text-muted-foreground/50 ml-auto">
-                      Last: {new Date(socialData.meta.queue.lastPostedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                    </span>
+                  {(socialData.meta?.facebook || socialData.meta?.instagram) && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-500/10 text-green-600 font-semibold ml-auto">Live</span>
                   )}
                 </div>
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Facebook (Meta)</span><span className="font-mono">{socialData.meta?.queue?.facebook?.posted || 0} posts</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Instagram (Meta)</span><span className="font-mono">{socialData.meta?.queue?.instagram?.posted || 0} posts</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Threads (Meta)</span><span className="font-mono">{socialData.meta?.queue?.threads?.posted || 0} posts</span></div>
+                  {/* Queue counts */}
+                  <div className="flex justify-between"><span className="text-muted-foreground">Facebook posts</span><span className="font-mono">{socialData.meta?.queue?.facebook?.posted || 0}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Instagram posts</span><span className="font-mono">{socialData.meta?.queue?.instagram?.posted || 0}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Threads posts</span><span className="font-mono">{socialData.meta?.queue?.threads?.posted || 0}</span></div>
+
+                  {/* Facebook engagement */}
+                  {socialData.meta?.facebook?.totals && (
+                    <>
+                      <div className="pt-1 border-t border-border/30 text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider">FB Engagement ({socialData.meta.facebook.totals.postsAnalyzed} posts)</div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Reactions</span><span className="font-mono text-green-600">{socialData.meta.facebook.totals.reactions}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Comments</span><span className="font-mono text-amber-500">{socialData.meta.facebook.totals.comments}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Shares</span><span className="font-mono text-blue-500">{socialData.meta.facebook.totals.shares}</span></div>
+                      {socialData.meta.facebook.page?.followers > 0 && (
+                        <div className="flex justify-between"><span className="text-muted-foreground">Followers</span><span className="font-mono">{socialData.meta.facebook.page.followers}</span></div>
+                      )}
+                    </>
+                  )}
+
+                  {/* Instagram engagement */}
+                  {socialData.meta?.instagram?.totals && (
+                    <>
+                      <div className="pt-1 border-t border-border/30 text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider">IG Engagement ({socialData.meta.instagram.totals.postsAnalyzed} posts)</div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Likes</span><span className="font-mono text-green-600">{socialData.meta.instagram.totals.likes}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Comments</span><span className="font-mono text-amber-500">{socialData.meta.instagram.totals.comments}</span></div>
+                      {socialData.meta.instagram.profile?.followers > 0 && (
+                        <div className="flex justify-between"><span className="text-muted-foreground">Followers</span><span className="font-mono">{socialData.meta.instagram.profile.followers}</span></div>
+                      )}
+                    </>
+                  )}
+
+                  {/* Buffer stats */}
                   <div className="flex justify-between text-muted-foreground/60 text-xs pt-1 border-t border-border/30">
-                    <span>Buffer — LinkedIn</span><span className="font-mono">{socialData.buffer?.queue?.linkedin || 0}</span>
+                    <span>Buffer - LinkedIn</span><span className="font-mono">{socialData.buffer?.queue?.linkedin || 0}</span>
                   </div>
-                  <div className="flex justify-between text-muted-foreground/60 text-xs">
-                    <span>Buffer — Instagram</span><span className="font-mono">{socialData.buffer?.queue?.instagram || 0}</span>
-                  </div>
-                  <div className="flex justify-between text-muted-foreground/60 text-xs">
-                    <span>Buffer — Facebook</span><span className="font-mono">{socialData.buffer?.queue?.facebook || 0}</span>
-                  </div>
+                  {socialData.buffer?.analytics?.map((b: any, i: number) => (
+                    b.totals && b.totals.clicks > 0 && (
+                      <div key={i} className="flex justify-between text-muted-foreground/60 text-xs">
+                        <span>Buffer {b.service} clicks</span><span className="font-mono text-blue-500">{b.totals.clicks}</span>
+                      </div>
+                    )
+                  ))}
                 </div>
               </div>
             </div>
