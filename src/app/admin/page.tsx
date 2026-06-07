@@ -211,23 +211,22 @@ export default function AdminPage() {
         {/* ═══ SOCIAL MEDIA STATS ═══ */}
         {socialData && (
           <Section title="Social Media" badge={socialData.summary?.cacheAge ? `cached ${socialData.summary.cacheAge}m ago` : 'Live'}>
-            {/* Platform KPIs Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-8 gap-y-6 mb-8">
+                       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-8 gap-y-6 mb-8">
               <Stat v={(socialData.x?.queue?.threads?.posted || 0) + (socialData.x?.queue?.insights?.posted || 0) + (socialData.x?.queue?.engagement?.posted || 0)} label="X Posts" sub="Threads + Insights + Engagement" />
               {socialData.bluesky?.live && (
                 <>
                   <Stat v={socialData.bluesky.live.followersCount || 0} label="BSky Followers" />
-                  <Stat v={socialData.bluesky.live.postsCount || 0} label="BSky Posts" />
-                </>
-              )}
+                </>              )}
+              <Stat v={socialData.summary?.totalViews || 0} label="Threads Views" sub="Last 25 posts" />
               <Stat v={socialData.summary?.totalPostsAcrossPlatforms || 0} label="Total posts" sub="All platforms" />
               <Stat v={socialData.summary?.totalEngagement || 0} label="Total engagement" sub="Likes + reposts + comments" />
               <Stat v={socialData.summary?.totalFollowers || 0} label="Total followers" sub="All platforms" />
               <Stat v={socialData.summary?.activePlatforms || 0} label="Active platforms" />
+            </div>orms" />
             </div>
 
             {/* Platform Detail Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {/* X Queue */}
               <div className="p-4 rounded-xl border border-border/50 bg-card">
                 <div className="flex items-center gap-2 mb-3">
@@ -287,7 +286,45 @@ export default function AdminPage() {
                 )}
               </div>
 
-              {/* Meta (Facebook + Instagram) */}
+              {/* Threads (Meta) with Views */}
+              <div className="p-4 rounded-xl border border-border/50 bg-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 192 192"><path d="M141.537 88.9883C140.71 88.5919 139.87 88.2104 139.019 87.8451C137.537 60.5382 122.616 44.905 97.5619 44.745C97.4484 44.7443 97.3355 44.7443 97.222 44.745C82.2364 44.745 69.7731 51.1399 62.1308 62.6747L75.4077 71.0693C81.1525 62.5765 89.752 60.0826 97.2527 60.0826C97.3293 60.0826 97.4066 60.0826 97.4833 60.0833C105.262 60.1332 111.239 62.588 115.235 67.3541C118.063 70.7079 119.936 75.2083 120.815 80.8103C115.262 79.8577 109.243 79.4748 102.804 79.6658C84.1334 80.2242 71.8016 90.4963 72.5625 104.529C72.9471 111.618 76.4872 117.799 82.5362 121.986C87.6912 125.539 94.3342 127.244 101.258 126.861C110.346 126.36 117.575 122.652 122.65 115.847C126.386 110.896 128.828 104.498 130.055 96.4717C135.367 99.5581 139.35 103.672 141.653 108.788C145.509 117.283 146.043 131.627 136.008 141.585C127.093 150.437 116.426 154.653 97.3077 154.791C76.2293 154.638 60.4527 148.054 50.0766 135.044C40.3393 122.853 35.2673 105.624 35.1013 83.9999C35.2673 62.376 40.3393 45.1468 50.0766 32.9559C60.4527 19.946 76.2293 13.3619 97.3077 13.2089C118.506 13.363 134.415 20.0023 145.005 33.1272C150.19 39.553 154.133 47.4605 156.768 56.6019L170.831 52.8832C167.676 41.8832 163.015 32.4625 156.727 24.6475C143.804 8.46255 125.555 0.10947 97.3462 0H97.2694C69.1837 0.0993418 51.0669 8.51169 38.1512 24.8197C26.5571 39.3801 20.5448 59.4305 20.35 83.9448L20.3484 83.9999L20.35 84.055C20.5448 108.569 26.5571 128.62 38.1512 143.18C51.0669 159.488 69.1837 167.901 97.2694 168H97.3462C119.369 167.838 133.02 162.476 144.336 151.222C159.784 135.86 159.03 116.052 153.843 104.277C150.179 96.0946 143.555 89.5738 141.537 88.9883ZM100.536 113.637C92.5345 114.087 86.0574 109.739 85.7382 103.955C85.4944 99.4766 88.8577 94.2584 102.356 93.8207C104.152 93.7647 105.916 93.7389 107.649 93.7389C112.118 93.7389 116.344 94.1455 120.244 94.9389C118.671 108.921 110.363 113.087 100.536 113.637Z"/></svg>
+                  <span className="text-sm font-semibold">Threads</span>
+                  {socialData.threads?.insights && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-500/10 text-green-600 font-semibold ml-auto">Live</span>
+                  )}
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Posts published</span><span className="font-mono">{socialData.threads?.queue?.posted || 0}</span></div>
+                  {socialData.threads?.insights?.totals && (
+                    <>
+                      <div className="pt-1 border-t border-border/30 text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider">Engagement ({socialData.threads.insights.totals.postsAnalyzed} posts)</div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Views</span><span className="font-mono text-purple-500 font-semibold">{socialData.threads.insights.totals.views.toLocaleString()}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Likes</span><span className="font-mono text-green-600">{socialData.threads.insights.totals.likes}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Replies</span><span className="font-mono text-amber-500">{socialData.threads.insights.totals.replies}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Reposts</span><span className="font-mono text-blue-500">{socialData.threads.insights.totals.reposts}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Quotes</span><span className="font-mono text-indigo-400">{socialData.threads.insights.totals.quotes}</span></div>
+                    </>
+                  )}
+                </div>
+                {/* Top posts by views */}
+                {socialData.threads?.insights?.topPosts?.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-border/30 space-y-2">
+                    <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-wider">Top posts by views</div>
+                    {socialData.threads.insights.topPosts.slice(0, 5).map((p: any, i: number) => (
+                      <div key={i} className="text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-mono text-purple-500 font-semibold shrink-0">{p.views.toLocaleString()} views</span>
+                          <span className="font-mono text-foreground/60 shrink-0">{p.likes}♡ {p.reposts}⟳</span>
+                        </div>
+                        <div className="truncate mt-0.5 text-muted-foreground/80">{p.text}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div className="p-4 rounded-xl border border-border/50 bg-card">
                 <div className="flex items-center gap-2 mb-3">
                   <Share2 className="h-4 w-4" />

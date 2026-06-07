@@ -68,6 +68,98 @@ async function fetchBlueskyFeed(): Promise<any[]> {
   }
 }
 
+// ── Threads API (free with threads token) ──────────────────────────────────
+const THREADS_URL = 'https://graph.threads.net/v1.0';
+const THREADS_USER_ID = process.env.THREADS_USER_ID;
+const THREADS_TOKEN = process.env.THREADS_ACCESS_TOKEN;
+
+async function fetchThreadsProfile(): Promise<any> {
+  if (!THREADS_USER_ID || !THREADS_TOKEN) return null;
+  try {
+    const res = await fetch(
+      `${THREADS_URL}/${THREADS_USER_ID}?fields=threads_profile_picture_url,threads_biography,username&access_token=${THREADS_TOKEN}`
+    );
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function fetchThreadsPosts(): Promise<any> {
+  if (!THREADS_USER_ID || !THREADS_TOKEN) return null;
+  try {
+    // Get recent threads
+    const feedRes = await fetch(
+      `${THREADS_URL}/${THREADS_USER_ID}/threads?fields=id,text,timestamp,media_type,shortcode,is_quote_post&limit=25&access_token=${THREADS_TOKEN}`
+    );
+    if (!feedRes.ok) return null;
+    const feedData = await feedRes.json();
+    const threads = feedData?.data || [];
+
+    // Fetch insights for each thread (views, likes, replies, reposts, quotes)
+    const postsWithInsights = [];
+    for (const thread of threads.slice(0, 25)) {
+      try {
+        const insightsRes = await fetch(
+          `${THREADS_URL}/${thread.id}/insights?metric=views,likes,replies,reposts,quotes&access_token=${THREADS_TOKEN}`
+        );
+        if (!insightsRes.ok) {
+          postsWithInsights.push({
+            text: (thread.text || '').slice(0, 100),
+            createdAt: thread.timestamp,
+            views: 0, likes: 0, replies: 0, reposts: 0, quotes: 0,
+          });
+          continue;
+        }
+        const insightsData = await insightsRes.json();
+        const metrics: Record<string, number> = {};
+        for (const m of (insightsData?.data || [])) {
+          metrics[m.name] = m.values?.[0]?.value || 0;
+        }
+        postsWithInsights.push({
+          text: (thread.text || '').slice(0, 100),
+          createdAt: thread.timestamp,
+          views: metrics.views || 0,
+          likes: metrics.likes || 0,
+          replies: metrics.replies || 0,
+          reposts: metrics.reposts || 0,
+          quotes: metrics.quotes || 0,
+        });
+      } catch {
+        postsWithInsights.push({
+          text: (thread.text || '').slice(0, 100),
+          createdAt: thread.timestamp,
+          views: 0, likes: 0, replies: 0, reposts: 0, quotes: 0,
+        });
+      }
+    }
+
+    const totalViews = postsWithInsights.reduce((s, p) => s + p.views, 0);
+    const totalLikes = postsWithInsights.reduce((s, p) => s + p.likes, 0);
+    const totalReplies = postsWithInsights.reduce((s, p) => s + p.replies, 0);
+    const totalReposts = postsWithInsights.reduce((s, p) => s + p.reposts, 0);
+    const totalQuotes = postsWithInsights.reduce((s, p) => s + p.quotes, 0);
+    const topPosts = [...postsWithInsights].sort((a, b) => b.views - a.views).slice(0, 5);
+
+    return {
+      posts: postsWithInsights,
+      topPosts,
+      totals: {
+        views: totalViews,
+        likes: totalLikes,
+        replies: totalReplies,
+        reposts: totalReposts,
+        quotes: totalQuotes,
+        postsAnalyzed: postsWithInsights.length,
+      },
+    };
+  } catch (e) {
+    console.error('Threads API error:', e);
+    return null;
+  }
+}
+
 // ── Meta Graph API (free with page token) ──────────────────────────────────
 const GRAPH_URL = 'https://graph.facebook.com/v22.0';
 const META_PAGE_ID = process.env.META_PAGE_ID;
@@ -278,6 +370,8 @@ export async function GET(request: NextRequest) {
     let fbInsights: any = null;
     let igInsights: any = null;
     let bufferAnalytics: any = null;
+    let threadsProfile: any = null;
+    let threadsInsights: any = null;
 
     if (cached) {
       bskyProfile = cached.data.bskyProfile;
@@ -285,18 +379,22 @@ export async function GET(request: NextRequest) {
       fbInsights = cached.data.fbInsights;
       igInsights = cached.data.igInsights;
       bufferAnalytics = cached.data.bufferAnalytics;
+      threadsProfile = cached.data.threadsProfile;
+      threadsInsights = cached.data.threadsInsights;
     } else {
       // Fetch all in parallel
-      [bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics] = await Promise.all([
+      [bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics, threadsProfile, threadsInsights] = await Promise.all([
         fetchBlueskyProfile(),
         fetchBlueskyFeed(),
         fetchFacebookPageInsights(),
         fetchInstagramInsights(),
         fetchBufferAnalytics(),
+        fetchThreadsProfile(),
+        fetchThreadsPosts(),
       ]);
 
       // Cache the results
-      writeCache({ bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics });
+      writeCache({ bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics, threadsProfile, threadsInsights });
     }
 
     // Calculate Bluesky engagement totals
@@ -359,7 +457,11 @@ export async function GET(request: NextRequest) {
       bskyTotalLikes + bskyTotalReposts + bskyTotalReplies +
       (fbInsights?.totals?.reactions || 0) + (fbInsights?.totals?.comments || 0) + (fbInsights?.totals?.shares || 0) +
       (igInsights?.totals?.likes || 0) + (igInsights?.totals?.comments || 0) +
+      (threadsInsights?.totals?.likes || 0) + (threadsInsights?.totals?.replies || 0) + (threadsInsights?.totals?.reposts || 0) +
       (bufferAnalytics || []).reduce((s: number, b: any) => s + (b.totals?.clicks || 0) + (b.totals?.likes || 0), 0);
+
+    const totalViews =
+      (threadsInsights?.totals?.views || 0);
 
     const totalFollowers =
       (bskyProfile?.followersCount || 0) +
@@ -374,6 +476,7 @@ export async function GET(request: NextRequest) {
         activePlatforms: 7,
         totalEngagement,
         totalFollowers,
+        totalViews,
         cacheAge: cached ? Math.round((Date.now() - cached.timestamp) / 60000) : 0, // minutes
       },
       x: {
@@ -390,6 +493,11 @@ export async function GET(request: NextRequest) {
           postsAnalyzed: bskyFeed.length,
           topPosts: bskyTopPosts,
         },
+      },
+      threads: {
+        queue: { posted: metaQueue.threads.posted },
+        profile: threadsProfile,
+        insights: threadsInsights,
       },
       meta: {
         queue: metaQueue,
