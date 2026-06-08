@@ -6,6 +6,7 @@ import path from 'path';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi } from 'lucide-react';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
@@ -211,31 +212,31 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             icon={<Thermometer className="w-4 h-4" />}
             label="Avg Temp"
             value={`${Math.round(data.weather.avg_temp)}°C`}
-            sub={`${Math.round(data.weather.avg_temp * 9 / 5 + 32)}°F`}
+            sub={`estimated: ${Math.round(data.weather.avg_temp * 9 / 5 + 32)}°F`}
           />
           <StatCard
             icon={<Droplets className="w-4 h-4" />}
             label="Humidity"
             value={`${Math.round(data.weather.avg_humidity)}%`}
-            sub="annual average"
+            sub="estimated annual average"
           />
           <StatCard
             icon={<CloudRain className="w-4 h-4" />}
             label="Annual Rain"
             value={`${Math.round(data.weather.annual_rain)}mm`}
-            sub={`${Math.round(data.weather.annual_rain / 25.4)}" / year`}
+            sub={`estimated: ${Math.round(data.weather.annual_rain / 25.4)}\" / year`}
           />
           <StatCard
             icon={<Building2 className="w-4 h-4" />}
             label="Total Spaces"
             value={data.spaces.total.toString()}
-            sub="accommodation & coworking"
+            sub="estimated total spaces"
           />
           <StatCard
             icon={<Wifi className="w-4 h-4" />}
             label="Coworking"
             value={data.spaces.coworking.toString()}
-            sub="spaces available"
+            sub="estimated spaces available"
           />
         </div>
 
@@ -333,7 +334,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         {/* Spaces */}
         <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-4">Accommodation & Coworking</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
             {Object.entries(SPACE_CONFIG).map(([key, cfg]) => {
               const count = data.spaces[key as keyof typeof data.spaces] as number;
               return (
@@ -347,12 +348,18 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               );
             })}
           </div>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+
+          {/* Interactive City Map */}
+          <div className="mt-6 pt-6 border-t border-zinc-100 dark:border-zinc-800/80">
+            <NomadMapWrapper cityFilter={data.slug} />
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/nomad"
               className="text-sm text-primary hover:underline transition-colors"
             >
-              View all on map →
+              View full world map →
             </Link>
             <Link
               href={`/nomad/compare?a=${data.slug}`}
@@ -422,6 +429,10 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             }),
           }}
         />
+        {/* Source Disclaimer */}
+        <p className="text-center text-xs text-zinc-400 dark:text-zinc-500 mt-12 max-w-xl mx-auto leading-relaxed">
+          * Cost of living, climate metrics, and accommodation spaces are estimated based on public open-source archives, historical weather databases, and OpenStreetMap (OSM) crowdsourced data.
+        </p>
       </main>
       <MicroFooter />
       <TelegramJobPopup />
