@@ -6,6 +6,7 @@ import Header from '@/components/header';
 import { normalizeLocation } from '@/lib/normalize-location';
 import MicroFooter from '@/components/micro-footer';
 import BlogCTA from '@/components/blog-cta';
+import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import Link from 'next/link';
 import { ArrowLeft, Briefcase, MapPin, Monitor, Clock, ExternalLink, Github, Linkedin, Twitter, Globe } from 'lucide-react';
 import { blogPosts } from '@/lib/blog-data';
@@ -390,6 +391,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           </article>
         </main>
         <MicroFooter />
+        <TelegramJobPopup />
       </div>
     );
   }
