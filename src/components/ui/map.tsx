@@ -257,6 +257,18 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     mapInstance.setStyle(mapStyle, { diff: true });
   }, [mapInstance, mapStyle, clearStyleTimeout]);
 
+  // Handle container resize
+  useEffect(() => {
+    if (!mapInstance || !containerRef.current) return;
+    const resizeObserver = new ResizeObserver(() => {
+      mapInstance.resize();
+    });
+    resizeObserver.observe(containerRef.current);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [mapInstance]);
+
   const contextValue = useMemo(
     () => ({
       map: mapInstance,
