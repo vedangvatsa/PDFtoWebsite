@@ -41,6 +41,7 @@ const CATEGORY_CONFIG: Record<string, { label: string; color: string; icon: type
   hostel: { label: 'Hostels', color: '#f59e0b', icon: Bed },
   apartment: { label: 'Apartments', color: '#10b981', icon: Home },
   guesthouse: { label: 'Guesthouses', color: '#ec4899', icon: Hotel },
+  coworking: { label: 'Coworking', color: '#3b82f6', icon: Building2 },
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -48,6 +49,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   hostel: '#f59e0b',
   apartment: '#10b981',
   guesthouse: '#ec4899',
+  coworking: '#3b82f6',
 };
 
 interface SelectedPoint {
