@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
+import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { blogPosts } from '@/lib/blog-data';
 import { blogMetadata } from '@/lib/blog-metadata';
 
@@ -66,6 +67,7 @@ export default function BlogPage() {
         </div>
       </main>
       <MicroFooter />
+      <TelegramJobPopup />
     </div>
   );
 }
