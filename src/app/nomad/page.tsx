@@ -7,12 +7,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
   title: 'Digital Nomad Directory',
-  description: 'Interactive directory of 4,400+ coliving houses, hostels, apartments, and guesthouses across 95 digital nomad cities in 52 countries. Quality-scored, open-source data.',
-  keywords: ['digital nomad', 'coliving', 'remote work', 'nomad directory', 'hostel', 'apartment'],
+  description: 'Interactive directory of coliving houses, coworking spaces, hostels, apartments, and guesthouses across 95 digital nomad cities in 52 countries. Quality-scored, open-source data.',
+  keywords: ['digital nomad', 'coliving', 'coworking', 'remote work', 'nomad directory', 'hostel', 'apartment'],
   alternates: { canonical: `${siteUrl}/nomad` },
   openGraph: {
     title: 'Digital Nomad Directory',
-    description: '4,400+ coliving, hostels, and apartments across 95 cities in 52 countries.',
+    description: 'Coliving, coworking spaces, hostels, and apartments across 95 cities in 52 countries.',
     url: `${siteUrl}/nomad`,
     siteName: 'CVin.Bio',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Digital Nomad Directory',
-    description: '4,400+ coliving, hostels, and apartments across 95 cities in 52 countries.',
+    description: 'Coliving, coworking spaces, hostels, and apartments across 95 cities in 52 countries.',
     images: [`${siteUrl}/opengraph-image`],
     creator: '@cvinbio',
   },
@@ -39,7 +39,7 @@ export default function NomadMapPage() {
             Digital Nomad Directory
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
-            4,400+ coliving houses, hostels, apartments, and guesthouses across 95 cities in 52 countries.
+            Coliving houses, coworking spaces, hostels, apartments, and guesthouses across 95 cities in 52 countries.
           </p>
         </div>
 

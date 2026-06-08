@@ -41,8 +41,8 @@ function MapSkeleton({ message }: { message: string }) {
 }
 
 // Compact v2 format: arrays with lookup tables instead of repeated key-value objects
-// Category indices: 0=coliving, 1=hostel, 2=apartment, 3=guesthouse
-const CATEGORIES = ['coliving', 'hostel', 'apartment', 'guesthouse'] as const;
+// Category indices: 0=coliving, 1=hostel, 2=apartment, 3=guesthouse, 4=coworking
+const CATEGORIES = ['coliving', 'hostel', 'apartment', 'guesthouse', 'coworking'] as const;
 
 interface V2Data {
   c: string[];  // city|country lookup table
