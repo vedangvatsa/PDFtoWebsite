@@ -212,31 +212,31 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             icon={<Thermometer className="w-4 h-4" />}
             label="Avg Temp"
             value={`${Math.round(data.weather.avg_temp)}°C`}
-            sub={`estimated: ${Math.round(data.weather.avg_temp * 9 / 5 + 32)}°F`}
+            sub={`${Math.round(data.weather.avg_temp * 9 / 5 + 32)}°F`}
           />
           <StatCard
             icon={<Droplets className="w-4 h-4" />}
             label="Humidity"
             value={`${Math.round(data.weather.avg_humidity)}%`}
-            sub="estimated annual average"
+            sub="annual average"
           />
           <StatCard
             icon={<CloudRain className="w-4 h-4" />}
             label="Annual Rain"
             value={`${Math.round(data.weather.annual_rain)}mm`}
-            sub={`estimated: ${Math.round(data.weather.annual_rain / 25.4)}\" / year`}
+            sub={`${Math.round(data.weather.annual_rain / 25.4)}" / year`}
           />
           <StatCard
             icon={<Building2 className="w-4 h-4" />}
             label="Total Spaces"
             value={data.spaces.total.toString()}
-            sub="estimated total spaces"
+            sub="accommodation & coworking"
           />
           <StatCard
             icon={<Wifi className="w-4 h-4" />}
             label="Coworking"
             value={data.spaces.coworking.toString()}
-            sub="estimated spaces available"
+            sub="spaces available"
           />
         </div>
 
