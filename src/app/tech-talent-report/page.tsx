@@ -4,6 +4,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import ReportCTA from '@/components/report-cta';
 import { useReportStats } from '@/hooks/use-report-stats';
+import { TelegramJobPopup } from '@/components/telegram-job-popup';
 
 function Cite({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -979,6 +980,7 @@ export default function TechTalentReport() {
 
       </main>
       <MicroFooter />
+      <TelegramJobPopup />
     </div>
   );
 }
