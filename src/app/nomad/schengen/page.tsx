@@ -372,7 +372,7 @@ export default function SchengenCalculatorPage() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div>
                 <div className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">
                   Days Used
@@ -579,7 +579,7 @@ export default function SchengenCalculatorPage() {
                     </div>
                     <button
                       onClick={() => removeTrip(trip.id)}
-                      className="p-1.5 rounded-md text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 opacity-0 group-hover:opacity-100 transition-all"
+                      className="p-1.5 rounded-md text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
                       aria-label="Delete trip"
                     >
                       <Trash2 className="w-4 h-4" />

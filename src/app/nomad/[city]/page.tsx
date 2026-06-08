@@ -315,7 +315,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           </div>
 
           {/* Legend */}
-          <div className="flex items-center gap-4 mt-4 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-xs text-zinc-500 dark:text-zinc-400">
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-sm bg-emerald-500 opacity-85" /> Comfortable (15–28°C)
             </div>
@@ -348,12 +348,18 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               );
             })}
           </div>
-          <div className="mt-4 text-center">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/nomad"
               className="text-sm text-primary hover:underline transition-colors"
             >
               View all on map →
+            </Link>
+            <Link
+              href={`/nomad/compare?a=${data.slug}`}
+              className="text-sm text-primary hover:underline transition-colors"
+            >
+              Compare with another city →
             </Link>
           </div>
         </div>
