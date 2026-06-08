@@ -7,7 +7,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
-import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi } from 'lucide-react';
+import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Info } from 'lucide-react';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
 
@@ -193,7 +193,13 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           {/* Nomad Score */}
           <div className="mt-4">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Nomad Score</span>
+              <div className="flex items-center gap-1.5 group relative">
+                <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Nomad Score</span>
+                <Info className="w-3.5 h-3.5 text-zinc-400 hover:text-zinc-500 cursor-help" />
+                <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block w-72 p-3 bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-100 text-xs rounded-xl shadow-xl border border-zinc-800 dark:border-zinc-700/50 z-20 leading-relaxed pointer-events-none transition-all">
+                  Calculated based on cost of living, climate suitability (preferring 15–28°C), coworking/coliving availability, and community infrastructure.
+                </div>
+              </div>
               <span className="text-sm font-bold text-zinc-900 dark:text-zinc-50">{data.nomad_score}/100</span>
             </div>
             <ScoreBar score={data.nomad_score} />
