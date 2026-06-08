@@ -6,6 +6,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import {
+  ArrowLeft,
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
@@ -224,6 +225,15 @@ export default function CostOfLivingPage() {
         id="main-content"
         className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1"
       >
+        {/* Back link */}
+        <Link
+          href="/nomad"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Directory
+        </Link>
+
         {/* ---- Heading ---- */}
         <div className="flex flex-col mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 transition-colors">
@@ -418,10 +428,10 @@ export default function CostOfLivingPage() {
                         budget !== null &&
                         city.cost.monthly_total > budget;
                       return (
-                        <Link
+                        <tr
                           key={city.slug}
-                          href={`/nomad/${city.slug}`}
-                          className={`table-row hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer border-b border-zinc-100 dark:border-zinc-800/30 last:border-0 ${
+                          onClick={() => window.location.href = `/nomad/${city.slug}`}
+                          className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer border-b border-zinc-100 dark:border-zinc-800/30 last:border-0 ${
                             dimmed ? 'opacity-35' : ''
                           }`}
                         >
@@ -457,7 +467,7 @@ export default function CostOfLivingPage() {
                               {city.nomad_score}
                             </span>
                           </td>
-                        </Link>
+                        </tr>
                       );
                     })}
                   </tbody>

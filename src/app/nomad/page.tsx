@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
+import { TelegramJobPopup } from '@/components/telegram-job-popup';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -85,6 +86,7 @@ export default function NomadMapPage() {
         <NomadMapWrapper />
       </main>
       <MicroFooter />
+      <TelegramJobPopup />
     </div>
   );
 }
