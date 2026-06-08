@@ -1,9 +1,31 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
+
+const TOOLS = [
+  {
+    href: '/nomad/cost-of-living',
+    emoji: '💰',
+    title: 'Cost of Living',
+    desc: 'Compare costs across 95 cities',
+  },
+  {
+    href: '/nomad/compare',
+    emoji: '⚖️',
+    title: 'Compare Cities',
+    desc: 'Side-by-side city comparison',
+  },
+  {
+    href: '/nomad/schengen',
+    emoji: '🛂',
+    title: 'Visa Calculator',
+    desc: 'Schengen 90/180 day tracker',
+  },
+];
 
 export const metadata: Metadata = {
   title: 'Digital Nomad Directory',
@@ -41,6 +63,23 @@ export default function NomadMapPage() {
           <p className="text-xl text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
             Coliving houses, coworking spaces, hostels, apartments, and guesthouses across 95 cities in 52 countries.
           </p>
+        </div>
+
+        {/* Tools Navigation */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10">
+          {TOOLS.map((tool) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all group"
+            >
+              <span className="text-2xl">{tool.emoji}</span>
+              <div>
+                <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors">{tool.title}</div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400">{tool.desc}</div>
+              </div>
+            </Link>
+          ))}
         </div>
 
         <NomadMapWrapper />
