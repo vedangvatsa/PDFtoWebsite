@@ -23,10 +23,10 @@ const TOOLS = [
     desc: 'Side-by-side city comparison',
   },
   {
-    href: '/nomad/schengen',
+    href: '/nomad/visas',
     icon: <ShieldCheck className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
-    title: 'Visa Calculator',
-    desc: 'Schengen 90/180 day tracker',
+    title: 'Nomad Visas',
+    desc: 'Explore active digital nomad visas',
   },
 ];
 
