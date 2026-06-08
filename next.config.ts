@@ -130,7 +130,7 @@ const nextConfigFn = (phase: string): NextConfig => {
         },
         {
           // Cache nomad data files aggressively — they change infrequently
-          source: '/nomad-data:path*',
+          source: '/:file(nomad-data[^/]*\\.json)',
           headers: [
             { key: 'Cache-Control', value: 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800' },
           ],
