@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   if (!data) return { title: 'City Not Found' };
 
   const title = `Digital Nomad Guide: ${data.name}, ${data.country} | CVin.Bio`;
-  const description = `${data.name} nomad guide — $${data.cost.monthly_total.toLocaleString()}/mo cost of living, ${Math.round(data.weather.avg_temp)}°C avg temperature, ${data.spaces.total} coliving & coworking spaces.`;
+  const description = `${data.name} nomad guide · $${data.cost.monthly_total.toLocaleString()}/mo cost of living, ${Math.round(data.weather.avg_temp)}°C avg temperature, ${data.spaces.total} coliving & coworking spaces.`;
 
   return {
     title,
@@ -86,7 +86,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${data.name} — Nomad Guide`,
+      title: `${data.name} · Nomad Guide`,
       description,
       images: [`${siteUrl}/opengraph-image`],
       creator: '@cvinbio',
@@ -178,7 +178,6 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         {/* City Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-4xl">{data.emoji}</span>
             <div>
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 transition-colors">
                 {data.name}
@@ -317,7 +316,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           {/* Legend */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-xs text-zinc-500 dark:text-zinc-400">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-sm bg-emerald-500 opacity-85" /> Comfortable (15–28°C)
+              <div className="w-3 h-3 rounded-sm bg-emerald-500 opacity-85" /> Comfortable (15-28°C)
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-sm bg-orange-500 opacity-85" /> Hot (&gt;28°C)
@@ -373,11 +372,12 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 <Link
                   key={nc.slug}
                   href={`/nomad/${nc.slug}`}
-                  className="flex-shrink-0 w-48 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all"
+                  className="flex-shrink-0 w-48 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all flex flex-col justify-between"
                 >
-                  <div className="text-2xl mb-1">{nc.emoji}</div>
-                  <div className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm">{nc.name}</div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">{nc.country}</div>
+                  <div>
+                    <div className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm">{nc.name}</div>
+                    <div className="text-xs text-zinc-500 dark:text-zinc-400">{nc.country}</div>
+                  </div>
                   <div className="flex items-center gap-2 mt-2 text-xs text-zinc-500 dark:text-zinc-400">
                     <span>${nc.cost.monthly_total.toLocaleString()}/mo</span>
                     <span>·</span>

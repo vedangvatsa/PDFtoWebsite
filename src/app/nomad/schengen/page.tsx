@@ -272,7 +272,7 @@ export default function SchengenCalculatorPage() {
       segments.push({
         startPct,
         widthPct,
-        label: `${formatDate(overlapStart)} – ${formatDate(overlapEnd)}`,
+        label: `${formatDate(overlapStart)} → ${formatDate(overlapEnd)}`,
       });
     }
 
@@ -616,7 +616,7 @@ export default function SchengenCalculatorPage() {
               any <strong className="text-zinc-900 dark:text-zinc-100">180-day rolling period</strong>.
             </p>
             <p>
-              Unlike a fixed calendar period, this is a <em>rolling window</em> — on any
+              Unlike a fixed calendar period, this is a <em>rolling window</em>. On any
               given day, the system looks back 180 days and counts how many of those
               days you spent inside the Schengen area.
             </p>

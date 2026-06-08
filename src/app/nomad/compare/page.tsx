@@ -135,8 +135,7 @@ function CityPicker({
       (c) =>
         c.slug !== otherSlug &&
         (c.name.toLowerCase().includes(q) ||
-          c.country.toLowerCase().includes(q) ||
-          c.emoji.includes(q))
+          c.country.toLowerCase().includes(q))
     );
   }, [cities, query, otherSlug]);
 
@@ -158,7 +157,6 @@ function CityPicker({
       >
         {selected ? (
           <>
-            <span className="text-xl flex-shrink-0">{selected.emoji}</span>
             <div className="min-w-0 flex-1">
               <div className="font-semibold text-zinc-900 dark:text-zinc-50 truncate text-sm">
                 {selected.name}
@@ -213,7 +211,6 @@ function CityPicker({
                     : ''
                 }`}
               >
-                <span className="text-lg flex-shrink-0">{c.emoji}</span>
                 <div className="min-w-0">
                   <div className="text-sm font-medium text-zinc-900 dark:text-zinc-50 truncate">
                     {c.name}
@@ -559,7 +556,6 @@ function ComparePageContent() {
                       href={`/nomad/${cityA.slug}`}
                       className="text-center group"
                     >
-                      <span className="text-lg">{cityA.emoji}</span>
                       <div className="text-sm font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
                         {cityA.name}
                       </div>
@@ -568,7 +564,6 @@ function ComparePageContent() {
                       href={`/nomad/${cityB.slug}`}
                       className="text-center group"
                     >
-                      <span className="text-lg">{cityB.emoji}</span>
                       <div className="text-sm font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
                         {cityB.name}
                       </div>
@@ -603,7 +598,7 @@ function ComparePageContent() {
                           className="flex-1 flex flex-col items-center h-full justify-end gap-0.5"
                         >
                           <div className="text-[9px] font-medium text-zinc-500 dark:text-zinc-400">
-                            {Math.round(mA.temp)}° / {mB ? Math.round(mB.temp) : '—'}°
+                            {Math.round(mA.temp)}° / {mB ? Math.round(mB.temp) : '-'}°
                           </div>
                           <div className="flex gap-px w-full h-full items-end justify-center">
                             <div
@@ -654,7 +649,7 @@ function ComparePageContent() {
                           opacity: 0.8,
                         }}
                       />
-                      {cityA.emoji} {cityA.name}
+                      {cityA.name}
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div
@@ -664,7 +659,7 @@ function ComparePageContent() {
                           opacity: 0.8,
                         }}
                       />
-                      {cityB.emoji} {cityB.name}
+                      {cityB.name}
                     </div>
                   </div>
                 </div>
@@ -690,12 +685,11 @@ function ComparePageContent() {
                     return (
                       <div key={city.slug} className="mb-4 last:mb-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-sm">{city.emoji}</span>
                           <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                             {city.name}
                           </span>
                           <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                            — ${total.toLocaleString()}/mo
+                            · ${total.toLocaleString()}/mo
                           </span>
                         </div>
                         <div className="w-full h-5 rounded-full overflow-hidden flex">
@@ -756,10 +750,10 @@ function ComparePageContent() {
                       </div>
                       <div>
                         <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                          {cityA.emoji} {cityA.name}
+                          {cityA.name}
                         </div>
                         <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                          {tzA !== null ? formatUtcOffset(tzA) : '—'}
+                          {tzA !== null ? formatUtcOffset(tzA) : '-'}
                         </div>
                       </div>
                     </div>
@@ -772,7 +766,7 @@ function ComparePageContent() {
                             ? tzDiff === 0
                               ? 'Same timezone'
                               : `${tzDiff}h difference`
-                            : '—'}
+                            : '-'}
                         </span>
                       </div>
                     </div>
@@ -780,10 +774,10 @@ function ComparePageContent() {
                     <div className="flex items-center gap-3 sm:justify-end">
                       <div>
                         <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 sm:text-right">
-                          {cityB.emoji} {cityB.name}
+                          {cityB.name}
                         </div>
                         <div className="text-xs text-zinc-500 dark:text-zinc-400 sm:text-right">
-                          {tzB !== null ? formatUtcOffset(tzB) : '—'}
+                          {tzB !== null ? formatUtcOffset(tzB) : '-'}
                         </div>
                       </div>
                       <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
@@ -822,14 +816,14 @@ function ComparePageContent() {
                     href={`/nomad/${cityA.slug}`}
                     className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all text-sm font-semibold text-zinc-900 dark:text-zinc-50"
                   >
-                    {cityA.emoji} View {cityA.name} Guide
+                    View {cityA.name} Guide
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href={`/nomad/${cityB.slug}`}
                     className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all text-sm font-semibold text-zinc-900 dark:text-zinc-50"
                   >
-                    {cityB.emoji} View {cityB.name} Guide
+                    View {cityB.name} Guide
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link

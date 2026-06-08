@@ -241,7 +241,7 @@ export default function CostOfLivingPage() {
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
             Compare monthly costs across 95 digital nomad cities. Filter by
-            budget, sort by rent, food, coworking — find your next base.
+            budget, and sort by rent, food, or coworking to find your next base.
           </p>
         </div>
 
@@ -265,7 +265,7 @@ export default function CostOfLivingPage() {
                 <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
                   I have{' '}
                   <span className="text-2xl tabular-nums">
-                    {budget !== null ? fmtCurrency(budget) : '—'}
+                    {budget !== null ? fmtCurrency(budget) : '-'}
                   </span>
                   <span className="text-zinc-500 font-normal text-base">
                     /month
@@ -346,11 +346,11 @@ export default function CostOfLivingPage() {
                 value={
                   stats.cheapest
                     ? fmtCurrency(stats.cheapest.cost.monthly_total) + '/mo'
-                    : '—'
+                    : '-'
                 }
                 sub={
                   stats.cheapest
-                    ? `${stats.cheapest.emoji} ${stats.cheapest.name}`
+                    ? stats.cheapest.name
                     : undefined
                 }
                 accentClass="text-emerald-600 dark:text-emerald-400"
@@ -361,11 +361,11 @@ export default function CostOfLivingPage() {
                 value={
                   stats.expensive
                     ? fmtCurrency(stats.expensive.cost.monthly_total) + '/mo'
-                    : '—'
+                    : '-'
                 }
                 sub={
                   stats.expensive
-                    ? `${stats.expensive.emoji} ${stats.expensive.name}`
+                    ? stats.expensive.name
                     : undefined
                 }
                 accentClass="text-red-600 dark:text-red-400"
@@ -439,7 +439,6 @@ export default function CostOfLivingPage() {
                             {i + 1}
                           </td>
                           <td className="px-5 py-3.5 font-medium text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
-                            <span className="mr-2">{city.emoji}</span>
                             {city.name}
                             <span className="text-zinc-400 dark:text-zinc-500 font-normal ml-1.5">
                               {city.country}
@@ -520,7 +519,6 @@ export default function CostOfLivingPage() {
                         </span>
                         <div className="min-w-0">
                           <div className="font-medium text-zinc-900 dark:text-zinc-100 truncate">
-                            <span className="mr-1.5">{city.emoji}</span>
                             {city.name}
                           </div>
                           <div className="text-xs text-zinc-400 dark:text-zinc-500">

@@ -7,22 +7,24 @@ import { TelegramJobPopup } from '@/components/telegram-job-popup';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
+import { Coins, GitCompare, ShieldCheck } from 'lucide-react';
+
 const TOOLS = [
   {
     href: '/nomad/cost-of-living',
-    emoji: '💰',
+    icon: <Coins className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Cost of Living',
     desc: 'Compare costs across 95 cities',
   },
   {
     href: '/nomad/compare',
-    emoji: '⚖️',
+    icon: <GitCompare className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Compare Cities',
     desc: 'Side-by-side city comparison',
   },
   {
     href: '/nomad/schengen',
-    emoji: '🛂',
+    icon: <ShieldCheck className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Visa Calculator',
     desc: 'Schengen 90/180 day tracker',
   },
@@ -74,7 +76,7 @@ export default function NomadMapPage() {
               href={tool.href}
               className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all group"
             >
-              <span className="text-2xl">{tool.emoji}</span>
+              {tool.icon}
               <div>
                 <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors">{tool.title}</div>
                 <div className="text-xs text-zinc-500 dark:text-zinc-400">{tool.desc}</div>
