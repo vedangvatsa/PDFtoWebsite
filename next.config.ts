@@ -116,14 +116,23 @@ const nextConfigFn = (phase: string): NextConfig => {
                 "default-src 'self'",
                 "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://*.vercel-scripts.com https://*.vercel-analytics.com",
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-                "font-src 'self' https://fonts.gstatic.com",
+                "font-src 'self' https://fonts.gstatic.com https://basemaps.cartocdn.com",
                 "img-src 'self' data: blob: https: http:",
-                "connect-src 'self' https://us.i.posthog.com https://*.supabase.co https://*.vercel-analytics.com wss://*.supabase.co",
+                "connect-src 'self' https://us.i.posthog.com https://*.supabase.co https://*.vercel-analytics.com wss://*.supabase.co https://basemaps.cartocdn.com https://*.cartocdn.com",
+                "worker-src 'self' blob:",
+                "child-src blob:",
                 "frame-ancestors 'self'",
                 "base-uri 'self'",
                 "form-action 'self'",
               ].join('; '),
             },
+          ],
+        },
+        {
+          // Cache nomad data files aggressively — they change infrequently
+          source: '/nomad-data:path*',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800' },
           ],
         },
       ];
