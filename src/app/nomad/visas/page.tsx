@@ -14,6 +14,7 @@ interface VisaData {
   minIncome: number; // in USD per month
   minIncomeDisplay: string;
   duration: string;
+  durationDisplay: string;
   fee: string;
   taxImplications: string;
   documents: string[];
@@ -30,6 +31,7 @@ const VISAS: VisaData[] = [
     minIncome: 2400,
     minIncomeDisplay: '$2,400 / month',
     duration: '1 year (renewable up to 5)',
+    durationDisplay: '1-5 years',
     fee: '$80 - $150',
     taxImplications: 'Eligible for "Beckhams Law" (reduced flat tax of 24% on income up to €600,000).',
     documents: [
@@ -50,6 +52,7 @@ const VISAS: VisaData[] = [
     minIncome: 3280,
     minIncomeDisplay: '$3,280 / month',
     duration: '1 year (temporary stay) or 2 years (residency)',
+    durationDisplay: '1-2 years',
     fee: '$90 - $190',
     taxImplications: 'Non-Habitual Resident (NHR) scheme is closed for new entries; standard progressive tax rates apply (up to 48%).',
     documents: [
@@ -71,6 +74,7 @@ const VISAS: VisaData[] = [
     minIncome: 3500,
     minIncomeDisplay: '$3,500 / month',
     duration: '1 to 2 years (renewable)',
+    durationDisplay: '1-2 years',
     fee: '$85',
     taxImplications: '50% tax cut on income earned in Greece for up to 7 years (requires commitment to stay).',
     documents: [
@@ -91,6 +95,7 @@ const VISAS: VisaData[] = [
     minIncome: 2539,
     minIncomeDisplay: '$2,539 / month',
     duration: '1 year (non-renewable; must leave for 6 months before reapplying)',
+    durationDisplay: '1 year',
     fee: '$80 - $130',
     taxImplications: '100% tax-exempt on remote income generated outside of Croatia.',
     documents: [
@@ -112,6 +117,7 @@ const VISAS: VisaData[] = [
     minIncome: 3500,
     minIncomeDisplay: '$3,500 / month',
     duration: '1 year (renewable)',
+    durationDisplay: '1 year',
     fee: '$325',
     taxImplications: 'Remote income is not taxed in Malta unless it is remitted or spent locally.',
     documents: [
@@ -132,6 +138,7 @@ const VISAS: VisaData[] = [
     minIncome: 2700,
     minIncomeDisplay: '$2,700 / month',
     duration: '1 year (renewable)',
+    durationDisplay: '1 year',
     fee: '$125',
     taxImplications: 'Income tax flat reductions (up to 70-90% exemption under local tax schemes for relocated workers).',
     documents: [
@@ -152,6 +159,7 @@ const VISAS: VisaData[] = [
     minIncome: 4500,
     minIncomeDisplay: '$4,500 / month',
     duration: '1 year (extendable up to 1.5 years)',
+    durationDisplay: '1-1.5 years',
     fee: '$100',
     taxImplications: 'Estonian tax residency is triggered after 183 days of stay; standard flat rate of 20% applies.',
     documents: [
@@ -171,6 +179,7 @@ const VISAS: VisaData[] = [
     minIncome: 5500,
     minIncomeDisplay: '$5,500 / month ($65k/year)',
     duration: '6 months (non-renewable)',
+    durationDisplay: '6 months',
     fee: '$30',
     taxImplications: 'Remote income is tax-exempt for the 6-month duration of the stay.',
     documents: [
@@ -190,6 +199,7 @@ const VISAS: VisaData[] = [
     minIncome: 0,
     minIncomeDisplay: '$13,600 bank balance (no monthly income minimum)',
     duration: '5 years (180 days per entry, extendable)',
+    durationDisplay: '5 years',
     fee: '$300 (10,000 THB)',
     taxImplications: 'Taxation applies only to income brought into Thailand during the same tax year; foreign income is generally tax-free.',
     documents: [
@@ -209,6 +219,7 @@ const VISAS: VisaData[] = [
     minIncome: 2000,
     minIncomeDisplay: '$2,000 / month ($24k/year)',
     duration: '1 to 2 years (renewable)',
+    durationDisplay: '1-2 years',
     fee: '$215 (spouse +$85)',
     taxImplications: 'Remote income generated outside of Malaysia is tax-exempt.',
     documents: [
@@ -343,7 +354,7 @@ export default function VisasPage() {
                   <Calendar className="w-4 h-4 text-zinc-400 shrink-0" />
                   <div>
                     <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider leading-none mb-1">Stay Duration</p>
-                    <p className="text-xs font-bold truncate max-w-[150px]">{visa.duration.split(' ')[0]} {visa.duration.split(' ')[1] || 'stay'}</p>
+                    <p className="text-xs font-bold truncate max-w-[150px]">{visa.durationDisplay}</p>
                   </div>
                 </div>
               </div>

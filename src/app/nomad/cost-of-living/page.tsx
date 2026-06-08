@@ -265,11 +265,13 @@ export default function CostOfLivingPage() {
                 <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
                   I have{' '}
                   <span className="text-2xl tabular-nums">
-                    {budget !== null ? fmtCurrency(budget) : '-'}
+                    {budget !== null ? fmtCurrency(budget) : 'Any budget'}
                   </span>
-                  <span className="text-zinc-500 font-normal text-base">
-                    /month
-                  </span>
+                  {budget !== null && (
+                    <span className="text-zinc-500 font-normal text-base">
+                      /month
+                    </span>
+                  )}
                 </p>
 
                 <div className="flex-1 flex items-center gap-3">

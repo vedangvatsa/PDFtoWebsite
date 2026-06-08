@@ -254,13 +254,13 @@ function ComparisonRow({ row }: { row: MetricRow }) {
   const bWin = winner === 'b';
 
   return (
-    <div className="grid grid-cols-[1fr_minmax(0,1fr)_minmax(0,1fr)] gap-2 sm:gap-4 items-center py-3 border-b border-zinc-100 dark:border-zinc-800/50 last:border-b-0">
+    <div className="grid grid-cols-[1.3fr_1fr_1fr] sm:grid-cols-[1fr_1fr_1fr] gap-2 sm:gap-4 items-center py-3 border-b border-zinc-100 dark:border-zinc-800/50 last:border-b-0">
       {/* Metric label */}
       <div className="flex items-center gap-2 min-w-0">
         <span className="text-zinc-400 dark:text-zinc-500 flex-shrink-0">
           {row.icon}
         </span>
-        <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 truncate">
+        <span className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 leading-tight">
           {row.label}
         </span>
       </div>
@@ -548,7 +548,7 @@ function ComparePageContent() {
                 {/* Comparison Grid */}
                 <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all p-5 sm:p-6 mb-8">
                   {/* Header row */}
-                  <div className="grid grid-cols-[1fr_minmax(0,1fr)_minmax(0,1fr)] gap-2 sm:gap-4 items-center pb-3 border-b-2 border-zinc-200 dark:border-zinc-700 mb-1">
+                  <div className="grid grid-cols-[1.3fr_1fr_1fr] sm:grid-cols-[1fr_1fr_1fr] gap-2 sm:gap-4 items-center pb-3 border-b-2 border-zinc-200 dark:border-zinc-700 mb-1">
                     <div className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                       Metric
                     </div>
