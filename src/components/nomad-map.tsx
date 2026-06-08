@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import {
   Map,
   MapClusterLayer,
@@ -11,7 +12,7 @@ import {
   type MapRef,
 } from '@/components/ui/map';
 import { Badge } from '@/components/ui/badge';
-import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star } from 'lucide-react';
+import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star, ArrowLeft } from 'lucide-react';
 
 interface POI {
   osm_id: number;
@@ -113,14 +114,111 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
   );
 });
 
+const CITY_IMAGES: Record<string, string> = {
+  'chiang-mai': 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?auto=format&fit=crop&w=400&q=80',
+  'bangalore': 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=400&q=80',
+  'da-nang': 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80',
+  'koh-phangan': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80',
+  'kuala-lumpur': 'https://images.unsplash.com/photo-1595841696660-181c4e769e11?auto=format&fit=crop&w=400&q=80',
+  'manila': 'https://images.unsplash.com/photo-1524396309943-e03f5ee026d0?auto=format&fit=crop&w=400&q=80',
+  'penang': 'https://images.unsplash.com/photo-1549693578-d683be217e58?auto=format&fit=crop&w=400&q=80',
+  'phnom-penh': 'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=400&q=80',
+  'siem-reap': 'https://images.unsplash.com/photo-1542856391-010fb87dcfed?auto=format&fit=crop&w=400&q=80',
+  'hanoi': 'https://images.unsplash.com/photo-1509060464153-4466739f78d0?auto=format&fit=crop&w=400&q=80',
+  'cebu': 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=400&q=80',
+  'playa-del-carmen': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80',
+  'bali': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80',
+  'ho-chi-minh-city': 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=400&q=80',
+  'taipei': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=400&q=80',
+  'bangkok': 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=400&q=80',
+  'zanzibar': 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=400&q=80',
+  'delhi': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=400&q=80',
+};
+
+function CityCard({ city }: { city: any }) {
+  const imageUrl = CITY_IMAGES[city.slug] || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80';
+  
+  return (
+    <Link
+      href={`/nomad/${city.slug}`}
+      className="group relative h-64 rounded-2xl overflow-hidden shadow-md border border-zinc-200/50 dark:border-zinc-800/50 hover:shadow-xl dark:hover:shadow-white/5 cursor-pointer transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-end p-5"
+    >
+      {/* Background Image */}
+      <img
+        src={imageUrl}
+        alt={city.name}
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+      {/* Overlay Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+
+      {/* Content */}
+      <div className="relative z-10 space-y-2">
+        <div className="flex justify-between items-start">
+          <div className="min-w-0">
+            <h3 className="text-lg font-bold text-white tracking-tight truncate">{city.name}</h3>
+            <p className="text-xs text-zinc-300 font-medium flex items-center gap-1 mt-0.5">
+              <span className="shrink-0">{city.emoji}</span>
+              <span className="truncate">{city.country}</span>
+            </p>
+          </div>
+          <span className="bg-emerald-500 text-white font-extrabold text-xs px-2 py-0.5 rounded shadow-sm shrink-0">
+            {city.nomad_score}
+          </span>
+        </div>
+
+        {/* Quick Stats Grid */}
+        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/20 text-white">
+          <div>
+            <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider">Cost</p>
+            <p className="text-xs font-bold">${city.cost.monthly_total.toLocaleString()}</p>
+          </div>
+          <div>
+            <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider">Temp</p>
+            <p className="text-xs font-bold">{Math.round(city.weather.avg_temp)}°C</p>
+          </div>
+          <div>
+            <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider">Spaces</p>
+            <p className="text-xs font-bold">{city.spaces.total}</p>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: string }) {
   const [selectedCity, setSelectedCity] = useState<string>(cityFilter || 'all');
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(Object.keys(CATEGORY_CONFIG)));
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
   const [visibleCount, setVisibleCount] = useState(50);
+  const [citySearchQuery, setCitySearchQuery] = useState('');
+  const [cityMetadata, setCityMetadata] = useState<any[]>([]);
   const mapRef = useRef<MapRef>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('/nomad-cities.json')
+      .then(res => res.json())
+      .then(data => setCityMetadata(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  const filteredCities = useMemo(() => {
+    let sorted = [...cityMetadata].sort((a, b) => b.nomad_score - a.nomad_score);
+    if (citySearchQuery.trim()) {
+      const q = citySearchQuery.toLowerCase();
+      sorted = sorted.filter(
+        (c) =>
+          c.name.toLowerCase().includes(q) ||
+          c.country.toLowerCase().includes(q)
+      );
+    } else {
+      sorted = sorted.slice(0, 18);
+    }
+    return sorted;
+  }, [cityMetadata, citySearchQuery]);
 
   const cities = useMemo(() => {
     const citySet = new globalThis.Map<string, { country: string; count: number; lat: number; lon: number }>();
@@ -443,38 +541,85 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
         </Map>
       </div>
 
-      {/* Listings table */}
-      <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-zinc-50 dark:bg-zinc-900 sticky top-0">
-              <tr>
-                <th className="text-left px-4 py-3 font-medium">#</th>
-                <th className="text-left px-4 py-3 font-medium">Name</th>
-                <th className="text-left px-4 py-3 font-medium">Type</th>
-                <th className="text-left px-4 py-3 font-medium">City</th>
-                <th className="text-left px-4 py-3 font-medium">Rating</th>
-                <th className="text-left px-4 py-3 font-medium">Quality</th>
-                <th className="text-left px-4 py-3 font-medium">Links</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.slice(0, visibleCount).map((poi, i) => (
-                <TableRow key={poi.osm_id} poi={poi} index={i} />
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/* Sentinel for infinite scroll */}
-        {visibleCount < filteredData.length && (
-          <div ref={sentinelRef} className="py-4 text-center text-xs text-zinc-500 dark:text-zinc-400">
-            Loading more…
+      {/* Conditional: Top Destinations Grid or Listings Table */}
+      {selectedCity === 'all' ? (
+        <div className="space-y-6 pt-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                Explore Top Nomad Destinations
+              </h2>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                Curated list of the best places to live, work, and explore.
+              </p>
+            </div>
+            {/* Search Input within Top Cities */}
+            <input
+              type="text"
+              placeholder="Search cities..."
+              value={citySearchQuery}
+              onChange={(e) => setCitySearchQuery(e.target.value)}
+              className="h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all w-full sm:w-64"
+            />
           </div>
-        )}
-        <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 py-2 border-t">
-          {Math.min(visibleCount, filteredData.length).toLocaleString()} of {filteredData.length.toLocaleString()} places
-        </p>
-      </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {filteredCities.map((city) => (
+              <CityCard key={city.slug} city={city} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-4 pt-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
+              Spaces in {selectedCity}
+            </h2>
+            {!cityFilter && (
+              <button
+                onClick={() => handleCityChange('all')}
+                className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Top Cities
+              </button>
+            )}
+          </div>
+          
+          {/* Listings table */}
+          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-zinc-50 dark:bg-zinc-900 sticky top-0">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-medium">#</th>
+                    <th className="text-left px-4 py-3 font-medium">Name</th>
+                    <th className="text-left px-4 py-3 font-medium">Type</th>
+                    <th className="text-left px-4 py-3 font-medium">City</th>
+                    <th className="text-left px-4 py-3 font-medium">Rating</th>
+                    <th className="text-left px-4 py-3 font-medium">Quality</th>
+                    <th className="text-left px-4 py-3 font-medium">Links</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData.slice(0, visibleCount).map((poi, i) => (
+                    <TableRow key={poi.osm_id} poi={poi} index={i} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Sentinel for infinite scroll */}
+            {visibleCount < filteredData.length && (
+              <div ref={sentinelRef} className="py-4 text-center text-xs text-zinc-500 dark:text-zinc-400">
+                Loading more…
+              </div>
+            )}
+            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 py-2 border-t">
+              {Math.min(visibleCount, filteredData.length).toLocaleString()} of {filteredData.length.toLocaleString()} places
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
