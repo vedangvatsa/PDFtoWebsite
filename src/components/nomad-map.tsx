@@ -113,8 +113,8 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
   );
 });
 
-export function NomadMap({ data }: { data: POI[] }) {
-  const [selectedCity, setSelectedCity] = useState<string>('all');
+export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: string }) {
+  const [selectedCity, setSelectedCity] = useState<string>(cityFilter || 'all');
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(Object.keys(CATEGORY_CONFIG)));
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
@@ -254,31 +254,37 @@ export function NomadMap({ data }: { data: POI[] }) {
         <Badge variant="outline" className="text-sm px-3 py-1">
           {filteredData.length.toLocaleString()} places
         </Badge>
-        <Badge variant="outline" className="text-sm px-3 py-1">
-          {cities.length} cities
-        </Badge>
-        <Badge variant="outline" className="text-sm px-3 py-1">
-          {new Set(data.map(d => d.country)).size} countries
-        </Badge>
+        {!cityFilter && (
+          <>
+            <Badge variant="outline" className="text-sm px-3 py-1">
+              {cities.length} cities
+            </Badge>
+            <Badge variant="outline" className="text-sm px-3 py-1">
+              {new Set(data.map(d => d.country)).size} countries
+            </Badge>
+          </>
+        )}
       </div>
 
       {/* Filters */}
       <div className="flex flex-col md:flex-row gap-4">
         {/* City selector */}
-        <div className="flex-1">
-          <select
-            value={selectedCity}
-            onChange={(e) => handleCityChange(e.target.value)}
-            className="w-full md:w-auto h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer"
-          >
-            <option value="all">All Cities ({data.length.toLocaleString()} places)</option>
-            {cities.map(city => (
-              <option key={city.name} value={city.name}>
-                {city.name}, {city.country} ({city.count})
-              </option>
-            ))}
-          </select>
-        </div>
+        {!cityFilter && (
+          <div className="flex-1">
+            <select
+              value={selectedCity}
+              onChange={(e) => handleCityChange(e.target.value)}
+              className="w-full md:w-auto h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer"
+            >
+              <option value="all">All Cities ({data.length.toLocaleString()} places)</option>
+              {cities.map(city => (
+                <option key={city.name} value={city.name}>
+                  {city.name}, {city.country} ({city.count})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* Search */}
         <input
@@ -286,7 +292,7 @@ export function NomadMap({ data }: { data: POI[] }) {
           placeholder="Search by name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all w-full md:w-64"
+          className={`h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${cityFilter ? 'w-full' : 'w-full md:w-64'}`}
         />
       </div>
 

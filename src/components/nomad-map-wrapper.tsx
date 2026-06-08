@@ -97,7 +97,7 @@ function expandV2(v2: V2Data) {
   return result;
 }
 
-export function NomadMapWrapper() {
+export function NomadMapWrapper({ cityFilter }: { cityFilter?: string }) {
   const [data, setData] = useState<any[] | null>(null);
   const [, startTransition] = useTransition();
 
@@ -108,18 +108,22 @@ export function NomadMapWrapper() {
       .then((v2: V2Data) => {
         // Defer heavy expansion to avoid blocking first paint
         startTransition(() => {
-          setData(expandV2(v2));
+          let expanded = expandV2(v2);
+          if (cityFilter) {
+            expanded = expanded.filter(p => p.city.toLowerCase() === cityFilter.toLowerCase());
+          }
+          setData(expanded);
         });
       })
       .catch(err => {
         if (err.name !== 'AbortError') console.error(err);
       });
     return () => controller.abort();
-  }, [startTransition]);
+  }, [startTransition, cityFilter]);
 
   if (!data) {
-    return <MapSkeleton message="Loading 4,400+ places…" />;
+    return <MapSkeleton message={cityFilter ? "Loading places…" : "Loading 4,400+ places…"} />;
   }
 
-  return <NomadMap data={data} />;
+  return <NomadMap data={data} cityFilter={cityFilter} />;
 }
