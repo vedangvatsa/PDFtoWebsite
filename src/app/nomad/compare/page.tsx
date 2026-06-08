@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Header from '@/components/header';
@@ -292,7 +292,7 @@ function ComparisonRow({ row }: { row: MetricRow }) {
 }
 
 /* ---------- main page ---------- */
-export default function ComparePage() {
+function ComparePageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -848,5 +848,17 @@ export default function ComparePage() {
       <MicroFooter />
       <TelegramJobPopup />
     </div>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#fafafa] dark:bg-black">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-primary" />
+      </div>
+    }>
+      <ComparePageContent />
+    </Suspense>
   );
 }

@@ -5,6 +5,7 @@ import { Building2, Briefcase } from 'lucide-react';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { normalizeLocation } from '@/lib/normalize-location';
 import type { Metadata } from 'next';
+import { TelegramJobPopup } from '@/components/telegram-job-popup';
 
 const supabase = supabaseAdmin;
 
@@ -258,6 +259,7 @@ export default async function CompaniesPage() {
       </main>
 
       <MicroFooter />
+      <TelegramJobPopup />
     </div>
   );
 }

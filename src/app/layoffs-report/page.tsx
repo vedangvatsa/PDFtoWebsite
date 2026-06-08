@@ -6,6 +6,7 @@ import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
 import ReportCTA from '@/components/report-cta';
 import { useReportStats } from '@/hooks/use-report-stats';
+import { TelegramJobPopup } from '@/components/telegram-job-popup';
 
 const STORAGE_KEY = 'layoffs-report-unlocked';
 
@@ -666,6 +667,7 @@ export default function LayoffsReport() {
 
       </main>
       <MicroFooter />
+      <TelegramJobPopup />
     </div>
   );
 }
