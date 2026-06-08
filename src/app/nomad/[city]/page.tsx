@@ -5,7 +5,8 @@ import fs from 'fs';
 import path from 'path';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
-import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Star } from 'lucide-react';
+import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi } from 'lucide-react';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
 
@@ -81,11 +82,13 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
       url: `${siteUrl}/nomad/${data.slug}`,
       siteName: 'CVin.Bio',
       type: 'website',
+      images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: `${data.name} Digital Nomad Guide` }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${data.name} — Nomad Guide`,
       description,
+      images: [`${siteUrl}/opengraph-image`],
       creator: '@cvinbio',
     },
   };
@@ -105,7 +108,7 @@ function ScoreBar({ score }: { score: number }) {
 
 function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub?: string }) {
   return (
-    <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 transition-colors">
+    <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all">
       <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
         {icon}
         <span className="text-xs font-medium uppercase tracking-wider">{label}</span>
@@ -160,9 +163,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   ];
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200">
+    <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
-      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-16 pb-32">
+      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
         {/* Back link */}
         <Link
           href="/nomad"
@@ -348,7 +351,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <div className="mt-4 text-center">
             <Link
               href="/nomad"
-              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-sm text-primary hover:underline transition-colors"
             >
               View all on map →
             </Link>
@@ -364,7 +367,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 <Link
                   key={nc.slug}
                   href={`/nomad/${nc.slug}`}
-                  className="flex-shrink-0 w-48 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
+                  className="flex-shrink-0 w-48 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all"
                 >
                   <div className="text-2xl mb-1">{nc.emoji}</div>
                   <div className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm">{nc.name}</div>
@@ -415,6 +418,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         />
       </main>
       <MicroFooter />
+      <TelegramJobPopup />
     </div>
   );
 }
