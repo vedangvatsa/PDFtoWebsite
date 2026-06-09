@@ -12,7 +12,7 @@ const supabase = supabaseAdmin;
 export const revalidate = 3600; // ISR: rebuild every 1 hour (heavy page)
 
 export const metadata: Metadata = {
-  title: 'Companies Hiring Now | CVin.Bio',
+  title: 'Companies Hiring Now',
   description: 'Browse all companies actively hiring on CVin.Bio. Discover open roles at top tech companies including Stripe, Anthropic, Figma, GitLab, and more.',
   alternates: { canonical: 'https://cvin.bio/companies' },
   openGraph: {

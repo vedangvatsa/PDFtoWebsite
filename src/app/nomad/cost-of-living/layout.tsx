@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'Cost of Living for Digital Nomads · 95 Cities Compared | CVin.Bio',
+  title: 'Cost of Living for Digital Nomads · 95 Cities Compared',
   description:
     'Compare cost of living across 95 digital nomad cities. Filter by budget, sort by rent, food, coworking costs. Find your perfect affordable destination.',
   keywords: [
