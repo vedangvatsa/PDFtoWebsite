@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       const { count } = await supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo);
       const jobCount = count || 0;
 
-      const title = `${companyDisplay} Careers — ${jobCount} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}) | CVin.Bio`;
+      const title = `${companyDisplay} Careers — ${jobCount} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
       const desc = meta
         ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount} open positions. Browse roles and apply.`
         : `${companyDisplay} is hiring — ${jobCount} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;

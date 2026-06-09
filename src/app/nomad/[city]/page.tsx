@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   const data = cities.find((c) => c.slug === city);
   if (!data) return { title: 'City Not Found' };
 
-  const title = `Digital Nomad Guide: ${data.name}, ${data.country} | CVin.Bio`;
+  const title = `Digital Nomad Guide: ${data.name}, ${data.country}`;
   const description = `${data.name} nomad guide · $${data.cost.monthly_total.toLocaleString()}/mo cost of living, ${Math.round(data.weather.avg_temp)}°C avg temperature, ${data.spaces.total} coliving & coworking spaces.`;
 
   return {

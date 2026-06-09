@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'Compare Cities for Digital Nomads | CVin.Bio',
+  title: 'Compare Cities for Digital Nomads',
   description:
     'Side-by-side comparison of cost of living, weather, coworking spaces, and nomad scores across 95 cities. Find your ideal digital nomad destination.',
   alternates: { canonical: `${siteUrl}/nomad/compare` },
