@@ -2,6 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import { useState, useEffect, useTransition } from 'react';
+import { getCitySlug } from '@/lib/utils';
+
 
 const NomadMap = dynamic(
   () => import('@/components/nomad-map').then(m => m.NomadMap),
@@ -110,7 +112,8 @@ export function NomadMapWrapper({ cityFilter }: { cityFilter?: string }) {
         startTransition(() => {
           let expanded = expandV2(v2);
           if (cityFilter) {
-            expanded = expanded.filter(p => p.city.toLowerCase() === cityFilter.toLowerCase());
+            const target = cityFilter.toLowerCase();
+            expanded = expanded.filter(p => getCitySlug(p.city) === target);
           }
           setData(expanded);
         });
