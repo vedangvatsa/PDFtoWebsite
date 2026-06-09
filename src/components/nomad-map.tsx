@@ -14,7 +14,7 @@ import {
   type MapRef,
 } from '@/components/ui/map';
 import { Badge } from '@/components/ui/badge';
-import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star, ArrowLeft } from 'lucide-react';
+import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star, ArrowLeft, Coins, Thermometer } from 'lucide-react';
 
 interface POI {
   osm_id: number;
@@ -135,53 +135,95 @@ const CITY_IMAGES: Record<string, string> = {
   'bangkok': 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=400&q=80',
   'zanzibar': 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=400&q=80',
   'delhi': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=400&q=80',
+  'goa': 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400&q=80',
+  'las-palmas': 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=400&q=80',
+  'medellin': 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80',
+  'phuket': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80',
+  'tulum': 'https://images.unsplash.com/photo-1504730030853-eff311f57d3c?auto=format&fit=crop&w=400&q=80',
+  'canggu': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80',
+  'marrakech': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=400&q=80',
+  'cartagena': 'https://images.unsplash.com/photo-1583531172005-814191b8b6c0?auto=format&fit=crop&w=400&q=80',
+  'oaxaca': 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80',
+  'cape-town': 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=400&q=80',
+  'kathmandu': 'https://images.unsplash.com/photo-1542856391-010fb87dcfed?auto=format&fit=crop&w=400&q=80',
+  'buenos-aires': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&w=400&q=80',
+  'mexico-city': 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80',
+  'accra': 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80',
+  'bansko': 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=400&q=80',
+  'hoi-an': 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80',
+  'siargao': 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=400&q=80',
+  'bali-cangguubud': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80',
 };
 
 function CityCard({ city }: { city: any }) {
   const imageUrl = CITY_IMAGES[city.slug] || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80';
   
+  // Custom neon gradients for score ranges to look premium
+  let badgeGradient = 'from-zinc-700 to-zinc-800 text-zinc-200 border-zinc-600/50';
+  let badgeGlow = '';
+  if (city.nomad_score >= 95) {
+    badgeGradient = 'from-emerald-400 via-teal-400 to-cyan-500 text-emerald-950 font-black';
+    badgeGlow = 'shadow-[0_0_15px_rgba(52,211,153,0.4)] animate-pulse';
+  } else if (city.nomad_score >= 90) {
+    badgeGradient = 'from-emerald-500 to-teal-500 text-white font-extrabold';
+    badgeGlow = 'shadow-[0_0_10px_rgba(16,185,129,0.3)]';
+  } else if (city.nomad_score >= 80) {
+    badgeGradient = 'from-teal-600 to-cyan-600 text-white font-bold';
+  }
+
   return (
     <Link
       href={`/nomad/${city.slug}`}
-      className="group relative h-64 rounded-2xl overflow-hidden shadow-md border border-zinc-200/50 dark:border-zinc-800/50 hover:shadow-xl dark:hover:shadow-white/5 cursor-pointer transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-end p-5"
+      className="group relative h-72 rounded-3xl overflow-hidden shadow-lg border border-zinc-200/50 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700/60 hover:shadow-2xl dark:hover:shadow-white/5 cursor-pointer transform hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-end p-4"
     >
       {/* Background Image */}
       <img
         src={imageUrl}
         alt={city.name}
-        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+        loading="lazy"
       />
       {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent transition-opacity duration-300 group-hover:via-black/55" />
 
-      {/* Content */}
-      <div className="relative z-10 space-y-2">
-        <div className="flex justify-between items-start">
+      {/* Content Container (Glassmorphic) */}
+      <div className="relative z-10 w-full bg-white/5 dark:bg-black/35 backdrop-blur-md rounded-2xl p-4 border border-white/10 shadow-lg space-y-3 transition-colors duration-300 group-hover:bg-white/10 group-hover:dark:bg-black/45 animate-fade-in">
+        <div className="flex justify-between items-start gap-2">
           <div className="min-w-0">
-            <h3 className="text-lg font-bold text-white tracking-tight truncate">{city.name}</h3>
-            <p className="text-xs text-zinc-300 font-medium flex items-center gap-1 mt-0.5">
-              <span className="shrink-0">{city.emoji}</span>
-              <span className="truncate">{city.country}</span>
+            <h3 className="text-lg font-bold text-white tracking-tight truncate filter drop-shadow-md">
+              {city.name}
+            </h3>
+            <p className="text-xs text-zinc-300 font-medium flex items-center gap-1.5 mt-1">
+              <span className="shrink-0 rounded-full bg-white/10 backdrop-blur-sm w-5 h-5 flex items-center justify-center text-xs shadow-inner">
+                {city.emoji}
+              </span>
+              <span className="truncate filter drop-shadow-sm">{city.country}</span>
             </p>
           </div>
-          <span className="bg-emerald-500 text-white font-extrabold text-[10px] px-2 py-0.5 rounded shadow-sm shrink-0 uppercase tracking-wider" title="Nomad Score">
+          <span className={`bg-gradient-to-r ${badgeGradient} ${badgeGlow} text-[9px] px-2 py-1 rounded-full shadow-sm shrink-0 uppercase tracking-widest font-black border border-white/10`} title="Nomad Score">
             Score: {city.nomad_score}
           </span>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/20 text-white">
-          <div>
-            <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider">Cost</p>
-            <p className="text-xs font-bold">${city.cost.monthly_total.toLocaleString()}</p>
+        {/* Quick Stats Pods */}
+        <div className="grid grid-cols-3 gap-2 pt-1.5 text-white">
+          <div className="flex flex-col items-center justify-center bg-white/5 dark:bg-black/40 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/5 group-hover:border-white/10 transition-all">
+            <span className="text-[8px] text-zinc-300 font-semibold tracking-wider uppercase flex items-center gap-0.5 mb-0.5">
+              <Coins className="w-2.5 h-2.5 text-amber-400" /> Cost
+            </span>
+            <span className="text-xs font-black">${city.cost.monthly_total.toLocaleString()}</span>
           </div>
-          <div>
-            <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider">Temp</p>
-            <p className="text-xs font-bold">{Math.round(city.weather.avg_temp)}°C</p>
+          <div className="flex flex-col items-center justify-center bg-white/5 dark:bg-black/40 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/5 group-hover:border-white/10 transition-all">
+            <span className="text-[8px] text-zinc-300 font-semibold tracking-wider uppercase flex items-center gap-0.5 mb-0.5">
+              <Thermometer className="w-2.5 h-2.5 text-orange-400" /> Temp
+            </span>
+            <span className="text-xs font-black">{Math.round(city.weather.avg_temp)}°C</span>
           </div>
-          <div>
-            <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider">Spaces</p>
-            <p className="text-xs font-bold">{city.spaces.total}</p>
+          <div className="flex flex-col items-center justify-center bg-white/5 dark:bg-black/40 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/5 group-hover:border-white/10 transition-all">
+            <span className="text-[8px] text-zinc-300 font-semibold tracking-wider uppercase flex items-center gap-0.5 mb-0.5">
+              <Building2 className="w-2.5 h-2.5 text-sky-400" /> Spaces
+            </span>
+            <span className="text-xs font-black">{city.spaces.total}</span>
           </div>
         </div>
       </div>
@@ -203,8 +245,10 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
   const [visibleCount, setVisibleCount] = useState(50);
   const [citySearchQuery, setCitySearchQuery] = useState('');
   const [cityMetadata, setCityMetadata] = useState<any[]>([]);
+  const [visibleCityCount, setVisibleCityCount] = useState(12);
   const mapRef = useRef<MapRef>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const citySentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch('/nomad-cities.json')
@@ -222,11 +266,31 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
           c.name.toLowerCase().includes(q) ||
           c.country.toLowerCase().includes(q)
       );
-    } else {
-      sorted = sorted.slice(0, 18);
     }
     return sorted;
   }, [cityMetadata, citySearchQuery]);
+
+  // Reset city visible count when search query changes
+  useEffect(() => {
+    setVisibleCityCount(12);
+  }, [citySearchQuery]);
+
+  // Infinite scroll for top cities grid
+  useEffect(() => {
+    const sentinel = citySentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCityCount(prev => Math.min(prev + 12, filteredCities.length));
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [filteredCities.length, selectedCity]);
 
   const cities = useMemo(() => {
     const citySet = new globalThis.Map<string, { country: string; count: number; lat: number; lon: number }>();
@@ -572,10 +636,17 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {filteredCities.map((city) => (
+            {filteredCities.slice(0, visibleCityCount).map((city) => (
               <CityCard key={city.slug} city={city} />
             ))}
           </div>
+
+          {/* Sentinel for infinite scroll of top cities */}
+          {visibleCityCount < filteredCities.length && (
+            <div ref={citySentinelRef} className="py-8 text-center text-xs text-zinc-500 dark:text-zinc-400">
+              Loading more destinations…
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-4 pt-4">
