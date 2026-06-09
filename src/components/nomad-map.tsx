@@ -4,6 +4,8 @@ import React from 'react';
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { getCitySlug } from '@/lib/utils';
+
 import {
   Map,
   MapClusterLayer,
@@ -188,7 +190,13 @@ function CityCard({ city }: { city: any }) {
 }
 
 export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: string }) {
-  const [selectedCity, setSelectedCity] = useState<string>(cityFilter || 'all');
+  const [selectedCity, setSelectedCity] = useState<string>(() => {
+    if (cityFilter) {
+      const match = data.find(p => getCitySlug(p.city) === cityFilter.toLowerCase());
+      return match ? match.city : cityFilter;
+    }
+    return 'all';
+  });
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(Object.keys(CATEGORY_CONFIG)));
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
