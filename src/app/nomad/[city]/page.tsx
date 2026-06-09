@@ -8,6 +8,7 @@ import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Info } from 'lucide-react';
+import { CITY_IMAGES } from '@/lib/utils';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
 
@@ -381,34 +382,35 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <div className="mb-8">
             <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-4">Nearby Cities</h2>
             <div className="flex gap-3 overflow-x-auto pb-2 -mx-6 px-6 scrollbar-none">
-              {nearbyCities.map((nc) => (
-                <Link
-                  key={nc.slug}
-                  href={`/nomad/${nc.slug}`}
-                  className="flex-shrink-0 w-48 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm">{nc.name}</div>
-                    <div className="text-xs text-zinc-500 dark:text-zinc-400">{nc.country}</div>
-                  </div>
-                  <div className="flex items-center gap-2 mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-                    <span>${nc.cost.monthly_total.toLocaleString()}/mo</span>
-                    <span>·</span>
-                    <span>{Math.round(nc.weather.avg_temp)}°C</span>
-                  </div>
-                  <div className="mt-1.5">
-                    <div className="w-full h-1 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${nc.nomad_score}%`,
-                          backgroundColor: nc.nomad_score >= 70 ? '#10b981' : nc.nomad_score >= 50 ? '#f59e0b' : '#ef4444',
-                        }}
-                      />
+              {nearbyCities.map((nc) => {
+                const imageUrl = CITY_IMAGES[nc.slug] || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80';
+                return (
+                  <Link
+                    key={nc.slug}
+                    href={`/nomad/${nc.slug}`}
+                    className="group relative flex-shrink-0 w-52 h-36 rounded-2xl overflow-hidden shadow-sm border border-zinc-200/50 dark:border-zinc-800/80 hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700/60 cursor-pointer transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-end p-4"
+                  >
+                    <img
+                      src={imageUrl}
+                      alt={nc.name}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+                    <div className="relative z-10 space-y-1.5 text-white w-full">
+                      <div>
+                        <div className="font-bold text-sm leading-tight truncate">{nc.name}</div>
+                        <div className="text-[10px] text-zinc-300 font-medium truncate mt-0.5">{nc.country}</div>
+                      </div>
+                      <div className="flex justify-between items-center pt-1.5 border-t border-white/10 mt-1.5">
+                        <span className="text-[10px] font-extrabold">${nc.cost.monthly_total.toLocaleString()}/mo</span>
+                        <span className="text-[8px] font-black bg-emerald-500/90 text-white px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                          Score: {nc.nomad_score}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}
