@@ -119,14 +119,14 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
 const CITY_IMAGES: Record<string, string> = {
   'chiang-mai': 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?auto=format&fit=crop&w=400&q=80',
   'bangalore': 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=400&q=80',
-  'da-nang': 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80',
-  'koh-phangan': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80',
-  'kuala-lumpur': 'https://images.unsplash.com/photo-1595841696660-181c4e769e11?auto=format&fit=crop&w=400&q=80',
-  'manila': 'https://images.unsplash.com/photo-1524396309943-e03f5ee026d0?auto=format&fit=crop&w=400&q=80',
-  'penang': 'https://images.unsplash.com/photo-1549693578-d683be217e58?auto=format&fit=crop&w=400&q=80',
+  'da-nang': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80',
+  'koh-phangan': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80',
+  'kuala-lumpur': 'https://images.unsplash.com/photo-1599833975787-5c143f373c30?auto=format&fit=crop&w=400&q=80',
+  'manila': 'https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=400&q=80',
+  'penang': 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80',
   'phnom-penh': 'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=400&q=80',
   'siem-reap': 'https://images.unsplash.com/photo-1542856391-010fb87dcfed?auto=format&fit=crop&w=400&q=80',
-  'hanoi': 'https://images.unsplash.com/photo-1509060464153-4466739f78d0?auto=format&fit=crop&w=400&q=80',
+  'hanoi': 'https://images.unsplash.com/photo-1568093858174-0f391ea21c45?auto=format&fit=crop&w=400&q=80',
   'cebu': 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=400&q=80',
   'playa-del-carmen': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80',
   'bali': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80',
@@ -164,8 +164,8 @@ function CityCard({ city }: { city: any }) {
               <span className="truncate">{city.country}</span>
             </p>
           </div>
-          <span className="bg-emerald-500 text-white font-extrabold text-xs px-2 py-0.5 rounded shadow-sm shrink-0">
-            {city.nomad_score}
+          <span className="bg-emerald-500 text-white font-extrabold text-[10px] px-2 py-0.5 rounded shadow-sm shrink-0 uppercase tracking-wider" title="Nomad Score">
+            Score: {city.nomad_score}
           </span>
         </div>
 
