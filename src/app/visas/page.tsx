@@ -1121,57 +1121,44 @@ export default function VisasPage() {
         </p>
 
         {/* Visas Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredVisas.map((visa) => (
             <div
               key={visa.country}
               onClick={() => setActiveModalVisa(visa)}
-              className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-lg dark:hover:shadow-white/5 transition-all cursor-pointer flex flex-col justify-between"
+              className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md dark:hover:shadow-white/5 transition-all cursor-pointer flex flex-col justify-between gap-3"
             >
-              <div>
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-3xl shrink-0">{visa.flag}</span>
-                    <div>
-                      <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 leading-tight">
-                        {visa.country}
-                      </h3>
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400">{visa.continent}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3 mb-6">
-                  {visa.description}
-                </p>
-
-                {/* Highlights List */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {visa.highlights.map((h, idx) => (
-                    <span key={idx} className="bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 text-xs px-2.5 py-1 rounded-md font-medium">
-                      {h}
-                    </span>
-                  ))}
+              {/* Header */}
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl shrink-0">{visa.flag}</span>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 leading-tight truncate">
+                    {visa.country}
+                  </h3>
+                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400">{visa.continent}</p>
                 </div>
               </div>
 
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/60 text-zinc-900 dark:text-zinc-50">
-                <div className="flex items-center gap-2">
-                  <Coins className="w-4 h-4 text-zinc-400 shrink-0" />
-                  <div>
-                    <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider leading-none mb-1">Income</p>
-                    <p className="text-xs font-bold truncate max-w-[150px]">
-                      {visa.minIncome === 0 ? 'Savings Only' : `$${visa.minIncome.toLocaleString()}/mo`}
-                    </p>
-                  </div>
+              {/* Highlights */}
+              <div className="flex flex-wrap gap-1.5">
+                {visa.highlights.map((h, idx) => (
+                  <span key={idx} className="bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 text-[10px] px-2 py-0.5 rounded font-medium leading-tight">
+                    {h}
+                  </span>
+                ))}
+              </div>
+
+              {/* Stats Row */}
+              <div className="flex items-center gap-3 pt-2.5 border-t border-zinc-100 dark:border-zinc-800/60 text-zinc-900 dark:text-zinc-50">
+                <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Coins className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                  <p className="text-[11px] font-semibold truncate">
+                    {visa.minIncome === 0 ? 'No min' : `$${visa.minIncome.toLocaleString()}/mo`}
+                  </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-zinc-400 shrink-0" />
-                  <div>
-                    <p className="text-[9px] text-zinc-400 uppercase font-semibold tracking-wider leading-none mb-1">Stay Duration</p>
-                    <p className="text-xs font-bold truncate max-w-[150px]">{visa.durationDisplay}</p>
-                  </div>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <Calendar className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                  <p className="text-[11px] font-semibold truncate">{visa.durationDisplay}</p>
                 </div>
               </div>
             </div>
