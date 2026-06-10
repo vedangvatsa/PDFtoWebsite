@@ -405,32 +405,35 @@ export async function GET(request: NextRequest) {
       `, 'admin_os_types'),
 
       // 18. Referrer → Signup conversions (last 90 days)
+      // Uses multiIf to prioritize utm_source over referring_domain (same logic as topReferrers query #4)
       hogql(`
         SELECT
-          first_referrer AS referrer,
+          first_source AS referrer,
           count() AS signups
         FROM (
           SELECT
             e.distinct_id,
             (
-              SELECT properties.$referring_domain
+              SELECT multiIf(
+                pv.properties.utm_source != '', pv.properties.utm_source,
+                pv.properties.$referring_domain != '', pv.properties.$referring_domain,
+                'Direct'
+              )
               FROM events AS pv
               WHERE pv.distinct_id = e.distinct_id
                 AND pv.event = '$pageview'
-                AND pv.properties.$referring_domain IS NOT NULL
-                AND pv.properties.$referring_domain != ''
               ORDER BY pv.timestamp ASC
               LIMIT 1
-            ) AS first_referrer
+            ) AS first_source
           FROM events AS e
           WHERE e.event IN ('auth_google_started', 'auth_magic_link_sent')
             AND e.timestamp >= now() - interval 90 day
           GROUP BY e.distinct_id
         )
-        WHERE first_referrer IS NOT NULL AND first_referrer != ''
-        GROUP BY first_referrer
+        WHERE first_source IS NOT NULL AND first_source != ''
+        GROUP BY first_source
         ORDER BY signups DESC
-        LIMIT 20
+        LIMIT 25
       `, 'admin_referrer_conversions'),
     ]);
 
