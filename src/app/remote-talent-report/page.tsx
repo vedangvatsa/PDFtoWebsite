@@ -289,8 +289,8 @@ export default function RemoteTalentReport() {
   const [unlocked, setUnlocked] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
   const { stats } = useReportStats();
-  const jobCount = stats ? stats.totalJobs.toLocaleString() : '68,000+';
-  const companyCount = stats ? `${stats.totalCompanies}+` : '2,000+';
+  const jobCount = stats ? stats.totalJobs.toLocaleString() : '24,000+';
+  const companyCount = stats ? `${stats.totalCompanies}+` : '900+';
   const remotePercent = stats ? `${stats.remotePercent}%` : '13%';
   const topLoc1 = stats?.topLocations?.[0];
   const topLoc2 = stats?.topLocations?.[3]; // Singapore

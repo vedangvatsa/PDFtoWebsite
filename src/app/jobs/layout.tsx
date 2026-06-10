@@ -8,14 +8,16 @@ export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const supabase = supabaseAdmin;
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
   // Fetch job count
   const { count } = await supabase
     .from('jobs')
     .select('*', { count: 'exact', head: true })
+    .gt('created_at', thirtyDaysAgo)
     .not('company', 'ilike', '%Gopuff%');
 
-  let countStr = '68,000+';
+  let countStr = '24,000+';
   if (count) {
     countStr = count.toLocaleString();
   }

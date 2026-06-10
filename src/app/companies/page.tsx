@@ -120,6 +120,8 @@ const NAME_MAP: Record<string, string> = {
 };
 
 export default async function CompaniesPage() {
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
   // Fetch all jobs to compute per-company stats — paginate aggressively
   let allJobs: any[] = [];
   let page = 0;
@@ -130,6 +132,7 @@ export default async function CompaniesPage() {
     const { data, error } = await supabase
       .from('jobs')
       .select('company, company_logo, location, published_at, created_at')
+      .gt('created_at', thirtyDaysAgo)
       .order('created_at', { ascending: false })
       .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
     if (error || !data || data.length === 0) break;

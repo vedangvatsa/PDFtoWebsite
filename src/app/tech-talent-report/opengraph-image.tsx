@@ -8,14 +8,16 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image() {
-  let jobCount = '68,000+';
-  let companyCount = '2,000+';
+  let jobCount = '24,000+';
+  let companyCount = '900+';
 
   try {
     const supabase = supabaseAdmin;
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { count } = await supabase
       .from('jobs')
       .select('*', { count: 'exact', head: true })
+      .gt('created_at', thirtyDaysAgo)
       .not('company', 'ilike', '%Gopuff%');
     if (count) {
       jobCount = count.toLocaleString();
@@ -24,6 +26,7 @@ export default async function Image() {
     const { data: companies } = await supabase
       .from('jobs')
       .select('company')
+      .gt('created_at', thirtyDaysAgo)
       .not('company', 'ilike', '%Gopuff%')
       .limit(isBuild ? 100 : 1000);
     if (companies) {
