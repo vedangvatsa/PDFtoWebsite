@@ -294,15 +294,20 @@ async function postSingle(state, content, slotKey) {
   // Upload image if present (required for all single engagement posts)
   let mediaId = null;
   if (!item.img) {
-    console.error('❌ Error: No image defined for this engagement post. Aborting.');
-    process.exit(1);
+    console.error('❌ Error: No image defined for this engagement post. Skipping.');
+    console.warn('  ⏭️ Skipping post and advancing index');
+    state[slotKey].index++;
+    state.lastPostedAt[SLOT] = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    return;
   }
 
   try {
     // Resolve image path: absolute, repo-relative (.github/...), or IMAGES_DIR-relative
     let imgPath;
     if (item.img.startsWith('/')) {
-      imgPath = item.img;
+      const publicPath = path.join(REPO_ROOT, 'public', item.img);
+      imgPath = fs.existsSync(publicPath) ? publicPath : item.img;
     } else if (item.img.startsWith('.github/')) {
       imgPath = path.join(REPO_ROOT, item.img);
     } else {
@@ -311,19 +316,31 @@ async function postSingle(state, content, slotKey) {
 
     if (!fs.existsSync(imgPath)) {
       console.error(`❌ Error: Required image not found on disk: ${imgPath}`);
-      process.exit(1);
+      console.warn('  ⏭️ Skipping post and advancing index');
+      state[slotKey].index++;
+      state.lastPostedAt[SLOT] = new Date().toISOString();
+      fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+      return;
     }
 
     mediaId = await uploadMedia(imgPath);
     if (mediaId) {
       console.log('🖼️ Media uploaded successfully to Twitter:', mediaId);
     } else {
-      console.error('❌ Error: No media ID returned — aborting to prevent text-only tweet.');
-      process.exit(1);
+      console.error('❌ Error: No media ID returned — skipping to prevent text-only tweet.');
+      console.warn('  ⏭️ Skipping post and advancing index');
+      state[slotKey].index++;
+      state.lastPostedAt[SLOT] = new Date().toISOString();
+      fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+      return;
     }
   } catch (e) {
     console.error('❌ Error: Twitter image upload failed:', e.message);
-    process.exit(1);
+    console.warn('  ⏭️ Skipping post and advancing index');
+    state[slotKey].index++;
+    state.lastPostedAt[SLOT] = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    return;
   }
 
   const result = await postTweet(text, mediaId);
@@ -341,7 +358,11 @@ async function postSingle(state, content, slotKey) {
     fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
   } else {
     console.error('❌ Failed:', JSON.stringify(result.body, null, 2));
-    process.exit(1);
+    console.warn('  ⏭️ Skipping post and advancing index');
+    state[slotKey].index++;
+    state.lastPostedAt[SLOT] = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    return;
   }
 }
 
@@ -400,7 +421,8 @@ async function postThread(state, content) {
       try {
         let fullPath;
         if (imgPath.startsWith('/')) {
-          fullPath = imgPath;
+          const publicPath = path.join(REPO_ROOT, 'public', imgPath);
+          fullPath = fs.existsSync(publicPath) ? publicPath : imgPath;
         } else if (imgPath.startsWith('.github/')) {
           fullPath = path.join(REPO_ROOT, imgPath);
         } else {
