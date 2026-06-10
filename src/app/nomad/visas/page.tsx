@@ -232,6 +232,251 @@ const VISAS: VisaData[] = [
     officialUrl: 'https://mdec.my/derantau',
     description: 'Malaysia’s DE Rantau program offers a robust digital nomad ecosystem, low cost of living, and an officially recognized network of nomad hubs.',
     highlights: ['Official nomad hub discounts', 'Tax-free remote income', 'Very low income threshold']
+  },
+  {
+    country: 'Colombia',
+    flag: '🇨🇴',
+    continent: 'South America',
+    minIncome: 700,
+    minIncomeDisplay: '$700 / month',
+    duration: 'Up to 2 years',
+    durationDisplay: '2 years',
+    fee: '$230',
+    taxImplications: 'Nomads are subject to Colombian tax after 183 days; foreign income might be taxed if tax residency is triggered.',
+    documents: [
+      'Valid passport',
+      'Proof of remote work for foreign company or freelance contracts',
+      'Bank statements proving minimum income equivalent to 3x Colombian minimum wage',
+      'Health insurance policy valid in Colombia with digital nomad coverage'
+    ],
+    officialUrl: 'https://www.cancilleria.gov.co/tramites_servicios/visa',
+    description: 'Colombia’s digital nomad visa is highly affordable and allows remote workers to experience the vibrant culture, coffee regions, and diverse cities for up to two years.',
+    highlights: ['Very low income requirement', 'Stunning biodiversity & culture', 'Valid for up to 2 years']
+  },
+  {
+    country: 'South Korea (Workation)',
+    flag: '🇰🇷',
+    continent: 'Asia',
+    minIncome: 5500,
+    minIncomeDisplay: '$5,500 / month ($65k/year)',
+    duration: '1 year (renewable up to 2 years)',
+    durationDisplay: '1-2 years',
+    fee: '$200',
+    taxImplications: 'Income from foreign sources is generally not taxed in South Korea during the workation period.',
+    documents: [
+      'Valid passport',
+      'Employment contract showing remote work capacity for a foreign company',
+      'Certificate of income proving GNI per capita threshold (double the Korean average GNI)',
+      'Clean criminal background check',
+      'Private health insurance covering at least 100 million KRW'
+    ],
+    officialUrl: 'https://www.visa.go.kr/',
+    description: 'South Korea’s official Workation Visa allows highly skilled remote workers to experience the mix of traditional history and futuristic lifestyle in cities like Seoul or Busan.',
+    highlights: ['Fast internet infrastructure', 'Sleek modern cities', 'Explore K-Culture']
+  },
+  {
+    country: 'Indonesia (E33G)',
+    flag: '🇮🇩',
+    continent: 'Asia',
+    minIncome: 5000,
+    minIncomeDisplay: '$5,000 / month ($60k/year)',
+    duration: '1 year (renewable)',
+    durationDisplay: '1 year',
+    fee: '$450',
+    taxImplications: 'Remote workers are exempt from Indonesian income taxes on foreign source income under specific conditions.',
+    documents: [
+      'Valid passport (minimum 6 months validity)',
+      'Proof of income showing at least $60,000 USD annual remote salary',
+      'Employment contract with a company based outside Indonesia',
+      'Bank statements showing the last 3 months of deposits'
+    ],
+    officialUrl: 'https://evisa.imigrasi.go.id/',
+    description: 'The Indonesian E33G Remote Worker visa is a dedicated route for digital nomads looking to legally reside and work remotely in Bali and other stunning parts of the archipelago.',
+    highlights: ['Perfect for Bali workations', 'Tax exemption on remote income', 'Renewable stay paths']
+  },
+  {
+    country: 'Dubai (UAE)',
+    flag: '🇦🇪',
+    continent: 'Asia',
+    minIncome: 3500,
+    minIncomeDisplay: '$3,500 / month',
+    duration: '1 year (renewable)',
+    durationDisplay: '1 year',
+    fee: '$350',
+    taxImplications: 'Zero personal income tax in the UAE on all remote and foreign-sourced income.',
+    documents: [
+      'Valid passport (minimum 6 months validity)',
+      'Proof of employment with a contract valid for one year minimum',
+      'Last month pay slip and 3 months of bank statements matching income requirement',
+      'Proof of company ownership (if business owner/freelancer)'
+    ],
+    officialUrl: 'https://www.visitdubai.com/en/business-in-dubai/visa-and-entry/work-remotely-from-dubai',
+    description: 'Dubai’s Virtual Working Programme offers a tax-free hub with world-class coworking infrastructure, high safety standards, and excellent global travel connectivity.',
+    highlights: ['100% tax-free income', 'World-class tech infrastructure', 'High safety & standard of living']
+  },
+  {
+    country: 'Costa Rica',
+    flag: '🇨🇷',
+    continent: 'North America',
+    minIncome: 3000,
+    minIncomeDisplay: '$3,000 / month',
+    duration: '1 year (renewable once)',
+    durationDisplay: '1-2 years',
+    fee: '$100',
+    taxImplications: 'Exempt from Costa Rican income taxes on all foreign-sourced remote income.',
+    documents: [
+      'Valid passport',
+      'Bank statements proving average monthly income of $3,000 USD (or $4,000 for families) for the past year',
+      'Proof of remote work or business ownership outside Costa Rica',
+      'Medical insurance policy covering at least $50,000 USD valid in Costa Rica'
+    ],
+    officialUrl: 'https://www.visitcostarica.com',
+    description: 'Costa Rica’s digital nomad visa is perfect for nature lovers seeking a tropical workspace, offering tax exemptions and easy extensions for remote workers.',
+    highlights: ['Pura Vida lifestyle', 'Tax-free remote income', 'Beautiful beaches & rainforests']
+  },
+  {
+    country: 'Mexico (Temporary Resident)',
+    flag: '🇲🇽',
+    continent: 'North America',
+    minIncome: 2600,
+    minIncomeDisplay: '$2,600 / month (or $43k savings)',
+    duration: '1 to 4 years',
+    durationDisplay: '1-4 years',
+    fee: '$200',
+    taxImplications: 'Foreign source income is not taxed in Mexico as long as you do not trigger local business/employment operations.',
+    documents: [
+      'Valid passport',
+      'Proof of average monthly income of ~$2,600 USD or bank savings balance of ~$43,000 USD over the last 12 months',
+      'Application form and interview at a Mexican consulate abroad',
+      'Fee payment receipt'
+    ],
+    officialUrl: 'https://www.gob.mx/inm',
+    description: 'Mexico does not have a dedicated digital nomad visa, but its highly popular Temporary Resident Visa serves as the primary route for remote workers looking to stay for up to 4 years.',
+    highlights: ['Very high savings alternative', 'Vibrant food and culture', 'Valid for up to 4 years']
+  },
+  {
+    country: 'Brazil',
+    flag: '🇧🇷',
+    continent: 'South America',
+    minIncome: 1500,
+    minIncomeDisplay: '$1,500 / month (or $18k savings)',
+    duration: '1 year (renewable up to 2 years)',
+    durationDisplay: '1-2 years',
+    fee: '$150',
+    taxImplications: 'You become a tax resident in Brazil after 183 days of physical presence, which triggers taxes on global income.',
+    documents: [
+      'Valid passport',
+      'Remote work contract or freelance declaration for foreign company',
+      'Bank statements proving $1,500/mo income or $18,000 savings balance',
+      'Clean criminal record certificate',
+      'Health insurance valid in Brazil'
+    ],
+    officialUrl: 'https://www.gov.br/mre',
+    description: 'Brazil’s VITEM XIV visa is a highly cost-effective option for nomads looking to experience South America, featuring beautiful coastlines, rainforests, and low cost of living.',
+    highlights: ['Savings option available', 'Cost-effective living', 'Lively coastal & city hubs']
+  },
+  {
+    country: 'Iceland',
+    flag: '🇮🇸',
+    continent: 'Europe',
+    minIncome: 7000,
+    minIncomeDisplay: '$7,000 / month',
+    duration: '180 days (non-renewable)',
+    durationDisplay: '180 days',
+    fee: '$90',
+    taxImplications: 'Exempt from Icelandic tax if you stay less than 183 days (the maximum duration of the visa anyway).',
+    documents: [
+      'Valid passport',
+      'Proof of employment or contracts indicating remote work outside Iceland',
+      'Bank statements matching the 1,000,000 ISK monthly income threshold',
+      'Proof of health insurance valid in Iceland'
+    ],
+    officialUrl: 'https://island.is',
+    description: 'Iceland’s remote work visa allows high-earning nomads from visa-exempt countries to spend up to 6 months exploring glaciers, hot springs, and volcanic landscapes.',
+    highlights: ['Breathtaking natural landscapes', 'Exempt from Icelandic income tax', 'Straightforward application']
+  },
+  {
+    country: 'Hungary (White Card)',
+    flag: '🇭🇺',
+    continent: 'Europe',
+    minIncome: 3200,
+    minIncomeDisplay: '$3,200 / month',
+    duration: '1 year (renewable once)',
+    durationDisplay: '1-2 years',
+    fee: '$120',
+    taxImplications: 'Hungarian tax residency triggers after 183 days, subject to a flat 15% income tax rate.',
+    documents: [
+      'Valid passport',
+      'Proof of remote employment for a company outside Hungary or freelance business contracts',
+      'Bank statements showing the €3,000 monthly minimum income for the past 6 months',
+      'Health insurance valid in Hungary'
+    ],
+    officialUrl: 'https://oif.gov.hu',
+    description: 'Hungary’s White Card offers digital nomads a highly central European base in Budapest, with low cost of living, high-speed internet, and access to the Schengen zone.',
+    highlights: ['Budapest nomad lifestyle', 'Schengen travel freedom', 'Low cost of living']
+  },
+  {
+    country: 'South Africa',
+    flag: '🇿🇦',
+    continent: 'Africa',
+    minIncome: 3000,
+    minIncomeDisplay: '$3,000 / month',
+    duration: '1 year (renewable)',
+    durationDisplay: '1 year',
+    fee: '$150',
+    taxImplications: 'Exempt from South African income tax for the first 36 months if registered as a remote worker from a foreign employer.',
+    documents: [
+      'Valid passport',
+      'Proof of employment contract with a foreign company',
+      'Bank statements showing gross annual income of at least 650,796 ZAR',
+      'Health insurance valid in South Africa',
+      'Accommodation booking or lease'
+    ],
+    officialUrl: 'https://www.dha.gov.za',
+    description: 'South Africa’s new Remote Work Visitor Visa allows digital nomads to live in beautiful hubs like Cape Town and Johannesburg while enjoying zero tax on remote income.',
+    highlights: ['Stunning Cape Town hubs', 'Zero local income tax initially', 'Great lifestyle and weather']
+  },
+  {
+    country: 'Cyprus',
+    flag: '🇨🇾',
+    continent: 'Europe',
+    minIncome: 3800,
+    minIncomeDisplay: '$3,800 net / month',
+    duration: '1 year (renewable up to 3 years)',
+    durationDisplay: '1-3 years',
+    fee: '$75',
+    taxImplications: 'Non-domicile tax residents enjoy exemptions on dividend and interest income in Cyprus.',
+    documents: [
+      'Valid passport',
+      'Employment contracts or freelance agreements outside Cyprus',
+      'Bank statements proving net monthly income of €3,500 (+20% for spouse, +15% per child)',
+      'Clean criminal record certificate',
+      'Health insurance valid in Cyprus'
+    ],
+    officialUrl: 'http://www.moi.gov.cy/crmd',
+    description: 'Cyprus offers digital nomads an attractive Mediterranean island base, a highly favorable tax system, and up to three years of legal residency.',
+    highlights: ['Favorable non-domicile tax scheme', 'Sunny Mediterranean beaches', 'Strong English-speaking environment']
+  },
+  {
+    country: 'Romania',
+    flag: '🇷🇴',
+    continent: 'Europe',
+    minIncome: 3900,
+    minIncomeDisplay: '$3,900 / month',
+    duration: '1 year (renewable)',
+    durationDisplay: '1-2 years',
+    fee: '$100',
+    taxImplications: 'Romania does not tax foreign remote income if you remain a tax resident of another country.',
+    documents: [
+      'Valid passport',
+      'Employment contract with a foreign company or business ownership documents',
+      'Bank statements showing at least €3,600/mo income for the past 3 months',
+      'Clean criminal record check',
+      'Medical insurance valid in Romania'
+    ],
+    officialUrl: 'https://evisa.mae.ro',
+    description: 'Romania offers one of the fastest internet networks in Europe, low cost of living, and a straightforward digital nomad visa route.',
+    highlights: ['Ultra-fast internet speeds', 'Very low cost of living', 'Explore Transylvania and cities']
   }
 ];
 
@@ -467,10 +712,10 @@ export default function VisasPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 flex justify-end gap-3">
+            <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 flex justify-end gap-3 flex-wrap sm:flex-nowrap">
               <button
                 onClick={() => setActiveModalVisa(null)}
-                className="px-4 py-2 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all"
+                className="px-4 py-2 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all w-full sm:w-auto"
               >
                 Close
               </button>
@@ -478,7 +723,7 @@ export default function VisasPage() {
                 href={activeModalVisa.officialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 rounded-lg text-sm font-semibold transition-all"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 rounded-lg text-sm font-semibold transition-all w-full sm:w-auto"
               >
                 Apply via Official Portal
                 <ExternalLink className="w-4 h-4" />
