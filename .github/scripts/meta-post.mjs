@@ -270,27 +270,63 @@ async function main() {
 
   let anySuccess = false;
 
+  // Helper: check if a post should be skipped after too many retries
+  const MAX_RETRIES = 3;
+  function getRetries(platform) { return state[platform]?.retries || 0; }
+  function getRetryIdx(platform) { return state[platform]?.retryIndex ?? -1; }
+  function recordFailure(platform, idx) {
+    if (!state[platform]) state[platform] = { index: 0 };
+    if (getRetryIdx(platform) === idx) {
+      state[platform].retries = getRetries(platform) + 1;
+    } else {
+      state[platform].retries = 1;
+      state[platform].retryIndex = idx;
+    }
+  }
+  function shouldSkip(platform, idx) {
+    return getRetryIdx(platform) === idx && getRetries(platform) >= MAX_RETRIES;
+  }
+  function clearRetries(platform) {
+    if (state[platform]) { delete state[platform].retries; delete state[platform].retryIndex; }
+  }
+
   // 1. Post to Facebook (at its own index)
   if (hasFacebook && fbIdx < items.length) {
-    const fbItem = items[fbIdx];
-    const fbText = fbItem.text.trim();
-    console.log(`\n📝 Facebook Post #${fbIdx + 1}/${items.length}: "${fbText.substring(0, 60)}..."`);
+    // Skip posts stuck after MAX_RETRIES
+    let fbCurrent = fbIdx;
+    while (fbCurrent < items.length && shouldSkip('facebook', fbCurrent)) {
+      console.log(`  ⏭️ Facebook: skipping post #${fbCurrent + 1} after ${MAX_RETRIES} failures`);
+      fbCurrent++;
+      state.facebook.index = fbCurrent;
+      clearRetries('facebook');
+    }
+    if (fbCurrent < items.length) {
+      const fbItem = items[fbCurrent];
+      const fbText = fbItem.text.trim();
+      console.log(`\n📝 Facebook Post #${fbCurrent + 1}/${items.length}: "${fbText.substring(0, 60)}..."`);
 
-    if (!fbItem.img) {
-      console.error('  ❌ No image for this post. Skipping.');
-    } else {
-      const { imagePath } = resolveMedia(fbItem);
-      if (!fs.existsSync(imagePath)) {
-        console.error(`  ❌ Image not found: ${imagePath}`);
+      if (!fbItem.img) {
+        console.error('  ❌ No image for this post. Skipping.');
+        state.facebook.index = fbCurrent + 1;
+        clearRetries('facebook');
       } else {
-        console.log('  📤 Posting to Facebook...');
-        const fb = await postToFacebook(fbText, imagePath);
-        if (fb.ok) {
-          state.facebook.index = fbIdx + 1;
-          anySuccess = true;
-          console.log(`  ✅ Facebook index → ${fbIdx + 1}`);
+        const { imagePath } = resolveMedia(fbItem);
+        if (!fs.existsSync(imagePath)) {
+          console.error(`  ❌ Image not found: ${imagePath}`);
+          state.facebook.index = fbCurrent + 1;
+          clearRetries('facebook');
         } else {
-          console.error('  ❌ Facebook post failed (will retry next run)');
+          console.log('  📤 Posting to Facebook...');
+          const fb = await postToFacebook(fbText, imagePath);
+          if (fb.ok) {
+            state.facebook.index = fbCurrent + 1;
+            clearRetries('facebook');
+            anySuccess = true;
+            console.log(`  ✅ Facebook index → ${fbCurrent + 1}`);
+          } else {
+            recordFailure('facebook', fbCurrent);
+            console.error(`  ❌ Facebook post failed (attempt ${getRetries('facebook')}/${MAX_RETRIES})`);
+          }
         }
       }
     }
@@ -300,36 +336,53 @@ async function main() {
 
   // 2. Post to Instagram (at its own index)
   if (hasInstagram && igIdx < items.length) {
-    const igItem = items[igIdx];
-    const igText = igItem.text.trim();
-    console.log(`\n📝 Instagram Post #${igIdx + 1}/${items.length}: "${igText.substring(0, 60)}..."`);
+    let igCurrent = igIdx;
+    while (igCurrent < items.length && shouldSkip('instagram', igCurrent)) {
+      console.log(`  ⏭️ Instagram: skipping post #${igCurrent + 1} after ${MAX_RETRIES} failures`);
+      igCurrent++;
+      state.instagram.index = igCurrent;
+      clearRetries('instagram');
+    }
+    if (igCurrent < items.length) {
+      const igItem = items[igCurrent];
+      const igText = igItem.text.trim();
+      console.log(`\n📝 Instagram Post #${igCurrent + 1}/${items.length}: "${igText.substring(0, 60)}..."`);
 
-    if (!igItem.img) {
-      console.error('  ❌ No image for this post. Skipping.');
-    } else {
-      const { imagePath, isVideo, githubUrl } = resolveMedia(igItem);
-      if (!fs.existsSync(imagePath)) {
-        console.error(`  ❌ Image not found: ${imagePath}`);
+      if (!igItem.img) {
+        console.error('  ❌ No image for this post. Skipping.');
+        state.instagram.index = igCurrent + 1;
+        clearRetries('instagram');
       } else {
-        // For IG, we need a public URL — try uploading to FB first for CDN URL, or use GitHub
-        let mediaUrl = null;
-        if (isVideo) {
-          mediaUrl = `https://cvin.bio${igItem.img}`;
+        const { imagePath, isVideo, githubUrl } = resolveMedia(igItem);
+        if (!fs.existsSync(imagePath)) {
+          console.error(`  ❌ Image not found: ${imagePath}`);
+          state.instagram.index = igCurrent + 1;
+          clearRetries('instagram');
         } else {
-          // Try to get a public URL from GitHub CDN
-          mediaUrl = githubUrl;
-        }
-        if (!mediaUrl) {
-          console.error('  ❌ No public media URL available. Skipping.');
-        } else {
-          console.log('  📤 Posting to Instagram...');
-          const igOk = await postToInstagram(igText, mediaUrl, isVideo);
-          if (igOk) {
-            state.instagram.index = igIdx + 1;
-            anySuccess = true;
-            console.log(`  ✅ Instagram index → ${igIdx + 1}`);
+          // For IG, we need a public URL — try uploading to FB first for CDN URL, or use GitHub
+          let mediaUrl = null;
+          if (isVideo) {
+            mediaUrl = `https://cvin.bio${igItem.img}`;
           } else {
-            console.error('  ❌ Instagram post failed (will retry next run)');
+            // Try to get a public URL from GitHub CDN
+            mediaUrl = githubUrl;
+          }
+          if (!mediaUrl) {
+            console.error('  ❌ No public media URL available. Skipping.');
+            state.instagram.index = igCurrent + 1;
+            clearRetries('instagram');
+          } else {
+            console.log('  📤 Posting to Instagram...');
+            const igOk = await postToInstagram(igText, mediaUrl, isVideo);
+            if (igOk) {
+              state.instagram.index = igCurrent + 1;
+              clearRetries('instagram');
+              anySuccess = true;
+              console.log(`  ✅ Instagram index → ${igCurrent + 1}`);
+            } else {
+              recordFailure('instagram', igCurrent);
+              console.error(`  ❌ Instagram post failed (attempt ${getRetries('instagram')}/${MAX_RETRIES})`);
+            }
           }
         }
       }
@@ -340,23 +393,36 @@ async function main() {
 
   // 3. Post to Threads (at its own index)
   if (hasThreads && thIdx < items.length) {
-    const thItem = items[thIdx];
-    const thText = thItem.text.trim();
-    console.log(`\n📝 Threads Post #${thIdx + 1}/${items.length}: "${thText.substring(0, 60)}..."`);
+    let thCurrent = thIdx;
+    while (thCurrent < items.length && shouldSkip('threads', thCurrent)) {
+      console.log(`  ⏭️ Threads: skipping post #${thCurrent + 1} after ${MAX_RETRIES} failures`);
+      thCurrent++;
+      state.threads.index = thCurrent;
+      clearRetries('threads');
+    }
+    if (thCurrent < items.length) {
+      const thItem = items[thCurrent];
+      const thText = thItem.text.trim();
+      console.log(`\n📝 Threads Post #${thCurrent + 1}/${items.length}: "${thText.substring(0, 60)}..."`);
 
-    if (!thItem.img) {
-      console.error('  ❌ No image for this post. Skipping.');
-    } else {
-      const { imagePath, isVideo, githubUrl } = resolveMedia(thItem);
-      let mediaUrl = isVideo ? `https://cvin.bio${thItem.img}` : githubUrl;
-      console.log('  📤 Posting to Threads...');
-      const thOk = await postToThreads(thText, mediaUrl, isVideo);
-      if (thOk) {
-        state.threads.index = thIdx + 1;
-        anySuccess = true;
-        console.log(`  ✅ Threads index → ${thIdx + 1}`);
+      if (!thItem.img) {
+        console.error('  ❌ No image for this post. Skipping.');
+        state.threads.index = thCurrent + 1;
+        clearRetries('threads');
       } else {
-        console.error('  ❌ Threads post failed (will retry next run)');
+        const { imagePath, isVideo, githubUrl } = resolveMedia(thItem);
+        let mediaUrl = isVideo ? `https://cvin.bio${thItem.img}` : githubUrl;
+        console.log('  📤 Posting to Threads...');
+        const thOk = await postToThreads(thText, mediaUrl, isVideo);
+        if (thOk) {
+          state.threads.index = thCurrent + 1;
+          clearRetries('threads');
+          anySuccess = true;
+          console.log(`  ✅ Threads index → ${thCurrent + 1}`);
+        } else {
+          recordFailure('threads', thCurrent);
+          console.error(`  ❌ Threads post failed (attempt ${getRetries('threads')}/${MAX_RETRIES})`);
+        }
       }
     }
   } else if (hasThreads) {
