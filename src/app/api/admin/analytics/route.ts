@@ -173,6 +173,7 @@ export async function GET(request: NextRequest) {
       phCvParsesByDay,
       phJobClicksTotal,
       phOsTypes,
+      phReferrerConversions,
     ] = await Promise.all([
       // 1. Pageviews by day (last 30 days)
       hogql(`
@@ -402,6 +403,35 @@ export async function GET(request: NextRequest) {
         GROUP BY os
         ORDER BY cnt DESC
       `, 'admin_os_types'),
+
+      // 18. Referrer → Signup conversions (last 90 days)
+      hogql(`
+        SELECT
+          first_referrer AS referrer,
+          count() AS signups
+        FROM (
+          SELECT
+            e.distinct_id,
+            (
+              SELECT properties.$referring_domain
+              FROM events AS pv
+              WHERE pv.distinct_id = e.distinct_id
+                AND pv.event = '$pageview'
+                AND pv.properties.$referring_domain IS NOT NULL
+                AND pv.properties.$referring_domain != ''
+              ORDER BY pv.timestamp ASC
+              LIMIT 1
+            ) AS first_referrer
+          FROM events AS e
+          WHERE e.event IN ('auth_google_started', 'auth_magic_link_sent')
+            AND e.timestamp >= now() - interval 90 day
+          GROUP BY e.distinct_id
+        )
+        WHERE first_referrer IS NOT NULL AND first_referrer != ''
+        GROUP BY first_referrer
+        ORDER BY signups DESC
+        LIMIT 20
+      `, 'admin_referrer_conversions'),
     ]);
 
     // ── Supabase KPIs (existing) ─────────────────────────────────────────
@@ -873,6 +903,17 @@ export async function GET(request: NextRequest) {
         pageviewsWoW: finalPageviewsWoW,
         activeToday: finalActiveToday,
         jobClicksTotal: finalJobClicksTotal,
+        referrerConversions: (() => {
+          if (!phReferrerConversions) return [];
+          const agg: Record<string, number> = {};
+          phReferrerConversions.forEach((r: any) => {
+            const name = friendlySource(r.referrer);
+            agg[name] = (agg[name] || 0) + r.signups;
+          });
+          return Object.entries(agg)
+            .map(([referrer, signups]) => ({ referrer, signups }))
+            .sort((a, b) => b.signups - a.signups);
+        })(),
       },
     });
   } catch (error) {
