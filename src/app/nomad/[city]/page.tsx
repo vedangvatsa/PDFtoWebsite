@@ -7,7 +7,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
-import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Info } from 'lucide-react';
+import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Info, Users, Facebook, Send, MessageCircle, Globe, Slack } from 'lucide-react';
 import { CITY_IMAGES } from '@/lib/utils';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
@@ -58,6 +58,25 @@ function loadCities(): CityData[] {
   const filePath = path.join(process.cwd(), 'public', 'nomad-cities.json');
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
+}
+
+interface Community {
+  name: string;
+  platform: string;
+  url: string;
+}
+
+function loadCommunities(): Record<string, Community[]> {
+  try {
+    const filePath = path.join(process.cwd(), 'public', 'nomad-communities.json');
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(raw);
+    }
+  } catch (err) {
+    console.error("Failed to load communities:", err);
+  }
+  return {};
 }
 
 export async function generateStaticParams() {
@@ -148,6 +167,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   const cities = loadCities();
   const data = cities.find((c) => c.slug === city);
   if (!data) notFound();
+
+  const communities = loadCommunities();
+  const cityCommunities = communities[data.slug] || [];
 
   const nearbyCities = data.nearby
     .map((slug) => cities.find((c) => c.slug === slug))
@@ -361,6 +383,50 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             <NomadMapWrapper cityFilter={data.slug} />
           </div>
 
+          {/* Local Transit Helper */}
+          <div className="mt-6 pt-6 border-t border-zinc-100 dark:border-zinc-800/80 text-left">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-2.5">Getting Around {data.name}</h3>
+            <div className="flex flex-wrap gap-2 text-xs">
+              <span className="text-zinc-500 dark:text-zinc-400 py-1.5 mr-1.5 flex items-center">Recommended tools:</span>
+              <a
+                href={`https://www.rome2rio.com/s/Everywhere/${data.name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+              >
+                Rome2rio (Inter-city)
+              </a>
+              <a
+                href="https://moovitapp.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+              >
+                Moovit (Local Transit)
+              </a>
+              {(data.continent === 'Asia' || data.country === 'Thailand' || data.country === 'Malaysia' || data.country === 'Philippines' || data.country === 'Indonesia' || data.country === 'Vietnam' || data.country === 'Cambodia') && (
+                <>
+                  <a
+                    href="https://12go.asia"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+                  >
+                    12Go Asia (Tickets)
+                  </a>
+                  <a
+                    href="https://www.grab.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+                  >
+                    Grab (Ride-Hailing)
+                  </a>
+                </>
+              )}
+            </div>
+          </div>
+
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/nomad"
@@ -374,6 +440,119 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             >
               Compare with another city →
             </Link>
+          </div>
+        </div>
+
+        {/* Local Communities */}
+        {cityCommunities.length > 0 && (
+          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
+            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-1">Local Communities</h2>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+              Connect with fellow digital nomads, remote workers, and expats in {data.name} through these active channels.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {cityCommunities.map((group, idx) => {
+                let platformIcon = <Globe className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                
+                if (group.platform === 'facebook') {
+                  platformIcon = <Facebook className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                } else if (group.platform === 'telegram') {
+                  platformIcon = <Send className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                } else if (group.platform === 'slack') {
+                  platformIcon = <Slack className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                } else if (group.platform === 'discord') {
+                  platformIcon = <MessageCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                } else if (group.platform === 'meetup') {
+                  platformIcon = <Users className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                } else if (group.platform === 'reddit') {
+                  platformIcon = <MessageCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                }
+
+                return (
+                  <a
+                    key={idx}
+                    href={group.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3.5 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+                  >
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700/60 shadow-sm">
+                      {platformIcon}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors truncate">
+                        {group.name}
+                      </div>
+                      <div className="text-xs text-zinc-400 dark:text-zinc-500 capitalize mt-0.5 flex items-center gap-1.5">
+                        {group.platform}
+                        <span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                        <span className="text-primary group-hover/card:underline">Join community →</span>
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Travel Essentials */}
+        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
+          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-1">Travel Essentials</h2>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+            Recommended health, safety, and connectivity resources for your stay in {data.name}.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <a
+              href="https://safetywing.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+            >
+              <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors">
+                SafetyWing Insurance
+              </div>
+              <div className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">
+                Flexible medical travel insurance built specifically for remote workers and nomads.
+              </div>
+              <div className="text-xs text-primary group-hover/card:underline mt-auto pt-2.5">
+                Learn more →
+              </div>
+            </a>
+
+            <a
+              href="https://www.worldnomads.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+            >
+              <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors">
+                World Nomads
+              </div>
+              <div className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">
+                Comprehensive activity and travel insurance covering gear protection and extreme sports.
+              </div>
+              <div className="text-xs text-primary group-hover/card:underline mt-auto pt-2.5">
+                Learn more →
+              </div>
+            </a>
+
+            <a
+              href="https://www.opensignal.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+            >
+              <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors">
+                OpenSignal App
+              </div>
+              <div className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">
+                Check 4G/5G cell coverage and WiFi signal performance in {data.name} before booking.
+              </div>
+              <div className="text-xs text-primary group-hover/card:underline mt-auto pt-2.5">
+                Check coverage →
+              </div>
+            </a>
           </div>
         </div>
 
