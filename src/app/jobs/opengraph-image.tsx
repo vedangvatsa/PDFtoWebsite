@@ -10,13 +10,15 @@ export const contentType = 'image/png';
 
 export default async function Image() {
   const supabase = supabaseAdmin;
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
   const { count } = await supabase
     .from('jobs')
     .select('*', { count: 'exact', head: true })
+    .gt('created_at', thirtyDaysAgo)
     .not('company', 'ilike', '%Gopuff%');
 
-  let jobsCountText = '68,000+';
+  let jobsCountText = '24,000+';
   if (count) {
     jobsCountText = count.toLocaleString();
   }
@@ -26,10 +28,11 @@ export default async function Image() {
   const { data: companies } = await supabase
     .from('jobs')
     .select('company')
+    .gt('created_at', thirtyDaysAgo)
     .not('company', 'ilike', '%Gopuff%')
     .limit(isBuild ? 100 : 1000);
     
-  let companyCount = '490+';
+  let companyCount = '900+';
   if (companies) {
     const unique = new Set(companies.map((c: { company: string }) => c.company));
     companyCount = `${unique.size}+`;

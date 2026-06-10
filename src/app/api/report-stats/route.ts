@@ -14,6 +14,8 @@ export async function GET() {
     });
   }
 
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
   // Fetch jobs (capped at 30K rows for speed — sufficient for stats)
   const allJobs: any[] = [];
   let page = 0;
@@ -22,6 +24,7 @@ export async function GET() {
     const { data } = await supabase
       .from('jobs')
       .select('company, location, tags, title, job_type')
+      .gt('created_at', thirtyDaysAgo)
       .range(page * 1000, (page + 1) * 1000 - 1);
     if (!data || data.length === 0) break;
     allJobs.push(...data);
@@ -32,7 +35,8 @@ export async function GET() {
   // Dynamically fetch the exact total number of jobs
   const { count: exactJobCount } = await supabase
     .from('jobs')
-    .select('*', { count: 'exact', head: true });
+    .select('*', { count: 'exact', head: true })
+    .gt('created_at', thirtyDaysAgo);
 
   const totalJobs = exactJobCount || allJobs.length;
   const sampleSize = allJobs.length;

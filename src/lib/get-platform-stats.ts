@@ -19,11 +19,13 @@ export async function getPlatformStats(): Promise<PlatformStats> {
   }
 
   const supabase = supabaseAdmin;
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
   // Get job count (head-only, no data transfer)
   const { count: totalJobs } = await supabase
     .from('jobs')
-    .select('id', { count: 'exact', head: true });
+    .select('id', { count: 'exact', head: true })
+    .gt('created_at', thirtyDaysAgo);
 
   // Get unique companies — use a paginated scan
   const companySet = new Set<string>();
@@ -33,6 +35,7 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     const { data } = await supabase
       .from('jobs')
       .select('company')
+      .gt('created_at', thirtyDaysAgo)
       .range(page * 1000, (page + 1) * 1000 - 1);
     if (!data || data.length === 0) break;
     data.forEach(j => {
