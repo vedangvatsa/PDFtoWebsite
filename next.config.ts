@@ -171,6 +171,16 @@ const nextConfigFn = (phase: string): NextConfig => {
           permanent: false,
         },
         {
+          source: '/th',
+          destination: '/?utm_source=threads&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/bsky',
+          destination: '/?utm_source=bluesky&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
           source: '/yt',
           destination: '/?utm_source=youtube&utm_medium=social&utm_campaign=social-share',
           permanent: false,
