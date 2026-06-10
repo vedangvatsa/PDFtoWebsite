@@ -3,7 +3,9 @@
     "index": 46
   },
   "instagram": {
-    "index": 40
+    "index": 40,
+    "retries": 3,
+    "retryIndex": 40
   },
   "threads": {
     "index": 94
