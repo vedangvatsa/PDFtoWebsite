@@ -138,6 +138,56 @@ const nextConfigFn = (phase: string): NextConfig => {
       ];
     },
   
+    async redirects() {
+      return [
+        {
+          source: '/wa',
+          destination: '/?utm_source=whatsapp&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/tg',
+          destination: '/?utm_source=telegram&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/li',
+          destination: '/?utm_source=linkedin&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/x',
+          destination: '/?utm_source=twitter&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/tw',
+          destination: '/?utm_source=twitter&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/ig',
+          destination: '/?utm_source=instagram&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/yt',
+          destination: '/?utm_source=youtube&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/fb',
+          destination: '/?utm_source=facebook&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+        {
+          source: '/rd',
+          destination: '/?utm_source=reddit&utm_medium=social&utm_campaign=social-share',
+          permanent: false,
+        },
+      ];
+    },
+  
     async rewrites() {
       return [
         {
