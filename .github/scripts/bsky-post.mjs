@@ -132,45 +132,75 @@ async function main() {
   let imageBlob = null;
   const imgRef = typeof item === 'object' ? item.img : null;
   if (!imgRef) {
-    console.error('❌ Error: No image reference defined for this engagement post. Aborting.');
-    process.exit(1);
+    console.warn('⚠️ Warning: No image reference defined for this engagement post. Skipping.');
+    state.index++;
+    state.lastPostedAt = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    console.log('⏭️ Skipped post, advancing to next');
+    process.exit(0);
   }
 
   let imgPath;
+  const REPO_ROOT = path.join(__dirname, '../..');
   if (imgRef.startsWith('/')) {
-    imgPath = imgRef;
+    const publicPath = path.join(REPO_ROOT, 'public', imgRef);
+    imgPath = fs.existsSync(publicPath) ? publicPath : imgRef;
   } else if (imgRef.startsWith('.github/')) {
-    const REPO_ROOT = path.join(__dirname, '../..');
     imgPath = path.join(REPO_ROOT, imgRef);
   } else {
     imgPath = path.join(IMAGES_DIR, imgRef);
   }
 
   if (imgPath.endsWith('.mp4')) {
-    console.error('❌ Error: Bluesky does not support video, and all engagement posts MUST have a valid image.');
-    process.exit(1);
+    console.warn('⚠️ Warning: Bluesky does not support video. Skipping this post.');
+    state.index++;
+    state.lastPostedAt = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    console.log('⏭️ Skipped post, advancing to next');
+    process.exit(0);
   }
 
   if (!fs.existsSync(imgPath)) {
-    console.error(`❌ Error: Required image not found: ${imgPath}`);
-    process.exit(1);
+    console.warn(`⚠️ Warning: Required image not found: ${imgPath}. Skipping this post.`);
+    state.index++;
+    state.lastPostedAt = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    console.log('⏭️ Skipped post, advancing to next');
+    process.exit(0);
   }
 
   try {
     imageBlob = await uploadImage(session, imgPath);
     console.log(`🖼️ Image uploaded successfully: ${path.basename(imgPath)}`);
   } catch (e) {
-    console.error('❌ Error: Image upload to Bluesky failed:', e.message);
-    process.exit(1);
+    console.warn('⚠️ Warning: Image upload to Bluesky failed:', e.message, '. Skipping this post.');
+    state.index++;
+    state.lastPostedAt = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    console.log('⏭️ Skipped post, advancing to next');
+    process.exit(0);
   }
 
   if (!imageBlob) {
-    console.error('❌ Error: No image blob returned — aborting to prevent text-only publish.');
-    process.exit(1);
+    console.warn('⚠️ Warning: No image blob returned. Skipping this post.');
+    state.index++;
+    state.lastPostedAt = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    console.log('⏭️ Skipped post, advancing to next');
+    process.exit(0);
   }
 
-  const result = await createPost(session, text, imageBlob);
-  console.log(`✅ Posted to Bluesky! URI: ${result.uri}`);
+  try {
+    const result = await createPost(session, text, imageBlob);
+    console.log(`✅ Posted to Bluesky! URI: ${result.uri}`);
+  } catch (e) {
+    console.warn('⚠️ Warning: createPost failed:', e.message, '. Skipping this post.');
+    state.index++;
+    state.lastPostedAt = new Date().toISOString();
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    console.log('⏭️ Skipped post, advancing to next');
+    process.exit(0);
+  }
 
   state.index++;
   state.lastPostedAt = new Date().toISOString();
