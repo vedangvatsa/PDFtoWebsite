@@ -58,6 +58,7 @@ type Analytics = {
     pageviewsWoW: { this_week: number; last_week: number } | null;
     activeToday: number;
     jobClicksTotal: number;
+    referrerConversions: { referrer: string; signups: number }[] | null;
   };
 };
 
@@ -471,6 +472,38 @@ export default function AdminPage() {
             <p className="text-sm text-muted-foreground/60">No referrer data available yet.</p>
           )}
         </Section>
+
+        {/* ═══ REFERRER CONVERSIONS (PostHog) ═══ */}
+        {ph.referrerConversions && ph.referrerConversions.length > 0 && (
+          <Section title="Referrer → Signups (90 days)" badge="PostHog">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
+              {ph.referrerConversions.map((r, i) => {
+                const maxR = ph.referrerConversions![0].signups || 1;
+                const trafficMatch = ph.topReferrers?.find(t => t.referrer === r.referrer);
+                const convRate = trafficMatch && trafficMatch.visits > 0
+                  ? ((r.signups / trafficMatch.visits) * 100).toFixed(1)
+                  : null;
+                return (
+                  <div key={i} className="flex items-center gap-3">
+                    <Globe className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline justify-between gap-2 mb-0.5">
+                        <span className="text-sm truncate">{r.referrer || 'Direct'}</span>
+                        <span className="text-xs text-muted-foreground font-mono shrink-0">
+                          {r.signups}
+                          {convRate && <span className="text-green-500 ml-1">({convRate}%)</span>}
+                        </span>
+                      </div>
+                      <div className="h-1 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full bg-green-500/40" style={{ width: `${(r.signups / maxR) * 100}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </Section>
+        )}
 
         {/* ═══ TOP PAGES (PostHog) ═══ */}
         <Section title="Top pages (7 days)" badge={ph.available ? "PostHog" : "Estimated"}>
