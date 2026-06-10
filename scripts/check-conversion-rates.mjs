@@ -9,7 +9,7 @@ async function hogql(query) {
     body: JSON.stringify({ query: { kind: 'HogQLQuery', query } }),
   });
   const data = await res.json();
-  if (!data.results) { console.error('Query error:', JSON.stringify(data).slice(0, 300)); return null; }
+  if (!data.results) { console.error('Query error:', JSON.stringify(data).slice(0, 500)); return null; }
   return data.results;
 }
 
@@ -40,23 +40,77 @@ const agg = rows => {
 };
 
 (async () => {
-  // Both queries use same 90-day window for fair comparison
-  const [traffic, signups] = await Promise.all([
-    hogql(`SELECT multiIf(properties.utm_source != '', properties.utm_source, properties.$referring_domain != '', properties.$referring_domain, 'Direct') AS source, uniq(distinct_id) AS visitors FROM events WHERE event = '$pageview' AND timestamp >= now() - interval 90 day GROUP BY source ORDER BY visitors DESC`),
-    hogql(`SELECT multiIf(properties.utm_source != '', properties.utm_source, properties.$referring_domain != '', properties.$referring_domain, 'Direct') AS source, uniq(distinct_id) AS signups FROM events WHERE event IN ('auth_google_started', 'auth_magic_link_sent') AND timestamp >= now() - interval 90 day GROUP BY source ORDER BY signups DESC`),
-  ]);
+  // Step 1: Get all users who signed up in last 90 days
+  const signupUsers = await hogql(`
+    SELECT distinct_id
+    FROM events
+    WHERE event IN ('auth_google_started', 'auth_magic_link_sent')
+      AND timestamp >= now() - interval 90 day
+    GROUP BY distinct_id
+  `);
+  if (!signupUsers) { console.log('Signup query failed'); return; }
+  console.log('Total unique signup users:', signupUsers.length);
 
-  if (!traffic || !signups) { console.log('Queries failed'); return; }
+  // Step 2: For each signup user, find their first pageview's referrer
+  // We batch this by getting ALL first pageviews with referrers
+  const firstTouch = await hogql(`
+    SELECT
+      distinct_id,
+      argMin(
+        multiIf(
+          properties.utm_source != '', properties.utm_source,
+          properties.$referring_domain != '', properties.$referring_domain,
+          'Direct'
+        ),
+        timestamp
+      ) AS first_source
+    FROM events
+    WHERE event = '$pageview'
+      AND distinct_id IN (
+        SELECT distinct_id FROM events
+        WHERE event IN ('auth_google_started', 'auth_magic_link_sent')
+          AND timestamp >= now() - interval 90 day
+        GROUP BY distinct_id
+      )
+    GROUP BY distinct_id
+  `);
+  if (!firstTouch) { console.log('First touch query failed'); return; }
 
-  const tM = agg(traffic), sM = agg(signups);
+  // Step 3: Traffic (90 days) for fair comparison
+  const traffic = await hogql(`
+    SELECT
+      multiIf(
+        properties.utm_source != '', properties.utm_source,
+        properties.$referring_domain != '', properties.$referring_domain,
+        'Direct'
+      ) AS source,
+      uniq(distinct_id) AS visitors
+    FROM events
+    WHERE event = '$pageview'
+      AND timestamp >= now() - interval 90 day
+    GROUP BY source
+    ORDER BY visitors DESC
+  `);
+  if (!traffic) { console.log('Traffic query failed'); return; }
+
+  // Aggregate first-touch sources
+  const signupsBySource = {};
+  for (const [, src] of firstTouch) {
+    const name = f(src);
+    signupsBySource[name] = (signupsBySource[name] || 0) + 1;
+  }
+
+  const tM = agg(traffic);
+
   const rows = [];
-  for (const src of new Set([...Object.keys(tM), ...Object.keys(sM)])) {
-    const v = tM[src] || 0, s = sM[src] || 0;
+  for (const src of new Set([...Object.keys(signupsBySource), ...Object.keys(tM)])) {
+    const v = tM[src] || 0;
+    const s = signupsBySource[src] || 0;
     if (s > 0) rows.push({ source: src, visitors: v, signups: s, rate: v > 0 ? ((s / v) * 100).toFixed(2) + '%' : 'N/A' });
   }
 
   rows.sort((a, b) => b.signups - a.signups);
-  console.log('\n=== ALL SOURCES WITH SIGNUPS (90 days) ===');
+  console.log('\n=== FIRST-TOUCH ATTRIBUTION: ALL SOURCES → SIGNUPS (90d) ===');
   console.table(rows);
 
   const meaningful = rows.filter(r => r.signups >= 2 && r.source !== 'Internal');
