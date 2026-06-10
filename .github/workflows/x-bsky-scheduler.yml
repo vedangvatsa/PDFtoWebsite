@@ -45,30 +45,60 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Determine content slot
-        id: slot
-        run: |
-          if [ -n "${{ github.event.inputs.slot }}" ]; then
-            echo "slot=${{ github.event.inputs.slot }}" >> $GITHUB_OUTPUT
-          else
-            echo "slot=engagement" >> $GITHUB_OUTPUT
-          fi
-          echo "Content slot: $(cat $GITHUB_OUTPUT)"
-
-      - name: Post to X and commit state
+      - name: Post to X (engagement) and commit state
         continue-on-error: true
         env:
           X_CONSUMER_KEY:        ${{ secrets.X_CONSUMER_KEY }}
           X_CONSUMER_SECRET:     ${{ secrets.X_CONSUMER_SECRET }}
           X_ACCESS_TOKEN:        ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
-          X_POST_SLOT:           ${{ steps.slot.outputs.slot }}
+          X_POST_SLOT:           ${{ github.event.inputs.slot || 'engagement' }}
         run: |
           echo "🎯 Posting slot: $X_POST_SLOT"
           node .github/scripts/x-post.mjs
           git add .github/scripts/x-state.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: advance X $X_POST_SLOT index [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
+
+      - name: Post to X (insight) and commit state
+        if: ${{ !github.event.inputs.slot }}
+        continue-on-error: true
+        env:
+          X_CONSUMER_KEY:        ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET:     ${{ secrets.X_CONSUMER_SECRET }}
+          X_ACCESS_TOKEN:        ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          X_POST_SLOT:           insight
+        run: |
+          echo "🎯 Posting slot: $X_POST_SLOT"
+          node .github/scripts/x-post.mjs
+          git add .github/scripts/x-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: advance X insight index [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
+
+      - name: Post to X (thread) and commit state
+        if: ${{ !github.event.inputs.slot }}
+        continue-on-error: true
+        env:
+          X_CONSUMER_KEY:        ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET:     ${{ secrets.X_CONSUMER_SECRET }}
+          X_ACCESS_TOKEN:        ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          X_POST_SLOT:           thread
+        run: |
+          echo "🎯 Posting slot: $X_POST_SLOT"
+          node .github/scripts/x-post.mjs
+          git add .github/scripts/x-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: advance X thread index [skip ci]"
             for i in 1 2 3 4 5; do
               git pull --rebase origin main && git push && break || sleep $((i * 3))
             done
