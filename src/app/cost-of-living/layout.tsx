@@ -16,12 +16,12 @@ export const metadata: Metadata = {
     'affordable cities',
     'nomad budget',
   ],
-  alternates: { canonical: `${siteUrl}/nomad/cost-of-living` },
+  alternates: { canonical: `${siteUrl}/cost-of-living` },
   openGraph: {
     title: 'Cost of Living for Digital Nomads · 95 Cities Compared',
     description:
       'Compare cost of living across 95 digital nomad cities. Filter by budget, sort by rent, food, coworking costs.',
-    url: `${siteUrl}/nomad/cost-of-living`,
+    url: `${siteUrl}/cost-of-living`,
     siteName: 'CVin.Bio',
     type: 'website',
     images: [

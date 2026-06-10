@@ -344,7 +344,7 @@ function ComparePageContent() {
         const params = new URLSearchParams();
         params.set('a', a.slug);
         params.set('b', b.slug);
-        router.replace(`/nomad/compare?${params.toString()}`, { scroll: false });
+        router.replace(`/compare?${params.toString()}`, { scroll: false });
       }
     },
     [router]
@@ -553,7 +553,7 @@ function ComparePageContent() {
                       Metric
                     </div>
                     <Link
-                      href={`/nomad/${cityA.slug}`}
+                      href={`/${cityA.slug}`}
                       className="text-center group"
                     >
                       <div className="text-sm font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
@@ -561,7 +561,7 @@ function ComparePageContent() {
                       </div>
                     </Link>
                     <Link
-                      href={`/nomad/${cityB.slug}`}
+                      href={`/${cityB.slug}`}
                       className="text-center group"
                     >
                       <div className="text-sm font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
@@ -813,14 +813,14 @@ function ComparePageContent() {
                 {/* Links */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
-                    href={`/nomad/${cityA.slug}`}
+                    href={`/${cityA.slug}`}
                     className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all text-sm font-semibold text-zinc-900 dark:text-zinc-50"
                   >
                     View {cityA.name} Guide
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
-                    href={`/nomad/${cityB.slug}`}
+                    href={`/${cityB.slug}`}
                     className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all text-sm font-semibold text-zinc-900 dark:text-zinc-50"
                   >
                     View {cityB.name} Guide

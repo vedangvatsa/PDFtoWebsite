@@ -1,16 +1,13 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
+import { notFound } from 'next/navigation';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Info, Users, Facebook, Send, MessageCircle, Globe, Slack } from 'lucide-react';
 import { CITY_IMAGES } from '@/lib/utils';
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
 
 interface CityWeatherMonth {
   month: string;
@@ -79,42 +76,6 @@ function loadCommunities(): Record<string, Community[]> {
   return {};
 }
 
-export async function generateStaticParams() {
-  const cities = loadCities();
-  return cities.map((c) => ({ city: c.slug }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
-  const { city } = await params;
-  const cities = loadCities();
-  const data = cities.find((c) => c.slug === city);
-  if (!data) return { title: 'City Not Found' };
-
-  const title = `Digital Nomad Guide: ${data.name}, ${data.country}`;
-  const description = `${data.name} nomad guide · $${data.cost.monthly_total.toLocaleString()}/mo cost of living, ${Math.round(data.weather.avg_temp)}°C avg temperature, ${data.spaces.total} coliving & coworking spaces.`;
-
-  return {
-    title,
-    description,
-    alternates: { canonical: `${siteUrl}/nomad/${data.slug}` },
-    openGraph: {
-      title,
-      description,
-      url: `${siteUrl}/nomad/${data.slug}`,
-      siteName: 'CVin.Bio',
-      type: 'website',
-      images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: `${data.name} Digital Nomad Guide` }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${data.name} · Nomad Guide`,
-      description,
-      images: [`${siteUrl}/opengraph-image`],
-      creator: '@cvinbio',
-    },
-  };
-}
-
 function ScoreBar({ score }: { score: number }) {
   const color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
   return (
@@ -162,10 +123,9 @@ function tempColor(temp: number): string {
   return '#f97316';
 }
 
-export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
-  const { city } = await params;
+export async function CityGuidePage({ citySlug }: { citySlug: string }) {
   const cities = loadCities();
-  const data = cities.find((c) => c.slug === city);
+  const data = cities.find((c) => c.slug === citySlug);
   if (!data) notFound();
 
   const communities = loadCommunities();
@@ -435,7 +395,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               View full world map →
             </Link>
             <Link
-              href={`/nomad/compare?a=${data.slug}`}
+              href={`/compare?a=${data.slug}`}
               className="text-sm text-primary hover:underline transition-colors"
             >
               Compare with another city →
@@ -566,7 +526,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 return (
                   <Link
                     key={nc.slug}
-                    href={`/nomad/${nc.slug}`}
+                    href={`/${nc.slug}`}
                     className="group relative flex-shrink-0 w-52 h-36 rounded-2xl overflow-hidden shadow-sm border border-zinc-200/50 dark:border-zinc-800/80 hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700/60 cursor-pointer transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-end p-4"
                   >
                     <img

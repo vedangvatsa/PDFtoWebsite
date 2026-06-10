@@ -134,7 +134,7 @@ function CityCard({ city }: { city: any }) {
 
   return (
     <Link
-      href={`/nomad/${city.slug}`}
+      href={`/${city.slug}`}
       className="group relative h-72 rounded-3xl overflow-hidden shadow-lg border border-zinc-200/50 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700/60 hover:shadow-2xl dark:hover:shadow-white/5 cursor-pointer transform hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-end p-4"
     >
       {/* Background Image */}

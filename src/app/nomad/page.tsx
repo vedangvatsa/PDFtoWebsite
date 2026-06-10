@@ -11,19 +11,19 @@ import { Coins, GitCompare, ShieldCheck } from 'lucide-react';
 
 const TOOLS = [
   {
-    href: '/nomad/cost-of-living',
+    href: '/cost-of-living',
     icon: <Coins className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Cost of Living',
     desc: 'Compare costs across 95 cities',
   },
   {
-    href: '/nomad/compare',
+    href: '/compare',
     icon: <GitCompare className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Compare Cities',
     desc: 'Side-by-side city comparison',
   },
   {
-    href: '/nomad/visas',
+    href: '/visas',
     icon: <ShieldCheck className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Nomad Visas',
     desc: 'Explore active digital nomad visas',

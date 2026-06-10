@@ -432,7 +432,7 @@ export default function CostOfLivingPage() {
                       return (
                         <tr
                           key={city.slug}
-                          onClick={() => window.location.href = `/nomad/${city.slug}`}
+                          onClick={() => window.location.href = `/${city.slug}`}
                           className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer border-b border-zinc-100 dark:border-zinc-800/30 last:border-0 ${
                             dimmed ? 'opacity-35' : ''
                           }`}
@@ -510,7 +510,7 @@ export default function CostOfLivingPage() {
                   return (
                     <Link
                       key={city.slug}
-                      href={`/nomad/${city.slug}`}
+                      href={`/${city.slug}`}
                       className={`flex items-center justify-between px-4 py-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer ${
                         dimmed ? 'opacity-35' : ''
                       }`}
