@@ -1126,39 +1126,39 @@ export default function VisasPage() {
             <div
               key={visa.country}
               onClick={() => setActiveModalVisa(visa)}
-              className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md dark:hover:shadow-white/5 transition-all cursor-pointer flex flex-col justify-between gap-3"
+              className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-5 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all cursor-pointer flex flex-col justify-between gap-3"
             >
               {/* Header */}
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3">
                 <span className="text-2xl shrink-0">{visa.flag}</span>
                 <div className="min-w-0">
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 leading-tight truncate">
+                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 leading-tight truncate">
                     {visa.country}
                   </h3>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400">{visa.continent}</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{visa.continent}</p>
                 </div>
               </div>
 
               {/* Highlights */}
               <div className="flex flex-wrap gap-1.5">
                 {visa.highlights.map((h, idx) => (
-                  <span key={idx} className="bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 text-[10px] px-2 py-0.5 rounded font-medium leading-tight">
+                  <span key={idx} className="bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 text-[11px] px-2 py-0.5 rounded-md font-medium">
                     {h}
                   </span>
                 ))}
               </div>
 
               {/* Stats Row */}
-              <div className="flex items-center gap-3 pt-2.5 border-t border-zinc-100 dark:border-zinc-800/60 text-zinc-900 dark:text-zinc-50">
+              <div className="flex items-center gap-4 pt-3 border-t border-zinc-200 dark:border-zinc-800/50 text-zinc-900 dark:text-zinc-50">
                 <div className="flex items-center gap-1.5 min-w-0 flex-1">
                   <Coins className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                  <p className="text-[11px] font-semibold truncate">
+                  <p className="text-xs font-semibold truncate">
                     {visa.minIncome === 0 ? 'No min' : `$${visa.minIncome.toLocaleString()}/mo`}
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 min-w-0">
                   <Calendar className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                  <p className="text-[11px] font-semibold truncate">{visa.durationDisplay}</p>
+                  <p className="text-xs font-semibold truncate">{visa.durationDisplay}</p>
                 </div>
               </div>
             </div>
