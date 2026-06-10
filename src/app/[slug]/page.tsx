@@ -11,6 +11,9 @@ import Link from 'next/link';
 import { ArrowLeft, Briefcase, MapPin, Monitor, Clock, ExternalLink, Github, Linkedin, Twitter, Globe } from 'lucide-react';
 import { blogPosts } from '@/lib/blog-data';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import fs from 'fs';
+import path from 'path';
+import { CityGuidePage } from '@/components/city-guide-page';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -42,6 +45,41 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
       twitter: { card: 'summary_large_image', title: post.title, description: post.excerpt, images: [ogImageUrl] },
       robots: { index: true, follow: true },
+    };
+  }
+
+  // Check if city guide
+  const citiesPath = path.join(process.cwd(), 'public', 'nomad-cities.json');
+  let cityData = null;
+  if (fs.existsSync(citiesPath)) {
+    const raw = fs.readFileSync(citiesPath, 'utf-8');
+    const cities = JSON.parse(raw);
+    cityData = cities.find((c: any) => c.slug === slug);
+  }
+
+  if (cityData) {
+    const title = `Digital Nomad Guide: ${cityData.name}, ${cityData.country}`;
+    const description = `${cityData.name} nomad guide · $${cityData.cost.monthly_total.toLocaleString()}/mo cost of living, ${Math.round(cityData.weather.avg_temp)}°C avg temperature, ${cityData.spaces.total} coliving & coworking spaces.`;
+
+    return {
+      title,
+      description,
+      alternates: { canonical: canonicalUrl },
+      openGraph: {
+        title,
+        description,
+        url: canonicalUrl,
+        siteName: 'CVin.Bio',
+        type: 'website',
+        images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: `${cityData.name} Digital Nomad Guide` }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${cityData.name} · Nomad Guide`,
+        description,
+        images: [`${siteUrl}/opengraph-image`],
+        creator: '@cvinbio',
+      },
     };
   }
 
@@ -205,6 +243,19 @@ function timeAgo(dateStr: string | null): string {
 export default async function ProfileSlugPage({ params }: PageProps) {
   const { slug } = await params;
   
+  // Check if city guide
+  const citiesPath = path.join(process.cwd(), 'public', 'nomad-cities.json');
+  let isCity = false;
+  if (fs.existsSync(citiesPath)) {
+    const raw = fs.readFileSync(citiesPath, 'utf-8');
+    const cities = JSON.parse(raw);
+    isCity = cities.some((c: any) => c.slug === slug);
+  }
+
+  if (isCity) {
+    return <CityGuidePage citySlug={slug} />;
+  }
+
   const post = blogPosts.find(p => p.slug === slug);
   if (!post) {
     const legacyRedirects: Record<string, string> = {
@@ -709,4 +760,18 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       <ProfilePageClient data={data} slug={slug} />
     </>
   );
+}
+
+export async function generateStaticParams() {
+  try {
+    const filePath = path.join(process.cwd(), 'public', 'nomad-cities.json');
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      const cities = JSON.parse(raw);
+      return cities.map((c: any) => ({ slug: c.slug }));
+    }
+  } catch (err) {
+    console.error("Failed to generate static params for cities:", err);
+  }
+  return [];
 }
