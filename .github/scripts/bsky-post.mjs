@@ -4,6 +4,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+let sharp;
+try { sharp = require('sharp'); } catch { sharp = null; }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STATE_FILE = path.join(__dirname, 'bsky-state.json');
@@ -29,17 +33,34 @@ async function createSession() {
   return r.json();
 }
 
+const BSKY_MAX_BLOB = 1_000_000; // 1MB limit
+
 async function uploadImage(session, imgPath) {
-  const imgData = fs.readFileSync(imgPath);
+  let imgData = fs.readFileSync(imgPath);
+  let contentType = imgPath.endsWith('.png') ? 'image/png' : 'image/jpeg';
+
+  // Compress if over 1MB
+  if (imgData.length > BSKY_MAX_BLOB && sharp) {
+    console.log(`  📐 Image ${(imgData.length / 1024).toFixed(0)}KB > 1MB limit, compressing...`);
+    imgData = await sharp(imgData)
+      .resize({ width: 1200, height: 1200, fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+    contentType = 'image/jpeg';
+    console.log(`  ✅ Compressed to ${(imgData.length / 1024).toFixed(0)}KB`);
+  } else if (imgData.length > BSKY_MAX_BLOB) {
+    console.warn(`  ⚠️ Image ${(imgData.length / 1024).toFixed(0)}KB > 1MB and sharp unavailable, upload may fail`);
+  }
+
   const r = await fetch('https://bsky.social/xrpc/com.atproto.repo.uploadBlob', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${session.accessJwt}`,
-      'Content-Type': 'image/png',
+      'Content-Type': contentType,
     },
     body: imgData,
   });
-  if (!r.ok) throw new Error(`Image upload failed: ${r.status}`);
+  if (!r.ok) throw new Error(`Image upload failed: ${r.status} ${await r.text()}`);
   const data = await r.json();
   return data.blob;
 }
