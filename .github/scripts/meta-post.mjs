@@ -251,10 +251,16 @@ async function main() {
   // Helper to resolve image for a given content item
   function resolveMedia(item) {
     let imagePath = null;
+    const REPO_ROOT = path.join(__dirname, '../..');
     if (item.img.startsWith('/')) {
-      imagePath = item.img;
+      // Next.js public assets: /images/... → public/images/...
+      const publicPath = path.join(REPO_ROOT, 'public', item.img);
+      if (fs.existsSync(publicPath)) {
+        imagePath = publicPath;
+      } else {
+        imagePath = item.img; // fallback to absolute
+      }
     } else if (item.img.startsWith('.github/')) {
-      const REPO_ROOT = path.join(__dirname, '../..');
       imagePath = path.join(REPO_ROOT, item.img);
     } else {
       imagePath = path.join(IMAGES_DIR, item.img);
