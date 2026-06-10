@@ -63,7 +63,7 @@ const VISAS: VisaData[] = [
       'Health insurance valid in Portugal',
       'Accommodation contract / lease in Portugal'
     ],
-    officialUrl: 'https://vistos.mne.gov.pt/en/national-visas/necessary-documentation/digital-nomads',
+    officialUrl: 'https://aima.gov.pt',
     description: 'Portugal’s D8 visa is the ultimate choice for remote workers looking for sun, coastlines, and a established community of expats.',
     highlights: ['Two application paths available', 'Fast track to Schengen residency', 'Established expat hubs']
   },
@@ -127,7 +127,7 @@ const VISAS: VisaData[] = [
       'Health insurance valid in Malta',
       'Rental or lease agreement in Malta'
     ],
-    officialUrl: 'https://nomad.residencymalta.gov.pt/',
+    officialUrl: 'https://nomad.residencymalta.gov.mt/',
     description: 'Malta’s Nomad Residence Permit is ideal for English-speaking nomads seeking a sunny island base in the middle of the Mediterranean.',
     highlights: ['English speaking country', 'Schengen travel freedom', 'High-speed internet infrastructure']
   },
@@ -148,7 +148,7 @@ const VISAS: VisaData[] = [
       'Health insurance valid in Italy',
       'Proof of accommodation'
     ],
-    officialUrl: 'https://vistoperitalia.esteri.it/home/en',
+    officialUrl: 'https://vistoperitalia.esteri.it/',
     description: 'Italy launched its official digital nomad visa in 2024, inviting highly-skilled workers to live under the Italian sun and experience la dolce vita.',
     highlights: ['Highly-skilled worker path', 'Exquisite lifestyle & cuisine', 'Generous regional tax cuts']
   },
@@ -516,7 +516,7 @@ const VISAS: VisaData[] = [
       'Proof of accommodation in Czech Republic',
       'Clean criminal record certificate'
     ],
-    officialUrl: 'https://www.mvcr.cz/mvcren/article/third-country-nationals-702950.aspx',
+    officialUrl: 'https://www.mpo.gov.cz',
     description: 'The Czech Živnostenský (trade license) visa is a popular route for freelancers and digital nomads to base themselves in Prague, one of Europe\'s most affordable and beautiful capital cities.',
     highlights: ['Affordable Prague lifestyle', 'Schengen access', 'Freelancer-friendly tax regime']
   },
@@ -684,7 +684,7 @@ const VISAS: VisaData[] = [
       'Health insurance covering Georgia',
       'Clean criminal record'
     ],
-    officialUrl: 'https://stopcov.ge/en/remotely-from-georgia',
+    officialUrl: 'https://geoconsul.gov.ge/en/entering-georgia',
     description: 'Georgia\'s "Remotely from Georgia" program is one of the most generous digital nomad schemes, with zero tax on foreign income, no visa fee, and a beautiful Caucasus setting.',
     highlights: ['Zero tax on foreign income', 'No visa fee', 'Stunning Caucasus scenery']
   },
@@ -855,27 +855,7 @@ const VISAS: VisaData[] = [
     description: 'Panama\'s Remote Worker Visa combines a territorial tax system (zero tax on foreign income) with a strategic location, modern infrastructure, and a dollarized economy.',
     highlights: ['Zero tax on foreign income', 'Dollarized economy', 'Modern infrastructure']
   },
-  {
-    country: 'Antigua and Barbuda',
-    flag: '🇦🇬',
-    continent: 'North America',
-    minIncome: 4200,
-    minIncomeDisplay: '$4,200 / month ($50k/year)',
-    duration: '2 years',
-    durationDisplay: '2 years',
-    fee: '$1,500 (individual) / $2,000 (couple)',
-    taxImplications: 'No income tax — Antigua and Barbuda has zero personal income tax.',
-    documents: [
-      'Valid passport',
-      'Proof of employment with a company outside Antigua',
-      'Proof of annual income exceeding $50,000',
-      'Health insurance',
-      'Clean criminal record'
-    ],
-    officialUrl: 'https://nomaddigitalresidence.ag',
-    description: 'Antigua and Barbuda\'s Nomad Digital Residence offers two years on stunning Caribbean beaches with zero income tax and 365 beaches — one for every day of the year.',
-    highlights: ['Zero income tax', '365 pristine beaches', '2-year duration']
-  },
+
   {
     country: 'Barbados (Welcome Stamp)',
     flag: '🇧🇧',
@@ -897,48 +877,8 @@ const VISAS: VisaData[] = [
     description: 'Barbados pioneered the Caribbean remote work movement with the Welcome Stamp, offering a year of island living with no local taxes on remote income.',
     highlights: ['Pioneer Caribbean remote work visa', 'Zero tax on remote income', 'World-class beaches']
   },
-  {
-    country: 'Bermuda',
-    flag: '🇧🇲',
-    continent: 'North America',
-    minIncome: 0,
-    minIncomeDisplay: 'No minimum income (must be employed remotely)',
-    duration: '1 year (renewable)',
-    durationDisplay: '1 year',
-    fee: '$263',
-    taxImplications: 'Bermuda has no income tax, capital gains tax, or withholding tax.',
-    documents: [
-      'Valid passport',
-      'Proof of remote employment or self-employment',
-      'Health insurance valid in Bermuda',
-      'Clean criminal record',
-      'Proof of accommodation'
-    ],
-    officialUrl: 'https://www.gov.bm/work-from-bermuda',
-    description: 'Bermuda\'s Work from Bermuda Certificate offers a tax-free Atlantic island lifestyle with pink sand beaches, just a 2-hour flight from the US East Coast.',
-    highlights: ['Zero income tax', 'Close to US East Coast', 'Pink sand beaches']
-  },
-  {
-    country: 'Cayman Islands',
-    flag: '🇰🇾',
-    continent: 'North America',
-    minIncome: 8350,
-    minIncomeDisplay: '$8,350 / month ($100k/year)',
-    duration: '2 years',
-    durationDisplay: '2 years',
-    fee: '$1,469',
-    taxImplications: 'Cayman Islands has zero income tax, zero capital gains tax, and zero corporate tax.',
-    documents: [
-      'Valid passport',
-      'Proof of employment with a company outside Cayman Islands',
-      'Proof of annual income of $100,000+ (or $150,000 for couples)',
-      'Health insurance valid in Cayman Islands',
-      'Clean criminal record'
-    ],
-    officialUrl: 'https://www.visitcaymanislands.com/en-us/global-citizen-concierge',
-    description: 'The Cayman Islands\' Global Citizen Concierge is the ultimate premium digital nomad visa for high earners, offering a completely tax-free Caribbean paradise.',
-    highlights: ['Completely tax-free', 'Premium luxury lifestyle', '2-year duration']
-  },
+
+
   {
     country: 'Curaçao',
     flag: '🇨🇼',
@@ -998,7 +938,7 @@ const VISAS: VisaData[] = [
       'Health insurance',
       'Return flight booking or proof of travel funds'
     ],
-    officialUrl: 'https://www.ics.gov.sc',
+    officialUrl: 'https://seychelles.govtas.com/',
     description: 'The Seychelles Workcation Retreat Visa offers digital nomads a dreamy Indian Ocean archipelago with pristine beaches, nature reserves, and virtually no taxes.',
     highlights: ['No minimum income', 'Tax-free foreign income', 'Pristine island paradise']
   },
