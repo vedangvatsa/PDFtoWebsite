@@ -405,30 +405,31 @@ export async function GET(request: NextRequest) {
       `, 'admin_os_types'),
 
       // 18. Referrer → Signup conversions (last 90 days)
-      // Uses multiIf to prioritize utm_source over referring_domain (same logic as topReferrers query #4)
+      // Uses argMin to find each signup user's first pageview source (avoids unsupported correlated subqueries)
       hogql(`
         SELECT
           first_source AS referrer,
           count() AS signups
         FROM (
           SELECT
-            e.distinct_id,
-            (
-              SELECT multiIf(
+            pv.distinct_id,
+            argMin(
+              multiIf(
                 pv.properties.utm_source != '', pv.properties.utm_source,
                 pv.properties.$referring_domain != '', pv.properties.$referring_domain,
                 'Direct'
-              )
-              FROM events AS pv
-              WHERE pv.distinct_id = e.distinct_id
-                AND pv.event = '$pageview'
-              ORDER BY pv.timestamp ASC
-              LIMIT 1
+              ),
+              pv.timestamp
             ) AS first_source
-          FROM events AS e
-          WHERE e.event IN ('auth_google_started', 'auth_magic_link_sent')
-            AND e.timestamp >= now() - interval 90 day
-          GROUP BY e.distinct_id
+          FROM events AS pv
+          WHERE pv.event = '$pageview'
+            AND pv.distinct_id IN (
+              SELECT distinct_id FROM events
+              WHERE event IN ('auth_google_started', 'auth_magic_link_sent')
+                AND timestamp >= now() - interval 90 day
+              GROUP BY distinct_id
+            )
+          GROUP BY pv.distinct_id
         )
         WHERE first_source IS NOT NULL AND first_source != ''
         GROUP BY first_source
@@ -908,13 +909,21 @@ export async function GET(request: NextRequest) {
         jobClicksTotal: finalJobClicksTotal,
         referrerConversions: (() => {
           if (!phReferrerConversions) return [];
-          const agg: Record<string, number> = {};
+          const signupAgg: Record<string, number> = {};
           phReferrerConversions.forEach((r: any) => {
             const name = friendlySource(r.referrer);
-            agg[name] = (agg[name] || 0) + r.signups;
+            signupAgg[name] = (signupAgg[name] || 0) + r.signups;
           });
-          return Object.entries(agg)
-            .map(([referrer, signups]) => ({ referrer, signups }))
+          // Build visitor counts from topReferrers (7-day) for conversion rate context
+          const visitorAgg: Record<string, number> = {};
+          if (finalTopReferrers) {
+            finalTopReferrers.forEach((r: any) => {
+              const name = friendlySource(r.referrer);
+              visitorAgg[name] = (visitorAgg[name] || 0) + r.visits;
+            });
+          }
+          return Object.entries(signupAgg)
+            .map(([referrer, signups]) => ({ referrer, signups, visitors: visitorAgg[referrer] || 0 }))
             .sort((a, b) => b.signups - a.signups);
         })(),
       },

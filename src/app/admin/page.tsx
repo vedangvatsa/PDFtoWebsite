@@ -58,7 +58,7 @@ type Analytics = {
     pageviewsWoW: { this_week: number; last_week: number } | null;
     activeToday: number;
     jobClicksTotal: number;
-    referrerConversions: { referrer: string; signups: number }[] | null;
+    referrerConversions: { referrer: string; signups: number; visitors: number }[] | null;
   };
 };
 
@@ -476,12 +476,13 @@ export default function AdminPage() {
         {/* ═══ REFERRER CONVERSIONS (PostHog) ═══ */}
         {ph.referrerConversions && ph.referrerConversions.length > 0 && (
           <Section title="Referrer → Signups (90 days)" badge="PostHog">
-            <p className="text-xs text-muted-foreground mb-4">Which traffic sources led to user signups (based on each user&apos;s first visit source)</p>
+            <p className="text-xs text-muted-foreground mb-4">Which traffic sources led to user signups (first-touch attribution)</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
               {ph.referrerConversions.map((r, i) => {
                 const maxR = ph.referrerConversions![0].signups || 1;
                 const total = ph.referrerConversions!.reduce((s, x) => s + x.signups, 0);
-                const pct = total > 0 ? ((r.signups / total) * 100).toFixed(0) : '0';
+                const sharePct = total > 0 ? ((r.signups / total) * 100).toFixed(0) : '0';
+                const convRate = r.visitors > 0 ? ((r.signups / r.visitors) * 100).toFixed(1) : null;
                 return (
                   <div key={i} className="flex items-center gap-3">
                     <Globe className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -489,7 +490,8 @@ export default function AdminPage() {
                       <div className="flex items-baseline justify-between gap-2 mb-0.5">
                         <span className="text-sm truncate">{r.referrer || 'Direct'}</span>
                         <span className="text-xs text-muted-foreground font-mono shrink-0">
-                          {r.signups} <span className="text-green-500">({pct}%)</span>
+                          {r.signups} <span className="text-muted-foreground/60">({sharePct}%)</span>
+                          {convRate && <span className="text-green-500 ml-1">CVR {convRate}%</span>}
                         </span>
                       </div>
                       <div className="h-1 rounded-full bg-muted overflow-hidden">
