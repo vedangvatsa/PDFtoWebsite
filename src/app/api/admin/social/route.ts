@@ -26,6 +26,47 @@ function writeCache(data: any) {
   try { writeFileSync(CACHE_FILE, JSON.stringify({ data, timestamp: Date.now() }, null, 2)); } catch {}
 }
 
+// ── Telegram Bot API (free) ────────────────────────────────────────────────
+const TG_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TG_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID;
+const TG_API = TG_BOT_TOKEN ? `https://api.telegram.org/bot${TG_BOT_TOKEN}` : null;
+
+async function fetchTelegramChannel(): Promise<any> {
+  if (!TG_API || !TG_CHANNEL_ID) return null;
+  try {
+    const [chatRes, countRes] = await Promise.all([
+      fetch(`${TG_API}/getChat?chat_id=${TG_CHANNEL_ID}`),
+      fetch(`${TG_API}/getChatMemberCount?chat_id=${TG_CHANNEL_ID}`),
+    ]);
+    const chatData = chatRes.ok ? await chatRes.json() : null;
+    const countData = countRes.ok ? await countRes.json() : null;
+    
+    const chat = chatData?.result;
+    const memberCount = countData?.result || 0;
+    
+    return {
+      title: chat?.title || '',
+      username: chat?.username || '',
+      memberCount,
+      description: (chat?.description || '').slice(0, 100),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function fetchTelegramRecentPosts(): Promise<any[]> {
+  if (!TG_API || !TG_CHANNEL_ID) return [];
+  try {
+    // Get recent channel history using getUpdates won't work for channels.
+    // Instead we use the Supabase jobs table to count how many were telegram_posted_at
+    // But we can't get view counts via Bot API — we'll just show posting stats
+    return [];
+  } catch {
+    return [];
+  }
+}
+
 // ── Bluesky API (free, public) ─────────────────────────────────────────────
 const BSKY_HANDLE = 'cv-in-bio.bsky.social';
 
@@ -376,6 +417,7 @@ export async function GET(request: NextRequest) {
     let bufferAnalytics: any = null;
     let threadsProfile: any = null;
     let threadsInsights: any = null;
+    let telegramChannel: any = null;
 
     if (cached) {
       bskyProfile = cached.data.bskyProfile;
@@ -385,9 +427,10 @@ export async function GET(request: NextRequest) {
       bufferAnalytics = cached.data.bufferAnalytics;
       threadsProfile = cached.data.threadsProfile;
       threadsInsights = cached.data.threadsInsights;
+      telegramChannel = cached.data.telegramChannel;
     } else {
       // Fetch all in parallel
-      [bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics, threadsProfile, threadsInsights] = await Promise.all([
+      [bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics, threadsProfile, threadsInsights, telegramChannel] = await Promise.all([
         fetchBlueskyProfile(),
         fetchBlueskyFeed(),
         fetchFacebookPageInsights(),
@@ -395,10 +438,11 @@ export async function GET(request: NextRequest) {
         fetchBufferAnalytics(),
         fetchThreadsProfile(),
         fetchThreadsPosts(),
+        fetchTelegramChannel(),
       ]);
 
       // Cache the results
-      writeCache({ bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics, threadsProfile, threadsInsights });
+      writeCache({ bskyProfile, bskyFeed, fbInsights, igInsights, bufferAnalytics, threadsProfile, threadsInsights, telegramChannel });
     }
 
     // Calculate Bluesky engagement totals
@@ -471,13 +515,14 @@ export async function GET(request: NextRequest) {
       (bskyProfile?.followersCount || 0) +
       (fbInsights?.page?.followers || 0) +
       (igInsights?.profile?.followers || 0) +
+      (telegramChannel?.memberCount || 0) +
       (bufferAnalytics || []).reduce((s: number, b: any) => s + (b.followers || 0), 0);
 
     return NextResponse.json({
       summary: {
         totalPostsAcrossPlatforms,
         totalTweetsInThreads,
-        activePlatforms: 7,
+        activePlatforms: 8,
         totalEngagement,
         totalFollowers,
         totalViews,
@@ -514,6 +559,9 @@ export async function GET(request: NextRequest) {
       },
       blogger: {
         queue: bloggerQueue,
+      },
+      telegram: {
+        channel: telegramChannel,
       },
     });
   } catch (error) {
