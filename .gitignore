@@ -51,3 +51,4 @@ mcp-package/node_modules
 secrets-to-purge.txt
 posthog-secret-to-purge.txt
 scratch/check_supabase.mjs
+.env*
