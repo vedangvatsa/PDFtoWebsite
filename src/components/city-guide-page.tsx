@@ -527,25 +527,23 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                   <Link
                     key={nc.slug}
                     href={`/${nc.slug}`}
-                    className="group relative flex-shrink-0 w-52 h-36 rounded-2xl overflow-hidden shadow-sm border border-zinc-200/50 dark:border-zinc-800/80 hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700/60 cursor-pointer transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-end p-4"
+                    className="group relative flex-shrink-0 w-52 h-36 rounded-2xl overflow-hidden shadow-sm hover:shadow-md cursor-pointer transform hover:-translate-y-1 transition-all duration-300"
                   >
                     <img
                       src={imageUrl}
                       alt={nc.name}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                    <div className="relative z-10 space-y-1.5 text-white w-full">
-                      <div>
-                        <div className="font-bold text-sm leading-tight truncate">{nc.name}</div>
-                        <div className="text-[10px] text-zinc-300 font-medium truncate mt-0.5">{nc.country}</div>
-                      </div>
-                      <div className="flex justify-between items-center pt-1.5 border-t border-white/10 mt-1.5">
-                        <span className="text-[10px] font-extrabold">${nc.cost.monthly_total.toLocaleString()}/mo</span>
-                        <span className="text-[8px] font-black bg-emerald-500/90 text-white px-1.5 py-0.5 rounded-full uppercase tracking-wider">
-                          Score: {nc.nomad_score}
-                        </span>
-                      </div>
+                    {/* Score badge */}
+                    <span className="absolute top-2 right-2 z-10 text-[9px] px-2 py-0.5 rounded-full bg-zinc-800/70 text-zinc-200 backdrop-blur-sm shadow-sm tracking-wide">
+                      {nc.nomad_score}
+                    </span>
+                    {/* Bottom gradient */}
+                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                    {/* Text */}
+                    <div className="absolute bottom-0 inset-x-0 z-10 p-3">
+                      <div className="font-bold text-sm text-white leading-tight truncate drop-shadow-lg">{nc.name}</div>
+                      <div className="text-xs text-white/70 mt-0.5 drop-shadow-md">{nc.emoji} {nc.country}</div>
                     </div>
                   </Link>
                 );

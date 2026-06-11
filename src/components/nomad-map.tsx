@@ -14,7 +14,7 @@ import {
   type MapRef,
 } from '@/components/ui/map';
 import { Badge } from '@/components/ui/badge';
-import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star, ArrowLeft, Coins, Thermometer } from 'lucide-react';
+import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star, ArrowLeft } from 'lucide-react';
 
 interface POI {
   osm_id: number;
@@ -61,11 +61,12 @@ interface SelectedPoint {
 }
 
 const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index: number }) {
-  const qualityDots = Math.min(Math.round(poi.quality / 2), 5);
   return (
     <tr className="border-t border-zinc-200/50 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-900/30 transition-colors">
       <td className="px-4 py-2.5 text-zinc-400 dark:text-zinc-500 text-xs font-mono">{index + 1}</td>
-      <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-50">{poi.name}</td>
+      <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-50">
+        <a href={`https://www.google.com/maps/search/${encodeURIComponent(poi.name + ', ' + poi.city)}`} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2">{poi.name}</a>
+      </td>
       <td className="px-4 py-2.5">
         <span
           className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-white"
@@ -74,7 +75,6 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
           {CATEGORY_CONFIG[poi.category]?.label || poi.category}
         </span>
       </td>
-      <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400">{poi.city}</td>
       <td className="px-4 py-2.5">
         {poi.google_rating ? (
           <div className="flex items-center gap-1">
@@ -89,16 +89,6 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
         ) : (
           <span className="text-zinc-500 dark:text-zinc-400 text-xs"> - </span>
         )}
-      </td>
-      <td className="px-4 py-2.5">
-        <div className="flex gap-0.5">
-          {Array.from({ length: qualityDots }).map((_, i) => (
-            <span key={i} className="w-2 h-2 rounded-full bg-emerald-500" />
-          ))}
-          {Array.from({ length: 5 - qualityDots }).map((_, i) => (
-            <span key={i} className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700" />
-          ))}
-        </div>
       </td>
       <td className="px-4 py-2.5">
         <div className="flex gap-2">
@@ -119,74 +109,46 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
 function CityCard({ city }: { city: any }) {
   const imageUrl = CITY_IMAGES[city.slug] || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80';
   
-  // Custom neon gradients for score ranges to look premium
-  let badgeGradient = 'from-zinc-700 to-zinc-800 text-zinc-200 border-zinc-600/50';
-  let badgeGlow = '';
+  // Score badge color
+  let badgeClass = 'bg-zinc-800/70 text-zinc-200';
   if (city.nomad_score >= 95) {
-    badgeGradient = 'from-emerald-400 via-teal-400 to-cyan-500 text-emerald-950 font-black';
-    badgeGlow = 'shadow-[0_0_15px_rgba(52,211,153,0.4)] animate-pulse';
+    badgeClass = 'bg-emerald-500/90 text-white font-black';
   } else if (city.nomad_score >= 90) {
-    badgeGradient = 'from-emerald-500 to-teal-500 text-white font-extrabold';
-    badgeGlow = 'shadow-[0_0_10px_rgba(16,185,129,0.3)]';
+    badgeClass = 'bg-teal-500/90 text-white font-extrabold';
   } else if (city.nomad_score >= 80) {
-    badgeGradient = 'from-teal-600 to-cyan-600 text-white font-bold';
+    badgeClass = 'bg-cyan-600/90 text-white font-bold';
   }
 
   return (
     <Link
       href={`/${city.slug}`}
-      className="group relative h-72 rounded-3xl overflow-hidden shadow-lg border border-zinc-200/50 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700/60 hover:shadow-2xl dark:hover:shadow-white/5 cursor-pointer transform hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-end p-4"
+      className="group relative h-72 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-white/5 cursor-pointer transform hover:-translate-y-1 transition-all duration-500"
     >
-      {/* Background Image */}
+      {/* Background Image — full bleed */}
       <img
         src={imageUrl}
         alt={city.name}
-        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         loading="lazy"
       />
-      {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent transition-opacity duration-300 group-hover:via-black/55" />
 
-      {/* Content Container (Glassmorphic) */}
-      <div className="relative z-10 w-full bg-white/5 dark:bg-black/35 backdrop-blur-md rounded-2xl p-4 border border-white/10 shadow-lg space-y-3 transition-colors duration-300 group-hover:bg-white/10 group-hover:dark:bg-black/45 animate-fade-in">
-        <div className="flex justify-between items-start gap-2">
-          <div className="min-w-0">
-            <h3 className="text-lg font-bold text-white tracking-tight truncate filter drop-shadow-md">
-              {city.name}
-            </h3>
-            <p className="text-xs text-zinc-300 font-medium flex items-center gap-1.5 mt-1">
-              <span className="shrink-0 rounded-full bg-white/10 backdrop-blur-sm w-5 h-5 flex items-center justify-center text-xs shadow-inner">
-                {city.emoji}
-              </span>
-              <span className="truncate filter drop-shadow-sm">{city.country}</span>
-            </p>
-          </div>
-          <span className={`bg-gradient-to-r ${badgeGradient} ${badgeGlow} text-[9px] px-2 py-1 rounded-full shadow-sm shrink-0 uppercase tracking-widest font-black border border-white/10`} title="Nomad Score">
-            Score: {city.nomad_score}
-          </span>
-        </div>
+      {/* Score badge — top right */}
+      <span className={`absolute top-3 right-3 z-10 text-[10px] px-2.5 py-1 rounded-full ${badgeClass} backdrop-blur-sm shadow-sm tracking-wide`}>
+        {city.nomad_score}
+      </span>
 
-        {/* Quick Stats Pods */}
-        <div className="grid grid-cols-3 gap-2 pt-1.5 text-white">
-          <div className="flex flex-col items-center justify-center bg-white/5 dark:bg-black/40 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/5 group-hover:border-white/10 transition-all">
-            <span className="text-[8px] text-zinc-300 font-semibold tracking-wider uppercase flex items-center gap-0.5 mb-0.5">
-              <Coins className="w-2.5 h-2.5 text-amber-400" /> Cost
-            </span>
-            <span className="text-xs font-black">${city.cost.monthly_total.toLocaleString()}</span>
-          </div>
-          <div className="flex flex-col items-center justify-center bg-white/5 dark:bg-black/40 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/5 group-hover:border-white/10 transition-all">
-            <span className="text-[8px] text-zinc-300 font-semibold tracking-wider uppercase flex items-center gap-0.5 mb-0.5">
-              <Thermometer className="w-2.5 h-2.5 text-orange-400" /> Temp
-            </span>
-            <span className="text-xs font-black">{Math.round(city.weather.avg_temp)}°C</span>
-          </div>
-          <div className="flex flex-col items-center justify-center bg-white/5 dark:bg-black/40 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/5 group-hover:border-white/10 transition-all">
-            <span className="text-[8px] text-zinc-300 font-semibold tracking-wider uppercase flex items-center gap-0.5 mb-0.5">
-              <Building2 className="w-2.5 h-2.5 text-sky-400" /> Spaces
-            </span>
-            <span className="text-xs font-black">{city.spaces.total}</span>
-          </div>
-        </div>
+      {/* Subtle bottom gradient — just enough to read text */}
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+      {/* City name + country — anchored to bottom */}
+      <div className="absolute bottom-0 inset-x-0 z-10 p-4">
+        <h3 className="text-lg font-bold text-white tracking-tight leading-tight drop-shadow-lg">
+          {city.name}
+        </h3>
+        <p className="text-sm text-white/70 mt-0.5 drop-shadow-md flex items-center gap-1.5">
+          <span>{city.emoji}</span>
+          <span>{city.country}</span>
+        </p>
       </div>
     </Link>
   );
@@ -534,16 +496,6 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
                   </p>
                 )}
 
-                {/* Quality dots */}
-                <div className="flex items-center gap-1">
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400 mr-1">Quality:</span>
-                  {Array.from({ length: Math.min(Math.round(selectedPoint.properties.quality / 2), 5) }).map((_, i) => (
-                    <span key={i} className="w-2 h-2 rounded-full bg-emerald-500" />
-                  ))}
-                  {Array.from({ length: 5 - Math.min(Math.round(selectedPoint.properties.quality / 2), 5) }).map((_, i) => (
-                    <span key={i} className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700" />
-                  ))}
-                </div>
 
                 <div className="flex gap-2 pt-1">
                   {selectedPoint.properties.website && selectedPoint.properties.website !== 'https://' && selectedPoint.properties.website !== 'http://' && (
@@ -596,7 +548,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredCities.slice(0, visibleCityCount).map((city) => (
               <CityCard key={city.slug} city={city} />
             ))}
@@ -635,9 +587,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
                     <th className="text-left px-4 py-3 font-medium">#</th>
                     <th className="text-left px-4 py-3 font-medium">Name</th>
                     <th className="text-left px-4 py-3 font-medium">Type</th>
-                    <th className="text-left px-4 py-3 font-medium">City</th>
                     <th className="text-left px-4 py-3 font-medium">Rating</th>
-                    <th className="text-left px-4 py-3 font-medium">Quality</th>
                     <th className="text-left px-4 py-3 font-medium">Links</th>
                   </tr>
                 </thead>
