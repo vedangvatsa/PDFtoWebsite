@@ -11,38 +11,75 @@ const PH_API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
 const PH_PROJECT_ID = process.env.POSTHOG_PROJECT_ID;
 const PH_HOST = 'https://us.posthog.com';
 
-/** Map raw referrer domains to friendly names */
+/** Map raw referrer domains AND utm_source values to friendly names */
 const SOURCE_MAP: Record<string, string> = {
+  // Direct / empty
   '$direct': 'Direct', '': 'Direct', 'direct': 'Direct',
-  'www.google.com': 'Google', 'google.com': 'Google', 'search.google.com': 'Google',
-  'accounts.google.com': 'Google Auth', 'com.google.android.googlequicksearchbox': 'Google App',
+  // Google
+  'www.google.com': 'Google Search', 'google.com': 'Google Search', 'search.google.com': 'Google Search',
+  'google': 'Google Search',
+  'accounts.google.com': 'Google Auth', 'com.google.android.googlequicksearchbox': 'Google Search',
   'docs.google.com': 'Google Docs',
+  // LinkedIn
   'www.linkedin.com': 'LinkedIn', 'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn', 'com.linkedin.android': 'LinkedIn',
+  'linkedin': 'LinkedIn',
+  // Facebook
   'www.facebook.com': 'Facebook', 'facebook.com': 'Facebook', 'm.facebook.com': 'Facebook', 'l.facebook.com': 'Facebook', 'lm.facebook.com': 'Facebook',
-  'l.messenger.com': 'Messenger',
+  'facebook': 'Facebook',
+  'l.messenger.com': 'Messenger', 'messenger': 'Messenger',
+  // Instagram (domains + UTM sources from Meta/IG in-app browser)
   'www.instagram.com': 'Instagram', 'instagram.com': 'Instagram', 'l.instagram.com': 'Instagram',
+  'instagram': 'Instagram', 'ig': 'Instagram',
+  'ig_text_feed_timeline': 'Instagram', 'ig_text_post_permalink': 'Instagram',
+  'ig_story': 'Instagram', 'ig_profile': 'Instagram', 'ig_explore': 'Instagram',
+  'ig_direct': 'Instagram', 'ig_reel': 'Instagram', 'ig_web': 'Instagram',
+  // Threads
   'l.threads.com': 'Threads', 'threads.net': 'Threads', 'www.threads.net': 'Threads',
-  'twitter.com': 'X', 'x.com': 'X', 't.co': 'X', 'com.twitter.android': 'X',
-  'www.reddit.com': 'Reddit', 'reddit.com': 'Reddit',
+  'threads': 'Threads',
+  // X / Twitter
+  'twitter.com': 'X (Twitter)', 'x.com': 'X (Twitter)', 't.co': 'X (Twitter)', 'com.twitter.android': 'X (Twitter)',
+  'x': 'X (Twitter)', 'twitter': 'X (Twitter)',
+  // Reddit
+  'www.reddit.com': 'Reddit', 'reddit.com': 'Reddit', 'reddit': 'Reddit',
+  // WhatsApp
   'wa.me': 'WhatsApp', 'web.whatsapp.com': 'WhatsApp', 'whatsapp.com': 'WhatsApp',
+  'whatsapp': 'WhatsApp',
+  // Telegram
   't.me': 'Telegram', 'web.telegram.org': 'Telegram', 'org.telegram.messenger.web': 'Telegram',
   'org.telegram.messenger': 'Telegram', 'org.telegram.plus': 'Telegram',
-  'bsky.app': 'Bluesky', 'bsky.social': 'Bluesky',
-  'www.tiktok.com': 'TikTok', 'tiktok.com': 'TikTok',
+  'telegram': 'Telegram',
+  // Bluesky
+  'bsky.app': 'Bluesky', 'bsky.social': 'Bluesky', 'bluesky': 'Bluesky', 'bsky': 'Bluesky',
+  // TikTok
+  'www.tiktok.com': 'TikTok', 'tiktok.com': 'TikTok', 'tiktok': 'TikTok',
+  // Tumblr
   'www.tumblr.com': 'Tumblr', 'tumblr.com': 'Tumblr',
+  // Dev platforms
   'dev.to': 'Dev.to', 'hashnode.com': 'Hashnode', 'medium.com': 'Medium',
-  'www.youtube.com': 'YouTube', 'youtube.com': 'YouTube', 'youtu.be': 'YouTube',
-  'github.com': 'GitHub', 'www.github.com': 'GitHub',
+  // YouTube
+  'www.youtube.com': 'YouTube', 'youtube.com': 'YouTube', 'youtu.be': 'YouTube', 'youtube': 'YouTube',
+  // GitHub
+  'github.com': 'GitHub', 'www.github.com': 'GitHub', 'github': 'GitHub',
+  // Email clients
   'mail.google.com': 'Gmail', 'com.google.android.gm': 'Gmail',
   'outlook.live.com': 'Outlook', 'outlook.office.com': 'Outlook',
   'statics.teams.cdn.office.net': 'MS Teams',
+  'email': 'Email', 'mail': 'Email', 'newsletter': 'Email',
+  // Search engines
   'search.brave.com': 'Brave Search',
   'bing.com': 'Bing', 'www.bing.com': 'Bing', 'cn.bing.com': 'Bing',
   'duckduckgo.com': 'DuckDuckGo', 'www.duckduckgo.com': 'DuckDuckGo',
   'search.yahoo.com': 'Yahoo', 'in.search.yahoo.com': 'Yahoo', 'fr.search.yahoo.com': 'Yahoo', 'ca.search.yahoo.com': 'Yahoo',
-  'chatgpt.com': 'ChatGPT', 'claude.ai': 'Claude',
+  // AI chatbots
+  'chatgpt.com': 'ChatGPT', 'chatgpt': 'ChatGPT', 'claude.ai': 'Claude',
+  // UTM source catch-alls
+  'social': 'Social (other)', 'referral': 'Referral', 'organic': 'Organic Search',
+  'paid': 'Paid', 'cpc': 'Paid', 'display': 'Paid',
+  // Internal / known sites
   'vercel.com': 'Vercel',
-  'cvin.bio': 'Internal', 'veda.ng': 'Internal',
+  'cvin.bio': 'Internal', 'veda.ng': 'Internal', 'internal': 'Internal',
+  'hashtagweb3': 'HashtagWeb3', 'hashtagweb3.com': 'HashtagWeb3', 'www.hashtagweb3.com': 'HashtagWeb3',
+  // Disposable email
   'temp-mail.org': 'Email', '10minutemail.com': 'Email', 'substack.com': 'Substack',
 };
 function friendlySource(raw: string): string {
