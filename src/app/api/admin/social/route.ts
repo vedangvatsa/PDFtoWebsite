@@ -62,6 +62,7 @@ async function fetchBlueskyFeed(): Promise<any[]> {
       replies: item.post?.replyCount || 0,
       quotes: item.post?.quoteCount || 0,
       uri: item.post?.uri || '',
+      url: `https://bsky.app/profile/${BSKY_HANDLE}/post/${(item.post?.uri || '').split('/').pop()}`,
     }));
   } catch {
     return [];
@@ -109,6 +110,7 @@ async function fetchThreadsPosts(): Promise<any> {
             text: (thread.text || '').slice(0, 100),
             createdAt: thread.timestamp,
             views: 0, likes: 0, replies: 0, reposts: 0, quotes: 0,
+            url: thread.shortcode ? `https://www.threads.net/post/${thread.shortcode}` : '',
           });
           continue;
         }
@@ -125,12 +127,14 @@ async function fetchThreadsPosts(): Promise<any> {
           replies: metrics.replies || 0,
           reposts: metrics.reposts || 0,
           quotes: metrics.quotes || 0,
+          url: thread.shortcode ? `https://www.threads.net/post/${thread.shortcode}` : '',
         });
       } catch {
         postsWithInsights.push({
           text: (thread.text || '').slice(0, 100),
           createdAt: thread.timestamp,
           views: 0, likes: 0, replies: 0, reposts: 0, quotes: 0,
+          url: thread.shortcode ? `https://www.threads.net/post/${thread.shortcode}` : '',
         });
       }
     }

@@ -278,10 +278,10 @@ export default function AdminPage() {
                   <div className="mt-3 pt-3 border-t border-border/30 space-y-2">
                     <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-wider">Top posts</div>
                     {socialData.bluesky.engagement.topPosts.slice(0, 3).map((p: any, i: number) => (
-                      <div key={i} className="text-xs text-muted-foreground truncate">
+                      <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" className="block text-xs text-muted-foreground truncate hover:text-foreground transition-colors">
                         <span className="font-mono text-foreground mr-1">{p.likes}♡ {p.reposts}⟳</span>
                         {p.text}
-                      </div>
+                      </a>
                     ))}
                   </div>
                 )}
@@ -314,13 +314,13 @@ export default function AdminPage() {
                   <div className="mt-3 pt-3 border-t border-border/30 space-y-2">
                     <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-wider">Top posts by views</div>
                     {socialData.threads.insights.topPosts.slice(0, 5).map((p: any, i: number) => (
-                      <div key={i} className="text-xs text-muted-foreground">
+                      <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" className="block text-xs text-muted-foreground hover:text-foreground transition-colors">
                         <div className="flex items-center gap-1.5">
                           <span className="font-mono text-purple-500 font-semibold shrink-0">{p.views.toLocaleString()} views</span>
                           <span className="font-mono text-foreground/60 shrink-0">{p.likes}♡ {p.reposts}⟳</span>
                         </div>
                         <div className="truncate mt-0.5 text-muted-foreground/80">{p.text}</div>
-                      </div>
+                      </a>
                     ))}
                   </div>
                 )}
