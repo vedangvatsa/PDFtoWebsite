@@ -219,7 +219,7 @@ export default function AdminPage() {
                   <Stat v={socialData.bluesky.live.followersCount || 0} label="BSky Followers" />
                 </>
               )}
-              <Stat v={socialData.summary?.totalViews || 0} label="Threads Views" sub="Last 25 posts" />
+              <Stat v={socialData.threads?.insights?.totals?.views || 0} label="Threads Views" sub={`Last ${socialData.threads?.insights?.totals?.postsAnalyzed || 25} posts`} />
               <Stat v={socialData.summary?.totalPostsAcrossPlatforms || 0} label="Total posts" sub="All platforms" />
               <Stat v={socialData.summary?.totalEngagement || 0} label="Total engagement" sub="Likes + reposts + comments" />
               <Stat v={socialData.summary?.totalFollowers || 0} label="Total followers" sub="All platforms" />
@@ -227,7 +227,7 @@ export default function AdminPage() {
             </div>
 
             {/* Platform Detail Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
               {/* X Queue */}
               <div className="p-4 rounded-xl border border-border/50 bg-card">
                 <div className="flex items-center gap-2 mb-3">
@@ -515,7 +515,7 @@ export default function AdminPage() {
                         <span className="text-sm truncate">{r.referrer || 'Direct'}</span>
                         <span className="text-xs text-muted-foreground font-mono shrink-0">
                           {r.signups} <span className="text-muted-foreground/60">({sharePct}%)</span>
-                          {convRate && <span className="text-green-500 ml-1">CVR {convRate}%</span>}
+                          {convRate && <span className="text-green-500 ml-1">~CVR {convRate}%</span>}
                         </span>
                       </div>
                       <div className="h-1 rounded-full bg-muted overflow-hidden">
@@ -540,7 +540,7 @@ export default function AdminPage() {
                     <span className="text-xs text-muted-foreground w-4 text-right shrink-0">{i + 1}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline justify-between gap-2 mb-0.5">
-                        <span className="text-sm font-mono truncate">{p.page}</span>
+                        <a href={`https://cvin.bio${p.page}`} target="_blank" rel="noopener noreferrer" className="text-sm font-mono truncate hover:underline underline-offset-2">{p.page}</a>
                         <span className="text-xs text-muted-foreground shrink-0">{p.views} <span className="text-muted-foreground/50">({p.uniques}u)</span></span>
                       </div>
                       <div className="h-1 rounded-full bg-muted overflow-hidden">

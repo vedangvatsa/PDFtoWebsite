@@ -515,14 +515,26 @@ export async function GET(request: NextRequest) {
       (bskyProfile?.followersCount || 0) +
       (fbInsights?.page?.followers || 0) +
       (igInsights?.profile?.followers || 0) +
+      (threadsProfile?.followers || 0) +
       (telegramChannel?.memberCount || 0) +
       (bufferAnalytics || []).reduce((s: number, b: any) => s + (b.followers || 0), 0);
+
+    // Count platforms that actually returned data
+    const activePlatforms = [
+      true, // X (always active — queue-based)
+      !!bskyProfile,
+      !!threadsProfile || !!threadsInsights,
+      !!fbInsights,
+      !!igInsights,
+      !!(bufferAnalytics && bufferAnalytics.length > 0),
+      !!telegramChannel,
+    ].filter(Boolean).length;
 
     return NextResponse.json({
       summary: {
         totalPostsAcrossPlatforms,
         totalTweetsInThreads,
-        activePlatforms: 8,
+        activePlatforms,
         totalEngagement,
         totalFollowers,
         totalViews,
