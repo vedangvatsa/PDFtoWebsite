@@ -92,6 +92,19 @@ function DefaultLoader() {
   );
 }
 
+function hasWebGL(): boolean {
+  if (typeof window === "undefined") return true;
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+    );
+  } catch (e) {
+    return false;
+  }
+}
+
 function getViewport(map: MapLibreGL.Map): MapViewport {
   const center = map.getCenter();
   return {
@@ -119,6 +132,7 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
   const [mapInstance, setMapInstance] = useState<MapLibreGL.Map | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isStyleLoaded, setIsStyleLoaded] = useState(false);
+  const [webGlSupported, setWebGlSupported] = useState(true);
   const currentStyleRef = useRef<MapStyleOption | null>(null);
   const styleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const internalUpdateRef = useRef(false);
@@ -147,6 +161,11 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
   // Initialize the map
   useEffect(() => {
     if (!containerRef.current) return;
+
+    if (!hasWebGL()) {
+      setWebGlSupported(false);
+      return;
+    }
 
     const initialStyle = mapStyle;
     currentStyleRef.current = initialStyle;
@@ -276,6 +295,20 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     }),
     [mapInstance, isLoaded, isStyleLoaded],
   );
+
+  if (!webGlSupported) {
+    return (
+      <div
+        className={cn(
+          "relative h-full w-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 p-6 text-center border border-zinc-200 dark:border-zinc-800 rounded-lg",
+          className,
+        )}
+      >
+        <p className="font-semibold text-zinc-900 dark:text-zinc-50">Map View Unavailable</p>
+        <p className="text-xs mt-1 max-w-sm">WebGL is not supported by your browser. You can still search and browse the listings below.</p>
+      </div>
+    );
+  }
 
   return (
     <MapContext.Provider value={contextValue}>
