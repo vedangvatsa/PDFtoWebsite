@@ -497,7 +497,7 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                 World Nomads
               </div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">
-                Comprehensive activity and travel insurance covering gear protection and extreme sports.
+                Full activity and travel insurance covering gear protection and extreme sports.
               </div>
               <div className="text-xs text-primary group-hover/card:underline mt-auto pt-2.5">
                 Learn more →

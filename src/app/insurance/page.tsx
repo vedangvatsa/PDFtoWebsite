@@ -46,7 +46,7 @@ const PROVIDERS: InsuranceProvider[] = [
     ageRange: '18–65',
     bestFor: 'Mental Health',
     features: [
-      'Comprehensive medical coverage',
+      'Full medical coverage',
       '€1M maximum coverage',
       'Mental health included',
       'Outpatient + dental (optional)',
@@ -94,7 +94,7 @@ const PROVIDERS: InsuranceProvider[] = [
     ageRange: '18–75',
     bestFor: 'Premium Coverage',
     features: [
-      'Premium comprehensive plan',
+      'Premium full-coverage plan',
       'Repatriation coverage',
       'Pre-existing conditions (after waiting)',
       'Maternity add-on available',
