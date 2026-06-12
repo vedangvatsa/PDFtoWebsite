@@ -53,3 +53,5 @@ posthog-secret-to-purge.txt
 scratch/check_supabase.mjs
 .env*
 *.parquet
+scratch/
+scripts/
