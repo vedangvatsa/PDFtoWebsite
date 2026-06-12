@@ -69,6 +69,13 @@ interface CityData {
   };
   nomad_score: number;
   nearby: string[];
+  internet?: {
+    download_mbps: number;
+    upload_mbps: number;
+    latency_ms: number;
+    test_count: number;
+    quarter: string;
+  };
 }
 
 /* ---------- constants ---------- */
@@ -458,6 +465,24 @@ function ComparePageContent() {
         valueB: `${cityB.spaces.coworking}`,
         rawA: cityA.spaces.coworking,
         rawB: cityB.spaces.coworking,
+        better: 'higher',
+      },
+      {
+        icon: <Wifi className="w-4 h-4" />,
+        label: 'Download Speed',
+        valueA: cityA.internet?.download_mbps ? `${cityA.internet.download_mbps} Mbps` : 'N/A',
+        valueB: cityB.internet?.download_mbps ? `${cityB.internet.download_mbps} Mbps` : 'N/A',
+        rawA: cityA.internet?.download_mbps || 0,
+        rawB: cityB.internet?.download_mbps || 0,
+        better: 'higher',
+      },
+      {
+        icon: <Wifi className="w-4 h-4" />,
+        label: 'Upload Speed',
+        valueA: cityA.internet?.upload_mbps ? `${cityA.internet.upload_mbps} Mbps` : 'N/A',
+        valueB: cityB.internet?.upload_mbps ? `${cityB.internet.upload_mbps} Mbps` : 'N/A',
+        rawA: cityA.internet?.upload_mbps || 0,
+        rawB: cityB.internet?.upload_mbps || 0,
         better: 'higher',
       },
     ];

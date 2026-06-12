@@ -110,7 +110,14 @@
       "siem-reap",
       "koh-phangan",
       "da-nang"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 335.9,
+      "upload_mbps": 274.1,
+      "latency_ms": 6,
+      "test_count": 44129,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "bangalore",
@@ -223,7 +230,14 @@
       "delhi",
       "kathmandu",
       "phuket"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 143.7,
+      "upload_mbps": 137.7,
+      "latency_ms": 8,
+      "test_count": 267715,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "da-nang",
@@ -336,7 +350,14 @@
       "hanoi",
       "ho-chi-minh-city",
       "phnom-penh"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 245.9,
+      "upload_mbps": 198.4,
+      "latency_ms": 5,
+      "test_count": 70984,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "koh-phangan",
@@ -449,7 +470,14 @@
       "penang",
       "phnom-penh",
       "siem-reap"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 243.6,
+      "upload_mbps": 204.6,
+      "latency_ms": 13,
+      "test_count": 5883,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "kuala-lumpur",
@@ -562,7 +590,14 @@
       "singapore",
       "phuket",
       "koh-phangan"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 271.0,
+      "upload_mbps": 152.7,
+      "latency_ms": 7,
+      "test_count": 276740,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "manila",
@@ -675,7 +710,14 @@
       "taipei",
       "hoi-an",
       "da-nang"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 201.3,
+      "upload_mbps": 187.3,
+      "latency_ms": 6,
+      "test_count": 870427,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "penang",
@@ -788,7 +830,14 @@
       "koh-phangan",
       "johor",
       "singapore"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 247.3,
+      "upload_mbps": 139.3,
+      "latency_ms": 8,
+      "test_count": 55130,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "phnom-penh",
@@ -901,7 +950,14 @@
       "bangkok",
       "koh-phangan",
       "hoi-an"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 78.4,
+      "upload_mbps": 70.5,
+      "latency_ms": 6,
+      "test_count": 123837,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "siem-reap",
@@ -1014,7 +1070,14 @@
       "ho-chi-minh-city",
       "hoi-an",
       "da-nang"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 66.6,
+      "upload_mbps": 63.8,
+      "latency_ms": 10,
+      "test_count": 14347,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "hanoi",
@@ -1127,7 +1190,14 @@
       "chiang-mai",
       "siem-reap",
       "bangkok"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 238.0,
+      "upload_mbps": 186.4,
+      "latency_ms": 5,
+      "test_count": 328304,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "cebu",
@@ -1240,7 +1310,14 @@
       "taipei",
       "hoi-an",
       "da-nang"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 179.8,
+      "upload_mbps": 181.4,
+      "latency_ms": 9,
+      "test_count": 154804,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "playa-del-carmen",
@@ -1353,7 +1430,14 @@
       "antigua",
       "oaxaca",
       "mexico-city"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 112.2,
+      "upload_mbps": 82.7,
+      "latency_ms": 22,
+      "test_count": 25232,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "bali",
@@ -1466,7 +1550,14 @@
       "singapore",
       "johor",
       "kuala-lumpur"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 102.1,
+      "upload_mbps": 91.9,
+      "latency_ms": 11,
+      "test_count": 133663,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "ho-chi-minh-city",
@@ -1579,7 +1670,14 @@
       "hoi-an",
       "da-nang",
       "koh-phangan"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 268.4,
+      "upload_mbps": 209.1,
+      "latency_ms": 5,
+      "test_count": 432328,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "taipei",
@@ -1692,7 +1790,14 @@
       "seoul",
       "cebu",
       "hanoi"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 259.7,
+      "upload_mbps": 166.8,
+      "latency_ms": 6,
+      "test_count": 460846,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "bangkok",
@@ -1805,7 +1910,14 @@
       "phnom-penh",
       "chiang-mai",
       "phuket"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 368.4,
+      "upload_mbps": 297.1,
+      "latency_ms": 6,
+      "test_count": 320752,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "zanzibar",
@@ -1918,7 +2030,14 @@
       "cape-town",
       "dubai",
       "dahab"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 31.4,
+      "upload_mbps": 24.0,
+      "latency_ms": 20,
+      "test_count": 2107,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "delhi",
@@ -2031,7 +2150,14 @@
       "bangalore",
       "dubai",
       "colombo"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 119.8,
+      "upload_mbps": 119.4,
+      "latency_ms": 6,
+      "test_count": 438562,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "goa",
@@ -2144,7 +2270,14 @@
       "delhi",
       "kathmandu",
       "dubai"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 88.4,
+      "upload_mbps": 87.4,
+      "latency_ms": 14,
+      "test_count": 15534,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "las-palmas",
@@ -2257,7 +2390,14 @@
       "madeira-funchal",
       "marrakech",
       "lisbon"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 296.5,
+      "upload_mbps": 253.1,
+      "latency_ms": 38,
+      "test_count": 5984,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "medellin",
@@ -2370,7 +2510,14 @@
       "santa-marta",
       "roatan",
       "antigua"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 319.1,
+      "upload_mbps": 231.1,
+      "latency_ms": 6,
+      "test_count": 144706,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "phuket",
@@ -2483,7 +2630,14 @@
       "kuala-lumpur",
       "bangkok",
       "phnom-penh"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 297.7,
+      "upload_mbps": 247.8,
+      "latency_ms": 10,
+      "test_count": 30710,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "tulum",
@@ -2596,7 +2750,14 @@
       "antigua",
       "oaxaca",
       "mexico-city"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 126.8,
+      "upload_mbps": 97.5,
+      "latency_ms": 15,
+      "test_count": 7221,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "canggu",
@@ -2709,7 +2870,14 @@
       "singapore",
       "johor",
       "kuala-lumpur"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 104.0,
+      "upload_mbps": 93.4,
+      "latency_ms": 11,
+      "test_count": 121085,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "marrakech",
@@ -2822,7 +2990,14 @@
       "las-palmas",
       "gran-canaria-las-palmas",
       "ericeira"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 85.3,
+      "upload_mbps": 76.5,
+      "latency_ms": 15,
+      "test_count": 58494,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "cartagena",
@@ -2935,7 +3110,14 @@
       "bogota",
       "roatan",
       "playa-del-carmen"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 244.7,
+      "upload_mbps": 203.4,
+      "latency_ms": 10,
+      "test_count": 27405,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "oaxaca",
@@ -3048,7 +3230,14 @@
       "guadalajara",
       "tulum",
       "roatan"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 117.5,
+      "upload_mbps": 93.0,
+      "latency_ms": 16,
+      "test_count": 25342,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "cape-town",
@@ -3161,7 +3350,14 @@
       "nairobi",
       "lagos",
       "accra"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 94.0,
+      "upload_mbps": 72.5,
+      "latency_ms": 11,
+      "test_count": 45308,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "kathmandu",
@@ -3274,7 +3470,14 @@
       "goa",
       "bangalore",
       "hanoi"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 126.6,
+      "upload_mbps": 100.6,
+      "latency_ms": 5,
+      "test_count": 39961,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "buenos-aires",
@@ -3387,7 +3590,14 @@
       "florianopolis-2",
       "valparaiso",
       "florianopolis"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 232.5,
+      "upload_mbps": 142.5,
+      "latency_ms": 10,
+      "test_count": 164321,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "mexico-city",
@@ -3500,7 +3710,14 @@
       "antigua",
       "tulum",
       "playa-del-carmen"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 176.6,
+      "upload_mbps": 125.7,
+      "latency_ms": 9,
+      "test_count": 584094,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "bali-cangguubud",
@@ -3613,7 +3830,14 @@
       "singapore",
       "johor",
       "kuala-lumpur"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 81.6,
+      "upload_mbps": 73.9,
+      "latency_ms": 14,
+      "test_count": 44529,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "accra",
@@ -3726,7 +3950,14 @@
       "las-palmas",
       "marrakech",
       "tenerife"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 81.6,
+      "upload_mbps": 46.5,
+      "latency_ms": 23,
+      "test_count": 10471,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "bansko",
@@ -3839,7 +4070,14 @@
       "bucharest",
       "belgrade",
       "athens"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 122.4,
+      "upload_mbps": 89.2,
+      "latency_ms": 11,
+      "test_count": 2202,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "hoi-an",
@@ -3952,7 +4190,14 @@
       "ho-chi-minh-city",
       "phnom-penh",
       "hanoi"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 205.6,
+      "upload_mbps": 174.2,
+      "latency_ms": 6,
+      "test_count": 14685,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "siargao",
@@ -4065,7 +4310,14 @@
       "taipei",
       "hoi-an",
       "da-nang"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 116.9,
+      "upload_mbps": 62.4,
+      "latency_ms": 38,
+      "test_count": 2776,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "malaga",
@@ -4178,7 +4430,14 @@
       "ericeira",
       "porto",
       "marrakech"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 339.5,
+      "upload_mbps": 295.3,
+      "latency_ms": 13,
+      "test_count": 12375,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "porto",
@@ -4291,7 +4550,14 @@
       "malaga",
       "valencia",
       "barcelona"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 359.9,
+      "upload_mbps": 225.5,
+      "latency_ms": 6,
+      "test_count": 55524,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "tbilisi",
@@ -4404,7 +4670,14 @@
       "kas",
       "bucharest",
       "dahab"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 49.8,
+      "upload_mbps": 48.7,
+      "latency_ms": 6,
+      "test_count": 28429,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "tenerife",
@@ -4517,7 +4790,14 @@
       "madeira-funchal",
       "marrakech",
       "lisbon"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 314.6,
+      "upload_mbps": 267.8,
+      "latency_ms": 28,
+      "test_count": 5360,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "ericeira",
@@ -4630,7 +4910,14 @@
       "malaga",
       "valencia",
       "marrakech"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 362.3,
+      "upload_mbps": 231.4,
+      "latency_ms": 7,
+      "test_count": 6484,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "athens",
@@ -4743,7 +5030,14 @@
       "sofia",
       "istanbul",
       "kas"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 241.2,
+      "upload_mbps": 138.6,
+      "latency_ms": 8,
+      "test_count": 393469,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "colombo",
@@ -4856,7 +5150,14 @@
       "phuket",
       "koh-phangan",
       "penang"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 79.8,
+      "upload_mbps": 47.6,
+      "latency_ms": 18,
+      "test_count": 50516,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "nairobi",
@@ -4969,7 +5270,14 @@
       "dahab",
       "dubai",
       "lagos"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 42.4,
+      "upload_mbps": 35.2,
+      "latency_ms": 12,
+      "test_count": 62154,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "lagos",
@@ -5082,7 +5390,14 @@
       "gran-canaria-las-palmas",
       "las-palmas",
       "tenerife"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 51.9,
+      "upload_mbps": 34.5,
+      "latency_ms": 22,
+      "test_count": 14625,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "warsaw",
@@ -5195,7 +5510,14 @@
       "berlin",
       "prague",
       "budapest"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 362.3,
+      "upload_mbps": 131.3,
+      "latency_ms": 8,
+      "test_count": 65978,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "budapest",
@@ -5308,7 +5630,14 @@
       "prague",
       "split",
       "warsaw"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 344.5,
+      "upload_mbps": 165.3,
+      "latency_ms": 9,
+      "test_count": 81221,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "gran-canaria-las-palmas",
@@ -5421,7 +5750,14 @@
       "madeira-funchal",
       "marrakech",
       "lisbon"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 298.8,
+      "upload_mbps": 251.8,
+      "latency_ms": 39,
+      "test_count": 6417,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "sofia",
@@ -5534,7 +5870,14 @@
       "bucharest",
       "belgrade",
       "dubrovnik"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 225.6,
+      "upload_mbps": 168.2,
+      "latency_ms": 5,
+      "test_count": 53660,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "istanbul",
@@ -5647,7 +5990,14 @@
       "antalya",
       "sofia",
       "thessaloniki"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 250.7,
+      "upload_mbps": 101.5,
+      "latency_ms": 7,
+      "test_count": 219161,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "barcelona",
@@ -5760,7 +6110,14 @@
       "paris",
       "porto",
       "lisbon"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 344.6,
+      "upload_mbps": 295.2,
+      "latency_ms": 7,
+      "test_count": 68231,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "lisbon",
@@ -5873,7 +6230,14 @@
       "malaga",
       "valencia",
       "marrakech"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 361.1,
+      "upload_mbps": 223.5,
+      "latency_ms": 7,
+      "test_count": 90644,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "split",
@@ -5986,7 +6350,14 @@
       "budapest",
       "sofia",
       "bansko"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 275.9,
+      "upload_mbps": 147.8,
+      "latency_ms": 13,
+      "test_count": 13624,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "dubai",
@@ -6099,7 +6470,14 @@
       "goa",
       "delhi",
       "antalya"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 369.2,
+      "upload_mbps": 223.2,
+      "latency_ms": 6,
+      "test_count": 122712,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "dahab",
@@ -6212,7 +6590,14 @@
       "athens",
       "istanbul",
       "thessaloniki"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 28.0,
+      "upload_mbps": 9.9,
+      "latency_ms": 33,
+      "test_count": 1513,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "santa-marta",
@@ -6325,7 +6710,14 @@
       "bogota",
       "roatan",
       "playa-del-carmen"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 232.3,
+      "upload_mbps": 167.5,
+      "latency_ms": 16,
+      "test_count": 12032,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "johor",
@@ -6438,7 +6830,14 @@
       "penang",
       "phuket",
       "koh-phangan"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 443.2,
+      "upload_mbps": 327.9,
+      "latency_ms": 8,
+      "test_count": 26695,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "kilifi",
@@ -6551,7 +6950,14 @@
       "dubai",
       "dahab",
       "cape-town"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 43.0,
+      "upload_mbps": 22.2,
+      "latency_ms": 23,
+      "test_count": 782,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "florianopolis",
@@ -6664,7 +7070,14 @@
       "rio-de-janeiro",
       "montevideo",
       "buenos-aires"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 320.6,
+      "upload_mbps": 205.6,
+      "latency_ms": 9,
+      "test_count": 19318,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "prague",
@@ -6777,7 +7190,14 @@
       "budapest",
       "warsaw",
       "amsterdam"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 252.9,
+      "upload_mbps": 153.9,
+      "latency_ms": 10,
+      "test_count": 57390,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "rio-de-janeiro",
@@ -6890,7 +7310,14 @@
       "florianopolis-2",
       "montevideo",
       "buenos-aires"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 302.0,
+      "upload_mbps": 159.6,
+      "latency_ms": 9,
+      "test_count": 156211,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "santiago",
@@ -7003,7 +7430,14 @@
       "montevideo",
       "florianopolis-2",
       "florianopolis"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 429.2,
+      "upload_mbps": 369.1,
+      "latency_ms": 5,
+      "test_count": 183567,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "antalya",
@@ -7116,7 +7550,14 @@
       "athens",
       "thessaloniki",
       "bansko"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 221.3,
+      "upload_mbps": 43.2,
+      "latency_ms": 12,
+      "test_count": 37058,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "roatan",
@@ -7229,7 +7670,14 @@
       "antigua",
       "oaxaca",
       "cartagena"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 146.5,
+      "upload_mbps": 114.2,
+      "latency_ms": 14,
+      "test_count": 2656,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "singapore",
@@ -7342,7 +7790,14 @@
       "penang",
       "phuket",
       "koh-phangan"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 576.9,
+      "upload_mbps": 453.7,
+      "latency_ms": 5,
+      "test_count": 338960,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "belgrade",
@@ -7455,7 +7910,14 @@
       "sofia",
       "split",
       "bansko"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 225.3,
+      "upload_mbps": 120.8,
+      "latency_ms": 7,
+      "test_count": 50767,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "bucharest",
@@ -7568,7 +8030,14 @@
       "belgrade",
       "istanbul",
       "thessaloniki"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 339.1,
+      "upload_mbps": 292.5,
+      "latency_ms": 4,
+      "test_count": 81300,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "guadalajara",
@@ -7681,7 +8150,14 @@
       "antigua",
       "tulum",
       "playa-del-carmen"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 189.6,
+      "upload_mbps": 147.7,
+      "latency_ms": 6,
+      "test_count": 180813,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "tokyo",
@@ -7794,7 +8270,14 @@
       "shanghai",
       "taipei",
       "manila"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 303.8,
+      "upload_mbps": 203.0,
+      "latency_ms": 15,
+      "test_count": 142338,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "montevideo",
@@ -7907,7 +8390,14 @@
       "florianopolis",
       "santiago",
       "valparaiso"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 230.0,
+      "upload_mbps": 54.2,
+      "latency_ms": 7,
+      "test_count": 9996,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "kas",
@@ -8020,7 +8510,14 @@
       "athens",
       "thessaloniki",
       "bansko"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 77.0,
+      "upload_mbps": 14.8,
+      "latency_ms": 21,
+      "test_count": 575,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "madeira-funchal",
@@ -8133,7 +8630,14 @@
       "gran-canaria-las-palmas",
       "marrakech",
       "lisbon"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 276.8,
+      "upload_mbps": 150.6,
+      "latency_ms": 9,
+      "test_count": 9235,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "krakow",
@@ -8246,7 +8750,14 @@
       "prague",
       "berlin",
       "belgrade"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 317.2,
+      "upload_mbps": 129.5,
+      "latency_ms": 9,
+      "test_count": 30551,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "lima",
@@ -8359,7 +8870,14 @@
       "medellin",
       "valparaiso",
       "santiago"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 330.1,
+      "upload_mbps": 290.7,
+      "latency_ms": 7,
+      "test_count": 236658,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "florianopolis-2",
@@ -8472,7 +8990,14 @@
       "rio-de-janeiro",
       "montevideo",
       "buenos-aires"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 345.9,
+      "upload_mbps": 211.3,
+      "latency_ms": 10,
+      "test_count": 39449,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "cusco",
@@ -8585,7 +9110,14 @@
       "valparaiso",
       "santiago",
       "medellin"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 321.6,
+      "upload_mbps": 276.7,
+      "latency_ms": 12,
+      "test_count": 17185,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "antigua",
@@ -8698,7 +9230,14 @@
       "tulum",
       "playa-del-carmen",
       "mexico-city"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 132.0,
+      "upload_mbps": 36.2,
+      "latency_ms": 14,
+      "test_count": 18673,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "sao-paulo",
@@ -8811,7 +9350,14 @@
       "florianopolis-2",
       "montevideo",
       "buenos-aires"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 313.7,
+      "upload_mbps": 178.3,
+      "latency_ms": 8,
+      "test_count": 423990,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "bogota",
@@ -8924,7 +9470,14 @@
       "santa-marta",
       "roatan",
       "lima"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 292.3,
+      "upload_mbps": 225.0,
+      "latency_ms": 6,
+      "test_count": 274996,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "valencia",
@@ -9037,7 +9590,14 @@
       "porto",
       "lisbon",
       "ericeira"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 375.3,
+      "upload_mbps": 308.8,
+      "latency_ms": 10,
+      "test_count": 34947,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "seoul",
@@ -9150,7 +9710,14 @@
       "tokyo",
       "taipei",
       "manila"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 311.0,
+      "upload_mbps": 261.7,
+      "latency_ms": 6,
+      "test_count": 49399,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "palermo",
@@ -9263,7 +9830,14 @@
       "thessaloniki",
       "athens",
       "belgrade"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 366.2,
+      "upload_mbps": 221.9,
+      "latency_ms": 20,
+      "test_count": 45913,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "berlin",
@@ -9376,7 +9950,14 @@
       "krakow",
       "amsterdam",
       "budapest"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 210.3,
+      "upload_mbps": 47.8,
+      "latency_ms": 11,
+      "test_count": 81641,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "tallinn",
@@ -9489,7 +10070,14 @@
       "warsaw",
       "berlin",
       "krakow"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 183.2,
+      "upload_mbps": 149.7,
+      "latency_ms": 6,
+      "test_count": 14027,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "thessaloniki",
@@ -9602,7 +10190,14 @@
       "athens",
       "dubrovnik",
       "bucharest"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 248.8,
+      "upload_mbps": 162.8,
+      "latency_ms": 9,
+      "test_count": 102206,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "amsterdam",
@@ -9715,7 +10310,14 @@
       "berlin",
       "prague",
       "krakow"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 323.4,
+      "upload_mbps": 177.8,
+      "latency_ms": 10,
+      "test_count": 94869,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "vilnius",
@@ -9828,7 +10430,14 @@
       "tallinn",
       "krakow",
       "berlin"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 304.7,
+      "upload_mbps": 255.4,
+      "latency_ms": 6,
+      "test_count": 23753,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "shanghai",
@@ -9941,7 +10550,14 @@
       "komoro",
       "tokyo",
       "manila"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 449.9,
+      "upload_mbps": 120.3,
+      "latency_ms": 9,
+      "test_count": 104981,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "london",
@@ -10054,7 +10670,14 @@
       "berlin",
       "prague",
       "barcelona"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 305.9,
+      "upload_mbps": 183.7,
+      "latency_ms": 10,
+      "test_count": 347656,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "paris",
@@ -10167,7 +10790,14 @@
       "barcelona",
       "berlin",
       "prague"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 475.9,
+      "upload_mbps": 346.0,
+      "latency_ms": 6,
+      "test_count": 124088,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "riga",
@@ -10280,7 +10910,14 @@
       "warsaw",
       "krakow",
       "berlin"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 296.6,
+      "upload_mbps": 235.0,
+      "latency_ms": 8,
+      "test_count": 23660,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "dubrovnik",
@@ -10393,7 +11030,14 @@
       "sofia",
       "bansko",
       "thessaloniki"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 158.5,
+      "upload_mbps": 90.8,
+      "latency_ms": 18,
+      "test_count": 3396,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "san-francisco",
@@ -10506,7 +11150,14 @@
       "oaxaca",
       "tulum",
       "playa-del-carmen"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 372.0,
+      "upload_mbps": 173.8,
+      "latency_ms": 11,
+      "test_count": 81396,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "valparaiso",
@@ -10619,7 +11270,14 @@
       "montevideo",
       "cusco",
       "florianopolis-2"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 414.8,
+      "upload_mbps": 348.0,
+      "latency_ms": 8,
+      "test_count": 21031,
+      "quarter": "2026-Q1"
+    }
   },
   {
     "slug": "komoro",
@@ -10732,6 +11390,13 @@
       "shanghai",
       "taipei",
       "manila"
-    ]
+    ],
+    "internet": {
+      "download_mbps": 257.9,
+      "upload_mbps": 148.6,
+      "latency_ms": 25,
+      "test_count": 1293,
+      "quarter": "2026-Q1"
+    }
   }
 ]
