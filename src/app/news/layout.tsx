@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: ['tech news', 'technology news', 'startup news', 'AI news', 'software news', 'hacker news'],
     openGraph: {
       title: 'Tech News Feed',
-      description: 'Curated tech news from the top sources in one feed.',
+      description: 'Top tech news from the top sources in one feed.',
       url: `${siteUrl}/news`,
     },
     twitter: {

@@ -408,7 +408,7 @@ export default function RemoteTalentReport() {
               <div className="w-full max-w-lg px-6">
                 <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 text-center shadow-lg">
                   <h3 className="text-xl font-serif font-bold text-zinc-900 dark:text-zinc-50 mb-3">Read the full report</h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 leading-relaxed">Enter your email to unlock the complete report with compensation data, RTO analysis, and predictions.</p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 leading-relaxed">Enter your email to access the complete report with compensation data, RTO analysis, and predictions.</p>
                   <EmailCapture position="gate" />
                 </div>
               </div>

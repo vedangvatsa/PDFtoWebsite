@@ -64,7 +64,7 @@ const VISAS: VisaData[] = [
       'Accommodation contract / lease in Portugal'
     ],
     officialUrl: 'https://aima.gov.pt',
-    description: 'Portugal’s D8 visa is the ultimate choice for remote workers looking for sun, coastlines, and a established community of expats.',
+    description: 'Portugal’s D8 visa suits remote workers after sun, coastlines, and an established community of expats.',
     highlights: ['Two application paths available', 'Fast track to Schengen residency', 'Established expat hubs']
   },
   {
@@ -230,7 +230,7 @@ const VISAS: VisaData[] = [
       'Health insurance valid in Malaysia'
     ],
     officialUrl: 'https://mdec.my/derantau',
-    description: 'Malaysia’s DE Rantau program offers a robust digital nomad ecosystem, low cost of living, and an officially recognized network of nomad hubs.',
+    description: 'Malaysia’s DE Rantau program offers a strong digital nomad ecosystem, low cost of living, and an officially recognized network of nomad hubs.',
     highlights: ['Official nomad hub discounts', 'Tax-free remote income', 'Very low income threshold']
   },
   {
@@ -311,8 +311,8 @@ const VISAS: VisaData[] = [
       'Proof of company ownership (if business owner/freelancer)'
     ],
     officialUrl: 'https://www.visitdubai.com/en/business-in-dubai/visa-and-entry/work-remotely-from-dubai',
-    description: 'Dubai’s Virtual Working Programme offers a tax-free hub with world-class coworking infrastructure, high safety standards, and excellent global travel connectivity.',
-    highlights: ['100% tax-free income', 'World-class tech infrastructure', 'High safety & standard of living']
+    description: 'Dubai’s Virtual Working Programme offers a tax-free hub with top coworking infrastructure, high safety standards, and excellent global travel connectivity.',
+    highlights: ['100% tax-free income', 'Top-tier tech infrastructure', 'High safety & standard of living']
   },
   {
     country: 'Costa Rica',
@@ -706,7 +706,7 @@ const VISAS: VisaData[] = [
       'Proof of accommodation'
     ],
     officialUrl: 'https://e-ikamet.goc.gov.tr',
-    description: 'Turkey offers digital nomads an affordable lifestyle with world-class food, historic cities like Istanbul and Antalya, and a rapidly growing remote work infrastructure.',
+    description: 'Turkey offers digital nomads an affordable lifestyle with excellent food, historic cities like Istanbul and Antalya, and a rapidly growing remote work infrastructure.',
     highlights: ['Affordable living costs', 'Rich cultural experience', 'Strategic Europe-Asia location']
   },
   {
@@ -727,7 +727,7 @@ const VISAS: VisaData[] = [
     ],
     officialUrl: 'https://goldcard.nat.gov.tw/en/',
     description: 'Taiwan\'s Employment Gold Card is a combined work permit and visa for skilled professionals, offering an incredible quality of life, safety, and one of Asia\'s best tech ecosystems.',
-    highlights: ['50% tax exemption for 3 years', 'World-class tech ecosystem', 'Excellent food & safety']
+    highlights: ['50% tax exemption for 3 years', 'Strong tech ecosystem', 'Excellent food & safety']
   },
   {
     country: 'Sri Lanka',
@@ -810,7 +810,7 @@ const VISAS: VisaData[] = [
       'Proof of accommodation'
     ],
     officialUrl: 'https://www.argentina.gob.ar/interior/migraciones',
-    description: 'Argentina\'s digital nomad visa offers Buenos Aires\' world-class culture, incredible steaks, and tango, all at very favorable exchange rates for foreign earners.',
+    description: 'Argentina\'s digital nomad visa offers Buenos Aires\' rich culture, incredible steaks, and tango, all at very favorable exchange rates for foreign earners.',
     highlights: ['No income minimum', 'Tax-exempt for 12 months', 'Favorable exchange rates']
   },
   {
@@ -875,7 +875,7 @@ const VISAS: VisaData[] = [
     ],
     officialUrl: 'https://www.barbadoswelcomestamp.bb',
     description: 'Barbados pioneered the Caribbean remote work movement with the Welcome Stamp, offering a year of island living with no local taxes on remote income.',
-    highlights: ['Pioneer Caribbean remote work visa', 'Zero tax on remote income', 'World-class beaches']
+    highlights: ['Pioneer Caribbean remote work visa', 'Zero tax on remote income', 'Great beaches & diving']
   },
 
 
@@ -960,8 +960,8 @@ const VISAS: VisaData[] = [
       'Proof of accommodation'
     ],
     officialUrl: 'https://mhaiss.gov.na',
-    description: 'Namibia\'s digital nomad visa invites remote workers to experience vast desert landscapes, world-class safari, and Windhoek\'s growing tech scene.',
-    highlights: ['Tax-free foreign income', 'World-class safari & deserts', 'Growing tech community']
+    description: 'Namibia\'s digital nomad visa invites remote workers to experience vast desert landscapes, top safari destinations, and Windhoek\'s growing tech scene.',
+    highlights: ['Tax-free foreign income', 'Top safari & desert scenery', 'Growing tech community']
   }
 ];
 

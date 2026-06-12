@@ -318,7 +318,7 @@ export default function JobsPage() {
           {userSkills.length > 0 && !profileComplete && (
             <Link href="/editor" className="inline-flex items-center gap-1.5 mt-3 text-xs text-zinc-400 hover:text-zinc-600 transition-colors">
               <Target className="h-3 w-3" />
-              Complete your profile to unlock skill matching →
+              Complete your profile to enable skill matching →
             </Link>
           )}
           {userSkills.length === 0 && (

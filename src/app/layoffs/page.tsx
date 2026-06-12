@@ -55,7 +55,7 @@ function EmailGate() {
           We&apos;ve sent a confirmation email to <span className="font-medium text-zinc-700 dark:text-zinc-200">{email}</span>.
         </p>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-          Click the link in the email to unlock the full report.
+          Click the link in the email to access the full report.
         </p>
         <p className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-5">Didn&apos;t receive it? Check your spam folder.</p>
       </div>
@@ -70,7 +70,7 @@ function EmailGate() {
       </div>
       <h3 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 dark:text-zinc-50 mb-3">Enter your email to read the full report</h3>
       <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 max-w-sm mx-auto leading-relaxed">
-        We&apos;ll send you a confirmation link to unlock all sections, exhibits, and data breakdowns.
+        We&apos;ll send you a confirmation link to access all sections, exhibits, and data breakdowns.
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
         <input
