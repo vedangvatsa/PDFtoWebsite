@@ -39,7 +39,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'hoi-an': 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&q=80',
   'siargao': 'https://images.unsplash.com/photo-1551415923-a2297c7fda79?auto=format&fit=crop&w=800&q=80',
   'colombo': 'https://images.unsplash.com/photo-1578165219176-ece04edbd053?auto=format&fit=crop&w=800&q=80',
-  'johor': 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=80',
+  'johor': '/images/cities/johor.png',
   'singapore': 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=80',
 
   // ── Indonesia ──
@@ -82,7 +82,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'barcelona': 'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80',
   'berlin': 'https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=800&q=80',
   'prague': 'https://images.unsplash.com/photo-1541849546-216549ae216d?auto=format&fit=crop&w=800&q=80',
-  'budapest': 'https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&w=800&q=80',
+  'budapest': '/images/cities/budapest.png',
   'athens': 'https://images.unsplash.com/photo-1555993539-1732b0258235?auto=format&fit=crop&w=800&q=80',
   'tbilisi': 'https://images.unsplash.com/photo-1565008576549-57569a49371d?auto=format&fit=crop&w=800&q=80',
   'amsterdam': 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=800&q=80',
@@ -129,7 +129,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'lima': 'https://images.unsplash.com/photo-1577587230708-187fdbef4d91?auto=format&fit=crop&w=800&q=80',
   'cusco': 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80',
   'santiago': 'https://images.unsplash.com/photo-1517030330234-94c4fb948ebc?auto=format&fit=crop&w=800&q=80',
-  'valparaiso': 'https://images.unsplash.com/photo-1518639192441-8fce0a366e2e?auto=format&fit=crop&w=800&q=80',
+  'valparaiso': 'https://images.unsplash.com/photo-1601000938259-9e92002320b2?auto=format&fit=crop&w=800&q=80',
   'montevideo': 'https://images.unsplash.com/photo-1611510338559-2f463335092c?auto=format&fit=crop&w=800&q=80',
   'antigua': 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80',
   'roatan': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
