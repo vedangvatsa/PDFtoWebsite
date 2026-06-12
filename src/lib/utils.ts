@@ -38,7 +38,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'phuket': 'https://images.unsplash.com/photo-1537956965359-7573183d1f57?auto=format&fit=crop&w=800&q=80',
   'hoi-an': 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&q=80',
   'siargao': 'https://images.unsplash.com/photo-1551415923-a2297c7fda79?auto=format&fit=crop&w=800&q=80',
-  'colombo': 'https://images.unsplash.com/photo-1578165219176-ece04edbd053?auto=format&fit=crop&w=800&q=80',
+  'colombo': '/images/cities/colombo.png',
   'johor': '/images/cities/johor.png',
   'singapore': 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=80',
 
@@ -71,7 +71,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'zanzibar': 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=800&q=80',
   'cape-town': 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=80',
   'accra': 'https://images.unsplash.com/photo-1614531341773-3bff8b7cb3fc?auto=format&fit=crop&w=800&q=80',
-  'nairobi': 'https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=800&q=80',
+  'nairobi': '/images/cities/nairobi.png',
   'lagos': 'https://images.unsplash.com/photo-1618828665011-0abd973f7bb8?auto=format&fit=crop&w=800&q=80',
   'kilifi': 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
   'marrakech': 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=800&q=80',
