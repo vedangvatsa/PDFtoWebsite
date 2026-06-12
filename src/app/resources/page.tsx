@@ -518,7 +518,7 @@ export default function ResourcesPage() {
         </Link>
 
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-10">
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
             Resources & Tools
           </h1>
