@@ -49,6 +49,13 @@ interface CityData {
   };
   nomad_score: number;
   nearby: string[];
+  internet?: {
+    download_mbps: number;
+    upload_mbps: number;
+    latency_ms: number;
+    test_count: number;
+    quarter: string;
+  };
 }
 
 function loadCities(): CityData[] {
@@ -223,9 +230,9 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
           />
           <StatCard
             icon={<Wifi className="w-4 h-4" />}
-            label="Coworking"
-            value={data.spaces.coworking.toString()}
-            sub="spaces available"
+            label="Internet Speed"
+            value={data.internet && data.internet.download_mbps > 0 ? `${data.internet.download_mbps} Mbps` : `${data.spaces.coworking} spaces`}
+            sub={data.internet && data.internet.download_mbps > 0 ? `↑${data.internet.upload_mbps} Mbps · ${data.internet.latency_ms}ms ping` : 'coworking available'}
           />
         </div>
 
