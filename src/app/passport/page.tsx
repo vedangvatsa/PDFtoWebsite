@@ -243,7 +243,7 @@ export default function VisaCheckerPage() {
             Visa Checker
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl">
-            Select your passport to see visa requirements for 199 countries — visa-free access, visa on arrival, eVisa, or visa required.
+            Select your passport to see visa requirements for 199 countries: visa-free access, visa on arrival, eVisa, or visa required.
           </p>
         </div>
 
@@ -348,7 +348,7 @@ export default function VisaCheckerPage() {
                   <Info className="w-4 h-4 shrink-0 mt-0.5" />
                   <p>
                     Data from <a href="https://github.com/ilyankou/passport-index-dataset" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 transition-colors">Passport Index</a>.
-                    Requirements change frequently — always verify with the destination embassy or{' '}
+                    Requirements change frequently. Always verify with the destination embassy or{' '}
                     <a href="https://www.iatatravelcentre.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 transition-colors">IATA Travel Centre</a>{' '}
                     before booking travel.
                   </p>

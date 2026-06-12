@@ -406,7 +406,7 @@ export default function LayoffsReport() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════
-            EMAIL GATE — blur + overlay for gated content
+            EMAIL GATE - blur + overlay for gated content
         ═══════════════════════════════════════════════════════════ */}
         {!unlocked && !checkingAccess && (
           <div className="relative mb-28">
@@ -435,7 +435,7 @@ export default function LayoffsReport() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            GATED CONTENT — only visible after email confirmation
+            GATED CONTENT - only visible after email confirmation
         ═══════════════════════════════════════════════════════════ */}
         {unlocked && (
           <>
@@ -602,7 +602,7 @@ export default function LayoffsReport() {
                     AI and Machine Learning is now the single most demanded skill category, appearing in 21% of all open roles across our entire dataset. Platform engineering (17%) and Support (16%) follow closely. The intense focus on Platform and Infrastructure (9%) confirms that the massive compute requirements of the AI boom are driving actual headcount growth.
                   </p>
                   <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85]">
-                    Growth (15%) and Solutions (14%) indicate that companies are still investing in go-to-market, but they want technical sellers and growth hackers who can drive revenue efficiency. For job seekers, the demand hasn't disappeared—it has just violently shifted toward AI, infrastructure, and revenue-generating roles.
+                    Growth (15%) and Solutions (14%) indicate that companies are still investing in go-to-market, but they want technical sellers and growth hackers who can drive revenue efficiency. For job seekers, the demand has not disappeared. It has just violently shifted toward AI, infrastructure, and revenue-generating roles.
                   </p>
                 </div>
                 <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-8 h-full flex flex-col justify-center">

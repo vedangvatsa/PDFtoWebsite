@@ -634,7 +634,7 @@ const VISAS: VisaData[] = [
     duration: '1 year (renewable)',
     durationDisplay: '1 year',
     fee: '$110',
-    taxImplications: 'Flat income tax rate of 10% — one of the lowest in the EU.',
+    taxImplications: 'Flat income tax rate of 10%, one of the lowest in the EU.',
     documents: [
       'Valid passport',
       'Proof of remote employment with a non-Bulgarian company',
@@ -810,7 +810,7 @@ const VISAS: VisaData[] = [
       'Proof of accommodation'
     ],
     officialUrl: 'https://www.argentina.gob.ar/interior/migraciones',
-    description: 'Argentina\'s digital nomad visa offers Buenos Aires\' world-class culture, incredible steaks, and tango — all at very favorable exchange rates for foreign earners.',
+    description: 'Argentina\'s digital nomad visa offers Buenos Aires\' world-class culture, incredible steaks, and tango, all at very favorable exchange rates for foreign earners.',
     highlights: ['No income minimum', 'Tax-exempt for 12 months', 'Favorable exchange rates']
   },
   {
@@ -843,7 +843,7 @@ const VISAS: VisaData[] = [
     duration: '9 months (renewable up to 18 months)',
     durationDisplay: '9-18 months',
     fee: '$300',
-    taxImplications: 'Panama uses a territorial tax system — foreign-sourced income is completely tax-free.',
+    taxImplications: 'Panama uses a territorial tax system. Foreign-sourced income is completely tax-free.',
     documents: [
       'Valid passport',
       'Proof of remote employment with a company outside Panama',

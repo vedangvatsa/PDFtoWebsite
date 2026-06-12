@@ -861,7 +861,13 @@ export default function EditorPage() {
             return;
         }
         
-        const RESERVED_SLUGS = ['admin', 'blog', 'editor', 'signup', 'login', 'preview', 'privacy', 'terms', 'auth', 'api', 'settings', 'dashboard', 'sitemap', 'robots', 'media'];
+        const RESERVED_SLUGS = [
+            'admin', 'blog', 'editor', 'signup', 'login', 'preview', 'privacy', 'terms', 'auth', 'api',
+            'settings', 'dashboard', 'sitemap', 'robots', 'media', 'nomad', 'jobs', 'visas', 'costs',
+            'wifi', 'passport', 'hiring', 'talent', 'discover', 'layoffs', 'news', 'resources', 'contact',
+            'story', 'compare', 'companies', 'climate', 'fire', 'insurance', 'safety', 'salary', 'schengen',
+            'tax', 'timezone', 'versus', 'walkability',
+        ];
         if (RESERVED_SLUGS.includes(cleanSlug)) {
             setSlugError('This URL is reserved. Please choose a different one.');
             setSlugSuccess(false);
@@ -873,14 +879,28 @@ export default function EditorPage() {
         setSlugSuccess(false);
 
         const timer = setTimeout(async () => {
+            // Check if slug is taken by another user
             const { data } = await supabase.from('profiles').select('id').eq('username', profile.slug).maybeSingle();
             if (data && data.id !== user.id) {
                 setSlugError('This URL is already taken.');
                 setSlugSuccess(false);
-            } else {
-                setSlugError(null);
-                setSlugSuccess(true);
+                setIsCheckingSlug(false);
+                return;
             }
+
+            // Check if slug matches an active company careers page
+            const decodedSearch = cleanSlug.replace(/-/g, '%').toLowerCase();
+            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+            const { data: companyJobs } = await supabase.from('jobs').select('id').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
+            if (companyJobs && companyJobs.length > 0) {
+                setSlugError('This URL is used by a company page. Please choose a different one.');
+                setSlugSuccess(false);
+                setIsCheckingSlug(false);
+                return;
+            }
+
+            setSlugError(null);
+            setSlugSuccess(true);
             setIsCheckingSlug(false);
         }, 400);
 

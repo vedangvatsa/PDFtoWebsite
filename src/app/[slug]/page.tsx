@@ -128,9 +128,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ? profile.summary.slice(0, 160)
     : `View ${name}'s professional profile${roleText}.`;
 
-  // Detect empty/default profiles — don't let search engines index them
+  // Detect empty/default profiles
   const isEmptyProfile = (!name || name === 'Professional Profile' || name === 'Your Name')
     || (!profile.summary && data.workExperience.length === 0 && data.education.length === 0 && (!profile.skills || profile.skills.length === 0));
+
+  // If profile is empty, check if this slug matches an active company page.
+  // Company careers pages should take priority over abandoned user profiles.
+  if (isEmptyProfile) {
+    const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
+    if (jobs && jobs.length > 0) {
+      const { getCompanyMeta } = await import('@/lib/company-data');
+      const meta = getCompanyMeta(slug);
+      const companyDisplay = jobs[0].company || slug.replace(/-/g, ' ');
+      const { count } = await supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo);
+      const jobCount = count || 0;
+      const compTitle = `${companyDisplay} Careers - ${jobCount} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
+      const compDesc = meta
+        ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount} open positions. Browse roles and apply.`
+        : `${companyDisplay} is hiring with ${jobCount} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
+      return {
+        title: compTitle,
+        description: compDesc.slice(0, 160),
+        alternates: { canonical: canonicalUrl },
+        openGraph: { type: 'website', url: canonicalUrl, title: compTitle, description: compDesc.slice(0, 160), siteName: 'CVin.Bio' },
+        twitter: { card: 'summary_large_image', title: compTitle, description: compDesc.slice(0, 160) },
+        robots: { index: true, follow: true },
+      };
+    }
+  }
 
   return {
     title,
@@ -447,7 +474,24 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     );
   }
 
-  const data = await getProfileBySlug(slug);
+  let data = await getProfileBySlug(slug);
+
+  // If profile exists but is empty/default, check if this slug matches a company.
+  // Company careers pages take priority over abandoned user profiles.
+  if (data) {
+    const { profile: p } = data;
+    const isEmpty = (!p.fullName || p.fullName === 'Professional Profile' || p.fullName === 'Your Name')
+      || (!p.summary && data.workExperience.length === 0 && data.education.length === 0 && (!p.skills || p.skills.length === 0));
+    if (isEmpty) {
+      const decodedCheck = slug.replace(/-/g, '%').toLowerCase();
+      const thirtyDaysCheck = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      const { data: companyJobs } = await supabaseForCompany.from('jobs').select('id').ilike('company', `${decodedCheck}%`).gt('created_at', thirtyDaysCheck).limit(1);
+      if (companyJobs && companyJobs.length > 0) {
+        data = null; // Fall through to company page render below
+      }
+    }
+  }
+
   if (!data) {
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();

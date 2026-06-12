@@ -92,7 +92,7 @@ export default function VersusPage() {
         valueB: cityB.weather.avg_temp,
         formatA: `${cityA.weather.avg_temp}°C`,
         formatB: `${cityB.weather.avg_temp}°C`,
-        higherWins: null, // neutral — no winner
+        higherWins: null, // neutral - no winner
       },
       {
         label: 'Humidity',
