@@ -52,7 +52,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'tokyo': 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80',
   'seoul': 'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?auto=format&fit=crop&w=800&q=80',
   'shanghai': 'https://images.unsplash.com/photo-1538428494232-9c0d8a3ab403?auto=format&fit=crop&w=800&q=80',
-  'komoro': 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=800&q=80',
+  'komoro': '/images/cities/komoro.png',
 
   // ── South Asia ──
   'bangalore': 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=80',
@@ -126,7 +126,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'sao-paulo': 'https://images.unsplash.com/photo-1543059080-f9b1272213d5?auto=format&fit=crop&w=800&q=80',
   'florianopolis': 'https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?auto=format&fit=crop&w=800&q=80',
   'florianopolis-2': 'https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?auto=format&fit=crop&w=800&q=80',
-  'lima': 'https://images.unsplash.com/photo-1577587230708-187fdbef4d91?auto=format&fit=crop&w=800&q=80',
+  'lima': '/images/cities/lima.png',
   'cusco': 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80',
   'santiago': 'https://images.unsplash.com/photo-1517030330234-94c4fb948ebc?auto=format&fit=crop&w=800&q=80',
   'valparaiso': 'https://images.unsplash.com/photo-1601000938259-9e92002320b2?auto=format&fit=crop&w=800&q=80',
