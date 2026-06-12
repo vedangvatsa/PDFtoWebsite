@@ -168,19 +168,19 @@ export async function GET() {
     content_resources: [
       {
         name: 'Tech Talent Report 2026',
-        url: `${siteUrl}/tech-talent-report`,
+        url: `${siteUrl}/hiring`,
         description: `Analysis of ${stats.jobCountDisplay} tech job listings. Skills demand, hiring trends, and compensation data.`,
         type: 'research_report',
       },
       {
         name: 'Tech Layoffs Report 2026',
-        url: `${siteUrl}/layoffs-report`,
+        url: `${siteUrl}/layoffs`,
         description: '750,000+ tech workers laid off since 2020. Data on who is cutting, why, and labor market impact.',
         type: 'research_report',
       },
       {
         name: 'Remote Talent Report 2026',
-        url: `${siteUrl}/remote-talent-report`,
+        url: `${siteUrl}/talent`,
         description: '34 million remote workers. Hiring trends, compensation premiums, and RTO mandate data.',
         type: 'research_report',
       },

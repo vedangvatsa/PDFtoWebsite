@@ -10,11 +10,11 @@ export const metadata: Metadata = {
     'visa checker', 'visa requirements', 'passport index', 'visa free countries',
     'digital nomad visa', 'travel visa', 'visa on arrival',
   ],
-  alternates: { canonical: `${siteUrl}/visa-checker` },
+  alternates: { canonical: `${siteUrl}/passport` },
   openGraph: {
     title: 'Visa Checker — Requirements for 199 Countries',
     description: 'Check visa requirements for any passport country.',
-    url: `${siteUrl}/visa-checker`,
+    url: `${siteUrl}/passport`,
     siteName: 'CVin.Bio',
     type: 'website',
   },

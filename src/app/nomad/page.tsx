@@ -11,7 +11,7 @@ import { Coins, GitCompare, ShieldCheck, Wifi, Globe, Bookmark } from 'lucide-re
 
 const TOOLS = [
   {
-    href: '/cost-of-living',
+    href: '/costs',
     icon: <Coins className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Cost of Living',
     desc: 'Compare costs across 95 cities',
@@ -29,13 +29,13 @@ const TOOLS = [
     desc: 'Explore active digital nomad visas',
   },
   {
-    href: '/internet-speeds',
+    href: '/wifi',
     icon: <Wifi className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Internet Speeds',
     desc: 'WiFi speed rankings by city',
   },
   {
-    href: '/visa-checker',
+    href: '/passport',
     icon: <Globe className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Visa Checker',
     desc: 'Visa requirements by passport',

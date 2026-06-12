@@ -671,7 +671,7 @@ export async function GET(request: NextRequest) {
     // ── Product Timeline ──
     const productTimeline = [
       { date: '2026-06-08', tag: 'build', title: 'Suspense Wrapper for /nomad/compare', desc: 'Resolved Next.js prerendering error by wrapping the comparison dashboard search-parameter logic in a React Suspense boundary.' },
-      { date: '2026-06-08', tag: 'popup', title: 'Telegram Job Feed Popup Expansion', desc: 'Integrated Telegram Job Popup across core platforms, including /companies, /layoffs-report, /tech-talent-report, and /remote-talent-report.' },
+      { date: '2026-06-08', tag: 'popup', title: 'Telegram Job Feed Popup Expansion', desc: 'Integrated Telegram Job Popup across core platforms, including /companies, /layoffs, /hiring, and /talent.' },
       { date: '2026-06-08', tag: 'nomad', title: 'Nomad Tools & Calculations', desc: 'Launched 3 interactive tools for digital nomads: Schengen Visa Calculator, Cost of Living comparison, and City Comparison dashboard.' },
       { date: '2026-06-08', tag: 'nomad', title: 'Digital Nomad Profile Pages', desc: 'Generated and polished highly visual city profile pages for 95 digital nomad destinations, aligning completely with the repository design guidelines.' },
       { date: '2026-06-08', tag: 'data', title: 'Coworking Space Aggregator', desc: 'Integrated 492 coworking spaces across 53 global nomad cities to provide nomads with local working infrastructure detail.' },
