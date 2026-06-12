@@ -45,7 +45,6 @@ export const CITY_IMAGES: Record<string, string> = {
   // ── Indonesia ──
   'bali': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
   'canggu': 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=800&q=80',
-  'bali-cangguubud': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
 
   // ── East Asia ──
   'taipei': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80',
@@ -95,7 +94,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'krakow': 'https://images.unsplash.com/photo-1558005137-d9619a5c539f?auto=format&fit=crop&w=800&q=80',
   'bucharest': 'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=800&q=80',
   'belgrade': 'https://images.unsplash.com/photo-1590073844006-33379778ae09?auto=format&fit=crop&w=800&q=80',
-  'vilnius': 'https://images.unsplash.com/photo-1577975882846-431adc8c2009?auto=format&fit=crop&w=800&q=80',
+  'vilnius': '/images/cities/vilnius.png',
   'riga': 'https://images.unsplash.com/photo-1513622470522-26c3c8a854bc?auto=format&fit=crop&w=800&q=80',
   'dubrovnik': 'https://images.unsplash.com/photo-1580137189272-c9379f8864fd?auto=format&fit=crop&w=800&q=80',
   'split': 'https://images.unsplash.com/photo-1504512485720-7d83a16ee930?auto=format&fit=crop&w=800&q=80',
@@ -109,7 +108,6 @@ export const CITY_IMAGES: Record<string, string> = {
   // ── Spain (Canaries) ──
   'tenerife': 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80',
   'las-palmas': 'https://images.unsplash.com/photo-1559628233-100c798642d4?auto=format&fit=crop&w=800&q=80',
-  'gran-canaria-las-palmas': 'https://images.unsplash.com/photo-1559628233-100c798642d4?auto=format&fit=crop&w=800&q=80',
 
   // ── Americas ──
   'playa-del-carmen': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
@@ -124,8 +122,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'buenos-aires': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&w=800&q=80',
   'rio-de-janeiro': 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80',
   'sao-paulo': 'https://images.unsplash.com/photo-1543059080-f9b1272213d5?auto=format&fit=crop&w=800&q=80',
-  'florianopolis': 'https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?auto=format&fit=crop&w=800&q=80',
-  'florianopolis-2': 'https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?auto=format&fit=crop&w=800&q=80',
+  'florianopolis': '/images/cities/florianopolis.png',
   'lima': '/images/cities/lima.png',
   'cusco': 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80',
   'santiago': 'https://images.unsplash.com/photo-1517030330234-94c4fb948ebc?auto=format&fit=crop&w=800&q=80',
