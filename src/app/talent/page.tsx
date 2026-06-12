@@ -384,7 +384,7 @@ export default function RemoteTalentReport() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════
-            EMAIL GATE — blur + overlay for gated content
+            EMAIL GATE - blur + overlay for gated content
         ═══════════════════════════════════════════════════════════ */}
         {!unlocked && !checkingAccess && (
           <div className="relative mb-28">
@@ -417,7 +417,7 @@ export default function RemoteTalentReport() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            GATED CONTENT — only visible after email confirmation
+            GATED CONTENT - only visible after email confirmation
         ═══════════════════════════════════════════════════════════ */}
         {unlocked && (
           <>
@@ -430,7 +430,7 @@ export default function RemoteTalentReport() {
                 Previously, Engineering roles were overwhelmingly remote while other departments lagged behind. Today, that gap has collapsed. Engineering (16%) and Design (16%) still lead slightly, but Sales (15%) and Marketing (14%) are right behind them.
               </p>
               <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85]">
-                What this means is that remote work is no longer a perk reserved exclusively for software developers. The overall pool of remote jobs has shrunk, but those remaining roles are distributed much more evenly across all knowledge-worker departments—except for Operations, which remains heavily tethered to the physical office at just 6% remote.
+                What this means is that remote work is no longer a perk reserved exclusively for software developers. The overall pool of remote jobs has shrunk, but those remaining roles are distributed much more evenly across all knowledge-worker departments, except for Operations, which remains heavily tethered to the physical office at just 6% remote.
               </p>
             </div>
             <div className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/40 rounded-2xl p-8 h-full flex flex-col justify-center">

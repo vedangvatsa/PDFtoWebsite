@@ -294,7 +294,7 @@ export default function TimezonePage() {
                             ? 'bg-emerald-500 dark:bg-emerald-500/80'
                             : 'bg-zinc-100 dark:bg-zinc-800/50'
                         }`}
-                        title={allWork ? `UTC ${h}:00 — All cities working` : `UTC ${h}:00`}
+                        title={allWork ? `UTC ${h}:00 - All cities working` : `UTC ${h}:00`}
                       />
                     );
                   })}

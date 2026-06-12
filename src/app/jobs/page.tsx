@@ -416,7 +416,7 @@ export default function JobsPage() {
           </div>
         )}
 
-        {/* Job Cards — 2-column grid */}
+        {/* Job Cards - 2-column grid */}
         {!loading && jobs.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {jobs.map((job) => (

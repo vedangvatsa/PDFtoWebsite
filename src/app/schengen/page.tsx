@@ -149,7 +149,7 @@ export default function SchengenPage() {
             <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50">How the 90/180 Rule Works</h3>
           </div>
           <div className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
-            <p>The Schengen area allows stays of up to <strong>90 days within any 180-day period</strong>. This is a rolling window — not a calendar year.</p>
+            <p>The Schengen area allows stays of up to <strong>90 days within any 180-day period</strong>. This is a rolling window, not a calendar year.</p>
             <p>For any given day, the system looks back 180 days and counts how many of those days were spent in the Schengen zone. If the count reaches 90, you must leave.</p>
             <p className="text-xs text-zinc-400 dark:text-zinc-500 pt-2">⚠️ Since April 2026, the EU Entry/Exit System (EES) biometrically tracks all border crossings. Overstays are flagged instantly.</p>
           </div>

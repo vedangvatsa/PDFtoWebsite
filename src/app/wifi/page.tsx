@@ -11,12 +11,12 @@ import { CITY_IMAGES, getCitySlug } from '@/lib/utils';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'Internet Speeds by City — Digital Nomad WiFi Rankings',
+  title: 'Internet Speeds by City | Digital Nomad WiFi Rankings',
   description: 'Compare fixed broadband internet speeds across 95 digital nomad cities. Download, upload, and latency data from Ookla Speedtest.',
   keywords: ['internet speed', 'wifi speed', 'digital nomad', 'broadband', 'remote work', 'nomad wifi'],
   alternates: { canonical: `${siteUrl}/wifi` },
   openGraph: {
-    title: 'Internet Speeds — Digital Nomad WiFi Rankings',
+    title: 'Internet Speeds | Digital Nomad WiFi Rankings',
     description: 'Compare broadband speeds across 95 nomad cities worldwide.',
     url: `${siteUrl}/wifi`,
     siteName: 'CVin.Bio',

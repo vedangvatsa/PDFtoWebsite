@@ -32,7 +32,7 @@ const PROVIDERS: InsuranceProvider[] = [
     features: [
       'Emergency medical up to $250K',
       'No deductible on most plans',
-      'Subscription model — no end date',
+      'Subscription model, no end date',
       'Covers COVID-19',
       'Home country coverage (15 days)',
     ],
