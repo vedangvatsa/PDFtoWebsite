@@ -7,7 +7,7 @@ import { TelegramJobPopup } from '@/components/telegram-job-popup';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
-import { Coins, GitCompare, ShieldCheck, Wifi } from 'lucide-react';
+import { Coins, GitCompare, ShieldCheck, Wifi, Globe, Bookmark } from 'lucide-react';
 
 const TOOLS = [
   {
@@ -33,6 +33,18 @@ const TOOLS = [
     icon: <Wifi className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Internet Speeds',
     desc: 'WiFi speed rankings by city',
+  },
+  {
+    href: '/visa-checker',
+    icon: <Globe className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
+    title: 'Visa Checker',
+    desc: 'Visa requirements by passport',
+  },
+  {
+    href: '/resources',
+    icon: <Bookmark className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
+    title: 'Resources',
+    desc: 'Insurance, banking, eSIM & more',
   },
 ];
 
@@ -75,7 +87,7 @@ export default function NomadMapPage() {
         </div>
 
         {/* Tools Navigation */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10">
           {TOOLS.map((tool) => (
             <Link
               key={tool.href}
