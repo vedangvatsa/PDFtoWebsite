@@ -130,7 +130,7 @@ export default function Home() {
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-balance">
               CV format for AI agents
             </h1>
-            <Link href="/ai-discovery" className="inline-block text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/discover" className="inline-block text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors">
               Get an AI-ready profile and auto-match with {jobCount ? jobCount.toLocaleString() : '24,000+'} jobs
             </Link>
           </div>

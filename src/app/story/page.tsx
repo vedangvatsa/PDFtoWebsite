@@ -608,7 +608,7 @@ export default async function StoryPage() {
               {`Job board aggregates listings from OpenAI, Anthropic, Stripe, Airbnb, Coinbase, Cloudflare, Databricks, Snowflake, and ${stats.totalCompanies - 8}+ others.`} Profile engine parses CVs into structured, schema-annotated pages. MCP server is operational.
             </p>
             <p className="text-[15px] text-zinc-500 dark:text-zinc-400 leading-[1.85]">
-              Three published research reports (<Cite href="https://cvin.bio/tech-talent-report">Tech Talent 2026</Cite>, <Cite href="https://cvin.bio/layoffs-report">Layoffs 2026</Cite>, <Cite href="https://cvin.bio/remote-talent-report">Remote Talent 2026</Cite>) gated behind email capture. Active distribution on LinkedIn and X.
+              Three published research reports (<Cite href="https://cvin.bio/hiring">Tech Talent 2026</Cite>, <Cite href="https://cvin.bio/layoffs">Layoffs 2026</Cite>, <Cite href="https://cvin.bio/talent">Remote Talent 2026</Cite>) gated behind email capture. Active distribution on LinkedIn and X.
             </p>
           </div>
         </section>

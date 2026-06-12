@@ -10,7 +10,7 @@ export default function MicroFooter() {
         <span>&middot;</span>
         <Link href="/contact" className="hover:text-muted-foreground transition-colors">Contact</Link>
         <span>&middot;</span>
-        <Link href="/ai-discovery" className="hover:text-muted-foreground transition-colors">AI Discovery</Link>
+        <Link href="/discover" className="hover:text-muted-foreground transition-colors">AI Discovery</Link>
         <span>&middot;</span>
         <div className="flex items-center space-x-3">
           <a href="https://www.linkedin.com/company/cvinbio" target="_blank" rel="noopener noreferrer" className="hover:text-muted-foreground transition-colors" aria-label="LinkedIn">

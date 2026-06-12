@@ -7,14 +7,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 const reports: Record<string, { title: string; path: string; fullPath: string; tagline: string }> = {
   'remote-talent': {
     title: 'The Remote Talent Report 2026',
-    path: '/remote-talent-report',
-    fullPath: '/remote-talent-report?access=confirmed',
+    path: '/talent',
+    fullPath: '/talent?access=confirmed',
     tagline: '34 million Americans work remotely. Companies offering flexibility see 3x larger candidate pools.',
   },
   'layoffs': {
     title: 'The Tech Layoffs Report 2026',
-    path: '/layoffs-report',
-    fullPath: '/layoffs-report?access=confirmed',
+    path: '/layoffs',
+    fullPath: '/layoffs?access=confirmed',
     tagline: '750,000+ tech workers displaced since 2020. Who is cutting, why, and what happens next.',
   },
 };
