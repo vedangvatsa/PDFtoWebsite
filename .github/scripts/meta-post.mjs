@@ -146,6 +146,21 @@ async function postToInstagram(text, mediaUrl, isVideo = false) {
   }
 }
 
+// ── Fetch recent Threads posts for dedup ──────────────────────────────────
+async function fetchRecentThreadsTexts() {
+  if (!THREADS_USER_ID || !THREADS_TOKEN) return [];
+  try {
+    const res = await fetch(
+      `https://graph.threads.net/v1.0/${THREADS_USER_ID}/threads?fields=id,text&limit=25&access_token=${THREADS_TOKEN}`
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.data || []).map(p => (p.text || '').slice(0, 60).toLowerCase());
+  } catch {
+    return [];
+  }
+}
+
 // ── Threads Post ──────────────────────────────────────────────────────────
 async function postToThreads(text, mediaUrl, isVideo = false) {
   if (!THREADS_USER_ID || !THREADS_TOKEN) return false;
@@ -169,6 +184,10 @@ async function postToThreads(text, mediaUrl, isVideo = false) {
       return false;
     }
 
+    // Container created — Threads will auto-publish even if the publish
+    // call below fails or times out, so we treat this as success.
+    console.log(`📦 Threads: container created ${createData.id}`);
+
     let ready = false;
     for (let i = 0; i < (isVideo ? 6 : 2); i++) {
         await new Promise(r => setTimeout(r, 5000));
@@ -187,11 +206,12 @@ async function postToThreads(text, mediaUrl, isVideo = false) {
 
     if (pubData.id) {
       console.log(`✅ Threads: published ${pubData.id}`);
-      return true;
     } else {
-      console.error('❌ Threads publish error:', JSON.stringify(pubData));
-      return false;
+      // Log the error but still return true — container was created
+      // and Threads will auto-publish it
+      console.warn('⚠️ Threads publish response missing id (container was created, will auto-publish):', JSON.stringify(pubData));
     }
+    return true; // Always true once container is created
   } catch (e) {
     console.error('❌ Threads exception:', e.message);
     return false;
@@ -397,8 +417,12 @@ async function main() {
     console.log('  Instagram: all posts published ✅');
   }
 
-  // 3. Post to Threads (at its own index)
+  // 3. Post to Threads (at its own index) — with dedup check
   if (hasThreads && thIdx < items.length) {
+    // Fetch recent Threads posts to prevent duplicates
+    const recentThreadsTexts = await fetchRecentThreadsTexts();
+    console.log(`  🔍 Fetched ${recentThreadsTexts.length} recent Threads posts for dedup check`);
+
     let thCurrent = thIdx;
     while (thCurrent < items.length && shouldSkip('threads', thCurrent)) {
       console.log(`  ⏭️ Threads: skipping post #${thCurrent + 1} after ${MAX_RETRIES} failures`);
@@ -411,7 +435,18 @@ async function main() {
       const thText = thItem.text.trim();
       console.log(`\n📝 Threads Post #${thCurrent + 1}/${items.length}: "${thText.substring(0, 60)}..."`);
 
-      if (!thItem.img) {
+      // Dedup: check if this text was already posted
+      const textPrefix = thText.slice(0, 60).toLowerCase();
+      const alreadyPosted = recentThreadsTexts.some(t => t === textPrefix || textPrefix.startsWith(t) || t.startsWith(textPrefix));
+
+      if (alreadyPosted) {
+        console.log(`  ⏭️ DEDUP: This content was already posted to Threads. Advancing index without re-posting.`);
+        state.threads.index = thCurrent + 1;
+        clearRetries('threads');
+        anySuccess = true;
+        // Save state immediately to prevent index regression on git push failure
+        saveState(state);
+      } else if (!thItem.img) {
         console.error('  ❌ No image for this post. Skipping.');
         state.threads.index = thCurrent + 1;
         clearRetries('threads');
@@ -425,6 +460,8 @@ async function main() {
           clearRetries('threads');
           anySuccess = true;
           console.log(`  ✅ Threads index → ${thCurrent + 1}`);
+          // Save state immediately to prevent index regression on git push failure
+          saveState(state);
         } else {
           recordFailure('threads', thCurrent);
           console.error(`  ❌ Threads post failed (attempt ${getRetries('threads')}/${MAX_RETRIES})`);
@@ -438,8 +475,10 @@ async function main() {
   if (anySuccess) {
     state.lastPostedAt = new Date().toISOString();
     saveState(state);
-    console.log(`\n📊 Post complete! FB:${state.facebook.index} IG:${state.instagram.index} TH:${state.threads.index}`);
+    console.log(`\n📊 Post complete! FB:${state.facebook?.index} IG:${state.instagram?.index} TH:${state.threads?.index}`);
   } else {
+    // Save state even on failure (retries/skip counts need to persist)
+    saveState(state);
     console.error('\n❌ All configured Meta platforms failed to publish. Aborting.');
     process.exit(1);
   }
