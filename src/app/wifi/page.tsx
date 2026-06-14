@@ -6,7 +6,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { ArrowLeft, Wifi, ArrowDown, ArrowUp, Clock, Activity, Info } from 'lucide-react';
-import { CITY_IMAGES, getCitySlug } from '@/lib/utils';
+import { CITY_IMAGES, PAGE_CONTAINER, getCitySlug } from '@/lib/utils';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -79,7 +79,7 @@ export default function InternetSpeedsPage() {
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
-      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
+      <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"

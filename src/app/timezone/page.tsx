@@ -1,4 +1,5 @@
 'use client';
+import { PAGE_CONTAINER } from '@/lib/utils';
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
@@ -108,7 +109,7 @@ export default function TimezonePage() {
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
-      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
+      <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"

@@ -1,3 +1,4 @@
+import { PAGE_CONTAINER } from '@/lib/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
@@ -76,7 +77,7 @@ export default function NomadMapPage() {
       <Header />
       {/* Preload the data file so it starts downloading immediately */}
       <link rel="preload" href="/nomad-data-v2.json" as="fetch" crossOrigin="anonymous" />
-      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
+      <main id="main-content" className={PAGE_CONTAINER}>
         <div className="flex flex-col mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 transition-colors">
             Digital Nomad Directory
