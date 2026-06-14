@@ -1,0 +1,46 @@
+name: One-off Threads Post
+
+on:
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post to Threads
+        env:
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+        run: |
+          TEXT="That look when your boss realizes you actually have options. Find yours at cvin.bio/jobs"
+          IMAGE_URL="https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/viral3/boss-realizes-employee-has-better-job-options-available.jpg"
+          
+          echo "Creating Threads container..."
+          RESPONSE=$(curl -s -X POST "https://graph.threads.net/v1.0/${THREADS_USER_ID}/threads" \
+            -d "text=${TEXT}" \
+            -d "media_type=IMAGE" \
+            -d "image_url=${IMAGE_URL}" \
+            -d "access_token=${THREADS_ACCESS_TOKEN}")
+          echo "Container: $RESPONSE"
+          
+          CONTAINER_ID=$(echo $RESPONSE | jq -r '.id // empty')
+          if [ -z "$CONTAINER_ID" ]; then
+            echo "❌ Failed to create container"
+            exit 1
+          fi
+          
+          echo "Waiting for processing..."
+          sleep 10
+          
+          echo "Publishing..."
+          PUB_RESPONSE=$(curl -s -X POST "https://graph.threads.net/v1.0/${THREADS_USER_ID}/threads_publish" \
+            -d "creation_id=${CONTAINER_ID}" \
+            -d "access_token=${THREADS_ACCESS_TOKEN}")
+          echo "Publish: $PUB_RESPONSE"
+          
+          PUB_ID=$(echo $PUB_RESPONSE | jq -r '.id // empty')
+          if [ -n "$PUB_ID" ]; then
+            echo "✅ Posted! ID: $PUB_ID"
+          else
+            echo "❌ Publish failed"
+          fi
