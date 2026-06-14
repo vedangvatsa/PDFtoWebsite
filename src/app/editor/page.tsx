@@ -991,6 +991,20 @@ export default function EditorPage() {
             setProfile(prev => ({ ...prev, email: value }));
         }
 
+        if (name === 'linkedin') {
+            // Strip to just the handle: remove URL parts, "in/", and reject generic "LinkedIn" text
+            let v = value.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/^linkedin\.com\//, '').replace(/^in\//, '').replace(/\/+$/, '');
+            if (/^linkedin$/i.test(v) || /^linkedin\s+profile$/i.test(v)) v = '';
+            if (v !== value) { value = v; setProfile(prev => ({ ...prev, linkedin: value })); }
+        }
+
+        if (name === 'github') {
+            // Strip to just the handle: remove URL parts, and reject generic "GitHub" text
+            let v = value.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/^github\.com\//, '').replace(/\/+$/, '');
+            if (/^github$/i.test(v) || /^git$/i.test(v)) v = '';
+            if (v !== value) { value = v; setProfile(prev => ({ ...prev, github: value })); }
+        }
+
         if (['email', 'phone', 'location', 'website', 'github', 'linkedin'].includes(name)) {
             const nextProfile = { ...profile, [name]: value };
             setProfile(nextProfile);
