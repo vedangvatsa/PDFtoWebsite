@@ -1,3 +1,4 @@
+import { PAGE_CONTAINER } from '@/lib/utils';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
@@ -190,7 +191,7 @@ export default async function CompaniesPage() {
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
-      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
+      <main id="main-content" className={PAGE_CONTAINER}>
         {/* Hero */}
         <div className="flex flex-col mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">

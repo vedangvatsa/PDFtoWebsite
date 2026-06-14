@@ -5,6 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/** Shared page container class — single source of truth for content width across the site. */
+export const PAGE_CONTAINER = 'w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1';
+
 export function getCitySlug(cityName: string): string {
   const lowerName = cityName.toLowerCase();
   if (lowerName === 'bali (canggu/ubud)') return 'bali-cangguubud';
