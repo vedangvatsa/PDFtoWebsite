@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/opengraph-image`,
+        url: `${siteUrl}/nomad/opengraph-image`,
         width: 1200,
         height: 630,
         alt: 'Cost of Living for Digital Nomads',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     title: 'Cost of Living for Digital Nomads · 95 Cities Compared',
     description:
       'Compare cost of living across 95 digital nomad cities. Filter by budget, sort by rent, food, coworking costs.',
-    images: [`${siteUrl}/opengraph-image`],
+    images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },
 };

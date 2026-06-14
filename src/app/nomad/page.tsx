@@ -59,13 +59,13 @@ export const metadata: Metadata = {
     url: `${siteUrl}/nomad`,
     siteName: 'CVin.Bio',
     type: 'website',
-    images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio Digital Nomad Directory' }],
+    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630, alt: 'Digital Nomad Directory — 95 Cities in 52 Countries' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Digital Nomad Directory',
     description: 'Coliving, coworking spaces, hostels, and apartments across 95 cities in 52 countries.',
-    images: [`${siteUrl}/opengraph-image`],
+    images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },
 };

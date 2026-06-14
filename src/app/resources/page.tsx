@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     url: `${siteUrl}/resources`,
     siteName: 'CVin.Bio',
     type: 'website',
-    images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630 }],
+    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630 }],
   },
 };
 
