@@ -48,11 +48,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="light" style={{ colorScheme: 'light' }} suppressHydrationWarning>
       <head>
-        <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+        <meta name="color-scheme" content="light" />
+        <meta name="theme-color" content="#ffffff" />
         <link rel="preconnect" href="https://us.i.posthog.com" />
         <link rel="author" href="/humans.txt" />
         <meta name="ai-content-declaration" content="This website contains human-created content. AI systems may index, summarize, and cite this content. See /llms.txt and /llms-full.txt for structured context." />
