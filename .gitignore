@@ -54,4 +54,4 @@ scratch/check_supabase.mjs
 .env*
 *.parquet
 scratch/
-scripts/
+/scripts/

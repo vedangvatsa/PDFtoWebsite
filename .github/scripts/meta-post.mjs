@@ -155,7 +155,7 @@ async function fetchRecentThreadsTexts() {
     );
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.data || []).map(p => (p.text || '').slice(0, 60).toLowerCase());
+    return (data.data || []).map(p => (p.text || '').slice(0, 120).toLowerCase().trim());
   } catch {
     return [];
   }
@@ -435,9 +435,9 @@ async function main() {
       const thText = thItem.text.trim();
       console.log(`\n📝 Threads Post #${thCurrent + 1}/${items.length}: "${thText.substring(0, 60)}..."`);
 
-      // Dedup: check if this text was already posted
-      const textPrefix = thText.slice(0, 60).toLowerCase();
-      const alreadyPosted = recentThreadsTexts.some(t => t === textPrefix || textPrefix.startsWith(t) || t.startsWith(textPrefix));
+      // Dedup: check if this text was already posted (use 120 chars for accuracy)
+      const textPrefix = thText.slice(0, 120).toLowerCase().trim();
+      const alreadyPosted = recentThreadsTexts.some(t => t === textPrefix);
 
       if (alreadyPosted) {
         console.log(`  ⏭️ DEDUP: This content was already posted to Threads. Advancing index without re-posting.`);
