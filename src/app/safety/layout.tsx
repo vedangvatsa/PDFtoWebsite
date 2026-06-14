@@ -5,6 +5,6 @@ export const metadata: Metadata = {
   description: 'Safety scores and rankings for 95 digital nomad cities worldwide. Compare overall safety, women\'s safety, and nighttime safety.',
   keywords: ['safest cities nomads', 'city safety ranking', 'digital nomad safety', 'safe travel'],
   alternates: { canonical: `${siteUrl}/safety` },
-  openGraph: { title: 'City Safety Rankings', description: 'Safety scores for 95 nomad cities.', url: `${siteUrl}/safety`, siteName: 'CVin.Bio', type: 'website' },
+  openGraph: { title: 'City Safety Rankings', description: 'Safety scores for 95 nomad cities.', url: `${siteUrl}/safety`, siteName: 'CVin.Bio', type: 'website', images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630 }] },
 };
 export default function Layout({ children }: { children: React.ReactNode }) { return children; }
