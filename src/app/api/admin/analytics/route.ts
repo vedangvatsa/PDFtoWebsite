@@ -573,6 +573,7 @@ export async function GET(request: NextRequest) {
     const authProviders = Object.entries(providerCounts).map(([provider, count]) => ({ provider, count }));
 
     // ── Recent signups ──
+    const sanitizeEmail = (e: string) => e.replace(/^https?:\/\//, '').replace(/^www\./, '').trim().toLowerCase();
     let recentUsers: any[] = [];
     if (authUsers.length > 0) {
       recentUsers = [...authUsers]
@@ -581,7 +582,7 @@ export async function GET(request: NextRequest) {
         .map((u: any) => {
           const profile = profiles.find((p: any) => p.id === u.id);
           return {
-            email: u.email || '',
+            email: sanitizeEmail(u.email || ''),
             name: profile?.full_name || u.user_metadata?.full_name || '',
             slug: profile?.username || '',
             views: profile?.views || 0,
@@ -600,7 +601,7 @@ export async function GET(request: NextRequest) {
         .map((p: any) => {
           const emailLink = Array.isArray(p.links) ? p.links.find((l: any) => l.type === 'email') : null;
           return {
-            email: emailLink?.value || '',
+            email: sanitizeEmail(emailLink?.value || ''),
             name: p.full_name || '',
             slug: p.username || '',
             views: p.views || 0,
