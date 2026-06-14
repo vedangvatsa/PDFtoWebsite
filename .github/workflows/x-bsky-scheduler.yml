@@ -76,7 +76,7 @@ jobs:
         run: |
           echo "🎯 Posting slot: $X_POST_SLOT"
           node .github/scripts/x-post.mjs
-          git add .github/scripts/x-state.json
+          git add -f .github/scripts/x-state.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: advance X insight index [skip ci]"
             for i in 1 2 3 4 5; do
@@ -96,7 +96,7 @@ jobs:
         run: |
           echo "🎯 Posting slot: $X_POST_SLOT"
           node .github/scripts/x-post.mjs
-          git add .github/scripts/x-state.json
+          git add -f .github/scripts/x-state.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: advance X thread index [skip ci]"
             for i in 1 2 3 4 5; do
@@ -110,7 +110,7 @@ jobs:
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
         run: |
           node .github/scripts/bsky-post.mjs
-          git add .github/scripts/bsky-state.json
+          git add -f .github/scripts/bsky-state.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: advance Bluesky post index [skip ci]"
             for i in 1 2 3 4 5; do
@@ -128,7 +128,7 @@ jobs:
           THREADS_ACCESS_TOKEN:  ${{ secrets.THREADS_ACCESS_TOKEN }}
         run: |
           node .github/scripts/meta-post.mjs
-          git add .github/scripts/meta-state.json
+          git add -f .github/scripts/meta-state.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: advance Meta post index [skip ci]"
             for i in 1 2 3 4 5; do
@@ -142,7 +142,7 @@ jobs:
           BUFFER_ACCESS_TOKEN: ${{ secrets.BUFFER_ACCESS_TOKEN }}
         run: |
           node .github/scripts/buffer-linkedin.mjs
-          git add .github/scripts/buffer-linkedin-state.json
+          git add -f .github/scripts/buffer-linkedin-state.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: update Buffer LinkedIn state [skip ci]"
             for i in 1 2 3 4 5; do
