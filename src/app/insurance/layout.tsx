@@ -5,6 +5,6 @@ export const metadata: Metadata = {
   description: 'Compare the top 6 insurance providers for digital nomads. SafetyWing, Genki, World Nomads, and more — coverage, costs, and features.',
   keywords: ['nomad insurance', 'travel insurance', 'digital nomad insurance', 'SafetyWing', 'Genki'],
   alternates: { canonical: `${siteUrl}/insurance` },
-  openGraph: { title: 'Nomad Insurance Comparison', description: 'Compare top 6 insurance providers for digital nomads.', url: `${siteUrl}/insurance`, siteName: 'CVin.Bio', type: 'website' },
+  openGraph: { title: 'Nomad Insurance Comparison', description: 'Compare top 6 insurance providers for digital nomads.', url: `${siteUrl}/insurance`, siteName: 'CVin.Bio', type: 'website', images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630 }] },
 };
 export default function Layout({ children }: { children: React.ReactNode }) { return children; }

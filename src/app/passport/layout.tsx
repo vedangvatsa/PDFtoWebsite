@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: 'Check visa requirements for any passport country.',
     url: `${siteUrl}/passport`,
     siteName: 'CVin.Bio',
-    type: 'website',
+    type: 'website', images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630 }],
   },
 };
 
