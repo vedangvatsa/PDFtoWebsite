@@ -133,8 +133,8 @@ function CityCard({ city }: { city: any }) {
       />
 
       {/* Score badge — top right */}
-      <span className={`absolute top-3 right-3 z-10 text-[10px] px-2.5 py-1 rounded-full ${badgeClass} backdrop-blur-sm shadow-sm tracking-wide`}>
-        {city.nomad_score}
+      <span className={`absolute top-3 right-3 z-10 text-[10px] px-2.5 py-1 rounded-full ${badgeClass} backdrop-blur-sm shadow-sm tracking-wide`} title="Nomad Score out of 100">
+        {city.nomad_score}<span className="opacity-60 ml-0.5">/100</span>
       </span>
 
       {/* Subtle bottom gradient — just enough to read text */}

@@ -91,7 +91,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'sofia': 'https://images.unsplash.com/photo-1555990793-da11153b2473?auto=format&fit=crop&w=800&q=80',
   'bansko': 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80',
   'warsaw': 'https://images.unsplash.com/photo-1519197924294-4ba991a11128?auto=format&fit=crop&w=800&q=80',
-  'krakow': 'https://images.unsplash.com/photo-1558005137-d9619a5c539f?auto=format&fit=crop&w=800&q=80',
+  'krakow': 'https://images.unsplash.com/photo-1578991624414-276ef23a534f?auto=format&fit=crop&w=800&q=80',
   'bucharest': 'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=800&q=80',
   'belgrade': 'https://images.unsplash.com/photo-1590073844006-33379778ae09?auto=format&fit=crop&w=800&q=80',
   'vilnius': '/images/cities/vilnius.png',
@@ -103,7 +103,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'malaga': 'https://images.unsplash.com/photo-1555862124-94036092ab14?auto=format&fit=crop&w=800&q=80',
   'valencia': 'https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=800&q=80',
   'ericeira': 'https://images.unsplash.com/photo-1594818379496-da1e345b0ded?auto=format&fit=crop&w=800&q=80',
-  'madeira-funchal': 'https://images.unsplash.com/photo-1605540436563-5bca919ae766?auto=format&fit=crop&w=800&q=80',
+  'madeira-funchal': 'https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?auto=format&fit=crop&w=800&q=80',
 
   // ── Spain (Canaries) ──
   'tenerife': 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80',
@@ -128,7 +128,7 @@ export const CITY_IMAGES: Record<string, string> = {
   'cusco': 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80',
   'santiago': 'https://images.unsplash.com/photo-1517030330234-94c4fb948ebc?auto=format&fit=crop&w=800&q=80',
   'valparaiso': 'https://images.unsplash.com/photo-1601000938259-9e92002320b2?auto=format&fit=crop&w=800&q=80',
-  'montevideo': 'https://images.unsplash.com/photo-1611510338559-2f463335092c?auto=format&fit=crop&w=800&q=80',
+  'montevideo': 'https://images.unsplash.com/photo-1598981457915-aea220950616?auto=format&fit=crop&w=800&q=80',
   'antigua': 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80',
   'roatan': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
   'san-francisco': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=800&q=80',

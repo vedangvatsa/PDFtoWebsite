@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/opengraph-image`,
+        url: `${siteUrl}/nomad/opengraph-image`,
         width: 1200,
         height: 630,
         alt: 'Compare Nomad Cities',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Compare Cities for Digital Nomads',
     description:
       'Side-by-side comparison of cost of living, weather, coworking spaces, and nomad scores across 95 cities.',
-    images: [`${siteUrl}/opengraph-image`],
+    images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },
 };

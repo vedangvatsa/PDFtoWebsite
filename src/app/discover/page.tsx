@@ -15,13 +15,13 @@ export const metadata: Metadata = {
     url: `${siteUrl}/discover`,
     siteName: 'CVin.Bio',
     type: 'article',
-    images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio AI Discovery' }],
+    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio AI Discovery' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI Discovery Infrastructure',
     description: 'Schema.org markup, MCP integration, and explicit crawler access make your profile readable by every major AI system.',
-    images: [`${siteUrl}/opengraph-image`],
+    images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },
 };
