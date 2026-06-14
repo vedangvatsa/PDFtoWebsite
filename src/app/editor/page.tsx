@@ -986,6 +986,11 @@ export default function EditorPage() {
             }
         }
         
+        if (name === 'email') {
+            value = value.replace(/^https?:\/\//, '').replace(/^www\./, '').trim().toLowerCase();
+            setProfile(prev => ({ ...prev, email: value }));
+        }
+
         if (['email', 'phone', 'location', 'website', 'github', 'linkedin'].includes(name)) {
             const nextProfile = { ...profile, [name]: value };
             setProfile(nextProfile);
