@@ -14,7 +14,7 @@ import {
   type MapRef,
 } from '@/components/ui/map';
 import { Badge } from '@/components/ui/badge';
-import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star, ArrowLeft } from 'lucide-react';
+import { Building2, Bed, Home, Hotel, Users, ExternalLink, Star, ArrowLeft, MapPin } from 'lucide-react';
 
 interface POI {
   osm_id: number;
@@ -60,12 +60,27 @@ interface SelectedPoint {
   properties: POI;
 }
 
-const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index: number }) {
+const TableRow = React.memo(function TableRow({ poi, index, onLocate }: { poi: POI; index: number; onLocate: (poi: POI) => void }) {
+  const hasWebsite = poi.website && poi.website !== 'https://' && poi.website !== 'http://' && poi.website.startsWith('http');
   return (
     <tr className="border-t border-zinc-200/50 hover:bg-zinc-50 transition-colors">
       <td className="px-4 py-2.5 text-zinc-400 text-xs font-mono">{index + 1}</td>
       <td className="px-4 py-2.5 font-medium text-zinc-900">
-        <a href={`https://www.google.com/maps/search/${encodeURIComponent(poi.name + ', ' + poi.city)}`} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2">{poi.name}</a>
+        <div className="flex items-center gap-1.5">
+          {hasWebsite ? (
+            <a href={poi.website} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2 text-blue-600">{poi.name}</a>
+          ) : (
+            <span>{poi.name}</span>
+          )}
+          <button
+            onClick={() => onLocate(poi)}
+            className="shrink-0 p-0.5 rounded text-zinc-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
+            title="Show on map"
+            aria-label={`Show ${poi.name} on map`}
+          >
+            <MapPin className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </td>
       <td className="px-4 py-2.5">
         <span
@@ -89,18 +104,6 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
         ) : (
           <span className="text-zinc-500 text-xs"> - </span>
         )}
-      </td>
-      <td className="px-4 py-2.5">
-        <div className="flex gap-2">
-          {poi.website && poi.website !== 'https://' && poi.website !== 'http://' && poi.website.startsWith('http') && (
-            <a href={poi.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
-              Web
-            </a>
-          )}
-          <a href={`https://www.google.com/maps/search/?api=1&query=${poi.lat},${poi.lon}`} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
-            Map
-          </a>
-        </div>
       </td>
     </tr>
   );
@@ -319,6 +322,24 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
     });
   }, []);
 
+  const handleLocatePoi = useCallback((poi: POI) => {
+    // Fly the map to this POI
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: [poi.lon, poi.lat],
+        zoom: 16,
+        duration: 1200,
+      });
+    }
+    // Open the popup for this POI
+    setSelectedPoint({
+      coordinates: [poi.lon, poi.lat],
+      properties: poi,
+    });
+    // Scroll the map into view
+    document.getElementById('nomad-map-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, []);
+
   const handleCityChange = useCallback((city: string) => {
     setSelectedCity(city);
     setSelectedPoint(null);
@@ -414,7 +435,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
       </div>
 
       {/* Map */}
-      <div className="w-full h-[350px] sm:h-[450px] md:h-[600px] rounded-lg overflow-hidden border border-zinc-200 shadow-sm">
+      <div id="nomad-map-container" className="w-full h-[350px] sm:h-[450px] md:h-[600px] rounded-lg overflow-hidden border border-zinc-200 shadow-sm">
         <Map
           ref={mapRef}
           center={mapCenter}
@@ -598,12 +619,11 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
                     <th className="text-left px-4 py-3 font-medium">Name</th>
                     <th className="text-left px-4 py-3 font-medium">Type</th>
                     <th className="text-left px-4 py-3 font-medium">Rating</th>
-                    <th className="text-left px-4 py-3 font-medium">Links</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredData.slice(0, visibleCount).map((poi, i) => (
-                    <TableRow key={poi.osm_id} poi={poi} index={i} />
+                    <TableRow key={poi.osm_id} poi={poi} index={i} onLocate={handleLocatePoi} />
                   ))}
                 </tbody>
               </table>
