@@ -2263,14 +2263,14 @@ async function fetchCareerjet() {
             keywords: keyword,
             sort: 'date',
             page: String(page),
-            page_size: '100',
-            fragment_size: '300',
+            pagesize: '100', // Careerjet uses 'pagesize' not 'page_size'
+            affid: apiKey,
             user_ip: '1.2.3.4',
-            user_agent: 'CVin.Bio job aggregator',
+            user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
           });
 
-          const res = await fetch(`https://search.api.careerjet.net/v4/query?${params}`, {
-            headers: { 'Authorization': `Basic ${credentials}` },
+          const res = await fetch(`http://public.api.careerjet.net/search?${params}`, {
+            headers: { 'Referer': 'https://cvin.bio' },
           });
 
           if (!res.ok) {
