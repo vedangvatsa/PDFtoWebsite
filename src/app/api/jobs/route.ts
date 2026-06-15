@@ -333,10 +333,21 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 });
   }
 
-  // Clean titles: strip bracketed prefixes like [PIP], [REMOTE], [NYC], etc.
+  // Clean titles: strip bracketed prefixes, requisition codes, and junk
   for (const job of (rawJobs || [])) {
     if (job.title) {
-      job.title = job.title.replace(/^\s*\[[^\]]*\]\s*/g, '').trim();
+      let t = job.title;
+      // 1. Strip bracketed or parenthesized prefixes (e.g. [Remote], (US))
+      t = t.replace(/^\s*\[[^\]]*\]\s*/g, '');
+      t = t.replace(/^\s*\([^\)]*\)\s*/g, '');
+      // 2. Strip complex requisition codes like 'M-11/13 - 8751 - '
+      t = t.replace(/^[\w\-\/]+\s*\-\s*\d+\s*\-\s*/g, '');
+      // 3. Strip percentage remote indicators like '75% remote: '
+      t = t.replace(/^\s*\d+%\s*remote\s*[:\|-]?\s*/i, '');
+      // 4. Strip standard Req/Ref codes like 'Req-1234: '
+      t = t.replace(/^\s*(req|ref)[a-z0-9\-]*\s*[:\-]\s*/i, '');
+      // 5. Strip any trailing location or req stuff that might be left at the front
+      job.title = t.replace(/^[\s:\-\|]+/, '').trim();
     }
   }
 
