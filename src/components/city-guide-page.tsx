@@ -363,13 +363,29 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
               >
                 Rome2rio (Inter-city)
               </a>
+              {/* Moovit — only for cities with real public transit (not small towns/islands/beach villages) */}
+              {!(['siargao', 'koh-phangan', 'dahab', 'canggu', 'ubud', 'bali-cangguubud', 'bali',
+                'pai', 'bansko', 'ericeira', 'tulum', 'hoi-an', 'kilifi', 'komoro', 'kas',
+                'phuket', 'koh-samui', 'playa-del-carmen', 'roatan', 'zanzibar', 'santa-marta',
+                'antigua', 'cusco', 'goa', 'siem-reap', 'pokhara'
+              ].includes(data.slug)) && (
+                <a
+                  href="https://moovitapp.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                >
+                  Moovit (Local Transit)
+                </a>
+              )}
+              {/* Google Maps transit — universal fallback for all cities */}
               <a
-                href="https://moovitapp.com"
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(data.name)}&travelmode=transit`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
               >
-                Moovit (Local Transit)
+                Google Maps
               </a>
               {/* 12Go Asia — only for SE Asia + Sri Lanka + India where it operates */}
               {(['Thailand', 'Malaysia', 'Philippines', 'Indonesia', 'Vietnam', 'Cambodia', 'Myanmar', 'Singapore', 'Laos', 'Sri Lanka', 'India'].includes(data.country)) && (
