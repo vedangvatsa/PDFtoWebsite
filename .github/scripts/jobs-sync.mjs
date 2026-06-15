@@ -3119,11 +3119,10 @@ async function main() {
     fetchJSearch(),
   ]);
 
-  // Group B: Careerjet + Reed + Findwork (heavier, more pages)
+  // Group B: Careerjet + Findwork (heavier, more pages)
   await sleep(1000);
-  const [careerjet, reed, findwork] = await Promise.all([
+  const [careerjet, findwork] = await Promise.all([
     fetchCareerjet(),
-    fetchReed(),
     fetchFindwork(),
   ]);
 
@@ -3131,8 +3130,8 @@ async function main() {
   await sleep(1000);
   const linkedin = await fetchLinkedIn();
 
-  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...reed, ...findwork, ...linkedin];
-  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from 7 aggregators`);
+  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...findwork, ...linkedin];
+  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from 6 aggregators`);
 
   const phase3Valid = filterAndNormalize(phase3Jobs);
   if (phase3Valid.length > 0) {
