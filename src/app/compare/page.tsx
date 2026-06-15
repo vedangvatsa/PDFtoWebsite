@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react';
 import Link from 'next/link';
@@ -155,27 +155,27 @@ function CityPicker({
 
   return (
     <div ref={ref} className="relative flex-1 min-w-0">
-      <label className="block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1.5 uppercase tracking-wider">
+      <label className="block text-xs font-medium text-zinc-500 mb-1.5 uppercase tracking-wider">
         {label}
       </label>
       <button
         id={`picker-${label.toLowerCase().replace(/\s/g, '-')}`}
         onClick={handleOpen}
-        className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all text-left"
+        className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 transition-all text-left"
       >
         {selected ? (
           <>
             <div className="min-w-0 flex-1">
-              <div className="font-semibold text-zinc-900 dark:text-zinc-50 truncate text-sm">
+              <div className="font-semibold text-zinc-900 truncate text-sm">
                 {selected.name}
               </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+              <div className="text-xs text-zinc-500 truncate">
                 {selected.country}
               </div>
             </div>
           </>
         ) : (
-          <span className="text-sm text-zinc-400 dark:text-zinc-500">
+          <span className="text-sm text-zinc-400">
             Select a city…
           </span>
         )}
@@ -183,8 +183,8 @@ function CityPicker({
       </button>
 
       {open && (
-        <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl max-h-72 overflow-hidden flex flex-col animate-in fade-in-0 zoom-in-95 duration-150">
-          <div className="flex items-center gap-2 px-3 py-2 border-b border-zinc-100 dark:border-zinc-800">
+        <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-xl shadow-xl max-h-72 overflow-hidden flex flex-col animate-in fade-in-0 zoom-in-95 duration-150">
+          <div className="flex items-center gap-2 px-3 py-2 border-b border-zinc-100">
             <Search className="w-4 h-4 text-zinc-400" />
             <input
               ref={inputRef}
@@ -192,10 +192,10 @@ function CityPicker({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search cities..."
-              className="flex-1 bg-transparent text-sm outline-none text-zinc-900 dark:text-zinc-50 placeholder:text-zinc-400"
+              className="flex-1 bg-transparent text-sm outline-none text-zinc-900 placeholder:text-zinc-400"
             />
             {query && (
-              <button onClick={() => setQuery('')} className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
+              <button onClick={() => setQuery('')} className="text-zinc-400 hover:text-zinc-600">
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
@@ -213,17 +213,17 @@ function CityPicker({
                   onSelect(c);
                   setOpen(false);
                 }}
-                className={`w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors ${
+                className={`w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-zinc-50 transition-colors ${
                   selected?.slug === c.slug
-                    ? 'bg-zinc-50 dark:bg-zinc-800/40'
+                    ? 'bg-zinc-50'
                     : ''
                 }`}
               >
                 <div className="min-w-0">
-                  <div className="text-sm font-medium text-zinc-900 dark:text-zinc-50 truncate">
+                  <div className="text-sm font-medium text-zinc-900 truncate">
                     {c.name}
                   </div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                  <div className="text-xs text-zinc-500 truncate">
                     {c.country} · ${c.cost.monthly_total.toLocaleString()}/mo
                   </div>
                 </div>
@@ -262,13 +262,13 @@ function ComparisonRow({ row }: { row: MetricRow }) {
   const bWin = winner === 'b';
 
   return (
-    <div className="grid grid-cols-[1.3fr_1fr_1fr] sm:grid-cols-[1fr_1fr_1fr] gap-2 sm:gap-4 items-center py-3 border-b border-zinc-100 dark:border-zinc-800/50 last:border-b-0">
+    <div className="grid grid-cols-[1.3fr_1fr_1fr] sm:grid-cols-[1fr_1fr_1fr] gap-2 sm:gap-4 items-center py-3 border-b border-zinc-100 last:border-b-0">
       {/* Metric label */}
       <div className="flex items-center gap-2 min-w-0">
-        <span className="text-zinc-400 dark:text-zinc-500 flex-shrink-0">
+        <span className="text-zinc-400 flex-shrink-0">
           {row.icon}
         </span>
-        <span className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 leading-tight">
+        <span className="text-xs sm:text-sm font-medium text-zinc-600 leading-tight">
           {row.label}
         </span>
       </div>
@@ -276,8 +276,8 @@ function ComparisonRow({ row }: { row: MetricRow }) {
       <div
         className={`text-center text-sm font-semibold rounded-lg py-1.5 px-2 transition-colors ${
           aWin
-            ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
-            : 'text-zinc-900 dark:text-zinc-50'
+            ? 'bg-emerald-50 text-emerald-700'
+            : 'text-zinc-900'
         }`}
       >
         {row.valueA}
@@ -286,8 +286,8 @@ function ComparisonRow({ row }: { row: MetricRow }) {
       <div
         className={`text-center text-sm font-semibold rounded-lg py-1.5 px-2 transition-colors ${
           bWin
-            ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
-            : 'text-zinc-900 dark:text-zinc-50'
+            ? 'bg-emerald-50 text-emerald-700'
+            : 'text-zinc-900'
         }`}
       >
         {row.valueB}
@@ -506,7 +506,7 @@ function ComparePageContent() {
 
   /* ---------- render ---------- */
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main
         id="main-content"
@@ -515,7 +515,7 @@ function ComparePageContent() {
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -523,10 +523,10 @@ function ComparePageContent() {
 
         {/* Page header */}
         <div className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Compare Cities
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-2xl">
+          <p className={PAGE_SUBTITLE}>
             Side-by-side comparison of cost of living, weather, coworking
             spaces, and nomad scores.
           </p>
@@ -536,8 +536,8 @@ function ComparePageContent() {
         {loading && (
           <div className="flex items-center justify-center py-32">
             <div className="flex flex-col items-center gap-4">
-              <div className="w-8 h-8 border-2 border-zinc-300 dark:border-zinc-700 border-t-zinc-900 dark:border-t-zinc-100 rounded-full animate-spin" />
-              <span className="text-sm text-zinc-500 dark:text-zinc-400">
+              <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
+              <span className="text-sm text-zinc-500">
                 Loading cities…
               </span>
             </div>
@@ -556,7 +556,7 @@ function ComparePageContent() {
                 otherSlug={cityB?.slug ?? null}
               />
               <div className="hidden sm:flex items-end pb-3">
-                <span className="text-zinc-300 dark:text-zinc-700 font-bold text-lg">
+                <span className="text-zinc-300 font-bold text-lg">
                   vs
                 </span>
               </div>
@@ -572,17 +572,17 @@ function ComparePageContent() {
             {cityA && cityB && (
               <>
                 {/* Comparison Grid */}
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all p-5 sm:p-6 mb-8">
+                <div className="bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-sm transition-all p-5 sm:p-6 mb-8">
                   {/* Header row */}
-                  <div className="grid grid-cols-[1.3fr_1fr_1fr] sm:grid-cols-[1fr_1fr_1fr] gap-2 sm:gap-4 items-center pb-3 border-b-2 border-zinc-200 dark:border-zinc-700 mb-1">
-                    <div className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                  <div className="grid grid-cols-[1.3fr_1fr_1fr] sm:grid-cols-[1fr_1fr_1fr] gap-2 sm:gap-4 items-center pb-3 border-b-2 border-zinc-200 mb-1">
+                    <div className="text-xs font-medium uppercase tracking-wider text-zinc-400">
                       Metric
                     </div>
                     <Link
                       href={`/${cityA.slug}`}
                       className="text-center group"
                     >
-                      <div className="text-sm font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
+                      <div className="text-sm font-bold text-zinc-900 group-hover:text-primary transition-colors truncate">
                         {cityA.name}
                       </div>
                     </Link>
@@ -590,7 +590,7 @@ function ComparePageContent() {
                       href={`/${cityB.slug}`}
                       className="text-center group"
                     >
-                      <div className="text-sm font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
+                      <div className="text-sm font-bold text-zinc-900 group-hover:text-primary transition-colors truncate">
                         {cityB.name}
                       </div>
                     </Link>
@@ -603,8 +603,8 @@ function ComparePageContent() {
                 </div>
 
                 {/* Weather Comparison */}
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all p-5 sm:p-6 mb-8">
-                  <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-5">
+                <div className="bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-sm transition-all p-5 sm:p-6 mb-8">
+                  <h2 className="text-lg font-bold text-zinc-900 mb-5">
                     12-Month Temperature Comparison
                   </h2>
                   <div className="flex items-end gap-1 sm:gap-2 h-52 mb-2">
@@ -623,7 +623,7 @@ function ComparePageContent() {
                           key={mA.month}
                           className="flex-1 flex flex-col items-center h-full justify-end gap-0.5"
                         >
-                          <div className="text-[9px] font-medium text-zinc-500 dark:text-zinc-400">
+                          <div className="text-[9px] font-medium text-zinc-500">
                             {Math.round(mA.temp)}° / {mB ? Math.round(mB.temp) : '-'}°
                           </div>
                           <div className="flex gap-px w-full h-full items-end justify-center">
@@ -659,14 +659,14 @@ function ComparePageContent() {
                     {cityA.weather.monthly.map((m) => (
                       <div
                         key={m.month}
-                        className="flex-1 text-center text-[10px] text-zinc-400 dark:text-zinc-500"
+                        className="flex-1 text-center text-[10px] text-zinc-400"
                       >
                         {m.month}
                       </div>
                     ))}
                   </div>
                   {/* Legend */}
-                  <div className="flex items-center gap-6 text-xs text-zinc-600 dark:text-zinc-400">
+                  <div className="flex items-center gap-6 text-xs text-zinc-600">
                     <div className="flex items-center gap-1.5">
                       <div
                         className="w-3 h-3 rounded-sm"
@@ -691,8 +691,8 @@ function ComparePageContent() {
                 </div>
 
                 {/* Cost Breakdown Comparison */}
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all p-5 sm:p-6 mb-8">
-                  <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-5">
+                <div className="bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-sm transition-all p-5 sm:p-6 mb-8">
+                  <h2 className="text-lg font-bold text-zinc-900 mb-5">
                     Cost Breakdown Comparison
                   </h2>
 
@@ -711,10 +711,10 @@ function ComparePageContent() {
                     return (
                       <div key={city.slug} className="mb-4 last:mb-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                          <span className="text-sm font-semibold text-zinc-900">
                             {city.name}
                           </span>
-                          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                          <span className="text-xs text-zinc-500">
                             · ${total.toLocaleString()}/mo
                           </span>
                         </div>
@@ -750,10 +750,10 @@ function ComparePageContent() {
                           style={{ backgroundColor: COST_COLORS[e.key] }}
                         />
                         <div>
-                          <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                          <div className="text-xs text-zinc-500">
                             {e.label}
                           </div>
-                          <div className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <div className="text-[11px] text-zinc-400">
                             ${cityA.cost[e.key as keyof typeof cityA.cost].toLocaleString()}{' '}
                             vs ${cityB.cost[e.key as keyof typeof cityB.cost].toLocaleString()}
                           </div>
@@ -764,30 +764,30 @@ function ComparePageContent() {
                 </div>
 
                 {/* Timezone Offset */}
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all p-5 sm:p-6 mb-8">
-                  <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-4">
+                <div className="bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-sm transition-all p-5 sm:p-6 mb-8">
+                  <h2 className="text-lg font-bold text-zinc-900 mb-4">
                     Timezone
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {/* City A tz */}
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center flex-shrink-0">
-                        <Clock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+                      <div className="w-9 h-9 rounded-full bg-violet-100 flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-4 h-4 text-violet-600" />
                       </div>
                       <div>
-                        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                        <div className="text-sm font-semibold text-zinc-900">
                           {cityA.name}
                         </div>
-                        <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                        <div className="text-xs text-zinc-500">
                           {tzA !== null ? formatUtcOffset(tzA) : '-'}
                         </div>
                       </div>
                     </div>
                     {/* Diff */}
                     <div className="flex items-center justify-center">
-                      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 dark:bg-zinc-800/50">
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100">
                         <Globe className="w-4 h-4 text-zinc-400" />
-                        <span className="text-sm font-bold text-zinc-900 dark:text-zinc-50">
+                        <span className="text-sm font-bold text-zinc-900">
                           {tzDiff !== null
                             ? tzDiff === 0
                               ? 'Same timezone'
@@ -799,34 +799,34 @@ function ComparePageContent() {
                     {/* City B tz */}
                     <div className="flex items-center gap-3 sm:justify-end">
                       <div>
-                        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 sm:text-right">
+                        <div className="text-sm font-semibold text-zinc-900 sm:text-right">
                           {cityB.name}
                         </div>
-                        <div className="text-xs text-zinc-500 dark:text-zinc-400 sm:text-right">
+                        <div className="text-xs text-zinc-500 sm:text-right">
                           {tzB !== null ? formatUtcOffset(tzB) : '-'}
                         </div>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                        <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-4 h-4 text-blue-600" />
                       </div>
                     </div>
                   </div>
 
                   {/* User timezone offset */}
                   {userTzOffset !== null && tzA !== null && tzB !== null && (
-                    <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
-                      <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+                    <div className="mt-4 pt-4 border-t border-zinc-100">
+                      <div className="flex items-center gap-2 text-xs text-zinc-500">
                         <MapPin className="w-3.5 h-3.5" />
                         <span>
                           Your timezone ({formatUtcOffset(userTzOffset)}):
                         </span>
-                        <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                        <span className="font-medium text-zinc-700">
                           {Math.abs(userTzOffset - tzA) === 0
                             ? `Same as ${cityA.name}`
                             : `${Math.abs(userTzOffset - tzA)}h from ${cityA.name}`}
                         </span>
                         <span>·</span>
-                        <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                        <span className="font-medium text-zinc-700">
                           {Math.abs(userTzOffset - tzB) === 0
                             ? `Same as ${cityB.name}`
                             : `${Math.abs(userTzOffset - tzB)}h from ${cityB.name}`}
@@ -840,21 +840,21 @@ function ComparePageContent() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
                     href={`/${cityA.slug}`}
-                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all text-sm font-semibold text-zinc-900 dark:text-zinc-50"
+                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all text-sm font-semibold text-zinc-900"
                   >
                     View {cityA.name} Guide
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href={`/${cityB.slug}`}
-                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all text-sm font-semibold text-zinc-900 dark:text-zinc-50"
+                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all text-sm font-semibold text-zinc-900"
                   >
                     View {cityB.name} Guide
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href="/nomad"
-                    className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all text-sm font-semibold"
+                    className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-900 text-white hover:bg-zinc-800 transition-all text-sm font-semibold"
                   >
                     <MapPin className="w-4 h-4" />
                     View on Map
@@ -874,7 +874,7 @@ function ComparePageContent() {
 export default function ComparePage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-[#fafafa] dark:bg-black">
+      <div className="min-h-screen flex items-center justify-center bg-[#fafafa]">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-primary" />
       </div>
     }>

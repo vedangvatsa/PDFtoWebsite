@@ -1,4 +1,4 @@
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_DISCLAIMER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
@@ -122,21 +122,21 @@ const PROVIDERS: InsuranceProvider[] = [
 ];
 
 function priceTier(price: number): { color: string; label: string } {
-  if (price <= 50) return { color: 'text-emerald-600 dark:text-emerald-400', label: 'Budget' };
-  if (price <= 100) return { color: 'text-blue-600 dark:text-blue-400', label: 'Mid-range' };
-  if (price <= 150) return { color: 'text-amber-600 dark:text-amber-400', label: 'Premium' };
-  return { color: 'text-red-600 dark:text-red-400', label: 'High-end' };
+  if (price <= 50) return { color: 'text-emerald-600', label: 'Budget' };
+  if (price <= 100) return { color: 'text-blue-600', label: 'Mid-range' };
+  if (price <= 150) return { color: 'text-amber-600', label: 'Premium' };
+  return { color: 'text-red-600', label: 'High-end' };
 }
 
 export default function InsurancePage() {
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -144,43 +144,43 @@ export default function InsurancePage() {
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Nomad Insurance Comparison
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className={PAGE_SUBTITLE}>
             Compare the top {PROVIDERS.length} insurance providers for digital nomads. Find the right balance of coverage, cost, and convenience.
           </p>
         </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Shield className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Providers</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{PROVIDERS.length}</div>
+            <div className="text-2xl font-bold text-zinc-900">{PROVIDERS.length}</div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Star className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Starting From</span>
             </div>
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">$45<span className="text-sm font-normal text-zinc-400">/mo</span></div>
+            <div className="text-2xl font-bold text-emerald-600">$45<span className="text-sm font-normal text-zinc-400">/mo</span></div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Heart className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Most Popular</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">SafetyWing</div>
+            <div className="text-2xl font-bold text-zinc-900">SafetyWing</div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Award className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Up To</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">$200<span className="text-sm font-normal text-zinc-400">/mo</span></div>
+            <div className="text-2xl font-bold text-zinc-900">$200<span className="text-sm font-normal text-zinc-400">/mo</span></div>
           </div>
         </div>
 
@@ -191,10 +191,10 @@ export default function InsurancePage() {
             return (
               <div
                 key={p.name}
-                className={`bg-white dark:bg-zinc-900/50 border rounded-xl p-5 transition-colors relative ${
+                className={`bg-white border rounded-xl p-5 transition-colors relative ${
                   p.popular
-                    ? 'border-emerald-300 dark:border-emerald-700/50 ring-1 ring-emerald-200 dark:ring-emerald-800/30'
-                    : 'border-zinc-200 dark:border-zinc-800/50'
+                    ? 'border-emerald-300 ring-1 ring-emerald-200'
+                    : 'border-zinc-200'
                 }`}
               >
                 {/* Popular badge */}
@@ -207,12 +207,12 @@ export default function InsurancePage() {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4 mt-1">
                   <div>
-                    <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">{p.name}</h3>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 ${tier.color}`}>
+                    <h3 className="text-lg font-bold text-zinc-900">{p.name}</h3>
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 ${tier.color}`}>
                       {p.bestFor}
                     </span>
                   </div>
-                  <div className="text-zinc-400 dark:text-zinc-500">{p.icon}</div>
+                  <div className="text-zinc-400">{p.icon}</div>
                 </div>
 
                 {/* Price */}
@@ -221,16 +221,16 @@ export default function InsurancePage() {
                 </div>
 
                 {/* Meta */}
-                <div className="flex items-center gap-3 mb-4 text-xs text-zinc-500 dark:text-zinc-400">
+                <div className="flex items-center gap-3 mb-4 text-xs text-zinc-500">
                   <span>Ages {p.ageRange}</span>
-                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                  <span className="text-zinc-300">•</span>
                   <span>{p.coverage}</span>
                 </div>
 
                 {/* Features */}
                 <ul className="space-y-2">
                   {p.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+                    <li key={i} className="flex items-start gap-2 text-sm text-zinc-600">
                       <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>
                       {f}
                     </li>
@@ -242,7 +242,7 @@ export default function InsurancePage() {
         </div>
 
         {/* Disclaimer */}
-        <div className="mt-8 flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed max-w-2xl">
+        <div className={PAGE_DISCLAIMER}>
           <Info className="w-4 h-4 shrink-0 mt-0.5" />
           <p>
             Prices are approximate and may vary by age, coverage area, and plan options.

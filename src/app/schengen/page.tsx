@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Header from '@/components/header';
@@ -66,35 +66,35 @@ export default function SchengenPage() {
   const nextEntry = useMemo(() => daysRemaining === 0 ? findNextEntry(trips) : null, [trips, daysRemaining]);
 
   const barColor = pct >= 90 ? 'bg-red-500' : pct >= 70 ? 'bg-amber-500' : 'bg-emerald-500';
-  const statusColor = daysRemaining <= 10 ? 'text-red-600 dark:text-red-400' : daysRemaining <= 30 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400';
+  const statusColor = daysRemaining <= 10 ? 'text-red-600' : daysRemaining <= 30 ? 'text-amber-600' : 'text-emerald-600';
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
-        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8">
+        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8">
           <ArrowLeft className="w-4 h-4" /> Back to Directory
         </Link>
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3">Schengen Calculator</h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl">Track your stays in the Schengen zone. The 90/180 rule allows maximum 90 days in any rolling 180-day period.</p>
+          <h1 className={PAGE_TITLE}>Schengen Calculator</h1>
+          <p className={PAGE_SUBTITLE}>Track your stays in the Schengen zone. The 90/180 rule allows maximum 90 days in any rolling 180-day period.</p>
         </div>
 
         {/* Summary */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
             <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">Days Used</div>
             <div className={`text-3xl font-bold ${statusColor}`}>{daysUsed}</div>
             <div className="text-xs text-zinc-500">of 90 allowed</div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
             <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">Days Remaining</div>
             <div className={`text-3xl font-bold ${statusColor}`}>{daysRemaining}</div>
             <div className="text-xs text-zinc-500">in current window</div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 col-span-2">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4 col-span-2">
             <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">Usage</div>
-            <div className="w-full h-3 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+            <div className="w-full h-3 rounded-full bg-zinc-100 overflow-hidden">
               <div className={`h-full rounded-full transition-all duration-500 ${barColor}`} style={{ width: `${pct}%` }} />
             </div>
             <div className="flex justify-between mt-1 text-xs text-zinc-500"><span>{pct}% used</span><span>90 day limit</span></div>
@@ -102,13 +102,13 @@ export default function SchengenPage() {
         </div>
 
         {daysRemaining <= 10 && daysRemaining > 0 && (
-          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-800 dark:text-amber-300 text-sm mb-6">
+          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm mb-6">
             <AlertTriangle className="w-4 h-4 shrink-0" /> Warning: Only {daysRemaining} days remaining. Plan your exit carefully.
           </div>
         )}
 
         {daysRemaining === 0 && (
-          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-800 dark:text-red-300 text-sm mb-6">
+          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm mb-6">
             <AlertTriangle className="w-4 h-4 shrink-0" /> Limit reached! {nextEntry ? `You can re-enter on ${nextEntry}.` : 'You must leave the Schengen zone.'}
           </div>
         )}
@@ -116,19 +116,19 @@ export default function SchengenPage() {
         {/* Trip inputs */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Your Trips</h2>
-            <button onClick={addTrip} disabled={trips.length >= 10} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/30 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all disabled:opacity-40">
+            <h2 className="text-lg font-bold text-zinc-900">Your Trips</h2>
+            <button onClick={addTrip} disabled={trips.length >= 10} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 transition-all disabled:opacity-40">
               <Plus className="w-3.5 h-3.5" /> Add Trip
             </button>
           </div>
           <div className="space-y-3">
             {trips.map((trip) => (
-              <div key={trip.id} className="flex items-center gap-3 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl px-4 py-3">
+              <div key={trip.id} className="flex items-center gap-3 bg-white border border-zinc-200 rounded-xl px-4 py-3">
                 <Calendar className="w-4 h-4 text-zinc-400 shrink-0" />
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <input type="date" value={trip.start} onChange={e => updateTrip(trip.id, 'start', e.target.value)} className="px-3 py-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-sm text-zinc-900 dark:text-zinc-100 outline-none" />
+                  <input type="date" value={trip.start} onChange={e => updateTrip(trip.id, 'start', e.target.value)} className="px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200 text-sm text-zinc-900 outline-none" />
                   <span className="text-xs text-zinc-400">to</span>
-                  <input type="date" value={trip.end} onChange={e => updateTrip(trip.id, 'end', e.target.value)} className="px-3 py-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-sm text-zinc-900 dark:text-zinc-100 outline-none" />
+                  <input type="date" value={trip.end} onChange={e => updateTrip(trip.id, 'end', e.target.value)} className="px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200 text-sm text-zinc-900 outline-none" />
                 </div>
                 {trip.start && trip.end && (
                   <span className="text-xs font-mono text-zinc-500 shrink-0">{daysBetween(new Date(trip.start), new Date(trip.end))}d</span>
@@ -144,15 +144,15 @@ export default function SchengenPage() {
         </div>
 
         {/* How it works */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6">
+        <div className="bg-white border border-zinc-200 rounded-xl p-6">
           <div className="flex items-center gap-2 mb-3">
             <Info className="w-4 h-4 text-zinc-400" />
-            <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50">How the 90/180 Rule Works</h3>
+            <h3 className="text-sm font-bold text-zinc-900">How the 90/180 Rule Works</h3>
           </div>
-          <div className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <div className="space-y-2 text-sm text-zinc-600">
             <p>The Schengen area allows stays of up to <strong>90 days within any 180-day period</strong>. This is a rolling window, not a calendar year.</p>
             <p>For any given day, the system looks back 180 days and counts how many of those days were spent in the Schengen zone. If the count reaches 90, you must leave.</p>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 pt-2">⚠️ Since April 2026, the EU Entry/Exit System (EES) biometrically tracks all border crossings. Overstays are flagged instantly.</p>
+            <p className="text-xs text-zinc-400 pt-2">⚠️ Since April 2026, the EU Entry/Exit System (EES) biometrically tracks all border crossings. Overstays are flagged instantly.</p>
           </div>
         </div>
       </main>

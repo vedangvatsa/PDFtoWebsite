@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
@@ -61,10 +61,10 @@ const TZ_CITIES: TZCity[] = [
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
 const COLORS = [
-  { bar: 'bg-emerald-500/70 dark:bg-emerald-500/60', text: 'text-emerald-700 dark:text-emerald-400' },
-  { bar: 'bg-blue-500/70 dark:bg-blue-500/60', text: 'text-blue-700 dark:text-blue-400' },
-  { bar: 'bg-violet-500/70 dark:bg-violet-500/60', text: 'text-violet-700 dark:text-violet-400' },
-  { bar: 'bg-amber-500/70 dark:bg-amber-500/60', text: 'text-amber-700 dark:text-amber-400' },
+  { bar: 'bg-emerald-500/70', text: 'text-emerald-700' },
+  { bar: 'bg-blue-500/70', text: 'text-blue-700' },
+  { bar: 'bg-violet-500/70', text: 'text-violet-700' },
+  { bar: 'bg-amber-500/70', text: 'text-amber-700' },
 ];
 
 function formatHour(h: number): string {
@@ -107,13 +107,13 @@ export default function TimezonePage() {
   const availableCities = TZ_CITIES.filter(c => !selected.includes(c.name));
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -121,16 +121,16 @@ export default function TimezonePage() {
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Timezone Overlap Tool
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className={PAGE_SUBTITLE}>
             Pick 2–4 cities and see their work hours (9 AM – 6 PM) across a 24-hour UTC bar. Find the best meeting times for distributed teams.
           </p>
         </div>
 
         {/* City Picker */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 md:p-6 mb-6">
+        <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
             <Globe className="w-4 h-4 text-zinc-400" />
             <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
@@ -145,12 +145,12 @@ export default function TimezonePage() {
                 key={city.name}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                   i === 0
-                    ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-400'
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
                     : i === 1
-                    ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400'
+                    ? 'bg-blue-50 border-blue-200 text-blue-700'
                     : i === 2
-                    ? 'bg-violet-50 dark:bg-violet-950/30 border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-400'
-                    : 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800/50 text-amber-700 dark:text-amber-400'
+                    ? 'bg-violet-50 border-violet-200 text-violet-700'
+                    : 'bg-amber-50 border-amber-200 text-amber-700'
                 }`}
               >
                 {city.emoji} {city.name}
@@ -173,7 +173,7 @@ export default function TimezonePage() {
               <select
                 onChange={(e) => { addCity(e.target.value); e.target.value = ''; }}
                 defaultValue=""
-                className="text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+                className="text-sm bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300"
               >
                 <option value="" disabled>Add a city…</option>
                 {availableCities.map(c => (
@@ -188,30 +188,30 @@ export default function TimezonePage() {
 
         {/* Overlap Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Clock className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Work Hour Overlap</span>
             </div>
-            <div className={`text-2xl font-bold ${overlapHours > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+            <div className={`text-2xl font-bold ${overlapHours > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
               {overlapHours} <span className="text-sm font-normal text-zinc-400">hours</span>
             </div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Globe className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Cities Compared</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+            <div className="text-2xl font-bold text-zinc-900">
               {selectedCities.length}
             </div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Clock className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Max Spread</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+            <div className="text-2xl font-bold text-zinc-900">
               {selectedCities.length >= 2
                 ? `${Math.abs(Math.max(...selectedCities.map(c => c.offset)) - Math.min(...selectedCities.map(c => c.offset)))}h`
                 : '—'}
@@ -221,12 +221,12 @@ export default function TimezonePage() {
 
         {/* 24-Hour Timeline */}
         {selectedCities.length >= 2 && (
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 md:p-6 overflow-x-auto">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 overflow-x-auto">
             <div className="min-w-[700px]">
               {/* UTC Hour Labels */}
               <div className="flex items-center mb-1 pl-32 md:pl-40">
                 {HOURS.map(h => (
-                  <div key={h} className="flex-1 text-center text-[10px] text-zinc-400 dark:text-zinc-500 font-mono">
+                  <div key={h} className="flex-1 text-center text-[10px] text-zinc-400 font-mono">
                     {h.toString().padStart(2, '0')}
                   </div>
                 ))}
@@ -242,13 +242,13 @@ export default function TimezonePage() {
                       <div className={`text-sm font-semibold truncate ${color.text}`}>
                         {city.emoji} {city.name}
                       </div>
-                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <div className="text-[10px] text-zinc-400">
                         UTC{city.offset >= 0 ? '+' : ''}{city.offset}
                       </div>
                     </div>
 
                     {/* Hour blocks */}
-                    <div className="flex flex-1 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800/50">
+                    <div className="flex flex-1 rounded-lg overflow-hidden border border-zinc-200">
                       {HOURS.map(h => {
                         const localHour = ((h + city.offset) % 24 + 24) % 24;
                         const isWork = localHour >= 9 && localHour < 18;
@@ -262,11 +262,11 @@ export default function TimezonePage() {
                                 ? allWork
                                   ? `${color.bar} ring-1 ring-inset ring-emerald-400/30`
                                   : color.bar
-                                : 'bg-zinc-100 dark:bg-zinc-800/50'
+                                : 'bg-zinc-100'
                             }`}
                             title={`UTC ${h}:00 → ${city.name} ${formatHour(localHour)}${isWork ? ' (work)' : ''}${allWork ? ' (overlap)' : ''}`}
                           >
-                            <span className={isWork ? 'text-white/80' : 'text-zinc-400/50 dark:text-zinc-600/50'}>
+                            <span className={isWork ? 'text-white/80' : 'text-zinc-400/50'}>
                               {Math.floor(localHour)}
                             </span>
                           </div>
@@ -280,11 +280,11 @@ export default function TimezonePage() {
               {/* Overlap row */}
               <div className="flex items-center mt-1">
                 <div className="w-32 md:w-40 shrink-0 pr-3 text-right">
-                  <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                  <div className="text-xs font-semibold text-zinc-500">
                     Overlap
                   </div>
                 </div>
-                <div className="flex flex-1 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800/50">
+                <div className="flex flex-1 rounded-lg overflow-hidden border border-zinc-200">
                   {HOURS.map(h => {
                     const allWork = selectedCities.every(c => isWorkHour(h, c.offset));
                     return (
@@ -292,8 +292,8 @@ export default function TimezonePage() {
                         key={h}
                         className={`flex-1 h-6 transition-colors ${
                           allWork
-                            ? 'bg-emerald-500 dark:bg-emerald-500/80'
-                            : 'bg-zinc-100 dark:bg-zinc-800/50'
+                            ? 'bg-emerald-500'
+                            : 'bg-zinc-100'
                         }`}
                         title={allWork ? `UTC ${h}:00 - All cities working` : `UTC ${h}:00`}
                       />
@@ -303,13 +303,13 @@ export default function TimezonePage() {
               </div>
 
               {/* Legend */}
-              <div className="flex items-center gap-4 mt-4 pl-32 md:pl-40 text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-4 mt-4 pl-32 md:pl-40 text-xs text-zinc-500">
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded bg-emerald-500" />
                   Overlap (all working)
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded bg-zinc-300 dark:bg-zinc-600" />
+                  <div className="w-3 h-3 rounded bg-zinc-300" />
                   Off-hours
                 </div>
               </div>
@@ -318,9 +318,9 @@ export default function TimezonePage() {
         )}
 
         {selectedCities.length < 2 && (
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-12 text-center">
-            <Clock className="w-10 h-10 text-zinc-300 dark:text-zinc-600 mx-auto mb-3" />
-            <p className="text-zinc-500 dark:text-zinc-400">
+          <div className="bg-white border border-zinc-200 rounded-xl p-12 text-center">
+            <Clock className="w-10 h-10 text-zinc-300 mx-auto mb-3" />
+            <p className="text-zinc-500">
               Select at least 2 cities to see timezone overlap.
             </p>
           </div>

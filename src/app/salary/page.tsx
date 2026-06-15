@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Header from '@/components/header';
@@ -10,10 +10,10 @@ import { ArrowLeft, DollarSign, ArrowUpDown, TrendingUp, TrendingDown, Loader2 }
 interface City { slug: string; name: string; country: string; emoji: string; cost: { monthly_total: number }; nomad_score: number; }
 
 function tier(remaining: number) {
-  if (remaining >= 3000) return { label: 'Luxury', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500' };
-  if (remaining >= 1500) return { label: 'Comfortable', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-500' };
-  if (remaining >= 500) return { label: 'Moderate', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-500' };
-  return { label: 'Tight', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-500' };
+  if (remaining >= 3000) return { label: 'Luxury', color: 'text-emerald-600', bg: 'bg-emerald-500' };
+  if (remaining >= 1500) return { label: 'Comfortable', color: 'text-blue-600', bg: 'bg-blue-500' };
+  if (remaining >= 500) return { label: 'Moderate', color: 'text-amber-600', bg: 'bg-amber-500' };
+  return { label: 'Tight', color: 'text-red-600', bg: 'bg-red-500' };
 }
 
 type SortKey = 'name' | 'cost' | 'remaining' | 'ppi';
@@ -53,69 +53,69 @@ export default function SalaryPage() {
   const sortIcon = (key: SortKey) => sortKey === key ? (sortAsc ? '↑' : '↓') : '';
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
-        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8">
+        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8">
           <ArrowLeft className="w-4 h-4" /> Back to Directory
         </Link>
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3">Purchasing Power Calculator</h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl">Enter your monthly income to see what it buys across 95 digital nomad cities.</p>
+          <h1 className={PAGE_TITLE}>Purchasing Power Calculator</h1>
+          <p className={PAGE_SUBTITLE}>Enter your monthly income to see what it buys across 95 digital nomad cities.</p>
         </div>
 
         {loading ? <div className="flex justify-center py-32"><Loader2 className="h-8 w-8 animate-spin text-zinc-400" /></div> : (<>
           <div className="mb-8">
-            <label className="block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2 uppercase tracking-wider">Monthly Income (USD)</label>
+            <label className="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Monthly Income (USD)</label>
             <div className="flex items-center gap-2 max-w-xs">
               <DollarSign className="w-5 h-5 text-zinc-400" />
-              <input type="number" value={income} onChange={e => setIncome(Number(e.target.value) || 0)} className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 text-zinc-900 dark:text-zinc-50 text-lg font-semibold outline-none focus:border-zinc-400" />
+              <input type="number" value={income} onChange={e => setIncome(Number(e.target.value) || 0)} className="w-full px-4 py-2.5 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-lg font-semibold outline-none focus:border-zinc-400" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
+            <div className="bg-white border border-zinc-200 rounded-xl p-4">
               <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">Comfortable+</div>
-              <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{comfortable}</div>
+              <div className="text-3xl font-bold text-emerald-600">{comfortable}</div>
               <div className="text-xs text-zinc-500">cities ≥$1,500 left</div>
             </div>
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
+            <div className="bg-white border border-zinc-200 rounded-xl p-4">
               <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">Best Value</div>
-              <div className="text-lg font-bold text-zinc-900 dark:text-zinc-50 truncate">{best?.emoji} {best?.name}</div>
+              <div className="text-lg font-bold text-zinc-900 truncate">{best?.emoji} {best?.name}</div>
               <div className="text-xs text-zinc-500">${best?.remaining?.toLocaleString()}/mo left</div>
             </div>
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
+            <div className="bg-white border border-zinc-200 rounded-xl p-4">
               <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">Most Expensive</div>
-              <div className="text-lg font-bold text-zinc-900 dark:text-zinc-50 truncate">{worst?.emoji} {worst?.name}</div>
+              <div className="text-lg font-bold text-zinc-900 truncate">{worst?.emoji} {worst?.name}</div>
               <div className="text-xs text-zinc-500">${worst?.cost?.monthly_total?.toLocaleString()}/mo cost</div>
             </div>
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
+            <div className="bg-white border border-zinc-200 rounded-xl p-4">
               <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">Total Cities</div>
-              <div className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">{rows.length}</div>
+              <div className="text-3xl font-bold text-zinc-900">{rows.length}</div>
               <div className="text-xs text-zinc-500">compared</div>
             </div>
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800/50">
+          <div className="overflow-x-auto rounded-xl border border-zinc-200">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800/50">
+                <tr className="bg-zinc-50 border-b border-zinc-200">
                   <th className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider w-8">#</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900 dark:hover:text-zinc-100" onClick={() => toggleSort('name')}>City {sortIcon('name')}</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900 dark:hover:text-zinc-100" onClick={() => toggleSort('cost')}>Monthly Cost {sortIcon('cost')}</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900 dark:hover:text-zinc-100" onClick={() => toggleSort('remaining')}>Remaining {sortIcon('remaining')}</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900 dark:hover:text-zinc-100" onClick={() => toggleSort('ppi')}>Power Index {sortIcon('ppi')}</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900" onClick={() => toggleSort('name')}>City {sortIcon('name')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900" onClick={() => toggleSort('cost')}>Monthly Cost {sortIcon('cost')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900" onClick={() => toggleSort('remaining')}>Remaining {sortIcon('remaining')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:text-zinc-900" onClick={() => toggleSort('ppi')}>Power Index {sortIcon('ppi')}</th>
                   <th className="text-center px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wider">Lifestyle</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/30">
+              <tbody className="divide-y divide-zinc-100">
                 {rows.map((r, i) => (
-                  <tr key={r.slug} className="bg-white dark:bg-transparent hover:bg-zinc-50 dark:hover:bg-zinc-900/30 transition-colors">
+                  <tr key={r.slug} className="bg-white hover:bg-zinc-50 transition-colors">
                     <td className="px-4 py-3 text-xs text-zinc-400">{i + 1}</td>
-                    <td className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">{r.emoji} {r.name}<span className="text-zinc-400 ml-1 text-xs">{r.country}</span></td>
-                    <td className="px-4 py-3 text-right font-mono text-zinc-600 dark:text-zinc-400">${r.cost.monthly_total.toLocaleString()}</td>
-                    <td className={`px-4 py-3 text-right font-mono font-semibold ${r.remaining >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>${r.remaining.toLocaleString()}</td>
-                    <td className="px-4 py-3 text-right font-mono text-zinc-600 dark:text-zinc-400">{r.ppi}</td>
+                    <td className="px-4 py-3 font-medium text-zinc-900">{r.emoji} {r.name}<span className="text-zinc-400 ml-1 text-xs">{r.country}</span></td>
+                    <td className="px-4 py-3 text-right font-mono text-zinc-600">${r.cost.monthly_total.toLocaleString()}</td>
+                    <td className={`px-4 py-3 text-right font-mono font-semibold ${r.remaining >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>${r.remaining.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-right font-mono text-zinc-600">{r.ppi}</td>
                     <td className="px-4 py-3 text-center"><span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${r.tier.color} bg-opacity-10`}><span className={`w-1.5 h-1.5 rounded-full ${r.tier.bg}`} />{r.tier.label}</span></td>
                   </tr>
                 ))}

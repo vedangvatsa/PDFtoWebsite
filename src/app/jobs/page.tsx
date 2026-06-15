@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER , PAGE_TITLE } from '@/lib/utils';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
@@ -128,7 +128,7 @@ function JobTypeBadge({ type }: { type: string | null }) {
     freelance: 'Freelance',
   };
   return (
-    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 transition-colors">
+    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 transition-colors">
       {labels[type] || type}
     </span>
   );
@@ -273,12 +273,12 @@ export default function JobsPage() {
   };
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Hero */}
         <div className="flex flex-col mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Job Board
           </h1>
           {/* Company logos strip */}
@@ -308,8 +308,8 @@ export default function JobsPage() {
               onClick={() => setMatchOnly(m => !m)}
               className={`inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
                 matchOnly
-                  ? 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-400'
-                  : 'bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300'
+                  ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                  : 'bg-zinc-50 border-zinc-200 text-zinc-500 hover:border-zinc-300'
               }`}
             >
               <Target className="h-3 w-3" />
@@ -373,7 +373,7 @@ export default function JobsPage() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               aria-label="Search jobs by title or company"
-              className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </form>
           <div className="relative shrink-0">
@@ -383,7 +383,7 @@ export default function JobsPage() {
               value={loc}
               onChange={(e) => setLoc(e.target.value)}
               aria-label="Filter jobs by location"
-              className="h-10 pl-3 pr-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer appearance-none"
+              className="h-10 pl-3 pr-8 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer appearance-none"
             >
               {LOCATIONS.map(l => (
                 <option key={l.value} value={l.value}>{l.label}</option>
@@ -395,7 +395,7 @@ export default function JobsPage() {
 
         {/* Job count */}
         {!loading && (
-          <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 mb-4 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
             {total} {total === 1 ? 'job' : 'jobs'} found
           </p>
         )}
@@ -403,7 +403,7 @@ export default function JobsPage() {
         {/* Loading */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="h-8 w-8 border-2 border-zinc-300 dark:border-zinc-700 border-t-primary rounded-full animate-spin" />
+            <div className="h-8 w-8 border-2 border-zinc-300 border-t-primary rounded-full animate-spin" />
             <p className="mt-4 text-sm text-zinc-500">Loading jobs...</p>
           </div>
         )}
@@ -411,8 +411,8 @@ export default function JobsPage() {
         {/* Empty state */}
         {!loading && jobs.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Briefcase className="h-12 w-12 text-zinc-300 dark:text-zinc-700 mb-4" />
-            <p className="text-lg font-semibold text-zinc-700 dark:text-zinc-300">No jobs found</p>
+            <Briefcase className="h-12 w-12 text-zinc-300 mb-4" />
+            <p className="text-lg font-semibold text-zinc-700">No jobs found</p>
             <p className="text-sm text-zinc-500 mt-2">Try adjusting your search or filters.</p>
           </div>
         )}
@@ -427,7 +427,7 @@ export default function JobsPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-job-id={job.id}
-                className="group flex items-center gap-3 px-4 py-2.5 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-lg hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all"
+                className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
                 onClick={(e) => handleJobClick(e, job)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -451,42 +451,42 @@ export default function JobsPage() {
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
+                    <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
                       {job.title}
                     </h3>
                     {job.match_score >= 50 && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 shrink-0 bg-emerald-50 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
                         <Sparkles className="h-2.5 w-2.5" />Great match
                       </span>
                     )}
                     {job.match_score >= 25 && job.match_score < 50 && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-600 dark:text-amber-400 shrink-0 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-600 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
                         <Target className="h-2.5 w-2.5" />Good match
                       </span>
                     )}
                     {job.match_score > 0 && job.match_score < 25 && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-zinc-400 dark:text-zinc-500 shrink-0" title={(job.match_signals || []).join(' · ')}>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-zinc-400 shrink-0" title={(job.match_signals || []).join(' · ')}>
                         <Target className="h-2.5 w-2.5" />Partial
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400 min-w-0">
+                  <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 min-w-0">
                     <span className="font-medium truncate shrink-0 max-w-[40%]">{job.company}</span>
                     {job.location && (
                       <>
-                        <span className="text-zinc-300 dark:text-zinc-700 shrink-0">·</span>
+                        <span className="text-zinc-300 shrink-0">·</span>
                         <span className="truncate">{job.location}</span>
                       </>
                     )}
                     {job.published_at && (
                       <>
-                        <span className="text-zinc-300 dark:text-zinc-700">·</span>
+                        <span className="text-zinc-300">·</span>
                         <span className="shrink-0">{timeAgo(job.published_at)}</span>
                       </>
                     )}
                   </div>
                 </div>
-                <ExternalLink className="h-3.5 w-3.5 text-zinc-300 dark:text-zinc-700 group-hover:text-primary shrink-0 transition-colors" />
+                <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" />
               </a>
             ))}
           </div>
@@ -496,7 +496,7 @@ export default function JobsPage() {
         {hasMore && !loading && (
           <div ref={sentinelRef} className="flex justify-center py-6">
             {loadingMore && (
-              <div className="h-5 w-5 border-2 border-zinc-300 dark:border-zinc-700 border-t-primary rounded-full animate-spin" />
+              <div className="h-5 w-5 border-2 border-zinc-300 border-t-primary rounded-full animate-spin" />
             )}
           </div>
         )}
@@ -504,27 +504,27 @@ export default function JobsPage() {
         {/* Interstitial Modal */}
         {pendingJobApply && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl max-w-md w-full p-6 relative animate-in zoom-in-95 duration-200">
+            <div className="bg-white border border-zinc-200 rounded-2xl shadow-2xl max-w-md w-full p-6 relative animate-in zoom-in-95 duration-200">
               <button 
                 onClick={() => setPendingJobApply(null)}
-                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 transition-colors"
                 aria-label="Close modal"
               >
                 <X className="h-5 w-5" />
               </button>
               
-              <h3 className="text-2xl font-bold text-center text-zinc-900 dark:text-zinc-50 mb-2 tracking-tight">
+              <h3 className="text-2xl font-bold text-center text-zinc-900 mb-2 tracking-tight">
                 Let jobs find you.
               </h3>
               
-              <p className="text-sm text-center text-zinc-500 dark:text-zinc-400 mb-8 max-w-xs mx-auto">
+              <p className="text-sm text-center text-zinc-500 mb-8 max-w-xs mx-auto">
                 Drop your CV to see instant matches and make yourself discoverable to AI agents.
               </p>
               
               <div className="flex flex-col gap-3">
                 <label 
                   htmlFor="modal-cv-upload" 
-                  className={`flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-md ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}
+                  className={`flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-black text-white font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-md ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}
                 >
                   {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
                   {isUploading ? 'Parsing...' : 'Upload CV'}
@@ -571,7 +571,7 @@ export default function JobsPage() {
                     posthog.capture('jobs_interstitial_skip_apply_clicked');
                     setPendingJobApply(null);
                   }}
-                  className="flex items-center justify-center w-full px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 font-medium text-sm transition-colors"
+                  className="flex items-center justify-center w-full px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-900 font-medium text-sm transition-colors"
                 >
                   Skip and apply
                 </a>

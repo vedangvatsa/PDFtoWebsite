@@ -1,4 +1,4 @@
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/header';
@@ -72,7 +72,7 @@ const CATEGORIES: Category[] = [
     title: 'Health Insurance',
     description: 'Travel and health insurance designed for location-independent workers.',
     icon: <Shield className="w-5 h-5" />,
-    color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10',
+    color: 'text-emerald-600 bg-emerald-50',
     resources: [
       {
         name: 'SafetyWing',
@@ -107,7 +107,7 @@ const CATEGORIES: Category[] = [
     title: 'Banking & Money',
     description: 'Multi-currency accounts, zero-fee transfers, and cards that work everywhere.',
     icon: <CreditCard className="w-5 h-5" />,
-    color: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-500/10',
+    color: 'text-violet-600 bg-violet-50',
     resources: [
       {
         name: 'Wise (TransferWise)',
@@ -143,7 +143,7 @@ const CATEGORIES: Category[] = [
     title: 'eSIM & Connectivity',
     description: 'Stay connected anywhere without swapping physical SIM cards.',
     icon: <Smartphone className="w-5 h-5" />,
-    color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10',
+    color: 'text-blue-600 bg-blue-50',
     resources: [
       {
         name: 'Airalo',
@@ -179,7 +179,7 @@ const CATEGORIES: Category[] = [
     title: 'VPN & Security',
     description: 'Protect your connection on public WiFi and access content from anywhere.',
     icon: <Lock className="w-5 h-5" />,
-    color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10',
+    color: 'text-amber-600 bg-amber-50',
     resources: [
       {
         name: 'NordVPN',
@@ -216,7 +216,7 @@ const CATEGORIES: Category[] = [
     title: 'Flights & Transport',
     description: 'Find cheap flights, compare routes, and book inter-city transport.',
     icon: <Plane className="w-5 h-5" />,
-    color: 'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-500/10',
+    color: 'text-sky-600 bg-sky-50',
     resources: [
       {
         name: 'Google Flights',
@@ -251,7 +251,7 @@ const CATEGORIES: Category[] = [
     title: 'Accommodation',
     description: 'Find apartments, coliving spaces, hostels, and long-term stays.',
     icon: <Home className="w-5 h-5" />,
-    color: 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10',
+    color: 'text-rose-600 bg-rose-50',
     resources: [
       {
         name: 'Airbnb',
@@ -292,7 +292,7 @@ const CATEGORIES: Category[] = [
     title: 'Coworking & Productivity',
     description: 'Day passes, memberships, and tools to stay productive on the road.',
     icon: <Laptop className="w-5 h-5" />,
-    color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10',
+    color: 'text-indigo-600 bg-indigo-50',
     resources: [
       {
         name: 'Deskpass',
@@ -328,7 +328,7 @@ const CATEGORIES: Category[] = [
     title: 'Tax & Legal',
     description: 'Handle taxes, incorporate remotely, and stay compliant across borders.',
     icon: <FileText className="w-5 h-5" />,
-    color: 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-500/10',
+    color: 'text-orange-600 bg-orange-50',
     resources: [
       {
         name: 'Deel',
@@ -363,7 +363,7 @@ const CATEGORIES: Category[] = [
     title: 'Freelance & Remote Jobs',
     description: 'Find remote-friendly work and clients from anywhere.',
     icon: <Briefcase className="w-5 h-5" />,
-    color: 'text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-500/10',
+    color: 'text-teal-600 bg-teal-50',
     resources: [
       {
         name: 'CVin.Bio Jobs',
@@ -399,7 +399,7 @@ const CATEGORIES: Category[] = [
     title: 'Community & Networking',
     description: 'Meet other nomads, join local groups, and find your tribe.',
     icon: <Users className="w-5 h-5" />,
-    color: 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-500/10',
+    color: 'text-pink-600 bg-pink-50',
     resources: [
       {
         name: 'Nomad List',
@@ -434,7 +434,7 @@ const CATEGORIES: Category[] = [
     title: 'Gear & Essentials',
     description: 'Travel-friendly tech, bags, and gadgets for life on the move.',
     icon: <Wrench className="w-5 h-5" />,
-    color: 'text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/50',
+    color: 'text-zinc-600 bg-zinc-100',
     resources: [
       {
         name: 'Peak Design Travel Backpack',
@@ -481,23 +481,23 @@ function ResourceCard({ resource }: { resource: Resource }) {
   return (
     <Tag
       {...(linkProps as any)}
-      className="group flex flex-col gap-1.5 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/30 hover:bg-zinc-50/80 dark:hover:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all duration-300"
+      className="group flex flex-col gap-1.5 p-4 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50/80 hover:border-zinc-300 hover:shadow-sm transition-all duration-300"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
+          <span className="text-sm font-semibold text-zinc-900 group-hover:text-primary transition-colors">
             {resource.name}
           </span>
           {resource.tag && (
-            <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-zinc-100 text-zinc-600">
               {resource.tag === 'Popular' && <Star className="w-2.5 h-2.5 mr-0.5 fill-current" />}
               {resource.tag}
             </span>
           )}
         </div>
-        <ExternalLink className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-700 group-hover:text-zinc-500 dark:group-hover:text-zinc-400 transition-colors shrink-0 mt-0.5" />
+        <ExternalLink className="w-3.5 h-3.5 text-zinc-300 group-hover:text-zinc-500 transition-colors shrink-0 mt-0.5" />
       </div>
-      <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+      <p className="text-xs text-zinc-500 leading-relaxed">
         {resource.description}
       </p>
     </Tag>
@@ -506,13 +506,13 @@ function ResourceCard({ resource }: { resource: Resource }) {
 
 export default function ResourcesPage() {
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -520,10 +520,10 @@ export default function ResourcesPage() {
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Resources & Tools
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className={PAGE_SUBTITLE}>
             Everything you need for life as a digital nomad — insurance, banking, connectivity, flights, accommodation, and more. Hand-picked and regularly updated.
           </p>
         </div>
@@ -534,7 +534,7 @@ export default function ResourcesPage() {
             <a
               key={cat.id}
               href={`#${cat.id}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/30 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 transition-all"
             >
               {cat.title}
             </a>
@@ -551,10 +551,10 @@ export default function ResourcesPage() {
                   {cat.icon}
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
+                  <h2 className="text-lg font-bold text-zinc-900">
                     {cat.title}
                   </h2>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-zinc-500">
                     {cat.description}
                   </p>
                 </div>
@@ -571,8 +571,8 @@ export default function ResourcesPage() {
         </div>
 
         {/* Footer note */}
-        <div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800/50">
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed max-w-2xl">
+        <div className="mt-16 pt-8 border-t border-zinc-200">
+          <p className="text-xs text-zinc-400 leading-relaxed max-w-2xl">
             This page contains curated recommendations based on community feedback and personal use. Some links may be affiliate links that help support CVin.Bio at no extra cost to you. Last updated June 2026.
           </p>
         </div>

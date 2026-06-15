@@ -1,4 +1,4 @@
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER , PAGE_TITLE } from '@/lib/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
@@ -73,16 +73,16 @@ export const metadata: Metadata = {
 
 export default function NomadMapPage() {
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       {/* Preload the data file so it starts downloading immediately */}
       <link rel="preload" href="/nomad-data-v2.json" as="fetch" crossOrigin="anonymous" />
       <main id="main-content" className={PAGE_CONTAINER}>
         <div className="flex flex-col mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Digital Nomad Directory
           </h1>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
             Coliving houses, coworking spaces, hostels, apartments, and guesthouses across 95 cities in 52 countries.
           </p>
         </div>
@@ -93,12 +93,12 @@ export default function NomadMapPage() {
             <Link
               key={tool.href}
               href={tool.href}
-              className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all group"
+              className="flex items-center gap-3 px-4 py-3 bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-sm transition-all group"
             >
               {tool.icon}
               <div>
-                <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors">{tool.title}</div>
-                <div className="text-xs text-zinc-500 dark:text-zinc-400">{tool.desc}</div>
+                <div className="text-sm font-semibold text-zinc-900 group-hover:text-primary transition-colors">{tool.title}</div>
+                <div className="text-xs text-zinc-500">{tool.desc}</div>
               </div>
             </Link>
           ))}

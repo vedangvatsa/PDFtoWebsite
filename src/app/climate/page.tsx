@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_DISCLAIMER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -49,10 +49,10 @@ function currentMonthIndex(): number {
 }
 
 function tempColor(t: number): string {
-  if (t < 15) return 'text-blue-600 dark:text-blue-400';
-  if (t <= 25) return 'text-emerald-600 dark:text-emerald-400';
-  if (t <= 32) return 'text-amber-600 dark:text-amber-400';
-  return 'text-red-600 dark:text-red-400';
+  if (t < 15) return 'text-blue-600';
+  if (t <= 25) return 'text-emerald-600';
+  if (t <= 32) return 'text-amber-600';
+  return 'text-red-600';
 }
 
 function humidityLabel(h: number): string {
@@ -130,11 +130,11 @@ export default function ClimatePage() {
   const SortHeader = ({ label, field, className = '' }: { label: string; field: SortKey; className?: string }) => (
     <button
       onClick={() => toggleSort(field)}
-      className={`group inline-flex items-center gap-1 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors ${className}`}
+      className={`group inline-flex items-center gap-1 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-zinc-700 transition-colors ${className}`}
     >
       {label}
       {sortKey === field ? (
-        sortDir === 'asc' ? <ArrowUp className="h-3 w-3 text-zinc-900 dark:text-zinc-100" /> : <ArrowDown className="h-3 w-3 text-zinc-900 dark:text-zinc-100" />
+        sortDir === 'asc' ? <ArrowUp className="h-3 w-3 text-zinc-900" /> : <ArrowDown className="h-3 w-3 text-zinc-900" />
       ) : (
         <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity" />
       )}
@@ -157,8 +157,8 @@ export default function ClimatePage() {
           onClick={() => onChange(o.value)}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
             value === o.value
-              ? 'bg-zinc-900 text-white dark:bg-white dark:text-black'
-              : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+              ? 'bg-zinc-900 text-white'
+              : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
           }`}
         >
           {o.label}
@@ -168,19 +168,19 @@ export default function ClimatePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
-        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8">
+        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8">
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
         </Link>
 
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Climate Finder
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className={PAGE_SUBTITLE}>
             Filter {cities.length} digital nomad cities by temperature, humidity, and rainfall for any month of the year.
           </p>
         </div>
@@ -192,7 +192,7 @@ export default function ClimatePage() {
         ) : (
           <>
             {/* Filters */}
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 md:p-6 mb-6">
+            <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 {/* Month */}
                 <div>
@@ -202,7 +202,7 @@ export default function ClimatePage() {
                   <select
                     value={monthIdx}
                     onChange={e => setMonthIdx(Number(e.target.value))}
-                    className="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300"
                   >
                     {MONTHS.map((m, i) => (
                       <option key={m} value={i}>{m}</option>
@@ -220,14 +220,14 @@ export default function ClimatePage() {
                       type="number"
                       value={tempMin}
                       onChange={e => setTempMin(Number(e.target.value))}
-                      className="w-20 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 tabular-nums focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+                      className="w-20 bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-900 tabular-nums focus:outline-none focus:ring-2 focus:ring-zinc-300"
                     />
                     <span className="text-zinc-400 text-sm">–</span>
                     <input
                       type="number"
                       value={tempMax}
                       onChange={e => setTempMax(Number(e.target.value))}
-                      className="w-20 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 tabular-nums focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+                      className="w-20 bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-900 tabular-nums focus:outline-none focus:ring-2 focus:ring-zinc-300"
                     />
                   </div>
                 </div>
@@ -269,12 +269,12 @@ export default function ClimatePage() {
             </div>
 
             {/* Summary */}
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 mb-6">
+            <div className="bg-white border border-zinc-200 rounded-xl p-4 mb-6">
               <div className="flex items-center gap-2">
                 <Sun className="w-4 h-4 text-amber-500" />
-                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                <span className="text-sm font-medium text-zinc-900">
                   <span className="text-2xl font-bold tabular-nums">{sorted.length}</span>
-                  <span className="text-zinc-500 dark:text-zinc-400 ml-1.5">
+                  <span className="text-zinc-500 ml-1.5">
                     {sorted.length === 1 ? 'city matches' : 'cities match'} your climate preferences in {MONTHS[monthIdx]}
                   </span>
                 </span>
@@ -282,7 +282,7 @@ export default function ClimatePage() {
             </div>
 
             {/* Temp Legend */}
-            <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-zinc-500">
               <span className="font-medium">Temperature:</span>
               <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-blue-500" /> Cold (&lt;15°C)</div>
               <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Pleasant (15-25°C)</div>
@@ -291,13 +291,13 @@ export default function ClimatePage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl overflow-hidden transition-colors">
+            <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden transition-colors">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-200 dark:border-zinc-800/50">
+                    <tr className="border-b border-zinc-200">
                       <th className="text-left px-5 py-4">
-                        <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">#</span>
+                        <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">#</span>
                       </th>
                       <th className="text-left px-5 py-4"><SortHeader label="City" field="name" /></th>
                       <th className="text-right px-5 py-4"><SortHeader label="Temp" field="temp" /></th>
@@ -310,31 +310,31 @@ export default function ClimatePage() {
                     {sorted.map((city, i) => {
                       const m = getMonthData(city);
                       return (
-                        <tr key={city.slug} className="border-b border-zinc-100 dark:border-zinc-800/30 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
+                        <tr key={city.slug} className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
                           <td className="px-5 py-3.5 text-zinc-400 tabular-nums">{i + 1}</td>
                           <td className="px-5 py-3.5">
-                            <Link href={`/${city.slug}`} className="font-medium text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">
+                            <Link href={`/${city.slug}`} className="font-medium text-zinc-900 hover:text-blue-600 transition-colors whitespace-nowrap">
                               {city.emoji} {city.name}
                             </Link>
-                            <span className="text-zinc-400 dark:text-zinc-500 font-normal ml-1.5 text-xs">{city.country}</span>
+                            <span className="text-zinc-400 font-normal ml-1.5 text-xs">{city.country}</span>
                           </td>
                           <td className="px-5 py-3.5 text-right">
                             <span className={`font-bold tabular-nums ${tempColor(m.temp)}`}>{m.temp}°C</span>
                           </td>
-                          <td className="px-5 py-3.5 text-right tabular-nums text-zinc-600 dark:text-zinc-400">
+                          <td className="px-5 py-3.5 text-right tabular-nums text-zinc-600">
                             {m.humidity}%
                             <span className="text-[10px] text-zinc-400 ml-1">{humidityLabel(m.humidity)}</span>
                           </td>
-                          <td className="px-5 py-3.5 text-right tabular-nums text-zinc-600 dark:text-zinc-400">
+                          <td className="px-5 py-3.5 text-right tabular-nums text-zinc-600">
                             {m.rain}<span className="text-xs text-zinc-400 ml-0.5">mm</span>
                           </td>
                           <td className="px-5 py-3.5 text-right">
                             <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums ${
                               city.nomad_score >= 70
-                                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
+                                ? 'bg-emerald-50 text-emerald-700'
                                 : city.nomad_score >= 50
-                                ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400'
-                                : 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400'
+                                ? 'bg-amber-50 text-amber-700'
+                                : 'bg-red-50 text-red-700'
                             }`}>
                               {city.nomad_score}
                             </span>
@@ -355,7 +355,7 @@ export default function ClimatePage() {
             </div>
 
             {/* Source */}
-            <div className="mt-8 flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed max-w-2xl">
+            <div className={PAGE_DISCLAIMER}>
               <Info className="w-4 h-4 shrink-0 mt-0.5" />
               <p>
                 Climate data aggregated from historical weather stations and satellite data.

@@ -300,11 +300,11 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     return (
       <div
         className={cn(
-          "relative h-full w-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 p-6 text-center border border-zinc-200 dark:border-zinc-800 rounded-lg",
+          "relative h-full w-full flex flex-col items-center justify-center bg-zinc-50 text-zinc-500 p-6 text-center border border-zinc-200 rounded-lg",
           className,
         )}
       >
-        <p className="font-semibold text-zinc-900 dark:text-zinc-50">Map View Unavailable</p>
+        <p className="font-semibold text-zinc-900">Map View Unavailable</p>
         <p className="text-xs mt-1 max-w-sm">WebGL is not supported by your browser. You can still search and browse the listings below.</p>
       </div>
     );

@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER , PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
@@ -994,13 +994,13 @@ export default function VisasPage() {
   }, [searchQuery, selectedIncomeFilter, selectedContinent]);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back Link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -1008,10 +1008,10 @@ export default function VisasPage() {
 
         {/* Page Header */}
         <div className="flex flex-col mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Digital Nomad Visas
           </h1>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
             Explore and compare {VISAS.length} active digital nomad visas across the world. Filter by region, income requirements, and tax rules.
           </p>
         </div>
@@ -1026,7 +1026,7 @@ export default function VisasPage() {
               placeholder="Search countries..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </div>
 
@@ -1034,7 +1034,7 @@ export default function VisasPage() {
           <select
             value={selectedContinent}
             onChange={(e) => setSelectedContinent(e.target.value)}
-            className="h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer min-w-[160px]"
+            className="h-10 px-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer min-w-[160px]"
           >
             {continents.map((c) => (
               <option key={c} value={c}>{c === 'all' ? 'All Regions' : c}</option>
@@ -1045,7 +1045,7 @@ export default function VisasPage() {
           <select
             value={selectedIncomeFilter}
             onChange={(e) => setSelectedIncomeFilter(e.target.value)}
-            className="h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer min-w-[200px]"
+            className="h-10 px-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer min-w-[200px]"
           >
             <option value="all">Any Income Requirement</option>
             <option value="0">No Monthly Minimum (Savings Only)</option>
@@ -1057,7 +1057,7 @@ export default function VisasPage() {
         </div>
 
         {/* Results count */}
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+        <p className="text-sm text-zinc-500 mb-6">
           Showing {filteredVisas.length} of {VISAS.length} visas
         </p>
 
@@ -1067,30 +1067,30 @@ export default function VisasPage() {
             <div
               key={visa.country}
               onClick={() => setActiveModalVisa(visa)}
-              className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-5 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all cursor-pointer flex flex-col justify-between gap-3"
+              className="bg-white border border-zinc-200 rounded-xl p-5 hover:border-zinc-300 hover:shadow-sm transition-all cursor-pointer flex flex-col justify-between gap-3"
             >
               {/* Header */}
               <div className="flex items-center gap-3">
                 <span className="text-2xl shrink-0">{visa.flag}</span>
                 <div className="min-w-0">
-                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 leading-tight truncate">
+                  <h3 className="text-sm font-semibold text-zinc-900 leading-tight truncate">
                     {visa.country}
                   </h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{visa.continent}</p>
+                  <p className="text-xs text-zinc-500">{visa.continent}</p>
                 </div>
               </div>
 
               {/* Highlights */}
               <div className="flex flex-wrap gap-1.5">
                 {visa.highlights.map((h, idx) => (
-                  <span key={idx} className="bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 text-[11px] px-2 py-0.5 rounded-md font-medium">
+                  <span key={idx} className="bg-zinc-100 text-zinc-600 text-[11px] px-2 py-0.5 rounded-md font-medium">
                     {h}
                   </span>
                 ))}
               </div>
 
               {/* Stats Row */}
-              <div className="flex items-center gap-4 pt-3 border-t border-zinc-200 dark:border-zinc-800/50 text-zinc-900 dark:text-zinc-50">
+              <div className="flex items-center gap-4 pt-3 border-t border-zinc-200 text-zinc-900">
                 <div className="flex items-center gap-1.5 min-w-0 flex-1">
                   <Coins className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                   <p className="text-xs font-semibold truncate">
@@ -1108,10 +1108,10 @@ export default function VisasPage() {
 
         {/* Empty state */}
         {filteredVisas.length === 0 && (
-          <div className="text-center py-16 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+          <div className="text-center py-16 bg-white border border-zinc-200 rounded-2xl">
             <Search className="w-8 h-8 text-zinc-400 mx-auto mb-3" />
-            <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50">No visas match your filters</h3>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Try resetting search or filters.</p>
+            <h3 className="text-base font-bold text-zinc-900">No visas match your filters</h3>
+            <p className="text-sm text-zinc-500 mt-1">Try resetting search or filters.</p>
           </div>
         )}
       </main>
@@ -1123,23 +1123,23 @@ export default function VisasPage() {
       {activeModalVisa && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity">
           <div
-            className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl flex flex-col justify-between"
+            className="bg-white border border-zinc-200 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl flex flex-col justify-between"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-6 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-start">
+            <div className="p-6 border-b border-zinc-100 flex justify-between items-start">
               <div className="flex items-center gap-3">
                 <span className="text-4xl">{activeModalVisa.flag}</span>
                 <div>
-                  <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+                  <h2 className="text-2xl font-bold text-zinc-900">
                     {activeModalVisa.country} Nomad Visa
                   </h2>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">{activeModalVisa.continent}</p>
+                  <p className="text-sm text-zinc-500">{activeModalVisa.continent}</p>
                 </div>
               </div>
               <button
                 onClick={() => setActiveModalVisa(null)}
-                className="p-1 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all"
+                className="p-1 rounded-lg text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1147,36 +1147,36 @@ export default function VisasPage() {
 
             {/* Modal Body */}
             <div className="p-6 space-y-6 overflow-y-auto">
-              <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
+              <p className="text-base text-zinc-700 leading-relaxed">
                 {activeModalVisa.description}
               </p>
 
               {/* Requirement Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-zinc-50 dark:bg-zinc-800/40 p-4 rounded-xl border border-zinc-200/40 dark:border-zinc-800/40">
-                  <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 mb-1">
+                <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-200/40">
+                  <div className="flex items-center gap-1.5 text-zinc-500 mb-1">
                     <DollarSign className="w-4 h-4" />
                     <span className="text-[10px] font-bold uppercase tracking-wider">Min Income</span>
                   </div>
-                  <p className="text-sm font-bold text-zinc-900 dark:text-zinc-50">
+                  <p className="text-sm font-bold text-zinc-900">
                     {activeModalVisa.minIncomeDisplay}
                   </p>
                 </div>
-                <div className="bg-zinc-50 dark:bg-zinc-800/40 p-4 rounded-xl border border-zinc-200/40 dark:border-zinc-800/40">
-                  <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 mb-1">
+                <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-200/40">
+                  <div className="flex items-center gap-1.5 text-zinc-500 mb-1">
                     <Calendar className="w-4 h-4" />
                     <span className="text-[10px] font-bold uppercase tracking-wider">Duration</span>
                   </div>
-                  <p className="text-sm font-bold text-zinc-900 dark:text-zinc-50 leading-tight">
+                  <p className="text-sm font-bold text-zinc-900 leading-tight">
                     {activeModalVisa.duration}
                   </p>
                 </div>
-                <div className="bg-zinc-50 dark:bg-zinc-800/40 p-4 rounded-xl border border-zinc-200/40 dark:border-zinc-800/40">
-                  <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 mb-1">
+                <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-200/40">
+                  <div className="flex items-center gap-1.5 text-zinc-500 mb-1">
                     <Coins className="w-4 h-4" />
                     <span className="text-[10px] font-bold uppercase tracking-wider">Visa Fee</span>
                   </div>
-                  <p className="text-sm font-bold text-zinc-900 dark:text-zinc-50">
+                  <p className="text-sm font-bold text-zinc-900">
                     {activeModalVisa.fee}
                   </p>
                 </div>
@@ -1184,22 +1184,22 @@ export default function VisasPage() {
 
               {/* Tax Implications */}
               <div>
-                <h4 className="text-xs font-extrabold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5 mb-2">
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5 mb-2">
                   <Landmark className="w-3.5 h-3.5" />
                   Tax Implications
                 </h4>
-                <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed bg-zinc-50 dark:bg-zinc-800/20 p-4 rounded-xl border border-zinc-200/40 dark:border-zinc-800/40">
+                <p className="text-sm text-zinc-700 leading-relaxed bg-zinc-50 p-4 rounded-xl border border-zinc-200/40">
                   {activeModalVisa.taxImplications}
                 </p>
               </div>
 
               {/* Documents Required */}
               <div>
-                <h4 className="text-xs font-extrabold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5 mb-2">
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5 mb-2">
                   <FileText className="w-3.5 h-3.5" />
                   Documents Needed
                 </h4>
-                <ul className="space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
+                <ul className="space-y-2 text-sm text-zinc-700">
                   {activeModalVisa.documents.map((doc, idx) => (
                     <li key={idx} className="flex gap-2">
                       <span className="text-primary font-bold shrink-0">•</span>
@@ -1211,10 +1211,10 @@ export default function VisasPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 flex justify-end gap-3 flex-wrap sm:flex-nowrap">
+            <div className="p-6 border-t border-zinc-100 flex justify-end gap-3 flex-wrap sm:flex-nowrap">
               <button
                 onClick={() => setActiveModalVisa(null)}
-                className="px-4 py-2 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all w-full sm:w-auto"
+                className="px-4 py-2 border border-zinc-200 rounded-lg text-sm text-zinc-600 hover:bg-zinc-50 transition-all w-full sm:w-auto"
               >
                 Close
               </button>
@@ -1222,7 +1222,7 @@ export default function VisasPage() {
                 href={activeModalVisa.officialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 rounded-lg text-sm font-semibold transition-all w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-zinc-900 text-white hover:bg-zinc-800 rounded-lg text-sm font-semibold transition-all w-full sm:w-auto"
               >
                 Apply via Official Portal
                 <ExternalLink className="w-4 h-4" />

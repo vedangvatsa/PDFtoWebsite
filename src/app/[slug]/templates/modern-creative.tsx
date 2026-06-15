@@ -384,7 +384,7 @@ export default function TemplateModern(props: ProfileData) {
             <header className="text-center">
               {profile.avatarUrl && !profile.avatarUrl.includes('picsum.photos') && (
                 <div className="flex justify-center mb-4">
-                  <div className="relative overflow-hidden rounded-full border-2 border-indigo-100 dark:border-indigo-900/50 bg-muted shrink-0 flex items-center justify-center transform-gpu shadow-[0_0_40px_-10px_rgba(99,102,241,0.5)] dark:shadow-[0_0_40px_-5px_rgba(99,102,241,0.3)] transition-all hover:shadow-[0_0_50px_-5px_rgba(99,102,241,0.6)]" style={{ width: 72, height: 72, borderRadius: '50%' }}>
+                  <div className="relative overflow-hidden rounded-full border-2 border-indigo-100 bg-muted shrink-0 flex items-center justify-center transform-gpu shadow-[0_0_40px_-10px_rgba(99,102,241,0.5)] transition-all hover:shadow-[0_0_50px_-5px_rgba(99,102,241,0.6)]" style={{ width: 72, height: 72, borderRadius: '50%' }}>
                     {profile.avatarUrl.startsWith('data:') ? (
                       <img
                         src={profile.avatarUrl}
@@ -458,7 +458,7 @@ export default function TemplateModern(props: ProfileData) {
                     aria-label={`GitHub: ${profile.github.replace(/^(?:https?:\/\/)?(?:www\.)?github\.com\//i, '').replace(/\/$/, '')}`}
                     className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted/60 hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                   >
-                    <Github className="h-4 w-4 text-[#181717] dark:text-[#f0f6fc]" />
+                    <Github className="h-4 w-4 text-[#181717]" />
                   </a>
                 )}
                 {profile.linkedin && (
@@ -504,20 +504,20 @@ export default function TemplateModern(props: ProfileData) {
               )}
             </header>
 
-            {(workExperience.length > 0 || education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
+            {(workExperience.length > 0 || education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />}
 
             {/* ─── EXPERIENCE ─── */}
             {workExperience.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2.5">
                     Experience
                   </h2>
                   <div className="space-y-4">
                     {workExperience.map(job => (
-                      <div key={job.id} className="avoid-break relative pl-4 border-l-2 border-indigo-200/70 dark:border-indigo-700/50">
+                      <div key={job.id} className="avoid-break relative pl-4 border-l-2 border-indigo-200/70">
                         {/* Timeline dot */}
-                        <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-indigo-400/80 dark:bg-indigo-500/80" />
+                        <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-indigo-400/80" />
                         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
                           <div>
                             <h3 className="text-sm font-semibold text-foreground">{job.title}</h3>
@@ -528,7 +528,7 @@ export default function TemplateModern(props: ProfileData) {
                               </p>
                             )}
                           </div>
-                          <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-400/80 whitespace-nowrap">
+                          <span className="text-xs font-medium text-indigo-600/80 whitespace-nowrap">
                             {job.startDate && job.endDate ? `${job.startDate} — ${job.endDate}` : job.startDate ? `${job.startDate} — Present` : job.endDate || ''}
                           </span>
                         </div>
@@ -541,7 +541,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                {(education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
+                {(education.length > 0 || skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />}
               </>
             )}
 
@@ -549,7 +549,7 @@ export default function TemplateModern(props: ProfileData) {
             {education.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2.5">
                     Education
                   </h2>
                   <div className="space-y-2.5">
@@ -560,7 +560,7 @@ export default function TemplateModern(props: ProfileData) {
                             <h3 className="text-sm font-semibold text-foreground">{edu.institution}</h3>
                             <p className="text-xs text-muted-foreground">{edu.degree}</p>
                           </div>
-                          <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-400/80 whitespace-nowrap">
+                          <span className="text-xs font-medium text-indigo-600/80 whitespace-nowrap">
                             {edu.startDate && edu.endDate ? `${edu.startDate} — ${edu.endDate}` : edu.startDate || edu.endDate || ''}
                           </span>
                         </div>
@@ -573,7 +573,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                {(skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
+                {(skills.length > 0 || customSections?.some(s => s.items?.length > 0)) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />}
               </>
             )}
 
@@ -581,21 +581,21 @@ export default function TemplateModern(props: ProfileData) {
             {skills.length > 0 && (
               <>
                 <section>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2.5">
                     Skills
                   </h2>
                   <div className="block" style={{ breakInside: 'avoid', pageBreakInside: 'avoid' }}>
                     {skills.map((skill, idx) => (
                       <span
                         key={idx}
-                        className="inline-block rounded-md border border-indigo-500/20 bg-indigo-50/50 text-indigo-700 dark:border-indigo-400/20 dark:bg-indigo-950/30 dark:text-indigo-300 text-xs px-2.5 py-1 mb-1.5 mr-1.5"
+                        className="inline-block rounded-md border border-indigo-500/20 bg-indigo-50/50 text-indigo-700 text-xs px-2.5 py-1 mb-1.5 mr-1.5"
                       >
                         {skill}
                       </span>
                     ))}
                   </div>
                 </section>
-                {customSections?.some(s => s.items?.length > 0) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
+                {customSections?.some(s => s.items?.length > 0) && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />}
               </>
             )}
 
@@ -603,7 +603,7 @@ export default function TemplateModern(props: ProfileData) {
             {customSections?.filter(s => s.items && s.items.length > 0).map((section, idx, filteredArr) => (
               <React.Fragment key={section.id}>
                 <section>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2.5">
                     {section.sectionTitle}
                   </h2>
                   <div className="space-y-3">
@@ -615,7 +615,7 @@ export default function TemplateModern(props: ProfileData) {
                             {item.subtitle && <p className="text-sm text-muted-foreground">{item.subtitle}</p>}
                           </div>
                           {item.date && (
-                            <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-400/80 whitespace-nowrap">{item.date}</span>
+                            <span className="text-xs font-medium text-indigo-600/80 whitespace-nowrap">{item.date}</span>
                           )}
                         </div>
                         {item.description && (
@@ -627,7 +627,7 @@ export default function TemplateModern(props: ProfileData) {
                     ))}
                   </div>
                 </section>
-                {idx < filteredArr.length - 1 && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 dark:via-indigo-400/30 to-transparent" />}
+                {idx < filteredArr.length - 1 && <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />}
               </React.Fragment>
             ))}
 
@@ -635,7 +635,7 @@ export default function TemplateModern(props: ProfileData) {
             <div className="no-print pt-6 text-center">
               <Link
                 href="/"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-indigo-200 dark:border-indigo-800 bg-indigo-50/60 dark:bg-indigo-950/40 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all hover:scale-105 active:scale-95 shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-indigo-200 bg-indigo-50/60 text-xs font-medium text-indigo-600 hover:bg-indigo-100 hover:border-indigo-300 transition-all hover:scale-105 active:scale-95 shadow-sm"
               >
                 <span className="text-[10px]">✦</span>
                 Made with CVin.Bio

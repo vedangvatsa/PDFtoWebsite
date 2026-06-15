@@ -6,7 +6,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { ArrowLeft, Wifi, ArrowDown, ArrowUp, Clock, Activity, Info } from 'lucide-react';
-import { CITY_IMAGES, PAGE_CONTAINER, getCitySlug } from '@/lib/utils';
+import { CITY_IMAGES, PAGE_CONTAINER, PAGE_DISCLAIMER, PAGE_SUBTITLE, PAGE_TITLE, getCitySlug } from '@/lib/utils';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -51,18 +51,18 @@ function loadCities(): CityInternet[] {
 }
 
 function speedTier(mbps: number): { label: string; color: string; bg: string } {
-  if (mbps >= 100) return { label: 'Blazing', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500' };
-  if (mbps >= 50) return { label: 'Fast', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-500' };
-  if (mbps >= 25) return { label: 'Good', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-500' };
-  if (mbps >= 10) return { label: 'Moderate', color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-500' };
-  return { label: 'Slow', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-500' };
+  if (mbps >= 100) return { label: 'Blazing', color: 'text-emerald-600', bg: 'bg-emerald-500' };
+  if (mbps >= 50) return { label: 'Fast', color: 'text-green-600', bg: 'bg-green-500' };
+  if (mbps >= 25) return { label: 'Good', color: 'text-yellow-600', bg: 'bg-yellow-500' };
+  if (mbps >= 10) return { label: 'Moderate', color: 'text-orange-600', bg: 'bg-orange-500' };
+  return { label: 'Slow', color: 'text-red-600', bg: 'bg-red-500' };
 }
 
 function latencyTier(ms: number): { color: string } {
-  if (ms <= 15) return { color: 'text-emerald-600 dark:text-emerald-400' };
-  if (ms <= 30) return { color: 'text-green-600 dark:text-green-400' };
-  if (ms <= 50) return { color: 'text-yellow-600 dark:text-yellow-400' };
-  return { color: 'text-red-600 dark:text-red-400' };
+  if (ms <= 15) return { color: 'text-emerald-600' };
+  if (ms <= 30) return { color: 'text-green-600' };
+  if (ms <= 50) return { color: 'text-yellow-600' };
+  return { color: 'text-red-600' };
 }
 
 export default function InternetSpeedsPage() {
@@ -77,13 +77,13 @@ export default function InternetSpeedsPage() {
   const fastCount = cities.filter(c => c.internet.download_mbps >= 50).length;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -91,10 +91,10 @@ export default function InternetSpeedsPage() {
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Internet Speeds by City
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className={PAGE_SUBTITLE}>
             Fixed broadband download, upload, and latency across {cities.length} digital nomad cities.
             Ranked by download speed.
           </p>
@@ -102,39 +102,39 @@ export default function InternetSpeedsPage() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <ArrowDown className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Avg Download</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{avgDownload} <span className="text-sm font-normal text-zinc-400">Mbps</span></div>
+            <div className="text-2xl font-bold text-zinc-900">{avgDownload} <span className="text-sm font-normal text-zinc-400">Mbps</span></div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <ArrowUp className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Avg Upload</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{avgUpload} <span className="text-sm font-normal text-zinc-400">Mbps</span></div>
+            <div className="text-2xl font-bold text-zinc-900">{avgUpload} <span className="text-sm font-normal text-zinc-400">Mbps</span></div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Clock className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Avg Latency</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{avgLatency} <span className="text-sm font-normal text-zinc-400">ms</span></div>
+            <div className="text-2xl font-bold text-zinc-900">{avgLatency} <span className="text-sm font-normal text-zinc-400">ms</span></div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Activity className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Fast Cities</span>
             </div>
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{fastCount} <span className="text-sm font-normal text-zinc-400">/ {cities.length}</span></div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">50+ Mbps download</div>
+            <div className="text-2xl font-bold text-emerald-600">{fastCount} <span className="text-sm font-normal text-zinc-400">/ {cities.length}</span></div>
+            <div className="text-xs text-zinc-500 mt-0.5">50+ Mbps download</div>
           </div>
         </div>
 
         {/* Speed Legend */}
-        <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-zinc-500">
           <span className="font-medium">Speed tiers:</span>
           <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Blazing (100+)</div>
           <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-green-500" /> Fast (50-99)</div>
@@ -144,9 +144,9 @@ export default function InternetSpeedsPage() {
         </div>
 
         {/* Rankings Table */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl overflow-hidden transition-colors">
+        <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden transition-colors">
           {/* Table Header */}
-          <div className="grid grid-cols-[3rem_1fr_6rem_6rem_5rem_5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800/50 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <div className="grid grid-cols-[3rem_1fr_6rem_6rem_5rem_5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-200 text-xs font-medium uppercase tracking-wider text-zinc-500">
             <div className="text-center">#</div>
             <div>City</div>
             <div className="text-right">Download</div>
@@ -165,22 +165,22 @@ export default function InternetSpeedsPage() {
               <Link
                 key={city.slug}
                 href={`/${city.slug}`}
-                className="grid grid-cols-[3rem_1fr_6rem_6rem_5rem_5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-100 dark:border-zinc-800/30 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors items-center group"
+                className="grid grid-cols-[3rem_1fr_6rem_6rem_5rem_5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-100 hover:bg-zinc-50 transition-colors items-center group"
               >
                 {/* Rank */}
-                <div className="text-center text-sm font-mono text-zinc-400 dark:text-zinc-500">
+                <div className="text-center text-sm font-mono text-zinc-400">
                   {idx + 1}
                 </div>
 
                 {/* City Name + Speed Bar */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-primary transition-colors truncate">
+                    <span className="text-sm font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
                       {city.emoji} {city.name}
                     </span>
-                    <span className="text-[10px] text-zinc-400 dark:text-zinc-500 shrink-0">{city.country}</span>
+                    <span className="text-[10px] text-zinc-400 shrink-0">{city.country}</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                  <div className="h-1.5 rounded-full bg-zinc-100 overflow-hidden">
                     <div
                       className={`h-full rounded-full ${tier.bg} transition-all duration-500`}
                       style={{ width: `${barWidth}%`, opacity: 0.7 }}
@@ -198,7 +198,7 @@ export default function InternetSpeedsPage() {
 
                 {/* Upload */}
                 <div className="text-right hidden md:block">
-                  <span className="text-sm font-mono text-zinc-600 dark:text-zinc-300">
+                  <span className="text-sm font-mono text-zinc-600">
                     {city.internet.upload_mbps}
                   </span>
                   <span className="text-xs text-zinc-400 ml-0.5">Mbps</span>
@@ -213,7 +213,7 @@ export default function InternetSpeedsPage() {
                 </div>
 
                 {/* Tests */}
-                <div className="text-right text-xs font-mono text-zinc-400 dark:text-zinc-500">
+                <div className="text-right text-xs font-mono text-zinc-400">
                   {city.internet.test_count >= 1000
                     ? `${(city.internet.test_count / 1000).toFixed(0)}K`
                     : city.internet.test_count.toLocaleString()}
@@ -224,10 +224,10 @@ export default function InternetSpeedsPage() {
         </div>
 
         {/* Data Source */}
-        <div className="mt-8 flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed max-w-2xl">
+        <div className={PAGE_DISCLAIMER}>
           <Info className="w-4 h-4 shrink-0 mt-0.5" />
           <p>
-            Data from <a href="https://github.com/teamookla/ookla-open-data" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">Ookla Open Data</a> ({quarter}).
+            Data from <a href="https://github.com/teamookla/ookla-open-data" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 transition-colors">Ookla Open Data</a> ({quarter}).
             Fixed broadband speeds aggregated within 15km of each city center.
             Licensed under CC BY-NC-SA 4.0.
           </p>

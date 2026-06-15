@@ -61,12 +61,12 @@ export default function BlogCTA() {
   };
 
   return (
-    <div className="my-16 p-6 sm:p-8 bg-zinc-50/50 dark:bg-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 rounded-2xl transition-colors w-full mx-auto">
+    <div className="my-16 p-6 sm:p-8 bg-zinc-50/50 border border-zinc-200/50 rounded-2xl transition-colors w-full mx-auto">
       <div className="text-center mb-6">
-        <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-50 mb-1 tracking-tight">
+        <h3 className="text-xl font-bold text-zinc-900 mb-1 tracking-tight">
           Turn Your CV into a Website
         </h3>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-500">
           Drop your CV below or build it from scratch.
         </p>
       </div>
@@ -83,14 +83,14 @@ export default function BlogCTA() {
             aria-label="Upload your CV file"
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10" 
           />
-          <div className="w-full h-20 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl flex items-center justify-center bg-white dark:bg-zinc-900 group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/80 transition-colors shadow-sm">
+          <div className="w-full h-20 border border-dashed border-zinc-300 rounded-xl flex items-center justify-center bg-white group-hover:bg-zinc-50 transition-colors shadow-sm">
             {isProcessingFile ? (
-              <div className="flex items-center text-zinc-500 dark:text-zinc-400 font-medium text-sm">
+              <div className="flex items-center text-zinc-500 font-medium text-sm">
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Analyzing CV...
               </div>
             ) : (
-              <div className="flex items-center text-zinc-600 dark:text-zinc-300 font-medium text-sm">
-                <UploadCloud className="w-5 h-5 mr-3 text-zinc-400 dark:text-zinc-500" /> Upload your CV
+              <div className="flex items-center text-zinc-600 font-medium text-sm">
+                <UploadCloud className="w-5 h-5 mr-3 text-zinc-400" /> Upload your CV
               </div>
             )}
           </div>
@@ -98,14 +98,14 @@ export default function BlogCTA() {
 
         {/* OR Divider */}
         <div className="flex items-center w-full my-1">
-          <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
-          <span className="flex-shrink-0 mx-4 text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">OR</span>
-          <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
+          <div className="flex-grow border-t border-zinc-200"></div>
+          <span className="flex-shrink-0 mx-4 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">OR</span>
+          <div className="flex-grow border-t border-zinc-200"></div>
         </div>
 
         {/* Enter Manually Button */}
-        <Link href="/editor" className="w-full flex items-center justify-center h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 font-medium text-sm rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm">
-          <Edit className="w-4 h-4 mr-2 text-zinc-500 dark:text-zinc-400" /> Enter details manually
+        <Link href="/editor" className="w-full flex items-center justify-center h-12 bg-white border border-zinc-200 text-zinc-700 font-medium text-sm rounded-xl hover:bg-zinc-50 transition-colors shadow-sm">
+          <Edit className="w-4 h-4 mr-2 text-zinc-500" /> Enter details manually
         </Link>
       </div>
     </div>

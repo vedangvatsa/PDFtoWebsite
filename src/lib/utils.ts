@@ -8,6 +8,28 @@ export function cn(...inputs: ClassValue[]) {
 /** Shared page container class — single source of truth for content width across the site. */
 export const PAGE_CONTAINER = 'w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1';
 
+/** Page title H1 — used on all tool/content pages. */
+export const PAGE_TITLE = 'text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 mb-3';
+
+/** Page subtitle — muted description below H1. */
+export const PAGE_SUBTITLE = 'text-lg text-zinc-600 max-w-3xl';
+
+/** Disclaimer text block at bottom of data pages. */
+export const PAGE_DISCLAIMER = 'mt-8 flex items-start gap-2 text-xs text-zinc-400 leading-relaxed max-w-2xl';
+
+/** Table column header. */
+export const TABLE_HEADER = 'text-[11px] font-semibold uppercase tracking-wider text-zinc-400';
+
+/** Score badge color classes (nomad score, safety score, etc.). */
+export function scoreBadgeClasses(score: number) {
+  if (score >= 70) return 'bg-emerald-50 text-emerald-700';
+  if (score >= 50) return 'bg-amber-50 text-amber-700';
+  return 'bg-red-50 text-red-700';
+}
+
+/** Default city image when no specific image is found. */
+export const CITY_IMAGE_FALLBACK = 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80';
+
 export function getCitySlug(cityName: string): string {
   const lowerName = cityName.toLowerCase();
   if (lowerName === 'bali (canggu/ubud)') return 'bali-cangguubud';
