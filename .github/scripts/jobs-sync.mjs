@@ -2236,6 +2236,209 @@ async function fetchFoorilla() {
   }
 }
 
+// ─── Source: Jooble (aggregator — millions of jobs across 70+ countries) ───
+const JOOBLE_SEARCH_QUERIES = [
+  { keywords: 'software engineer', location: 'remote' },
+  { keywords: 'frontend developer', location: 'remote' },
+  { keywords: 'backend developer', location: 'remote' },
+  { keywords: 'full stack developer', location: 'remote' },
+  { keywords: 'devops engineer', location: 'remote' },
+  { keywords: 'data scientist', location: 'remote' },
+  { keywords: 'machine learning engineer', location: 'remote' },
+  { keywords: 'product manager', location: 'remote' },
+  { keywords: 'UX designer', location: 'remote' },
+  { keywords: 'data analyst', location: 'remote' },
+  { keywords: 'software engineer', location: 'London' },
+  { keywords: 'software engineer', location: 'New York' },
+  { keywords: 'software engineer', location: 'San Francisco' },
+  { keywords: 'software engineer', location: 'Berlin' },
+  { keywords: 'frontend developer', location: 'London' },
+  { keywords: 'backend developer', location: 'New York' },
+  { keywords: 'product manager', location: 'London' },
+  { keywords: 'data scientist', location: 'San Francisco' },
+  { keywords: 'devops engineer', location: 'Berlin' },
+  { keywords: 'marketing manager', location: 'remote' },
+  { keywords: 'sales manager', location: 'remote' },
+  { keywords: 'cloud engineer', location: 'remote' },
+  { keywords: 'iOS developer', location: 'remote' },
+  { keywords: 'Android developer', location: 'remote' },
+  { keywords: 'cybersecurity', location: 'remote' },
+  { keywords: 'AI engineer', location: 'remote' },
+  { keywords: 'data engineer', location: 'remote' },
+  { keywords: 'QA engineer', location: 'remote' },
+  { keywords: 'solutions architect', location: 'remote' },
+  { keywords: 'site reliability engineer', location: 'remote' },
+];
+
+async function fetchJooble() {
+  const apiKey = process.env.JOOBLE_API_KEY;
+  if (!apiKey) {
+    console.log('\n── Jooble ── (skipped: no JOOBLE_API_KEY)');
+    return [];
+  }
+  console.log('\n── Jooble ──');
+  const allJobs = [];
+  let queryCount = 0;
+
+  for (const query of JOOBLE_SEARCH_QUERIES) {
+    try {
+      const res = await fetch(`https://jooble.org/api/${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          keywords: query.keywords,
+          location: query.location,
+          page: '1',
+          ResultOnPage: '20',
+        }),
+      });
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          console.log(`  ⚠️ Rate limited after ${queryCount} queries, stopping`);
+          break;
+        }
+        console.error(`  ❌ Jooble ${query.keywords}/${query.location}: ${res.status}`);
+        continue;
+      }
+
+      const data = await res.json();
+      const jobs = (data.jobs || []).map(j => ({
+        source: 'jooble',
+        external_id: `jooble_${j.id || crypto.createHash('md5').update(j.link || j.title || '').digest('hex')}`,
+        dedup_hash: dedupHash(j.company || '', j.title || ''),
+        title: (j.title || '').replace(/<[^>]*>/g, '').trim(),
+        company: (j.company || 'Unknown').trim(),
+        company_logo: null,
+        location: j.location || query.location || 'Remote',
+        job_type: normalizeJobType(j.type) || null,
+        salary: j.salary || null,
+        description: (j.snippet || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+        tags: extractTags(`${j.title || ''} ${(j.snippet || '').replace(/<[^>]*>/g, '')}`),
+        apply_url: j.link || '',
+        category: null,
+        published_at: j.updated || null,
+      })).filter(j => j.title && j.company && j.apply_url);
+
+      allJobs.push(...jobs);
+      queryCount++;
+
+      // Rate limit: ~100ms between requests
+      await sleep(150);
+    } catch (e) {
+      console.error(`  ❌ Jooble ${query.keywords}/${query.location}: ${e.message}`);
+    }
+  }
+
+  // Deduplicate within Jooble results (same job from multiple queries)
+  const seen = new Set();
+  const unique = allJobs.filter(j => {
+    if (seen.has(j.dedup_hash)) return false;
+    seen.add(j.dedup_hash);
+    return true;
+  });
+
+  console.log(`  Total: ${unique.length} unique jobs from Jooble (${allJobs.length} raw, ${queryCount} queries)`);
+  return unique;
+}
+
+// ─── Source: Adzuna (aggregator — millions of jobs across 12 countries) ───
+const ADZUNA_COUNTRIES = ['us', 'gb', 'de', 'au', 'nl', 'sg'];
+const ADZUNA_KEYWORDS = [
+  'software engineer',
+  'frontend developer',
+  'data scientist',
+  'product manager',
+  'devops',
+  'machine learning',
+  'cloud engineer',
+  'UX designer',
+];
+
+async function fetchAdzuna() {
+  const appId = process.env.ADZUNA_APP_ID;
+  const appKey = process.env.ADZUNA_APP_KEY;
+  if (!appId || !appKey) {
+    console.log('\n── Adzuna ── (skipped: no ADZUNA_APP_ID/ADZUNA_APP_KEY)');
+    return [];
+  }
+  console.log('\n── Adzuna ──');
+  const allJobs = [];
+  let queryCount = 0;
+
+  for (const country of ADZUNA_COUNTRIES) {
+    for (const keyword of ADZUNA_KEYWORDS) {
+      try {
+        const params = new URLSearchParams({
+          app_id: appId,
+          app_key: appKey,
+          what: keyword,
+          results_per_page: '50',
+          'content-type': 'application/json',
+          sort_by: 'date',
+        });
+
+        const res = await fetch(
+          `https://api.adzuna.com/v1/api/jobs/${country}/search/1?${params}`,
+          { headers: { 'User-Agent': 'CVin.Bio job aggregator (contact@cvin.bio)' } }
+        );
+
+        if (!res.ok) {
+          if (res.status === 429) {
+            console.log(`  ⚠️ Rate limited on ${country}, skipping remaining keywords`);
+            break;
+          }
+          console.error(`  ❌ Adzuna ${country}/${keyword}: ${res.status}`);
+          continue;
+        }
+
+        const data = await res.json();
+        const jobs = (data.results || []).map(j => {
+          const salaryStr = j.salary_min && j.salary_max
+            ? `$${Math.round(j.salary_min).toLocaleString()}-$${Math.round(j.salary_max).toLocaleString()}`
+            : null;
+
+          return {
+            source: 'adzuna',
+            external_id: `adzuna_${j.id || crypto.createHash('md5').update(j.redirect_url || j.title || '').digest('hex')}`,
+            dedup_hash: dedupHash(j.company?.display_name || '', j.title || ''),
+            title: (j.title || '').trim(),
+            company: (j.company?.display_name || 'Unknown').trim(),
+            company_logo: null,
+            location: j.location?.display_name || country.toUpperCase(),
+            job_type: j.contract_type ? normalizeJobType(j.contract_type) : null,
+            salary: salaryStr,
+            description: (j.description || '').substring(0, 5000),
+            tags: extractTags(`${j.title || ''} ${j.description || ''}`),
+            apply_url: j.redirect_url || '',
+            category: j.category?.label || null,
+            published_at: j.created || null,
+          };
+        }).filter(j => j.title && j.company && j.apply_url);
+
+        allJobs.push(...jobs);
+        queryCount++;
+
+        // Rate limit: 200ms between requests
+        await sleep(200);
+      } catch (e) {
+        console.error(`  ❌ Adzuna ${country}/${keyword}: ${e.message}`);
+      }
+    }
+  }
+
+  // Deduplicate within Adzuna results
+  const seen = new Set();
+  const unique = allJobs.filter(j => {
+    if (seen.has(j.dedup_hash)) return false;
+    seen.add(j.dedup_hash);
+    return true;
+  });
+
+  console.log(`  Total: ${unique.length} unique jobs from Adzuna (${allJobs.length} raw, ${queryCount} queries)`);
+  return unique;
+}
+
 // ─── Cleanup: remove jobs older than 30 days ───
 async function cleanupOldJobs() {
   const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -2302,11 +2505,27 @@ async function main() {
     console.log(`✅ Phase 2: Inserted ${inserted}, Skipped ${skipped}`);
   }
 
+  // ── PHASE 3: Aggregator APIs (Jooble + Adzuna) ──
+  console.log('\n═══ Phase 3: Aggregator APIs ═══');
+  await sleep(2000);
+  const [jooble, adzuna] = await Promise.all([
+    fetchJooble(),
+    fetchAdzuna(),
+  ]);
+  const phase3Jobs = [...jooble, ...adzuna];
+  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators`);
+
+  const phase3Valid = filterAndNormalize(phase3Jobs);
+  if (phase3Valid.length > 0) {
+    const { inserted, skipped } = await supabaseUpsert(phase3Valid);
+    console.log(`✅ Phase 3: Inserted ${inserted}, Skipped ${skipped}`);
+  }
+
   // Cleanup old jobs
   await cleanupOldJobs();
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-  console.log(`\n🏁 Done in ${elapsed}s — Total: ${phase1Jobs.length + phase2Jobs.length} jobs processed`);
+  console.log(`\n🏁 Done in ${elapsed}s — Total: ${phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);
 }
 
 // ── Shared filter/normalize logic ──
