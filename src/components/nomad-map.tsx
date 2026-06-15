@@ -92,12 +92,12 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
       </td>
       <td className="px-4 py-2.5">
         <div className="flex gap-2">
-          {poi.website && poi.website !== 'https://' && poi.website !== 'http://' && (
+          {poi.website && poi.website !== 'https://' && poi.website !== 'http://' && poi.website.startsWith('http') && (
             <a href={poi.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
               Web
             </a>
           )}
-          <a href={poi.osm_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
+          <a href={`https://www.google.com/maps/search/?api=1&query=${poi.lat},${poi.lon}`} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
             Map
           </a>
         </div>
@@ -498,7 +498,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
 
 
                 <div className="flex gap-2 pt-1">
-                  {selectedPoint.properties.website && selectedPoint.properties.website !== 'https://' && selectedPoint.properties.website !== 'http://' && (
+                  {selectedPoint.properties.website && selectedPoint.properties.website !== 'https://' && selectedPoint.properties.website !== 'http://' && selectedPoint.properties.website.startsWith('http') && (
                     <a
                       href={selectedPoint.properties.website}
                       target="_blank"
@@ -510,13 +510,23 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
                     </a>
                   )}
                   <a
-                    href={selectedPoint.properties.osm_url}
+                    href={`https://www.google.com/maps/search/?api=1&query=${selectedPoint.coordinates[1]},${selectedPoint.coordinates[0]}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-blue-500 hover:underline"
                   >
-                    OpenStreetMap
+                    Map
                   </a>
+                  {selectedPoint.properties.osm_url && (
+                    <a
+                      href={selectedPoint.properties.osm_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-500 hover:underline"
+                    >
+                      OSM
+                    </a>
+                  )}
                 </div>
               </div>
             </MapPopup>

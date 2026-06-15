@@ -91,7 +91,7 @@ function expandV2(v2: V2Data) {
       cost_tier: 0,
       timezone: '',
       visa: '',
-      osm_url: '',
+      osm_url: typeof row[0] === 'number' ? `https://www.openstreetmap.org/node/${row[0]}` : '',
       review_summary: '',
     };
   }
