@@ -2850,6 +2850,170 @@ async function fetchJSearch() {
   return unique;
 }
 
+// ─── Source: LinkedIn (public guest endpoint — no auth, HTML parsing) ───
+// Endpoint: GET https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search
+// Returns HTML with job cards, 10 per page, paginate with start=0,25,50,...
+// No API key needed — this is the same endpoint LinkedIn's public job search page uses
+const LINKEDIN_QUERIES = [
+  { keywords: 'software engineer', location: 'remote' },
+  { keywords: 'frontend developer', location: 'remote' },
+  { keywords: 'backend developer', location: 'remote' },
+  { keywords: 'full stack developer', location: 'remote' },
+  { keywords: 'data scientist', location: 'remote' },
+  { keywords: 'devops engineer', location: 'remote' },
+  { keywords: 'machine learning engineer', location: 'remote' },
+  { keywords: 'product manager', location: 'remote' },
+  { keywords: 'UX designer', location: 'remote' },
+  { keywords: 'cloud engineer', location: 'remote' },
+  { keywords: 'data engineer', location: 'remote' },
+  { keywords: 'AI engineer', location: 'remote' },
+  { keywords: 'mobile developer', location: 'remote' },
+  { keywords: 'cybersecurity', location: 'remote' },
+  { keywords: 'solutions architect', location: 'remote' },
+  { keywords: 'SRE', location: 'remote' },
+  { keywords: 'software engineer', location: 'London' },
+  { keywords: 'software engineer', location: 'Berlin' },
+  { keywords: 'software engineer', location: 'Singapore' },
+  { keywords: 'software engineer', location: 'New York' },
+];
+
+function parseLinkedInHTML(html) {
+  const jobs = [];
+  // Split into individual job cards
+  const cardPattern = /data-entity-urn="urn:li:jobPosting:(\d+)"[\s\S]*?<\/li>/g;
+  let match;
+  while ((match = cardPattern.exec(html)) !== null) {
+    const card = match[0];
+    const jobId = match[1];
+
+    // Extract title
+    const titleMatch = card.match(/base-search-card__title">\s*\n?\s*(.+?)\s*\n/);
+    const title = titleMatch ? titleMatch[1].trim() : null;
+
+    // Extract company
+    const companyMatch = card.match(/hidden-nested-link[^>]*>([^<]+)</);
+    const company = companyMatch ? companyMatch[1].replace(/\s+/g, ' ').trim() : null;
+
+    // Extract location
+    const locationMatch = card.match(/job-search-card__location">\s*([^<]+)/);
+    const location = locationMatch ? locationMatch[1].trim() : null;
+
+    // Extract URL
+    const urlMatch = card.match(/href="(https:\/\/www\.linkedin\.com\/jobs\/view\/[^"?]+)/);
+    const url = urlMatch ? urlMatch[1] : null;
+
+    // Extract date
+    const dateMatch = card.match(/datetime="([^"]+)"/);
+    const date = dateMatch ? dateMatch[1] : null;
+
+    // Extract company logo
+    const logoMatch = card.match(/data-delayed-url="(https:\/\/media\.licdn\.com\/[^"]+)"/);
+    const logo = logoMatch ? logoMatch[1].replace(/&amp;/g, '&') : null;
+
+    if (title && company && url) {
+      jobs.push({ jobId, title, company, location, url, date, logo });
+    }
+  }
+  return jobs;
+}
+
+async function fetchLinkedIn() {
+  console.log('\n── LinkedIn (public guest) ──');
+  const allJobs = [];
+  let queryCount = 0;
+  let consecutiveFailures = 0;
+
+  const USER_AGENTS = [
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  ];
+
+  for (const query of LINKEDIN_QUERIES) {
+    if (consecutiveFailures >= 3) {
+      console.log('  ⚠️ Too many failures, stopping LinkedIn scrape');
+      break;
+    }
+
+    // Fetch 4 pages per query (start=0,25,50,75 → ~100 jobs per keyword)
+    for (let start = 0; start < 100; start += 25) {
+      try {
+        const params = new URLSearchParams({
+          keywords: query.keywords,
+          location: query.location,
+          start: String(start),
+          f_TPR: 'r604800', // Last 7 days
+        });
+
+        const ua = USER_AGENTS[queryCount % USER_AGENTS.length];
+        const res = await fetch(
+          `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?${params}`,
+          {
+            headers: {
+              'User-Agent': ua,
+              'Accept': 'text/html',
+              'Accept-Language': 'en-US,en;q=0.9',
+            },
+          }
+        );
+
+        if (!res.ok) {
+          if (res.status === 429) {
+            console.log(`  ⚠️ Rate limited at query ${queryCount}, waiting 30s...`);
+            await sleep(30000);
+            consecutiveFailures++;
+            continue;
+          }
+          consecutiveFailures++;
+          continue;
+        }
+
+        const html = await res.text();
+        const parsed = parseLinkedInHTML(html);
+        consecutiveFailures = 0; // Reset on success
+
+        if (parsed.length === 0) break; // No more results for this query
+
+        const jobs = parsed.map(j => ({
+          source: 'linkedin',
+          external_id: `linkedin_${j.jobId}`,
+          dedup_hash: dedupHash(j.company, j.title),
+          title: j.title,
+          company: j.company,
+          company_logo: j.logo || null,
+          location: j.location || query.location,
+          job_type: null,
+          salary: null,
+          description: '', // Guest endpoint doesn't include full descriptions
+          tags: extractTags(j.title),
+          apply_url: j.url,
+          category: null,
+          published_at: j.date || null,
+        }));
+
+        allJobs.push(...jobs);
+        queryCount++;
+
+        // Be respectful: 2-3 second delay between requests
+        await sleep(2000 + Math.random() * 1000);
+      } catch (e) {
+        console.error(`  ❌ LinkedIn ${query.keywords}/${query.location}/s${start}: ${e.message}`);
+        consecutiveFailures++;
+      }
+    }
+  }
+
+  const seen = new Set();
+  const unique = allJobs.filter(j => {
+    if (seen.has(j.dedup_hash)) return false;
+    seen.add(j.dedup_hash);
+    return true;
+  });
+
+  console.log(`  Total: ${unique.length} unique jobs from LinkedIn (${allJobs.length} raw, ${queryCount} requests)`);
+  return unique;
+}
+
 // ─── Cleanup: remove jobs older than 30 days ───
 async function cleanupOldJobs() {
   const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -2935,8 +3099,12 @@ async function main() {
     fetchFindwork(),
   ]);
 
-  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...reed, ...findwork];
-  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from 6 aggregators`);
+  // Group C: LinkedIn (HTML scraping, needs deliberate pacing)
+  await sleep(1000);
+  const linkedin = await fetchLinkedIn();
+
+  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...reed, ...findwork, ...linkedin];
+  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from 7 aggregators`);
 
   const phase3Valid = filterAndNormalize(phase3Jobs);
   if (phase3Valid.length > 0) {
