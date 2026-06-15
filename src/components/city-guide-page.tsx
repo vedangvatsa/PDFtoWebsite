@@ -371,25 +371,168 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
               >
                 Moovit (Local Transit)
               </a>
-              {(data.continent === 'Asia' || data.country === 'Thailand' || data.country === 'Malaysia' || data.country === 'Philippines' || data.country === 'Indonesia' || data.country === 'Vietnam' || data.country === 'Cambodia') && (
+              {/* 12Go Asia — only for SE Asia + Sri Lanka + India where it operates */}
+              {(['Thailand', 'Malaysia', 'Philippines', 'Indonesia', 'Vietnam', 'Cambodia', 'Myanmar', 'Singapore', 'Laos', 'Sri Lanka', 'India'].includes(data.country)) && (
+                <a
+                  href="https://12go.asia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                >
+                  12Go Asia (Tickets)
+                </a>
+              )}
+              {/* Grab — only in SE Asia where it actually operates */}
+              {(['Thailand', 'Malaysia', 'Philippines', 'Indonesia', 'Vietnam', 'Cambodia', 'Myanmar', 'Singapore'].includes(data.country)) && (
+                <a
+                  href="https://www.grab.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                >
+                  Grab (Ride-Hailing)
+                </a>
+              )}
+              {/* India — Ola + Uber */}
+              {data.country === 'India' && (
                 <>
                   <a
-                    href="https://12go.asia"
+                    href="https://www.olacabs.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
                   >
-                    12Go Asia (Tickets)
+                    Ola (Ride-Hailing)
                   </a>
                   <a
-                    href="https://www.grab.com"
+                    href="https://www.uber.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
                   >
-                    Grab (Ride-Hailing)
+                    Uber
                   </a>
                 </>
+              )}
+              {/* Latin America — Uber + local apps */}
+              {(['Mexico', 'Colombia', 'Brazil', 'Argentina', 'Chile', 'Peru', 'Uruguay', 'Guatemala', 'Honduras', 'Ecuador', 'Costa Rica'].includes(data.country)) && (
+                <>
+                  <a
+                    href="https://www.uber.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                  >
+                    Uber
+                  </a>
+                  {(['Colombia', 'Chile', 'Argentina', 'Peru', 'Uruguay', 'Ecuador'].includes(data.country)) && (
+                    <a
+                      href="https://cabify.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                    >
+                      Cabify
+                    </a>
+                  )}
+                  {(['Mexico', 'Brazil', 'Colombia'].includes(data.country)) && (
+                    <a
+                      href="https://www.didiglobal.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                    >
+                      DiDi
+                    </a>
+                  )}
+                </>
+              )}
+              {/* Turkey, Georgia, Eastern Europe — Uber + Bolt */}
+              {(['Turkey', 'Georgia', 'Estonia', 'Latvia', 'Lithuania', 'Poland', 'Romania', 'Hungary', 'Czech Republic', 'Croatia', 'Serbia', 'Bulgaria', 'Greece', 'South Africa', 'Kenya', 'Nigeria', 'Ghana', 'Tanzania', 'Egypt', 'Morocco', 'UAE'].includes(data.country)) && (
+                <>
+                  <a
+                    href="https://bolt.eu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                  >
+                    Bolt (Ride-Hailing)
+                  </a>
+                  {(!['Morocco'].includes(data.country)) && (
+                    <a
+                      href="https://www.uber.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                    >
+                      Uber
+                    </a>
+                  )}
+                </>
+              )}
+              {/* Japan, South Korea, Taiwan — local transit apps */}
+              {data.country === 'Japan' && (
+                <a
+                  href="https://japantaxi.jp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                >
+                  GO Taxi (Japan)
+                </a>
+              )}
+              {data.country === 'South Korea' && (
+                <a
+                  href="https://www.kakaomobility.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                >
+                  Kakao T (Taxi)
+                </a>
+              )}
+              {/* Western Europe — Uber + Bolt */}
+              {(['Portugal', 'Spain', 'France', 'Germany', 'Italy', 'United Kingdom', 'Netherlands', 'Belgium', 'Austria', 'Ireland', 'Sweden', 'Denmark', 'Norway', 'Finland', 'Iceland', 'Slovenia', 'Slovakia'].includes(data.country)) && (
+                <>
+                  <a
+                    href="https://www.uber.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                  >
+                    Uber
+                  </a>
+                  <a
+                    href="https://bolt.eu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                  >
+                    Bolt
+                  </a>
+                </>
+              )}
+              {/* China — DiDi */}
+              {data.country === 'China' && (
+                <a
+                  href="https://www.didiglobal.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                >
+                  DiDi (Ride-Hailing)
+                </a>
+              )}
+              {/* Nepal — Pathao */}
+              {data.country === 'Nepal' && (
+                <a
+                  href="https://pathao.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
+                >
+                  Pathao (Ride-Hailing)
+                </a>
               )}
             </div>
           </div>
