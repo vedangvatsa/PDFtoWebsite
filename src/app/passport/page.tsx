@@ -20,6 +20,10 @@ import {
   Info,
   Loader2,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { getMapIsoCode } from '@/lib/country-to-iso';
+
+const WorldMap = dynamic(() => import('react-svg-worldmap'), { ssr: false });
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -227,6 +231,25 @@ export default function VisaCheckerPage() {
     };
   }, [grouped]);
 
+  // Generate map data
+  const mapData = useMemo(() => {
+    if (!visaData || !selected || !visaData[selected]) return [];
+    const entries = visaData[selected];
+    const data: { country: string, value: string }[] = [];
+    
+    // Add selected passport's home country
+    const homeIso = getMapIsoCode(selected);
+    if (homeIso) data.push({ country: homeIso, value: 'home' });
+
+    for (const [dest, entry] of Object.entries(entries)) {
+      const iso = getMapIsoCode(dest);
+      if (iso && iso !== homeIso) {
+        data.push({ country: iso, value: entry.t });
+      }
+    }
+    return data as any;
+  }, [visaData, selected]);
+
   return (
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
@@ -285,6 +308,35 @@ export default function VisaCheckerPage() {
                     <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">Visa Required</div>
                     <div className="text-3xl font-bold text-red-600">{summary.required}</div>
                     <div className="text-xs text-zinc-500 mt-0.5">countries</div>
+                  </div>
+                </div>
+
+                {/* World Map */}
+                <div className="w-full bg-white border border-zinc-200 rounded-2xl p-4 md:p-8 mb-12 shadow-sm overflow-hidden flex flex-col items-center">
+                  <div className="w-full max-w-4xl mx-auto flex justify-center">
+                    <WorldMap
+                      color="#d4d4d8"
+                      title="Visa Requirements Map"
+                      value-suffix="days"
+                      size="responsive"
+                      data={mapData}
+                      strokeOpacity={1}
+                      borderColor="#ffffff"
+                      richInteraction
+                      tooltipBgColor="#18181b"
+                      tooltipTextColor="#ffffff"
+                      styleFunction={(context) => {
+                        const t = context.countryValue as string;
+                        if (t === 'home') return { fill: '#18181b', stroke: '#ffffff', strokeWidth: 0.5 };
+                        if (t === 'fm') return { fill: '#8b5cf6', stroke: '#ffffff', strokeWidth: 0.5 }; // violet-500
+                        if (t === 'vf') return { fill: '#10b981', stroke: '#ffffff', strokeWidth: 0.5 }; // emerald-500
+                        if (t === 'voa') return { fill: '#3b82f6', stroke: '#ffffff', strokeWidth: 0.5 }; // blue-500
+                        if (t === 'ev') return { fill: '#f59e0b', stroke: '#ffffff', strokeWidth: 0.5 }; // amber-500
+                        if (t === 'vr') return { fill: '#ef4444', stroke: '#ffffff', strokeWidth: 0.5 }; // red-500
+                        if (t === 'na') return { fill: '#71717a', stroke: '#ffffff', strokeWidth: 0.5 }; // zinc-500
+                        return { fill: '#f4f4f5', stroke: '#ffffff', strokeWidth: 0.5 }; // unknown
+                      }}
+                    />
                   </div>
                 </div>
 

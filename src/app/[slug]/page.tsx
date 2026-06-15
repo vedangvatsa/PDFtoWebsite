@@ -14,6 +14,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import fs from 'fs';
 import path from 'path';
 import { CityGuidePage } from '@/components/city-guide-page';
+import validCompanies from '@/lib/valid-companies.json';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -85,6 +86,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const data = await getProfileBySlug(slug);
   if (!data) {
+    if (!validCompanies.includes(slug)) notFound();
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
@@ -134,7 +136,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // If profile is empty, check if this slug matches an active company page.
   // Company careers pages should take priority over abandoned user profiles.
-  if (isEmptyProfile) {
+  if (isEmptyProfile && validCompanies.includes(slug)) {
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
@@ -482,7 +484,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     const { profile: p } = data;
     const isEmpty = (!p.fullName || p.fullName === 'Professional Profile' || p.fullName === 'Your Name')
       || (!p.summary && data.workExperience.length === 0 && data.education.length === 0 && (!p.skills || p.skills.length === 0));
-    if (isEmpty) {
+    if (isEmpty && validCompanies.includes(slug)) {
       const decodedCheck = slug.replace(/-/g, '%').toLowerCase();
       const thirtyDaysCheck = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
       const { data: companyJobs } = await supabaseForCompany.from('jobs').select('id').ilike('company', `${decodedCheck}%`).gt('created_at', thirtyDaysCheck).limit(1);
@@ -493,6 +495,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   }
 
   if (!data) {
+    if (!validCompanies.includes(slug)) notFound();
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: jobs } = await supabaseForCompany
