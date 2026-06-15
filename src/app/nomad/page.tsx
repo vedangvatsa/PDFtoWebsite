@@ -104,7 +104,9 @@ export default function NomadMapPage() {
           ))}
         </div>
 
-        <NomadMapWrapper />
+        <div id="map">
+          <NomadMapWrapper />
+        </div>
       </main>
       <MicroFooter />
       <TelegramJobPopup />

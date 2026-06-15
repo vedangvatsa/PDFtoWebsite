@@ -853,7 +853,7 @@ function ComparePageContent() {
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
-                    href="/nomad"
+                    href="/nomad#map"
                     className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-900 text-white hover:bg-zinc-800 transition-all text-sm font-semibold"
                   >
                     <MapPin className="w-4 h-4" />
