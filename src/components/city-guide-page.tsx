@@ -538,7 +538,7 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                   >
                     <img
                       src={imageUrl}
-                      alt={nc.name}
+                      alt={`Digital nomad guide, travel, coliving and coworking in ${nc.name}, ${nc.country}`}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {/* Score badge */}

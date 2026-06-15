@@ -125,7 +125,7 @@ export function ReportCitySpread({
             {/* Photo right */}
             <div style={{ width: '50%', flexShrink: 0 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={city.imageUrl} alt={city.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <img src={city.imageUrl} alt={`Digital nomad report on coliving and coworking in ${city.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
           </>
         ) : (
@@ -134,7 +134,7 @@ export function ReportCitySpread({
             {/* Full-bleed photo */}
             <div style={{ width: '100%', height: layoutVariant === 0 ? '55%' : '45%', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={city.imageUrl} alt={city.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <img src={city.imageUrl} alt={`Digital nomad guide to ${city.name}, ${city.country} - Cost of living and wifi speeds`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               <div style={{
                 position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
                 background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
