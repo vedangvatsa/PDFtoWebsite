@@ -166,6 +166,23 @@ const GREENHOUSE_SLUGS = [
   'togetherai','traderepublic','trivago','twilio','twitch','typeform','udemy','udio','unity3d',
   'upgrade','vectara','vercel','verkada','warp','waymo','webflow','wunderkind','xai','xendit',
   'ziprecruiter','zscaler',
+  
+  // === MASSIVE EXPANSION (Top Tech, Unicorns, AI, Crypto) ===
+  'openai','figma','canva','notion','miro','spacex','anduril','rippling','uber','zillow','redfin',
+  'compass','peloton','masterclass','skillshare','patreon','vimeo','roblox','snap','postscript',
+  'clearbit','segment','heap','pendo','looker','dbtlabs','confluent','hashicorp','datastax',
+  'couchbase','redis','opensea','dapperlabs','alchemy','phantom','magic','moralis','helio',
+  'zerion','zapper','anthropic','midjourney','huggingface','cohere','adept','inflection',
+  'characterai','runwayml','synthesia','descript','jasper','copyai','writesonic','mutiny',
+  'gong','outreach','salesloft','apollo','zoominfo','clearbit','cognism','lusha','zoom',
+  'slack','teams','webex','bluejeans','ringcentral','dialpad','aircall','talkdesk','genesys',
+  'five9','twilio','messagebird','sinch','bandwidth','plivo','vonage','infobip','sendgrid',
+  'mailchimp','klaviyo','braze','iterable','customerio','onesignal','clevertap','moengage',
+  'leanplum','airship','urbanairship','branch','adjust','appsflyer','kochava','singular',
+  'mparticle','segment','rudderstack','snowplow','tealium','treasuredata','liveramp','acxiom',
+  'epsilon','experian','transunion','equifax','fico','vantiv','worldpay','fiserv','fis',
+  'globalpayments','tsys','adyen','stripe','square','paypal','braintree','authorize','cybersource',
+  'checkout','mollie','rapyd','dlocal','payu','razorpay','paytm','phonepe','google','meta','apple'
 ];
 
 // ─── Ashby company slugs ───
@@ -401,6 +418,22 @@ const LEVER_SLUGS = [
   'venteur','veo','vergesense','versapay','vevo','vida','vivrelle','voodoo','vrchat','walkme',
   'waveapps','wealthfront','whereby','whoop','willowinc','wisdomai','workwave','wr','z1tech','zeta',
   'zocks','zoox',
+  
+  // === MASSIVE EXPANSION (Top Tech, Unicorns, AI, Crypto, E-commerce) ===
+  'shopify','yelp','eventbrite','glassdoor','thumbtack','taskrabbit','postmates','grubhub',
+  'seamless','shipt','gopuff','fetchrewards','ibotta','honey','rakuten','retailmenot',
+  'slickdeals','groupon','wework','clear','tsa','globalentry','precheck','ftx','blockfi',
+  'celsius','voyager','nexo','kraken','binance','coinbase','bitstamp','bitfinex','kucoin',
+  'huobi','okx','bybit','deribit','bitmex','dYdX','uniswap','sushiswap','pancakeswap','1inch',
+  'curve','balancer','bancor','kyber','loopring','aave','compound','makerdao','synthetix',
+  'yearn','creamfinance','badgerdao','harvestfinance','convexfinance','frax','alchemix',
+  'olympusdao','wonderland','spell','abracadabra','tether','circle','paxos','trueusd',
+  'gemini','binanceusd','dai','frax','ampleforth','basis','empty-set-dollar','dynamic-set-dollar',
+  'fantom','avalanche','polygon','solana','polkadot','cosmos','terra','near','algorand',
+  'elrond','harmony','celo','flow','stacks','mina','helium','arweave','filecoin','chia',
+  'bittorrent','theta','livepeer','audius','gala','enjin','sandbox','decentraland','axieinfinity',
+  'illuvium','staratlas','zedrun','sorare','nba-top-shot','cryptokitties','bored-ape-yacht-club',
+  'cryptopunks','art-blocks','superrare','foundation','opensea','rarible','nifty-gateway'
 ];
 
 // ─── Helpers ───
