@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_DISCLAIMER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -34,7 +34,7 @@ function fmtCurrency(n: number): string {
 }
 
 function winnerColor(isWinner: boolean): string {
-  return isWinner ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500 dark:text-zinc-400';
+  return isWinner ? 'text-emerald-600' : 'text-zinc-500';
 }
 
 export default function VersusPage() {
@@ -121,13 +121,13 @@ export default function VersusPage() {
   }, [metrics]);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -135,10 +135,10 @@ export default function VersusPage() {
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             City vs City
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className={PAGE_SUBTITLE}>
             Side-by-side comparison of digital nomad cities. Pick two cities and see which one wins on cost, internet, weather, and more.
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function VersusPage() {
         ) : (
           <>
             {/* City Pickers */}
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 md:p-6 mb-8">
+            <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 mb-8">
               <div className="grid grid-cols-[1fr_auto_1fr] gap-3 md:gap-6 items-center">
                 {/* City A */}
                 <div>
@@ -158,7 +158,7 @@ export default function VersusPage() {
                   <select
                     value={slugA}
                     onChange={e => setSlugA(e.target.value)}
-                    className="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300"
                   >
                     {cities.map(c => (
                       <option key={c.slug} value={c.slug}>{c.emoji} {c.name}</option>
@@ -168,7 +168,7 @@ export default function VersusPage() {
 
                 {/* VS */}
                 <div className="flex flex-col items-center pt-5">
-                  <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center">
                     <ArrowLeftRight className="w-4 h-4 text-zinc-400" />
                   </div>
                   <span className="text-[10px] text-zinc-400 mt-1 font-semibold uppercase">VS</span>
@@ -180,7 +180,7 @@ export default function VersusPage() {
                   <select
                     value={slugB}
                     onChange={e => setSlugB(e.target.value)}
-                    className="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300"
                   >
                     {cities.map(c => (
                       <option key={c.slug} value={c.slug}>{c.emoji} {c.name}</option>
@@ -204,7 +204,7 @@ export default function VersusPage() {
                     return (
                       <div
                         key={m.label}
-                        className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4"
+                        className="bg-white border border-zinc-200 rounded-xl p-4"
                       >
                         {/* Metric label */}
                         <div className="flex items-center justify-center gap-2 mb-3">
@@ -220,7 +220,7 @@ export default function VersusPage() {
                             </span>
                             {aWins && <Trophy className="w-4 h-4 text-emerald-500 inline ml-2" />}
                           </div>
-                          <div className="text-xs text-zinc-300 dark:text-zinc-600 font-medium">vs</div>
+                          <div className="text-xs text-zinc-300 font-medium">vs</div>
                           <div>
                             {bWins && <Trophy className="w-4 h-4 text-emerald-500 inline mr-2" />}
                             <span className={`text-xl md:text-2xl font-bold tabular-nums ${winnerColor(bWins)}`}>
@@ -234,7 +234,7 @@ export default function VersusPage() {
                 </div>
 
                 {/* Verdict */}
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 text-center">
+                <div className="bg-white border border-zinc-200 rounded-xl p-6 text-center">
                   <div className="flex items-center justify-center gap-2 mb-3">
                     <Trophy className="w-5 h-5 text-amber-500" />
                     <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Verdict</span>
@@ -242,24 +242,24 @@ export default function VersusPage() {
 
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     <div>
-                      <div className={`text-3xl font-bold ${verdictCounts.winsA > verdictCounts.winsB ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400'}`}>
+                      <div className={`text-3xl font-bold ${verdictCounts.winsA > verdictCounts.winsB ? 'text-emerald-600' : 'text-zinc-400'}`}>
                         {verdictCounts.winsA}
                       </div>
                       <div className="text-xs text-zinc-500 mt-1">{cityA.emoji} {cityA.name}</div>
                     </div>
                     <div>
-                      <div className="text-3xl font-bold text-zinc-300 dark:text-zinc-600">{verdictCounts.ties}</div>
+                      <div className="text-3xl font-bold text-zinc-300">{verdictCounts.ties}</div>
                       <div className="text-xs text-zinc-500 mt-1">Neutral</div>
                     </div>
                     <div>
-                      <div className={`text-3xl font-bold ${verdictCounts.winsB > verdictCounts.winsA ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400'}`}>
+                      <div className={`text-3xl font-bold ${verdictCounts.winsB > verdictCounts.winsA ? 'text-emerald-600' : 'text-zinc-400'}`}>
                         {verdictCounts.winsB}
                       </div>
                       <div className="text-xs text-zinc-500 mt-1">{cityB.emoji} {cityB.name}</div>
                     </div>
                   </div>
 
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <p className="text-sm text-zinc-600">
                     {verdictCounts.winsA > verdictCounts.winsB
                       ? `${cityA.emoji} ${cityA.name} wins on ${verdictCounts.winsA} out of ${metrics.length} metrics.`
                       : verdictCounts.winsB > verdictCounts.winsA
@@ -269,10 +269,10 @@ export default function VersusPage() {
                   </p>
 
                   <div className="flex items-center justify-center gap-3 mt-4">
-                    <Link href={`/${cityA.slug}`} className="px-4 py-2 rounded-lg text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+                    <Link href={`/${cityA.slug}`} className="px-4 py-2 rounded-lg text-xs font-medium bg-zinc-100 text-zinc-600 hover:bg-zinc-200 transition-colors">
                       View {cityA.name} →
                     </Link>
-                    <Link href={`/${cityB.slug}`} className="px-4 py-2 rounded-lg text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+                    <Link href={`/${cityB.slug}`} className="px-4 py-2 rounded-lg text-xs font-medium bg-zinc-100 text-zinc-600 hover:bg-zinc-200 transition-colors">
                       View {cityB.name} →
                     </Link>
                   </div>
@@ -281,7 +281,7 @@ export default function VersusPage() {
             )}
 
             {/* Disclaimer */}
-            <div className="mt-8 flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed max-w-2xl">
+            <div className={PAGE_DISCLAIMER}>
               <Info className="w-4 h-4 shrink-0 mt-0.5" />
               <p>
                 Comparison uses average annual data. Individual experience may vary by season,

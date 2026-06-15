@@ -7,7 +7,7 @@ import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Info, Users, Facebook, Send, MessageCircle, Globe, Slack } from 'lucide-react';
-import { CITY_IMAGES } from '@/lib/utils';
+import { CITY_IMAGES, CITY_IMAGE_FALLBACK } from '@/lib/utils';
 
 interface CityWeatherMonth {
   month: string;
@@ -86,7 +86,7 @@ function loadCommunities(): Record<string, Community[]> {
 function ScoreBar({ score }: { score: number }) {
   const color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
   return (
-    <div className="w-full h-2.5 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+    <div className="w-full h-2.5 rounded-full bg-zinc-200 overflow-hidden">
       <div
         className="h-full rounded-full transition-all duration-500"
         style={{ width: `${score}%`, backgroundColor: color }}
@@ -97,13 +97,13 @@ function ScoreBar({ score }: { score: number }) {
 
 function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub?: string }) {
   return (
-    <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm dark:hover:shadow-white/5 transition-all">
-      <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+    <div className="bg-white border border-zinc-200 rounded-xl p-4 hover:border-zinc-300 hover:shadow-sm transition-all">
+      <div className="flex items-center gap-2 text-zinc-500 mb-1">
         {icon}
         <span className="text-xs font-medium uppercase tracking-wider">{label}</span>
       </div>
-      <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{value}</div>
-      {sub && <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{sub}</div>}
+      <div className="text-2xl font-bold text-zinc-900">{value}</div>
+      {sub && <div className="text-xs text-zinc-500 mt-0.5">{sub}</div>}
     </div>
   );
 }
@@ -154,13 +154,13 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
   ];
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1">
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -170,10 +170,10 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <div>
-              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 transition-colors">
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900">
                 {data.name}
               </h1>
-              <p className="text-lg text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+              <p className="text-lg text-zinc-500 flex items-center gap-1.5">
                 <MapPin className="w-4 h-4" />
                 {data.country} · {data.continent}
               </p>
@@ -184,13 +184,13 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
           <div className="mt-4">
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1.5 group relative">
-                <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Nomad Score</span>
+                <span className="text-sm font-medium text-zinc-600">Nomad Score</span>
                 <Info className="w-3.5 h-3.5 text-zinc-400 hover:text-zinc-500 cursor-help" />
-                <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block w-72 p-3 bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-100 text-xs rounded-xl shadow-xl border border-zinc-800 dark:border-zinc-700/50 z-20 leading-relaxed pointer-events-none transition-all">
+                <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block w-72 p-3 bg-zinc-900 text-white text-xs rounded-xl shadow-xl border border-zinc-800 z-20 leading-relaxed pointer-events-none transition-all">
                   Calculated based on cost of living, climate suitability (preferring 15–28°C), coworking/coliving availability, and community infrastructure.
                 </div>
               </div>
-              <span className="text-sm font-bold text-zinc-900 dark:text-zinc-50">{data.nomad_score}/100</span>
+              <span className="text-sm font-bold text-zinc-900">{data.nomad_score}/100</span>
             </div>
             <ScoreBar score={data.nomad_score} />
           </div>
@@ -237,8 +237,8 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
         </div>
 
         {/* Cost Breakdown */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
-          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-4">Cost of Living Breakdown</h2>
+        <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-8 transition-colors">
+          <h2 className="text-lg font-bold text-zinc-900 mb-4">Cost of Living Breakdown</h2>
 
           {/* Stacked bar */}
           <div className="w-full h-6 rounded-full overflow-hidden flex mb-4">
@@ -261,8 +261,8 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
               <div key={e.key} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: COST_COLORS[e.key] }} />
                 <div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">{e.label}</div>
-                  <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">${e.value}</div>
+                  <div className="text-xs text-zinc-500">{e.label}</div>
+                  <div className="text-sm font-semibold text-zinc-900">${e.value}</div>
                 </div>
               </div>
             ))}
@@ -270,14 +270,14 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
         </div>
 
         {/* Weather Chart */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
-          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-4">Monthly Climate</h2>
+        <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-8 transition-colors">
+          <h2 className="text-lg font-bold text-zinc-900 mb-4">Monthly Climate</h2>
 
           <div className="flex items-end gap-1 sm:gap-2 h-48 mb-2">
             {data.weather.monthly.map((m) => (
               <div key={m.month} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
                 {/* Temperature bar */}
-                <div className="text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
+                <div className="text-[10px] font-medium text-zinc-600">
                   {Math.round(m.temp)}°
                 </div>
                 <div
@@ -304,14 +304,14 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
           {/* Month labels */}
           <div className="flex gap-1 sm:gap-2">
             {data.weather.monthly.map((m) => (
-              <div key={m.month} className="flex-1 text-center text-[10px] text-zinc-400 dark:text-zinc-500">
+              <div key={m.month} className="flex-1 text-center text-[10px] text-zinc-400">
                 {m.month}
               </div>
             ))}
           </div>
 
           {/* Legend */}
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-xs text-zinc-500">
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-sm bg-emerald-500 opacity-85" /> Comfortable (15-28°C)
             </div>
@@ -328,8 +328,8 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
         </div>
 
         {/* Spaces */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
-          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-4">Accommodation & Coworking</h2>
+        <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-8 transition-colors">
+          <h2 className="text-lg font-bold text-zinc-900 mb-4">Accommodation & Coworking</h2>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
             {Object.entries(SPACE_CONFIG).map(([key, cfg]) => {
               const count = data.spaces[key as keyof typeof data.spaces] as number;
@@ -338,28 +338,28 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                   <div className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: cfg.color + '20' }}>
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cfg.color }} />
                   </div>
-                  <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{count}</div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">{cfg.label}</div>
+                  <div className="text-2xl font-bold text-zinc-900">{count}</div>
+                  <div className="text-xs text-zinc-500">{cfg.label}</div>
                 </div>
               );
             })}
           </div>
 
           {/* Interactive City Map */}
-          <div className="mt-6 pt-6 border-t border-zinc-100 dark:border-zinc-800/80">
+          <div className="mt-6 pt-6 border-t border-zinc-100">
             <NomadMapWrapper cityFilter={data.slug} />
           </div>
 
           {/* Local Transit Helper */}
-          <div className="mt-6 pt-6 border-t border-zinc-100 dark:border-zinc-800/80 text-left">
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-2.5">Getting Around {data.name}</h3>
+          <div className="mt-6 pt-6 border-t border-zinc-100 text-left">
+            <h3 className="text-sm font-semibold text-zinc-900 mb-2.5">Getting Around {data.name}</h3>
             <div className="flex flex-wrap gap-2 text-xs">
-              <span className="text-zinc-500 dark:text-zinc-400 py-1.5 mr-1.5 flex items-center">Recommended tools:</span>
+              <span className="text-zinc-500 py-1.5 mr-1.5 flex items-center">Recommended tools:</span>
               <a
                 href={`https://www.rome2rio.com/s/Everywhere/${data.name}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+                className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
               >
                 Rome2rio (Inter-city)
               </a>
@@ -367,7 +367,7 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                 href="https://moovitapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+                className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
               >
                 Moovit (Local Transit)
               </a>
@@ -377,7 +377,7 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                     href="https://12go.asia"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
                   >
                     12Go Asia (Tickets)
                   </a>
@@ -385,7 +385,7 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                     href="https://www.grab.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-300"
+                    className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-300 bg-zinc-50/20 hover:bg-zinc-50/60 text-zinc-600 hover:text-zinc-900 transition-all duration-300"
                   >
                     Grab (Ride-Hailing)
                   </a>
@@ -412,27 +412,27 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
 
         {/* Local Communities */}
         {cityCommunities.length > 0 && (
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-1">Local Communities</h2>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+          <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-8 transition-colors">
+            <h2 className="text-lg font-bold text-zinc-900 mb-1">Local Communities</h2>
+            <p className="text-sm text-zinc-500 mb-6">
               Connect with fellow digital nomads, remote workers, and expats in {data.name} through these active channels.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {cityCommunities.map((group, idx) => {
-                let platformIcon = <Globe className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                let platformIcon = <Globe className="w-4 h-4 text-zinc-500" />;
                 
                 if (group.platform === 'facebook') {
-                  platformIcon = <Facebook className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                  platformIcon = <Facebook className="w-4 h-4 text-zinc-500" />;
                 } else if (group.platform === 'telegram') {
-                  platformIcon = <Send className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                  platformIcon = <Send className="w-4 h-4 text-zinc-500" />;
                 } else if (group.platform === 'slack') {
-                  platformIcon = <Slack className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                  platformIcon = <Slack className="w-4 h-4 text-zinc-500" />;
                 } else if (group.platform === 'discord') {
-                  platformIcon = <MessageCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                  platformIcon = <MessageCircle className="w-4 h-4 text-zinc-500" />;
                 } else if (group.platform === 'meetup') {
-                  platformIcon = <Users className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                  platformIcon = <Users className="w-4 h-4 text-zinc-500" />;
                 } else if (group.platform === 'reddit') {
-                  platformIcon = <MessageCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />;
+                  platformIcon = <MessageCircle className="w-4 h-4 text-zinc-500" />;
                 }
 
                 return (
@@ -441,18 +441,18 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                     href={group.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3.5 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+                    className="flex items-center gap-3.5 p-4 rounded-xl border border-zinc-200 bg-zinc-50/20 hover:bg-zinc-50/60 hover:border-zinc-300 hover:shadow-sm transition-all group/card duration-300"
                   >
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700/60 shadow-sm">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-white border border-zinc-100 shadow-sm">
                       {platformIcon}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors truncate">
+                      <div className="text-sm font-semibold text-zinc-800 group-hover/card:text-zinc-900 transition-colors truncate">
                         {group.name}
                       </div>
-                      <div className="text-xs text-zinc-400 dark:text-zinc-500 capitalize mt-0.5 flex items-center gap-1.5">
+                      <div className="text-xs text-zinc-400 capitalize mt-0.5 flex items-center gap-1.5">
                         {group.platform}
-                        <span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                        <span className="w-1 h-1 rounded-full bg-zinc-300" />
                         <span className="text-primary group-hover/card:underline">Join community →</span>
                       </div>
                     </div>
@@ -464,9 +464,9 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
         )}
 
         {/* Travel Essentials */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-8 transition-colors">
-          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-1">Travel Essentials</h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+        <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-8 transition-colors">
+          <h2 className="text-lg font-bold text-zinc-900 mb-1">Travel Essentials</h2>
+          <p className="text-sm text-zinc-500 mb-6">
             Recommended health, safety, and connectivity resources for your stay in {data.name}.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -474,12 +474,12 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
               href="https://safetywing.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 bg-zinc-50/20 hover:bg-zinc-50/60 hover:border-zinc-300 hover:shadow-sm transition-all group/card duration-300"
             >
-              <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors">
+              <div className="text-sm font-semibold text-zinc-800 group-hover/card:text-zinc-900 transition-colors">
                 SafetyWing Insurance
               </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">
+              <div className="text-xs text-zinc-500 leading-relaxed mt-0.5">
                 Flexible medical travel insurance built specifically for remote workers and nomads.
               </div>
               <div className="text-xs text-primary group-hover/card:underline mt-auto pt-2.5">
@@ -491,12 +491,12 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
               href="https://www.worldnomads.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 bg-zinc-50/20 hover:bg-zinc-50/60 hover:border-zinc-300 hover:shadow-sm transition-all group/card duration-300"
             >
-              <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors">
+              <div className="text-sm font-semibold text-zinc-800 group-hover/card:text-zinc-900 transition-colors">
                 World Nomads
               </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">
+              <div className="text-xs text-zinc-500 leading-relaxed mt-0.5">
                 Full activity and travel insurance covering gear protection and extreme sports.
               </div>
               <div className="text-xs text-primary group-hover/card:underline mt-auto pt-2.5">
@@ -508,12 +508,12 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
               href="https://www.opensignal.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-900/10 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700/80 hover:shadow-sm transition-all group/card duration-300"
+              className="flex flex-col gap-1 p-4 rounded-xl border border-zinc-200 bg-zinc-50/20 hover:bg-zinc-50/60 hover:border-zinc-300 hover:shadow-sm transition-all group/card duration-300"
             >
-              <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-50 transition-colors">
+              <div className="text-sm font-semibold text-zinc-800 group-hover/card:text-zinc-900 transition-colors">
                 OpenSignal App
               </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">
+              <div className="text-xs text-zinc-500 leading-relaxed mt-0.5">
                 Check 4G/5G cell coverage and WiFi signal performance in {data.name} before booking.
               </div>
               <div className="text-xs text-primary group-hover/card:underline mt-auto pt-2.5">
@@ -526,10 +526,10 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
         {/* Nearby Cities */}
         {nearbyCities.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50 mb-4">Nearby Cities</h2>
+            <h2 className="text-lg font-bold text-zinc-900 mb-4">Nearby Cities</h2>
             <div className="flex gap-3 overflow-x-auto pb-2 -mx-6 px-6 scrollbar-none">
               {nearbyCities.map((nc) => {
-                const imageUrl = CITY_IMAGES[nc.slug] || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80';
+                const imageUrl = CITY_IMAGES[nc.slug] || CITY_IMAGE_FALLBACK;
                 return (
                   <Link
                     key={nc.slug}
@@ -582,7 +582,7 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
           }}
         />
         {/* Source Disclaimer */}
-        <p className="text-center text-xs text-zinc-400 dark:text-zinc-500 mt-12 max-w-xl mx-auto leading-relaxed">
+        <p className="text-center text-xs text-zinc-400 mt-12 max-w-xl mx-auto leading-relaxed">
           * Cost of living, climate metrics, and accommodation spaces are estimated based on public open-source archives, historical weather databases, and OpenStreetMap (OSM) crowdsourced data.
         </p>
       </main>

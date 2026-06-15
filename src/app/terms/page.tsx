@@ -21,7 +21,7 @@ export default function TermsPage() {
       <Header />
       <main id="main-content" className="flex-1 mx-auto max-w-3xl px-6 py-16">
         <h1 className="text-3xl font-extrabold mb-8 tracking-tight text-foreground">Terms & Privacy</h1>
-        <div className="prose prose-base dark:prose-invert space-y-8 text-muted-foreground">
+        <div className="prose prose-base space-y-8 text-muted-foreground">
           <p className="text-sm"><strong>Last updated:</strong> March 2026</p>
 
           {/* ── Terms of Service ── */}
@@ -175,7 +175,7 @@ export default function TermsPage() {
             <h3 className="text-xl font-bold text-foreground mb-3">15. Contact Us</h3>
             <p>
               For any questions regarding these Terms or Privacy Policy, please reach out at{' '}
-              <a href="mailto:hi@cvin.bio" className="text-indigo-600 dark:text-indigo-400 underline underline-offset-2 hover:text-indigo-500 transition-colors">hi@cvin.bio</a>.
+              <a href="mailto:hi@cvin.bio" className="text-indigo-600 underline underline-offset-2 hover:text-indigo-500 transition-colors">hi@cvin.bio</a>.
             </p>
           </section>
         </div>

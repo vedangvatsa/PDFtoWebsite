@@ -1,5 +1,5 @@
 'use client';
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, scoreBadgeClasses , PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
@@ -79,13 +79,7 @@ function fmtCurrency(n: number) {
   return '$' + n.toLocaleString('en-US');
 }
 
-function scoreBadgeClasses(score: number) {
-  if (score >= 70)
-    return 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400';
-  if (score >= 50)
-    return 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400';
-  return 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400';
-}
+
 
 function getSortValue(city: City, key: SortKey): number {
   switch (key) {
@@ -194,14 +188,14 @@ export default function CostOfLivingPage() {
   }) => (
     <button
       onClick={() => toggleSort(sortField)}
-      className={`group inline-flex items-center gap-1 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors ${className}`}
+      className={`group inline-flex items-center gap-1 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-zinc-700 transition-colors ${className}`}
     >
       {label}
       {sortKey === sortField ? (
         sortDir === 'asc' ? (
-          <ArrowUp className="h-3 w-3 text-zinc-900 dark:text-zinc-100" />
+          <ArrowUp className="h-3 w-3 text-zinc-900" />
         ) : (
-          <ArrowDown className="h-3 w-3 text-zinc-900 dark:text-zinc-100" />
+          <ArrowDown className="h-3 w-3 text-zinc-900" />
         )
       ) : (
         <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity" />
@@ -220,7 +214,7 @@ export default function CostOfLivingPage() {
   /* ---------------------------------------------------------------- */
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main
         id="main-content"
@@ -229,7 +223,7 @@ export default function CostOfLivingPage() {
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -237,10 +231,10 @@ export default function CostOfLivingPage() {
 
         {/* ---- Heading ---- */}
         <div className="flex flex-col mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Cost of Living
           </h1>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
             Compare monthly costs across 95 digital nomad cities. Filter by
             budget, and sort by rent, food, or coworking to find your next base.
           </p>
@@ -254,16 +248,16 @@ export default function CostOfLivingPage() {
         ) : (
           <>
             {/* ---- Budget Slider ---- */}
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-6 mb-6">
+            <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-6">
               <div className="flex items-center gap-3 mb-4">
                 <SlidersHorizontal className="h-4 w-4 text-zinc-400" />
-                <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                   Budget Filter
                 </span>
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
+                <p className="text-lg font-semibold text-zinc-900 whitespace-nowrap">
                   I have{' '}
                   <span className="text-2xl tabular-nums">
                     {budget !== null ? fmtCurrency(budget) : 'Any budget'}
@@ -291,16 +285,16 @@ export default function CostOfLivingPage() {
                         setBudget(v === BUDGET_MAX ? null : v);
                       }}
                       className="w-full h-2 rounded-full appearance-none cursor-pointer
-                        bg-zinc-200 dark:bg-zinc-800
+                        bg-zinc-200
                         [&::-webkit-slider-thumb]:appearance-none
                         [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5
                         [&::-webkit-slider-thumb]:rounded-full
-                        [&::-webkit-slider-thumb]:bg-zinc-900 [&::-webkit-slider-thumb]:dark:bg-white
+                        [&::-webkit-slider-thumb]:bg-zinc-900
                         [&::-webkit-slider-thumb]:shadow-md
                         [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110
                         [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5
                         [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0
-                        [&::-moz-range-thumb]:bg-zinc-900 [&::-moz-range-thumb]:dark:bg-white
+                        [&::-moz-range-thumb]:bg-zinc-900
                         [&::-moz-range-thumb]:shadow-md"
                       style={{
                         background: `linear-gradient(to right, #18181b ${budgetPercent}%, #e4e4e7 ${budgetPercent}%)`,
@@ -316,7 +310,7 @@ export default function CostOfLivingPage() {
                 {budget !== null && (
                   <button
                     onClick={() => setBudget(null)}
-                    className="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 underline underline-offset-2 transition-colors whitespace-nowrap"
+                    className="text-xs text-zinc-500 hover:text-zinc-900 underline underline-offset-2 transition-colors whitespace-nowrap"
                   >
                     Clear filter
                   </button>
@@ -332,8 +326,8 @@ export default function CostOfLivingPage() {
                   onClick={() => setContinent(c)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
                     continent === c
-                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-black shadow-sm'
-                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                      ? 'bg-zinc-900 text-white shadow-sm'
+                      : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
                   }`}
                 >
                   {c}
@@ -356,7 +350,7 @@ export default function CostOfLivingPage() {
                     ? stats.cheapest.name
                     : undefined
                 }
-                accentClass="text-emerald-600 dark:text-emerald-400"
+                accentClass="text-emerald-600"
               />
               <StatCard
                 icon={<TrendingUp className="h-4 w-4" />}
@@ -371,37 +365,37 @@ export default function CostOfLivingPage() {
                     ? stats.expensive.name
                     : undefined
                 }
-                accentClass="text-red-600 dark:text-red-400"
+                accentClass="text-red-600"
               />
               <StatCard
                 icon={<BarChart3 className="h-4 w-4" />}
                 label="Average cost"
                 value={fmtCurrency(stats.avg) + '/mo'}
-                accentClass="text-blue-600 dark:text-blue-400"
+                accentClass="text-blue-600"
               />
               <StatCard
                 icon={<MapPin className="h-4 w-4" />}
                 label="Cities in budget"
                 value={`${inBudget}/${filtered.length}`}
                 sub={budget !== null ? `≤ ${fmtCurrency(budget)}/mo` : 'No filter'}
-                accentClass="text-violet-600 dark:text-violet-400"
+                accentClass="text-violet-600"
               />
             </div>
 
             {/* ---- Table ---- */}
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl overflow-hidden">
+            <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden">
               {/* Desktop table */}
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-200 dark:border-zinc-800/50">
+                    <tr className="border-b border-zinc-200">
                       <th className="text-left px-5 py-4">
-                        <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                           #
                         </span>
                       </th>
                       <th className="text-left px-5 py-4">
-                        <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                           City
                         </span>
                       </th>
@@ -434,32 +428,32 @@ export default function CostOfLivingPage() {
                         <tr
                           key={city.slug}
                           onClick={() => window.location.href = `/${city.slug}`}
-                          className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer border-b border-zinc-100 dark:border-zinc-800/30 last:border-0 ${
+                          className={`hover:bg-zinc-50 transition-colors cursor-pointer border-b border-zinc-100 last:border-0 ${
                             dimmed ? 'opacity-35' : ''
                           }`}
                         >
                           <td className="px-5 py-3.5 text-zinc-400 tabular-nums">
                             {i + 1}
                           </td>
-                          <td className="px-5 py-3.5 font-medium text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
+                          <td className="px-5 py-3.5 font-medium text-zinc-900 whitespace-nowrap">
                             {city.name}
-                            <span className="text-zinc-400 dark:text-zinc-500 font-normal ml-1.5">
+                            <span className="text-zinc-400 font-normal ml-1.5">
                               {city.country}
                             </span>
                           </td>
-                          <td className="px-5 py-3.5 tabular-nums font-semibold text-zinc-900 dark:text-zinc-100">
+                          <td className="px-5 py-3.5 tabular-nums font-semibold text-zinc-900">
                             {fmtCurrency(city.cost.monthly_total)}
                           </td>
-                          <td className="px-5 py-3.5 tabular-nums text-zinc-600 dark:text-zinc-400">
+                          <td className="px-5 py-3.5 tabular-nums text-zinc-600">
                             {fmtCurrency(city.cost.rent)}
                           </td>
-                          <td className="px-5 py-3.5 tabular-nums text-zinc-600 dark:text-zinc-400">
+                          <td className="px-5 py-3.5 tabular-nums text-zinc-600">
                             {fmtCurrency(city.cost.food)}
                           </td>
-                          <td className="px-5 py-3.5 tabular-nums text-zinc-600 dark:text-zinc-400">
+                          <td className="px-5 py-3.5 tabular-nums text-zinc-600">
                             {fmtCurrency(city.cost.coworking)}
                           </td>
-                          <td className="px-5 py-3.5 tabular-nums text-zinc-600 dark:text-zinc-400">
+                          <td className="px-5 py-3.5 tabular-nums text-zinc-600">
                             {Math.round(city.weather.avg_temp)}°C
                           </td>
                           <td className="px-5 py-3.5">
@@ -477,9 +471,9 @@ export default function CostOfLivingPage() {
               </div>
 
               {/* Mobile table */}
-              <div className="md:hidden divide-y divide-zinc-100 dark:divide-zinc-800/30">
+              <div className="md:hidden divide-y divide-zinc-100">
                 {/* Mobile sort controls */}
-                <div className="flex items-center gap-2 px-4 py-3 bg-zinc-50/50 dark:bg-zinc-900/30">
+                <div className="flex items-center gap-2 px-4 py-3 bg-zinc-50/50">
                   <DollarSign className="h-3.5 w-3.5 text-zinc-400" />
                   <span className="text-xs text-zinc-400 mr-1">Sort:</span>
                   {(
@@ -494,8 +488,8 @@ export default function CostOfLivingPage() {
                       onClick={() => toggleSort(key)}
                       className={`text-xs px-2.5 py-1 rounded-md transition-colors ${
                         sortKey === key
-                          ? 'bg-zinc-900 text-white dark:bg-white dark:text-black font-medium'
-                          : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
+                          ? 'bg-zinc-900 text-white font-medium'
+                          : 'text-zinc-500 hover:text-zinc-900'
                       }`}
                     >
                       {label}
@@ -512,7 +506,7 @@ export default function CostOfLivingPage() {
                     <Link
                       key={city.slug}
                       href={`/${city.slug}`}
-                      className={`flex items-center justify-between px-4 py-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer ${
+                      className={`flex items-center justify-between px-4 py-3.5 hover:bg-zinc-50 transition-colors cursor-pointer ${
                         dimmed ? 'opacity-35' : ''
                       }`}
                     >
@@ -521,16 +515,16 @@ export default function CostOfLivingPage() {
                           {i + 1}
                         </span>
                         <div className="min-w-0">
-                          <div className="font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                          <div className="font-medium text-zinc-900 truncate">
                             {city.name}
                           </div>
-                          <div className="text-xs text-zinc-400 dark:text-zinc-500">
+                          <div className="text-xs text-zinc-400">
                             {city.country}
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 shrink-0 ml-3">
-                        <span className="text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100">
+                        <span className="text-sm font-semibold tabular-nums text-zinc-900">
                           {fmtCurrency(city.cost.monthly_total)}
                         </span>
                         <span
@@ -577,18 +571,18 @@ function StatCard({
   accentClass: string;
 }) {
   return (
-    <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-5">
+    <div className="bg-white border border-zinc-200 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-3">
         <div className={accentClass}>{icon}</div>
-        <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+        <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
           {label}
         </span>
       </div>
-      <p className="text-xl font-bold text-zinc-900 dark:text-zinc-100 tabular-nums">
+      <p className="text-xl font-bold text-zinc-900 tabular-nums">
         {value}
       </p>
       {sub && (
-        <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">{sub}</p>
+        <p className="text-xs text-zinc-400 mt-1">{sub}</p>
       )}
     </div>
   );

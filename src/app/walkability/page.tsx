@@ -1,4 +1,4 @@
-import { PAGE_CONTAINER } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_DISCLAIMER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
@@ -98,10 +98,10 @@ function getWalk(slug: string): WalkData {
 }
 
 function walkColor(s: number): string {
-  if (s >= 8) return 'text-emerald-600 dark:text-emerald-400';
-  if (s >= 6) return 'text-blue-600 dark:text-blue-400';
-  if (s >= 4) return 'text-amber-600 dark:text-amber-400';
-  return 'text-red-600 dark:text-red-400';
+  if (s >= 8) return 'text-emerald-600';
+  if (s >= 6) return 'text-blue-600';
+  if (s >= 4) return 'text-amber-600';
+  return 'text-red-600';
 }
 
 function walkBg(s: number): string {
@@ -112,10 +112,10 @@ function walkBg(s: number): string {
 }
 
 function carFreeColor(cf: string): string {
-  if (cf === 'Yes') return 'text-emerald-600 dark:text-emerald-400';
-  if (cf === 'Mostly') return 'text-blue-600 dark:text-blue-400';
-  if (cf === 'Difficult') return 'text-amber-600 dark:text-amber-400';
-  return 'text-red-600 dark:text-red-400';
+  if (cf === 'Yes') return 'text-emerald-600';
+  if (cf === 'Mostly') return 'text-blue-600';
+  if (cf === 'Difficult') return 'text-amber-600';
+  return 'text-red-600';
 }
 
 function loadCities(): City[] {
@@ -142,13 +142,13 @@ export default function WalkabilityPage() {
   const bikeFriendly = ranked.filter(c => c.bike >= 7).length;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
         <Link
           href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Directory
@@ -156,51 +156,51 @@ export default function WalkabilityPage() {
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3 transition-colors">
+          <h1 className={PAGE_TITLE}>
             Walkability Scores
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 transition-colors max-w-3xl">
+          <p className={PAGE_SUBTITLE}>
             Walk, transit, and bike scores for {ranked.length} digital nomad cities. Find cities where you can live car-free.
           </p>
         </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Footprints className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Avg Walk Score</span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{avgWalk}<span className="text-sm font-normal text-zinc-400">/10</span></div>
+            <div className="text-2xl font-bold text-zinc-900">{avgWalk}<span className="text-sm font-normal text-zinc-400">/10</span></div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Footprints className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Highly Walkable</span>
             </div>
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{highlyWalkable}</div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">score 8.0+</div>
+            <div className="text-2xl font-bold text-emerald-600">{highlyWalkable}</div>
+            <div className="text-xs text-zinc-500 mt-0.5">score 8.0+</div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Train className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Car-Free OK</span>
             </div>
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{carFreeCount}</div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">don&apos;t need a car</div>
+            <div className="text-2xl font-bold text-blue-600">{carFreeCount}</div>
+            <div className="text-xs text-zinc-500 mt-0.5">don&apos;t need a car</div>
           </div>
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-1">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
               <Bike className="w-4 h-4" />
               <span className="text-xs font-medium uppercase tracking-wider">Bike Friendly</span>
             </div>
-            <div className="text-2xl font-bold text-violet-600 dark:text-violet-400">{bikeFriendly}</div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">bike score 7.0+</div>
+            <div className="text-2xl font-bold text-violet-600">{bikeFriendly}</div>
+            <div className="text-xs text-zinc-500 mt-0.5">bike score 7.0+</div>
           </div>
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-zinc-500">
           <span className="font-medium">Walk score tiers:</span>
           <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Highly walkable (8+)</div>
           <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-blue-500" /> Walkable (6-8)</div>
@@ -209,36 +209,36 @@ export default function WalkabilityPage() {
         </div>
 
         {/* Rankings Table */}
-        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 rounded-xl overflow-hidden transition-colors">
+        <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden transition-colors">
           {/* Desktop */}
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-zinc-200 dark:border-zinc-800/50">
-                  <th className="text-left px-5 py-4"><span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">#</span></th>
-                  <th className="text-left px-5 py-4"><span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">City</span></th>
-                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Walk</span></th>
-                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Transit</span></th>
-                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Bike</span></th>
-                  <th className="text-center px-5 py-4"><span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Car-Free?</span></th>
-                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Nomad Score</span></th>
+                <tr className="border-b border-zinc-200">
+                  <th className="text-left px-5 py-4"><span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">#</span></th>
+                  <th className="text-left px-5 py-4"><span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">City</span></th>
+                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Walk</span></th>
+                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Transit</span></th>
+                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Bike</span></th>
+                  <th className="text-center px-5 py-4"><span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Car-Free?</span></th>
+                  <th className="text-right px-5 py-4"><span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Nomad Score</span></th>
                 </tr>
               </thead>
               <tbody>
                 {ranked.map((city, i) => {
                   const walkBar = (city.walk / 10) * 100;
                   return (
-                    <tr key={city.slug} className="border-b border-zinc-100 dark:border-zinc-800/30 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
+                    <tr key={city.slug} className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
                       <td className="px-5 py-3.5 text-zinc-400 tabular-nums">{i + 1}</td>
                       <td className="px-5 py-3.5">
-                        <Link href={`/${city.slug}`} className="font-medium text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">
+                        <Link href={`/${city.slug}`} className="font-medium text-zinc-900 hover:text-blue-600 transition-colors whitespace-nowrap">
                           {city.emoji} {city.name}
                         </Link>
-                        <span className="text-zinc-400 dark:text-zinc-500 font-normal ml-1.5 text-xs">{city.country}</span>
+                        <span className="text-zinc-400 font-normal ml-1.5 text-xs">{city.country}</span>
                       </td>
                       <td className="px-5 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <div className="w-14 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                          <div className="w-14 h-1.5 rounded-full bg-zinc-100 overflow-hidden">
                             <div className={`h-full rounded-full ${walkBg(city.walk)}`} style={{ width: `${walkBar}%`, opacity: 0.7 }} />
                           </div>
                           <span className={`font-bold tabular-nums ${walkColor(city.walk)}`}>{city.walk.toFixed(1)}</span>
@@ -256,10 +256,10 @@ export default function WalkabilityPage() {
                       <td className="px-5 py-3.5 text-right">
                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums ${
                           city.nomad_score >= 70
-                            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
+                            ? 'bg-emerald-50 text-emerald-700'
                             : city.nomad_score >= 50
-                            ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400'
-                            : 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400'
+                            ? 'bg-amber-50 text-amber-700'
+                            : 'bg-red-50 text-red-700'
                         }`}>
                           {city.nomad_score}
                         </span>
@@ -272,20 +272,20 @@ export default function WalkabilityPage() {
           </div>
 
           {/* Mobile */}
-          <div className="md:hidden divide-y divide-zinc-100 dark:divide-zinc-800/30">
+          <div className="md:hidden divide-y divide-zinc-100">
             {ranked.map((city, i) => (
               <Link
                 key={city.slug}
                 href={`/${city.slug}`}
-                className="flex items-center justify-between px-4 py-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
+                className="flex items-center justify-between px-4 py-3.5 hover:bg-zinc-50 transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-xs text-zinc-400 tabular-nums w-5 shrink-0">{i + 1}</span>
                   <div className="min-w-0">
-                    <div className="font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                    <div className="font-medium text-zinc-900 truncate">
                       {city.emoji} {city.name}
                     </div>
-                    <div className="text-xs text-zinc-400 dark:text-zinc-500">
+                    <div className="text-xs text-zinc-400">
                       {city.country} · <span className={carFreeColor(city.carFree)}>Car-free: {city.carFree}</span>
                     </div>
                   </div>
@@ -308,7 +308,7 @@ export default function WalkabilityPage() {
         </div>
 
         {/* Data Source */}
-        <div className="mt-8 flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed max-w-2xl">
+        <div className={PAGE_DISCLAIMER}>
           <Info className="w-4 h-4 shrink-0 mt-0.5" />
           <p>
             Walkability scores are based on pedestrian infrastructure, public transit availability,

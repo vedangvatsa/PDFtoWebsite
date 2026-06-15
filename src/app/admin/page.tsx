@@ -814,7 +814,7 @@ export default function AdminPage() {
         <Section title="Data Science Insights" badge="Mathematical Analysis">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="p-5 rounded-xl border border-border/50 bg-indigo-500/5">
-              <h3 className="text-sm font-semibold flex items-center gap-2 text-indigo-700 dark:text-indigo-400 mb-4">
+              <h3 className="text-sm font-semibold flex items-center gap-2 text-indigo-700 mb-4">
                 <TrendingUp className="h-4 w-4" /> Statistical Signals
               </h3>
               <ul className="space-y-3">
@@ -881,7 +881,7 @@ export default function AdminPage() {
             </div>
             
             <div className="p-5 rounded-xl border border-border/50 bg-amber-500/5">
-              <h3 className="text-sm font-semibold flex items-center gap-2 text-amber-700 dark:text-amber-400 mb-4">
+              <h3 className="text-sm font-semibold flex items-center gap-2 text-amber-700 mb-4">
                 <Globe className="h-4 w-4" /> Anomaly &amp; Variance Detection
               </h3>
               <ul className="space-y-3">

@@ -1,7 +1,7 @@
 import './report.css';
 import fs from 'fs';
 import path from 'path';
-import { CITY_IMAGES } from '@/lib/utils';
+import { CITY_IMAGES, CITY_IMAGE_FALLBACK } from '@/lib/utils';
 import { ReportCover } from '@/components/report/report-cover';
 import { ReportTOC } from '@/components/report/report-toc';
 import { ReportMethodology } from '@/components/report/report-methodology';
@@ -84,7 +84,7 @@ export default function ReportPage() {
     ...city,
     rank: i + 1,
     weatherScore: computeWeatherScore(city),
-    imageUrl: CITY_IMAGES[city.slug] || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80',
+    imageUrl: CITY_IMAGES[city.slug] || CITY_IMAGE_FALLBACK,
   }));
 
   // Pre-compute ranking lists

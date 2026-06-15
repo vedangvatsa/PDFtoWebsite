@@ -1,12 +1,29 @@
 import type { RankedCity } from '@/app/report/page';
 
+const TEAL = '#0d9488';
+const CORAL = '#f43f5e';
+const AMBER = '#f59e0b';
+const INDIGO = '#6366f1';
+const EMERALD = '#10b981';
+const SLATE = '#64748b';
+
+const REGION_COLORS: Record<string, string> = {
+  'Asia': TEAL,
+  'Europe': INDIGO,
+  'South America': CORAL,
+  'North America': AMBER,
+  'Africa': EMERALD,
+  'Oceania': '#8b5cf6',
+};
+
 interface RegionStats {
   continent: string;
   count: number;
+  cities: RankedCity[];
   avgScore: number;
   avgCost: number;
   avgSpeed: number;
-  avgWeather: number;
+  color: string;
 }
 
 function computeRegions(cities: RankedCity[]): RegionStats[] {
@@ -16,181 +33,106 @@ function computeRegions(cities: RankedCity[]): RegionStats[] {
     group.push(city);
     map.set(city.continent, group);
   }
-
-  const regions: RegionStats[] = [];
-  for (const [continent, group] of map) {
-    const n = group.length;
-    regions.push({
+  return [...map.entries()]
+    .map(([continent, group]) => ({
       continent,
-      count: n,
-      avgScore: Math.round(group.reduce((s, c) => s + c.nomad_score, 0) / n),
-      avgCost: Math.round(group.reduce((s, c) => s + c.cost.monthly_total, 0) / n),
-      avgSpeed: Math.round(group.reduce((s, c) => s + c.internet.download_mbps, 0) / n),
-      avgWeather: Math.round(group.reduce((s, c) => s + c.weatherScore, 0) / n),
-    });
-  }
-
-  return regions.sort((a, b) => b.count - a.count);
+      count: group.length,
+      cities: group.sort((a, b) => a.rank - b.rank),
+      avgScore: Math.round(group.reduce((s, c) => s + c.nomad_score, 0) / group.length),
+      avgCost: Math.round(group.reduce((s, c) => s + c.cost.monthly_total, 0) / group.length),
+      avgSpeed: Math.round(group.reduce((s, c) => s + c.internet.download_mbps, 0) / group.length),
+      color: REGION_COLORS[continent] || SLATE,
+    }))
+    .sort((a, b) => b.count - a.count);
 }
 
 export function ReportRegionalAnalysis({ cities }: { cities: RankedCity[] }) {
   const regions = computeRegions(cities);
-  const maxCount = Math.max(...regions.map((r) => r.count));
+  const totalCities = cities.length;
 
   return (
-    <div className="report-page" style={{ padding: '32px 36px', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
-      <div style={{ marginBottom: 4 }}>
-        <p
-          style={{
-            fontSize: 8,
-            fontWeight: 600,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase' as const,
-            color: '#71717A',
-            margin: 0,
-          }}
-        >
-          Back Matter
-        </p>
-      </div>
-      <h2
-        style={{
-          fontSize: 28,
-          fontWeight: 800,
-          letterSpacing: '-0.04em',
-          margin: '4px 0 0 0',
-          lineHeight: 1.1,
-        }}
-      >
-        Regional Analysis
-      </h2>
-      <hr className="section-rule" style={{ marginTop: 12, marginBottom: 24 }} />
+    <div className="report-page" style={{ padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
+      <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.14em', color: TEAL, textTransform: 'uppercase' as const }}>Back Matter</span>
+      <h2 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-0.04em', margin: '4px 0 0 0', lineHeight: 1.1 }}>Regional Analysis</h2>
+      <div style={{ height: 2, background: TEAL, marginTop: 8, marginBottom: 14 }} />
 
-      {/* Intro */}
-      <p style={{ fontSize: 10, color: '#71717A', margin: '0 0 20px 0', lineHeight: 1.6, maxWidth: '80%' }}>
-        Aggregate performance across {regions.length} regions. Averages are computed from the top {cities.length} ranked
-        cities in this report.
+      <p style={{ fontSize: 10, lineHeight: 1.7, color: '#3f3f46', margin: '0 0 14px 0' }}>
+        The 50 ranked cities span {regions.length} continents. Asia dominates in representation and affordability. European entries score higher on weather comfort at 40-80% higher monthly costs.
       </p>
 
-      {/* Data Table */}
-      <table className="report-table" style={{ marginBottom: 28 }}>
-        <thead>
-          <tr>
-            <th style={{ width: '22%' }}>Region</th>
-            <th style={{ width: '10%', textAlign: 'right' }}>Cities</th>
-            <th style={{ width: '14%', textAlign: 'right' }}>Avg Score</th>
-            <th style={{ width: '18%', textAlign: 'right' }}>Avg Cost</th>
-            <th style={{ width: '18%', textAlign: 'right' }}>Avg Speed</th>
-            <th style={{ width: '18%', textAlign: 'right' }}>Avg Weather</th>
-          </tr>
-        </thead>
-        <tbody>
-          {regions.map((r) => (
-            <tr key={r.continent}>
-              <td style={{ fontWeight: 600, fontSize: 9.5 }}>{r.continent}</td>
-              <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{r.count}</td>
-              <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{r.avgScore}</td>
-              <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>${r.avgCost.toLocaleString()}</td>
-              <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{r.avgSpeed} Mbps</td>
-              <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{r.avgWeather}/100</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Horizontal Bar Chart */}
-      <div style={{ marginBottom: 8 }}>
-        <p
-          style={{
-            fontSize: 8,
-            fontWeight: 600,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase' as const,
-            color: '#71717A',
-            margin: '0 0 14px 0',
-          }}
-        >
-          Cities per Region
-        </p>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {regions.map((r) => (
-            <div key={r.continent} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              {/* Label */}
-              <span
-                style={{
-                  fontSize: 9,
-                  fontWeight: 600,
-                  width: 100,
-                  flexShrink: 0,
-                  textAlign: 'right',
-                  color: '#09090B',
-                }}
-              >
-                {r.continent}
-              </span>
-
-              {/* Bar */}
-              <div style={{ flex: 1, position: 'relative', height: 16 }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    height: '100%',
-                    width: `${(r.count / maxCount) * 100}%`,
-                    background: '#09090B',
-                    borderRadius: 2,
-                    minWidth: 2,
-                  }}
-                />
-              </div>
-
-              {/* Value */}
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 800,
-                  fontVariantNumeric: 'tabular-nums',
-                  width: 24,
-                  textAlign: 'right',
-                  flexShrink: 0,
-                }}
-              >
-                {r.count}
-              </span>
+      {/* Distribution bar — visual */}
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: '0.12em', color: SLATE, marginBottom: 6, textTransform: 'uppercase' as const }}>
+          Distribution by Region
+        </div>
+        <div style={{ display: 'flex', width: '100%', height: 18, borderRadius: 4, overflow: 'hidden', marginBottom: 6 }}>
+          {regions.map(r => (
+            <div key={r.continent} style={{
+              width: `${(r.count / totalCities) * 100}%`,
+              background: r.color,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 7, fontWeight: 700, color: '#fff',
+              minWidth: 20,
+            }}>
+              {r.count}
             </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 10, fontSize: 7, color: SLATE }}>
+          {regions.map(r => (
+            <span key={r.continent} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <span style={{ width: 7, height: 7, borderRadius: 2, background: r.color, display: 'inline-block' }} />
+              {r.continent} ({r.count})
+            </span>
           ))}
         </div>
       </div>
 
-      {/* Spacer */}
-      <div style={{ flex: 1 }} />
+      {/* Region cards */}
+      <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 10, flex: 1 }}>
+        {regions.map(r => (
+          <div key={r.continent} style={{
+            flex: '1 1 calc(50% - 5px)', minWidth: 0,
+            borderTop: `3px solid ${r.color}`,
+            background: '#f8fafc', borderRadius: 6, padding: '10px 12px',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
+              <span style={{ fontSize: 12, fontWeight: 800 }}>{r.continent}</span>
+              <span style={{ fontSize: 8, color: SLATE }}>{r.count} cities</span>
+            </div>
 
-      {/* Footer */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderTop: '0.5px solid #e4e4e7',
-          paddingTop: 10,
-        }}
-      >
-        <span style={{ fontSize: 7.5, color: '#71717A', letterSpacing: '0.05em' }}>
-          DIGITAL NOMAD CITIES REPORT
-        </span>
-        <span
-          style={{
-            fontSize: 7.5,
-            color: '#71717A',
-            fontVariantNumeric: 'tabular-nums',
-            fontWeight: 600,
-          }}
-        >
-          Regional Analysis
-        </span>
+            {/* Mini stats */}
+            <div style={{ display: 'flex', gap: 12, marginBottom: 8 }}>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: '-0.02em' }}>{r.avgScore}</div>
+                <div style={{ fontSize: 6.5, fontWeight: 600, color: SLATE, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>Avg Score</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: '-0.02em' }}>${r.avgCost.toLocaleString()}</div>
+                <div style={{ fontSize: 6.5, fontWeight: 600, color: SLATE, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>Avg Cost</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: '-0.02em' }}>{r.avgSpeed}</div>
+                <div style={{ fontSize: 6.5, fontWeight: 600, color: SLATE, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>Avg Mbps</div>
+              </div>
+            </div>
+
+            {/* City list */}
+            <div style={{ fontSize: 8, color: '#3f3f46', lineHeight: 1.6 }}>
+              {r.cities.map((c, i) => (
+                <span key={c.slug}>
+                  {i > 0 && ', '}
+                  <strong>{c.name}</strong>
+                  <span style={{ color: SLATE }}> #{c.rank}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 'auto', paddingTop: 6, borderTop: '0.5px solid #e4e4e7', display: 'flex', justifyContent: 'space-between', fontSize: 7, color: '#a1a1aa' }}>
+        <span>cvin.bio/report</span><span>109</span>
       </div>
     </div>
   );

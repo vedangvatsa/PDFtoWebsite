@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { getCitySlug, CITY_IMAGES } from '@/lib/utils';
+import { getCitySlug, CITY_IMAGES, CITY_IMAGE_FALLBACK } from '@/lib/utils';
 
 import {
   Map,
@@ -62,9 +62,9 @@ interface SelectedPoint {
 
 const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index: number }) {
   return (
-    <tr className="border-t border-zinc-200/50 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-900/30 transition-colors">
-      <td className="px-4 py-2.5 text-zinc-400 dark:text-zinc-500 text-xs font-mono">{index + 1}</td>
-      <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-50">
+    <tr className="border-t border-zinc-200/50 hover:bg-zinc-50 transition-colors">
+      <td className="px-4 py-2.5 text-zinc-400 text-xs font-mono">{index + 1}</td>
+      <td className="px-4 py-2.5 font-medium text-zinc-900">
         <a href={`https://www.google.com/maps/search/${encodeURIComponent(poi.name + ', ' + poi.city)}`} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2">{poi.name}</a>
       </td>
       <td className="px-4 py-2.5">
@@ -81,13 +81,13 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
             <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
             <span className="text-xs font-medium">{poi.google_rating}</span>
             {poi.google_review_count && (
-              <span className="text-zinc-500 dark:text-zinc-400 text-[10px]">
+              <span className="text-zinc-500 text-[10px]">
                 ({poi.google_review_count})
               </span>
             )}
           </div>
         ) : (
-          <span className="text-zinc-500 dark:text-zinc-400 text-xs"> - </span>
+          <span className="text-zinc-500 text-xs"> - </span>
         )}
       </td>
       <td className="px-4 py-2.5">
@@ -107,7 +107,7 @@ const TableRow = React.memo(function TableRow({ poi, index }: { poi: POI; index:
 });
 
 function CityCard({ city }: { city: any }) {
-  const imageUrl = CITY_IMAGES[city.slug] || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80';
+  const imageUrl = CITY_IMAGES[city.slug] || CITY_IMAGE_FALLBACK;
   
   // Score badge color
   let badgeClass = 'bg-zinc-800/70 text-zinc-200';
@@ -122,7 +122,7 @@ function CityCard({ city }: { city: any }) {
   return (
     <Link
       href={`/${city.slug}`}
-      className="group relative h-72 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-white/5 cursor-pointer transform hover:-translate-y-1 transition-all duration-500"
+      className="group relative h-72 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl cursor-pointer transform hover:-translate-y-1 transition-all duration-500"
     >
       {/* Background Image — full bleed */}
       <img
@@ -367,7 +367,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
             <select
               value={selectedCity}
               onChange={(e) => handleCityChange(e.target.value)}
-              className="w-full md:w-auto h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer"
+              className="w-full md:w-auto h-10 px-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer"
             >
               <option value="all">All Cities ({data.length.toLocaleString()} places)</option>
               {cities.map(city => (
@@ -385,7 +385,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
           placeholder="Search by name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className={`h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${cityFilter ? 'w-full' : 'w-full md:w-64'}`}
+          className={`h-10 px-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${cityFilter ? 'w-full' : 'w-full md:w-64'}`}
         />
       </div>
 
@@ -401,8 +401,8 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
               onClick={() => toggleCategory(key)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
                 active
-                  ? 'bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 border-zinc-900 dark:border-zinc-50'
-                  : 'bg-white dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700'
+                  ? 'bg-zinc-900 text-white border-zinc-900'
+                  : 'bg-white text-zinc-500 border-zinc-200 hover:border-zinc-300'
               }`}
             >
               <Icon className="w-3 h-3" />
@@ -414,7 +414,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
       </div>
 
       {/* Map */}
-      <div className="w-full h-[350px] sm:h-[450px] md:h-[600px] rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <div className="w-full h-[350px] sm:h-[450px] md:h-[600px] rounded-lg overflow-hidden border border-zinc-200 shadow-sm">
         <Map
           ref={mapRef}
           center={mapCenter}
@@ -444,7 +444,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
             >
               <div className="space-y-2">
                 <div>
-                  <p className="font-semibold text-zinc-900 dark:text-zinc-50 text-base leading-tight">
+                  <p className="font-semibold text-zinc-900 text-base leading-tight">
                     {selectedPoint.properties.name}
                   </p>
                   <div className="flex items-center gap-1.5 mt-1">
@@ -454,7 +454,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
                     >
                       {CATEGORY_CONFIG[selectedPoint.properties.category]?.label || selectedPoint.properties.category}
                     </span>
-                    <span className="text-zinc-500 dark:text-zinc-400 text-xs">
+                    <span className="text-zinc-500 text-xs">
                       {selectedPoint.properties.city}, {selectedPoint.properties.country}
                     </span>
                   </div>
@@ -466,7 +466,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
                     <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                     <span className="text-sm font-medium">{selectedPoint.properties.google_rating}</span>
                     {selectedPoint.properties.google_review_count && (
-                      <span className="text-zinc-500 dark:text-zinc-400 text-xs">
+                      <span className="text-zinc-500 text-xs">
                         ({selectedPoint.properties.google_review_count.toLocaleString()} reviews)
                       </span>
                     )}
@@ -475,23 +475,23 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
 
                 {/* AI review summary */}
                 {selectedPoint.properties.review_summary && (
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 italic border-l-2 border-primary/30 pl-2">
+                  <p className="text-xs text-zinc-500 italic border-l-2 border-primary/30 pl-2">
                     {selectedPoint.properties.review_summary}
                   </p>
                 )}
 
                 {selectedPoint.properties.address && (
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{selectedPoint.properties.address}</p>
+                  <p className="text-xs text-zinc-500">{selectedPoint.properties.address}</p>
                 )}
 
                 {selectedPoint.properties.opening_hours && (
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-zinc-500">
                     Hours: {selectedPoint.properties.opening_hours}
                   </p>
                 )}
 
                 {selectedPoint.properties.phone && (
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-zinc-500">
                     Phone: {selectedPoint.properties.phone}
                   </p>
                 )}
@@ -531,10 +531,10 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
         <div className="space-y-6 pt-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+              <h2 className="text-2xl font-bold tracking-tight text-zinc-900">
                 Explore Top Nomad Destinations
               </h2>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              <p className="text-sm text-zinc-500 mt-1">
                 Curated list of the best places to live, work, and explore.
               </p>
             </div>
@@ -544,7 +544,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
               placeholder="Search cities..."
               value={citySearchQuery}
               onChange={(e) => setCitySearchQuery(e.target.value)}
-              className="h-10 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all w-full sm:w-64"
+              className="h-10 px-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all w-full sm:w-64"
             />
           </div>
 
@@ -556,7 +556,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
 
           {/* Sentinel for infinite scroll of top cities */}
           {visibleCityCount < filteredCities.length && (
-            <div ref={citySentinelRef} className="py-8 text-center text-xs text-zinc-500 dark:text-zinc-400">
+            <div ref={citySentinelRef} className="py-8 text-center text-xs text-zinc-500">
               Loading more destinations…
             </div>
           )}
@@ -564,13 +564,13 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
       ) : (
         <div className="space-y-4 pt-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
+            <h2 className="text-xl font-bold text-zinc-900">
               Spaces in {selectedCity}
             </h2>
             {!cityFilter && (
               <button
                 onClick={() => handleCityChange('all')}
-                className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Top Cities
@@ -579,10 +579,10 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
           </div>
           
           {/* Listings table */}
-          <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
+          <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-zinc-50 dark:bg-zinc-900 sticky top-0">
+                <thead className="bg-zinc-50 sticky top-0">
                   <tr>
                     <th className="text-left px-4 py-3 font-medium">#</th>
                     <th className="text-left px-4 py-3 font-medium">Name</th>
@@ -600,11 +600,11 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
             </div>
             {/* Sentinel for infinite scroll */}
             {visibleCount < filteredData.length && (
-              <div ref={sentinelRef} className="py-4 text-center text-xs text-zinc-500 dark:text-zinc-400">
+              <div ref={sentinelRef} className="py-4 text-center text-xs text-zinc-500">
                 Loading more…
               </div>
             )}
-            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 py-2 border-t">
+            <p className="text-center text-xs text-zinc-500 py-2 border-t">
               {Math.min(visibleCount, filteredData.length).toLocaleString()} of {filteredData.length.toLocaleString()} places
             </p>
           </div>

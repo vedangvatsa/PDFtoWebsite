@@ -1,19 +1,28 @@
 import type { RankedCity } from '@/app/report/page';
+import CITY_DESCRIPTIONS from '@/lib/city-descriptions';
 
-/* ── Helpers ── */
+const MONTHS_SHORT = ['J','F','M','A','M','J','J','A','S','O','N','D'];
 
-const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-function pct(value: number, total: number): string {
-  if (total === 0) return '0';
-  return ((value / total) * 100).toFixed(1);
-}
-
-function formatDollars(n: number): string {
+function fmt(n: number): string {
   return '$' + n.toLocaleString('en-US');
 }
 
-/* ── Component ── */
+/* ── Color palette (60-30-10 rule) ── */
+const TEAL = '#0d9488';
+const CORAL = '#f43f5e';
+const AMBER = '#f59e0b';
+const SLATE = '#64748b';
+const LIGHT_TEAL = '#ccfbf1';
+const LIGHT_CORAL = '#ffe4e6';
+
+/* ── Cost breakdown colors ── */
+const COST_COLORS = {
+  rent: TEAL,
+  food: CORAL,
+  coworking: AMBER,
+  transport: SLATE,
+  other: '#cbd5e1',
+};
 
 export function ReportCitySpread({
   city,
@@ -24,711 +33,359 @@ export function ReportCitySpread({
 }) {
   const { cost, internet, weather, spaces, nearby } = city;
   const total = cost.monthly_total;
-
-  // Page number: cover(1) + TOC(1) + methodology(1) + overall(2) + internet(1) + cost(1) + weather(1) = 8 pages before cities
   const pageBase = 9 + (city.rank - 1) * 2;
+  const desc = CITY_DESCRIPTIONS[city.slug] || '';
 
-  // Nearby city display names
   const nearbyCities = nearby
     .map((slug) => allCities.find((c) => c.slug === slug))
     .filter(Boolean) as RankedCity[];
 
-  // Weather chart scaling
-  const maxTemp = Math.max(...weather.monthly.map((m) => m.temp), 1);
-  const maxRain = Math.max(...weather.monthly.map((m) => m.rain), 1);
-  const tempBarMax = 56; // px height for max temp
-  const rainBarMax = 28; // px height for max rain
+  const internetRank = [...allCities].sort((a, b) => b.internet.download_mbps - a.internet.download_mbps).findIndex(c => c.slug === city.slug) + 1;
+  const costRank = [...allCities].sort((a, b) => a.cost.monthly_total - b.cost.monthly_total).findIndex(c => c.slug === city.slug) + 1;
+  const weatherRank = [...allCities].sort((a, b) => b.weatherScore - a.weatherScore).findIndex(c => c.slug === city.slug) + 1;
 
-  // Cost segments for stacked bar
-  const costSegments = [
-    { label: 'Rent', value: cost.rent, color: '#09090B' },
-    { label: 'Food', value: cost.food, color: '#52525b' },
-    { label: 'Transport', value: cost.transport, color: '#a1a1aa' },
-    { label: 'Coworking', value: cost.coworking, color: '#d4d4d8' },
-    { label: 'Other', value: cost.other, color: '#e4e4e7' },
+  /* Cost breakdown percentages */
+  const costParts = [
+    { label: 'Rent', value: cost.rent, color: COST_COLORS.rent, pct: Math.round((cost.rent / total) * 100) },
+    { label: 'Food', value: cost.food, color: COST_COLORS.food, pct: Math.round((cost.food / total) * 100) },
+    { label: 'Coworking', value: cost.coworking, color: COST_COLORS.coworking, pct: Math.round((cost.coworking / total) * 100) },
+    { label: 'Transport', value: cost.transport, color: COST_COLORS.transport, pct: Math.round((cost.transport / total) * 100) },
+    { label: 'Other', value: cost.other, color: COST_COLORS.other, pct: Math.round((cost.other / total) * 100) },
   ];
+
+  /* Temperature bar heights (normalize to 40px max) */
+  const maxTemp = Math.max(...weather.monthly.map(m => m.temp));
+  const maxRain = Math.max(...weather.monthly.map(m => m.rain), 1);
+
+  /* Alternate layouts for visual variety */
+  const layoutVariant = city.rank % 3; // 0, 1, or 2
 
   return (
     <>
-      {/* ════════════════════════════════════════════════════════════
-          PAGE 1 — City Overview
-          ════════════════════════════════════════════════════════════ */}
-      <div className="report-page" style={{ display: 'flex', flexDirection: 'column' }}>
-        {/* ── Hero Photo ── */}
-        <div className="city-photo-container">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={city.imageUrl} alt={city.name} />
+      {/* ═══ PAGE 1 — PHOTO PAGE ═══ */}
+      <div className="report-page" style={{
+        padding: 0,
+        display: 'flex',
+        flexDirection: layoutVariant === 1 ? 'row-reverse' : 'column',
+        overflow: 'hidden',
+      }}>
+        {layoutVariant === 1 ? (
+          /* Variant B: Side-by-side — photo right, text left */
+          <>
+            <div style={{ flex: 1, padding: '36px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: '0.14em', color: TEAL, textTransform: 'uppercase' as const, marginBottom: 6 }}>
+                #{city.rank} · {city.continent}
+              </div>
+              <h2 style={{ fontSize: 42, fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 0.95, margin: '0 0 6px 0' }}>{city.name}</h2>
+              <div style={{ fontSize: 11, color: SLATE, marginBottom: 20 }}>{city.country}</div>
 
-          {/* Score badge — top-right */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 24,
-            }}
-          >
-            <div className="score-badge">
-              {city.nomad_score}
+              {/* Hero cost */}
+              <div style={{ fontSize: 52, fontWeight: 800, letterSpacing: '-0.04em', color: TEAL, lineHeight: 1, marginBottom: 4 }}>
+                {fmt(total)}
+                <span style={{ fontSize: 18, fontWeight: 400, color: SLATE }}>/mo</span>
+              </div>
+              <div style={{ fontSize: 9, color: SLATE, marginBottom: 20 }}>Total estimated monthly budget</div>
+
+              {/* Stacked bar */}
+              <div style={{ display: 'flex', width: '100%', height: 14, borderRadius: 4, overflow: 'hidden', marginBottom: 8 }}>
+                {costParts.map(p => (
+                  <div key={p.label} style={{ width: `${p.pct}%`, background: p.color, minWidth: 2 }} />
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const, fontSize: 7.5, color: '#52525b', marginBottom: 20 }}>
+                {costParts.map(p => (
+                  <span key={p.label} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: 2, background: p.color, display: 'inline-block' }} />
+                    {p.label} ({p.pct}%)
+                  </span>
+                ))}
+              </div>
+
+              {/* Score + Speed inline */}
+              <div style={{ display: 'flex', gap: 20 }}>
+                <div>
+                  <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em' }}>{city.nomad_score}</div>
+                  <div style={{ fontSize: 7, fontWeight: 600, letterSpacing: '0.1em', color: SLATE, textTransform: 'uppercase' as const }}>Score</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em' }}>{internet.download_mbps.toFixed(0)}</div>
+                  <div style={{ fontSize: 7, fontWeight: 600, letterSpacing: '0.1em', color: SLATE, textTransform: 'uppercase' as const }}>Mbps</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em' }}>{weather.avg_temp.toFixed(0)}°</div>
+                  <div style={{ fontSize: 7, fontWeight: 600, letterSpacing: '0.1em', color: SLATE, textTransform: 'uppercase' as const }}>Avg Temp</div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 'auto', fontSize: 7, color: '#a1a1aa' }}>
+                <span>cvin.bio/{city.slug}</span>
+                <span style={{ float: 'right', fontVariantNumeric: 'tabular-nums' }}>{pageBase}</span>
+              </div>
             </div>
-          </div>
-
-          {/* City name overlay — bottom */}
-          <div className="city-photo-overlay">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 32 }}>{city.emoji}</span>
-              <div>
-                <div
-                  style={{
-                    fontSize: 28,
-                    fontWeight: 800,
-                    letterSpacing: '-0.04em',
-                    lineHeight: 1.1,
-                    color: '#fff',
-                  }}
-                >
+            {/* Photo right */}
+            <div style={{ width: '50%', flexShrink: 0 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={city.imageUrl} alt={city.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </div>
+          </>
+        ) : (
+          /* Variant A & C: Full-bleed photo with overlay */
+          <>
+            {/* Full-bleed photo */}
+            <div style={{ width: '100%', height: layoutVariant === 0 ? '55%' : '45%', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={city.imageUrl} alt={city.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
+                background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
+              }} />
+              <div style={{ position: 'absolute', bottom: 24, left: 32, right: 32 }}>
+                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' as const, marginBottom: 4 }}>
+                  #{city.rank} · {city.country} · {city.continent}
+                </div>
+                <h2 style={{ fontSize: 52, fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 0.92, color: '#fff', margin: 0 }}>
                   {city.name}
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: 'rgba(255,255,255,0.8)',
-                    marginTop: 2,
-                  }}
-                >
-                  {city.country}
-                </div>
+                </h2>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* ── Quick Stats Bar ── */}
-        <div
-          style={{
-            background: '#09090B',
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            height: '18mm',
-            padding: '0 32px',
-          }}
-        >
-          {[
-            { value: `$${total.toLocaleString('en-US')}/mo`, label: 'MONTHLY COST' },
-            { value: `${internet.download_mbps.toFixed(0)} Mbps`, label: 'DOWNLOAD' },
-            { value: `${weather.avg_temp.toFixed(1)}°C`, label: 'AVG TEMPERATURE' },
-          ].map((stat, i) => (
-            <div
-              key={i}
-              style={{
-                flex: 1,
-                textAlign: 'center',
-                borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.15)' : 'none',
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 16,
-                  fontWeight: 800,
-                  letterSpacing: '-0.04em',
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                {stat.value}
+            {/* Content area */}
+            <div style={{ flex: 1, padding: '20px 32px 16px', display: 'flex', flexDirection: 'column' }}>
+
+              {/* Hero cost stat — LARGE */}
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 4 }}>
+                <div style={{ fontSize: 48, fontWeight: 800, letterSpacing: '-0.04em', color: TEAL, lineHeight: 1 }}>
+                  {fmt(total)}
+                  <span style={{ fontSize: 16, fontWeight: 400, color: SLATE }}>/mo</span>
+                </div>
+                <div style={{ fontSize: 9, color: SLATE }}>Total estimated monthly budget</div>
               </div>
-              <div
-                style={{
-                  fontSize: 7,
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase' as const,
-                  color: 'rgba(255,255,255,0.55)',
-                  marginTop: 2,
-                }}
-              >
-                {stat.label}
+
+              {/* Stacked cost bar */}
+              <div style={{ display: 'flex', width: '100%', height: 12, borderRadius: 3, overflow: 'hidden', marginBottom: 6 }}>
+                {costParts.map(p => (
+                  <div key={p.label} style={{ width: `${p.pct}%`, background: p.color, minWidth: 2 }} />
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const, fontSize: 7.5, color: '#52525b', marginBottom: 16 }}>
+                {costParts.map(p => (
+                  <span key={p.label} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <span style={{ width: 6, height: 6, borderRadius: 2, background: p.color, display: 'inline-block' }} />
+                    {p.label} {fmt(p.value)} ({p.pct}%)
+                  </span>
+                ))}
+              </div>
+
+              {/* Three big stats */}
+              <div style={{ display: 'flex', gap: 24, marginBottom: 16 }}>
+                {[
+                  { value: city.nomad_score.toString(), unit: '/100', label: 'Nomad Score', rank: `#${city.rank}` },
+                  { value: internet.download_mbps.toFixed(0), unit: ' Mbps', label: 'Download Speed', rank: `#${internetRank}` },
+                  { value: `${weather.avg_temp.toFixed(0)}°`, unit: 'C', label: 'Avg Temperature', rank: `#${weatherRank}` },
+                ].map(s => (
+                  <div key={s.label} style={{ flex: 1, borderLeft: `3px solid ${TEAL}`, paddingLeft: 10 }}>
+                    <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1 }}>
+                      {s.value}<span style={{ fontSize: 11, fontWeight: 400, color: SLATE }}>{s.unit}</span>
+                    </div>
+                    <div style={{ fontSize: 7, fontWeight: 600, letterSpacing: '0.08em', color: SLATE, textTransform: 'uppercase' as const, marginTop: 2 }}>
+                      {s.label} <span style={{ color: TEAL }}>{s.rank}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Description */}
+              <p style={{ fontSize: 9, lineHeight: 1.8, color: '#3f3f46', margin: '0 0 0 0', textAlign: 'justify' as const }}>
+                {desc}
+              </p>
+
+              {/* Footer */}
+              <div style={{ marginTop: 'auto', paddingTop: 8, borderTop: `0.5px solid #e4e4e7`, display: 'flex', justifyContent: 'space-between', fontSize: 7, color: '#a1a1aa' }}>
+                <span>cvin.bio/{city.slug}</span>
+                <span style={{ fontVariantNumeric: 'tabular-nums' }}>{pageBase}</span>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* ── Cost Cards ── */}
-        <div style={{ padding: '24px 32px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', gap: 12 }}>
-            {[
-              { title: 'Rent', value: cost.rent },
-              { title: 'Food', value: cost.food },
-              { title: 'Coworking', value: cost.coworking },
-            ].map((card) => (
-              <div
-                key={card.title}
-                style={{
-                  flex: 1,
-                  border: '1px solid #e4e4e7',
-                  padding: 16,
-                  borderRadius: 4,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 7,
-                    fontWeight: 600,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase' as const,
-                    color: '#71717A',
-                    marginBottom: 6,
-                  }}
-                >
-                  {card.title}
-                </div>
-                <div
-                  style={{
-                    fontSize: 28,
-                    fontWeight: 800,
-                    letterSpacing: '-0.04em',
-                    fontVariantNumeric: 'tabular-nums',
-                    lineHeight: 1,
-                  }}
-                >
-                  {formatDollars(card.value)}
-                </div>
-                <div
-                  style={{
-                    fontSize: 9,
-                    color: '#a1a1aa',
-                    marginTop: 4,
-                  }}
-                >
-                  per month
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* ── Rank Indicator ── */}
-          <div style={{ marginTop: 20 }}>
-            <div
-              style={{
-                fontSize: 9,
-                fontWeight: 600,
-                color: '#71717A',
-                marginBottom: 6,
-                fontVariantNumeric: 'tabular-nums',
-              }}
-            >
-              Ranked #{city.rank} of 50
-            </div>
-            <div className="bar-track" style={{ height: 4 }}>
-              <div
-                className="bar-fill"
-                style={{
-                  width: `${(city.rank / 50) * 100}%`,
-                  background: '#09090B',
-                  height: '100%',
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Spacer */}
-          <div style={{ flex: 1 }} />
-
-          {/* ── Footer ── */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderTop: '0.5px solid #e4e4e7',
-              paddingTop: 10,
-            }}
-          >
-            <span style={{ fontSize: 7, color: '#a1a1aa' }}>
-              cvin.bio/{city.slug}
-            </span>
-            <span
-              style={{
-                fontSize: 7,
-                color: '#a1a1aa',
-                fontVariantNumeric: 'tabular-nums',
-              }}
-            >
-              {pageBase}
-            </span>
-          </div>
-        </div>
+          </>
+        )}
       </div>
 
-      {/* ════════════════════════════════════════════════════════════
-          PAGE 2 — Data Profile
-          ════════════════════════════════════════════════════════════ */}
-      <div className="report-page" style={{ display: 'flex', flexDirection: 'column', padding: 32 }}>
-        {/* ── Page Header ── */}
-        <div style={{ marginBottom: 20 }}>
-          <div
-            style={{
-              fontSize: 8,
-              fontWeight: 600,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase' as const,
-              color: '#71717A',
-              marginBottom: 4,
-            }}
-          >
+      {/* ═══ PAGE 2 — DATA VISUALIZATION PAGE ═══ */}
+      <div className="report-page" style={{ padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
+
+        {/* Header bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+            <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.03em' }}>{city.name}</span>
+            <span style={{ fontSize: 8, color: SLATE }}>{city.country}</span>
+          </div>
+          <div style={{ fontSize: 8, fontWeight: 700, color: TEAL, letterSpacing: '0.1em', textTransform: 'uppercase' as const }}>
             Data Profile
           </div>
-          <div
-            style={{
-              fontSize: 22,
-              fontWeight: 800,
-              letterSpacing: '-0.04em',
-              lineHeight: 1.1,
-            }}
-          >
-            {city.name}
-          </div>
-          <hr className="section-rule" style={{ marginTop: 10 }} />
         </div>
+        <div style={{ height: 2, background: TEAL, marginBottom: 18 }} />
 
-        {/* ── Two-Column: Cost + Internet ── */}
-        <div style={{ display: 'flex', gap: 32, marginBottom: 20 }}>
-          {/* Cost Breakdown */}
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontSize: 7,
-                fontWeight: 600,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase' as const,
-                color: '#71717A',
-                marginBottom: 8,
-              }}
-            >
-              Cost Breakdown
-            </div>
-
-            {/* Stacked horizontal bar */}
-            <div
-              style={{
-                display: 'flex',
-                width: '100%',
-                borderRadius: 3,
-                overflow: 'hidden',
-                marginBottom: 12,
-              }}
-            >
-              {costSegments.map((seg) => (
-                <div
-                  key={seg.label}
-                  className="cost-segment"
-                  style={{
-                    width: `${(seg.value / total) * 100}%`,
-                    backgroundColor: seg.color,
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Breakdown rows */}
-            {costSegments.map((seg) => (
-              <div
-                key={seg.label}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '4px 0',
-                  borderBottom: '0.5px solid #f4f4f5',
-                  fontSize: 9,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 2,
-                      background: seg.color,
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span style={{ color: '#3f3f46' }}>{seg.label}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span
-                    style={{
-                      fontWeight: 700,
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    {formatDollars(seg.value)}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 7,
-                      color: '#a1a1aa',
-                      width: 30,
-                      textAlign: 'right',
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    {pct(seg.value, total)}%
-                  </span>
-                </div>
-              </div>
-            ))}
-
-            {/* Total row */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                paddingTop: 6,
-                fontSize: 10,
-                fontWeight: 800,
-                fontVariantNumeric: 'tabular-nums',
-              }}
-            >
-              <span>Total</span>
-              <span>{formatDollars(total)}</span>
-            </div>
-          </div>
-
-          {/* Internet Stats */}
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontSize: 7,
-                fontWeight: 600,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase' as const,
-                color: '#71717A',
-                marginBottom: 8,
-              }}
-            >
-              Internet
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              {[
-                { label: 'DOWNLOAD', value: internet.download_mbps.toFixed(0), unit: 'Mbps' },
-                { label: 'UPLOAD', value: internet.upload_mbps.toFixed(0), unit: 'Mbps' },
-                { label: 'LATENCY', value: internet.latency_ms.toFixed(0), unit: 'ms' },
-                { label: 'TESTS RUN', value: internet.test_count.toLocaleString('en-US'), unit: '' },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  style={{
-                    border: '1px solid #e4e4e7',
-                    borderRadius: 4,
-                    padding: '10px 12px',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: 7,
-                      fontWeight: 600,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase' as const,
-                      color: '#71717A',
-                      marginBottom: 4,
-                    }}
-                  >
-                    {stat.label}
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'baseline',
-                      gap: 3,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 22,
-                        fontWeight: 800,
-                        letterSpacing: '-0.04em',
-                        fontVariantNumeric: 'tabular-nums',
-                        lineHeight: 1,
-                      }}
-                    >
-                      {stat.value}
-                    </span>
-                    {stat.unit && (
-                      <span style={{ fontSize: 9, color: '#a1a1aa', fontWeight: 500 }}>
-                        {stat.unit}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Quarter label */}
-            <div
-              style={{
-                fontSize: 7,
-                color: '#a1a1aa',
-                marginTop: 8,
-                textAlign: 'right',
-              }}
-            >
-              Data from {internet.quarter}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Monthly Weather ── */}
+        {/* ── CLIMATE VISUALIZATION ── */}
         <div style={{ marginBottom: 20 }}>
-          <div
-            style={{
-              fontSize: 7,
-              fontWeight: 600,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase' as const,
-              color: '#71717A',
-              marginBottom: 10,
-            }}
-          >
-            Monthly Weather
+          <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: SLATE, marginBottom: 10, textTransform: 'uppercase' as const }}>
+            Monthly Climate · Temperature & Rainfall
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              gap: 0,
-              width: '100%',
-            }}
-          >
+          {/* Dual chart: temp bars + rain bars */}
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 70, marginBottom: 4 }}>
             {weather.monthly.map((m, i) => {
-              const tempH = Math.max(4, (m.temp / maxTemp) * tempBarMax);
-              const rainH = Math.max(2, (m.rain / maxRain) * rainBarMax);
+              const tempH = Math.max(8, (m.temp / maxTemp) * 55);
+              const rainH = Math.max(2, (m.rain / maxRain) * 55);
               return (
-                <div
-                  key={i}
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 0,
-                  }}
-                >
-                  {/* Temp value */}
-                  <div
-                    style={{
-                      fontSize: 7,
-                      fontWeight: 700,
-                      fontVariantNumeric: 'tabular-nums',
-                      color: '#09090B',
-                      marginBottom: 3,
-                    }}
-                  >
-                    {m.temp.toFixed(0)}°
-                  </div>
-
-                  {/* Temperature bar */}
-                  <div
-                    className="weather-bar"
-                    style={{ height: tempH }}
-                  />
-
-                  {/* Rain bar */}
-                  <div
-                    className="weather-bar rain-bar"
-                    style={{
-                      height: rainH,
-                      borderRadius: '0 0 2px 2px',
-                      marginTop: 1,
-                    }}
-                  />
-
-                  {/* Rain value */}
-                  <div
-                    style={{
-                      fontSize: 6,
-                      color: '#3b82f6',
-                      fontVariantNumeric: 'tabular-nums',
-                      marginTop: 2,
-                    }}
-                  >
-                    {m.rain.toFixed(0)}
-                  </div>
-
-                  {/* Month label */}
-                  <div
-                    style={{
-                      fontSize: 7,
-                      color: '#71717A',
-                      fontWeight: 500,
-                      marginTop: 2,
-                    }}
-                  >
-                    {MONTH_LABELS[i]}
+                <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                  <div style={{ fontSize: 6.5, fontWeight: 700, color: '#3f3f46', marginBottom: 2 }}>{m.temp.toFixed(0)}°</div>
+                  <div style={{ display: 'flex', gap: 1, alignItems: 'flex-end', height: 50 }}>
+                    <div style={{ width: 8, height: tempH, background: TEAL, borderRadius: '2px 2px 0 0' }} />
+                    <div style={{ width: 8, height: rainH, background: '#93c5fd', borderRadius: '2px 2px 0 0', opacity: 0.7 }} />
                   </div>
                 </div>
               );
             })}
           </div>
-
+          <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
+            {MONTHS_SHORT.map(m => (
+              <div key={m} style={{ flex: 1, textAlign: 'center', fontSize: 7, fontWeight: 600, color: SLATE }}>{m}</div>
+            ))}
+          </div>
           {/* Legend */}
-          <div
-            style={{
-              display: 'flex',
-              gap: 16,
-              marginTop: 8,
-              fontSize: 7,
-              color: '#a1a1aa',
-            }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#09090B', borderRadius: 2 }} />
-              Temp (°C)
+          <div style={{ display: 'flex', gap: 12, fontSize: 7, color: SLATE }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <span style={{ width: 8, height: 8, borderRadius: 2, background: TEAL, display: 'inline-block' }} /> Temperature (°C)
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#3b82f6', borderRadius: 2 }} />
-              Rain (mm)
+            <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <span style={{ width: 8, height: 8, borderRadius: 2, background: '#93c5fd', opacity: 0.7, display: 'inline-block' }} /> Rainfall (mm)
+            </span>
+            <span style={{ marginLeft: 'auto' }}>
+              Annual: {weather.avg_temp.toFixed(1)}°C avg · {weather.annual_rain.toLocaleString()} mm · {weather.avg_humidity}% humidity
             </span>
           </div>
         </div>
 
-        {/* ── Spaces & Infrastructure ── */}
-        <div style={{ marginBottom: 20 }}>
-          <div
-            style={{
-              fontSize: 7,
-              fontWeight: 600,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase' as const,
-              color: '#71717A',
-              marginBottom: 8,
-            }}
-          >
-            Spaces
+        {/* ── INTERNET & COST DETAIL — Two columns ── */}
+        <div style={{ display: 'flex', gap: 24, marginBottom: 16 }}>
+
+          {/* Left: Internet */}
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: SLATE, marginBottom: 8, textTransform: 'uppercase' as const }}>
+              Internet Connectivity
+            </div>
+
+            {/* Speed bars */}
+            {[
+              { label: 'Download', value: internet.download_mbps, max: 250, color: TEAL },
+              { label: 'Upload', value: internet.upload_mbps, max: 150, color: CORAL },
+            ].map(s => (
+              <div key={s.label} style={{ marginBottom: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                  <span style={{ fontSize: 8, color: '#3f3f46' }}>{s.label}</span>
+                  <span style={{ fontSize: 9, fontWeight: 800 }}>{s.value.toFixed(0)} Mbps</span>
+                </div>
+                <div style={{ width: '100%', height: 8, background: '#f1f5f9', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: `${Math.min(100, (s.value / s.max) * 100)}%`, height: '100%', background: s.color, borderRadius: 4 }} />
+                </div>
+              </div>
+            ))}
+            <div style={{ fontSize: 8, color: SLATE, marginTop: 4 }}>
+              Latency: <strong>{internet.latency_ms} ms</strong> · {internet.test_count.toLocaleString()} tests · {internet.quarter}
+            </div>
+            <div style={{ fontSize: 8, color: TEAL, fontWeight: 700, marginTop: 2 }}>
+              Rank #{internetRank} of 50 cities
+            </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 8 }}>
+          {/* Right: Cost detail */}
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: SLATE, marginBottom: 8, textTransform: 'uppercase' as const }}>
+              Cost Breakdown
+            </div>
+            {costParts.map(p => (
+              <div key={p.label} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 2, background: p.color, marginRight: 6, flexShrink: 0 }} />
+                <span style={{ flex: 1, fontSize: 8.5, color: '#3f3f46' }}>{p.label}</span>
+                <span style={{ fontSize: 9, fontWeight: 700, fontVariantNumeric: 'tabular-nums', marginRight: 8 }}>{fmt(p.value)}</span>
+                <div style={{ width: 60, height: 6, background: '#f1f5f9', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{ width: `${p.pct}%`, height: '100%', background: p.color, borderRadius: 3 }} />
+                </div>
+              </div>
+            ))}
+            <div style={{ fontSize: 8, color: TEAL, fontWeight: 700, marginTop: 4 }}>
+              Rank #{costRank} of 50 (cheapest first)
+            </div>
+          </div>
+        </div>
+
+        {/* ── RANKINGS SUMMARY ── */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: SLATE, marginBottom: 8, textTransform: 'uppercase' as const }}>
+            Ranking Position
+          </div>
+          <div style={{ display: 'flex', gap: 12 }}>
             {[
-              { label: 'Coworking', count: spaces.coworking },
-              { label: 'Coliving', count: spaces.coliving },
-              { label: 'Hostels', count: spaces.hostel },
-              { label: 'Apartments', count: spaces.apartment },
-              { label: 'Guesthouses', count: spaces.guesthouse },
-            ].map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  flex: 1,
-                  background: '#f4f4f5',
-                  borderRadius: 4,
-                  padding: '10px 8px',
-                  textAlign: 'center',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 22,
-                    fontWeight: 800,
-                    letterSpacing: '-0.04em',
-                    fontVariantNumeric: 'tabular-nums',
-                    lineHeight: 1,
-                  }}
-                >
-                  {s.count}
-                </div>
-                <div
-                  style={{
-                    fontSize: 7,
-                    fontWeight: 600,
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase' as const,
-                    color: '#71717A',
-                    marginTop: 4,
-                  }}
-                >
-                  {s.label}
-                </div>
+              { label: 'Overall', rank: city.rank, value: `${city.nomad_score}/100`, color: TEAL },
+              { label: 'Cost', rank: costRank, value: fmt(total), color: CORAL },
+              { label: 'Internet', rank: internetRank, value: `${internet.download_mbps.toFixed(0)} Mbps`, color: AMBER },
+              { label: 'Weather', rank: weatherRank, value: `${city.weatherScore}/100`, color: '#6366f1' },
+            ].map(r => (
+              <div key={r.label} style={{ flex: 1, background: '#f8fafc', borderRadius: 6, padding: '10px 12px', borderTop: `3px solid ${r.color}` }}>
+                <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1 }}>#{r.rank}</div>
+                <div style={{ fontSize: 7, fontWeight: 600, color: SLATE, textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginTop: 2 }}>{r.label}</div>
+                <div style={{ fontSize: 8, color: '#71717A', marginTop: 2 }}>{r.value}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── Nearby Cities ── */}
-        {nearbyCities.length > 0 && (
-          <div style={{ marginBottom: 0 }}>
-            <div
-              style={{
-                fontSize: 7,
-                fontWeight: 600,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase' as const,
-                color: '#71717A',
-                marginBottom: 8,
-              }}
-            >
-              Nearby
+        {/* ── SPACES & NEARBY ── */}
+        <div style={{ display: 'flex', gap: 24, flex: 1 }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: SLATE, marginBottom: 6, textTransform: 'uppercase' as const }}>
+              Remote Work Spaces
             </div>
-
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {nearbyCities.map((nc) => (
-                <div
-                  key={nc.slug}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 4,
-                    border: '1px solid #e4e4e7',
-                    borderRadius: 4,
-                    padding: '4px 10px',
-                    fontSize: 9,
-                    fontWeight: 500,
-                    color: '#3f3f46',
-                  }}
-                >
-                  <span style={{ fontSize: 11 }}>{nc.emoji}</span>
-                  <span>{nc.name}</span>
-                  <span
-                    style={{
-                      fontSize: 7,
-                      color: '#a1a1aa',
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    #{nc.rank}
-                  </span>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const }}>
+              {[
+                { label: 'Coworking', count: spaces.coworking, icon: '💻' },
+                { label: 'Coliving', count: spaces.coliving, icon: '🏠' },
+                { label: 'Hostels', count: spaces.hostel, icon: '🛏' },
+                { label: 'Apartments', count: spaces.apartment, icon: '🏢' },
+                { label: 'Guesthouses', count: spaces.guesthouse, icon: '🏡' },
+              ].map(s => (
+                <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 4, background: '#f8fafc', borderRadius: 4, padding: '4px 8px', fontSize: 8 }}>
+                  <span>{s.icon}</span>
+                  <span style={{ fontWeight: 700 }}>{s.count}</span>
+                  <span style={{ color: SLATE }}>{s.label}</span>
                 </div>
               ))}
             </div>
+            <div style={{ fontSize: 8, fontWeight: 700, color: TEAL, marginTop: 6 }}>{spaces.total} total spaces</div>
           </div>
-        )}
 
-        {/* Spacer */}
-        <div style={{ flex: 1 }} />
+          {nearbyCities.length > 0 && (
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: SLATE, marginBottom: 6, textTransform: 'uppercase' as const }}>
+                Nearby Ranked Cities
+              </div>
+              {nearbyCities.slice(0, 3).map(nc => (
+                <div key={nc.slug} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: '0.5px solid #e2e8f0', fontSize: 8.5 }}>
+                  <span>
+                    <span style={{ marginRight: 4 }}>{nc.emoji}</span>
+                    <strong>{nc.name}</strong>
+                    <span style={{ color: SLATE, marginLeft: 4 }}>{nc.country}</span>
+                  </span>
+                  <span style={{ fontWeight: 700, color: TEAL }}>#{nc.rank}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-        {/* ── Footer ── */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderTop: '0.5px solid #e4e4e7',
-            paddingTop: 10,
-          }}
-        >
-          <span style={{ fontSize: 7, color: '#a1a1aa' }}>
-            cvin.bio/{city.slug}
-          </span>
-          <span
-            style={{
-              fontSize: 7,
-              color: '#a1a1aa',
-              fontVariantNumeric: 'tabular-nums',
-            }}
-          >
-            {pageBase + 1}
-          </span>
+        {/* Footer */}
+        <div style={{ marginTop: 'auto', paddingTop: 8, borderTop: '0.5px solid #e4e4e7', display: 'flex', justifyContent: 'space-between', fontSize: 7, color: '#a1a1aa' }}>
+          <span>cvin.bio/{city.slug}</span>
+          <span style={{ fontVariantNumeric: 'tabular-nums' }}>{pageBase + 1}</span>
         </div>
       </div>
     </>
