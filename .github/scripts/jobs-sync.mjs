@@ -2439,6 +2439,417 @@ async function fetchAdzuna() {
   return unique;
 }
 
+// ─── Source: Careerjet (aggregator — millions of jobs, 60+ countries) ───
+// Auth: Basic auth with API key as username, empty password
+// Endpoint: GET https://search.api.careerjet.net/v4/query
+// page_size up to 100, page 1-10, offset 0-999 → up to 1,000 jobs per query
+const CAREERJET_LOCALES = [
+  'en_US', 'en_GB', 'en_AU', 'en_CA', 'de_DE', 'fr_FR', 'nl_NL', 'en_SG',
+  'en_IN', 'en_NZ', 'en_IE', 'en_ZA', 'es_ES', 'it_IT', 'pt_BR', 'en_AE',
+];
+const CAREERJET_KEYWORDS = [
+  'software engineer', 'frontend developer', 'backend developer', 'data scientist',
+  'product manager', 'devops engineer', 'machine learning', 'UX designer',
+  'full stack developer', 'cloud engineer', 'data engineer', 'AI engineer',
+  'mobile developer', 'QA engineer', 'cybersecurity', 'solutions architect',
+];
+
+async function fetchCareerjet() {
+  const apiKey = process.env.CAREERJET_API_KEY;
+  if (!apiKey) {
+    console.log('\n── Careerjet ── (skipped: no CAREERJET_API_KEY)');
+    return [];
+  }
+  console.log('\n── Careerjet ──');
+  const allJobs = [];
+  let queryCount = 0;
+  const credentials = Buffer.from(`${apiKey}:`).toString('base64');
+
+  // Strategy: 16 locales × 16 keywords × 3 pages × 100/page = up to 76,800 jobs
+  // But we cap at 500 requests to stay well within 1K/hr limit
+  for (const locale of CAREERJET_LOCALES) {
+    for (const keyword of CAREERJET_KEYWORDS) {
+      // Fetch first 3 pages (300 jobs per keyword×locale)
+      for (let page = 1; page <= 3; page++) {
+        if (queryCount >= 480) break; // Stay within rate limit
+        try {
+          const params = new URLSearchParams({
+            locale_code: locale,
+            keywords: keyword,
+            sort: 'date',
+            page: String(page),
+            page_size: '100',
+            fragment_size: '300',
+            user_ip: '1.2.3.4',
+            user_agent: 'CVin.Bio job aggregator',
+          });
+
+          const res = await fetch(`https://search.api.careerjet.net/v4/query?${params}`, {
+            headers: { 'Authorization': `Basic ${credentials}` },
+          });
+
+          if (!res.ok) {
+            if (res.status === 429) {
+              console.log(`  ⚠️ Rate limited after ${queryCount} queries`);
+              break;
+            }
+            continue;
+          }
+
+          const data = await res.json();
+          if (data.type !== 'JOBS' || !data.jobs?.length) {
+            if (page === 1) break; // No results for this combo, skip further pages
+            continue;
+          }
+
+          const jobs = data.jobs.map(j => ({
+            source: 'careerjet',
+            external_id: `careerjet_${crypto.createHash('md5').update(j.url || j.title || '').digest('hex')}`,
+            dedup_hash: dedupHash(j.company || '', j.title || ''),
+            title: (j.title || '').replace(/<[^>]*>/g, '').trim(),
+            company: (j.company || 'Unknown').trim(),
+            company_logo: null,
+            location: j.locations || locale.split('_')[1],
+            job_type: null,
+            salary: j.salary || (j.salary_min && j.salary_max ? `${j.salary_currency_code || '$'}${j.salary_min}-${j.salary_max}` : null),
+            description: (j.description || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+            tags: extractTags(`${j.title || ''} ${(j.description || '').replace(/<[^>]*>/g, '')}`),
+            apply_url: j.url || '',
+            category: null,
+            published_at: j.date || null,
+          })).filter(j => j.title && j.company && j.apply_url);
+
+          allJobs.push(...jobs);
+          queryCount++;
+
+          // If fewer results than page_size, no more pages
+          if (data.jobs.length < 100) break;
+
+          await sleep(80); // ~12 req/sec, well under 1K/hr
+        } catch (e) {
+          if (e.message?.includes('abort')) break;
+          console.error(`  ❌ Careerjet ${locale}/${keyword}/p${page}: ${e.message}`);
+        }
+      }
+      if (queryCount >= 480) break;
+    }
+    if (queryCount >= 480) break;
+  }
+
+  const seen = new Set();
+  const unique = allJobs.filter(j => {
+    if (seen.has(j.dedup_hash)) return false;
+    seen.add(j.dedup_hash);
+    return true;
+  });
+
+  console.log(`  Total: ${unique.length} unique jobs from Careerjet (${allJobs.length} raw, ${queryCount} queries)`);
+  return unique;
+}
+
+// ─── Source: Reed (UK job board — 250K+ listings) ───
+// Auth: Basic auth with API key as username, empty password
+// Endpoint: GET https://www.reed.co.uk/api/1.0/search
+// resultsToTake up to 100, resultsToSkip for pagination
+const REED_KEYWORDS = [
+  'software engineer', 'frontend developer', 'backend developer', 'data scientist',
+  'product manager', 'devops', 'machine learning', 'UX designer', 'cloud engineer',
+  'data analyst', 'QA engineer', 'full stack developer', 'project manager',
+  'business analyst', 'solutions architect', 'data engineer', 'scrum master',
+  'marketing manager', 'sales manager', 'content manager',
+];
+
+async function fetchReed() {
+  const apiKey = process.env.REED_API_KEY;
+  if (!apiKey) {
+    console.log('\n── Reed ── (skipped: no REED_API_KEY)');
+    return [];
+  }
+  console.log('\n── Reed ──');
+  const allJobs = [];
+  let queryCount = 0;
+  const credentials = Buffer.from(`${apiKey}:`).toString('base64');
+
+  // Strategy: 20 keywords × 5 pages × 100/page = up to 10,000 jobs
+  // 100 queries well within 1K/day limit
+  for (const keyword of REED_KEYWORDS) {
+    for (let skip = 0; skip < 500; skip += 100) {
+      if (queryCount >= 900) break;
+      try {
+        const params = new URLSearchParams({
+          keywords: keyword,
+          resultsToTake: '100',
+          resultsToSkip: String(skip),
+        });
+
+        const res = await fetch(`https://www.reed.co.uk/api/1.0/search?${params}`, {
+          headers: { 'Authorization': `Basic ${credentials}` },
+        });
+
+        if (!res.ok) {
+          if (res.status === 429) {
+            console.log(`  ⚠️ Rate limited after ${queryCount} queries`);
+            break;
+          }
+          continue;
+        }
+
+        const data = await res.json();
+        const results = data.results || [];
+        if (!results.length) break;
+
+        const jobs = results.map(j => ({
+          source: 'reed',
+          external_id: `reed_${j.jobId}`,
+          dedup_hash: dedupHash(j.employerName || '', j.jobTitle || ''),
+          title: (j.jobTitle || '').trim(),
+          company: (j.employerName || 'Unknown').trim(),
+          company_logo: j.employerProfileUrl || null,
+          location: j.locationName || 'UK',
+          job_type: j.partTime ? 'part_time' : (j.contractType === 'Contract' ? 'contract' : 'full_time'),
+          salary: j.minimumSalary && j.maximumSalary
+            ? `£${Math.round(j.minimumSalary).toLocaleString()}-£${Math.round(j.maximumSalary).toLocaleString()}`
+            : (j.salaryDescription || null),
+          description: (j.jobDescription || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+          tags: extractTags(`${j.jobTitle || ''} ${(j.jobDescription || '').replace(/<[^>]*>/g, '')}`),
+          apply_url: j.jobUrl || `https://www.reed.co.uk/jobs/${j.jobId}`,
+          category: j.category || null,
+          published_at: j.date || null,
+        })).filter(j => j.title && j.company && j.apply_url);
+
+        allJobs.push(...jobs);
+        queryCount++;
+
+        if (results.length < 100) break; // No more pages
+
+        await sleep(100);
+      } catch (e) {
+        console.error(`  ❌ Reed ${keyword}/skip${skip}: ${e.message}`);
+      }
+    }
+    if (queryCount >= 900) break;
+  }
+
+  const seen = new Set();
+  const unique = allJobs.filter(j => {
+    if (seen.has(j.dedup_hash)) return false;
+    seen.add(j.dedup_hash);
+    return true;
+  });
+
+  console.log(`  Total: ${unique.length} unique jobs from Reed (${allJobs.length} raw, ${queryCount} queries)`);
+  return unique;
+}
+
+// ─── Source: Findwork.dev (developer-focused job board — 100K+ listings) ───
+// Auth: Token in Authorization header
+// Endpoint: GET https://findwork.dev/api/jobs/
+// Pagination: ?page=N, 20 results per page, 60 req/min
+const FINDWORK_SEARCHES = [
+  'software engineer', 'frontend', 'backend', 'full stack', 'devops',
+  'data scientist', 'machine learning', 'product manager', 'UX designer',
+  'mobile developer', 'cloud', 'AI', 'data engineer', 'SRE',
+  'react', 'python', 'typescript', 'golang', 'rust', 'kubernetes',
+];
+
+async function fetchFindwork() {
+  const apiKey = process.env.FINDWORK_API_KEY;
+  if (!apiKey) {
+    console.log('\n── Findwork ── (skipped: no FINDWORK_API_KEY)');
+    return [];
+  }
+  console.log('\n── Findwork ──');
+  const allJobs = [];
+  let queryCount = 0;
+
+  // Strategy: 20 keywords × 10 pages × 20/page = up to 4,000 jobs
+  // 200 queries at 60/min = ~3.5 minutes
+  for (const search of FINDWORK_SEARCHES) {
+    for (let page = 1; page <= 10; page++) {
+      if (queryCount >= 500) break;
+      try {
+        const params = new URLSearchParams({
+          search,
+          page: String(page),
+          sort_by: 'date',
+        });
+
+        const res = await fetch(`https://findwork.dev/api/jobs/?${params}`, {
+          headers: { 'Authorization': `Token ${apiKey}` },
+        });
+
+        if (!res.ok) {
+          if (res.status === 429) {
+            console.log(`  ⚠️ Rate limited, waiting 30s...`);
+            await sleep(30000);
+            continue;
+          }
+          break;
+        }
+
+        const data = await res.json();
+        const results = data.results || [];
+        if (!results.length) break;
+
+        const jobs = results.map(j => ({
+          source: 'findwork',
+          external_id: `findwork_${j.id}`,
+          dedup_hash: dedupHash(j.company_name || '', j.role || ''),
+          title: (j.role || '').trim(),
+          company: (j.company_name || 'Unknown').trim(),
+          company_logo: j.logo || null,
+          location: j.location || (j.remote ? 'Remote' : 'Unknown'),
+          job_type: j.employment_type ? normalizeJobType(j.employment_type) : null,
+          salary: j.salary_min && j.salary_max
+            ? `$${j.salary_min.toLocaleString()}-$${j.salary_max.toLocaleString()}`
+            : null,
+          description: (j.text || j.description || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+          tags: j.keywords?.length ? j.keywords : extractTags(`${j.role || ''} ${j.text || j.description || ''}`),
+          apply_url: j.url || '',
+          category: null,
+          published_at: j.date_posted || null,
+        })).filter(j => j.title && j.company && j.apply_url);
+
+        allJobs.push(...jobs);
+        queryCount++;
+
+        if (!data.next) break; // No more pages
+
+        await sleep(1100); // 60 req/min = 1 per second
+      } catch (e) {
+        console.error(`  ❌ Findwork ${search}/p${page}: ${e.message}`);
+      }
+    }
+    if (queryCount >= 500) break;
+  }
+
+  const seen = new Set();
+  const unique = allJobs.filter(j => {
+    if (seen.has(j.dedup_hash)) return false;
+    seen.add(j.dedup_hash);
+    return true;
+  });
+
+  console.log(`  Total: ${unique.length} unique jobs from Findwork (${allJobs.length} raw, ${queryCount} queries)`);
+  return unique;
+}
+
+// ─── Source: JSearch / Google Jobs via RapidAPI (aggregates ALL boards) ───
+// Auth: X-RapidAPI-Key header
+// Endpoint: GET https://jsearch.p.rapidapi.com/search
+// num_pages up to 10, 10 results per page
+// Free: 200 req/mo → we maximize each with broad queries + pagination
+const JSEARCH_QUERIES = [
+  { query: 'software engineer remote', num_pages: '5' },
+  { query: 'frontend developer remote', num_pages: '3' },
+  { query: 'backend developer remote', num_pages: '3' },
+  { query: 'data scientist remote', num_pages: '3' },
+  { query: 'product manager remote', num_pages: '3' },
+  { query: 'devops engineer remote', num_pages: '3' },
+  { query: 'machine learning engineer remote', num_pages: '3' },
+  { query: 'full stack developer remote', num_pages: '3' },
+  { query: 'UX designer remote', num_pages: '2' },
+  { query: 'cloud engineer remote', num_pages: '2' },
+  { query: 'data engineer remote', num_pages: '2' },
+  { query: 'AI engineer remote', num_pages: '2' },
+  { query: 'mobile developer remote', num_pages: '2' },
+  { query: 'cybersecurity analyst remote', num_pages: '2' },
+  { query: 'software engineer London', num_pages: '2' },
+  { query: 'software engineer Berlin', num_pages: '2' },
+  { query: 'software engineer Singapore', num_pages: '2' },
+  { query: 'marketing manager remote', num_pages: '2' },
+  { query: 'sales engineer remote', num_pages: '2' },
+  { query: 'solutions architect remote', num_pages: '2' },
+];
+
+async function fetchJSearch() {
+  const apiKey = process.env.JSEARCH_API_KEY;
+  if (!apiKey) {
+    console.log('\n── JSearch ── (skipped: no JSEARCH_API_KEY)');
+    return [];
+  }
+  console.log('\n── JSearch ──');
+  const allJobs = [];
+  let queryCount = 0;
+
+  // 20 queries × avg 3 pages = 60 requests (well within 200/mo if run 3x/day = 60 × 30 = 1800... too many)
+  // Actually: run max 6 queries per sync (3 syncs/day × 30 days = 90 syncs → 6 × 90 = 540 > 200)
+  // Solution: rotate queries each sync using day-of-month
+  const today = new Date().getDate(); // 1-31
+  const rotatedQueries = [...JSEARCH_QUERIES.slice(today % JSEARCH_QUERIES.length), ...JSEARCH_QUERIES.slice(0, today % JSEARCH_QUERIES.length)];
+  const queriesThisSync = rotatedQueries.slice(0, 3); // Only 3 queries per sync = ~9 requests
+
+  for (const q of queriesThisSync) {
+    try {
+      const params = new URLSearchParams({
+        query: q.query,
+        num_pages: q.num_pages,
+        date_posted: 'week',
+      });
+
+      const res = await fetch(`https://jsearch.p.rapidapi.com/search?${params}`, {
+        headers: {
+          'X-RapidAPI-Key': apiKey,
+          'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
+        },
+      });
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          console.log(`  ⚠️ Rate limited, stopping`);
+          break;
+        }
+        console.error(`  ❌ JSearch "${q.query}": ${res.status}`);
+        continue;
+      }
+
+      const data = await res.json();
+      const results = data.data || [];
+
+      const jobs = results.map(j => ({
+        source: 'jsearch',
+        external_id: `jsearch_${j.job_id || crypto.createHash('md5').update(j.job_apply_link || j.job_title || '').digest('hex')}`,
+        dedup_hash: dedupHash(j.employer_name || '', j.job_title || ''),
+        title: (j.job_title || '').trim(),
+        company: (j.employer_name || 'Unknown').trim(),
+        company_logo: j.employer_logo || null,
+        location: j.job_city
+          ? `${j.job_city}${j.job_state ? ', ' + j.job_state : ''}${j.job_country ? ', ' + j.job_country : ''}`
+          : (j.job_is_remote ? 'Remote' : 'Unknown'),
+        job_type: j.job_employment_type ? normalizeJobType(j.job_employment_type) : null,
+        salary: j.job_min_salary && j.job_max_salary
+          ? `$${Math.round(j.job_min_salary).toLocaleString()}-$${Math.round(j.job_max_salary).toLocaleString()}`
+          : null,
+        description: (j.job_description || '').substring(0, 5000),
+        tags: j.job_required_skills?.length
+          ? j.job_required_skills
+          : extractTags(`${j.job_title || ''} ${j.job_description || ''}`),
+        apply_url: j.job_apply_link || '',
+        category: null,
+        published_at: j.job_posted_at_datetime_utc || null,
+      })).filter(j => j.title && j.company && j.apply_url);
+
+      allJobs.push(...jobs);
+      queryCount++;
+      console.log(`  ✅ "${q.query}": ${jobs.length} jobs`);
+
+      await sleep(500);
+    } catch (e) {
+      console.error(`  ❌ JSearch "${q.query}": ${e.message}`);
+    }
+  }
+
+  const seen = new Set();
+  const unique = allJobs.filter(j => {
+    if (seen.has(j.dedup_hash)) return false;
+    seen.add(j.dedup_hash);
+    return true;
+  });
+
+  console.log(`  Total: ${unique.length} unique jobs from JSearch (${allJobs.length} raw, ${queryCount} queries)`);
+  return unique;
+}
+
 // ─── Cleanup: remove jobs older than 30 days ───
 async function cleanupOldJobs() {
   const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -2505,15 +2916,27 @@ async function main() {
     console.log(`✅ Phase 2: Inserted ${inserted}, Skipped ${skipped}`);
   }
 
-  // ── PHASE 3: Aggregator APIs (Jooble + Adzuna) ──
+  // ── PHASE 3: Aggregator APIs (6 sources — millions of jobs) ──
   console.log('\n═══ Phase 3: Aggregator APIs ═══');
   await sleep(2000);
-  const [jooble, adzuna] = await Promise.all([
+
+  // Group A: Jooble + Adzuna + JSearch (lightweight, fast)
+  const [jooble, adzuna, jsearch] = await Promise.all([
     fetchJooble(),
     fetchAdzuna(),
+    fetchJSearch(),
   ]);
-  const phase3Jobs = [...jooble, ...adzuna];
-  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators`);
+
+  // Group B: Careerjet + Reed + Findwork (heavier, more pages)
+  await sleep(1000);
+  const [careerjet, reed, findwork] = await Promise.all([
+    fetchCareerjet(),
+    fetchReed(),
+    fetchFindwork(),
+  ]);
+
+  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...reed, ...findwork];
+  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from 6 aggregators`);
 
   const phase3Valid = filterAndNormalize(phase3Jobs);
   if (phase3Valid.length > 0) {
