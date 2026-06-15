@@ -127,7 +127,7 @@ function CityCard({ city }: { city: any }) {
       {/* Background Image — full bleed */}
       <img
         src={imageUrl}
-        alt={city.name}
+        alt={`Digital nomad guide, travel photography, coliving and coworking in ${city.name}, ${city.country}`}
         className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         loading="lazy"
       />
