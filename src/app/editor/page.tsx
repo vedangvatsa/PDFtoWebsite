@@ -1273,7 +1273,7 @@ export default function EditorPage() {
             <main id="main-content" className="flex-1 bg-secondary/30">
 
 
-                <div className="container mx-auto max-w-4xl p-4 md:p-8">
+                <div className="container mx-auto max-w-5xl p-4 md:p-8">
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h1 className="text-2xl md:text-3xl font-bold truncate max-w-[65vw] md:max-w-none">{user ? <><span className="sm:hidden">Welcome!</span><span className="hidden sm:inline">Welcome, {profile.fullName?.split(' ')[0] || ''}!</span></> : 'Your Profile'}</h1>
