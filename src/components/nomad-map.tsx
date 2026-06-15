@@ -243,7 +243,8 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
       const q = searchQuery.toLowerCase();
       filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
     }
-    return filtered;
+    // Sort by rating descending (rated first, unrated last)
+    return [...filtered].sort((a, b) => (b.google_rating || 0) - (a.google_rating || 0));
   }, [data, selectedCity, selectedCategories, searchQuery]);
 
   // Reset visible count when filters change
