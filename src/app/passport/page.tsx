@@ -285,6 +285,15 @@ export default function VisaCheckerPage() {
               <PassportPicker passports={passports} selected={selected} onSelect={setSelected} />
             </div>
 
+
+            {!selected && (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <Globe className="w-12 h-12 text-zinc-300 mb-4" />
+                <p className="text-zinc-500 text-sm">Select your passport country above to see visa requirements for 199 destinations.</p>
+                <p className="text-zinc-400 text-xs mt-2">Includes visa-free, visa on arrival, eVisa, and visa required categories.</p>
+              </div>
+            )}
+
             {selected && grouped && summary && (
               <>
                 {/* Summary Cards */}
