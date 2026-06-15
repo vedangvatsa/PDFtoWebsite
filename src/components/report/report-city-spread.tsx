@@ -247,8 +247,8 @@ export function ReportCitySpread({
             })}
           </div>
           <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
-            {MONTHS_SHORT.map(m => (
-              <div key={m} style={{ flex: 1, textAlign: 'center', fontSize: 7, fontWeight: 600, color: SLATE }}>{m}</div>
+            {MONTHS_SHORT.map((m, i) => (
+              <div key={i} style={{ flex: 1, textAlign: 'center', fontSize: 7, fontWeight: 600, color: SLATE }}>{m}</div>
             ))}
           </div>
           {/* Legend */}

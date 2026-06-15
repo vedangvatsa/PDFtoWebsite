@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Digital Nomad Cities 2026 Report | CVin.Bio',
+  title: 'Digital Nomad Cities 2026 Report',
   description: 'Data-driven report ranking the top 50 digital nomad cities by cost of living, internet speed, weather, and livability.',
   robots: { index: true, follow: true },
 };
