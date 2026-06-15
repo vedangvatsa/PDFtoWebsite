@@ -658,7 +658,7 @@ export default async function StoryPage() {
             <div className="lg:col-span-2">
               <div className="bg-white border border-zinc-200 rounded-2xl p-8 text-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="https://veda.ng/images/icon.png" alt="Vedang Vatsa" className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-zinc-200" />
+                <img src="https://veda.ng/images/icon.png" alt="Vedang Vatsa, founder of CVin.Bio — digital nomad platform" className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-zinc-200" />
                 <h3 className="text-lg font-serif font-bold text-zinc-900">Vedang Vatsa</h3>
                 <p className="text-[13px] text-zinc-500 mt-1 mb-4">Founder, CVin.Bio</p>
                 <div className="flex items-center justify-center gap-3 mb-6">
@@ -675,7 +675,7 @@ export default async function StoryPage() {
                   <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-3">Previous venture</p>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <a href="https://hashtagweb3.com" target="_blank" rel="noopener noreferrer">
-                    <img src="https://hashtagweb3.com/logo/HashtagWeb3.png" alt="HashtagWeb3" className="h-7 mx-auto opacity-70 hover:opacity-100 transition-opacity" />
+                    <img src="https://hashtagweb3.com/logo/HashtagWeb3.png" alt="HashtagWeb3 — previous venture by Vedang Vatsa" className="h-7 mx-auto opacity-70 hover:opacity-100 transition-opacity" />
                   </a>
                 </div>
               </div>

@@ -204,7 +204,7 @@ export default async function CompaniesPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`}
-                  alt={`${c.name} logo`}
+                  alt={`${c.name} company logo — remote job listings`}
                   className="h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0"
                   loading="lazy"
                 />
@@ -238,7 +238,7 @@ export default async function CompaniesPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`https://www.google.com/s2/favicons?domain=${domainFor(company.name)}&sz=32`}
-                  alt={`${company.name} logo`}
+                  alt={`${company.name} logo — hiring ${company.count} open roles`}
                   className="h-5 w-5 rounded shrink-0"
                   loading="lazy"
                 />

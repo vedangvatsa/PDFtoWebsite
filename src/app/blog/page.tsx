@@ -55,7 +55,7 @@ export default function BlogPage() {
                 {/* Native Unsplash Pull - 100x Faster */}
                 <div className="w-[45%] h-full relative bg-zinc-100 shrink-0 overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={blogMetadata.find(m => m.slug === post.slug)?.featuredImage} alt={post.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.1] transition-transform duration-700 ease-out" />
+                  <img src={blogMetadata.find(m => m.slug === post.slug)?.featuredImage} alt={`${post.title} — CVin.Bio blog featured image`} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.1] transition-transform duration-700 ease-out" />
                 </div>
               </div>
                 <div className="p-4 md:p-5 flex flex-col flex-1">
