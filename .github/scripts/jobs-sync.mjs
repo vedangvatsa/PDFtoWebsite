@@ -2855,6 +2855,7 @@ async function fetchJSearch() {
 // Returns HTML with job cards, 10 per page, paginate with start=0,25,50,...
 // No API key needed — this is the same endpoint LinkedIn's public job search page uses
 const LINKEDIN_QUERIES = [
+  // Global Remote
   { keywords: 'software engineer', location: 'remote' },
   { keywords: 'frontend developer', location: 'remote' },
   { keywords: 'backend developer', location: 'remote' },
@@ -2871,10 +2872,37 @@ const LINKEDIN_QUERIES = [
   { keywords: 'cybersecurity', location: 'remote' },
   { keywords: 'solutions architect', location: 'remote' },
   { keywords: 'SRE', location: 'remote' },
-  { keywords: 'software engineer', location: 'London' },
-  { keywords: 'software engineer', location: 'Berlin' },
+  { keywords: 'blockchain developer', location: 'remote' },
+  { keywords: 'game developer', location: 'remote' },
+  { keywords: 'system administrator', location: 'remote' },
+  { keywords: 'business analyst', location: 'remote' },
+
+  // US Tech Hubs
+  { keywords: 'software engineer', location: 'San Francisco Bay Area' },
+  { keywords: 'software engineer', location: 'New York, United States' },
+  { keywords: 'software engineer', location: 'Seattle, WA' },
+  { keywords: 'software engineer', location: 'Austin, TX' },
+
+  // European Tech Hubs
+  { keywords: 'software engineer', location: 'London, United Kingdom' },
+  { keywords: 'software engineer', location: 'Berlin, Germany' },
+  { keywords: 'software engineer', location: 'Amsterdam, Netherlands' },
+  { keywords: 'software engineer', location: 'Paris, France' },
+  { keywords: 'software engineer', location: 'Dublin, Ireland' },
+  { keywords: 'software engineer', location: 'Stockholm, Sweden' },
+
+  // Asia / Pacific Hubs
   { keywords: 'software engineer', location: 'Singapore' },
-  { keywords: 'software engineer', location: 'New York' },
+  { keywords: 'software engineer', location: 'Sydney, Australia' },
+  { keywords: 'software engineer', location: 'Tokyo, Japan' },
+  { keywords: 'software engineer', location: 'Bengaluru, India' },
+  { keywords: 'software engineer', location: 'Dubai, UAE' },
+
+  // Data / AI focus by region
+  { keywords: 'data scientist', location: 'London, United Kingdom' },
+  { keywords: 'data scientist', location: 'New York, United States' },
+  { keywords: 'AI engineer', location: 'San Francisco Bay Area' },
+  { keywords: 'machine learning', location: 'London, United Kingdom' },
 ];
 
 function parseLinkedInHTML(html) {
@@ -2935,8 +2963,8 @@ async function fetchLinkedIn() {
       break;
     }
 
-    // Fetch 4 pages per query (start=0,25,50,75 → ~100 jobs per keyword)
-    for (let start = 0; start < 100; start += 25) {
+    // Fetch up to 16 pages per query (start=0,25,50...375 → ~400 jobs per keyword/location)
+    for (let start = 0; start < 400; start += 25) {
       try {
         const params = new URLSearchParams({
           keywords: query.keywords,
