@@ -352,8 +352,8 @@ const ASHBY_SLUGS = [
 // ─── Workable company slugs ───
 const WORKABLE_SLUGS = [
   '15five','3pillarglobal','6sense','9fin','a-team','abe','able','abridge','academia','accurate',
-  'accurx','achievers','achira','acorns','activecampaign','acumen','adaptive','huggingface','midjourney','oysterhr',
-  'writesonic'
+  'accurx','achievers','achira','acorns','activecampaign','acumen','adaptive','church','circuit','huggingface',
+  'midjourney','oysterhr','writesonic'
 ];
 
 // ─── Lever company slugs ───
@@ -1194,13 +1194,15 @@ const BAMBOOHR_SLUGS = [
 
 // ─── Personio company slugs ───
 const PERSONIO_SLUGS = [
-  'agile-robots-se','alan','alchemy','arweave','atlas','aurora','banxware','basis','bunch','cabify',
-  'carbon','cas','celonis','cic','clark','codex','contabo','cosmos','deepslate','demo',
-  'digitalservice','egym','emma-sleep','finn','forward','framer','freeletics','gnosis','govtech','julius',
-  'kit','kiwi','lalamove','leap','merantix','monday','neon','opal','ottonova','penta',
-  'phoenix','planradar-gmbh','powerus','quantpi','quantware','raiku','researchgate','scroll','sim','skynrg',
-  'smava','solarisbank','sunday','tado','teleport','tonies','tractable','traderepublic','trawa','twelve',
-  'upstart','urbansportsclub','usercentrics-gmbh','vivid','wandelbots','wunderflats'
+  'activation','again','agile-robots-se','ahead','alan','alchemy','angela','arctic','arweave','atlas',
+  'aurora','aware','banxware','basis','bedrop','benjamin','betty','bolt','builders','bunch',
+  'cabify','carbon','carl','cas','celonis','charlotte','cic','clark','climate','closed',
+  'code','codex','contabo','cosmos','deepslate','demo','digitalservice','egym','emma-sleep','finn',
+  'forward','framer','freeletics','gnosis','govtech','julius','kit','kiwi','lalamove','leap',
+  'merantix','monday','neon','opal','ottonova','penta','phoenix','planradar-gmbh','powerus','quantpi',
+  'quantware','raiku','researchgate','scroll','sim','skynrg','smava','solarisbank','sunday','tado',
+  'teleport','tonies','tractable','traderepublic','trawa','twelve','upstart','urbansportsclub','usercentrics-gmbh','vivid',
+  'wandelbots','wunderflats'
 ];
 
 // ─── Breezy HR company slugs ───
