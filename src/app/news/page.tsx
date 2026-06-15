@@ -145,7 +145,7 @@ export default function NewsPage() {
               { name: 'The Information', domain: 'theinformation.com' },
             ].map((s) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={s.name} src={`https://www.google.com/s2/favicons?domain=${s.domain}&sz=64`} alt={s.name} title={s.name}
+              <img key={s.name} src={`https://www.google.com/s2/favicons?domain=${s.domain}&sz=64`} alt={`${s.name} — tech news source`} title={s.name}
                 className="h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0"
                 loading="lazy" />
             ))}
@@ -224,7 +224,7 @@ export default function NewsPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`https://www.google.com/s2/favicons?domain=${item.sourceIcon}&sz=64`}
-                  alt={item.source}
+                  alt={`${item.source} favicon — tech news`}
                   className="h-5 w-5 rounded shrink-0"
                   loading="lazy"
                 />

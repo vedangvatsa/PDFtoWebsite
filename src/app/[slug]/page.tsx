@@ -421,14 +421,14 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                 <span>{post.date}</span>
                 <span className="mx-3">•</span>
                 <div className="flex items-center gap-2">
-                  <img src={post.author.avatarUrl} alt={post.author.name} className="w-5 h-5 rounded-full object-cover border border-zinc-200 transition-colors" />
+                  <img src={post.author.avatarUrl} alt={`${post.author.name}, author of ${post.title} on CVin.Bio`} className="w-5 h-5 rounded-full object-cover border border-zinc-200 transition-colors" />
                   <span>{post.author.name}</span>
                 </div>
               </div>
             </div>
             
             <div className="w-full aspect-[1200/630] rounded-2xl border border-zinc-200 overflow-hidden mb-12 shadow-sm bg-zinc-50 relative transition-colors">
-              <img src={`/${slug}/opengraph-image?v=10`} alt={post.title} className="w-full h-full object-cover" />
+              <img src={`/${slug}/opengraph-image?v=10`} alt={`${post.title} — featured image for CVin.Bio blog`} className="w-full h-full object-cover" />
             </div>
 
             <div className="prose prose-zinc prose-lg min-w-full transition-colors mb-16">
@@ -627,7 +627,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           {/* Company Header */}
           <div className="flex items-start gap-4 sm:gap-6 mb-8">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logo} alt={companyName} className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl border border-zinc-200 bg-white shadow-sm shrink-0" />
+            <img src={logo} alt={`${companyName} company logo — careers and remote jobs`} className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl border border-zinc-200 bg-white shadow-sm shrink-0" />
             <div className="min-w-0">
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 mb-2">{companyName} Careers</h1>
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm font-medium text-zinc-500">
@@ -738,7 +738,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                 className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={logo} alt={`${companyName} logo`} className="h-5 w-5 rounded shrink-0 bg-white" />
+                <img src={logo} alt={`${companyName} logo — open job positions`} className="h-5 w-5 rounded shrink-0 bg-white" />
                 <div className="flex-1 min-w-0">
                   <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
                     {job.title}

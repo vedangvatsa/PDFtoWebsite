@@ -388,7 +388,7 @@ export default function TemplateModern(props: ProfileData) {
                     {profile.avatarUrl.startsWith('data:') ? (
                       <img
                         src={profile.avatarUrl}
-                        alt={profile.fullName}
+                        alt={`${profile.fullName} profile photo on CVin.Bio`}
                         className="w-full h-full object-cover"
                         style={{ width: '100%', height: '100%' }}
                         fetchPriority="high"
@@ -397,7 +397,7 @@ export default function TemplateModern(props: ProfileData) {
                     ) : (
                       <img
                         src={profile.avatarUrl}
-                        alt={profile.fullName}
+                        alt={`${profile.fullName} profile photo on CVin.Bio`}
                         className="w-full h-full object-cover"
                         style={{ width: '100%', height: '100%' }}
                         data-ai-hint={profile.avatarHint || 'person portrait'}
