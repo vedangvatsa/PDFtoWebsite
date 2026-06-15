@@ -2,9 +2,8 @@ name: Jobs Sync + Telegram (8h cadence)
 
 on:
   schedule:
-    - cron: '30 3 * * *'     # 11:30 SGT — Morning
-    - cron: '30 11 * * *'    # 19:30 SGT — Afternoon
-    - cron: '30 19 * * *'    # 03:30 SGT — Evening
+    # Run every 4 hours (e.g., 00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC)
+    - cron: '0 */4 * * *'
   workflow_dispatch:
     inputs:
       sync_only:

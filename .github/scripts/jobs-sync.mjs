@@ -2855,7 +2855,7 @@ async function fetchJSearch() {
 // Returns HTML with job cards, 10 per page, paginate with start=0,25,50,...
 // No API key needed — this is the same endpoint LinkedIn's public job search page uses
 const LINKEDIN_QUERIES = [
-  // Global Remote
+  // === REMOTE WORLDWIDE ===
   { keywords: 'software engineer', location: 'remote' },
   { keywords: 'frontend developer', location: 'remote' },
   { keywords: 'backend developer', location: 'remote' },
@@ -2876,33 +2876,75 @@ const LINKEDIN_QUERIES = [
   { keywords: 'game developer', location: 'remote' },
   { keywords: 'system administrator', location: 'remote' },
   { keywords: 'business analyst', location: 'remote' },
+  { keywords: 'cloud architect', location: 'remote' },
+  { keywords: 'data analyst', location: 'remote' },
+  { keywords: 'security engineer', location: 'remote' },
+  { keywords: 'iOS developer', location: 'remote' },
+  { keywords: 'Android developer', location: 'remote' },
+  { keywords: 'QA engineer', location: 'remote' },
+  { keywords: 'infrastructure engineer', location: 'remote' },
+  { keywords: 'platform engineer', location: 'remote' },
 
-  // US Tech Hubs
+  // === NORTH AMERICA TECH HUBS ===
   { keywords: 'software engineer', location: 'San Francisco Bay Area' },
-  { keywords: 'software engineer', location: 'New York, United States' },
-  { keywords: 'software engineer', location: 'Seattle, WA' },
-  { keywords: 'software engineer', location: 'Austin, TX' },
-
-  // European Tech Hubs
-  { keywords: 'software engineer', location: 'London, United Kingdom' },
-  { keywords: 'software engineer', location: 'Berlin, Germany' },
-  { keywords: 'software engineer', location: 'Amsterdam, Netherlands' },
-  { keywords: 'software engineer', location: 'Paris, France' },
-  { keywords: 'software engineer', location: 'Dublin, Ireland' },
-  { keywords: 'software engineer', location: 'Stockholm, Sweden' },
-
-  // Asia / Pacific Hubs
-  { keywords: 'software engineer', location: 'Singapore' },
-  { keywords: 'software engineer', location: 'Sydney, Australia' },
-  { keywords: 'software engineer', location: 'Tokyo, Japan' },
-  { keywords: 'software engineer', location: 'Bengaluru, India' },
-  { keywords: 'software engineer', location: 'Dubai, UAE' },
-
-  // Data / AI focus by region
-  { keywords: 'data scientist', location: 'London, United Kingdom' },
-  { keywords: 'data scientist', location: 'New York, United States' },
+  { keywords: 'machine learning', location: 'San Francisco Bay Area' },
   { keywords: 'AI engineer', location: 'San Francisco Bay Area' },
+  { keywords: 'data scientist', location: 'San Francisco Bay Area' },
+  { keywords: 'software engineer', location: 'New York, United States' },
+  { keywords: 'data scientist', location: 'New York, United States' },
+  { keywords: 'product manager', location: 'New York, United States' },
+  { keywords: 'software engineer', location: 'Seattle, WA' },
+  { keywords: 'cloud engineer', location: 'Seattle, WA' },
+  { keywords: 'software engineer', location: 'Austin, TX' },
+  { keywords: 'devops engineer', location: 'Austin, TX' },
+  { keywords: 'software engineer', location: 'Toronto, Canada' },
+  { keywords: 'data scientist', location: 'Toronto, Canada' },
+  { keywords: 'software engineer', location: 'Vancouver, Canada' },
+
+  // === EUROPE TECH HUBS ===
+  { keywords: 'software engineer', location: 'London, United Kingdom' },
+  { keywords: 'data scientist', location: 'London, United Kingdom' },
+  { keywords: 'product manager', location: 'London, United Kingdom' },
   { keywords: 'machine learning', location: 'London, United Kingdom' },
+  { keywords: 'software engineer', location: 'Berlin, Germany' },
+  { keywords: 'backend developer', location: 'Berlin, Germany' },
+  { keywords: 'data engineer', location: 'Berlin, Germany' },
+  { keywords: 'software engineer', location: 'Amsterdam, Netherlands' },
+  { keywords: 'frontend developer', location: 'Amsterdam, Netherlands' },
+  { keywords: 'software engineer', location: 'Paris, France' },
+  { keywords: 'data scientist', location: 'Paris, France' },
+  { keywords: 'software engineer', location: 'Dublin, Ireland' },
+  { keywords: 'SRE', location: 'Dublin, Ireland' },
+  { keywords: 'software engineer', location: 'Stockholm, Sweden' },
+  { keywords: 'game developer', location: 'Stockholm, Sweden' },
+  { keywords: 'software engineer', location: 'Zurich, Switzerland' },
+  { keywords: 'machine learning', location: 'Zurich, Switzerland' },
+
+  // === ASIA / PACIFIC TECH HUBS ===
+  { keywords: 'software engineer', location: 'Singapore' },
+  { keywords: 'data scientist', location: 'Singapore' },
+  { keywords: 'cybersecurity', location: 'Singapore' },
+  { keywords: 'software engineer', location: 'Sydney, Australia' },
+  { keywords: 'full stack developer', location: 'Sydney, Australia' },
+  { keywords: 'software engineer', location: 'Tokyo, Japan' },
+  { keywords: 'AI engineer', location: 'Tokyo, Japan' },
+  { keywords: 'software engineer', location: 'Bengaluru, India' },
+  { keywords: 'backend developer', location: 'Bengaluru, India' },
+  { keywords: 'data engineer', location: 'Bengaluru, India' },
+
+  // === MIDDLE EAST / AFRICA ===
+  { keywords: 'software engineer', location: 'Dubai, UAE' },
+  { keywords: 'blockchain developer', location: 'Dubai, UAE' },
+  { keywords: 'software engineer', location: 'Tel Aviv, Israel' },
+  { keywords: 'cybersecurity', location: 'Tel Aviv, Israel' },
+
+  // === EMERGING AI & DATA ROLES (Global search) ===
+  { keywords: 'large language models', location: 'worldwide' },
+  { keywords: 'generative ai', location: 'worldwide' },
+  { keywords: 'prompt engineer', location: 'worldwide' },
+  { keywords: 'nlp engineer', location: 'worldwide' },
+  { keywords: 'computer vision', location: 'worldwide' },
+  { keywords: 'AI research scientist', location: 'worldwide' }
 ];
 
 function parseLinkedInHTML(html) {
