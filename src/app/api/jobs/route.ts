@@ -299,12 +299,27 @@ export async function GET(request: NextRequest) {
     query = query.or(`title.ilike.%${q}%,company.ilike.%${q}%`);
   }
 
-  // If user has complete profile AND match=true, filter to jobs that match their skills
+  // If user has complete profile AND match=true, filter to jobs that match their skills and location
   const matchOnly = searchParams.get('match') === 'true';
   if (profileComplete && userProfile && userProfile.skills.length > 0 && matchOnly && !q) {
     // Build OR filter: match tags overlap OR any skill appears in the title
     const titleFilters = userProfile.skills.map(s => `title.ilike.%${s}%`).join(',');
     query = query.or(`tags.ov.{${userProfile.skills.join(',')}},${titleFilters}`);
+
+    // If candidate has a location (and is not purely 'remote'), ensure jobs match location or are remote
+    if (userProfile.location) {
+      const userLoc = normalizeLocation(userProfile.location);
+      if (!userLoc.isRemote && userLoc.tokens.length > 0) {
+        const locFilters = [
+          'location.ilike.%remote%',
+          'location.ilike.%anywhere%',
+          'location.ilike.%worldwide%',
+          'location.ilike.%distributed%',
+          ...userLoc.tokens.map(t => `location.ilike.%${t}%`)
+        ].join(',');
+        query = query.or(locFilters);
+      }
+    }
   }
 
   // Fetch a larger batch to allow company interleaving (3x is enough)
