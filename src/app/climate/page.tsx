@@ -181,7 +181,7 @@ export default function ClimatePage() {
             Climate Finder
           </h1>
           <p className={PAGE_SUBTITLE}>
-            Filter {cities.length} digital nomad cities by temperature, humidity, and rainfall for any month of the year.
+            Filter {loading ? '…' : cities.length} digital nomad cities by temperature, humidity, and rainfall for any month of the year.
           </p>
         </div>
 
