@@ -1,9 +1,10 @@
-name: Jobs Sync + Telegram (8h cadence)
+name: Jobs Sync + Telegram (Daily Cadence)
 
 on:
   schedule:
-    # Run every 4 hours (e.g., 00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC)
-    - cron: '0 */4 * * *'
+    # Run ONCE a day to stay within GitHub's 2,000 free minutes/month limit.
+    # The massive LinkedIn scrape takes ~50 mins per run (1,500 mins/month total).
+    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       sync_only:
