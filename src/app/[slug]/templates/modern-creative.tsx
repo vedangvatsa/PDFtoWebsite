@@ -180,33 +180,40 @@ function StructuredText({ text }: { text?: string }) {
   const normalized = text.replace(/\s*●\s*/g, '\n● ');
   const lines = normalized.split('\n');
   const blocks: Array<{ type: 'bullet' | 'para'; lines: string[] }> = [];
+  let afterBlankLine = false;
 
   for (const raw of lines) {
     const line = raw.trim();
     if (!line) {
-      // Blank line = explicit paragraph break — start a new para block
-      if (blocks.length > 0 && blocks[blocks.length - 1].type === 'para') {
-        blocks.push({ type: 'para', lines: [] });
-      }
+      afterBlankLine = true;
       continue;
     }
 
     if (isBulletLine(line)) {
       // Append to existing bullet block or start a new one
-      if (blocks.length > 0 && blocks[blocks.length - 1].type === 'bullet') {
+      if (blocks.length > 0 && blocks[blocks.length - 1].type === 'bullet' && !afterBlankLine) {
         blocks[blocks.length - 1].lines.push(line);
       } else {
         blocks.push({ type: 'bullet', lines: [line] });
       }
+      afterBlankLine = false;
     } else {
       // Non-bullet line
       const last = blocks.length > 0 ? blocks[blocks.length - 1] : null;
-      if (last?.type === 'para') {
-        last.lines.push(line);
+      if (last && !afterBlankLine) {
+        if (last.type === 'bullet') {
+          // Append as continuation of the last bullet line
+          const lastIdx = last.lines.length - 1;
+          last.lines[lastIdx] = last.lines[lastIdx] + ' ' + line;
+        } else if (last.type === 'para') {
+          // Append as continuation of the paragraph
+          last.lines.push(line);
+        }
       } else {
-        // After bullets or at start — new paragraph block
+        // Start a new paragraph block
         blocks.push({ type: 'para', lines: [line] });
       }
+      afterBlankLine = false;
     }
   }
 
