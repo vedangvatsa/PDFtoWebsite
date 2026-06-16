@@ -136,6 +136,8 @@ export const PROFILE_EVENTS = {
   SHARE_WHATSAPP: 'profile_share_whatsapp',
   /** User downloaded the story card image */
   STORY_CARD_DOWNLOADED: 'profile_story_card_downloaded',
+  /** User clicked on "Made with CVin.Bio" watermark badge */
+  WATERMARK_CLICKED: 'profile_watermark_clicked',
 } as const;
 
 // Properties for PROFILE events:

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { Mail, Phone, MapPin, Globe, Download, ArrowUpRight, FileDown, Github, Linkedin, Twitter, Youtube, Facebook, Instagram, BookOpen, GraduationCap, Palette, Code2, Pen, MessageCircle, Send, Music, Headphones, Tv, Hash, Figma, Package, Gamepad2, Megaphone, Users, Briefcase, Rss, FileCode2, GitBranch } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import type { ServerProfileData as ProfileData } from '@/lib/supabase-server';
+import posthog from 'posthog-js';
+import { PROFILE_EVENTS } from '@/lib/posthog-events';
 
 const LINK_ICON_MAP: Record<string, { icon: React.ComponentType<any>; color: string }> = {
   // Major social
@@ -634,7 +636,13 @@ export default function TemplateModern(props: ProfileData) {
             {/* Footer - branding */}
             <div className="no-print pt-6 text-center">
               <Link
-                href="/"
+                href="/?utm_source=watermark&utm_medium=badge&utm_campaign=portfolio-watermark"
+                onClick={() => {
+                  posthog.capture(PROFILE_EVENTS.WATERMARK_CLICKED, {
+                    slug: profile.slug,
+                    name: profile.fullName,
+                  });
+                }}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-indigo-200 bg-indigo-50/60 text-xs font-medium text-indigo-600 hover:bg-indigo-100 hover:border-indigo-300 transition-all hover:scale-105 active:scale-95 shadow-sm"
               >
                 <span className="text-[10px]">✦</span>
