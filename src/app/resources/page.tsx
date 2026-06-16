@@ -1,5 +1,5 @@
+'use client';
 import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
-import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
@@ -18,36 +18,10 @@ import {
   Users,
   Wrench,
   ExternalLink,
-  Star,
 } from 'lucide-react';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
-
-export const metadata: Metadata = {
-  title: 'Digital Nomad Resources & Tools — Essential Services for Remote Workers',
-  description:
-    'Curated collection of the best tools, services, and resources for digital nomads — insurance, banking, eSIMs, VPNs, flights, accommodation, and more.',
-  keywords: [
-    'digital nomad tools',
-    'remote work resources',
-    'nomad insurance',
-    'esim travel',
-    'nomad banking',
-    'travel vpn',
-  ],
-  alternates: { canonical: `${siteUrl}/resources` },
-  openGraph: {
-    title: 'Digital Nomad Resources & Tools',
-    description: 'Essential services for remote workers and digital nomads.',
-    url: `${siteUrl}/resources`,
-    siteName: 'CVin.Bio',
-    type: 'website',
-    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
-
 /* ------------------------------------------------------------------ */
-/*  Data                                                               */
+/*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
 interface Resource {
@@ -62,7 +36,6 @@ interface Category {
   title: string;
   description: string;
   icon: React.ReactNode;
-  color: string; // accent color class
   resources: Resource[];
 }
 
@@ -71,8 +44,7 @@ const CATEGORIES: Category[] = [
     id: 'insurance',
     title: 'Health Insurance',
     description: 'Travel and health insurance designed for location-independent workers.',
-    icon: <Shield className="w-5 h-5" />,
-    color: 'text-emerald-600 bg-emerald-50',
+    icon: <Shield className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'SafetyWing',
@@ -93,7 +65,7 @@ const CATEGORIES: Category[] = [
       {
         name: 'Passport Card',
         url: 'https://www.passportcard.com',
-        description: 'Digital-first international health insurance with direct billing — no claims paperwork.',
+        description: 'Digital-first international health insurance with direct billing, with no claims paperwork.',
       },
       {
         name: 'Insured Nomads',
@@ -106,8 +78,7 @@ const CATEGORIES: Category[] = [
     id: 'banking',
     title: 'Banking & Money',
     description: 'Multi-currency accounts, zero-fee transfers, and cards that work everywhere.',
-    icon: <CreditCard className="w-5 h-5" />,
-    color: 'text-violet-600 bg-violet-50',
+    icon: <CreditCard className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Wise (TransferWise)',
@@ -142,8 +113,7 @@ const CATEGORIES: Category[] = [
     id: 'esim',
     title: 'eSIM & Connectivity',
     description: 'Stay connected anywhere without swapping physical SIM cards.',
-    icon: <Smartphone className="w-5 h-5" />,
-    color: 'text-blue-600 bg-blue-50',
+    icon: <Smartphone className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Airalo',
@@ -178,8 +148,7 @@ const CATEGORIES: Category[] = [
     id: 'vpn',
     title: 'VPN & Security',
     description: 'Protect your connection on public WiFi and access content from anywhere.',
-    icon: <Lock className="w-5 h-5" />,
-    color: 'text-amber-600 bg-amber-50',
+    icon: <Lock className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'NordVPN',
@@ -215,8 +184,7 @@ const CATEGORIES: Category[] = [
     id: 'flights',
     title: 'Flights & Transport',
     description: 'Find cheap flights, compare routes, and book inter-city transport.',
-    icon: <Plane className="w-5 h-5" />,
-    color: 'text-sky-600 bg-sky-50',
+    icon: <Plane className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Google Flights',
@@ -237,7 +205,7 @@ const CATEGORIES: Category[] = [
       {
         name: 'Rome2Rio',
         url: 'https://www.rome2rio.com',
-        description: 'Shows all transport options between any two points — flights, trains, buses, ferries.',
+        description: 'Shows all transport options between any two points: flights, trains, buses, and ferries.',
       },
       {
         name: '12Go Asia',
@@ -250,8 +218,7 @@ const CATEGORIES: Category[] = [
     id: 'accommodation',
     title: 'Accommodation',
     description: 'Find apartments, coliving spaces, hostels, and long-term stays.',
-    icon: <Home className="w-5 h-5" />,
-    color: 'text-rose-600 bg-rose-50',
+    icon: <Home className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Airbnb',
@@ -283,7 +250,7 @@ const CATEGORIES: Category[] = [
       {
         name: 'NomadStays',
         url: 'https://nomadstays.com',
-        description: 'Curated apartments verified for remote work — fast WiFi, desk, quiet environment.',
+        description: 'Curated apartments verified for remote work with fast WiFi, desk, and quiet environment.',
       },
     ],
   },
@@ -291,8 +258,7 @@ const CATEGORIES: Category[] = [
     id: 'coworking',
     title: 'Coworking & Productivity',
     description: 'Day passes, memberships, and tools to stay productive on the road.',
-    icon: <Laptop className="w-5 h-5" />,
-    color: 'text-indigo-600 bg-indigo-50',
+    icon: <Laptop className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Deskpass',
@@ -327,8 +293,7 @@ const CATEGORIES: Category[] = [
     id: 'tax-legal',
     title: 'Tax & Legal',
     description: 'Handle taxes, incorporate remotely, and stay compliant across borders.',
-    icon: <FileText className="w-5 h-5" />,
-    color: 'text-orange-600 bg-orange-50',
+    icon: <FileText className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Deel',
@@ -362,8 +327,7 @@ const CATEGORIES: Category[] = [
     id: 'freelance',
     title: 'Freelance & Remote Jobs',
     description: 'Find remote-friendly work and clients from anywhere.',
-    icon: <Briefcase className="w-5 h-5" />,
-    color: 'text-teal-600 bg-teal-50',
+    icon: <Briefcase className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'CVin.Bio Jobs',
@@ -398,8 +362,7 @@ const CATEGORIES: Category[] = [
     id: 'community',
     title: 'Community & Networking',
     description: 'Meet other nomads, join local groups, and find your tribe.',
-    icon: <Users className="w-5 h-5" />,
-    color: 'text-pink-600 bg-pink-50',
+    icon: <Users className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Nomad List',
@@ -415,7 +378,7 @@ const CATEGORIES: Category[] = [
       {
         name: 'Meetup',
         url: 'https://www.meetup.com',
-        description: 'Find local events and groups in any city — tech meetups, language exchanges, hiking.',
+        description: 'Find local events and groups in any city: tech meetups, language exchanges, hiking.',
       },
       {
         name: 'Couchsurfing Hangouts',
@@ -433,8 +396,7 @@ const CATEGORIES: Category[] = [
     id: 'gear',
     title: 'Gear & Essentials',
     description: 'Travel-friendly tech, bags, and gadgets for life on the move.',
-    icon: <Wrench className="w-5 h-5" />,
-    color: 'text-zinc-600 bg-zinc-100',
+    icon: <Wrench className="w-4 h-4 text-zinc-900" />,
     resources: [
       {
         name: 'Peak Design Travel Backpack',
@@ -460,7 +422,7 @@ const CATEGORIES: Category[] = [
       {
         name: 'Universal Travel Adapter',
         url: 'https://www.epickatech.com',
-        description: 'One adapter for all outlet types. USB-C PD fast charging. Covers 200+ countries.',
+        description: 'One adapter for all outlet types. Universal fast charging. Covers 200+ countries.',
       },
     ],
   },
@@ -472,7 +434,6 @@ const CATEGORIES: Category[] = [
 
 function ResourceCard({ resource }: { resource: Resource }) {
   const isInternal = resource.url.startsWith('/');
-
   const Tag = isInternal ? Link : 'a';
   const linkProps = isInternal
     ? { href: resource.url }
@@ -481,23 +442,22 @@ function ResourceCard({ resource }: { resource: Resource }) {
   return (
     <Tag
       {...(linkProps as any)}
-      className="group flex flex-col gap-1.5 p-4 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50/80 hover:border-zinc-300 hover:shadow-sm transition-all duration-300"
+      className="group flex flex-col gap-2 p-5 rounded-lg border border-zinc-200 bg-white hover:border-zinc-950 transition-colors duration-150"
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-sm font-semibold text-zinc-900 group-hover:text-primary transition-colors">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2 min-w-0">
+          <span className="text-sm font-bold text-zinc-900 group-hover:text-zinc-950 transition-colors tracking-tight">
             {resource.name}
           </span>
           {resource.tag && (
-            <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-zinc-100 text-zinc-600">
-              {resource.tag === 'Popular' && <Star className="w-2.5 h-2.5 mr-0.5 fill-current" />}
+            <span className="shrink-0 text-[9px] font-mono font-medium uppercase tracking-wider bg-zinc-50 border border-zinc-200 text-zinc-500 px-1.5 py-0.5 rounded">
               {resource.tag}
             </span>
           )}
         </div>
-        <ExternalLink className="w-3.5 h-3.5 text-zinc-300 group-hover:text-zinc-500 transition-colors shrink-0 mt-0.5" />
+        <ExternalLink className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 transition-colors shrink-0 mt-0.5" />
       </div>
-      <p className="text-xs text-zinc-500 leading-relaxed">
+      <p className="text-xs text-zinc-500 leading-relaxed font-normal">
         {resource.description}
       </p>
     </Tag>
@@ -506,7 +466,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
 
 export default function ResourcesPage() {
   return (
-    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-zinc-200 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back link */}
@@ -520,21 +480,21 @@ export default function ResourcesPage() {
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className={PAGE_TITLE}>
+          <h1 className={`${PAGE_TITLE} tracking-tighter`}>
             Resources & Tools
           </h1>
           <p className={PAGE_SUBTITLE}>
-            Everything you need for life as a digital nomad — insurance, banking, connectivity, flights, accommodation, and more. Hand-picked and regularly updated.
+            Everything you need for life as a digital nomad: insurance, banking, connectivity, flights, accommodation, and more. Hand-picked and regularly updated.
           </p>
         </div>
 
-        {/* Quick jump nav */}
-        <div className="flex flex-wrap gap-2 mb-12">
+        {/* Quick jump nav - Unyielding Horizontal Block (horizontally scrollable) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-12 border-b border-zinc-200/50 scrollbar-none whitespace-nowrap">
           {CATEGORIES.map((cat) => (
             <a
               key={cat.id}
               href={`#${cat.id}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-800 hover:text-zinc-900 transition-all whitespace-nowrap shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
             >
               {cat.title}
             </a>
@@ -542,26 +502,26 @@ export default function ResourcesPage() {
         </div>
 
         {/* Categories */}
-        <div className="space-y-12">
+        <div className="space-y-16">
           {CATEGORIES.map((cat) => (
-            <section key={cat.id} id={cat.id}>
-              {/* Category header */}
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${cat.color}`}>
+            <section key={cat.id} id={cat.id} className="scroll-mt-6">
+              {/* Category header - Geometric & Monochromatic */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-lg border border-zinc-200 bg-white flex items-center justify-center text-zinc-950 shrink-0 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
                   {cat.icon}
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-zinc-900">
+                  <h2 className="text-base font-bold text-zinc-900 tracking-tight leading-none">
                     {cat.title}
                   </h2>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-zinc-500 mt-1">
                     {cat.description}
                   </p>
                 </div>
               </div>
 
               {/* Resource cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {cat.resources.map((resource) => (
                   <ResourceCard key={resource.name} resource={resource} />
                 ))}
