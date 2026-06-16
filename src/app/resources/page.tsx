@@ -356,6 +356,11 @@ const CATEGORIES: Category[] = [
         description: 'Commission-free freelance platform. Build a portfolio and get discovered by clients.',
         tag: 'Free',
       },
+      {
+        name: 'HashtagWeb3',
+        url: 'https://hashtagweb3.com',
+        description: 'Web3 job board for blockchain, crypto, and decentralized tech roles. Remote-first listings.',
+      },
     ],
   },
   {
