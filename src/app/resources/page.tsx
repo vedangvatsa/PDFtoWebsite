@@ -533,7 +533,7 @@ export default function ResourcesPage() {
         {/* Footer note */}
         <div className="mt-16 pt-8 border-t border-zinc-200">
           <p className="text-xs text-zinc-400 leading-relaxed max-w-2xl">
-            This page contains curated recommendations based on community feedback and personal use. Some links may be affiliate links that help support CVin.Bio at no extra cost to you. Last updated June 2026.
+            This page contains curated recommendations based on community feedback and personal use. Last updated June 2026.
           </p>
         </div>
       </main>
