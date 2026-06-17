@@ -295,58 +295,109 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-// ─── Nomad score computation ───────────────────────────────────
+// ─── Safety scores (per-city, 0-10 scale) ─────────────────────
+const SAFETY_SCORE = {
+  'tokyo': 9.2, 'singapore': 9.1, 'taipei': 9.0, 'seoul': 8.5, 'reykjavik': 9.0,
+  'copenhagen': 8.8, 'vienna': 8.7, 'zurich': 8.8, 'stockholm': 8.5, 'helsinki': 8.7,
+  'prague': 8.3, 'tallinn': 8.2, 'ljubljana': 8.4, 'budapest': 7.8,
+  'lisbon': 7.5, 'porto': 7.8, 'barcelona': 6.8, 'berlin': 7.2, 'amsterdam': 7.3,
+  'dublin': 7.5, 'split': 8.0, 'dubrovnik': 8.2, 'tbilisi': 7.5, 'bansko': 8.0,
+  'bucharest': 7.0, 'belgrade': 7.2, 'chiang-mai': 8.0, 'bangkok': 7.0,
+  'bali': 7.2, 'bali-cangguubud': 7.3, 'canggu': 7.2, 'ubud': 7.5,
+  'kuala-lumpur': 6.8, 'ho-chi-minh-city': 6.5, 'da-nang': 7.5, 'hanoi': 6.8,
+  'manila': 5.5, 'buenos-aires': 5.8, 'medellin': 5.5, 'bogota': 4.8,
+  'mexico-city': 5.0, 'playa-del-carmen': 5.5, 'lima': 5.0, 'santiago': 6.0,
+  'cartagena': 5.5, 'dubai': 8.5, 'istanbul': 6.5, 'antalya': 7.5,
+  'cape-town': 4.5, 'nairobi': 4.0, 'accra': 5.5, 'marrakech': 5.8,
+  'cairo': 5.0, 'bangalore': 5.5, 'mumbai': 5.0, 'delhi': 4.5, 'goa': 6.5,
+  'antigua': 6.5, 'las-palmas': 8.0, 'tenerife': 8.0, 'malaga': 7.5,
+  'valencia': 7.3, 'palma-de-mallorca': 7.8, 'koh-phangan': 7.0,
+  'koh-samui': 7.2, 'phuket': 6.8, 'chiang-rai': 8.2, 'pai': 8.0,
+  'florence': 7.5, 'rome': 6.5, 'milan': 7.0, 'athens': 6.8,
+  'new-york': 6.0, 'san-francisco': 5.5, 'austin': 7.0, 'denver': 7.0,
+  'miami': 6.0, 'montreal': 7.5, 'vancouver': 7.3, 'toronto': 7.0,
+  'london': 6.5, 'paris': 6.0, 'johor-bahru': 6.5, 'johor': 6.5, 'penang': 7.0,
+  'cebu': 5.8, 'siargao': 7.0, 'jakarta': 5.5, 'yogyakarta': 7.0,
+  'siem-reap': 6.5, 'phnom-penh': 5.5, 'vientiane': 7.0, 'luang-prabang': 7.5,
+  'kathmandu': 5.5, 'pokhara': 7.0, 'colombo': 6.0, 'batumi': 7.0,
+  'yerevan': 7.5, 'tashkent': 6.5, 'almaty': 6.5,
+  'gran-canaria-las-palmas': 8.0, 'sofia': 7.0, 'dahab': 7.0,
+  'santa-marta': 5.0, 'kilifi': 5.0, 'florianopolis': 6.0,
+  'rio-de-janeiro': 4.5, 'roatan': 5.5, 'guadalajara': 5.0,
+  'montevideo': 6.5, 'kas': 7.5, 'madeira-funchal': 8.5, 'ericeira': 7.8,
+  'krakow': 8.0, 'florianopolis-2': 6.0, 'cusco': 5.5,
+  'sao-paulo': 4.5, 'palermo': 6.5, 'thessaloniki': 7.0,
+  'vilnius': 8.0, 'shanghai': 7.5, 'riga': 7.5, 'valparaiso': 5.0,
+  'hoi-an': 7.5, 'tulum': 5.5, 'oaxaca': 5.5, 'zanzibar': 5.5, 'lagos': 4.0,
+  'warsaw': 7.5, 'komoro': 6.0,
+};
+const DEFAULT_SAFETY = 6.0;
+
+// ─── Walkability scores (per-city, 0-10 scale) ────────────────
+const WALKABILITY_SCORE = {
+  'tokyo': 9.2, 'barcelona': 9.0, 'lisbon': 8.5, 'prague': 8.8, 'budapest': 8.5,
+  'vienna': 9.0, 'paris': 9.0, 'berlin': 8.5, 'amsterdam': 8.8, 'copenhagen': 8.5,
+  'stockholm': 8.2, 'singapore': 8.5, 'taipei': 8.0, 'london': 8.8, 'rome': 8.5,
+  'florence': 9.0, 'seoul': 7.8, 'bangkok': 6.5, 'buenos-aires': 7.5,
+  'istanbul': 7.0, 'porto': 7.8, 'split': 7.5, 'dubrovnik': 8.0, 'tbilisi': 6.8,
+  'chiang-mai': 6.0, 'ho-chi-minh-city': 6.0, 'marrakech': 7.0, 'tallinn': 7.5,
+  'athens': 7.2, 'milan': 7.8, 'valencia': 7.5, 'malaga': 7.5, 'hanoi': 6.5,
+  'da-nang': 6.0, 'ljubljana': 8.0,
+  'bali': 4.0, 'bali-cangguubud': 4.0, 'canggu': 4.5, 'kuala-lumpur': 5.5,
+  'dubai': 4.0, 'manila': 5.0, 'mexico-city': 6.0, 'lima': 5.0, 'bogota': 5.5,
+  'santiago': 6.0, 'cape-town': 4.5, 'mumbai': 5.5, 'delhi': 5.0, 'jakarta': 4.0,
+  'phuket': 3.0, 'koh-phangan': 3.5, 'playa-del-carmen': 5.0, 'tulum': 4.0,
+};
+const DEFAULT_WALKABILITY = 5.5;
+
+// ─── Nomad score computation (v2 — smooth continuous functions) ─
 function computeNomadScore(city) {
-  let score = 0;
-  
-  // 1. Cost score (0-30): lower cost → higher score
+  // Helper: clamp value between 0 and 1
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+
+  // ── 1. Cost of living (0–25 pts) ──
+  // Smooth inverse linear: $500 → 25pts, $3500 → 0pts
   const cost = city.cost?.monthly_total || 2000;
-  if (cost <= 900) score += 30;
-  else if (cost <= 1200) score += 26;
-  else if (cost <= 1500) score += 22;
-  else if (cost <= 1800) score += 18;
-  else if (cost <= 2200) score += 14;
-  else if (cost <= 2800) score += 10;
-  else score += 5;
-  
-  // 2. Weather score (0-25): 20-28°C optimal
+  const costScore = 25 * clamp01((3500 - cost) / 3000);
+
+  // ── 2. Safety (0–20 pts) ──
+  // Linear from per-city safety score (0–10 scale)
+  const safety = SAFETY_SCORE[city.slug] ?? DEFAULT_SAFETY;
+  const safetyScore = 20 * (safety / 10);
+
+  // ── 3. Weather comfort (0–15 pts) ──
+  // Gaussian curve centered at 24°C with σ=6
+  // Plus gradual humidity penalty above 75%
   const temp = city.weather?.avg_temp;
+  let weatherScore = 15 * 0.5; // neutral default
   if (temp != null) {
-    if (temp >= 20 && temp <= 28) score += 25;
-    else if (temp >= 15 && temp <= 32) score += 18;
-    else if (temp >= 10 && temp <= 35) score += 12;
-    else score += 5;
-  } else {
-    score += 12; // neutral
+    weatherScore = 15 * Math.exp(-((temp - 24) ** 2) / (2 * 6 ** 2));
+    // Gradual humidity penalty (75% → no penalty, 100% → halved)
+    const humidity = city.weather?.avg_humidity;
+    if (humidity != null && humidity > 75) {
+      weatherScore *= (1 - clamp01((humidity - 75) / 50));
+    }
   }
-  
-  // 3. Spaces score (0-20): more spaces → higher
-  const totalSpaces = city.spaces?.total || 0;
-  if (totalSpaces >= 20) score += 20;
-  else if (totalSpaces >= 10) score += 16;
-  else if (totalSpaces >= 5) score += 12;
-  else if (totalSpaces >= 2) score += 8;
-  else score += 4;
-  
-  // 4. Internet score (0-15)
+
+  // ── 4. Internet speed (0–15 pts) ──
+  // Linear from country-level score (already 0–100)
   const inet = INTERNET_SCORE[city.countryCode] || 60;
-  score += Math.round((inet / 100) * 15);
-  
-  // 5. Humidity penalty (0 to -5): very high humidity is uncomfortable
-  const humidity = city.weather?.avg_humidity;
-  if (humidity != null && humidity > 80) score -= 3;
-  else if (humidity != null && humidity > 85) score -= 5;
-  
-  // 6. Community bonus (0-10): based on coliving + coworking
-  const coliving = city.spaces?.coliving || 0;
-  const coworking = city.spaces?.coworking || 0;
-  const community = coliving + coworking;
-  if (community >= 5) score += 10;
-  else if (community >= 3) score += 7;
-  else if (community >= 1) score += 5;
-  else score += 2;
-  
-  return Math.max(0, Math.min(100, score));
+  const inetScore = 15 * (inet / 100);
+
+  // ── 5. Nomad infrastructure (0–15 pts) ──
+  // Logarithmic: diminishing returns after ~10 coliving+coworking spaces
+  // Only counts coliving + coworking (not hostels/apartments — those aren't nomad infra)
+  const colivingCoworking = (city.spaces?.coliving || 0) + (city.spaces?.coworking || 0);
+  const infraScore = 15 * clamp01(Math.log2(1 + colivingCoworking) / Math.log2(11));
+
+  // ── 6. Walkability (0–10 pts) ──
+  // Linear from per-city walkability score (0–10 scale)
+  const walk = WALKABILITY_SCORE[city.slug] ?? DEFAULT_WALKABILITY;
+  const walkScore = 10 * (walk / 10);
+
+  // ── Total ──
+  const total = costScore + safetyScore + weatherScore + inetScore + infraScore + walkScore;
+  return Math.round(Math.max(0, Math.min(100, total)));
 }
 
 // ─── Main ──────────────────────────────────────────────────────

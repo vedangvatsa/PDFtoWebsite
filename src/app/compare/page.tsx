@@ -27,6 +27,7 @@ import {
   ArrowRight,
   Globe,
   X,
+  Trophy,
 } from 'lucide-react';
 
 /* ---------- types ---------- */
@@ -499,6 +500,19 @@ function ComparePageContent() {
     );
   }, [cityA, cityB]);
 
+  // Verdict: count wins/losses/ties across scorable metrics
+  const verdict = useMemo(() => {
+    let winsA = 0, winsB = 0, ties = 0;
+    metricRows.forEach(row => {
+      if (row.better === 'none' || row.rawA === row.rawB) { ties++; return; }
+      const winner = getWinner(row);
+      if (winner === 'a') winsA++;
+      else if (winner === 'b') winsB++;
+      else ties++;
+    });
+    return { winsA, winsB, ties, total: metricRows.length };
+  }, [metricRows]);
+
   // Timezone offsets
   const tzA = cityA ? lonToUtcOffset(cityA.lon) : null;
   const tzB = cityB ? lonToUtcOffset(cityB.lon) : null;
@@ -600,6 +614,42 @@ function ComparePageContent() {
                   {metricRows.map((row) => (
                     <ComparisonRow key={row.label} row={row} />
                   ))}
+                </div>
+
+                {/* Verdict Scorecard */}
+                <div className="bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-sm transition-all p-5 sm:p-6 mb-8">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Trophy className="w-5 h-5 text-amber-500" />
+                    <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Verdict</span>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div className="text-center">
+                      <div className={`text-3xl font-bold ${verdict.winsA > verdict.winsB ? 'text-emerald-600' : 'text-zinc-400'}`}>
+                        {verdict.winsA}
+                      </div>
+                      <div className="text-xs text-zinc-500 mt-1 truncate">{cityA.name}</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-zinc-300">{verdict.ties}</div>
+                      <div className="text-xs text-zinc-500 mt-1">Neutral</div>
+                    </div>
+                    <div className="text-center">
+                      <div className={`text-3xl font-bold ${verdict.winsB > verdict.winsA ? 'text-emerald-600' : 'text-zinc-400'}`}>
+                        {verdict.winsB}
+                      </div>
+                      <div className="text-xs text-zinc-500 mt-1 truncate">{cityB.name}</div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-zinc-600 text-center">
+                    {verdict.winsA > verdict.winsB
+                      ? `${cityA.name} wins on ${verdict.winsA} out of ${verdict.total} metrics.`
+                      : verdict.winsB > verdict.winsA
+                      ? `${cityB.name} wins on ${verdict.winsB} out of ${verdict.total} metrics.`
+                      : `It's a tie! Both cities win on ${verdict.winsA} metrics each.`
+                    }
+                  </p>
                 </div>
 
                 {/* Weather Comparison */}

@@ -866,7 +866,7 @@ export default function EditorPage() {
             'settings', 'dashboard', 'sitemap', 'robots', 'media', 'nomad', 'jobs', 'visas', 'costs',
             'wifi', 'passport', 'hiring', 'talent', 'discover', 'layoffs', 'news', 'resources', 'contact',
             'story', 'compare', 'companies', 'climate', 'fire', 'insurance', 'safety', 'salary', 'schengen',
-            'tax', 'timezone', 'versus', 'walkability',
+            'tax', 'timezone', 'walkability',
         ];
         if (RESERVED_SLUGS.includes(cleanSlug)) {
             setSlugError('This URL is reserved. Please choose a different one.');
