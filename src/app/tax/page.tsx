@@ -18,43 +18,44 @@ interface TaxCountry {
   rate: number;
   dnVisa: boolean;
   notes: string;
+  source: string;
 }
 
 const TAX_DATA: TaxCountry[] = [
-  { country: 'UAE', emoji: '🇦🇪', rate: 0, dnVisa: true, notes: 'No income tax' },
-  { country: 'Paraguay', emoji: '🇵🇾', rate: 0, dnVisa: false, notes: 'Territorial taxation' },
-  { country: 'Panama', emoji: '🇵🇦', rate: 0, dnVisa: true, notes: 'Territorial. Foreign income exempt' },
-  { country: 'Georgia', emoji: '🇬🇪', rate: 0, dnVisa: true, notes: 'Individual entrepreneur: 1% on revenue <500K GEL' },
-  { country: 'Malaysia', emoji: '🇲🇾', rate: 0, dnVisa: true, notes: 'Foreign-sourced income exempt' },
-  { country: 'Bahamas', emoji: '🇧🇸', rate: 0, dnVisa: false, notes: 'No income tax' },
-  { country: 'Montenegro', emoji: '🇲🇪', rate: 9, dnVisa: true, notes: 'Flat rate' },
-  { country: 'Bulgaria', emoji: '🇧🇬', rate: 10, dnVisa: false, notes: 'Flat rate' },
-  { country: 'Romania', emoji: '🇷🇴', rate: 10, dnVisa: true, notes: 'Flat rate + social contributions' },
-  { country: 'Serbia', emoji: '🇷🇸', rate: 10, dnVisa: false, notes: 'Flat rate' },
-  { country: 'Costa Rica', emoji: '🇨🇷', rate: 10, dnVisa: true, notes: 'Territorial taxation' },
-  { country: 'Colombia', emoji: '🇨🇴', rate: 10, dnVisa: true, notes: 'Low bracket for non-residents' },
-  { country: 'Singapore', emoji: '🇸🇬', rate: 3, dnVisa: false, notes: 'Progressive, very low at $60K' },
-  { country: 'Greece', emoji: '🇬🇷', rate: 7, dnVisa: true, notes: '7% flat for 15 years (non-dom regime)' },
-  { country: 'Albania', emoji: '🇦🇱', rate: 15, dnVisa: true, notes: 'Flat rate' },
-  { country: 'Hungary', emoji: '🇭🇺', rate: 15, dnVisa: false, notes: 'Flat rate' },
-  { country: 'Czech Republic', emoji: '🇨🇿', rate: 15, dnVisa: true, notes: 'Flat rate' },
-  { country: 'Thailand', emoji: '🇹🇭', rate: 15, dnVisa: true, notes: 'Progressive, effective for mid-income' },
-  { country: 'Croatia', emoji: '🇭🇷', rate: 20, dnVisa: true, notes: 'Flat rate' },
-  { country: 'Portugal', emoji: '🇵🇹', rate: 20, dnVisa: true, notes: 'NHR regime (20% flat)' },
-  { country: 'Estonia', emoji: '🇪🇪', rate: 20, dnVisa: true, notes: 'Only on distributions (e-Residency)' },
-  { country: 'Spain', emoji: '🇪🇸', rate: 24, dnVisa: true, notes: 'Beckham Law: 24% flat for 6 years' },
-  { country: 'Mexico', emoji: '🇲🇽', rate: 25, dnVisa: false, notes: 'Progressive, effective at mid-income' },
-  { country: 'US', emoji: '🇺🇸', rate: 30, dnVisa: false, notes: 'Federal + self-employment tax' },
-  { country: 'Australia', emoji: '🇦🇺', rate: 32, dnVisa: false, notes: 'Progressive, effective estimate' },
-  { country: 'UK', emoji: '🇬🇧', rate: 33, dnVisa: false, notes: 'Income tax + NI contributions' },
-  { country: 'Canada', emoji: '🇨🇦', rate: 33, dnVisa: false, notes: 'Federal + provincial combined' },
-  { country: 'Japan', emoji: '🇯🇵', rate: 33, dnVisa: false, notes: 'National + municipal tax' },
-  { country: 'Netherlands', emoji: '🇳🇱', rate: 37, dnVisa: false, notes: 'Box 1 income tax' },
-  { country: 'Ireland', emoji: '🇮🇪', rate: 40, dnVisa: false, notes: 'Income tax + USC + PRSI' },
-  { country: 'Germany', emoji: '🇩🇪', rate: 42, dnVisa: true, notes: 'Progressive, effective at mid-income' },
-  { country: 'France', emoji: '🇫🇷', rate: 45, dnVisa: false, notes: 'Progressive + social charges' },
-  { country: 'Sweden', emoji: '🇸🇪', rate: 50, dnVisa: false, notes: 'National + municipal tax' },
-  { country: 'Denmark', emoji: '🇩🇰', rate: 55, dnVisa: false, notes: 'Highest in the world' },
+  { country: 'UAE', emoji: '🇦🇪', rate: 0, dnVisa: true, notes: 'No personal income tax', source: 'tax.gov.ae' },
+  { country: 'Paraguay', emoji: '🇵🇾', rate: 0, dnVisa: false, notes: 'Territorial. Foreign income exempt', source: 'pwc.com' },
+  { country: 'Panama', emoji: '🇵🇦', rate: 0, dnVisa: true, notes: 'Territorial. Foreign income exempt', source: 'pwc.com' },
+  { country: 'Bahamas', emoji: '🇧🇸', rate: 0, dnVisa: false, notes: 'No personal income tax', source: 'bahamas.gov.bs' },
+  { country: 'Georgia', emoji: '🇬🇪', rate: 1, dnVisa: true, notes: '1% on revenue <500K GEL (Small Business Status). Excludes consulting', source: 'rs.ge' },
+  { country: 'Malaysia', emoji: '🇲🇾', rate: 0, dnVisa: true, notes: 'FSI exempt if taxed abroad (extended to 2036). Otherwise 0–30% progressive', source: 'hasil.gov.my' },
+  { country: 'Singapore', emoji: '🇸🇬', rate: 4, dnVisa: false, notes: 'Progressive 0–22%. ~4% effective at $60K USD for residents', source: 'iras.gov.sg' },
+  { country: 'Greece', emoji: '🇬🇷', rate: 7, dnVisa: true, notes: '7% flat for 15 years (non-dom regime on foreign income)', source: 'aade.gr' },
+  { country: 'Montenegro', emoji: '🇲🇪', rate: 9, dnVisa: true, notes: 'Flat 9% income tax', source: 'gov.me' },
+  { country: 'Bulgaria', emoji: '🇧🇬', rate: 10, dnVisa: false, notes: 'Flat 10%', source: 'nra.bg' },
+  { country: 'Romania', emoji: '🇷🇴', rate: 10, dnVisa: true, notes: '10% income tax + 25% social contributions on some income', source: 'anaf.ro' },
+  { country: 'Serbia', emoji: '🇷🇸', rate: 10, dnVisa: false, notes: 'Flat 10% income tax', source: 'poreskauprava.gov.rs' },
+  { country: 'Costa Rica', emoji: '🇨🇷', rate: 10, dnVisa: true, notes: 'Territorial. Only local income taxed (up to 25%)', source: 'hacienda.go.cr' },
+  { country: 'Albania', emoji: '🇦🇱', rate: 15, dnVisa: true, notes: 'Flat 15%', source: 'tatime.gov.al' },
+  { country: 'Hungary', emoji: '🇭🇺', rate: 15, dnVisa: false, notes: 'Flat 15%', source: 'nav.gov.hu' },
+  { country: 'Czech Republic', emoji: '🇨🇿', rate: 15, dnVisa: true, notes: 'Flat 15% (23% above ~$80K USD)', source: 'financnisprava.cz' },
+  { country: 'Croatia', emoji: '🇭🇷', rate: 20, dnVisa: true, notes: '20% up to ~$60K, 30% above', source: 'porezna-uprava.hr' },
+  { country: 'Estonia', emoji: '🇪🇪', rate: 20, dnVisa: true, notes: '20% flat. e-Residency: only on distributed profits', source: 'emta.ee' },
+  { country: 'Thailand', emoji: '🇹🇭', rate: 20, dnVisa: true, notes: 'Progressive 5–35%. Foreign income taxed if remitted while resident (180+ days)', source: 'rd.go.th' },
+  { country: 'Portugal', emoji: '🇵🇹', rate: 28, dnVisa: true, notes: 'NHR ended 2024. Standard progressive up to 48%. IFICI (NHR 2.0) very limited', source: 'portaldasfinancas.gov.pt' },
+  { country: 'Spain', emoji: '🇪🇸', rate: 24, dnVisa: true, notes: 'Beckham Law: 24% flat, 6 years. Employees only, not freelancers', source: 'agenciatributaria.es' },
+  { country: 'Mexico', emoji: '🇲🇽', rate: 25, dnVisa: false, notes: 'Progressive 1.9–35%. ~25% effective at mid-income', source: 'sat.gob.mx' },
+  { country: 'US', emoji: '🇺🇸', rate: 30, dnVisa: false, notes: 'Federal 10–37% + 15.3% self-employment tax', source: 'irs.gov' },
+  { country: 'Australia', emoji: '🇦🇺', rate: 32, dnVisa: false, notes: 'Progressive 0–45%. ~32% effective at mid-income', source: 'ato.gov.au' },
+  { country: 'UK', emoji: '🇬🇧', rate: 33, dnVisa: false, notes: '20–45% income tax + NI contributions', source: 'gov.uk/hmrc' },
+  { country: 'Canada', emoji: '🇨🇦', rate: 33, dnVisa: false, notes: 'Federal 15–33% + provincial. ~33% combined effective', source: 'canada.ca/cra' },
+  { country: 'Japan', emoji: '🇯🇵', rate: 33, dnVisa: false, notes: 'National 5–45% + municipal 10%', source: 'nta.go.jp' },
+  { country: 'Colombia', emoji: '🇨🇴', rate: 35, dnVisa: true, notes: 'Non-residents: 35% flat on local income. Residents: 0–39% progressive', source: 'dian.gov.co' },
+  { country: 'Netherlands', emoji: '🇳🇱', rate: 37, dnVisa: false, notes: 'Progressive 36.9–49.5% (Box 1)', source: 'belastingdienst.nl' },
+  { country: 'Ireland', emoji: '🇮🇪', rate: 40, dnVisa: false, notes: '20–40% income tax + USC + PRSI', source: 'revenue.ie' },
+  { country: 'Germany', emoji: '🇩🇪', rate: 42, dnVisa: true, notes: 'Progressive 14–45%. ~42% effective at mid-income', source: 'bzst.de' },
+  { country: 'France', emoji: '🇫🇷', rate: 45, dnVisa: false, notes: 'Progressive 0–45% + social charges', source: 'impots.gouv.fr' },
+  { country: 'Sweden', emoji: '🇸🇪', rate: 50, dnVisa: false, notes: 'National + municipal combined. Up to ~52%', source: 'skatteverket.se' },
+  { country: 'Denmark', emoji: '🇩🇰', rate: 55, dnVisa: false, notes: 'Among highest globally. Up to ~55.9%', source: 'skat.dk' },
 ];
 
 type SortKey = 'country' | 'rate' | 'taxAmount' | 'takeHome';
@@ -244,6 +245,9 @@ export default function TaxPage() {
                   <th className="text-left px-5 py-4">
                     <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Notes</span>
                   </th>
+                  <th className="text-left px-5 py-4">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Source</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -274,6 +278,9 @@ export default function TaxPage() {
                         )}
                       </td>
                       <td className="px-5 py-3.5 text-xs text-zinc-500 max-w-[200px] truncate">{c.notes}</td>
+                      <td className="px-5 py-3.5 text-xs text-zinc-400 whitespace-nowrap">
+                        <a href={`https://${c.source}`} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-700 underline underline-offset-2 transition-colors">{c.source}</a>
+                      </td>
                     </tr>
                   );
                 })}
@@ -298,6 +305,9 @@ export default function TaxPage() {
                   <div className="flex items-center justify-between text-xs text-zinc-500">
                     <span>Tax: {fmtCurrency(taxAmt)}</span>
                     <span className="font-medium text-zinc-700">Take-home: {fmtCurrency(takeHome)}</span>
+                  </div>
+                  <div className="text-xs text-zinc-400 mt-1">
+                    {c.notes} · <a href={`https://${c.source}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-zinc-600">{c.source}</a>
                   </div>
                 </div>
               );
