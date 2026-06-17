@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 import {
   ArrowLeft, ArrowDown, ArrowUp, Clock, Activity,
   Shield, AlertTriangle, BarChart3,
@@ -800,6 +801,7 @@ function RankingsContent() {
             {activeTab === 'walkability' && <WalkabilityTab cities={cities} />}
           </>
         )}
+        <BlogCTA />
       </main>
       <MicroFooter />
       <TelegramJobPopup />

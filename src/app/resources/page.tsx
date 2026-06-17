@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 import {
   ArrowLeft,
   Shield,
@@ -544,6 +545,8 @@ export default function ResourcesPage() {
             </section>
           ))}
         </div>
+
+        <BlogCTA />
 
         {/* Footer note */}
         <div className="mt-16 pt-8 border-t border-zinc-200">

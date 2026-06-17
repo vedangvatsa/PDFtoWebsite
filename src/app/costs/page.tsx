@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 import {
   ArrowLeft,
   ArrowUpDown,
@@ -658,6 +659,7 @@ export default function CostOfLivingPage() {
             </div>
           </>
         )}
+        <BlogCTA />
       </main>
       <MicroFooter />
       <TelegramJobPopup />

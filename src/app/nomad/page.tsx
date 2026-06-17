@@ -5,6 +5,7 @@ import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -157,6 +158,7 @@ export default function NomadMapPage() {
             ))}
           </div>
         </section>
+        <BlogCTA />
       </main>
       <MicroFooter />
       <TelegramJobPopup />
