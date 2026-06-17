@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 import { ArrowLeft, Flame, Loader2 } from 'lucide-react';
 
 interface City { slug: string; name: string; country: string; emoji: string; cost: { monthly_total: number }; nomad_score: number; }
@@ -119,6 +120,7 @@ export default function FirePage() {
             </table>
           </div>
         </>)}
+        <BlogCTA />
       </main>
       <MicroFooter />
       <TelegramJobPopup />

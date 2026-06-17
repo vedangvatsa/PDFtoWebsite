@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 import { ArrowLeft, ArrowUpDown, ArrowUp, ArrowDown, DollarSign, Info, Calculator, TrendingDown } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
@@ -317,6 +318,8 @@ export default function TaxPage() {
             })}
           </div>
         </div>
+
+        <BlogCTA />
 
         {/* Disclaimer */}
         <div className={PAGE_DISCLAIMER}>

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 import { ArrowLeft, Search, Coins, Calendar, DollarSign, ExternalLink, X, FileText, Landmark, Globe, Loader2 } from 'lucide-react';
 import VisaCheckerContent from './visa-checker';
 
@@ -1160,6 +1161,7 @@ function VisasPageInner() {
           </div>
         )}
         </>)}
+        <BlogCTA />
       </main>
 
       <MicroFooter />

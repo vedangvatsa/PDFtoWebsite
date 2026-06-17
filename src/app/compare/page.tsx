@@ -7,6 +7,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import BlogCTA from '@/components/blog-cta';
 import {
   ArrowLeft,
   DollarSign,
@@ -914,6 +915,7 @@ function ComparePageContent() {
             )}
           </>
         )}
+        <BlogCTA />
       </main>
       <MicroFooter />
       <TelegramJobPopup />
