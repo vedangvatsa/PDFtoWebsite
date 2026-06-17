@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'Digital Nomad Directory — 95 Cities in 52 Countries';
+export const alt = 'Digital Nomad Directory — 100 Cities in 56 Countries';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -41,7 +41,7 @@ export default async function Image() {
             Digital Nomad Directory
           </div>
           <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#71717a', gap: 24 }}>
-            <span>95 cities</span>
+            <span>100 cities</span>
             <span style={{ color: '#d4d4d8' }}>·</span>
             <span>52 countries</span>
             <span style={{ color: '#d4d4d8' }}>·</span>

@@ -32,7 +32,7 @@ export function ReportTOC({ cities }: { cities: RankedCity[] }) {
 
       {/* Intro text */}
       <p style={{ fontSize: 10, lineHeight: 1.7, color: '#52525b', margin: '0 0 20px 0', maxWidth: '85%' }}>
-        This report profiles the top 50 cities for digital nomads, selected from a pool of 95 candidates across {regions.size} continents and {new Set(cities.map(c => c.country)).size} countries. Each city receives a two-page spread with cost analysis, internet data, climate charts, and practical details.
+        This report profiles the top 50 cities for digital nomads, selected from a pool of 100 candidates across {regions.size} continents and {new Set(cities.map(c => c.country)).size} countries. Each city receives a two-page spread with cost analysis, internet data, climate charts, and practical details.
       </p>
 
       {/* Main sections */}

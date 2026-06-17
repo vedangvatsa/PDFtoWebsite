@@ -40,7 +40,7 @@ const TOOLS = [
     href: '/costs',
     icon: <Coins className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
     title: 'Cost of Living',
-    desc: 'Compare costs across 95 cities',
+    desc: 'Compare costs across 100 cities',
   },
   {
     href: '/compare',
@@ -76,12 +76,12 @@ const TOOLS = [
 
 export const metadata: Metadata = {
   title: 'Digital Nomad Directory',
-  description: 'Interactive directory of coliving houses, coworking spaces, hostels, apartments, and guesthouses across 95 digital nomad cities in 52 countries. Quality-scored, open-source data.',
+  description: 'Interactive directory of coliving houses, coworking spaces, hostels, apartments, and guesthouses across 100 digital nomad cities in 56 countries. Quality-scored, open-source data.',
   keywords: ['digital nomad', 'coliving', 'coworking', 'remote work', 'nomad directory', 'hostel', 'apartment'],
   alternates: { canonical: `${siteUrl}/nomad` },
   openGraph: {
     title: 'Digital Nomad Directory',
-    description: 'Coliving, coworking spaces, hostels, and apartments across 95 cities in 52 countries.',
+    description: 'Coliving, coworking spaces, hostels, and apartments across 100 cities in 56 countries.',
     url: `${siteUrl}/nomad`,
     siteName: 'CVin.Bio',
     type: 'website',
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Digital Nomad Directory',
-    description: 'Coliving, coworking spaces, hostels, and apartments across 95 cities in 52 countries.',
+    description: 'Coliving, coworking spaces, hostels, and apartments across 100 cities in 56 countries.',
     images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },
@@ -108,7 +108,7 @@ export default function NomadMapPage() {
             Digital Nomad Directory
           </h1>
           <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
-            Coliving houses, coworking spaces, hostels, apartments, and guesthouses across 95 cities in 52 countries.
+            Coliving houses, coworking spaces, hostels, apartments, and guesthouses across 100 cities in 56 countries.
           </p>
         </div>
 
