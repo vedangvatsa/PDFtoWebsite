@@ -119,7 +119,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/wifi`,
+      url: `${siteUrl}/rankings`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -155,18 +155,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/safety`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/salary`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
       url: `${siteUrl}/schengen`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
@@ -180,12 +168,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${siteUrl}/timezone`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/walkability`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
