@@ -12,7 +12,7 @@ export const PAGE_CONTAINER = 'w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:p
 export const PAGE_TITLE = 'text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 mb-3';
 
 /** Page subtitle — muted description below H1. */
-export const PAGE_SUBTITLE = 'text-lg text-zinc-600 max-w-3xl';
+export const PAGE_SUBTITLE = 'text-lg text-zinc-600 max-w-none';
 
 /** Disclaimer text block at bottom of data pages. */
 export const PAGE_DISCLAIMER = 'mt-8 flex items-start gap-2 text-xs text-zinc-400 leading-relaxed max-w-2xl';
