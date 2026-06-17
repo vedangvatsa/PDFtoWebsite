@@ -246,7 +246,7 @@ export default function TaxPage() {
                     <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Notes</span>
                   </th>
                   <th className="text-left px-5 py-4">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Source</span>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Read More</span>
                   </th>
                 </tr>
               </thead>
@@ -279,7 +279,7 @@ export default function TaxPage() {
                       </td>
                       <td className="px-5 py-3.5 text-xs text-zinc-500 max-w-[320px] whitespace-normal break-words">{c.notes}</td>
                       <td className="px-5 py-3.5 text-xs text-zinc-400 whitespace-nowrap">
-                        <a href={`https://${c.source}`} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-700 underline underline-offset-2 transition-colors">{c.source}</a>
+                        <a href={`https://${c.source}`} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-700 underline underline-offset-2 transition-colors">Read More</a>
                       </td>
                     </tr>
                   );
@@ -307,7 +307,7 @@ export default function TaxPage() {
                     <span className="font-medium text-zinc-700">Take-home: {fmtCurrency(takeHome)}</span>
                   </div>
                   <div className="text-xs text-zinc-400 mt-1">
-                    {c.notes} · <a href={`https://${c.source}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-zinc-600">{c.source}</a>
+                    {c.notes} · <a href={`https://${c.source}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-zinc-600">Read More</a>
                   </div>
                 </div>
               );
