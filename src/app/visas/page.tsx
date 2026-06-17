@@ -1,12 +1,14 @@
 'use client';
 import { PAGE_CONTAINER , PAGE_TITLE } from '@/lib/utils';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
-import { ArrowLeft, Search, Coins, Calendar, DollarSign, ExternalLink, X, FileText, Landmark } from 'lucide-react';
+import { ArrowLeft, Search, Coins, Calendar, DollarSign, ExternalLink, X, FileText, Landmark, Globe, Loader2 } from 'lucide-react';
+import VisaCheckerContent from './visa-checker';
 
 interface VisaData {
   country: string;
@@ -966,7 +968,22 @@ const VISAS: VisaData[] = [
   }
 ];
 
-export default function VisasPage() {
+function VisasPageInner() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const tab = searchParams.get('tab') === 'checker' ? 'checker' : 'programs';
+
+  const setTab = (t: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (t === 'programs') {
+      params.delete('tab');
+    } else {
+      params.set('tab', t);
+    }
+    const qs = params.toString();
+    router.push(qs ? `/visas?${qs}` : '/visas', { scroll: false });
+  };
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIncomeFilter, setSelectedIncomeFilter] = useState('all');
   const [selectedContinent, setSelectedContinent] = useState('all');
@@ -1007,14 +1024,42 @@ export default function VisasPage() {
         </Link>
 
         {/* Page Header */}
-        <div className="flex flex-col mb-10">
+        <div className="flex flex-col mb-6">
           <h1 className={PAGE_TITLE}>
-            Digital Nomad Visas
+            Visas & Travel
           </h1>
-          <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
-            Explore and compare {VISAS.length} active digital nomad visas across the world. Filter by region, income requirements, and tax rules.
-          </p>
         </div>
+
+        {/* Tab Bar */}
+        <div className="bg-zinc-100 rounded-lg p-1 inline-flex gap-1 mb-8">
+          <button
+            onClick={() => setTab('programs')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              tab === 'programs'
+                ? 'bg-white shadow-sm text-zinc-900'
+                : 'text-zinc-500 hover:text-zinc-700'
+            }`}
+          >
+            Nomad Visas
+          </button>
+          <button
+            onClick={() => setTab('checker')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              tab === 'checker'
+                ? 'bg-white shadow-sm text-zinc-900'
+                : 'text-zinc-500 hover:text-zinc-700'
+            }`}
+          >
+            Visa Checker
+          </button>
+        </div>
+
+        {tab === 'checker' && <VisaCheckerContent />}
+
+        {tab === 'programs' && (<>
+        <p className="text-xl text-zinc-600 transition-colors max-w-3xl mb-10">
+          Explore and compare {VISAS.length} active digital nomad visas across the world. Filter by region, income requirements, and tax rules.
+        </p>
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -1114,6 +1159,7 @@ export default function VisasPage() {
             <p className="text-sm text-zinc-500 mt-1">Try resetting search or filters.</p>
           </div>
         )}
+        </>)}
       </main>
 
       <MicroFooter />
@@ -1232,5 +1278,17 @@ export default function VisasPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function VisasPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-zinc-400" />
+      </div>
+    }>
+      <VisasPageInner />
+    </Suspense>
   );
 }

@@ -10,8 +10,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 import {
   Coins, GitCompare, ShieldCheck, Globe, Bookmark,
-  CloudSun, Clock, Stamp, Map, BarChart3,
-  DollarSign, Receipt, Flame, HeartPulse, Compass,
+  CloudSun, Clock, Map, BarChart3,
+  DollarSign, Receipt, Flame, Compass,
 } from 'lucide-react';
 
 const iconClass = 'h-4 w-4 text-zinc-400 group-hover:text-primary transition-colors shrink-0';
@@ -25,16 +25,13 @@ const ALL_TOOLS = {
     { href: '/climate', icon: <CloudSun className={iconClass} />, title: 'Climate', desc: 'Weather & climate finder' },
   ],
   'Travel & Visas': [
-    { href: '/visas', icon: <ShieldCheck className={iconClass} />, title: 'Nomad Visas', desc: 'Digital nomad visa options' },
-    { href: '/visa-checker', icon: <Stamp className={iconClass} />, title: 'Visa Checker', desc: 'Do you need a visa?' },
-    { href: '/passport', icon: <Globe className={iconClass} />, title: 'Passport Index', desc: 'How strong is your passport' },
+    { href: '/visas', icon: <ShieldCheck className={iconClass} />, title: 'Visas & Travel', desc: 'Nomad visas & visa checker' },
     { href: '/schengen', icon: <Map className={iconClass} />, title: 'Schengen Tracker', desc: 'Track your 90-day limit' },
   ],
   'Money & Planning': [
     { href: '/tax', icon: <Receipt className={iconClass} />, title: 'Tax Rates', desc: 'Tax rates by city' },
     { href: '/fire', icon: <Flame className={iconClass} />, title: 'FIRE Calculator', desc: 'Retirement runway planner' },
-    { href: '/insurance', icon: <HeartPulse className={iconClass} />, title: 'Insurance', desc: 'Travel insurance guide' },
-    { href: '/resources', icon: <Bookmark className={iconClass} />, title: 'Resources', desc: 'Best nomad tools & links' },
+    { href: '/resources', icon: <Bookmark className={iconClass} />, title: 'Resources', desc: 'Insurance, banking, tools & links' },
   ],
 };
 
