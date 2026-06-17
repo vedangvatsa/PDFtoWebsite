@@ -11,7 +11,6 @@ export const metadata: Metadata = {
     url: `${siteUrl}/rankings`,
     siteName: 'CVin.Bio',
     type: 'website',
-    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630 }],
   },
 };
 export default function Layout({ children }: { children: React.ReactNode }) { return children; }

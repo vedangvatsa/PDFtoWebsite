@@ -1,6 +1,8 @@
 import { ImageResponse } from 'next/og';
 import { getProfileBySlug } from '@/lib/supabase-server';
 import { blogMetadata } from '@/lib/blog-metadata';
+import path from 'path';
+import fs from 'fs';
 
 export const runtime = 'nodejs';
 
@@ -42,14 +44,89 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
     );
   }
 
+  // Check if it is a city guide
+  const citiesPath = path.join(process.cwd(), 'public', 'nomad-cities.json');
+  let cityData = null;
+  if (fs.existsSync(citiesPath)) {
+    const raw = fs.readFileSync(citiesPath, 'utf-8');
+    const cities = JSON.parse(raw);
+    cityData = cities.find((c: any) => c.slug === slug);
+  }
+
+  if (cityData) {
+    const costDisplay = `$${cityData.cost?.monthly_total?.toLocaleString() ?? '1,500'}`;
+    const tempDisplay = `${Math.round(cityData.weather?.avg_temp ?? 25)}°C`;
+    const spacesDisplay = `${cityData.spaces?.total ?? 0}`;
+    const speedDisplay = `${Math.round(cityData.internet?.download_mbps ?? 50)} Mbps`;
+
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#fafafa',
+            fontFamily: 'sans-serif',
+            padding: '60px 80px',
+            justifyContent: 'space-between',
+          }}
+        >
+          {/* Top branding */}
+          <div style={{ display: 'flex', fontSize: 14, fontWeight: 600, color: '#a1a1aa', letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
+            CVin.Bio · Digital Nomad Guide
+          </div>
+
+          {/* Title and location */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+              {cityData.emoji} {cityData.name}
+            </div>
+            <div style={{ display: 'flex', fontSize: 32, fontWeight: 500, color: '#71717a' }}>
+              {cityData.country} · Quality Score {cityData.nomad_score ?? 90}/100
+            </div>
+          </div>
+
+          {/* Info cards row */}
+          <div style={{ display: 'flex', flexDirection: 'row', gap: 16 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
+              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Monthly Cost</span>
+              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{costDisplay}</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
+              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Avg Temp</span>
+              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{tempDisplay}</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
+              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Coworking & Coliving</span>
+              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{spacesDisplay}</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
+              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Internet Speed</span>
+              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{speedDisplay}</span>
+            </div>
+          </div>
+
+          {/* Bottom URL */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #e4e4e7', paddingTop: 20 }}>
+            <span style={{ fontSize: 20, color: '#71717a', fontWeight: 500 }}>Find coliving, coworking, and costs</span>
+            <span style={{ fontSize: 20, color: '#6366f1', fontWeight: 600 }}>{`${siteDomain}/${slug}`}</span>
+          </div>
+        </div>
+      ),
+      { ...size, headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' } }
+    );
+  }
+
   const data = await getProfileBySlug(slug);
 
   if (!data) {
     return new ImageResponse(
       (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundColor: '#09090b', color: '#ffffff' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundColor: '#fafafa', color: '#09090b', fontFamily: 'sans-serif' }}>
           <div style={{ fontSize: 90, fontWeight: 800, letterSpacing: '-0.05em', marginBottom: 20 }}>CVin.Bio</div>
-          <div style={{ fontSize: 44, color: '#a1a1aa' }}>Turn Your CV into a Website</div>
+          <div style={{ fontSize: 44, color: '#71717a' }}>Turn Your CV into a Website</div>
         </div>
       ), { ...size }
     );

@@ -5,6 +5,6 @@ export const metadata: Metadata = {
   description: 'Filter 100 digital nomad cities by temperature, humidity, and rainfall. Find your ideal climate for any month of the year.',
   keywords: ['digital nomad climate', 'best weather nomad', 'temperature by city', 'weather finder'],
   alternates: { canonical: `${siteUrl}/climate` },
-  openGraph: { title: 'Climate Finder', description: 'Find cities with your ideal weather.', url: `${siteUrl}/climate`, siteName: 'CVin.Bio', type: 'website', images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630 }] },
+  openGraph: { title: 'Climate Finder', description: 'Find cities with your ideal weather.', url: `${siteUrl}/climate`, siteName: 'CVin.Bio', type: 'website' },
 };
 export default function Layout({ children }: { children: React.ReactNode }) { return children; }
