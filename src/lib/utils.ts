@@ -136,7 +136,7 @@ export const CITY_IMAGES: Record<string, string> = {
   // ── Spain (Canaries) ──
   'tenerife': '/images/cities/tenerife.png',
   'las-palmas': '/images/cities/las-palmas.png',
-  'gran-canaria-las-palmas': '/images/cities/las-palmas.png',
+
 
   // ── Americas ──
   'playa-del-carmen': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
