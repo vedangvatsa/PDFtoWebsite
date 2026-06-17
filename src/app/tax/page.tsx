@@ -159,14 +159,14 @@ export default function TaxPage() {
             <Calculator className="w-4 h-4 text-zinc-400" />
             <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Annual Income (USD)</span>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="relative w-full sm:w-auto">
               <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
               <input
                 type="number"
                 value={income}
                 onChange={(e) => setIncome(Math.max(0, Number(e.target.value)))}
-                className="pl-9 pr-4 py-2.5 w-48 bg-zinc-50 border border-zinc-200 rounded-lg text-lg font-semibold text-zinc-900 tabular-nums focus:outline-none focus:ring-2 focus:ring-zinc-300"
+                className="pl-9 pr-4 py-2.5 w-full sm:w-48 bg-zinc-50 border border-zinc-200 rounded-lg text-lg font-semibold text-zinc-900 tabular-nums focus:outline-none focus:ring-2 focus:ring-zinc-300"
               />
             </div>
             <div className="flex gap-2">
