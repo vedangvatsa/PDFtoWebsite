@@ -78,15 +78,17 @@ const SAFETY: Record<string, number> = {
   'siem-reap': 6.5, 'phnom-penh': 5.5, 'vientiane': 7.0, 'luang-prabang': 7.5,
   'kathmandu': 5.5, 'pokhara': 7.0, 'colombo': 6.0, 'batumi': 7.0,
   'yerevan': 7.5, 'tashkent': 6.5, 'almaty': 6.5,
-  'gran-canaria-las-palmas': 8.0, 'sofia': 7.0, 'dahab': 7.0,
+  'sofia': 7.0, 'dahab': 7.0,
   'santa-marta': 5.0, 'kilifi': 5.0, 'florianopolis': 6.0,
   'rio-de-janeiro': 4.5, 'roatan': 5.5, 'guadalajara': 5.0,
   'montevideo': 6.5, 'kas': 7.5, 'madeira-funchal': 8.5, 'ericeira': 7.8,
-  'krakow': 8.0, 'florianopolis-2': 6.0, 'cusco': 5.5,
+  'krakow': 8.0, 'cusco': 5.5,
   'sao-paulo': 4.5, 'palermo': 6.5, 'thessaloniki': 7.0,
   'vilnius': 8.0, 'shanghai': 7.5, 'riga': 7.5, 'valparaiso': 5.0,
   'hoi-an': 7.5, 'tulum': 5.5, 'oaxaca': 5.5, 'zanzibar': 5.5, 'lagos': 4.0,
   'warsaw': 7.5, 'komoro': 6.0,
+  'madrid': 7.0, 'melbourne': 8.0, 'tel-aviv': 6.5,
+  'tirana': 6.8, 'osaka': 9.0, 'merida': 6.0,
 };
 
 const DEFAULT_SAFETY = 6.0;
@@ -151,6 +153,15 @@ const WALKABILITY: Record<string, WalkData> = {
   'koh-phangan': { walk: 3.5, transit: 2.0, bike: 3.5, carFree: 'No' },
   'playa-del-carmen': { walk: 5.0, transit: 3.0, bike: 4.5, carFree: 'Difficult' },
   'tulum': { walk: 4.0, transit: 2.0, bike: 5.0, carFree: 'No' },
+  'madrid': { walk: 8.0, transit: 9.0, bike: 7.0, carFree: 'Yes' },
+  'melbourne': { walk: 7.5, transit: 8.0, bike: 7.5, carFree: 'Mostly' },
+  'tel-aviv': { walk: 8.0, transit: 7.0, bike: 8.0, carFree: 'Yes' },
+  'batumi': { walk: 6.5, transit: 4.5, bike: 5.0, carFree: 'Mostly' },
+  'tirana': { walk: 6.0, transit: 4.0, bike: 4.5, carFree: 'Difficult' },
+  'osaka': { walk: 8.5, transit: 9.5, bike: 8.0, carFree: 'Yes' },
+  'toronto': { walk: 7.5, transit: 8.5, bike: 7.0, carFree: 'Mostly' },
+  'merida': { walk: 6.0, transit: 4.0, bike: 5.5, carFree: 'Difficult' },
+  'dublin': { walk: 8.0, transit: 7.5, bike: 7.0, carFree: 'Mostly' },
 };
 
 const DEFAULT_WALK: WalkData = { walk: 5.5, transit: 5.0, bike: 4.5, carFree: 'Difficult' };
