@@ -129,7 +129,7 @@ export function ReportSources({ date }: { date: string }) {
         </p>
         <p style={{ fontSize: 10, lineHeight: 1.7, color: '#09090B', margin: 0, maxWidth: '85%' }}>
           CVin.Bio converts PDF resumes into portfolio websites. This report is generated from live data
-          collected across 95 cities worldwide and ranked using a weighted composite score covering internet
+          collected across 100 cities worldwide and ranked using a weighted composite score covering internet
           speed, cost of living, weather, and workspace availability.
         </p>
       </div>

@@ -107,7 +107,7 @@ export function ReportMethodology({ quarter }: { quarter: string }) {
               City Selection
             </div>
             <p style={{ fontSize: 9, lineHeight: 1.7, color: '#3f3f46', margin: 0 }}>
-              Initial pool: 95 cities. Screened for minimum 10 Mbps download, coworking availability, sufficient cost data. Top 50 by composite score are profiled.
+              Initial pool: 100 cities. Screened for minimum 10 Mbps download, coworking availability, sufficient cost data. Top 50 by composite score are profiled.
             </p>
           </div>
 

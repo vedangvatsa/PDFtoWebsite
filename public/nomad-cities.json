@@ -3720,126 +3720,6 @@
     }
   },
   {
-    "slug": "bali-cangguubud",
-    "name": "Bali (Canggu/Ubud)",
-    "country": "Indonesia",
-    "countryCode": "ID",
-    "continent": "Asia",
-    "lat": -8.5039888,
-    "lon": 115.2581287,
-    "emoji": "🇮🇩",
-    "weather": {
-      "monthly": [
-        {
-          "month": "Jan",
-          "temp": 25.3,
-          "humidity": 85,
-          "rain": 257
-        },
-        {
-          "month": "Feb",
-          "temp": 25,
-          "humidity": 88,
-          "rain": 296
-        },
-        {
-          "month": "Mar",
-          "temp": 25.3,
-          "humidity": 87,
-          "rain": 274
-        },
-        {
-          "month": "Apr",
-          "temp": 25.2,
-          "humidity": 87,
-          "rain": 204
-        },
-        {
-          "month": "May",
-          "temp": 25.1,
-          "humidity": 85,
-          "rain": 95
-        },
-        {
-          "month": "Jun",
-          "temp": 24.5,
-          "humidity": 85,
-          "rain": 90
-        },
-        {
-          "month": "Jul",
-          "temp": 23.5,
-          "humidity": 86,
-          "rain": 142
-        },
-        {
-          "month": "Aug",
-          "temp": 23.6,
-          "humidity": 84,
-          "rain": 79
-        },
-        {
-          "month": "Sep",
-          "temp": 24.2,
-          "humidity": 84,
-          "rain": 78
-        },
-        {
-          "month": "Oct",
-          "temp": 25.1,
-          "humidity": 84,
-          "rain": 134
-        },
-        {
-          "month": "Nov",
-          "temp": 25.4,
-          "humidity": 86,
-          "rain": 279
-        },
-        {
-          "month": "Dec",
-          "temp": 25.2,
-          "humidity": 86,
-          "rain": 296
-        }
-      ],
-      "avg_temp": 24.8,
-      "avg_humidity": 86,
-      "annual_rain": 2224
-    },
-    "cost": {
-      "monthly_total": 1000,
-      "rent": 400,
-      "food": 260,
-      "transport": 50,
-      "coworking": 140,
-      "other": 150
-    },
-    "spaces": {
-      "coliving": 0,
-      "hostel": 44,
-      "apartment": 26,
-      "guesthouse": 152,
-      "coworking": 0,
-      "total": 222
-    },
-    "nomad_score": 80,
-    "nearby": [
-      "bali",
-      "canggu",
-      "singapore",
-      "johor",
-      "kuala-lumpur"
-    ],
-    "internet": {
-      "download_mbps": 81.6,
-      "upload_mbps": 73.9,
-      "latency_ms": 14,
-      "test_count": 44529,
-      "quarter": "2026-Q1"
-    }
-  },
-  {
     "slug": "accra",
     "name": "Accra",
     "country": "Ghana",
@@ -5636,126 +5516,6 @@
       "upload_mbps": 165.3,
       "latency_ms": 9,
       "test_count": 81221,
-      "quarter": "2026-Q1"
-    }
-  },
-  {
-    "slug": "gran-canaria-las-palmas",
-    "name": "Gran Canaria (Las Palmas)",
-    "country": "Spain",
-    "countryCode": "ES",
-    "continent": "Europe",
-    "lat": 28.1406525,
-    "lon": -15.4319702,
-    "emoji": "🇪🇸",
-    "weather": {
-      "monthly": [
-        {
-          "month": "Jan",
-          "temp": 18.3,
-          "humidity": 65,
-          "rain": 58
-        },
-        {
-          "month": "Feb",
-          "temp": 18.1,
-          "humidity": 67,
-          "rain": 52
-        },
-        {
-          "month": "Mar",
-          "temp": 18.2,
-          "humidity": 74,
-          "rain": 54
-        },
-        {
-          "month": "Apr",
-          "temp": 19.4,
-          "humidity": 70,
-          "rain": 26
-        },
-        {
-          "month": "May",
-          "temp": 20,
-          "humidity": 74,
-          "rain": 20
-        },
-        {
-          "month": "Jun",
-          "temp": 21.5,
-          "humidity": 77,
-          "rain": 23
-        },
-        {
-          "month": "Jul",
-          "temp": 23.4,
-          "humidity": 72,
-          "rain": 11
-        },
-        {
-          "month": "Aug",
-          "temp": 24.2,
-          "humidity": 73,
-          "rain": 13
-        },
-        {
-          "month": "Sep",
-          "temp": 23,
-          "humidity": 78,
-          "rain": 62
-        },
-        {
-          "month": "Oct",
-          "temp": 23.3,
-          "humidity": 71,
-          "rain": 42
-        },
-        {
-          "month": "Nov",
-          "temp": 21.6,
-          "humidity": 70,
-          "rain": 33
-        },
-        {
-          "month": "Dec",
-          "temp": 19.3,
-          "humidity": 68,
-          "rain": 73
-        }
-      ],
-      "avg_temp": 20.9,
-      "avg_humidity": 72,
-      "annual_rain": 467
-    },
-    "cost": {
-      "monthly_total": 1800,
-      "rent": 750,
-      "food": 400,
-      "transport": 60,
-      "coworking": 230,
-      "other": 360
-    },
-    "spaces": {
-      "coliving": 0,
-      "hostel": 9,
-      "apartment": 2,
-      "guesthouse": 0,
-      "coworking": 1,
-      "total": 12
-    },
-    "nomad_score": 77,
-    "nearby": [
-      "las-palmas",
-      "tenerife",
-      "madeira-funchal",
-      "marrakech",
-      "lisbon"
-    ],
-    "internet": {
-      "download_mbps": 298.8,
-      "upload_mbps": 251.8,
-      "latency_ms": 39,
-      "test_count": 6417,
       "quarter": "2026-Q1"
     }
   },
@@ -8880,126 +8640,6 @@
     }
   },
   {
-    "slug": "florianopolis-2",
-    "name": "Florianopolis",
-    "country": "Brazil",
-    "countryCode": "BR",
-    "continent": "South America",
-    "lat": -27.6048846,
-    "lon": -48.4687012,
-    "emoji": "🇧🇷",
-    "weather": {
-      "monthly": [
-        {
-          "month": "Jan",
-          "temp": 24.9,
-          "humidity": 80,
-          "rain": 153
-        },
-        {
-          "month": "Feb",
-          "temp": 25.1,
-          "humidity": 81,
-          "rain": 167
-        },
-        {
-          "month": "Mar",
-          "temp": 24.6,
-          "humidity": 81,
-          "rain": 143
-        },
-        {
-          "month": "Apr",
-          "temp": 22,
-          "humidity": 82,
-          "rain": 145
-        },
-        {
-          "month": "May",
-          "temp": 19.3,
-          "humidity": 82,
-          "rain": 158
-        },
-        {
-          "month": "Jun",
-          "temp": 17.6,
-          "humidity": 83,
-          "rain": 99
-        },
-        {
-          "month": "Jul",
-          "temp": 16.9,
-          "humidity": 84,
-          "rain": 100
-        },
-        {
-          "month": "Aug",
-          "temp": 17.1,
-          "humidity": 82,
-          "rain": 111
-        },
-        {
-          "month": "Sep",
-          "temp": 19.1,
-          "humidity": 82,
-          "rain": 90
-        },
-        {
-          "month": "Oct",
-          "temp": 20.2,
-          "humidity": 82,
-          "rain": 238
-        },
-        {
-          "month": "Nov",
-          "temp": 21.7,
-          "humidity": 81,
-          "rain": 216
-        },
-        {
-          "month": "Dec",
-          "temp": 23.6,
-          "humidity": 79,
-          "rain": 181
-        }
-      ],
-      "avg_temp": 21,
-      "avg_humidity": 82,
-      "annual_rain": 1801
-    },
-    "cost": {
-      "monthly_total": 1600,
-      "rent": 650,
-      "food": 380,
-      "transport": 60,
-      "coworking": 200,
-      "other": 310
-    },
-    "spaces": {
-      "coliving": 0,
-      "hostel": 10,
-      "apartment": 0,
-      "guesthouse": 9,
-      "coworking": 0,
-      "total": 19
-    },
-    "nomad_score": 69,
-    "nearby": [
-      "florianopolis",
-      "sao-paulo",
-      "rio-de-janeiro",
-      "montevideo",
-      "buenos-aires"
-    ],
-    "internet": {
-      "download_mbps": 345.9,
-      "upload_mbps": 211.3,
-      "latency_ms": 10,
-      "test_count": 39449,
-      "quarter": "2026-Q1"
-    }
-  },
-  {
     "slug": "cusco",
     "name": "Cusco",
     "country": "Peru",
@@ -11396,6 +11036,955 @@
       "upload_mbps": 148.6,
       "latency_ms": 25,
       "test_count": 1293,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "madrid",
+    "name": "Madrid",
+    "country": "Spain",
+    "countryCode": "ES",
+    "continent": "Europe",
+    "lat": 40.4168,
+    "lon": -3.7038,
+    "emoji": "🇪🇸",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 6.3,
+          "humidity": 71,
+          "rain": 33
+        },
+        {
+          "month": "Feb",
+          "temp": 7.9,
+          "humidity": 63,
+          "rain": 34
+        },
+        {
+          "month": "Mar",
+          "temp": 11.2,
+          "humidity": 54,
+          "rain": 25
+        },
+        {
+          "month": "Apr",
+          "temp": 13.1,
+          "humidity": 53,
+          "rain": 45
+        },
+        {
+          "month": "May",
+          "temp": 17.3,
+          "humidity": 49,
+          "rain": 47
+        },
+        {
+          "month": "Jun",
+          "temp": 22.5,
+          "humidity": 39,
+          "rain": 21
+        },
+        {
+          "month": "Jul",
+          "temp": 26.1,
+          "humidity": 31,
+          "rain": 12
+        },
+        {
+          "month": "Aug",
+          "temp": 25.6,
+          "humidity": 33,
+          "rain": 10
+        },
+        {
+          "month": "Sep",
+          "temp": 21.2,
+          "humidity": 44,
+          "rain": 22
+        },
+        {
+          "month": "Oct",
+          "temp": 15.1,
+          "humidity": 60,
+          "rain": 46
+        },
+        {
+          "month": "Nov",
+          "temp": 9.9,
+          "humidity": 70,
+          "rain": 56
+        },
+        {
+          "month": "Dec",
+          "temp": 6.9,
+          "humidity": 74,
+          "rain": 56
+        }
+      ],
+      "avg_temp": 15.3,
+      "avg_humidity": 53,
+      "annual_rain": 407
+    },
+    "cost": {
+      "monthly_total": 2100,
+      "rent": 1000,
+      "food": 450,
+      "transport": 80,
+      "coworking": 250,
+      "other": 320
+    },
+    "spaces": {
+      "coliving": 5,
+      "hostel": 45,
+      "apartment": 12,
+      "guesthouse": 20,
+      "coworking": 35,
+      "total": 117
+    },
+    "nomad_score": 88,
+    "nearby": [
+      "barcelona",
+      "lisbon",
+      "valencia",
+      "malaga",
+      "porto"
+    ],
+    "internet": {
+      "download_mbps": 198.5,
+      "upload_mbps": 142.3,
+      "latency_ms": 8,
+      "test_count": 85210,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "melbourne",
+    "name": "Melbourne",
+    "country": "Australia",
+    "countryCode": "AU",
+    "continent": "Oceania",
+    "lat": -37.8136,
+    "lon": 144.9631,
+    "emoji": "🇦🇺",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 25.9,
+          "humidity": 47,
+          "rain": 47
+        },
+        {
+          "month": "Feb",
+          "temp": 25.8,
+          "humidity": 49,
+          "rain": 48
+        },
+        {
+          "month": "Mar",
+          "temp": 23.9,
+          "humidity": 51,
+          "rain": 50
+        },
+        {
+          "month": "Apr",
+          "temp": 20.3,
+          "humidity": 57,
+          "rain": 57
+        },
+        {
+          "month": "May",
+          "temp": 16.7,
+          "humidity": 63,
+          "rain": 56
+        },
+        {
+          "month": "Jun",
+          "temp": 14.1,
+          "humidity": 68,
+          "rain": 49
+        },
+        {
+          "month": "Jul",
+          "temp": 13.5,
+          "humidity": 68,
+          "rain": 48
+        },
+        {
+          "month": "Aug",
+          "temp": 14.8,
+          "humidity": 63,
+          "rain": 50
+        },
+        {
+          "month": "Sep",
+          "temp": 17.0,
+          "humidity": 57,
+          "rain": 58
+        },
+        {
+          "month": "Oct",
+          "temp": 19.7,
+          "humidity": 53,
+          "rain": 66
+        },
+        {
+          "month": "Nov",
+          "temp": 22.0,
+          "humidity": 50,
+          "rain": 60
+        },
+        {
+          "month": "Dec",
+          "temp": 24.2,
+          "humidity": 48,
+          "rain": 59
+        }
+      ],
+      "avg_temp": 19.8,
+      "avg_humidity": 56,
+      "annual_rain": 648
+    },
+    "cost": {
+      "monthly_total": 2800,
+      "rent": 1400,
+      "food": 550,
+      "transport": 120,
+      "coworking": 350,
+      "other": 380
+    },
+    "spaces": {
+      "coliving": 3,
+      "hostel": 38,
+      "apartment": 15,
+      "guesthouse": 10,
+      "coworking": 42,
+      "total": 108
+    },
+    "nomad_score": 79,
+    "nearby": [
+      "singapore",
+      "bali"
+    ],
+    "internet": {
+      "download_mbps": 102.4,
+      "upload_mbps": 48.7,
+      "latency_ms": 12,
+      "test_count": 62340,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "tel-aviv",
+    "name": "Tel Aviv",
+    "country": "Israel",
+    "countryCode": "IL",
+    "continent": "Asia",
+    "lat": 32.0853,
+    "lon": 34.7818,
+    "emoji": "🇮🇱",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 13.4,
+          "humidity": 69,
+          "rain": 128
+        },
+        {
+          "month": "Feb",
+          "temp": 13.5,
+          "humidity": 68,
+          "rain": 91
+        },
+        {
+          "month": "Mar",
+          "temp": 15.6,
+          "humidity": 67,
+          "rain": 60
+        },
+        {
+          "month": "Apr",
+          "temp": 18.6,
+          "humidity": 64,
+          "rain": 15
+        },
+        {
+          "month": "May",
+          "temp": 21.7,
+          "humidity": 66,
+          "rain": 3
+        },
+        {
+          "month": "Jun",
+          "temp": 24.8,
+          "humidity": 68,
+          "rain": 0
+        },
+        {
+          "month": "Jul",
+          "temp": 27.0,
+          "humidity": 71,
+          "rain": 0
+        },
+        {
+          "month": "Aug",
+          "temp": 27.6,
+          "humidity": 72,
+          "rain": 0
+        },
+        {
+          "month": "Sep",
+          "temp": 26.2,
+          "humidity": 66,
+          "rain": 1
+        },
+        {
+          "month": "Oct",
+          "temp": 23.0,
+          "humidity": 63,
+          "rain": 25
+        },
+        {
+          "month": "Nov",
+          "temp": 18.5,
+          "humidity": 60,
+          "rain": 73
+        },
+        {
+          "month": "Dec",
+          "temp": 14.6,
+          "humidity": 65,
+          "rain": 117
+        }
+      ],
+      "avg_temp": 20.4,
+      "avg_humidity": 67,
+      "annual_rain": 513
+    },
+    "cost": {
+      "monthly_total": 3200,
+      "rent": 1600,
+      "food": 600,
+      "transport": 100,
+      "coworking": 400,
+      "other": 500
+    },
+    "spaces": {
+      "coliving": 4,
+      "hostel": 22,
+      "apartment": 10,
+      "guesthouse": 8,
+      "coworking": 28,
+      "total": 72
+    },
+    "nomad_score": 80,
+    "nearby": [
+      "istanbul",
+      "athens",
+      "dubai",
+      "tbilisi"
+    ],
+    "internet": {
+      "download_mbps": 115.2,
+      "upload_mbps": 52.8,
+      "latency_ms": 10,
+      "test_count": 31450,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "batumi",
+    "name": "Batumi",
+    "country": "Georgia",
+    "countryCode": "GE",
+    "continent": "Asia",
+    "lat": 41.6168,
+    "lon": 41.6367,
+    "emoji": "🇬🇪",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 6.5,
+          "humidity": 76,
+          "rain": 170
+        },
+        {
+          "month": "Feb",
+          "temp": 6.8,
+          "humidity": 75,
+          "rain": 130
+        },
+        {
+          "month": "Mar",
+          "temp": 8.9,
+          "humidity": 76,
+          "rain": 110
+        },
+        {
+          "month": "Apr",
+          "temp": 12.4,
+          "humidity": 78,
+          "rain": 85
+        },
+        {
+          "month": "May",
+          "temp": 16.5,
+          "humidity": 79,
+          "rain": 75
+        },
+        {
+          "month": "Jun",
+          "temp": 20.6,
+          "humidity": 77,
+          "rain": 130
+        },
+        {
+          "month": "Jul",
+          "temp": 23.2,
+          "humidity": 75,
+          "rain": 140
+        },
+        {
+          "month": "Aug",
+          "temp": 23.5,
+          "humidity": 74,
+          "rain": 180
+        },
+        {
+          "month": "Sep",
+          "temp": 20.1,
+          "humidity": 75,
+          "rain": 200
+        },
+        {
+          "month": "Oct",
+          "temp": 16.0,
+          "humidity": 76,
+          "rain": 210
+        },
+        {
+          "month": "Nov",
+          "temp": 12.0,
+          "humidity": 76,
+          "rain": 210
+        },
+        {
+          "month": "Dec",
+          "temp": 8.2,
+          "humidity": 76,
+          "rain": 190
+        }
+      ],
+      "avg_temp": 14.6,
+      "avg_humidity": 76,
+      "annual_rain": 1830
+    },
+    "cost": {
+      "monthly_total": 750,
+      "rent": 300,
+      "food": 200,
+      "transport": 30,
+      "coworking": 80,
+      "other": 140
+    },
+    "spaces": {
+      "coliving": 6,
+      "hostel": 35,
+      "apartment": 8,
+      "guesthouse": 45,
+      "coworking": 8,
+      "total": 102
+    },
+    "nomad_score": 82,
+    "nearby": [
+      "tbilisi",
+      "istanbul",
+      "bucharest",
+      "athens"
+    ],
+    "internet": {
+      "download_mbps": 58.3,
+      "upload_mbps": 34.1,
+      "latency_ms": 18,
+      "test_count": 4520,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "tirana",
+    "name": "Tirana",
+    "country": "Albania",
+    "countryCode": "AL",
+    "continent": "Europe",
+    "lat": 41.3275,
+    "lon": 19.8187,
+    "emoji": "🇦🇱",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 5.5,
+          "humidity": 76,
+          "rain": 130
+        },
+        {
+          "month": "Feb",
+          "temp": 6.8,
+          "humidity": 73,
+          "rain": 115
+        },
+        {
+          "month": "Mar",
+          "temp": 9.5,
+          "humidity": 70,
+          "rain": 105
+        },
+        {
+          "month": "Apr",
+          "temp": 13.5,
+          "humidity": 68,
+          "rain": 100
+        },
+        {
+          "month": "May",
+          "temp": 18.0,
+          "humidity": 65,
+          "rain": 85
+        },
+        {
+          "month": "Jun",
+          "temp": 22.0,
+          "humidity": 58,
+          "rain": 45
+        },
+        {
+          "month": "Jul",
+          "temp": 25.0,
+          "humidity": 52,
+          "rain": 28
+        },
+        {
+          "month": "Aug",
+          "temp": 24.8,
+          "humidity": 53,
+          "rain": 35
+        },
+        {
+          "month": "Sep",
+          "temp": 21.0,
+          "humidity": 60,
+          "rain": 75
+        },
+        {
+          "month": "Oct",
+          "temp": 15.8,
+          "humidity": 70,
+          "rain": 120
+        },
+        {
+          "month": "Nov",
+          "temp": 10.8,
+          "humidity": 77,
+          "rain": 170
+        },
+        {
+          "month": "Dec",
+          "temp": 7.0,
+          "humidity": 78,
+          "rain": 150
+        }
+      ],
+      "avg_temp": 15.0,
+      "avg_humidity": 67,
+      "annual_rain": 1158
+    },
+    "cost": {
+      "monthly_total": 850,
+      "rent": 350,
+      "food": 220,
+      "transport": 30,
+      "coworking": 100,
+      "other": 150
+    },
+    "spaces": {
+      "coliving": 3,
+      "hostel": 28,
+      "apartment": 6,
+      "guesthouse": 32,
+      "coworking": 10,
+      "total": 79
+    },
+    "nomad_score": 78,
+    "nearby": [
+      "sofia",
+      "belgrade",
+      "athens",
+      "dubrovnik"
+    ],
+    "internet": {
+      "download_mbps": 52.1,
+      "upload_mbps": 28.4,
+      "latency_ms": 22,
+      "test_count": 3890,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "osaka",
+    "name": "Osaka",
+    "country": "Japan",
+    "countryCode": "JP",
+    "continent": "Asia",
+    "lat": 34.6937,
+    "lon": 135.5023,
+    "emoji": "🇯🇵",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 5.8,
+          "humidity": 61,
+          "rain": 45
+        },
+        {
+          "month": "Feb",
+          "temp": 6.3,
+          "humidity": 60,
+          "rain": 60
+        },
+        {
+          "month": "Mar",
+          "temp": 9.7,
+          "humidity": 59,
+          "rain": 104
+        },
+        {
+          "month": "Apr",
+          "temp": 15.4,
+          "humidity": 59,
+          "rain": 104
+        },
+        {
+          "month": "May",
+          "temp": 20.2,
+          "humidity": 62,
+          "rain": 131
+        },
+        {
+          "month": "Jun",
+          "temp": 23.7,
+          "humidity": 70,
+          "rain": 184
+        },
+        {
+          "month": "Jul",
+          "temp": 27.5,
+          "humidity": 72,
+          "rain": 157
+        },
+        {
+          "month": "Aug",
+          "temp": 28.8,
+          "humidity": 68,
+          "rain": 90
+        },
+        {
+          "month": "Sep",
+          "temp": 25.0,
+          "humidity": 68,
+          "rain": 161
+        },
+        {
+          "month": "Oct",
+          "temp": 19.2,
+          "humidity": 64,
+          "rain": 112
+        },
+        {
+          "month": "Nov",
+          "temp": 13.5,
+          "humidity": 64,
+          "rain": 69
+        },
+        {
+          "month": "Dec",
+          "temp": 8.2,
+          "humidity": 62,
+          "rain": 43
+        }
+      ],
+      "avg_temp": 16.9,
+      "avg_humidity": 64,
+      "annual_rain": 1260
+    },
+    "cost": {
+      "monthly_total": 1800,
+      "rent": 800,
+      "food": 400,
+      "transport": 100,
+      "coworking": 200,
+      "other": 300
+    },
+    "spaces": {
+      "coliving": 4,
+      "hostel": 55,
+      "apartment": 8,
+      "guesthouse": 30,
+      "coworking": 18,
+      "total": 115
+    },
+    "nomad_score": 84,
+    "nearby": [
+      "tokyo",
+      "seoul",
+      "taipei",
+      "shanghai"
+    ],
+    "internet": {
+      "download_mbps": 210.5,
+      "upload_mbps": 175.2,
+      "latency_ms": 7,
+      "test_count": 52180,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "toronto",
+    "name": "Toronto",
+    "country": "Canada",
+    "countryCode": "CA",
+    "continent": "North America",
+    "lat": 43.6532,
+    "lon": -79.3832,
+    "emoji": "🇨🇦",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": -3.7,
+          "humidity": 73,
+          "rain": 52
+        },
+        {
+          "month": "Feb",
+          "temp": -2.6,
+          "humidity": 70,
+          "rain": 47
+        },
+        {
+          "month": "Mar",
+          "temp": 2.2,
+          "humidity": 67,
+          "rain": 53
+        },
+        {
+          "month": "Apr",
+          "temp": 8.9,
+          "humidity": 62,
+          "rain": 68
+        },
+        {
+          "month": "May",
+          "temp": 15.4,
+          "humidity": 61,
+          "rain": 74
+        },
+        {
+          "month": "Jun",
+          "temp": 20.8,
+          "humidity": 63,
+          "rain": 71
+        },
+        {
+          "month": "Jul",
+          "temp": 23.5,
+          "humidity": 63,
+          "rain": 64
+        },
+        {
+          "month": "Aug",
+          "temp": 22.4,
+          "humidity": 65,
+          "rain": 81
+        },
+        {
+          "month": "Sep",
+          "temp": 18.2,
+          "humidity": 67,
+          "rain": 75
+        },
+        {
+          "month": "Oct",
+          "temp": 11.5,
+          "humidity": 69,
+          "rain": 64
+        },
+        {
+          "month": "Nov",
+          "temp": 5.4,
+          "humidity": 74,
+          "rain": 70
+        },
+        {
+          "month": "Dec",
+          "temp": -0.4,
+          "humidity": 75,
+          "rain": 62
+        }
+      ],
+      "avg_temp": 10.1,
+      "avg_humidity": 67,
+      "annual_rain": 781
+    },
+    "cost": {
+      "monthly_total": 2600,
+      "rent": 1300,
+      "food": 500,
+      "transport": 110,
+      "coworking": 300,
+      "other": 390
+    },
+    "spaces": {
+      "coliving": 3,
+      "hostel": 25,
+      "apartment": 10,
+      "guesthouse": 8,
+      "coworking": 45,
+      "total": 91
+    },
+    "nomad_score": 77,
+    "nearby": [
+      "san-francisco"
+    ],
+    "internet": {
+      "download_mbps": 185.3,
+      "upload_mbps": 95.6,
+      "latency_ms": 9,
+      "test_count": 71200,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "merida",
+    "name": "Merida",
+    "country": "Mexico",
+    "countryCode": "MX",
+    "continent": "North America",
+    "lat": 20.9674,
+    "lon": -89.5926,
+    "emoji": "🇲🇽",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 23.2,
+          "humidity": 74,
+          "rain": 32
+        },
+        {
+          "month": "Feb",
+          "temp": 24.0,
+          "humidity": 70,
+          "rain": 20
+        },
+        {
+          "month": "Mar",
+          "temp": 26.2,
+          "humidity": 66,
+          "rain": 15
+        },
+        {
+          "month": "Apr",
+          "temp": 28.2,
+          "humidity": 64,
+          "rain": 18
+        },
+        {
+          "month": "May",
+          "temp": 29.3,
+          "humidity": 66,
+          "rain": 65
+        },
+        {
+          "month": "Jun",
+          "temp": 28.8,
+          "humidity": 74,
+          "rain": 140
+        },
+        {
+          "month": "Jul",
+          "temp": 28.5,
+          "humidity": 76,
+          "rain": 155
+        },
+        {
+          "month": "Aug",
+          "temp": 28.3,
+          "humidity": 77,
+          "rain": 155
+        },
+        {
+          "month": "Sep",
+          "temp": 27.5,
+          "humidity": 80,
+          "rain": 175
+        },
+        {
+          "month": "Oct",
+          "temp": 26.2,
+          "humidity": 79,
+          "rain": 105
+        },
+        {
+          "month": "Nov",
+          "temp": 24.5,
+          "humidity": 77,
+          "rain": 40
+        },
+        {
+          "month": "Dec",
+          "temp": 23.3,
+          "humidity": 76,
+          "rain": 30
+        }
+      ],
+      "avg_temp": 26.5,
+      "avg_humidity": 73,
+      "annual_rain": 950
+    },
+    "cost": {
+      "monthly_total": 1000,
+      "rent": 450,
+      "food": 250,
+      "transport": 40,
+      "coworking": 100,
+      "other": 160
+    },
+    "spaces": {
+      "coliving": 5,
+      "hostel": 32,
+      "apartment": 6,
+      "guesthouse": 25,
+      "coworking": 12,
+      "total": 80
+    },
+    "nomad_score": 85,
+    "nearby": [
+      "mexico-city",
+      "playa-del-carmen",
+      "tulum",
+      "oaxaca",
+      "guadalajara"
+    ],
+    "internet": {
+      "download_mbps": 72.4,
+      "upload_mbps": 35.8,
+      "latency_ms": 15,
+      "test_count": 8920,
       "quarter": "2026-Q1"
     }
   }

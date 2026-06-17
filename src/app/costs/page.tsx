@@ -247,7 +247,7 @@ export default function CostOfLivingPage() {
             Cost of Living
           </h1>
           <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
-            Compare monthly costs across 95 digital nomad cities. Filter by
+            Compare monthly costs across 100 digital nomad cities. Filter by
             budget, and sort by rent, food, or coworking to find your next base.
           </p>
         </div>

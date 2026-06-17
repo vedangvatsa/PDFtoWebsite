@@ -26,7 +26,7 @@ export async function GET() {
     '',
     '## Nomad Directory & Tools',
     '',
-    `> Directory of 95 digital nomad cities with cost of living, visas, wifi speeds, and interactive tools for remote workers.`,
+    `> Directory of 100 digital nomad cities with cost of living, visas, wifi speeds, and interactive tools for remote workers.`,
     '',
     `- Digital Nomad Directory: ${siteUrl}/nomad`,
     `- Cost of Living & Purchasing Power: ${siteUrl}/costs`,
