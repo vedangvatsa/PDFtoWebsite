@@ -8,7 +8,39 @@ import { TelegramJobPopup } from '@/components/telegram-job-popup';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
-import { Coins, GitCompare, ShieldCheck, Wifi, Globe, Bookmark } from 'lucide-react';
+import {
+  Coins, GitCompare, ShieldCheck, Wifi, Globe, Bookmark,
+  CloudSun, Shield, Footprints, Clock, Stamp, Map,
+  Swords, DollarSign, Receipt, Flame, HeartPulse, Compass,
+} from 'lucide-react';
+
+const iconClass = 'h-4 w-4 text-zinc-400 group-hover:text-primary transition-colors shrink-0';
+
+const ALL_TOOLS = {
+  'City Research': [
+    { href: '/costs', icon: <Coins className={iconClass} />, title: 'Cost of Living', desc: 'Compare living costs abroad' },
+    { href: '/compare', icon: <GitCompare className={iconClass} />, title: 'Compare Cities', desc: 'Side-by-side city comparison' },
+    { href: '/versus', icon: <Swords className={iconClass} />, title: 'City vs City', desc: 'Head-to-head city matchup' },
+    { href: '/discover', icon: <Compass className={iconClass} />, title: 'Discover', desc: 'Find hidden gem cities' },
+    { href: '/safety', icon: <Shield className={iconClass} />, title: 'Safety', desc: 'City safety rankings' },
+    { href: '/climate', icon: <CloudSun className={iconClass} />, title: 'Climate', desc: 'Weather & climate finder' },
+    { href: '/walkability', icon: <Footprints className={iconClass} />, title: 'Walkability', desc: 'Walk & transit scores' },
+    { href: '/wifi', icon: <Wifi className={iconClass} />, title: 'Internet Speeds', desc: 'WiFi speed rankings' },
+  ],
+  'Travel & Visas': [
+    { href: '/visas', icon: <ShieldCheck className={iconClass} />, title: 'Nomad Visas', desc: 'Digital nomad visa options' },
+    { href: '/visa-checker', icon: <Stamp className={iconClass} />, title: 'Visa Checker', desc: 'Do you need a visa?' },
+    { href: '/passport', icon: <Globe className={iconClass} />, title: 'Passport Index', desc: 'How strong is your passport' },
+    { href: '/schengen', icon: <Map className={iconClass} />, title: 'Schengen Tracker', desc: 'Track your 90-day limit' },
+  ],
+  'Money & Planning': [
+    { href: '/salary', icon: <DollarSign className={iconClass} />, title: 'Salary', desc: 'How far your salary goes' },
+    { href: '/tax', icon: <Receipt className={iconClass} />, title: 'Tax Rates', desc: 'Tax rates by city' },
+    { href: '/fire', icon: <Flame className={iconClass} />, title: 'FIRE Calculator', desc: 'Retirement runway planner' },
+    { href: '/insurance', icon: <HeartPulse className={iconClass} />, title: 'Insurance', desc: 'Travel insurance guide' },
+    { href: '/resources', icon: <Bookmark className={iconClass} />, title: 'Resources', desc: 'Best nomad tools & links' },
+  ],
+};
 
 const TOOLS = [
   {
@@ -107,6 +139,33 @@ export default function NomadMapPage() {
         <div id="map">
           <NomadMapWrapper />
         </div>
+
+        {/* All Nomad Tools */}
+        <section className="mt-16 mb-10">
+          <h2 className="text-xl font-bold text-zinc-900 mb-6">All Nomad Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {Object.entries(ALL_TOOLS).map(([category, tools]) => (
+              <div key={category}>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3">{category}</h3>
+                <div className="space-y-1">
+                  {tools.map((tool) => (
+                    <Link
+                      key={tool.href}
+                      href={tool.href}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm border border-transparent hover:border-zinc-200 transition-all group"
+                    >
+                      {tool.icon}
+                      <div>
+                        <div className="text-sm font-medium text-zinc-900 group-hover:text-primary transition-colors">{tool.title}</div>
+                        <div className="text-xs text-zinc-400">{tool.desc}</div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
       <MicroFooter />
       <TelegramJobPopup />
