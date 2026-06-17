@@ -143,7 +143,7 @@ export default function TaxPage() {
         </Link>
 
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-8">
           <h1 className={PAGE_TITLE}>
             Nomad Tax Comparison
           </h1>
@@ -151,6 +151,12 @@ export default function TaxPage() {
             Compare effective freelancer tax rates across {TAX_DATA.length} countries.
             Adjust your income to see take-home pay instantly.
           </p>
+          <div className="mt-4 inline-flex items-start gap-2.5 bg-zinc-50 border border-zinc-200 rounded-lg p-3 text-xs text-zinc-600 max-w-2xl">
+            <Info className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-semibold text-zinc-900">Who qualifies?</span> These rates apply to remote employees, self-employed freelancers, and sole proprietors contracting with clients outside their destination country (often under a Digital Nomad Visa).
+            </div>
+          </div>
         </div>
 
         {/* Income Input */}
