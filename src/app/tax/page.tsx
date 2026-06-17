@@ -147,7 +147,7 @@ export default function TaxPage() {
           <h1 className={PAGE_TITLE}>
             Nomad Tax Comparison
           </h1>
-          <p className={PAGE_SUBTITLE}>
+          <p className={`${PAGE_SUBTITLE} max-w-none`}>
             Compare effective freelancer tax rates across {TAX_DATA.length} countries.
             Adjust your income to see take-home pay instantly.
           </p>
