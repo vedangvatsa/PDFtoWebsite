@@ -11,7 +11,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 import {
   Coins, GitCompare, ShieldCheck, Wifi, Globe, Bookmark,
   CloudSun, Shield, Footprints, Clock, Stamp, Map,
-  Swords, DollarSign, Receipt, Flame, HeartPulse, Compass,
+  DollarSign, Receipt, Flame, HeartPulse, Compass,
 } from 'lucide-react';
 
 const iconClass = 'h-4 w-4 text-zinc-400 group-hover:text-primary transition-colors shrink-0';
@@ -19,8 +19,7 @@ const iconClass = 'h-4 w-4 text-zinc-400 group-hover:text-primary transition-col
 const ALL_TOOLS = {
   'City Research': [
     { href: '/costs', icon: <Coins className={iconClass} />, title: 'Cost of Living', desc: 'Compare living costs abroad' },
-    { href: '/compare', icon: <GitCompare className={iconClass} />, title: 'Compare Cities', desc: 'Side-by-side city comparison' },
-    { href: '/versus', icon: <Swords className={iconClass} />, title: 'City vs City', desc: 'Head-to-head city matchup' },
+    { href: '/compare', icon: <GitCompare className={iconClass} />, title: 'Compare Cities', desc: 'Side-by-side city comparison with verdict' },
     { href: '/discover', icon: <Compass className={iconClass} />, title: 'Discover', desc: 'Find hidden gem cities' },
     { href: '/safety', icon: <Shield className={iconClass} />, title: 'Safety', desc: 'City safety rankings' },
     { href: '/climate', icon: <CloudSun className={iconClass} />, title: 'Climate', desc: 'Weather & climate finder' },

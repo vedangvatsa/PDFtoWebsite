@@ -43,7 +43,6 @@ export async function GET() {
     `- Schengen 90/180 Day Rule Tracker: ${siteUrl}/schengen`,
     `- Nomad Tax Comparison: ${siteUrl}/tax`,
     `- Timezone Overlap Tool: ${siteUrl}/timezone`,
-    `- City vs City Comparison: ${siteUrl}/versus`,
     `- Walkability & Transit Scores: ${siteUrl}/walkability`,
     '',
     '## Professional Profiles',
