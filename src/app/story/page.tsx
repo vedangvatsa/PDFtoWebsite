@@ -20,13 +20,11 @@ export const metadata: Metadata = {
     url: `${siteUrl}/story`,
     siteName: 'CVin.Bio',
     type: 'article',
-    images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CVin.Bio',
     description: 'The talent infrastructure for the agentic economy.',
-    images: [`${siteUrl}/opengraph-image`],
     creator: '@cvinbio',
   },
 };

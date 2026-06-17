@@ -22,7 +22,6 @@ export const metadata: Metadata = {
     title: 'Companies Hiring Now | CVin.Bio',
     description: 'Browse all companies actively hiring on CVin.Bio. Discover open roles at top tech companies.',
     siteName: 'CVin.Bio',
-    images: [{ url: 'https://cvin.bio/opengraph-image', width: 1200, height: 630, alt: 'Browse companies hiring on CVin.Bio' }],
   },
   twitter: { card: 'summary_large_image', title: 'Companies Hiring Now | CVin.Bio' },
   robots: { index: true, follow: true },
