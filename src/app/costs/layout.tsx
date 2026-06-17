@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'Cost of Living for Digital Nomads · 95 Cities Compared',
+  title: 'Cost of Living for Digital Nomads | 100 Cities Compared',
   description:
     'Compare cost of living across 100 digital nomad cities. Filter by budget, sort by rent, food, coworking costs. Find your perfect affordable destination.',
   keywords: [
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${siteUrl}/costs` },
   openGraph: {
-    title: 'Cost of Living for Digital Nomads · 95 Cities Compared',
+    title: 'Cost of Living for Digital Nomads | 100 Cities Compared',
     description:
       'Compare cost of living across 100 digital nomad cities. Filter by budget, sort by rent, food, coworking costs.',
     url: `${siteUrl}/costs`,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cost of Living for Digital Nomads · 95 Cities Compared',
+    title: 'Cost of Living for Digital Nomads | 100 Cities Compared',
     description:
       'Compare cost of living across 100 digital nomad cities. Filter by budget, sort by rent, food, coworking costs.',
     images: [`${siteUrl}/nomad/opengraph-image`],

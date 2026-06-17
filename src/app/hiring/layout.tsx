@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(): Promise<Metadata> {
   const stats = await getPlatformStats();
   return {
-    title: 'The Tech Talent Report 2026 — Skills, Roles, and Hiring Trends',
+    title: 'The Tech Talent Report 2026 | Skills, Roles, and Hiring Trends',
     description: `Analysis of ${stats.jobCountDisplay} job listings across ${stats.companyCountDisplay} companies. Which skills are most in demand? Where is hiring happening? How much does AI matter? The data tells the story.`,
     keywords: ['tech talent report 2026', 'tech hiring trends', 'AI jobs report', 'software engineer demand', 'tech skills demand', 'programming language trends'],
     openGraph: {

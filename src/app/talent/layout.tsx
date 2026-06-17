@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'The Remote Talent Report 2026 — Data on Remote Work, Hiring, and Compensation',
+  title: 'The Remote Talent Report 2026 | Remote Work and Hiring Data',
   description: '34 million Americans work remotely. This report examines the data: remote hiring trends, compensation premiums, RTO mandates, and productivity research heading into 2027.',
   keywords: ['remote work report', 'remote talent 2026', 'work from home statistics', 'remote job trends', 'remote work salary', 'RTO mandate data'],
   openGraph: {

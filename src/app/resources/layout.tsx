@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'Digital Nomad Resources & Tools · Essential Services for Remote Workers',
+  title: 'Digital Nomad Resources & Tools | Essential Services',
   description:
     'Curated collection of the best tools, services, and resources for digital nomads: insurance, banking, eSIMs, VPNs, flights, accommodation, and more.',
   keywords: [

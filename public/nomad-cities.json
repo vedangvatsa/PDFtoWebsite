@@ -1545,8 +1545,6 @@
     },
     "nomad_score": 88,
     "nearby": [
-      "canggu",
-      "bali-cangguubud",
       "singapore",
       "johor",
       "kuala-lumpur"
@@ -2385,7 +2383,6 @@
     },
     "nomad_score": 86,
     "nearby": [
-      "gran-canaria-las-palmas",
       "tenerife",
       "madeira-funchal",
       "marrakech",
@@ -2760,126 +2757,6 @@
     }
   },
   {
-    "slug": "canggu",
-    "name": "Canggu",
-    "country": "Indonesia",
-    "countryCode": "ID",
-    "continent": "Asia",
-    "lat": -8.6536,
-    "lon": 115.1278,
-    "emoji": "🇮🇩",
-    "weather": {
-      "monthly": [
-        {
-          "month": "Jan",
-          "temp": 26.7,
-          "humidity": 84,
-          "rain": 248
-        },
-        {
-          "month": "Feb",
-          "temp": 26.4,
-          "humidity": 87,
-          "rain": 293
-        },
-        {
-          "month": "Mar",
-          "temp": 26.9,
-          "humidity": 84,
-          "rain": 172
-        },
-        {
-          "month": "Apr",
-          "temp": 26.7,
-          "humidity": 85,
-          "rain": 177
-        },
-        {
-          "month": "May",
-          "temp": 26.8,
-          "humidity": 81,
-          "rain": 77
-        },
-        {
-          "month": "Jun",
-          "temp": 26.2,
-          "humidity": 81,
-          "rain": 69
-        },
-        {
-          "month": "Jul",
-          "temp": 25.3,
-          "humidity": 80,
-          "rain": 80
-        },
-        {
-          "month": "Aug",
-          "temp": 25.3,
-          "humidity": 80,
-          "rain": 62
-        },
-        {
-          "month": "Sep",
-          "temp": 25.7,
-          "humidity": 82,
-          "rain": 94
-        },
-        {
-          "month": "Oct",
-          "temp": 26.6,
-          "humidity": 82,
-          "rain": 122
-        },
-        {
-          "month": "Nov",
-          "temp": 26.8,
-          "humidity": 84,
-          "rain": 199
-        },
-        {
-          "month": "Dec",
-          "temp": 26.7,
-          "humidity": 84,
-          "rain": 317
-        }
-      ],
-      "avg_temp": 26.3,
-      "avg_humidity": 83,
-      "annual_rain": 1910
-    },
-    "cost": {
-      "monthly_total": 1100,
-      "rent": 450,
-      "food": 280,
-      "transport": 60,
-      "coworking": 150,
-      "other": 160
-    },
-    "spaces": {
-      "coliving": 6,
-      "hostel": 1,
-      "apartment": 0,
-      "guesthouse": 0,
-      "coworking": 3,
-      "total": 10
-    },
-    "nomad_score": 84,
-    "nearby": [
-      "bali",
-      "bali-cangguubud",
-      "singapore",
-      "johor",
-      "kuala-lumpur"
-    ],
-    "internet": {
-      "download_mbps": 104.0,
-      "upload_mbps": 93.4,
-      "latency_ms": 11,
-      "test_count": 121085,
-      "quarter": "2026-Q1"
-    }
-  },
-  {
     "slug": "marrakech",
     "name": "Marrakech",
     "country": "Morocco",
@@ -2988,7 +2865,6 @@
       "malaga",
       "lisbon",
       "las-palmas",
-      "gran-canaria-las-palmas",
       "ericeira"
     ],
     "internet": {
@@ -3587,9 +3463,8 @@
     "nearby": [
       "montevideo",
       "santiago",
-      "florianopolis-2",
-      "valparaiso",
-      "florianopolis"
+      "florianopolis",
+      "valparaiso"
     ],
     "internet": {
       "download_mbps": 232.5,
@@ -3826,7 +3701,6 @@
     "nomad_score": 80,
     "nearby": [
       "lagos",
-      "gran-canaria-las-palmas",
       "las-palmas",
       "marrakech",
       "tenerife"
@@ -4666,7 +4540,6 @@
     "nomad_score": 79,
     "nearby": [
       "las-palmas",
-      "gran-canaria-las-palmas",
       "madeira-funchal",
       "marrakech",
       "lisbon"
@@ -5267,7 +5140,6 @@
     "nearby": [
       "accra",
       "marrakech",
-      "gran-canaria-las-palmas",
       "las-palmas",
       "tenerife"
     ],
@@ -6825,7 +6697,6 @@
     },
     "nomad_score": 73,
     "nearby": [
-      "florianopolis-2",
       "sao-paulo",
       "rio-de-janeiro",
       "montevideo",
@@ -7067,7 +6938,6 @@
     "nearby": [
       "sao-paulo",
       "florianopolis",
-      "florianopolis-2",
       "montevideo",
       "buenos-aires"
     ],
@@ -7188,7 +7058,6 @@
       "valparaiso",
       "buenos-aires",
       "montevideo",
-      "florianopolis-2",
       "florianopolis"
     ],
     "internet": {
@@ -8146,7 +8015,6 @@
     "nomad_score": 72,
     "nearby": [
       "buenos-aires",
-      "florianopolis-2",
       "florianopolis",
       "santiago",
       "valparaiso"
@@ -8387,7 +8255,6 @@
     "nearby": [
       "tenerife",
       "las-palmas",
-      "gran-canaria-las-palmas",
       "marrakech",
       "lisbon"
     ],
@@ -8987,7 +8854,6 @@
     "nearby": [
       "rio-de-janeiro",
       "florianopolis",
-      "florianopolis-2",
       "montevideo",
       "buenos-aires"
     ],
@@ -10909,7 +10775,7 @@
       "buenos-aires",
       "montevideo",
       "cusco",
-      "florianopolis-2"
+      "florianopolis"
     ],
     "internet": {
       "download_mbps": 414.8,
@@ -11985,6 +11851,124 @@
       "upload_mbps": 35.8,
       "latency_ms": 15,
       "test_count": 8920,
+      "quarter": "2026-Q1"
+    }
+  },
+  {
+    "slug": "dublin",
+    "name": "Dublin",
+    "country": "Ireland",
+    "countryCode": "IE",
+    "continent": "Europe",
+    "lat": 53.3498,
+    "lon": -6.2603,
+    "emoji": "🇮🇪",
+    "weather": {
+      "monthly": [
+        {
+          "month": "Jan",
+          "temp": 5.2,
+          "humidity": 86,
+          "rain": 67
+        },
+        {
+          "month": "Feb",
+          "temp": 5.3,
+          "humidity": 82,
+          "rain": 50
+        },
+        {
+          "month": "Mar",
+          "temp": 6.8,
+          "humidity": 79,
+          "rain": 53
+        },
+        {
+          "month": "Apr",
+          "temp": 8.5,
+          "humidity": 75,
+          "rain": 51
+        },
+        {
+          "month": "May",
+          "temp": 11.1,
+          "humidity": 74,
+          "rain": 56
+        },
+        {
+          "month": "Jun",
+          "temp": 13.8,
+          "humidity": 74,
+          "rain": 57
+        },
+        {
+          "month": "Jul",
+          "temp": 15.6,
+          "humidity": 76,
+          "rain": 50
+        },
+        {
+          "month": "Aug",
+          "temp": 15.3,
+          "humidity": 77,
+          "rain": 70
+        },
+        {
+          "month": "Sep",
+          "temp": 13.4,
+          "humidity": 79,
+          "rain": 58
+        },
+        {
+          "month": "Oct",
+          "temp": 10.5,
+          "humidity": 83,
+          "rain": 70
+        },
+        {
+          "month": "Nov",
+          "temp": 7.4,
+          "humidity": 85,
+          "rain": 65
+        },
+        {
+          "month": "Dec",
+          "temp": 5.6,
+          "humidity": 87,
+          "rain": 73
+        }
+      ],
+      "avg_temp": 9.9,
+      "avg_humidity": 80,
+      "annual_rain": 720
+    },
+    "cost": {
+      "monthly_total": 2900,
+      "rent": 1500,
+      "food": 500,
+      "transport": 100,
+      "coworking": 350,
+      "other": 450
+    },
+    "spaces": {
+      "coliving": 2,
+      "hostel": 30,
+      "apartment": 8,
+      "guesthouse": 12,
+      "coworking": 38,
+      "total": 90
+    },
+    "nomad_score": 76,
+    "nearby": [
+      "london",
+      "amsterdam",
+      "lisbon"
+    ],
+    "internet": {
+      "download_mbps": 132.7,
+      "upload_mbps": 68.4,
+      "latency_ms": 11,
+      "test_count": 42100,
       "quarter": "2026-Q1"
     }
   }

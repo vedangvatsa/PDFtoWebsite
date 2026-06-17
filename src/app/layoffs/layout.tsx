@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'The Tech Layoffs Report 2026 — Data, Trends, and Analysis',
+  title: 'The Tech Layoffs Report 2026 | Data, Trends, and Analysis',
   description: 'Since 2020, 750,000+ tech workers have been laid off. This report examines the data: who is cutting, why, and what it means for the labor market in 2026 and beyond.',
   keywords: ['tech layoffs 2026', 'tech layoffs report', 'layoff tracker', 'tech industry layoffs', 'mass layoffs technology'],
   openGraph: {

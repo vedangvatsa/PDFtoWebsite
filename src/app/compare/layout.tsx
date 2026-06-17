@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     'Side-by-side comparison of cost of living, weather, coworking spaces, and nomad scores across 100 cities. Find your ideal digital nomad destination.',
   alternates: { canonical: `${siteUrl}/compare` },
   openGraph: {
-    title: 'Compare Cities for Digital Nomads | CVin.Bio',
+    title: 'Compare Cities for Digital Nomads',
     description:
       'Side-by-side comparison of cost of living, weather, coworking spaces, and nomad scores across 100 cities.',
     url: `${siteUrl}/compare`,
