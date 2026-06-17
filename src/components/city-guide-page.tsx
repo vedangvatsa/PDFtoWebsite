@@ -364,7 +364,7 @@ export async function CityGuidePage({ citySlug }: { citySlug: string }) {
                 Rome2rio (Inter-city)
               </a>
               {/* Moovit — only for cities with real public transit (not small towns/islands/beach villages) */}
-              {!(['siargao', 'koh-phangan', 'dahab', 'canggu', 'ubud', 'bali-cangguubud', 'bali',
+              {!(['siargao', 'koh-phangan', 'dahab', 'bali',
                 'pai', 'bansko', 'ericeira', 'tulum', 'hoi-an', 'kilifi', 'komoro', 'kas',
                 'phuket', 'koh-samui', 'playa-del-carmen', 'roatan', 'zanzibar', 'santa-marta',
                 'antigua', 'cusco', 'goa', 'siem-reap', 'pokhara'

@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description: 'Get in touch with the CVin.Bio team for feedback, partnerships, support, or feature requests.',
   alternates: { canonical: `${siteUrl}/contact` },
   openGraph: {
-    title: 'Contact Us | CVin.Bio',
+    title: 'Contact Us',
     description: 'Get in touch with the CVin.Bio team.',
     url: `${siteUrl}/contact`,
   },
-  twitter: { card: 'summary', title: 'Contact Us | CVin.Bio' },
+  twitter: { card: 'summary', title: 'Contact Us' },
 };
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {

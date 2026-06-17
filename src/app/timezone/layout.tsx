@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 export const metadata: Metadata = {
-  title: 'Timezone Overlap Tool — Find Shared Work Hours',
+  title: 'Timezone Overlap Tool | Find Shared Work Hours',
   description: 'See work hour overlap between cities worldwide. Plan meetings across time zones and test how overlap changes if you move.',
   keywords: ['timezone overlap', 'remote work', 'time zone calculator', 'meeting planner', 'distributed team'],
   alternates: { canonical: `${siteUrl}/timezone` },

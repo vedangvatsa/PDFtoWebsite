@@ -60,7 +60,7 @@ const SAFETY: Record<string, number> = {
   'lisbon': 7.5, 'porto': 7.8, 'barcelona': 6.8, 'berlin': 7.2, 'amsterdam': 7.3,
   'dublin': 7.5, 'split': 8.0, 'dubrovnik': 8.2, 'tbilisi': 7.5, 'bansko': 8.0,
   'bucharest': 7.0, 'belgrade': 7.2, 'chiang-mai': 8.0, 'bangkok': 7.0,
-  'bali': 7.2, 'bali-cangguubud': 7.3, 'canggu': 7.2, 'ubud': 7.5,
+  'bali': 7.2,
   'kuala-lumpur': 6.8, 'ho-chi-minh-city': 6.5, 'da-nang': 7.5, 'hanoi': 6.8,
   'manila': 5.5, 'buenos-aires': 5.8, 'medellin': 5.5, 'bogota': 4.8,
   'mexico-city': 5.0, 'playa-del-carmen': 5.5, 'lima': 5.0, 'santiago': 6.0,
@@ -135,8 +135,6 @@ const WALKABILITY: Record<string, WalkData> = {
   'Ljubljana': { walk: 8.0, transit: 6.0, bike: 8.0, carFree: 'Mostly' },
   // Moderate (4-6)
   'bali': { walk: 4.0, transit: 2.5, bike: 5.0, carFree: 'Difficult' },
-  'bali-cangguubud': { walk: 4.0, transit: 2.5, bike: 5.0, carFree: 'Difficult' },
-  'canggu': { walk: 4.5, transit: 2.0, bike: 5.5, carFree: 'Difficult' },
   'kuala-lumpur': { walk: 5.5, transit: 7.0, bike: 3.5, carFree: 'Difficult' },
   'dubai': { walk: 4.0, transit: 6.5, bike: 3.0, carFree: 'Difficult' },
   'manila': { walk: 5.0, transit: 5.5, bike: 3.0, carFree: 'Difficult' },
