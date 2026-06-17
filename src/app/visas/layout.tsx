@@ -3,22 +3,22 @@ import { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'Digital Nomad Visas Guide | Requirements & Income Thresholds',
-  description: 'Compare active digital nomad visas across 22 top countries. Filter by minimum monthly income, stay duration, application fees, and tax details.',
-  keywords: ['digital nomad visa', 'remote work visa', 'nomad visas', 'travel guide', 'income requirement'],
+  title: 'Visas & Travel | Nomad Visas, Visa Checker & Requirements',
+  description: 'Explore active digital nomad visas across 50+ countries, and check visa-free access for 199 destinations by passport. Income thresholds, fees, tax details, and world map.',
+  keywords: ['digital nomad visa', 'remote work visa', 'visa checker', 'visa-free countries', 'passport index', 'nomad visas'],
   alternates: { canonical: `${siteUrl}/visas` },
   openGraph: {
-    title: 'Digital Nomad Visas Guide',
-    description: 'Compare active digital nomad visas across 22 top countries.',
+    title: 'Visas & Travel | Nomad Visas & Visa Checker',
+    description: 'Explore nomad visas and check visa-free access for 199 destinations.',
     url: `${siteUrl}/visas`,
     siteName: 'CVin.Bio',
     type: 'website',
-    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio Nomad Visas Directory' }],
+    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio Visas & Travel' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Digital Nomad Visas Guide',
-    description: 'Compare active digital nomad visas across 22 top countries.',
+    title: 'Visas & Travel | Nomad Visas & Visa Checker',
+    description: 'Explore nomad visas and check visa-free access for 199 destinations.',
     images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },

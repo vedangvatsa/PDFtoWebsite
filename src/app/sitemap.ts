@@ -125,12 +125,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/passport`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
       url: `${siteUrl}/resources`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
@@ -144,12 +138,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${siteUrl}/fire`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/insurance`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,

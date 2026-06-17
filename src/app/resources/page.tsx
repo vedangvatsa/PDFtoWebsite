@@ -49,23 +49,33 @@ const CATEGORIES: Category[] = [
       {
         name: 'SafetyWing',
         url: 'https://safetywing.com',
-        description: 'Subscription-based travel medical insurance. Pay monthly, cancel anytime. Built for nomads.',
+        description: '~$45/mo. Subscription-based travel medical insurance up to $250K. Pay monthly, cancel anytime. Ages 18–69.',
         tag: 'Popular',
-      },
-      {
-        name: 'World Nomads',
-        url: 'https://www.worldnomads.com',
-        description: 'Comprehensive travel insurance with adventure activity coverage and gear protection.',
       },
       {
         name: 'Genki',
         url: 'https://www.genki.world',
-        description: 'EU-based health insurance for remote workers. Monthly billing, worldwide coverage.',
+        description: '~$65/mo. EU-based health insurance with mental health coverage included. €1M max. Monthly cancellation. Ages 18–65.',
+      },
+      {
+        name: 'World Nomads',
+        url: 'https://www.worldnomads.com',
+        description: '~$100/mo. Adventure sports + gear coverage. Trip cancellation, 24/7 emergency assistance. Ages 18–70.',
       },
       {
         name: 'Passport Card',
         url: 'https://www.passportcard.com',
-        description: 'Digital-first international health insurance with direct billing, with no claims paperwork.',
+        description: '~$120/mo. No out-of-pocket debit card, real-time claims, no forms. Telemedicine included. Ages 18–55.',
+      },
+      {
+        name: 'Allianz Care',
+        url: 'https://www.allianzcare.com',
+        description: '~$180/mo. Premium full-coverage plan with repatriation. Pre-existing conditions after waiting period. Ages 18–75.',
+      },
+      {
+        name: 'Cigna Global',
+        url: 'https://www.cigna.com/global',
+        description: '~$200/mo. Full international health insurance with family plans, dental add-on, and preventive care. Ages 18–75.',
       },
       {
         name: 'Insured Nomads',
