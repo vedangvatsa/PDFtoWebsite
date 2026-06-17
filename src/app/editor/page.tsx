@@ -864,9 +864,9 @@ export default function EditorPage() {
         const RESERVED_SLUGS = [
             'admin', 'blog', 'editor', 'signup', 'login', 'preview', 'privacy', 'terms', 'auth', 'api',
             'settings', 'dashboard', 'sitemap', 'robots', 'media', 'nomad', 'jobs', 'visas', 'costs',
-            'wifi', 'passport', 'hiring', 'talent', 'discover', 'layoffs', 'news', 'resources', 'contact',
-            'story', 'compare', 'companies', 'climate', 'fire', 'insurance', 'safety', 'salary', 'schengen',
-            'tax', 'timezone', 'walkability',
+            'passport', 'hiring', 'talent', 'discover', 'layoffs', 'news', 'resources', 'contact',
+            'story', 'compare', 'companies', 'climate', 'fire', 'insurance', 'rankings', 'schengen',
+            'tax', 'timezone',
         ];
         if (RESERVED_SLUGS.includes(cleanSlug)) {
             setSlugError('This URL is reserved. Please choose a different one.');

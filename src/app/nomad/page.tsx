@@ -9,8 +9,8 @@ import { TelegramJobPopup } from '@/components/telegram-job-popup';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 import {
-  Coins, GitCompare, ShieldCheck, Wifi, Globe, Bookmark,
-  CloudSun, Shield, Footprints, Clock, Stamp, Map,
+  Coins, GitCompare, ShieldCheck, Globe, Bookmark,
+  CloudSun, Clock, Stamp, Map, BarChart3,
   DollarSign, Receipt, Flame, HeartPulse, Compass,
 } from 'lucide-react';
 
@@ -18,13 +18,11 @@ const iconClass = 'h-4 w-4 text-zinc-400 group-hover:text-primary transition-col
 
 const ALL_TOOLS = {
   'City Research': [
-    { href: '/costs', icon: <Coins className={iconClass} />, title: 'Cost of Living', desc: 'Compare living costs abroad' },
+    { href: '/costs', icon: <DollarSign className={iconClass} />, title: 'Cost of Living', desc: 'Costs and purchasing power' },
     { href: '/compare', icon: <GitCompare className={iconClass} />, title: 'Compare Cities', desc: 'Side-by-side city comparison with verdict' },
+    { href: '/rankings', icon: <BarChart3 className={iconClass} />, title: 'City Rankings', desc: 'Internet, safety & walkability' },
     { href: '/discover', icon: <Compass className={iconClass} />, title: 'Discover', desc: 'Find hidden gem cities' },
-    { href: '/safety', icon: <Shield className={iconClass} />, title: 'Safety', desc: 'City safety rankings' },
     { href: '/climate', icon: <CloudSun className={iconClass} />, title: 'Climate', desc: 'Weather & climate finder' },
-    { href: '/walkability', icon: <Footprints className={iconClass} />, title: 'Walkability', desc: 'Walk & transit scores' },
-    { href: '/wifi', icon: <Wifi className={iconClass} />, title: 'Internet Speeds', desc: 'WiFi speed rankings' },
   ],
   'Travel & Visas': [
     { href: '/visas', icon: <ShieldCheck className={iconClass} />, title: 'Nomad Visas', desc: 'Digital nomad visa options' },
@@ -33,7 +31,6 @@ const ALL_TOOLS = {
     { href: '/schengen', icon: <Map className={iconClass} />, title: 'Schengen Tracker', desc: 'Track your 90-day limit' },
   ],
   'Money & Planning': [
-    { href: '/salary', icon: <DollarSign className={iconClass} />, title: 'Salary', desc: 'How far your salary goes' },
     { href: '/tax', icon: <Receipt className={iconClass} />, title: 'Tax Rates', desc: 'Tax rates by city' },
     { href: '/fire', icon: <Flame className={iconClass} />, title: 'FIRE Calculator', desc: 'Retirement runway planner' },
     { href: '/insurance', icon: <HeartPulse className={iconClass} />, title: 'Insurance', desc: 'Travel insurance guide' },
@@ -61,10 +58,10 @@ const TOOLS = [
     desc: 'Explore active digital nomad visas',
   },
   {
-    href: '/wifi',
-    icon: <Wifi className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
-    title: 'Internet Speeds',
-    desc: 'WiFi speed rankings by city',
+    href: '/rankings',
+    icon: <BarChart3 className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors shrink-0" />,
+    title: 'City Rankings',
+    desc: 'Internet, safety & walkability',
   },
   {
     href: '/passport',

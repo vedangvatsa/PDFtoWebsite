@@ -79,7 +79,13 @@ function fmtCurrency(n: number) {
   return '$' + n.toLocaleString('en-US');
 }
 
-
+function lifestyleTier(remaining: number) {
+  if (remaining >= 3000) return { label: 'Luxury', color: 'text-emerald-600', bg: 'bg-emerald-500' };
+  if (remaining >= 1500) return { label: 'Comfortable', color: 'text-blue-600', bg: 'bg-blue-500' };
+  if (remaining >= 500) return { label: 'Moderate', color: 'text-amber-600', bg: 'bg-amber-500' };
+  if (remaining >= 0) return { label: 'Tight', color: 'text-red-600', bg: 'bg-red-500' };
+  return { label: 'Over budget', color: 'text-red-600', bg: 'bg-red-500' };
+}
 
 function getSortValue(city: City, key: SortKey): number {
   switch (key) {
@@ -109,6 +115,7 @@ export default function CostOfLivingPage() {
   // Filters
   const [budget, setBudget] = useState<number | null>(null); // null = no filter
   const [continent, setContinent] = useState<string>('All');
+  const [income, setIncome] = useState<number | null>(null); // null = no income set
 
   // Sort
   const [sortKey, setSortKey] = useState<SortKey>('monthly_total');
@@ -146,6 +153,11 @@ export default function CostOfLivingPage() {
     if (budget === null) return sorted.length;
     return sorted.filter((c) => c.cost.monthly_total <= budget).length;
   }, [sorted, budget]);
+
+  const comfortableCount = useMemo(() => {
+    if (!income) return 0;
+    return sorted.filter((c) => (income - c.cost.monthly_total) >= 1500).length;
+  }, [sorted, income]);
 
   const stats = useMemo(() => {
     if (filtered.length === 0)
@@ -318,6 +330,44 @@ export default function CostOfLivingPage() {
               </div>
             </div>
 
+            {/* ---- Income Input ---- */}
+            <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <DollarSign className="h-4 w-4 text-zinc-400" />
+                <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                  Purchasing Power
+                </span>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <p className="text-sm text-zinc-600">
+                  Enter your monthly income to see what you keep after costs.
+                </p>
+                <div className="flex items-center gap-2 max-w-[200px]">
+                  <span className="text-zinc-400 text-sm">$</span>
+                  <input
+                    type="number"
+                    value={income ?? ''}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setIncome(v > 0 ? v : null);
+                    }}
+                    placeholder="4,000"
+                    className="w-full px-3 py-2 rounded-lg bg-zinc-50 border border-zinc-200 text-zinc-900 text-sm font-semibold outline-none focus:border-zinc-400 tabular-nums"
+                    aria-label="Monthly income"
+                  />
+                  <span className="text-xs text-zinc-400 whitespace-nowrap">/mo</span>
+                </div>
+                {income !== null && (
+                  <button
+                    onClick={() => setIncome(null)}
+                    className="text-xs text-zinc-500 hover:text-zinc-900 underline underline-offset-2 transition-colors whitespace-nowrap"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+            </div>
+
             {/* ---- Continent Filter ---- */}
             <div className="flex flex-wrap gap-2 mb-6">
               {CONTINENTS.map((c) => (
@@ -382,6 +432,32 @@ export default function CostOfLivingPage() {
               />
             </div>
 
+            {income !== null && income > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                <StatCard
+                  icon={<TrendingDown className="h-4 w-4" />}
+                  label="Comfortable+"
+                  value={`${comfortableCount}`}
+                  sub="cities with ≥$1,500 left"
+                  accentClass="text-emerald-600"
+                />
+                <StatCard
+                  icon={<DollarSign className="h-4 w-4" />}
+                  label="Your income"
+                  value={fmtCurrency(income)}
+                  sub="per month"
+                  accentClass="text-blue-600"
+                />
+                <StatCard
+                  icon={<TrendingUp className="h-4 w-4" />}
+                  label="Best left over"
+                  value={stats.cheapest ? fmtCurrency(income - stats.cheapest.cost.monthly_total) : '-'}
+                  sub={stats.cheapest ? stats.cheapest.name : undefined}
+                  accentClass="text-violet-600"
+                />
+              </div>
+            )}
+
             {/* ---- Table ---- */}
             <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden">
               {/* Desktop table */}
@@ -414,6 +490,16 @@ export default function CostOfLivingPage() {
                       <th className="text-left px-5 py-4">
                         <SortHeader label="Temp" sortField="avg_temp" />
                       </th>
+                      {income !== null && income > 0 && (
+                        <th className="text-left px-5 py-4">
+                          <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Left Over</span>
+                        </th>
+                      )}
+                      {income !== null && income > 0 && (
+                        <th className="text-center px-5 py-4">
+                          <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Lifestyle</span>
+                        </th>
+                      )}
                       <th className="text-left px-5 py-4">
                         <SortHeader label="Score" sortField="nomad_score" />
                       </th>
@@ -456,6 +542,25 @@ export default function CostOfLivingPage() {
                           <td className="px-5 py-3.5 tabular-nums text-zinc-600">
                             {Math.round(city.weather.avg_temp)}°C
                           </td>
+                          {income !== null && income > 0 && (() => {
+                            const remaining = income - city.cost.monthly_total;
+                            return (
+                              <td className={`px-5 py-3.5 tabular-nums font-semibold ${remaining >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                                {fmtCurrency(remaining)}
+                              </td>
+                            );
+                          })()}
+                          {income !== null && income > 0 && (() => {
+                            const remaining = income - city.cost.monthly_total;
+                            const t = lifestyleTier(remaining);
+                            return (
+                              <td className="px-5 py-3.5 text-center">
+                                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${t.color}`}>
+                                  <span className={`w-1.5 h-1.5 rounded-full ${t.bg}`} />{t.label}
+                                </span>
+                              </td>
+                            );
+                          })()}
                           <td className="px-5 py-3.5">
                             <span
                               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums ${scoreBadgeClasses(city.nomad_score)}`}
@@ -524,9 +629,16 @@ export default function CostOfLivingPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3 shrink-0 ml-3">
-                        <span className="text-sm font-semibold tabular-nums text-zinc-900">
-                          {fmtCurrency(city.cost.monthly_total)}
-                        </span>
+                        <div className="text-right">
+                          <span className="text-sm font-semibold tabular-nums text-zinc-900">
+                            {fmtCurrency(city.cost.monthly_total)}
+                          </span>
+                          {income !== null && income > 0 && (
+                            <div className={`text-[10px] tabular-nums font-medium ${(income - city.cost.monthly_total) >= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                              {fmtCurrency(income - city.cost.monthly_total)} left
+                            </div>
+                          )}
+                        </div>
                         <span
                           className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ${scoreBadgeClasses(city.nomad_score)}`}
                         >
