@@ -237,7 +237,7 @@ function StructuredText({ text }: { text?: string }) {
 
   // Count para blocks — if user already added line breaks (2+ para blocks), skip auto-splitting
   const paraBlockCount = cleanBlocks.filter(b => b.type === 'para').length;
-  const shouldAutoSplit = paraBlockCount <= 1;
+  const shouldAutoSplit = paraBlockCount <= 1 && !text.includes('\n');
 
   return (
     <div className="space-y-2.5">
@@ -253,7 +253,7 @@ function StructuredText({ text }: { text?: string }) {
             </ul>
           );
         }
-        const fullText = block.lines.join(' ');
+        const fullText = block.lines.join('<br>');
         // Only auto-split if user didn't already add their own line breaks
         const paras = shouldAutoSplit ? splitIntoParas(fullText) : [fullText];
         return (
