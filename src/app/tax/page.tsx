@@ -277,7 +277,7 @@ export default function TaxPage() {
                           <span className="text-zinc-300">✗</span>
                         )}
                       </td>
-                      <td className="px-5 py-3.5 text-xs text-zinc-500 max-w-[200px] truncate">{c.notes}</td>
+                      <td className="px-5 py-3.5 text-xs text-zinc-500 max-w-[320px] whitespace-normal break-words">{c.notes}</td>
                       <td className="px-5 py-3.5 text-xs text-zinc-400 whitespace-nowrap">
                         <a href={`https://${c.source}`} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-700 underline underline-offset-2 transition-colors">{c.source}</a>
                       </td>
