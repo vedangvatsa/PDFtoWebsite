@@ -97,7 +97,7 @@ function getLinkIcon(type: string, url?: string): { Icon?: React.ComponentType<a
   return { Icon: Globe, color: '#4285F4' };
 }
 
-function LinkifiedLine({ text }: { text: string }) {
+function LinkifyText({ text }: { text: string }) {
   const urlRegex = /((?:https?:\/\/|www\.)[^\s<>()[\]{}]+)/gi;
   const parts = text.split(urlRegex);
   return (
@@ -113,6 +113,21 @@ function LinkifiedLine({ text }: { text: string }) {
         }
         return <span key={i}>{part}</span>;
       })}
+    </>
+  );
+}
+
+function LinkifiedLine({ text }: { text: string }) {
+  const lineBreakRegex = /(?:<br\s*\/?>|\\\s*(?=\s|$))/gi;
+  const lines = text.split(lineBreakRegex);
+  return (
+    <>
+      {lines.map((line, li) => (
+        <React.Fragment key={li}>
+          {li > 0 && <br />}
+          <LinkifyText text={line} />
+        </React.Fragment>
+      ))}
     </>
   );
 }
