@@ -13,13 +13,11 @@ export const metadata: Metadata = {
     url: `${siteUrl}/visas`,
     siteName: 'CVin.Bio',
     type: 'website',
-    images: [{ url: `${siteUrl}/nomad/opengraph-image`, width: 1200, height: 630, alt: 'CVin.Bio Visas & Travel' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Visas & Travel | Nomad Visas & Visa Checker',
     description: 'Explore nomad visas and check visa-free access for 199 destinations.',
-    images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },
 };

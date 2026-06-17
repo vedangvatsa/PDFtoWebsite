@@ -24,21 +24,12 @@ export const metadata: Metadata = {
     url: `${siteUrl}/costs`,
     siteName: 'CVin.Bio',
     type: 'website',
-    images: [
-      {
-        url: `${siteUrl}/nomad/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: 'Cost of Living for Digital Nomads',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Cost of Living for Digital Nomads | 100 Cities Compared',
     description:
       'Compare cost of living across 100 digital nomad cities. Filter by budget, sort by rent, food, coworking costs.',
-    images: [`${siteUrl}/nomad/opengraph-image`],
     creator: '@cvinbio',
   },
 };
