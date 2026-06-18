@@ -90,12 +90,28 @@ export default function SignUpForm() {
   const handleGoogleAuth = async () => {
     setIsGoogleLoading(true);
     posthog.capture(AUTH_EVENTS.GOOGLE_CLICKED, { from: fromParam || 'direct' });
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${window.location.origin}/auth/callback?next=/editor` } });
-    if (error) {
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=/editor`
+        }
+      });
+      if (error) {
         posthog.capture(AUTH_EVENTS.GOOGLE_FAILED, { error: error.message });
         toast({ variant: 'destructive', title: 'Error', description: friendlyAuthError(error.message) });
         setIsGoogleLoading(false);
+      }
+    } catch (err) {
+      console.error('Client-side Google Auth error:', err);
+      posthog.capture(AUTH_EVENTS.GOOGLE_FAILED, { error: err instanceof Error ? err.message : String(err) });
+      toast({
+        variant: 'destructive',
+        title: 'Authentication Error',
+        description: err instanceof Error ? err.message : 'An unexpected error occurred during Google sign-in.'
+      });
+      setIsGoogleLoading(false);
     }
     // Reset loading state after 10s if redirect was blocked (popup blocker, etc.)
     setTimeout(() => setIsGoogleLoading(false), 10000);
