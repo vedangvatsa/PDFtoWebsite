@@ -3,7 +3,16 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
+  const requestUrl = new URL(request.url)
+  const searchParams = requestUrl.searchParams
+  const forwardedHost = request.headers.get('x-forwarded-host')
+  const protocol = request.headers.get('x-forwarded-proto') || 'https'
+  
+  let origin = forwardedHost ? `${protocol}://${forwardedHost}` : requestUrl.origin
+  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+    origin = origin.replace('http://', 'https://')
+  }
+
   const code = searchParams.get('code')
   // Validate 'next' param to prevent open redirect (e.g., //evil.com)
   const rawNext = searchParams.get('next') ?? '/editor'
