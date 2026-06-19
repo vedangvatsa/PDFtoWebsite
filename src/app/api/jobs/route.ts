@@ -281,9 +281,36 @@ export async function GET(request: NextRequest) {
 
   // Build query — select only needed columns (skip description to reduce payload)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at';
+
+  // Base filters shared by all queries
+  function applyBaseFilters(q: any) {
+    if (type && type !== 'all') q = q.eq('job_type', type);
+    return q;
+  }
+
+  // --- Query 1: Remote + location-matched jobs (priority pool) ---
+  let priorityFilter = 'location.ilike.%remote%,location.ilike.%anywhere%,location.ilike.%distributed%,location.ilike.%worldwide%';
+  if (userProfile?.location) {
+    const userLoc = normalizeLocation(userProfile.location);
+    if (!userLoc.isRemote && userLoc.tokens.length > 0) {
+      priorityFilter += ',' + userLoc.tokens.map(t => `location.ilike.%${t}%`).join(',');
+    }
+  }
+
+  let priorityQuery = supabase
+    .from('jobs')
+    .select(selectCols)
+    .gt('created_at', thirtyDaysAgo)
+    .or(priorityFilter)
+    .order('published_at', { ascending: false, nullsFirst: false })
+    .range(0, limit * 2 - 1);
+  priorityQuery = applyBaseFilters(priorityQuery);
+
+  // --- Query 2: All jobs (backfill pool) ---
   let query = supabase
     .from('jobs')
-    .select('id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at', { count: 'estimated' })
+    .select(selectCols, { count: 'estimated' })
     .gt('created_at', thirtyDaysAgo)
     .order('published_at', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false });
@@ -293,7 +320,7 @@ export async function GET(request: NextRequest) {
     query = query.eq('job_type', type);
   }
 
-  // Filter by location type
+  // Filter by location type (user-selected filter)
   if (loc === 'remote') {
     query = query.or('location.ilike.%remote%,location.ilike.%anywhere%,location.ilike.%distributed%,location.ilike.%worldwide%');
   } else if (loc === 'onsite') {
@@ -332,7 +359,24 @@ export async function GET(request: NextRequest) {
   const fetchLimit = limit * 3;
   query = query.range(offset, offset + fetchLimit - 1);
 
-  const { data: rawJobs, error, count } = await query;
+  // Run both queries in parallel
+  const [priorityResult, mainResult] = await Promise.all([
+    loc === 'onsite' ? Promise.resolve({ data: [], error: null }) : priorityQuery,
+    query,
+  ]);
+
+  const { data: mainJobs, error, count } = mainResult as any;
+  const priorityJobs = (priorityResult as any).data || [];
+
+  // Merge: priority jobs first (deduped), then backfill from main
+  const mergedIds = new Set<string>();
+  const rawJobs: any[] = [];
+  for (const job of priorityJobs) {
+    if (!mergedIds.has(job.id)) { mergedIds.add(job.id); rawJobs.push(job); }
+  }
+  for (const job of (mainJobs || [])) {
+    if (!mergedIds.has(job.id)) { mergedIds.add(job.id); rawJobs.push(job); }
+  }
 
   if (error) {
     console.error('Jobs query error:', error);
