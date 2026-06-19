@@ -127,9 +127,9 @@ interface UserProfile {
  * 
  * Weights:
  * - Skills overlap:     40 points max
- * - Title/role match:   30 points max
- * - Seniority match:    15 points max
- * - Location match:     15 points max
+ * - Title/role match:   25 points max
+ * - Seniority match:    10 points max
+ * - Location match:     25 points max
  */
 function computeMatchScore(
   user: UserProfile,
@@ -187,7 +187,7 @@ function computeMatchScore(
 
   const roleOverlap = [...userRoleFamilies].filter(f => jobRoleFamilies.has(f));
   if (roleOverlap.length > 0) {
-    const roleScore = Math.min(30, roleOverlap.length * 15);
+    const roleScore = Math.min(25, roleOverlap.length * 12);
     score += roleScore;
     signals.push(`role: ${roleOverlap.join(', ')}`);
   }
@@ -199,30 +199,36 @@ function computeMatchScore(
   const jobSeniority = extractSeniority(job.title);
   const seniorityDiff = Math.abs(userSeniority - jobSeniority);
   if (seniorityDiff === 0) {
-    score += 15;
+    score += 10;
     signals.push('seniority: exact');
   } else if (seniorityDiff === 1) {
-    score += 10;
+    score += 7;
     signals.push('seniority: close');
   } else if (seniorityDiff === 2) {
-    score += 5;
+    score += 3;
   }
 
-  // ── 4. Location match (15 pts) ──
-  if (user.location && job.location) {
-    const userLoc = normalizeLocation(user.location);
+  // ── 4. Location match (25 pts) ──
+  if (job.location) {
     const jobLoc = normalizeLocation(job.location);
 
-    if (jobLoc.isRemote) {
-      // Remote jobs match everyone
-      score += 15;
-      signals.push('location: remote');
-    } else if (userLoc.tokens.some(t => jobLoc.tokens.includes(t))) {
-      // City/country overlap
-      score += 15;
-      signals.push('location: match');
-    } else if (userLoc.isRemote && jobLoc.isRemote) {
-      score += 15;
+    if (user.location) {
+      const userLoc = normalizeLocation(user.location);
+      if (userLoc.tokens.some(t => jobLoc.tokens.includes(t))) {
+        // City/country overlap — strongest signal
+        score += 25;
+        signals.push('location: match');
+      } else if (jobLoc.isRemote) {
+        // Remote jobs are a good match for everyone with a location
+        score += 20;
+        signals.push('location: remote');
+      }
+    } else {
+      // No user location — boost remote jobs
+      if (jobLoc.isRemote) {
+        score += 25;
+        signals.push('location: remote');
+      }
     }
   }
 
@@ -443,22 +449,21 @@ export async function GET(request: NextRequest) {
   }
 
   // Calculate match scores per job
-  const jobsWithMatches = (jobs || []).map(job => {
-    let matchedSkills: string[] = [];
-    let matchScore = 0;
-    let matchSignals: string[] = [];
+  // Build a dummy profile for anonymous users so location scoring still applies
+  const scoringProfile: UserProfile = userProfile || {
+    skills: [],
+    experience: [],
+    location: '',
+    about: '',
+  };
 
-    if (userProfile && userProfile.skills.length > 0) {
-      const result = computeMatchScore(userProfile, {
-        title: job.title,
-        tags: job.tags || [],
-        location: job.location || '',
-        company: job.company,
-      });
-      matchedSkills = result.matchedSkills;
-      matchScore = result.score;
-      matchSignals = result.signals;
-    }
+  const jobsWithMatches = (jobs || []).map(job => {
+    const result = computeMatchScore(scoringProfile, {
+      title: job.title,
+      tags: job.tags || [],
+      location: job.location || '',
+      company: job.company,
+    });
 
     return {
       id: job.id,
@@ -473,17 +478,22 @@ export async function GET(request: NextRequest) {
       category: job.category,
       source: job.source,
       published_at: job.published_at,
-      matched_skills: matchedSkills,
-      match_count: matchedSkills.length,
-      match_score: matchScore,
-      match_signals: matchSignals,
+      matched_skills: result.matchedSkills,
+      match_count: result.matchedSkills.length,
+      match_score: result.score,
+      match_signals: result.signals,
     };
   });
 
-  // Sort: highest match score first if user is authenticated
-  if (userProfile && userProfile.skills.length > 0) {
-    jobsWithMatches.sort((a, b) => b.match_score - a.match_score);
-  }
+  // Sort: remote/location-matched jobs first, then by match score, then by recency
+  jobsWithMatches.sort((a, b) => {
+    // Primary: match score (includes location boost)
+    if (b.match_score !== a.match_score) return b.match_score - a.match_score;
+    // Secondary: recency
+    const dateA = a.published_at ? new Date(a.published_at).getTime() : 0;
+    const dateB = b.published_at ? new Date(b.published_at).getTime() : 0;
+    return dateB - dateA;
+  });
 
   const response = NextResponse.json({
     jobs: jobsWithMatches,
