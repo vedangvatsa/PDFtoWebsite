@@ -352,6 +352,12 @@ async function main() {
           } else {
             recordFailure('facebook', fbCurrent);
             console.error(`  ❌ Facebook post failed (attempt ${getRetries('facebook')}/${MAX_RETRIES})`);
+            if (getRetries('facebook') >= MAX_RETRIES) {
+              console.log(`  ⏭️ Facebook: auto-skipping post #${fbCurrent + 1} after ${MAX_RETRIES} failures`);
+              state.facebook.index = fbCurrent + 1;
+              clearRetries('facebook');
+              saveState(state);
+            }
           }
         }
       }
@@ -408,6 +414,12 @@ async function main() {
             } else {
               recordFailure('instagram', igCurrent);
               console.error(`  ❌ Instagram post failed (attempt ${getRetries('instagram')}/${MAX_RETRIES})`);
+              if (getRetries('instagram') >= MAX_RETRIES) {
+                console.log(`  ⏭️ Instagram: auto-skipping post #${igCurrent + 1} after ${MAX_RETRIES} failures`);
+                state.instagram.index = igCurrent + 1;
+                clearRetries('instagram');
+                saveState(state);
+              }
             }
           }
         }
@@ -477,6 +489,12 @@ async function main() {
         } else {
           recordFailure('threads', thCurrent);
           console.error(`  ❌ Threads post failed (attempt ${getRetries('threads')}/${MAX_RETRIES})`);
+          if (getRetries('threads') >= MAX_RETRIES) {
+            console.log(`  ⏭️ Threads: auto-skipping post #${thCurrent + 1} after ${MAX_RETRIES} failures`);
+            state.threads.index = thCurrent + 1;
+            clearRetries('threads');
+            saveState(state);
+          }
         }
       }
     }
