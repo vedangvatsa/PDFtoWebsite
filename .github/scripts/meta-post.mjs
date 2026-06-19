@@ -418,8 +418,8 @@ async function main() {
   }
 
   // 3. Post to Threads (at its own index) — with dedup check
-  // Threads has its own 8h cooldown (3 posts/day max)
-  const THREADS_COOLDOWN_MS = 8 * 60 * 60 * 1000; // 8 hours
+  // Threads has its own 7h cooldown (3 posts/day max)
+  const THREADS_COOLDOWN_MS = 7 * 60 * 60 * 1000; // 7 hours
   const threadsCooldownOk = !state.threads?.lastPostedAt ||
     (Date.now() - new Date(state.threads.lastPostedAt).getTime()) >= THREADS_COOLDOWN_MS;
 
