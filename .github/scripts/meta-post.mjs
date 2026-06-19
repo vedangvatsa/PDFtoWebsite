@@ -89,6 +89,53 @@ async function postToFacebook(text, imagePath) {
   }
 }
 
+// ── Instagram Hashtag Picker (3 relevant tags per post) ───────────────────
+const IG_HASHTAG_MAP = [
+  // Career & Jobs
+  { keywords: ['job', 'jobs', 'hiring', 'career', 'recruit', 'interview', 'resume', 'cv ', 'applicant'], tags: ['#careers', '#jobsearch', '#hiring'] },
+  { keywords: ['remote', 'wfh', 'work from home', 'distributed', 'hybrid'], tags: ['#remotework', '#workfromhome', '#digitalnomad'] },
+  { keywords: ['salary', 'pay', 'compensation', 'raise', 'negotiate', 'income', 'earning'], tags: ['#salarynegotiation', '#careergrowth', '#motivation'] },
+  { keywords: ['freelance', 'freelancer', 'gig', 'contract', 'self-employed'], tags: ['#freelance', '#entrepreneur', '#hustle'] },
+  { keywords: ['startup', 'founder', 'venture', 'bootstrapped'], tags: ['#startup', '#entrepreneurship', '#business'] },
+  // Tech
+  { keywords: ['tech', 'software', 'developer', 'engineer', 'coding', 'programming', 'ai ', 'artificial intelligence'], tags: ['#tech', '#softwaredeveloper', '#coding'] },
+  { keywords: ['design', 'ux', 'ui ', 'designer', 'figma', 'creative'], tags: ['#design', '#uxdesign', '#creativity'] },
+  // Workplace & Culture
+  { keywords: ['toxic', 'burnout', 'overwork', 'quit', 'fired', 'layoff', 'office', 'corporate', 'manager', 'boss'], tags: ['#corporatelife', '#worklifebalance', '#motivation'] },
+  { keywords: ['productivity', 'efficient', 'focus', 'routine', 'habit'], tags: ['#productivity', '#successmindset', '#selfimprovement'] },
+  { keywords: ['skill', 'learn', 'course', 'certif', 'training', 'education'], tags: ['#learning', '#personalgrowth', '#selfimprovement'] },
+  // Lifestyle & Travel
+  { keywords: ['travel', 'nomad', 'abroad', 'visa', 'country', 'city', 'relocat'], tags: ['#travel', '#digitalnomad', '#explore'] },
+  { keywords: ['finance', 'invest', 'budget', 'save', 'money', 'wealth', 'fire '], tags: ['#personalfinance', '#investing', '#motivation'] },
+  // Generic high-reach fallbacks
+  { keywords: ['tip', 'advice', 'guide', 'how to', 'hack'], tags: ['#lifehacks', '#tips', '#instagood'] },
+  { keywords: ['success', 'mindset', 'growth', 'inspire', 'motivation', 'grind'], tags: ['#successmindset', '#motivation', '#inspiration'] },
+];
+
+const IG_FALLBACK_TAGS = ['#instagood', '#motivation', '#careertips'];
+
+function pickHashtags(text, count = 3) {
+  const lower = text.toLowerCase();
+  const scored = new Map(); // tag -> score
+  for (const rule of IG_HASHTAG_MAP) {
+    const matchCount = rule.keywords.filter(kw => lower.includes(kw)).length;
+    if (matchCount > 0) {
+      for (const tag of rule.tags) {
+        scored.set(tag, (scored.get(tag) || 0) + matchCount);
+      }
+    }
+  }
+  // Sort by score descending, pick top N unique tags
+  const sorted = [...scored.entries()].sort((a, b) => b[1] - a[1]);
+  const picked = sorted.slice(0, count).map(([tag]) => tag);
+  // Fill with fallbacks if not enough
+  for (const fb of IG_FALLBACK_TAGS) {
+    if (picked.length >= count) break;
+    if (!picked.includes(fb)) picked.push(fb);
+  }
+  return picked.slice(0, count);
+}
+
 // ── Instagram Post ────────────────────────────────────────────────────────
 async function postToInstagram(text, mediaUrl, isVideo = false) {
   if (!META_IG_USER_ID || !META_PAGE_TOKEN) return false;
@@ -404,8 +451,10 @@ async function main() {
             state.instagram.index = igCurrent + 1;
             clearRetries('instagram');
           } else {
-            console.log('  📤 Posting to Instagram...');
-            const igOk = await postToInstagram(igText, mediaUrl, isVideo);
+            const hashtags = pickHashtags(igText);
+            const igCaption = `${igText}\n\n${hashtags.join(' ')}`;
+            console.log(`  📤 Posting to Instagram... (tags: ${hashtags.join(' ')})`);
+            const igOk = await postToInstagram(igCaption, mediaUrl, isVideo);
             if (igOk) {
               state.instagram.index = igCurrent + 1;
               clearRetries('instagram');
