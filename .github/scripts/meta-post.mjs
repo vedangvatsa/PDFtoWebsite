@@ -418,7 +418,17 @@ async function main() {
   }
 
   // 3. Post to Threads (at its own index) — with dedup check
-  if (hasThreads && thIdx < items.length) {
+  // Threads has its own 8h cooldown (3 posts/day max)
+  const THREADS_COOLDOWN_MS = 8 * 60 * 60 * 1000; // 8 hours
+  const threadsCooldownOk = !state.threads?.lastPostedAt ||
+    (Date.now() - new Date(state.threads.lastPostedAt).getTime()) >= THREADS_COOLDOWN_MS;
+
+  if (!threadsCooldownOk && hasThreads) {
+    const thElapsed = ((Date.now() - new Date(state.threads.lastPostedAt).getTime()) / 3600000).toFixed(1);
+    console.log(`  ⏳ Threads Cooldown: last Threads post was ${thElapsed}h ago (need 8h gap). Skipping Threads.`);
+  }
+
+  if (hasThreads && thIdx < items.length && threadsCooldownOk) {
     // Fetch recent Threads posts to prevent duplicates
     const recentThreadsTexts = await fetchRecentThreadsTexts();
     console.log(`  🔍 Fetched ${recentThreadsTexts.length} recent Threads posts for dedup check`);
@@ -442,6 +452,7 @@ async function main() {
       if (alreadyPosted) {
         console.log(`  ⏭️ DEDUP: This content was already posted to Threads. Advancing index without re-posting.`);
         state.threads.index = thCurrent + 1;
+        state.threads.lastPostedAt = new Date().toISOString();
         clearRetries('threads');
         anySuccess = true;
         // Save state immediately to prevent index regression on git push failure
@@ -457,6 +468,7 @@ async function main() {
         const thOk = await postToThreads(thText, mediaUrl, isVideo);
         if (thOk) {
           state.threads.index = thCurrent + 1;
+          state.threads.lastPostedAt = new Date().toISOString();
           clearRetries('threads');
           anySuccess = true;
           console.log(`  ✅ Threads index → ${thCurrent + 1}`);
