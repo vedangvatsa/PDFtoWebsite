@@ -89,30 +89,32 @@ async function postToFacebook(text, imagePath) {
   }
 }
 
-// ── Instagram Hashtag Picker (3 relevant tags per post) ───────────────────
+// ── Instagram Hashtag Picker (3 relevant tags from top 100 IG hashtags) ───
+// Only hashtags from the top 100 most followed/used hashtags on Instagram
 const IG_HASHTAG_MAP = [
-  // Career & Jobs
-  { keywords: ['job', 'jobs', 'hiring', 'career', 'recruit', 'interview', 'resume', 'cv ', 'applicant'], tags: ['#careers', '#jobsearch', '#hiring'] },
-  { keywords: ['remote', 'wfh', 'work from home', 'distributed', 'hybrid'], tags: ['#remotework', '#workfromhome', '#digitalnomad'] },
-  { keywords: ['salary', 'pay', 'compensation', 'raise', 'negotiate', 'income', 'earning'], tags: ['#salarynegotiation', '#careergrowth', '#motivation'] },
-  { keywords: ['freelance', 'freelancer', 'gig', 'contract', 'self-employed'], tags: ['#freelance', '#entrepreneur', '#hustle'] },
-  { keywords: ['startup', 'founder', 'venture', 'bootstrapped'], tags: ['#startup', '#entrepreneurship', '#business'] },
-  // Tech
-  { keywords: ['tech', 'software', 'developer', 'engineer', 'coding', 'programming', 'ai ', 'artificial intelligence'], tags: ['#tech', '#softwaredeveloper', '#coding'] },
-  { keywords: ['design', 'ux', 'ui ', 'designer', 'figma', 'creative'], tags: ['#design', '#uxdesign', '#creativity'] },
-  // Workplace & Culture
-  { keywords: ['toxic', 'burnout', 'overwork', 'quit', 'fired', 'layoff', 'office', 'corporate', 'manager', 'boss'], tags: ['#corporatelife', '#worklifebalance', '#motivation'] },
-  { keywords: ['productivity', 'efficient', 'focus', 'routine', 'habit'], tags: ['#productivity', '#successmindset', '#selfimprovement'] },
-  { keywords: ['skill', 'learn', 'course', 'certif', 'training', 'education'], tags: ['#learning', '#personalgrowth', '#selfimprovement'] },
-  // Lifestyle & Travel
-  { keywords: ['travel', 'nomad', 'abroad', 'visa', 'country', 'city', 'relocat'], tags: ['#travel', '#digitalnomad', '#explore'] },
-  { keywords: ['finance', 'invest', 'budget', 'save', 'money', 'wealth', 'fire '], tags: ['#personalfinance', '#investing', '#motivation'] },
-  // Generic high-reach fallbacks
-  { keywords: ['tip', 'advice', 'guide', 'how to', 'hack'], tags: ['#lifehacks', '#tips', '#instagood'] },
-  { keywords: ['success', 'mindset', 'growth', 'inspire', 'motivation', 'grind'], tags: ['#successmindset', '#motivation', '#inspiration'] },
+  // Career & Work → closest top-100 matches
+  { keywords: ['job', 'jobs', 'hiring', 'career', 'recruit', 'interview', 'resume', 'cv ', 'applicant', 'work'], tags: ['#success', '#motivation', '#life'] },
+  { keywords: ['remote', 'wfh', 'work from home', 'distributed', 'hybrid', 'office'], tags: ['#lifestyle', '#life', '#happy'] },
+  { keywords: ['salary', 'pay', 'compensation', 'raise', 'negotiate', 'income', 'money'], tags: ['#motivation', '#success', '#inspiration'] },
+  { keywords: ['startup', 'founder', 'business', 'entrepreneur', 'company'], tags: ['#success', '#motivation', '#inspiration'] },
+  { keywords: ['tech', 'software', 'developer', 'engineer', 'coding', 'programming', 'ai '], tags: ['#technology', '#motivation', '#instagood'] },
+  // Workplace & Mindset
+  { keywords: ['toxic', 'burnout', 'overwork', 'quit', 'fired', 'layoff', 'corporate', 'manager', 'boss'], tags: ['#life', '#motivation', '#mindfulness'] },
+  { keywords: ['productivity', 'efficient', 'focus', 'routine', 'habit', 'discipline'], tags: ['#motivation', '#fitness', '#lifestyle'] },
+  { keywords: ['skill', 'learn', 'course', 'certif', 'training', 'education'], tags: ['#motivation', '#inspiration', '#success'] },
+  // Travel & Lifestyle
+  { keywords: ['travel', 'nomad', 'abroad', 'visa', 'country', 'city', 'relocat'], tags: ['#travel', '#wanderlust', '#adventure'] },
+  { keywords: ['finance', 'invest', 'budget', 'save', 'wealth', 'fire '], tags: ['#motivation', '#success', '#lifestyle'] },
+  // Motivation & Growth
+  { keywords: ['success', 'mindset', 'growth', 'inspire', 'dream', 'grind', 'hustle'], tags: ['#motivation', '#inspiration', '#success'] },
+  { keywords: ['happy', 'love', 'life', 'freedom', 'peace', 'grateful'], tags: ['#happy', '#love', '#life'] },
+  // Design & Creative
+  { keywords: ['design', 'creative', 'art', 'brand', 'visual'], tags: ['#art', '#style', '#beautiful'] },
+  // Health
+  { keywords: ['health', 'wellness', 'mental', 'balance', 'selfcare'], tags: ['#fitness', '#lifestyle', '#mindfulness'] },
 ];
 
-const IG_FALLBACK_TAGS = ['#instagood', '#motivation', '#careertips'];
+const IG_FALLBACK_TAGS = ['#instagood', '#motivation', '#photooftheday'];
 
 function pickHashtags(text, count = 3) {
   const lower = text.toLowerCase();
