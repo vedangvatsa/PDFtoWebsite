@@ -421,19 +421,27 @@ export async function GET(request: NextRequest) {
       // 10. Strip after colon when followed by a list/department (e.g. "DevRel Lead: Content, Social & Events")
       t = t.replace(/\s*:\s+.+$/, '');
       // 11. Strip after comma when followed by a department/team name (not a role qualifier)
-      //     Keep: "Associate Director/Senior Manager" but cut: ", Professional Services"
-      //     Heuristic: if what follows the comma is >25 chars or matches department-like words, cut it
+      //     Keep: "Member of Technical Staff, Platform Engineering" 
+      //     Cut: "Finance Operations Specialist, Newsletter Sponsorships & Partnerships"
       const commaMatch = t.match(/^(.{10,}?),\s+(.+)$/);
       if (commaMatch) {
         const [, before, after] = commaMatch;
-        const isDeptOrTeam = /^(professional|enterprise|global|corporate|commercial|strategic|digital|consumer|internal|regional|national|technical|platform|infrastructure|cloud|campaign|newsletter|growth|revenue|customer|product|partner|people|talent|marketing|engineering|operations|sales|finance|legal|security|trust|safety|compliance|data|analytics|business|risk|content|creative|brand|performance|clinical|medical|supply|logistics)/i.test(after);
-        const isTooLong = after.length > 25;
-        if (isDeptOrTeam || isTooLong) {
+        // Generic base roles that NEED a qualifier to be meaningful
+        const isGenericBase = /\b(member of technical staff|analyst|specialist|coordinator|associate|advisor|consultant|representative|intern)\s*$/i.test(before);
+        // Only strip if NOT a generic base, and (matches dept words OR is too long)
+        if (!isGenericBase) {
+          const isDeptOrTeam = /^(professional|enterprise|global|corporate|commercial|strategic|digital|consumer|internal|regional|national|technical|newsletter|campaign|growth|revenue|customer|partner|people|talent|content|creative|brand|performance|clinical|medical|supply|logistics|demand|home\b)/i.test(after);
+          const isTooLong = after.length > 30;
+          if (isDeptOrTeam || isTooLong) {
+            t = before;
+          }
+        } else if (after.length > 35) {
+          // Even for generic roles, cut if the qualifier is absurdly long
           t = before;
         }
       }
-      // 12. Strip trailing " - <long text>" (department after dash)
-      const dashMatch = t.match(/^(.{10,}?)\s+-\s+(.{15,})$/);
+      // 12. Strip trailing " - <long text>" (department after dash, but only if very long)
+      const dashMatch = t.match(/^(.{10,}?)\s+-\s+(.{20,})$/);
       if (dashMatch) {
         t = dashMatch[1];
       }
