@@ -77,42 +77,32 @@ function timeAgo(dateStr: string | null): string {
 }
 
 function organizeJobs(existingJobs: Job[], newJobs: Job[]): Job[] {
+  // Preserve the API's score-based order while preventing adjacent same-company cards
   const result = [...existingJobs];
-  
-  const buckets = new Map<string, Job[]>();
+  const deferred: Job[] = [];
+
   for (const job of newJobs) {
-    if (!buckets.has(job.company)) buckets.set(job.company, []);
-    buckets.get(job.company)!.push(job);
-  }
-
-  let totalJobs = newJobs.length;
-
-  while (totalJobs > 0) {
-    // Sort keys so we deplete the most abundant companies first
-    const sortedKeys = Array.from(buckets.keys()).sort((a, b) => buckets.get(b)!.length - buckets.get(a)!.length);
-    
     const i = result.length;
-    // In a 2-column grid, horizontal neighbors are pairs (0, 1), (2, 3), etc.
     const horizontalNeighbor = (i % 2 !== 0) ? result[i - 1]?.company : null;
-    // Desktop vertical neighbor is directly above (i - 2)
     const verticalNeighbor = (i >= 2) ? result[i - 2]?.company : null;
 
-    let picked = false;
-    for (const company of sortedKeys) {
-      const bucket = buckets.get(company)!;
-      if (bucket.length > 0 && company !== horizontalNeighbor && company !== verticalNeighbor) {
-        result.push(bucket.shift()!);
-        totalJobs--;
-        picked = true;
-        break;
-      }
+    if (job.company !== horizontalNeighbor && job.company !== verticalNeighbor) {
+      result.push(job);
+    } else {
+      deferred.push(job);
     }
+  }
 
-    if (!picked) {
-      // If we cannot find any job that avoids a visual clash (horizontal or vertical),
-      // we must break and drop the rest to strictly maintain the interleaving layout.
-      break;
+  // Try to place deferred jobs in remaining slots
+  for (const job of deferred) {
+    const i = result.length;
+    const horizontalNeighbor = (i % 2 !== 0) ? result[i - 1]?.company : null;
+    const verticalNeighbor = (i >= 2) ? result[i - 2]?.company : null;
+
+    if (job.company !== horizontalNeighbor && job.company !== verticalNeighbor) {
+      result.push(job);
     }
+    // Drop if still clashing — API will send more on next page
   }
 
   return result;
