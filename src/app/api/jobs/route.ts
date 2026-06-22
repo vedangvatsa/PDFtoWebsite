@@ -401,12 +401,38 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Filter out non-English titles
+  // Filter out non-English titles and vague/generic postings
+  const VAGUE_TITLE_PATTERNS = [
+    /\bmultiple\s+(roles?|positions?|openings?|opportunities)\b/i,
+    /\bvarious\s+(roles?|positions?|openings?)\b/i,
+    /\bcleared\s+candidates?\b/i,
+    /\bvetting\s+cleared\b/i,
+    /\bexpressions?\s+of\s+interest\b/i,
+    /\btalent\s+(pool|community|pipeline|network)\b/i,
+    /\bgeneral\s+application\b/i,
+    /\bopen\s+application\b/i,
+    /\bspontaneous\s+application\b/i,
+    /\bjoin\s+our\s+(team|talent)\b/i,
+    /\bfuture\s+(opportunities|openings|roles?)\b/i,
+    /\bregister\s+(your\s+)?interest\b/i,
+    /\bwe\s+are\s+hiring\b/i,
+    /\bwe\'?re\s+hiring\b/i,
+    /\bapply\s+now\b/i,
+  ];
+  const VAGUE_COMPANY_PATTERNS = [
+    /\bjobradars?\b/i,
+    /\bstaffing\s+agency\b/i,
+  ];
+
   const englishFiltered = (rawJobs || []).filter(job => {
     if (isNonEnglishTitle(job.title)) return false;
     // Block junk company names & Gopuff (to avoid expensive wildcard database queries)
     const companyLower = (job.company || '').toLowerCase().trim();
     if (COMPANY_BLOCKLIST.has(companyLower) || companyLower.includes('gopuff')) return false;
+    // Block vague/generic titles
+    if (VAGUE_TITLE_PATTERNS.some(p => p.test(job.title))) return false;
+    // Block known junk sources
+    if (VAGUE_COMPANY_PATTERNS.some(p => p.test(job.company))) return false;
     return true;
   });
 
