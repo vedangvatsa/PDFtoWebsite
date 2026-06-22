@@ -383,21 +383,37 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 });
   }
 
-  // Clean titles: strip bracketed prefixes, requisition codes, and junk
+  // Clean titles: strip noise so only the meaningful role name remains
   for (const job of (rawJobs || [])) {
     if (job.title) {
       let t = job.title;
-      // 1. Strip bracketed or parenthesized prefixes (e.g. [Remote], (US))
+      // 1. Strip bracketed or parenthesized prefixes AND suffixes (e.g. [Remote], (US), [Rem...])
       t = t.replace(/^\s*\[[^\]]*\]\s*/g, '');
       t = t.replace(/^\s*\([^\)]*\)\s*/g, '');
+      t = t.replace(/\s*\[[^\]]*\]\s*$/g, '');
+      t = t.replace(/\s*\([^\)]*\)\s*$/g, '');
+      // Also strip mid-title brackets/parens containing location/remote info
+      t = t.replace(/\s*\[(remote|hybrid|onsite|on-site|contract|full[- ]?time|part[- ]?time|freelance|temporary|intern(?:ship)?)[^\]]*\]/gi, '');
+      t = t.replace(/\s*\((remote|hybrid|onsite|on-site|contract|full[- ]?time|part[- ]?time|freelance|temporary|intern(?:ship)?)[^\)]*\)/gi, '');
       // 2. Strip complex requisition codes like 'M-11/13 - 8751 - '
       t = t.replace(/^[\w\-\/]+\s*\-\s*\d+\s*\-\s*/g, '');
       // 3. Strip percentage remote indicators like '75% remote: '
       t = t.replace(/^\s*\d+%\s*remote\s*[:\|-]?\s*/i, '');
       // 4. Strip standard Req/Ref codes like 'Req-1234: '
       t = t.replace(/^\s*(req|ref)[a-z0-9\-]*\s*[:\-]\s*/i, '');
-      // 5. Strip any trailing location or req stuff that might be left at the front
-      job.title = t.replace(/^[\s:\-\|]+/, '').trim();
+      // 5. Strip "Urgently Hiring:", "Now Hiring:", "Hiring:", "New:" prefixes
+      t = t.replace(/^\s*(urgently\s+)?hiring\s*[:!\-]\s*/i, '');
+      t = t.replace(/^\s*now\s+hiring\s*[:!\-]\s*/i, '');
+      t = t.replace(/^\s*new\s*[:!\-]\s*/i, '');
+      t = t.replace(/^\s*hot\s+job\s*[:!\-]\s*/i, '');
+      // 6. Strip trailing metadata after | or — or – (e.g. "Engineer | Remote | USA")
+      t = t.replace(/\s*[|—–]\s*(remote|hybrid|onsite|work from home|wfh).*$/i, '');
+      // 7. Strip trailing " - Location" patterns (e.g. "Engineer - New York, NY")
+      t = t.replace(/\s+-\s+(remote|hybrid|onsite|home\s+based|work\s+from\s+home).*$/i, '');
+      // 8. Strip trailing comma + location-like patterns (e.g. ", Remote, US")
+      t = t.replace(/,\s*(remote|hybrid|worldwide|global|anywhere)\s*$/i, '');
+      // 9. Clean up any leading/trailing junk
+      job.title = t.replace(/^[\s:\-\|]+/, '').replace(/[\s:\-\|,]+$/, '').trim();
     }
   }
 
