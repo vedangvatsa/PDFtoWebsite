@@ -407,12 +407,37 @@ export async function GET(request: NextRequest) {
       t = t.replace(/^\s*new\s*[:!\-]\s*/i, '');
       t = t.replace(/^\s*hot\s+job\s*[:!\-]\s*/i, '');
       // 6. Strip trailing metadata after | or — or – (e.g. "Engineer | Remote | USA")
-      t = t.replace(/\s*[|—–]\s*(remote|hybrid|onsite|work from home|wfh).*$/i, '');
+      t = t.replace(/\s*[|—–].*$/i, '');
       // 7. Strip trailing " - Location" patterns (e.g. "Engineer - New York, NY")
       t = t.replace(/\s+-\s+(remote|hybrid|onsite|home\s+based|work\s+from\s+home).*$/i, '');
       // 8. Strip trailing comma + location-like patterns (e.g. ", Remote, US")
       t = t.replace(/,\s*(remote|hybrid|worldwide|global|anywhere)\s*$/i, '');
-      // 9. Clean up any leading/trailing junk
+      // 9. Strip filler phrases (e.g. "to be part of a company", "to join our team")
+      t = t.replace(/\s+(to\s+(be\s+part|join)\s+.*)$/i, '');
+      t = t.replace(/\s+(for\s+(our|a|the)\s+.*)$/i, '');
+      t = t.replace(/\s+(at\s+.{15,})$/i, '');
+      t = t.replace(/\s+(who\s+will\s+.*)$/i, '');
+      t = t.replace(/\s+(with\s+(experience|focus|expertise)\s+.*)$/i, '');
+      // 10. Strip after colon when followed by a list/department (e.g. "DevRel Lead: Content, Social & Events")
+      t = t.replace(/\s*:\s+.+$/, '');
+      // 11. Strip after comma when followed by a department/team name (not a role qualifier)
+      //     Keep: "Associate Director/Senior Manager" but cut: ", Professional Services"
+      //     Heuristic: if what follows the comma is >25 chars or matches department-like words, cut it
+      const commaMatch = t.match(/^(.{10,}?),\s+(.+)$/);
+      if (commaMatch) {
+        const [, before, after] = commaMatch;
+        const isDeptOrTeam = /^(professional|enterprise|global|corporate|commercial|strategic|digital|consumer|internal|regional|national|technical|platform|infrastructure|cloud|campaign|newsletter|growth|revenue|customer|product|partner|people|talent|marketing|engineering|operations|sales|finance|legal|security|trust|safety|compliance|data|analytics|business|risk|content|creative|brand|performance|clinical|medical|supply|logistics)/i.test(after);
+        const isTooLong = after.length > 25;
+        if (isDeptOrTeam || isTooLong) {
+          t = before;
+        }
+      }
+      // 12. Strip trailing " - <long text>" (department after dash)
+      const dashMatch = t.match(/^(.{10,}?)\s+-\s+(.{15,})$/);
+      if (dashMatch) {
+        t = dashMatch[1];
+      }
+      // 13. Clean up any leading/trailing junk
       job.title = t.replace(/^[\s:\-\|]+/, '').replace(/[\s:\-\|,]+$/, '').trim();
     }
   }
