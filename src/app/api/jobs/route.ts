@@ -461,6 +461,35 @@ export async function GET(request: NextRequest) {
     return true;
   });
 
+  // ── Score all jobs FIRST so location/skill priority drives selection ──
+  const scoringProfile: UserProfile = userProfile || {
+    skills: [],
+    experience: [],
+    location: '',
+    about: '',
+  };
+
+  const scoredJobs = englishJobs.map(job => {
+    const result = computeMatchScore(scoringProfile, {
+      title: job.title,
+      tags: job.tags || [],
+      location: job.location || '',
+      company: job.company,
+    });
+    return { ...job, _score: result.score, _matchedSkills: result.matchedSkills, _signals: result.signals };
+  });
+
+  // Sort by score DESC, then recency — so remote/location-matched jobs come first
+  scoredJobs.sort((a, b) => {
+    if (b._score !== a._score) return b._score - a._score;
+    const dateA = a.published_at ? new Date(a.published_at).getTime() : 0;
+    const dateB = b.published_at ? new Date(b.published_at).getTime() : 0;
+    return dateB - dateA;
+  });
+
+  // Take top candidates (enough for interleaving)
+  const candidatePool = scoredJobs.slice(0, limit * 3);
+
   // Two-level interleave: by department category, then by company within each category
   // This ensures marketing, sales, design, content roles surface alongside engineering
   function guessCategory(job: any): string {
@@ -482,9 +511,9 @@ export async function GET(request: NextRequest) {
     return 'Other';
   }
 
-  // Group by category → company
+  // Group by category → company (preserving score order within each bucket)
   const catBuckets: Record<string, Record<string, any[]>> = {};
-  for (const job of englishJobs) {
+  for (const job of candidatePool) {
     const cat = guessCategory(job);
     const co = normalizeCompany(job.company);
     if (!catBuckets[cat]) catBuckets[cat] = {};
@@ -534,48 +563,29 @@ export async function GET(request: NextRequest) {
     if (!added) break;
   }
 
-  // Calculate match scores per job
-  // Build a dummy profile for anonymous users so location scoring still applies
-  const scoringProfile: UserProfile = userProfile || {
-    skills: [],
-    experience: [],
-    location: '',
-    about: '',
-  };
+  // Map to response format (scores already computed)
+  const jobsWithMatches = jobs.map(job => ({
+    id: job.id,
+    title: job.title,
+    company: job.company,
+    company_logo: job.company_logo,
+    location: normalizeLocationDisplay(job.location),
+    job_type: job.job_type,
+    salary: job.salary,
+    tags: job.tags || [],
+    apply_url: job.apply_url,
+    category: job.category,
+    source: job.source,
+    published_at: job.published_at,
+    matched_skills: job._matchedSkills,
+    match_count: job._matchedSkills.length,
+    match_score: job._score,
+    match_signals: job._signals,
+  }));
 
-  const jobsWithMatches = (jobs || []).map(job => {
-    const result = computeMatchScore(scoringProfile, {
-      title: job.title,
-      tags: job.tags || [],
-      location: job.location || '',
-      company: job.company,
-    });
-
-    return {
-      id: job.id,
-      title: job.title,
-      company: job.company,
-      company_logo: job.company_logo,
-      location: normalizeLocationDisplay(job.location),
-      job_type: job.job_type,
-      salary: job.salary,
-      tags: job.tags || [],
-      apply_url: job.apply_url,
-      category: job.category,
-      source: job.source,
-      published_at: job.published_at,
-      matched_skills: result.matchedSkills,
-      match_count: result.matchedSkills.length,
-      match_score: result.score,
-      match_signals: result.signals,
-    };
-  });
-
-  // Sort: remote/location-matched jobs first, then by match score, then by recency
+  // Final sort: score first, then recency
   jobsWithMatches.sort((a, b) => {
-    // Primary: match score (includes location boost)
     if (b.match_score !== a.match_score) return b.match_score - a.match_score;
-    // Secondary: recency
     const dateA = a.published_at ? new Date(a.published_at).getTime() : 0;
     const dateB = b.published_at ? new Date(b.published_at).getTime() : 0;
     return dateB - dateA;
