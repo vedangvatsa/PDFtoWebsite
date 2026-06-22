@@ -440,8 +440,8 @@ export default function JobsPage() {
                   }}
                 />
                 <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                    <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
                       {job.title}
                     </h3>
                     {job.match_score >= 50 && (
