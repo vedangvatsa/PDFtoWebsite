@@ -1,4 +1,4 @@
-name: Jobs Sync + Telegram (Daily Cadence)
+name: Jobs Sync (Daily)
 
 on:
   schedule:
@@ -17,7 +17,7 @@ on:
         default: false
 
 concurrency:
-  group: jobs-telegram-${{ github.event.schedule || 'manual' }}
+  group: jobs-sync-${{ github.event.schedule || 'manual' }}
   cancel-in-progress: true
 
 jobs:
@@ -66,28 +66,3 @@ jobs:
           MASS_SCAN: ${{ github.event.inputs.mass_scan }}
         run: node .github/scripts/prune-404s.mjs
 
-      - name: Post jobs to Telegram
-        continue-on-error: true
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: node .github/scripts/telegram-post.mjs
-
-      - name: Post AI jobs to @hashtag_ai
-        continue-on-error: true
-        env:
-          TELEGRAM_AI_BOT_TOKEN: ${{ secrets.TELEGRAM_AI_BOT_TOKEN }}
-          TELEGRAM_AI_CHANNEL_ID: '@hashtag_ai'
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: |
-          node .github/scripts/telegram-ai-jobs.mjs
-          git add .github/scripts/.telegram-ai-jobs-posted.json
-          if ! git diff --staged --quiet; then
-            git commit -m "chore: update AI jobs dedup state [skip ci]"
-            for i in 1 2 3 4 5; do
-              git pull --rebase origin main && git push && break || sleep $((i * 3))
-            done
-          fi
