@@ -1,13 +1,10 @@
-name: Social Poster — X + Bluesky + Meta (4h cadence)
+name: Social Poster — X + Bluesky + Meta + Telegram (3x daily)
 
 on:
   schedule:
     - cron: '30 0 * * *'     # 08:30 SGT
-    - cron: '30 4 * * *'     # 12:30 SGT
     - cron: '30 8 * * *'     # 16:30 SGT
-    - cron: '30 12 * * *'    # 20:30 SGT
     - cron: '30 16 * * *'    # 00:30 SGT
-    - cron: '30 20 * * *'    # 04:30 SGT
   workflow_dispatch:
     inputs:
       slot:
@@ -149,3 +146,30 @@ jobs:
               git pull --rebase origin main && git push && break || sleep $((i * 3))
             done
           fi
+
+      - name: Post jobs to Telegram (techjobsdaily)
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node .github/scripts/telegram-post.mjs
+
+      - name: Post AI jobs to @hashtag_ai
+        continue-on-error: true
+        env:
+          TELEGRAM_AI_BOT_TOKEN: ${{ secrets.TELEGRAM_AI_BOT_TOKEN }}
+          TELEGRAM_AI_CHANNEL_ID: '@hashtag_ai'
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          node .github/scripts/telegram-ai-jobs.mjs
+          git add .github/scripts/.telegram-ai-jobs-posted.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update AI jobs dedup state [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
+
