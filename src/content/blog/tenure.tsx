@@ -78,7 +78,7 @@ export default function ArticleContent() {
 
         <h2 className={h2}>The Silent Danger of the Gap</h2>
         <p>When you present a string of six month jobs without any written explanation you give the recruiter permission to imagine the worst possible scenario. Human nature is naturally anxious especially when placing a permanent hire. If you leave the reason for your exit blank the reader will simply assume that you failed the probationary review period and were quietly fired.</p>
-        <p>You must actively remove the guesswork. You have the total power to reframe a negative short sprint into a highly positive story of adaptability and speed.</p>
+        <p>You must actively remove the guesswork. You can reframe a short stint as a story of adaptability and speed — but only if you write the explanation yourself.</p>
         
         <h2 className={h2}>Contract Labelling Reverses Risk</h2>
         <p>If a role was genuinely intended to be a short burst of contract work you must label it with perfect clarity. Appending the exact word Contract or Temporary Engagement next to the job title completely removes all the negative stigma associated with a fast exit.</p>

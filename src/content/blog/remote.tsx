@@ -140,9 +140,7 @@ export default function ArticleContent() {
         This shows that you operate with high engineering discipline.
       </p>
       <p>
-        It proves you can design complex features without requiring face-to-face discussions. 
-        It demonstrates that you value clean communication. 
-        This is a major indicator of senior technical leadership.
+        Designing complex features without face-to-face discussions, through clean written specs alone, is a major indicator of senior technical leadership.
       </p>
 
       <h2 className={h2}>Managing Timezone Overlap Dynamics</h2>
@@ -157,9 +155,7 @@ export default function ArticleContent() {
         This demonstrates that you treat timezone differences as a system variable.
       </p>
       <p>
-        It proves that you can run systems consistently across global environments. 
-        It shows you design workflows to prevent operational bottlenecks. 
-        This capacity is highly valued by global engineering directors.
+        The ability to run systems consistently across global environments and design workflows that prevent bottlenecks is highly valued by global engineering directors.
       </p>
 
       <h2 className={h2}>Quantifying Distributed Collaboration Wins</h2>

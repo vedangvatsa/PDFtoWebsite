@@ -96,9 +96,7 @@ export default function ArticleContent() {
         This proves that you can manage large system configurations.
       </p>
       <p>
-        It shows that you are comfortable working in enterprise codebases. 
-        This knowledge is highly valuable for engineering teams. 
-        It separates you from developers who only build simple applications.
+        Comfort in enterprise-scale codebases separates you from developers who only build solo apps. Mention the monorepo tooling, dependency management, and workspace structures you navigated.
       </p>
 
       <h2 className={h2}>Quantifying Your Open Source Impact</h2>
@@ -139,9 +137,7 @@ export default function ArticleContent() {
         This demonstrates technical maturity and resilience.
       </p>
       <p>
-        It proves that you can accept feedback and work with others. 
-        These are key qualities for senior engineering roles. 
-        It shows you can deliver clean work under strict guidelines.
+        Accepting critical feedback, iterating, and shipping clean work under strict guidelines are key qualities for senior engineering roles.
       </p>
 
       <h2 className={h2}>Creating and Maintaining Your Own Open Source Tool</h2>
@@ -156,9 +152,7 @@ export default function ArticleContent() {
         Document the community contributions you merged into your codebase.
       </p>
       <p>
-        This shows that you understand release cycles and API stability. 
-        It proves that you can manage a product pipeline. 
-        It is a massive signal of engineering leadership.
+        Download counts, community contributions, and release management are massive signals of engineering leadership — the kind hiring managers notice immediately.
       </p>
 
       <h2 className={h2}>The Dynamics of Community Management</h2>
@@ -173,9 +167,7 @@ export default function ArticleContent() {
         This shows you can lead distributed teams.
       </p>
       <p>
-        It proves that you have the soft skills required for team lead roles. 
-        It highlights your ability to manage public-facing codebases. 
-        This is a rare quality in candidate pools.
+        Leading a distributed open source community is a rare quality in candidate pools. It demonstrates the soft skills needed for team lead roles and proves you can manage public-facing codebases.
       </p>
 
       <h2 className={h2}>The Value of Documentation Contributions</h2>

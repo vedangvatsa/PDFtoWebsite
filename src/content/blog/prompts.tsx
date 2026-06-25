@@ -14,7 +14,7 @@ export default function ArticleContent() {
       </p>
 
       <p>
-        This is the new reality of recruiting. Large language models have replaced the traditional keyword scanning tools of the past decade. These models do not just look for exact word matches. They read your entire profile to evaluate your technical depth and career trajectory. To survive this filter, you must understand the exact instructions these systems receive.
+        Large language models have replaced the keyword scanning tools of the past decade. They do not just look for exact word matches. They read your entire profile to evaluate your technical depth and career trajectory. To survive this filter, you must understand the exact instructions these systems receive.
       </p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">

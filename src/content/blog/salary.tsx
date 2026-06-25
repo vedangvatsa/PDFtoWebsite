@@ -12,7 +12,7 @@ export default function ArticleContent() {
         You blurt out a random number you saw on an online forum. The recruiter writes it down. The call continues but the trap has already sprung. If your number was low you just saved the company thousands of dollars at your own expense. If your number was high the recruiter will silently flag you as too expensive and end your candidacy.
       </p>
       <p>
-        Giving a salary number early in the interview loop is a major tactical mistake. Recruiters ask this question to filter candidates out as fast as possible. You must learn how to deflect this question and keep the negotiation open. This article outlines the best strategies to handle early salary questions and protect your market value.
+        Giving a salary number early in the interview loop is a major tactical mistake. Recruiters ask this question to filter candidates out as fast as possible. You must learn how to deflect this question and keep the negotiation open.
       </p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">

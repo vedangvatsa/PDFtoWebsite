@@ -147,7 +147,7 @@ export default function ArticleContent() {
       <h2 className={h2}>How Formatting Choices Affect Scanners</h2>
       <p>Paragraph breaks are important for defining section ends. When the parsing software finishes reading a block it expects a clear space before the next title. If you remove spacing the scanner merges the blocks.</p>
 
-      <p>Avoid using horizontal rules to separate sections. While lines look clean to humans they often convert to long dashes or underscore strings in the text stream. These strings confuse the parser pattern matching.</p>
+      <p>Do not use horizontal rules to separate sections. While lines look clean to humans they often convert to long dashes or underscore strings in the text stream. These strings confuse the parser pattern matching.</p>
 
       <p>Use whitespace instead of lines. A simple blank line is the most effective separator. It creates a physical boundary that both humans and machines recognize without errors.</p>
 
@@ -167,7 +167,7 @@ export default function ArticleContent() {
 
       <p>Do not mix languages in your headings. If you apply for a job in English use English headings throughout the document. Mixing English and local language headings confuses the section classifier.</p>
 
-      <p>Avoid using multiple levels of nested headings. Keep your structure flat with one level of section titles. This simple hierarchy ensures that the parser maps your details without nesting errors.</p>
+      <p>Skip nested heading levels. Keep your structure flat with one level of section titles. This simple hierarchy ensures that the parser maps your details without nesting errors.</p>
 
       <p>Test your final layout using a plain text export. If your headings are merged with the body text add more blank lines. Clean spacing is the best way to guarantee parsing success.</p>
 

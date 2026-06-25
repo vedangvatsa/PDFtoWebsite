@@ -14,7 +14,7 @@ export default function ArticleContent() {
       </p>
 
       <p>
-        This guide will evaluate the tools used to optimize technical profiles. We will explain the difference between frequency scanners and semantic tools. We will show you how to use these tools to build a strong profile without resorting to keyword stuffing. We will also describe how modern parsers use vector embeddings to evaluate your background.
+        The fix is understanding the difference between dumb frequency scanners and modern semantic tools, and knowing how to use them without turning your profile into keyword soup.
       </p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">

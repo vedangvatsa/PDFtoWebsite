@@ -5,7 +5,7 @@ import { h2, h3, callout, ul, ol, bold, link } from '@/lib/blog-styles';
 export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
-      <p>Imagine a recruiter opening your profile and seeing four different jobs listed over a four year span. Their immediate reaction is negative. They see a flighty worker who cannot stay in one place. They assume you will leave their team in a few months. But the truth is completely different. You stayed at the same employer the entire time and earned three successive promotions. Your formatting choice accidentally made you look like an unstable job hopper.</p>
+      <p>Imagine a recruiter opening your profile and seeing four different jobs listed over a four year span. Their immediate reaction is negative. They see a flighty worker who cannot stay in one place. They assume you will leave their team in a few months. But you actually stayed at the same employer the entire time and earned three successive promotions. Your formatting choice accidentally made you look like an unstable job hopper.</p>
       
       <p>This is a common disaster for high performers. When you separate every internal promotion into a completely separate company entry you destroy your own story. The reader scans the left margin and sees multiple company names or repeated logos. They do not read the fine print. They miss the fact that you were climbing the ladder at a single organization.</p>
 
