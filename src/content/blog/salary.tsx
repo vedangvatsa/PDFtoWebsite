@@ -111,7 +111,7 @@ export default function ArticleContent() {
         If you are looking for remote contracts you can read about the <Link href="/remote" className={link}>best methods to format remote work</Link> to show your autonomy. A strong history of remote work helps you demand higher rates.
       </p>
       <p>
-        For instance a lower base salary can be acceptable if the company offers significant equity or a flexible work schedule. You must calculate the cost savings of working from home. Saving time and money on daily commuting can balance a slightly lower cash offer. Always consider the net value of the entire compensation package.
+        For instance a lower base salary can be acceptable if the company offers meaningful equity or a flexible work schedule. You must calculate the cost savings of working from home. Saving time and money on daily commuting can balance a slightly lower cash offer. Always consider the net value of the entire compensation package.
       </p>
 
       <h2 className={h2}>Delay the Number Until the Technical Loop</h2>

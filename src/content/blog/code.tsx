@@ -6,7 +6,7 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
-        <p>The modern technical hiring landscape is completely flooded with perfectly formatted documents claiming absolute mastery of every programming language on earth. Because of the massive proliferation of online tutorials and bootcamps it costs a candidate literally zero effort to type the word React or Postgres onto their public profile. Due to this extreme saturation technical recruiters have developed an immense distrust of plain text declarations.</p>
+        <p>The modern technical hiring world is completely flooded with perfectly formatted documents claiming absolute mastery of every programming language on earth. Because of the massive proliferation of online tutorials and bootcamps it costs a candidate literally zero effort to type the word React or Postgres onto their public profile. Due to this extreme saturation technical recruiters have developed an immense distrust of plain text declarations.</p>
         <p>We assume every single technical skill you list is an aggressive exaggeration until you prove otherwise. If you want to bypass the massive pile of generic applicants and instantly trigger an interview request you must stop demanding that we trust your words. You must force us to interact directly with your compiled functional code. Showing always defeats telling.</p>
 
         <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
@@ -57,7 +57,7 @@ export default function ArticleContent() {
         <p>Deploying a project proves you survived the most difficult and frustrating phase of software engineering. Millions of juniors can follow a clean local tutorial but very few possess the grit required to successfully configure a production server set up database scaling and secure a custom domain network. A live link proves you are a finisher.</p>
         
         <div className={callout}>
-          <h3 className={h3}>Curate the Source Repository</h3>
+          <h3 className={h3}>Clean Up the Source Repository</h3>
           <p>When you link to your public code repository explicitly pin your three most impressive projects to the top of your profile. Make absolutely sure the root folder contains a pristine descriptive markdown file that clearly explains the architecture the database choices and the specific reasons you selected the overarching technical stack. Managers read the documentation before they ever look at the pure code.</p>
         </div>
 

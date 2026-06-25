@@ -11,7 +11,7 @@ export default function ArticleContent() {
         <p>This is called forced horizontal scrolling, and every usability study in the last twenty years classifies it as a <span className={bold}>critical interface failure</span>.</p>
         <div className={callout}>
           <h3 className={h3}>The math of the 6-second scan</h3>
-          <p>The average recruiter spends <span className={bold}>6-8 seconds</span> on an initial resume scan. If two of those seconds are wasted navigating, you have lost a third of your window. They will not fight your formatting. They will close the file and open the next one.</p>
+          <p>The average recruiter spends <span className={bold}>6-8 seconds</span> on an initial resume scan. If two of those seconds are wasted just scrolling around, you have lost a third of your window. They will not fight your formatting. They will close the file and open the next one.</p>
         </div>
 
         <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">

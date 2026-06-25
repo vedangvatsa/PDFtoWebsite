@@ -64,7 +64,7 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>The Data Integrity Gap</h2>
-        <p>Recruiters rely on automated filters. If the ATS reads your "2023" as "2O23" (using the letter O instead of the number zero), you might be filtered out of a search for candidates with recent experience. Subtle glitches in OCR create massive gaps in your data integrity. Web profiles provide the raw text, ensuring 100% accuracy for every tool that reads them. This accuracy is vital for your <Link href="/tech-keywords" className={link}>visual hierarchy to remain effective</Link>.</p>
+        <p>Recruiters rely on automated filters. If the ATS reads your "2023" as "2O23" (using the letter O instead of the number zero), you might be filtered out of a search for candidates with recent experience. Subtle glitches in OCR create massive gaps in your data integrity. Web profiles provide the raw text, ensuring 100% accuracy for every tool that reads them. This accuracy is important for your <Link href="/tech-keywords" className={link}>visual hierarchy to remain effective</Link>.</p>
 
         <h2 className={h2}>Messy Background Layers</h2>
         <p>Designed resumes use background colors and sidebars as separate layers. The parser does not understand layers. It reads characters in coordinate order regardless of which visual layer they belong to. This is another reason <Link href="/attachments" className={link}>static PDFs are increasingly unreliable</Link>.</p>
@@ -81,7 +81,7 @@ export default function ArticleContent() {
         <div className="space-y-6">
           <div>
             <h3 className={h3}>Do big tech companies use OCR on resumes?</h3>
-            <p>Almost all of them do. They handle thousands of applications per day, and manual data entry is impossible. If their machine cannot read your file, you are essentially invisible.</p>
+            <p>Almost all of them do. They handle thousands of applications per day, and manual data entry is impossible. If their machine cannot read your file, you are basically invisible.</p>
           </div>
           <div>
             <h3 className={h3}>Is an exported Word document better than a Canva PDF?</h3>

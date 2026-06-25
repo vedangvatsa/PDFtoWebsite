@@ -86,7 +86,7 @@ export default function ArticleContent() {
         If you want to catch the eye of an engineering manager, you must use metrics. You should not say a service was fast. You should state the latency percentile. Mentioning P95 or P99 latency shows you understand real performance. It tells the reader that you know some users experienced slow times and that you fixed those outliers.
       </p>
       <p>
-        Throughput is another vital metric. Use requests per second or messages per minute. If you worked on background processing, write about queue depth and drain rates. These numbers give a sense of scale. A system handling ten requests per second is designed differently than one handling ten thousand.
+        Throughput is another key metric. Use requests per second or messages per minute. If you worked on background processing, write about queue depth and drain rates. These numbers give a sense of scale. A system handling ten requests per second is designed differently than one handling ten thousand.
       </p>
       <p>
         Here are examples of how to rewrite your project descriptions.
@@ -139,7 +139,7 @@ export default function ArticleContent() {
         Third template. Migrated a legacy user profile database to a sharded Postgres cluster. This partition strategy prevented write bottlenecks and saved seventy thousand dollars in annual hosting fees.
       </p>
       <p>
-        These templates put the technical details first. They use active verbs and avoid generic corporate jargon. They do not say the system was exceptional. They let the numbers prove the quality of the work.
+        These templates put the technical details first. They use active verbs and avoid generic corporate jargon. They do not say the system was amazing. They let the numbers prove the quality of the work.
       </p>
 
       <h2 className={h2}>Proving System Ownership</h2>

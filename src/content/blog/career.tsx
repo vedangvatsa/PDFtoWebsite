@@ -91,7 +91,7 @@ export default function ArticleContent() {
 
         <h2 className={h2}>7. Use a Web Profile URL</h2>
         <p>A one-page resume cannot tell your full story, and that is extra true when you are changing careers. You need more space to show projects, explain the transition, and present yourself as someone who belongs in the new field.</p>
-        <p>A web profile gives you that space. A link like <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm">cvin.bio/yourname</code> at the top of your resume lets the recruiter click through to a curated version of your background. On your web profile, you control the layout. You can put your projects first, your bootcamp second, and your old career last. Or leave the old career off entirely.</p>
+        <p>A web profile gives you that space. A link like <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm">cvin.bio/yourname</code> at the top of your resume lets the recruiter click through to a tailored version of your background. On your web profile, you control the layout. You can put your projects first, your bootcamp second, and your old career last. Or leave the old career off entirely.</p>
         <p>This also helps when someone shares your profile with a hiring manager. They send a link, not a file. The hiring manager sees the version of you that makes sense for this role.</p>
 
         <h2 className={h2}>8. Write a Bridge Summary</h2>

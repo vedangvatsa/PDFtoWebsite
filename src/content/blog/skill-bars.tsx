@@ -11,7 +11,7 @@ export default function ArticleContent() {
         
         <h2 className={h2}>The Trap of Stated Weakness</h2>
         <p>The most devastating consequence of using visual skill bars is that you inevitably force yourself to document your own incompetence. If you design a beautiful five star scale and boldly claim five stars in Python you are naturally pressured to give yourself only three stars in AWS so you appear honest.</p>
-        <p>By visually highlighting a three star rating you immediately flag to the hiring manager that you are fundamentally weak at AWS infrastructure. Why would you ever permanently carve a declaration of your own mediocrity directly into the prime real estate of your public profile. It makes absolutely no strategic sense.</p>
+        <p>By visually highlighting a three star rating you immediately flag to the hiring manager that you are seriously weak at AWS infrastructure. Why would you ever permanently carve a declaration of your own mediocrity directly into the prime real estate of your public profile. It makes absolutely no strategic sense.</p>
         
         <div className={callout}>
           <h3 className={h3}>The Binary Competence Rule</h3>

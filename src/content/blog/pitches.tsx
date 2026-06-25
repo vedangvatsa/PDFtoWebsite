@@ -96,7 +96,7 @@ export default function ArticleContent() {
         When you talk to an engineering manager or a senior developer you must use systems language. They do not care about broad marketing terms or generic project names.
       </p>
       <p>
-        Explain your work in terms of architecture and code quality. Speak about how you handle database connections or structure your React components. Discuss the trade-offs you made when choosing your state management tool.
+        Explain your work when it comes to architecture and code quality. Speak about how you handle database connections or structure your React components. Discuss the trade-offs you made when choosing your state management tool.
       </p>
       <p>
         An engineer wants to know if they would enjoy reviewing your code. They want to see if you understand standard practices like git workflows and unit testing. If you show that you care about these details you will build trust immediately.

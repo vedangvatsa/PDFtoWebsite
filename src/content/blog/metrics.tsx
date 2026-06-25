@@ -7,7 +7,7 @@ export default function ArticleContent() {
     <div className="flex flex-col gap-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
       <p>A frontend developer submits fifty job applications over two weeks. They refresh their email inbox hourly but receive only silence. They do not know if hiring managers opened their files, read their bullet points, or deleted their messages instantly. This candidate is operating in total darkness.</p>
       
-      <p>This lack of feedback is the worst part of the traditional job hunt. When you send static documents you lose all visibility. You cannot optimize your strategy because you have no data on user engagement.</p>
+      <p>This lack of feedback is the worst part of the traditional job hunt. When you send static documents you lose all visibility. You cannot improve your strategy because you have no data on user engagement.</p>
 
       <p>Switching to an interactive resume changes this equation. Publishing your profile as a web link allows you to track reader behavior using lightweight analytics. This data helps you debug your layout and double your response rates.</p>
 
@@ -19,7 +19,7 @@ export default function ArticleContent() {
       <p>Tracking metrics allows you to run tests on your descriptions. If you change your header summary and notice longer read times you know the new text is effective. This feedback loop is impossible with static files.</p>
 
       <div className={callout}>
-        <h3 className={h3}>Measure to Optimize</h3>
+        <h3 className={h3}>Measure to Improve</h3>
         <p>Treat your job hunt like a marketing funnel. Measure conversion rates from application submissions to profile clicks. If your submission count is high but your page views are zero your email pitch needs work.</p>
       </div>
 
@@ -113,7 +113,7 @@ export default function ArticleContent() {
 
       <p>This tracking is particularly useful for verifying application handoffs. If you notice a visit from a company domain name you know your application passed the entry filters. You can prioritize follow up messages to this company.</p>
 
-      <h2 className={h2}>Optimizing Content Based on Analytics Feedback</h2>
+      <h2 className={h2}>Improving Content Based on Analytics Feedback</h2>
       <p>Data without action is useless. You must review your metrics weekly to make targeted adjustments to your layout. Let the data guide your optimization iterations.</p>
 
       <p>If you see high traffic but low read times rewrite your summary paragraph. Make it shorter and place your primary stack keywords at the absolute front. Ensure your tech stack is readable in under five seconds.</p>
@@ -132,7 +132,7 @@ export default function ArticleContent() {
 
       <p>Avoid traditional analytics scripts that require complex cookie banners. Cookie banners create immediate friction and look unprofessional on a personal profile. Use cookieless systems that load in milliseconds.</p>
 
-      <p>A platform like CVin.Bio handles these metrics for you natively. It tracks views, read times, and link clicks without bloated scripts. You get the data you need to optimize your search while keeping your profile fast and clean.</p>
+      <p>A platform like CVin.Bio handles these metrics for you natively. It tracks views, read times, and link clicks without bloated scripts. You get the data you need to improve your search while keeping your profile fast and clean.</p>
 
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on building interactive layouts and passing recruiter scans read these detailed articles.</p>

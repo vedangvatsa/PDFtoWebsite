@@ -42,7 +42,7 @@ export default function ArticleContent() {
       <h2 className={h2}>Why Objective Statements Fail Completely</h2>
       <p>An objective statement is passive. It places the burden on the company to fulfill your desires. It reads like a list of demands rather than an offer of help. Recruiters have no interest in funding your education or helping you discover your interests.</p>
       
-      <p>Furthermore these statements are packed with filler words that convey zero meaning. Phrases like passionate team player or hard worker are completely subjective. Anyone can write them. They hold no weight with hiring managers who want to see evidence.</p>
+      <p>On top of that, these statements are packed with filler words that convey zero meaning. Phrases like passionate team player or hard worker are completely subjective. Anyone can write them. They hold no weight with hiring managers who want to see evidence.</p>
       
       <p>The top of your profile is what recruiters see first. If you waste this space on boring corporate phrases you lose the opportunity to make a strong impression. You must replace the fluff with hard facts and metrics.</p>
 

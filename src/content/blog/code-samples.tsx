@@ -80,7 +80,7 @@ export default function ArticleContent() {
 
       <p>To make your repository useful you must write a README file. Do not leave the README blank. A blank file shows laziness. The README is the introduction to your code. Use it to explain what the project does what problem it solves and what technologies you chose. Write clear instructions on how to install and run the code locally.</p>
 
-      <p>Keep your repositories focused. Do not share a single repository that has fifty random playground files. Create a dedicated repository for each major project. Keep the folder structure clean and organized. If you want to optimize your profile check out our guide on <Link href="/readme" className={link}>building a GitHub Profile README</Link> to stand out.</p>
+      <p>Keep your repositories focused. Do not share a single repository that has fifty random playground files. Create a dedicated repository for each major project. Keep the folder structure clean and organized. If you want to improve your profile check out our guide on <Link href="/readme" className={link}>building a GitHub Profile README</Link> to stand out.</p>
 
       <h2 className={h2}>Using Interactive Web Sandboxes</h2>
       <p>If you are a frontend developer a static code repository is not enough. Managers want to see your user interface in action. They want to see how the animations run. They want to see how the layout handles different screen sizes. They do not want to pull your repository and set up a local build just to see your UI.</p>

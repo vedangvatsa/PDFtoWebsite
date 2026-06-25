@@ -64,7 +64,7 @@ export default function ArticleContent() {
         <p>The manager reads the brilliant payment gateway achievement and assigns it a perfect score. Then they read that you attend meetings and they average it out. Suddenly your perfect score drops to a mediocre score. You bury your own brilliance under a mountain of mandatory corporate boredom.</p>
 
         <h2 className={h2}>The Rule of Three</h2>
-        <p>To combat this you must ruthlessly enforce the rule of three. Impose a strict limit on yourself. You are only allowed to present the top three most impressive business wins for your current role. If a fourth bullet does not utterly destroy the third bullet in terms of impact you must delete it entirely.</p>
+        <p>To combat this you must ruthlessly enforce the rule of three. Impose a strict limit on yourself. You are only allowed to present the top three most impressive business wins for your current role. If a fourth bullet does not utterly destroy the third bullet when it comes to impact you must delete it entirely.</p>
         <p>This forced constraint makes your profile feel incredibly dense with talent. It proves to the hiring manager that you understand the difference between high-impact results and basic operational noise.</p>
         
         <div className={callout}>

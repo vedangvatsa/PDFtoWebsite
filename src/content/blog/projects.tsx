@@ -107,7 +107,7 @@ export default function ArticleContent() {
       <p>
         This shows that you understand modern container tooling. 
         It proves that your code can run consistently in any cloud environment. 
-        It elevates your profile above developers who do not use container systems.
+        It sets your profile apart from developers who do not use container systems.
       </p>
 
       <h2 className={h2}>Build Systems That Solve Real Scale Problems</h2>
@@ -123,7 +123,7 @@ export default function ArticleContent() {
       </p>
       <p>
         These metrics show that you understand technical constraints. 
-        They demonstrate that you can optimize system velocity and scaling paths. 
+        They demonstrate that you can improve system speed and scaling paths. 
         To see how to showcase code links effectively, visit our guide on <Link href="/code" className={link}>showing your code instead of listing skills</Link>.
       </p>
 

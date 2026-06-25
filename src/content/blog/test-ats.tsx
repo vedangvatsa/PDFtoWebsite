@@ -127,7 +127,7 @@ export default function ArticleContent() {
       <p>Taking ten minutes to test your layout prevents your profile from getting lost in database systems. A clean document structure combined with a live web link ensures you get noticed by engineering managers.</p>
 
       <h2 className={h2}>Read Next</h2>
-      <p>To learn more about optimizing your document layout check out these helpful guides.</p>
+      <p>To learn more about improving your document layout check out these helpful guides.</p>
       
       <p>
         Learn why PDF files often fail in systems by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.

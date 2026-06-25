@@ -85,8 +85,8 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>Avoid the Guru Trap</h2>
-        <p>Never under any circumstances list yourself as an AI Thought Leader. The technology is evolving so violently fast that anyone claiming absolute mastery of the entire ecosystem is instantly flagged as a liar by technical recruiters. We respect humility and brutal pragmatism over grandiose titles.</p>
-        <p>State clearly that you are aggressively and consistently learning how to use new developer tools to ship code faster. This framing proves you possess the hunger required to adapt to the shifting landscape while firmly keeping your feet planted in the reality of building functional products.</p>
+        <p>Never under any circumstances list yourself as an AI Thought Leader. The technology is evolving so violently fast that anyone claiming absolute mastery of the entire space is instantly flagged as a liar by technical recruiters. We respect humility and brutal pragmatism over grandiose titles.</p>
+        <p>State clearly that you are aggressively and consistently learning how to use new developer tools to ship code faster. This framing proves you possess the hunger required to adapt to a shifting world while firmly keeping your feet planted in the reality of building functional products.</p>
       </div>
   );
 }

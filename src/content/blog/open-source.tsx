@@ -88,7 +88,7 @@ export default function ArticleContent() {
       <p>
         Large open source codebases use complex repository systems. 
         They often configure monorepos containing multiple independent packages. 
-        Understanding this structure is crucial when explaining your contributions.
+        Understanding this structure is important when explaining your contributions.
       </p>
       <p>
         Explain how your code interacts with different modules in the package. 
@@ -127,7 +127,7 @@ export default function ArticleContent() {
         </p>
       </div>
 
-      <h2 className={h2}>Navigating the Review Cycle of a Major Library</h2>
+      <h2 className={h2}>Working Through the Review Cycle of a Major Library</h2>
       <p>
         The pull request review cycle is where engineering quality is tested. 
         Strict maintainers will analyze every line of your code. 
@@ -140,7 +140,7 @@ export default function ArticleContent() {
       </p>
       <p>
         It proves that you can accept feedback and work with others. 
-        These are essential qualities for senior engineering roles. 
+        These are key qualities for senior engineering roles. 
         It shows you can deliver clean work under strict guidelines.
       </p>
 
