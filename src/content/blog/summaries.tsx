@@ -201,8 +201,8 @@ export default function ArticleContent() {
       </p>
       <p>
         Modern systems use natural language processing to extract skills. 
-        They analyze the relationship between your tools and your achievements. 
-        They flag lists of words that lack grammatical context.
+        The algorithms analyze the relationship between your tools and your achievements. 
+        Bare keyword lists without grammatical context get flagged as low-quality.
       </p>
       <p>
         Ensure that every technical term is part of a complete sentence. 

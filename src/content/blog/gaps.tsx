@@ -6,16 +6,16 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
-        <p>Taking extended time away from the corporate grind is completely normal. Unfortunately candidates have been terrified into believing that a gap of more than three months will instantly ruin their entire career track. This fear causes people to do incredibly foolish things on their profiles like stretching old job dates to cover the empty months or completely removing months and only listing years.</p>
-        <p>When you attempt to hide a career gap you trigger an automatic failure during the background check phase. Discovering that you actively lied about a start or end date shatters all professional trust. The recruiter will immediately assume you were fired for gross misconduct and simply rescind the job offer. You must never hide the gap.</p>
+        <p>Taking extended time away from work is normal. But candidates have been scared into thinking a gap of more than three months will ruin their career. This fear causes people to do foolish things on their profiles — stretching old job dates to cover empty months or removing months and only listing years.</p>
+        <p>When you hide a career gap, you risk an automatic failure during background checks. If they discover you lied about a start or end date, all professional trust is gone. The recruiter will assume the worst and pull the offer. Do not hide the gap.</p>
         
         <h2 className={h2}>The Power of Explicit Labelling</h2>
-        <p>The absolute best way to handle a career break is to aggressively own it. Treat the missing time exactly like a formal job entry. Put the start and end dates clearly on the page and give the gap an explicit title. Labelling it as a Planned Sabbatical or Full Time Caregiver completely kills the toxic guessing game.</p>
-        <p>When a hiring manager sees an unexplained gap they assume you have been helplessly searching for work and getting rejected for an entire year. When they see the exact same gap labelled carefully as an active life choice they respect your agency.</p>
+        <p>The best way to handle a career break is to own it. Treat the missing time like a formal job entry. Put the start and end dates clearly on the page and give the gap an explicit title. Label it as a Planned Sabbatical or Full-Time Caregiver and the guessing game is over.</p>
+        <p>When a hiring manager sees an unexplained gap, they assume you spent that time job hunting and getting rejected. When they see the same gap labeled as a deliberate choice, they respect it.</p>
         
         <div className={callout}>
           <h3 className={h3}>Transforming Shadows into Projects</h3>
-          <p>If you spent your six month gap learning a new programming language or building a small independent application you should name the gap after the project. List yourself as an Independent Developer and outline the specific technical stack you conquered. Self directed engineering is highly respected by modern technical managers.</p>
+          <p>If you spent your six-month gap learning a new programming language or building an independent application, name the gap after the project. List yourself as an Independent Developer and outline the technical stack you worked with. Self-directed engineering is respected by technical managers.</p>
         </div>
 
         {/* Visual: Two timelines — one with blank gap (bad), one with labeled gap (good) */}
@@ -120,8 +120,8 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>Controlling the Interview Narrative</h2>
-        <p>Once you proudly label the gap on your profile it becomes a strength rather than a scary secret. When you inevitably get asked about the time off during the phone screen you can answer directly without any nervous fumbling.</p>
-        <p>Simply state that you took targeted time away to handle family matters or travel and quickly pivot back to your readiness. Saying you stepped away but are now fully energized and aggressively seeking a high ownership role signals immense personal stability. Managers love hiring stable people who know exactly what they want.</p>
+        <p>Once you label the gap on your profile, it becomes a strength instead of a secret. When you get asked about it during the phone screen, you can answer directly without fumbling.</p>
+        <p>State that you took time away to handle family matters or travel, then pivot back to your readiness. Saying you stepped away and are now looking for a high-ownership role signals stability. Managers hire people who know what they want.</p>
       </div>
   );
 }

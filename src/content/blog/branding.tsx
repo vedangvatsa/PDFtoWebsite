@@ -37,7 +37,7 @@ export default function ArticleContent() {
 
       <p>Set up your A and AAAA records to point directly to your hosting provider's servers. These records handle IPv4 and IPv6 traffic and ensure global accessibility. Use CNAME records for subdomains like www to route users to your main site.</p>
 
-      <p>Configure your TTL values to balance speed and flexibility. A lower time to live value lets you update server IPs quickly during migrations. A higher value reduces DNS lookup times for your visitors.</p>
+      <p>Set your TTL values to balance speed and flexibility. A lower time-to-live value lets you update server IPs quickly during migrations. A higher value reduces DNS lookup times for your visitors.</p>
 
       <p>Use DNS propagation checkers to verify your configurations globally. It can take up to twenty-four hours for DNS changes to spread across the web. Ensure your site is fully accessible before sending links to employers.</p>
 
@@ -148,18 +148,18 @@ export default function ArticleContent() {
 
       <p>Most modern hosting platforms offer automatic SSL certificates with zero setup. They generate and renew your certificates using free open certificate authorities. This keeps your domain secure and accessible without manual work.</p>
 
-      <p>Configure automatic redirects to force all visitors onto the secure HTTPS version of your site. This protects user privacy and ensures compliance with modern browser security standards. A secure lock icon next to your URL builds immediate trust.</p>
+      <p>Set up automatic redirects to force all visitors onto the secure HTTPS version of your site. This protects user privacy and meets modern browser security standards. A secure lock icon next to your URL builds immediate trust.</p>
 
       <p>Check your site security configuration using online tools to find vulnerabilities. Keep your server software updated and avoid loading insecure assets onto your pages. A clean security report protects both you and your visitors.</p>
 
       <h2 className={h2}>Setting Up a Professional Custom Email</h2>
-      <p>Applying for jobs using a generic email address from a free provider looks highly unprofessional. It signals that you are an amateur who lacks basic technical skills. A custom domain allows you to set up a dedicated professional email address.</p>
+      <p>Applying for jobs using a generic email address from a free provider looks sloppy. It signals you have not invested in your professional presence. A custom domain lets you set up a dedicated email address that matches your brand.</p>
 
       <p>Use your domain to create an address like hello at your name dot dev. This matches your web profile URL and reinforces your professional brand. It shows that you pay attention to minor details in your business communications.</p>
 
-      <p>Configure email forwarding or link your custom address to your preferred email client. This ensures you receive all recruiter messages in a single inbox and can reply quickly. Fast response times are critical during active job hunts.</p>
+      <p>Set up email forwarding or link your custom address to your preferred email client. This ensures you receive all recruiter messages in a single inbox and can reply quickly. Fast response times are critical during active job hunts.</p>
 
-      <p>Configure SPF and DKIM records to verify your email server's identity. This prevents your professional emails from ending up in recruiter spam folders. Deliverability is just as important as the content of your message.</p>
+      <p>Add SPF and DKIM records to verify your email server's identity. This prevents your professional emails from ending up in recruiter spam folders. Deliverability is just as important as the content of your message.</p>
 
       <h2 className={h2}>Avoiding Common Domain Mistakes</h2>
       <p>Many job hunters make the mistake of choosing domain names that are too long. A domain with thirty characters is difficult to type on a phone and takes up too much space on a page. Keep your address under fifteen characters if possible.</p>

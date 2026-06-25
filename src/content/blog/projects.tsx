@@ -88,9 +88,7 @@ export default function ArticleContent() {
         Configure basic logging and monitoring tools like Prometheus or Datadog.
       </p>
       <p>
-        These steps prove that you understand deployment pipelines. 
-        They show that you can manage a live runtime environment. 
-        This is a much stronger signal than a codebase that only runs on localhost.
+        A live deployment with monitoring proves you can manage a real runtime environment — not just code that runs on localhost.
       </p>
 
       <h2 className={h2}>Selecting a Production Grade Tech Stack</h2>
@@ -105,9 +103,7 @@ export default function ArticleContent() {
         Configure docker-compose configurations to orchestrate your application layers locally.
       </p>
       <p>
-        This shows that you understand modern container tooling. 
-        It proves that your code can run consistently in any cloud environment. 
-        It sets your profile apart from developers who do not use container systems.
+        Containerization signals you can ship code that runs consistently anywhere. Most junior developers skip this step entirely, which is exactly why it sets you apart.
       </p>
 
       <h2 className={h2}>Build Systems That Solve Real Scale Problems</h2>
@@ -122,9 +118,7 @@ export default function ArticleContent() {
         Document the database optimizations that lowered memory usage.
       </p>
       <p>
-        These metrics show that you understand technical constraints. 
-        They demonstrate that you can improve system speed and scaling paths. 
-        To see how to showcase code links effectively, visit our guide on <Link href="/code" className={link}>showing your code instead of listing skills</Link>.
+        Hard performance numbers make hiring managers lean forward. To see how to showcase code links effectively, visit our guide on <Link href="/code" className={link}>showing your code instead of listing skills</Link>.
       </p>
 
       <div className={callout}>
@@ -187,9 +181,7 @@ export default function ArticleContent() {
         Use branch systems and pull requests to merge new features.
       </p>
       <p>
-        This reveals that you understand commercial git workflows. 
-        It shows that you can collaborate on large codebases. 
-        It proves you follow standard industry practices.
+        Clean git hygiene signals that you understand commercial workflows and can collaborate on large codebases — the kind of developer who does not need hand-holding on day one.
       </p>
 
       <h2 className={h2}>Handling Secrets and Environment Configuration</h2>
@@ -204,9 +196,7 @@ export default function ArticleContent() {
         Explain how to set up the credentials safely.
       </p>
       <p>
-        This shows that you understand production security boundaries. 
-        It proves that you write secure applications. 
-        It protects your projects from malicious actors.
+        Getting security right on a personal project tells a hiring manager you will get it right on their production systems too.
       </p>
 
       <h2 className={h2}>Establishing User Feedback Loops</h2>
@@ -221,9 +211,7 @@ export default function ArticleContent() {
         This shows that you can maintain an active codebase.
       </p>
       <p>
-        It proves that you understand product lifecycle mechanics. 
-        Hiring teams love engineers who build tools that solve real problems for real users. 
-        It makes your portfolio stand out.
+        Engineers who build tools that solve real problems for real users stand out immediately. That feedback loop — ship, listen, fix — is exactly what hiring teams want to see.
       </p>
 
       <h2 className={h2}>How to Link Projects on Your CV</h2>

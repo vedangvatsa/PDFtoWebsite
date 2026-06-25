@@ -73,11 +73,11 @@ export default function ArticleContent() {
 
         <h2 className={h2}>The Internal User Metric</h2>
         <p>Do not forget the value of internal adoption. If you build tools that help other employees work faster you are saving the company thousands of hours of paid labor. You do not need the exact dollar value of their salaries to prove your worth.</p>
-        <p>Simply state how many developers relied on your architecture. Writing that you maintained a deployment pipeline used daily by forty senior engineers clearly establishes your extreme competency and trust level within the organization.</p>
+        <p>Simply state how many developers relied on your architecture. Writing that you maintained a deployment pipeline used daily by forty senior engineers clearly establishes your competency and the trust the organization placed in your work.</p>
 
         <h2 className={h2}>Overcoming Non Disclosure Agreements</h2>
         <p>Many hardware developers and defense contractors work under strict legal silence. They cannot even mention the name of the projects they build. If you face this barrier you must focus entirely on the scale of the environments you managed.</p>
-        <p>You can honestly write that you maintained zero downtime across a massive distributed network of secure environments. You replace the secret project details with extreme operational reliability metrics. Reliability is a universal language that every hiring manager understands instantly.</p>
+        <p>You can write that you maintained zero downtime across a large distributed network of secure environments. Replace the secret project details with operational reliability metrics. Reliability is a universal language that every hiring manager understands.</p>
       </div>
   );
 }

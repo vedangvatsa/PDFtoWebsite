@@ -9,7 +9,7 @@ export default function ArticleContent() {
       
       <p>All the engineer's recent accomplishments are silently deleted from the record. The recruiter only sees the older experience at the top of the file. This silent truncation happens on many enterprise portals without showing any warnings.</p>
 
-      <p>You can prevent this data loss by managing your document length. Keeping your text dense and using web links ensures recruiters see all your achievements. Let us inspect how enterprise database limits affect your applications.</p>
+      <p>You can prevent this data loss by managing your document length. Keeping your text dense and using web links ensures recruiters see all your achievements. Here is how enterprise database limits quietly destroy your applications.</p>
 
       <h2 className={h2}>Understanding Database String Limits</h2>
       <p>Applicant tracking systems rely on database engines to store candidate records. Many older databases use fixed character fields for the text extract. These fields often have limits of four thousand or eight thousand characters.</p>

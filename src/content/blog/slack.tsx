@@ -143,7 +143,7 @@ export default function ArticleContent() {
       <p>Keep your profile details consistent across different workspaces. Hiring managers often belong to multiple regional channels. If they see you posting conflicting details they will reject your profile.</p>
 
       <h2 className={h2}>The Advantage of a Hosted Technical Profile</h2>
-      <p>A web profile is a professional necessity. It acts as a single source of truth for your professional brand. When you share a web link you invite recruiters to interact with your work.</p>
+      <p>A web profile centralizes everything a recruiter needs — your stack, your projects, your contact info — behind one link. When you share a web link you invite recruiters to interact with your work.</p>
 
       <p>Your web profile can link directly to your GitHub repository and live demonstrations. It allows recruiters to verify your skills with a single click. This speed is critical in fast moving chat feeds.</p>
 

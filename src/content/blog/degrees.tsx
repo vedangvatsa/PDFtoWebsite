@@ -6,12 +6,12 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
-        <p>The traditional corporate obsession with elite university credentials is rapidly collapsing across the entire technology sector. A decade ago failing to possess a computer science degree from a prestigious engineering institution would instantly disqualify you from passing the initial automated resume screen. Today the most powerful technology companies on the planet have formally and publicly ripped the college degree requirement out of their job descriptions.</p>
-        <p>This massive structural shift occurred because engineering managers finally realized that surviving four years of theoretical mathematics in a classroom has almost zero correlation with the ability to ship a functioning web application under immense pressure. The industry has aggressively pivoted toward pure skills based hiring. We no longer care where you sat for four years. We only care what you built yesterday.</p>
+        <p>The corporate obsession with elite university credentials is collapsing across the technology sector. A decade ago, not having a CS degree from a top school would disqualify you before a human ever saw your resume. Today, the biggest tech companies have removed the degree requirement from their job descriptions entirely.</p>
+        <p>This shift happened because engineering managers realized that four years of theoretical coursework has almost no correlation with the ability to ship working software under pressure. The industry has moved toward skills-based hiring. Nobody cares where you sat for four years. They care what you built.</p>
         
         <h2 className={h2}>Flipping the Traditional Hierarchy</h2>
-        <p>If you lack a famous degree you must completely restructure the visual hierarchy of your specific profile. The classic template demands you put your education at the very absolute top of the page. You must completely ignore this obsolete rule. You need to aggressively force your massive commercial project wins and detailed technical deployments to the very top margin where the eye naturally lands.</p>
-        <p>Bury your formal education section at the absolute furthest bottom corner of the digital page. Treat it exactly like a minor administrative footnote. When a recruiter is instantly blown away by the massive enterprise platforms you architected in the first ten seconds of reading they will entirely forget to even check if you actually went to college.</p>
+        <p>If you do not have a well-known degree, restructure your profile hierarchy. The classic template puts education at the top. Ignore that rule. Put your commercial project wins and technical deployments at the top where the eye lands first.</p>
+        <p>Push your education section to the bottom of the page. Treat it like a footnote. When a recruiter sees the platforms you built in the first ten seconds of reading, they will not care where you went to school.</p>
 
         <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
           <svg viewBox="0 0 680 300" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,12 +74,12 @@ export default function ArticleContent() {
         
         <div className={callout}>
           <h3 className={h3}>The Autodidact Advantage</h3>
-          <p>Never operate from a posture of shame regarding your self taught background. In the hyper accelerated modern technology market the ability to aggressively teach yourself complex new frameworks over the weekend is the single most valuable skill a human can possess. Explicitly highlighting that you taught yourself full stack development while working a chaotic retail job proves you possess terrifying levels of grit and discipline.</p>
+          <p>Do not apologize for being self-taught. In this market, the ability to teach yourself new frameworks quickly is one of the most valuable skills you can have. Highlighting that you taught yourself full-stack development while working a retail job proves real grit and discipline.</p>
         </div>
 
         <h2 className={h2}>Bootcamps are Tools Not Diplomas</h2>
-        <p>If you used an accelerated coding bootcamp to transition into the industry you must treat it appropriately. A twelve week camp is a phenomenal acceleration tool but it is absolutely not a replacement for a university degree and you should not format it like one. List the dense technical curriculum you survived but immediately follow it with the standalone applications you built outside of their guided tutorials.</p>
-        <p>Hiring managers want to see that you have completely broken away from the scripted safety of the bootcamp environment. Prove that you can fly solo without a famous instructor holding your hand.</p>
+        <p>If you used a coding bootcamp to transition into the industry, treat it appropriately. A twelve-week camp is a great acceleration tool, but it is not a replacement for a university degree and you should not format it like one. List the technical curriculum you covered, but follow it immediately with the applications you built on your own outside of guided tutorials.</p>
+        <p>Hiring managers want to see that you can build things independently. Prove that you can ship code without an instructor walking you through every step.</p>
       </div>
   );
 }

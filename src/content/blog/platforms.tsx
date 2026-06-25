@@ -14,7 +14,7 @@ export default function ArticleContent() {
       </p>
 
       <p>
-        This guide will explain how to handle the major tracking platforms. We will cover systems like Workday, Greenhouse, Lever, and Taleo. We will also discuss modern startup systems like Ashby and Jobvite. We will show you the exact strategies you need to use to keep your formatting clean on each system.
+        Here is how to handle the major tracking platforms — Workday, Greenhouse, Lever, Taleo, Ashby, and Jobvite — and the exact strategies to keep your formatting clean on each one.
       </p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">

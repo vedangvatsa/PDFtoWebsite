@@ -92,7 +92,7 @@ export default function ArticleContent() {
 
         <h2 className={h2}>Documentation is Scalable Empathy</h2>
         <p>One of the strongest and most overlooked forms of teamwork in modern business is written documentation. Writing code only helps the company today but mapping out a strong internal knowledge base helps the entire technical organization for the next five years. You must treat your internal wikis and onboarding manuals as high-impact team accomplishments.</p>
-        <p>State clearly that you authored the engineering deployment standard operating procedure that the entire technical department now uses daily to push code safely. That single bullet point screams to the recruiter that you care deeply about your peers and proactively work to make their lives infinitely easier. Documentation proves you possess elite organizational empathy.</p>
+        <p>State clearly that you authored the engineering deployment standard operating procedure that the entire technical department now uses daily to push code safely. That single bullet point screams to the recruiter that you care deeply about your peers and proactively work to make their lives easier. That is teamwork you can point to.</p>
       </div>
   );
 }
