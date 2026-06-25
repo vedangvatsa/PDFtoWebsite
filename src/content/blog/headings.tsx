@@ -145,7 +145,7 @@ export default function ArticleContent() {
       <p>Recruiters search for candidates using specific databases. These databases have pre-defined filters for experience and education. If your headings match these filters your profile appears higher in search results.</p>
 
       <h2 className={h2}>How Formatting Choices Affect Scanners</h2>
-      <p>Paragraph breaks are essential for defining section ends. When the parsing software finishes reading a block it expects a clear space before the next title. If you remove spacing the scanner merges the blocks.</p>
+      <p>Paragraph breaks are important for defining section ends. When the parsing software finishes reading a block it expects a clear space before the next title. If you remove spacing the scanner merges the blocks.</p>
 
       <p>Avoid using horizontal rules to separate sections. While lines look clean to humans they often convert to long dashes or underscore strings in the text stream. These strings confuse the parser pattern matching.</p>
 

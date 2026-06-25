@@ -105,7 +105,7 @@ export default function ArticleContent() {
 
         <h2 className={h2}>5. ReadCV</h2>
         <p><span className={bold}>Best for:</span> Designers and creative developers who want a clean, visual profile.</p>
-        <p>ReadCV gives you a beautiful one-page profile with a curated feel. The design is minimal and polished. You can add project cards with images, which works well if your work has a visual component.</p>
+        <p>ReadCV gives you a beautiful one-page profile with a polished feel. The design is minimal and polished. You can add project cards with images, which works well if your work has a visual component.</p>
         <p>The limitation is that ReadCV leans heavily toward design portfolios. If your best work is a distributed system or a CLI tool, ReadCV does not give you a great way to present that. It also does not generate structured data that machines can parse, which matters more every year as <Link href="/ai" className={link}>AI agents start browsing candidate profiles</Link> programmatically.</p>
 
         <h2 className={h2}>6. CVin.Bio</h2>

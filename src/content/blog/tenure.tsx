@@ -7,7 +7,7 @@ export default function ArticleContent() {
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
         <p>In the traditional corporate world staying at a company for only ten months was considered a massive red flag. Recruiters viewed fast exits as irrefutable proof of either severe performance issues or toxic personality conflicts. Many hiring managers would completely throw away an application if they spotted two short stints back to back.</p>
-        <p>The modern startup ecosystem has entirely shattered those old rules. Rapid layoffs and sudden pivot mandates happen constantly. Companies run out of venture funding overnight forcing entire engineering departments to hunt for new jobs on the exact same weekend. However even though short tenures are common today you still must completely control the narrative on your profile.</p>
+        <p>The modern startup world has entirely shattered those old rules. Rapid layoffs and sudden pivot mandates happen constantly. Companies run out of venture funding overnight forcing entire engineering departments to hunt for new jobs on the exact same weekend. However even though short tenures are common today you still must completely control the narrative on your profile.</p>
 
         {/* Visual: Horizontal bar chart showing 3 short job tenures with contextual labels */}
         <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
@@ -77,7 +77,7 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>The Silent Danger of the Gap</h2>
-        <p>When you present a string of six month jobs without any written explanation you give the recruiter permission to imagine the worst possible scenario. Human nature is fundamentally anxious especially when placing a permanent hire. If you leave the reason for your exit blank the reader will simply assume that you failed the probationary review period and were quietly fired.</p>
+        <p>When you present a string of six month jobs without any written explanation you give the recruiter permission to imagine the worst possible scenario. Human nature is naturally anxious especially when placing a permanent hire. If you leave the reason for your exit blank the reader will simply assume that you failed the probationary review period and were quietly fired.</p>
         <p>You must actively remove the guesswork. You have the total power to reframe a negative short sprint into a highly positive story of adaptability and speed.</p>
         
         <h2 className={h2}>Contract Labelling Reverses Risk</h2>

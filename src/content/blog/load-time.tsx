@@ -78,7 +78,7 @@ export default function ArticleContent() {
 
       <p>Static files are also incredibly cheap to host. You can deploy your entire site to a global content delivery network for free. This ensures your portfolio loads fast for recruiters regardless of their geographic location.</p>
 
-      <p>If you need dynamic elements like contact forms use API endpoints or third-party service integrations. This keeps your main page static and fast while allowing essential interactions. Do not sacrifice basic load speed for unnecessary database calls.</p>
+      <p>If you need dynamic elements like contact forms use API endpoints or third-party service integrations. This keeps your main page static and fast while allowing key interactions. Do not sacrifice basic load speed for unnecessary database calls.</p>
 
       <h2 className={h2}>CDN Deployment and Edge Caching</h2>
       <p>Hosting your portfolio on a single server in one country causes high latency for international recruiters. A developer in Europe will experience slow loads if your server is based in America. A content delivery network solves this problem by caching your files worldwide.</p>

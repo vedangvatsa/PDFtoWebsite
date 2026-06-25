@@ -114,7 +114,7 @@ export default function ArticleContent() {
         When you contact a manager on Twitter or LinkedIn, you must keep your pitch extremely short. Do not ask for a phone call immediately. Do not ask them to read a long message. Do not attach files. Send a brief message explaining how you can help, and include a link to your live profile.
       </p>
       <p>
-        A link like cvin.bio/tomas is perfect. It loads instantly on their phone. They do not have to download an attachment. They can see your profile picture, read your values, check your code, and click your live project URLs. It is a seamless experience for a busy manager.
+        A link like cvin.bio/tomas is perfect. It loads instantly on their phone. They do not have to download an attachment. They can see your profile picture, read your values, check your code, and click your live project URLs. It is a smooth experience for a busy manager.
       </p>
       <p>
         Your pitch should highlight your strongest technical accomplishment. Do not say "I am a frontend developer looking for a job." Say "I recently built a Next.js frontend that renders search results in under 100 milliseconds." This is specific, interesting, and proves you understand system performance.

@@ -70,7 +70,7 @@ export default function ArticleContent() {
         A web link is also easier to share. Hiring managers can check your profile on their phones during a meeting. A PDF often looks cramped and unreadable on small screens.
       </p>
       <p>
-        Furthermore, flat documents limit your ability to show your design systems in action. In modern product development, designers do not just create static mockups. They build reusable component libraries and define token systems. An interactive page allows you to show these systems working in code, proving you can collaborate effectively with developers.
+        Beyond that, flat documents limit your ability to show your design systems in action. In modern product development, designers do not just create static mockups. They build reusable component libraries and define token systems. An interactive page allows you to show these systems working in code, proving you can collaborate effectively with developers.
       </p>
 
       <h2 className={h2}>Core Sections of a Designer Web Profile</h2>
@@ -136,7 +136,7 @@ export default function ArticleContent() {
         Ask a friend to look at your site. Watch them interact with it. Do they know where to click? Do they understand what your projects are about? Observing a real user will highlight usability issues you might have missed.
       </p>
       <p>
-        Similarly, check your loading speeds. You can use free web tools to audit your page speed. If your images are too large, compress them. A fast loading site is essential for keeping busy recruiters on your page.
+        Similarly, check your loading speeds. You can use free web tools to audit your page speed. If your images are too large, compress them. A fast loading site is key to keeping busy recruiters on your page.
       </p>
 
       <h2 className={h2}>How to Host and Share Your Work</h2>
@@ -150,7 +150,7 @@ export default function ArticleContent() {
         Having a single web link is the best way to get noticed by design leaders. Read about <Link href="/link" className={link}>why sharing a web link is better than sending a static file</Link> for your job search.
       </p>
       <p>
-        If you want to ensure your web page looks great on mobile, check out our guide on <Link href="/mobile" className={link}>making your CV mobile friendly</Link> to optimize your mobile layout.
+        If you want to ensure your web page looks great on mobile, check out our guide on <Link href="/mobile" className={link}>making your CV mobile friendly</Link> to improve your mobile layout.
       </p>
 
       <h2 className={h2}>Read Next</h2>

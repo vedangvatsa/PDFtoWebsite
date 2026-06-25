@@ -78,7 +78,7 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>Simplicity Survives the Machine</h2>
-        <p>While the reading comprehension of parsing bots has evolved incredibly fast their ability to unentangle chaotic visual layouts remains surprisingly terrible. Complex multi column designs intricate grid graphics and overlapping text boxes constantly cause the extraction engines to scramble your sentences into total gibberish.</p>
+        <p>While the reading comprehension of parsing bots has evolved incredibly fast their ability to unentangle chaotic visual layouts remains surprisingly terrible. Complex multi column designs complex grid graphics and overlapping text boxes constantly cause the extraction engines to scramble your sentences into total gibberish.</p>
         <p>You must completely surrender your desire to create a visually wild document. Using a rigorously clean linear website link or a dead simple text structure guarantees that the language model ingests every single syllable of your history in perfect sequential order giving you the absolute highest possible match score.</p>
       </div>
   );

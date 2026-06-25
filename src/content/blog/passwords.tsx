@@ -35,7 +35,7 @@ export default function ArticleContent() {
       <h2 className={h2}>Server-Less Token Based Access</h2>
       <p>A great way to reduce recruiter friction is to use token-based URLs. Instead of forcing managers to type a password you can include the credentials directly inside the link query parameters. The page reads the token and validates access automatically.</p>
 
-      <p>When you send your web CV to a company you provide a custom link. The link contains a unique search parameter that unlocks the project page. The recruiter clicks the URL and views your work with zero typing required.</p>
+      <p>When you send your web CV to a company you provide a custom link. The link contains a unique search parameter that opens the project page. The recruiter clicks the URL and views your work with zero typing required.</p>
 
       <p>This approach gives you complete control over who views your work. You can generate different tokens for different applications and track which companies actually click the links. You can also revoke specific tokens after your application process finishes.</p>
 

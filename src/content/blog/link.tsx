@@ -11,7 +11,7 @@ export default function ArticleContent() {
         <p>Now think about the PDF version of the same workflow. It involves downloading, hunting for the file, and re-uploading. This is why many hiring teams are choosing <Link href="/inbox" className={link}>candidates who simplify their inbox</Link>. Every step is a chance for the momentum to die.</p>
 
         <h2 className={h2}>Building a Personal Brand</h2>
-        <p>A custom URL like cvin.bio/yourname is the beginning of your professional brand. It shows you have taken the time to curate your online presence. It moves you from being a "file on a server" to a "person with a platform." This subtle shift in status makes you more memorable when the team discusses candidates at the end of the week.</p>
+        <p>A custom URL like cvin.bio/yourname is the beginning of your professional brand. It shows you have taken the time to shape your online presence. It moves you from being a "file on a server" to a "person with a platform." This subtle shift in status makes you more memorable when the team discusses candidates at the end of the week.</p>
 
         <h2 className={h2}>The Preview Card Effect</h2>
         <p>When you drop a URL into Slack, LinkedIn, iMessage, or WhatsApp, the platform automatically fetches your page metadata and renders a preview card showing:</p>
@@ -75,7 +75,7 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>The Analytics Benefit</h2>
-        <p>One thing an attachment can never tell you is when it has been opened. With a web profile, you can track views. Knowing that your profile was viewed three times in the last hour from a specific city gives you a clear indication that a team is currently discussing you. This information is invaluable for managing your own nerves and following up at the right time.</p>
+        <p>One thing an attachment can never tell you is when it has been opened. With a web profile, you can track views. Knowing that your profile was viewed three times in the last hour from a specific city gives you a clear indication that a team is currently discussing you. This information is really useful for managing your own nerves and following up at the right time.</p>
 
         <h2 className={h2}>The Psychology of Clean URLs</h2>
         <p>There is a subtle effect at work. When someone receives <span className={bold}>&quot;cvin.bio/james&quot;</span> versus a file called &quot;James_Lee_SeniorDev_Resume_March2026_FINAL.pdf,&quot; the URL feels more credible. This person has their act together. They are not just looking for a job. They are managing a career.</p>

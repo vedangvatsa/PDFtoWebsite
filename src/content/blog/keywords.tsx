@@ -81,7 +81,7 @@ export default function ArticleContent() {
 
         <h2 className={h2}>AI and ML Keywords</h2>
         <p><span className={bold}>High signal in 2026:</span> PyTorch, fine-tuning, RAG (retrieval-augmented generation), prompt engineering, LangChain, vector databases, RLHF, model evaluation, MLOps, Hugging Face.</p>
-        <p>The AI/ML keyword landscape shifted dramatically in the last two years. Before 2024, the important keywords were TensorFlow, scikit-learn, and feature engineering. Those still matter for traditional ML roles, but the market has moved toward large language models.</p>
+        <p>The AI/ML keyword world shifted dramatically in the last two years. Before 2024, the important keywords were TensorFlow, scikit-learn, and feature engineering. Those still matter for traditional ML roles, but the market has moved toward large language models.</p>
         <p>If you work with LLMs, say so directly. Mention whether you are fine-tuning, building RAG pipelines, doing prompt engineering, or evaluating model outputs. These are distinct skills and hiring managers know the difference.</p>
         <p><span className={bold}>Losing weight:</span> TensorFlow (still used but PyTorch won the research and startup market), Keras (absorbed into TensorFlow), basic scikit-learn without production context, &quot;machine learning&quot; as a standalone keyword without specifics.</p>
 

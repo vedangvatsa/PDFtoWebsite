@@ -7,7 +7,7 @@ export default function ArticleContent() {
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
         <p>I have reviewed over ten thousand applications in my career as a senior technical recruiter. If there is one massive mistake that instantly ruins a candidate profile it is the classic objective statement. Years ago people wrote what they wanted from a job at the very top of their paper resumes. They would literally write that they sought a challenging role at a dynamic company to grow their personal skills.</p>
-        <p>This practice is entirely dead. If you do this today managers will think you are fundamentally out of touch with modern business realities. Companies do not hire you to fulfill your personal dreams. They hire you because they have expensive problems that need fixing right now.</p>
+        <p>This practice is entirely dead. If you do this today managers will think you are completely out of touch with modern business realities. Companies do not hire you to fulfill your personal dreams. They hire you because they have expensive problems that need fixing right now.</p>
         
         <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
           <svg viewBox="0 0 660 260" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">

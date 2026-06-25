@@ -10,12 +10,12 @@ export default function ArticleContent() {
         <p>When a hiring manager reviews a heavily academic profile they experience an immediate twinge of fear. They worry that you will treat every basic database query like a six month research grant. They fear you possess zero urgency and lack the brutal pragmatism required to launch a messy but profitable feature by Friday afternoon. You must aggressively rewrite your academic history to destroy this bias.</p>
         
         <h2 className={h2}>Reframing the Laboratory as a Startup</h2>
-        <p>The secret to successfully pitching a doctorate is translation. You must strip away all the prestigious sounding university jargon and describe your research laboratory exactly as if it were a high growth technology startup. Your complex dissertation was fundamentally just a multi year product lifecycle. Your frantic test scripts were early valid tests for real customer behavior patterns.</p>
+        <p>The secret to successfully pitching a doctorate is translation. You must strip away all the prestigious sounding university jargon and describe your research laboratory exactly as if it were a high growth technology startup. Your complex dissertation was really just a multi year product lifecycle. Your frantic test scripts were early valid tests for real customer behavior patterns.</p>
         <p>Write about your academic tenure using strictly commercial verbs. Say that you architected and maintained a massive data pipeline that processed terabytes of messy inputs daily. Detail how you secured strict funding approvals by successfully pitching your architecture directly to skeptical institutional stakeholders. This frames you as a battle tested operator.</p>
         
         <div className={callout}>
           <h3 className={h3}>Delete the Deep Theory</h3>
-          <p>Your future corporate boss does not understand the nuanced theoretical math inside your published papers and they do not want to learn it. Delete the long academic titles of your research entirely. Focus purely on the massive computational scale you handled and how you optimized the server costs to keep your lab budget from exploding.</p>
+          <p>Your future corporate boss does not understand the complex theoretical math inside your published papers and they do not want to learn it. Delete the long academic titles of your research entirely. Focus purely on the massive computational scale you handled and how you optimized the server costs to keep your lab budget from exploding.</p>
         </div>
 
         {/* Visual: Academic language translated to commercial equivalents with arrows */}
@@ -105,7 +105,7 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>Proving Extreme Velocity</h2>
-        <p>Because the primary fear regarding academics is sluggish perfectionism you must constantly highlight your speed. Dedicate a massive section of your profile to a specific moment where you abandoned theory and built a dirty script overnight just to hit a brutal deadline. Prove that you know when to be a meticulous scientist and when to be a fast shipping hacker.</p>
+        <p>Because the primary fear regarding academics is sluggish perfectionism you must constantly highlight your speed. Dedicate a massive section of your profile to a specific moment where you abandoned theory and built a dirty script overnight just to hit a brutal deadline. Prove that you know when to be a careful scientist and when to be a fast shipping hacker.</p>
         <p>Highlight moments where you collaborated with external departments or presented data to non technical audiences. Showing that you can explain complex algorithms to business majors instantly raises your corporate value and completely separates you from the stereotype of the isolated researcher.</p>
       </div>
   );

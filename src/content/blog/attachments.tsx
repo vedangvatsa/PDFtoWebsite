@@ -92,7 +92,7 @@ export default function ArticleContent() {
 
         <h2 className={h2}>Security Rules Kill Attachments</h2>
         <p>Enterprise email systems at large companies <span className={bold}>strip PDFs from emails entirely</span> or quarantine them for 24 hours. By the time your resume clears, fifty other candidates who sent <Link href="/link" className={link}>clean profile links</Link> have already been reviewed.</p>
-        <p>Even when it goes through, every attachment requires the recipient to download a file, which is a significant friction point. Modern hiring is about speed.</p>
+        <p>Even when it goes through, every attachment requires the recipient to download a file, which is a real friction point. Modern hiring is about speed.</p>
         
         <h2 className={h2}>The Versioning Nightmare</h2>
         <p>When you send an attachment, you lose control of the content. If you find a better way to describe your current project or catch a minor error, that PDF in their inbox is now a historical relic. You cannot update it. This is why many candidates are <Link href="/update" className={link}>switching to live profiles</Link> where they can fix typos instantly.</p>

@@ -64,7 +64,7 @@ export default function ArticleContent() {
 
       <p>Your work is interactive. It reacts to clicks. It transitions smoothly between views. It handles network failures and lazy loads images. A static PDF cannot show any of these capabilities. It turns your interactive products into flat pictures. It forces the manager to take your word on your coding skills rather than seeing them in action.</p>
 
-      <p>Additionally enterprise application systems frequently mangle PDF files. The parsers read from left to right and scramble complex layouts. This means your carefully designed sections are turned into garbage text. You can read more about why this happens in our article on <Link href="/pdf" className={link}>why complex PDFs break algorithms</Link>.</p>
+      <p>On top of that, enterprise application systems frequently mangle PDF files. The parsers read from left to right and scramble complex layouts. This means your carefully designed sections are turned into garbage text. You can read more about why this happens in our article on <Link href="/pdf" className={link}>why complex PDFs break algorithms</Link>.</p>
 
       <h2 className={h2}>The Live Web Profile as the Ultimate Alternative</h2>
       <p>The best alternative is a dedicated web profile. A live site hosted on a custom domain name is a massive upgrade over an email attachment. It shows you understand hosting deployment and domain management.</p>

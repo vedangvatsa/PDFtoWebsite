@@ -195,8 +195,8 @@ export default function ArticleContent() {
         This makes your profile easier to discover online.
       </p>
       <p>
-        Additionally, screen readers can jump directly to specific sections. 
-        This makes your profile easier to navigate for everyone.
+        Also, screen readers can jump directly to specific sections. 
+        This makes your profile easier to use for everyone.
       </p>
 
       <h2 className={h2}>Designing for Mobile Recruiters on the Go</h2>

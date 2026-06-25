@@ -133,7 +133,7 @@ export default function ArticleContent() {
 
       <h2 className={h2}>Avoiding the Copy Paste Trap</h2>
       <p>
-        Some candidates optimize their profiles by copying the job description text word-for-word. They insert the exact phrases of the posting into their experience bullets. You must avoid this technique.
+        Some candidates try to improve their profiles by copying the job description text word-for-word. They insert the exact phrases of the posting into their experience bullets. You must avoid this technique.
       </p>
 
       <p>

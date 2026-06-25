@@ -30,7 +30,7 @@ export default function ArticleContent() {
         They must calculate payroll taxes and verify employment eligibility.
       </p>
       <p>
-        Additionally, teams want to understand your timezone alignment. 
+        On top of that, teams want to understand your timezone alignment. 
         If a team operates in New York, they will hesitate to hire someone in Singapore. 
         Listing your physical location prevents immediate rejection due to scheduling fears.
       </p>
@@ -94,11 +94,11 @@ export default function ArticleContent() {
         </p>
       </div>
 
-      <h2 className={h2}>Navigating Regional Compliance and Tax Zones</h2>
+      <h2 className={h2}>Handling Regional Compliance and Tax Zones</h2>
       <p>
         Companies face complex legal rules when hiring remote employees. 
         They must follow local labor laws and manage tax declarations. 
-        Your CV should make these issues easy to navigate.
+        Your CV should make these issues easy to sort out.
       </p>
       <p>
         If you work as an independent contractor, state this clearly in your experience details. 
@@ -171,7 +171,7 @@ export default function ArticleContent() {
       <p>
         For example, write about how you automated deployment notifications to coordinate global updates. 
         Explain how this change reduced release errors by forty percent. 
-        These metrics show that you optimize remote working patterns.
+        These metrics show that you improve remote working patterns.
       </p>
       <p>
         This approach demonstrates that you treat remote operations as a technical system. 

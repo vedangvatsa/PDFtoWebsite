@@ -74,7 +74,7 @@ export default function ArticleContent() {
         For instance, describe how you designed a schema for an order system. Explain that you selected PostgreSQL because you required ACID transaction guarantees to prevent payment conflicts. Stating this design rationale shows you understand data integrity.
       </p>
       <p>
-        On the other hand, explain why you used a NoSQL database like DynamoDB or Cassandra. You could write that you selected a document store to handle high write volumes from a web activity stream. Detail how you chose the primary partition key to avoid write hot spots.
+        Then, explain why you used a NoSQL database like DynamoDB or Cassandra. You could write that you selected a document store to handle high write volumes from a web activity stream. Detail how you chose the primary partition key to avoid write hot spots.
       </p>
       <p>
         This level of detail shows that you understand the strengths and limits of different data stores. It proves you do not have a one size fits all approach to system architecture.

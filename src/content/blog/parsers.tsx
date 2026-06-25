@@ -161,7 +161,7 @@ export default function ArticleContent() {
 
       <p>The system searches the database for matching profiles. If a parser failed to identify your database skills your profile will not appear in the results. The system simply does not know you possess those skills.</p>
 
-      <p>Recruiters also search for tenure. They filter for candidates who stayed at their last job for more than two years. Accurate date extraction is essential to survive this filter.</p>
+      <p>Recruiters also search for tenure. They filter for candidates who stayed at their last job for more than two years. Accurate date extraction is key to surviving this filter.</p>
 
       <h2 className={h2}>Key Factors in Parser Scoring</h2>
       <p>Most database platforms assign a match score to each candidate profile. This score is calculated by comparing your skills list to the job description. The system ranks profiles by this percentage score.</p>
