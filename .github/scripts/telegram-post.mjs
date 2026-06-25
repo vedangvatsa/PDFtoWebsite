@@ -203,9 +203,9 @@ const TELEGRAM_ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'r
 async function fetchUnpostedJobs() {
   const sourceFilter = TELEGRAM_ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
   const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+  // Fast query: just source + date filter (both indexed). Skip the slow IS NULL filter.
   const params = new URLSearchParams({
-    select: 'id,title,company,location,apply_url,source,published_at',
-    'telegram_posted_at': 'is.null',
+    select: 'id,title,company,location,apply_url,source,published_at,telegram_posted_at',
     'source': `in.(${sourceFilter})`,
     'published_at': `gt.${threeDaysAgo}`,
     order: 'published_at.desc',
@@ -224,7 +224,9 @@ async function fetchUnpostedJobs() {
     throw new Error(`Failed to fetch jobs: ${res.status} ${err}`);
   }
 
-  return res.json();
+  const jobs = await res.json();
+  // Filter out already-posted jobs in JS (avoids slow IS NULL scan in DB)
+  return jobs.filter(j => !j.telegram_posted_at);
 }
 
 // ── Pick jobs: 2+ remote, 1 per company, diverse locations ───────────────

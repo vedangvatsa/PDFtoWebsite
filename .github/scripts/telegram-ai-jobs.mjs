@@ -245,7 +245,7 @@ async function fetchJobs() {
     'source': `in.(${sourceFilter})`,
     'created_at': `gt.${threeDaysAgo}`,
     order: 'created_at.desc',
-    limit: '500',
+    limit: '300',
   });
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?${params}`, {
