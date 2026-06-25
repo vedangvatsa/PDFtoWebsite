@@ -347,6 +347,12 @@ const CATEGORIES: Category[] = [
         tag: 'Our Pick',
       },
       {
+        name: 'AI Interview Question Bank',
+        url: '/ai-interview-questions',
+        description: 'Curated technical interview questions, answers, and evaluation rubrics for AI roles.',
+        tag: 'New',
+      },
+      {
         name: 'Toptal',
         url: 'https://www.toptal.com',
         description: 'Top 3% freelance talent network. High-paying contracts for developers, designers, and finance.',
