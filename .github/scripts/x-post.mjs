@@ -308,10 +308,10 @@ async function postSingle(state, content, slotKey) {
     if (item.img.startsWith('/')) {
       const publicPath = path.join(REPO_ROOT, 'public', item.img);
       imgPath = fs.existsSync(publicPath) ? publicPath : item.img;
-    } else if (item.img.startsWith('.github/')) {
-      imgPath = path.join(REPO_ROOT, item.img);
+    } else if (item.img.startsWith('.github/images/')) {
+      imgPath = path.join(REPO_ROOT, 'public/images/github', item.img.substring('.github/images/'.length));
     } else {
-      imgPath = path.join(IMAGES_DIR, item.img);
+      imgPath = path.join(REPO_ROOT, 'public/images/github', item.img);
     }
 
     if (!fs.existsSync(imgPath)) {

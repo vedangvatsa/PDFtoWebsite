@@ -188,11 +188,11 @@ async function run() {
     let isVideo = false;
     if (post.img) {
       if (post.img.startsWith('/')) {
-        imageUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/public${post.img}`;
+        imageUrl = `https://cvin.bio${post.img}`;
       } else if (post.img.startsWith('.github/images/')) {
-        imageUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/${post.img}`;
+        imageUrl = `https://cvin.bio/images/github/${post.img.substring('.github/images/'.length)}`;
       } else {
-        imageUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${post.img}`;
+        imageUrl = `https://cvin.bio/images/github/${post.img}`;
       }
       isVideo = imageUrl.toLowerCase().endsWith('.mp4');
     }
