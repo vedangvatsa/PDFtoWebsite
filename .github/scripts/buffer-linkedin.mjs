@@ -27,7 +27,7 @@ function loadState() {
   try {
     return JSON.parse(fs.readFileSync(STATE_FILE, 'utf-8'));
   } catch {
-    return { lastIndex: -1, lastScheduledAt: '', postedHashes: [] };
+    return { lastIndex: -1, postedHashes: [] };
   }
 }
 
@@ -93,13 +93,12 @@ async function getQueueCount() {
   return 0;
 }
 
-async function schedulePost(text, imageUrl, dueAt, videoUrl) {
+async function schedulePost(text, imageUrl, videoUrl) {
   const input = {
     channelId: LINKEDIN_ID,
     text,
     schedulingType: 'automatic',
-    mode: 'customScheduled',
-    dueAt,
+    mode: 'addToQueue',
   };
 
   if (videoUrl) {
@@ -165,34 +164,6 @@ async function run() {
 
   const queueTexts = await getQueueTexts();
 
-  // Generate time slots (3x/day: 9am, 1pm, 5pm SGT = 1am, 5am, 9am UTC)
-  const generateSlots = (count, startTimeStr) => {
-    const slots = [];
-    const hours = [1, 5, 9]; // UTC hours
-    let d = new Date();
-    let strictlyAfter = new Date();
-    if (startTimeStr) {
-      const st = new Date(startTimeStr);
-      if (!isNaN(st.getTime()) && st > d) {
-        d = new Date(st);
-        strictlyAfter = new Date(st);
-      }
-    }
-    d.setMinutes(0, 0, 0);
-    while (slots.length < count) {
-      for (const h of hours) {
-        const slot = new Date(d);
-        slot.setUTCHours(h, 30, 0, 0);
-        if (slot > new Date() && slot > strictlyAfter && slots.length < count) {
-          slots.push(new Date(slot));
-        }
-      }
-      d.setDate(d.getDate() + 1);
-    }
-    return slots;
-  };
-
-  const slots = generateSlots(toSchedule, state.lastScheduledAt);
   let scheduled = 0;
 
   for (let i = 0; i < toSchedule; i++) {
@@ -220,15 +191,11 @@ async function run() {
       imageUrl = `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relPath}`;
     }
 
-    const dueAt = slots[scheduled]?.toISOString();
-    if (!dueAt) break;
-
-    console.log(`  #${idx} at ${dueAt}`);
-    const result = await schedulePost(text, imageUrl, dueAt, post.videoUrl || undefined);
+    console.log(`  #${idx} adding to queue`);
+    const result = await schedulePost(text, imageUrl, post.videoUrl || undefined);
 
     if (result.success) {
       state.postedHashes.push(textHash);
-      state.lastScheduledAt = dueAt;
       scheduled++;
     } else if (result.duplicate) {
       state.postedHashes.push(textHash);
