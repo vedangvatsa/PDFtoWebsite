@@ -102,9 +102,9 @@ async function schedulePost(text, imageUrl, videoUrl) {
   };
 
   if (videoUrl) {
-    input.assets = { videos: [{ url: videoUrl }] };
+    input.assets = [{ video: { url: videoUrl } }];
   } else if (imageUrl) {
-    input.assets = { images: [{ url: imageUrl, thumbnailUrl: imageUrl }] };
+    input.assets = [{ image: { url: imageUrl, thumbnailUrl: imageUrl } }];
   }
 
   const data = await gqlRequest(`
@@ -184,15 +184,21 @@ async function run() {
       continue;
     }
 
-    // Build image URL from GitHub CDN
     let imageUrl = '';
+    let isVideo = false;
     if (post.img) {
-      const relPath = post.img.startsWith('.github/images/') ? post.img.substring('.github/images/'.length) : post.img;
-      imageUrl = `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relPath}`;
+      if (post.img.startsWith('/')) {
+        imageUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/public${post.img}`;
+      } else if (post.img.startsWith('.github/images/')) {
+        imageUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/${post.img}`;
+      } else {
+        imageUrl = `https://raw.githubusercontent.com/vedangvatsa/PDFtoWebsite/main/.github/images/${post.img}`;
+      }
+      isVideo = imageUrl.toLowerCase().endsWith('.mp4');
     }
 
     console.log(`  #${idx} adding to queue`);
-    const result = await schedulePost(text, imageUrl, post.videoUrl || undefined);
+    const result = await schedulePost(text, isVideo ? undefined : imageUrl, isVideo ? imageUrl : post.videoUrl);
 
     if (result.success) {
       state.postedHashes.push(textHash);
