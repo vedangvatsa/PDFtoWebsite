@@ -423,10 +423,12 @@ async function postThread(state, content) {
         if (imgPath.startsWith('/')) {
           const publicPath = path.join(REPO_ROOT, 'public', imgPath);
           fullPath = fs.existsSync(publicPath) ? publicPath : imgPath;
+        } else if (imgPath.startsWith('.github/images/')) {
+          fullPath = path.join(REPO_ROOT, 'public/images/github', imgPath.substring('.github/images/'.length));
         } else if (imgPath.startsWith('.github/')) {
           fullPath = path.join(REPO_ROOT, imgPath);
         } else {
-          fullPath = path.join(IMAGES_DIR, imgPath);
+          fullPath = path.join(REPO_ROOT, 'public/images/github', imgPath);
         }
         mediaId = await uploadMedia(fullPath);
         if (mediaId) console.log(`  🖼️ Media: ${mediaId}`);

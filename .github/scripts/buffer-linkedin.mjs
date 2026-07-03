@@ -188,13 +188,13 @@ async function run() {
     let isVideo = false;
     if (post.img) {
       if (post.img.startsWith('/')) {
-        imageUrl = `https://cvin.bio${post.img}`;
+        imageUrl = `https://cvin.bio${post.img}?v=${Date.now()}`;
       } else if (post.img.startsWith('.github/images/')) {
-        imageUrl = `https://cvin.bio/images/github/${post.img.substring('.github/images/'.length)}`;
+        imageUrl = `https://cvin.bio/images/github/${post.img.substring('.github/images/'.length)}?v=${Date.now()}`;
       } else {
-        imageUrl = `https://cvin.bio/images/github/${post.img}`;
+        imageUrl = `https://cvin.bio/images/github/${post.img}?v=${Date.now()}`;
       }
-      isVideo = imageUrl.toLowerCase().endsWith('.mp4');
+      isVideo = post.img.toLowerCase().endsWith('.mp4');
     }
 
     console.log(`  #${idx} adding to queue`);
