@@ -338,17 +338,19 @@ async function main() {
       } else {
         imagePath = item.img; // fallback to absolute
       }
+    } else if (item.img.startsWith('.github/images/')) {
+      imagePath = path.join(REPO_ROOT, 'public/images/github', item.img.substring('.github/images/'.length));
     } else if (item.img.startsWith('.github/')) {
       imagePath = path.join(REPO_ROOT, item.img);
     } else {
-      imagePath = path.join(IMAGES_DIR, item.img);
+      imagePath = path.join(REPO_ROOT, 'public/images/github', item.img);
     }
     const isVideo = imagePath?.endsWith('.mp4') || false;
     let relativeImgPath = item.img.startsWith('/') ? item.img.substring(1) : item.img;
     if (relativeImgPath.startsWith('.github/images/')) {
       relativeImgPath = relativeImgPath.substring('.github/images/'.length);
     }
-    const githubUrl = !isVideo ? `https://cdn.jsdelivr.net/gh/vedangvatsa/PDFtoWebsite@main/.github/images/${relativeImgPath}` : null;
+    const githubUrl = !isVideo ? `https://cvin.bio/images/github/${relativeImgPath}` : null;
     return { imagePath, isVideo, githubUrl };
   }
 

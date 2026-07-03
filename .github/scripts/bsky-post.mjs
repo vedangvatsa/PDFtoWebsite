@@ -166,10 +166,12 @@ async function main() {
   if (imgRef.startsWith('/')) {
     const publicPath = path.join(REPO_ROOT, 'public', imgRef);
     imgPath = fs.existsSync(publicPath) ? publicPath : imgRef;
+  } else if (imgRef.startsWith('.github/images/')) {
+    imgPath = path.join(REPO_ROOT, 'public/images/github', imgRef.substring('.github/images/'.length));
   } else if (imgRef.startsWith('.github/')) {
     imgPath = path.join(REPO_ROOT, imgRef);
   } else {
-    imgPath = path.join(IMAGES_DIR, imgRef);
+    imgPath = path.join(REPO_ROOT, 'public/images/github', imgRef);
   }
 
   if (imgPath.endsWith('.mp4')) {
