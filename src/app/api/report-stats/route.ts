@@ -16,30 +16,29 @@ export async function GET() {
 
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  // Fetch jobs (capped at 30K rows for speed — sufficient for stats)
-  const allJobs: any[] = [];
-  let page = 0;
-  const MAX_PAGES = 30;
-  while (page < MAX_PAGES) {
-    const { data } = await supabase
-      .from('jobs')
-      .select('company, location, tags, title, job_type')
-      .gt('created_at', thirtyDaysAgo)
-      .range(page * 1000, (page + 1) * 1000 - 1);
-    if (!data || data.length === 0) break;
-    allJobs.push(...data);
-    if (data.length < 1000) break;
-    page++;
-  }
-
-  // Dynamically fetch the exact total number of jobs
+  // Dynamically fetch the exact total number of jobs first (fast count query)
   const { count: exactJobCount } = await supabase
     .from('jobs')
     .select('*', { count: 'exact', head: true })
     .gt('created_at', thirtyDaysAgo);
 
-  const totalJobs = exactJobCount || allJobs.length;
-  const sampleSize = allJobs.length;
+  const totalJobs = exactJobCount || 0;
+  
+  // Calculate exactly how many pages we need to query (capped at 30 pages / 30K rows)
+  const pagesNeeded = Math.max(1, Math.min(30, Math.ceil(totalJobs / 1000)));
+
+  // Fetch jobs in parallel for speed
+  const pagePromises = Array.from({ length: pagesNeeded }).map((_, page) =>
+    supabase
+      .from('jobs')
+      .select('company, location, tags, title, job_type')
+      .gt('created_at', thirtyDaysAgo)
+      .range(page * 1000, (page + 1) * 1000 - 1)
+  );
+
+  const pageResults = await Promise.all(pagePromises);
+  const allJobs = pageResults.flatMap(r => r.data || []);
+  const sampleSize = allJobs.length || 1; // Prevent division by zero if empty
 
   // Unique companies
   const companySet = new Set<string>();

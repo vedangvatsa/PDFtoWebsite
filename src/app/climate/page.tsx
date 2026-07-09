@@ -292,7 +292,7 @@ export default function ClimatePage() {
 
             {/* Table */}
             <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden transition-colors">
-              <div className="overflow-x-auto">
+            <div className="w-full max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-zinc-200">

@@ -215,7 +215,8 @@ function HeroIllustration() {
           const baseY = 15 + row * 38;
           const isFalling = falling.has(key);
           const x = baseX;
-          const y = isFalling ? baseY + 18 + Math.random() * 12 : baseY;
+          const pseudoRandom = (Math.abs(Math.sin(row * 12.9898 + col * 78.233) * 43758.5453) % 1);
+          const y = isFalling ? baseY + 18 + pseudoRandom * 12 : baseY;
 
           return (
             <g key={key}>

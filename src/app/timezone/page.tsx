@@ -221,7 +221,7 @@ export default function TimezonePage() {
 
         {/* 24-Hour Timeline */}
         {selectedCities.length >= 2 && (
-          <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 overflow-x-auto">
+          <div className="w-full max-w-full min-w-0 bg-white border border-zinc-200 rounded-xl p-4 md:p-6 overflow-x-auto">
             <div className="min-w-[700px]">
               {/* UTC Hour Labels */}
               <div className="flex items-center mb-1 pl-32 md:pl-40">

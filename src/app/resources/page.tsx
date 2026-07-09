@@ -511,7 +511,7 @@ export default function ResourcesPage() {
         </div>
 
         {/* Quick jump nav - Unyielding Horizontal Block (horizontally scrollable) */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-12 border-b border-zinc-200/50 scrollbar-none whitespace-nowrap">
+        <div className="w-full max-w-full min-w-0 flex items-center gap-2 overflow-x-auto pb-4 mb-12 border-b border-zinc-200/50 scrollbar-none whitespace-nowrap">
           {CATEGORIES.map((cat) => (
             <a
               key={cat.id}
@@ -554,10 +554,11 @@ export default function ResourcesPage() {
 
         <BlogCTA />
 
-        {/* Footer note */}
-        <div className="mt-16 pt-8 border-t border-zinc-200">
-          <p className="text-xs text-zinc-400 leading-relaxed max-w-2xl">
-            This page contains curated recommendations based on community feedback and personal use. Last updated June 2026.
+        {/* Disclaimer footer */}
+        <div className="mt-20 pt-8 border-t border-zinc-200">
+          <p className="text-[10px] text-zinc-400 leading-relaxed w-full">
+            <span className="font-bold text-zinc-500 uppercase tracking-wider block mb-1.5">Disclaimer</span>
+            All resources listed on this page are compiled for informational purposes. While we strive to maintain accurate and up-to-date information, we do not guarantee the terms, pricing, or suitability of external third-party services. We recommend verifying current offerings directly with the respective providers before making any financial or coverage-related decisions. Last updated June 2026.
           </p>
         </div>
       </main>
