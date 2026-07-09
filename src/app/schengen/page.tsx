@@ -125,10 +125,10 @@ export default function SchengenPage() {
             {trips.map((trip) => (
               <div key={trip.id} className="flex items-center gap-3 bg-white border border-zinc-200 rounded-xl px-4 py-3">
                 <Calendar className="w-4 h-4 text-zinc-400 shrink-0" />
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <input type="date" value={trip.start} onChange={e => updateTrip(trip.id, 'start', e.target.value)} className="px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200 text-sm text-zinc-900 outline-none" />
-                  <span className="text-xs text-zinc-400">to</span>
-                  <input type="date" value={trip.end} onChange={e => updateTrip(trip.id, 'end', e.target.value)} className="px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200 text-sm text-zinc-900 outline-none" />
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1 min-w-0">
+                  <input type="date" value={trip.start} onChange={e => updateTrip(trip.id, 'start', e.target.value)} className="w-full sm:w-auto px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200 text-sm text-zinc-900 outline-none" />
+                  <span className="text-xs text-zinc-400 text-center sm:text-left">to</span>
+                  <input type="date" value={trip.end} onChange={e => updateTrip(trip.id, 'end', e.target.value)} className="w-full sm:w-auto px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200 text-sm text-zinc-900 outline-none" />
                 </div>
                 {trip.start && trip.end && (
                   <span className="text-xs font-mono text-zinc-500 shrink-0">{daysBetween(new Date(trip.start), new Date(trip.end))}d</span>

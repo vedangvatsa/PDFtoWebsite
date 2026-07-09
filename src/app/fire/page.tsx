@@ -93,7 +93,7 @@ export default function FirePage() {
             </div>
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-zinc-200">
+          <div className="w-full max-w-full overflow-x-auto rounded-xl border border-zinc-200">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-zinc-50 border-b border-zinc-200">

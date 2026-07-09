@@ -312,7 +312,7 @@ function InternetTab({ cities }: { cities: City[] }) {
       {/* Rankings Table */}
       <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden transition-colors">
         {/* Table Header */}
-        <div className="grid grid-cols-[3rem_1fr_6rem_6rem_5rem_5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-200 text-xs font-medium uppercase tracking-wider text-zinc-500">
+        <div className="grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem_3.5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-200 text-xs font-medium uppercase tracking-wider text-zinc-500">
           <div className="text-center">#</div>
           <div>City</div>
           <div className="text-right">Download</div>
@@ -331,7 +331,7 @@ function InternetTab({ cities }: { cities: City[] }) {
             <Link
               key={city.slug}
               href={`/${city.slug}`}
-              className="grid grid-cols-[3rem_1fr_6rem_6rem_5rem_5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-100 hover:bg-zinc-50 transition-colors items-center group"
+              className="grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem_3.5rem] md:grid-cols-[3rem_1fr_8rem_7rem_6rem_6rem] gap-2 px-4 py-3 border-b border-zinc-100 hover:bg-zinc-50 transition-colors items-center group"
             >
               {/* Rank */}
               <div className="text-center text-sm font-mono text-zinc-400">
