@@ -239,13 +239,10 @@ const ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'remoteok']
 
 async function fetchJobs() {
   const sourceFilter = ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
-  const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
   const params = new URLSearchParams({
     select: 'id,title,company,location,apply_url,source',
-    'source': `in.(${sourceFilter})`,
-    'created_at': `gt.${threeDaysAgo}`,
-    order: 'created_at.desc',
-    limit: '300',
+    order: 'id.desc',
+    limit: '3000',
   });
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?${params}`, {
@@ -296,13 +293,21 @@ function pickJobs(jobs, postedUrls) {
 
   console.log(`  Candidates after filter: ${candidates.length}`);
 
-  // Strictly one per company — never allow duplicates
+  // First pass: Try to get one per company
   for (const job of candidates) {
     if (picked.length >= JOBS_PER_POST) break;
     const key = job.company.toLowerCase().trim();
     if (companySeen.has(key)) continue;
     companySeen.add(key);
     picked.push(job);
+  }
+
+  // Second pass: Fill remaining slots if we couldn't find 5 unique companies
+  for (const job of candidates) {
+    if (picked.length >= JOBS_PER_POST) break;
+    if (!picked.includes(job)) {
+      picked.push(job);
+    }
   }
 
   return picked;
