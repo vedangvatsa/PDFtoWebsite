@@ -776,7 +776,7 @@ Task: "\${userTask}"\`;`,
             exampleLanguage: 'typescript'
           },
           whyThisMatters: [
-            'Prevents developers from writing hundreds of static prompts for different tasks, letting the system construct custom-tailored prompts dynamically.'
+            'Prevents developers from writing hundreds of static prompts for different tasks, letting the system construct custom prompts dynamically.'
           ],
           commonPitfalls: [
             'Allowing the metaprompt model to output unstructured conversational text around the prompt templates, which breaks client-side parsing.'
@@ -1875,7 +1875,7 @@ spec:
           scoringRubric: {
             1: 'Does not know how token count translates to costs or what metrics evaluate user experience.',
             3: 'Correctly identifies token costs and latency metrics but has no strategy to measure real-world output quality.',
-            5: 'Lists comprehensive metrics across cost, latency, and quality, and details practical collection methods (telemetry, automated judges).'
+            5: 'Lists complete metrics across cost, latency, and quality, and details practical collection methods (telemetry, automated judges).'
           }
         },
         {
@@ -1911,7 +1911,7 @@ spec:
           scoringRubric: {
             1: 'Suggests manually reviewing 100% of all outputs, or letting the model run fully automated without safety gates.',
             3: 'Understands basic approval gates but lacks confidence-based routing rules, risk classification, or data telemetry loops.',
-            5: 'Outlines a comprehensive risk-confidence routing system, details dashboard layouts, and integrates data telemetry loops to improve the model over time.'
+            5: 'Outlines a complete risk-confidence routing system, details dashboard layouts, and integrates data telemetry loops to improve the model over time.'
           }
         },
         {
