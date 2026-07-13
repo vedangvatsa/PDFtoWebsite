@@ -41,40 +41,6 @@ import { Input } from '@/components/ui/input';
 
 import { ROLES_DATA, type Question } from '@/data/ai-interview-questions';
 
-const ROLE_ICONS: Record<string, React.ReactNode> = {
-  'ai-agent-engineer': <Cpu className="w-4 h-4" />,
-  'prompt-architect': <Brain className="w-4 h-4" />,
-  'llm-tuning-engineer': <Network className="w-4 h-4" />,
-  'mlops-engineer': <Settings className="w-4 h-4" />,
-  'ai-pm': <LineChartIcon className="w-4 h-4" />,
-  'ai-data-engineer': <Database className="w-4 h-4" />,
-  'computer-vision-engineer': <Eye className="w-4 h-4" />,
-  'ai-safety-engineer': <Shield className="w-4 h-4" />,
-  'research-scientist': <Layers className="w-4 h-4" />,
-  'ai-architect': <Lock className="w-4 h-4" />,
-};
-
-// Fallback helper in case LineChart wasn't imported
-function LineChartIcon(props: React.ComponentProps<'svg'>) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M3 3v18h18" />
-      <path d="m19 9-5 5-4-4-3 3" />
-    </svg>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /*  Main Component                                                   */
 /* ------------------------------------------------------------------ */
@@ -169,13 +135,6 @@ export default function AIInterviewPage() {
                         : 'border-transparent bg-transparent text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
                     }`}
                   >
-                    <span className={`p-1.5 rounded-lg border transition-colors ${
-                      isSelected 
-                        ? 'bg-zinc-800 border-zinc-700 text-white' 
-                        : 'bg-zinc-50 border-zinc-200 text-zinc-900'
-                    }`}>
-                      {ROLE_ICONS[role.id]}
-                    </span>
                     <span className="truncate tracking-tight">{role.role}</span>
                   </button>
                 );
