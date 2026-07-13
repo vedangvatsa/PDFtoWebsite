@@ -124,39 +124,27 @@ export default function AIInterviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] selection:bg-zinc-200 transition-colors duration-200 flex flex-col relative overflow-hidden">
-      {/* Subtle tech background grids */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(24,24,27,0.03),transparent)] pointer-events-none -z-10" />
-      
+    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Back Link */}
         <Link
           href="/resources"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-zinc-950 transition-colors mb-8 group"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-zinc-950 transition-colors mb-4 group"
         >
           <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
           Back to Resources
         </Link>
 
-        {/* Hero Section - Premium Mesh Grid Look */}
-        <div className="relative mb-12 p-8 md:p-10 rounded-3xl border border-zinc-200/80 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.01),0_10px_40px_-10px_rgba(0,0,0,0.02)] overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-zinc-50 rounded-full blur-3xl pointer-events-none -z-10" />
-          
-          <div className="relative z-10 max-w-3xl">
-            <Badge variant="outline" className="mb-4 bg-zinc-50 border-zinc-200 text-zinc-500 font-mono text-[9px] tracking-wider uppercase px-2 py-0.5 rounded-md">
-              AI Careers & Prep
-            </Badge>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900 mb-4 leading-none bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-700 bg-clip-text text-transparent">
-              AI Interview Question Bank
-            </h1>
-            <p className="text-sm md:text-base text-zinc-500 leading-relaxed font-normal">
-              An extensive, curated library of highly technical interview questions, key evaluation criteria, common pitfalls, and answers tailored to modern engineering and product teams.
-            </p>
-          </div>
+        {/* Hero Section */}
+        <div className="flex flex-col mb-10">
+          <h1 className={PAGE_TITLE}>
+            AI Interview Question Bank
+          </h1>
+          <p className={PAGE_SUBTITLE}>
+            An extensive, curated library of highly technical interview questions, key evaluation criteria, common pitfalls, and answers tailored to modern engineering and product teams.
+          </p>
         </div>
 
         {/* Layout Grid */}
