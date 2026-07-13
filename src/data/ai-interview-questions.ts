@@ -2394,37 +2394,36 @@ const chunkBoundaries = similarities.map((sim, idx) => sim < threshold ? idx : n
           difficulty: 'Foundation',
           category: 'Practical',
           expectedTime: '60-90 seconds',
-          question: 'What is the difference between structured and unstructured data in the context of AI pipelines?',
+          question: 'What is the difference between ETL and ELT, and when would you use each for AI data pipelines?',
           idealAnswer: {
-            coreIdea: 'Structured data has a defined schema (tables, JSON, databases). Unstructured data has no schema (PDFs, images, emails, free text). AI pipelines handle each differently.',
+            coreIdea: 'ETL transforms data before loading it into the target system; ELT loads raw data first and transforms it inside the target system. The choice depends on data volume, compute location, and latency requirements.',
             keyPoints: [
-              'Structured: Rows/columns, SQL databases, CSV, JSON with known fields. Easy to query and validate.',
-              'Unstructured: PDFs, images, audio, emails, web pages. Needs parsing, extraction, and embedding.',
-              'Semi-structured: JSON with variable schemas, logs, XML. Partial structure but flexible.',
-              'RAG for structured: Text-to-SQL or direct database queries.',
-              'RAG for unstructured: Parse, chunk, embed, and store in vector DB.'
+              'ETL (Extract, Transform, Load): Clean, normalize, and aggregate data in a separate processing engine before loading to the warehouse/vector store. Better for strict schemas and heavy cleaning.',
+              'ELT (Extract, Load, Transform): Load raw data into the target system first, then run transformations using the target engine (SQL, Spark, dbt). Better for large volumes and flexible exploration.',
+              'AI pipelines: ETL is common when documents must be parsed, chunked, and embedded before vector storage. ELT is common when raw data lands in a lakehouse and multiple downstream teams transform it.',
+              'Trade-offs: ETL has higher upfront compute and slower ingestion; ELT requires a powerful target warehouse and careful data governance.'
             ],
           },
           whyThisMatters: [
-            'Different data types need different ingestion and retrieval strategies.',
-            'Mixing approaches (e.g., embedding structured data) wastes resources and hurts quality.'
+            'Data engineers are expected to justify pipeline architecture choices based on volume, cost, and transformation complexity.',
+            'The wrong pattern creates bottlenecks when preprocessing large document corpora for RAG or training.'
           ],
           commonPitfalls: [
-            'Using vector search for structured data that SQL handles better.',
-            'Not parsing unstructured documents properly before chunking.'
+            'Using ETL for every pipeline, which slows iteration and adds unnecessary engineering overhead.',
+            'Using ELT without proper schema enforcement, producing inconsistent downstream datasets.'
           ],
           followUps: [
-            'How do you handle mixed structured and unstructured data in one RAG system?',
-            'What is text-to-SQL and when is it better than vector search?'
+            'How do you handle schema evolution in ELT pipelines?',
+            'What tools do you use for orchestration and transformation (Airflow, Spark, dbt)?'
           ],
           redFlags: [
-            'Cannot distinguish structured from unstructured data.',
-            'Uses one approach for all data types.'
+            'Cannot explain the difference between ETL and ELT.',
+            'Claims one pattern is always superior.'
           ],
           scoringRubric: {
-            1: 'Cannot distinguish structured from unstructured data.',
-            3: 'Defines both but cannot explain different pipeline strategies.',
-            5: 'Explains both, semi-structured, and when to use SQL vs vector search vs hybrid.'
+            1: 'Cannot explain ETL or ELT.',
+            3: 'Defines the acronyms but cannot explain when to use each.',
+            5: 'Contrasts ETL and ELT, applies the choice to AI pipelines, and discusses volume, compute, and governance trade-offs.'
           }
         },
         {
@@ -2809,37 +2808,37 @@ function getIoU(boxA, boxB) {
           difficulty: 'Foundation',
           category: 'Knowledge',
           expectedTime: '60-90 seconds',
-          question: 'What is a Vision-Language Model (VLM) and how does it differ from a text-only LLM?',
+          question: 'What is the difference between image classification, object detection, and image segmentation?',
           idealAnswer: {
-            coreIdea: 'A VLM processes both images and text, enabling tasks like image captioning, visual question answering, and image-based reasoning. Text-only LLMs process text only.',
+            coreIdea: 'Classification assigns a single label to an image. Object detection finds objects and draws bounding boxes. Segmentation classifies every pixel, producing precise object boundaries.',
             keyPoints: [
-              'VLM architecture: Vision encoder (e.g., CLIP ViT) extracts image features, projected into the LLM embedding space.',
-              'The LLM then processes the combined image + text representations.',
-              'Tasks: Image captioning, VQA, image-based reasoning, document understanding.',
-              'Models: GPT-4V, Claude 3.5 Sonnet, LLaVA, Qwen-VL.',
-              'Difference: LLMs take text tokens as input; VLMs take text tokens + image patches/features.'
+              'Classification: Output is a class label (e.g., "cat"). No localization information.',
+              'Object detection: Output is a set of bounding boxes with class labels. Useful for counting and locating objects.',
+              'Semantic segmentation: Every pixel is assigned a class label; no distinction between instances.',
+              'Instance segmentation: Every pixel is assigned a class and an instance ID, separating individual objects.',
+              'Use cases: Classification for tagging; detection for surveillance and autonomous driving; segmentation for medical imaging and photo editing.'
             ],
           },
           whyThisMatters: [
-            'VLMs extend LLM capabilities to visual tasks, enabling multimodal products.',
-            'Understanding VLM architecture is needed for building image-based AI features.'
+            'These three tasks are the foundation of most computer vision interviews and production systems.',
+            'Choosing the wrong task leads to insufficient output detail or unnecessary compute cost.'
           ],
           commonPitfalls: [
-            'Treating VLMs as just LLMs with image inputs — the vision encoder matters.',
-            'Not understanding image resolution and token limits for VLMs.'
+            'Using classification when the application needs object locations.',
+            'Using segmentation when bounding boxes would be faster and sufficient.'
           ],
           followUps: [
-            'How does LLaVA differ from GPT-4V architecturally?',
-            'What are the limitations of current VLMs?'
+            'What is panoptic segmentation and how does it combine semantic and instance segmentation?',
+            'Which architecture would you use for each task?'
           ],
           redFlags: [
-            'Does not know what a VLM is.',
-            'Thinks VLMs are just LLMs with image attachments.'
+            'Cannot distinguish the three tasks.',
+            'Thinks classification and detection are the same.'
           ],
           scoringRubric: {
-            1: 'Does not know what a VLM is.',
-            3: 'Knows VLMs process images but cannot explain the architecture.',
-            5: 'Explains vision encoder, projection, LLM integration, and names specific models.'
+            1: 'Cannot distinguish classification, detection, and segmentation.',
+            3: 'Defines the three tasks but cannot explain output formats or use cases.',
+            5: 'Clearly contrasts classification, detection, semantic/instance segmentation, and gives concrete use cases.'
           }
         },
         {
@@ -3697,37 +3696,37 @@ LayerNorm: Mean/Var over [HiddenFeatures] -> Normalizes each token individually`
           difficulty: 'Foundation',
           category: 'Knowledge',
           expectedTime: '60-90 seconds',
-          question: 'What is gradient descent and how does the learning rate affect it?',
+          question: 'What causes training instability in deep neural networks, and what techniques do you use to diagnose it?',
           idealAnswer: {
-            coreIdea: 'Gradient descent updates model weights by moving in the direction of the negative gradient of the loss function. The learning rate controls the step size of each update.',
+            coreIdea: 'Training instability shows up as loss spikes, NaN gradients, or diverging validation metrics. Common causes include learning rate too high, poor initialization, bad data points, numerical precision issues, and architectural problems.',
             keyPoints: [
-              'Loss function: Measures how wrong the model predictions are.',
-              'Gradient: Partial derivatives of loss w.r.t. each weight; points in the direction of increasing loss.',
-              'Update rule: weight = weight - learning_rate * gradient.',
-              'Learning rate too high: Overshoots the minimum, training diverges.',
-              'Learning rate too low: Converges slowly, may get stuck in local minima.'
+              'Loss spikes: Often caused by a learning rate that is too high, bad data batches, or outlier examples.',
+              'NaN/Inf gradients: Result from overflow, division by zero, or exploding gradients in deep networks.',
+              'Vanishing gradients: Common in deep networks without residual connections or proper normalization.',
+              'Diagnosis: Plot loss curves, gradient norms, and activation distributions. Check specific batches that cause spikes.',
+              'Fixes: Gradient clipping, learning rate warmup, learning rate scheduling, better initialization, mixed precision checks, data cleaning.'
             ],
           },
           whyThisMatters: [
-            'Gradient descent is the core optimization algorithm for all deep learning.',
-            'Learning rate is the most important hyperparameter for training success.'
+              'Training instability is a daily problem when training large models, and research scientists must be able to debug it systematically.',
+              'Without good diagnosis, teams waste compute on failed training runs.'
           ],
           commonPitfalls: [
-            'Using a fixed learning rate without scheduling.',
-            'Not understanding the relationship between learning rate and batch size.'
+            'Lowering the learning rate blindly without investigating root cause.',
+            'Ignoring the possibility that a single corrupted batch is causing the spike.'
           ],
           followUps: [
-            'What is the difference between SGD, Adam, and AdamW?',
-            'How does gradient clipping help with training stability?'
+            'How do you detect and fix dead ReLU neurons?',
+            'What is the role of gradient norm clipping in large-batch training?'
           ],
           redFlags: [
-            'Cannot explain gradient descent.',
-            'Does not know what a learning rate is.'
+            'Cannot name common causes of training instability.',
+            'Suggests randomly changing hyperparameters without a diagnostic process.'
           ],
           scoringRubric: {
-            1: 'Cannot explain gradient descent.',
-            3: 'Knows the concept but cannot explain learning rate effects.',
-            5: 'Explains the update rule, learning rate trade-offs, and common optimizers.'
+            1: 'Cannot explain training instability or debugging.',
+            3: 'Lists some causes but has no systematic diagnostic process.',
+            5: 'Explains loss spikes, gradient issues, diagnosis techniques, and targeted fixes.'
           }
         },
         {
@@ -4077,39 +4076,40 @@ class MoELayer(nn.Module):
         {
           id: 'ARC-F-03',
           difficulty: 'Foundation',
-          category: 'Knowledge',
+          category: 'Architecture',
           expectedTime: '60-90 seconds',
-          question: 'What is the difference between using a managed LLM API (e.g., OpenAI) and hosting an open-weight model (e.g., Llama)?',
+          question: 'How do you design a RAG system for enterprise search over a company\'s private documents?',
           idealAnswer: {
-            coreIdea: 'Managed APIs handle infrastructure, scaling, and updates but cost per token and send data to a third party. Open-weight models give full control and privacy but require GPU infrastructure and ops expertise.',
+            coreIdea: 'A production RAG system connects document ingestion, chunking, embedding, retrieval, reranking, and generation behind an access-controlled API, with monitoring and fallback mechanisms.',
             keyPoints: [
-              'Managed API: No infra to manage, pay per token, automatic updates, data leaves your network.',
-              'Open-weight: Self-hosted on GPUs, no per-token cost, full data privacy, you handle scaling and updates.',
-              'Cost crossover: At high volume, self-hosting becomes cheaper than per-token API costs.',
-              'Latency: Self-hosted can be faster (no network round trip) if co-located with application.',
-              'Compliance: Healthcare (HIPAA), finance, and government may require self-hosting for data sovereignty.'
+              'Ingestion: Parse documents (PDF, Word, Slack, email) while preserving structure and metadata.',
+              'Chunking: Use semantic or header-aware chunking with overlap to keep context intact.',
+              'Embedding: Choose a domain-appropriate embedding model and store vectors in a scalable vector database.',
+              'Retrieval: Hybrid search combining dense vector similarity with keyword matching (BM25) for better recall.',
+              'Generation: Inject retrieved chunks into a prompt with citations; instruct the model to only use provided context.',
+              'Access control: Filter results by user permissions and document ACLs at query time.'
             ],
           },
           whyThisMatters: [
-            'The build-vs-buy decision for LLMs is a core architecture decision.',
-            'Wrong choice leads to cost overruns, compliance violations, or operational nightmares.'
+            'Enterprise RAG is one of the most common system design questions for AI architects.',
+            'A weak design misses access control, metadata, or retrieval quality, leading to poor answers and data leaks.'
           ],
           commonPitfalls: [
-            'Choosing self-hosting without GPU ops expertise, leading to outages.',
-            'Using managed APIs for high-volume workloads where self-hosting would be cheaper.'
+            'Using only vector search without keyword fallback for exact term matching.',
+            'Ignoring document permissions, allowing users to retrieve content they should not access.'
           ],
           followUps: [
-            'At what request volume does self-hosting become cost-effective?',
-            'How do you handle compliance requirements with managed APIs?'
+            'How do you handle document updates and versioning in the vector store?',
+            'What reranking model would you add after initial retrieval?'
           ],
           redFlags: [
-            'Always picks one approach without considering trade-offs.',
-            'Does not consider data privacy implications of managed APIs.'
+            'Cannot sketch the core RAG pipeline.',
+            'No mention of access control or citations.'
           ],
           scoringRubric: {
-            1: 'Cannot articulate the difference.',
-            3: 'Knows the basic difference but not cost, compliance, or latency trade-offs.',
-            5: 'Explains cost crossover, compliance, latency, and operational trade-offs with concrete examples.'
+            1: 'Cannot describe a RAG pipeline.',
+            3: 'Lists ingestion, chunking, and retrieval but misses hybrid search, access control, or citations.',
+            5: 'Designs a complete enterprise RAG architecture with ingestion, hybrid retrieval, citations, ACLs, and monitoring.'
           }
         },
         {
