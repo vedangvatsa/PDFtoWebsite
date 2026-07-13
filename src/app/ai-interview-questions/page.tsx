@@ -21,7 +21,6 @@ import {
   Settings,
   Sparkles,
   Award,
-  Clock,
   AlertTriangle,
   HelpCircle,
   Shield,
@@ -263,18 +262,6 @@ export default function AIInterviewPage() {
                         className="p-5 flex items-start justify-between gap-4 cursor-pointer select-none"
                       >
                         <div className="space-y-2.5">
-                          <div className="flex flex-wrap items-center gap-3">
-                            <span className="text-[9px] font-mono font-extrabold bg-zinc-100 border border-zinc-200 text-zinc-500 px-1.5 py-0.5 rounded">
-                              {q.id}
-                            </span>
-                            <span className="text-[10px] text-zinc-400 font-extrabold uppercase tracking-wider">
-                              {q.category}
-                            </span>
-                            <span className="text-[10px] text-zinc-400 flex items-center gap-1 font-medium">
-                              <Clock className="w-3 h-3 text-zinc-400" />
-                              {q.expectedTime}
-                            </span>
-                          </div>
                           <h3 className="text-sm md:text-base font-extrabold text-zinc-900 tracking-tight leading-snug group-hover:text-zinc-950 transition-colors">
                             {q.question}
                           </h3>
