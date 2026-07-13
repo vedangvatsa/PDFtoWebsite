@@ -202,12 +202,28 @@ export async function POST(request: NextRequest) {
         };
 
       } else if (fileType === 'doc') {
-        // .doc files (legacy binary format) are not supported by mammoth or Gemini API inline.
-        // Ask the user to convert the file instead of returning an API error.
-        return NextResponse.json(
-          { error: 'Legacy Word documents (.doc) are not supported. Please save your resume as a PDF or .docx file and try uploading again.' },
-          { status: 400 }
-        );
+        // Use word-extractor for legacy .doc files
+        try {
+          const WordExtractor = require('word-extractor');
+          const extractor = new WordExtractor();
+          const doc = await extractor.extract(fileBuffer);
+          extractedText = doc.getBody();
+        } catch (err) {
+          return NextResponse.json({ error: 'This Word document could not be read. Please save it as a PDF or .docx and try again.' }, { status: 400 });
+        }
+        
+        if (extractedText && extractedText.trim().length >= 50) {
+          requestBody = {
+            contents: [{
+              parts: [
+                { text: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` }
+              ]
+            }],
+            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+          };
+        } else {
+          return NextResponse.json({ error: 'Could not extract enough text from this document.' }, { status: 400 });
+        }
 
       } else {
         if (fileType === 'docx') {
