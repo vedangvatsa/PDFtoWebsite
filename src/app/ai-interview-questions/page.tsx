@@ -100,7 +100,7 @@ export default function AIInterviewPage() {
 
   // Helper to copy Q&A text to clipboard
   const copyQAndA = (q: Question) => {
-    const formattedText = `Question: ${q.question}\n\nIdeal Answer:\n- Core Idea: ${q.idealAnswer.coreIdea}\n- Key Points:\n${q.idealAnswer.keyPoints.map(p => `  * ${p}`).join('\n')}${q.idealAnswer.example ? `\n\nCode Example:\n${q.idealAnswer.example}` : ''}\n\nCommon Pitfalls:\n${q.commonPitfalls.map(p => `  * ${p}`).join('\n')}\n\nRed Flags:\n${q.redFlags.map(r => `  * ${r}`).join('\n')}`;
+    const formattedText = `Question: ${q.question}\n\nIdeal Answer:\n- Core Idea: ${q.idealAnswer.coreIdea}\n- Key Points:\n${q.idealAnswer.keyPoints.map(p => `  * ${p}`).join('\n')}${q.idealAnswer.example ? `\n\nCode Example:\n${q.idealAnswer.example}` : ''}`;
     navigator.clipboard.writeText(formattedText);
     setCopiedId(q.id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -115,9 +115,7 @@ export default function AIInterviewPage() {
       const matchText = (
         q.question + ' ' + 
         q.idealAnswer.coreIdea + ' ' + 
-        q.idealAnswer.keyPoints.join(' ') + ' ' +
-        q.commonPitfalls.join(' ') + ' ' +
-        q.whyThisMatters.join(' ')
+        q.idealAnswer.keyPoints.join(' ')
       ).toLowerCase();
       return matchText.includes(searchQuery.toLowerCase());
     });
@@ -373,100 +371,6 @@ export default function AIInterviewPage() {
                             </div>
                           )}
 
-                          {/* Why This Matters / Common Pitfalls Split Columns */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                            <div className="space-y-2.5 p-4 rounded-xl border border-emerald-100 bg-emerald-50/20">
-                              <h4 className="text-xs font-extrabold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
-                                <ThumbsUp className="w-3.5 h-3.5 text-emerald-700" />
-                                Why This Matters
-                              </h4>
-                              <ul className="space-y-2 list-none p-0 m-0 text-xs text-zinc-600 leading-relaxed font-normal">
-                                {q.whyThisMatters.map((item, idx) => (
-                                  <li key={idx} className="flex gap-2">
-                                    <span className="text-emerald-600 font-extrabold">•</span>
-                                    <span>{item}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-
-                            <div className="space-y-2.5 p-4 rounded-xl border border-amber-100 bg-amber-50/20">
-                              <h4 className="text-xs font-extrabold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
-                                <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
-                                Common Pitfalls
-                              </h4>
-                              <ul className="space-y-2 list-none p-0 m-0 text-xs text-zinc-600 leading-relaxed font-normal">
-                                {q.commonPitfalls.map((item, idx) => (
-                                  <li key={idx} className="flex gap-2">
-                                    <span className="text-amber-600 font-extrabold">•</span>
-                                    <span>{item}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-
-                          {/* Recruiter Evaluation Panel: Follow-ups & Red Flags */}
-                          <div className="p-5 rounded-2xl bg-zinc-50 border border-zinc-200/50 space-y-4">
-                            <h4 className="text-xs font-extrabold uppercase tracking-wider text-zinc-500">
-                              Evaluation Guide for Interviewers
-                            </h4>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                              {/* Follow ups */}
-                              <div className="space-y-2.5">
-                                <h5 className="text-[10px] font-extrabold text-zinc-600 uppercase flex items-center gap-1.5 tracking-wider">
-                                  <HelpCircle className="w-3 h-3 text-zinc-400" />
-                                  Suggested Follow-ups
-                                </h5>
-                                <ul className="space-y-1.5 list-none p-0 m-0 text-xs text-zinc-500 leading-relaxed font-normal">
-                                  {q.followUps.map((item, idx) => (
-                                    <li key={idx} className="flex gap-1.5">
-                                      <span className="text-zinc-400">→</span>
-                                      <span>{item}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              {/* Red flags */}
-                              <div className="space-y-2.5">
-                                <h5 className="text-[10px] font-extrabold text-zinc-600 uppercase flex items-center gap-1.5 tracking-wider">
-                                  <ShieldAlert className="w-3.5 h-3.5 text-red-500" />
-                                  Red Flags to Spot
-                                </h5>
-                                <ul className="space-y-1.5 list-none p-0 m-0 text-xs text-zinc-500 leading-relaxed font-normal">
-                                  {q.redFlags.map((item, idx) => (
-                                    <li key={idx} className="flex gap-1.5">
-                                      <span className="text-red-500 font-bold">•</span>
-                                      <span>{item}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </div>
-
-                            {/* Scoring Rubric Grid */}
-                            <div className="pt-4 border-t border-zinc-200 space-y-3">
-                              <h5 className="text-[10px] font-extrabold text-zinc-600 uppercase tracking-wider">
-                                Scoring Rubric
-                              </h5>
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <div className="p-3.5 rounded-xl bg-white border border-red-100 text-[11px] leading-relaxed font-normal">
-                                  <span className="font-extrabold text-red-600 block mb-1">Score 1 (Poor)</span>
-                                  <span className="text-zinc-500">{q.scoringRubric[1]}</span>
-                                </div>
-                                <div className="p-3.5 rounded-xl bg-white border border-amber-100 text-[11px] leading-relaxed font-normal">
-                                  <span className="font-extrabold text-amber-600 block mb-1">Score 3 (Average)</span>
-                                  <span className="text-zinc-500">{q.scoringRubric[3]}</span>
-                                </div>
-                                <div className="p-3.5 rounded-xl bg-white border border-emerald-100 text-[11px] leading-relaxed font-normal">
-                                  <span className="font-extrabold text-emerald-600 block mb-1">Score 5 (Excellent)</span>
-                                  <span className="text-zinc-500">{q.scoringRubric[5]}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
 
                           {/* Utility actions */}
                           <div className="flex items-center gap-2 pt-4 border-t border-zinc-100">
