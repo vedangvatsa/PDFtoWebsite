@@ -510,13 +510,13 @@ export default function ResourcesPage() {
           </p>
         </div>
 
-        {/* Quick jump nav - Unyielding Horizontal Block (horizontally scrollable) */}
-        <div className="w-full max-w-full min-w-0 flex items-center gap-2 overflow-x-auto pb-4 mb-12 border-b border-zinc-200/50 scrollbar-none whitespace-nowrap">
+        {/* Quick jump nav - fixed wrap tiles */}
+        <div className="flex flex-wrap gap-2 pb-4 mb-12 border-b border-zinc-200/50">
           {CATEGORIES.map((cat) => (
             <a
               key={cat.id}
               href={`#${cat.id}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-800 hover:text-zinc-900 transition-all whitespace-nowrap shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-800 hover:text-zinc-900 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
             >
               {cat.title}
             </a>
@@ -527,19 +527,14 @@ export default function ResourcesPage() {
         <div className="space-y-16">
           {CATEGORIES.map((cat) => (
             <section key={cat.id} id={cat.id} className="scroll-mt-6">
-              {/* Category header - Geometric & Monochromatic */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-lg border border-zinc-200 bg-white flex items-center justify-center text-zinc-950 shrink-0 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-                  {cat.icon}
-                </div>
-                <div>
-                  <h2 className="text-base font-bold text-zinc-900 tracking-tight leading-none">
-                    {cat.title}
-                  </h2>
-                  <p className="text-xs text-zinc-500 mt-1">
-                    {cat.description}
-                  </p>
-                </div>
+              {/* Category header */}
+              <div className="mb-4">
+                <h2 className="text-base font-bold text-zinc-900 tracking-tight leading-none">
+                  {cat.title}
+                </h2>
+                <p className="text-xs text-zinc-500 mt-1">
+                  {cat.description}
+                </p>
               </div>
 
               {/* Resource cards */}
