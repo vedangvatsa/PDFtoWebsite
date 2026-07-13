@@ -47,7 +47,7 @@ import { ROLES_DATA, type Question } from '@/data/ai-interview-questions';
 
 export default function AIInterviewPage() {
   const [selectedRoleId, setSelectedRoleId] = useState(ROLES_DATA[0].id);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<'Foundation' | 'Intermediate' | 'Advanced' | 'Expert'>('Foundation');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'Foundation' | 'Advanced'>('Foundation');
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -73,7 +73,7 @@ export default function AIInterviewPage() {
   };
 
   // Filter questions based on search query
-  const getFilteredQuestions = (difficulty: 'Foundation' | 'Intermediate' | 'Advanced' | 'Expert') => {
+  const getFilteredQuestions = (difficulty: 'Foundation' | 'Advanced') => {
     const questions = activeRole.questions[difficulty] || [];
     if (!searchQuery.trim()) return questions;
 
@@ -215,7 +215,7 @@ export default function AIInterviewPage() {
 
               {/* Segmented control style difficulty tabs */}
               <div className="flex p-1 gap-1 bg-zinc-100/80 border border-zinc-200/50 rounded-2xl w-full max-w-xl">
-                {(['Foundation', 'Intermediate', 'Advanced', 'Expert'] as const).map((diff) => {
+                {(['Foundation', 'Advanced'] as const).map((diff) => {
                   const count = getFilteredQuestions(diff).length;
                   const isSelected = selectedDifficulty === diff;
                   return (
