@@ -1483,7 +1483,7 @@ export default function EditorPage() {
                                                 </TooltipProvider>
                                             ) : (
                                                 <Button asChild variant="default" size="sm" className="h-9 shrink-0 shadow-sm">
-                                                    <Link href={`/${profile.slug}`} target="_blank" prefetch={false}>Visit</Link>
+                                                    <a href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`} target="_blank" rel="noopener noreferrer">Visit</a>
                                                 </Button>
                                             )}
                                         </div>
