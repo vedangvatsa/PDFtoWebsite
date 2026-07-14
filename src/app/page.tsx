@@ -117,7 +117,7 @@ export default function Home() {
         <div className="flex flex-col items-center space-y-4 sm:space-y-6 text-center">
           <div className="rounded-2xl p-2 sm:p-4">
             <Image
-              src="/images/cvtopdf.png"
+              src="/images/cvinbio.webp"
               alt="CVin.Bio | Turn your CV into a website"
               width={300}
               height={300}
