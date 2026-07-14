@@ -1,10 +1,16 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { unstable_cache, revalidateTag } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
 // Only these emails can access the admin dashboard
 const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
+
+// In-memory cache to avoid slow database and PostHog (18 queries) fetches
+let cachedAnalyticsData: any = null;
+let cachedAnalyticsTime: number = 0;
+const ANALYTICS_CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
 // ── PostHog HogQL helper ────────────────────────────────────────────────────
 const PH_API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
@@ -162,6 +168,14 @@ export async function GET(request: NextRequest) {
 
     if (authError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
       return NextResponse.json({ error: 'Unauthorized', debug: { authError: authError?.message, email: user?.email, hasUser: !!user } }, { status: 403 });
+    }
+
+    const requestUrl = new URL(request.url);
+    const refresh = requestUrl.searchParams.get('refresh') === 'true';
+
+    // Check in-memory cache first if not refreshing
+    if (!refresh && cachedAnalyticsData && (Date.now() - cachedAnalyticsTime < ANALYTICS_CACHE_TTL_MS)) {
+      return NextResponse.json(cachedAnalyticsData);
     }
 
     // ── Supabase queries (existing) ───────────────────────────────────────
@@ -901,7 +915,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({
+    const resultPayload = {
       kpis: {
         totalUsers,
         totalViews,
@@ -984,7 +998,11 @@ export async function GET(request: NextRequest) {
             .sort((a, b) => b.signups - a.signups);
         })(),
       },
-    });
+    };
+
+    cachedAnalyticsData = resultPayload;
+    cachedAnalyticsTime = Date.now();
+    return NextResponse.json(resultPayload);
   } catch (error) {
     console.error('Admin analytics error:', error);
     return NextResponse.json({ error: 'Internal error', detail: error instanceof Error ? error.message : String(error) }, { status: 500 });
