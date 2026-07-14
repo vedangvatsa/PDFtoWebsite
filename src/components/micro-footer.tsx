@@ -5,8 +5,6 @@ export default function MicroFooter() {
     <footer className="w-full py-6 mt-auto px-4" role="contentinfo">
       <nav className="mx-auto flex flex-col sm:flex-row max-w-screen-2xl items-center justify-center gap-4 text-xs text-muted-foreground/60" aria-label="Footer navigation">
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-          <Link href="/terms" className="hover:text-muted-foreground transition-colors">Terms</Link>
-          <span>&middot;</span>
           <Link href="/blog" className="hover:text-muted-foreground transition-colors">Insights</Link>
           <span>&middot;</span>
           <Link href="/contact" className="hover:text-muted-foreground transition-colors">Contact</Link>
