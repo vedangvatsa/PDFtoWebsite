@@ -13,11 +13,23 @@ export async function GET(request: Request) {
     origin = origin.replace('http://', 'https://')
   }
 
+  // 1. Check for error parameters from Supabase / OAuth provider
+  const authError = searchParams.get('error')
+  const authErrorDescription = searchParams.get('error_description')
+  if (authError) {
+    console.error('Auth callback error parameter:', authError, authErrorDescription)
+    return NextResponse.redirect(`${origin}/signup?error=auth&message=${encodeURIComponent(authErrorDescription || authError)}`)
+  }
+
   const code = searchParams.get('code')
+  const tokenHash = searchParams.get('token_hash')
+  const type = searchParams.get('type')
+  
   // Validate 'next' param to prevent open redirect (e.g., //evil.com)
   const rawNext = searchParams.get('next') ?? '/editor'
   const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/editor'
 
+  // Handle standard PKCE code exchange
   if (code) {
     const cookieStore = await cookies()
     const redirectUrl = `${origin}${next}`
@@ -49,6 +61,42 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/signup?error=auth&message=${encodeURIComponent(error.message)}`)
   }
 
-  // If code exchange fails, redirect to signup with an error hint
-  return NextResponse.redirect(`${origin}/signup?error=auth&message=No+code+provided`)
+  // Handle OTP / Magic Link token verification
+  if (tokenHash && type) {
+    const cookieStore = await cookies()
+    const redirectUrl = `${origin}${next}`
+    const response = NextResponse.redirect(redirectUrl)
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options)
+              response.cookies.set(name, value, options)
+            })
+          },
+        },
+      }
+    )
+
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash: tokenHash,
+      type: type as any,
+    })
+
+    if (!error) {
+      return response
+    }
+    console.error('verifyOtp error:', error)
+    return NextResponse.redirect(`${origin}/signup?error=auth&message=${encodeURIComponent(error.message)}`)
+  }
+
+  // If no code and no token_hash is provided, redirect to signup with error
+  return NextResponse.redirect(`${origin}/signup?error=auth&message=No+code+or+token+provided`)
 }
