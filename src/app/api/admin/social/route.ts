@@ -13,6 +13,11 @@ const CACHE_FILE = process.env.VERCEL
   : join(process.cwd(), '.github/scripts', 'social-analytics-cache.json');
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
+// In-memory cache to avoid file reads and slow cold fetches
+let cachedSocialData: any = null;
+let cachedSocialTime: number = 0;
+const IN_MEMORY_TTL_MS = 15 * 60 * 1000; // 15 minutes
+
 function readCache(): { data: any; timestamp: number } | null {
   if (!existsSync(CACHE_FILE)) return null;
   try {
@@ -396,6 +401,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    const requestUrl = new URL(request.url);
+    const refresh = requestUrl.searchParams.get('refresh') === 'true';
+
+    // Check in-memory cache first if not refreshing
+    if (!refresh && cachedSocialData && (Date.now() - cachedSocialTime < IN_MEMORY_TTL_MS)) {
+      return NextResponse.json(cachedSocialData);
+    }
+
     // Check cache first for expensive API calls
     const cached = readCache();
 
@@ -530,7 +543,7 @@ export async function GET(request: NextRequest) {
       !!telegramChannel,
     ].filter(Boolean).length;
 
-    return NextResponse.json({
+    const resultPayload = {
       summary: {
         totalPostsAcrossPlatforms,
         totalTweetsInThreads,
@@ -575,7 +588,11 @@ export async function GET(request: NextRequest) {
       telegram: {
         channel: telegramChannel,
       },
-    });
+    };
+
+    cachedSocialData = resultPayload;
+    cachedSocialTime = Date.now();
+    return NextResponse.json(resultPayload);
   } catch (error) {
     console.error('Social API error:', error);
     return NextResponse.json(
