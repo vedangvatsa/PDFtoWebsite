@@ -28,6 +28,8 @@ export function friendlyAuthError(msg: string): string {
     return 'Sign-in popup was blocked or closed. Please try again.';
   if (m.includes('signup is disabled') || m.includes('signups not allowed'))
     return 'New signups are currently disabled. Please try again later.';
+  if (m.includes('sending confirmation') || m.includes('confirmation email'))
+    return 'Unable to send confirmation email. This is usually due to a mail server rate-limit or configuration error. Please try again later.';
 
   // Fallback: show the actual Supabase error so it is never hidden from the user
   return msg || 'Something went wrong. Please try again.';
