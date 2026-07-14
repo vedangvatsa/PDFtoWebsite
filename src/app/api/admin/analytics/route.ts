@@ -153,31 +153,9 @@ function calculateLinearRegression(y: number[]) {
   return { slope, intercept };
 }
 
-export async function GET(request: NextRequest) {
+async function fetchAnalyticsDataRaw() {
   try {
-    // 1. Auth check — verify token from Authorization header
-    const authHeader = request.headers.get('Authorization');
-    const token = authHeader?.replace('Bearer ', '');
-    if (!token) {
-      return NextResponse.json({ error: 'No token provided', debug: 'Authorization header missing' }, { status: 403 });
-    }
-
     const supabase = supabaseAdmin;
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-
-    if (authError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
-      return NextResponse.json({ error: 'Unauthorized', debug: { authError: authError?.message, email: user?.email, hasUser: !!user } }, { status: 403 });
-    }
-
-    const requestUrl = new URL(request.url);
-    const refresh = requestUrl.searchParams.get('refresh') === 'true';
-
-    // Check in-memory cache first if not refreshing
-    if (!refresh && cachedAnalyticsData && (Date.now() - cachedAnalyticsTime < ANALYTICS_CACHE_TTL_MS)) {
-      return NextResponse.json(cachedAnalyticsData);
-    }
-
     // ── Supabase queries (existing) ───────────────────────────────────────
     const [profilesRes] = await Promise.all([
       supabase.from('profiles').select('id, full_name, username, profile_picture_url, views, skills, experience, education, custom_sections, links, created_at, updated_at'),
@@ -999,10 +977,54 @@ export async function GET(request: NextRequest) {
         })(),
       },
     };
+    return resultPayload;
+  } catch (error) {
+    console.error('Fetch analytics raw error:', error);
+    throw error;
+  }
+}
 
-    cachedAnalyticsData = resultPayload;
-    cachedAnalyticsTime = Date.now();
-    return NextResponse.json(resultPayload);
+const fetchAnalyticsData = unstable_cache(
+  async () => fetchAnalyticsDataRaw(),
+  ['admin-analytics'],
+  { revalidate: 900, tags: ['admin-analytics'] }
+);
+
+export async function GET(request: NextRequest) {
+  try {
+    // 1. Auth check ── verify token from Authorization header
+    const authHeader = request.headers.get('Authorization');
+    const token = authHeader?.replace('Bearer ', '');
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided', debug: 'Authorization header missing' }, { status: 403 });
+    }
+
+    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
+
+    if (authError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
+      return NextResponse.json({ error: 'Unauthorized', debug: { authError: authError?.message, email: user?.email, hasUser: !!user } }, { status: 403 });
+    }
+
+    const requestUrl = new URL(request.url);
+    const refresh = requestUrl.searchParams.get('refresh') === 'true';
+
+    let data;
+    if (refresh) {
+      revalidateTag('admin-analytics', undefined as any);
+      data = await fetchAnalyticsDataRaw();
+    } else {
+      // Check in-memory cache first (quickest hit on warm instance)
+      if (cachedAnalyticsData && (Date.now() - cachedAnalyticsTime < ANALYTICS_CACHE_TTL_MS)) {
+        data = cachedAnalyticsData;
+      } else {
+        // Fall back to Next.js persistent data cache
+        data = await fetchAnalyticsData();
+        cachedAnalyticsData = data;
+        cachedAnalyticsTime = Date.now();
+      }
+    }
+
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Admin analytics error:', error);
     return NextResponse.json({ error: 'Internal error', detail: error instanceof Error ? error.message : String(error) }, { status: 500 });
