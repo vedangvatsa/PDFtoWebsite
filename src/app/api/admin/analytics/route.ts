@@ -203,6 +203,7 @@ async function fetchAnalyticsDataRaw() {
       phJobClicksTotal,
       phOsTypes,
       phReferrerConversions,
+      phReferrerVisitors,
     ] = await Promise.all([
       // 1. Pageviews by day (last 30 days)
       hogql(`
@@ -465,6 +466,33 @@ async function fetchAnalyticsDataRaw() {
         ORDER BY signups DESC
         LIMIT 25
       `, 'admin_referrer_conversions'),
+
+      // 19. Referrer → Visitor counts (last 90 days) to match 90 days conversion window
+      hogql(`
+        SELECT
+          first_source AS referrer,
+          count() AS visitors
+        FROM (
+          SELECT
+            pv.distinct_id,
+            argMin(
+              multiIf(
+                pv.properties.utm_source != '', pv.properties.utm_source,
+                pv.properties.$referring_domain != '', pv.properties.$referring_domain,
+                'Direct'
+              ),
+              pv.timestamp
+            ) AS first_source
+          FROM events AS pv
+          WHERE pv.event = '$pageview'
+            AND pv.timestamp >= now() - interval 90 day
+          GROUP BY pv.distinct_id
+        )
+        WHERE first_source IS NOT NULL AND first_source != ''
+        GROUP BY first_source
+        ORDER BY visitors DESC
+        LIMIT 25
+      `, 'admin_referrer_visitors'),
     ]);
 
     // ── Supabase KPIs (existing) ─────────────────────────────────────────
@@ -963,12 +991,12 @@ async function fetchAnalyticsDataRaw() {
             const name = friendlySource(r.referrer);
             signupAgg[name] = (signupAgg[name] || 0) + r.signups;
           });
-          // Build visitor counts from topReferrers (7-day) for conversion rate context
+          // Build visitor counts from 90-day referrer visitors query
           const visitorAgg: Record<string, number> = {};
-          if (finalTopReferrers) {
-            finalTopReferrers.forEach((r: any) => {
+          if (phReferrerVisitors) {
+            phReferrerVisitors.forEach((r: any) => {
               const name = friendlySource(r.referrer);
-              visitorAgg[name] = (visitorAgg[name] || 0) + r.visits;
+              visitorAgg[name] = (visitorAgg[name] || 0) + r.visitors;
             });
           }
           return Object.entries(signupAgg)
