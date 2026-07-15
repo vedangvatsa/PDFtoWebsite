@@ -1,21 +1,23 @@
 /**
- * Pass 2 — pure Node, no tsx. Uses GH secrets for Supabase service role + Cloudflare.
+ * Pass 2 — pure Node fetch only (no realtime). GitHub secrets for Supabase + Cloudflare.
  */
-import { createClient } from '@supabase/supabase-js';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-const cfToken = process.env.CLOUDFLARE_API_TOKEN;
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
+const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID || '';
+const cfToken = process.env.CLOUDFLARE_API_TOKEN || '';
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(
+  /\/$/,
+  ''
+);
 
 console.log('start', new Date().toISOString());
 console.log({
-  url: url ? new URL(url).host : null,
-  serviceKeyLen: serviceKey?.length || 0,
-  accountIdLen: accountId?.length || 0,
-  cfTokenLen: cfToken?.length || 0,
+  urlHost: url ? new URL(url).host : null,
+  serviceKeyLen: serviceKey.length,
+  accountIdLen: accountId.length,
+  cfTokenLen: cfToken.length,
 });
 
 if (!url || !serviceKey || !accountId || !cfToken) {
@@ -26,8 +28,28 @@ if (!url || !serviceKey || !accountId || !cfToken) {
 const TELEGRAM_LABEL = 'Jobs feed on Telegram · 5,000+ subscribers';
 const TELEGRAM_URL = 'https://t.me/techjobsdaily';
 const campaign = 'profile-reminder-2026-07-15-pass2';
-
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const sbHeaders = {
+  apikey: serviceKey,
+  Authorization: `Bearer ${serviceKey}`,
+  'Content-Type': 'application/json',
+};
+
+async function sbGet(path) {
+  const res = await fetch(`${url}${path}`, { headers: sbHeaders });
+  const text = await res.text();
+  let data;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    data = text;
+  }
+  if (!res.ok) {
+    throw new Error(`Supabase ${res.status} ${path}: ${text.slice(0, 300)}`);
+  }
+  return data;
+}
 
 function escapeHtml(s) {
   return String(s)
@@ -171,17 +193,10 @@ ${TELEGRAM_URL}
 You have a CVin.Bio account. Reply to stop these emails.`;
 
   const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>${escapeHtml(subject)}</title>
-</head>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
 <body style="margin:0;padding:0;width:100%;background:#FAFAFA;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAFA;">
-<tr><td align="center" style="padding:32px 12px 48px;">
-<table role="presentation" width="100%" style="max-width:560px;background:#FFFFFF;border:1px solid #E4E4E7;">
-<tr><td style="padding:32px 24px 40px;word-break:break-word;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAFA;"><tr><td align="center" style="padding:32px 12px 48px;">
+<table role="presentation" width="100%" style="max-width:560px;background:#FFFFFF;border:1px solid #E4E4E7;"><tr><td style="padding:32px 24px 40px;word-break:break-word;">
 <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#3F3F46;">Hi ${escapeHtml(firstName)},</p>
 <p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:#3F3F46;">CVin.Bio turns your CV into a live website of your profile. Recruiters open one link instead of a PDF or Word file.</p>
 <table role="presentation" width="100%" style="margin:0 0 24px;border:1px solid #E4E4E7;"><tr><td style="padding:16px;">
@@ -189,12 +204,10 @@ You have a CVin.Bio account. Reply to stop these emails.`;
 <p style="margin:0 0 10px;font-size:28px;font-weight:800;letter-spacing:-0.05em;line-height:1.15;color:#09090B;">${score}%</p>
 ${whatsLeftHtml}
 </td></tr></table>
-<table role="presentation" width="100%" style="margin:0 0 12px;"><tr>
-<td align="center" style="background:#18181B;border-radius:8px;">
+<table role="presentation" width="100%" style="margin:0 0 12px;"><tr><td align="center" style="background:#18181B;border-radius:8px;">
 <a href="${editorUrl}" style="display:block;width:100%;box-sizing:border-box;padding:14px 16px;font-size:14px;font-weight:600;color:#FFFFFF;text-decoration:none;text-align:center;white-space:normal;word-break:break-word;">Finish profile</a>
 </td></tr></table>
-<table role="presentation" width="100%" style="margin:0 0 28px;"><tr>
-<td align="center" style="background:#FFFFFF;border:1px solid #18181B;border-radius:8px;">
+<table role="presentation" width="100%" style="margin:0 0 28px;"><tr><td align="center" style="background:#FFFFFF;border:1px solid #18181B;border-radius:8px;">
 <a href="${telegramUrl}" style="display:block;width:100%;box-sizing:border-box;padding:13px 16px;font-size:13px;font-weight:600;color:#18181B;text-decoration:none;text-align:center;white-space:normal;word-break:break-word;">${escapeHtml(TELEGRAM_LABEL)}</a>
 </td></tr></table>
 <p style="margin:0 0 20px;font-size:14px;font-weight:600;color:#09090B;">— CVin.Bio</p>
@@ -202,18 +215,13 @@ ${whatsLeftHtml}
 <td style="padding:16px 0 8px;font-size:12px;line-height:1.55;color:#A1A1AA;">You have a CVin.Bio account. Reply to stop these emails.</td>
 </tr></table>
 <img src="${openPixel}" width="1" height="1" alt="" style="display:block;width:1px;height:1px;border:0;"/>
-</td></tr></table>
-</td></tr></table>
-</body></html>`;
+</td></tr></table></td></tr></table></body></html>`;
 
   return { subject, text, html };
 }
 
 async function main() {
   console.log('start', new Date().toISOString());
-  const supabase = createClient(url, serviceKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
 
   const alreadyPath = '.github/scripts/already-sent-profile-reminder.json';
   const already = existsSync(alreadyPath)
@@ -223,38 +231,42 @@ async function main() {
   console.log('already sent', alreadySet.size);
 
   console.log('profiles...');
-  const { data: profiles, error } = await supabase
-    .from('profiles')
-    .select(
-      'id, username, full_name, links, profile_picture_url, about, skills, experience, education, created_at'
+  // paginate rest
+  let profiles = [];
+  let from = 0;
+  const pageSize = 1000;
+  while (true) {
+    const batch = await sbGet(
+      `/rest/v1/profiles?select=id,username,full_name,links,profile_picture_url,about,skills,experience,education,created_at&offset=${from}&limit=${pageSize}`
     );
-  if (error) {
-    console.error('profiles error', error);
-    process.exit(1);
+    if (!Array.isArray(batch)) throw new Error('profiles not array');
+    profiles = profiles.concat(batch);
+    console.log('profiles batch', batch.length, 'total', profiles.length);
+    if (batch.length < pageSize) break;
+    from += pageSize;
   }
-  console.log('profiles', profiles?.length || 0);
 
   console.log('auth users...');
   const allUsers = [];
-  for (let page = 1; page <= 50; page++) {
-    const { data, error: ae } = await supabase.auth.admin.listUsers({
-      page,
-      perPage: 200,
-    });
-    if (ae) {
-      console.error('listUsers', page, ae);
-      process.exit(1);
+  for (let page = 1; page <= 100; page++) {
+    // GoTrue admin API: page is 1-indexed
+    const batch = await sbGet(
+      `/auth/v1/admin/users?page=${page}&per_page=200`
+    );
+    const users = batch?.users || batch || [];
+    if (!Array.isArray(users)) {
+      console.error('unexpected auth response keys', Object.keys(batch || {}));
+      throw new Error('auth users not array');
     }
-    const batch = data?.users || [];
-    allUsers.push(...batch);
-    console.log('page', page, batch.length, 'total', allUsers.length);
-    if (batch.length < 200) break;
+    allUsers.push(...users);
+    console.log('auth page', page, users.length, 'total', allUsers.length);
+    if (users.length < 200) break;
   }
   const byId = Object.fromEntries(allUsers.map((u) => [u.id, u]));
 
   const seen = new Set();
   const audience = [];
-  for (const p of profiles || []) {
+  for (const p of profiles) {
     const a = analyze(p);
     if (a.complete) continue;
     if (
@@ -352,7 +364,13 @@ async function main() {
     'profile-reminder-pass2-results.json',
     JSON.stringify(out, null, 2)
   );
-  console.log(JSON.stringify({ campaign, audience: audience.length, sent, failed }, null, 2));
+  console.log(
+    JSON.stringify(
+      { campaign, audience: audience.length, sent, failed },
+      null,
+      2
+    )
+  );
 }
 
 main().catch((e) => {
