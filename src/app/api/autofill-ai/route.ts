@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getProfileBySlug } from '@/lib/supabase-server';
 
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {

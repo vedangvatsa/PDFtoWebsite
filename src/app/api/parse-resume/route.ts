@@ -5,6 +5,8 @@ import pdf from 'pdf-parse';
 import mammoth from 'mammoth';
 import { parseResumeText } from '@/lib/resume-parser';
 
+export const maxDuration = 60;
+
 const systemInstruction = `You are a strict, highly accurate JSON API extracting candidate resumes.
 Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks):
 {
