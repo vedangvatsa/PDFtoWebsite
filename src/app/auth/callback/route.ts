@@ -9,7 +9,13 @@ export async function GET(request: Request) {
   const protocol = request.headers.get('x-forwarded-proto') || 'https'
   
   let origin = forwardedHost ? `${protocol}://${forwardedHost}` : requestUrl.origin
-  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+  const isLocal = origin.includes('localhost') || 
+                  origin.includes('127.0.0.1') || 
+                  origin.includes('.local') ||
+                  origin.includes('192.168.') ||
+                  origin.includes('10.') ||
+                  /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\./.test(origin);
+  if (!isLocal) {
     origin = origin.replace('http://', 'https://')
   }
 
@@ -44,10 +50,14 @@ export async function GET(request: Request) {
             return cookieStore.getAll()
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options)
-              response.cookies.set(name, value, options)
-            })
+            try {
+              cookiesToSet.forEach(({ name, value, options }) => {
+                cookieStore.set(name, value, options)
+                response.cookies.set(name, value, options)
+              })
+            } catch (err) {
+              console.warn('cookieStore.set failed in auth callback (PKCE):', err)
+            }
           },
         },
       }
@@ -76,10 +86,14 @@ export async function GET(request: Request) {
             return cookieStore.getAll()
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options)
-              response.cookies.set(name, value, options)
-            })
+            try {
+              cookiesToSet.forEach(({ name, value, options }) => {
+                cookieStore.set(name, value, options)
+                response.cookies.set(name, value, options)
+              })
+            } catch (err) {
+              console.warn('cookieStore.set failed in auth callback (verifyOtp):', err)
+            }
           },
         },
       }
