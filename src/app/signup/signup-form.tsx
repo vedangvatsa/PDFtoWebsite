@@ -55,7 +55,7 @@ export default function SignUpForm() {
       email,
       options: {
         // Keeping this for fallback if you don't update the Supabase template immediately
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/editor`,
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ? process.env.NEXT_PUBLIC_SITE_URL : window.location.origin}/auth/callback?next=/editor`,
       },
     });
     if (error) {
