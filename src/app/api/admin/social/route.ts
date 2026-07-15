@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import path from 'path';
+import fs from 'fs';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,8 +9,8 @@ const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
 // ── Cache helpers ──────────────────────────────────────────────────────────
 const CACHE_FILE = process.env.VERCEL
-  ? join('/tmp', 'social-analytics-cache.json')
-  : join(process.cwd(), '.github/scripts', 'social-analytics-cache.json');
+  ? '/tmp/social-analytics-cache.json'
+  : path.join(/*turbopackIgnore: true*/ process.cwd(), '.github/scripts', 'social-analytics-cache.json');
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
 // In-memory cache to avoid file reads and slow cold fetches
@@ -19,16 +19,16 @@ let cachedSocialTime: number = 0;
 const IN_MEMORY_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
 function readCache(): { data: any; timestamp: number } | null {
-  if (!existsSync(CACHE_FILE)) return null;
+  if (!fs.existsSync(CACHE_FILE)) return null;
   try {
-    const raw = JSON.parse(readFileSync(CACHE_FILE, 'utf8'));
+    const raw = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
     if (raw.timestamp && Date.now() - raw.timestamp < CACHE_TTL_MS) return raw;
   } catch {}
   return null;
 }
 
 function writeCache(data: any) {
-  try { writeFileSync(CACHE_FILE, JSON.stringify({ data, timestamp: Date.now() }, null, 2)); } catch {}
+  try { fs.writeFileSync(CACHE_FILE, JSON.stringify({ data, timestamp: Date.now() }, null, 2)); } catch {}
 }
 
 // ── Telegram Bot API (free) ────────────────────────────────────────────────
@@ -369,21 +369,20 @@ async function fetchBufferAnalytics(): Promise<any> {
 // ── Read state files ────────────────────────────────────────────────────────
 function readStateFile(filename: string): any {
   const paths = [
-    join(process.cwd(), '.github/scripts', filename),
-    join(process.cwd(), '.github', 'scripts', filename),
+    path.join(/*turbopackIgnore: true*/ process.cwd(), '.github/scripts', filename),
   ];
   for (const p of paths) {
-    if (existsSync(p)) {
-      try { return JSON.parse(readFileSync(p, 'utf8')); } catch { continue; }
+    if (fs.existsSync(p)) {
+      try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { continue; }
     }
   }
   return null;
 }
 
 function readContentFile(filename: string): any {
-  const p = join(process.cwd(), '.github/scripts', filename);
-  if (existsSync(p)) {
-    try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return null; }
+  const p = path.join(/*turbopackIgnore: true*/ process.cwd(), '.github/scripts', filename);
+  if (fs.existsSync(p)) {
+    try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
   }
   return null;
 }
