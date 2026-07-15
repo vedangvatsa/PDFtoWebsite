@@ -4,8 +4,8 @@ import fs from 'fs';
 import path from 'path';
 
 const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
-const CONTENT_FILE = path.join(/*turbopackIgnore: true*/ process.cwd(), '.github', 'scripts', 'x-content.json');
-const BUFFER_CONTENT_FILE = path.join(/*turbopackIgnore: true*/ process.cwd(), '.github', 'scripts', 'buffer-content.json');
+const CONTENT_FILE = process['cwd']() + '/.github/scripts/x-content.json';
+const BUFFER_CONTENT_FILE = process['cwd']() + '/.github/scripts/buffer-content.json';
 
 export async function GET(req: Request) {
   try {
@@ -28,16 +28,16 @@ export async function GET(req: Request) {
 
     // Try to get states to know what is posted vs upcoming
     let xState = { threads: { index: 0 }, insights: { index: 0 }, engagement: { index: 0 } };
-    try { xState = JSON.parse(fs.readFileSync(path.join(/*turbopackIgnore: true*/ process.cwd(), '.github', 'scripts', 'x-state.json'), 'utf8')); } catch(e){}
+    try { xState = JSON.parse(fs.readFileSync(process['cwd']() + '/.github/scripts/x-state.json', 'utf8')); } catch(e){}
 
     let bskyState = { index: 0 };
-    try { bskyState = JSON.parse(fs.readFileSync(path.join(/*turbopackIgnore: true*/ process.cwd(), '.github', 'scripts', 'bsky-state.json'), 'utf8')); } catch(e){}
+    try { bskyState = JSON.parse(fs.readFileSync(process['cwd']() + '/.github/scripts/bsky-state.json', 'utf8')); } catch(e){}
 
     let metaState = { facebook: { index: 0 }, instagram: { index: 0 }, threads: { index: 0 } };
-    try { metaState = JSON.parse(fs.readFileSync(path.join(/*turbopackIgnore: true*/ process.cwd(), '.github', 'scripts', 'meta-state.json'), 'utf8')); } catch(e){}
+    try { metaState = JSON.parse(fs.readFileSync(process['cwd']() + '/.github/scripts/meta-state.json', 'utf8')); } catch(e){}
 
     let bufferState = { linkedin: { index: 0 }, instagram: { index: 0 }, facebook: { index: 0 } };
-    try { bufferState = JSON.parse(fs.readFileSync(path.join(/*turbopackIgnore: true*/ process.cwd(), '.github', 'scripts', 'buffer-state.json'), 'utf8')); } catch(e){}
+    try { bufferState = JSON.parse(fs.readFileSync(process['cwd']() + '/.github/scripts/buffer-state.json', 'utf8')); } catch(e){}
 
     return NextResponse.json({
       content,
