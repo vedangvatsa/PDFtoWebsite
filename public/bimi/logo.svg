@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny-ps" viewBox="0 0 32 32" width="32" height="32">
+  <title>CVin.Bio</title>
+  <!-- Solid square mark for BIMI (SVG Tiny PS friendly) -->
+  <rect width="32" height="32" fill="#18181b"/>
+  <!-- Document / CV mark in white -->
+  <path fill="#ffffff" d="M9 5h9l5 5v17H9V5zm9 1.5V11h4.5L18 6.5z"/>
+  <rect x="12" y="15" width="8" height="1.5" fill="#18181b"/>
+  <rect x="12" y="18.5" width="8" height="1.5" fill="#18181b"/>
+  <rect x="12" y="22" width="5" height="1.5" fill="#18181b"/>
+</svg>
