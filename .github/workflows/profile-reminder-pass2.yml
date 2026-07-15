@@ -12,10 +12,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
-      - name: Install supabase client only
-        run: npm i @supabase/supabase-js@2 --no-save
+          node-version: '22'
 
       - name: Send remaining incomplete-profile emails
         env:
