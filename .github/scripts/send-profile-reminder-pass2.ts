@@ -1,28 +1,21 @@
 /**
- * Second pass: incomplete profiles whose email is only in auth.users
- * (not on profile links), excluding already-sent list from pass 1.
+ * Pass 2: incomplete profiles with auth email, skip already-sent.
+ * Uses GitHub secrets; plain fetch for reliability in CI.
  */
 import { createClient } from '@supabase/supabase-js';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { buildProfileReminderEmail } from '../../src/lib/profile-reminder-email.ts';
+import { buildProfileReminderEmail } from '../../src/lib/profile-reminder-email';
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const accountId = process.env.CLOUDFLARE_ACCOUNT_ID!;
-const cfToken = process.env.CLOUDFLARE_API_TOKEN!;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-if (!url || !serviceKey) {
-  console.error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
-  process.exit(1);
+function requireEnv(name: string) {
+  const v = process.env[name];
+  if (!v) {
+    console.error(`Missing env: ${name}`);
+    process.exit(1);
+  }
+  return v;
 }
-if (!accountId || !cfToken) {
-  console.error('Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN');
-  process.exit(1);
-}
-
-const supabase = createClient(url, serviceKey, {
-  auth: { persistSession: false, autoRefreshToken: false },
-});
 
 function analyze(p: any) {
   const hasPhoto = !!(
@@ -66,42 +59,63 @@ function analyze(p: any) {
   };
 }
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 async function main() {
-  const alreadyPath =
-    '.github/scripts/already-sent-profile-reminder.json';
+  console.log('pass2 start', new Date().toISOString());
+
+  const url = requireEnv('NEXT_PUBLIC_SUPABASE_URL');
+  const serviceKey = requireEnv('SUPABASE_SERVICE_ROLE_KEY');
+  const accountId = requireEnv('CLOUDFLARE_ACCOUNT_ID');
+  const cfToken = requireEnv('CLOUDFLARE_API_TOKEN');
+  process.env.NEXT_PUBLIC_SITE_URL =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
+
+  console.log('url host', new URL(url).host);
+  console.log('serviceKey len', serviceKey.length);
+  console.log('cf token len', cfToken.length);
+
+  const supabase = createClient(url, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  const alreadyPath = '.github/scripts/already-sent-profile-reminder.json';
   const already: string[] = existsSync(alreadyPath)
     ? JSON.parse(readFileSync(alreadyPath, 'utf8'))
     : [];
   const alreadySet = new Set(already.map((e) => e.toLowerCase()));
+  console.log('already sent', alreadySet.size);
 
-  console.log('Already sent (pass 1):', alreadySet.size);
-
+  console.log('fetching profiles...');
   const { data: profiles, error } = await supabase
     .from('profiles')
     .select(
       'id, username, full_name, links, profile_picture_url, about, skills, experience, education, created_at'
     );
-  if (error) throw error;
+  if (error) {
+    console.error('profiles error', error);
+    process.exit(1);
+  }
+  console.log('profiles', profiles?.length ?? 0);
 
-  // auth users
+  console.log('listing auth users...');
   const allUsers: any[] = [];
   for (let page = 1; page <= 50; page++) {
     const { data, error: ae } = await supabase.auth.admin.listUsers({
       page,
-      perPage: 1000,
+      perPage: 200,
     });
-    if (ae) throw ae;
-    allUsers.push(...(data?.users || []));
-    if (!data?.users?.length || data.users.length < 1000) break;
+    if (ae) {
+      console.error('listUsers error page', page, ae);
+      process.exit(1);
+    }
+    const batch = data?.users || [];
+    allUsers.push(...batch);
+    console.log('auth page', page, 'got', batch.length, 'total', allUsers.length);
+    if (batch.length < 200) break;
   }
-  console.log('Auth users:', allUsers.length);
   const byId = Object.fromEntries(allUsers.map((u) => [u.id, u]));
 
   const seen = new Set<string>();
   const audience: any[] = [];
-
   for (const p of profiles || []) {
     const a = analyze(p);
     if (a.complete) continue;
@@ -112,22 +126,16 @@ async function main() {
       continue;
     }
     if (!p.username || /^user\d+$/i.test(String(p.username))) continue;
-
     const u = byId[p.id];
     const email = (u?.email || '').trim().toLowerCase();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue;
-    if (alreadySet.has(email)) continue;
-    if (seen.has(email)) continue;
+    if (alreadySet.has(email) || seen.has(email)) continue;
     seen.add(email);
-
-    // prefer not re-sending if profile link email was already used under different casing
     const firstName =
       (p.full_name || u?.user_metadata?.full_name || '')
         .trim()
         .split(/\s+/)[0] || 'there';
-
     audience.push({
-      id: p.id,
       email,
       firstName,
       username: p.username,
@@ -136,11 +144,10 @@ async function main() {
     });
   }
 
-  console.log('Pass-2 audience:', audience.length);
+  console.log('pass2 audience', audience.length);
 
   const campaign = 'profile-reminder-2026-07-15-pass2';
   const results: any[] = [];
-  const DELAY_MS = 400;
 
   for (let i = 0; i < audience.length; i++) {
     const r = audience[i];
@@ -186,12 +193,10 @@ async function main() {
         messageId: data.result?.message_id,
         errors: data.errors,
       });
-      if ((i + 1) % 10 === 0 || !ok) {
-        console.log(
-          `[${i + 1}/${audience.length}] ${ok ? 'OK' : 'FAIL'} ${r.email}`,
-          ok ? '' : JSON.stringify(data.errors)
-        );
-      }
+      console.log(
+        `[${i + 1}/${audience.length}] ${ok ? 'OK' : 'FAIL'} ${r.email}`,
+        ok ? '' : JSON.stringify(data.errors)
+      );
       if (!ok) {
         const msg = String(data.errors?.[0]?.message || '');
         if (/throttl|rate/i.test(msg)) {
@@ -199,21 +204,17 @@ async function main() {
           i--;
           continue;
         }
-        if (/daily|limit|quota|disabled/i.test(msg)) {
-          console.log('Stopping:', msg);
-          break;
-        }
+        if (/daily|limit|quota|disabled/i.test(msg)) break;
       }
     } catch (err: any) {
       results.push({
         email: r.email,
-        username: r.username,
         ok: false,
-        error: String(err),
+        error: String(err?.message || err),
       });
       console.log(`[${i + 1}] ERR`, err?.message || err);
     }
-    await sleep(DELAY_MS);
+    await sleep(400);
   }
 
   const sent = results.filter((r) => r.ok).length;
@@ -226,11 +227,14 @@ async function main() {
     attempted: results.length,
     results,
   };
-  writeFileSync('profile-reminder-pass2-results.json', JSON.stringify(out, null, 2));
+  writeFileSync(
+    'profile-reminder-pass2-results.json',
+    JSON.stringify(out, null, 2)
+  );
   console.log(JSON.stringify({ campaign, audience: audience.length, sent, failed }, null, 2));
 }
 
 main().catch((e) => {
-  console.error(e);
+  console.error('FATAL', e);
   process.exit(1);
 });
