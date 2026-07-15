@@ -14,8 +14,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install deps
-        run: npm ci --ignore-scripts
+      - name: Install supabase client only
+        run: npm i @supabase/supabase-js@2 --no-save
 
       - name: Send remaining incomplete-profile emails
         env:
@@ -24,7 +24,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           NEXT_PUBLIC_SITE_URL: https://cvin.bio
-        run: npx --yes tsx .github/scripts/send-profile-reminder-pass2.ts
+        run: node .github/scripts/send-profile-reminder-pass2.mjs
 
       - name: Upload results
         if: always()
