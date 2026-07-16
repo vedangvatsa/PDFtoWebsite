@@ -135,7 +135,13 @@ const nextConfigFn = (phase: string): NextConfig => {
     },
   
     async redirects() {
-      return [];
+      return [
+        {
+          source: '/ai-interview-questions',
+          destination: '/aiq',
+          permanent: true,
+        },
+      ];
     },
   
     async rewrites() {
