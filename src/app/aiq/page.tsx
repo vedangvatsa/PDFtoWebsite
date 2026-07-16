@@ -33,7 +33,7 @@ export default function AIInterviewPage() {
 
  const toggleAccordion = (id: string) => {
  setExpandedIds((prev) =>
- prev.includes(id) ? prev.filter((item) => item !== id) : [.prev, id]
+ prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
  );
  };
 
