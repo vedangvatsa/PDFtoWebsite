@@ -1526,7 +1526,7 @@ fsdp_config = {
  difficulty: 'Advanced',
  category: 'Practical',
  expectedTime: '3-4 minutes',
- question: 'How do you evaluate a fine-tuned LLM to ensure it improved over the base model without regressions?',
+ question: 'How do you evaluate a fine-tuned LLM to check it improved over the base model without regressions?',
  idealAnswer: {
  coreIdea: 'Use multi-dimensional evaluation: domain benchmarks, general capability benchmarks, human evaluation, and LLM-as-a-judge to compare fine-tuned vs base model.',
  keyPoints: [
@@ -2456,7 +2456,7 @@ function calculateCost(inputTokens, outputTokens, model) {
  keyPoints: [
  'Automated metrics: LLM-as-a-judge for quality scoring, task completion rate, response length distribution.',
  'User signals: Rephrase rate (user asks the same thing again = bad response), thumbs up/down, conversation abandonment.',
- 'Traffic splitting: Route 10% to variant, 90% to control; ensure consistent user assignment.',
+ 'Traffic splitting: Route 10% to variant, 90% to control; keep user assignment consistent.',
  'Statistical testing: Sequential testing or fixed-horizon; require minimum sample size for significance.',
  'Gradual rollout: If variant wins, increase traffic 25% -> 50% -> 100% with monitoring.'
  ],
@@ -5021,7 +5021,7 @@ async function smartRoute(query, user) {
  'It enables graceful degradation under budget constraints.'
  ],
  commonPitfalls: [
- 'Classification model adds latency and cost. Ensure it is cheaper than always using the mid-tier model.',
+ 'Classification model adds latency and cost. It must be cheaper than always using the mid-tier model.',
  'Not monitoring quality when downgrading models. Cheaper models may produce worse outputs.'
  ],
  followUps: [
