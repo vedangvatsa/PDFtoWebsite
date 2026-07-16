@@ -106,7 +106,7 @@ export default function AIInterviewPage() {
             AI Interview Question Bank
           </h1>
           <p className={PAGE_SUBTITLE}>
-            An extensive, curated library of highly technical interview questions, key evaluation criteria, common pitfalls, and answers tailored to modern engineering and product teams.
+            100+ interview questions for AI engineering roles — with model answers, pitfalls, and scoring notes.
           </p>
         </div>
 
@@ -148,7 +148,7 @@ export default function AIInterviewPage() {
                 Build an AI Resume
               </h3>
               <p className="text-[11px] text-zinc-500 leading-relaxed mb-4 font-normal">
-                Optimize your CV with semantic keyword integration for vector search and ATS systems. Convert your PDF CV into a website.
+                Turn your PDF CV into a live profile page you can share with recruiters.
               </p>
               <Button asChild className="w-full h-8 text-[11px] font-bold bg-zinc-950 text-white hover:bg-zinc-900 rounded-xl transition-all shadow-sm">
                 <Link href="/">
@@ -363,7 +363,7 @@ export default function AIInterviewPage() {
         {/* Disclaimer footer - full width (w-full) matching the layout update policy */}
         <div className="mt-20 pt-8 border-t border-zinc-200">
           <p className="text-[10px] text-zinc-400 leading-relaxed w-full font-normal">
-            This interview question bank is updated continuously to align with modern production systems, models, and engineering architectures. Last updated June 2026.
+            Focused on production AI systems. Last updated July 2026.
           </p>
         </div>
       </main>
