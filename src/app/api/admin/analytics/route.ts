@@ -691,6 +691,12 @@ async function fetchAnalyticsDataRaw() {
 
     // ── Product Timeline ──
     const productTimeline = [
+      { date: '2026-07-16', tag: 'infra', title: 'Free-Tier Supabase Hardening', desc: 'Cut jobs-sync load for Free Nano: bi-daily schedule, LinkedIn scrape weekly only, smaller insert batches, 30-day job purge (~100k+ stale rows removed), and indexes on jobs/profiles hot columns (created_at, external_id, dedup_hash, telegram_posted_at, username).' },
+      { date: '2026-07-16', tag: 'perf', title: 'Public Routes Cached Harder', desc: 'Lengthened cache for platform stats (6h), sitemap (6h), and llms.txt (12h) with capped profile/company scans so crawlers and pageviews no longer thrash Postgres.' },
+      { date: '2026-07-15', tag: 'email', title: 'Cloudflare Marketing Email Sending', desc: 'Marketing sends via Cloudflare Email Service from news@cvin.bio (Vercel host + Resend onboarding untouched). Domain DNS, BIMI logo, open/click tracking via /api/email-track, List-Unsubscribe headers.' },
+      { date: '2026-07-15', tag: 'growth', title: 'Incomplete Profile Reminder Campaign', desc: 'Personalized Cloudflare emails for incomplete profiles (score + what\'s left, Finish profile + Telegram jobs CTA). Pass 1 sent 175; pass 2 queued ~120 (CF daily send throttle). Copy: registered but incomplete; hide 0% score display.' },
+      { date: '2026-07-15', tag: 'auth', title: 'Google Sign-In Resilience', desc: 'OAuth flow uses explicit redirect with clear toasts when Auth/origin is down; CSP form-action allows Google + Supabase OAuth destinations so Continue with Google fails loudly instead of silently.' },
+      { date: '2026-07-15', tag: 'seo', title: 'AI Crawler Indexing Restored', desc: 'Disabled Cloudflare managed robots AI Disallow so public profiles and content stay Allow for AI user-agents; only /editor, /api/, /admin remain blocked.' },
       { date: '2026-06-15', tag: 'data', title: 'Broken Link Audit & Cleanup', desc: 'Scanned 2,466 URLs across all nomad city pages. Deleted 62 places with dead websites (404/DNS failures) and fixed 36 broken booking.com share links.' },
       { date: '2026-06-15', tag: 'feature', title: 'Universal UTM Tracking Suffixes', desc: 'Middleware-based UTM suffixes (/th, /wa, /li, etc.) now work on ALL pages, not just homepage. Enables per-channel attribution on any link.' },
       { date: '2026-06-15', tag: 'nomad', title: 'Spaces Table UX Redesign', desc: 'Hyperlinked names, map-pin fly-to interaction, rating-based sort. Removed redundant columns for cleaner layout.' },
