@@ -256,6 +256,43 @@ const results = await index.query({
             3: 'Knows they differ but cannot explain what goes in each.',
             5: 'Separates roles clearly, explains persistence, describes system prompt design practices.'
           }
+        },
+        {
+          id: 'AGT-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'What is RAG (Retrieval-Augmented Generation), and when would you use it instead of only prompting the model?',
+          idealAnswer: {
+            coreIdea: 'RAG fetches relevant documents at query time and puts them in the prompt so the model can answer with fresher, private, or domain data without full retraining.',
+            keyPoints: [
+              'Retriever finds top chunks from a store (often vectors).',
+              'Generator (LLM) writes the answer using those chunks.',
+              'Use RAG when knowledge changes often, is private, or is too large to fit in training.',
+              'Fine-tuning is better for style or format skills; RAG is better for facts and docs.'
+            ]
+          },
+          whyThisMatters: [
+            'Most production LLM apps with company data use some form of RAG.',
+            'Interviewers want a clear RAG vs fine-tune trade-off.'
+          ],
+          commonPitfalls: [
+            'Saying RAG replaces fine-tuning for every use case.',
+            'Ignoring retrieval quality and only judging the final text.'
+          ],
+          followUps: [
+            'How do you evaluate whether retrieval is good?',
+            'What fails if chunks are too large or too small?'
+          ],
+          redFlags: [
+            'Cannot describe retrieve-then-generate.',
+            'Thinks RAG trains the model on new docs every query.'
+          ],
+          scoringRubric: {
+            1: 'Vague or confuses RAG with fine-tuning.',
+            3: 'Correct high-level flow but weak on when to use it.',
+            5: 'Clear pipeline, trade-offs, and basic failure modes.'
+          }
         }
       ],
       Advanced: [
@@ -478,6 +515,44 @@ span1.end({ output: response, metadata: { tokens: response.usage } });`,
             1: 'No concept of agent observability.',
             3: 'Knows logging matters but no structured approach.',
             5: 'Implements distributed tracing, token accounting, replay debugging, and cost alerting.'
+          }
+        },
+        {
+          id: 'AGT-A-06',
+          difficulty: 'Advanced',
+          category: 'Architecture',
+          expectedTime: '3-4 minutes',
+          question: 'How would you combine keyword search and vector search (hybrid retrieval) and when would you add a reranker?',
+          idealAnswer: {
+            coreIdea: 'Hybrid search merges sparse (keyword) and dense (embedding) hits so exact terms and semantic matches both rank well; a reranker scores the top pool more carefully.',
+            keyPoints: [
+              'BM25 or similar catches exact IDs, codes, and rare words.',
+              'Embeddings catch paraphrases and synonyms.',
+              'Fuse scores (for example RRF) then take a top-N list.',
+              'Optional cross-encoder reranker improves precision on the shortlist.',
+              'Measure with recall@k, precision@k, and end-task quality.'
+            ]
+          },
+          whyThisMatters: [
+            'Hybrid retrieval is a standard production RAG question.',
+            'Shows you know real search quality, not demos only.'
+          ],
+          commonPitfalls: [
+            'Using only vectors when users search exact SKUs or error codes.',
+            'Reranking the full corpus instead of a small candidate set.'
+          ],
+          followUps: [
+            'How do you tune fusion weights?',
+            'When is a reranker not worth the latency?'
+          ],
+          redFlags: [
+            'Only knows vector search.',
+            'No evaluation plan.'
+          ],
+          scoringRubric: {
+            1: 'Cannot explain hybrid retrieval.',
+            3: 'Describes both channels but weak on fusion or eval.',
+            5: 'Full design with latency and metrics trade-offs.'
           }
         }
       ]
@@ -710,6 +785,44 @@ Summarize the content inside <document> tags in 3 bullet points.`,
             3: 'Uses delimiters but cannot explain their security or organizational benefits.',
             5: 'Explains delimiter types, consistency, security implications, and practices.'
           }
+        },
+        {
+          id: 'PRM-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '45-60 seconds',
+          question: 'What do temperature and top-p control in LLM decoding, and when would you set temperature low?',
+          idealAnswer: {
+            coreIdea: 'Temperature scales randomness of next-token choice; top-p limits sampling to a probability mass of likely tokens. Low temperature suits factual, stable answers.',
+            keyPoints: [
+              'Temperature near 0 is more deterministic.',
+              'Higher temperature adds variety and more risk of nonsense.',
+              'Top-p keeps the smallest set of tokens whose probs sum to p.',
+              'For JSON, tools, and support answers, keep temperature low.',
+              'For brainstorming, raise temperature carefully and still constrain format.'
+            ]
+          },
+          whyThisMatters: [
+            'Almost every LLM interview asks sampling basics.',
+            'Product and eng both need this for predictable UX.'
+          ],
+          commonPitfalls: [
+            'Treating temperature as creativity only without side effects.',
+            'Ignoring that high temperature hurts structured output.'
+          ],
+          followUps: [
+            'How does this interact with constrained decoding?',
+            'What happens at temperature 0?'
+          ],
+          redFlags: [
+            'Cannot define temperature.',
+            'Confuses temperature with training rate.'
+          ],
+          scoringRubric: {
+            1: 'No clear definition.',
+            3: 'Correct basics, weak on when to use.',
+            5: 'Clear definitions and practical settings.'
+          }
         }
       ],
       Advanced: [
@@ -938,6 +1051,44 @@ For each claim, cite the document ID that supports it.`,
             3: 'Suggests prompt instructions but no grounding or verification.',
             5: 'Multi-layer approach: grounding, uncertainty instructions, citations, verification, structured output.'
           }
+        },
+        {
+          id: 'PRM-A-06',
+          difficulty: 'Advanced',
+          category: 'Practical',
+          expectedTime: '2-3 minutes',
+          question: 'How do you force reliable JSON (or other structured) output from an LLM in production?',
+          idealAnswer: {
+            coreIdea: 'Combine clear schema instructions with model or API features that constrain tokens, then validate and retry on failure.',
+            keyPoints: [
+              'Put a JSON schema or example in the prompt.',
+              'Prefer API JSON mode or grammar constraints when available.',
+              'Validate with a schema parser; on failure, repair or retry with the error.',
+              'Keep temperature low for structured tasks.',
+              'Log parse failures as a quality metric.'
+            ]
+          },
+          whyThisMatters: [
+            'Structured output is a daily production issue.',
+            'Separates demo prompts from shippable systems.'
+          ],
+          commonPitfalls: [
+            'Trusting free-form text without validation.',
+            'No retry or fallback when JSON is invalid.'
+          ],
+          followUps: [
+            'How do you handle partial JSON streams?',
+            'When do you fall back to simpler extraction?'
+          ],
+          redFlags: [
+            'No validation step.',
+            'Only ask nicely for JSON.'
+          ],
+          scoringRubric: {
+            1: 'No production plan.',
+            3: 'Prompt and validation mentioned.',
+            5: 'Full loop: constrain, validate, retry, measure.'
+          }
         }
       ]
     }
@@ -1157,6 +1308,43 @@ model = get_peft_model(base_model, lora_config)`,
             1: 'Does not know what catastrophic forgetting is.',
             3: 'Knows it exists but has no mitigation strategies.',
             5: 'Explains causes, symptoms, and multiple mitigations including PEFT and replay.'
+          }
+        },
+        {
+          id: 'TUN-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'When should you fine-tune a model versus use RAG or better prompts?',
+          idealAnswer: {
+            coreIdea: 'Fine-tune for style, format, or skills that are hard to prompt; use RAG for facts and changing knowledge; use prompts first when they already work.',
+            keyPoints: [
+              'Prompts and tools are the cheapest first step.',
+              'RAG for private or fresh documents without retraining.',
+              'Fine-tune for consistent tone, domain language, or tool-use habits.',
+              'Do not fine-tune just to inject company facts that change weekly.',
+              'Often combine a fine-tuned model with RAG for knowledge.'
+            ]
+          },
+          whyThisMatters: [
+            'Core decision in LLM product and eng interviews.',
+            'Saves cost and time if answered well.'
+          ],
+          commonPitfalls: [
+            'Fine-tuning every time quality is low without trying evals or retrieval.',
+            'Assuming fine-tune removes hallucinations completely.'
+          ],
+          followUps: [
+            'Give an example where fine-tune is wrong.',
+            'How do you measure the decision?'
+          ],
+          redFlags: [
+            'Only one approach for every problem.'
+          ],
+          scoringRubric: {
+            1: 'No clear criteria.',
+            3: 'Lists options with weak trade-offs.',
+            5: 'Clear decision framework with examples.'
           }
         }
       ],
@@ -1380,6 +1568,43 @@ fsdp_config = {
             3: 'Checks loss but no domain or general benchmarks.',
             5: 'Multi-dimensional eval: domain, general, human, LLM-judge, statistical rigor.'
           }
+        },
+        {
+          id: 'TUN-A-06',
+          difficulty: 'Advanced',
+          category: 'Practical',
+          expectedTime: '3-4 minutes',
+          question: 'How does DPO (Direct Preference Optimization) differ from classic RLHF with a reward model and PPO?',
+          idealAnswer: {
+            coreIdea: 'DPO trains the policy directly from preferred vs rejected answers without a separate reward model and PPO loop, which is simpler to run.',
+            keyPoints: [
+              'RLHF: SFT, train reward model on preferences, then optimize policy with RL (often PPO).',
+              'DPO uses preference pairs to update the policy with a simpler objective.',
+              'DPO usually needs less infrastructure and fewer unstable RL steps.',
+              'Both still need good preference data and evals for safety and quality.',
+              'Choice depends on data, stack maturity, and research vs product constraints.'
+            ]
+          },
+          whyThisMatters: [
+            'Modern alignment interviews expect DPO vs RLHF.',
+            'Shows you follow post-SFT training practice.'
+          ],
+          commonPitfalls: [
+            'Saying DPO needs no data.',
+            'Ignoring that bad preference data still breaks either method.'
+          ],
+          followUps: [
+            'When might PPO still be preferred?',
+            'How do you detect reward hacking without a reward model?'
+          ],
+          redFlags: [
+            'Cannot contrast the pipelines.'
+          ],
+          scoringRubric: {
+            1: 'Names both without mechanics.',
+            3: 'Correct high-level difference.',
+            5: 'Clear pipeline comparison and trade-offs.'
+          }
         }
       ]
     }
@@ -1594,6 +1819,43 @@ python -m vllm.entrypoints.openai.api_server \\
             1: 'Does not know what vLLM is.',
             3: 'Knows it is an inference engine but cannot explain paged attention.',
             5: 'Explains paged attention, continuous batching, throughput gains, and limitations.'
+          }
+        },
+        {
+          id: 'OPS-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'How is MLOps different from DevOps, and what extra pieces does ML need?',
+          idealAnswer: {
+            coreIdea: 'DevOps ships software; MLOps also versions data and models, tracks experiments, and monitors model quality after deploy because models decay as data changes.',
+            keyPoints: [
+              'Shared ideas: CI/CD, infra as code, observability.',
+              'ML extras: dataset lineage, experiment tracking, model registry.',
+              'After deploy: prediction quality, data drift, concept drift.',
+              'Rollback may mean old model weights, not only old code.',
+              'Feature pipelines must stay consistent between train and serve.'
+            ]
+          },
+          whyThisMatters: [
+            'Opening question on almost every MLOps list.',
+            'Sets level before deep serving questions.'
+          ],
+          commonPitfalls: [
+            'Saying MLOps is just DevOps with GPUs.',
+            'No mention of drift or data versioning.'
+          ],
+          followUps: [
+            'What do you store in a model registry?',
+            'How do you detect data drift?'
+          ],
+          redFlags: [
+            'No difference listed.'
+          ],
+          scoringRubric: {
+            1: 'Vague difference.',
+            3: 'Names data/model versioning and monitoring.',
+            5: 'Clear comparison with deploy-time and run-time concerns.'
           }
         }
       ],
@@ -1825,6 +2087,43 @@ spec:
             3: 'Has a backup provider but no tiered approach or caching.',
             5: 'Tiered fallback with circuit breaker, semantic cache, graceful degradation, auto-recovery.'
           }
+        },
+        {
+          id: 'OPS-A-06',
+          difficulty: 'Advanced',
+          category: 'Architecture',
+          expectedTime: '3-4 minutes',
+          question: 'How do you monitor a production LLM or ML model for quality problems after launch?',
+          idealAnswer: {
+            coreIdea: 'Track online product metrics, offline evals on a golden set, and data or prediction drift; alert and roll back when thresholds break.',
+            keyPoints: [
+              'Golden set evals on a schedule for quality, safety, and format.',
+              'Online metrics: latency, error rate, cost per request, user feedback.',
+              'Drift checks on inputs and outputs when labels exist.',
+              'Canary or shadow traffic before full rollout.',
+              'Runbooks: degrade features, switch model, or roll back weights and config.'
+            ]
+          },
+          whyThisMatters: [
+            'Top MLOps interview topic.',
+            'Shows production ownership beyond deploy scripts.'
+          ],
+          commonPitfalls: [
+            'Only watching CPU/GPU and uptime.',
+            'No golden set, only anecdotal bugs.'
+          ],
+          followUps: [
+            'How do you monitor free-form text quality?',
+            'What is your rollback criterion?'
+          ],
+          redFlags: [
+            'No monitoring plan beyond infra.'
+          ],
+          scoringRubric: {
+            1: 'Infra only.',
+            3: 'Mentions quality metrics weakly.',
+            5: 'Layered monitoring plus rollout and rollback.'
+          }
         }
       ]
     }
@@ -2033,6 +2332,43 @@ function calculateCost(inputTokens, outputTokens, model) {
             1: 'No concept of fallback experiences.',
             3: 'Knows fallbacks are needed but has not designed the UX.',
             5: 'Designs multiple fallback tiers, defines triggers, tracks fallback rate as a health metric.'
+          }
+        },
+        {
+          id: 'PM-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'As a PM, when do you choose RAG versus fine-tuning for a product feature?',
+          idealAnswer: {
+            coreIdea: 'Choose RAG when answers must use private or changing docs; choose fine-tuning when you need stable style, format, or skill. Often use both.',
+            keyPoints: [
+              'RAG for knowledge bases, policies, tickets, catalogs.',
+              'Fine-tune for tone, classification, tool-use format, smaller specialized models.',
+              'Start with prompt and evals; add RAG before fine-tune for facts.',
+              'Estimate cost: indexing vs training and retrain cadence.',
+              'Ship with metrics: task success, hallu rate, latency, cost.'
+            ]
+          },
+          whyThisMatters: [
+            'Standard AI PM interview decision.',
+            'Shows product judgment, not buzzwords.'
+          ],
+          commonPitfalls: [
+            'Fine-tune as default for any wrong answer.',
+            'Ignoring legal rights for training data.'
+          ],
+          followUps: [
+            'How would you A/B the two options?',
+            'What is your no-go hallu rate?'
+          ],
+          redFlags: [
+            'No product criteria.'
+          ],
+          scoringRubric: {
+            1: 'Confused options.',
+            3: 'Basic correct choice rules.',
+            5: 'Clear framework with cost and risk.'
           }
         }
       ],
@@ -2260,6 +2596,43 @@ async function flywheel() {
             3: 'Collects feedback but no pipeline to use it for improvement.',
             5: 'Full flywheel: explicit + implicit feedback, eval set building, SFT data generation, automated retraining loop.'
           }
+        },
+        {
+          id: 'PM-A-06',
+          difficulty: 'Advanced',
+          category: 'Architecture',
+          expectedTime: '2-3 minutes',
+          question: 'How would you set launch gates for an LLM feature so you know when it is safe to ship?',
+          idealAnswer: {
+            coreIdea: 'Define offline eval thresholds, online guardrails, and a rollback plan before wide release.',
+            keyPoints: [
+              'Offline golden set for quality, safety, and format pass rates.',
+              'Hard gates: max hallu or unsafe rate, P95 latency, cost per task.',
+              'Soft gates: human review on a sample.',
+              'Release path: internal, limited cohort, then full, with a kill switch.',
+              'Document owners and on-call for model incidents.'
+            ]
+          },
+          whyThisMatters: [
+            'Senior AI PM interviews focus on evals and launch discipline.',
+            'Protects users and brand.'
+          ],
+          commonPitfalls: [
+            'Shipping on demo vibes only.',
+            'No numeric thresholds.'
+          ],
+          followUps: [
+            'What if offline pass but online fails?',
+            'How do you handle subjective quality?'
+          ],
+          redFlags: [
+            'No gates defined.'
+          ],
+          scoringRubric: {
+            1: 'Only one metric.',
+            3: 'Several metrics, weak process.',
+            5: 'Full gated rollout with rollback.'
+          }
         }
       ]
     }
@@ -2472,6 +2845,43 @@ redacted = anonymizer.anonymize(text=user_input, analyzer_results=results)`,
             1: 'Does not know what PII is.',
             3: 'Knows PII should be removed but has no implementation strategy.',
             5: 'Explains PII types, detection methods, redaction strategies, compliance requirements, and RAG-specific concerns.'
+          }
+        },
+        {
+          id: 'DAT-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'What is an embedding, and how is it used in a RAG system?',
+          idealAnswer: {
+            coreIdea: 'An embedding is a numeric vector that represents meaning of text or other media. RAG embeds queries and chunks to find similar content by distance.',
+            keyPoints: [
+              'Encoder maps text to a fixed-size vector.',
+              'Similar meanings land closer in vector space.',
+              'At index time, embed chunks and store with metadata.',
+              'At query time, embed the question and run nearest-neighbor search.',
+              'Bad embeddings or chunking can hurt more than the LLM choice.'
+            ]
+          },
+          whyThisMatters: [
+            'Base RAG interview question.',
+            'Data engineers own the embedding pipeline.'
+          ],
+          commonPitfalls: [
+            'Thinking embeddings store only the original full text.',
+            'Ignoring model choice and re-embedding needs.'
+          ],
+          followUps: [
+            'When do you re-embed the corpus?',
+            'How do you pick an embedding model?'
+          ],
+          redFlags: [
+            'Cannot define embedding.'
+          ],
+          scoringRubric: {
+            1: 'Vague definition.',
+            3: 'Correct RAG usage.',
+            5: 'Clear end-to-end use and failure modes.'
           }
         }
       ],
@@ -2708,6 +3118,43 @@ async function queryRAG(query, tenantId) {
             3: 'Uses metadata filtering but no access control enforcement.',
             5: 'Multi-strategy isolation, enforced access control, performance/cost trade-off analysis.'
           }
+        },
+        {
+          id: 'DAT-A-06',
+          difficulty: 'Advanced',
+          category: 'Architecture',
+          expectedTime: '3-4 minutes',
+          question: 'How do you keep a vector index in sync when source documents change every day?',
+          idealAnswer: {
+            coreIdea: 'Use incremental pipelines: detect changes, re-chunk and re-embed only affected docs, upsert or delete vectors, and verify with data quality checks.',
+            keyPoints: [
+              'Change detection via CDC, webhooks, or scheduled diffs by doc id.',
+              'Idempotent upserts with stable chunk ids.',
+              'Delete or tombstone removed docs.',
+              'Batch re-embed when the embedding model upgrades.',
+              'Metrics: lag time, failed docs, retrieval smoke tests.'
+            ]
+          },
+          whyThisMatters: [
+            'Real production RAG data problem.',
+            'Shows pipeline ownership.'
+          ],
+          commonPitfalls: [
+            'Full reindex every hour for a large corpus without need.',
+            'No delete path for removed content.'
+          ],
+          followUps: [
+            'How do you handle partial failures mid-batch?',
+            'How do you version embeddings?'
+          ],
+          redFlags: [
+            'Only full rebuild strategy forever.'
+          ],
+          scoringRubric: {
+            1: 'No incremental plan.',
+            3: 'Upsert idea without ops detail.',
+            5: 'Full incremental design with checks.'
+          }
         }
       ]
     }
@@ -2915,6 +3362,43 @@ function getIoU(boxA, boxB) {
             1: 'Does not know what transfer learning is.',
             3: 'Knows the concept but cannot explain freezing vs fine-tuning strategies.',
             5: 'Explains pre-training, fine-tuning strategies, backbone selection, and domain adaptation.'
+          }
+        },
+        {
+          id: 'VIS-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'How does a Vision Transformer (ViT) differ from a CNN, and when might you still pick a CNN?',
+          idealAnswer: {
+            coreIdea: 'ViT splits the image into patches and uses self-attention; CNNs use local filters that slide over the image. CNNs can win on small data or tight latency budgets.',
+            keyPoints: [
+              'ViT: patches become tokens for a transformer encoder.',
+              'CNN: local receptive fields and hierarchical features.',
+              'ViT often needs more data or strong pretraining.',
+              'CNNs are mature for classic detect and segment stacks and many edge chips.',
+              'Modern systems sometimes combine both.'
+            ]
+          },
+          whyThisMatters: [
+            'Extremely common CV interview question.',
+            'Missing it stands out.'
+          ],
+          commonPitfalls: [
+            'Saying CNNs are obsolete in every case.',
+            'No trade-off on data size or compute.'
+          ],
+          followUps: [
+            'What is a patch embedding?',
+            'How do hybrid models work?'
+          ],
+          redFlags: [
+            'Cannot contrast architectures.'
+          ],
+          scoringRubric: {
+            1: 'Names both only.',
+            3: 'Main differences clear.',
+            5: 'Differences plus when to choose each.'
           }
         }
       ],
@@ -3132,6 +3616,43 @@ async function detectHallucination(image, vlmDescription) {
             3: 'Uses general benchmarks but no domain eval or hallucination detection.',
             5: 'Task benchmarks, domain eval, structured hallucination detection, metrics tracking.'
           }
+        },
+        {
+          id: 'VIS-A-06',
+          difficulty: 'Advanced',
+          category: 'Practical',
+          expectedTime: '2-3 minutes',
+          question: 'What is non-maximum suppression (NMS) in object detection, and what is mAP used for?',
+          idealAnswer: {
+            coreIdea: 'NMS removes duplicate boxes that overlap a lot for the same object; mAP summarizes detection precision across recall levels and classes.',
+            keyPoints: [
+              'Detector may output many boxes per object.',
+              'NMS keeps high-score boxes and drops heavy overlaps using an IoU threshold.',
+              'mAP aggregates precision-recall behavior across categories.',
+              'Report the IoU thresholds used.',
+              'Tuning NMS affects precision and recall balance.'
+            ]
+          },
+          whyThisMatters: [
+            'Classic detection interview pair.',
+            'Needed for real CV systems.'
+          ],
+          commonPitfalls: [
+            'Skipping NMS and treating all boxes as final.',
+            'Citing accuracy only for detection.'
+          ],
+          followUps: [
+            'What breaks with crowded scenes?',
+            'Soft-NMS vs hard NMS?'
+          ],
+          redFlags: [
+            'No idea what NMS does.'
+          ],
+          scoringRubric: {
+            1: 'Vague NMS.',
+            3: 'Correct NMS and mAP idea.',
+            5: 'Clear definitions and metric caveats.'
+          }
         }
       ]
     }
@@ -3332,6 +3853,43 @@ async function detectHallucination(image, vlmDescription) {
             1: 'Does not know about moderation APIs.',
             3: 'Knows they exist but cannot explain pre/post filtering or limitations.',
             5: 'Explains pre/post filtering, categories, specific APIs, threshold tuning, and limitations.'
+          }
+        },
+        {
+          id: 'SAF-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'What are the main steps of RLHF for language models?',
+          idealAnswer: {
+            coreIdea: 'After base pretraining, you do supervised fine-tuning, train a reward model from human preferences, then optimize the policy with RL so outputs score higher on that reward.',
+            keyPoints: [
+              'SFT teaches helpful response format.',
+              'Humans rank or rate model answers.',
+              'Reward model learns to score answers.',
+              'RL such as PPO updates the policy with constraints to stay near the SFT model.',
+              'Evals and red teaming still required after RLHF.'
+            ]
+          },
+          whyThisMatters: [
+            'Core alignment interview question.',
+            'Safety roles expect this pipeline.'
+          ],
+          commonPitfalls: [
+            'Skipping SFT and going straight to RL.',
+            'Ignoring the need to stay close to the base SFT behavior.'
+          ],
+          followUps: [
+            'What is reward hacking here?',
+            'How does RLAIF differ?'
+          ],
+          redFlags: [
+            'Cannot order the stages.'
+          ],
+          scoringRubric: {
+            1: 'Wrong order.',
+            3: 'Correct stages, thin detail.',
+            5: 'Clear pipeline and purpose of each stage.'
           }
         }
       ],
@@ -3562,6 +4120,43 @@ async function routeOutput(output, context) {
             3: 'Manual review but no risk-based routing or automation.',
             5: 'Risk-tiered routing, confidence scoring, reviewer tools, feedback loop, SLA management.'
           }
+        },
+        {
+          id: 'SAF-A-06',
+          difficulty: 'Advanced',
+          category: 'Architecture',
+          expectedTime: '3-4 minutes',
+          question: 'How would you evaluate jailbreak resistance without only using a few manual prompts?',
+          idealAnswer: {
+            coreIdea: 'Use a large, versioned attack set, automated attacks, graded scoring, and regression gates in CI before release.',
+            keyPoints: [
+              'Maintain a jailbreak corpus with severity labels.',
+              'Add automated red-team generators, not only static lists.',
+              'Score with policy classifiers and human review on samples.',
+              'Track attack success rate over time and by category.',
+              'Block release if regression exceeds a threshold; add novel attacks back into the set.'
+            ]
+          },
+          whyThisMatters: [
+            'Safety interviews stress systematic eval.',
+            'Matches production release practice.'
+          ],
+          commonPitfalls: [
+            'Ten manual prompts as the whole test.',
+            'No regression tracking between versions.'
+          ],
+          followUps: [
+            'How do you avoid overfitting to the attack set?',
+            'Open vs closed model differences?'
+          ],
+          redFlags: [
+            'Only manual testing.'
+          ],
+          scoringRubric: {
+            1: 'Manual only.',
+            3: 'Corpus but weak automation.',
+            5: 'Full automated CI and feedback loop.'
+          }
         }
       ]
     }
@@ -3765,6 +4360,43 @@ LayerNorm: Mean/Var over [HiddenFeatures] -> Normalizes each token individually`
             1: 'Cannot explain attention or self-attention.',
             3: 'Knows self-attention exists but cannot explain Q, K, V or the difference from cross-attention.',
             5: 'Explains Q/K/V, self vs cross-attention, multi-head, causal masking, and O(n^2) complexity.'
+          }
+        },
+        {
+          id: 'RES-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'Why do transformers use residual connections and multi-head attention?',
+          idealAnswer: {
+            coreIdea: 'Residuals ease training of deep stacks by letting gradients and information skip layers; multi-head attention lets the model track different relations in parallel.',
+            keyPoints: [
+              'Residual path: layer output plus the input.',
+              'Helps deep networks train more stably.',
+              'Multiple heads attend to different patterns.',
+              'Heads are projected and combined.',
+              'Together they power deep language models.'
+            ]
+          },
+          whyThisMatters: [
+            'Standard deep learning screen.',
+            'Checks fundamentals beyond naming Transformer.'
+          ],
+          commonPitfalls: [
+            'Saying residuals only speed up inference.',
+            'Claiming one head is always enough for all tasks.'
+          ],
+          followUps: [
+            'What is pre-norm vs post-norm?',
+            'How do you interpret heads?'
+          ],
+          redFlags: [
+            'Cannot explain residuals.'
+          ],
+          scoringRubric: {
+            1: 'Buzzwords only.',
+            3: 'Correct intuition.',
+            5: 'Clear training and representation reasons.'
           }
         }
       ],
@@ -3986,6 +4618,43 @@ class MoELayer(nn.Module):
             3: 'Knows experts exist but cannot explain routing or trade-offs.',
             5: 'Explains routing, top-k selection, load balancing, memory vs compute trade-offs, and specific models.'
           }
+        },
+        {
+          id: 'RES-A-06',
+          difficulty: 'Advanced',
+          category: 'Architecture',
+          expectedTime: '2-3 minutes',
+          question: 'What problem does FlashAttention aim to solve?',
+          idealAnswer: {
+            coreIdea: 'FlashAttention computes attention with less memory traffic by fusing operations and avoiding large full attention matrices in GPU memory when possible.',
+            keyPoints: [
+              'Naive attention materializes large N by N matrices.',
+              'Memory bandwidth often bottlenecks more than pure math ops.',
+              'FlashAttention tiles computation and reduces memory reads and writes.',
+              'Enables longer context and faster training or inference in practice.',
+              'Exact vs approximate variants exist depending on implementation.'
+            ]
+          },
+          whyThisMatters: [
+            'Common modern LLM systems question.',
+            'Shows awareness of efficient training research.'
+          ],
+          commonPitfalls: [
+            'Calling it only a smaller model.',
+            'No link to memory bandwidth.'
+          ],
+          followUps: [
+            'How does it interact with causal masks?',
+            'Trade-offs vs standard attention?'
+          ],
+          redFlags: [
+            'No idea.'
+          ],
+          scoringRubric: {
+            1: 'Name only.',
+            3: 'Memory benefit stated.',
+            5: 'Clear memory IO story and impact.'
+          }
         }
       ]
     }
@@ -4187,6 +4856,43 @@ class MoELayer(nn.Module):
             1: 'Cannot distinguish sync from async.',
             3: 'Defines both but cannot say when to use each.',
             5: 'Explains both, streaming hybrid, use cases for each, and timeout/retry considerations.'
+          }
+        },
+        {
+          id: 'ARC-F-06',
+          difficulty: 'Foundation',
+          category: 'Knowledge',
+          expectedTime: '60-90 seconds',
+          question: 'What is an embedding model in an LLM architecture, and how does it differ from the chat model?',
+          idealAnswer: {
+            coreIdea: 'An embedding model turns text into vectors for search; a chat model generates tokens. They are often different models with different cost and size.',
+            keyPoints: [
+              'Embeddings for retrieval, clustering, and semantic cache keys.',
+              'Chat model for answers, tools, and reasoning.',
+              'You can change embedding models without changing the generator if you reindex.',
+              'Latency and cost budgets differ per stage.',
+              'Architectures usually separate the two services.'
+            ]
+          },
+          whyThisMatters: [
+            'Solutions interviews mix RAG components.',
+            'Avoids one-model-for-everything designs.'
+          ],
+          commonPitfalls: [
+            'Using a huge chat model ad hoc for every embed without a real embedding model.',
+            'No plan to reindex on embedding change.'
+          ],
+          followUps: [
+            'When would you use the same vendor for both?',
+            'How do you version embedding spaces?'
+          ],
+          redFlags: [
+            'Confuses the two completely.'
+          ],
+          scoringRubric: {
+            1: 'Mixed up roles.',
+            3: 'Clear split.',
+            5: 'Split plus ops implications.'
           }
         }
       ],
@@ -4430,6 +5136,43 @@ function routeRegion(request) {
             1: 'No DR plan.',
             3: 'Has a backup provider but no automated failover or data backups.',
             5: 'Multi-provider failover, vector DB backups, state replication, runbook, defined RTO/RPO.'
+          }
+        },
+        {
+          id: 'ARC-A-06',
+          difficulty: 'Advanced',
+          category: 'Architecture',
+          expectedTime: '3-4 minutes',
+          question: 'How do you design rate limiting, auth, and audit logging for an enterprise LLM API gateway?',
+          idealAnswer: {
+            coreIdea: 'Put a gateway in front of models: authenticate callers, enforce quotas, log prompts and responses under policy, and route to backends with retries.',
+            keyPoints: [
+              'Auth: API keys or OAuth, per-tenant roles.',
+              'Rate limits per user, tenant, and route.',
+              'Audit who asked what, when, model version, token usage under PII rules.',
+              'Routing with primary and fallback models, timeouts, idempotency keys.',
+              'Alerts on 429 and 5xx spikes and cost anomalies.'
+            ]
+          },
+          whyThisMatters: [
+            'Enterprise architect rounds expect gateway controls.',
+            'Security and cost meet here.'
+          ],
+          commonPitfalls: [
+            'Logging raw secrets or regulated data without controls.',
+            'No per-tenant isolation of quotas.'
+          ],
+          followUps: [
+            'How do you red-act PII in logs?',
+            'How do you handle streaming responses in audits?'
+          ],
+          redFlags: [
+            'No gateway concept.'
+          ],
+          scoringRubric: {
+            1: 'Only API key mention.',
+            3: 'Auth and limit basic.',
+            5: 'Full enterprise gateway design.'
           }
         }
       ]
