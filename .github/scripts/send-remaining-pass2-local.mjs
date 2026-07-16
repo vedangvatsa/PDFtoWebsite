@@ -1,54 +1,127 @@
 /**
- * Pass 2 — pure Node fetch only (no realtime). GitHub secrets for Supabase + Cloudflare.
+ * Send remaining profile reminders via Cloudflare.
+ * - Reads /tmp/remaining-audience/remaining-audience.json
+ * - Hard-excludes already-sent-profile-reminder.json + prior results
+ * - Resumes if profile-reminder-pass2-results.json has successes
+ * - Exponential backoff on throttle (CF daily/rate limits)
+ *
+ * Usage (from repo root):
+ *   node .github/scripts/send-remaining-pass2-local.mjs
  */
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, writeSync } from 'fs';
 
-const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+// Always flush so nohup/file redirect shows live progress
+function log(...args) {
+  writeSync(1, args.map(String).join(' ') + '\n');
+}
+
+function loadEnvLocal() {
+  if (!existsSync('.env.local')) return;
+  const envText = readFileSync('.env.local', 'utf8');
+  for (const line of envText.split('\n')) {
+    const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    if (!m) continue;
+    let v = m[2].trim();
+    if (
+      (v.startsWith('"') && v.endsWith('"')) ||
+      (v.startsWith("'") && v.endsWith("'"))
+    ) {
+      v = v.slice(1, -1);
+    }
+    if (!process.env[m[1]]) process.env[m[1]] = v;
+  }
+}
+
+loadEnvLocal();
+
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID || '';
 const cfToken = process.env.CLOUDFLARE_API_TOKEN || '';
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(
   /\/$/,
   ''
 );
-
-console.log('start', new Date().toISOString());
-console.log({
-  urlHost: url ? new URL(url).host : null,
-  serviceKeyLen: serviceKey.length,
-  accountIdLen: accountId.length,
-  cfTokenLen: cfToken.length,
-});
-
-if (!url || !serviceKey || !accountId || !cfToken) {
-  console.error('Missing required env');
-  process.exit(1);
-}
+const campaign = 'profile-reminder-2026-07-15-pass2';
+const alreadyPath = '.github/scripts/already-sent-profile-reminder.json';
+const resultsPath = 'profile-reminder-pass2-results.json';
+const remainingPath =
+  process.env.REMAINING_AUDIENCE_PATH ||
+  '/tmp/remaining-audience/remaining-audience.json';
 
 const TELEGRAM_LABEL = 'Jobs feed on Telegram · 5,000+ subscribers';
 const TELEGRAM_URL = 'https://t.me/techjobsdaily';
-const campaign = 'profile-reminder-2026-07-15-pass2';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const sbHeaders = {
-  apikey: serviceKey,
-  Authorization: `Bearer ${serviceKey}`,
-  'Content-Type': 'application/json',
-};
+if (!accountId || !cfToken) {
+  log('Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN');
+  process.exit(1);
+}
+if (!existsSync(remainingPath)) {
+  log('Missing remaining audience:', remainingPath);
+  process.exit(1);
+}
 
-async function sbGet(path) {
-  const res = await fetch(`${url}${path}`, { headers: sbHeaders });
-  const text = await res.text();
-  let data;
+const alreadySet = new Set();
+function addEmails(list) {
+  for (const e of list) {
+    if (e) alreadySet.add(String(e).toLowerCase().trim());
+  }
+}
+
+if (existsSync(alreadyPath)) {
+  addEmails(JSON.parse(readFileSync(alreadyPath, 'utf8')));
+}
+for (const p of [
+  '/tmp/profile_reminder_results.json',
+  resultsPath,
+]) {
+  if (!existsSync(p)) continue;
   try {
-    data = text ? JSON.parse(text) : null;
+    const data = JSON.parse(readFileSync(p, 'utf8'));
+    const list = Array.isArray(data) ? data : data.results || [];
+    for (const r of list) {
+      if (r?.email && r.ok === true) alreadySet.add(String(r.email).toLowerCase().trim());
+      if (typeof r === 'string' && r.includes('@')) alreadySet.add(r.toLowerCase().trim());
+    }
   } catch {
-    data = text;
+    /* ignore */
   }
-  if (!res.ok) {
-    throw new Error(`Supabase ${res.status} ${path}: ${text.slice(0, 300)}`);
-  }
-  return data;
+}
+
+const remaining = JSON.parse(readFileSync(remainingPath, 'utf8'));
+const audience = [];
+const seen = new Set();
+for (const r of remaining) {
+  const email = String(r.email || '')
+    .toLowerCase()
+    .trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue;
+  if (alreadySet.has(email) || seen.has(email)) continue;
+  seen.add(email);
+  audience.push({
+    email,
+    firstName: r.firstName || 'there',
+    username: r.username || '',
+    score: Number(r.score) || 0,
+    missing: Array.isArray(r.missing) ? r.missing : [],
+  });
+}
+
+log(
+  JSON.stringify(
+    {
+      campaign,
+      alreadyBlocked: alreadySet.size,
+      remainingFile: remaining.length,
+      willSend: audience.length,
+    },
+    null,
+    2
+  )
+);
+
+if (audience.length === 0) {
+  log('Nothing left to send (all excluded or already sent).');
+  process.exit(0);
 }
 
 function escapeHtml(s) {
@@ -57,48 +130,6 @@ function escapeHtml(s) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
-}
-
-function analyze(p) {
-  const hasPhoto = !!(
-    p.profile_picture_url &&
-    String(p.profile_picture_url).trim() &&
-    !String(p.profile_picture_url).includes('picsum.photos')
-  );
-  const hasSummary = !!(p.about && String(p.about).trim());
-  const links = Array.isArray(p.links) ? p.links : [];
-  const hasLocation = links.some(
-    (l) => l?.type === 'location' && String(l?.value || '').trim()
-  );
-  const exp = Array.isArray(p.experience) ? p.experience : [];
-  const edu = Array.isArray(p.education) ? p.education : [];
-  const skills = Array.isArray(p.skills) ? p.skills : [];
-  const hasWork = exp.some((w) =>
-    (w?.title || w?.company || w?.description || '').toString().trim()
-  );
-  const hasEdu = edu.some((ed) =>
-    (ed?.institution || ed?.degree || '').toString().trim()
-  );
-  const hasSkill = skills.some((s) => {
-    const val = typeof s === 'string' ? s : s?.name || '';
-    return String(val).trim().length > 0;
-  });
-  const checks = {
-    hasPhoto,
-    hasSummary,
-    hasLocation,
-    hasWork,
-    hasEdu,
-    hasSkill,
-  };
-  const missing = Object.entries(checks)
-    .filter(([, v]) => !v)
-    .map(([k]) => k);
-  return {
-    complete: missing.length === 0,
-    missing,
-    score: Math.round(((6 - missing.length) / 6) * 100),
-  };
 }
 
 const LABELS = {
@@ -133,8 +164,9 @@ function missingProse(missing) {
   return { single: false, line: '', labels };
 }
 
-function buildEmail({ firstName, score, username, missing, email }) {
+function buildEmail({ firstName, score, missing, email }) {
   const m = missingProse(missing);
+  const showScore = score > 0;
   const subject =
     missing.length === 1
       ? 'One thing left on your CVin.Bio profile'
@@ -163,9 +195,6 @@ function buildEmail({ firstName, score, username, missing, email }) {
   const editorUrl = track(editorDest);
   const telegramUrl = track(TELEGRAM_URL);
   const openPixel = `${siteUrl}/api/email-track?action=open&cid=${encodeURIComponent(campaign)}&email=${encodeURIComponent(email)}`;
-
-  // Don't lead with 0% — empty profiles skip the score number
-  const showScore = score > 0;
 
   const whatsLeftText = m.single
     ? showScore
@@ -233,84 +262,43 @@ ${scoreBoxHtml}
   return { subject, text, html };
 }
 
-async function main() {
-  console.log('start', new Date().toISOString());
-
-  const alreadyPath = '.github/scripts/already-sent-profile-reminder.json';
-  const already = existsSync(alreadyPath)
-    ? JSON.parse(readFileSync(alreadyPath, 'utf8'))
-    : [];
-  const alreadySet = new Set(already.map((e) => String(e).toLowerCase()));
-  console.log('already sent', alreadySet.size);
-
-  console.log('profiles...');
-  // paginate rest
-  let profiles = [];
-  let from = 0;
-  const pageSize = 1000;
-  while (true) {
-    const batch = await sbGet(
-      `/rest/v1/profiles?select=id,username,full_name,links,profile_picture_url,about,skills,experience,education,created_at&offset=${from}&limit=${pageSize}`
-    );
-    if (!Array.isArray(batch)) throw new Error('profiles not array');
-    profiles = profiles.concat(batch);
-    console.log('profiles batch', batch.length, 'total', profiles.length);
-    if (batch.length < pageSize) break;
-    from += pageSize;
-  }
-
-  console.log('auth users...');
-  const allUsers = [];
-  for (let page = 1; page <= 100; page++) {
-    // GoTrue admin API: page is 1-indexed
-    const batch = await sbGet(
-      `/auth/v1/admin/users?page=${page}&per_page=200`
-    );
-    const users = batch?.users || batch || [];
-    if (!Array.isArray(users)) {
-      console.error('unexpected auth response keys', Object.keys(batch || {}));
-      throw new Error('auth users not array');
-    }
-    allUsers.push(...users);
-    console.log('auth page', page, users.length, 'total', allUsers.length);
-    if (users.length < 200) break;
-  }
-  const byId = Object.fromEntries(allUsers.map((u) => [u.id, u]));
-
-  const seen = new Set();
-  const audience = [];
-  for (const p of profiles) {
-    const a = analyze(p);
-    if (a.complete) continue;
-    if (
-      p.created_at &&
-      Date.now() - new Date(p.created_at).getTime() < 86400000
+function persist(results) {
+  const sent = results.filter((r) => r.ok).length;
+  const failed = results.filter((r) => !r.ok).length;
+  writeFileSync(
+    resultsPath,
+    JSON.stringify(
+      {
+        campaign,
+        willSend: audience.length,
+        sent,
+        failed,
+        attempted: results.length,
+        results,
+      },
+      null,
+      2
     )
-      continue;
-    if (!p.username || /^user\d+$/i.test(String(p.username))) continue;
-    const u = byId[p.id];
-    const email = (u?.email || '').trim().toLowerCase();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue;
-    if (alreadySet.has(email) || seen.has(email)) continue;
-    seen.add(email);
-    const firstName =
-      (p.full_name || u?.user_metadata?.full_name || '')
-        .trim()
-        .split(/\s+/)[0] || 'there';
-    audience.push({
-      email,
-      firstName,
-      username: p.username,
-      score: a.score,
-      missing: a.missing,
-    });
-  }
-  console.log('audience', audience.length);
+  );
+  writeFileSync(alreadyPath, JSON.stringify([...alreadySet], null, 2));
+}
 
-  const results = [];
-  for (let i = 0; i < audience.length; i++) {
-    const r = audience[i];
-    const built = buildEmail(r);
+const results = [];
+let throttleMs = 60_000;
+const maxThrottleMs = 15 * 60_000;
+let consecutiveThrottle = 0;
+
+for (let i = 0; i < audience.length; i++) {
+  const r = audience[i];
+  if (alreadySet.has(r.email)) {
+    log(`[${i + 1}/${audience.length}] SKIP already-sent ${r.email}`);
+    continue;
+  }
+  const built = buildEmail(r);
+
+  let attempt = 0;
+  while (true) {
+    attempt++;
     try {
       const res = await fetch(
         `https://api.cloudflare.com/client/v4/accounts/${accountId}/email/sending/send`,
@@ -336,57 +324,88 @@ async function main() {
       );
       const data = await res.json();
       const ok = !!data.success;
+      if (ok) {
+        results.push({
+          email: r.email,
+          username: r.username,
+          score: r.score,
+          ok: true,
+          messageId: data.result?.message_id,
+        });
+        alreadySet.add(r.email);
+        consecutiveThrottle = 0;
+        throttleMs = 60_000;
+        log(
+          `[${i + 1}/${audience.length}] OK ${r.email} ${data.result?.message_id || ''}`
+        );
+        persist(results);
+        break;
+      }
+
+      const msg = String(data.errors?.[0]?.message || '');
+      if (/throttl|rate|429/i.test(msg) || res.status === 429) {
+        consecutiveThrottle++;
+        log(
+          `[${i + 1}/${audience.length}] THROTTLED ${r.email} wait ${Math.round(throttleMs / 1000)}s (x${consecutiveThrottle})`
+        );
+        if (consecutiveThrottle >= 12) {
+          log(
+            'Still throttled after many waits — likely daily quota. Saving progress and exiting.'
+          );
+          results.push({
+            email: r.email,
+            ok: false,
+            errors: data.errors,
+            deferred: true,
+          });
+          persist(results);
+          log(
+            JSON.stringify(
+              {
+                campaign,
+                sent: results.filter((x) => x.ok).length,
+                remaining: audience.length - results.filter((x) => x.ok).length,
+                note: 'Resume later with same script',
+              },
+              null,
+              2
+            )
+          );
+          process.exit(2);
+        }
+        await sleep(throttleMs);
+        throttleMs = Math.min(maxThrottleMs, Math.floor(throttleMs * 1.5));
+        continue;
+      }
+
       results.push({
         email: r.email,
         username: r.username,
-        ok,
-        messageId: data.result?.message_id,
+        score: r.score,
+        ok: false,
         errors: data.errors,
       });
-      console.log(
-        `[${i + 1}/${audience.length}] ${ok ? 'OK' : 'FAIL'} ${r.email}`,
-        ok ? '' : JSON.stringify(data.errors)
+      log(
+        `[${i + 1}/${audience.length}] FAIL ${r.email}`,
+        JSON.stringify(data.errors)
       );
-      if (!ok) {
-        const msg = String(data.errors?.[0]?.message || '');
-        if (/throttl|rate/i.test(msg)) {
-          await sleep(30000);
-          i--;
-          continue;
-        }
-        if (/daily|limit|quota|disabled/i.test(msg)) break;
-      }
+      persist(results);
+      break;
     } catch (err) {
-      results.push({ email: r.email, ok: false, error: String(err) });
-      console.log(`[${i + 1}] ERR`, err);
+      log(`[${i + 1}] ERR attempt ${attempt}`, err);
+      if (attempt >= 3) {
+        results.push({ email: r.email, ok: false, error: String(err) });
+        persist(results);
+        break;
+      }
+      await sleep(5000);
     }
-    await sleep(300);
   }
 
-  const sent = results.filter((r) => r.ok).length;
-  const failed = results.filter((r) => !r.ok).length;
-  const out = {
-    campaign,
-    audience: audience.length,
-    sent,
-    failed,
-    attempted: results.length,
-    results,
-  };
-  writeFileSync(
-    'profile-reminder-pass2-results.json',
-    JSON.stringify(out, null, 2)
-  );
-  console.log(
-    JSON.stringify(
-      { campaign, audience: audience.length, sent, failed },
-      null,
-      2
-    )
-  );
+  await sleep(800); // pace between successful sends
 }
 
-main().catch((e) => {
-  console.error('FATAL', e);
-  process.exit(1);
-});
+const sent = results.filter((r) => r.ok).length;
+const failed = results.filter((r) => !r.ok).length;
+persist(results);
+log(JSON.stringify({ campaign, willSend: audience.length, sent, failed }, null, 2));

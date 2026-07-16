@@ -1,5 +1,4 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { unstable_cache } from 'next/cache';
 
 export interface PlatformStats {
   totalJobs: number;
@@ -11,7 +10,11 @@ export interface PlatformStats {
 }
 
 let cache: { data: PlatformStats; ts: number } | null = null;
-const CACHE_TTL = 5 * 60 * 1000;
+
+// Free-tier friendly: long TTL so page views don't re-scan jobs constantly.
+// Was 5 minutes + up to 40k row scans — that alone can knock out Nano compute.
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+const MAX_COMPANY_PAGES = process.env.NEXT_IS_BUILD_PHASE === '1' ? 1 : 3; // 3k rows max
 
 export async function getPlatformStats(): Promise<PlatformStats> {
   if (cache && Date.now() - cache.ts < CACHE_TTL) {
@@ -19,26 +22,28 @@ export async function getPlatformStats(): Promise<PlatformStats> {
   }
 
   const supabase = supabaseAdmin;
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const thirtyDaysAgo = new Date(
+    Date.now() - 30 * 24 * 60 * 60 * 1000
+  ).toISOString();
 
-  // Get job count (head-only, no data transfer)
+  // Head-only counts (cheap)
   const { count: totalJobs } = await supabase
     .from('jobs')
     .select('id', { count: 'exact', head: true })
     .gt('created_at', thirtyDaysAgo);
 
-  // Get unique companies — use a paginated scan
+  // Sample unique companies from a small window (not full table)
   const companySet = new Set<string>();
   let page = 0;
-  const maxPages = process.env.NEXT_IS_BUILD_PHASE === '1' ? 2 : 40;
-  while (page < maxPages) {
+  while (page < MAX_COMPANY_PAGES) {
     const { data } = await supabase
       .from('jobs')
       .select('company')
       .gt('created_at', thirtyDaysAgo)
+      .order('created_at', { ascending: false })
       .range(page * 1000, (page + 1) * 1000 - 1);
     if (!data || data.length === 0) break;
-    data.forEach(j => {
+    data.forEach((j) => {
       if (j.company && !j.company.includes('...')) {
         companySet.add(j.company.toLowerCase().trim());
       }
@@ -47,17 +52,20 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     page++;
   }
 
-  // Get user count
   const { count: totalUsers } = await supabase
     .from('profiles')
-    .select('*', { count: 'exact', head: true });
+    .select('id', { count: 'exact', head: true });
 
   const jobs = totalJobs || 0;
+  // Sampled unique companies from recent rows only (not full-table scan)
   const companies = companySet.size;
   const users = totalUsers || 0;
 
   const jobThousands = Math.floor(jobs / 1000);
-  const jobCountDisplay = `${jobThousands.toLocaleString()},000+`;
+  const jobCountDisplay =
+    jobThousands > 0
+      ? `${jobThousands.toLocaleString()},000+`
+      : `${jobs}+`;
   const companyCountDisplay = `${companies}+`;
   const userCountDisplay = `${users}`;
 

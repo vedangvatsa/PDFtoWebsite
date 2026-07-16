@@ -48,16 +48,29 @@ export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
     setIsGoogleLoading(true);
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=/editor`
-        }
+          redirectTo: `${window.location.origin}/auth/callback?next=/editor`,
+          skipBrowserRedirect: true,
+        },
       });
       if (error) {
         toast({ variant: 'destructive', title: 'Error', description: friendlyAuthError(error.message) });
         setIsGoogleLoading(false);
+        return;
       }
+      if (!data?.url) {
+        toast({
+          variant: 'destructive',
+          title: 'Sign-in unavailable',
+          description:
+            'Could not start Google sign-in. Auth service may be down — try again in a few minutes or use email.',
+        });
+        setIsGoogleLoading(false);
+        return;
+      }
+      window.location.assign(data.url);
     } catch (err) {
       console.error('Client-side Google Auth error:', err);
       toast({

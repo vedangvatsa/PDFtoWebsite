@@ -1,0 +1,22 @@
+name: Cleanup old jobs (30+ days)
+
+on:
+  workflow_dispatch:
+  # Optional weekly safety net (light if table already clean)
+  schedule:
+    - cron: '0 4 * * 0' # Sunday 04:00 UTC
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Delete jobs older than 30 days
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          JOBS_MAX_AGE_DAYS: '30'
+        run: node .github/scripts/cleanup-old-jobs.mjs

@@ -2,8 +2,9 @@ import type { MetadataRoute } from 'next';
 import { blogPosts } from '@/lib/blog-data';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Free-tier friendly: cache sitemap so crawlers don't hammer Supabase every hit.
+// Was force-dynamic + full job scans — a major source of Nano load.
+export const revalidate = 21600; // 6 hours
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
@@ -180,7 +181,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select('username, updated_at, full_name, about, skills, experience, education')
       .not('username', 'is', null)
       .order('updated_at', { ascending: false })
-      .limit(1000);
+      .limit(500);
 
     if (profiles) {
       profileEntries = profiles
@@ -207,10 +208,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic company page URLs — single capped query, no pagination loop
   let companyEntries: MetadataRoute.Sitemap = [];
   try {
+    // Cap hard — Free Nano cannot load 10k job rows per sitemap build
     const { data: allJobs } = await supabase
       .from('jobs')
       .select('company')
-      .limit(10000);
+      .order('created_at', { ascending: false })
+      .limit(2500);
 
     if (allJobs) {
       const companyCounts: Record<string, number> = {};

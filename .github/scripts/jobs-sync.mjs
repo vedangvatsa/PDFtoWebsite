@@ -425,33 +425,48 @@ function normalizeJobType(raw) {
 }
 
 async function fetchExistingKeys() {
-  // Wait for connection pool to drain after massive parallel fetches
+  // Free-tier Nano: never full-scan the entire jobs table (that alone can OOM the project).
+  // Only load recent keys client-side; DB unique constraints still block true dupes on insert.
   await sleep(2000);
-  
-  // Fetch all existing dedup_hashes AND external_ids from DB to skip duplicates client-side
+
   const allHashes = new Set();
   const allExternalIds = new Set();
+  const pageSize = 500;
+  // ~30 days of recent jobs is enough for daily/bi-daily sync dedup
+  const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   let offset = 0;
-  const pageSize = 1000;
   let retries = 0;
-  while (true) {
+  const maxPages = 40; // hard cap 20k rows — never unbounded
+
+  console.log(`   📥 fetchExistingKeys: last 30d only (free-tier safe), pageSize=${pageSize}`);
+
+  for (let page = 0; page < maxPages; page++) {
     try {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/jobs?select=dedup_hash,external_id&offset=${offset}&limit=${pageSize}`,
-        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-      );
-      if (!res.ok) break;
+      const url = `${SUPABASE_URL}/rest/v1/jobs?select=dedup_hash,external_id&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&offset=${offset}&limit=${pageSize}`;
+      const res = await fetch(url, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      });
+      if (!res.ok) {
+        console.error(`  ❌ fetchExistingKeys HTTP ${res.status}`);
+        break;
+      }
       const rows = await res.json();
-      if (rows.length === 0) break;
+      if (!Array.isArray(rows) || rows.length === 0) break;
       for (const r of rows) {
-        allHashes.add(r.dedup_hash);
+        if (r.dedup_hash) allHashes.add(r.dedup_hash);
         if (r.external_id) allExternalIds.add(r.external_id);
       }
       offset += pageSize;
-      retries = 0; // reset on success
+      retries = 0;
+      // Pace requests so Free Nano connection pool can breathe
+      await sleep(150);
+      if (rows.length < pageSize) break;
     } catch (e) {
       retries++;
-      if (retries > 5) { console.error('  ❌ fetchExistingKeys failed after 5 retries'); break; }
+      if (retries > 5) {
+        console.error('  ❌ fetchExistingKeys failed after 5 retries');
+        break;
+      }
       console.log(`  ⚠ fetchExistingKeys retry ${retries}/5: ${e.message}`);
       await sleep(3000 * retries);
     }
@@ -542,16 +557,17 @@ async function supabaseUpsert(jobs) {
     return { inserted: 0, skipped: skippedCount };
   }
 
-  // Batch insert only new jobs — 200 per batch, 50 concurrent
-  const batchSize = 200;
-  const concurrency = 5;
+  // Free-tier safe inserts: smaller batches, low concurrency, pause between groups
+  // (was 200 × 5 parallel — enough to exhaust Nano memory/connections)
+  const batchSize = Number(process.env.JOBS_SYNC_BATCH_SIZE || 75);
+  const concurrency = Number(process.env.JOBS_SYNC_CONCURRENCY || 2);
   let inserted = 0;
   const batches = [];
 
   for (let i = 0; i < newJobs.length; i += batchSize) {
     batches.push(newJobs.slice(i, i + batchSize));
   }
-  console.log(`   📤 Inserting ${batches.length} batches of ~${batchSize} (${concurrency} parallel)...`);
+  console.log(`   📤 Inserting ${batches.length} batches of ~${batchSize} (${concurrency} parallel, free-tier)...`);
 
   async function insertBatch(batch) {
     try {
@@ -604,12 +620,15 @@ async function supabaseUpsert(jobs) {
     }
   }
 
-  // Fire all batches with concurrency limit
+  // Fire batches with low concurrency + cooldown for Free Nano
   for (let g = 0; g < batches.length; g += concurrency) {
     const group = batches.slice(g, g + concurrency);
-    const results = await Promise.all(group.map(b => insertBatch(b)));
+    const results = await Promise.all(group.map((b) => insertBatch(b)));
     for (const r of results) inserted += r;
-    console.log(`   ✅ Group ${Math.floor(g / concurrency) + 1}/${Math.ceil(batches.length / concurrency)} done (${inserted} inserted so far)`);
+    console.log(
+      `   ✅ Group ${Math.floor(g / concurrency) + 1}/${Math.ceil(batches.length / concurrency)} done (${inserted} inserted so far)`
+    );
+    await sleep(400);
   }
 
   return { inserted, skipped: skippedCount + (newJobs.length - inserted) };
@@ -2870,23 +2889,76 @@ async function fetchLinkedIn() {
 }
 
 // ─── Cleanup: remove jobs older than 30 days ───
+// Prefer created_at (row age). Also wipe stale synced_at so old re-synced rows don't linger.
+// Batched deletes keep Free Nano from choking on one giant DELETE.
 async function cleanupOldJobs() {
   const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/jobs?synced_at=lt.${cutoff}`,
+
+  let totalDeleted = 0;
+  const maxRounds = 50; // safety: 50 × ~1000
+
+  console.log(`\n🗑️ Cleaning jobs older than 30 days (created_at < ${cutoff})...`);
+
+  for (let round = 0; round < maxRounds; round++) {
+    // Select a batch of old ids, then delete by id (more reliable than unbounded DELETE)
+    const sel = await fetch(
+      `${SUPABASE_URL}/rest/v1/jobs?select=id&created_at=lt.${encodeURIComponent(cutoff)}&limit=1000`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+    );
+    if (!sel.ok) {
+      const err = await sel.text();
+      console.error(`  ❌ cleanup select failed: ${sel.status} ${err.slice(0, 200)}`);
+      break;
+    }
+    const rows = await sel.json();
+    if (!Array.isArray(rows) || rows.length === 0) break;
+
+    const ids = rows.map((r) => r.id).filter(Boolean);
+    if (ids.length === 0) break;
+
+    // PostgREST: quote UUIDs inside in.()
+    const inList = ids.map((id) => `"${id}"`).join(',');
+    const del = await fetch(
+      `${SUPABASE_URL}/rest/v1/jobs?id=in.(${inList})`,
+      {
+        method: 'DELETE',
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          Prefer: 'return=minimal',
+        },
+      }
+    );
+    if (!del.ok) {
+      const err = await del.text();
+      console.error(`  ❌ cleanup delete failed: ${del.status} ${err.slice(0, 200)}`);
+      break;
+    }
+    const n = ids.length;
+    totalDeleted += n;
+    console.log(`  🗑️ round ${round + 1}: deleted ${n} (total ${totalDeleted})`);
+    await sleep(200);
+    if (rows.length < 1000) break;
+  }
+
+  // Also remove rows with null/missing created_at but stale synced_at
+  const syncedDel = await fetch(
+    `${SUPABASE_URL}/rest/v1/jobs?synced_at=lt.${encodeURIComponent(cutoff)}&created_at=is.null`,
     {
       method: 'DELETE',
       headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Prefer': 'return=representation',
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        Prefer: 'return=minimal',
       },
     }
   );
-  if (res.ok) {
-    const deleted = await res.json();
-    console.log(`\n🗑️ Cleaned up ${deleted.length} jobs older than 30 days`);
+  if (syncedDel.ok) {
+    console.log('  🗑️ also cleared null-created_at rows with old synced_at');
   }
+
+  console.log(`\n🗑️ Cleanup done: ${totalDeleted} jobs older than 30 days removed`);
+  return totalDeleted;
 }
 
 // ─── Main ───
@@ -2953,12 +3025,24 @@ async function main() {
     fetchFindwork(),
   ]);
 
-  // Group C: LinkedIn (HTML scraping, needs deliberate pacing)
+  // Group C: LinkedIn — weekly only (very heavy). Set INCLUDE_LINKEDIN=true to force.
+  // Default off so regular Free-tier syncs (every 1–2 days) stay light.
   await sleep(1000);
-  const linkedin = await fetchLinkedIn();
+  const includeLinkedIn =
+    process.env.INCLUDE_LINKEDIN === 'true' ||
+    process.env.INCLUDE_LINKEDIN === '1';
+  let linkedin = [];
+  if (includeLinkedIn) {
+    console.log('  🔗 INCLUDE_LINKEDIN=true — running LinkedIn scrape (weekly path)');
+    linkedin = await fetchLinkedIn();
+  } else {
+    console.log('  ⏭ Skipping LinkedIn scrape (weekly only — set INCLUDE_LINKEDIN=true to run)');
+  }
 
   const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...findwork, ...linkedin];
-  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from 6 aggregators`);
+  console.log(
+    `📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators${includeLinkedIn ? ' + LinkedIn' : ' (no LinkedIn)'}`
+  );
 
   const phase3Valid = filterAndNormalize(phase3Jobs);
   if (phase3Valid.length > 0) {
