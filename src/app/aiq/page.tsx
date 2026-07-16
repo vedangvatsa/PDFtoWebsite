@@ -25,21 +25,27 @@ import { ROLES_DATA, type Question } from '@/data/ai-interview-questions';
 const START_TRACKS = [
   {
     id: 'build',
-    label: 'I build AI apps',
+    title: 'LLM / agent engineer',
     roleId: 'ai-agent-engineer',
-    blurb: 'Agents, tools, and RAG.',
+    forWho: 'You build chatbots, tools, or RAG apps.',
+    youWillDrill: 'ReAct, tool calls, RAG, injection, memory.',
+    timeHint: 'About 45 min for a full pass',
   },
   {
     id: 'ship',
-    label: 'I ship models',
+    title: 'MLOps / inference engineer',
     roleId: 'mlops-engineer',
-    blurb: 'Serving, speed, and ops.',
+    forWho: 'You deploy and run models in production.',
+    youWillDrill: 'Latency, vLLM, scaling, monitoring, rollback.',
+    timeHint: 'About 45 min for a full pass',
   },
   {
     id: 'product',
-    label: 'I own the product',
+    title: 'AI product manager',
     roleId: 'ai-pm',
-    blurb: 'Metrics, cost, and launch bars.',
+    forWho: 'You set goals, cost, and quality for AI features.',
+    youWillDrill: 'Token cost, hallu metrics, HITL, launch gates.',
+    timeHint: 'About 30 min for a full pass',
   },
 ] as const;
 
@@ -176,11 +182,39 @@ export default function AIInterviewPage() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const selectRole = (roleId: string) => {
+  const selectRole = (roleId: string, opts?: { practice?: boolean }) => {
     setSelectedRoleId(roleId);
     setExpandedIds([]);
     setSearchQuery('');
-    if (mode === 'practice') {
+    setSelectedDifficulty('Foundation');
+    if (opts?.practice) {
+      // startPractice uses activeRole from state; apply after role switch via timeout
+      window.setTimeout(() => {
+        const role = ROLES_DATA.find((r) => r.id === roleId) || ROLES_DATA[0];
+        const pool = [
+          ...(role.questions.Foundation || []),
+          ...(role.questions.Advanced || []),
+        ];
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        setPracticeQueue(pool);
+        setPracticeIndex(0);
+        setShowAnswer(false);
+        setTimerSec(null);
+        setMode('practice');
+        if (pool[0]) {
+          setSeenMap((prev) => {
+            const cur = prev[roleId] || [];
+            if (cur.includes(pool[0].id)) return prev;
+            const next = { ...prev, [roleId]: [...cur, pool[0].id] };
+            saveSeen(next);
+            return next;
+          });
+        }
+      }, 0);
+    } else if (mode === 'practice') {
       setMode('browse');
       setPracticeQueue([]);
     }
@@ -213,29 +247,86 @@ export default function AIInterviewPage() {
         </div>
 
         {/* Start here */}
-        <div className="mb-10 flex flex-col gap-3">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
-            Start here
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            {START_TRACKS.map((track) => (
-              <button
-                key={track.id}
-                type="button"
-                onClick={() => selectRole(track.roleId)}
-                className={cn(
-                  'text-left border rounded-lg p-4 bg-white transition-colors',
-                  selectedRoleId === track.roleId
-                    ? 'border-zinc-900'
-                    : 'border-zinc-200 hover:border-zinc-400'
-                )}
-              >
-                <p className="text-sm font-bold text-zinc-900 tracking-tight">
-                  {track.label}
-                </p>
-                <p className="text-[11px] text-zinc-500 mt-1">{track.blurb}</p>
-              </button>
-            ))}
+        <div className="mb-10 border border-zinc-200 bg-white rounded-lg p-4 sm:p-5 flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-sm font-bold text-zinc-900 tracking-tight">
+              Pick a track and practice out loud
+            </h2>
+            <p className="text-xs text-zinc-500 leading-relaxed max-w-2xl">
+              Choose the job you are interviewing for. We open that role and
+              shuffle the questions. Hide the answer, say yours first, then
+              check. This is a drill pack, not a full interview course.
+            </p>
+          </div>
+
+          <ol className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-zinc-500">
+            <li className="border border-zinc-100 rounded-md px-3 py-2">
+              <span className="font-bold text-zinc-900">1.</span> Pick a track
+            </li>
+            <li className="border border-zinc-100 rounded-md px-3 py-2">
+              <span className="font-bold text-zinc-900">2.</span> Answer out loud
+              before reveal
+            </li>
+            <li className="border border-zinc-100 rounded-md px-3 py-2">
+              <span className="font-bold text-zinc-900">3.</span> Note gaps, then
+              mock with a friend
+            </li>
+          </ol>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {START_TRACKS.map((track) => {
+              const role = ROLES_DATA.find((r) => r.id === track.roleId);
+              const count = role
+                ? (role.questions.Foundation?.length || 0) +
+                  (role.questions.Advanced?.length || 0)
+                : 0;
+              const selected = selectedRoleId === track.roleId;
+              return (
+                <div
+                  key={track.id}
+                  className={cn(
+                    'border rounded-lg p-4 bg-[#FAFAFA] flex flex-col gap-3',
+                    selected ? 'border-zinc-900' : 'border-zinc-200'
+                  )}
+                >
+                  <div className="flex flex-col gap-1.5 flex-1">
+                    <p className="text-sm font-bold text-zinc-900 tracking-tight">
+                      {track.title}
+                    </p>
+                    <p className="text-[11px] text-zinc-600 leading-relaxed">
+                      {track.forWho}
+                    </p>
+                    <p className="text-[11px] text-zinc-500 leading-relaxed">
+                      <span className="font-semibold text-zinc-700">
+                        You will drill
+                      </span>{' '}
+                      {track.youWillDrill}
+                    </p>
+                    <p className="text-[10px] text-zinc-400">
+                      {count} questions · {track.timeHint}
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Button
+                      type="button"
+                      className="w-full h-9 text-xs font-semibold bg-zinc-900 text-white hover:bg-zinc-800 rounded-md"
+                      onClick={() =>
+                        selectRole(track.roleId, { practice: true })
+                      }
+                    >
+                      Start practice
+                    </Button>
+                    <button
+                      type="button"
+                      onClick={() => selectRole(track.roleId)}
+                      className="text-[11px] font-semibold text-zinc-500 hover:text-zinc-900 py-1"
+                    >
+                      Browse this role instead
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
