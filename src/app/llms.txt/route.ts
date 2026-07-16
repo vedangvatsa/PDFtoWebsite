@@ -1,8 +1,9 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { getPlatformStats } from '@/lib/get-platform-stats';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Cache for 1 hour
+// Free-tier: cache hard so crawlers don't re-scan profiles/jobs every request.
+// Do not use force-dynamic here — that would bypass revalidate.
+export const revalidate = 43200; // 12 hours
 
 export async function GET() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
@@ -53,23 +54,25 @@ export async function GET() {
       .select('username, full_name, about, skills, experience, education')
       .not('username', 'is', null)
       .order('updated_at', { ascending: false })
-      .limit(1000);
+      .limit(400);
 
     if (profiles) {
       for (const p of profiles) {
         if (!p.username || p.username.length < 3) continue;
-        // Skip empty/default profiles
-        const hasRealName = p.full_name && p.full_name !== 'Your Name' && p.full_name.length > 1;
-        const hasContent = (p.about && p.about.length > 10)
-          || (Array.isArray(p.skills) && p.skills.length > 0)
-          || (Array.isArray(p.experience) && p.experience.length > 0)
-          || (Array.isArray(p.education) && p.education.length > 0);
+        const hasRealName =
+          p.full_name && p.full_name !== 'Your Name' && p.full_name.length > 1;
+        const hasContent =
+          (p.about && p.about.length > 10) ||
+          (Array.isArray(p.skills) && p.skills.length > 0) ||
+          (Array.isArray(p.experience) && p.experience.length > 0) ||
+          (Array.isArray(p.education) && p.education.length > 0);
         if (!hasRealName || !hasContent) continue;
 
         const name = p.full_name || 'Professional';
-        const skills = Array.isArray(p.skills) && p.skills.length > 0
-          ? p.skills.slice(0, 5).join(', ')
-          : null;
+        const skills =
+          Array.isArray(p.skills) && p.skills.length > 0
+            ? p.skills.slice(0, 5).join(', ')
+            : null;
         const summary = p.about
           ? p.about.slice(0, 120).replace(/\n/g, ' ').trim()
           : null;
@@ -82,43 +85,44 @@ export async function GET() {
       }
     }
 
-    // Dynamic company page URLs
     lines.push('');
     lines.push('## Company Careers');
     lines.push('');
-    lines.push('> These pages contain live job openings, hiring locations, required skills, and FAQ for specific tech companies.');
+    lines.push(
+      '> These pages contain live job openings, hiring locations, required skills, and FAQ for specific tech companies.'
+    );
     lines.push('');
 
-    let allJobs: any[] = [];
-    let page = 0;
-    while (page < 10) { // Limit to top 10000 jobs for llms.txt speed
-      const { data } = await supabase
-        .from('jobs')
-        .select('company')
-        .range(page * 1000, (page + 1) * 1000 - 1);
-      if (!data || data.length === 0) break;
-      allJobs.push(...data);
-      if (data.length < 1000) break;
-      page++;
-    }
+    // Cap hard for Free Nano (was up to 10k rows)
+    const { data: jobSample } = await supabase
+      .from('jobs')
+      .select('company')
+      .order('created_at', { ascending: false })
+      .limit(2000);
 
     const companyNames = new Set<string>();
-    allJobs.forEach(j => {
+    (jobSample || []).forEach((j) => {
       if (j.company && !j.company.includes('...')) companyNames.add(j.company);
     });
 
-    const toSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+    const toSlug = (name: string) =>
+      name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+$/, '')
+        .replace(/^-+/, '');
     const seenSlugs = new Set<string>();
 
-    companyNames.forEach(name => {
+    companyNames.forEach((name) => {
       const slug = toSlug(name);
       if (!seenSlugs.has(slug)) {
         seenSlugs.add(slug);
-        lines.push(`- [${name}](${siteUrl}/${slug}): Open roles, remote data, and hiring FAQs for ${name}.`);
+        lines.push(
+          `- [${name}](${siteUrl}/${slug}): Open roles, remote data, and hiring FAQs for ${name}.`
+        );
       }
     });
-
-  } catch (e) {
+  } catch {
     lines.push('- Error loading data');
   }
 
@@ -131,7 +135,7 @@ export async function GET() {
   return new Response(lines.join('\n'), {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      'Cache-Control': 'public, s-maxage=43200, stale-while-revalidate=86400',
     },
   });
 }

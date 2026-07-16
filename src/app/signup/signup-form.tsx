@@ -92,17 +92,33 @@ export default function SignUpForm() {
     posthog.capture(AUTH_EVENTS.GOOGLE_CLICKED, { from: fromParam || 'direct' });
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=/editor`
-        }
+          redirectTo: `${window.location.origin}/auth/callback?next=/editor`,
+          // We navigate ourselves so a missing URL / failed origin surfaces as an error toast
+          // instead of a silent no-op when the auth server is down.
+          skipBrowserRedirect: true,
+        },
       });
       if (error) {
         posthog.capture(AUTH_EVENTS.GOOGLE_FAILED, { error: error.message });
         toast({ variant: 'destructive', title: 'Error', description: friendlyAuthError(error.message) });
         setIsGoogleLoading(false);
+        return;
       }
+      if (!data?.url) {
+        posthog.capture(AUTH_EVENTS.GOOGLE_FAILED, { error: 'no_oauth_url' });
+        toast({
+          variant: 'destructive',
+          title: 'Sign-in unavailable',
+          description:
+            'Could not start Google sign-in. Auth service may be down — try again in a few minutes or use email.',
+        });
+        setIsGoogleLoading(false);
+        return;
+      }
+      window.location.assign(data.url);
     } catch (err) {
       console.error('Client-side Google Auth error:', err);
       posthog.capture(AUTH_EVENTS.GOOGLE_FAILED, { error: err instanceof Error ? err.message : String(err) });

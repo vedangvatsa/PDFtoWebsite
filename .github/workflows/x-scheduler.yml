@@ -1,10 +1,12 @@
-name: Jobs Sync (Daily)
+name: Jobs Sync (every 1–2 days + LinkedIn weekly)
 
 on:
   schedule:
-    # Run ONCE a day to stay within GitHub's 2,000 free minutes/month limit.
-    # The massive LinkedIn scrape takes ~50 mins per run (1,500 mins/month total).
-    - cron: '0 0 * * *'
+    # Free-tier: refresh jobs about every 2 days (not twice/day).
+    # Cron: 00:00 UTC on even calendar days of the month → ~1–2 day gap.
+    - cron: '0 0 */2 * *'
+    # Sunday 03:00 UTC: same pipeline + LinkedIn scrape
+    - cron: '0 3 * * 0'
   workflow_dispatch:
     inputs:
       sync_only:
@@ -12,7 +14,15 @@ on:
         type: boolean
         default: false
       mass_scan:
-        description: 'Check all 19k+ jobs for 404s in parallel'
+        description: 'Check all 19k+ jobs for 404s in parallel (HEAVY — never use on Free tier unless necessary)'
+        type: boolean
+        default: false
+      run_prune:
+        description: 'Also run prune-404s after sync (skip on Free tier unless needed)'
+        type: boolean
+        default: false
+      include_linkedin:
+        description: 'Include LinkedIn scrape (heavy; also runs automatically on Sundays)'
         type: boolean
         default: false
 
@@ -57,9 +67,16 @@ jobs:
           REED_API_KEY: ${{ secrets.REED_API_KEY }}
           FINDWORK_API_KEY: ${{ secrets.FINDWORK_API_KEY }}
           JSEARCH_API_KEY: ${{ secrets.JSEARCH_API_KEY }}
+          # Free Nano: small batches, low parallelism
+          JOBS_SYNC_BATCH_SIZE: '75'
+          JOBS_SYNC_CONCURRENCY: '2'
+          # LinkedIn only on Sunday cron or manual include_linkedin
+          INCLUDE_LINKEDIN: ${{ github.event.schedule == '0 3 * * 0' || github.event.inputs.include_linkedin == true }}
         run: node .github/scripts/jobs-sync.mjs
 
+      # Prune is heavy (HTTP checks + DB). Off on schedule; only when manually requested.
       - name: Prune dead job links
+        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.run_prune == 'true' || github.event.inputs.mass_scan == 'true') }}
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

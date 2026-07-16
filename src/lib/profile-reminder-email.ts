@@ -164,17 +164,46 @@ export function buildProfileReminderEmail(input: ProfileReminderInput) {
         ? 'Finish setting up your CVin.Bio profile'
         : `Your profile is ${score}% complete`;
 
+  // Don't lead with 0% — it reads poorly for empty profiles
+  const showScore = score > 0;
+
   const whatsLeftText = missing.single
-    ? `Your profile is ${score}% complete. What's left: ${missing.line}.`
-    : `Your profile is ${score}% complete. What's left:\n${missing.bulletsText}`;
+    ? showScore
+      ? `Your profile is ${score}% complete. What's left: ${missing.line}.`
+      : `What's left: ${missing.line}.`
+    : showScore
+      ? `Your profile is ${score}% complete. What's left:\n${missing.bulletsText}`
+      : `What's left:\n${missing.bulletsText}`;
 
   const whatsLeftHtml = missing.single
     ? `<p style="margin:0;font-size:14px;line-height:1.55;color:#3F3F46;">What's left: <span style="font-weight:600;color:#09090B;">${escapeHtml(missing.line)}</span></p>`
     : `<p style="margin:0 0 8px 0;font-size:14px;line-height:1.55;color:#3F3F46;">What's left:</p>${missing.bulletsHtml}`;
 
+  const scoreBoxHtml = showScore
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;margin:0 0 24px 0;border:1px solid #E4E4E7;">
+                <tr>
+                  <td style="padding:16px;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                    <p style="margin:0 0 6px 0;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;line-height:1.3;color:#71717A;">
+                      Profile score
+                    </p>
+                    <p style="margin:0 0 10px 0;font-size:28px;font-weight:800;letter-spacing:-0.05em;line-height:1.15;color:#09090B;">
+                      ${score}%
+                    </p>
+                    ${whatsLeftHtml}
+                  </td>
+                </tr>
+              </table>`
+    : `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;margin:0 0 24px 0;border:1px solid #E4E4E7;">
+                <tr>
+                  <td style="padding:16px;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                    ${whatsLeftHtml}
+                  </td>
+                </tr>
+              </table>`;
+
   const text = `Hi ${firstName},
 
-CVin.Bio turns your CV into a live website of your profile. Recruiters open one link instead of a PDF or Word file.
+You created a CVin.Bio account, but your profile is still incomplete. CVin.Bio turns your CV into a live website of your profile. Recruiters open one link instead of a PDF or Word file.
 
 ${whatsLeftText}
 
@@ -223,7 +252,7 @@ You have a CVin.Bio account. Reply to stop these emails.`;
 </head>
 <body id="body" style="margin:0;padding:0;width:100% !important;min-width:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#FAFAFA;">
   <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">
-    Your profile is ${score}% complete. Finish it on CVin.Bio.
+    ${showScore ? `Your profile is ${score}% complete. Finish it on CVin.Bio.` : 'Finish your CVin.Bio profile.'}
   </div>
   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#FAFAFA;margin:0;padding:0;width:100%;">
     <tr>
@@ -237,22 +266,10 @@ You have a CVin.Bio account. Reply to stop these emails.`;
               </p>
 
               <p style="margin:0 0 20px 0;font-size:15px;line-height:1.65;color:#3F3F46;">
-                CVin.Bio turns your CV into a live website of your profile. Recruiters open one link instead of a PDF or Word file.
+                You created a CVin.Bio account, but your profile is still incomplete. CVin.Bio turns your CV into a live website of your profile. Recruiters open one link instead of a PDF or Word file.
               </p>
 
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;margin:0 0 24px 0;border:1px solid #E4E4E7;">
-                <tr>
-                  <td style="padding:16px;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-                    <p style="margin:0 0 6px 0;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;line-height:1.3;color:#71717A;">
-                      Profile score
-                    </p>
-                    <p style="margin:0 0 10px 0;font-size:28px;font-weight:800;letter-spacing:-0.05em;line-height:1.15;color:#09090B;">
-                      ${score}%
-                    </p>
-                    ${whatsLeftHtml}
-                  </td>
-                </tr>
-              </table>
+              ${scoreBoxHtml}
 
               ${buttonRow({
                 href: editorUrl,

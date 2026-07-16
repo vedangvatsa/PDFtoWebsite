@@ -118,7 +118,8 @@ const nextConfigFn = (phase: string): NextConfig => {
                 "child-src blob:",
                 "frame-ancestors 'self'",
                 "base-uri 'self'",
-                "form-action 'self'",
+                // Allow OAuth redirects (Google + Supabase) after Continue with Google
+                "form-action 'self' https://accounts.google.com https://*.google.com https://*.supabase.co",
               ].join('; '),
             },
           ],
