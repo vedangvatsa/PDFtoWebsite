@@ -270,7 +270,7 @@ export default function AIInterviewPage() {
  {q.whyThisMatters?.length > 0 && (
  <div>
  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
- Why it matters
+ Why interviewers ask this
  </p>
  <ul className="space-y-1">
  {q.whyThisMatters.map((item, i) => (
