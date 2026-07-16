@@ -1,0 +1,173 @@
+name: Apply DB indexes (one-shot)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  indexes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pg
+        run: npm install pg
+      - name: Resolve DB URL and create indexes
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          # Optional direct secret if present
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        run: node << 'EOF'
+const { Client } = require('pg');
+
+const SQL = `
+CREATE INDEX IF NOT EXISTS jobs_created_at_idx ON public.jobs (created_at);
+CREATE INDEX IF NOT EXISTS jobs_external_id_idx ON public.jobs (external_id);
+CREATE INDEX IF NOT EXISTS jobs_dedup_hash_idx ON public.jobs (dedup_hash);
+CREATE INDEX IF NOT EXISTS jobs_telegram_posted_at_idx ON public.jobs (telegram_posted_at);
+CREATE INDEX IF NOT EXISTS profiles_username_idx ON public.profiles (username);
+`;
+
+async function vercelEnvMap() {
+  const token = process.env.VERCEL_TOKEN;
+  const org = process.env.VERCEL_ORG_ID;
+  const project = process.env.VERCEL_PROJECT_ID;
+  if (!token || !project) return {};
+  const qs = org ? `?teamId=${encodeURIComponent(org)}` : '';
+  const r = await fetch(`https://api.vercel.com/v9/projects/${project}/env${qs}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!r.ok) {
+    console.log('vercel env list status', r.status, (await r.text()).slice(0, 200));
+    return {};
+  }
+  const data = await r.json();
+  const envs = data.envs || data || [];
+  const map = {};
+  for (const e of envs) {
+    // decrypted values may need another call for sensitive
+    map[e.key] = e.value || e;
+  }
+  // For encrypted env vars, fetch each
+  for (const e of envs) {
+    if (e.id && (e.type === 'encrypted' || e.type === 'sensitive' || !e.value)) {
+      const er = await fetch(
+        `https://api.vercel.com/v1/projects/${project}/env/${e.id}${qs}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (er.ok) {
+        const full = await er.json();
+        if (full.value) map[e.key] = full.value;
+      }
+    }
+  }
+  console.log(
+    'vercel env keys found:',
+    Object.keys(map)
+      .filter((k) => /SUPABASE|DATABASE|POSTGRES|DB_/i.test(k))
+      .join(', ') || '(none matching)'
+  );
+  return map;
+}
+
+function buildCandidates(extra = {}) {
+  const url =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.DIRECT_URL ||
+    extra.DATABASE_URL ||
+    extra.POSTGRES_URL ||
+    extra.DIRECT_URL ||
+    extra.POSTGRES_PRISMA_URL;
+  if (url) return [{ connectionString: url, ssl: { rejectUnauthorized: false } }];
+
+  const password =
+    process.env.SUPABASE_DB_PASSWORD ||
+    process.env.POSTGRES_PASSWORD ||
+    process.env.DB_PASSWORD ||
+    extra.SUPABASE_DB_PASSWORD ||
+    extra.POSTGRES_PASSWORD ||
+    extra.DB_PASSWORD ||
+    extra.SUPABASE_DB_PASS;
+  const ref = (process.env.NEXT_PUBLIC_SUPABASE_URL || extra.NEXT_PUBLIC_SUPABASE_URL || '')
+    .replace('https://', '')
+    .replace('.supabase.co', '');
+  if (!password || !ref) return [];
+  return [
+    {
+      host: `db.${ref}.supabase.co`,
+      port: 5432,
+      user: 'postgres',
+      password,
+      database: 'postgres',
+      ssl: { rejectUnauthorized: false },
+    },
+    {
+      host: `aws-0-ap-southeast-1.pooler.supabase.com`,
+      port: 6543,
+      user: `postgres.${ref}`,
+      password,
+      database: 'postgres',
+      ssl: { rejectUnauthorized: false },
+    },
+  ];
+}
+
+(async () => {
+  const vercel = await vercelEnvMap();
+  const candidates = buildCandidates(vercel);
+  console.log('connection candidates', candidates.length);
+  if (!candidates.length) {
+    console.error(
+      'No DATABASE_URL / SUPABASE_DB_PASSWORD in GitHub secrets or Vercel env. Cannot CREATE INDEX with service_role JWT alone.'
+    );
+    process.exit(1);
+  }
+  let lastErr;
+  for (const conf of candidates) {
+    const client = new Client({
+      ...conf,
+      connectionTimeoutMillis: 20000,
+    });
+    try {
+      await client.connect();
+      console.log('connected');
+      await client.query(SQL);
+      const idx = await client.query(`
+        select tablename, indexname
+        from pg_indexes
+        where schemaname = 'public'
+          and tablename in ('jobs','profiles')
+          and (
+            indexname like '%created_at%'
+            or indexname like '%external_id%'
+            or indexname like '%dedup_hash%'
+            or indexname like '%telegram%'
+            or indexname like '%username%'
+          )
+        order by 1,2
+      `);
+      console.log('indexes present:', JSON.stringify(idx.rows, null, 2));
+      await client.end();
+      console.log('OK indexes applied');
+      process.exit(0);
+    } catch (e) {
+      lastErr = e;
+      console.log('candidate failed:', (e.message || String(e)).slice(0, 150));
+      try {
+        await client.end();
+      } catch {}
+    }
+  }
+  console.error('All candidates failed', lastErr?.message);
+  process.exit(1);
+})();
+EOF
