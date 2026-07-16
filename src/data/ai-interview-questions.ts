@@ -293,6 +293,82 @@ const results = await index.query({
  3: 'Correct high-level flow but weak on when to use it.',
  5: 'Clear pipeline, trade-offs, and basic failure modes.'
  }
+ },
+ {
+ id: 'AGT-F-07',
+ difficulty: 'Foundation',
+ category: 'Knowledge',
+ expectedTime: '60-90 seconds',
+ question: 'What is an embedding, and how does it help search in a RAG system?',
+ idealAnswer: {
+ coreIdea: 'An embedding is a list of numbers that stands for the meaning of text. Similar text maps to similar numbers so you can search by meaning.',
+ keyPoints: [
+ 'A model turns a chunk of text into a fixed-size vector.',
+ 'Similar questions and answers sit near each other in that space.',
+ 'At index time you embed each chunk and store it.',
+ 'At query time you embed the user question and find nearest chunks.',
+ 'Bad chunking or a weak embedding model hurts results before the LLM even runs.'
+ ]
+ },
+ whyThisMatters: [
+ 'Interviewers expect this base RAG building block.',
+ 'Many production bugs sit in embeddings, not in the chat model.'
+ ],
+ commonPitfalls: [
+ 'Thinking embeddings store the full original document only as text.',
+ 'Never planning to re-embed when the embedding model changes.'
+ ],
+ followUps: [
+ 'When do you re-embed the whole corpus?',
+ 'How do you pick an embedding model?'
+ ],
+ redFlags: [
+ 'Cannot define an embedding.',
+ 'Confuses embeddings with the chat model weights.'
+ ],
+ scoringRubric: {
+ 1: 'No clear definition.',
+ 3: 'Defines vectors but weak on the RAG flow.',
+ 5: 'Clear definition, index and query path, and failure modes.'
+ }
+ },
+ {
+ id: 'AGT-F-08',
+ difficulty: 'Foundation',
+ category: 'Practical',
+ expectedTime: '60-90 seconds',
+ question: 'How do you evaluate a RAG system beyond reading a few sample answers?',
+ idealAnswer: {
+ coreIdea: 'Score retrieval and generation separately, then check the end task. Use a fixed golden set so changes do not regress quality.',
+ keyPoints: [
+ 'Retrieval metrics such as recall@k and precision@k on labeled queries.',
+ 'Generation metrics such as faithfulness or groundedness to the retrieved text.',
+ 'Task success rate for the real user job (resolve ticket, find policy).',
+ 'Keep a versioned golden set and run it in CI before deploy.',
+ 'Track cost and latency with quality, not quality alone.'
+ ]
+ },
+ whyThisMatters: [
+ 'Without metrics you only ship vibes.',
+ 'RAG interviews almost always ask how you know it works.'
+ ],
+ commonPitfalls: [
+ 'Only spot-checking a few happy-path questions.',
+ 'Tuning the LLM while retrieval is the real failure.'
+ ],
+ followUps: [
+ 'How large should a golden set be to start?',
+ 'How do you handle subjective answers?'
+ ],
+ redFlags: [
+ 'No metrics at all.',
+ 'Only demo notebooks.'
+ ],
+ scoringRubric: {
+ 1: 'No evaluation plan.',
+ 3: 'Names one metric without a process.',
+ 5: 'Retrieval plus generation plus CI golden set and ops metrics.'
+ }
  }
  ],
  Advanced: [
@@ -553,6 +629,82 @@ span1.end({ output: response, metadata: { tokens: response.usage } });`,
  1: 'Cannot explain hybrid retrieval.',
  3: 'Describes both channels but weak on fusion or eval.',
  5: 'Full design with latency and metrics trade-offs.'
+ }
+ },
+ {
+ id: 'AGT-A-07',
+ difficulty: 'Advanced',
+ category: 'Architecture',
+ expectedTime: '3-4 minutes',
+ question: 'How do you design short-term and long-term memory for an LLM agent?',
+ idealAnswer: {
+ coreIdea: 'Short-term memory is the current conversation and tool trace in the prompt. Long-term memory is stored outside the model and pulled back when needed.',
+ keyPoints: [
+ 'Short-term: recent messages, tool results, and working plan in the context window.',
+ 'Long-term: user prefs, past tickets, or facts in a DB or vector store.',
+ 'Write path: save only useful facts, with ids and timestamps.',
+ 'Read path: retrieve top relevant memories into the prompt.',
+ 'Evict or summarize old short-term context to control tokens and cost.'
+ ]
+ },
+ whyThisMatters: [
+ 'Real agents break when context grows without a memory plan.',
+ 'Shows system design beyond a single ReAct loop demo.'
+ ],
+ commonPitfalls: [
+ 'Stuffing the full history into every call forever.',
+ 'Storing raw secrets or PII in memory without controls.'
+ ],
+ followUps: [
+ 'How do you stop memory from poisoning later answers?',
+ 'When do you summarize versus drop history?'
+ ],
+ redFlags: [
+ 'No separation of short-term and long-term.',
+ 'No storage design at all.'
+ ],
+ scoringRubric: {
+ 1: 'No memory model.',
+ 3: 'Mentions chat history only.',
+ 5: 'Clear short-term versus long-term design with write, read, and eviction.'
+ }
+ },
+ {
+ id: 'AGT-A-08',
+ difficulty: 'Advanced',
+ category: 'Practical',
+ expectedTime: '3-4 minutes',
+ question: 'How do you measure whether an agent is succeeding on multi-step tasks?',
+ idealAnswer: {
+ coreIdea: 'Define task success on a labeled set, track step failures, and watch cost and latency. Do not judge only the final sentence.',
+ keyPoints: [
+ 'Task success rate on a golden set of multi-step jobs.',
+ 'Step metrics: tool error rate, retries, infinite-loop cuts.',
+ 'Trajectory logs for failed paths so you can fix tools or prompts.',
+ 'Cost and tokens per successful task.',
+ 'Human review on a sample of hard cases.'
+ ]
+ },
+ whyThisMatters: [
+ 'Agents fail in the middle of a plan even when the last reply looks fine.',
+ 'Production teams need numbers, not demos.'
+ ],
+ commonPitfalls: [
+ 'Only scoring final answer quality.',
+ 'No cap on steps or tool calls.'
+ ],
+ followUps: [
+ 'How do you build the golden set?',
+ 'How do you detect loops?'
+ ],
+ redFlags: [
+ 'No success definition.',
+ 'Cannot name any process metric.'
+ ],
+ scoringRubric: {
+ 1: 'No measurement plan.',
+ 3: 'Final answer quality only.',
+ 5: 'Task success, step health, cost, and review loop.'
  }
  }
  ]
@@ -1857,6 +2009,82 @@ python -m vllm.entrypoints.openai.api_server \\
  3: 'Names data/model versioning and monitoring.',
  5: 'Clear comparison with deploy-time and run-time concerns.'
  }
+ },
+ {
+ id: 'OPS-F-07',
+ difficulty: 'Foundation',
+ category: 'Knowledge',
+ expectedTime: '60-90 seconds',
+ question: 'What is a model registry, and why do you need one?',
+ idealAnswer: {
+ coreIdea: 'A model registry stores versioned model artifacts and metadata so you know what is in production and can roll back safely.',
+ keyPoints: [
+ 'Stores weights or image refs with version numbers.',
+ 'Metadata: training data id, metrics, owner, approval status.',
+ 'Stages such as staging and production.',
+ 'Deployments pull a pinned version, not a random file from a laptop.',
+ 'Supports audit and rollback when a release goes bad.'
+ ]
+ },
+ whyThisMatters: [
+ 'Without a registry, teams lose track of what is live.',
+ 'Core MLOps interview topic.'
+ ],
+ commonPitfalls: [
+ 'Copying model files by hand between machines.',
+ 'No link between model version and training data version.'
+ ],
+ followUps: [
+ 'How does a registry differ from a Docker registry?',
+ 'Who is allowed to promote a model to production?'
+ ],
+ redFlags: [
+ 'No versioning story.',
+ 'Cannot explain rollback.'
+ ],
+ scoringRubric: {
+ 1: 'No idea what a registry is.',
+ 3: 'Says it stores models but weak on metadata and stages.',
+ 5: 'Clear versioning, promotion, and rollback story.'
+ }
+ },
+ {
+ id: 'OPS-F-08',
+ difficulty: 'Foundation',
+ category: 'Knowledge',
+ expectedTime: '60-90 seconds',
+ question: 'What is data drift, and how is it different from a code bug?',
+ idealAnswer: {
+ coreIdea: 'Data drift is when live inputs change relative to training or past live data. The code can be fine while quality still falls.',
+ keyPoints: [
+ 'Input drift: feature or text distributions shift.',
+ 'Concept drift: the mapping from inputs to labels changes.',
+ 'Code bugs break deterministically. Drift often shows as slow quality loss.',
+ 'Detect with stats on inputs, embedding distance, or label feedback.',
+ 'Response can be retrain, recalibrate, or fall back.'
+ ]
+ },
+ whyThisMatters: [
+ 'Models age in production even when deploys are clean.',
+ 'Separates ML ops from pure software ops.'
+ ],
+ commonPitfalls: [
+ 'Only watching HTTP 500s.',
+ 'Assuming accuracy stays fixed after launch.'
+ ],
+ followUps: [
+ 'How often would you check for drift?',
+ 'What do you do when drift is detected?'
+ ],
+ redFlags: [
+ 'Never heard of drift.',
+ 'Only blames the model weights with no data view.'
+ ],
+ scoringRubric: {
+ 1: 'Cannot define drift.',
+ 3: 'Defines drift but no detection plan.',
+ 5: 'Clear definition, detection ideas, and response actions.'
+ }
  }
  ],
  Advanced: [
@@ -2123,6 +2351,82 @@ spec:
  1: 'Infra only.',
  3: 'Mentions quality metrics weakly.',
  5: 'Layered monitoring plus rollout and rollback.'
+ }
+ },
+ {
+ id: 'OPS-A-07',
+ difficulty: 'Advanced',
+ category: 'Architecture',
+ expectedTime: '3-4 minutes',
+ question: 'How do you set up CI/CD for models, not only for application code?',
+ idealAnswer: {
+ coreIdea: 'Every model change should pass automated tests, get registered as a version, deploy through stages, and support fast rollback.',
+ keyPoints: [
+ 'Build: package model and config with a version id.',
+ 'Test: unit checks, golden set evals, safety checks, schema checks.',
+ 'Register: write metrics and artifact pointer to the registry.',
+ 'Deploy: staging then canary then full traffic.',
+ 'Rollback: pin previous registry version on failure.'
+ ]
+ },
+ whyThisMatters: [
+ 'Interviewers want model delivery discipline, not only notebook training.',
+ 'Stops silent quality regressions.'
+ ],
+ commonPitfalls: [
+ 'Manual scp of weights to production.',
+ 'No eval gate before traffic switch.'
+ ],
+ followUps: [
+ 'What fails a release in your pipeline?',
+ 'How do you canary an LLM change?'
+ ],
+ redFlags: [
+ 'No automated path to production.',
+ 'Cannot name a rollback step.'
+ ],
+ scoringRubric: {
+ 1: 'No CI/CD for models.',
+ 3: 'Mentions tests but no registry or stages.',
+ 5: 'Full build, test, register, stage, and rollback design.'
+ }
+ },
+ {
+ id: 'OPS-A-08',
+ difficulty: 'Advanced',
+ category: 'Practical',
+ expectedTime: '3-4 minutes',
+ question: 'How do you keep train and serve pipelines consistent so production features match training?',
+ idealAnswer: {
+ coreIdea: 'Use one shared feature definition and the same transforms in training and serving. Version them so train and live never diverge silently.',
+ keyPoints: [
+ 'Shared feature code or a feature store with clear owners.',
+ 'Same preprocessing library and versions in train and serve.',
+ 'Point-in-time correct joins for training labels.',
+ 'Integration tests that compare offline and online feature values.',
+ 'Alert when online distributions diverge from training baselines.'
+ ]
+ },
+ whyThisMatters: [
+ 'Train-serve skew is a classic production failure.',
+ 'Shows real MLOps experience beyond packaging a model file.'
+ ],
+ commonPitfalls: [
+ 'Reimplementing features twice in Python and in the service.',
+ 'Training with future data leakage.'
+ ],
+ followUps: [
+ 'How does a feature store help?',
+ 'How do you test for leakage?'
+ ],
+ redFlags: [
+ 'No concern about train versus serve mismatch.',
+ 'Duplicate ad hoc transforms with no tests.'
+ ],
+ scoringRubric: {
+ 1: 'No train-serve concept.',
+ 3: 'Aware of skew but weak design.',
+ 5: 'Shared transforms, versioning, tests, and monitoring.'
  }
  }
  ]

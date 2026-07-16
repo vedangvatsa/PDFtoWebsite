@@ -349,7 +349,7 @@ const CATEGORIES: Category[] = [
       {
         name: 'AI Interview Question Bank',
         url: '/aiq',
-        description: '120 technical interview questions with answers and scoring notes for AI roles.',
+        description: 'Starter GenAI interview questions with answers and scoring notes. Practice by role.',
         tag: 'New',
       },
       {
