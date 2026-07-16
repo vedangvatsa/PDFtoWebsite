@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
-import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
+import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE, cn } from '@/lib/utils';
 import {
   ArrowLeft,
   Search,
@@ -14,360 +14,349 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
-  Cpu,
-  Brain,
-  Database,
-  Network,
-  Settings,
-  Sparkles,
-  Award,
-  AlertTriangle,
-  HelpCircle,
-  Shield,
-  ShieldAlert,
-  ThumbsUp,
-  Layers,
-  Eye,
-  Lock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-
-/* ------------------------------------------------------------------ */
-/*  Data Source & Icons                                               */
-/* ------------------------------------------------------------------ */
-
 import { ROLES_DATA, type Question } from '@/data/ai-interview-questions';
-
-/* ------------------------------------------------------------------ */
-/*  Main Component                                                   */
-/* ------------------------------------------------------------------ */
 
 export default function AIInterviewPage() {
   const [selectedRoleId, setSelectedRoleId] = useState(ROLES_DATA[0].id);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<'Foundation' | 'Advanced'>('Foundation');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<
+    'Foundation' | 'Advanced'
+  >('Foundation');
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Find active role
-  const activeRole = ROLES_DATA.find((r) => r.id === selectedRoleId) || ROLES_DATA[0];
+  const activeRole =
+    ROLES_DATA.find((r) => r.id === selectedRoleId) || ROLES_DATA[0];
 
-  // Helper to toggle accordion items
   const toggleAccordion = (id: string) => {
-    if (expandedIds.includes(id)) {
-      setExpandedIds(expandedIds.filter((item) => item !== id));
-    } else {
-      setExpandedIds([...expandedIds, id]);
-    }
+    setExpandedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
-  // Helper to copy Q&A text to clipboard
   const copyQAndA = (q: Question) => {
-    const formattedText = `Question: ${q.question}\n\nIdeal Answer:\n- Core Idea: ${q.idealAnswer.coreIdea}\n- Key Points:\n${q.idealAnswer.keyPoints.map(p => `  * ${p}`).join('\n')}${q.idealAnswer.example ? `\n\nCode Example:\n${q.idealAnswer.example}` : ''}`;
+    const formattedText = `Question: ${q.question}\n\nAnswer:\n${q.idealAnswer.coreIdea}\n\nKey points:\n${q.idealAnswer.keyPoints.map((p) => `- ${p}`).join('\n')}${q.idealAnswer.example ? `\n\nExample:\n${q.idealAnswer.example}` : ''}`;
     navigator.clipboard.writeText(formattedText);
     setCopiedId(q.id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Filter questions based on search query
   const getFilteredQuestions = (difficulty: 'Foundation' | 'Advanced') => {
     const questions = activeRole.questions[difficulty] || [];
     if (!searchQuery.trim()) return questions;
-
-    return questions.filter((q) => {
-      const matchText = (
-        q.question + ' ' + 
-        q.idealAnswer.coreIdea + ' ' + 
-        q.idealAnswer.keyPoints.join(' ')
+    const q = searchQuery.toLowerCase();
+    return questions.filter((item) => {
+      const hay = (
+        item.question +
+        ' ' +
+        item.idealAnswer.coreIdea +
+        ' ' +
+        item.idealAnswer.keyPoints.join(' ')
       ).toLowerCase();
-      return matchText.includes(searchQuery.toLowerCase());
+      return hay.includes(q);
     });
   };
 
+  const visible = getFilteredQuestions(selectedDifficulty);
+
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
       <Header />
-      
+
       <main id="main-content" className={PAGE_CONTAINER}>
-        {/* Back Link */}
         <Link
           href="/resources"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-zinc-950 transition-colors mb-4 group"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition-colors mb-6"
         >
-          <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back to Resources
         </Link>
 
-        {/* Hero Section */}
-        <div className="flex flex-col mb-10">
-          <h1 className={PAGE_TITLE}>
-            AI Interview Question Bank
-          </h1>
+        <div className="mb-10">
+          <h1 className={PAGE_TITLE}>AI Interview Question Bank</h1>
           <p className={PAGE_SUBTITLE}>
-            100+ interview questions for AI engineering roles — with model answers, pitfalls, and scoring notes.
+            120 interview questions for AI engineering roles — with short
+            answers, pitfalls, and scoring notes.
           </p>
         </div>
 
-        {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-          
-          {/* Sidebar: Roles Navigation */}
-          <div className="lg:col-span-1 space-y-4">
-            <h2 className="text-[10px] font-extrabold uppercase tracking-wider text-zinc-400 px-2.5">
-              Select AI Role
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          {/* Role list */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-24 space-y-4">
+            <h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+              Role
             </h2>
-            <div className="space-y-1 bg-white/60 backdrop-blur-sm p-1.5 rounded-2xl border border-zinc-200/50 shadow-sm">
+            <nav className="border border-zinc-200 bg-white rounded-lg overflow-hidden">
               {ROLES_DATA.map((role) => {
-                const isSelected = selectedRoleId === role.id;
+                const selected = selectedRoleId === role.id;
+                const count =
+                  (role.questions.Foundation?.length || 0) +
+                  (role.questions.Advanced?.length || 0);
                 return (
                   <button
                     key={role.id}
+                    type="button"
                     onClick={() => {
                       setSelectedRoleId(role.id);
                       setExpandedIds([]);
                     }}
-                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition-all border flex items-center gap-2.5 ${
-                      isSelected
-                        ? 'border-zinc-950 bg-zinc-950 text-white shadow-md shadow-zinc-950/10'
-                        : 'border-transparent bg-transparent text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
-                    }`}
+                    className={cn(
+                      'w-full text-left px-3 py-2.5 text-xs font-semibold border-b border-zinc-100 last:border-b-0 transition-colors',
+                      selected
+                        ? 'bg-zinc-900 text-white'
+                        : 'bg-white text-zinc-700 hover:bg-zinc-50'
+                    )}
                   >
-                    <span className="truncate tracking-tight">{role.role}</span>
+                    <span className="block leading-snug">{role.role}</span>
+                    <span
+                      className={cn(
+                        'text-[10px] font-medium',
+                        selected ? 'text-zinc-300' : 'text-zinc-400'
+                      )}
+                    >
+                      {count} questions
+                    </span>
                   </button>
                 );
               })}
-            </div>
+            </nav>
 
-            {/* Quick CV Helper - Polished Card */}
-            <div className="p-5 rounded-2xl border border-zinc-200/80 bg-white relative overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] hidden lg:block">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-b from-zinc-500/5 to-transparent rounded-full blur-xl pointer-events-none" />
-              <h3 className="text-xs font-bold text-zinc-900 tracking-tight flex items-center gap-1.5 mb-2">
-                <Sparkles className="w-3.5 h-3.5 text-zinc-900" />
-                Build an AI Resume
-              </h3>
-              <p className="text-[11px] text-zinc-500 leading-relaxed mb-4 font-normal">
-                Turn your PDF CV into a live profile page you can share with recruiters.
+            <div className="hidden lg:block border border-zinc-200 bg-white rounded-lg p-4">
+              <p className="text-xs font-bold text-zinc-900 tracking-tight mb-1.5">
+                Build an AI resume
               </p>
-              <Button asChild className="w-full h-8 text-[11px] font-bold bg-zinc-950 text-white hover:bg-zinc-900 rounded-xl transition-all shadow-sm">
-                <Link href="/">
-                  Convert CV to Web
-                </Link>
+              <p className="text-[11px] text-zinc-500 leading-relaxed mb-3">
+                Turn your PDF CV into a live profile page you can share with
+                recruiters.
+              </p>
+              <Button
+                asChild
+                className="w-full h-9 text-xs font-semibold bg-zinc-900 text-white hover:bg-zinc-800 rounded-md"
+              >
+                <Link href="/">Convert CV to web</Link>
               </Button>
             </div>
-          </div>
+          </aside>
 
-          {/* Main Content Area */}
-          <div className="lg:col-span-3 space-y-6">
-            
-            {/* Active Role Meta Card - Glassmorphism style */}
-            <div className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-[0_1.5px_4px_rgba(0,0,0,0.02)] relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-zinc-50 rounded-full blur-3xl pointer-events-none -z-10 opacity-50" />
-              <h2 className="text-xl font-bold text-zinc-900 tracking-tight mb-2">
+          {/* Questions */}
+          <div className="lg:col-span-8 space-y-5 min-w-0">
+            <div className="border border-zinc-200 bg-white rounded-lg p-4 sm:p-5">
+              <h2 className="text-lg sm:text-xl font-extrabold tracking-tighter text-zinc-900 mb-2">
                 {activeRole.role}
               </h2>
-              <p className="text-xs text-zinc-500 leading-relaxed mb-6 font-normal">
+              <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed mb-4">
                 {activeRole.snapshot}
               </p>
-              
-              {/* Competency Badges */}
-              <div className="space-y-3">
-                <h3 className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                  Core Competencies Tested
-                </h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {activeRole.coreCompetencies.map((comp) => (
-                    <Badge
-                      key={comp}
-                      variant="secondary"
-                      className="text-[10px] font-bold px-2.5 py-1 bg-zinc-100/60 hover:bg-zinc-100 border border-zinc-200/40 text-zinc-600 rounded-lg tracking-tight transition-colors"
-                    >
-                      {comp}
-                    </Badge>
-                  ))}
-                </div>
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                Skills tested
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {activeRole.coreCompetencies.map((comp) => (
+                  <span
+                    key={comp}
+                    className="text-[10px] font-medium px-2 py-1 border border-zinc-200 bg-zinc-50 text-zinc-600 rounded"
+                  >
+                    {comp}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* Filter controls: Search and Segmented Difficulty Tabs */}
-            <div className="space-y-4">
-              {/* Search input */}
+            <div className="space-y-3">
               <div className="relative">
-                <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-zinc-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 pointer-events-none" />
                 <Input
-                  type="text"
-                  placeholder={`Search questions inside ${activeRole.role}...`}
-                  className="pl-10 h-11 bg-white border-zinc-200 focus-visible:ring-1 focus-visible:ring-zinc-950 focus-visible:border-zinc-950 rounded-xl text-xs shadow-sm transition-all"
+                  type="search"
+                  placeholder="Search questions…"
+                  className="pl-10 h-10 bg-white border-zinc-200 rounded-md text-xs"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-3.5 top-3.5 text-xs text-zinc-400 hover:text-zinc-900 font-medium"
-                  >
-                    Clear
-                  </button>
-                )}
               </div>
 
-              {/* Segmented control style difficulty tabs */}
-              <div className="flex p-1 gap-1 bg-zinc-100/80 border border-zinc-200/50 rounded-2xl w-full max-w-xl">
+              <div className="grid grid-cols-2 gap-1 p-1 bg-zinc-100 border border-zinc-200 rounded-md max-w-md">
                 {(['Foundation', 'Advanced'] as const).map((diff) => {
                   const count = getFilteredQuestions(diff).length;
-                  const isSelected = selectedDifficulty === diff;
+                  const selected = selectedDifficulty === diff;
                   return (
                     <button
                       key={diff}
+                      type="button"
                       onClick={() => {
                         setSelectedDifficulty(diff);
                         setExpandedIds([]);
                       }}
-                      className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
-                        isSelected
-                          ? 'bg-white text-zinc-950 shadow-sm border border-zinc-200/50'
-                          : 'text-zinc-500 hover:text-zinc-900 border border-transparent'
-                      }`}
+                      className={cn(
+                        'py-2 px-2 rounded text-xs font-semibold transition-colors',
+                        selected
+                          ? 'bg-white text-zinc-900 border border-zinc-200'
+                          : 'text-zinc-500 hover:text-zinc-800 border border-transparent'
+                      )}
                     >
-                      {diff}
-                      <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-mono font-bold ${
-                        isSelected ? 'bg-zinc-950 text-white' : 'bg-zinc-200/60 text-zinc-500'
-                      }`}>
-                        {count}
-                      </span>
+                      {diff}{' '}
+                      <span className="text-[10px] text-zinc-400">({count})</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Questions List */}
-            <div className="space-y-4">
-              {getFilteredQuestions(selectedDifficulty).length > 0 ? (
-                getFilteredQuestions(selectedDifficulty).map((q) => {
+            <div className="space-y-2">
+              {visible.length > 0 ? (
+                visible.map((q) => {
                   const isExpanded = expandedIds.includes(q.id);
                   return (
                     <article
                       key={q.id}
-                      className={`group rounded-2xl border bg-white transition-all duration-300 ${
-                        isExpanded 
-                          ? 'border-zinc-950 ring-1 ring-zinc-950/5 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.03)]' 
-                          : 'border-zinc-200 hover:border-zinc-400 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.02)]'
-                      }`}
+                      className={cn(
+                        'border bg-white rounded-lg',
+                        isExpanded ? 'border-zinc-900' : 'border-zinc-200'
+                      )}
                     >
-                      {/* Card Header (Toggle Action) */}
-                      <div
+                      <button
+                        type="button"
                         onClick={() => toggleAccordion(q.id)}
-                        className="p-5 flex items-start justify-between gap-4 cursor-pointer select-none"
+                        className="w-full p-4 sm:p-5 flex items-start justify-between gap-3 text-left"
                       >
-                        <div className="space-y-2.5">
-                          <h3 className="text-sm md:text-base font-extrabold text-zinc-900 tracking-tight leading-snug group-hover:text-zinc-950 transition-colors">
-                            {q.question}
-                          </h3>
-                        </div>
-                        <div className="shrink-0 w-8 h-8 rounded-lg border border-zinc-200 bg-white flex items-center justify-center text-zinc-500 group-hover:text-zinc-900 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-                          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                        </div>
-                      </div>
+                        <h3 className="text-sm font-bold text-zinc-900 tracking-tight leading-snug">
+                          {q.question}
+                        </h3>
+                        <span className="shrink-0 w-7 h-7 border border-zinc-200 rounded flex items-center justify-center text-zinc-500">
+                          {isExpanded ? (
+                            <ChevronUp className="w-4 h-4" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4" />
+                          )}
+                        </span>
+                      </button>
 
-                      {/* Card Body (Expanded Content with Smooth Slide-in details) */}
                       {isExpanded && (
-                        <div className="px-5 pb-6 pt-1 border-t border-zinc-100 space-y-6">
-                          
-                          {/* Ideal Answer Section */}
-                          <div className="space-y-3 mt-4">
-                            <h4 className="text-xs font-extrabold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-                              <Award className="w-3.5 h-3.5 text-zinc-900" />
-                              Ideal Response Strategy
-                            </h4>
-                            <div className="pl-4 border-l-2 border-zinc-950 space-y-3">
-                              <p className="text-xs md:text-sm font-bold text-zinc-800 leading-relaxed">
-                                {q.idealAnswer.coreIdea}
-                              </p>
-                              <ul className="space-y-2 list-none p-0 m-0 text-xs md:text-sm text-zinc-500 leading-relaxed font-normal">
-                                {q.idealAnswer.keyPoints.map((point, index) => (
-                                  <li key={index} className="flex gap-2">
-                                    <span className="text-zinc-950 font-bold">•</span>
-                                    <span>{point}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                        <div className="px-4 sm:px-5 pb-5 space-y-5 border-t border-zinc-100">
+                          <div className="pt-4 space-y-2">
+                            <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                              Answer
+                            </p>
+                            <p className="text-sm font-semibold text-zinc-900 leading-relaxed">
+                              {q.idealAnswer.coreIdea}
+                            </p>
+                            <ul className="space-y-1.5 text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                              {q.idealAnswer.keyPoints.map((point, index) => (
+                                <li key={index} className="flex gap-2">
+                                  <span className="text-zinc-900 shrink-0">•</span>
+                                  <span>{point}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
 
-                          {/* Code Example (styled as high-end editor window) */}
                           {q.idealAnswer.example && (
-                            <div className="rounded-xl border border-zinc-200 overflow-hidden bg-zinc-950 p-4">
-                              <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-800/80 bg-zinc-900/50">
-                                <div className="flex items-center gap-1.5">
-                                  <span className="w-2 h-2 rounded-full bg-zinc-700" />
-                                  <span className="w-2 h-2 rounded-full bg-zinc-700" />
-                                  <span className="w-2 h-2 rounded-full bg-zinc-700" />
-                                </div>
-                                <span className="text-[9px] font-mono text-zinc-500 tracking-wider font-extrabold">
-                                  {q.idealAnswer.exampleLanguage?.toUpperCase()} EXAMPLE
+                            <div className="rounded-md border border-zinc-200 overflow-hidden">
+                              <div className="px-3 py-1.5 border-b border-zinc-200 bg-zinc-50">
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+                                  {q.idealAnswer.exampleLanguage || 'example'}
                                 </span>
                               </div>
-                              <div className="p-4 overflow-x-auto select-text">
-                                <pre className="text-xs text-zinc-200 font-mono leading-relaxed max-h-72">
-                                  <code>{q.idealAnswer.example}</code>
-                                </pre>
-                              </div>
+                              <pre className="p-3 text-[11px] sm:text-xs text-zinc-800 font-mono leading-relaxed overflow-x-auto max-h-64 bg-white">
+                                <code>{q.idealAnswer.example}</code>
+                              </pre>
                             </div>
                           )}
 
+                          {(q.commonPitfalls?.length > 0 ||
+                            q.whyThisMatters?.length > 0) && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-zinc-600">
+                              {q.whyThisMatters?.length > 0 && (
+                                <div>
+                                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                                    Why it matters
+                                  </p>
+                                  <ul className="space-y-1">
+                                    {q.whyThisMatters.map((item, i) => (
+                                      <li key={i}>• {item}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                              {q.commonPitfalls?.length > 0 && (
+                                <div>
+                                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                                    Common mistakes
+                                  </p>
+                                  <ul className="space-y-1">
+                                    {q.commonPitfalls.map((item, i) => (
+                                      <li key={i}>• {item}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          )}
 
-                          {/* Utility actions */}
-                          <div className="flex items-center gap-2 pt-4 border-t border-zinc-100">
+                          <div className="pt-2 border-t border-zinc-100">
                             <Button
+                              type="button"
                               variant="outline"
                               size="sm"
-                              className="h-8 text-xs font-bold border-zinc-200 hover:bg-zinc-50 rounded-lg"
+                              className="h-8 text-xs font-semibold border-zinc-200 rounded-md"
                               onClick={() => copyQAndA(q)}
                             >
                               {copiedId === q.id ? (
-                                <span className="inline-flex items-center gap-1.5 text-emerald-700">
+                                <span className="inline-flex items-center gap-1.5">
                                   <Check className="w-3.5 h-3.5" />
-                                  Copied!
+                                  Copied
                                 </span>
                               ) : (
                                 <span className="inline-flex items-center gap-1.5">
                                   <Copy className="w-3.5 h-3.5" />
-                                  Copy full Q&A
+                                  Copy Q&amp;A
                                 </span>
                               )}
                             </Button>
                           </div>
-
                         </div>
                       )}
                     </article>
                   );
                 })
               ) : (
-                <div className="text-center py-16 bg-white rounded-2xl border border-zinc-200 p-8 shadow-sm">
-                  <BookOpen className="w-8 h-8 text-zinc-300 mx-auto mb-3" />
-                  <h4 className="text-sm font-bold text-zinc-800">No questions found matching your search</h4>
-                  <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto font-normal">
-                    Try searching for different keywords or checking another difficulty tier.
+                <div className="text-center py-14 bg-white rounded-lg border border-zinc-200 px-6">
+                  <BookOpen className="w-7 h-7 text-zinc-300 mx-auto mb-3" />
+                  <p className="text-sm font-bold text-zinc-800">
+                    No matching questions
+                  </p>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    Try different keywords or switch Foundation / Advanced.
                   </p>
                 </div>
               )}
             </div>
-
           </div>
-
         </div>
 
-        {/* Disclaimer footer - full width (w-full) matching the layout update policy */}
-        <div className="mt-20 pt-8 border-t border-zinc-200">
-          <p className="text-[10px] text-zinc-400 leading-relaxed w-full font-normal">
+        {/* Mobile CTA */}
+        <div className="lg:hidden mt-8 border border-zinc-200 bg-white rounded-lg p-4">
+          <p className="text-xs font-bold text-zinc-900 mb-1">Build an AI resume</p>
+          <p className="text-[11px] text-zinc-500 mb-3">
+            Turn your PDF CV into a live profile page.
+          </p>
+          <Button
+            asChild
+            className="w-full h-9 text-xs font-semibold bg-zinc-900 text-white hover:bg-zinc-800 rounded-md"
+          >
+            <Link href="/">Convert CV to web</Link>
+          </Button>
+        </div>
+
+        <div className="mt-16 pt-6 border-t border-zinc-200">
+          <p className="text-[10px] text-zinc-400 leading-relaxed">
             Focused on production AI systems. Last updated July 2026.
           </p>
         </div>
       </main>
-      
+
       <MicroFooter />
       <TelegramJobPopup />
     </div>
