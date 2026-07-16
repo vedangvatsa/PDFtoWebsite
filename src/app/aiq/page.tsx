@@ -182,13 +182,7 @@ export default function AIInterviewPage() {
         <div className="mb-8 flex flex-col gap-3">
           <h1 className={PAGE_TITLE}>AI Interview Question Bank</h1>
           <p className={PAGE_SUBTITLE}>
-            Starter questions for GenAI and LLM roles. Agents, RAG, MLOps,
-            fine-tuning, and AI PM. Short answers and scoring notes. Not a full
-            classic MLE or coding prep.
-          </p>
-          <p className="text-xs text-zinc-500 max-w-2xl">
-            Each role has a focused set of questions. Use this to drill, then do
-            mock interviews and real system design on your own.
+            Interview questions by AI role, with short answers and scoring notes.
           </p>
         </div>
 
