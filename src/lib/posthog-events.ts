@@ -58,17 +58,26 @@ export const AUTH_EVENTS = {
   GOOGLE_CLICKED: 'auth_google_started',
   /** Google OAuth returned an error */
   GOOGLE_FAILED: 'auth_google_failed',
-  /** Magic link email was successfully sent */
+  /** Email with OTP (+ link) was successfully sent */
   MAGIC_LINK_SENT: 'auth_magic_link_sent',
-  /** Magic link email send failed */
+  /** Email send or OTP verify failed */
   MAGIC_LINK_FAILED: 'auth_magic_link_failed',
+  /** User successfully verified the numeric email OTP in the UI */
+  OTP_VERIFIED: 'auth_otp_verified',
+  /**
+   * User completed auth (landed signed-in). Use `method` to compare channels:
+   * "otp" | "email_link" | "google" | "oauth"
+   */
+  COMPLETED: 'auth_completed',
 } as const;
 
 // Properties for AUTH events:
-// | Property    | Type    | Description                         | Example            |
-// |-------------|---------|-------------------------------------|--------------------|
-// | from        | string  | Where the user came from            | "upload", "direct" |
-// | error       | string  | Error message (for failed events)   | "rate_limited"     |
+// | Property    | Type    | Description                         | Example              |
+// |-------------|---------|-------------------------------------|----------------------|
+// | from        | string  | Where the user came from            | "upload", "direct"   |
+// | error       | string  | Error message (for failed events)   | "rate_limited"       |
+// | method      | string  | Auth channel on success             | "otp", "email_link"  |
+// | is_otp      | boolean | True when failure was code verify   | true                 |
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // PAGE: EDITOR (/editor)

@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import './globals.css';
 import { SupabaseClientProvider } from '@/auth';
 import { PostHogProvider } from '@/components/posthog-provider';
+import { AuthMethodTracker } from '@/components/auth-method-tracker';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -131,6 +133,9 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Suspense fallback={null}>
+                <AuthMethodTracker />
+              </Suspense>
               <Toaster />
               <Analytics />
               <SpeedInsights />

@@ -3,6 +3,19 @@
  * Maps Supabase auth error messages to user-friendly descriptions.
  */
 
+/**
+ * Supabase Auth email OTP length for this project (GoTrue mailer OTP).
+ * Must match Auth → Email → OTP length in the Supabase dashboard and
+ * the digits shown in "Your CVin.Bio Login Code" emails. Do not set the
+ * UI maxLength lower than this — users cannot verify a truncated code.
+ */
+export const EMAIL_OTP_LENGTH = 8;
+
+/** Keep only digits and cap to EMAIL_OTP_LENGTH for the OTP input. */
+export function normalizeEmailOtp(raw: string): string {
+  return raw.replace(/\D/g, '').slice(0, EMAIL_OTP_LENGTH);
+}
+
 export function friendlyAuthError(msg: string): string {
   const m = msg.toLowerCase();
 
@@ -18,9 +31,22 @@ export function friendlyAuthError(msg: string): string {
     return 'Please enter a valid email address.';
   if (m.includes('rate limit') || m.includes('too many') || m.includes('exceeded'))
     return 'Too many attempts. Please wait a moment and try again.';
+  // OTP / magic-link token failures (check before generic "disabled")
+  if (
+    m.includes('token has expired') ||
+    m.includes('otp has expired') ||
+    (m.includes('token') && m.includes('invalid')) ||
+    m.includes('invalid otp')
+  ) {
+    return `That code is invalid or has expired. Enter the full ${EMAIL_OTP_LENGTH}-digit code from your latest email, or request a new one.`;
+  }
+  if (m.includes('email link is invalid') || (m.includes('email link') && m.includes('expired')))
+    return 'That sign-in link is invalid or has expired. Request a new code and try again.';
+  if (m.includes('pkce') || m.includes('code verifier'))
+    return 'Sign-in link must be opened in the same browser where you started. Prefer entering the code from the email instead.';
   if (m.includes('user not found') || m.includes('no user'))
     return 'No account found with this email.';
-  if (m.includes('user banned') || m.includes('disabled'))
+  if (m.includes('user banned') || (m.includes('disabled') && !m.includes('signup')))
     return 'This account has been disabled. Contact support.';
   if (m.includes('network') || m.includes('fetch'))
     return 'Network error. Check your connection and try again.';
