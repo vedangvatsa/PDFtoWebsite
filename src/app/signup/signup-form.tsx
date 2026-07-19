@@ -8,10 +8,10 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Icons } from '@/components/icons';
 import { GoogleIcon } from '@/components/google-icon';
-import { EMAIL_OTP_LENGTH, friendlyAuthError, normalizeEmailOtp } from '@/lib/auth-utils';
+import { EMAIL_OTP_LENGTH, friendlyAuthError, isInAppBrowser, normalizeEmailOtp } from '@/lib/auth-utils';
 import { useUser } from '@/auth';
 import { createClient } from '@/utils/supabase/client';
-import { Mail } from 'lucide-react';
+import { Mail, AlertTriangle, ExternalLink } from 'lucide-react';
 import posthog from 'posthog-js';
 import { AUTH_EVENTS } from '@/lib/posthog-events';
 
@@ -30,6 +30,7 @@ export default function SignUpForm() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [inAppBrowser, setInAppBrowser] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -55,6 +56,56 @@ export default function SignUpForm() {
       router.push('/editor');
     }
   }, [user, isUserLoading, router]);
+
+  useEffect(() => {
+    const inApp = isInAppBrowser();
+    if (!inApp) return;
+    setInAppBrowser(true);
+
+    // Auto-escape: try to open this URL in the system browser.
+    // Many in-app browsers block window.open, so we try multiple strategies.
+    const currentUrl = window.location.href;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    let escaped = false;
+
+    if (isIOS) {
+      // Try Safari first, then Chrome
+      const safariUrl = currentUrl.replace(/^https?:\/\//, 'x-safari-https://');
+      try {
+        window.location.href = safariUrl;
+        escaped = true;
+      } catch {}
+      if (!escaped) {
+        const chromeUrl = currentUrl.replace(/^https?:\/\//, 'googlechrome://');
+        try {
+          window.location.href = chromeUrl;
+          escaped = true;
+        } catch {}
+      }
+    } else if (isAndroid) {
+      // Android: use intent:// scheme to open in Chrome
+      const intentUrl = currentUrl.replace(/^https?:\/\//, 'intent://') +
+        '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
+      try {
+        window.location.href = intentUrl;
+        escaped = true;
+      } catch {}
+    }
+
+    // Fallback: try window.open
+    if (!escaped) {
+      try {
+        const w = window.open(currentUrl, '_blank', 'noopener,noreferrer');
+        if (w) escaped = true;
+      } catch {}
+    }
+
+    // Copy URL to clipboard as last resort
+    try {
+      navigator.clipboard?.writeText(currentUrl);
+    } catch {}
+  }, []);
 
   const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,7 +172,41 @@ export default function SignUpForm() {
     setIsVerifying(false);
   };
 
+  const openInExternalBrowser = () => {
+    const url = window.location.href;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
+
+    if (isIOS) {
+      // Try Safari scheme
+      try { window.location.href = url.replace(/^https?:\/\//, 'x-safari-https://'); return; } catch {}
+      // Try Chrome scheme
+      try { window.location.href = url.replace(/^https?:\/\//, 'googlechrome://'); return; } catch {}
+    } else if (isAndroid) {
+      // Android intent
+      const intentUrl = url.replace(/^https?:\/\//, 'intent://') +
+        '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
+      try { window.location.href = intentUrl; return; } catch {}
+    }
+
+    // Generic fallback
+    try { navigator.clipboard?.writeText(url); } catch {}
+    window.open(url, '_blank', 'noopener,noreferrer');
+    toast({
+      title: 'Opening in browser',
+      description: 'If a new tab didn\'t open, tap the ••• menu in your current app and select "Open in Browser" or "Open in Safari".',
+    });
+  };
+
   const handleGoogleAuth = async () => {
+    if (inAppBrowser) {
+      toast({
+        variant: 'destructive',
+        title: 'Google sign-in blocked',
+        description: 'Your current browser doesn\'t support Google sign-in. Tap "Open in Browser" below to continue.',
+      });
+      return;
+    }
     setIsGoogleLoading(true);
     posthog.capture(AUTH_EVENTS.GOOGLE_CLICKED, { from: fromParam || 'direct' });
     try {
@@ -233,6 +318,32 @@ export default function SignUpForm() {
         <p className="text-sm text-center text-muted-foreground bg-accent/50 rounded-md p-2">
           Sign in to build your profile and get a shareable link.
         </p>
+      )}
+
+      {inAppBrowser && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950">
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
+            <div className="grid gap-2 text-sm">
+              <p className="font-medium text-amber-900 dark:text-amber-200">
+                Open in your browser to sign in
+              </p>
+              <p className="text-amber-800 dark:text-amber-300">
+                Google sign-in doesn\'t work inside this app\'s built-in browser. Open this page in Safari or Chrome to continue.
+              </p>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="w-fit border-amber-300 text-amber-900 hover:bg-amber-100 dark:border-amber-800 dark:text-amber-200 dark:hover:bg-amber-900"
+                onClick={openInExternalBrowser}
+              >
+                <ExternalLink className="h-3.5 w-3.5 mr-1.5" />
+                Open in Browser
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
 
       <Button variant="outline" className="w-full" onClick={handleGoogleAuth} disabled={isGoogleLoading}>

@@ -2,6 +2,33 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 /**
+ * In-app browser user-agent patterns. When detected on the signup page,
+ * we inject a meta refresh / JS redirect page that tries to escape to
+ * the system browser before Google OAuth is attempted.
+ */
+const IN_APP_BROWSER_UA = [
+  /Instagram/i,
+  /FBAN|FBAV/i,
+  /LinkedInApp/i,
+  /Twitter|Tweetbot/i,
+  /TikTok/i,
+  /Snapchat/i,
+  /WhatsApp/i,
+  /GSA/i,
+  /Line\//i,
+  /MicroMessenger/i,
+  /Pinterest/i,
+  /Reddit/i,
+  /Discord/i,
+  /Slack/i,
+  /Teams/i,
+];
+
+function isInAppBrowser(ua: string): boolean {
+  return IN_APP_BROWSER_UA.some((p) => p.test(ua));
+}
+
+/**
  * UTM suffixes — append /th, /wa, /li etc. to ANY page URL
  * to automatically add UTM tracking parameters.
  *
@@ -28,6 +55,61 @@ const SUFFIX_SET = new Set(Object.keys(UTM_SUFFIXES));
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const ua = request.headers.get('user-agent') || '';
+
+  // Detect in-app browsers on the signup page and serve an escape page
+  // that attempts to open in the system browser before showing the form.
+  if (pathname === '/signup' && isInAppBrowser(ua)) {
+    const fullUrl = request.nextUrl.toString();
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isAndroid = /Android/i.test(ua);
+
+    const escapeHtml = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open in Browser — CVin.Bio</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 24px; background: #fafaf9; color: #1c1917; display: flex; min-height: 100vh; align-items: center; justify-content: center; }
+  .card { max-width: 380px; text-align: center; }
+  .icon { width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; }
+  .icon svg { width: 28px; height: 28px; color: #d97706; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+  p { font-size: 14px; color: #57534e; line-height: 1.5; margin: 0 0 20px; }
+  .btn { display: inline-block; padding: 12px 24px; background: #1c1917; color: #fff; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500; }
+  .hint { font-size: 12px; color: #a8a29e; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+  </div>
+  <h1>Open in your browser to continue</h1>
+  <p>Google sign-in doesn't work inside this app's built-in browser. Tap below to open CVin.Bio in your system browser.</p>
+  <a href="${fullUrl}" class="btn" target="_blank" rel="noopener noreferrer">Open in Browser</a>
+  <p class="hint">If the button doesn't work, tap the ••• menu in your current app and select "Open in Browser" or "Open in Safari".</p>
+</div>
+<script>
+  // Auto-redirect attempts to escape the in-app browser
+  (function() {
+    var url = ${JSON.stringify(fullUrl)};
+    ${isIOS ? `
+    try { window.location.href = url.replace(/^https?:\/\//, 'x-safari-https://'); return; } catch(e) {}
+    try { window.location.href = url.replace(/^https?:\/\//, 'googlechrome://'); return; } catch(e) {}` : ''}
+    ${isAndroid ? `
+    try { window.location.href = url.replace(/^https?:\/\//, 'intent://') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;'; return; } catch(e) {}` : ''}
+    try { window.open(url, '_blank', 'noopener,noreferrer'); } catch(e) {}
+  })();
+</script>
+</body>
+</html>`;
+    return new NextResponse(escapeHtml, {
+      status: 200,
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+  }
 
   // Extract the last segment of the path
   const segments = pathname.split('/').filter(Boolean);

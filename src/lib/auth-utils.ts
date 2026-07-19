@@ -56,7 +56,47 @@ export function friendlyAuthError(msg: string): string {
     return 'New signups are currently disabled. Please try again later.';
   if (m.includes('sending confirmation') || m.includes('confirmation email'))
     return 'Unable to send confirmation email. This is usually due to a mail server rate-limit or configuration error. Please try again later.';
+  if (m.includes('disallowed_useragent') || m.includes('use secure browsers'))
+    return 'Google sign-in is blocked in this browser. Open cvin.bio in Safari or Chrome (not an in-app browser) and try again.';
 
   // Fallback: show the actual Supabase error so it is never hidden from the user
   return msg || 'Something went wrong. Please try again.';
+}
+
+/**
+ * Detects whether the current browser is an in-app / embedded browser
+ * (Instagram, Facebook, LinkedIn, X/Twitter, TikTok, etc.).
+ * Google blocks OAuth in these browsers with `403: disallowed_useragent`.
+ */
+export function isInAppBrowser(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+
+  // iOS Safari standalone (PWA) is fine
+  // @ts-expect-error - iOS only property
+  if (navigator.standalone === true) return false;
+
+  const patterns = [
+    /Instagram/i,
+    /FBAN|FBAV/i,          // Facebook in-app
+    /LinkedInApp/i,         // LinkedIn in-app
+    /Twitter|Tweetbot/i,    // X / Twitter in-app
+    /TikTok/i,              // TikTok in-app
+    /Snapchat/i,            // Snapchat in-app
+    /WhatsApp/i,            // WhatsApp in-app
+    /GSA/i,                 // Google Search App
+    /Line\//i,              // LINE in-app
+    /MicroMessenger/i,      // WeChat in-app
+    /Naver/i,               // Naver in-app
+    /Daum/i,                // Daum in-app
+    /Kakao/i,               // Kakao in-app
+    /Pinterest/i,           // Pinterest in-app
+    /Reddit/i,              // Reddit in-app
+    /Discord/i,             // Discord in-app
+    /Slack/i,               // Slack in-app
+    /Teams/i,               // MS Teams in-app
+    /Firefox\/Focus/i,      // Firefox Focus
+  ];
+
+  return patterns.some((p) => p.test(ua));
 }
