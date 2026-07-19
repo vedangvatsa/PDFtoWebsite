@@ -39,7 +39,8 @@ let doNotSend = new Set();
 try { doNotSend = new Set(JSON.parse(readFileSync(join(__dirname, 'global-do-not-send.json'), 'utf8'))); } catch {}
 if (doNotSend.size > 0) console.log(`🚫 Loaded ${doNotSend.size} blacklisted emails`);
 
-const cleanQueue = queue.filter(e => !doNotSend.has(e));
+const sentSet = new Set(sentList);
+const cleanQueue = queue.filter(e => !doNotSend.has(e) && !sentSet.has(e));
 const totalToSendCount = ACCOUNTS.length * MAX_PER_ACCOUNT;
 const toSend = cleanQueue.slice(0, totalToSendCount);
 
