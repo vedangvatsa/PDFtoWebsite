@@ -11,26 +11,31 @@ const K4 = process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20
 const K5 = process.env.AGENTMAIL_API_KEY_5 || 'am_us_a1a368bc15d1fcdf46f8cc3a3dc4a1cb553d72913e3c0d6e2b74b912a9e6698c';
 const K6 = process.env.AGENTMAIL_API_KEY_6 || 'am_us_7c394f3ec04464e7faac0d1fa09c2bcd6b343d15fd0eefebd36f367b56845f68';
 
-const ACCOUNTS = [
-  { apiKey: K1, inbox: 'cvinbio@agentmail.to' },
-  { apiKey: K1, inbox: 'thankfulproblem853@agentmail.to' },
-  { apiKey: K1, inbox: 'bitterweather319@agentmail.to' },
-  { apiKey: K2, inbox: 'quaintmirror345@agentmail.to' },
-  { apiKey: K2, inbox: 'foolishglass765@agentmail.to' },
-  { apiKey: K2, inbox: 'curiousvideo725@agentmail.to' },
-  { apiKey: K3, inbox: 'creepymessage220@agentmail.to' },
-  { apiKey: K3, inbox: 'easyball343@agentmail.to' },
-  { apiKey: K3, inbox: 'bravewriter157@agentmail.to' },
-  { apiKey: K4, inbox: 'repulsivehappiness172@agentmail.to' },
-  { apiKey: K4, inbox: 'pricklyweather719@agentmail.to' },
-  { apiKey: K4, inbox: 'ashamedclass759@agentmail.to' },
-  { apiKey: K5, inbox: 'cvinbio-sender-2@agentmail.to' },
-  { apiKey: K5, inbox: 'adorablecharacter249@agentmail.to' },
-  { apiKey: K5, inbox: 'beautifulself926@agentmail.to' },
-  { apiKey: K6, inbox: 'cvinbio-sender-7@agentmail.to' },
-  { apiKey: K6, inbox: 'naughtylocation145@agentmail.to' },
-  { apiKey: K6, inbox: 'hurtinspiration418@agentmail.to' },
+const AGENTMAIL_ACCOUNTS = [
+  { apiKey: K1, inbox: 'cvinbio@agentmail.to', provider: 'agentmail' },
+  { apiKey: K1, inbox: 'thankfulproblem853@agentmail.to', provider: 'agentmail' },
+  { apiKey: K1, inbox: 'bitterweather319@agentmail.to', provider: 'agentmail' },
+  { apiKey: K2, inbox: 'quaintmirror345@agentmail.to', provider: 'agentmail' },
+  { apiKey: K2, inbox: 'foolishglass765@agentmail.to', provider: 'agentmail' },
+  { apiKey: K2, inbox: 'curiousvideo725@agentmail.to', provider: 'agentmail' },
+  { apiKey: K3, inbox: 'creepymessage220@agentmail.to', provider: 'agentmail' },
+  { apiKey: K3, inbox: 'easyball343@agentmail.to', provider: 'agentmail' },
+  { apiKey: K3, inbox: 'bravewriter157@agentmail.to', provider: 'agentmail' },
+  { apiKey: K4, inbox: 'repulsivehappiness172@agentmail.to', provider: 'agentmail' },
+  { apiKey: K4, inbox: 'pricklyweather719@agentmail.to', provider: 'agentmail' },
+  { apiKey: K4, inbox: 'ashamedclass759@agentmail.to', provider: 'agentmail' },
+  { apiKey: K5, inbox: 'cvinbio-sender-2@agentmail.to', provider: 'agentmail' },
+  { apiKey: K5, inbox: 'adorablecharacter249@agentmail.to', provider: 'agentmail' },
+  { apiKey: K5, inbox: 'beautifulself926@agentmail.to', provider: 'agentmail' },
+  { apiKey: K6, inbox: 'cvinbio-sender-7@agentmail.to', provider: 'agentmail' },
+  { apiKey: K6, inbox: 'naughtylocation145@agentmail.to', provider: 'agentmail' },
+  { apiKey: K6, inbox: 'hurtinspiration418@agentmail.to', provider: 'agentmail' },
 ];
+
+const VOIDMAIL_ACCOUNTS = JSON.parse(readFileSync(join(__dirname, 'voidmail-accounts.json'), 'utf8'))
+  .map(a => ({ apiKey: a.api_key, inbox: a.address, provider: 'voidmail' }));
+
+const ACCOUNTS = [...AGENTMAIL_ACCOUNTS, ...VOIDMAIL_ACCOUNTS];
 
 const MAX_PER_ACCOUNT = 100;
 
@@ -82,33 +87,58 @@ for (let accountIndex = 0; accountIndex < ACCOUNTS.length; accountIndex++) {
     if (limitReached) break;
 
     try {
-      const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(account.inbox)}/messages/send`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${account.apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ to: email, subject: 'your resume is probably invisible', html, text })
-    });
-    
-    const data = await res.json();
-    
-    if (res.ok) {
-      successfullySent.push(email);
-      logs.push({ email, status: 'sent', id: data.message_id, sentAt: new Date().toISOString(), account: account.inbox });
-      console.log(`[Account ${accountIndex + 1}] ✓ Sent → ${email}`);
-    } else {
-      failedEmails.push({ email, error: data.message || res.status });
-      logs.push({ email, status: 'failed', error: data.message || res.status, sentAt: new Date().toISOString(), account: account.inbox });
-      console.log(`[Account ${accountIndex + 1}] ✗ FAIL → ${email}: ${data.message || res.status}`);
+      let res, data;
       
-      if (data.message && (data.message.includes('Limit exceeded') || data.message.includes('Daily limit'))) {
-        console.log(`Account ${accountIndex + 1} limit reached. Skipping remaining batch.`);
-        limitReached = true;
+      if (account.provider === 'voidmail') {
+        res = await fetch('https://api.voidly.ai/v1/agent-mail/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${account.apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ to: email, subject: 'your resume is probably invisible', text, html })
+        });
+        data = await res.json();
+        
+        if (res.ok && data.sent) {
+          successfullySent.push(email);
+          logs.push({ email, status: 'sent', id: data.messageId, sentAt: new Date().toISOString(), account: account.inbox });
+          console.log(`[Account ${accountIndex + 1}] ✓ Sent → ${email}`);
+        } else {
+          failedEmails.push({ email, error: data.error || res.status });
+          logs.push({ email, status: 'failed', error: data.error || res.status, sentAt: new Date().toISOString(), account: account.inbox });
+          console.log(`[Account ${accountIndex + 1}] ✗ FAIL → ${email}: ${data.error || res.status}`);
+        }
+        await new Promise(r => setTimeout(r, 300));
+      } else {
+        res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(account.inbox)}/messages/send`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${account.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ to: email, subject: 'your resume is probably invisible', html, text })
+      });
+      
+      data = await res.json();
+      
+      if (res.ok) {
+        successfullySent.push(email);
+        logs.push({ email, status: 'sent', id: data.message_id, sentAt: new Date().toISOString(), account: account.inbox });
+        console.log(`[Account ${accountIndex + 1}] ✓ Sent → ${email}`);
+      } else {
+        failedEmails.push({ email, error: data.message || res.status });
+        logs.push({ email, status: 'failed', error: data.message || res.status, sentAt: new Date().toISOString(), account: account.inbox });
+        console.log(`[Account ${accountIndex + 1}] ✗ FAIL → ${email}: ${data.message || res.status}`);
+        
+        if (data.message && (data.message.includes('Limit exceeded') || data.message.includes('Daily limit'))) {
+          console.log(`Account ${accountIndex + 1} limit reached. Skipping remaining batch.`);
+          limitReached = true;
+        }
       }
-    }
-    
-    await new Promise(r => setTimeout(r, 600)); 
+      
+      await new Promise(r => setTimeout(r, 600));
+      } 
   } catch (e) {
     failedEmails.push({ email, error: e.message });
     console.log(`✗ ERROR → ${email}: ${e.message}`);
