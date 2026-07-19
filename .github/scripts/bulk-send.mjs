@@ -109,11 +109,11 @@ const CTAS = [
 ];
 
 const SIGNATURES = [
-  'Free. No credit card. &mdash; cvin.bio',
-  'No signup needed. &mdash; cvin.bio',
-  '100% free. &mdash; cvin.bio',
-  'No catch, no cost. &mdash; cvin.bio',
-  'Built free for job seekers. &mdash; cvin.bio',
+  'Free. No credit card. &mdash; cvin.bio<br><br>Also: we post daily tech job openings on <a href="https://t.me/techjobsdaily" style="color:#2563eb;text-decoration:none">Telegram</a>.',
+  'No signup needed. &mdash; cvin.bio<br><br>P.S. Daily tech job alerts on <a href="https://t.me/techjobsdaily" style="color:#2563eb;text-decoration:none">t.me/techjobsdaily</a>.',
+  '100% free. &mdash; cvin.bio<br><br>Job hunting? Join <a href="https://t.me/techjobsdaily" style="color:#2563eb;text-decoration:none">Tech Jobs Daily on Telegram</a>.',
+  'No catch, no cost. &mdash; cvin.bio<br><br>We also share fresh tech jobs daily on <a href="https://t.me/techjobsdaily" style="color:#2563eb;text-decoration:none">Telegram</a>.',
+  'Built free for job seekers. &mdash; cvin.bio<br><br>Daily tech job openings: <a href="https://t.me/techjobsdaily" style="color:#2563eb;text-decoration:none">t.me/techjobsdaily</a>',
 ];
 
 function getEmailVariant(accountIndex, inbox, provider) {
@@ -166,7 +166,7 @@ for (let accountIndex = 0; accountIndex < ACCOUNTS.length; accountIndex++) {
             'Authorization': `Bearer ${account.apiKey}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ to: email, subject: variant.subject, text: variant.text, html: variant.html })
+          body: JSON.stringify({ to: email, subject: variant.subject, text: variant.text, html: variant.html, from_name: 'CVinBio' })
         });
         data = await res.json();
         
