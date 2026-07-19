@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Send Batch of 1800 (18-Inbox, 6-Account)
+      - name: Send Batch of 9000 (90-Inbox, Agentmail + Voidmail)
         run: node .github/scripts/bulk-send.mjs
         env:
           AGENTMAIL_API_KEY: ${{ secrets.AGENTMAIL_API_KEY }}
