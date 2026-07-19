@@ -63,9 +63,75 @@ if (toSend.length === 0) {
   process.exit(0);
 }
 
-const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;max-width:480px;padding:16px;"><p style="font-size:22px;font-weight:900;color:#000;line-height:1.3;margin:0 0 12px">75% of resumes never reach a human.</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">A robot scans it for keywords. Rejects it in 3 minutes. Nobody read it.</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">A PDF sits in a folder. A <b>link</b> gets shared, clicked, and tracked.</p><p style="font-size:16px;font-weight:700;color:#000;margin:0 0 16px">Turn your CV into a live link. 2 minutes. Free.</p><a href="https://cvin.bio?utm_source=agentmail&amp;utm_medium=email&amp;utm_campaign=cold_v1" style="display:inline-block;padding:10px 28px;font-size:15px;font-weight:700;color:#fff;background:#2563eb;border-radius:50px;text-decoration:none">Make your CV a link &rarr;</a><p style="font-size:12px;color:#bbb;margin:10px 0 0">Free. No credit card. &mdash; cvin.bio</p></div>`;
+const SUBJECTS = [
+  'your resume is probably invisible',
+  'are recruiters even reading your resume?',
+  'your CV deserves more than a PDF',
+  '75% of resumes get rejected by a robot',
+  'stop sending PDFs',
+  'a recruiter spends 3 minutes on your resume',
+  'your resume vs a link — which wins?',
+  'PDFs die in folders. Links get clicked.',
+  'why your resume isn\'t getting responses',
+  'turn your CV into something people actually open',
+];
 
-const text = `75% of resumes never reach a human.\n\nA robot scans it for keywords. Rejects it in 3 minutes. Nobody read it.\n\nA PDF sits in a folder. A link gets shared, clicked, and tracked.\n\nTurn your CV into a live link. 2 minutes. Free.\n\nhttps://cvin.bio?utm_source=agentmail&utm_medium=email&utm_campaign=cold_v1`;
+const HEADLINES = [
+  '75% of resumes never reach a human.',
+  'A robot reads your resume before a human ever does.',
+  'Most resumes get scanned, scored, and rejected in 3 minutes.',
+  'Your resume is a PDF. PDFs sit in folders. Nobody opens folders.',
+  'Recruiters don\'t download attachments. They click links.',
+];
+
+const SUBLINES = [
+  'A robot scans it for keywords. Rejects it in 3 minutes. Nobody read it.',
+  'An ATS strips your formatting, hunts for keywords, and filters you out.',
+  'The ATS reads it first. If it doesn\'t like what it sees, a human never will.',
+  'Applicant tracking systems scan for keywords and reject in minutes.',
+  'Automated filters parse your CV and decide your fate before a human sees it.',
+];
+
+const MIDDLE_LINES = [
+  'A PDF sits in a folder. A <b>link</b> gets shared, clicked, and tracked.',
+  'A PDF gets downloaded and forgotten. A <b>link</b> gets opened and shared.',
+  'A PDF is a dead end. A <b>link</b> is a live, trackable page.',
+  'PDFs collect dust in downloads. <b>Links</b> get clicked, shared, and remembered.',
+  'A PDF is static. A <b>link</b> shows your work in motion.',
+];
+
+const CTAS = [
+  'Turn your CV into a live link. 2 minutes. Free.',
+  'Make your CV a link in 2 minutes. Free.',
+  'Convert your resume to a live link. Free, takes 2 minutes.',
+  'Get your CV online as a link. 2 minutes, no cost.',
+  'Your CV, but as a link. Free and takes 2 minutes.',
+];
+
+const SIGNATURES = [
+  'Free. No credit card. &mdash; cvin.bio',
+  'No signup needed. &mdash; cvin.bio',
+  '100% free. &mdash; cvin.bio',
+  'No catch, no cost. &mdash; cvin.bio',
+  'Built free for job seekers. &mdash; cvin.bio',
+];
+
+function getEmailVariant(accountIndex) {
+  const i = accountIndex;
+  const subject = SUBJECTS[i % SUBJECTS.length];
+  const headline = HEADLINES[i % HEADLINES.length];
+  const subline = SUBLINES[i % SUBLINES.length];
+  const middle = MIDDLE_LINES[i % MIDDLE_LINES.length];
+  const cta = CTAS[i % CTAS.length];
+  const sig = SIGNATURES[i % SIGNATURES.length];
+  const utm = `cold_v${(i % 5) + 1}`;
+  
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;max-width:480px;padding:16px;"><p style="font-size:22px;font-weight:900;color:#000;line-height:1.3;margin:0 0 12px">${headline}</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">${subline}</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">${middle}</p><p style="font-size:16px;font-weight:700;color:#000;margin:0 0 16px">${cta}</p><a href="https://cvin.bio?utm_source=agentmail&amp;utm_medium=email&amp;utm_campaign=${utm}" style="display:inline-block;padding:10px 28px;font-size:15px;font-weight:700;color:#fff;background:#2563eb;border-radius:50px;text-decoration:none">Make your CV a link &rarr;</a><p style="font-size:12px;color:#bbb;margin:10px 0 0">${sig}</p></div>`;
+  
+  const text = `${headline}\n\n${subline.replace(/<[^>]+>/g, '')}\n\n${middle.replace(/<[^>]+>/g, '')}\n\n${cta}\n\nhttps://cvin.bio?utm_source=agentmail&utm_medium=email&utm_campaign=${utm}`;
+  
+  return { subject, html, text };
+}
 
 let successfullySent = [];
 let failedEmails = [];
@@ -80,7 +146,8 @@ for (let accountIndex = 0; accountIndex < ACCOUNTS.length; accountIndex++) {
 
   if (accountBatch.length === 0) continue;
 
-  console.log(`\n--- Using Account ${accountIndex + 1}: ${account.inbox} ---`);
+  const variant = getEmailVariant(accountIndex);
+  console.log(`\n--- Using Account ${accountIndex + 1}: ${account.inbox} (subject: "${variant.subject}") ---`);
   let limitReached = false;
 
   for (const email of accountBatch) {
@@ -96,7 +163,7 @@ for (let accountIndex = 0; accountIndex < ACCOUNTS.length; accountIndex++) {
             'Authorization': `Bearer ${account.apiKey}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ to: email, subject: 'your resume is probably invisible', text, html })
+          body: JSON.stringify({ to: email, subject: variant.subject, text: variant.text, html: variant.html })
         });
         data = await res.json();
         
@@ -117,7 +184,7 @@ for (let accountIndex = 0; accountIndex < ACCOUNTS.length; accountIndex++) {
           'Authorization': `Bearer ${account.apiKey}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ to: email, subject: 'your resume is probably invisible', html, text })
+        body: JSON.stringify({ to: email, subject: variant.subject, html: variant.html, text: variant.text })
       });
       
       data = await res.json();
