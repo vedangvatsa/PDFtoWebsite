@@ -20,13 +20,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Send Batch of 1200 (12-Inbox Penta-Account)
+      - name: Send Batch of 1500 (15-Inbox, 5-Account)
         run: node .github/scripts/bulk-send.mjs
         env:
           AGENTMAIL_API_KEY: ${{ secrets.AGENTMAIL_API_KEY }}
           AGENTMAIL_API_KEY_2: ${{ secrets.AGENTMAIL_API_KEY_2 }}
           AGENTMAIL_API_KEY_3: ${{ secrets.AGENTMAIL_API_KEY_3 }}
           AGENTMAIL_API_KEY_4: ${{ secrets.AGENTMAIL_API_KEY_4 }}
+          AGENTMAIL_API_KEY_5: ${{ secrets.AGENTMAIL_API_KEY_5 }}
 
       - name: Refresh Analytics Register
         run: node .github/scripts/refresh-stats.mjs
@@ -35,6 +36,7 @@ jobs:
           AGENTMAIL_API_KEY_2: ${{ secrets.AGENTMAIL_API_KEY_2 }}
           AGENTMAIL_API_KEY_3: ${{ secrets.AGENTMAIL_API_KEY_3 }}
           AGENTMAIL_API_KEY_4: ${{ secrets.AGENTMAIL_API_KEY_4 }}
+          AGENTMAIL_API_KEY_5: ${{ secrets.AGENTMAIL_API_KEY_5 }}
 
       - name: Generate ROI Summary
         run: |
