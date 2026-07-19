@@ -116,7 +116,7 @@ const SIGNATURES = [
   'Built free for job seekers. &mdash; cvin.bio',
 ];
 
-function getEmailVariant(accountIndex) {
+function getEmailVariant(accountIndex, inbox, provider) {
   const i = accountIndex;
   const subject = SUBJECTS[i % SUBJECTS.length];
   const headline = HEADLINES[i % HEADLINES.length];
@@ -124,11 +124,14 @@ function getEmailVariant(accountIndex) {
   const middle = MIDDLE_LINES[i % MIDDLE_LINES.length];
   const cta = CTAS[i % CTAS.length];
   const sig = SIGNATURES[i % SIGNATURES.length];
-  const utm = `cold_v${(i % 5) + 1}`;
+  const utmCampaign = `cold_v${(i % 5) + 1}`;
+  const utmContent = `inbox_${String(i + 1).padStart(2, '0')}_${inbox.split('@')[0]}`;
+  const utmSource = provider || 'agentmail';
   
-  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;max-width:480px;padding:16px;"><p style="font-size:22px;font-weight:900;color:#000;line-height:1.3;margin:0 0 12px">${headline}</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">${subline}</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">${middle}</p><p style="font-size:16px;font-weight:700;color:#000;margin:0 0 16px">${cta}</p><a href="https://cvin.bio?utm_source=agentmail&amp;utm_medium=email&amp;utm_campaign=${utm}" style="display:inline-block;padding:10px 28px;font-size:15px;font-weight:700;color:#fff;background:#2563eb;border-radius:50px;text-decoration:none">Make your CV a link &rarr;</a><p style="font-size:12px;color:#bbb;margin:10px 0 0">${sig}</p></div>`;
+  const trackingPixel = `<img src="https://cvin.bio/api/email-open?campaign=${utmCampaign}&content=${utmContent}&source=${utmSource}" width="1" height="1" alt="" style="display:none;border:0;outline:none;text-decoration:none"/>`;
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;max-width:480px;padding:16px;"><p style="font-size:22px;font-weight:900;color:#000;line-height:1.3;margin:0 0 12px">${headline}</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">${subline}</p><p style="font-size:15px;color:#333;line-height:1.5;margin:0 0 8px">${middle}</p><p style="font-size:16px;font-weight:700;color:#000;margin:0 0 16px">${cta}</p><a href="https://cvin.bio?utm_source=${utmSource}&amp;utm_medium=email&amp;utm_campaign=${utmCampaign}&amp;utm_content=${utmContent}" style="display:inline-block;padding:10px 28px;font-size:15px;font-weight:700;color:#fff;background:#2563eb;border-radius:50px;text-decoration:none">Make your CV a link &rarr;</a><p style="font-size:12px;color:#bbb;margin:10px 0 0">${sig}</p>${trackingPixel}</div>`;
   
-  const text = `${headline}\n\n${subline.replace(/<[^>]+>/g, '')}\n\n${middle.replace(/<[^>]+>/g, '')}\n\n${cta}\n\nhttps://cvin.bio?utm_source=agentmail&utm_medium=email&utm_campaign=${utm}`;
+  const text = `${headline}\n\n${subline.replace(/<[^>]+>/g, '')}\n\n${middle.replace(/<[^>]+>/g, '')}\n\n${cta}\n\nhttps://cvin.bio?utm_source=${utmSource}&utm_medium=email&utm_campaign=${utmCampaign}&utm_content=${utmContent}`;
   
   return { subject, html, text };
 }
@@ -146,7 +149,7 @@ for (let accountIndex = 0; accountIndex < ACCOUNTS.length; accountIndex++) {
 
   if (accountBatch.length === 0) continue;
 
-  const variant = getEmailVariant(accountIndex);
+  const variant = getEmailVariant(accountIndex, account.inbox, account.provider);
   console.log(`\n--- Using Account ${accountIndex + 1}: ${account.inbox} (subject: "${variant.subject}") ---`);
   let limitReached = false;
 
