@@ -57,7 +57,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/scripts/email-list-clean.json .github/scripts/sent-emails.json .github/scripts/email-logs.json
+          git add .github/scripts/agentmail-list.json .github/scripts/sent-emails.json .github/scripts/email-logs.json
           git commit -m "Update email campaign state [skip ci]" || echo "No changes to commit"
           git pull --rebase origin main || true
           git push || { echo "Push failed, retrying after pull..."; git pull --rebase origin main && git push; }

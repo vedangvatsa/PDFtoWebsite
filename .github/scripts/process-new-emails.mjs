@@ -4,7 +4,7 @@ import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const CLEAN_LIST_PATH = join(__dirname, 'email-list-clean.json');
+const CLEAN_LIST_PATH = join(__dirname, 'agentmail-list.json');
 const SENT_PATH = join(__dirname, 'sent-emails.json');
 const INPUT_PATH = join(__dirname, 'new-emails.txt');
 

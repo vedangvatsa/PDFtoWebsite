@@ -25,7 +25,7 @@ const ACCOUNTS = [
 
 const MAX_PER_ACCOUNT = 100;
 
-const CLEAN_LIST_PATH = join(__dirname, 'email-list-clean.json');
+const CLEAN_LIST_PATH = join(__dirname, 'agentmail-list.json');
 const LOGS_PATH = join(__dirname, 'email-logs.json');
 const SENT_PATH = join(__dirname, 'sent-emails.json');
 
