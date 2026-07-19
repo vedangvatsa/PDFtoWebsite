@@ -3,13 +3,24 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const K1 = process.env.AGENTMAIL_API_KEY || 'am_us_bd628380488f632397ce6b30b630c55a76e1ed5fee96860b5b359332ac7ff7c6';
+const K2 = process.env.AGENTMAIL_API_KEY_2 || 'am_us_b0299617e7fa8dc355c3aaa4eb8464ff6b972f0609ebe664ed798cf7032e47f7';
+const K3 = process.env.AGENTMAIL_API_KEY_3 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894';
+const K4 = process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20105471a6a0feaef0e212f152887c5e40c0f00';
+
 const ACCOUNTS = {
-  'cvinbio@agentmail.to': process.env.AGENTMAIL_API_KEY || 'am_us_bd628380488f632397ce6b30b630c55a76e1ed5fee96860b5b359332ac7ff7c6',
-  'foolishglass765@agentmail.to': process.env.AGENTMAIL_API_KEY_2 || 'am_us_b0299617e7fa8dc355c3aaa4eb8464ff6b972f0609ebe664ed798cf7032e47f7',
-  'quaintmirror345@agentmail.to': process.env.AGENTMAIL_API_KEY_2 || 'am_us_b0299617e7fa8dc355c3aaa4eb8464ff6b972f0609ebe664ed798cf7032e47f7',
-  'creepymessage220@agentmail.to': process.env.AGENTMAIL_API_KEY_3 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894',
-  'repulsivehappiness172@agentmail.to': process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20105471a6a0feaef0e212f152887c5e40c0f00',
-  'easyball343@agentmail.to': process.env.AGENTMAIL_API_KEY_5 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894'
+  'cvinbio@agentmail.to': K1,
+  'thankfulproblem853@agentmail.to': K1,
+  'bitterweather319@agentmail.to': K1,
+  'quaintmirror345@agentmail.to': K2,
+  'foolishglass765@agentmail.to': K2,
+  'curiousvideo725@agentmail.to': K2,
+  'creepymessage220@agentmail.to': K3,
+  'easyball343@agentmail.to': K3,
+  'bravewriter157@agentmail.to': K3,
+  'repulsivehappiness172@agentmail.to': K4,
+  'pricklyweather719@agentmail.to': K4,
+  'ashamedclass759@agentmail.to': K4,
 };
 
 const LOGS_PATH = join(__dirname, 'email-logs.json');

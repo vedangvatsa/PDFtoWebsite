@@ -4,27 +4,24 @@ import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const K1 = process.env.AGENTMAIL_API_KEY || 'am_us_bd628380488f632397ce6b30b630c55a76e1ed5fee96860b5b359332ac7ff7c6';
+const K2 = process.env.AGENTMAIL_API_KEY_2 || 'am_us_b0299617e7fa8dc355c3aaa4eb8464ff6b972f0609ebe664ed798cf7032e47f7';
+const K3 = process.env.AGENTMAIL_API_KEY_3 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894';
+const K4 = process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20105471a6a0feaef0e212f152887c5e40c0f00';
+
 const ACCOUNTS = [
-  {
-    apiKey: process.env.AGENTMAIL_API_KEY || 'am_us_bd628380488f632397ce6b30b630c55a76e1ed5fee96860b5b359332ac7ff7c6',
-    inbox: 'cvinbio@agentmail.to'
-  },
-  {
-    apiKey: process.env.AGENTMAIL_API_KEY_2 || 'am_us_b0299617e7fa8dc355c3aaa4eb8464ff6b972f0609ebe664ed798cf7032e47f7',
-    inbox: 'quaintmirror345@agentmail.to' // Jessica Miller
-  },
-  {
-    apiKey: process.env.AGENTMAIL_API_KEY_3 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894',
-    inbox: 'creepymessage220@agentmail.to' // Michael Smith
-  },
-  {
-    apiKey: process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20105471a6a0feaef0e212f152887c5e40c0f00',
-    inbox: 'repulsivehappiness172@agentmail.to' // Alex Carter
-  },
-  {
-    apiKey: process.env.AGENTMAIL_API_KEY_5 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894',
-    inbox: 'easyball343@agentmail.to' // CVinBio Replies
-  }
+  { apiKey: K1, inbox: 'cvinbio@agentmail.to' },
+  { apiKey: K1, inbox: 'thankfulproblem853@agentmail.to' },
+  { apiKey: K1, inbox: 'bitterweather319@agentmail.to' },
+  { apiKey: K2, inbox: 'quaintmirror345@agentmail.to' },
+  { apiKey: K2, inbox: 'foolishglass765@agentmail.to' },
+  { apiKey: K2, inbox: 'curiousvideo725@agentmail.to' },
+  { apiKey: K3, inbox: 'creepymessage220@agentmail.to' },
+  { apiKey: K3, inbox: 'easyball343@agentmail.to' },
+  { apiKey: K3, inbox: 'bravewriter157@agentmail.to' },
+  { apiKey: K4, inbox: 'repulsivehappiness172@agentmail.to' },
+  { apiKey: K4, inbox: 'pricklyweather719@agentmail.to' },
+  { apiKey: K4, inbox: 'ashamedclass759@agentmail.to' },
 ];
 
 const MAX_PER_ACCOUNT = 100;
