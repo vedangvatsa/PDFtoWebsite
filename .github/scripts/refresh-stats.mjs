@@ -9,6 +9,7 @@ const K3 = process.env.AGENTMAIL_API_KEY_3 || 'am_us_2c975d4bbda82b90af084f0c293
 const K4 = process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20105471a6a0feaef0e212f152887c5e40c0f00';
 
 const K5 = process.env.AGENTMAIL_API_KEY_5 || 'am_us_a1a368bc15d1fcdf46f8cc3a3dc4a1cb553d72913e3c0d6e2b74b912a9e6698c';
+const K6 = process.env.AGENTMAIL_API_KEY_6 || 'am_us_7c394f3ec04464e7faac0d1fa09c2bcd6b343d15fd0eefebd36f367b56845f68';
 
 const ACCOUNTS = {
   'cvinbio@agentmail.to': K1,
@@ -26,6 +27,9 @@ const ACCOUNTS = {
   'cvinbio-sender-2@agentmail.to': K5,
   'adorablecharacter249@agentmail.to': K5,
   'beautifulself926@agentmail.to': K5,
+  'cvinbio-sender-7@agentmail.to': K6,
+  'naughtylocation145@agentmail.to': K6,
+  'hurtinspiration418@agentmail.to': K6,
 };
 
 const LOGS_PATH = join(__dirname, 'email-logs.json');
