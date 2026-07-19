@@ -20,6 +20,10 @@ const ACCOUNTS = [
   {
     apiKey: process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20105471a6a0feaef0e212f152887c5e40c0f00',
     inbox: 'repulsivehappiness172@agentmail.to' // Alex Carter
+  },
+  {
+    apiKey: process.env.AGENTMAIL_API_KEY_5 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894',
+    inbox: 'easyball343@agentmail.to' // CVinBio Replies
   }
 ];
 
