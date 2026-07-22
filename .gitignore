@@ -48,11 +48,6 @@ mcp-package/node_modules
 # lockfiles
 .github/scripts/.x-post.lock
 .github/scripts/ses-*.json
-.github/scripts/*-accounts.json
-.github/scripts/*-inboxes.json
-.github/scripts/prosple-sent.json
-.github/scripts/prosple-list.json
-.github/scripts/bounced-emails.json
 secrets-to-purge.txt
 posthog-secret-to-purge.txt
 scratch/check_supabase.mjs
