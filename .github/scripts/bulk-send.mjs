@@ -4,33 +4,10 @@ import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const K1 = process.env.AGENTMAIL_API_KEY || 'am_us_bd628380488f632397ce6b30b630c55a76e1ed5fee96860b5b359332ac7ff7c6';
-const K2 = process.env.AGENTMAIL_API_KEY_2 || 'am_us_b0299617e7fa8dc355c3aaa4eb8464ff6b972f0609ebe664ed798cf7032e47f7';
-const K3 = process.env.AGENTMAIL_API_KEY_3 || 'am_us_2c975d4bbda82b90af084f0c2936a431f3a5020686247561a75501e9581d5894';
-const K4 = process.env.AGENTMAIL_API_KEY_4 || 'am_us_1c24769df244dbbcd0657e51f20105471a6a0feaef0e212f152887c5e40c0f00';
-const K5 = process.env.AGENTMAIL_API_KEY_5 || 'am_us_a1a368bc15d1fcdf46f8cc3a3dc4a1cb553d72913e3c0d6e2b74b912a9e6698c';
-const K6 = process.env.AGENTMAIL_API_KEY_6 || 'am_us_7c394f3ec04464e7faac0d1fa09c2bcd6b343d15fd0eefebd36f367b56845f68';
-
-const AGENTMAIL_ACCOUNTS = [
-  { apiKey: K1, inbox: 'cvinbio@agentmail.to', provider: 'agentmail' },
-  { apiKey: K1, inbox: 'thankfulproblem853@agentmail.to', provider: 'agentmail' },
-  { apiKey: K1, inbox: 'bitterweather319@agentmail.to', provider: 'agentmail' },
-  { apiKey: K2, inbox: 'quaintmirror345@agentmail.to', provider: 'agentmail' },
-  { apiKey: K2, inbox: 'foolishglass765@agentmail.to', provider: 'agentmail' },
-  { apiKey: K2, inbox: 'curiousvideo725@agentmail.to', provider: 'agentmail' },
-  { apiKey: K3, inbox: 'creepymessage220@agentmail.to', provider: 'agentmail' },
-  { apiKey: K3, inbox: 'easyball343@agentmail.to', provider: 'agentmail' },
-  { apiKey: K3, inbox: 'bravewriter157@agentmail.to', provider: 'agentmail' },
-  { apiKey: K4, inbox: 'repulsivehappiness172@agentmail.to', provider: 'agentmail' },
-  { apiKey: K4, inbox: 'pricklyweather719@agentmail.to', provider: 'agentmail' },
-  { apiKey: K4, inbox: 'ashamedclass759@agentmail.to', provider: 'agentmail' },
-  { apiKey: K5, inbox: 'cvinbio-sender-2@agentmail.to', provider: 'agentmail' },
-  { apiKey: K5, inbox: 'adorablecharacter249@agentmail.to', provider: 'agentmail' },
-  { apiKey: K5, inbox: 'beautifulself926@agentmail.to', provider: 'agentmail' },
-  { apiKey: K6, inbox: 'cvinbio-sender-7@agentmail.to', provider: 'agentmail' },
-  { apiKey: K6, inbox: 'naughtylocation145@agentmail.to', provider: 'agentmail' },
-  { apiKey: K6, inbox: 'hurtinspiration418@agentmail.to', provider: 'agentmail' },
-];
+const AGENTMAIL_ACCOUNTS_RAW = JSON.parse(readFileSync(join(__dirname, 'agentmail-accounts.json'), 'utf8'));
+const AGENTMAIL_ACCOUNTS = AGENTMAIL_ACCOUNTS_RAW.flatMap(a =>
+  a.inboxes.map(inbox => ({ apiKey: a.api_key, inbox, provider: 'agentmail' }))
+);
 
 const VOIDMAIL_ACCOUNTS = JSON.parse(readFileSync(join(__dirname, 'voidmail-accounts.json'), 'utf8'))
   .map(a => ({ apiKey: a.api_key, inbox: a.address, provider: 'voidmail' }));
