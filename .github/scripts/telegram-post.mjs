@@ -504,6 +504,7 @@ function htmlToLinkedInText(html) {
     .replace(/&#39;/g, "'")
     .replace(/utm_medium=telegram/g, 'utm_medium=linkedin')
     .replace(/(?:\r?\n)*Turn your CV into a Website:[\s\S]*$/, '')
+    .replace(/^• .+$/gm, (line) => line + '\n')
     .trim();
 }
 
