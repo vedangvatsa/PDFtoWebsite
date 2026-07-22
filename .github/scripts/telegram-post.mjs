@@ -77,6 +77,8 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 const JOBS_PER_POST = 10;
 const FETCH_LIMIT = 500; // fetch extra to allow company dedup
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN || '';
+const LINKEDIN_PERSON_URN = process.env.LINKEDIN_PERSON_URN || '';
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -479,6 +481,65 @@ async function sendTelegramMessage(text) {
   return data.result;
 }
 
+// ── Convert Telegram HTML message to LinkedIn plain text ─────────────────
+
+function htmlToLinkedInText(html) {
+  return html
+    .replace(/<b>/g, '')
+    .replace(/<\/b>/g, '')
+    .replace(/<a\s+href=["']([^"']+)["'][^>]*>([^<]*)<\/a>/gi, (m, url, text) => {
+      const t = text.trim().toLowerCase();
+      if (!t) return url;
+      try {
+        const host = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+        if (host === t || host.startsWith(t + '.') || host.endsWith('.' + t)) return url;
+      } catch {}
+      return `${text}: ${url}`;
+    })
+    .replace(/\n_\n/g, '\n\n')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/utm_medium=telegram/g, 'utm_medium=linkedin')
+    .replace(/(?:\r?\n)*Turn your CV into a Website:[\s\S]*$/, '')
+    .trim();
+}
+
+// ── Cross-post the job list to LinkedIn (vedangvatsa) ───────────────────
+
+async function postToLinkedIn(text) {
+  const res = await fetch('https://api.linkedin.com/rest/posts', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${LINKEDIN_ACCESS_TOKEN}`,
+      'Content-Type': 'application/json',
+      'LinkedIn-Version': '202604',
+      'X-Restli-Protocol-Version': '2.0.0',
+    },
+    body: JSON.stringify({
+      author: LINKEDIN_PERSON_URN,
+      commentary: text,
+      visibility: 'PUBLIC',
+      distribution: {
+        feedDistribution: 'MAIN_FEED',
+        targetEntities: [],
+        thirdPartyDistributionChannels: [],
+      },
+      lifecycleState: 'PUBLISHED',
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`LinkedIn API error: ${res.status} ${err}`);
+  }
+
+  const postUrn = res.headers.get('x-restli-id') || 'unknown';
+  return postUrn;
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -531,6 +592,19 @@ async function main() {
   } else {
     const result = await sendTelegramMessage(message);
     console.log(`  Posted. Message ID: ${result.message_id}`);
+  }
+
+  // Cross-post to LinkedIn (vedangvatsa) using same job list
+  if (LINKEDIN_ACCESS_TOKEN && LINKEDIN_PERSON_URN) {
+    try {
+      const linkedInText = htmlToLinkedInText(message);
+      const linkedInUrn = await postToLinkedIn(linkedInText);
+      console.log(`  ✅ LinkedIn cross-post: ${linkedInUrn}`);
+    } catch (e) {
+      console.warn(`  ⚠️ LinkedIn cross-post failed: ${e.message}`);
+    }
+  } else {
+    console.log('  ⏭ LinkedIn cross-post skipped (no LINKEDIN_ACCESS_TOKEN/PERSON_URN)');
   }
 
   // 4. Mark ONLY the picked jobs as posted
