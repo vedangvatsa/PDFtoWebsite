@@ -76,6 +76,96 @@ const INSTITUTION_RE = /\b(university|college|institute|school|academy|polytechn
 const LINKEDIN_RE = /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/[\w-]+/i;
 const GITHUB_RE = /(?:https?:\/\/)?(?:www\.)?github\.com\/[\w-]+/i;
 
+// ─── PDF Space Reconstruction ────────────────────────────────────────────────
+// pdf-parse often loses spaces between words. This function inserts likely
+// missing spaces using regex heuristics before the text is sent to Gemini.
+
+// Common abbreviations and tech terms that should NOT be split by camelCase
+const NO_SPLIT_CAMELCASE = new Set([
+  'JavaScript', 'TypeScript', 'NodeJS', 'ReactJS', 'VueJS', 'NextJS',
+  'GitHub', 'GitLab', 'YouTube', 'LinkedIn', 'WhatsApp', 'FaceBook',
+  'PowerPoint', 'AccessDB', 'MySpace', 'ChatGPT',
+]);
+
+export function reconstructMissingSpaces(text: string): string {
+  // Protect known multi-word terms and tech names from being split
+  const protections: string[] = [];
+  let safe = text;
+
+  // Protect URLs, emails, and file paths
+  safe = safe.replace(/(?:https?:\/\/|www\.)\S+/gi, (m) => {
+    protections.push(m);
+    return `__PROT${protections.length - 1}__`;
+  });
+  safe = safe.replace(/[\w.+-]+@[\w-]+\.[a-z]{2,}/gi, (m) => {
+    protections.push(m);
+    return `__PROT${protections.length - 1}__`;
+  });
+
+  // Protect known camelCase tech terms
+  for (const term of NO_SPLIT_CAMELCASE) {
+    const re = new RegExp(term, 'gi');
+    safe = safe.replace(re, (m) => {
+      protections.push(m);
+      return `__PROT${protections.length - 1}__`;
+    });
+  }
+
+  // Protect file extensions and version numbers like ".js", "v2.0", "C++"
+  safe = safe.replace(/\b[A-Za-z]\+\+/g, (m) => {
+    protections.push(m);
+    return `__PROT${protections.length - 1}__`;
+  });
+  safe = safe.replace(/\.\w{1,4}\b/g, (m) => {
+    protections.push(m);
+    return `__PROT${protections.length - 1}__`;
+  });
+
+  // 1. Insert space at lowercase→uppercase boundary (camelCase)
+  //    "indraftingRFPs" → "indrafting RFPs"
+  //    But NOT for all-caps sequences like "RFPs" or acronyms
+  safe = safe.replace(/([a-z])([A-Z][a-z])/g, '$1 $2');
+
+  // 2. Insert space at lowercase→uppercase acronym boundary
+  //    "winningcontractworth" has no camelCase, so also handle all-lowercase runs
+  //    "proactive&reactiveselling" → "proactive & reactiveselling"
+  safe = safe.replace(/([a-z])&/gi, '$1 & ');
+  safe = safe.replace(/&([a-zA-Z])/gi, '& $1');
+
+  // 3. Insert space around + when between word characters
+  //    "10+clients" → "10+ clients", "proactive+reactive" → "proactive+ reactive"
+  safe = safe.replace(/([a-zA-Z])\+([a-zA-Z])/g, '$1+ $2');
+  safe = safe.replace(/(\d)\+([a-zA-Z])/g, '$1+ $2');
+
+  // 4. Insert space at letter→number boundary
+  //    "winningcontractworth$10Mn" → "winningcontractworth $10Mn"
+  safe = safe.replace(/([a-zA-Z])(\$)/g, '$1 $2');
+  safe = safe.replace(/(\$)([a-zA-Z])/g, '$1 $2');
+  safe = safe.replace(/([a-zA-Z])(\d)/g, '$1 $2');
+  safe = safe.replace(/(\d)([a-zA-Z])/g, '$1 $2');
+
+  // 5. Insert space after comma/period/semicolon when directly followed by a letter
+  safe = safe.replace(/,([a-zA-Z])/g, ', $1');
+  safe = safe.replace(/\.([A-Z][a-z])/g, '. $1');
+
+  // 6. Insert space before bullet character if jammed against preceding word
+  safe = safe.replace(/([a-zA-Z])•/g, '$1 •');
+
+  // 7. Insert space after closing paren before a letter
+  safe = safe.replace(/\)([a-zA-Z])/g, ') $1');
+
+  // 8. Insert space before opening paren after a letter
+  safe = safe.replace(/([a-zA-Z])\(/g, '$1 (');
+
+  // Collapse multiple spaces
+  safe = safe.replace(/\s+/g, ' ').trim();
+
+  // Restore protected tokens
+  safe = safe.replace(/__PROT(\d+)__/g, (_, i) => protections[parseInt(i)]);
+
+  return safe;
+}
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function cleanLine(line: string): string {
