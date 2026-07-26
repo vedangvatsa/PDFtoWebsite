@@ -44,16 +44,16 @@ const PURE_AI_COMPANIES = new Set([
   'mistral', 'cohere', 'inflection', 'character', 'reka', 'aleph alpha',
   'stability ai', 'midjourney',
   'cerebras', 'groq', 'sambanova', 'tenstorrent', 'graphcore', 'd-matrix',
-  'together ai', 'fireworks', 'anyscale', 'modal', 'baseten', 'replicate',
-  'hugging face', 'weights & biases', 'wandb', 'langchain', 'pinecone',
+  'together ai', 'fireworks', 'fireworks ai', 'anyscale', 'modal', 'baseten', 'replicate',
+  'hugging face', 'huggingface', 'weights & biases', 'wandb', 'langchain', 'pinecone',
   'weaviate', 'vectara', 'unstructured', 'arize',
   'cursor', 'perplexity', 'replit', 'jasper', 'grammarly', 'descript',
   'elevenlabs', 'synthesia', 'heygen', 'runway', 'pika', 'ideogram',
   'suno', 'udio', 'livekit', 'deepgram', 'moveworks', 'cresta',
   'cognition', 'sierra', 'poolside', 'contextual ai', 'tavus',
-  'abnormal security', 'observe ai', 'c3 ai', 'datarobot', 'snorkel',
-  'coreweave', 'lambda', 'databricks', 'scale ai', 'nvidia',
-  'waymo', 'cruise', 'nuro', 'figure', 'skydio', 'shield ai',
+  'abnormal security', 'observe ai', 'c3 ai', 'c3.ai', 'datarobot', 'snorkel', 'snorkel ai',
+  'coreweave', 'lambda', 'databricks', 'scale ai', 'scaleai', 'nvidia',
+  'waymo', 'cruise', 'nuro', 'figure', 'skydio', 'shield ai', 'shieldai',
   'physical intelligence', 'sanctuary ai', 'insitro', 'pathai',
 ]);
 
@@ -62,19 +62,52 @@ const BIG_TECH_COMPANIES = new Set([
   'google', 'apple', 'microsoft', 'amazon', 'meta', 'tesla',
 ]);
 
+/** Normalize company strings so "OpenAI, Inc." / "Snorkel AI" match the allowlist. */
+function normalizeCompanyName(company) {
+  return (company || '')
+    .toLowerCase()
+    .trim()
+    .replace(/&amp;/g, '&')
+    .replace(/[,\s]+(?:inc\.?|llc|ltd\.?|corp\.?|gmbh|pty\.?|co\.?|plc|ag|se)\.?\s*$/i, '')
+    .replace(/\s*\(.*?\)/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Short/ambiguous allowlist names must match exactly (after normalize).
+// Longer brand names may match as a prefix ("OpenAI Research", "Anthropic PBC").
+const PURE_AI_EXACT_ONLY = new Set([
+  'sierra', 'figure', 'modal', 'lambda', 'cruise', 'character', 'reka',
+  'pika', 'udio', 'suno', 'arize', 'jasper', 'nuro', 'cohere', 'groq',
+]);
+
 function isPureAICompany(company) {
-  const c = company.toLowerCase().trim();
+  const c = normalizeCompanyName(company);
+  if (!c) return false;
+  if (PURE_AI_COMPANIES.has(c)) return true;
+
+  // "Foo AI" / "Foo.AI" → try base name (snorkel ai → snorkel)
+  const withoutAi = c.replace(/\s+ai$/, '').replace(/\.ai$/, '');
+  if (withoutAi !== c && PURE_AI_COMPANIES.has(withoutAi)) return true;
+
+  // Prefix variants for unambiguous brands only
   for (const name of PURE_AI_COMPANIES) {
-    if (c === name) return true;
+    if (PURE_AI_EXACT_ONLY.has(name) || name.length < 5) continue;
+    if (c.startsWith(name + ' ') || c.startsWith(name + ',') || c.startsWith(name + '.')) {
+      return true;
+    }
   }
   return false;
 }
 
 function isBigTech(company) {
-  const c = company.toLowerCase().trim();
+  const c = normalizeCompanyName(company);
+  if (!c) return false;
+  // Substring match is intentional: "Amazon Web Services (AWS)", "Google DeepMind"
   for (const name of BIG_TECH_COMPANIES) {
     if (c.includes(name)) return true;
   }
+  if (c.includes('aws') || c.includes('facebook')) return true;
   return false;
 }
 
@@ -235,14 +268,13 @@ function cleanLocation(loc) {
 }
 
 // ─── Fetch AI jobs from Supabase ─────────────────────────────────────────────
-const ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'remoteok'];
-
+// IMPORTANT: jobs.id is a UUID — ordering by id.desc does NOT return newest rows.
+// Always order by created_at (or published_at) for chronological recency.
 async function fetchJobs() {
-  const sourceFilter = ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
   const params = new URLSearchParams({
-    select: 'id,title,company,location,apply_url,source',
-    order: 'id.desc',
-    limit: '3000',
+    select: 'id,title,company,location,apply_url,source,created_at',
+    order: 'created_at.desc',
+    limit: String(FETCH_LIMIT),
   });
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?${params}`, {
@@ -401,14 +433,15 @@ async function main() {
   console.log(message.replace(/<[^>]*>/g, ''));
   console.log('---');
 
-  if (!DRY_RUN) {
-    const result = await sendTelegram(message);
-    console.log(`  ✅ Posted. Message ID: ${result.message_id}`);
-  } else {
-    console.log('  🏜️  Dry run — skipped posting.');
+  if (DRY_RUN) {
+    console.log('  🏜️  Dry run — skipped posting and dedup update.');
+    return;
   }
 
-  // 6. Update dedup file
+  // 6. Send + update dedup only on real posts
+  const result = await sendTelegram(message);
+  console.log(`  ✅ Posted. Message ID: ${result.message_id}`);
+
   const newUrls = [...postedUrls, ...jobs.map(j => j.apply_url)];
   savePosted(newUrls);
   console.log(`  Saved ${newUrls.length} total URLs to dedup file.`);
