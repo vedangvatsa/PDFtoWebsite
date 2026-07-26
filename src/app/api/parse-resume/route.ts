@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createClient } from '@/utils/supabase/server';
 import pdf from 'pdf-parse';
 import mammoth from 'mammoth';
-import { parseResumeText } from '@/lib/resume-parser';
+import { parseResumeText, reconstructMissingSpaces } from '@/lib/resume-parser';
 
 export const maxDuration = 60;
 
@@ -24,6 +24,7 @@ CRITICAL RULES:
 3. EXTRACT ALL PROFESSIONAL EXPERIENCE into "workExperience"! Even if it is labeled irregularly (e.g. 'Internships', 'Freelance', 'Partnerships', 'Self-Employed', 'Leadership'), aggressively map it to "workExperience" to ensure no primary job data is lost.
 4. CUSTOM SECTIONS RULE: If the CV contains ANY supplementary sections beyond work/education/skills, you MUST map them into "customSections". This includes but is not limited to: 'Awards', 'Achievements', 'Honors', 'Certifications', 'Licenses', 'Publications', 'Patents', 'Projects', 'Volunteering', 'Community Service', 'Languages', 'Interests', 'Hobbies', 'Testimonials', 'References', 'Courses', 'Training', 'Conferences', 'Memberships', 'Professional Affiliations', 'Research', 'Presentations', 'Extracurricular Activities', 'Competitions', 'Scholarships', 'Fellowships', 'Grants'. EXCLUSION: Do NOT create a customSection for Summary, Professional Summary, Profile, Objective, About Me, Career Summary, Executive Summary, Personal Statement, or Overview — these MUST go into the top-level "summary" field ONLY, never into customSections. Use this schema: { "id": "1", "userProfileId": "", "sectionTitle": "Exact Section Name From CV", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] }. EVERY distinct section in the CV that is not work/education/skills/summary MUST appear as a separate customSection. Do NOT silently skip any section!
 5. OCR CLEANING RULE: If the input contains garbled characters, aggressively apply reasoning to reconstruct the intended words. Maintain detailed descriptions and retain bullet point formatting.
+5b. SPACE RECONSTRUCTION RULE: PDF extraction often loses spaces between words, producing text like "Assistedinacquisitionof10+clients". You MUST reconstruct the correct spacing in ALL output fields. Carefully split concatenated words (e.g. "Assistedinacquisition" → "Assisted in acquisition", "proactive&reactiveselling" → "proactive & reactive selling", "winningcontractworth$10Mn" → "winning contract worth $10Mn"). Apply this to EVERY field including descriptions, titles, companies, degrees, and skills. Output text must read as natural English with proper word boundaries.
 6. LOCATION PRIVACY RULE: Do NOT extract full specific street addresses. ONLY output the generalized "City, Country" (e.g., "San Francisco, USA", "London, UK") for the personal location field!
 7. LINKS RULE: Extract ALL URLs/links found anywhere in the CV. Put GitHub in "github", LinkedIn in "linkedin", and a personal website/portfolio in "website". ALL other links (ResearchGate, Google Scholar, Twitter/X, Behance, Dribbble, Medium, Stack Overflow, Kaggle, ORCID, YouTube, Facebook, Instagram, or any other URL) MUST go into "additionalLinks" with a human-readable "label" (e.g. "ResearchGate", "Google Scholar", "Twitter") and the full "url". Do NOT drop any link!
 8. COMPLETENESS RULE: Count every distinct section heading in the CV. Every one must appear in your output (as workExperience, education, skills, or customSections). If your output has fewer sections than the CV, you are WRONG.
@@ -162,7 +163,7 @@ export async function POST(request: NextRequest) {
         }
         
         pageCount = pdfData.numpages;
-        extractedText = pdfData.text || '';
+        extractedText = reconstructMissingSpaces(pdfData.text || '');
         if (pdfData.numpages > 10) {
           return NextResponse.json({ error: `Document is ${pdfData.numpages} pages. Max 10.` }, { status: 400 });
         }
