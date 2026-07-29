@@ -49,18 +49,21 @@ jobs:
 
             ACCESS=$(python3 -c 'import json,sys; d=json.loads(sys.argv[1]); print(d.get("access_token") or "")' "$RESP")
             if [ -z "$ACCESS" ]; then
-              echo "OAuth refresh failed: $RESP"
+              echo "OAuth refresh failed (response redacted)"
               if [ -n "${CLOUDFLARE_API_TOKEN_FALLBACK:-}" ]; then
                 echo "Falling back to CLOUDFLARE_API_TOKEN secret"
+                echo "::add-mask::${CLOUDFLARE_API_TOKEN_FALLBACK}"
                 echo "CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN_FALLBACK}" >> "$GITHUB_ENV"
                 exit 0
               fi
               exit 1
             fi
+            echo "::add-mask::${ACCESS}"
             echo "CLOUDFLARE_API_TOKEN=${ACCESS}" >> "$GITHUB_ENV"
             echo "Cloudflare OAuth access token ready"
           elif [ -n "${CLOUDFLARE_API_TOKEN_FALLBACK:-}" ]; then
             echo "No refresh token; using CLOUDFLARE_API_TOKEN secret"
+            echo "::add-mask::${CLOUDFLARE_API_TOKEN_FALLBACK}"
             echo "CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN_FALLBACK}" >> "$GITHUB_ENV"
           else
             echo "Missing CLOUDFLARE_REFRESH_TOKEN and CLOUDFLARE_API_TOKEN"
