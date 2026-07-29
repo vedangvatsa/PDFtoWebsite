@@ -1,0 +1,85 @@
+name: Check Vercel inventory (temp)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List Vercel projects and domains
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          {
+            echo "### Vercel inventory"
+            if [ -z "${VERCEL_TOKEN:-}" ]; then
+              echo "NO_VERCEL_TOKEN in secrets"
+              exit 0
+            fi
+
+            echo "#### User"
+            curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com/v2/user | \
+              python3 -c 'import sys,json;d=json.load(sys.stdin);u=d.get("user") or d;print(f"- username: {u.get(\"username\")}");print(f"- email: {u.get(\"email\")}");print(f"- id: {u.get(\"uid\") or u.get(\"id\")}")' || echo "user lookup failed"
+
+            echo ""
+            echo "#### Teams"
+            curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com/v2/teams | \
+              python3 -c 'import sys,json;d=json.load(sys.stdin);ts=d.get("teams") or [];print("\n".join(f"- {t.get(\"name\")} slug={t.get(\"slug\")} id={t.get(\"id\")}" for t in ts) or "(none)")' || echo "teams lookup failed"
+
+            TEAM="${VERCEL_ORG_ID:-}"
+            echo ""
+            echo "#### Secrets context"
+            echo "- VERCEL_ORG_ID set: $([ -n "$TEAM" ] && echo yes || echo no)"
+            echo "- VERCEL_PROJECT_ID: ${VERCEL_PROJECT_ID:-"(none)"}"
+
+            echo ""
+            echo "#### Projects"
+            if [ -n "$TEAM" ]; then
+              URL="https://api.vercel.com/v9/projects?teamId=${TEAM}&limit=100"
+            else
+              URL="https://api.vercel.com/v9/projects?limit=100"
+            fi
+            curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" "$URL" > /tmp/projects.json
+            python3 <<'PY'
+import json, os, urllib.request
+token = os.environ["VERCEL_TOKEN"]
+team = os.environ.get("VERCEL_ORG_ID") or ""
+d = json.load(open("/tmp/projects.json"))
+if "error" in d:
+    print("API error:", d)
+    raise SystemExit(0)
+projects = d.get("projects") or []
+print(f"count: {len(projects)}")
+for p in projects:
+    pid = p["id"]
+    name = p.get("name")
+    qs = f"?teamId={team}" if team else ""
+    req = urllib.request.Request(
+        f"https://api.vercel.com/v9/projects/{pid}/domains{qs}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    try:
+        with urllib.request.urlopen(req) as r:
+            dom = json.load(r)
+        names = ", ".join(x.get("name", "") for x in dom.get("domains") or [])
+    except Exception as e:
+        names = f"domains_error:{e}"
+    print(f"- {name}")
+    print(f"  id: {pid}")
+    print(f"  framework: {p.get('framework')}")
+    print(f"  domains: [{names}]")
+    print(f"  crons: {p.get('crons')}")
+    print(f"  updatedAt: {p.get('updatedAt')}")
+PY
+
+            if [ -n "$TEAM" ]; then
+              echo ""
+              echo "#### Team domains"
+              curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v5/domains?teamId=${TEAM}&limit=50" | \
+                python3 -c 'import sys,json;d=json.load(sys.stdin);print("\n".join(f"- {x.get(\"name\")} verified={x.get(\"verified\")}" for x in d.get("domains") or []) or "(none)")' || true
+            fi
+          } | tee -a "$GITHUB_STEP_SUMMARY"
