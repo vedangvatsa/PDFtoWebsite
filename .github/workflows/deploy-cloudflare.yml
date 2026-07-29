@@ -27,6 +27,46 @@ jobs:
           node-version: "22"
           cache: npm
 
+      - name: Refresh Cloudflare OAuth access token
+        id: cfauth
+        env:
+          CLOUDFLARE_REFRESH_TOKEN: ${{ secrets.CLOUDFLARE_REFRESH_TOKEN }}
+          CLOUDFLARE_OAUTH_CLIENT_ID: ${{ secrets.CLOUDFLARE_OAUTH_CLIENT_ID }}
+          CLOUDFLARE_API_TOKEN_FALLBACK: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          CLIENT_ID="${CLOUDFLARE_OAUTH_CLIENT_ID:-54d11594-84e4-41aa-b438-e81b8fa78ee7}"
+
+          if [ -n "${CLOUDFLARE_REFRESH_TOKEN:-}" ]; then
+            echo "Refreshing Cloudflare OAuth token..."
+            RESP=$(curl -sS -X POST "https://dash.cloudflare.com/oauth2/token" \
+              -H "Content-Type: application/x-www-form-urlencoded" \
+              -H "User-Agent: wrangler/4.115.0" \
+              -H "Accept: application/json" \
+              --data-urlencode "grant_type=refresh_token" \
+              --data-urlencode "refresh_token=${CLOUDFLARE_REFRESH_TOKEN}" \
+              --data-urlencode "client_id=${CLIENT_ID}")
+
+            ACCESS=$(python3 -c 'import json,sys; d=json.loads(sys.argv[1]); print(d.get("access_token") or "")' "$RESP")
+            if [ -z "$ACCESS" ]; then
+              echo "OAuth refresh failed: $RESP"
+              if [ -n "${CLOUDFLARE_API_TOKEN_FALLBACK:-}" ]; then
+                echo "Falling back to CLOUDFLARE_API_TOKEN secret"
+                echo "CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN_FALLBACK}" >> "$GITHUB_ENV"
+                exit 0
+              fi
+              exit 1
+            fi
+            echo "CLOUDFLARE_API_TOKEN=${ACCESS}" >> "$GITHUB_ENV"
+            echo "Cloudflare OAuth access token ready"
+          elif [ -n "${CLOUDFLARE_API_TOKEN_FALLBACK:-}" ]; then
+            echo "No refresh token; using CLOUDFLARE_API_TOKEN secret"
+            echo "CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN_FALLBACK}" >> "$GITHUB_ENV"
+          else
+            echo "Missing CLOUDFLARE_REFRESH_TOKEN and CLOUDFLARE_API_TOKEN"
+            exit 1
+          fi
+
       - name: Install dependencies
         run: npm ci
 
@@ -47,7 +87,7 @@ jobs:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
           POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ env.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL_FROM: news@cvin.bio
           CLOUDFLARE_EMAIL_FROM_NAME: CVin.Bio
           CLOUDFLARE_MARKETING_FROM: news@cvin.bio
@@ -76,7 +116,7 @@ jobs:
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
           packageManager: npm
@@ -89,5 +129,6 @@ jobs:
             echo "- Worker: \`cvinbio\`"
             echo "- Branch: \`${{ github.ref_name }}\`"
             echo "- Commit: \`${{ github.sha }}\`"
+            echo "- Auth: OAuth refresh token (auto-refreshed each deploy)"
             echo "- Auto-deploys on every push to \`main\`"
           } >> "$GITHUB_STEP_SUMMARY"
