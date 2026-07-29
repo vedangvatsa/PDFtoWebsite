@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt =
   "Climate Finder | Best Weather for Nomads by Month";
 export const size = { width: 1200, height: 630 };
@@ -28,37 +27,31 @@ export default function Image() {
       >
         {/* CVin.Bio label */}
         <span
-          style={{
-            fontSize: 14,
+          style={{ display: 'flex', fontSize: 14,
             fontWeight: 600,
             color: "#a1a1aa",
             letterSpacing: "0.08em",
-            textTransform: "uppercase" as const,
-          }}
+            textTransform: "uppercase" as const, }}
         >
           CVin.Bio
         </span>
 
         {/* Title */}
         <span
-          style={{
-            fontSize: 56,
+          style={{ display: 'flex', fontSize: 56,
             fontWeight: 700,
             color: "#09090b",
             marginTop: 16,
-            lineHeight: 1.1,
-          }}
+            lineHeight: 1.1, }}
         >
           Climate Finder
         </span>
 
         {/* Subtitle */}
         <span
-          style={{
-            fontSize: 22,
+          style={{ display: 'flex', fontSize: 22,
             color: "#71717a",
-            marginTop: 12,
-          }}
+            marginTop: 12, }}
         >
           Temperature · Humidity · Rainfall · By month
         </span>
@@ -86,39 +79,33 @@ export default function Image() {
               }}
             >
               {/* Flag */}
-              <span style={{ fontSize: 48 }}>{city.flag}</span>
+              <span style={{ display: 'flex', fontSize: 48 }}>{city.flag}</span>
 
               {/* City name */}
               <span
-                style={{
-                  fontSize: 22,
+                style={{ display: 'flex', fontSize: 22,
                   fontWeight: 700,
                   color: "#09090b",
-                  marginTop: 12,
-                }}
+                  marginTop: 12, }}
               >
                 {city.name}
               </span>
 
               {/* Temperature */}
               <span
-                style={{
-                  fontSize: 36,
+                style={{ display: 'flex', fontSize: 36,
                   fontWeight: 700,
                   color: "#09090b",
-                  marginTop: 8,
-                }}
+                  marginTop: 8, }}
               >
                 {city.temp}
               </span>
 
               {/* Condition */}
               <span
-                style={{
-                  fontSize: 16,
+                style={{ display: 'flex', fontSize: 16,
                   color: "#71717a",
-                  marginTop: 4,
-                }}
+                  marginTop: 4, }}
               >
                 {city.condition}
               </span>
@@ -128,14 +115,12 @@ export default function Image() {
 
         {/* Dark bottom accent bar */}
         <div
-          style={{
-            position: "absolute",
+          style={{ display: 'flex', position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
             height: 4,
-            backgroundColor: "#09090b",
-          }}
+            backgroundColor: "#09090b", }}
         />
       </div>
     ),

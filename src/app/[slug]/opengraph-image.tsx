@@ -36,7 +36,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
 
           {/* Right Visual Side */}
           <div style={{ display: 'flex', width: '45%', height: '100%', backgroundColor: '#f4f4f5' }}>
-            <img src={post.featuredImage} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={post.featuredImage} alt={post.title} style={{ display: 'flex', width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
 
         </div>
@@ -91,27 +91,27 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
           {/* Info cards row */}
           <div style={{ display: 'flex', flexDirection: 'row', gap: 16 }}>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
-              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Monthly Cost</span>
-              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{costDisplay}</span>
+              <span style={{ display: 'flex', fontSize: 16, color: '#71717a', fontWeight: 600 }}>Monthly Cost</span>
+              <span style={{ display: 'flex', fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{costDisplay}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
-              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Avg Temp</span>
-              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{tempDisplay}</span>
+              <span style={{ display: 'flex', fontSize: 16, color: '#71717a', fontWeight: 600 }}>Avg Temp</span>
+              <span style={{ display: 'flex', fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{tempDisplay}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
-              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Coworking & Coliving</span>
-              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{spacesDisplay}</span>
+              <span style={{ display: 'flex', fontSize: 16, color: '#71717a', fontWeight: 600 }}>Coworking & Coliving</span>
+              <span style={{ display: 'flex', fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{spacesDisplay}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
-              <span style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>Internet Speed</span>
-              <span style={{ fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{speedDisplay}</span>
+              <span style={{ display: 'flex', fontSize: 16, color: '#71717a', fontWeight: 600 }}>Internet Speed</span>
+              <span style={{ display: 'flex', fontSize: 36, fontWeight: 800, color: '#09090b', marginTop: 4 }}>{speedDisplay}</span>
             </div>
           </div>
 
           {/* Bottom URL */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #e4e4e7', paddingTop: 20 }}>
-            <span style={{ fontSize: 20, color: '#71717a', fontWeight: 500 }}>Find coliving, coworking, and costs</span>
-            <span style={{ fontSize: 20, color: '#6366f1', fontWeight: 600 }}>{`${siteDomain}/${slug}`}</span>
+            <span style={{ display: 'flex', fontSize: 20, color: '#71717a', fontWeight: 500 }}>Find coliving, coworking, and costs</span>
+            <span style={{ display: 'flex', fontSize: 20, color: '#6366f1', fontWeight: 600 }}>{`${siteDomain}/${slug}`}</span>
           </div>
         </div>
       ),
@@ -125,8 +125,8 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
     return new ImageResponse(
       (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundColor: '#fafafa', color: '#09090b', fontFamily: 'sans-serif' }}>
-          <div style={{ fontSize: 90, fontWeight: 800, letterSpacing: '-0.05em', marginBottom: 20 }}>CVin.Bio</div>
-          <div style={{ fontSize: 44, color: '#71717a' }}>Turn Your CV into a Website</div>
+          <div style={{ display: 'flex', fontSize: 90, fontWeight: 800, letterSpacing: '-0.05em', marginBottom: 20 }}>CVin.Bio</div>
+          <div style={{ display: 'flex', fontSize: 44, color: '#71717a' }}>Turn Your CV into a Website</div>
         </div>
       ), { ...size }
     );
@@ -154,7 +154,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
           <img 
             src={avatarUrl} 
             alt={name} 
-            style={{ width: 160, height: 160, borderRadius: 160, objectFit: 'cover', border: '1px solid #e4e4e7', background: '#fafafa' }} 
+            style={{ display: 'flex', width: 160, height: 160, borderRadius: 160, objectFit: 'cover', border: '1px solid #e4e4e7', background: '#fafafa' }} 
           />
         ) : (
           <div style={{ width: 160, height: 160, borderRadius: 160, background: '#f4f4f5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 60, fontWeight: 600, color: '#a1a1aa', border: '1px solid #e4e4e7' }}>

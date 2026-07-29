@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "City Rankings | Internet, Safety and Walkability";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

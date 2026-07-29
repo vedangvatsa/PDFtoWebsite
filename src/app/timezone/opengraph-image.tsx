@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
-
 export const alt = 'Timezone Overlap Tool | Find Shared Work Hours';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -48,10 +46,10 @@ export default async function Image() {
             <div key={z.city} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '16px 24px', gap: 16 }}>
               <div style={{ display: 'flex', width: 8, height: 40, backgroundColor: z.color, borderRadius: 4 }} />
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <div style={{ fontSize: 20, fontWeight: 700, color: '#09090b' }}>{z.city}</div>
-                <div style={{ fontSize: 14, color: '#71717a', fontWeight: 500 }}>{z.tz}</div>
+                <div style={{ display: 'flex', fontSize: 20, fontWeight: 700, color: '#09090b' }}>{z.city}</div>
+                <div style={{ display: 'flex', fontSize: 14, color: '#71717a', fontWeight: 500 }}>{z.tz}</div>
               </div>
-              <div style={{ fontSize: 20, fontWeight: 600, color: '#09090b' }}>{z.hours}</div>
+              <div style={{ display: 'flex', fontSize: 20, fontWeight: 600, color: '#09090b' }}>{z.hours}</div>
             </div>
           ))}
         </div>

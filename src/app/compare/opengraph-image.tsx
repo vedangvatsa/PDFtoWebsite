@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
-
 export const alt = 'Compare Cities for Digital Nomads';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -36,11 +34,11 @@ export default async function Image() {
           </div>
           <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#71717a', gap: 24 }}>
             <span>Cost</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>Weather</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>Internet</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>Side by side</span>
           </div>
         </div>

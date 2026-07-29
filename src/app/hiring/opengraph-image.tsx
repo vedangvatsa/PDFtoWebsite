@@ -1,8 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-export const runtime = 'edge';
-
 export const alt = 'Tech Talent Report 2026 | CVin.Bio';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';

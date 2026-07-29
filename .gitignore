@@ -55,3 +55,7 @@ scratch/check_supabase.mjs
 *.parquet
 scratch/
 /scripts/
+.open-next
+.wrangler
+.dev.vars
+cloudflare-env.d.ts
