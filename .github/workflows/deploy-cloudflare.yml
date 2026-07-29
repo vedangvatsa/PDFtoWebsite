@@ -28,51 +28,11 @@ jobs:
           cache: npm
 
       - name: Mint Cloudflare access token
-        id: cfauth
         env:
           CLOUDFLARE_REFRESH_TOKEN: ${{ secrets.CLOUDFLARE_REFRESH_TOKEN }}
           CLOUDFLARE_OAUTH_CLIENT_ID: ${{ secrets.CLOUDFLARE_OAUTH_CLIENT_ID }}
           CLOUDFLARE_API_TOKEN_FALLBACK: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: |
-          set -euo pipefail
-          CLIENT_ID="${CLOUDFLARE_OAUTH_CLIENT_ID:-54d11594-84e4-41aa-b438-e81b8fa78ee7}"
-          ACCESS=""
-
-          if [ -n "${CLOUDFLARE_REFRESH_TOKEN:-}" ]; then
-            echo "Refreshing Cloudflare OAuth access token..."
-            RESP=$(curl -sS -X POST "https://dash.cloudflare.com/oauth2/token" \
-              -H "Content-Type: application/x-www-form-urlencoded" \
-              -H "User-Agent: wrangler/4.115.0" \
-              -H "Accept: application/json" \
-              --data-urlencode "grant_type=refresh_token" \
-              --data-urlencode "refresh_token=${CLOUDFLARE_REFRESH_TOKEN}" \
-              --data-urlencode "client_id=${CLIENT_ID}" || true)
-            ACCESS=$(python3 -c 'import json,sys
-try:
-  d=json.loads(sys.argv[1])
-except Exception:
-  d={}
-print(d.get("access_token") or "")' "$RESP")
-          fi
-
-          if [ -z "$ACCESS" ] && [ -n "${CLOUDFLARE_API_TOKEN_FALLBACK:-}" ]; then
-            echo "Using CLOUDFLARE_API_TOKEN fallback secret"
-            ACCESS="$CLOUDFLARE_API_TOKEN_FALLBACK"
-          fi
-
-          if [ -z "$ACCESS" ]; then
-            echo "Unable to obtain Cloudflare credentials"
-            exit 1
-          fi
-
-          echo "::add-mask::${ACCESS}"
-          # Write for later steps without printing
-          {
-            echo "CLOUDFLARE_API_TOKEN<<EOF"
-            echo "$ACCESS"
-            echo "EOF"
-          } >> "$GITHUB_ENV"
-          echo "Cloudflare credentials ready"
+        run: node .github/scripts/mint-cloudflare-token.mjs
 
       - name: Install dependencies
         run: npm ci
