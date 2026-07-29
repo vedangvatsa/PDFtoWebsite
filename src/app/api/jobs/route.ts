@@ -379,8 +379,20 @@ export async function GET(request: NextRequest) {
   }
 
   if (error) {
-    console.error('Jobs query error:', error);
-    return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 });
+    console.error('Jobs query error:', {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    return NextResponse.json(
+      {
+        error: 'Failed to fetch jobs',
+        // Safe, non-secret diagnostic for operators (no keys / tokens)
+        reason: error.message || error.code || 'unknown',
+      },
+      { status: 500 }
+    );
   }
 
   // Clean titles: strip noise so only the meaningful role name remains
