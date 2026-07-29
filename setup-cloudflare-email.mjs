@@ -3,12 +3,12 @@
  * Cloudflare Email Service setup for cvin.bio — MARKETING only.
  *
  * Hard guarantees this script is designed around:
- *   - Hosting remains on Vercel (app still served by Vercel)
+ *   - Hosting is Cloudflare Workers (OpenNext)
  *   - Onboarding/transactional mail remains on Resend (do not edit those routes)
  *   - Cloudflare Email Sending is only for marketing (from news@cvin.bio)
  *
  * DNS note: Email Service requires Cloudflare DNS for the domain. Website
- * records still target Vercel. Email Sending auth lives under cf-bounce.*.
+ * Email Sending auth lives under cf-bounce.*.
  *
  * Usage:
  *   node setup-cloudflare-email.mjs status
@@ -140,7 +140,7 @@ async function findZone() {
 
 async function status() {
   console.log('=== Isolation check ===');
-  console.log('  Website hosting : Vercel');
+  console.log('  Website hosting : Cloudflare Workers');
   console.log('  Onboarding email: Resend (hi@cvin.bio) — do not touch');
   console.log('  Marketing email : Cloudflare Email Service (news@cvin.bio)');
   console.log('');
@@ -172,7 +172,7 @@ Next steps:
   3. Test marketing send:
      node setup-cloudflare-email.mjs test you@example.com
 
-Namecheap currently holds DNS (Resend DKIM, SES, Vercel A, etc.).
+Namecheap currently holds DNS (Resend DKIM, SES, etc.).
 migrate-dns copies those records into Cloudflare before set-ns flips nameservers.
 `);
   } else {
@@ -259,7 +259,7 @@ async function migrateDns() {
       name,
       content,
       ttl: Math.max(parseInt(h.ttl, 10) || 1800, 60),
-      proxied: false, // keep DNS-only so email + Vercel stay simple
+      proxied: false, // keep DNS-only for mail records
     };
     if (h.type === 'MX') {
       payload.priority = parseInt(h.mxPref, 10) || 10;
@@ -355,7 +355,7 @@ It does not change Resend DKIM or SES inbound MX.
 
   console.log(`
 Email Sending enabled. Default from: ${FROM}
-Hosting remains on Vercel.
+Hosting is on Cloudflare Workers.
 Test: node setup-cloudflare-email.mjs test you@example.com
 `);
 }
@@ -377,8 +377,8 @@ async function test(to) {
       },
       to,
       subject: 'CVin.Bio — Cloudflare Email Sending test',
-      text: 'Test email via Cloudflare Email Sending. App hosting remains on Vercel.',
-      html: '<p>Test email via <strong>Cloudflare Email Sending</strong>.</p><p>App hosting remains on Vercel.</p>',
+      text: 'Test email via Cloudflare Email Sending. App hosting is on Cloudflare Workers.',
+      html: '<p>Test email via <strong>Cloudflare Email Sending</strong>.</p><p>App hosting is on Cloudflare Workers.</p>',
     }),
   });
   console.log(JSON.stringify(result.data, null, 2));

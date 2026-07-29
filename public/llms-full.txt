@@ -147,8 +147,8 @@ After completing your profile, the system compares your skills against job requi
 - **Database**: Supabase (PostgreSQL) with Row-Level Security
 - **Styling**: Tailwind CSS
 - **Authentication**: Supabase Auth (Magic Link + Google OAuth)
-- **Analytics**: PostHog (product analytics), Vercel Analytics (web vitals)
-- **Hosting**: Vercel (edge deployment)
+- **Analytics**: PostHog (product analytics)
+- **Hosting**: Cloudflare Workers (OpenNext)
 - **Job Sync**: Node.js scripts via GitHub Actions (cron)
 - **Search**: PostgreSQL full-text search with GIN indexes
 

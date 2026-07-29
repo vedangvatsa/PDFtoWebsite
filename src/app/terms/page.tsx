@@ -139,7 +139,7 @@ export default function TermsPage() {
             <ul className="list-disc pl-5 space-y-2 mt-2">
               <li><strong>Recruiters and Partners:</strong> We may share profile data with relevant recruiters and job opportunities to benefit your career. You retain control and can opt out by deleting your account.</li>
               <li><strong>AI Agents and Automated Systems:</strong> Whatever you add to your profile is made available to AI agents, AI-powered search engines, and automated hiring tools. These systems may index, read, and surface your profile data to connect you with relevant job opportunities. Private account data (email, authentication credentials) is never exposed.</li>
-              <li><strong>Service Providers:</strong> We may use third-party cloud infrastructure like Supabase and Vercel to help run the website and process data securely.</li>
+              <li><strong>Service Providers:</strong> We may use third-party cloud infrastructure like Supabase and Cloudflare to help run the website and process data securely.</li>
               <li><strong>Legal Requirements:</strong> If requested by valid legal process, we may occasionally need to disclose information to authorized public authorities.</li>
             </ul>
           </section>

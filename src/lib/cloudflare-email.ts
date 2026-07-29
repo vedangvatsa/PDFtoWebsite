@@ -2,7 +2,8 @@
  * Cloudflare Email Service — MARKETING sends only.
  *
  * Isolation guarantees (do not change without explicit product decision):
- *   1. Website hosting stays on Vercel. This module never touches deploy/hosting.
+ *   1. Website hosting is Cloudflare Workers (OpenNext). This module never
+ *      changes deploy/hosting configuration.
  *   2. Onboarding / transactional email stays on Resend (hi@cvin.bio and existing
  *      contact/report-download routes). Do NOT import this module there.
  *   3. This client only calls Cloudflare Email Sending REST API for marketing.
@@ -99,7 +100,7 @@ function addressOf(from: EmailAddress): string {
 
 /**
  * Send a marketing email via Cloudflare Email Service REST API.
- * Safe to call from Vercel server code. Does not affect Resend or hosting.
+ * Safe to call from Worker server code. Does not affect Resend or hosting.
  */
 export async function sendMarketingEmail(
   input: MarketingEmailInput
