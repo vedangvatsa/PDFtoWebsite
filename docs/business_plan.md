@@ -33,7 +33,7 @@ CVin.Bio is an aggressively minimalist, AI-native "Link-in-Bio" platform designe
 To support this massive scalability without skyrocketing server costs, the architecture is designed around edge-computing and native database features.
 
 ### A. The Tech Stack
-- **Frontend & Routing:** Next.js (App Router) deployed on Vercel. Ensures blazingly fast global page loads via the Edge Network.
+- **Frontend & Routing:** Next.js (App Router) deployed on Cloudflare Workers via OpenNext for fast global edge delivery.
 - **Backend Database:** Supabase (PostgreSQL). Chosen specifically for its superior handling of unstructured data (`JSONB`) and complex analytical queries.
 - **Authentication:** Supabase Auth (Google OAuth & Email). Allows zero-friction onboarding.
 - **AI Processing:** Google Generative AI (Gemini 2.5 Flash). Chosen for its Multimodal capabilities, meaning it can literally "read" a scanned image of a PDF natively.

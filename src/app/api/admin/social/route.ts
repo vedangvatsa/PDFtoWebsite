@@ -8,9 +8,11 @@ export const dynamic = 'force-dynamic';
 const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
 // ── Cache helpers ──────────────────────────────────────────────────────────
-const CACHE_FILE = process.env.VERCEL
-  ? '/tmp/social-analytics-cache.json'
-  : path.join(/*turbopackIgnore: true*/ process.cwd(), '.github/scripts', 'social-analytics-cache.json');
+// Prefer /tmp on serverless/edge-like runtimes; fall back to repo scripts dir locally.
+const CACHE_FILE =
+  process.env.CF_PAGES || process.env.CLOUDFLARE || process.env.VERCEL || process.env.NODE_ENV === 'production'
+    ? '/tmp/social-analytics-cache.json'
+    : path.join(/*turbopackIgnore: true*/ process.cwd(), '.github/scripts', 'social-analytics-cache.json');
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
 // In-memory cache to avoid file reads and slow cold fetches

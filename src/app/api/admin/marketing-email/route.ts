@@ -16,7 +16,7 @@ const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
  *
  * Isolation:
  *   - Does not replace Resend (onboarding / contact / report-download stay on Resend)
- *   - Does not change hosting (Vercel)
+ *   - Hosting is Cloudflare Workers (OpenNext)
  *   - Default from is news@cvin.bio, never hi@cvin.bio
  */
 async function requireAdmin(request: NextRequest) {
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     provider: 'cloudflare',
     purpose: 'marketing',
-    hosting: 'vercel',
+    hosting: 'cloudflare',
     onboardingProvider: 'resend',
     configured: isCloudflareEmailConfigured(),
     from: (() => {
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       provider: 'cloudflare',
       purpose: 'marketing',
-      hosting: 'vercel',
+      hosting: 'cloudflare',
       sent: results.filter((r) => r.ok).length,
       failed: results.filter((r) => !r.ok).length,
       results,

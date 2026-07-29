@@ -69,4 +69,4 @@ Use these keywords to register the tool in relevant directory categories:
 
 * **Frontend:** Next.js (React), TailwindCSS, Radix UI (shadcn/ui), Lucide Icons
 * **Backend & Auth:** Supabase (PostgreSQL, Realtime, Edge Functions), PostHog Analytics
-* **Hosting:** Vercel / Classic Hosting
+* **Hosting:** Cloudflare Workers / Classic Hosting
