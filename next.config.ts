@@ -164,3 +164,7 @@ const nextConfigFn = (phase: string): NextConfig => {
 };
 
 export default nextConfigFn;
+
+// Enable Cloudflare bindings during local `next dev` when available.
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();

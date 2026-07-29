@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
-
 export const alt = 'Digital Nomad Resources | Insurance, Banking, eSIMs';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -40,11 +38,11 @@ export default async function Image() {
           </div>
           <div style={{ display: 'flex', fontSize: 24, fontWeight: 500, color: '#71717a', gap: 16 }}>
             <span>Insurance</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>Banking</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>eSIMs</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>VPNs</span>
           </div>
         </div>
@@ -54,16 +52,16 @@ export default async function Image() {
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
             {categories.slice(0, 2).map((c) => (
               <div key={c.label} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px', gap: 16 }}>
-                <div style={{ fontSize: 36 }}>{c.icon}</div>
-                <div style={{ fontSize: 22, fontWeight: 700, color: '#09090b' }}>{c.label}</div>
+                <div style={{ display: 'flex', fontSize: 36 }}>{c.icon}</div>
+                <div style={{ display: 'flex', fontSize: 22, fontWeight: 700, color: '#09090b' }}>{c.label}</div>
               </div>
             ))}
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
             {categories.slice(2, 4).map((c) => (
               <div key={c.label} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px', gap: 16 }}>
-                <div style={{ fontSize: 36 }}>{c.icon}</div>
-                <div style={{ fontSize: 22, fontWeight: 700, color: '#09090b' }}>{c.label}</div>
+                <div style={{ display: 'flex', fontSize: 36 }}>{c.icon}</div>
+                <div style={{ display: 'flex', fontSize: 22, fontWeight: 700, color: '#09090b' }}>{c.label}</div>
               </div>
             ))}
           </div>

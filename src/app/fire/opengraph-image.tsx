@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "FIRE Calculator | Savings Runway by City";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -109,20 +108,16 @@ export default function Image() {
                 }}
               >
                 <span
-                  style={{
-                    fontSize: 48,
+                  style={{ display: 'flex', fontSize: 48,
                     fontWeight: 800,
-                    color: "#09090b",
-                  }}
+                    color: "#09090b", }}
                 >
                   {city.months}
                 </span>
                 <span
-                  style={{
-                    fontSize: 20,
+                  style={{ display: 'flex', fontSize: 20,
                     color: "#a1a1aa",
-                    fontWeight: 500,
-                  }}
+                    fontWeight: 500, }}
                 >
                   mo
                 </span>

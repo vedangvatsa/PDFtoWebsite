@@ -1,7 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-export const runtime = 'edge';
 export const revalidate = 3600;
 
 export const alt = 'CVin.Bio | Tech Job Board';
@@ -73,9 +72,9 @@ export default async function Image() {
           </div>
           <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#71717a', gap: 24 }}>
             <span>{jobsCountText} jobs</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>{companyCount} companies</span>
-            <span style={{ color: '#d4d4d8' }}>·</span>
+            <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>Updated daily</span>
           </div>
         </div>
@@ -85,16 +84,16 @@ export default async function Image() {
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
             {cards.slice(0, 3).map((c) => (
               <div key={c.company} style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
-                <div style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>{c.company}</div>
-                <div style={{ fontSize: 20, color: '#09090b', fontWeight: 700, marginTop: 4 }}>{c.title}</div>
+                <div style={{ display: 'flex', fontSize: 16, color: '#71717a', fontWeight: 600 }}>{c.company}</div>
+                <div style={{ display: 'flex', fontSize: 20, color: '#09090b', fontWeight: 700, marginTop: 4 }}>{c.title}</div>
               </div>
             ))}
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
             {cards.slice(3, 6).map((c) => (
               <div key={c.company} style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '20px 24px' }}>
-                <div style={{ fontSize: 16, color: '#71717a', fontWeight: 600 }}>{c.company}</div>
-                <div style={{ fontSize: 20, color: '#09090b', fontWeight: 700, marginTop: 4 }}>{c.title}</div>
+                <div style={{ display: 'flex', fontSize: 16, color: '#71717a', fontWeight: 600 }}>{c.company}</div>
+                <div style={{ display: 'flex', fontSize: 20, color: '#09090b', fontWeight: 700, marginTop: 4 }}>{c.title}</div>
               </div>
             ))}
           </div>
