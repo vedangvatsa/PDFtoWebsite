@@ -71,6 +71,7 @@ export default function JobDetailClient({
 
   const applyUrl = addJobApplyUtm(job.apply_url, 'job_detail');
   const typeLabel = jobTypeLabel(job.job_type);
+  const needsCv = userSkills.length === 0;
 
   useEffect(() => {
     posthog.capture('job_detail_viewed', {
@@ -101,13 +102,18 @@ export default function JobDetailClient({
     }).catch(() => {});
   };
 
-  const parseCv = async (file: File) => {
+  const parseCv = async (file: File, source: string) => {
     if (file.size > 10 * 1024 * 1024) {
       toast({ variant: 'destructive', title: 'Too Large', description: 'Max 10MB.' });
       return;
     }
     setIsUploading(true);
-    toast({ title: 'Parsing CV...', description: 'Extracting your details.' });
+    posthog.capture('job_detail_cv_upload_started', {
+      job_id: job.id,
+      company: job.company,
+      source,
+    });
+    toast({ title: 'Parsing CV...', description: 'Building your profile and matches.' });
     try {
       const fd = new FormData();
       fd.append('resume', file);
@@ -117,7 +123,7 @@ export default function JobDetailClient({
         return;
       }
       const parsed = await res.json();
-      posthog.capture('job_detail_cv_uploaded', { job_id: job.id });
+      posthog.capture('job_detail_cv_uploaded', { job_id: job.id, source });
       sessionStorage.setItem('parsedResume', JSON.stringify(parsed));
       try {
         localStorage.setItem('parsedResume', JSON.stringify(parsed));
@@ -134,23 +140,56 @@ export default function JobDetailClient({
     }
   };
 
-  const ApplyButton = ({
+  const CvUploadButton = ({
+    id,
+    source,
     className = '',
     size = 'md',
   }: {
+    id: string;
+    source: string;
     className?: string;
     size?: 'md' | 'sm';
   }) => (
+    <label
+      htmlFor={id}
+      className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
+        size === 'sm' ? 'px-3 py-2.5 text-sm' : 'px-4 py-3.5 text-sm sm:text-[15px]'
+      } ${isUploading ? 'opacity-50 pointer-events-none' : ''} ${className}`}
+    >
+      {isUploading ? (
+        <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+      ) : (
+        <UploadCloud className="h-4 w-4 shrink-0" />
+      )}
+      <span className="truncate">
+        {isUploading ? 'Parsing your CV...' : 'Upload CV — get matched free'}
+      </span>
+      <input
+        id={id}
+        type="file"
+        className="hidden"
+        accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+        disabled={isUploading}
+        onChange={async (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          await parseCv(file, source);
+          e.target.value = '';
+        }}
+      />
+    </label>
+  );
+
+  const ApplyLink = ({ className = '' }: { className?: string }) => (
     <a
       href={applyUrl}
       target="_blank"
       rel="noopener noreferrer"
       onClick={trackClick}
-      className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
-        size === 'sm' ? 'px-3 py-2.5 text-sm' : 'px-4 py-3 text-sm sm:text-[15px]'
-      } ${className}`}
+      className={`inline-flex items-center justify-center gap-1.5 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors min-h-[44px] touch-manipulation ${className}`}
     >
-      <span className="truncate">Apply on company site</span>
+      <span>Or apply on {job.company}&apos;s site</span>
       <ExternalLink className="h-3.5 w-3.5 shrink-0" />
     </a>
   );
@@ -160,7 +199,7 @@ export default function JobDetailClient({
       <Header />
       <main
         id="main-content"
-        className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 md:py-14 lg:py-16 pb-28 flex-1 min-w-0"
+        className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 md:py-14 lg:py-16 pb-32 sm:pb-16 flex-1 min-w-0"
       >
         <Link
           href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
@@ -243,84 +282,92 @@ export default function JobDetailClient({
             </div>
           )}
 
-          {/* Single-column apply (all breakpoints) */}
-          <div className="mb-5 sm:mb-6 space-y-3">
-            <ApplyButton />
-            <p className="text-[11px] text-center text-zinc-400">
-              Opens the official application on the company site
-            </p>
-
-            {userSkills.length === 0 ? (
-              <div className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-3">
-                <div className="flex items-start gap-2 min-w-0 flex-1">
-                  <Sparkles className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                  <p className="text-xs text-zinc-600 leading-relaxed">
-                    Optional: upload your CV for matches on similar roles.
+          {/* Primary product CTA: Upload CV */}
+          <div className="mb-6 sm:mb-8">
+            {needsCv ? (
+              <div className="rounded-2xl bg-gradient-to-b from-zinc-900 to-zinc-800 text-white p-5 sm:p-6 shadow-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="h-4 w-4 text-amber-300 shrink-0" />
+                  <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                    CVin.Bio
                   </p>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <label
-                    htmlFor="jd-cv-upload"
-                    className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-zinc-200 text-zinc-800 font-medium text-xs cursor-pointer hover:bg-zinc-100 transition-colors touch-manipulation min-h-[40px] ${
-                      isUploading ? 'opacity-50 pointer-events-none' : ''
-                    }`}
-                  >
-                    {isUploading ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <UploadCloud className="h-3.5 w-3.5" />
-                    )}
-                    {isUploading ? 'Parsing...' : 'Upload CV'}
-                    <input
-                      id="jd-cv-upload"
-                      type="file"
-                      className="hidden"
-                      accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
-                      disabled={isUploading}
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (!file) return;
-                        await parseCv(file);
-                        e.target.value = '';
-                      }}
-                    />
-                  </label>
+                <h2 className="text-lg sm:text-xl font-bold tracking-tight mb-2">
+                  Upload your CV. Get matched to roles like this.
+                </h2>
+                <p className="text-sm text-zinc-300 leading-relaxed mb-5 max-w-md">
+                  Free public profile + skill matches across {job.company} and thousands of
+                  other companies. Takes about a minute.
+                </p>
+                <CvUploadButton id="jd-cv-primary" source="hero" />
+                <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                  <p className="text-[11px] text-zinc-400">PDF, Word, or image · under 10MB</p>
                   {!isAuthenticated && (
                     <Link
                       href="/signup"
-                      className="text-[11px] text-zinc-500 hover:text-zinc-800 whitespace-nowrap"
+                      className="text-[11px] text-zinc-400 hover:text-white transition-colors"
                       onClick={() =>
                         posthog.capture('job_detail_signup_clicked', { job_id: job.id })
                       }
                     >
-                      Sign up
+                      or create a free account →
                     </Link>
                   )}
+                </div>
+                <div className="mt-4 pt-4 border-t border-white/10 text-center">
+                  <ApplyLink className="text-zinc-400 hover:text-white w-full" />
                 </div>
               </div>
             ) : (
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 flex items-start gap-2">
-                <Target className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
-                <div className="min-w-0 text-xs text-emerald-900 leading-relaxed">
-                  <span className="font-semibold">
-                    {profileComplete ? 'Profile ready' : 'Skills on file'}
-                  </span>
-                  {userSkills.slice(0, 4).length > 0 && (
-                    <span className="text-emerald-800/80">
-                      {' '}
-                      · {userSkills.slice(0, 4).join(', ')}
-                      {userSkills.length > 4 ? '…' : ''}
-                    </span>
-                  )}
-                  {!profileComplete && (
-                    <Link
-                      href="/editor"
-                      className="block mt-1 font-semibold text-emerald-700 hover:underline"
-                    >
-                      Complete profile for better matches →
-                    </Link>
-                  )}
+              <div className="space-y-3">
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 sm:px-5 py-4">
+                  <div className="flex items-start gap-2.5">
+                    <Target className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-emerald-900">
+                        {profileComplete
+                          ? 'Your profile is ready for matches'
+                          : 'We have your skills on file'}
+                      </p>
+                      <p className="text-xs text-emerald-800/80 mt-1 leading-relaxed break-words">
+                        Matching this role
+                        {userSkills.slice(0, 5).length > 0
+                          ? ` with ${userSkills.slice(0, 5).join(', ')}${userSkills.length > 5 ? '…' : ''}`
+                          : ''}
+                        .
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+                        <Link
+                          href="/jobs?match=true"
+                          className="text-xs font-semibold text-emerald-800 hover:underline"
+                          onClick={() =>
+                            posthog.capture('job_detail_view_matches', { job_id: job.id })
+                          }
+                        >
+                          See your matched jobs →
+                        </Link>
+                        {!profileComplete && (
+                          <Link
+                            href="/editor"
+                            className="text-xs font-semibold text-emerald-700 hover:underline"
+                          >
+                            Complete profile →
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <a
+                  href={applyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={trackClick}
+                  className="flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-4 py-3.5 text-sm sm:text-[15px] hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation"
+                >
+                  <span className="truncate">Apply on company site</span>
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                </a>
               </div>
             )}
           </div>
@@ -356,33 +403,92 @@ export default function JobDetailClient({
                 <p className="text-sm text-zinc-600 font-medium">
                   Full description is on the company careers page.
                 </p>
+                {needsCv ? (
+                  <div className="mt-4 max-w-sm mx-auto space-y-2">
+                    <CvUploadButton id="jd-cv-nodesc" source="no_description" size="sm" />
+                    <ApplyLink className="w-full" />
+                  </div>
+                ) : (
+                  <a
+                    href={applyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={trackClick}
+                    className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline min-h-[44px]"
+                  >
+                    View full listing
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Bottom conversion block */}
+          <div className="mt-8 sm:mt-10 pt-6 border-t border-zinc-100">
+            {needsCv ? (
+              <div className="rounded-2xl border-2 border-zinc-900 bg-white p-5 sm:p-6 text-center">
+                <UploadCloud className="h-8 w-8 text-zinc-900 mx-auto mb-3" />
+                <h3 className="text-base sm:text-lg font-bold text-zinc-900 tracking-tight">
+                  Start with your CV
+                </h3>
+                <p className="text-sm text-zinc-500 mt-1.5 mb-4 max-w-sm mx-auto leading-relaxed">
+                  Turn this role into a match. We build your public profile and show jobs
+                  that fit your skills.
+                </p>
+                <CvUploadButton id="jd-cv-bottom" source="bottom" />
+                <div className="mt-3">
+                  <ApplyLink />
+                </div>
+              </div>
+            ) : (
+              <div className="text-center space-y-3">
                 <a
                   href={applyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={trackClick}
-                  className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline min-h-[44px]"
+                  className="flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-4 py-3.5 text-sm sm:text-[15px] hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation"
                 >
-                  View full listing
-                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span className="truncate">Apply on company site</span>
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                 </a>
+                <Link
+                  href="/jobs?match=true"
+                  className="inline-flex text-sm font-medium text-zinc-500 hover:text-zinc-900"
+                >
+                  Browse matched jobs →
+                </Link>
               </div>
             )}
           </div>
 
-          <div className="mt-8 sm:mt-10 pt-5 border-t border-zinc-100">
-            <ApplyButton />
-          </div>
-
-          <p className="mt-4 text-[11px] text-zinc-400 leading-relaxed text-center">
-            Listing on CVin.Bio. You apply on the employer&apos;s site.
+          <p className="mt-5 text-[11px] text-zinc-400 leading-relaxed text-center">
+            Listing on CVin.Bio. Upload builds your free profile. Applications go to the
+            employer&apos;s site.
           </p>
         </article>
       </main>
 
-      {/* Sticky mobile apply bar */}
-      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 px-3 pt-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-        <ApplyButton size="sm" />
+      {/* Sticky bar: CV first for conversion visitors */}
+      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 px-3 pt-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+        {needsCv ? (
+          <div className="space-y-1">
+            <CvUploadButton id="jd-cv-sticky" source="sticky" size="sm" />
+            <ApplyLink className="w-full text-xs text-zinc-500" />
+          </div>
+        ) : (
+          <a
+            href={applyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={trackClick}
+            className="flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-3 py-2.5 text-sm shadow-md touch-manipulation"
+          >
+            <span className="truncate">Apply on company site</span>
+            <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+          </a>
+        )}
       </div>
 
       <div className="sm:pb-0 pb-2">
