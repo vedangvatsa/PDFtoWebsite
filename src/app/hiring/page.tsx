@@ -6,6 +6,7 @@ import MicroFooter from '@/components/micro-footer';
 import ReportCTA from '@/components/report-cta';
 import { useReportStats } from '@/hooks/use-report-stats';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 
 function Cite({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -329,13 +330,13 @@ function SkillRadarChart() {
 
 export default function TechTalentReport() {
   const { stats } = useReportStats();
-  const jobCount = stats ? stats.totalJobs.toLocaleString() : '24,000+';
+  const jobCount = stats?.totalJobsDisplay || PLATFORM_JOBS_DISPLAY;
   const companyCount = stats ? `${stats.totalCompanies}+` : '900+';
   const aiPercent = stats ? `${stats.aiPercent}%` : '7%';
   const aiCount = stats ? stats.aiJobs.toLocaleString() : '6,000+';
   const remotePercent = stats ? `${100 - stats.remotePercent}%` : '87%';
   const remoteOnlyPercent = stats ? `${stats.remotePercent}%` : '13%';
-  const totalJobs = stats ? stats.totalJobs.toLocaleString() : '24,000+';
+  const totalJobs = stats?.totalJobsDisplay || PLATFORM_JOBS_DISPLAY;
   const totalCompanies = stats ? `${stats.totalCompanies}` : '900';
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-zinc-200 transition-colors duration-200 flex flex-col">

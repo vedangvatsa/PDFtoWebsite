@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createServerClient } from '@supabase/ssr';
 import { normalizeLocation as normalizeLocationDisplay } from '@/lib/normalize-location';
 import { jobPublicPath } from '@/lib/job-description';
+import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
 
 const supabase = supabaseAdmin;
 
@@ -308,10 +309,16 @@ export async function GET(request: NextRequest) {
     .range(0, limit * 2 - 1);
   priorityQuery = applyBaseFilters(priorityQuery);
 
+  // Unfiltered board: skip DB count (static total). Filtered search: estimated only.
+  const matchOnlyEarly = searchParams.get('match') === 'true';
+  const needsDbCount = Boolean(
+    (type && type !== 'all') || loc || q || matchOnlyEarly
+  );
+
   // --- Query 2: All jobs (backfill pool) ---
   let query = supabase
     .from('jobs')
-    .select(selectCols, { count: 'estimated' })
+    .select(selectCols, needsDbCount ? { count: 'estimated' } : undefined)
     .gt('created_at', thirtyDaysAgo)
     .order('published_at', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false });
@@ -639,12 +646,18 @@ export async function GET(request: NextRequest) {
     return dateB - dateA;
   });
 
+  const total = needsDbCount
+    ? (count || jobsWithMatches.length)
+    : PLATFORM_JOBS_TOTAL;
+
   const response = NextResponse.json({
     jobs: jobsWithMatches,
-    total: count || 0,
+    total,
     page,
     limit,
-    hasMore: offset + limit < (count || 0),
+    hasMore: needsDbCount
+      ? offset + limit < (count || 0)
+      : jobsWithMatches.length >= limit,
     userSkills: (userProfile?.skills || []).map(s => s.trim()).filter(Boolean),
     profileComplete,
   });

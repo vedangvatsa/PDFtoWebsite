@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 
 export const revalidate = 3600;
 
@@ -8,33 +9,27 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image() {
-  const supabase = supabaseAdmin;
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-
-  const { count } = await supabase
-    .from('jobs')
-    .select('*', { count: 'exact', head: true })
-    .gt('created_at', thirtyDaysAgo)
-    .not('company', 'ilike', '%Gopuff%');
-
-  let jobsCountText = '24,000+';
-  if (count) {
-    jobsCountText = count.toLocaleString();
-  }
-
-  const isBuild = process.env.NEXT_IS_BUILD_PHASE === '1';
-
-  const { data: companies } = await supabase
-    .from('jobs')
-    .select('company')
-    .gt('created_at', thirtyDaysAgo)
-    .not('company', 'ilike', '%Gopuff%')
-    .limit(isBuild ? 100 : 1000);
-    
+  const jobsCountText = PLATFORM_JOBS_DISPLAY;
   let companyCount = '900+';
-  if (companies) {
-    const unique = new Set(companies.map((c: { company: string }) => c.company));
-    companyCount = `${unique.size}+`;
+
+  try {
+    const supabase = supabaseAdmin;
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const isBuild = process.env.NEXT_IS_BUILD_PHASE === '1';
+
+    const { data: companies } = await supabase
+      .from('jobs')
+      .select('company')
+      .gt('created_at', thirtyDaysAgo)
+      .not('company', 'ilike', '%Gopuff%')
+      .limit(isBuild ? 100 : 1000);
+
+    if (companies) {
+      const unique = new Set(companies.map((c: { company: string }) => c.company));
+      companyCount = `${unique.size}+`;
+    }
+  } catch {
+    // keep static company fallback
   }
 
   const cards = [
@@ -60,12 +55,10 @@ export default async function Image() {
           justifyContent: 'space-between',
         }}
       >
-        {/* Top: Label */}
         <div style={{ display: 'flex', fontSize: 14, fontWeight: 600, color: '#a1a1aa', letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
           CVin.Bio
         </div>
 
-        {/* Middle: Title + Stats */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
             Tech Job Board
@@ -79,7 +72,6 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Bottom: Job card grid — 2 rows × 3 cols */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
             {cards.slice(0, 3).map((c) => (
@@ -99,7 +91,6 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div style={{ display: 'flex', width: '100%', height: 4, backgroundColor: '#09090b', borderRadius: 2 }} />
       </div>
     ),

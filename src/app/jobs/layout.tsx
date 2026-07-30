@@ -1,26 +1,12 @@
 import type { Metadata } from 'next';
-import { supabaseAdmin } from '@/lib/supabase-admin';
+import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
-// Revalidate metadata layout every hour so job counts stay dynamic
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const supabase = supabaseAdmin;
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-
-  // Fetch job count
-  const { count } = await supabase
-    .from('jobs')
-    .select('*', { count: 'exact', head: true })
-    .gt('created_at', thirtyDaysAgo)
-    .not('company', 'ilike', '%Gopuff%');
-
-  let countStr = '24,000+';
-  if (count) {
-    countStr = count.toLocaleString();
-  }
+  const countStr = PLATFORM_JOBS_DISPLAY;
 
   return {
     title: `Browse ${countStr} Open Roles at Top Companies`,
@@ -31,7 +17,6 @@ export async function generateMetadata(): Promise<Metadata> {
       description: `Search open roles at OpenAI, Stripe, Cloudflare, Anthropic, Databricks, and hundreds of top tech companies. Updated daily.`,
       url: `${siteUrl}/jobs`,
       type: 'website',
-      // Next.js will automatically use opengraph-image.tsx
     },
     twitter: {
       card: 'summary_large_image',
