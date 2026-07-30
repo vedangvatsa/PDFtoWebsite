@@ -92,14 +92,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       const meta = getCompanyMeta(slug);
       const companyDisplay = jobs[0].company || slug.replace(/-/g, ' ');
 
-      // Count total jobs for richer description
-      const { count } = await supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo);
-      const jobCount = count || 0;
+      // Free-tier Supabase often returns null for exact counts — fall back to estimated.
+      const [{ count: exactCount }, { count: estimatedCount }] = await Promise.all([
+        supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
+        supabaseForCompany.from('jobs').select('id', { count: 'estimated', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
+      ]);
+      const jobCount = exactCount || estimatedCount || 1;
 
-      const title = `${companyDisplay} Careers — ${jobCount} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
+      const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
       const desc = meta
-        ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount} open positions. Browse roles and apply.`
-        : `${companyDisplay} is hiring — ${jobCount} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
+        ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
+        : `${companyDisplay} is hiring — ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
       return {
         title,
         description: desc.slice(0, 160),
@@ -141,12 +144,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       const { getCompanyMeta } = await import('@/lib/company-data');
       const meta = getCompanyMeta(slug);
       const companyDisplay = jobs[0].company || slug.replace(/-/g, ' ');
-      const { count } = await supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo);
-      const jobCount = count || 0;
-      const compTitle = `${companyDisplay} Careers - ${jobCount} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
+      const [{ count: exactCount }, { count: estimatedCount }] = await Promise.all([
+        supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
+        supabaseForCompany.from('jobs').select('id', { count: 'estimated', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
+      ]);
+      const jobCount = exactCount || estimatedCount || 1;
+      const compTitle = `${companyDisplay} Careers - ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
       const compDesc = meta
-        ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount} open positions. Browse roles and apply.`
-        : `${companyDisplay} is hiring with ${jobCount} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
+        ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
+        : `${companyDisplay} is hiring with ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
       return {
         title: compTitle,
         description: compDesc.slice(0, 160),
