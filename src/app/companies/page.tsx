@@ -122,12 +122,27 @@ const NAME_MAP: Record<string, string> = {
 export default async function CompaniesPage() {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  // Fetch all jobs to compute per-company stats — paginate aggressively
+  // Real board total (not sum of the company sample below — sample is capped for perf).
+  // Free-tier Supabase often returns null for exact counts; estimated is fine for UI.
+  const [{ count: exactCount }, { count: estimatedCount }] = await Promise.all([
+    supabase
+      .from('jobs')
+      .select('id', { count: 'exact', head: true })
+      .gt('created_at', thirtyDaysAgo),
+    supabase
+      .from('jobs')
+      .select('id', { count: 'estimated', head: true })
+      .gt('created_at', thirtyDaysAgo),
+  ]);
+  const totalJobsFromDb = exactCount || estimatedCount || 0;
+
+  // Fetch jobs to compute per-company stats — paginate (capped so page stays fast)
   let allJobs: any[] = [];
   let page = 0;
   const PAGE_SIZE = 1000;
   const isBuild = process.env.NEXT_IS_BUILD_PHASE === '1';
-  const MAX_PAGES = isBuild ? 2 : 40; // Cap at 40K rows — sufficient for all unique companies
+  // Build: light sample for company list; runtime: deeper sample for better counts
+  const MAX_PAGES = isBuild ? 5 : 50;
   while (page < MAX_PAGES) {
     const { data, error } = await supabase
       .from('jobs')
@@ -170,7 +185,10 @@ export default async function CompaniesPage() {
   const companies = Object.values(companyMap)
     .sort((a, b) => b.count - a.count);
 
-  const totalJobs = companies.reduce((s, c) => s + c.count, 0);
+  // Prefer DB total for the "Browse all N open roles" CTA. Company-card counts
+  // may still be undercounts when the sample is capped.
+  const sampledJobs = companies.reduce((s, c) => s + c.count, 0);
+  const totalJobs = Math.max(totalJobsFromDb, sampledJobs);
 
   // Top companies for logo strip (hardcoded domains for reliability)
   const logoStrip = [
