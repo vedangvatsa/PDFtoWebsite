@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
-import { PAGE_CONTAINER } from '@/lib/utils';
 import {
   addJobApplyUtm,
   companyLogoFallback,
@@ -45,11 +44,8 @@ export interface JobDetail {
   description_html: string;
   has_description: boolean;
   excerpt: string;
-  /** Company URL segment, e.g. google */
   company_slug?: string | null;
-  /** Short job slug when curated, e.g. mkt */
   job_slug?: string | null;
-  /** Canonical path e.g. /google/mkt */
   public_path?: string | null;
 }
 
@@ -110,7 +106,6 @@ export default function JobDetailClient({
 
   const handleApply = (e?: React.MouseEvent) => {
     trackClick();
-    // Soft conversion: if no skills on profile, show CV interstitial first
     if (userSkills.length === 0) {
       e?.preventDefault();
       posthog.capture('job_detail_soft_cta_shown', {
@@ -120,7 +115,6 @@ export default function JobDetailClient({
       setShowCta(true);
       return;
     }
-    // Has skills → open apply URL directly
   };
 
   const openApply = () => {
@@ -153,7 +147,6 @@ export default function JobDetailClient({
       try {
         localStorage.setItem('parsedResume', JSON.stringify(parsed));
       } catch {}
-      // Remember where they were applying so editor/signup can return later if needed
       try {
         sessionStorage.setItem('pendingJobApply', applyUrl);
         sessionStorage.setItem('pendingJobId', job.id);
@@ -166,28 +159,53 @@ export default function JobDetailClient({
     }
   };
 
+  const ApplyButton = ({
+    className = '',
+    size = 'md',
+  }: {
+    className?: string;
+    size?: 'md' | 'sm';
+  }) => (
+    <a
+      href={applyUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={handleApply}
+      className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
+        size === 'sm' ? 'px-3 py-2.5 text-sm' : 'px-4 py-3 text-sm sm:text-[15px]'
+      } ${className}`}
+    >
+      <span className="truncate">Apply on company site</span>
+      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+    </a>
+  );
+
   return (
-    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col">
+    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
       <Header />
-      <main id="main-content" className={PAGE_CONTAINER}>
-        {/* Back: company page when on /google/..., else jobs board */}
+      <main
+        id="main-content"
+        className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 md:py-14 lg:py-16 pb-28 lg:pb-24 flex-1 min-w-0"
+      >
         <Link
           href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-6"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-4 sm:mb-6 min-h-[44px] sm:min-h-0"
         >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          {job.company_slug ? `${job.company} careers` : 'All jobs'}
+          <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
+          <span className="truncate max-w-[70vw] sm:max-w-none">
+            {job.company_slug ? `${job.company} careers` : 'All jobs'}
+          </span>
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(260px,300px)] gap-5 sm:gap-6 lg:gap-8 items-start">
           {/* Main column */}
-          <article className="bg-white border border-zinc-200 rounded-2xl p-6 md:p-8 shadow-sm">
-            <div className="flex items-start gap-4 mb-6">
+          <article className="bg-white border border-zinc-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm min-w-0 overflow-hidden">
+            <div className="flex items-start gap-3 sm:gap-4 mb-5 sm:mb-6">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logoSrc}
                 alt={`${job.company} logo`}
-                className="h-12 w-12 rounded-xl object-cover border border-zinc-100 shrink-0"
+                className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl object-cover border border-zinc-100 shrink-0"
                 onLoad={(e) => {
                   const el = e.target as HTMLImageElement;
                   if (!job.company_logo && el.naturalWidth <= 16) {
@@ -203,36 +221,36 @@ export default function JobDetailClient({
                 }}
               />
               <div className="min-w-0 flex-1">
-                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 leading-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 leading-snug sm:leading-tight break-words">
                   {job.title}
                 </h1>
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-zinc-600">
-                  <span className="inline-flex items-center gap-1 font-semibold text-zinc-800">
-                    <Building2 className="h-3.5 w-3.5 text-zinc-400" />
-                    {job.company}
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-1.5 gap-x-3 mt-2 text-[13px] sm:text-sm text-zinc-600">
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-zinc-800 min-w-0">
+                    <Building2 className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                    <span className="truncate">{job.company}</span>
                   </span>
                   {job.location && (
-                    <span className="inline-flex items-center gap-1">
-                      <MapPin className="h-3.5 w-3.5 text-zinc-400" />
-                      {job.location}
+                    <span className="inline-flex items-start gap-1.5 min-w-0">
+                      <MapPin className="h-3.5 w-3.5 text-zinc-400 shrink-0 mt-0.5" />
+                      <span className="break-words">{job.location}</span>
                     </span>
                   )}
                   {typeLabel && (
-                    <span className="inline-flex items-center gap-1">
-                      <Briefcase className="h-3.5 w-3.5 text-zinc-400" />
+                    <span className="inline-flex items-center gap-1.5">
+                      <Briefcase className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
                       {typeLabel}
                     </span>
                   )}
                   {job.published_at && (
-                    <span className="inline-flex items-center gap-1 text-zinc-400">
-                      <Clock className="h-3.5 w-3.5" />
+                    <span className="inline-flex items-center gap-1.5 text-zinc-400">
+                      <Clock className="h-3.5 w-3.5 shrink-0" />
                       {timeAgo(job.published_at)}
                     </span>
                   )}
                 </div>
                 {job.salary && (
-                  <p className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-emerald-700">
-                    <DollarSign className="h-3.5 w-3.5" />
+                  <p className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-emerald-700 break-words">
+                    <DollarSign className="h-3.5 w-3.5 shrink-0" />
                     {job.salary}
                   </p>
                 )}
@@ -240,11 +258,11 @@ export default function JobDetailClient({
             </div>
 
             {job.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-6">
+              <div className="flex flex-wrap gap-1.5 mb-5 sm:mb-6">
                 {job.tags.slice(0, 12).map((tag) => (
                   <span
                     key={tag}
-                    className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600"
+                    className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 max-w-full truncate"
                   >
                     {tag}
                   </span>
@@ -252,43 +270,38 @@ export default function JobDetailClient({
               </div>
             )}
 
-            {/* Mobile apply */}
-            <div className="lg:hidden mb-6">
-              <a
-                href={applyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleApply}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-black text-white font-semibold text-sm hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md"
-              >
-                Apply on company site
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
+            {/* In-flow apply: tablets in portrait / phones before sticky bar is needed */}
+            <div className="lg:hidden mb-5 sm:mb-6">
+              <ApplyButton />
             </div>
 
-            {/* Description */}
-            <div className="border-t border-zinc-100 pt-6">
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-4">
+            <div className="border-t border-zinc-100 pt-5 sm:pt-6 min-w-0">
+              <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-3 sm:mb-4">
                 Job description
               </h2>
               {job.has_description ? (
                 <div
-                  className="job-description text-[14px] leading-relaxed text-zinc-600
-                    [&_h2]:text-base [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-zinc-900 [&_h2]:mt-6 [&_h2]:mb-2
-                    [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-zinc-900 [&_h3]:mt-5 [&_h3]:mb-2
+                  className="job-description text-[13px] sm:text-[14px] leading-relaxed text-zinc-600 min-w-0 max-w-full overflow-x-auto
+                    break-words [overflow-wrap:anywhere]
+                    [&_*]:max-w-full
+                    [&_img]:h-auto [&_img]:max-w-full
+                    [&_table]:block [&_table]:w-full [&_table]:overflow-x-auto
+                    [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap
+                    [&_h2]:text-[15px] sm:[&_h2]:text-base [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-zinc-900 [&_h2]:mt-5 sm:[&_h2]:mt-6 [&_h2]:mb-2
+                    [&_h3]:text-[14px] sm:[&_h3]:text-sm [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-zinc-900 [&_h3]:mt-4 sm:[&_h3]:mt-5 [&_h3]:mb-2
                     [&_h4]:text-sm [&_h4]:font-semibold [&_h4]:text-zinc-800 [&_h4]:mt-4 [&_h4]:mb-1.5
                     [&_p]:mb-3 [&_p]:leading-relaxed
                     [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1
                     [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1
                     [&_li]:text-zinc-600
-                    [&_a]:text-primary [&_a]:underline-offset-2 hover:[&_a]:underline
+                    [&_a]:text-primary [&_a]:underline-offset-2 hover:[&_a]:underline [&_a]:break-all
                     [&_strong]:font-semibold [&_strong]:text-zinc-800
                     [&_b]:font-semibold [&_b]:text-zinc-800
                     [&_blockquote]:border-l-2 [&_blockquote]:border-zinc-200 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-zinc-500"
                   dangerouslySetInnerHTML={{ __html: job.description_html }}
                 />
               ) : (
-                <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50 px-5 py-8 text-center">
+                <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50 px-4 sm:px-5 py-6 sm:py-8 text-center">
                   <Briefcase className="h-8 w-8 text-zinc-300 mx-auto mb-3" />
                   <p className="text-sm text-zinc-600 font-medium">
                     Full description is on the company careers page.
@@ -301,7 +314,7 @@ export default function JobDetailClient({
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleApply}
-                    className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline"
+                    className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline min-h-[44px]"
                   >
                     View full listing
                     <ExternalLink className="h-3.5 w-3.5" />
@@ -310,35 +323,25 @@ export default function JobDetailClient({
               )}
             </div>
 
-            <p className="mt-8 text-[11px] text-zinc-400 leading-relaxed">
+            <p className="mt-6 sm:mt-8 text-[11px] text-zinc-400 leading-relaxed">
               You&apos;re viewing a listing on CVin.Bio. Applications are submitted on the
               employer&apos;s site. We may lightly clean formatting for readability.
             </p>
           </article>
 
-          {/* Sidebar: soft conversion + apply */}
-          <aside className="lg:sticky lg:top-24 space-y-4">
+          {/* Sidebar: desktop/tablet landscape */}
+          <aside className="hidden lg:block lg:sticky lg:top-24 space-y-4 min-w-0">
             <div className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
-              <a
-                href={applyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleApply}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-black text-white font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all shadow-md"
-              >
-                Apply on company site
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
+              <ApplyButton />
               <p className="text-[11px] text-center text-zinc-400 mt-2">
                 Opens the official application
               </p>
             </div>
 
-            {/* Soft CV / account CTA */}
             {userSkills.length === 0 ? (
               <div className="bg-gradient-to-b from-zinc-900 to-zinc-800 text-white rounded-2xl p-5 shadow-md">
                 <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="h-4 w-4 text-amber-300" />
+                  <Sparkles className="h-4 w-4 text-amber-300 shrink-0" />
                   <h3 className="text-sm font-semibold">Let jobs find you</h3>
                 </div>
                 <p className="text-xs text-zinc-300 leading-relaxed mb-4">
@@ -347,7 +350,7 @@ export default function JobDetailClient({
                 </p>
                 <label
                   htmlFor="jd-cv-upload"
-                  className={`flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-white text-zinc-900 font-semibold text-sm cursor-pointer hover:bg-zinc-100 transition-colors ${
+                  className={`flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-white text-zinc-900 font-semibold text-sm cursor-pointer hover:bg-zinc-100 transition-colors touch-manipulation ${
                     isUploading ? 'opacity-50 pointer-events-none' : ''
                   }`}
                 >
@@ -386,12 +389,12 @@ export default function JobDetailClient({
             ) : (
               <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
                 <div className="flex items-center gap-2 mb-1">
-                  <Target className="h-4 w-4 text-emerald-600" />
+                  <Target className="h-4 w-4 text-emerald-600 shrink-0" />
                   <h3 className="text-sm font-semibold text-emerald-900">
                     {profileComplete ? 'Profile ready' : 'Skills on file'}
                   </h3>
                 </div>
-                <p className="text-xs text-emerald-800/80 leading-relaxed">
+                <p className="text-xs text-emerald-800/80 leading-relaxed break-words">
                   Matching uses your skills
                   {userSkills.slice(0, 4).length > 0
                     ? `: ${userSkills.slice(0, 4).join(', ')}${userSkills.length > 4 ? '...' : ''}`
@@ -418,36 +421,86 @@ export default function JobDetailClient({
               </ol>
             </div>
           </aside>
+
+          {/* Mobile/tablet soft CV CTA (sidebar is desktop-only) */}
+          {userSkills.length === 0 && (
+            <div className="lg:hidden bg-gradient-to-b from-zinc-900 to-zinc-800 text-white rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-md">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-amber-300 shrink-0" />
+                <h3 className="text-sm font-semibold">Let jobs find you</h3>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed mb-4">
+                Upload your CV once. Get matched to roles like this and a public profile
+                recruiters can open.
+              </p>
+              <label
+                htmlFor="jd-cv-upload-mobile"
+                className={`flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-white text-zinc-900 font-semibold text-sm cursor-pointer hover:bg-zinc-100 transition-colors touch-manipulation min-h-[48px] ${
+                  isUploading ? 'opacity-50 pointer-events-none' : ''
+                }`}
+              >
+                {isUploading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <UploadCloud className="h-4 w-4" />
+                )}
+                {isUploading ? 'Parsing...' : 'Upload CV (free)'}
+                <input
+                  id="jd-cv-upload-mobile"
+                  type="file"
+                  className="hidden"
+                  accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+                  disabled={isUploading}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    await parseCv(file);
+                    e.target.value = '';
+                  }}
+                />
+              </label>
+              {!isAuthenticated && (
+                <Link
+                  href="/signup"
+                  className="block text-center text-xs text-zinc-400 hover:text-white mt-3 py-2 transition-colors"
+                  onClick={() =>
+                    posthog.capture('job_detail_signup_clicked', { job_id: job.id })
+                  }
+                >
+                  or create a free account →
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </main>
 
       {/* Sticky mobile apply bar */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <a
-          href={applyUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleApply}
-          className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-black text-white font-semibold text-sm"
-        >
-          Apply on company site
-          <ExternalLink className="h-3.5 w-3.5" />
-        </a>
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 px-3 sm:px-4 pt-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+        <ApplyButton size="sm" />
       </div>
 
-      {/* Soft interstitial modal before external apply */}
+      {/* Soft interstitial modal */}
       {showCta && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white border border-zinc-200 rounded-2xl shadow-2xl max-w-md w-full p-6 relative animate-in zoom-in-95 duration-200">
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="jd-cta-title"
+        >
+          <div className="bg-white border border-zinc-200 rounded-t-2xl sm:rounded-2xl shadow-2xl max-w-md w-full p-5 sm:p-6 relative animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 max-h-[90dvh] overflow-y-auto pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:pb-6">
             <button
               onClick={() => setShowCta(false)}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 transition-colors"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-zinc-400 hover:text-zinc-600 transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <h3 className="text-2xl font-bold text-center text-zinc-900 mb-2 tracking-tight">
+            <h3
+              id="jd-cta-title"
+              className="text-xl sm:text-2xl font-bold text-center text-zinc-900 mb-2 tracking-tight pr-8"
+            >
               Before you apply
             </h3>
             <p className="text-sm text-center text-zinc-500 mb-6 max-w-xs mx-auto">
@@ -458,7 +511,7 @@ export default function JobDetailClient({
             <div className="flex flex-col gap-3">
               <label
                 htmlFor="jd-modal-cv"
-                className={`flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-black text-white font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-md ${
+                className={`flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-xl bg-black text-white font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-md touch-manipulation min-h-[48px] ${
                   isUploading ? 'opacity-50 pointer-events-none' : ''
                 }`}
               >
@@ -487,16 +540,18 @@ export default function JobDetailClient({
               <button
                 type="button"
                 onClick={openApply}
-                className="flex items-center justify-center w-full px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-900 font-medium text-sm transition-colors"
+                className="flex items-center justify-center w-full px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-900 font-medium text-sm transition-colors min-h-[48px] touch-manipulation"
               >
-                Skip and apply at {job.company}
+                <span className="truncate">Skip and apply at {job.company}</span>
               </button>
             </div>
           </div>
         </div>
       )}
 
-      <MicroFooter />
+      <div className="lg:pb-0 pb-2">
+        <MicroFooter />
+      </div>
     </div>
   );
 }
