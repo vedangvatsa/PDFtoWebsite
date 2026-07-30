@@ -14,6 +14,8 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
+import { supabaseFetch, restUrl } from './supabase-fetch.mjs';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -33,7 +35,10 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 }
 
 const JOBS_PER_POST = 5;
-const FETCH_LIMIT = 3000;
+// Free-tier friendly: never pull 3000 rows (that was causing Cloudflare 522s).
+const RECENT_DAYS = 7;
+const RECENT_LIMIT = 200;
+const COMPANY_BATCH = 10;
 const DEDUP_FILE = resolve(__dirname, '.telegram-ai-jobs-posted.json');
 const DEDUP_MAX = 500;
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
@@ -267,29 +272,126 @@ function cleanLocation(loc) {
   return clean.trim() || 'Remote';
 }
 
-// ─── Fetch AI jobs from Supabase ─────────────────────────────────────────────
-// IMPORTANT: jobs.id is a UUID — ordering by id.desc does NOT return newest rows.
-// Always order by created_at (or published_at) for chronological recency.
-async function fetchJobs() {
-  const params = new URLSearchParams({
+// ─── Fetch AI jobs from Supabase (free-tier friendly) ────────────────────────
+// Avoid one huge `limit=3000` scan (Cloudflare 522 on Free Nano).
+// Strategy:
+//   1) Small recent window (7d, 200 rows) for big-tech AI titles + any pure AI hits
+//   2) Targeted company.ilike batches for pure-AI brands (tiny queries, high yield)
+// Always order by created_at (UUID id.desc is NOT chronological).
+
+function mergeByUrl(into, rows) {
+  for (const j of rows || []) {
+    if (j?.apply_url && !into.has(j.apply_url)) into.set(j.apply_url, j);
+  }
+}
+
+async function fetchRecentJobs() {
+  const since = new Date(Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000).toISOString();
+  const url = restUrl(SUPABASE_URL, 'jobs', {
     select: 'id,title,company,location,apply_url,source,created_at',
+    created_at: `gt.${since}`,
     order: 'created_at.desc',
-    limit: String(FETCH_LIMIT),
+    limit: String(RECENT_LIMIT),
   });
-
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?${params}`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-    },
+  const rows = await supabaseFetch(url, {
+    apiKey: SUPABASE_KEY,
+    timeoutMs: 25_000,
+    retries: 5,
+    label: 'ai-jobs-recent',
   });
+  return Array.isArray(rows) ? rows : [];
+}
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Supabase fetch failed: ${res.status} ${err}`);
+/** Tiny per-batch company lookups — each request is cheap for Free Nano. */
+async function fetchByCompanyNames(names) {
+  const out = new Map();
+  // Prefer longer / multi-word names first; skip ultra-ambiguous shorts in SQL
+  // (filter exact-ish in pickJobs anyway). Wildcards used carefully.
+  const usable = names.filter((n) => n.length >= 4 && n !== 'modal' && n !== 'lambda' && n !== 'cruise');
+
+  for (let i = 0; i < usable.length; i += COMPANY_BATCH) {
+    const batch = usable.slice(i, i + COMPANY_BATCH);
+    // company.ilike.*name* — PostgREST or=() list
+    const or = batch
+      .map((n) => {
+        // escape commas/parens in filter values
+        const safe = n.replace(/[,()]/g, ' ');
+        return `company.ilike.*${safe}*`;
+      })
+      .join(',');
+    const url = restUrl(SUPABASE_URL, 'jobs', {
+      select: 'id,title,company,location,apply_url,source,created_at',
+      or: `(${or})`,
+      order: 'created_at.desc',
+      limit: '30',
+    });
+    try {
+      const rows = await supabaseFetch(url, {
+        apiKey: SUPABASE_KEY,
+        timeoutMs: 20_000,
+        retries: 4,
+        label: `ai-jobs-co[${i / COMPANY_BATCH + 1}]`,
+      });
+      mergeByUrl(out, rows);
+    } catch (e) {
+      // Don't fail the whole post if one company batch times out
+      console.warn(`  ⚠️  company batch failed: ${e.message}`);
+    }
+    // Brief pause between batches to avoid free-tier connection spikes
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  return [...out.values()];
+}
+
+async function fetchJobs() {
+  const byUrl = new Map();
+
+  // Pass 1: recent jobs (cheap date-range scan)
+  try {
+    const recent = await fetchRecentJobs();
+    console.log(`  Recent window: ${recent.length} jobs (last ${RECENT_DAYS}d)`);
+    mergeByUrl(byUrl, recent);
+  } catch (e) {
+    console.warn(`  ⚠️  recent fetch failed: ${e.message}`);
   }
 
-  return res.json();
+  // Pass 2: pure-AI company batches (fills gaps if recent window is sparse)
+  try {
+    const pure = await fetchByCompanyNames([...PURE_AI_COMPANIES]);
+    console.log(`  Pure-AI company fetch: ${pure.length} jobs`);
+    mergeByUrl(byUrl, pure);
+  } catch (e) {
+    console.warn(`  ⚠️  pure-AI fetch failed: ${e.message}`);
+  }
+
+  // Pass 3: if still thin, one slightly larger recent pull (not 3000)
+  if (byUrl.size < 40) {
+    try {
+      const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+      const url = restUrl(SUPABASE_URL, 'jobs', {
+        select: 'id,title,company,location,apply_url,source,created_at',
+        created_at: `gt.${since}`,
+        order: 'created_at.desc',
+        limit: '400',
+      });
+      const rows = await supabaseFetch(url, {
+        apiKey: SUPABASE_KEY,
+        timeoutMs: 30_000,
+        retries: 4,
+        label: 'ai-jobs-fallback-14d',
+      });
+      console.log(`  Fallback 14d: ${Array.isArray(rows) ? rows.length : 0} jobs`);
+      mergeByUrl(byUrl, rows);
+    } catch (e) {
+      console.warn(`  ⚠️  fallback fetch failed: ${e.message}`);
+    }
+  }
+
+  if (byUrl.size === 0) {
+    throw new Error('No jobs fetched from Supabase after retries (free-tier timeout?)');
+  }
+
+  return [...byUrl.values()];
 }
 
 // ─── Pick 5 AI jobs (one per company, spread across different orgs) ──────────

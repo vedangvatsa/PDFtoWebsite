@@ -8,6 +8,8 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
+import { supabaseFetch, restUrl } from './supabase-fetch.mjs';
+
 // ─── Banned Jobs Filter (must match jobs-sync.mjs) ───
 const BANNED_PATTERNS = [
   '\\btherapists?\\b', '\\bpsychiatric\\b', '\\bpsychiatrist\\b', '\\bnurse\\b',
@@ -75,7 +77,6 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 }
 
 const JOBS_PER_POST = 10;
-const FETCH_LIMIT = 500; // fetch extra to allow company dedup
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN || '';
 const LINKEDIN_PERSON_URN = process.env.LINKEDIN_PERSON_URN || '';
@@ -199,35 +200,33 @@ function truncate(text, max = 60) {
 }
 
 // ── Fetch unposted jobs from Supabase ────────────────────────────────────
+// Free-tier friendly: small window, small limit, retries on 522/timeouts.
 // Only fetch from curated sources — BambooHR excluded (unfiltered junk)
 const TELEGRAM_ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'remoteok'];
+const FETCH_DAYS = 2;       // was 3 — less rows to scan
+const FETCH_LIMIT = 80;     // was 200 — enough for 10 picks after filters
 
 async function fetchUnpostedJobs() {
   const sourceFilter = TELEGRAM_ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
-  const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
-  // Fast query: just source + date filter (both indexed). Skip the slow IS NULL filter.
-  const params = new URLSearchParams({
+  const since = new Date(Date.now() - FETCH_DAYS * 24 * 60 * 60 * 1000).toISOString();
+  // Fast query: source + date (indexed). Skip slow IS NULL in SQL.
+  const url = restUrl(SUPABASE_URL, 'jobs', {
     select: 'id,title,company,location,apply_url,source,published_at,telegram_posted_at',
-    'source': `in.(${sourceFilter})`,
-    'published_at': `gt.${threeDaysAgo}`,
+    source: `in.(${sourceFilter})`,
+    published_at: `gt.${since}`,
     order: 'published_at.desc',
-    limit: '200',
+    limit: String(FETCH_LIMIT),
   });
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?${params}`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-    },
+  const jobs = await supabaseFetch(url, {
+    apiKey: SUPABASE_KEY,
+    timeoutMs: 25_000,
+    retries: 5,
+    label: 'telegram-jobs',
   });
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Failed to fetch jobs: ${res.status} ${err}`);
-  }
-
-  const jobs = await res.json();
-  // Filter out already-posted jobs in JS (avoids slow IS NULL scan in DB)
+  if (!Array.isArray(jobs)) throw new Error('Unexpected jobs response');
+  // Filter already-posted in JS (avoids slow IS NULL scan in DB)
   return jobs.filter(j => !j.telegram_posted_at);
 }
 
@@ -404,27 +403,36 @@ function pickJobs(jobs, limit, category) {
 async function markJobsPosted(jobIds) {
   const now = new Date().toISOString();
 
-  for (let i = 0; i < jobIds.length; i += 50) {
-    const batch = jobIds.slice(i, i + 50);
+  for (let i = 0; i < jobIds.length; i += 20) {
+    const batch = jobIds.slice(i, i + 20);
     const idFilter = batch.map(id => `"${id}"`).join(',');
-
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/jobs?id=in.(${idFilter})`,
-      {
-        method: 'PATCH',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal',
-        },
-        body: JSON.stringify({ telegram_posted_at: now }),
+    let ok = false;
+    for (let attempt = 1; attempt <= 4 && !ok; attempt++) {
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/jobs?id=in.(${idFilter})`,
+          {
+            method: 'PATCH',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify({ telegram_posted_at: now }),
+          }
+        );
+        if (res.ok) {
+          ok = true;
+        } else {
+          const err = await res.text();
+          if (attempt === 4) console.error(`  Failed to mark batch as posted: ${err.slice(0, 200)}`);
+          else await new Promise(r => setTimeout(r, 1000 * attempt));
+        }
+      } catch (e) {
+        if (attempt === 4) console.error(`  Failed to mark batch as posted: ${e.message}`);
+        else await new Promise(r => setTimeout(r, 1000 * attempt));
       }
-    );
-
-    if (!res.ok) {
-      const err = await res.text();
-      console.error(`  Failed to mark batch as posted: ${err}`);
     }
   }
 }
