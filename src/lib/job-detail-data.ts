@@ -146,6 +146,7 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
     excerpt || `${jobTitle} at ${company}. ${location}. Apply via CVin.Bio.`;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
 
+  // opengraph-image.tsx next to the page supplies og:image automatically
   return {
     title,
     description: description.slice(0, 160),
