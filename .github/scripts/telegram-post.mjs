@@ -200,34 +200,66 @@ function truncate(text, max = 60) {
 }
 
 // ── Fetch unposted jobs from Supabase ────────────────────────────────────
-// Free-tier friendly: small window, small limit, retries on 522/timeouts.
-// Only fetch from curated sources — BambooHR excluded (unfiltered junk)
+// Ultra-light for Free Nano: short window + small limit + retries.
+// Tradeoff: less backlog catch-up / thinner category pool vs fewer 522/503s.
+// Only curated sources — BambooHR excluded (unfiltered junk).
 const TELEGRAM_ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'remoteok'];
-const FETCH_DAYS = 2;       // was 3 — less rows to scan
-const FETCH_LIMIT = 80;     // was 200 — enough for 10 picks after filters
+const FETCH_DAYS = 1;        // ultra-light: last 24h only
+const FETCH_LIMIT = 40;      // ultra-light: small payload
+const FALLBACK_DAYS = 2;     // only if first pass is too thin
+const FALLBACK_LIMIT = 60;
 
-async function fetchUnpostedJobs() {
+async function fetchJobsPage({ days, limit, label }) {
   const sourceFilter = TELEGRAM_ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
-  const since = new Date(Date.now() - FETCH_DAYS * 24 * 60 * 60 * 1000).toISOString();
-  // Fast query: source + date (indexed). Skip slow IS NULL in SQL.
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
-    select: 'id,title,company,location,apply_url,source,published_at,telegram_posted_at',
+    // Minimal columns — less IO on free tier
+    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at',
     source: `in.(${sourceFilter})`,
     published_at: `gt.${since}`,
     order: 'published_at.desc',
-    limit: String(FETCH_LIMIT),
+    limit: String(limit),
   });
 
   const jobs = await supabaseFetch(url, {
     apiKey: SUPABASE_KEY,
-    timeoutMs: 25_000,
+    timeoutMs: 20_000,
     retries: 5,
-    label: 'telegram-jobs',
+    label,
   });
-
   if (!Array.isArray(jobs)) throw new Error('Unexpected jobs response');
-  // Filter already-posted in JS (avoids slow IS NULL scan in DB)
   return jobs.filter(j => !j.telegram_posted_at);
+}
+
+async function fetchUnpostedJobs() {
+  // Pass 1: ultra-light
+  let jobs = await fetchJobsPage({
+    days: FETCH_DAYS,
+    limit: FETCH_LIMIT,
+    label: 'telegram-jobs-1d',
+  });
+  console.log(`  Ultra-light fetch: ${jobs.length} unposted (last ${FETCH_DAYS}d, limit ${FETCH_LIMIT})`);
+
+  // Pass 2: slightly larger only if we can't fill a post
+  if (jobs.length < JOBS_PER_POST) {
+    console.log(`  Thin pool (${jobs.length} < ${JOBS_PER_POST}) — fallback ${FALLBACK_DAYS}d / ${FALLBACK_LIMIT}`);
+    try {
+      const more = await fetchJobsPage({
+        days: FALLBACK_DAYS,
+        limit: FALLBACK_LIMIT,
+        label: 'telegram-jobs-fallback',
+      });
+      const seen = new Set(jobs.map(j => j.id));
+      for (const j of more) {
+        if (!seen.has(j.id)) jobs.push(j);
+      }
+      console.log(`  After fallback: ${jobs.length} unposted`);
+    } catch (e) {
+      console.warn(`  ⚠️  fallback fetch failed: ${e.message}`);
+    }
+  }
+
+  return jobs;
 }
 
 // ── Pick jobs: 2+ remote, 1 per company, diverse locations ───────────────
@@ -585,30 +617,42 @@ async function main() {
 
   // 2. Shuffle for source diversity, then pick category-matching remote-preferred roles
   const jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST, category);
+  if (jobs.length === 0) {
+    console.log('  No jobs matched category filters.');
+    return;
+  }
   const remoteCount = jobs.filter(j => isRemote(j.location)).length;
   console.log(`  ${allJobs.length} unposted -> ${jobs.length} picked (${remoteCount} remote)`);
 
-  // 3. Format and send
+  // 3. Format once — post TG and LinkedIn independently so one failure doesn't block the other
   const message = formatJobsMessage(jobs, category);
   console.log(`  Message: ${message.length} chars`);
 
-  if (message.length > 4096) {
-    const half = Math.ceil(jobs.length / 2);
-    await sendTelegramMessage(formatJobsMessage(jobs.slice(0, half), category));
-    await new Promise(r => setTimeout(r, 1000));
-    await sendTelegramMessage(formatJobsMessage(jobs.slice(half), category));
-    console.log('  Posted in 2 batches');
-  } else {
-    const result = await sendTelegramMessage(message);
-    console.log(`  Posted. Message ID: ${result.message_id}`);
+  let telegramOk = false;
+  try {
+    if (message.length > 4096) {
+      const half = Math.ceil(jobs.length / 2);
+      await sendTelegramMessage(formatJobsMessage(jobs.slice(0, half), category));
+      await new Promise(r => setTimeout(r, 1000));
+      await sendTelegramMessage(formatJobsMessage(jobs.slice(half), category));
+      console.log('  Posted Telegram in 2 batches');
+    } else {
+      const result = await sendTelegramMessage(message);
+      console.log(`  Posted Telegram. Message ID: ${result.message_id}`);
+    }
+    telegramOk = true;
+  } catch (e) {
+    console.warn(`  ⚠️ Telegram send failed: ${e.message}`);
   }
 
-  // Cross-post to LinkedIn (vedangvatsa) using same job list
+  // Cross-post to LinkedIn (vedangvatsa) — same job list, direct API (not Buffer)
+  let linkedInOk = false;
   if (LINKEDIN_ACCESS_TOKEN && LINKEDIN_PERSON_URN) {
     try {
       const linkedInText = htmlToLinkedInText(message);
       const linkedInUrn = await postToLinkedIn(linkedInText);
       console.log(`  ✅ LinkedIn cross-post: ${linkedInUrn}`);
+      linkedInOk = true;
     } catch (e) {
       console.warn(`  ⚠️ LinkedIn cross-post failed: ${e.message}`);
     }
@@ -616,10 +660,15 @@ async function main() {
     console.log('  ⏭ LinkedIn cross-post skipped (no LINKEDIN_ACCESS_TOKEN/PERSON_URN)');
   }
 
-  // 4. Mark ONLY the picked jobs as posted
-  const pickedIds = jobs.map(j => j.id);
-  await markJobsPosted(pickedIds);
-  console.log(`  Marked ${pickedIds.length} jobs as posted`);
+  // 4. Mark posted if either channel succeeded (avoid re-spamming the one that worked)
+  if (telegramOk || linkedInOk) {
+    const pickedIds = jobs.map(j => j.id);
+    await markJobsPosted(pickedIds);
+    console.log(`  Marked ${pickedIds.length} jobs as posted (tg=${telegramOk}, li=${linkedInOk})`);
+  } else {
+    console.error('  Both Telegram and LinkedIn failed — jobs left unposted for retry');
+    process.exitCode = 1;
+  }
 }
 
 main().catch(e => {
