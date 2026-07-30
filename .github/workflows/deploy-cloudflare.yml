@@ -27,11 +27,23 @@ jobs:
           node-version: "22"
           cache: npm
 
-      - name: Mint Cloudflare access token
+      # Prefer long-lived API token. OAuth refresh is fallback only (and rotates).
+      - name: Resolve Cloudflare credentials
+        id: cfauth
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_REFRESH_TOKEN: ${{ secrets.CLOUDFLARE_REFRESH_TOKEN }}
           CLOUDFLARE_OAUTH_CLIENT_ID: ${{ secrets.CLOUDFLARE_OAUTH_CLIENT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node .github/scripts/mint-cloudflare-token.mjs
+
+      - name: Persist rotated OAuth refresh token
+        if: steps.cfauth.outputs.refresh_rotated == 'true'
+        env:
+          REFRESH_ROTATED: ${{ steps.cfauth.outputs.refresh_rotated }}
+          CLOUDFLARE_SECRETS_PAT: ${{ secrets.CLOUDFLARE_SECRETS_PAT }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node .github/scripts/update-cf-refresh-secret.mjs
 
       - name: Install dependencies
         run: npm ci
@@ -81,6 +93,7 @@ jobs:
       - name: Deploy Worker
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Token was written to GITHUB_ENV by mint script (static or oauth)
         run: npx wrangler deploy
 
       - name: Deployment summary
@@ -91,6 +104,7 @@ jobs:
             echo "- Worker: \`cvinbio\`"
             echo "- Branch: \`${{ github.ref_name }}\`"
             echo "- Commit: \`${{ github.sha }}\`"
-            echo "- Auth: Wrangler OAuth refresh token (minted each run)"
+            echo "- Auth mode: \`${{ steps.cfauth.outputs.auth_mode }}\`"
+            echo "- Prefer long-lived API token (no rotation) over OAuth refresh"
             echo "- Auto-deploys on every push to \`main\`"
           } >> "$GITHUB_STEP_SUMMARY"

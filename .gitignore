@@ -59,3 +59,7 @@ scratch/
 .wrangler
 .dev.vars
 cloudflare-env.d.ts
+
+# Cloudflare local tokens (never commit)
+cf-deploy-api.token
+cf-refresh-rotated.token
