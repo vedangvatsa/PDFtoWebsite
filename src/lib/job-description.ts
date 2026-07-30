@@ -1,8 +1,12 @@
 /**
  * Job description cleaning + URL helpers for cvin.bio JD pages.
- * Descriptions in DB are raw HTML (ATS) or plain text — we sanitize and
+ * Descriptions in DB are raw HTML (ATS) or plain text. We sanitize and
  * lightly restructure for readable interstitial pages before external apply.
+ *
+ * All publish output runs through src/lib/noslop.ts (see /noslop.md).
  */
+
+import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 const ALLOWED_TAGS = new Set([
   'p', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li',
@@ -106,34 +110,34 @@ export function plainTextToHtml(text: string): string {
 
 /**
  * Normalize stored description into safe HTML for display.
- * "Rewritten" = cleaned structure, no LLM rewrite (keeps free-tier costs down).
+ * Structure cleanup + mandatory noslop punctuation pass.
  */
 export function formatJobDescription(raw: string | null | undefined): string {
   if (!raw || !raw.trim()) return '';
 
   const looksHtml = /<[a-z][\s\S]*>/i.test(raw);
-  if (looksHtml) {
-    return sanitizeJobHtml(raw);
-  }
-  return plainTextToHtml(raw);
+  const structured = looksHtml ? sanitizeJobHtml(raw) : plainTextToHtml(raw);
+  return cleanPublishHtml(structured);
 }
 
 /** Plain excerpt for meta description / OG. */
 export function jobDescriptionExcerpt(raw: string | null | undefined, max = 160): string {
   if (!raw) return '';
-  const text = raw
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&amp;/gi, '&')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&quot;/gi, '"')
-    .replace(/\s+/g, ' ')
-    .trim();
+  const text = cleanPublishText(
+    raw
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
   if (text.length <= max) return text;
-  return text.slice(0, max - 1).trimEnd() + '…';
+  return text.slice(0, max - 1).trimEnd() + '...';
 }
 
 export function addJobApplyUtm(url: string, medium = 'job_detail'): string {
@@ -206,7 +210,7 @@ export function shortJobSlug(
   const lower = externalId.toLowerCase();
   if (!lower.startsWith(prefix)) return null;
   const rest = externalId.slice(prefix.length);
-  // Short pretty slug: 1–24 chars, no uuid-ish noise
+  // Short pretty slug: 1-24 chars, no uuid-ish noise
   if (!/^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest)) return null;
   if (/^[0-9a-f]{8,}$/i.test(rest)) return null; // reject pure hex ids
   if (rest.length > 12 && /^\d+$/.test(rest)) return null; // reject google numeric job ids

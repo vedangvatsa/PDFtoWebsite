@@ -2,6 +2,8 @@
 
 These guidelines dictate the strict linguistic, structural, and philosophical rules for all blog content, marketing copy, and articles generated for this application. Any divergence from these rules is considered a critical brand failure.
 
+**Mandatory companion:** root `noslop.md` (also served at `/noslop.md`). Runtime enforcement for job pages and publish paths lives in `src/lib/noslop.ts`.
+
 ## 1. Core Terminology & Product Philosophy
 *   **It is a CV, never a Resume.** The product converts a "CV" into a "web link". You must aggressively avoid the word "resume" in all modern copy.
 *   **The PDF is Dead.** The site does *not* sell a PDF formatting or printing service. Do not write about "printing out paper copies" or "legacy PDF downloads". The primary value proposition is instantly turning a document into a clean, mobile-friendly interactive website URL.

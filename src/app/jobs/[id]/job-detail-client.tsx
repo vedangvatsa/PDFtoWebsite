@@ -170,7 +170,7 @@ export default function JobDetailClient({
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
-        {/* Back — company page when on /google/…, else jobs board */}
+        {/* Back: company page when on /google/..., else jobs board */}
         <Link
           href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
           className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-6"
@@ -294,7 +294,7 @@ export default function JobDetailClient({
                     Full description is on the company careers page.
                   </p>
                   <p className="text-xs text-zinc-400 mt-1">
-                    We&apos;ll send you there to apply — takes a second.
+                    We&apos;ll send you there to apply. Takes a second.
                   </p>
                   <a
                     href={applyUrl}
@@ -316,7 +316,7 @@ export default function JobDetailClient({
             </p>
           </article>
 
-          {/* Sidebar — soft conversion + apply */}
+          {/* Sidebar: soft conversion + apply */}
           <aside className="lg:sticky lg:top-24 space-y-4">
             <div className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
               <a
@@ -356,7 +356,7 @@ export default function JobDetailClient({
                   ) : (
                     <UploadCloud className="h-4 w-4" />
                   )}
-                  {isUploading ? 'Parsing…' : 'Upload CV — free'}
+                  {isUploading ? 'Parsing...' : 'Upload CV (free)'}
                   <input
                     id="jd-cv-upload"
                     type="file"
@@ -394,7 +394,7 @@ export default function JobDetailClient({
                 <p className="text-xs text-emerald-800/80 leading-relaxed">
                   Matching uses your skills
                   {userSkills.slice(0, 4).length > 0
-                    ? `: ${userSkills.slice(0, 4).join(', ')}${userSkills.length > 4 ? '…' : ''}`
+                    ? `: ${userSkills.slice(0, 4).join(', ')}${userSkills.length > 4 ? '...' : ''}`
                     : ''}
                   .
                 </p>
@@ -451,7 +451,7 @@ export default function JobDetailClient({
               Before you apply
             </h3>
             <p className="text-sm text-center text-zinc-500 mb-6 max-w-xs mx-auto">
-              Drop your CV so we can match you to similar roles — then we&apos;ll send you to{' '}
+              Drop your CV so we can match you to similar roles. Then we&apos;ll send you to{' '}
               <span className="font-medium text-zinc-700">{job.company}</span>.
             </p>
 
@@ -467,7 +467,7 @@ export default function JobDetailClient({
                 ) : (
                   <UploadCloud className="h-4 w-4" />
                 )}
-                {isUploading ? 'Parsing…' : 'Upload CV'}
+                {isUploading ? 'Parsing...' : 'Upload CV'}
                 <input
                   id="jd-modal-cv"
                   type="file"
