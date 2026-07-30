@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
-import { Briefcase, ExternalLink, Search, Target, Clock, ChevronDown, Sparkles, UploadCloud, Loader2, X } from 'lucide-react';
+import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
 
@@ -23,6 +23,8 @@ interface Job {
   category: string | null;
   source: string;
   published_at: string | null;
+  external_id?: string | null;
+  path?: string;
   matched_skills: string[];
   match_count: number;
   match_score: number;
@@ -53,17 +55,6 @@ const LOCATIONS = [
   { value: 'remote', label: 'Remote Only' },
   { value: 'onsite', label: 'On-site' },
 ];
-
-function addUTM(url: string): string {
-  try {
-    const u = new URL(url);
-    u.searchParams.set('utm_source', 'cvin.bio');
-    u.searchParams.set('utm_medium', 'job_board');
-    return u.toString();
-  } catch {
-    return url;
-  }
-}
 
 function timeAgo(dateStr: string | null): string {
   if (!dateStr) return '';
@@ -141,7 +132,6 @@ export default function JobsPage() {
   const [matchOnly, setMatchOnly] = useState(false);
   const [profileComplete, setProfileComplete] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [pendingJobApply, setPendingJobApply] = useState<string | null>(null);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -240,7 +230,14 @@ export default function JobsPage() {
   }, [jobs]);
 
   const trackClick = (jobId: string, job: Job) => {
-    posthog.capture('job_clicked', { job_id: job.id, title: job.title, company: job.company, source: job.source, match_count: job.match_count });
+    posthog.capture('job_clicked', {
+      job_id: job.id,
+      title: job.title,
+      company: job.company,
+      source: job.source,
+      match_count: job.match_count,
+      destination: 'job_detail',
+    });
     fetch('/api/jobs/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -248,13 +245,9 @@ export default function JobsPage() {
     }).catch(() => {});
   };
 
-  const handleJobClick = (e: React.MouseEvent<HTMLAnchorElement>, job: Job) => {
+  const handleJobClick = (_e: React.MouseEvent<HTMLAnchorElement>, job: Job) => {
+    // Navigate to on-site JD page (soft CV CTA + external apply live there)
     trackClick(job.id, job);
-    if (userSkills.length === 0) {
-      e.preventDefault();
-      posthog.capture('jobs_interstitial_modal_shown', { job_id: job.id, company: job.company });
-      setPendingJobApply(addUTM(job.apply_url));
-    }
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -411,11 +404,9 @@ export default function JobsPage() {
         {!loading && jobs.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {jobs.map((job) => (
-              <a
+              <Link
                 key={job.id}
-                href={addUTM(job.apply_url)}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={job.path || `/jobs/${job.id}`}
                 data-job-id={job.id}
                 className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
                 onClick={(e) => handleJobClick(e, job)}
@@ -476,8 +467,8 @@ export default function JobsPage() {
                     )}
                   </div>
                 </div>
-                <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" />
-              </a>
+                <ChevronRight className="h-3.5 w-3.5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" />
+              </Link>
             ))}
           </div>
         )}
@@ -490,86 +481,6 @@ export default function JobsPage() {
             )}
           </div>
         )}
-
-        {/* Interstitial Modal */}
-        {pendingJobApply && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white border border-zinc-200 rounded-2xl shadow-2xl max-w-md w-full p-6 relative animate-in zoom-in-95 duration-200">
-              <button 
-                onClick={() => setPendingJobApply(null)}
-                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 transition-colors"
-                aria-label="Close modal"
-              >
-                <X className="h-5 w-5" />
-              </button>
-              
-              <h3 className="text-2xl font-bold text-center text-zinc-900 mb-2 tracking-tight">
-                Let jobs find you.
-              </h3>
-              
-              <p className="text-sm text-center text-zinc-500 mb-8 max-w-xs mx-auto">
-                Drop your CV to see instant matches and make yourself discoverable to AI agents.
-              </p>
-              
-              <div className="flex flex-col gap-3">
-                <label 
-                  htmlFor="modal-cv-upload" 
-                  className={`flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-black text-white font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-md ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}
-                >
-                  {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
-                  {isUploading ? 'Parsing...' : 'Upload CV'}
-                  <input
-                    id="modal-cv-upload"
-                    type="file"
-                    className="hidden"
-                    accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
-                    disabled={isUploading}
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      if (file.size > 10 * 1024 * 1024) {
-                        toast({ variant: 'destructive', title: 'Too Large', description: 'Max 10MB.' });
-                        e.target.value = ''; return;
-                      }
-                      posthog.capture('jobs_interstitial_upload_cv_started');
-                      setIsUploading(true);
-                      toast({ title: 'Parsing CV...', description: 'Extracting your details.' });
-                      try {
-                        const fd = new FormData(); fd.append('resume', file);
-                        const res = await fetch('/api/parse-resume', { method: 'POST', body: fd });
-                        if (!res.ok) { toast({ variant: 'destructive', title: 'Failed', description: 'Could not parse your CV.' }); return; }
-                        const parsed = await res.json();
-                        posthog.capture('jobs_interstitial_upload_cv_completed');
-                        sessionStorage.setItem('parsedResume', JSON.stringify(parsed));
-                        try { localStorage.setItem('parsedResume', JSON.stringify(parsed)); } catch {}
-                        router.push('/editor');
-                      } catch {
-                        toast({ variant: 'destructive', title: 'Error', description: 'Network error.' });
-                      } finally {
-                        e.target.value = '';
-                        setIsUploading(false);
-                      }
-                    }}
-                  />
-                </label>
-                
-                <a 
-                  href={pendingJobApply}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => {
-                    posthog.capture('jobs_interstitial_skip_apply_clicked');
-                    setPendingJobApply(null);
-                  }}
-                  className="flex items-center justify-center w-full px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-900 font-medium text-sm transition-colors"
-                >
-                  Skip and apply
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-
 
       </main>
       <MicroFooter />

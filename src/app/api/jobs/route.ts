@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createServerClient } from '@supabase/ssr';
 import { normalizeLocation as normalizeLocationDisplay } from '@/lib/normalize-location';
+import { jobPublicPath } from '@/lib/job-description';
 
 const supabase = supabaseAdmin;
 
@@ -281,7 +282,7 @@ export async function GET(request: NextRequest) {
 
   // Build query — select only needed columns (skip description to reduce payload)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at';
+  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,external_id';
 
   // Base filters shared by all queries
   function applyBaseFilters(q: any) {
@@ -622,6 +623,8 @@ export async function GET(request: NextRequest) {
     category: job.category,
     source: job.source,
     published_at: job.published_at,
+    external_id: job.external_id,
+    path: jobPublicPath(job),
     matched_skills: job._matchedSkills,
     match_count: job._matchedSkills.length,
     match_score: job._score,

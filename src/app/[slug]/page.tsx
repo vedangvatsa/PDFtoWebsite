@@ -14,8 +14,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import fs from 'fs';
 import path from 'path';
 import { CityGuidePage } from '@/components/city-guide-page';
-import validCompanies from '@/lib/valid-companies.json';
-
+import { jobPublicPath } from '@/lib/job-description';
 const supabaseForCompany = supabaseAdmin;
 
 export const revalidate = 300; // ISR: rebuild every 5 minutes
@@ -82,7 +81,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const data = await getProfileBySlug(slug);
   if (!data) {
-    if (!validCompanies.includes(slug)) notFound();
+    // Company careers: resolve from live jobs (not a static whitelist).
+    // /companies links every employer with open roles; valid-companies.json
+    // was incomplete and caused 404s for Google, Meta, Microsoft, etc.
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
@@ -132,7 +133,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // If profile is empty, check if this slug matches an active company page.
   // Company careers pages should take priority over abandoned user profiles.
-  if (isEmptyProfile && validCompanies.includes(slug)) {
+  if (isEmptyProfile) {
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
@@ -478,7 +479,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     const { profile: p } = data;
     const isEmpty = (!p.fullName || p.fullName === 'Professional Profile' || p.fullName === 'Your Name')
       || (!p.summary && data.workExperience.length === 0 && data.education.length === 0 && (!p.skills || p.skills.length === 0));
-    if (isEmpty && validCompanies.includes(slug)) {
+    if (isEmpty) {
       const decodedCheck = slug.replace(/-/g, '%').toLowerCase();
       const thirtyDaysCheck = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
       const { data: companyJobs } = await supabaseForCompany.from('jobs').select('id').ilike('company', `${decodedCheck}%`).gt('created_at', thirtyDaysCheck).limit(1);
@@ -489,14 +490,15 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   }
 
   if (!data) {
-    if (!validCompanies.includes(slug)) notFound();
+    // Resolve company careers from live jobs table (same as /companies directory).
     const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: jobs } = await supabaseForCompany
       .from('jobs')
-      .select('id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary')
+      .select('id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id')
       .ilike('company', `${decodedSearch}%`)
       .gt('created_at', thirtyDaysAgo)
+      .order('published_at', { ascending: false, nullsFirst: false })
       .limit(100);
 
     if (!jobs || jobs.length === 0) {
@@ -724,11 +726,9 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-12">
             {jobs.map((job: any) => (
-              <a
+              <Link
                 key={job.id}
-                href={job.apply_url}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={jobPublicPath(job)}
                 className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -750,7 +750,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                   </div>
                 </div>
                 <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 transition-colors shrink-0" />
-              </a>
+              </Link>
             ))}
           </div>
 
