@@ -147,6 +147,8 @@ jobs:
             done
           fi
 
+      # Stagger Telegram/Supabase calls so Free Nano isn't hit with two heavy
+      # job queries back-to-back (was a common cause of Cloudflare 522s).
       - name: Post jobs to Telegram (techjobsdaily) and cross-post to LinkedIn
         continue-on-error: true
         env:
@@ -157,6 +159,10 @@ jobs:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
           LINKEDIN_PERSON_URN: ${{ secrets.LINKEDIN_PERSON_URN }}
         run: node .github/scripts/telegram-post.mjs
+
+      - name: Cool down Supabase (free-tier)
+        run: sleep 15
+        continue-on-error: true
 
       - name: Post AI jobs to @hashtag_ai
         continue-on-error: true
