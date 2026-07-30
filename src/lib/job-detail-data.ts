@@ -16,6 +16,7 @@ import {
   jobPublicPath,
   jobTypeLabel,
 } from '@/lib/job-description';
+import { cleanPublishText } from '@/lib/noslop';
 import type { JobDetail } from '@/app/jobs/[id]/job-detail-client';
 
 const SELECT_COLS =
@@ -74,12 +75,12 @@ export function toJobDetail(job: JobRow): JobDetail {
   const descriptionHtml = formatJobDescription(job.description);
   return {
     id: job.id,
-    title: job.title,
-    company: job.company,
+    title: cleanPublishText(job.title),
+    company: cleanPublishText(job.company),
     company_logo: job.company_logo,
-    location: normalizeLocation(job.location || ''),
+    location: cleanPublishText(normalizeLocation(job.location || '')),
     job_type: job.job_type,
-    salary: job.salary,
+    salary: job.salary ? cleanPublishText(job.salary) : job.salary,
     tags: job.tags || [],
     apply_url: job.apply_url,
     category: job.category,
@@ -135,12 +136,14 @@ export async function getViewerJobContext(): Promise<{
 }
 
 export function buildJobMetadata(job: JobRow, siteUrl: string) {
-  const location = normalizeLocation(job.location || '') || 'Remote';
+  const location = cleanPublishText(normalizeLocation(job.location || '') || 'Remote');
   const type = jobTypeLabel(job.job_type);
-  const title = `${job.title} at ${job.company}${type ? ` (${type})` : ''}`;
+  const jobTitle = cleanPublishText(job.title);
+  const company = cleanPublishText(job.company);
+  const title = `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
   const excerpt = jobDescriptionExcerpt(job.description, 140);
   const description =
-    excerpt || `${job.title} at ${job.company} · ${location}. Apply via CVin.Bio.`;
+    excerpt || `${jobTitle} at ${company}. ${location}. Apply via CVin.Bio.`;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
 
   return {
