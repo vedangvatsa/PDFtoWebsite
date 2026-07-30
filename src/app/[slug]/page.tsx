@@ -17,8 +17,20 @@ import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
 const supabaseForCompany = supabaseAdmin;
 
-export const revalidate = 300; // ISR: rebuild every 5 minutes
+// Company careers are expensive (jobs.ilike). Prefer longer ISR now that
+// role counts come from the companies table, not dual exact COUNTs.
+export const revalidate = 1800; // 30 minutes
 export type ProfileData = ServerProfileData;
+
+/** Resolve directory row by slug (O(1) PK) — avoids dual exact COUNT on jobs. */
+async function getCompanyDirectory(slug: string) {
+  const { data } = await supabaseForCompany
+    .from('companies')
+    .select('slug, name, role_count, logo, locations')
+    .eq('slug', slug)
+    .maybeSingle();
+  return data;
+}
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -81,24 +93,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const data = await getProfileBySlug(slug);
   if (!data) {
-    // Company careers: resolve from live jobs (not a static whitelist).
-    // /companies links every employer with open roles; valid-companies.json
-    // was incomplete and caused 404s for Google, Meta, Microsoft, etc.
-    const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
-    if (jobs && jobs.length > 0) {
+    // Prefer companies directory (cheap PK lookup) over dual exact COUNT on jobs.
+    const dir = await getCompanyDirectory(slug);
+    if (dir) {
       const { getCompanyMeta } = await import('@/lib/company-data');
       const meta = getCompanyMeta(slug);
-      const companyDisplay = jobs[0].company || slug.replace(/-/g, ' ');
-
-      // Free-tier Supabase often returns null for exact counts — fall back to estimated.
-      const [{ count: exactCount }, { count: estimatedCount }] = await Promise.all([
-        supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
-        supabaseForCompany.from('jobs').select('id', { count: 'estimated', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
-      ]);
-      const jobCount = exactCount || estimatedCount || 1;
-
+      const companyDisplay = dir.name || slug.replace(/-/g, ' ');
+      const jobCount = dir.role_count || 1;
       const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
       const desc = meta
         ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
@@ -137,18 +138,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // If profile is empty, check if this slug matches an active company page.
   // Company careers pages should take priority over abandoned user profiles.
   if (isEmptyProfile) {
-    const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: jobs } = await supabaseForCompany.from('jobs').select('company').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
-    if (jobs && jobs.length > 0) {
+    const dir = await getCompanyDirectory(slug);
+    if (dir) {
       const { getCompanyMeta } = await import('@/lib/company-data');
       const meta = getCompanyMeta(slug);
-      const companyDisplay = jobs[0].company || slug.replace(/-/g, ' ');
-      const [{ count: exactCount }, { count: estimatedCount }] = await Promise.all([
-        supabaseForCompany.from('jobs').select('id', { count: 'exact', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
-        supabaseForCompany.from('jobs').select('id', { count: 'estimated', head: true }).ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo),
-      ]);
-      const jobCount = exactCount || estimatedCount || 1;
+      const companyDisplay = dir.name || slug.replace(/-/g, ' ');
+      const jobCount = dir.role_count || 1;
       const compTitle = `${companyDisplay} Careers - ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
       const compDesc = meta
         ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
@@ -486,32 +481,48 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     const isEmpty = (!p.fullName || p.fullName === 'Professional Profile' || p.fullName === 'Your Name')
       || (!p.summary && data.workExperience.length === 0 && data.education.length === 0 && (!p.skills || p.skills.length === 0));
     if (isEmpty) {
-      const decodedCheck = slug.replace(/-/g, '%').toLowerCase();
-      const thirtyDaysCheck = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: companyJobs } = await supabaseForCompany.from('jobs').select('id').ilike('company', `${decodedCheck}%`).gt('created_at', thirtyDaysCheck).limit(1);
-      if (companyJobs && companyJobs.length > 0) {
+      const dirHit = await getCompanyDirectory(slug);
+      if (dirHit) {
         data = null; // Fall through to company page render below
       }
     }
   }
 
   if (!data) {
-    // Resolve company careers from live jobs table (same as /companies directory).
-    const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
+    // Prefer directory name for exact company filter; avoid expensive ilike when possible.
+    const dir = await getCompanyDirectory(slug);
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: jobs } = await supabaseForCompany
-      .from('jobs')
-      .select('id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id')
-      .ilike('company', `${decodedSearch}%`)
-      .gt('created_at', thirtyDaysAgo)
-      .order('published_at', { ascending: false, nullsFirst: false })
-      .limit(100);
+    const selectCols =
+      'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id';
+
+    let jobs: any[] | null = null;
+    if (dir?.name) {
+      const { data: exactJobs } = await supabaseForCompany
+        .from('jobs')
+        .select(selectCols)
+        .eq('company', dir.name)
+        .gt('created_at', thirtyDaysAgo)
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .limit(100);
+      jobs = exactJobs;
+    }
+    if (!jobs || jobs.length === 0) {
+      const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
+      const { data: fuzzyJobs } = await supabaseForCompany
+        .from('jobs')
+        .select(selectCols)
+        .ilike('company', `${decodedSearch}%`)
+        .gt('created_at', thirtyDaysAgo)
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .limit(100);
+      jobs = fuzzyJobs;
+    }
 
     if (!jobs || jobs.length === 0) {
       notFound();
     }
 
-    const companyName = jobs[0].company;
+    const companyName = dir?.name || jobs[0].company;
     
     let logo = jobs.find(j => j.company_logo)?.company_logo;
     if (!logo) {
@@ -519,9 +530,10 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       logo = `https://www.google.com/s2/favicons?domain=${domainFallback}&sz=128`;
     }
     
-    const totalJobs = jobs.length;
+    // Directory role_count is the full board total; jobs[] is only a sample for the UI.
+    const totalJobs = dir?.role_count || jobs.length;
     const remoteJobs = jobs.filter(j => j.location?.toLowerCase().includes('remote')).length;
-    const remotePercent = totalJobs > 0 ? Math.round((remoteJobs / totalJobs) * 100) : 0;
+    const remotePercent = jobs.length > 0 ? Math.round((remoteJobs / jobs.length) * 100) : 0;
     
     const skillCount: Record<string, number> = {};
     jobs.forEach((j: any) => {

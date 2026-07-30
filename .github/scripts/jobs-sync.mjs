@@ -3053,6 +3053,26 @@ async function main() {
   // Cleanup old jobs
   await cleanupOldJobs();
 
+  // Rebuild /companies directory table (cheap page reads; see rebuild-companies.mjs)
+  console.log('\n═══ Rebuild companies directory ═══');
+  try {
+    const { spawnSync } = await import('child_process');
+    const { fileURLToPath } = await import('url');
+    const { dirname, join } = await import('path');
+    const here = dirname(fileURLToPath(import.meta.url));
+    const script = join(here, 'rebuild-companies.mjs');
+    const r = spawnSync(process.execPath, [script], {
+      env: process.env,
+      stdio: 'inherit',
+      timeout: 10 * 60 * 1000,
+    });
+    if (r.status !== 0) {
+      console.error(`  ⚠️ companies rebuild exited ${r.status} (jobs sync still OK)`);
+    }
+  } catch (e) {
+    console.error(`  ⚠️ companies rebuild failed: ${e.message}`);
+  }
+
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n🏁 Done in ${elapsed}s — Total: ${phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);
 }

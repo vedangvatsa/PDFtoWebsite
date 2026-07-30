@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/login-dialog';
 import { useUser } from '@/auth';
+import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 
 function StepIndicator({ num, label, desc }: { num: number; label: string; desc: string }) {
   return (
@@ -36,15 +37,7 @@ export default function Home() {
   const router = useRouter();
   const [isProcessingFile, setIsProcessingFile] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [jobCount, setJobCount] = useState<number | null>(null);
-
   useEffect(() => { setMounted(true); }, []);
-
-  useEffect(() => {
-    fetch('/api/jobs?limit=1').then(r => r.json()).then(d => {
-      if (d.total) setJobCount(d.total);
-    }).catch(() => {});
-  }, []);
 
   // If user lands here after OAuth with pending resume data, redirect to editor
   useEffect(() => {
@@ -131,7 +124,7 @@ export default function Home() {
               Upload your CV. See matching jobs.
             </h1>
             <Link href="/discover" className="inline-block text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors">
-              Get an AI-ready profile and auto-match with {jobCount ? jobCount.toLocaleString() : '24,000+'} jobs
+              Get an AI-ready profile and auto-match with {PLATFORM_JOBS_DISPLAY} jobs
             </Link>
           </div>
 
@@ -191,7 +184,7 @@ export default function Home() {
                   <span className="text-muted-foreground/30 text-lg mt-1 text-center">→</span>
                   <StepIndicator num={2} label="Get a webpage" desc="Ready to share" />
                   <span className="text-muted-foreground/30 text-lg mt-1 text-center">→</span>
-                  <StepIndicator num={3} label="Get matched" desc={jobCount ? `${jobCount.toLocaleString()} jobs` : 'Thousands of jobs'} />
+                  <StepIndicator num={3} label="Get matched" desc={`${PLATFORM_JOBS_DISPLAY} jobs`} />
                 </div>
               </>
             )}

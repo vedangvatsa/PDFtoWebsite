@@ -1,4 +1,8 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import {
+  PLATFORM_JOBS_DISPLAY,
+  PLATFORM_JOBS_TOTAL,
+} from '@/lib/platform-job-count';
 
 export interface PlatformStats {
   totalJobs: number;
@@ -11,8 +15,6 @@ export interface PlatformStats {
 
 let cache: { data: PlatformStats; ts: number } | null = null;
 
-// Free-tier friendly: long TTL so page views don't re-scan jobs constantly.
-// Was 5 minutes + up to 40k row scans — that alone can knock out Nano compute.
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
 const MAX_COMPANY_PAGES = process.env.NEXT_IS_BUILD_PHASE === '1' ? 1 : 3; // 3k rows max
 
@@ -26,13 +28,8 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     Date.now() - 30 * 24 * 60 * 60 * 1000
   ).toISOString();
 
-  // Head-only counts (cheap)
-  const { count: totalJobs } = await supabase
-    .from('jobs')
-    .select('id', { count: 'exact', head: true })
-    .gt('created_at', thirtyDaysAgo);
-
-  // Sample unique companies from a small window (not full table)
+  // Job total is static (100k+) — never COUNT(*) the full jobs table here.
+  // Sample unique companies from a small recent window only.
   const companySet = new Set<string>();
   let page = 0;
   while (page < MAX_COMPANY_PAGES) {
@@ -56,26 +53,16 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     .from('profiles')
     .select('id', { count: 'exact', head: true });
 
-  const jobs = totalJobs || 0;
-  // Sampled unique companies from recent rows only (not full-table scan)
   const companies = companySet.size;
   const users = totalUsers || 0;
 
-  const jobThousands = Math.floor(jobs / 1000);
-  const jobCountDisplay =
-    jobThousands > 0
-      ? `${jobThousands.toLocaleString()},000+`
-      : `${jobs}+`;
-  const companyCountDisplay = `${companies}+`;
-  const userCountDisplay = `${users}`;
-
   const stats: PlatformStats = {
-    totalJobs: jobs,
+    totalJobs: PLATFORM_JOBS_TOTAL,
     totalCompanies: companies,
     totalUsers: users,
-    jobCountDisplay,
-    companyCountDisplay,
-    userCountDisplay,
+    jobCountDisplay: PLATFORM_JOBS_DISPLAY,
+    companyCountDisplay: `${companies}+`,
+    userCountDisplay: `${users}`,
   };
 
   cache = { data: stats, ts: Date.now() };

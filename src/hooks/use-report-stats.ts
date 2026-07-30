@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 export interface ReportStats {
   totalJobs: number;
+  totalJobsDisplay?: string;
   totalCompanies: number;
   remoteJobs: number;
   remotePercent: number;

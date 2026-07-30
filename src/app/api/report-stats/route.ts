@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import {
+  PLATFORM_JOBS_DISPLAY,
+  PLATFORM_JOBS_TOTAL,
+} from '@/lib/platform-job-count';
 
 const supabase = supabaseAdmin;
 
@@ -16,16 +20,10 @@ export async function GET() {
 
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  // Dynamically fetch the exact total number of jobs first (fast count query)
-  const { count: exactJobCount } = await supabase
-    .from('jobs')
-    .select('*', { count: 'exact', head: true })
-    .gt('created_at', thirtyDaysAgo);
-
-  const totalJobs = exactJobCount || 0;
-  
-  // Calculate exactly how many pages we need to query (capped at 30 pages / 30K rows)
-  const pagesNeeded = Math.max(1, Math.min(30, Math.ceil(totalJobs / 1000)));
+  // Static board total for marketing copy — no full-table COUNT(*).
+  // Sample a fixed window for distributions (tags, locations, etc.).
+  const totalJobs = PLATFORM_JOBS_TOTAL;
+  const pagesNeeded = process.env.NEXT_IS_BUILD_PHASE === '1' ? 2 : 10;
 
   // Fetch jobs in parallel for speed
   const pagePromises = Array.from({ length: pagesNeeded }).map((_, page) =>
@@ -109,6 +107,7 @@ export async function GET() {
 
   const stats = {
     totalJobs,
+    totalJobsDisplay: PLATFORM_JOBS_DISPLAY,
     totalCompanies,
     remoteJobs,
     remotePercent,

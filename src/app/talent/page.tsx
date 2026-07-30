@@ -8,6 +8,7 @@ import Link from 'next/link';
 import ReportCTA from '@/components/report-cta';
 import { useReportStats } from '@/hooks/use-report-stats';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 
 const STORAGE_KEY = 'remote-talent-report-unlocked';
 
@@ -290,7 +291,7 @@ export default function RemoteTalentReport() {
   const [unlocked, setUnlocked] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
   const { stats } = useReportStats();
-  const jobCount = stats ? stats.totalJobs.toLocaleString() : '24,000+';
+  const jobCount = stats?.totalJobsDisplay || PLATFORM_JOBS_DISPLAY;
   const companyCount = stats ? `${stats.totalCompanies}+` : '900+';
   const remotePercent = stats ? `${stats.remotePercent}%` : '13%';
   const topLoc1 = stats?.topLocations?.[0];
