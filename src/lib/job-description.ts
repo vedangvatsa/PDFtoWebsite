@@ -9,7 +9,7 @@
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 6;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 7;
 
 /** Tailwind prose for every job detail description block. */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -20,16 +20,19 @@ export const JOB_DESCRIPTION_PROSE_CLASS =
   '[&_table]:block [&_table]:w-full [&_table]:overflow-x-auto ' +
   '[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap ' +
   '[&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:pt-6 [&_h2]:border-t [&_h2]:border-zinc-200 [&_h2]:text-[15px] sm:[&_h2]:text-base [&_h2]:font-bold [&_h2]:text-zinc-900 ' +
-  '[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:pt-6 [&_h3]:border-t [&_h3]:border-zinc-200 [&_h3]:text-[15px] sm:[&_h3]:text-base [&_h3]:font-bold [&_h3]:text-zinc-900 ' +
+  '[&_h3]:mt-9 [&_h3]:mb-3 [&_h3]:pt-7 [&_h3]:border-t [&_h3]:border-zinc-200 [&_h3]:text-base sm:[&_h3]:text-[17px] [&_h3]:font-bold [&_h3]:leading-snug [&_h3]:text-zinc-900 ' +
   '[&_h3:first-child]:mt-0 [&_h3:first-child]:pt-0 [&_h3:first-child]:border-t-0 ' +
   '[&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:text-sm [&_h4]:font-bold [&_h4]:text-zinc-800 ' +
-  '[&_p]:mb-4 [&_p]:leading-relaxed [&_p:last-child]:mb-0 ' +
-  '[&>p:first-child]:text-[14px] sm:[&>p:first-child]:text-[15px] [&>p:first-child]:font-semibold [&>p:first-child]:text-zinc-900 ' +
-  '[&_h3+ul]:mt-1 [&_h3+ul]:mb-6 [&_h3+ol]:mt-1 [&_h3+ol]:mb-6 ' +
-  '[&_h3+p]:mt-1 [&_h3+p]:mb-3 [&_h4+p]:mt-1 ' +
+  '[&_p]:mb-3 [&_p]:leading-relaxed [&_p:last-child]:mb-0 ' +
+  '[&_.jd-intro]:mb-7 [&_.jd-intro_p]:mb-2 [&_.jd-intro_p:last-child]:mb-0 ' +
+  '[&_.jd-intro_p:first-child]:text-[14px] sm:[&_.jd-intro_p:first-child]:text-[15px] [&_.jd-intro_p:first-child]:font-medium [&_.jd-intro_p:first-child]:text-zinc-800 ' +
+  '[&_.jd-meta-facts]:mb-1 [&_.jd-meta-facts_p]:mb-1.5 [&_.jd-meta-facts_p]:leading-snug [&_.jd-meta-facts_p:last-child]:mb-0 ' +
+  '[&_h3+ul]:mt-2 [&_h3+ul]:mb-7 [&_h3+ol]:mt-2 [&_h3+ol]:mb-7 ' +
+  '[&_h3+.jd-meta-facts]:mt-1 [&_h3+.jd-meta-facts]:mb-7 ' +
+  '[&_h3+p]:mt-2 [&_h3+p]:mb-3 [&_h4+p]:mt-1 ' +
   '[&_p+ul]:mt-0 [&_p+ol]:mt-0 ' +
-  '[&_ul]:my-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2.5 [&_ul]:marker:text-zinc-500 ' +
-  '[&_ol]:my-0 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2.5 [&_ol]:marker:text-zinc-500 ' +
+  '[&_ul]:my-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-3 [&_ul]:marker:text-zinc-400 ' +
+  '[&_ol]:my-0 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-3 [&_ol]:marker:text-zinc-400 ' +
   '[&_li]:text-zinc-600 [&_li]:leading-relaxed [&_li]:pl-0.5 ' +
   '[&_a]:text-primary [&_a]:underline-offset-2 hover:[&_a]:underline [&_a]:break-all ' +
   '[&_strong]:font-semibold [&_strong]:text-zinc-900 ' +
@@ -151,12 +154,17 @@ export function plainTextToHtml(text: string): string {
   let buf: string[] = [];
   let introBuf: string[] = [];
   let inBody = false;
+  let currentSection = '';
 
   const flushBuf = () => {
     while (buf.length && !buf[0].trim()) buf.shift();
     while (buf.length && !buf[buf.length - 1].trim()) buf.pop();
     if (!buf.length) return;
-    out.push(renderPlainBlock(buf.join('\n')));
+    if (isMetaFactsSection(currentSection)) {
+      out.push(renderMetaFactsBlock(buf.join('\n')));
+    } else {
+      out.push(renderPlainBlock(buf.join('\n')));
+    }
     buf = [];
   };
 
@@ -177,6 +185,7 @@ export function plainTextToHtml(text: string): string {
       flushIntro();
       inBody = true;
       const title = trimmed.replace(/:$/, '').trim();
+      currentSection = title.toLowerCase();
       out.push(`<h3>${escapeHtml(title)}</h3>`);
       continue;
     }
@@ -217,7 +226,22 @@ function renderIntroBlock(lines: string[]): string {
     }
     parts.push(`<p>${escapeHtml(t)}</p>`);
   }
-  return parts.join('\n');
+  return `<div class="jd-intro">${parts.join('\n')}</div>`;
+}
+
+function isMetaFactsSection(section: string): boolean {
+  return section === 'key facts' || section === 'application window';
+}
+
+function renderMetaFactsBlock(block: string): string {
+  const lines = block
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (lines.length > 0 && lines.every(isLabelValueLine)) {
+    return `<div class="jd-meta-facts">${lines.map((l) => renderLabelValueParagraph(l)).join('')}</div>`;
+  }
+  return renderPlainBlock(block);
 }
 
 /** Split "1. Title body..." lines and inline numbered clauses into structured lines. */
@@ -430,7 +454,7 @@ function renderPlainBlock(block: string): string {
   const lines = trimmed.split('\n').map((l) => l.trim()).filter(Boolean);
 
   if (lines.length > 0 && lines.every(isLabelValueLine)) {
-    return renderListItems(lines, false);
+    return lines.map((l) => renderLabelValueParagraph(l)).join('\n');
   }
 
   const bulletLines = lines.filter(isBulletLine);
