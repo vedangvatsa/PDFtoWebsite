@@ -49,7 +49,8 @@ const loadCompaniesDirectory = unstable_cache(
         .from('companies')
         .select('slug, name, role_count, logo, locations')
         .order('role_count', { ascending: false })
-        .limit(2000),
+        // Cap HTML payload — 2k rows was multi‑MB and dominated TTFB.
+        .limit(500),
       DB_BUDGET.list,
       { data: null, error: { message: 'timeout' } } as any,
       'companies-directory'
