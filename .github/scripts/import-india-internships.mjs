@@ -2,6 +2,7 @@
  * Import India internship postings into jobs:
  *  - Indian Army via AICTE portal — list URLs, then each internship-details.php
  *  - MoSPI NIOS cycles via public API
+ *  - NITI Aayog Internship Scheme (workforindia.niti.gov.in)
  *
  * Usage: node .github/scripts/import-india-internships.mjs
  * Env: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_KEY)
@@ -51,7 +52,7 @@ const SLUG_STOP = new Set([
   'a', 'an', 'and', 'the', 'of', 'for', 'in', 'on', 'to', 'with', 'by', 'or',
   'intern', 'internship', 'interns', 'required', 'hiring', 'passionate',
   'about', 'related', 'projects', 'project', 'existing', 'based', 'enabled',
-  'indian', 'army', 'mospi', 'national', 'official', 'statistics', 'nios',
+  'indian', 'army', 'mospi', 'niti', 'aayog', 'national', 'official', 'statistics', 'nios',
   'phase', 'under', 'including', 'from', 'into', 'using', 'via', 'allied',
   'aspects', 'work', 'module', 'modules', 'application', 'applications',
   'system', 'systems', 'technology', 'technologies',
@@ -1227,9 +1228,190 @@ async function fetchMospiInternships() {
   return [job];
 }
 
+// ─── NITI Aayog Internship Scheme (single consolidated posting) ───
+const NITI_APPLY_URL =
+  'https://workforindia.niti.gov.in/intern/InternshipEntry/PCInternshipEntry.aspx';
+const NITI_GUIDELINES_PDF =
+  'https://workforindia.niti.gov.in/intern/PDF/NITI%20Internship%20Guidelines2019.pdf';
+const NITI_LOGO = `${(process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '')}/company-logos/niti-aayog.png`;
+
+/** Domains listed on the official application form (Aug 2026 snapshot). */
+const NITI_INTEREST_AREAS = [
+  'Agriculture & agriculture policy',
+  'Aspirational Districts Programme',
+  'Data management and analysis',
+  'Economics & economics intelligence',
+  'Education',
+  'Energy sector',
+  'Foreign trade / commerce',
+  'Frontier Tech Hub',
+  'Governance',
+  'Health, nutrition, women & child development',
+  'Industry & MSME',
+  'Infrastructure connectivity (transportation)',
+  'Innovation & entrepreneurship (Atal Innovation Mission)',
+  'IT / telecom',
+  'Law',
+  'Lifestyle for Environment (LiFE)',
+  'Mass communications & social media',
+  'Mining sector',
+  'Natural resources, environment & forests',
+  'Panchayati Raj',
+  'Programme monitoring & evaluation',
+  'Public finance / budget / PPP',
+  'Rural development & SDGs',
+  'Science & technology',
+  'Skill development & employment',
+  'Social justice & empowerment',
+  'Sports & youth development',
+  'State Support Mission',
+  'Tourism & culture',
+  'Urbanization / smart cities',
+  'Viksit Bharat perspective planning',
+  'Voluntary Action Cell',
+  'Water resources',
+];
+
+async function fetchNitiDesiredMonths() {
+  try {
+    const res = await fetch(NITI_APPLY_URL, {
+      headers: { 'User-Agent': 'CVin.Bio job importer', Accept: 'text/html' },
+    });
+    if (!res.ok) return [];
+    const html = await res.text();
+    const months = [
+      ...html.matchAll(
+        />(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})</gi
+      ),
+    ].map((m) => `${m[1]} ${m[2]}`);
+    return [...new Set(months)];
+  } catch {
+    return [];
+  }
+}
+
+function buildNitiDescription(desiredMonths) {
+  const parts = [
+    'NITI Aayog Internship Scheme',
+    '',
+    "Government of India's premier policy think tank — short-term internships across verticals, divisions, and units in New Delhi.",
+    '',
+    'About the scheme',
+    '- Exposure to how NITI Aayog supports analysis, developmental policy, and government functioning',
+    '- Interns supplement in-house work through data collection, collation, briefing notes, and policy inputs',
+    '- Unpaid internship; completion certificate issued by the Adviser of the host division on successful completion',
+    '',
+    'Key facts',
+    'Location: NITI Aayog, Sansad Marg, New Delhi 110001, India',
+    'Engagement type: Internship (on-site at NITI Aayog headquarters)',
+    'Duration: Minimum 6 weeks, maximum 6 months',
+    'Stipend: Unpaid (no stipend under the official scheme)',
+    'Attendance: Minimum 75% required; below 75% — no extension and no experience certificate',
+    'Logistics: Bring your own laptop; NITI provides workspace, internet, and other essentials as decided by the host division',
+    'Capacity: Up to 3 interns per vertical/division at a time (may be relaxed with CEO approval)',
+  ];
+
+  parts.push(
+    '',
+    'Application window',
+    '- Online applications only, 1st (00:00 hrs) to 10th (23:59 hrs) of every month',
+    '- Apply at least 2 months and at most 6 months before your desired internship start month',
+    '- One application per candidate per financial year',
+    '- No printout or supporting documents sent by post — originals verified at joining'
+  );
+
+  if (desiredMonths.length) {
+    parts.push('', 'Desired start months on the portal (select one when applying)');
+    for (const m of desiredMonths.slice(0, 12)) {
+      parts.push(`- ${m}`);
+    }
+    if (desiredMonths.length > 12) {
+      parts.push(`- …and ${desiredMonths.length - 12} more months on the official form`);
+    }
+  }
+
+  parts.push(
+    '',
+    'Areas of interest',
+    'Choose one area on the application form (allocation is subject to availability and NITI Aayog discretion):',
+    ...NITI_INTEREST_AREAS.slice(0, 18).map((a) => `- ${a}`),
+    `- …plus ${NITI_INTEREST_AREAS.length - 18} more domains on the portal (e.g. space domain, cyber, library, NIC division)`
+  );
+
+  parts.push(
+    '',
+    'Who can apply',
+    'Bonafide students of a recognized university or institution in India or abroad:',
+    '- Undergraduates who have completed or appeared in 2nd-year / 4th-semester exams, with at least 85% (or equivalent) in Class 12',
+    '- Postgraduate students who have completed or appeared in 1st-year / 2nd-semester PG exams, or research/PhD scholars, with at least 70% (or equivalent) in graduation',
+    '- Recent graduates awaiting higher studies: at least 70% cumulative marks in graduation/PG, and final-result declaration within 6 months of the desired internship month',
+    '',
+    'Selection',
+    '- Applications reviewed online by concerned verticals/divisions; Adviser decision is final',
+    '- Selected candidates submit NOC from college/institution (HOD or Principal) and original mark sheets at joining',
+    '- Shortlisted lists are published on the NITI Aayog website',
+    '',
+    'During the internship',
+    '- Submit a brief report on your learning experience at the end of the assignment',
+    '- Mark daily in/out attendance; host division supervises conduct and data access',
+    '',
+    'How to apply',
+    '1. Open the official Work for India internship portal',
+    '2. Fill the application form (personal, education, desired month, one area of interest)',
+    '3. Preview all details — corrections are not entertained after submission',
+    '4. Submit during the monthly window and note your registration number',
+    '',
+    'Practical notes',
+    '- Eligibility is checked automatically; ineligible applications are rejected by the system',
+    '- Indicating a preferred sector does not guarantee placement in that area',
+    '- Scheme guidelines and instructions are available from the official portal before you apply',
+    '- For web/application issues: nic-niti@gov.in'
+  );
+
+  return parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+async function fetchNitiAayogInternships() {
+  console.log('\n── NITI Aayog Internship Scheme ──');
+  const desiredMonths = await fetchNitiDesiredMonths();
+  console.log(`  portal desired months: ${desiredMonths.length ? desiredMonths.join(', ') : '(not scraped)'}`);
+
+  const company = 'NITI Aayog';
+  const companySlug = 'niti-aayog';
+  const title = 'NITI Aayog Internship Scheme';
+  const description = buildNitiDescription(desiredMonths);
+
+  const job = {
+    source: 'niti-aayog-internship',
+    external_id: `${companySlug}_internship`,
+    dedup_hash: dedupHash(company, 'internship-scheme'),
+    title,
+    company,
+    company_key: companySlug,
+    company_logo: NITI_LOGO,
+    location: 'New Delhi, India',
+    job_type: 'internship',
+    salary: null,
+    description: description.slice(0, 12000),
+    tags: [
+      'Public Policy',
+      'Economics',
+      'Data Analytics',
+      'Governance',
+      'Research',
+    ],
+    apply_url: NITI_APPLY_URL,
+    category: 'Internship',
+    published_at: new Date().toISOString(),
+  };
+
+  console.log('  → 1 NITI page at /niti-aayog/internship');
+  return [job];
+}
+
 async function deleteOldIndiaJobs() {
   console.log('\n── Remove previous India internship rows ──');
-  for (const source of ['aicte-indian-army', 'mospi-nios']) {
+  for (const source of ['aicte-indian-army', 'mospi-nios', 'niti-aayog-internship']) {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/jobs?source=eq.${encodeURIComponent(source)}`,
       {
@@ -1308,7 +1490,8 @@ async function upsertJobs(jobs) {
 async function main() {
   const army = await fetchIndianArmyInternships();
   const mospi = await fetchMospiInternships();
-  const all = [...army, ...mospi];
+  const niti = await fetchNitiAayogInternships();
+  const all = [...army, ...mospi, ...niti];
   console.log(`\nTotal to import: ${all.length}`);
   if (!all.length) process.exit(1);
 

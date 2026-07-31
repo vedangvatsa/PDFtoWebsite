@@ -15,6 +15,7 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replac
  */
 const LOGO_OVERRIDES: Record<string, string> = {
   'indian army': `${SITE_URL}/company-logos/indian-army.png`,
+  'niti aayog': `${SITE_URL}/company-logos/niti-aayog.png`,
   mospi: `${SITE_URL}/company-logos/mospi.png`,
 };
 
@@ -161,6 +162,9 @@ export function companyLogoCandidates(
   }
   if (name.toLowerCase().trim() === 'mospi') {
     out.push('https://www.internship.mospi.gov.in/favicon.ico');
+  }
+  if (name.toLowerCase().trim() === 'niti aayog') {
+    out.push('https://www.niti.gov.in/favicon.ico');
   }
   out.push(googleFaviconUrl(domain, size));
   out.push(ddgIconUrl(domain));

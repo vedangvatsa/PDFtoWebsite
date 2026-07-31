@@ -3069,7 +3069,7 @@ async function main() {
   }
 
   // ── PHASE 4: India internships (AICTE Indian Army + MoSPI NIOS) ──
-  console.log('\n═══ Phase 4: India internships (AICTE Army + MoSPI) ═══');
+  console.log('\n═══ Phase 4: India internships (Army + MoSPI + NITI Aayog) ═══');
   try {
     const { spawnSync } = await import('child_process');
     const { fileURLToPath } = await import('url');
