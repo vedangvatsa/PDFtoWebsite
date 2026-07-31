@@ -295,6 +295,11 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^Skills (&|and) tools$/i.test(line)) return true;
   if (/^Program highlights$/i.test(line)) return true;
   if (/^Current cycles$/i.test(line)) return true;
+  if (/^Official references$/i.test(line)) return true;
+  if (/^Application window$/i.test(line)) return true;
+  if (/^Desired start months/i.test(line)) return true;
+  if (/^Areas of interest$/i.test(line)) return true;
+  if (/^About the scheme$/i.test(line)) return true;
   if (/^About the program$/i.test(line)) return true;
   if (/^Work areas$/i.test(line)) return true;
   if (/^Practical notes$/i.test(line)) return true;
@@ -550,6 +555,10 @@ export function companyLogoFallback(company: string, logo: string | null | undef
   if (key === 'mospi') {
     const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
     return `${site}/company-logos/mospi.png`;
+  }
+  if (key === 'niti aayog') {
+    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
+    return `${site}/company-logos/niti-aayog.png`;
   }
   const domainGuess = company.toLowerCase().replace(/[^a-z0-9]/g, '');
   return `https://www.google.com/s2/favicons?domain=${domainGuess}.com&sz=128`;
