@@ -1,5 +1,5 @@
-
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
 const supabase = supabaseAdmin;
 
@@ -48,7 +48,12 @@ export interface ServerProfileData {
 }
 
 export async function getProfileBySlug(slug: string): Promise<ServerProfileData | null> {
-    const { data: profile } = await supabase.from('profiles').select('*').eq('username', slug).single();
+    const { data: profile } = await withTimeoutFallback(
+      supabase.from('profiles').select('*').eq('username', slug).maybeSingle(),
+      DB_BUDGET.fast,
+      { data: null, error: null } as any,
+      `profile-slug:${slug}`
+    );
     if (!profile) return null;
 
     const links = profile.links || [];

@@ -15,21 +15,94 @@ import fs from 'fs';
 import path from 'path';
 import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
+import { toCompanyKey } from '@/lib/company-directory';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { unstable_cache } from 'next/cache';
+
 const supabaseForCompany = supabaseAdmin;
 
-// Company careers are expensive (jobs.ilike). Prefer longer ISR now that
-// role counts come from the companies table, not dual exact COUNTs.
+// Company careers: directory PK + company_key equality only (no public ILIKE).
 export const revalidate = 1800; // 30 minutes
 export type ProfileData = ServerProfileData;
 
 /** Resolve directory row by slug (O(1) PK) — avoids dual exact COUNT on jobs. */
 async function getCompanyDirectory(slug: string) {
-  const { data } = await supabaseForCompany
-    .from('companies')
-    .select('slug, name, role_count, logo, locations')
-    .eq('slug', slug)
-    .maybeSingle();
-  return data;
+  const result = await withTimeoutFallback(
+    supabaseForCompany
+      .from('companies')
+      .select('slug, name, role_count, logo, locations')
+      .eq('slug', slug)
+      .maybeSingle(),
+    DB_BUDGET.fast,
+    { data: null, error: null } as any,
+    `company-dir:${slug}`
+  );
+  return result.data as {
+    slug: string;
+    name: string;
+    role_count: number;
+    logo: string | null;
+    locations: string[] | null;
+  } | null;
+}
+
+const SELECT_JOB_COLS =
+  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id';
+
+/**
+ * Load recent jobs for a company page.
+ * Contract: equality only (company_key OR exact company name). Never ILIKE.
+ * Hard timeout + empty fail-open so the page still renders directory meta.
+ */
+async function loadCompanyJobs(
+  slug: string,
+  dirName: string | null | undefined
+): Promise<any[]> {
+  return unstable_cache(
+    async () => {
+      const thirtyDaysAgo = new Date(
+        Date.now() - 30 * 24 * 60 * 60 * 1000
+      ).toISOString();
+      const companyKey = toCompanyKey(dirName || slug);
+
+      // Prefer company_key (indexed equality). Falls back to exact name if key empty.
+      if (companyKey) {
+        const byKey = await withTimeoutFallback(
+          supabaseForCompany
+            .from('jobs')
+            .select(SELECT_JOB_COLS)
+            .eq('company_key', companyKey)
+            .gt('created_at', thirtyDaysAgo)
+            .order('published_at', { ascending: false, nullsFirst: false })
+            .limit(50),
+          DB_BUDGET.list,
+          { data: null, error: { message: 'timeout' } } as any,
+          `company-jobs-key:${companyKey}`
+        );
+        if (byKey.data && byKey.data.length > 0) return byKey.data;
+      }
+
+      if (dirName) {
+        const byName = await withTimeoutFallback(
+          supabaseForCompany
+            .from('jobs')
+            .select(SELECT_JOB_COLS)
+            .eq('company', dirName)
+            .gt('created_at', thirtyDaysAgo)
+            .order('published_at', { ascending: false, nullsFirst: false })
+            .limit(50),
+          DB_BUDGET.list,
+          { data: null, error: { message: 'timeout' } } as any,
+          `company-jobs-name:${dirName}`
+        );
+        if (byName.data && byName.data.length > 0) return byName.data;
+      }
+
+      return [];
+    },
+    ['company-jobs-v2', slug, dirName || ''],
+    { revalidate: 900, tags: [`company-jobs:${slug}`] }
+  )();
 }
 
 type PageProps = {
@@ -489,49 +562,28 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   }
 
   if (!data) {
-    // Prefer directory name for exact company filter; avoid expensive ilike when possible.
+    // Directory first (cheap PK). Jobs load is equality-only + timeout fail-open.
+    // Never ILIKE company on public SSR — that path hung the site under load.
     const dir = await getCompanyDirectory(slug);
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const selectCols =
-      'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id';
+    const jobs = await loadCompanyJobs(slug, dir?.name);
 
-    let jobs: any[] | null = null;
-    if (dir?.name) {
-      const { data: exactJobs } = await supabaseForCompany
-        .from('jobs')
-        .select(selectCols)
-        .eq('company', dir.name)
-        .gt('created_at', thirtyDaysAgo)
-        .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(100);
-      jobs = exactJobs;
-    }
-    if (!jobs || jobs.length === 0) {
-      const decodedSearch = slug.replace(/-/g, '%').toLowerCase();
-      const { data: fuzzyJobs } = await supabaseForCompany
-        .from('jobs')
-        .select(selectCols)
-        .ilike('company', `${decodedSearch}%`)
-        .gt('created_at', thirtyDaysAgo)
-        .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(100);
-      jobs = fuzzyJobs;
-    }
-
-    if (!jobs || jobs.length === 0) {
+    // Need either directory membership or at least one job to render a company page.
+    if ((!jobs || jobs.length === 0) && !dir) {
       notFound();
     }
 
-    const companyName = dir?.name || jobs[0].company;
+    const companyName = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
     
-    let logo = jobs.find(j => j.company_logo)?.company_logo;
+    let logo =
+      dir?.logo ||
+      jobs.find((j: any) => j.company_logo)?.company_logo;
     if (!logo) {
       const domainFallback = companyName.toLowerCase().replace(/\s+/g, '') + '.com';
       logo = `https://www.google.com/s2/favicons?domain=${domainFallback}&sz=128`;
     }
     
     // Directory role_count is the full board total; jobs[] is only a sample for the UI.
-    const totalJobs = dir?.role_count || jobs.length;
+    const totalJobs = dir?.role_count || jobs.length || 0;
     const remoteJobs = jobs.filter(j => j.location?.toLowerCase().includes('remote')).length;
     const remotePercent = jobs.length > 0 ? Math.round((remoteJobs / jobs.length) * 100) : 0;
     

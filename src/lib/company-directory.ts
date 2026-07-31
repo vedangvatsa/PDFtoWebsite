@@ -6,8 +6,17 @@ export function toCompanySlug(name: string): string {
   return name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
     .replace(/-+$/, '')
     .replace(/^-+/, '');
+}
+
+/**
+ * Stable join key for jobs.company_key (and companies.slug).
+ * Prefer equality on this over ILIKE company scans on public pages.
+ */
+export function toCompanyKey(name: string): string {
+  return toCompanySlug(name || '');
 }
 
 /** Junk/test company names to exclude entirely */

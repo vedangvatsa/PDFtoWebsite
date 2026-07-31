@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 import { normalizeLocation as normalizeLocationDisplay } from '@/lib/normalize-location';
 import { jobPublicPath } from '@/lib/job-description';
 import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
 const supabase = supabaseAdmin;
 
@@ -367,10 +368,24 @@ export async function GET(request: NextRequest) {
   const fetchLimit = limit * 3;
   query = query.range(offset, offset + fetchLimit - 1);
 
-  // Run both queries in parallel
+  // Run both queries in parallel with hard timeout — never hang the board.
+  const emptyResult = {
+    data: [] as any[],
+    error: null,
+    count: null,
+    status: 200,
+    statusText: 'OK',
+  } as any;
   const [priorityResult, mainResult] = await Promise.all([
-    loc === 'onsite' ? Promise.resolve({ data: [], error: null }) : priorityQuery,
-    query,
+    loc === 'onsite'
+      ? Promise.resolve(emptyResult)
+      : withTimeoutFallback(
+          priorityQuery as any,
+          DB_BUDGET.list,
+          emptyResult,
+          'api-jobs-priority'
+        ),
+    withTimeoutFallback(query as any, DB_BUDGET.list, emptyResult, 'api-jobs-main'),
   ]);
 
   const { data: mainJobs, error, count } = mainResult as any;

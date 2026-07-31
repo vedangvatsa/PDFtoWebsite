@@ -9,6 +9,8 @@ import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import CompanyLogo from '@/components/company-logo';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 import { toCompanySlug } from '@/lib/company-directory';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { unstable_cache } from 'next/cache';
 
 const supabase = supabaseAdmin;
 
@@ -40,24 +42,37 @@ type CompanyRow = {
   locations: string[] | null;
 };
 
+const loadCompaniesDirectory = unstable_cache(
+  async (): Promise<CompanyRow[]> => {
+    const result = await withTimeoutFallback(
+      supabase
+        .from('companies')
+        .select('slug, name, role_count, logo, locations')
+        .order('role_count', { ascending: false })
+        .limit(2000),
+      DB_BUDGET.list,
+      { data: null, error: { message: 'timeout' } } as any,
+      'companies-directory'
+    );
+
+    if (result.error) {
+      console.error('companies directory read failed:', result.error.message);
+    }
+
+    return (result.data || []).map((c: any) => ({
+      slug: c.slug || toCompanySlug(c.name),
+      name: c.name,
+      role_count: c.role_count ?? 0,
+      logo: c.logo ?? null,
+      locations: Array.isArray(c.locations) ? c.locations : [],
+    }));
+  },
+  ['companies-directory-v1'],
+  { revalidate: 3600, tags: ['companies-directory'] }
+);
+
 export default async function CompaniesPage() {
-  const { data, error } = await supabase
-    .from('companies')
-    .select('slug, name, role_count, logo, locations')
-    .order('role_count', { ascending: false })
-    .limit(2000);
-
-  if (error) {
-    console.error('companies directory read failed:', error.message);
-  }
-
-  const companies: CompanyRow[] = (data || []).map((c) => ({
-    slug: c.slug || toCompanySlug(c.name),
-    name: c.name,
-    role_count: c.role_count ?? 0,
-    logo: c.logo ?? null,
-    locations: Array.isArray(c.locations) ? c.locations : [],
-  }));
+  const companies = await loadCompaniesDirectory();
 
   const logoStrip = [
     'Stripe',
