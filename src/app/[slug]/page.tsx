@@ -18,6 +18,7 @@ import { jobPublicPath } from '@/lib/job-description';
 import { toCompanyKey } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { unstable_cache } from 'next/cache';
+import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -587,19 +588,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     const remoteJobs = jobs.filter(j => j.location?.toLowerCase().includes('remote')).length;
     const remotePercent = jobs.length > 0 ? Math.round((remoteJobs / jobs.length) * 100) : 0;
     
-    const skillCount: Record<string, number> = {};
-    jobs.forEach((j: any) => {
-      if (Array.isArray(j.tags)) {
-        j.tags.forEach((t: string) => {
-          skillCount[t] = (skillCount[t] || 0) + 1;
-        });
-      }
-    });
-    
-    const topSkills = Object.entries(skillCount)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 8)
-      .map(e => e[0]);
+    const topSkills = topSkillTagsFromJobs(jobs, { companyName }, 8);
 
     const { getCompanyMeta } = await import('@/lib/company-data');
     const meta = getCompanyMeta(slug);

@@ -10,6 +10,7 @@ import crypto from 'crypto';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
+import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -419,86 +420,204 @@ async function fetchAicteDetail(applyUrl) {
   };
 }
 
-/** Pull discrete eligibility facts without copying portal prose. */
-function eligibilityFacts(whoText) {
-  const who = String(whoText || '');
-  const facts = [];
-  for (const m of who.matchAll(
-    /are from\s+(.+?)(?:\s+with specialisation in\s+(.+?))?(?=\n|- are from|$)/gi
-  )) {
-    const degree = stripHtml(m[1]).replace(/\s+/g, ' ').trim();
-    const spec = m[2] ? stripHtml(m[2]).replace(/\s+/g, ' ').trim() : '';
-    if (degree) {
-      facts.push(spec ? `${degree} (${spec})` : degree);
+function normalizeSectionText(text) {
+  return String(text || '')
+    .replace(/\t+/g, ' ')
+    .replace(/[ ]{2,}/g, ' ')
+    .replace(/\n[ \t]+/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+/** Short eligibility lines — facts only, not portal prose. */
+function eligibilityBullets(whoText, duration) {
+  const who = normalizeSectionText(whoText);
+  if (!who) return [];
+
+  const out = [];
+  for (const raw of who.split(/\s*-\s*/).map((s) => s.trim()).filter(Boolean)) {
+    if (/^only those candidates/i.test(raw)) continue;
+
+    if (/^are available for duration/i.test(raw)) {
+      const d = raw.match(/duration of\s+([^\n.]+)/i)?.[1]?.trim() || duration;
+      out.push(`Available for the full ${d || 'posted'} internship period`);
+      continue;
+    }
+    if (/^have relevant skills/i.test(raw)) {
+      out.push('Relevant skills and interest in the project area');
+      continue;
+    }
+
+    const from = raw.match(/^are from\s+(.+)/is)?.[1]?.replace(/\s+/g, ' ').trim();
+    if (!from) continue;
+
+    const spec = from.match(/^(.*?)\s+with specialisation in\s+(.+)$/i);
+    if (spec) {
+      out.push(`${spec[1].trim()} — ${spec[2].trim()}`);
+    } else {
+      out.push(from);
     }
   }
-  if (/available for duration/i.test(who)) {
-    const dm = who.match(/available for duration of\s+([^\n.]+)/i);
-    facts.push(
-      dm
-        ? `Available for the full ${stripHtml(dm[1]).trim()} duration`
-        : 'Available for the full stated internship duration'
+
+  return [...new Set(out)].filter((s) => s.length > 4 && s.length < 220);
+}
+
+/** Role-specific work themes — labels only, no copied sentences. */
+function extractWorkThemes(project, max = 6) {
+  const text = normalizeSectionText(project);
+  if (!text) return [];
+
+  const themes = [];
+  for (const m of text.matchAll(/\d+\.\s*([^:\n]{4,72})/g)) {
+    themes.push(m[1].replace(/\s+/g, ' ').trim());
+  }
+  for (const m of text.matchAll(/(?:^|\n)-\s*([A-Z][^:\n]{4,55}):/g)) {
+    themes.push(m[1].replace(/\s+/g, ' ').trim());
+  }
+  if (/technical requirements/i.test(text) && themes.length < max) {
+    themes.push('Technical stack requirements listed on the official posting');
+  }
+
+  return [...new Set(themes)]
+    .filter((t) => t.length > 3 && !/^technical requirements$/i.test(t))
+    .slice(0, max);
+}
+
+/** One original sentence describing the role focus (inferred, not copied). */
+function roleFocusSentence(title, project, skills) {
+  const blob = `${title} ${project} ${skills.join(' ')}`.toLowerCase();
+  if (/soc|security operations|siem|threat|vetting|zero-trust/i.test(blob)) {
+    return 'Focus areas include security operations, AI-assisted vetting, and resilient web systems for defence use.';
+  }
+  if (/drone|uav|unmanned|aerial/i.test(blob)) {
+    return 'Focus areas include drone systems, flight software, and counter-UAS technologies.';
+  }
+  if (/robot|autonomous|uas/i.test(blob)) {
+    return 'Focus areas include robotics, autonomous ground systems, and related R&D.';
+  }
+  if (/data|analytics|dashboard|bi\b/i.test(blob)) {
+    return 'Focus areas include data analysis, reporting, and decision-support tooling.';
+  }
+  if (/cyber|security|devsecops/i.test(blob)) {
+    return 'Focus areas include cybersecurity, secure infrastructure, and risk management.';
+  }
+  if (/ai|ml|llm|machine learning|nlp|computer vision/i.test(blob)) {
+    return 'Focus areas include AI/ML model work, automation, and applied intelligent systems.';
+  }
+  if (/software|mobile|android|full[- ]?stack|erp|sap|zoho/i.test(blob)) {
+    return 'Focus areas include software engineering, application development, and platform integration.';
+  }
+  if (/media|communication|content|graphic|social/i.test(blob)) {
+    return 'Focus areas include digital media, outreach, and strategic communications.';
+  }
+  if (/simulation|wargam|modeling/i.test(blob)) {
+    return 'Focus areas include modeling, simulation, and operational analysis.';
+  }
+  if (/space|satellite|antenna/i.test(blob)) {
+    return 'Focus areas include space-domain systems, RF/antenna work, or related engineering.';
+  }
+  if (/hospital|medical|health/i.test(blob)) {
+    return 'Focus areas include healthcare IT, clinical workflows, and medical systems.';
+  }
+  return 'Hands-on internship with military mentors on a live technology project.';
+}
+
+/** Only notes that matter for applicants — skip repeated IAIP boilerplate. */
+function practicalNotes(detail) {
+  const terms = String(detail.terms || '');
+  const notes = [];
+
+  const hours = terms.match(/Timings:\s*([^(\n]+).*?Working Days:\s*([^(\n]+)/is);
+  if (hours) {
+    notes.push(
+      `Working hours: ${hours[1].trim()}, ${hours[2].trim()}`
     );
   }
-  if (/relevant skills/i.test(who)) {
-    facts.push('Relevant skills and interest in the role area');
+  if (/less than 75%\s*attendance/i.test(terms)) {
+    notes.push('Stipend is paid after successful completion; under 75% attendance is ineligible');
   }
-  return [...new Set(facts)].filter(Boolean);
+  if (/police verification is mandatory/i.test(terms)) {
+    notes.push('Police verification is required before joining');
+  }
+  if (/no accommodation will be provided/i.test(terms)) {
+    notes.push('Accommodation is not provided');
+  }
+  if (/smartphones and laptops are not permitted/i.test(terms)) {
+    notes.push('Personal smartphones/laptops are restricted on premises; workstations are provided');
+  }
+
+  return notes;
 }
 
 /** Tool / skill tokens mentioned on the official page (not full sentences). */
-function skillHintsFromProject(project) {
-  const text = String(project || '');
+function skillHintsFromProject(project, keywords = '') {
+  const text = `${project || ''} ${keywords || ''}`;
   const catalog = [
     'Excel',
     'Google Sheets',
     'Power BI',
     'Python',
+    'Node.js',
     'SQL',
     'Android',
     'SAP',
     'ERP',
     'Zoho',
     'Elastic',
+    'Elasticsearch',
+    'Logstash',
+    'Kibana',
     'DevSecOps',
     'CI/CD',
+    'Docker',
+    'Kubernetes',
+    'AWS',
     'Machine Learning',
     'Deep Learning',
     'Computer Vision',
     'NLP',
     'LLM',
+    'OpenAI',
+    'LangChain',
+    'Hugging Face',
+    'React',
+    'Vue',
+    'JavaScript',
+    'TypeScript',
+    'Java',
     'Drone',
     'UAV',
     'Robotics',
     'Cybersecurity',
-    'Java',
-    'JavaScript',
-    'React',
+    'SIEM',
+    'SOAR',
     'Full Stack',
+    'Quantum Computing',
+    'Cryptography',
   ];
-  return catalog.filter((k) => new RegExp(`\\b${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text));
-}
+  const found = catalog.filter((k) =>
+    new RegExp(`\\b${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)
+  );
 
-function extractRoleLabel(project) {
-  const m = String(project || '').match(/Role:\s*([^\n]+)/i);
-  return m ? stripHtml(m[1]).replace(/\s+/g, ' ').trim() : null;
+  if (keywords?.trim()) {
+    for (const kw of keywords.split(/[,;|]/)) {
+      const k = kw.trim();
+      if (k.length > 1 && k.length < 40) found.push(k);
+    }
+  }
+
+  return [...new Set(found.map((s) => s.replace(/\s+/g, ' ').trim()))].filter(Boolean);
 }
 
 function buildArmyDescription(detail) {
-  const roleLabel = extractRoleLabel(detail.project);
-  const skills = skillHintsFromProject(detail.project);
-  const eligibility = eligibilityFacts(detail.who);
-  const hoursMatch = String(detail.terms || '').match(
-    /Timings:\s*([^\n<(]+).*?Working Days:\s*([^\n<(]+)/is
-  );
-  const needsPolice = /Police verification is mandatory/i.test(detail.terms || '');
-  const noAccom = /accommodation is not included/i.test(detail.terms || '');
-  const stipendAttendance = /less than 75%\s*attendance/i.test(detail.terms || '');
+  const skills = skillHintsFromProject(detail.project, detail.keywords);
+  const eligibility = eligibilityBullets(detail.who, detail.duration);
+  const workThemes = extractWorkThemes(detail.project);
+  const notes = practicalNotes(detail);
 
   const parts = [
-    `Indian Army Internship Program (IAIP) opening${
-      roleLabel ? ` for ${roleLabel}` : detail.title ? ` for ${detail.title}` : ''
-    }.`,
+    `Indian Army Internship Program (IAIP) — ${detail.title || 'internship opening'}.`,
+    roleFocusSentence(detail.title, detail.project, skills),
     '',
     'Key facts',
   ];
@@ -515,32 +634,23 @@ function buildArmyDescription(detail) {
   ].filter(Boolean);
   parts.push(...meta);
 
+  if (workThemes.length) {
+    parts.push('', 'Work areas', ...workThemes.map((t) => `- ${t}`));
+  }
+
   if (skills.length) {
-    parts.push('', 'Skills & tools', skills.map((s) => `- ${s}`).join('\n'));
+    parts.push('', 'Skills & tools', ...skills.map((s) => `- ${s}`));
   }
 
   if (eligibility.length) {
     parts.push('', 'Who can apply', ...eligibility.map((f) => `- ${f}`));
   }
 
-  const notes = [];
-  if (hoursMatch) {
-    notes.push(
-      `Working hours: ${stripHtml(hoursMatch[1]).trim()}, ${stripHtml(hoursMatch[2]).trim()}`
-    );
-  }
-  if (detail.stipend && stipendAttendance) {
-    notes.push(
-      'Stipend is paid after successful completion; final amount depends on attendance (under 75% attendance is ineligible).'
-    );
-  }
-  if (needsPolice) notes.push('Police verification is mandatory for this internship.');
-  if (noAccom) notes.push('Accommodation is not provided; interns arrange their own stay.');
   if (notes.length) {
     parts.push('', 'Practical notes', ...notes.map((n) => `- ${n}`));
   }
 
-  return parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  return parts.join('\n').replace(/\n{3,}/g, '\n\n').trim().slice(0, 8000);
 }
 
 function parseDdMmYyyy(s) {
@@ -555,6 +665,32 @@ function parseDdMmYyyy(s) {
   if (mi == null) return null;
   const d = new Date(Date.UTC(Number(m[3]), mi, Number(m[1])));
   return Number.isNaN(d.getTime()) ? null : d.toISOString();
+}
+
+function extractArmySkillTags(title, project = '') {
+  const text = `${title} ${project}`;
+  const tags = new Set();
+  const add = (...items) => items.forEach((t) => tags.add(t));
+
+  if (/ai|ml|machine learning|llm|nlp|computer vision|deep learning/i.test(text)) {
+    add('AI', 'Machine Learning');
+  }
+  if (/data|analytics|sql|power bi|excel|dashboard/i.test(text)) add('Data Analytics');
+  if (/robot|drone|uav|unmanned|autonomous/i.test(text)) add('Robotics', 'Drones');
+  if (/cyber|security|devsecops|secops/i.test(text)) add('Cybersecurity');
+  if (/software|app|web|full[- ]?stack|mobile|android|erp|sap|zoho/i.test(text)) {
+    add('Software Development');
+  }
+  if (/cloud|devops|ci\/cd|infrastructure/i.test(text)) add('DevOps');
+  if (/simulation|wargam|modeling/i.test(text)) add('Simulation');
+  if (/antenna|\brf\b|signal/i.test(text)) add('RF Engineering');
+  if (/legal|document/i.test(text)) add('Legal Tech');
+  if (/media|communication|content|graphic|social media/i.test(text)) add('Communications');
+  if (/elastic|elasticsearch|kibana/i.test(text)) add('Elastic Stack');
+  if (/space|satellite/i.test(text)) add('Space Systems');
+  if (/hospital|medical|health/i.test(text)) add('Healthcare IT');
+
+  return [...tags];
 }
 
 // ─── Indian Army (AICTE) ───
@@ -670,21 +806,6 @@ async function fetchIndianArmyInternships() {
       : 'India';
     const description = buildArmyDescription(detail);
 
-    const tags = ['Internship', 'Indian Army', 'AICTE', 'Defence', 'India'];
-    if (/ai|ml|machine learning/i.test(title + ' ' + detail.project)) {
-      tags.push('AI', 'Machine Learning');
-    }
-    if (/data/i.test(title + ' ' + detail.project)) tags.push('Data');
-    if (/robot|drone|uav|unmanned/i.test(title + ' ' + detail.project)) {
-      tags.push('Robotics', 'Drones');
-    }
-    if (/cyber|security|hack/i.test(title + ' ' + detail.project)) {
-      tags.push('Cybersecurity');
-    }
-    if (/software|app|web|erp|sap|excel|power bi/i.test(title + ' ' + detail.project)) {
-      tags.push('Software');
-    }
-
     all.push({
       source: 'aicte-indian-army',
       external_id: shortJobExternalId(companySlug, title, applyUrl, usedSlugs),
@@ -698,7 +819,7 @@ async function fetchIndianArmyInternships() {
       // Only the stipend string printed on the official detail header — else null
       salary: detail.stipend || null,
       description: description.slice(0, 12000),
-      tags: [...new Set(tags)],
+      tags: extractArmySkillTags(title, detail.project),
       apply_url: applyUrl,
       category: 'Internship',
       published_at:
@@ -760,20 +881,39 @@ async function fetchMospiPortalJs() {
   return res.text();
 }
 
+/** Cycles stay flagged active in the API after their application window closes. */
+function filterOpenApplicationCycles(cycles, asOf = new Date()) {
+  const today = asOf.toISOString().slice(0, 10);
+  return (cycles || []).filter((c) => {
+    const end = c?.end_date?.slice(0, 10);
+    return c?.is_Active && end && end >= today;
+  });
+}
+
+function cycleSlotCount(cycle) {
+  return (cycle.vacancies || []).reduce((n, v) => n + (Number(v.available_slots) || 0), 0);
+}
+
+function shortenCycleTitle(title) {
+  const t = String(title || '').trim();
+  const phase = t.match(/Phase\s+(I{1,3}|IV|V|\d+)/i)?.[0];
+  const year = t.match(/20\d{2}-\d{2}/)?.[0];
+  if (phase && year) return `${phase}, NIOS ${year}`;
+  return t
+    .replace(/\s+of\s+National Internship in Official Statistics \(NIOS\)\s*/i, ', NIOS ')
+    .replace(/\s+of\s+MoSPI$/i, '')
+    .replace(/,\s*MoSPI\s*/i, ' ')
+    .trim();
+}
+
 function buildMospiDescription(portalTexts, cycles) {
-  const active = (cycles || []).filter((c) => c?.is_Active);
-  const totalSlots = active.reduce(
-    (s, c) => s + (c.vacancies || []).reduce((n, v) => n + (Number(v.available_slots) || 0), 0),
-    0
-  );
-  const totalVacs = active.reduce((s, c) => s + (c.vacancies || []).length, 0);
+  const openCycles = filterOpenApplicationCycles(cycles);
+  const openSlots = openCycles.reduce((s, c) => s + cycleSlotCount(c), 0);
+  const openVacs = openCycles.reduce((s, c) => s + (c.vacancies || []).length, 0);
 
   const hero =
     portalTexts.find((t) => /Facilitating the students to get familiarized/i.test(t)) ||
     'Facilitating students to get familiarized with the prevailing system of Official Statistics in India.';
-
-  const objective =
-    'Introduces students to India\'s official statistical system — data collection, processing and analysis, publication, and dissemination.';
 
   const parts = [
     'National Internship in Official Statistics (NIOS)',
@@ -782,46 +922,86 @@ function buildMospiDescription(portalTexts, cycles) {
     '',
     hero,
     '',
-    objective,
+    'About the scheme',
+    '- Helps students understand how official statistics are produced and used across India',
+    '- Hands-on exposure to MoSPI verticals: national accounts, index numbers, energy statistics, SDGs, environment accounts, global indices, and survey programmes (PLFS, ASUSE, ASI, and related collections)',
+    '- Covers the full statistical pipeline: data collection, processing and analysis, publication, and dissemination',
     '',
     'Key facts',
-    'Location: India (central and regional MoSPI offices)',
-    'Engagement type: Internship',
-    'Stipend: ₹10,000+ per month (government-funded, on successful completion of each month)',
-    active.length ? `Active internship cycles listed: ${active.length}` : null,
-    totalVacs ? `Open vacancy postings (active cycles): ${totalVacs}` : null,
-    totalSlots ? `Available slots (active cycles): ${totalSlots}` : null,
-  ].filter((v) => v !== null && v !== '');
+    'Location: India — MoSPI headquarters in New Delhi plus central and regional/state statistical offices nationwide',
+    'Engagement type: Internship (2–6 months from date of joining)',
+    'Stipend: ₹10,000 per month, paid monthly after the nodal officer submits your progress report for the preceding month',
+    'Certificate: Issued by the host office on successful completion; leaving early forfeits stipend and certificate',
+    'Scale: 200+ internship slots across Group A (Delhi HQ divisions) and Group B (regional/zonal offices)',
+  ];
 
-  if (active.length) {
-    parts.push('', 'Current cycles');
-    for (const c of active) {
-      const slots = (c.vacancies || []).reduce(
-        (n, v) => n + (Number(v.available_slots) || 0),
-        0
-      );
+  if (openCycles.length) {
+    parts.push('', 'Open application window');
+    for (const c of openCycles) {
+      const slots = cycleSlotCount(c);
+      const vacs = (c.vacancies || []).length;
+      const label = shortenCycleTitle(c.title) || c.title;
       parts.push(
-        `- ${c.title}${c.start_date && c.end_date ? ` (${c.start_date} to ${c.end_date})` : ''}${slots ? ` — ${slots} slots` : ''}`
+        `- ${label}: apply ${c.start_date} to ${c.end_date}${slots ? ` — ${slots} slots across ${vacs} office postings` : ''}`
       );
     }
+    if (openSlots) {
+      parts.push(`Total open slots in current window: ${openSlots} (${openVacs} office-level postings)`);
+    }
+  } else {
+    parts.push(
+      '',
+      'Application window',
+      'No MoSPI internship application window is open right now. Check the official portal for the next phase announcement.'
+    );
   }
 
   parts.push(
     '',
-    'Program highlights',
-    '- ₹10,000+ monthly stipend for every month of successful internship',
-    '- 200+ internship slots across central and regional offices nationwide',
-    '- Flexible duration from 2 to 6 months based on project and availability',
-    '- Government completion certificate with exposure to real data projects and mentorship',
+    'Placement groups',
+    '- Group A: Delhi headquarters divisions (e.g. national accounts, economic/social statistics, price statistics)',
+    '- Group B: Regional and zonal NSO (FOD) offices and state DES centres across India',
+    '- You may apply to Group A or Group B for a given phase, not both',
+    '- Choose your preferred office/centre and internship duration (2–6 months) during application',
     '',
     'Who can apply',
-    'Bonafide students of any recognized university or institution in India or abroad may apply.',
-    '- Undergraduate or postgraduate students with statistics or mathematics in their curriculum',
-    '- Research or Ph.D. students in statistics, economics, demography, or related applied statistics fields (typically 70%+ marks in graduation)',
-    '- Graduates who completed their degree within the last two years with 70%+ marks in graduation and/or post-graduation',
-    '- Applicants currently pursuing a degree may apply only for 2–3 month internship slots',
+    'Bonafide students of any recognized university or institution in India or abroad may apply if they meet one of these paths:',
+    '- Undergraduates who have completed or appeared in second-year / 4th-semester exams, with statistics or mathematics in the curriculum, and at least 75% (or equivalent) in Class 12',
+    '- Postgraduate students in any year with statistics or mathematics in the curriculum',
+    '- Research or Ph.D. students in statistics, mathematical statistics, operations research, economics, demography, or related applied statistics, with at least 70% (or equivalent) in graduation',
+    '- Graduates who finished graduation or post-graduation within the last two years with at least 70% (or equivalent) marks',
+    '- Current degree students (UG, PG, research, or Ph.D.) may only take 2–3 month internship slots',
     '',
-    'Interns work with MoSPI offices on official statistics and choose office placements during application.'
+    'Selection',
+    '- Online shortlisting based on aggregate marks in 12th, graduation, or post-graduation (as applicable); mention qualifying subjects and CGPA conversion if used',
+    '- Office allocation considers marks and the location preferences you submit',
+    '- Group A results are published on the MoSPI website; Group B results are posted at the respective office notice boards',
+    '',
+    'During the internship',
+    '- Each centre assigns a guide or nodal officer; monthly progress reports are required for stipend release',
+    '- Submit a final report or paper (with soft copy) covering observations and suggestions at the end of the assignment',
+    '- Field visits for NSO (FOD) zonal/regional offices may include ₹500 per day when undertaking approved field work',
+    '- Field visits must not exceed 10 days across the entire internship period',
+    '- No travelling allowance or daily allowance is paid for reporting to the allotted office or returning after completion',
+    '- Selected interns submit bank account details through the portal after joining (stipend via electronic transfer / PFMS / Aadhaar-based payment rails)',
+    '',
+    'How to apply on the MoSPI portal',
+    '1. Register — create an account on the official internship portal',
+    '2. Complete profile — education and personal details',
+    '3. Upload documents — certificates and government ID (each file under 5 MB)',
+    '4. Select preferences — internship group, office/centre, and duration',
+    '5. Submit application — review and submit before the phase deadline',
+    '6. Selection — shortlisting; interview if required by the host office',
+    '7. Confirmation — offer letter and joining instructions from the allotted office',
+    '',
+    'Practical notes',
+    '- Enquiries are handled only by designated MoSPI offices and officers',
+    '- Annex office lists are tentative and may change with competent authority approval',
+    '- Internship award is not a job offer and does not guarantee future government employment',
+    '',
+    'Contact',
+    'Training Unit, Ministry of Statistics and Programme Implementation, Khurshid Lal Bhawan, Janpath, New Delhi 110001',
+    'Email: training-mospi@nic.in'
   );
 
   return parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
@@ -852,8 +1032,8 @@ async function fetchMospiInternships() {
   const companySlug = 'mospi';
   const title = 'National Internship in Official Statistics (NIOS)';
   const description = buildMospiDescription(portalTexts, cycles);
-  const active = cycles.filter((c) => c?.is_Active);
-  const latest = active.sort(
+  const openCycles = filterOpenApplicationCycles(cycles);
+  const latest = openCycles.sort(
     (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
   )[0];
 
@@ -867,9 +1047,9 @@ async function fetchMospiInternships() {
     company_logo: MOSPI_LOGO,
     location: 'India',
     job_type: 'internship',
-    salary: '₹10,000+/month',
+    salary: '₹10,000/month',
     description: description.slice(0, 12000),
-    tags: ['Internship', 'MoSPI', 'Statistics', 'Government', 'India', 'NIOS'],
+    tags: ['Statistics', 'Data Analytics', 'Economics', 'Research'],
     apply_url: MOSPI_APPLY_URL,
     category: 'Internship',
     published_at: latest?.createdAt || new Date().toISOString(),
@@ -907,8 +1087,13 @@ async function upsertJobs(jobs) {
   let inserted = 0;
   let errors = 0;
 
-  for (let i = 0; i < jobs.length; i += batchSize) {
-    const batch = jobs.slice(i, i + batchSize);
+  const normalized = jobs.map((j) => ({
+    ...j,
+    description: normalizeJobDescriptionForStorage(j.description),
+  }));
+
+  for (let i = 0; i < normalized.length; i += batchSize) {
+    const batch = normalized.slice(i, i + batchSize);
     const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id`, {
       method: 'POST',
       headers: {

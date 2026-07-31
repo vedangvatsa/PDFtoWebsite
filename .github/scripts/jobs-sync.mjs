@@ -4,6 +4,7 @@
 
 import crypto from 'crypto';
 import dotenv from 'dotenv';
+import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -581,6 +582,7 @@ async function supabaseUpsert(jobs) {
     return batch.map((j) => ({
       ...j,
       company_key: j.company_key || toCompanyKey(j.company),
+      description: normalizeJobDescriptionForStorage(j.description),
     }));
   }
 

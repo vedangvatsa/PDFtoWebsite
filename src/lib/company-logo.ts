@@ -11,6 +11,7 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replac
 /**
  * Hard-coded logos for orgs without a public web favicon.
  * Indian Army emblem mirrored at /company-logos/indian-army.png (from IAIP posting asset).
+ * MoSPI: national emblem from internship.mospi.gov.in favicon (mirrored at /company-logos/mospi.png).
  */
 const LOGO_OVERRIDES: Record<string, string> = {
   'indian army': `${SITE_URL}/company-logos/indian-army.png`,
@@ -159,7 +160,7 @@ export function companyLogoCandidates(
     );
   }
   if (name.toLowerCase().trim() === 'mospi') {
-    out.push('https://www.internship.mospi.gov.in/static/media/Logo-MOSPI.58746789e2643aae82fb.png');
+    out.push('https://www.internship.mospi.gov.in/favicon.ico');
   }
   out.push(googleFaviconUrl(domain, size));
   out.push(ddgIconUrl(domain));
