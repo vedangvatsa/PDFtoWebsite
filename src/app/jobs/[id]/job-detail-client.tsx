@@ -249,10 +249,6 @@ export default function JobDetailClient({
           <div className="mt-8 sm:mt-10 pt-6 border-t border-zinc-100">
             <ApplyButton />
           </div>
-
-          <p className="mt-5 text-[11px] text-zinc-400 leading-relaxed text-center">
-            Listing on CVin.Bio. Applications go to the employer&apos;s site.
-          </p>
         </article>
       </main>
 
