@@ -22,6 +22,7 @@ import {
   jobTypeLabel,
   timeAgo,
 } from '@/lib/job-description';
+import { PAGE_CONTAINER } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
 
@@ -157,10 +158,7 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
   return (
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
       <Header />
-      <main
-        id="main-content"
-        className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 md:py-14 lg:py-16 pb-32 sm:pb-16 flex-1 min-w-0"
-      >
+      <main id="main-content" className={`${PAGE_CONTAINER} min-w-0`}>
         <Link
           href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
           className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-4 sm:mb-6 min-h-[44px] sm:min-h-0"
