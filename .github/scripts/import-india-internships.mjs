@@ -619,7 +619,91 @@ function cleanupBullet(s) {
     .replace(/\s+/g, ' ')
     .replace(/&nbsp;/gi, ' ')
     .replace(/^[•\-*]\s*/, '')
+    .replace(/\s+-\s*$/g, '')
     .trim();
+}
+
+/** Readable page title from AICTE ALL-CAPS / multi-numbered titles. */
+function displayArmyTitle(rawTitle) {
+  const t = normalizeSectionText(stripHtml(rawTitle));
+  if (!t) return 'Internship opening';
+
+  const multi = [...t.matchAll(/\d+\.\s+(.+?)(?=\s+\d+\.\s|$)/g)];
+  if (multi.length >= 2) {
+    const blob = t.toLowerCase();
+    if (/soc|security operations|vetting|arch layout/i.test(blob)) {
+      return 'AI Security & SOC Engineering Internship';
+    }
+    return sentenceCaseTitle(multi[0][1].replace(/\.$/, '').trim()).slice(0, 90);
+  }
+
+  let cleaned = t.replace(/^\d+\.\s+/, '').replace(/\.$/, '').trim();
+  if (cleaned === cleaned.toUpperCase() && cleaned.length > 20) {
+    return sentenceCaseTitle(cleaned).slice(0, 120);
+  }
+  return cleaned.slice(0, 120);
+}
+
+function sentenceCaseTitle(s) {
+  const small = new Set(['a', 'an', 'and', 'at', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
+  return String(s || '')
+    .toLowerCase()
+    .split(/\s+/)
+    .map((word, i) => {
+      if (i > 0 && small.has(word)) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+}
+
+/** Parse "1. AI Integration: ... 2. SOC Engineering: ..." from single-line AICTE project text. */
+function extractNumberedWorkItems(text) {
+  const normalized = normalizeSectionText(text).replace(/&nbsp;/gi, ' ');
+  if (!normalized) return [];
+
+  const items = [];
+  const parts = normalized.split(/\s+(?=\d{1,2}\.\s+[A-Za-z][^:]{2,72}:\s*)/);
+
+  for (const part of parts) {
+    const m = part.match(/^(\d{1,2})\.\s+([^:]+):\s*(.*)$/s);
+    if (!m) continue;
+
+    const sectionTitle = cleanupBullet(m[2]);
+    let body = cleanupBullet(m[3]);
+
+    if (
+      /responsibilit|skill|technical requirement|keyword|document|dress code|working hours|stipend|application/i.test(
+        sectionTitle
+      )
+    ) {
+      continue;
+    }
+    if (/^technical requirements$/i.test(sectionTitle)) break;
+
+    let subLabels = body.split(/\s+-\s+(?=[A-Za-z][^:]{2,48}:\s*)/);
+    if (subLabels.length === 1) {
+      subLabels = body.split(/\s+(?=[A-Z][A-Za-z]+\s+[A-Z][A-Za-z]+:\s+)/);
+    }
+    if (subLabels.length > 1 && subLabels.some((s) => /^[A-Za-z].+:\s/.test(s))) {
+      for (const sub of subLabels) {
+        const sm = sub.match(/^([^:]+):\s*(.+)$/);
+        if (sm && sm[1].length < 50 && sm[2].trim()) {
+          items.push(
+            `${sectionTitle} — ${cleanupBullet(sm[1])}: ${cleanupBullet(sm[2])}`.slice(0, 300)
+          );
+        } else if (sub.trim().length >= 15) {
+          items.push(`${sectionTitle}: ${cleanupBullet(sub)}`.slice(0, 300));
+        }
+      }
+    } else {
+      const mainBody = body.split(/\s+(?=\d{1,2}\.\s+[A-Za-z])/)[0].trim();
+      if (mainBody.length >= 12) {
+        items.push(`${sectionTitle}: ${mainBody}`.slice(0, 300));
+      }
+    }
+  }
+
+  return items;
 }
 
 /** Split responsibility run-on text from AICTE project descriptions. */
@@ -695,19 +779,24 @@ function parseProjectDetail(project) {
     responsibilities.push(...splitResponsibilityItems(cleaned));
   }
 
-  for (const m of text.matchAll(
-    /(?:^|\n)\d+\.\s+([^:\n]{4,72}):\s*([\s\S]+?)(?=(?:\n\d+\.\s)|$)/g
-  )) {
-    const title = m[1].trim();
-    if (/responsibilit|skill|technical|keyword|document|dress code|working hours|stipend|application/i.test(title)) {
-      continue;
-    }
-    const body = splitResponsibilityItems(m[2]);
-    if (body.length) {
-      responsibilities.push(...body.map((b) => `${title}: ${b}`));
-    } else {
-      const short = cleanupBullet(m[2]).slice(0, 200);
-      if (short.length >= 12) responsibilities.push(`${title}: ${short}`);
+  const numberedItems = extractNumberedWorkItems(text);
+  if (numberedItems.length) {
+    responsibilities.push(...numberedItems);
+  } else {
+    for (const m of text.matchAll(
+      /(?:^|\n)\d+\.\s+([^:\n]{4,72}):\s*([\s\S]+?)(?=(?:\n\d+\.\s)|$)/g
+    )) {
+      const title = m[1].trim();
+      if (/responsibilit|skill|technical|keyword|document|dress code|working hours|stipend|application/i.test(title)) {
+        continue;
+      }
+      const body = splitResponsibilityItems(m[2]);
+      if (body.length) {
+        responsibilities.push(...body.map((b) => `${title}: ${b}`));
+      } else {
+        const short = cleanupBullet(m[2]).slice(0, 200);
+        if (short.length >= 12) responsibilities.push(`${title}: ${short}`);
+      }
     }
   }
 
@@ -772,9 +861,10 @@ function buildArmyDescription(detail) {
     (t) => !parsed.responsibilities.some((r) => r.toLowerCase().includes(t.toLowerCase()))
   );
   const notes = practicalNotes(detail);
+  const displayTitle = displayArmyTitle(detail.title);
 
   const parts = [
-    `Indian Army Internship Program (IAIP) — ${detail.title || 'internship opening'}.`,
+    `Indian Army Internship Program (IAIP) — ${displayTitle}.`,
   ];
 
   if (parsed.role) {
@@ -965,7 +1055,7 @@ async function fetchIndianArmyInternships() {
       continue;
     }
 
-    const title = detail.title;
+    const title = displayArmyTitle(detail.title);
     const company = 'Indian Army';
     const companySlug = 'indian-army';
     const location = detail.location
@@ -977,7 +1067,7 @@ async function fetchIndianArmyInternships() {
 
     all.push({
       source: 'aicte-indian-army',
-      external_id: shortJobExternalId(companySlug, title, applyUrl, usedSlugs),
+      external_id: shortJobExternalId(companySlug, detail.title, applyUrl, usedSlugs),
       dedup_hash: dedupHash(company, applyUrl),
       title: title.slice(0, 200),
       company,
@@ -988,7 +1078,7 @@ async function fetchIndianArmyInternships() {
       // Only the stipend string printed on the official detail header — else null
       salary: detail.stipend || null,
       description: description.slice(0, 12000),
-      tags: extractArmySkillTags(title, detail.project),
+      tags: extractArmySkillTags(detail.title, detail.project),
       apply_url: applyUrl,
       category: 'Internship',
       published_at:
@@ -1487,6 +1577,43 @@ async function upsertJobs(jobs) {
   return { inserted, errors };
 }
 
+async function upsertIndiaCompanies(jobs) {
+  const byKey = new Map();
+  for (const j of jobs) {
+    if (!j.company_key) continue;
+    const prev = byKey.get(j.company_key);
+    const loc = j.location?.split(',')[0]?.trim();
+    byKey.set(j.company_key, {
+      slug: j.company_key,
+      name: j.company,
+      logo: j.company_logo || prev?.logo || null,
+      role_count: (prev?.role_count || 0) + 1,
+      locations: [...new Set([...(prev?.locations || []), loc].filter(Boolean))].slice(0, 3),
+      latest_job_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+  }
+  if (!byKey.size) return;
+
+  const rows = [...byKey.values()];
+  console.log(`\n── Upsert ${rows.length} company pages ──`);
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/companies?on_conflict=slug`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'resolution=merge-duplicates,return=minimal',
+    },
+    body: JSON.stringify(rows),
+  });
+  if (!res.ok) {
+    console.warn(`  companies upsert failed: ${(await res.text()).slice(0, 200)}`);
+  } else {
+    console.log(`  ok: ${rows.map((r) => r.slug).join(', ')}`);
+  }
+}
+
 async function main() {
   const army = await fetchIndianArmyInternships();
   const mospi = await fetchMospiInternships();
@@ -1503,6 +1630,7 @@ async function main() {
 
   await deleteOldIndiaJobs();
   await upsertJobs(all);
+  await upsertIndiaCompanies(all);
 }
 
 main().catch((e) => {
