@@ -500,8 +500,6 @@ function buildArmyDescription(detail) {
       roleLabel ? ` for ${roleLabel}` : detail.title ? ` for ${detail.title}` : ''
     }.`,
     '',
-    'This CVin.Bio page is an original summary of facts published on the official role posting. It is not a full reproduction of that posting.',
-    '',
     'Key facts',
   ];
 
@@ -511,36 +509,29 @@ function buildArmyDescription(detail) {
     detail.start ? `Start date: ${detail.start}` : null,
     detail.deadline ? `Last date to apply: ${detail.deadline}` : null,
     detail.posted ? `Date of posting: ${detail.posted}` : null,
-    detail.stipend ? `Stipend (as stated on the official posting): ${detail.stipend}` : null,
+    detail.stipend ? `Stipend: ${detail.stipend}` : null,
     detail.credits ? `Credits: ${detail.credits}` : null,
     detail.jobType ? `Engagement type: ${detail.jobType}` : null,
   ].filter(Boolean);
   parts.push(...meta);
 
   if (skills.length) {
-    parts.push('', 'Tools and topics named on the official posting', skills.map((s) => `- ${s}`).join('\n'));
+    parts.push('', 'Skills & tools', skills.map((s) => `- ${s}`).join('\n'));
   }
 
   if (eligibility.length) {
-    parts.push(
-      '',
-      'Who can apply',
-      'Eligibility criteria published on the official posting include:',
-      ...eligibility.map((f) => `- ${f}`)
-    );
+    parts.push('', 'Who can apply', ...eligibility.map((f) => `- ${f}`));
   }
 
   const notes = [];
   if (hoursMatch) {
     notes.push(
-      `Working hours stated on the posting: ${stripHtml(hoursMatch[1]).trim()}, ${stripHtml(hoursMatch[2]).trim()}`
+      `Working hours: ${stripHtml(hoursMatch[1]).trim()}, ${stripHtml(hoursMatch[2]).trim()}`
     );
   }
-  if (detail.stipend) {
+  if (detail.stipend && stipendAttendance) {
     notes.push(
-      stipendAttendance
-        ? `Stipend is paid after successful completion; the official posting ties the final amount to attendance (under 75% attendance is stated as ineligible).`
-        : `Stipend details and payment conditions are defined on the official posting.`
+      'Stipend is paid after successful completion; final amount depends on attendance (under 75% attendance is ineligible).'
     );
   }
   if (needsPolice) notes.push('Police verification is mandatory for this internship.');
@@ -548,11 +539,6 @@ function buildArmyDescription(detail) {
   if (notes.length) {
     parts.push('', 'Practical notes', ...notes.map((n) => `- ${n}`));
   }
-
-  parts.push(
-    '',
-    'Full responsibilities, complete terms, and the application form are on the official Indian Army role page (listed through the AICTE National Internship Portal).'
-  );
 
   return parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
@@ -734,71 +720,163 @@ async function fetchIndianArmyInternships() {
   return all;
 }
 
-// ─── MoSPI NIOS ───
+// ─── MoSPI NIOS (single consolidated posting) ───
+const MOSPI_APPLY_URL = 'https://www.internship.mospi.gov.in';
+const MOSPI_LOGO = `${(process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '')}/company-logos/mospi.png`;
+
+function decodeMospiJsString(s) {
+  return s
+    .replace(/\\u2013/g, '–')
+    .replace(/\\u2014/g, '—')
+    .replace(/\\u201c/g, '"')
+    .replace(/\\u201d/g, '"')
+    .replace(/\\u2019/g, "'")
+    .replace(/\\n/g, '\n');
+}
+
+function extractMospiPortalCopy(js) {
+  const texts = new Set();
+  for (const m of js.matchAll(/children:"([^"]{6,800})"/g)) {
+    texts.add(decodeMospiJsString(m[1]));
+  }
+  for (const m of js.matchAll(/description:"([^"]{6,400})"/g)) {
+    texts.add(decodeMospiJsString(m[1]));
+  }
+  for (const m of js.matchAll(/title:"([^"]{3,120})"/g)) {
+    texts.add(decodeMospiJsString(m[1]));
+  }
+  return [...texts];
+}
+
+async function fetchMospiPortalJs() {
+  const home = await fetch(MOSPI_APPLY_URL, {
+    headers: { 'User-Agent': 'CVin.Bio job importer' },
+  });
+  const html = await home.text();
+  const jsM = html.match(/src="(\/static\/js\/main\.[^"]+\.js)"/);
+  if (!jsM) throw new Error('MoSPI main.js not found');
+  const jsUrl = new URL(jsM[1], MOSPI_APPLY_URL).href;
+  const res = await fetch(jsUrl, { headers: { 'User-Agent': 'CVin.Bio job importer' } });
+  return res.text();
+}
+
+function buildMospiDescription(portalTexts, cycles) {
+  const active = (cycles || []).filter((c) => c?.is_Active);
+  const totalSlots = active.reduce(
+    (s, c) => s + (c.vacancies || []).reduce((n, v) => n + (Number(v.available_slots) || 0), 0),
+    0
+  );
+  const totalVacs = active.reduce((s, c) => s + (c.vacancies || []).length, 0);
+
+  const hero =
+    portalTexts.find((t) => /Facilitating the students to get familiarized/i.test(t)) ||
+    'Facilitating students to get familiarized with the prevailing system of Official Statistics in India.';
+
+  const objective =
+    'Introduces students to India\'s official statistical system — data collection, processing and analysis, publication, and dissemination.';
+
+  const parts = [
+    'National Internship in Official Statistics (NIOS)',
+    '',
+    'Ministry of Statistics and Programme Implementation (MoSPI), Government of India.',
+    '',
+    hero,
+    '',
+    objective,
+    '',
+    'Key facts',
+    'Location: India (central and regional MoSPI offices)',
+    'Engagement type: Internship',
+    'Stipend: ₹10,000+ per month (government-funded, on successful completion of each month)',
+    active.length ? `Active internship cycles listed: ${active.length}` : null,
+    totalVacs ? `Open vacancy postings (active cycles): ${totalVacs}` : null,
+    totalSlots ? `Available slots (active cycles): ${totalSlots}` : null,
+  ].filter((v) => v !== null && v !== '');
+
+  if (active.length) {
+    parts.push('', 'Current cycles');
+    for (const c of active) {
+      const slots = (c.vacancies || []).reduce(
+        (n, v) => n + (Number(v.available_slots) || 0),
+        0
+      );
+      parts.push(
+        `- ${c.title}${c.start_date && c.end_date ? ` (${c.start_date} to ${c.end_date})` : ''}${slots ? ` — ${slots} slots` : ''}`
+      );
+    }
+  }
+
+  parts.push(
+    '',
+    'Program highlights',
+    '- ₹10,000+ monthly stipend for every month of successful internship',
+    '- 200+ internship slots across central and regional offices nationwide',
+    '- Flexible duration from 2 to 6 months based on project and availability',
+    '- Government completion certificate with exposure to real data projects and mentorship',
+    '',
+    'Who can apply',
+    'Bonafide students of any recognized university or institution in India or abroad may apply.',
+    '- Undergraduate or postgraduate students with statistics or mathematics in their curriculum',
+    '- Research or Ph.D. students in statistics, economics, demography, or related applied statistics fields (typically 70%+ marks in graduation)',
+    '- Graduates who completed their degree within the last two years with 70%+ marks in graduation and/or post-graduation',
+    '- Applicants currently pursuing a degree may apply only for 2–3 month internship slots',
+    '',
+    'Interns work with MoSPI offices on official statistics and choose office placements during application.'
+  );
+
+  return parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 async function fetchMospiInternships() {
-  console.log('\n── MoSPI NIOS ──');
-  const res = await fetch('https://internship.mospi.gov.in/api/cycles', {
+  console.log('\n── MoSPI NIOS (single posting) ──');
+  const cyclesRes = await fetch('https://internship.mospi.gov.in/api/cycles', {
     headers: { Accept: 'application/json', 'User-Agent': 'CVin.Bio job importer' },
   });
-  if (!res.ok) {
-    console.warn(`  cycles HTTP ${res.status}`);
+  if (!cyclesRes.ok) {
+    console.warn(`  cycles HTTP ${cyclesRes.status}`);
     return [];
   }
-  const data = await res.json();
+  const data = await cyclesRes.json();
   const cycles = data.cycles || [];
-  const jobs = [];
-  const usedSlugs = new Set();
-  // Short company name → /mospi/{slug} URLs
+
+  let portalTexts = [];
+  try {
+    const js = await fetchMospiPortalJs();
+    portalTexts = extractMospiPortalCopy(js);
+    console.log(`  portal copy snippets: ${portalTexts.length}`);
+  } catch (e) {
+    console.warn(`  portal copy fetch failed: ${e.message}`);
+  }
+
   const company = 'MoSPI';
   const companySlug = 'mospi';
+  const title = 'National Internship in Official Statistics (NIOS)';
+  const description = buildMospiDescription(portalTexts, cycles);
+  const active = cycles.filter((c) => c?.is_Active);
+  const latest = active.sort(
+    (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+  )[0];
 
-  for (const cycle of cycles) {
-    if (!cycle?.is_Active) continue;
-    const vacs = cycle.vacancies || [];
-    const slots = vacs.reduce((s, v) => s + (Number(v.available_slots) || 0), 0);
-    const title = (cycle.title || 'MoSPI National Internship').trim();
-    const start = cycle.start_date || null;
-    const end = cycle.end_date || null;
+  const job = {
+    source: 'mospi-nios',
+    external_id: `${companySlug}_nios`,
+    dedup_hash: dedupHash(company, 'nios-internship'),
+    title,
+    company,
+    company_key: toCompanyKey(company),
+    company_logo: MOSPI_LOGO,
+    location: 'India',
+    job_type: 'internship',
+    salary: '₹10,000+/month',
+    description: description.slice(0, 12000),
+    tags: ['Internship', 'MoSPI', 'Statistics', 'Government', 'India', 'NIOS'],
+    apply_url: MOSPI_APPLY_URL,
+    category: 'Internship',
+    published_at: latest?.createdAt || new Date().toISOString(),
+  };
 
-    const description = [
-      title,
-      ``,
-      `National Internship in Official Statistics (NIOS) under the Ministry of Statistics and Programme Implementation (MoSPI), Government of India.`,
-      ``,
-      start && end ? `Cycle window: ${start} to ${end}` : null,
-      `Open vacancy postings in this cycle: ${vacs.length}`,
-      `Total available slots (listed): ${slots}`,
-      ``,
-      `Interns work with MoSPI offices on official statistics. Choose office placements on the official MoSPI internship portal.`,
-    ]
-      .filter(Boolean)
-      .join('\n');
-
-    // One page per active cycle (office-level vacancy names need auth; portal has detail).
-    jobs.push({
-      source: 'mospi-nios',
-      external_id: shortJobExternalId(companySlug, title, cycle.id, usedSlugs),
-      dedup_hash: dedupHash(company, String(cycle.id)),
-      title: title.slice(0, 200),
-      company,
-      company_key: toCompanyKey(company),
-      company_logo: null,
-      location: 'India',
-      job_type: 'internship',
-      salary: null,
-      description: description.slice(0, 5000),
-      tags: ['Internship', 'MoSPI', 'Statistics', 'Government', 'India', 'NIOS'],
-      apply_url: 'https://www.internship.mospi.gov.in',
-      category: 'Internship',
-      published_at: cycle.createdAt || new Date().toISOString(),
-    });
-  }
-
-  console.log(`  → ${jobs.length} MoSPI cycle pages`);
-  for (const j of jobs) {
-    console.log(`     /mospi/${j.external_id.replace(/^mospi_/, '')}`);
-  }
-  return jobs;
+  console.log('  → 1 MoSPI page at /mospi/nios');
+  return [job];
 }
 
 async function deleteOldIndiaJobs() {

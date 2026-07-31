@@ -118,6 +118,10 @@ export function plainTextToHtml(text: string): string {
 function isSectionHeading(line: string): boolean {
   if (!line || line.length > 90) return false;
   if (/^Who can apply\??$/i.test(line)) return true;
+  if (/^Key facts$/i.test(line)) return true;
+  if (/^Skills (&|and) tools$/i.test(line)) return true;
+  if (/^Program highlights$/i.test(line)) return true;
+  if (/^Current cycles$/i.test(line)) return true;
   if (/^About the program$/i.test(line)) return true;
   if (/^Terms of Engagement\b/i.test(line)) return true;
   if (/^Responsibilities:?$/i.test(line)) return true;
@@ -226,6 +230,10 @@ export function companyLogoFallback(company: string, logo: string | null | undef
   if (key === 'indian army') {
     const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
     return `${site}/company-logos/indian-army.png`;
+  }
+  if (key === 'mospi') {
+    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
+    return `${site}/company-logos/mospi.png`;
   }
   const domainGuess = company.toLowerCase().replace(/[^a-z0-9]/g, '');
   return `https://www.google.com/s2/favicons?domain=${domainGuess}.com&sz=128`;
