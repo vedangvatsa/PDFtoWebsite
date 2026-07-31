@@ -552,6 +552,10 @@ export function companyLogoFallback(company: string, logo: string | null | undef
     const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
     return `${site}/company-logos/indian-army.png`;
   }
+  if (key === 'google') {
+    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
+    return `${site}/company-logos/google.png`;
+  }
   if (key === 'mospi') {
     const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
     return `${site}/company-logos/mospi.png`;

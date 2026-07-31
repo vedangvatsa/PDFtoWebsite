@@ -19,6 +19,8 @@ import { toCompanyKey } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { unstable_cache } from 'next/cache';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
+import CompanyLogo from '@/components/company-logo';
+import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -575,13 +577,10 @@ export default async function ProfileSlugPage({ params }: PageProps) {
 
     const companyName = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
     
-    let logo =
+    const storedLogo =
       dir?.logo ||
       jobs.find((j: any) => j.company_logo)?.company_logo;
-    if (!logo) {
-      const domainFallback = companyName.toLowerCase().replace(/\s+/g, '') + '.com';
-      logo = `https://www.google.com/s2/favicons?domain=${domainFallback}&sz=128`;
-    }
+    const logo = primaryCompanyLogoUrl(companyName, storedLogo, 128);
     
     // Directory role_count is the full board total; jobs[] is only a sample for the UI.
     const totalJobs = dir?.role_count || jobs.length || 0;
@@ -681,8 +680,13 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           
           {/* Company Header */}
           <div className="flex items-start gap-4 sm:gap-6 mb-8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logo} alt={`${companyName} company logo — careers and remote jobs`} className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl border border-zinc-200 bg-white shadow-sm shrink-0" />
+            <CompanyLogo
+              name={companyName}
+              logo={storedLogo}
+              size={64}
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl border border-zinc-200 bg-white shadow-sm shrink-0 object-contain p-1"
+              alt={`${companyName} company logo — careers and remote jobs`}
+            />
             <div className="min-w-0">
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 mb-2">{companyName} Careers</h1>
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm font-medium text-zinc-500">
@@ -790,8 +794,13 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                 href={jobPublicPath(job)}
                 className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={logo} alt={`${companyName} logo — open job positions`} className="h-5 w-5 rounded shrink-0 bg-white" />
+                <CompanyLogo
+                  name={companyName}
+                  logo={job.company_logo || storedLogo}
+                  size={20}
+                  className="h-5 w-5 rounded shrink-0 bg-white object-contain"
+                  alt={`${companyName} logo — open job positions`}
+                />
                 <div className="flex-1 min-w-0">
                   <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
                     {job.title}
