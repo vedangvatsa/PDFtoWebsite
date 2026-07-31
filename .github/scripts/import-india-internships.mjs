@@ -485,7 +485,11 @@ function extractWorkThemes(project, max = 6) {
 
 /** One original sentence describing the role focus (inferred, not copied). */
 function roleFocusSentence(title, project, skills) {
+  const titleBlob = (title || '').toLowerCase();
   const blob = `${title} ${project} ${skills.join(' ')}`.toLowerCase();
+  if (/software|android|mobile|full[- ]?stack|erp|sap|zoho|apex|pl\/sql|developer/i.test(titleBlob)) {
+    return 'Focus areas include software engineering, application development, and platform integration.';
+  }
   if (/soc|security operations|siem|threat|vetting|zero-trust/i.test(blob)) {
     return 'Focus areas include security operations, AI-assisted vetting, and resilient web systems for defence use.';
   }
@@ -609,18 +613,180 @@ function skillHintsFromProject(project, keywords = '') {
   return [...new Set(found.map((s) => s.replace(/\s+/g, ' ').trim()))].filter(Boolean);
 }
 
+function cleanupBullet(s) {
+  return String(s || '')
+    .replace(/\s+/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/^[•\-*]\s*/, '')
+    .trim();
+}
+
+/** Split responsibility run-on text from AICTE project descriptions. */
+function splitResponsibilityItems(block) {
+  if (!block?.trim()) return [];
+  const normalized = block.replace(/\s+/g, ' ').trim();
+  const itemSplit =
+    /\s+(?=(?:Create and|Collect,|Perform |Ensure |Support the |Prepare |Develop |Work with |Assist |Design |Build |Implement |Analyze |Manage |Conduct |Review |Update |Monitor |Test |Deploy |Configure |Integrate |Optimize |Document |Research |Collaborate |Experience in |Knowledge of |prepare summary|Create charts))/i;
+  return normalized
+    .split(itemSplit)
+    .map((s) => cleanupBullet(s))
+    .filter((s) => s.length >= 15 && s.length < 280);
+}
+
+/** Split skills run-on text from AICTE project descriptions. */
+function splitSkillItems(block) {
+  if (!block?.trim()) return [];
+  const normalized = block.replace(/\s+/g, ' ').trim();
+  const itemSplit =
+    /\s+(?=(?:Excellent |Good knowledge |Good communication |Basic analytical |Attention to |Strong |Proficient |Experience in |Familiarity with |Ability to |Hands-on ))/;
+  return normalized
+    .split(itemSplit)
+    .map((s) => cleanupBullet(s))
+    .filter((s) => s.length >= 8 && s.length < 120);
+}
+
+function extractNumberedSubItems(text) {
+  const items = [];
+  for (const m of text.matchAll(/\d+\.\d+\.\s*([^]+?)(?=\d+\.\d+\.|(?:\s\d+\.\s+[A-Z][a-z])|$)/gi)) {
+    const item = cleanupBullet(m[1]);
+    if (item.length >= 12 && item.length < 320) items.push(item);
+  }
+  return items;
+}
+
+function sliceBetween(text, startLabel, endLabels) {
+  const startRe = new RegExp(`(?:^|\\s)${startLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*:?\\s*`, 'i');
+  const m = text.match(startRe);
+  if (!m) return '';
+  let rest = text.slice(m.index + m[0].length);
+  for (const end of endLabels) {
+    const endRe = new RegExp(
+      `\\s*(?:${end.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\s*:`,
+      'i'
+    );
+    const em = rest.match(endRe);
+    if (em) rest = rest.slice(0, em.index);
+  }
+  return rest.trim();
+}
+
+/** Parse official "Description of the Project" into role, tasks, and skills. */
+function parseProjectDetail(project) {
+  const text = normalizeSectionText(project);
+  if (!text) {
+    return { role: null, intro: null, responsibilities: [], skills: [], workAreas: [] };
+  }
+
+  let role =
+    text.match(/^Role:\s*(.+?)(?=\s+Responsibilities:?|\s+Skills Required:?|$)/is)?.[1]?.trim() ||
+    null;
+  if (role) role = role.replace(/\s+Responsibilities.*$/is, '').trim().slice(0, 120);
+
+  let responsibilities = extractNumberedSubItems(text);
+
+  const respBlock = sliceBetween(text, 'Responsibilities', [
+    'Skills Required',
+    'Technical Requirements',
+    'Keywords',
+  ]);
+  if (respBlock) {
+    const cleaned = respBlock.replace(/^\d+\.\s*Responsibilities:?\s*/i, '');
+    responsibilities.push(...splitResponsibilityItems(cleaned));
+  }
+
+  for (const m of text.matchAll(
+    /(?:^|\n)\d+\.\s+([^:\n]{4,72}):\s*([\s\S]+?)(?=(?:\n\d+\.\s)|$)/g
+  )) {
+    const title = m[1].trim();
+    if (/responsibilit|skill|technical|keyword|document|dress code|working hours|stipend|application/i.test(title)) {
+      continue;
+    }
+    const body = splitResponsibilityItems(m[2]);
+    if (body.length) {
+      responsibilities.push(...body.map((b) => `${title}: ${b}`));
+    } else {
+      const short = cleanupBullet(m[2]).slice(0, 200);
+      if (short.length >= 12) responsibilities.push(`${title}: ${short}`);
+    }
+  }
+
+  let intro = null;
+  if (!role && responsibilities.length < 2) {
+    const narrative = text
+      .replace(/^Role:.*$/im, '')
+      .replace(/Responsibilities:.*$/is, '')
+      .replace(/Skills Required:.*$/is, '')
+      .trim();
+    const sentences = narrative.match(/[^.!?]+[.!?]+/g) || [];
+    if (sentences.length) {
+      intro = sentences
+        .slice(0, 2)
+        .join(' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 340);
+    }
+  }
+
+  const skillsBlock = sliceBetween(text, 'Skills Required', [
+    'Technical Requirements',
+    'Keywords',
+    'Terms',
+  ]);
+  const techBlock = sliceBetween(text, 'Technical Requirements', [
+    'Skills Required',
+    'Keywords',
+  ]);
+  const skills = [
+    ...splitSkillItems(skillsBlock),
+    ...splitSkillItems(techBlock),
+  ];
+
+  const workAreas = extractWorkThemes(text);
+
+  responsibilities = [...new Set(responsibilities.map(cleanupBullet))].filter(Boolean).slice(0, 10);
+  const merged = [];
+  for (const line of responsibilities) {
+    if (merged.length && /\band\s*$/i.test(merged[merged.length - 1])) {
+      merged[merged.length - 1] = `${merged[merged.length - 1]} ${line}`;
+    } else {
+      merged.push(line);
+    }
+  }
+  responsibilities = merged;
+  const parsedSkills = [...new Set(skills.map(cleanupBullet))].filter(Boolean).slice(0, 12);
+
+  return { role, intro, responsibilities, skills: parsedSkills, workAreas };
+}
+
 function buildArmyDescription(detail) {
-  const skills = skillHintsFromProject(detail.project, detail.keywords);
+  const parsed = parseProjectDetail(detail.project);
+  const catalogSkills = skillHintsFromProject(detail.project, detail.keywords);
+  const skills = [...new Set([...catalogSkills, ...parsed.skills])].filter((s, i, arr) => {
+    const lower = s.toLowerCase();
+    return !arr.some((other, j) => j !== i && other.length > s.length && other.toLowerCase().includes(lower));
+  });
   const eligibility = eligibilityBullets(detail.who, detail.duration);
-  const workThemes = extractWorkThemes(detail.project);
+  const workThemes = [...new Set([...parsed.workAreas, ...extractWorkThemes(detail.project)])].filter(
+    (t) => !parsed.responsibilities.some((r) => r.toLowerCase().includes(t.toLowerCase()))
+  );
   const notes = practicalNotes(detail);
 
   const parts = [
     `Indian Army Internship Program (IAIP) — ${detail.title || 'internship opening'}.`,
-    roleFocusSentence(detail.title, detail.project, skills),
-    '',
-    'Key facts',
   ];
+
+  if (parsed.role) {
+    parts.push(`Role: ${parsed.role}`);
+  } else {
+    parts.push(roleFocusSentence(detail.title, detail.project, skills));
+  }
+
+  if (parsed.intro) {
+    parts.push(parsed.intro);
+  }
+
+  parts.push('', 'Key facts');
 
   const meta = [
     detail.location ? `Location: ${detail.location}` : null,
@@ -634,7 +800,9 @@ function buildArmyDescription(detail) {
   ].filter(Boolean);
   parts.push(...meta);
 
-  if (workThemes.length) {
+  if (parsed.responsibilities.length) {
+    parts.push('', "What you'll do", ...parsed.responsibilities.map((r) => `- ${r}`));
+  } else if (workThemes.length) {
     parts.push('', 'Work areas', ...workThemes.map((t) => `- ${t}`));
   }
 

@@ -9,7 +9,7 @@
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 2;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 3;
 
 /** Tailwind prose for every job detail description block. */
 export const JOB_DESCRIPTION_PROSE_CLASS =
