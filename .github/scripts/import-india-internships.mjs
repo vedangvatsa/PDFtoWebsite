@@ -638,7 +638,8 @@ function displayArmyTitle(rawTitle) {
   }
 
   let cleaned = t.replace(/^\d+\.\s+/, '').replace(/\.$/, '').trim();
-  if (cleaned === cleaned.toUpperCase() && cleaned.length > 20) {
+  const lettersOnly = cleaned.replace(/[^A-Za-z]/g, '');
+  if (lettersOnly.length >= 4 && lettersOnly === lettersOnly.toUpperCase()) {
     return sentenceCaseTitle(cleaned).slice(0, 120);
   }
   return cleaned.slice(0, 120);
@@ -646,10 +647,14 @@ function displayArmyTitle(rawTitle) {
 
 function sentenceCaseTitle(s) {
   const small = new Set(['a', 'an', 'and', 'at', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
+  const acronyms = new Set([
+    'ai', 'ml', 'ui', 'ux', 'sql', 'api', 'soc', 'uav', 'erp', 'sap', 'nlp', 'llm', 'ci', 'cd', 'bi',
+  ]);
   return String(s || '')
     .toLowerCase()
     .split(/\s+/)
     .map((word, i) => {
+      if (acronyms.has(word)) return word.toUpperCase();
       if (i > 0 && small.has(word)) return word;
       return word.charAt(0).toUpperCase() + word.slice(1);
     })
