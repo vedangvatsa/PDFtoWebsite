@@ -296,11 +296,12 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
             {needsCv ? (
               <div className="rounded-2xl border-2 border-zinc-900 bg-white p-5 sm:p-6 text-center">
                 <UploadCloud className="h-7 w-7 text-zinc-900 mx-auto mb-2.5" />
+                {/* Soft CTA: invite the upload without promising or denying an application. */}
                 <h3 className="text-base sm:text-lg font-bold text-zinc-900 tracking-tight">
-                  Upload your CV
+                  Continue with your CV
                 </h3>
                 <p className="text-sm text-zinc-500 mt-1.5 mb-4 max-w-sm mx-auto leading-relaxed">
-                  Free profile and matches for roles like this. About a minute.
+                  PDF, Word, or image. Under 10MB.
                 </p>
                 <label
                   htmlFor="jd-cv-bottom"
@@ -314,7 +315,7 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
                     <UploadCloud className="h-4 w-4 shrink-0" />
                   )}
                   <span className="truncate">
-                    {isUploading ? 'Parsing your CV...' : 'Upload CV'}
+                    {isUploading ? 'Uploading...' : 'Upload CV'}
                   </span>
                   <input
                     id="jd-cv-bottom"
@@ -330,7 +331,6 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
                     }}
                   />
                 </label>
-                <p className="mt-3 text-[11px] text-zinc-400">PDF, Word, or image. Under 10MB.</p>
                 <div className="mt-4 pt-3 border-t border-zinc-100">
                   <a
                     href={applyUrl}
