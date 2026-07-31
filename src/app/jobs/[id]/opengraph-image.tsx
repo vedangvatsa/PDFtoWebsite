@@ -96,7 +96,7 @@ export default async function Image({ params }: Props) {
           }}
         >
           <div style={{ display: 'flex', fontSize: 22, color: '#71717a', fontWeight: 500 }}>
-            Review on CVin.Bio, apply on the company site
+            Review on CVin.Bio · Continue with your CV
           </div>
           <div style={{ display: 'flex', fontSize: 22, color: '#09090b', fontWeight: 700 }}>
             {siteDomain}

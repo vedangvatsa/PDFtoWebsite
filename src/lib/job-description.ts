@@ -84,28 +84,97 @@ export function plainTextToHtml(text: string): string {
 
   if (!cleaned) return '';
 
-  // Split on blank lines; single newlines become <br>
-  const blocks = cleaned.split(/\n{2,}/);
-  return blocks
-    .map((block) => {
-      const line = escapeHtml(block.trim()).replace(/\n/g, '<br />');
-      // Promote ALL-CAPS short lines to headings (common JD pattern)
-      if (block.length < 60 && /^[A-Z0-9][A-Z0-9\s/&,:.\-]{4,}$/.test(block.trim()) && !/\.$/.test(block.trim())) {
-        return `<h3>${escapeHtml(block.trim())}</h3>`;
+  const lines = cleaned.split('\n');
+  const out: string[] = [];
+  let buf: string[] = [];
+
+  const flush = () => {
+    while (buf.length && !buf[0].trim()) buf.shift();
+    while (buf.length && !buf[buf.length - 1].trim()) buf.pop();
+    if (!buf.length) return;
+    out.push(renderPlainBlock(buf.join('\n')));
+    buf = [];
+  };
+
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd();
+    const trimmed = line.trim();
+    if (!trimmed) {
+      flush();
+      continue;
+    }
+    if (isSectionHeading(trimmed)) {
+      flush();
+      out.push(`<h3>${escapeHtml(trimmed)}</h3>`);
+      continue;
+    }
+    buf.push(line);
+  }
+  flush();
+  return out.join('\n');
+}
+
+/** Section titles commonly found in curated / government JD plain text. */
+function isSectionHeading(line: string): boolean {
+  if (!line || line.length > 90) return false;
+  if (/^Who can apply\??$/i.test(line)) return true;
+  if (/^About the program$/i.test(line)) return true;
+  if (/^Terms of Engagement\b/i.test(line)) return true;
+  if (/^Responsibilities:?$/i.test(line)) return true;
+  if (/^Skills Required:?$/i.test(line)) return true;
+  if (/^Keywords:?$/i.test(line)) return true;
+  if (/^Role:\s+\S+/i.test(line)) return true;
+  // Numbered engagement clauses: "3. Working Hours", "6. Stipend"
+  if (/^\d{1,2}\.\s+[A-Z][A-Za-z0-9 /&'’-]{1,60}$/.test(line)) return true;
+  // Short noun-phrase labels ending with colon (not full sentences)
+  if (
+    line.length < 45 &&
+    /:$/.test(line) &&
+    /^[A-Z][A-Za-z0-9 /&'’()-]{1,42}:$/.test(line) &&
+    !/\b(who|that|which|with|from|are|can|the|and|for|only|those|candidates)\b/i.test(
+      line
+    )
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function renderPlainBlock(block: string): string {
+  const trimmed = block.trim();
+  // Promote ALL-CAPS short lines to headings (common JD pattern)
+  if (
+    trimmed.length < 60 &&
+    /^[A-Z0-9][A-Z0-9\s/&,:.\-]{4,}$/.test(trimmed) &&
+    !/\.$/.test(trimmed)
+  ) {
+    return `<h3>${escapeHtml(trimmed)}</h3>`;
+  }
+  // Bullet-like lines
+  if (
+    /^[-•*]\s+/m.test(trimmed) &&
+    trimmed.split('\n').every((l) => !l.trim() || /^[-•*]\s+/.test(l.trim()))
+  ) {
+    const items = trimmed
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean)
+      .map((l) => `<li>${escapeHtml(l.replace(/^[-•*]\s+/, ''))}</li>`)
+      .join('');
+    return `<ul>${items}</ul>`;
+  }
+  // Label: value lines — bold the label
+  const labeled = trimmed
+    .split('\n')
+    .map((l) => {
+      const m = l.match(/^([A-Za-z][A-Za-z0-9 /&'’()-]{1,40}):\s+(.+)$/);
+      if (m) {
+        return `<strong>${escapeHtml(m[1])}:</strong> ${escapeHtml(m[2])}`;
       }
-      // Bullet-like lines
-      if (/^[-•*]\s+/m.test(block) && block.split('\n').every((l) => !l.trim() || /^[-•*]\s+/.test(l.trim()))) {
-        const items = block
-          .split('\n')
-          .map((l) => l.trim())
-          .filter(Boolean)
-          .map((l) => `<li>${escapeHtml(l.replace(/^[-•*]\s+/, ''))}</li>`)
-          .join('');
-        return `<ul>${items}</ul>`;
-      }
-      return `<p>${line}</p>`;
+      return escapeHtml(l);
     })
-    .join('\n');
+    .join('<br />');
+  return `<p>${labeled}</p>`;
 }
 
 /**
@@ -153,6 +222,11 @@ export function addJobApplyUtm(url: string, medium = 'job_detail'): string {
 
 export function companyLogoFallback(company: string, logo: string | null | undefined): string {
   if (logo) return logo;
+  const key = company.toLowerCase().trim();
+  if (key === 'indian army') {
+    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
+    return `${site}/company-logos/indian-army.png`;
+  }
   const domainGuess = company.toLowerCase().replace(/[^a-z0-9]/g, '');
   return `https://www.google.com/s2/favicons?domain=${domainGuess}.com&sz=128`;
 }
