@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -60,6 +60,7 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
   const [logoSrc, setLogoSrc] = useState(
     companyLogoFallback(job.company, job.company_logo)
   );
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -134,26 +135,117 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
     }
   };
 
-  const ApplyButton = ({
-    className = '',
-    size = 'md',
-  }: {
-    className?: string;
-    size?: 'md' | 'sm';
-  }) => (
+  const onFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    source: string
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    await parseCv(file, source);
+    e.target.value = '';
+  };
+
+  const CompanyApplyLink = ({ className = '' }: { className?: string }) => (
     <a
       href={applyUrl}
       target="_blank"
       rel="noopener noreferrer"
       onClick={trackClick}
-      className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
-        size === 'sm' ? 'px-3 py-2.5 text-sm' : 'px-4 py-3.5 text-sm sm:text-[15px]'
-      } ${className}`}
+      className={`inline-flex items-center justify-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-zinc-800 transition-colors min-h-[44px] touch-manipulation ${className}`}
     >
-      <span className="truncate">Apply on company site</span>
-      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+      <span>Apply on {job.company}&apos;s site</span>
+      <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-70" />
     </a>
   );
+
+  /** Primary conversion: stay on CVin.Bio via CV upload / continue. */
+  const CvPrimaryCard = () =>
+    needsCv ? (
+      <div className="rounded-2xl border-2 border-zinc-900 bg-white p-5 sm:p-6 text-center">
+        <UploadCloud className="h-7 w-7 text-zinc-900 mx-auto mb-2.5" />
+        <h2 className="text-base sm:text-lg font-bold text-zinc-900 tracking-tight">
+          Continue with your CV
+        </h2>
+        <p className="text-sm text-zinc-500 mt-1.5 mb-4 max-w-sm mx-auto leading-relaxed">
+          PDF, Word, or image. Under 10MB.
+        </p>
+        <label
+          htmlFor="jd-cv-primary"
+          className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-4 py-3.5 text-sm sm:text-[15px] cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
+            isUploading ? 'opacity-50 pointer-events-none' : ''
+          }`}
+        >
+          {isUploading ? (
+            <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+          ) : (
+            <UploadCloud className="h-4 w-4 shrink-0" />
+          )}
+          <span className="truncate">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
+          <input
+            id="jd-cv-primary"
+            type="file"
+            className="hidden"
+            accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+            disabled={isUploading}
+            onChange={(e) => onFileChange(e, 'primary')}
+          />
+        </label>
+        <div className="mt-3">
+          <CompanyApplyLink />
+        </div>
+      </div>
+    ) : (
+      <div className="rounded-2xl border-2 border-zinc-900 bg-white p-5 sm:p-6 text-center">
+        <UploadCloud className="h-7 w-7 text-zinc-900 mx-auto mb-2.5" />
+        <h2 className="text-base sm:text-lg font-bold text-zinc-900 tracking-tight">
+          Continue with your CV
+        </h2>
+        <p className="text-sm text-zinc-500 mt-1.5 mb-4 max-w-sm mx-auto leading-relaxed">
+          Your profile is ready. Continue on CVin.Bio, or upload an updated CV.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            try {
+              sessionStorage.setItem('pendingJobApply', applyUrl);
+              sessionStorage.setItem('pendingJobId', job.id);
+            } catch {}
+            posthog.capture('job_detail_continue_profile', {
+              job_id: job.id,
+              company: job.company,
+            });
+            router.push('/editor');
+          }}
+          className="flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-4 py-3.5 text-sm sm:text-[15px] hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation"
+        >
+          Continue with your CV
+        </button>
+        <label
+          htmlFor="jd-cv-primary-update"
+          className={`mt-3 flex items-center justify-center gap-2 w-full rounded-xl border border-zinc-300 bg-white text-zinc-900 font-semibold px-4 py-3 text-sm cursor-pointer hover:bg-zinc-50 transition-colors touch-manipulation ${
+            isUploading ? 'opacity-50 pointer-events-none' : ''
+          }`}
+        >
+          {isUploading ? (
+            <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+          ) : (
+            <UploadCloud className="h-4 w-4 shrink-0" />
+          )}
+          <span className="truncate">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
+          <input
+            id="jd-cv-primary-update"
+            type="file"
+            className="hidden"
+            accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+            disabled={isUploading}
+            onChange={(e) => onFileChange(e, 'primary_update')}
+          />
+        </label>
+        <div className="mt-3">
+          <CompanyApplyLink />
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
@@ -240,8 +332,9 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
             </div>
           )}
 
+          {/* Primary: stay on-site with CV */}
           <div className="mb-6 sm:mb-8">
-            <ApplyButton />
+            <CvPrimaryCard />
           </div>
 
           <div className="border-t border-zinc-100 pt-5 sm:pt-6 min-w-0">
@@ -256,9 +349,9 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
                   [&_img]:h-auto [&_img]:max-w-full
                   [&_table]:block [&_table]:w-full [&_table]:overflow-x-auto
                   [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap
-                  [&_h2]:text-[15px] sm:[&_h2]:text-base [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-zinc-900 [&_h2]:mt-5 sm:[&_h2]:mt-6 [&_h2]:mb-2
-                  [&_h3]:text-[14px] sm:[&_h3]:text-sm [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-zinc-900 [&_h3]:mt-4 sm:[&_h3]:mt-5 [&_h3]:mb-2
-                  [&_h4]:text-sm [&_h4]:font-semibold [&_h4]:text-zinc-800 [&_h4]:mt-4 [&_h4]:mb-1.5
+                  [&_h2]:text-[15px] sm:[&_h2]:text-base [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-zinc-900 [&_h2]:mt-5 sm:[&_h2]:mt-6 [&_h2]:mb-2
+                  [&_h3]:text-[14px] sm:[&_h3]:text-sm [&_h3]:font-bold [&_h3]:tracking-tight [&_h3]:text-zinc-900 [&_h3]:mt-4 sm:[&_h3]:mt-5 [&_h3]:mb-2
+                  [&_h4]:text-sm [&_h4]:font-bold [&_h4]:text-zinc-800 [&_h4]:mt-4 [&_h4]:mb-1.5
                   [&_p]:mb-3 [&_p]:leading-relaxed
                   [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1
                   [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1
@@ -275,85 +368,62 @@ export default function JobDetailClient({ job, userSkills: initialSkills }: Prop
                 <p className="text-sm text-zinc-600 font-medium">
                   Full description is on the company careers page.
                 </p>
-                <a
-                  href={applyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={trackClick}
-                  className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline min-h-[44px]"
-                >
-                  View full listing
-                  <ExternalLink className="h-3.5 w-3.5" />
-                </a>
+                <div className="mt-3">
+                  <CompanyApplyLink />
+                </div>
               </div>
             )}
           </div>
 
-          {/* Bottom card only: soft CV CTA. Does not claim this submits an application. */}
-          <div className="mt-8 sm:mt-10 pt-6 border-t border-zinc-100">
-            {needsCv ? (
-              <div className="rounded-2xl border-2 border-zinc-900 bg-white p-5 sm:p-6 text-center">
-                <UploadCloud className="h-7 w-7 text-zinc-900 mx-auto mb-2.5" />
-                {/* Soft CTA: invite the upload without promising or denying an application. */}
-                <h3 className="text-base sm:text-lg font-bold text-zinc-900 tracking-tight">
-                  Continue with your CV
-                </h3>
-                <p className="text-sm text-zinc-500 mt-1.5 mb-4 max-w-sm mx-auto leading-relaxed">
-                  PDF, Word, or image. Under 10MB.
-                </p>
-                <label
-                  htmlFor="jd-cv-bottom"
-                  className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-4 py-3.5 text-sm sm:text-[15px] cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
-                    isUploading ? 'opacity-50 pointer-events-none' : ''
-                  }`}
-                >
-                  {isUploading ? (
-                    <Loader2 className="h-4 w-4 animate-spin shrink-0" />
-                  ) : (
-                    <UploadCloud className="h-4 w-4 shrink-0" />
-                  )}
-                  <span className="truncate">
-                    {isUploading ? 'Uploading...' : 'Upload CV'}
-                  </span>
-                  <input
-                    id="jd-cv-bottom"
-                    type="file"
-                    className="hidden"
-                    accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
-                    disabled={isUploading}
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      await parseCv(file, 'bottom');
-                      e.target.value = '';
-                    }}
-                  />
-                </label>
-                <div className="mt-4 pt-3 border-t border-zinc-100">
-                  <a
-                    href={applyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={trackClick}
-                    className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors min-h-[44px] touch-manipulation"
-                  >
-                    <span>Apply on {job.company}&apos;s site</span>
-                    <ExternalLink className="h-3.5 w-3.5 shrink-0" />
-                  </a>
-                </div>
-              </div>
-            ) : (
-              <ApplyButton />
-            )}
+          {/* Soft company exit only — not a primary CTA */}
+          <div className="mt-8 sm:mt-10 pt-6 border-t border-zinc-100 text-center">
+            <CompanyApplyLink />
           </div>
         </article>
       </main>
 
+      {/* Mobile float: Upload CV (primary), not company apply */}
       <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 px-3 pt-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-        <ApplyButton size="sm" />
+        {needsCv ? (
+          <button
+            type="button"
+            disabled={isUploading}
+            onClick={() => fileInputRef.current?.click()}
+            className="flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-3 py-2.5 text-sm hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation disabled:opacity-50"
+          >
+            {isUploading ? (
+              <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+            ) : (
+              <UploadCloud className="h-4 w-4 shrink-0" />
+            )}
+            <span className="truncate">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              try {
+                sessionStorage.setItem('pendingJobApply', applyUrl);
+                sessionStorage.setItem('pendingJobId', job.id);
+              } catch {}
+              router.push('/editor');
+            }}
+            className="flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-3 py-2.5 text-sm hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation"
+          >
+            Continue with your CV
+          </button>
+        )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+          disabled={isUploading}
+          onChange={(e) => onFileChange(e, 'mobile_float')}
+        />
       </div>
 
-      <div className="sm:pb-0 pb-2">
+      <div className="sm:pb-0 pb-20">
         <MicroFooter />
       </div>
     </div>

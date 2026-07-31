@@ -6,6 +6,16 @@
 import { getCompanyMeta } from '@/lib/company-data';
 import companyDomains from '@/lib/company-domains.json';
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
+
+/**
+ * Hard-coded logos for orgs without a public web favicon.
+ * Indian Army emblem mirrored at /company-logos/indian-army.png (from IAIP posting asset).
+ */
+const LOGO_OVERRIDES: Record<string, string> = {
+  'indian army': `${SITE_URL}/company-logos/indian-army.png`,
+};
+
 /** Normalize website value from company-domains.json to bare hostname. */
 function hostFromDomainEntry(value: string): string {
   try {
@@ -139,6 +149,14 @@ export function companyLogoCandidates(
   if (storedLogo && /^https?:\/\//i.test(storedLogo)) {
     out.push(storedLogo);
   }
+  const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
+  if (override) out.push(override);
+  // Fallback: original IAIP-hosted Indian Army emblem if CDN mirror 404s pre-deploy
+  if (name.toLowerCase().trim() === 'indian army') {
+    out.push(
+      'https://internship.aicte-india.org/dashboard/indianarmy/images/logo/circle%20indian%20army%20logo.png'
+    );
+  }
   out.push(googleFaviconUrl(domain, size));
   out.push(ddgIconUrl(domain));
   out.push(clearbitLogoUrl(domain));
@@ -149,7 +167,7 @@ export function companyLogoCandidates(
 
 /**
  * Single best logo URL for server-rendered lists (no client fallback waterfall).
- * Prefer ATS-stored logo, else Google favicon for the resolved domain.
+ * Prefer ATS-stored logo, else known override, else Google favicon.
  */
 export function primaryCompanyLogoUrl(
   name: string,
@@ -157,5 +175,7 @@ export function primaryCompanyLogoUrl(
   size = 64
 ): string {
   if (storedLogo && /^https?:\/\//i.test(storedLogo)) return storedLogo;
+  const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
+  if (override) return override;
   return googleFaviconUrl(domainForCompany(name), size);
 }

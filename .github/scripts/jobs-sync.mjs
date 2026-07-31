@@ -3066,6 +3066,26 @@ async function main() {
     console.log(`✅ Phase 3: Inserted ${inserted}, Skipped ${skipped}`);
   }
 
+  // ── PHASE 4: India internships (AICTE Indian Army + MoSPI NIOS) ──
+  console.log('\n═══ Phase 4: India internships (AICTE Army + MoSPI) ═══');
+  try {
+    const { spawnSync } = await import('child_process');
+    const { fileURLToPath } = await import('url');
+    const { dirname, join } = await import('path');
+    const here = dirname(fileURLToPath(import.meta.url));
+    const indiaScript = join(here, 'import-india-internships.mjs');
+    const ir = spawnSync(process.execPath, [indiaScript], {
+      env: process.env,
+      stdio: 'inherit',
+      timeout: 8 * 60 * 1000,
+    });
+    if (ir.status !== 0) {
+      console.error(`  ⚠️ India internships import exited ${ir.status}`);
+    }
+  } catch (e) {
+    console.error(`  ⚠️ India internships import failed: ${e.message}`);
+  }
+
   // Cleanup old jobs
   await cleanupOldJobs();
 
