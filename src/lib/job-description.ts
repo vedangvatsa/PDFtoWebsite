@@ -9,30 +9,31 @@
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 4;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 5;
 
 /** Tailwind prose for every job detail description block. */
 export const JOB_DESCRIPTION_PROSE_CLASS =
-  'job-description text-[13px] sm:text-[14px] leading-[1.65] text-zinc-600 min-w-0 max-w-full overflow-x-auto ' +
+  'job-description text-[13px] sm:text-[14px] leading-[1.7] text-zinc-600 min-w-0 max-w-full overflow-x-auto ' +
   'break-words [overflow-wrap:anywhere] ' +
   '[&_*]:max-w-full ' +
   '[&_img]:h-auto [&_img]:max-w-full ' +
   '[&_table]:block [&_table]:w-full [&_table]:overflow-x-auto ' +
   '[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap ' +
-  '[&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:pt-6 [&_h2]:border-t [&_h2]:border-zinc-100 [&_h2]:text-sm [&_h2]:font-semibold [&_h2]:text-zinc-900 ' +
-  '[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:pt-6 [&_h3]:border-t [&_h3]:border-zinc-100 [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-zinc-900 ' +
+  '[&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:pt-6 [&_h2]:border-t [&_h2]:border-zinc-200 [&_h2]:text-[15px] sm:[&_h2]:text-base [&_h2]:font-bold [&_h2]:text-zinc-900 ' +
+  '[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:pt-6 [&_h3]:border-t [&_h3]:border-zinc-200 [&_h3]:text-[15px] sm:[&_h3]:text-base [&_h3]:font-bold [&_h3]:text-zinc-900 ' +
   '[&_h3:first-child]:mt-0 [&_h3:first-child]:pt-0 [&_h3:first-child]:border-t-0 ' +
-  '[&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:text-sm [&_h4]:font-semibold [&_h4]:text-zinc-800 ' +
+  '[&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:text-sm [&_h4]:font-bold [&_h4]:text-zinc-800 ' +
   '[&_p]:mb-4 [&_p]:leading-relaxed [&_p:last-child]:mb-0 ' +
-  '[&>p:first-child]:text-[14px] sm:[&>p:first-child]:text-[15px] [&>p:first-child]:font-medium [&>p:first-child]:text-zinc-800 ' +
-  '[&_h3+ul]:mt-0 [&_h3+ul]:mb-6 [&_h3+ol]:mt-0 [&_h3+ol]:mb-6 ' +
-  '[&_h3+p]:mt-0 [&_h4+p]:mt-0 ' +
-  '[&_ul]:my-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2.5 [&_ul]:marker:text-zinc-400 ' +
-  '[&_ol]:my-0 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 ' +
-  '[&_li]:text-zinc-600 [&_li]:leading-relaxed ' +
+  '[&>p:first-child]:text-[14px] sm:[&>p:first-child]:text-[15px] [&>p:first-child]:font-semibold [&>p:first-child]:text-zinc-900 ' +
+  '[&_h3+ul]:mt-1 [&_h3+ul]:mb-6 [&_h3+ol]:mt-1 [&_h3+ol]:mb-6 ' +
+  '[&_h3+p]:mt-1 [&_h3+p]:mb-3 [&_h4+p]:mt-1 ' +
+  '[&_p+ul]:mt-0 [&_p+ol]:mt-0 ' +
+  '[&_ul]:my-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2.5 [&_ul]:marker:text-zinc-500 ' +
+  '[&_ol]:my-0 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2.5 [&_ol]:marker:text-zinc-500 ' +
+  '[&_li]:text-zinc-600 [&_li]:leading-relaxed [&_li]:pl-0.5 ' +
   '[&_a]:text-primary [&_a]:underline-offset-2 hover:[&_a]:underline [&_a]:break-all ' +
-  '[&_strong]:font-semibold [&_strong]:text-zinc-800 ' +
-  '[&_b]:font-semibold [&_b]:text-zinc-800 ' +
+  '[&_strong]:font-semibold [&_strong]:text-zinc-900 ' +
+  '[&_b]:font-semibold [&_b]:text-zinc-900 ' +
   '[&_blockquote]:border-l-2 [&_blockquote]:border-zinc-200 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-zinc-500';
 
 /** Strip aggregator / mirror disclaimers that must never appear on job pages. */
@@ -230,6 +231,12 @@ function expandStructuredPlainText(text: string): string {
       continue;
     }
 
+    // Keep how-to steps intact: "1. Open the portal", "2. Fill the form"
+    if (isNumberedStepLine(line)) {
+      expanded.push(raw);
+      continue;
+    }
+
     const numberedColon = line.match(
       /^(?:-\s*)?(\d{1,2})\.\s+([A-Za-z0-9 /&'’()-]{2,70}?):\s+(.+)$/
     );
@@ -242,7 +249,7 @@ function expandStructuredPlainText(text: string): string {
     const numbered = line.match(
       /^(?:-\s*)?(\d{1,2})\.\s+([A-Z][A-Za-z0-9 /&'’()-]{2,60}?)\s+(.+)$/
     );
-    if (numbered && numbered[3].length > 15) {
+    if (numbered && numbered[3].length > 15 && isNumberedSectionTitle(numbered[2])) {
       expanded.push(`${numbered[1]}. ${numbered[2]}`);
       expanded.push(...splitLetteredSubclauses(numbered[3]));
       continue;
@@ -254,7 +261,7 @@ function expandStructuredPlainText(text: string): string {
         const inner = part.trim().match(
           /^(\d{1,2})\.\s+([A-Z][A-Za-z0-9 /&'’()-]{2,60}?)\s+(.+)$/
         );
-        if (inner) {
+        if (inner && isNumberedSectionTitle(inner[2])) {
           expanded.push(`${inner[1]}. ${inner[2]}`);
           expanded.push(...splitLetteredSubclauses(inner[3]));
         } else {
@@ -268,6 +275,33 @@ function expandStructuredPlainText(text: string): string {
   }
 
   return expanded.join('\n');
+}
+
+/** "1. Documentation Requirements" yes; "1. Open" no */
+function isNumberedSectionTitle(title: string): boolean {
+  const t = title.trim();
+  if (isNumberedStepLine(`1. ${t}`)) return false;
+  const words = t.split(/\s+/).filter(Boolean);
+  if (words.length >= 3) return true;
+  if (t.length >= 20) return true;
+  if (/requirements|engagement|documentation|responsibilities|qualifications/i.test(t)) {
+    return true;
+  }
+  return false;
+}
+
+function isNumberedStepLine(line: string): boolean {
+  return /^\d{1,2}\.\s+(Open|Fill|Preview|Submit|Register|Upload|Complete|Review|Create|Sign|Download|Read|Check|Apply|Select|Verify|Confirm|Visit|Browse|Prepare|Attend|Join)\b/i.test(
+    line.trim()
+  );
+}
+
+function isBulletLine(line: string): boolean {
+  return /^[-•*]\s+/.test(line.trim());
+}
+
+function isOrderedLine(line: string): boolean {
+  return /^\d{1,2}\.\s+/.test(line.trim());
 }
 
 function splitLetteredSubclauses(body: string): string[] {
@@ -323,7 +357,9 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^Responsibilities:?$/i.test(line)) return true;
   if (/^Skills Required:?$/i.test(line)) return true;
   if (/^Keywords:?$/i.test(line)) return true;
-  if (/^\d{1,2}\.\s+[A-Z][A-Za-z0-9 /&'’()-]{2,70}$/.test(line)) return true;
+  if (isNumberedStepLine(line)) return false;
+  const numberedTitle = line.match(/^(\d{1,2})\.\s+(.+)$/);
+  if (numberedTitle && isNumberedSectionTitle(numberedTitle[2])) return true;
   return false;
 }
 
@@ -335,7 +371,8 @@ function isSectionHeading(line: string): boolean {
 /** In-section labels: "5. SOC Platform", "- 1. AI Integration: ..." title only */
 function isSubSectionHeading(line: string): boolean {
   const t = line.replace(/^-\s*/, '').trim();
-  if (/^\d{1,2}\.\s+[A-Z][A-Za-z0-9 /&'’()-]{3,70}$/.test(t)) return true;
+  const numbered = t.match(/^(\d{1,2})\.\s+(.+)$/);
+  if (numbered && isNumberedSectionTitle(numbered[2])) return true;
   if (/^Technical Requirements$/i.test(t)) return true;
   return false;
 }
@@ -350,45 +387,54 @@ function renderLabelValueParagraph(line: string): string {
   return `<p><strong>${escapeHtml(m[1].trim())}:</strong> ${escapeHtml(m[2].trim())}</p>`;
 }
 
+function renderListItems(lines: string[], ordered = false): string {
+  const tag = ordered ? 'ol' : 'ul';
+  const items = lines
+    .map((l) => {
+      const text = l
+        .trim()
+        .replace(/^\d{1,2}\.\s+/, '')
+        .replace(/^[-•*]\s+/, '');
+      const labeled = text.match(/^([^:]+):\s+(.+)$/);
+      if (labeled && !/^-/.test(l.trim())) {
+        return `<li><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtml(labeled[2].trim())}</li>`;
+      }
+      return `<li>${escapeHtml(text)}</li>`;
+    })
+    .join('');
+  return `<${tag}>${items}</${tag}>`;
+}
+
 function renderPlainBlock(block: string): string {
   const trimmed = block.trim();
   const lines = trimmed.split('\n').map((l) => l.trim()).filter(Boolean);
 
-  // Key facts style: Location: Delhi / Duration: 75 Days
   if (lines.length > 0 && lines.every(isLabelValueLine)) {
-    const items = lines
-      .map((l) => {
-        const m = l.match(/^([^:]+):\s+(.+)$/);
-        if (!m) return '';
-        return `<li><strong>${escapeHtml(m[1].trim())}:</strong> ${escapeHtml(m[2].trim())}</li>`;
-      })
-      .filter(Boolean)
-      .join('');
-    return `<ul>${items}</ul>`;
+    return renderListItems(lines, false);
   }
 
-  // Bullet-like lines
-  if (
-    /^[-•*]\s+/m.test(trimmed) &&
-    trimmed.split('\n').every((l) => !l.trim() || /^[-•*]\s+/.test(l.trim()))
-  ) {
-    const items = trimmed
-      .split('\n')
-      .map((l) => l.trim())
-      .filter(Boolean)
-      .map((l) => {
-        const text = l.replace(/^[-•*]\s+/, '');
-        const labeled = text.match(/^([^:]+):\s+(.+)$/);
-        if (labeled) {
-          return `<li><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtml(labeled[2].trim())}</li>`;
-        }
-        return `<li>${escapeHtml(text)}</li>`;
-      })
-      .join('');
-    return `<ul>${items}</ul>`;
+  const bulletLines = lines.filter(isBulletLine);
+  const orderedLines = lines.filter((l) => isOrderedLine(l) && !isBulletLine(l));
+  const plainLines = lines.filter((l) => !isBulletLine(l) && !isOrderedLine(l));
+
+  if (bulletLines.length && plainLines.length) {
+    const paras = plainLines.map((l) => renderLabelValueParagraph(l)).join('\n');
+    return `${paras}\n${renderListItems(bulletLines)}`;
   }
 
-  // Multiple plain lines → separate paragraphs (avoid cramped <br /> walls)
+  if (orderedLines.length && plainLines.length) {
+    const paras = plainLines.map((l) => renderLabelValueParagraph(l)).join('\n');
+    return `${paras}\n${renderListItems(orderedLines, true)}`;
+  }
+
+  if (bulletLines.length && bulletLines.length === lines.length) {
+    return renderListItems(bulletLines);
+  }
+
+  if (orderedLines.length && orderedLines.length === lines.length) {
+    return renderListItems(orderedLines, true);
+  }
+
   if (lines.length > 1) {
     return lines.map((l) => renderLabelValueParagraph(l)).join('\n');
   }
