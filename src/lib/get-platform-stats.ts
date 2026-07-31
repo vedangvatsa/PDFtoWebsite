@@ -3,6 +3,7 @@ import {
   PLATFORM_JOBS_DISPLAY,
   PLATFORM_JOBS_TOTAL,
 } from '@/lib/platform-job-count';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
 export interface PlatformStats {
   totalJobs: number;
@@ -16,7 +17,16 @@ export interface PlatformStats {
 let cache: { data: PlatformStats; ts: number } | null = null;
 
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
-const MAX_COMPANY_PAGES = process.env.NEXT_IS_BUILD_PHASE === '1' ? 1 : 3; // 3k rows max
+
+/** Static-ish fallbacks so marketing pages never hang on Supabase. */
+const FALLBACK_STATS: PlatformStats = {
+  totalJobs: PLATFORM_JOBS_TOTAL,
+  totalCompanies: 500,
+  totalUsers: 2000,
+  jobCountDisplay: PLATFORM_JOBS_DISPLAY,
+  companyCountDisplay: '500+',
+  userCountDisplay: '2000+',
+};
 
 export async function getPlatformStats(): Promise<PlatformStats> {
   if (cache && Date.now() - cache.ts < CACHE_TTL) {
@@ -24,37 +34,26 @@ export async function getPlatformStats(): Promise<PlatformStats> {
   }
 
   const supabase = supabaseAdmin;
-  const thirtyDaysAgo = new Date(
-    Date.now() - 30 * 24 * 60 * 60 * 1000
-  ).toISOString();
 
-  // Job total is static (100k+) — never COUNT(*) the full jobs table here.
-  // Sample unique companies from a small recent window only.
-  const companySet = new Set<string>();
-  let page = 0;
-  while (page < MAX_COMPANY_PAGES) {
-    const { data } = await supabase
-      .from('jobs')
-      .select('company')
-      .gt('created_at', thirtyDaysAgo)
-      .order('created_at', { ascending: false })
-      .range(page * 1000, (page + 1) * 1000 - 1);
-    if (!data || data.length === 0) break;
-    data.forEach((j) => {
-      if (j.company && !j.company.includes('...')) {
-        companySet.add(j.company.toLowerCase().trim());
-      }
-    });
-    if (data.length < 1000) break;
-    page++;
-  }
+  // Prefer companies table (O(1) count of directory) over jobs scan.
+  const companiesRes = await withTimeoutFallback(
+    supabase
+      .from('companies')
+      .select('slug', { count: 'estimated', head: true }),
+    DB_BUDGET.stats,
+    { count: null, error: { message: 'timeout' } } as any,
+    'stats-companies-count'
+  );
 
-  const { count: totalUsers } = await supabase
-    .from('profiles')
-    .select('id', { count: 'exact', head: true });
+  const usersRes = await withTimeoutFallback(
+    supabase.from('profiles').select('id', { count: 'estimated', head: true }),
+    DB_BUDGET.stats,
+    { count: null, error: { message: 'timeout' } } as any,
+    'stats-users-count'
+  );
 
-  const companies = companySet.size;
-  const users = totalUsers || 0;
+  const companies = companiesRes.count ?? FALLBACK_STATS.totalCompanies;
+  const users = usersRes.count ?? FALLBACK_STATS.totalUsers;
 
   const stats: PlatformStats = {
     totalJobs: PLATFORM_JOBS_TOTAL,

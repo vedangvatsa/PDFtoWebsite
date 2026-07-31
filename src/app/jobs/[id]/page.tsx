@@ -10,7 +10,7 @@ import {
 import { jobPublicPath, isJobId } from '@/lib/job-description';
 import JobDetailClient from './job-detail-client';
 
-export const revalidate = 300;
+export const revalidate = 1800;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 

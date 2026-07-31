@@ -10,7 +10,8 @@ import {
 import { isShortJobSlug } from '@/lib/job-description';
 import JobDetailClient from '@/app/jobs/[id]/job-detail-client';
 
-export const revalidate = 300;
+// Longer ISR: job snapshots revalidate in loaders (900s); page can stay warm longer.
+export const revalidate = 1800;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 

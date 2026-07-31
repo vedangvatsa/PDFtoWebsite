@@ -569,8 +569,24 @@ async function supabaseUpsert(jobs) {
   }
   console.log(`   📤 Inserting ${batches.length} batches of ~${batchSize} (${concurrency} parallel, free-tier)...`);
 
+  // company_key for equality filters on public pages (never public ILIKE on company).
+  function toCompanyKey(name) {
+    return String(name || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+  function withCompanyKey(batch) {
+    return batch.map((j) => ({
+      ...j,
+      company_key: j.company_key || toCompanyKey(j.company),
+    }));
+  }
+
   async function insertBatch(batch) {
     try {
+      const payload = withCompanyKey(batch);
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 120000);
       const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id`, {
@@ -581,7 +597,7 @@ async function supabaseUpsert(jobs) {
           'Content-Type': 'application/json',
           'Prefer': 'resolution=ignore-duplicates,return=representation',
         },
-        body: JSON.stringify(batch),
+        body: JSON.stringify(payload),
         signal: controller.signal,
       });
       clearTimeout(timeout);
@@ -604,7 +620,7 @@ async function supabaseUpsert(jobs) {
                   'Content-Type': 'application/json',
                   'Prefer': 'resolution=ignore-duplicates,return=representation',
                 },
-                body: JSON.stringify([job]),
+                body: JSON.stringify(withCompanyKey([job])),
               });
               if (r2.ok) { const r = await r2.json(); count += r.length; }
             } catch {} // silently skip individual dupe failures

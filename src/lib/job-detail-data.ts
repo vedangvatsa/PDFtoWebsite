@@ -1,5 +1,6 @@
 /**
  * Shared loaders for job detail pages (/jobs/{id} and /{company}/{jobSlug}).
+ * Public path is cache-first + hard-timeout (see job-snapshots.ts).
  */
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
@@ -9,7 +10,6 @@ import {
   formatJobDescription,
   jobDescriptionExcerpt,
   isJobId,
-  jobExternalIdFromSlugs,
   isShortJobSlug,
   companyToSlug,
   shortJobSlug,
@@ -18,9 +18,11 @@ import {
 } from '@/lib/job-description';
 import { cleanPublishText } from '@/lib/noslop';
 import type { JobDetail } from '@/app/jobs/[id]/job-detail-client';
-
-const SELECT_COLS =
-  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id';
+import {
+  getCachedJobById,
+  getCachedJobByCompanyAndSlug,
+} from '@/lib/job-snapshots';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
 export type JobRow = {
   id: string;
@@ -41,13 +43,7 @@ export type JobRow = {
 
 export async function fetchJobById(id: string): Promise<JobRow | null> {
   if (!isJobId(id)) return null;
-  const { data, error } = await supabaseAdmin
-    .from('jobs')
-    .select(SELECT_COLS)
-    .eq('id', id)
-    .maybeSingle();
-  if (error || !data) return null;
-  return data as JobRow;
+  return getCachedJobById(id);
 }
 
 /** Resolve `/google/mkt` via external_id = google_mkt + company match. */
@@ -56,19 +52,7 @@ export async function fetchJobByCompanyAndSlug(
   jobSlug: string
 ): Promise<JobRow | null> {
   if (!companySlug || !isShortJobSlug(jobSlug)) return null;
-  const externalId = jobExternalIdFromSlugs(companySlug, jobSlug);
-
-  const { data, error } = await supabaseAdmin
-    .from('jobs')
-    .select(SELECT_COLS)
-    .eq('external_id', externalId)
-    .maybeSingle();
-
-  if (error || !data) return null;
-
-  // Ensure company slug matches (avoid cross-company external_id collisions)
-  if (companyToSlug(data.company) !== companySlug.toLowerCase()) return null;
-  return data as JobRow;
+  return getCachedJobByCompanyAndSlug(companySlug, jobSlug);
 }
 
 export function toJobDetail(job: JobRow): JobDetail {
@@ -100,39 +84,55 @@ export async function getViewerJobContext(): Promise<{
   profileComplete: boolean;
   isAuthenticated: boolean;
 }> {
-  let userSkills: string[] = [];
-  let profileComplete = false;
-  let isAuthenticated = false;
-  try {
-    const cookieStore = await cookies();
-    const anonClient = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll: () => cookieStore.getAll(),
-        },
+  const empty = {
+    userSkills: [] as string[],
+    profileComplete: false,
+    isAuthenticated: false,
+  };
+  // Auth must not block job page render when Supabase is slow.
+  return withTimeoutFallback(
+    (async () => {
+      try {
+        const cookieStore = await cookies();
+        const anonClient = createServerClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          {
+            cookies: {
+              getAll: () => cookieStore.getAll(),
+            },
+          }
+        );
+        const {
+          data: { user },
+        } = await anonClient.auth.getUser();
+        if (!user) return empty;
+
+        const { data: profile } = await supabaseAdmin
+          .from('profiles')
+          .select('skills, about')
+          .eq('id', user.id)
+          .single();
+
+        if (!profile) {
+          return { ...empty, isAuthenticated: true };
+        }
+        const userSkills = (profile.skills || [])
+          .map((s: string) => s.trim())
+          .filter(Boolean);
+        return {
+          userSkills,
+          profileComplete: !!profile.about && userSkills.length > 0,
+          isAuthenticated: true,
+        };
+      } catch {
+        return empty;
       }
-    );
-    const {
-      data: { user },
-    } = await anonClient.auth.getUser();
-    if (user) {
-      isAuthenticated = true;
-      const { data: profile } = await supabaseAdmin
-        .from('profiles')
-        .select('skills, about')
-        .eq('id', user.id)
-        .single();
-      if (profile) {
-        userSkills = (profile.skills || []).map((s: string) => s.trim()).filter(Boolean);
-        profileComplete = !!profile.about && userSkills.length > 0;
-      }
-    }
-  } catch {
-    // anonymous
-  }
-  return { userSkills, profileComplete, isAuthenticated };
+    })(),
+    DB_BUDGET.fast,
+    empty,
+    'viewer-job-context'
+  );
 }
 
 export function buildJobMetadata(job: JobRow, siteUrl: string) {
@@ -146,7 +146,6 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
     excerpt || `${jobTitle} at ${company}. ${location}. Apply via CVin.Bio.`;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
 
-  // opengraph-image.tsx next to the page supplies og:image automatically
   return {
     title,
     description: description.slice(0, 160),
