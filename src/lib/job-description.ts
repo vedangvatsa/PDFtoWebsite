@@ -9,23 +9,27 @@
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 3;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 4;
 
 /** Tailwind prose for every job detail description block. */
 export const JOB_DESCRIPTION_PROSE_CLASS =
-  'job-description text-[13px] sm:text-[14px] leading-relaxed text-zinc-600 min-w-0 max-w-full overflow-x-auto ' +
+  'job-description text-[13px] sm:text-[14px] leading-[1.65] text-zinc-600 min-w-0 max-w-full overflow-x-auto ' +
   'break-words [overflow-wrap:anywhere] ' +
   '[&_*]:max-w-full ' +
   '[&_img]:h-auto [&_img]:max-w-full ' +
   '[&_table]:block [&_table]:w-full [&_table]:overflow-x-auto ' +
   '[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap ' +
-  '[&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:pt-4 [&_h2]:border-t [&_h2]:border-zinc-200 [&_h2]:text-[11px] sm:[&_h2]:text-xs [&_h2]:font-semibold [&_h2]:uppercase [&_h2]:tracking-wider [&_h2]:text-zinc-500 [&_h2]:first:mt-0 [&_h2]:first:pt-0 [&_h2]:first:border-t-0 ' +
-  '[&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:pt-4 [&_h3]:border-t [&_h3]:border-zinc-200 [&_h3]:text-[11px] sm:[&_h3]:text-xs [&_h3]:font-semibold [&_h3]:uppercase [&_h3]:tracking-wider [&_h3]:text-zinc-500 [&_h3]:first:mt-0 [&_h3]:first:pt-0 [&_h3]:first:border-t-0 ' +
-  '[&_h4]:mt-4 [&_h4]:mb-2 [&_h4]:text-sm [&_h4]:font-semibold [&_h4]:text-zinc-900 ' +
-  '[&_p]:mb-3 [&_p]:leading-relaxed ' +
-  '[&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:marker:text-zinc-400 ' +
-  '[&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 ' +
-  '[&_li]:text-zinc-600 ' +
+  '[&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:pt-6 [&_h2]:border-t [&_h2]:border-zinc-100 [&_h2]:text-sm [&_h2]:font-semibold [&_h2]:text-zinc-900 ' +
+  '[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:pt-6 [&_h3]:border-t [&_h3]:border-zinc-100 [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-zinc-900 ' +
+  '[&_h3:first-child]:mt-0 [&_h3:first-child]:pt-0 [&_h3:first-child]:border-t-0 ' +
+  '[&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:text-sm [&_h4]:font-semibold [&_h4]:text-zinc-800 ' +
+  '[&_p]:mb-4 [&_p]:leading-relaxed [&_p:last-child]:mb-0 ' +
+  '[&>p:first-child]:text-[14px] sm:[&>p:first-child]:text-[15px] [&>p:first-child]:font-medium [&>p:first-child]:text-zinc-800 ' +
+  '[&_h3+ul]:mt-0 [&_h3+ul]:mb-6 [&_h3+ol]:mt-0 [&_h3+ol]:mb-6 ' +
+  '[&_h3+p]:mt-0 [&_h4+p]:mt-0 ' +
+  '[&_ul]:my-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2.5 [&_ul]:marker:text-zinc-400 ' +
+  '[&_ol]:my-0 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 ' +
+  '[&_li]:text-zinc-600 [&_li]:leading-relaxed ' +
   '[&_a]:text-primary [&_a]:underline-offset-2 hover:[&_a]:underline [&_a]:break-all ' +
   '[&_strong]:font-semibold [&_strong]:text-zinc-800 ' +
   '[&_b]:font-semibold [&_b]:text-zinc-800 ' +
@@ -144,8 +148,10 @@ export function plainTextToHtml(text: string): string {
   const lines = cleaned.split('\n');
   const out: string[] = [];
   let buf: string[] = [];
+  let introBuf: string[] = [];
+  let inBody = false;
 
-  const flush = () => {
+  const flushBuf = () => {
     while (buf.length && !buf[0].trim()) buf.shift();
     while (buf.length && !buf[buf.length - 1].trim()) buf.pop();
     if (!buf.length) return;
@@ -153,27 +159,64 @@ export function plainTextToHtml(text: string): string {
     buf = [];
   };
 
+  const flushIntro = () => {
+    if (!introBuf.length) return;
+    out.push(renderIntroBlock(introBuf));
+    introBuf = [];
+  };
+
   for (const rawLine of lines) {
-    const line = rawLine.trimEnd();
-    const trimmed = line.trim();
+    const trimmed = rawLine.trim();
     if (!trimmed) {
-      flush();
+      if (inBody) flushBuf();
       continue;
     }
-    if (isSectionHeading(trimmed)) {
-      flush();
-      out.push(`<h3>${escapeHtml(trimmed)}</h3>`);
+    if (isMetaSectionHeading(trimmed)) {
+      flushBuf();
+      flushIntro();
+      inBody = true;
+      const title = trimmed.replace(/:$/, '').trim();
+      out.push(`<h3>${escapeHtml(title)}</h3>`);
       continue;
     }
     if (isSubSectionHeading(trimmed)) {
-      flush();
+      flushBuf();
+      flushIntro();
+      inBody = true;
       out.push(`<h4>${escapeHtml(trimmed.replace(/^-\s*/, '').trim())}</h4>`);
       continue;
     }
-    buf.push(line);
+    if (!inBody) {
+      introBuf.push(trimmed);
+    } else {
+      buf.push(rawLine);
+    }
   }
-  flush();
+  flushBuf();
+  flushIntro();
   return out.join('\n');
+}
+
+function renderIntroBlock(lines: string[]): string {
+  const parts: string[] = [];
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) continue;
+    const role = t.match(/^Role:\s*(.+)$/i);
+    if (role) {
+      parts.push(`<p><strong>Role:</strong> ${escapeHtml(role[1].trim())}</p>`);
+      continue;
+    }
+    const labeled = t.match(/^([^:\n]{2,48}):\s+(.+)$/);
+    if (labeled && !isMetaSectionHeading(t)) {
+      parts.push(
+        `<p><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtml(labeled[2].trim())}</p>`
+      );
+      continue;
+    }
+    parts.push(`<p>${escapeHtml(t)}</p>`);
+  }
+  return parts.join('\n');
 }
 
 /** Split "1. Title body..." lines and inline numbered clauses into structured lines. */
@@ -244,8 +287,8 @@ function splitLetteredSubclauses(body: string): string[] {
   return out;
 }
 
-/** Section titles commonly found in curated / government JD plain text. */
-function isSectionHeading(line: string): boolean {
+/** Section titles for structured plain-text job descriptions. */
+function isMetaSectionHeading(line: string): boolean {
   if (!line || line.length > 90) return false;
   if (/^Who can apply\??$/i.test(line)) return true;
   if (/^Key facts$/i.test(line)) return true;
@@ -275,21 +318,13 @@ function isSectionHeading(line: string): boolean {
   if (/^Responsibilities:?$/i.test(line)) return true;
   if (/^Skills Required:?$/i.test(line)) return true;
   if (/^Keywords:?$/i.test(line)) return true;
-  if (/^Role:\s+\S+/i.test(line)) return true;
-  // Numbered section titles on their own line: "1. Documentation Requirements"
   if (/^\d{1,2}\.\s+[A-Z][A-Za-z0-9 /&'’()-]{2,70}$/.test(line)) return true;
-  // Short noun-phrase labels ending with colon (not full sentences)
-  if (
-    line.length < 45 &&
-    /:$/.test(line) &&
-    /^[A-Z][A-Za-z0-9 /&'’()-]{1,42}:$/.test(line) &&
-    !/\b(who|that|which|with|from|are|can|the|and|for|only|those|candidates)\b/i.test(
-      line
-    )
-  ) {
-    return true;
-  }
   return false;
+}
+
+/** @deprecated Use isMetaSectionHeading — kept for internal HTML restructuring. */
+function isSectionHeading(line: string): boolean {
+  return isMetaSectionHeading(line);
 }
 
 /** In-section labels: "5. SOC Platform", "- 1. AI Integration: ..." title only */
@@ -301,7 +336,13 @@ function isSubSectionHeading(line: string): boolean {
 }
 
 function isLabelValueLine(line: string): boolean {
-  return /^[A-Za-z][A-Za-z0-9 /&'’()-]{1,40}:\s+.+$/.test(line.trim());
+  return /^[A-Za-z][A-Za-z0-9 /&'’()-]{1,48}:\s+.+$/.test(line.trim());
+}
+
+function renderLabelValueParagraph(line: string): string {
+  const m = line.trim().match(/^([^:\n]{2,48}):\s+(.+)$/);
+  if (!m) return `<p>${escapeHtml(line.trim())}</p>`;
+  return `<p><strong>${escapeHtml(m[1].trim())}:</strong> ${escapeHtml(m[2].trim())}</p>`;
 }
 
 function renderPlainBlock(block: string): string {
@@ -314,21 +355,13 @@ function renderPlainBlock(block: string): string {
       .map((l) => {
         const m = l.match(/^([^:]+):\s+(.+)$/);
         if (!m) return '';
-        return `<li><strong>${escapeHtml(m[1])}:</strong> ${escapeHtml(m[2])}</li>`;
+        return `<li><strong>${escapeHtml(m[1].trim())}:</strong> ${escapeHtml(m[2].trim())}</li>`;
       })
       .filter(Boolean)
       .join('');
     return `<ul>${items}</ul>`;
   }
 
-  // Promote ALL-CAPS short lines to headings (common JD pattern)
-  if (
-    trimmed.length < 60 &&
-    /^[A-Z0-9][A-Z0-9\s/&,:.\-]{4,}$/.test(trimmed) &&
-    !/\.$/.test(trimmed)
-  ) {
-    return `<h3>${escapeHtml(trimmed)}</h3>`;
-  }
   // Bullet-like lines
   if (
     /^[-•*]\s+/m.test(trimmed) &&
@@ -342,25 +375,24 @@ function renderPlainBlock(block: string): string {
         const text = l.replace(/^[-•*]\s+/, '');
         const labeled = text.match(/^([^:]+):\s+(.+)$/);
         if (labeled) {
-          return `<li><strong>${escapeHtml(labeled[1])}:</strong> ${escapeHtml(labeled[2])}</li>`;
+          return `<li><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtml(labeled[2].trim())}</li>`;
         }
         return `<li>${escapeHtml(text)}</li>`;
       })
       .join('');
     return `<ul>${items}</ul>`;
   }
-  // Label: value lines — bold the label
-  const labeled = trimmed
-    .split('\n')
-    .map((l) => {
-      const m = l.match(/^([A-Za-z][A-Za-z0-9 /&'’()-]{1,40}):\s+(.+)$/);
-      if (m) {
-        return `<strong>${escapeHtml(m[1])}:</strong> ${escapeHtml(m[2])}`;
-      }
-      return escapeHtml(l);
-    })
-    .join('<br />');
-  return `<p>${labeled}</p>`;
+
+  // Multiple plain lines → separate paragraphs (avoid cramped <br /> walls)
+  if (lines.length > 1) {
+    return lines.map((l) => renderLabelValueParagraph(l)).join('\n');
+  }
+
+  if (lines.length === 1 && isLabelValueLine(lines[0])) {
+    return renderLabelValueParagraph(lines[0]);
+  }
+
+  return `<p>${escapeHtml(trimmed)}</p>`;
 }
 
 function decodeHtmlEntities(s: string): string {
@@ -401,7 +433,7 @@ function shouldUsePlainPipeline(html: string, plain?: string): boolean {
 
   const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
   const sectionLines = lines.filter(
-    (l) => isSectionHeading(l) || isSubSectionHeading(l)
+    (l) => isMetaSectionHeading(l) || isSubSectionHeading(l)
   );
   if (sectionLines.length >= 2) return true;
 
@@ -426,13 +458,14 @@ function structureJobHtml(html: string): string {
     /<p>\s*<(?:strong|b)>([^<]{2,90})<\/(?:strong|b)>\s*<\/p>/gi,
     (_full, title: string) => {
       const t = decodeHtmlEntities(title.trim());
-      if (isSectionHeading(t) || isSubSectionHeading(t)) {
+      if (isMetaSectionHeading(t) || isSubSectionHeading(t)) {
         return `<h3>${escapeHtml(t)}</h3>`;
       }
       if (
         t.length < 60 &&
         /^[A-Z0-9][A-Z0-9\s/&,:.\-]{4,}$/.test(t) &&
-        !/\.$/.test(t)
+        !/\.$/.test(t) &&
+        !/^Role:/i.test(t)
       ) {
         return `<h3>${escapeHtml(t)}</h3>`;
       }
