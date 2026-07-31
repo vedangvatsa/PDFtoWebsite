@@ -14,10 +14,24 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replac
  * MoSPI: national emblem from internship.mospi.gov.in favicon (mirrored at /company-logos/mospi.png).
  */
 const LOGO_OVERRIDES: Record<string, string> = {
+  google: `${SITE_URL}/company-logos/google.png`,
   'indian army': `${SITE_URL}/company-logos/indian-army.png`,
   'niti aayog': `${SITE_URL}/company-logos/niti-aayog.png`,
   mospi: `${SITE_URL}/company-logos/mospi.png`,
 };
+
+/** Hotlink-blocked or expired CDN logos — skip and use fallbacks. */
+const UNRELIABLE_LOGO_HOSTS = ['media.licdn.com', 'licdn.com', 'linkedin.com'];
+
+function isReliableStoredLogo(url: string | null | undefined): boolean {
+  if (!url || !/^https?:\/\//i.test(url)) return false;
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return !UNRELIABLE_LOGO_HOSTS.some((h) => host === h || host.endsWith(`.${h}`));
+  } catch {
+    return false;
+  }
+}
 
 /** Normalize website value from company-domains.json to bare hostname. */
 function hostFromDomainEntry(value: string): string {
@@ -149,8 +163,8 @@ export function companyLogoCandidates(
 ): string[] {
   const domain = domainForCompany(name);
   const out: string[] = [];
-  if (storedLogo && /^https?:\/\//i.test(storedLogo)) {
-    out.push(storedLogo);
+  if (isReliableStoredLogo(storedLogo)) {
+    out.push(storedLogo!);
   }
   const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
   if (override) out.push(override);
@@ -183,7 +197,7 @@ export function primaryCompanyLogoUrl(
   storedLogo?: string | null,
   size = 64
 ): string {
-  if (storedLogo && /^https?:\/\//i.test(storedLogo)) return storedLogo;
+  if (isReliableStoredLogo(storedLogo)) return storedLogo!;
   const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
   if (override) return override;
   return googleFaviconUrl(domainForCompany(name), size);
