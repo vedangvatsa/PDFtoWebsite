@@ -9,7 +9,7 @@
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 5;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 6;
 
 /** Tailwind prose for every job detail description block. */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -256,6 +256,15 @@ function expandStructuredPlainText(text: string): string {
     }
 
     if (/\s\d{1,2}\.\s+[A-Z]/.test(line) && line.length > 120) {
+      // IAIP intros and ALL-CAPS multi-role titles are one paragraph — do not split
+      if (/IAIP|Indian Army Internship Program/i.test(line)) {
+        expanded.push(raw);
+        continue;
+      }
+      if (isAllCapsTitleFragment(line)) {
+        expanded.push(raw);
+        continue;
+      }
       const parts = line.split(/\s+(?=\d{1,2}\.\s+[A-Z])/);
       for (const part of parts) {
         const inner = part.trim().match(
@@ -277,10 +286,21 @@ function expandStructuredPlainText(text: string): string {
   return expanded.join('\n');
 }
 
+/** ALL-CAPS portal titles (e.g. "AI ENABLED APPLICATION FOR ARCH LAYOUT VETTING") are not section headings. */
+function isAllCapsTitleFragment(text: string): boolean {
+  const t = text.trim();
+  if (t.length < 12) return false;
+  const letters = t.replace(/[^A-Za-z]/g, '');
+  if (letters.length < 8) return false;
+  const upper = letters.replace(/[^A-Z]/g, '').length;
+  return upper / letters.length >= 0.85;
+}
+
 /** "1. Documentation Requirements" yes; "1. Open" no */
 function isNumberedSectionTitle(title: string): boolean {
   const t = title.trim();
   if (isNumberedStepLine(`1. ${t}`)) return false;
+  if (isAllCapsTitleFragment(t)) return false;
   const words = t.split(/\s+/).filter(Boolean);
   if (words.length >= 3) return true;
   if (t.length >= 20) return true;
