@@ -1,6 +1,8 @@
 import { ImageResponse } from 'next/og';
 import { getProfileBySlug } from '@/lib/supabase-server';
 import { blogMetadata } from '@/lib/blog-metadata';
+import { getCompanyDirectoryForOg, resolveOgCompanyLogo } from '@/lib/og-company-logo';
+import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
 import path from 'path';
 import fs from 'fs';
 
@@ -120,6 +122,127 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
   }
 
   const data = await getProfileBySlug(slug);
+
+  const isEmptyProfile =
+    data &&
+    (() => {
+      const { profile, workExperience, education } = data;
+      const name = profile.fullName;
+      return (
+        !name ||
+        name === 'Professional Profile' ||
+        name === 'Your Name' ||
+        (!profile.summary &&
+          workExperience.length === 0 &&
+          education.length === 0 &&
+          (!profile.skills || profile.skills.length === 0))
+      );
+    })();
+
+  if (!data || isEmptyProfile) {
+    const companyDir = await getCompanyDirectoryForOg(slug);
+    if (companyDir) {
+      const companyDisplay = companyDir.name || slug.replace(/-/g, ' ');
+      const jobCount = companyDir.role_count || 0;
+      const logoSrc = await resolveOgCompanyLogo({
+        slug,
+        companyName: companyDisplay,
+        storedLogo: companyDir.logo,
+      });
+      const roleLabel =
+        jobCount === 1 ? '1 open role' : `${jobCount.toLocaleString()} open roles`;
+
+      return new ImageResponse(
+        (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              height: '100%',
+              backgroundColor: '#fafafa',
+              fontFamily: 'sans-serif',
+              padding: '56px 72px',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: '#a1a1aa',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase' as const,
+                }}
+              >
+                CVin.Bio  ·  Company careers
+              </div>
+              <CompanyLogoBadge logoSrc={logoSrc} size={96} />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 64,
+                  fontWeight: 800,
+                  color: '#09090b',
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1.08,
+                  maxWidth: 1000,
+                }}
+              >
+                {companyDisplay.length > 48
+                  ? companyDisplay.slice(0, 45).trimEnd() + '...'
+                  : companyDisplay}
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 32,
+                  fontWeight: 500,
+                  color: '#52525b',
+                }}
+              >
+                {roleLabel} · Browse active openings
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderTop: '1px solid #e4e4e7',
+                paddingTop: 24,
+              }}
+            >
+              <div style={{ display: 'flex', fontSize: 22, color: '#71717a', fontWeight: 500 }}>
+                Hiring data on CVin.Bio
+              </div>
+              <div style={{ display: 'flex', fontSize: 22, color: '#09090b', fontWeight: 700 }}>
+                {siteDomain}/{slug}
+              </div>
+            </div>
+          </div>
+        ),
+        {
+          ...size,
+          headers: { 'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400' },
+        }
+      );
+    }
+  }
 
   if (!data) {
     return new ImageResponse(

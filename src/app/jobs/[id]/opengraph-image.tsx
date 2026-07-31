@@ -1,8 +1,10 @@
 import { ImageResponse } from 'next/og';
 import { fetchJobById } from '@/lib/job-detail-data';
 import { cleanPublishText } from '@/lib/noslop';
-import { jobTypeLabel, isJobId, jobPublicPath } from '@/lib/job-description';
+import { jobTypeLabel, isJobId, jobPublicPath, companyToSlug } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
+import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
+import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
 
 export const runtime = 'nodejs';
 export const revalidate = 3600;
@@ -24,6 +26,8 @@ export default async function Image({ params }: Props) {
   let location = 'Remote';
   let typeLabel: string | null = null;
   let path = `/jobs/${id}`;
+  let companySlug: string | undefined;
+  let storedLogo: string | null = null;
 
   if (isJobId(id)) {
     const job = await fetchJobById(id);
@@ -33,8 +37,16 @@ export default async function Image({ params }: Props) {
       location = cleanPublishText(normalizeLocation(job.location || '') || 'Remote');
       typeLabel = jobTypeLabel(job.job_type);
       path = jobPublicPath(job);
+      companySlug = companyToSlug(company);
+      storedLogo = job.company_logo;
     }
   }
+
+  const logoSrc = await resolveOgCompanyLogo({
+    slug: companySlug,
+    companyName: company,
+    storedLogo,
+  });
 
   const displayTitle = title.length > 72 ? title.slice(0, 69).trimEnd() + '...' : title;
   const metaBits = [company, location, typeLabel].filter(Boolean).join('  ·  ');
@@ -56,14 +68,24 @@ export default async function Image({ params }: Props) {
         <div
           style={{
             display: 'flex',
-            fontSize: 14,
-            fontWeight: 600,
-            color: '#a1a1aa',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase' as const,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          CVin.Bio  ·  Job listing
+          <div
+            style={{
+              display: 'flex',
+              fontSize: 14,
+              fontWeight: 600,
+              color: '#a1a1aa',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase' as const,
+            }}
+          >
+            CVin.Bio  ·  Job listing
+          </div>
+          <CompanyLogoBadge logoSrc={logoSrc} />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>

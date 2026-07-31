@@ -14,6 +14,7 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replac
  */
 const LOGO_OVERRIDES: Record<string, string> = {
   'indian army': `${SITE_URL}/company-logos/indian-army.png`,
+  mospi: `${SITE_URL}/company-logos/mospi.png`,
 };
 
 /** Normalize website value from company-domains.json to bare hostname. */
@@ -156,6 +157,9 @@ export function companyLogoCandidates(
     out.push(
       'https://internship.aicte-india.org/dashboard/indianarmy/images/logo/circle%20indian%20army%20logo.png'
     );
+  }
+  if (name.toLowerCase().trim() === 'mospi') {
+    out.push('https://www.internship.mospi.gov.in/static/media/Logo-MOSPI.58746789e2643aae82fb.png');
   }
   out.push(googleFaviconUrl(domain, size));
   out.push(ddgIconUrl(domain));
