@@ -146,3 +146,16 @@ export function companyLogoCandidates(
   // de-dupe
   return [...new Set(out)];
 }
+
+/**
+ * Single best logo URL for server-rendered lists (no client fallback waterfall).
+ * Prefer ATS-stored logo, else Google favicon for the resolved domain.
+ */
+export function primaryCompanyLogoUrl(
+  name: string,
+  storedLogo?: string | null,
+  size = 64
+): string {
+  if (storedLogo && /^https?:\/\//i.test(storedLogo)) return storedLogo;
+  return googleFaviconUrl(domainForCompany(name), size);
+}

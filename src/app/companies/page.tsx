@@ -6,16 +6,19 @@ import { Briefcase } from 'lucide-react';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import type { Metadata } from 'next';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
-import CompanyLogo from '@/components/company-logo';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 import { toCompanySlug } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { unstable_cache } from 'next/cache';
 
 const supabase = supabaseAdmin;
 
-// Directory is rebuilt in jobs-sync; no need to re-scan jobs hourly.
+// Directory is rebuilt in jobs-sync; slim SSR list only.
 export const revalidate = 21600; // 6 hours
+
+/** Hard budget: first paint is top N by role_count (not the whole board). */
+const DIRECTORY_LIMIT = 100;
 
 export const metadata: Metadata = {
   title: 'Companies Hiring Now',
@@ -39,7 +42,6 @@ type CompanyRow = {
   name: string;
   role_count: number;
   logo: string | null;
-  locations: string[] | null;
 };
 
 const loadCompaniesDirectory = unstable_cache(
@@ -47,11 +49,11 @@ const loadCompaniesDirectory = unstable_cache(
     const result = await withTimeoutFallback(
       supabase
         .from('companies')
-        .select('slug, name, role_count, logo, locations')
+        // Slim select — no locations[] (shown on company pages only).
+        .select('slug, name, role_count, logo')
         .order('role_count', { ascending: false })
-        // Cap HTML payload — 2k rows was multi‑MB and dominated TTFB.
-        .limit(500),
-      DB_BUDGET.list,
+        .limit(DIRECTORY_LIMIT),
+      DB_BUDGET.fast,
       { data: null, error: { message: 'timeout' } } as any,
       'companies-directory'
     );
@@ -65,12 +67,40 @@ const loadCompaniesDirectory = unstable_cache(
       name: c.name,
       role_count: c.role_count ?? 0,
       logo: c.logo ?? null,
-      locations: Array.isArray(c.locations) ? c.locations : [],
     }));
   },
-  ['companies-directory-v1'],
+  ['companies-directory-v2'],
   { revalidate: 3600, tags: ['companies-directory'] }
 );
+
+/** Server-only logo img — keeps company marks without client hydration × N. */
+function DirectoryLogo({
+  name,
+  logo,
+  size,
+  className,
+  alt,
+}: {
+  name: string;
+  logo?: string | null;
+  size: number;
+  className: string;
+  alt: string;
+}) {
+  const src = primaryCompanyLogoUrl(name, logo, Math.max(size * 2, 64));
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={alt}
+      width={size}
+      height={size}
+      className={className}
+      loading="lazy"
+      decoding="async"
+    />
+  );
+}
 
 export default async function CompaniesPage() {
   const companies = await loadCompaniesDirectory();
@@ -98,7 +128,7 @@ export default async function CompaniesPage() {
           <div className="flex items-center gap-3 mt-3">
             {logoStrip.map((name) => (
               <Link key={name} href={`/${toCompanySlug(name)}`} title={name} className="shrink-0">
-                <CompanyLogo
+                <DirectoryLogo
                   name={name}
                   size={24}
                   className="h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0 object-cover bg-white"
@@ -107,7 +137,7 @@ export default async function CompaniesPage() {
               </Link>
             ))}
             <span className="text-xs text-zinc-400 shrink-0">
-              +{Math.max(0, companies.length - logoStrip.length)} more
+              top {companies.length || DIRECTORY_LIMIT} hiring
             </span>
           </div>
           <Link
@@ -120,44 +150,33 @@ export default async function CompaniesPage() {
         </div>
 
         <p className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
-          {companies.length} {companies.length === 1 ? 'company' : 'companies'} found
+          Top {companies.length} companies by open roles
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {companies.map((company) => {
-            const topLocs = (company.locations || []).slice(0, 3);
-            return (
-              <Link
-                key={company.slug}
-                href={`/${company.slug}`}
-                className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
-              >
-                <CompanyLogo
-                  name={company.name}
-                  logo={company.logo}
-                  size={20}
-                  className="h-5 w-5 rounded shrink-0 object-cover bg-white"
-                  alt={`${company.name} logo — hiring ${company.role_count} open roles`}
-                />
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
-                    {company.name}
-                  </h2>
-                  <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 min-w-0">
-                    <span className="font-medium shrink-0">
-                      {company.role_count} {company.role_count === 1 ? 'role' : 'roles'}
-                    </span>
-                    {topLocs.length > 0 && (
-                      <>
-                        <span className="shrink-0 text-zinc-300">·</span>
-                        <span className="truncate">{topLocs.join(', ')}</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+          {companies.map((company) => (
+            <Link
+              key={company.slug}
+              href={`/${company.slug}`}
+              className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
+            >
+              <DirectoryLogo
+                name={company.name}
+                logo={company.logo}
+                size={20}
+                className="h-5 w-5 rounded shrink-0 object-cover bg-white"
+                alt={`${company.name} logo — hiring ${company.role_count} open roles`}
+              />
+              <div className="flex-1 min-w-0">
+                <h2 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
+                  {company.name}
+                </h2>
+                <p className="mt-0.5 text-[11px] text-zinc-500 font-medium">
+                  {company.role_count} {company.role_count === 1 ? 'role' : 'roles'}
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
 
         {companies.length === 0 && (
@@ -167,6 +186,16 @@ export default async function CompaniesPage() {
               all open roles
             </Link>{' '}
             in the meantime.
+          </p>
+        )}
+
+        {companies.length > 0 && (
+          <p className="text-sm text-zinc-500 mt-8 text-center">
+            Showing the top {companies.length} by open roles.{' '}
+            <Link href="/jobs" className="text-primary underline">
+              Search all companies on the jobs board
+            </Link>
+            .
           </p>
         )}
       </main>
