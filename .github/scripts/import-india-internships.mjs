@@ -487,42 +487,26 @@ function extractWorkThemes(project, max = 6) {
 /** One original sentence describing the role focus (inferred, not copied). */
 function roleFocusSentence(title, project, skills) {
   const titleBlob = (title || '').toLowerCase();
-  const blob = `${title} ${project} ${skills.join(' ')}`.toLowerCase();
-  if (/software|android|mobile|full[- ]?stack|erp|sap|zoho|apex|pl\/sql|developer/i.test(titleBlob)) {
-    return 'Focus areas include software engineering, application development, and platform integration.';
+  const projectBlob = `${project || ''} ${skills.join(' ')}`.toLowerCase();
+  const rules = [
+    [/media|communication|content|graphic|social|outreach/i, 'Focus areas include digital media, outreach, and strategic communications.'],
+    [/hospital|medical|health|clinical/i, 'Focus areas include healthcare IT, clinical workflows, and medical systems.'],
+    [/legal|document generator/i, 'Focus areas include legal-tech tooling, document automation, and compliance workflows.'],
+    [/simulation|wargam|modeling|modelling/i, 'Focus areas include modeling, simulation, and operational analysis.'],
+    [/space|satellite|antenna|sda/i, 'Focus areas include space-domain systems, RF/antenna work, or related engineering.'],
+    [/drone|uav|unmanned|aerial/i, 'Focus areas include drone systems, flight software, and counter-UAS technologies.'],
+    [/robot|autonomous/i, 'Focus areas include robotics, autonomous ground systems, and related R&D.'],
+    [/data|analytics|dashboard|power bi|excel/i, 'Focus areas include data analysis, reporting, and decision-support tooling.'],
+    [/software|android|mobile|full[- ]?stack|erp|sap|zoho|apex|pl\/sql|developer/i, 'Focus areas include software engineering, application development, and platform integration.'],
+    [/soc|siem|threat|vetting|zero-trust/i, 'Focus areas include security operations, AI-assisted vetting, and resilient web systems for defence use.'],
+    [/cyber|devsecops/i, 'Focus areas include cybersecurity, secure infrastructure, and risk management.'],
+    [/ai|ml|llm|machine learning|nlp|computer vision/i, 'Focus areas include AI/ML model work, automation, and applied intelligent systems.'],
+  ];
+  for (const [re, sentence] of rules) {
+    if (re.test(titleBlob)) return sentence;
   }
-  if (/soc|security operations|siem|threat|vetting|zero-trust/i.test(blob)) {
-    return 'Focus areas include security operations, AI-assisted vetting, and resilient web systems for defence use.';
-  }
-  if (/drone|uav|unmanned|aerial/i.test(blob)) {
-    return 'Focus areas include drone systems, flight software, and counter-UAS technologies.';
-  }
-  if (/robot|autonomous|uas/i.test(blob)) {
-    return 'Focus areas include robotics, autonomous ground systems, and related R&D.';
-  }
-  if (/data|analytics|dashboard|bi\b/i.test(blob)) {
-    return 'Focus areas include data analysis, reporting, and decision-support tooling.';
-  }
-  if (/cyber|security|devsecops/i.test(blob)) {
-    return 'Focus areas include cybersecurity, secure infrastructure, and risk management.';
-  }
-  if (/ai|ml|llm|machine learning|nlp|computer vision/i.test(blob)) {
-    return 'Focus areas include AI/ML model work, automation, and applied intelligent systems.';
-  }
-  if (/software|mobile|android|full[- ]?stack|erp|sap|zoho/i.test(blob)) {
-    return 'Focus areas include software engineering, application development, and platform integration.';
-  }
-  if (/media|communication|content|graphic|social/i.test(blob)) {
-    return 'Focus areas include digital media, outreach, and strategic communications.';
-  }
-  if (/simulation|wargam|modeling/i.test(blob)) {
-    return 'Focus areas include modeling, simulation, and operational analysis.';
-  }
-  if (/space|satellite|antenna/i.test(blob)) {
-    return 'Focus areas include space-domain systems, RF/antenna work, or related engineering.';
-  }
-  if (/hospital|medical|health/i.test(blob)) {
-    return 'Focus areas include healthcare IT, clinical workflows, and medical systems.';
+  for (const [re, sentence] of rules) {
+    if (re.test(projectBlob)) return sentence;
   }
   return 'Hands-on internship with military mentors on a live technology project.';
 }
@@ -638,6 +622,10 @@ function displayArmyTitle(rawTitle) {
   }
 
   let cleaned = t.replace(/^\d+\.\s+/, '').replace(/\.$/, '').trim();
+  if (cleaned.length > 85) {
+    const short = cleaned.split(/\s*,\s+|\s+&\s+|\s+and\s+/i)[0].trim();
+    if (short.length >= 10 && short.length < cleaned.length) cleaned = short;
+  }
   const lettersOnly = cleaned.replace(/[^A-Za-z]/g, '');
   if (lettersOnly.length >= 4 && lettersOnly === lettersOnly.toUpperCase()) {
     return sentenceCaseTitle(cleaned).slice(0, 120);
@@ -709,6 +697,50 @@ function extractNumberedWorkItems(text) {
   }
 
   return items;
+}
+
+/** Action-oriented sentences from narrative AICTE project text (no portal course blurbs). */
+function extractNarrativeDuties(text, max = 8) {
+  const normalized = normalizeSectionText(text);
+  if (!normalized) return [];
+
+  const skipRe =
+    /course description|comprehensive \d+[- ]day|skill development program|designed to provide|theoretical foundation|internship course is|students with a strong/i;
+  const duties = [];
+
+  for (const clause of normalized.split(/\s*;\s+|\s+-\s+(?=[A-Z])/)) {
+    let t = cleanupBullet(clause);
+    if (t.length < 18 || t.length > 240) continue;
+    if (skipRe.test(t)) continue;
+    if (/^(role|responsibilit|skill|technical requirement|keyword|document|terms|working hours|stipend)/i.test(t)) {
+      continue;
+    }
+    if (/^(the |this |course |internship )/i.test(t) && t.length > 100) continue;
+    if (
+      /^(develop|build|design|implement|create|assist|support|work|analyze|analyse|research|conduct|maintain|prepare|collaborate|learn|gain|apply|use|study|explore|configure|deploy|test|document)/i.test(
+        t
+      )
+    ) {
+      duties.push(t.replace(/[.!?]+$/, '') + (t.endsWith('.') ? '' : '.'));
+    }
+  }
+
+  if (duties.length < 2) {
+    for (const s of normalized.match(/[^.!?]+[.!?]+/g) || []) {
+      let t = cleanupBullet(s);
+      if (t.length < 25 || t.length > 220) continue;
+      if (skipRe.test(t)) continue;
+      if (/^(role|responsibilit|skill|technical|keyword|the |this |course )/i.test(t)) continue;
+      if (
+        /\b(will|shall|must|should)\b/i.test(t) ||
+        /^(develop|build|design|implement|create|assist|support|work with|learn|gain hands-on|interns will)/i.test(t)
+      ) {
+        duties.push(t);
+      }
+    }
+  }
+
+  return [...new Set(duties.map(cleanupBullet))].filter(Boolean).slice(0, max);
 }
 
 /** Split responsibility run-on text from AICTE project descriptions. */
@@ -823,6 +855,10 @@ function parseProjectDetail(project) {
     }
   }
 
+  if (responsibilities.length < 2) {
+    responsibilities.push(...extractNarrativeDuties(text));
+  }
+
   const skillsBlock = sliceBetween(text, 'Skills Required', [
     'Technical Requirements',
     'Keywords',
@@ -876,10 +912,6 @@ function buildArmyDescription(detail) {
     parts.push(`Role: ${parsed.role}`);
   } else {
     parts.push(roleFocusSentence(detail.title, detail.project, skills));
-  }
-
-  if (parsed.intro) {
-    parts.push(parsed.intro);
   }
 
   parts.push('', 'Key facts');
