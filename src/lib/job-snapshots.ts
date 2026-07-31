@@ -16,6 +16,7 @@ import {
   isShortJobSlug,
   jobExternalIdFromSlugs,
   companyToSlug,
+  JOB_DESCRIPTION_FORMAT_VERSION,
 } from '@/lib/job-description';
 import type { JobRow } from '@/lib/job-detail-data';
 
@@ -59,8 +60,8 @@ export function getCachedJobById(id: string): Promise<JobRow | null> {
   if (!isJobId(id)) return Promise.resolve(null);
   return unstable_cache(
     () => loadJobByIdLive(id),
-    ['job-snapshot-id', id],
-    { revalidate: 900, tags: [`job:${id}`] }
+    ['job-snapshot-id', `v${JOB_DESCRIPTION_FORMAT_VERSION}`, id],
+    { revalidate: 300, tags: [`job:${id}`] }
   )();
 }
 
@@ -73,7 +74,7 @@ export function getCachedJobByCompanyAndSlug(
   const key = `${companySlug.toLowerCase()}_${jobSlug.toLowerCase()}`;
   return unstable_cache(
     () => loadJobByExternalIdLive(companySlug.toLowerCase(), jobSlug.toLowerCase()),
-    ['job-snapshot-ext', key],
-    { revalidate: 900, tags: [`job-ext:${key}`] }
+    ['job-snapshot-ext', `v${JOB_DESCRIPTION_FORMAT_VERSION}`, key],
+    { revalidate: 300, tags: [`job-ext:${key}`] }
   )();
 }

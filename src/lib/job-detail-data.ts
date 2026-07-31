@@ -143,7 +143,7 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
   const title = `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
   const excerpt = jobDescriptionExcerpt(job.description, 140);
   const description =
-    excerpt || `${jobTitle} at ${company}. ${location}. Apply via CVin.Bio.`;
+    excerpt || `${jobTitle} at ${company}. ${location}.`;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
 
   return {
