@@ -1419,8 +1419,6 @@ async function fetchNitiDesiredMonths() {
 
 function buildNitiDescription(desiredMonths) {
   const parts = [
-    'NITI Aayog Internship Scheme',
-    '',
     "Government of India's premier policy think tank — short-term internships across verticals, divisions, and units in New Delhi.",
     '',
     'About the scheme',
@@ -1483,7 +1481,7 @@ function buildNitiDescription(desiredMonths) {
     '- Mark daily in/out attendance; host division supervises conduct and data access',
     '',
     'How to apply',
-    '1. Open the official Work for India internship portal',
+    '1. Open the official application form at workforindia.niti.gov.in',
     '2. Fill the application form (personal, education, desired month, one area of interest)',
     '3. Preview all details — corrections are not entertained after submission',
     '4. Submit during the monthly window and note your registration number',

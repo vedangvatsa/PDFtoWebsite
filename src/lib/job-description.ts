@@ -9,35 +9,15 @@
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 7;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 8;
 
-/** Tailwind prose for every job detail description block. */
+/** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
-  'job-description text-[13px] sm:text-[14px] leading-[1.7] text-zinc-600 min-w-0 max-w-full overflow-x-auto ' +
-  'break-words [overflow-wrap:anywhere] ' +
+  'job-description min-w-0 max-w-full overflow-x-auto break-words [overflow-wrap:anywhere] ' +
   '[&_*]:max-w-full ' +
   '[&_img]:h-auto [&_img]:max-w-full ' +
   '[&_table]:block [&_table]:w-full [&_table]:overflow-x-auto ' +
-  '[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap ' +
-  '[&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:pt-6 [&_h2]:border-t [&_h2]:border-zinc-200 [&_h2]:text-[15px] sm:[&_h2]:text-base [&_h2]:font-bold [&_h2]:text-zinc-900 ' +
-  '[&_h3]:mt-9 [&_h3]:mb-3 [&_h3]:pt-7 [&_h3]:border-t [&_h3]:border-zinc-200 [&_h3]:text-base sm:[&_h3]:text-[17px] [&_h3]:font-bold [&_h3]:leading-snug [&_h3]:text-zinc-900 ' +
-  '[&_h3:first-child]:mt-0 [&_h3:first-child]:pt-0 [&_h3:first-child]:border-t-0 ' +
-  '[&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:text-sm [&_h4]:font-bold [&_h4]:text-zinc-800 ' +
-  '[&_p]:mb-3 [&_p]:leading-relaxed [&_p:last-child]:mb-0 ' +
-  '[&_.jd-intro]:mb-7 [&_.jd-intro_p]:mb-2 [&_.jd-intro_p:last-child]:mb-0 ' +
-  '[&_.jd-intro_p:first-child]:text-[14px] sm:[&_.jd-intro_p:first-child]:text-[15px] [&_.jd-intro_p:first-child]:font-medium [&_.jd-intro_p:first-child]:text-zinc-800 ' +
-  '[&_.jd-meta-facts]:mb-1 [&_.jd-meta-facts_p]:mb-1.5 [&_.jd-meta-facts_p]:leading-snug [&_.jd-meta-facts_p:last-child]:mb-0 ' +
-  '[&_h3+ul]:mt-2 [&_h3+ul]:mb-7 [&_h3+ol]:mt-2 [&_h3+ol]:mb-7 ' +
-  '[&_h3+.jd-meta-facts]:mt-1 [&_h3+.jd-meta-facts]:mb-7 ' +
-  '[&_h3+p]:mt-2 [&_h3+p]:mb-3 [&_h4+p]:mt-1 ' +
-  '[&_p+ul]:mt-0 [&_p+ol]:mt-0 ' +
-  '[&_ul]:my-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-3 [&_ul]:marker:text-zinc-400 ' +
-  '[&_ol]:my-0 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-3 [&_ol]:marker:text-zinc-400 ' +
-  '[&_li]:text-zinc-600 [&_li]:leading-relaxed [&_li]:pl-0.5 ' +
-  '[&_a]:text-primary [&_a]:underline-offset-2 hover:[&_a]:underline [&_a]:break-all ' +
-  '[&_strong]:font-semibold [&_strong]:text-zinc-900 ' +
-  '[&_b]:font-semibold [&_b]:text-zinc-900 ' +
-  '[&_blockquote]:border-l-2 [&_blockquote]:border-zinc-200 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-zinc-500';
+  '[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap';
 
 /** Strip aggregator / mirror disclaimers that must never appear on job pages. */
 export function stripAggregatorDisclaimers(text: string): string {
