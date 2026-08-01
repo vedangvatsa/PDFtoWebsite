@@ -1,4 +1,6 @@
 export const blogMetadata = [
+  { slug: 'pdf-to-website', title: 'Best Free Way to Convert a PDF Resume into a Website', imageText: 'PDF to Website CV', featuredImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80' },
+  { slug: 'cv-website-vs-pdf', title: 'CV Website vs PDF Resume: Which Should You Send?', imageText: 'Website vs PDF', featuredImage: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&q=80' },
   { slug: 'remote', title: 'Best Methods to Format Remote Work Experience on a CV', imageText: 'Format Remote Experience', featuredImage: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=1200&q=80' },
   { slug: 'open-source', title: 'Best Ways to Showcase Open Source Contributions on your CV', imageText: 'Showcase Open Source', featuredImage: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&q=80' },
   { slug: 'projects', title: 'Best Personal Projects to Put on a Software CV', imageText: 'Build Production Projects', featuredImage: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1200&q=80' },

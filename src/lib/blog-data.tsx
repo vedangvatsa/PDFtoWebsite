@@ -19,6 +19,62 @@ export type BlogPost = {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'pdf-to-website',
+    title: 'Best Free Way to Convert a PDF Resume into a Website',
+    excerpt:
+      'Upload your PDF once, publish a live CV at cvin.bio/your-name, and share a link recruiters can open on any phone.',
+    date: 'Aug 1, 2026',
+    author: {
+      name: 'Vedang V.',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',
+    },
+    faqs: [
+      {
+        question: 'What is the best free way to turn a PDF resume into a website?',
+        answer:
+          'Upload the PDF to CVin.Bio, review the extracted profile, and publish at cvin.bio/your-name. The public URL is your CV website. It is free to create and works on mobile.',
+      },
+      {
+        question: 'Do I need design or coding skills to convert my resume to a website?',
+        answer:
+          'No. CVin.Bio parses your CV with AI and generates the page. You only review details and choose a short URL slug.',
+      },
+      {
+        question: 'Can I still use a PDF after I publish a CV website?',
+        answer:
+          'Yes. Keep a simple PDF for portals that require a file upload, and use the website link for email, Slack, LinkedIn, and WhatsApp.',
+      },
+    ],
+  },
+  {
+    slug: 'cv-website-vs-pdf',
+    title: 'CV Website vs PDF Resume: Which Should You Send?',
+    excerpt:
+      'Send a CV website link by default. Keep a plain PDF only when an application form forces a file upload.',
+    date: 'Aug 1, 2026',
+    author: {
+      name: 'Vedang V.',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',
+    },
+    faqs: [
+      {
+        question: 'CV website vs PDF resume: which should I send to recruiters?',
+        answer:
+          'Prefer a CV website link for people and chat. Use a PDF only when the ATS or portal requires a file. Many teams do both: PDF for the form, link in the message.',
+      },
+      {
+        question: 'Why do recruiters prefer a resume link over a PDF attachment?',
+        answer:
+          'Links open on phones without downloads, show preview cards in chat apps, and stay up to date when you edit. Attachments add friction and often break formatting.',
+      },
+      {
+        question: 'When is a PDF still required?',
+        answer:
+          'Government and enterprise application portals often accept only PDF or DOC uploads. Use the PDF there, and still include your CV website URL in the cover note or portfolio field.',
+      },
+    ],
+  },
+  {
     slug: 'remote',
     title: 'Best Methods to Format Remote Work Experience on a CV',
     excerpt: 'Vague location labels confuse payroll and timezone alignment. Discover the formatting rules that highlight your autonomy and async values.',
