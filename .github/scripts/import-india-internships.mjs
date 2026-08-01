@@ -1014,7 +1014,7 @@ function buildArmyDescription(detail) {
   }
 
   const parts = [
-    `Indian Army Internship Program (IAIP) — ${displayTitle}.`,
+    `Indian Army Internship Program (IAIP): ${displayTitle}.`,
   ];
 
   if (parsed.role) {
@@ -1333,8 +1333,8 @@ function buildMospiDescription(portalTexts, cycles) {
     '- Covers the full statistical pipeline: data collection, processing and analysis, publication, and dissemination',
     '',
     'Key facts',
-    'Location: India — MoSPI headquarters in New Delhi plus central and regional/state statistical offices nationwide',
-    'Engagement type: Internship (2–6 months from date of joining)',
+    'Location: India: MoSPI headquarters in New Delhi plus central and regional/state statistical offices nationwide',
+    'Engagement type: Internship (2-6 months from date of joining)',
     'Stipend: ₹10,000 per month, paid monthly after the nodal officer submits your progress report for the preceding month',
     'Certificate: Issued by the host office on successful completion; leaving early forfeits stipend and certificate',
     'Scale: 200+ internship slots across Group A (Delhi HQ divisions) and Group B (regional/zonal offices)',
@@ -1347,7 +1347,7 @@ function buildMospiDescription(portalTexts, cycles) {
       const vacs = (c.vacancies || []).length;
       const label = shortenCycleTitle(c.title) || c.title;
       parts.push(
-        `- ${label}: apply ${c.start_date} to ${c.end_date}${slots ? ` — ${slots} slots across ${vacs} office postings` : ''}`
+        `- ${label}: apply ${c.start_date} to ${c.end_date}${slots ? ` (${slots} slots across ${vacs} office postings)` : ''}`
       );
     }
     if (openSlots) {
@@ -1367,7 +1367,7 @@ function buildMospiDescription(portalTexts, cycles) {
     '- Group A: Delhi headquarters divisions (e.g. national accounts, economic/social statistics, price statistics)',
     '- Group B: Regional and zonal NSO (FOD) offices and state DES centres across India',
     '- You may apply to Group A or Group B for a given phase, not both',
-    '- Choose your preferred office/centre and internship duration (2–6 months) during application',
+    '- Choose your preferred office/centre and internship duration (2-6 months) during application',
     '',
     'Who can apply',
     'Bonafide students of any recognized university or institution in India or abroad may apply if they meet one of these paths:',
@@ -1375,7 +1375,7 @@ function buildMospiDescription(portalTexts, cycles) {
     '- Postgraduate students in any year with statistics or mathematics in the curriculum',
     '- Research or Ph.D. students in statistics, mathematical statistics, operations research, economics, demography, or related applied statistics, with at least 70% (or equivalent) in graduation',
     '- Graduates who finished graduation or post-graduation within the last two years with at least 70% (or equivalent) marks',
-    '- Current degree students (UG, PG, research, or Ph.D.) may only take 2–3 month internship slots',
+    '- Current degree students (UG, PG, research, or Ph.D.) may only take 2-3 month internship slots',
     '',
     'Selection',
     '- Online shortlisting based on aggregate marks in 12th, graduation, or post-graduation (as applicable); mention qualifying subjects and CGPA conversion if used',
@@ -1391,13 +1391,13 @@ function buildMospiDescription(portalTexts, cycles) {
     '- Selected interns submit bank account details through the portal after joining (stipend via electronic transfer / PFMS / Aadhaar-based payment rails)',
     '',
     'How to apply on the MoSPI portal',
-    '1. Register — create an account on the official internship portal',
-    '2. Complete profile — education and personal details',
-    '3. Upload documents — certificates and government ID (each file under 5 MB)',
-    '4. Select preferences — internship group, office/centre, and duration',
-    '5. Submit application — review and submit before the phase deadline',
-    '6. Selection — shortlisting; interview if required by the host office',
-    '7. Confirmation — offer letter and joining instructions from the allotted office',
+    '1. Register: create an account on the official internship portal',
+    '2. Complete profile: education and personal details',
+    '3. Upload documents: certificates and government ID (each file under 5 MB)',
+    '4. Select preferences: internship group, office/centre, and duration',
+    '5. Submit application: review and submit before the phase deadline',
+    '6. Selection: shortlisting; interview if required by the host office',
+    '7. Confirmation: offer letter and joining instructions from the allotted office',
     '',
     'Practical notes',
     '- Enquiries are handled only by designated MoSPI offices and officers',
@@ -1528,7 +1528,7 @@ async function fetchNitiDesiredMonths() {
 
 function buildNitiDescription(desiredMonths) {
   const parts = [
-    "Government of India's premier policy think tank — short-term internships across verticals, divisions, and units in New Delhi.",
+    "Government of India's premier policy think tank: short-term internships across verticals, divisions, and units in New Delhi.",
     '',
     'About the scheme',
     '- Exposure to how NITI Aayog supports analysis, developmental policy, and government functioning',
@@ -1540,7 +1540,7 @@ function buildNitiDescription(desiredMonths) {
     'Engagement type: Internship (on-site at NITI Aayog headquarters)',
     'Duration: Minimum 6 weeks, maximum 6 months',
     'Stipend: Unpaid (no stipend under the official scheme)',
-    'Attendance: Minimum 75% required; below 75% — no extension and no experience certificate',
+    'Attendance: Minimum 75% required; below 75%: no extension and no experience certificate',
     'Logistics: Bring your own laptop; NITI provides workspace, internet, and other essentials as decided by the host division',
     'Capacity: Up to 3 interns per vertical/division at a time (may be relaxed with CEO approval)',
   ];
@@ -1551,7 +1551,7 @@ function buildNitiDescription(desiredMonths) {
     '- Online applications only, 1st (00:00 hrs) to 10th (23:59 hrs) of every month',
     '- Apply at least 2 months and at most 6 months before your desired internship start month',
     '- One application per candidate per financial year',
-    '- No printout or supporting documents sent by post — originals verified at joining'
+    '- No printout or supporting documents sent by post; originals verified at joining'
   );
 
   if (desiredMonths.length) {
@@ -1592,7 +1592,7 @@ function buildNitiDescription(desiredMonths) {
     'How to apply',
     '1. Open the official application form at workforindia.niti.gov.in',
     '2. Fill the application form (personal, education, desired month, one area of interest)',
-    '3. Preview all details — corrections are not entertained after submission',
+    '3. Preview all details: corrections are not entertained after submission',
     '4. Submit during the monthly window and note your registration number',
     '',
     'Practical notes',
@@ -1760,7 +1760,8 @@ async function upsertIndiaCompanies(jobs) {
 
 async function main() {
   const armyOnly = process.argv.includes('--army-only');
-  const army = await fetchIndianArmyInternships();
+  const mospiNitiOnly = process.argv.includes('--mospi-niti-only');
+  const army = mospiNitiOnly ? [] : await fetchIndianArmyInternships();
   const mospi = armyOnly ? [] : await fetchMospiInternships();
   const niti = armyOnly ? [] : await fetchNitiAayogInternships();
   const all = [...army, ...mospi, ...niti];
@@ -1773,9 +1774,12 @@ async function main() {
     console.log(`  /${j.company_key}/${slug} — ${j.title.slice(0, 55)}`);
   }
 
-  await deleteOldIndiaJobs(
-    armyOnly ? ['aicte-indian-army'] : ['aicte-indian-army', 'mospi-nios', 'niti-aayog-internship']
-  );
+  const deleteSources = armyOnly
+    ? ['aicte-indian-army']
+    : mospiNitiOnly
+      ? ['mospi-nios', 'niti-aayog-internship']
+      : ['aicte-indian-army', 'mospi-nios', 'niti-aayog-internship'];
+  await deleteOldIndiaJobs(deleteSources);
   await upsertJobs(all);
   await upsertIndiaCompanies(all);
 
