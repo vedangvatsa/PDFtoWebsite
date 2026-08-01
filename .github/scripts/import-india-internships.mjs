@@ -539,16 +539,23 @@ function practicalNotes(detail) {
   const terms = String(detail.terms || '');
   const notes = [];
 
-  const hours = terms.match(/Timings:\s*([^(\n]+).*?Working Days:\s*([^(\n]+)/is);
-  if (hours) {
-    notes.push(
-      `Working hours: ${hours[1].trim()}, ${hours[2].trim()}`
+  const hoursFull = terms.match(/Timings:\s*([^(\n]+).*?Working Days:\s*([^(\n]+)/is);
+  const hoursOnly = terms.match(/Timings:\s*([0-9][^(\n]{3,40})/i);
+  if (hoursFull) {
+    notes.push(`Working hours: ${hoursFull[1].trim()}, ${hoursFull[2].trim()}`);
+  } else if (hoursOnly) {
+    notes.push(`Working hours: ${hoursOnly[1].trim()}`);
+  } else {
+    const range = terms.match(
+      /(\d{1,2}:\d{2}\s*(?:AM|PM)\s*To\s*\d{1,2}:\d{2}\s*(?:AM|PM))/i
     );
+    if (range) notes.push(`Working hours: ${range[1].trim()}`);
   }
+
   if (/less than 75%\s*attendance/i.test(terms)) {
     notes.push('Stipend is paid after successful completion; under 75% attendance is ineligible');
   }
-  if (/police verification is mandatory/i.test(terms)) {
+  if (/police verification is mandatory|Police Verification Certificate/i.test(terms)) {
     notes.push('Police verification is required before joining');
   }
   if (/no accommodation will be provided/i.test(terms)) {
@@ -641,19 +648,20 @@ function displayArmyTitle(rawTitle) {
     if (/soc|security operations|vetting|arch layout/i.test(blob)) {
       return 'AI Security & SOC Engineering Internship';
     }
-    return sentenceCaseTitle(multi[0][1].replace(/\.$/, '').trim()).slice(0, 90);
+    // Keep both role names when two numbered titles are present
+    return multi
+      .map((m) => sentenceCaseTitle(m[1].replace(/\.$/, '').trim()))
+      .join(' / ')
+      .slice(0, 160);
   }
 
   let cleaned = t.replace(/^\d+\.\s+/, '').replace(/\.$/, '').trim();
-  if (cleaned.length > 85) {
-    const short = cleaned.split(/\s*,\s+|\s+&\s+|\s+and\s+/i)[0].trim();
-    if (short.length >= 10 && short.length < cleaned.length) cleaned = short;
-  }
   const lettersOnly = cleaned.replace(/[^A-Za-z]/g, '');
   if (lettersOnly.length >= 4 && lettersOnly === lettersOnly.toUpperCase()) {
-    return sentenceCaseTitle(cleaned).slice(0, 120);
+    cleaned = sentenceCaseTitle(cleaned);
   }
-  return cleaned.slice(0, 120);
+  // Keep the full official title (title-cased) — do not chop mid-phrase
+  return cleaned.slice(0, 160);
 }
 
 function sentenceCaseTitle(s) {
