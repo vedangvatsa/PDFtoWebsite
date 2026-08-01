@@ -12,6 +12,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
+import { pingIndexNow } from './lib/indexnow.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -1707,6 +1708,26 @@ async function main() {
   await deleteOldIndiaJobs();
   await upsertJobs(all);
   await upsertIndiaCompanies(all);
+
+  const indexPaths = [
+    '/indian-army',
+    '/mospi',
+    '/niti-aayog',
+    '/niti-aayog/internship',
+    '/mospi/nios',
+    '/jobs',
+    ...all.map((j) => {
+      const slug = j.external_id.replace(`${j.company_key}_`, '');
+      return `/${j.company_key}/${slug}`;
+    }),
+  ];
+  console.log(`\n── IndexNow ping (${indexPaths.length} URLs) ──`);
+  const ping = await pingIndexNow(indexPaths);
+  console.log(
+    ping.ok
+      ? `  ok status=${ping.status} submitted=${ping.submitted}`
+      : `  failed status=${ping.status} ${ping.error || ''}`
+  );
 }
 
 main().catch((e) => {
