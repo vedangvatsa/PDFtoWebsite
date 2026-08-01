@@ -45,7 +45,7 @@ export default function ArticleContent() {
           <rect x="460" y="70" width="130" height="200" rx="12" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="2" />
           <rect x="465" y="80" width="120" height="180" rx="6" className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-800" />
           
-          {/* Legible single column text representing mobile optimized */}
+          {/* Legible single column text representing mobile tuned */}
           <rect x="475" y="90" width="80" height="12" rx="2" className="fill-emerald-500/20" />
           <rect x="475" y="110" width="100" height="8" rx="1.5" className="fill-zinc-300 dark:fill-zinc-700" />
           <rect x="475" y="125" width="100" height="6" rx="1" className="fill-zinc-200 dark:fill-zinc-800" />
@@ -79,21 +79,21 @@ export default function ArticleContent() {
       </div>
 
       <h2 className={h2}>Embedding Interactive Sandboxes</h2>
-      <p>When you use a web CV you can embed interactive sandboxes. If you built a custom UI component do not just write about it. Embed a live CodePen or StackBlitz playground directly into your page. This lets the reviewer view and run your code without leaving your profile.</p>
+      <p>When you use a web CV you can embed interactive sandboxes. If you built a custom UI component do write about it. Embed a live CodePen or StackBlitz playground directly into your page. This lets the reviewer view and run your code without leaving your profile.</p>
 
       <p>This is a powerful way to prove your technical competence. It shows the quality of your code and your attention to design detail. It turns your CV from a list of claims into a live gallery of your skills.</p>
 
-      <p>Make sure your embedded playgrounds load fast. Optimize your assets and keep your code clean. If you want tips on how to arrange your portfolios check out our advice on <Link href="/portfolio" className={link}>developer portfolio platforms</Link>.</p>
+      <p>Make sure your embedded playgrounds load fast. tune your assets and keep your code clean. If you want tips on how to arrange your portfolios check out our advice on <Link href="/portfolio" className={link}>developer portfolio platforms</Link>.</p>
 
       <h2 className={h2}>Structured Web Builders for Fast Setup</h2>
       <p>If you do not want to spend weeks writing custom CSS you can use a structured profile builder. Platforms like CVin.Bio let you input your experience and output a clean professional web profile on a custom URL.</p>
 
-      <p>These platforms handle the responsiveness for you. They optimize image load times and ensure your page passes core web performance checks. They also include structured metadata that makes your profile readable by search engines and automated scrapers. It gives you all the benefits of a web CV with zero setup time.</p>
+      <p>These platforms handle the responsiveness for you. They tune image load times and ensure your page passes core web performance checks. They also include structured metadata that makes your profile readable by search engines and automated scrapers. It gives you all the benefits of a web CV with zero setup time.</p>
 
       <p>Having a live link also makes it easy to update your history. If you fix a bug in your project or update a job description you edit the site. The next visitor instantly sees the updated version. Read about this advantage in our guide on <Link href="/link" className={link}>sending your CV as a link</Link>.</p>
 
       <h2 className={h2}>Web Performance as a Professional Signal</h2>
-      <p>When you build a web profile you are not just presenting content. You are publishing a live web system. The speed and quality of that system is a direct representation of your technical capabilities. If your page takes three seconds to load because you did not optimize your images it tells the evaluator that you do not understand frontend performance rules.</p>
+      <p>When you build a web profile you are presenting content. You are publishing a live web system. The speed and quality of that system is a direct representation of your technical capabilities. If your page takes three seconds to load because you did not tune your images it tells the evaluator that you do not understand frontend performance rules.</p>
 
       <p>A professional web profile should load in under five hundred milliseconds. It should have a perfect score on core web vitals. This shows you know how to configure bundle sizes minimize blocking scripts and handle server caching. It shows you care about user experience under slow network conditions.</p>
 
@@ -111,7 +111,14 @@ export default function ArticleContent() {
 
       <p>Upload a very simple linear text document. Use standard headings and simple bullet lists. This text document is for the robot scanners. It guarantees that the parser reads your data correctly. Inside the document place a link to your live web CV at the very top. Label it as View Interactive Frontend Profile.</p>
 
-      <p>This approach satisfies both targets. The automated system gets a clean text format to scan. The human manager gets a link to a responsive showcase of your actual frontend capabilities. It is the safest way to ensure your application gets processed and remembered.</p>
+      <p>This approach satisfies both targets. The automated system gets a clean text format to scan. The human manager gets a link to a responsive show of your actual frontend capabilities. It is the safest way to ensure your application gets processed and remembered.</p>
+
+      <h2 className={h2}>Choosing a Custom Domain for Your Profile</h2>
+      <p>Your domain name is part of the first impression. A custom domain like yourname.dev signals that you manage infrastructure basics. A generic subdomain on a free hosting platform can work, but it looks less polished when a hiring manager compares you against candidates who invested in a clean URL.</p>
+
+      <p>Keep the domain simple. Your first and last name is ideal. Avoid clever spellings that require explanation over the phone. Configure HTTPS correctly. A profile that throws certificate warnings will get closed immediately, no matter how good your projects look.</p>
+
+      <p>If you are not ready to manage DNS records yourself, use a structured profile builder that handles hosting and SSL for you. The important part is that the URL stays stable across job searches. You should be able to update your projects without changing the link you printed on business cards or shared in past emails.</p>
 
       <p>Stop relying on static PDF CVs. Build a responsive web profile. Embed live code samples. Give hiring teams an interactive experience that proves you are a modern frontend engineer.</p>
     </div>

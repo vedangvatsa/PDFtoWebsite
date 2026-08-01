@@ -6,11 +6,11 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
       <p>
-        Designers who send flat PDF files when applying for jobs are missing a major opportunity. A PDF is static and silent. It does not show how you handle hover states, layout transitions, or user flows. If you are a UI or UX designer, your application is a reflection of your work.
-      </p>
+ Designers who send flat PDF files when applying for jobs are missing a major opportunity. A PDF is static and silent. It does not show how you handle hover states, layout transitions, or user flows. If you are a UI or UX designer, your application is a reflection of your work.
+ </p>
       <p>
-        An interactive resume allows you to show off your design system in a living environment. It proves you understand how code and design work together. It demonstrates your ability to build accessible, responsive interfaces that work on any screen size. This guide covers how to design and build an interactive profile that gets you hired.
-      </p>
+ An interactive resume allows you to show off your design system in a living environment. It proves you understand how code and design work together. It demonstrates your ability to build accessible, responsive interfaces that work on any screen size. This guide covers how to design and build an interactive profile that gets you hired.
+ </p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
         <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Static PDF versus interactive web layout comparison for UI UX designers">
@@ -58,100 +58,118 @@ export default function ArticleContent() {
 
       <h2 className={h2}>Why Static Files Limit Designers</h2>
       <p>
-        A static document cannot show how an interface responds to user inputs. You cannot demonstrate form validation behaviors. You cannot show how a side panel slides open, or how a card transitions on hover. These details are the core of modern user experience design.
-      </p>
+ A static document cannot show how an interface responds to user inputs. You cannot demonstrate form validation behaviors. You cannot show how a side panel slides open, or how a card transitions on hover. These details are the core of modern user experience design.
+ </p>
       <p>
-        By using a static format, you force hiring managers to read about your designs instead of feeling them. A live page, however, acts as an active demonstration of your product thinking.
-      </p>
+ By using a static format, you force hiring managers to read about your designs instead of feeling them. A live page, however, acts as an active demonstration of your product thinking.
+ </p>
       <p>
-        Building a web profile proves you can write clean HTML and CSS. Many companies value designers who can bridge the gap between design tools and frontend code. If you can build the layouts you design, you become twice as valuable to a product team.
-      </p>
+ Building a web profile proves you can write clean HTML and CSS. Many companies value designers who can bridge the gap between design tools and frontend code. If you can build the layouts you design, you become twice as valuable to a product team.
+ </p>
       <p>
-        A web link is also easier to share. Hiring managers can check your profile on their phones during a meeting. A PDF often looks cramped and unreadable on small screens.
-      </p>
+ A web link is also easier to share. Hiring managers can check your profile on their phones during a meeting. A PDF often looks cramped and unreadable on small screens.
+ </p>
       <p>
-        Beyond that, flat documents limit your ability to show your design systems in action. In modern product development, designers do not just create static mockups. They build reusable component libraries and define token systems. An interactive page allows you to show these systems working in code, proving you can collaborate effectively with developers.
-      </p>
+ Beyond that, flat documents limit your ability to show your design systems in action. In modern product development, designers do create static mockups. They build reusable component libraries and define token systems. An interactive page allows you to show these systems working in code, proving you can collaborate effectively with developers.
+ </p>
 
       <h2 className={h2}>Core Sections of a Designer Web Profile</h2>
       <p>
-        Your interactive resume should have a structured layout that prioritizes readability. The header must state your role and your design philosophy in a single clear sentence. Avoid using vague jargon.
-      </p>
+ Your interactive resume should have a structured layout that prioritizes readability. The header must state your role and your design philosophy in a single clear sentence. Avoid using vague jargon.
+ </p>
       <p>
-        The main section must feature your case studies. Do not just upload final polished screens. Show the progression of your design process. Explain the research steps, the initial wireframes, the user tests, and the final outcomes.
-      </p>
+ The main section must feature your case studies. Do upload final polished screens. Show the progression of your design process. Explain the research steps, the initial wireframes, the user tests, and the final outcomes.
+ </p>
       <p>
-        Include a section that highlights your design system work. Show your typography choices, spacing rules, and color palettes. This proves you design with consistency and build systems that scale.
-      </p>
+ Include a section that highlights your design system work. Show your typography choices, spacing rules, and color palettes. This proves you design with consistency and build systems that scale.
+ </p>
       <p>
-        Finally, add a section with embedded Figma files or interactive prototypes. This allows recruiters to click through your workflows without leaving your page. It shows you build logical, intuitive user paths.
-      </p>
+ Finally, add a section with embedded Figma files or interactive prototypes. This allows recruiters to click through your workflows without leaving your page. It shows you build logical, intuitive user paths.
+ </p>
       <p>
-        Do not forget to write about user outcomes. A beautiful interface is meaningless if users cannot achieve their goals. For each case study, explain how your design choices affected key product metrics. Did sign-up conversion rates increase? Did task completion times decrease? Sharing these numbers proves you design for business results rather than just visual appeal. This approach makes your case studies much more convincing to product managers. It shows you think about the business, not just the pixels.
-      </p>
+ Do not forget to write about user outcomes. A beautiful interface is meaningless if users cannot achieve their goals. For each case study, explain how your design choices affected key product metrics. Did sign-up conversion rates increase? Did task completion times decrease? Sharing these numbers proves you design for business results rather than just visual appeal. This approach makes your case studies much more convincing to product managers. It shows you think about the business, the pixels.
+ </p>
 
       <div className={callout}>
         <h3 className={h3}>Keep the layout clean</h3>
         <p>
-          Do not make your page complex. Use a single column format for your text. Ensure there is plenty of whitespace between sections. A cluttered layout looks unprofessional and hurts the user experience.
-        </p>
+ Do not make your page complex. Use a single column format for your text. Ensure there is plenty of whitespace between sections. A cluttered layout looks unprofessional and hurts the user experience.
+ </p>
       </div>
 
       <h2 className={h2}>Designing with Micro-interactions</h2>
       <p>
-        Subtle animations can make your web page feel alive and polished. You can use hover states on cards, smooth scrolls when clicking navigation links, and simple fade transitions.
-      </p>
+ Subtle animations can make your web page feel alive and polished. You can use hover states on cards, smooth scrolls when clicking navigation links, and simple fade transitions.
+ </p>
       <p>
-        However, you must avoid over-animating. Too many moving elements are distracting. If text blocks fly in from all directions, they become hard to read.
-      </p>
+ However, you must avoid over-animating. Too many moving elements are distracting. If text blocks fly in from all directions, they become hard to read.
+ </p>
       <p>
-        Use animations only to guide the reader&apos;s eye. A slight color shift on a button shows it is clickable. A smooth expansion of a text box reveals more details without page reloads. Keep all transitions under three hundred milliseconds to ensure they feel fast and responsive.
-      </p>
+ Use animations only to guide the reader&apos;s eye. A slight color shift on a button shows it is clickable. A smooth expansion of a text box reveals more details without page reloads. Keep all transitions under three hundred milliseconds to ensure they feel fast and responsive.
+ </p>
       <p>
-        Make sure your page load speed is fast. Large image files can slow down your site. Optimize your screenshots and design assets. Having a slow page is a major user experience failure.
-      </p>
+ Make sure your page load speed is fast. Large image files can slow down your site. tune your screenshots and design assets. Having a slow page is a major user experience failure.
+ </p>
       <p>
-        Recruiters will close the tab if your images take ages to load. A fast site shows you respect the user&apos;s time.
-      </p>
+ Recruiters will close the tab if your images take ages to load. A fast site shows you respect the user&apos;s time.
+ </p>
 
       <h2 className={h2}>Accessibility is Not Optional</h2>
       <p>
-        As a designer, you must build products that everyone can use. This rule applies to your personal profile page as well. An inaccessible site proves you do not understand UX principles.
-      </p>
+ As a designer, you must build products that everyone can use. This rule applies to your personal profile page as well. An inaccessible site proves you do not understand UX principles.
+ </p>
       <p>
-        Ensure your text has proper color contrast. Dark grey text on a slightly lighter grey background is hard to read. Use high contrast colors that are easy on the eyes.
-      </p>
+ Ensure your text has proper color contrast. Dark grey text on a slightly lighter grey background is hard to read. Use high contrast colors that are easy on the eyes.
+ </p>
       <p>
-        Make your site keyboard friendly. A user should be able to move through all links using only the tab key. Provide clear focus indicators on active elements.
-      </p>
+ Make your site keyboard friendly. A user should be able to move through all links using only the tab key. Provide clear focus indicators on active elements.
+ </p>
       <p>
-        Add alternative text descriptions to all your project images. This allows screen readers to describe your designs to visually impaired users. Designing with accessibility in mind shows you care about all users.
-      </p>
+ Add alternative text descriptions to all your project images. This allows screen readers to describe your designs to visually impaired users. Designing with accessibility in mind shows you care about all users.
+ </p>
 
       <h2 className={h2}>Testing Your Interactive Profile</h2>
       <p>
-        Before you send your link to companies, test it thoroughly. Open your page on different web browsers. A layout that looks perfect in Chrome might look broken in Safari or Firefox. Test all clickable elements to ensure they respond correctly.
-      </p>
+ Before you send your link to companies, test it thoroughly. Open your page on different web browsers. A layout that looks perfect in Chrome might look broken in Safari or Firefox. Test all clickable elements to ensure they respond correctly.
+ </p>
       <p>
-        Ask a friend to look at your site. Watch them interact with it. Do they know where to click? Do they understand what your projects are about? Observing a real user will highlight usability issues you might have missed.
-      </p>
+ Ask a friend to look at your site. Watch them interact with it. Do they know where to click? Do they understand what your projects are about? Observing a real user will highlight usability issues you might have missed.
+ </p>
       <p>
-        Similarly, check your loading speeds. You can use free web tools to audit your page speed. If your images are too large, compress them. A fast loading site is key to keeping busy recruiters on your page.
-      </p>
+ Similarly, check your loading speeds. You can use free web tools to audit your page speed. If your images are too large, compress them. A fast loading site is key to keeping busy recruiters on your page.
+ </p>
 
       <h2 className={h2}>How to Host and Share Your Work</h2>
       <p>
-        Once your interactive profile is ready, you need a reliable hosting platform. You can use services like Vercel or Netlify to publish your code for free. They connect to your GitHub repository and build your site automatically.
-      </p>
+ Once your interactive profile is ready, you need a reliable hosting platform. You can use services like Vercel or Netlify to publish your code for free. They connect to your GitHub repository and build your site automatically.
+ </p>
       <p>
-        Buy a custom domain to make your link look professional. A clean URL is easy to share in emails and message pitches.
-      </p>
+ Buy a custom domain to make your link look professional. A clean URL is easy to share in emails and message pitches.
+ </p>
       <p>
-        Having a single web link is the best way to get noticed by design leaders. Read about <Link href="/link" className={link}>why sharing a web link is better than sending a static file</Link> for your job search.
-      </p>
+ Having a single web link is the best way to get noticed by design leaders. Read about <Link href="/link" className={link}>why sharing a web link is better than sending a static file</Link> for your job search.
+ </p>
       <p>
-        If you want to ensure your web page looks great on mobile, check out our guide on <Link href="/mobile" className={link}>making your CV mobile friendly</Link> to improve your mobile layout.
-      </p>
+ If you want to ensure your web page looks great on mobile, check out our guide on <Link href="/mobile" className={link}>making your CV mobile friendly</Link> to improve your mobile layout.
+ </p>
+
+      <h2 className={h2}>Case Study Layout Patterns That Convert</h2>
+      <p>Strong designer profiles follow a repeatable case study skeleton. Problem statement in two sentences. Constraints you faced: timeline, team size, platform. Your role spelled out explicitly so nobody assumes you soloed a team project. Before and after metrics. Three to five final screens with captions, not a fifty-image carousel.</p>
+      <p>Embed Figma prototypes inline when possible. Let recruiters click through a checkout flow instead of reading a paragraph about checkout flows. The interaction is the evidence.</p>
+
+      <h2 className={h2}>Dark Mode and Reader Preference</h2>
+      <p>Respect <span className={bold}>prefers-color-scheme</span> if you hand-code the site. Many hiring managers read email on phones at night. A blinding white portfolio at 10 PM creates a negative first impression. A subtle dark palette with tested contrast ratios shows systems thinking.</p>
+
+      <h2 className={h2}>Motion Reduction and Accessibility Settings</h2>
+      <p>Honor <span className={bold}>prefers-reduced-motion</span> for users who disable animations at the OS level. Your micro-interactions should degrade to instant state changes, not disappear entirely. That dual behavior is a strong signal you understand production-grade front-end work.</p>
+
+      <h2 className={h2}>Typography as Proof of Craft</h2>
+      <p>Pair a display face with a workhorse text face. Set a modular scale for headings and body. Document your type choices in a small inline style guide section. Hiring managers who care about design systems will look for intentional type, not default browser fonts slapped on a template.</p>
+      <p>Limit yourself to two families and three weights. Restraint reads as confidence.</p>
+
+      <h2 className={h2}>Shipping the First Version</h2>
+      <p>Publish when one case study, contact path, and about section are solid. Iterate in public. Designers respect shipped work more than endless work-in-progress Figma files linked from a PDF.</p>
+      <p>Done beats perfect when the job search clock is running.</p>
 
       <h2 className={h2}>Read Next</h2>
       <ul className={ul}>

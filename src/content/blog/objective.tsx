@@ -20,7 +20,7 @@ export default function ArticleContent() {
             <text x="40" y="42" fontSize="11" fontWeight="700" letterSpacing="0.05em" fontFamily="system-ui, sans-serif" className="fill-red-500 dark:fill-red-400">BEFORE</text>
 
             {/* Before text */}
-            <text x="40" y="68" fontSize="13" fontFamily="system-ui, sans-serif" className="fill-zinc-600 dark:fill-zinc-400" fontStyle="italic">"Seeking a challenging position where I can leverage</text>
+            <text x="40" y="68" fontSize="13" fontFamily="system-ui, sans-serif" className="fill-zinc-600 dark:fill-zinc-400" fontStyle="italic">"Seeking a challenging position where I can use</text>
             <text x="40" y="88" fontSize="13" fontFamily="system-ui, sans-serif" className="fill-zinc-600 dark:fill-zinc-400" fontStyle="italic">my skills and grow professionally."</text>
 
             {/* Arrow between boxes */}
@@ -62,6 +62,59 @@ export default function ArticleContent() {
         <h2 className={h2}>Space Is Your Most Valuable Asset</h2>
         <p>The top quarter of your application is the most expensive real estate you own. This is the only section that every single recruiter is guaranteed to read. If you waste that prime space talking about your personal journey you force the reader to scroll down just to find out if you even know the required coding languages.</p>
         <p>Never make a tired manager hunt for your core skills. Put your value plainly at the top and let your accomplishments speak for themselves.</p>
+
+        <h2 className={h2}>What Hiring Managers Scan in Six Seconds</h2>
+        <p>Eye-tracking studies on recruiter behavior consistently show the same pattern. Name and current title first. Most recent employer second. One number that proves impact third. Skills list fourth if they still have attention.</p>
+        <p>An objective statement about seeking growth does not appear anywhere on that list because it answers a question nobody asked. A value summary that says <span className={bold}>cut API latency 40% at a fintech with 2M daily users</span> hits items two and three immediately.</p>
+
+        <h2 className={h2}>Objective Statements by Role Type</h2>
+        <p>Junior candidates often think objectives help because they lack long work history. They hurt juniors the most. Without achievements, an objective is pure wishful thinking. Replace it with a skills-forward summary: your stack, your strongest academic or internship project, and one metric from that project.</p>
+        <p>Senior candidates who write objectives look like they have not hired anyone in years. Leaders know hiring is problem solving. Open with the problems you have solved at scale.</p>
+        <p>Career changers should frame translation, not desire. <span className={bold}>Product manager with eight years in clinical research, shipped two HIPAA-compliant patient portals</span> tells the reader how your past maps to the new field. <span className={bold}>Seeking to transition into product</span> tells them nothing.</p>
+
+        <div className={callout}>
+          <h3 className={h3}>The headline field counts</h3>
+          <p>On CVin.Bio and LinkedIn, your headline is the summary most people see without scrolling. Treat it like the replacement for an objective. One line: role, years, domain, flagship win.</p>
+        </div>
+
+        <h2 className={h2}>Summary Templates That Work</h2>
+        <p>Template for engineers: <span className={bold}>[Role] with [X] years building [domain]. Deep in [tool A] and [tool B]. Last shipped [outcome with number].</span></p>
+        <p>Template for designers: <span className={bold}>[Role] across [industry]. Led [project type] from research through launch. [Metric] improvement on [surface].</span></p>
+        <p>Template for managers: <span className={bold}>[Role] leading teams of [size] on [product area]. Grew [metric] from [A] to [B] over [timeframe].</span></p>
+        <p>Swap the bracketed pieces with your real data. Delete any sentence that does not contain a concrete noun or number.</p>
+
+        <h2 className={h2}>Where Objectives Still Appear</h2>
+        <p>University career centers still hand out objective examples. Older Word templates on Google still have placeholder objectives. Job boards in some regions expect them. Ignore those defaults for tech and product roles in 2026.</p>
+        <p>If a legacy form has a required <span className={bold}>career goals</span> text box, write two sentences about what you deliver, not what you want. Never mention <span className={bold}>challenging opportunities</span> or <span className={bold}>dynamic teams</span>. Those phrases are empty calories.</p>
+
+        <h2 className={h2}>Pair Your Summary With Short Bullets</h2>
+        <p>The summary sets the frame. Bullets under each job provide evidence. Read our guide on <Link href="/bullets" className={link}>keeping bullets to one sentence</Link> so the top of your profile stays tight. A strong summary plus three crisp bullets per role beats a half-page objective plus dense paragraphs every time.</p>
+
+        <h2 className={h2}>ATS Fields That Replace Objectives</h2>
+        <p>Many portals now ask for a <span className={bold}>professional summary</span> or <span className={bold}>elevator pitch</span> in a dedicated text box. Treat that field exactly like the value summary on your CV. Same three sentences. Same past-tense proof. No wishes about future growth.</p>
+        <p>If the form still labels the field <span className={bold}>objective</span>, ignore the label and write value anyway. The parser indexes the text, not the field name on the recruiter screen.</p>
+
+        <h2 className={h2}>LinkedIn About Section vs Resume Summary</h2>
+        <p>Your LinkedIn About block and your CV summary should tell the same story with different length. CV gets three sentences. LinkedIn gets one short paragraph with the same numbers. Do not write a motivational objective on LinkedIn and a value summary on your CV. Recruiters cross-check both.</p>
+        <p>First person is fine on LinkedIn. Third person or fragment style is fine on a formal CV. The facts must match.</p>
+
+        <h2 className={h2}>Executive and Board-Ready Summaries</h2>
+        <p>VP and C-level candidates sometimes write objectives about visionary leadership. Boards want receipts. Open with P&amp;L scope, team size, and a turnaround metric. <span className={bold}>Operator who took a $40M ARR product from negative growth to 18% YoY in fourteen months by rebuilding the enterprise sales motion.</span> That is a summary. <span className={bold}>Passionate leader seeking visionary opportunities</span> is noise.</p>
+        <p>Keep it under four lines even at executive level. Density beats length when every word carries a number or a named outcome.</p>
+
+        <h2 className={h2}>Freelancers and Contract Summaries</h2>
+        <p>Contractors often write objectives about seeking long-term employment. Clients hiring six-month sprints want speed and domain fit. Lead with stack, timezone overlap, and two shipped client outcomes. Mention availability dates in the contact block, not in the summary paragraph that should sell capability.</p>
+        <p>Your summary should answer what you build, not what you hope the client becomes for your career.</p>
+
+        <h2 className={h2}>Students and New Grads</h2>
+        <p>Replace the objective with your strongest proof of work: capstone project, internship outcome, or open source contribution with a number. <span className={bold}>CS grad. Built a campus events app used by 4,000 students. Internship: automated test suite that cut release QA time from three days to six hours.</span> Employers hire potential when it is backed by shipped output.</p>
+
+        <h2 className={h2}>Read Next</h2>
+        <ul className={ul}>
+          <li><Link href="/bullets" className={link}>How long resume bullets should be</Link></li>
+          <li><Link href="/impact" className={link}>Quantifying impact without confidential revenue data</Link></li>
+          <li><Link href="/headings" className={link}>ATS-friendly section headings that parsers recognize</Link></li>
+        </ul>
       </div>
   );
 }

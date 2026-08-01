@@ -17,7 +17,7 @@ export default function ArticleContent() {
               .sev-label { font: 12px system-ui; fill: white; }
               .sev-zone { font: bold 10px system-ui; text-anchor: middle; }
             `}</style>
-            <text x="320" y="22" className="sev-title fill-zinc-900 dark:fill-zinc-100" textAnchor="middle">Resume Mistakes — Damage Severity Scale</text>
+            <text x="320" y="22" className="sev-title fill-zinc-900 dark:fill-zinc-100" textAnchor="middle">Resume Mistakes. Damage Severity Scale</text>
             {/* Zone labels */}
             <text x="24" y="80" className="sev-zone" fill="#dc2626" transform="rotate(-90 24 80)" style={{letterSpacing: '2px'}}>CRITICAL</text>
             <text x="24" y="240" className="sev-zone" fill="#ea580c" transform="rotate(-90 24 240)" style={{letterSpacing: '2px'}}>SERIOUS</text>
@@ -25,43 +25,43 @@ export default function ArticleContent() {
             {/* #1 */}
             <rect x="44" y="38" width="576" height="40" rx="6" fill="#dc2626" opacity="0.95" />
             <text x="60" y="63" className="sev-rank">#1</text>
-            <text x="96" y="63" className="sev-label">Typos in company names — instant rejection</text>
+            <text x="96" y="63" className="sev-label">Typos in company names. instant rejection</text>
             {/* #2 */}
             <rect x="44" y="84" width="540" height="40" rx="6" fill="#dc2626" opacity="0.82" />
             <text x="60" y="109" className="sev-rank">#2</text>
-            <text x="96" y="109" className="sev-label">Generic objective statements — says nothing useful</text>
+            <text x="96" y="109" className="sev-label">Generic objective statements. says nothing useful</text>
             {/* #3 */}
             <rect x="44" y="130" width="504" height="40" rx="6" fill="#ea580c" opacity="0.85" />
             <text x="60" y="155" className="sev-rank">#3</text>
-            <text x="96" y="155" className="sev-label">Overstuffed bullet points — eyes glaze over</text>
+            <text x="96" y="155" className="sev-label">Overstuffed bullet points. eyes glaze over</text>
             {/* #4 */}
             <rect x="44" y="176" width="468" height="40" rx="6" fill="#ea580c" opacity="0.78" />
             <text x="60" y="201" className="sev-rank">#4</text>
-            <text x="96" y="201" className="sev-label">Skill bars and ratings — no real meaning</text>
+            <text x="96" y="201" className="sev-label">Skill bars and ratings. no real meaning</text>
             {/* #5 */}
             <rect x="44" y="222" width="432" height="40" rx="6" fill="#d97706" opacity="0.8" />
             <text x="60" y="247" className="sev-rank">#5</text>
-            <text x="96" y="247" className="sev-label">Non-responsive formatting — unreadable on mobile</text>
+            <text x="96" y="247" className="sev-label">Non-responsive formatting. unreadable on mobile</text>
             {/* #6 */}
             <rect x="44" y="268" width="396" height="40" rx="6" fill="#d97706" opacity="0.72" />
             <text x="60" y="293" className="sev-rank">#6</text>
-            <text x="96" y="293" className="sev-label">Wrong file format — blocked or broken</text>
+            <text x="96" y="293" className="sev-label">Wrong file format. blocked or broken</text>
             {/* #7 */}
             <rect x="44" y="314" width="360" height="40" rx="6" fill="#ca8a04" opacity="0.75" />
             <text x="60" y="339" className="sev-rank">#7</text>
-            <text x="96" y="339" className="sev-label">Missing keywords — filtered by ATS</text>
+            <text x="96" y="339" className="sev-label">Missing keywords. filtered by ATS</text>
             {/* #8 */}
             <rect x="44" y="360" width="324" height="40" rx="6" fill="#ca8a04" opacity="0.65" />
             <text x="60" y="385" className="sev-rank">#8</text>
-            <text x="96" y="385" className="sev-label">Gaps with no explanation — invites assumptions</text>
+            <text x="96" y="385" className="sev-label">Gaps with no explanation. invites assumptions</text>
             {/* #9 */}
             <rect x="44" y="406" width="288" height="40" rx="6" fill="#a3a3a3" opacity="0.7" />
             <text x="60" y="431" className="sev-rank">#9</text>
-            <text x="96" y="431" className="sev-label">Outdated contact info — silent missed calls</text>
+            <text x="96" y="431" className="sev-label">Outdated contact info. silent missed calls</text>
             {/* #10 */}
             <rect x="44" y="452" width="252" height="40" rx="6" fill="#a3a3a3" opacity="0.55" />
             <text x="60" y="477" className="sev-rank">#10</text>
-            <text x="96" y="477" className="sev-label">No way to verify claims — low trust</text>
+            <text x="96" y="477" className="sev-label">No way to verify claims. low trust</text>
             {/* Footer */}
             <text x="320" y="510" textAnchor="middle" style={{font: '11px system-ui'}} className="fill-zinc-400 dark:fill-zinc-500">Bar length = relative impact on your chances of getting an interview</text>
           </svg>
@@ -94,7 +94,7 @@ export default function ArticleContent() {
         <p>The fix is to either simplify your PDF to a single column or switch to a <Link href="/mobile" className={link}>web-based profile that adapts to any screen size</Link> automatically. Your content stays the same. The reading experience just stops being painful.</p>
 
         <h2 className={h2}>#6: Wrong File Format</h2>
-        <p>Sending a .pages file to a Windows user. Exporting a Canva design as a JPEG instead of a PDF. Submitting a Google Doc link that requires sign-in. Every wrong file format is a barrier between you and the person trying to read your resume.</p>
+        <p>Sending a.pages file to a Windows user. Exporting a Canva design as a JPEG instead of a PDF. Submitting a Google Doc link that requires sign-in. Every wrong file format is a barrier between you and the person trying to read your resume.</p>
         <p>If you must send a file, PDF is the safest bet. But even PDFs get stripped by corporate email security. The most reliable approach is a permanent web link that works for everyone, on every device, with no software required.</p>
 
         <h2 className={h2}>#7: Missing Keywords</h2>
@@ -117,6 +117,11 @@ export default function ArticleContent() {
           <h3 className={h3}>Fix all ten in under an hour</h3>
           <p>None of these mistakes require a full resume rewrite. Proofread for typos (5 min). Kill the objective statement (2 min). Trim your bullets (10 min). Remove skill bars (2 min). Test on your phone (3 min). Check your file format (1 min). Add missing keywords (10 min). Explain gaps (5 min). Verify contact info (2 min). Add one portfolio link (5 min). Total: about 45 minutes for a dramatically better resume.</p>
         </div>
+
+        <h2 className={h2}>Why Small Mistakes Stack</h2>
+        <p>Each mistake on this list creates a separate reason to reject you. They compound. A typo plus skill bars plus a generic objective is three strikes before the recruiter finishes page one.</p>
+        <p>Fix them in severity order. The top four items take about twenty minutes and remove the biggest risks. The rest is polish, but polish still matters when you are competing against hundreds of applicants for one role.</p>
+        <p>Run the same checklist before every application. A resume that passed last month might have a stale phone number or a broken project link today.</p>
 
         <h2 className={h2}>Read Next</h2>
         <ul className={ul}>

@@ -73,7 +73,7 @@ export default function ArticleContent() {
             <text x="672" y="333" textAnchor="middle" className="matrix-col fill-red-500 dark:fill-red-400">HIGH</text>
             {/* Bottom border */}
             <line x1="40" y1="358" x2="700" y2="358" className="stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1" />
-            <text x="360" y="375" textAnchor="middle" style={{font: '11px system-ui'}} className="fill-zinc-400 dark:fill-zinc-500">✓ = Yes  ✗ = No  |  Maintenance = effort to keep updated</text>
+            <text x="360" y="375" textAnchor="middle" style={{font: '11px system-ui'}} className="fill-zinc-400 dark:fill-zinc-500">✓ = Yes ✗ = No | Maintenance = effort to keep updated</text>
           </svg>
         </div>
 
@@ -86,7 +86,7 @@ export default function ArticleContent() {
         <h2 className={h2}>2. Vercel or Netlify</h2>
         <p><span className={bold}>Best for:</span> Frontend developers who want a custom site that doubles as a project.</p>
         <p>Vercel and Netlify let you deploy a React, Next.js, or any static site with a single push. The developer experience is excellent. You get instant previews, automatic deploys from Git, and free SSL on a custom domain.</p>
-        <p>The catch is that you need to build the site first. That means choosing a framework, designing layouts, writing CSS, and maintaining it over time. For a frontend developer, the portfolio site itself is a showcase of your skills. For everyone else, it is a time sink that pulls you away from work that actually matters to employers.</p>
+        <p>The catch is that you need to build the site first. That means choosing a framework, designing layouts, writing CSS, and maintaining it over time. For a frontend developer, the portfolio site itself is a show of your skills. For everyone else, it is a time sink that pulls you away from work that actually matters to employers.</p>
         <div className={callout}>
           <h3 className={h3}>When building your own site makes sense</h3>
           <p>If you are applying for frontend or full-stack roles, a well-built personal site on Vercel shows that you can ship. If you are a backend or data engineer, your time is better spent on something that highlights your actual domain.</p>
@@ -127,6 +127,7 @@ export default function ArticleContent() {
         <p>There is no single right answer. But here is a simple way to decide.</p>
         <p>If you are a frontend developer who enjoys building UIs, go with Vercel or Netlify and make the site itself a portfolio piece. If you are a backend, DevOps, or data person who just needs a professional presence online, use CVin.Bio or ReadCV and spend your time on actual projects instead. If you are just starting out and need something online today, publish a Notion page and upgrade later.</p>
         <p>The biggest mistake is spending so long choosing a platform that you never publish anything. A live page with three good projects beats a planned custom site that never ships.</p>
+        <p>If you already have strong public repos on GitHub, start there. Add GitHub Pages or link your CVin.Bio profile from your bio. You do not need to rebuild everything on day one. Upgrade the frame when the work inside it is already solid.</p>
 
         <div className={callout}>
           <h3 className={h3}>The real portfolio is the work</h3>

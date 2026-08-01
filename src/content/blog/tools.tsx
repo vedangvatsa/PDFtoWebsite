@@ -17,7 +17,7 @@ export default function ArticleContent() {
               .cat-icon { font: 400 22px system-ui; }
               .cat-heading { font: 600 13px system-ui; }
             `}</style>
-            <text x="350" y="22" textAnchor="middle" className="cat-heading fill-zinc-500 dark:fill-zinc-400">Your Job Search Toolkit — One from Each Category</text>
+            <text x="350" y="22" textAnchor="middle" className="cat-heading fill-zinc-500 dark:fill-zinc-400">Your Job Search Toolkit. One from Each Category</text>
             {/* Category 1: Resume & Profile */}
             <rect x="10" y="38" width="128" height="260" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <text x="74" y="72" textAnchor="middle" className="cat-icon fill-zinc-400 dark:fill-zinc-500">📄</text>
@@ -77,7 +77,7 @@ export default function ArticleContent() {
         <h2 className={h2}>Resume and Profile Tools</h2>
 
         <h3 className={h3}>1. Google Docs</h3>
-        <p>Google Docs is still the best free tool for writing your resume. It sounds boring, and it is. That is exactly why it works. You get a clean single-column document that exports to .docx without breaking your formatting. It auto-saves, supports comments from friends who review your drafts, and runs in any browser.</p>
+        <p>Google Docs is still the best free tool for writing your resume. It sounds boring, and it is. That is exactly why it works. You get a clean single-column document that exports to.docx without breaking your formatting. It auto-saves, supports comments from friends who review your drafts, and runs in any browser.</p>
         <p>The main limit is design. Google Docs resumes look plain. If you are going for a role where visual design matters, you will want something with more layout control. But for most tech roles, clean and readable beats pretty every time.</p>
         <p><span className={bold}>Best for:</span> anyone who wants a simple, ATS-friendly resume they can edit from any device.</p>
 

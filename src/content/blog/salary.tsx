@@ -6,14 +6,14 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
       <p>
-        You are five minutes into an introductory phone call with a corporate recruiter. The conversation is friendly and you are discussing your backend experience. Suddenly the recruiter asks for your salary expectations. You feel a surge of panic. You do not want to state a number that is too high and get rejected. You do not want to say a number that is too low and leave money on the table.
-      </p>
+ You are five minutes into an introductory phone call with a corporate recruiter. The conversation is friendly and you are discussing your backend experience. Suddenly the recruiter asks for your salary expectations. You feel a surge of panic. You do not want to state a number that is too high and get rejected. You do not want to say a number that is too low and leave money on the table.
+ </p>
       <p>
-        You blurt out a random number you saw on an online forum. The recruiter writes it down. The call continues but the trap has already sprung. If your number was low you just saved the company thousands of dollars at your own expense. If your number was high the recruiter will silently flag you as too expensive and end your candidacy.
-      </p>
+ You blurt out a random number you saw on an online forum. The recruiter writes it down. The call continues but the trap has already sprung. If your number was low you just saved the company thousands of dollars at your own expense. If your number was high the recruiter will silently flag you as too expensive and end your candidacy.
+ </p>
       <p>
-        Giving a salary number early in the interview loop is a major tactical mistake. Recruiters ask this question to filter candidates out as fast as possible. You must learn how to deflect this question and keep the negotiation open.
-      </p>
+ Giving a salary number early in the interview loop is a major tactical mistake. Recruiters ask this question to filter candidates out as fast as possible. You must learn how to deflect this question and keep the negotiation open.
+ </p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
         <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Salary negotiation path comparison">
@@ -58,109 +58,135 @@ export default function ArticleContent() {
 
       <h2 className={h2}>Understand the Recruiter Target</h2>
       <p>
-        Recruiters do not ask about money because they are curious. They ask because they have strict guidelines. Every role has a pre-approved budget. If the range is eighty thousand to one hundred thousand and you say you want one hundred and twenty thousand the recruiter will end the call.
-      </p>
+ Recruiters do not ask about money because they are curious. They ask because they have strict guidelines. Every role has a pre-approved budget. If the range is eighty thousand to one hundred thousand and you say you want one hundred and twenty thousand the recruiter will end the call.
+ </p>
       <p>
-        They do this because they do not want to waste time on a candidate they cannot afford. However they also want to get the best talent for the lowest cost. If you say you will accept seventy thousand the company will happily write that into your contract.
-      </p>
+ They do this because they do not want to waste time on a candidate they cannot afford. However they also want to get the best talent for the lowest cost. If you say you will accept seventy thousand the company will happily write that into your contract.
+ </p>
       <p>
-        By giving a number first you give away all your bargaining power. You establish a ceiling for your potential salary. You can never negotiate up from a number you volunteered.
-      </p>
+ By giving a number first you give away all your bargaining power. You establish a ceiling for your potential salary. You can never negotiate up from a number you volunteered.
+ </p>
       <p>
-        Your goal during the first call is to prove you can do the job. Once the team decides they want to hire you your bargaining power increases. That is when you negotiate.
-      </p>
+ Your goal during the first call is to prove you can do the job. Once the team decides they want to hire you your bargaining power increases. That is when you negotiate.
+ </p>
       <p>
-        It is also helpful to understand how recruiting agencies work. External recruiters are paid a percentage of your starting salary as a placement fee. Internal recruiters are evaluated on their ability to hire within budget limits. Both sides have different motivations but both need to know if you are in the ball park before spending hours on interviews.
-      </p>
+ It is also helpful to understand how recruiting agencies work. External recruiters are paid a percentage of your starting salary as a placement fee. Internal recruiters are evaluated on their ability to hire within budget limits. Both sides have different motivations but both need to know if you are in the ball park before spending hours on interviews.
+ </p>
 
       <h2 className={h2}>The Budget Deflection Technique</h2>
       <p>
-        When the question comes up you should turn it back to the recruiter. Ask them what range they have budgeted for the role.
-      </p>
+ When the question comes up you should turn it back to the recruiter. Ask them what range they have budgeted for the role.
+ </p>
       <p>
-        You can say that you are open to a competitive offer and would like to know what range they are targetting. This is a standard professional question.
-      </p>
+ You can say that you are open to a competitive offer and would like to know what range they are targetting. This is a standard professional question.
+ </p>
       <p>
-        Most recruiters will share the range. Once you have their numbers you can confirm if the range matches your expectations.
-      </p>
+ Most recruiters will share the range. Once you have their numbers you can confirm if the range matches your expectations.
+ </p>
       <p>
-        If the recruiter shares a range of ninety thousand to one hundred and ten thousand you can say that sounds like a reasonable place to start. This keeps you in the process without committing to a specific number.
-      </p>
+ If the recruiter shares a range of ninety thousand to one hundred and ten thousand you can say that sounds like a reasonable place to start. This keeps you in the process without committing to a specific number.
+ </p>
       <p>
-        In many jurisdictions companies are legally required to share the salary range on the job posting. You should look up these pay transparency laws before your call. If they are legally required to post the range you can mention that you saw the posted range and want to confirm if it is still accurate. This shows you are informed and keeps the conversation professional.
-      </p>
+ In many jurisdictions companies are legally required to share the salary range on the job posting. You should look up these pay transparency laws before your call. If they are legally required to post the range you can mention that you saw the posted range and want to confirm if it is still accurate. This shows you are informed and keeps the conversation professional.
+ </p>
 
       <div className={callout}>
         <h3 className={h3}>Keep the response simple</h3>
         <p>
-          Do not give long explanations for why you want a certain salary. Keep your deflection short and professional. Ask for their range and listen to their answer.
-        </p>
+ Do not give long explanations for why you want a certain salary. Keep your deflection short and professional. Ask for their range and listen to their answer.
+ </p>
       </div>
 
       <h2 className={h2}>Focus on the Whole Package</h2>
       <p>
-        Salary is only one component of your total compensation. You must also consider equity, retirement matching, healthcare, and remote work policies.
-      </p>
+ Salary is only one component of your total compensation. You must also consider equity, retirement matching, healthcare, and remote work policies.
+ </p>
       <p>
-        When a recruiter presses for a number explain that you need to understand the full package first. You can mention that you value flexible remote work or specific learning opportunities.
-      </p>
+ When a recruiter presses for a number explain that you need to understand the full package first. You can mention that you value flexible remote work or specific learning opportunities.
+ </p>
       <p>
-        State that you are flexible on base salary if other benefits are strong. This framing allows you to negotiate different aspects of the offer later.
-      </p>
+ State that you are flexible on base salary if other benefits are strong. This framing allows you to negotiate different aspects of the offer later.
+ </p>
       <p>
-        If you are looking for remote contracts you can read about the <Link href="/remote" className={link}>best methods to format remote work</Link> to show your autonomy. A strong history of remote work helps you demand higher rates.
-      </p>
+ If you are looking for remote contracts you can read about the <Link href="/remote" className={link}>best methods to format remote work</Link> to show your autonomy. A strong history of remote work helps you demand higher rates.
+ </p>
       <p>
-        For instance a lower base salary can be acceptable if the company offers meaningful equity or a flexible work schedule. You must calculate the cost savings of working from home. Saving time and money on daily commuting can balance a slightly lower cash offer. Always consider the net value of the entire compensation package.
-      </p>
+ For instance a lower base salary can be acceptable if the company offers meaningful equity or a flexible work schedule. You must calculate the cost savings of working from home. Saving time and money on daily commuting can balance a slightly lower cash offer. Always consider the net value of the entire compensation package.
+ </p>
 
       <h2 className={h2}>Delay the Number Until the Technical Loop</h2>
       <p>
-        If the recruiter refuses to share their budget you must still delay giving a number. Explain that you cannot quote a price without knowing the exact system challenges.
-      </p>
+ If the recruiter refuses to share their budget you must still delay giving a number. Explain that you cannot quote a price without knowing the exact system challenges.
+ </p>
       <p>
-        State that you want to talk to the engineering team first. Explain that you need to see the complexity of the codebase and the scope of the responsibilities.
-      </p>
+ State that you want to talk to the engineering team first. Explain that you need to see the complexity of the codebase and the scope of the responsibilities.
+ </p>
       <p>
-        This is a logical technical response. A senior engineer would not estimate a project scope before seeing the requirements. You should treat your salary estimation the same way.
-      </p>
+ This is a logical technical response. A senior engineer would not estimate a project scope before seeing the requirements. You should treat your salary estimation the same way.
+ </p>
       <p>
-        This response proves you are a professional who takes their work seriously. It shifts the discussion from a quick price check to a serious evaluation of your technical skills.
-      </p>
+ This response proves you are a professional who takes their work seriously. It shifts the discussion from a quick price check to a serious evaluation of your technical skills.
+ </p>
 
       <h2 className={h2}>Handling the Application Form Fields</h2>
       <p>
-        Many online job portals force you to enter a number in the salary expectations field. You cannot submit the application without filling it in.
-      </p>
+ Many online job portals force you to enter a number in the salary expectations field. You cannot submit the application without filling it in.
+ </p>
       <p>
-        If the field allows text write negotiable or open. This tells the recruiter you are flexible and prevents you from being filtered out by automated parsers.
-      </p>
+ If the field allows text write negotiable or open. This tells the recruiter you are flexible and prevents you from being filtered out by automated parsers.
+ </p>
       <p>
-        If the field only accepts numbers do not write zero. An entry of zero can cause parsing errors in the applicant database. Instead write a realistic market rate for the role or use a placeholder that matches the average range.
-      </p>
+ If the field only accepts numbers do not write zero. An entry of zero can cause parsing errors in the applicant database. Instead write a realistic market rate for the role or use a placeholder that matches the average range.
+ </p>
       <p>
-        You can research average salaries for your target city using developer databases. Use that data to pick a number that is safe but does not limit your upside.
-      </p>
+ You can research average salaries for your target city using developer databases. Use that data to pick a number that is safe but does not limit your upside.
+ </p>
       <p>
-        If you want to ensure your profile parses correctly look at <Link href="/trust" className={link}>how recruiters spot fake skills</Link> to build a trusted profile. A clean layout ensures your application passes the initial automated screening.
-      </p>
+ If you want to ensure your profile parses correctly look at <Link href="/trust" className={link}>how recruiters spot fake skills</Link> to build a trusted profile. A clean layout ensures your application passes the initial automated screening.
+ </p>
 
       <h2 className={h2}>Practice Your Scripts</h2>
       <p>
-        The key to a successful deflection is your tone of voice. If you sound defensive or nervous the recruiter will keep pushing.
-      </p>
+ The key to a successful deflection is your tone of voice. If you sound defensive or nervous the recruiter will keep pushing.
+ </p>
       <p>
-        Practice saying your deflection script out loud until it feels natural. You should sound calm and confident.
-      </p>
+ Practice saying your deflection script out loud until it feels natural. You should sound calm and confident.
+ </p>
       <p>
-        Remember that the recruiter is not your enemy. They are just trying to do their job. Treat the conversation as a mutual evaluation rather than a test.
-      </p>
+ Remember that the recruiter is not your enemy. They are just trying to do their job. Treat the conversation as a mutual evaluation rather than a test.
+ </p>
       <p>
-        By holding back your number you protect your value. You ensure that when an offer is made it will reflect your true capabilities.
-      </p>
+ By holding back your number you protect your value. You ensure that when an offer is made it will reflect your true capabilities.
+ </p>
       <p>
-        If you are working on a contract basis you can also read about <Link href="/freelance" className={link}>freelance portfolio formatting tips</Link> to structure your past projects for maximum value. Presenting your work clearly helps you command the rate you deserve.
-      </p>
+ If you are working on a contract basis you can also read about <Link href="/freelance" className={link}>freelance portfolio formatting tips</Link> to structure your past projects for maximum value. Presenting your work clearly helps you command the rate you deserve.
+ </p>
+
+      <h2 className={h2}>When You Must Give a Number</h2>
+      <p>
+ Some recruiters will not move forward without a figure. 
+ If you are backed into a corner, quote a range rather than a single number. 
+ Say you are looking for something between one hundred ten and one hundred thirty thousand depending on equity and scope.
+ </p>
+      <p>
+ Ranges keep you inside the conversation while preserving room to negotiate upward. 
+ Anchor the bottom of your range at the number you would actually accept. 
+ Never quote a range where the low end is below your walk-away point.
+ </p>
+      <p>
+ After technical interviews pass, your bargaining position improves. 
+ That is when you can ask for the top of the posted band or request a signing bonus to close the gap. 
+ Holding your number until the team wants you changes who holds the pricing power.
+ </p>
+
+      <div className={callout}>
+        <h3 className={h3}>Write your walk-away number before the call</h3>
+        <p>
+ Decide your minimum acceptable total compensation in a spreadsheet before any recruiter phones you. 
+ Panic makes people accept thirty thousand below market. 
+ A written number on paper stops impulse answers during live calls.
+ </p>
+      </div>
 
       <h2 className={h2}>Read Next</h2>
       <ul className={ul}>

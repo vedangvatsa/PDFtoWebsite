@@ -64,9 +64,9 @@ export default function ArticleContent() {
       <p>The solution is simple. Host your code on a trusted platform. Send a link. A link to a public GitHub repository is safe. It is clean. It shows you know how to use industry standard tools to share your work.</p>
 
       <h2 className={h2}>Pasting Code in Emails and Text Fields</h2>
-      <p>Some developers try to avoid attachments by pasting their code directly into the body of an email or application form. This is also a bad idea. Plain text areas strip out indentation. They break line wraps. They remove syntax highlighting. Your beautiful code turns into a giant block of unreadable text.</p>
+      <p>Some developers try to avoid attachments by pasting their code directly into the body of an email or application form. This is also a bad idea. Plain text areas strip out indentation. They break line wraps. They remove syntax showing. Your beautiful code turns into a giant block of unreadable text.</p>
 
-      <p>Reading code without syntax highlighting is exhausting. It takes three times longer to understand. A manager who has to read fifty lines of raw unformatted Javascript will lose patience immediately. They will assume you do not care about code presentation.</p>
+      <p>Reading code without syntax showing is exhausting. It takes three times longer to understand. A manager who has to read fifty lines of raw unformatted Javascript will lose patience immediately. They will assume you do not care about code presentation.</p>
 
       <p>If you want to share a small snippet of code use a service like GitHub Gist. These tools let you paste code and get a clean URL with proper formatting and line numbers. It keeps the presentation clean and readable without filling an inbox with raw text.</p>
 
@@ -89,7 +89,7 @@ export default function ArticleContent() {
 
       <p>This is extremely convenient for the reader. They can change a line of CSS and instantly see the result. They can test your forms and buttons. It shows you understand modern web tools and want to provide a great experience for the reviewer. You can see how this compares to listing skills in our guide on <Link href="/code" className={link}>showing your code instead of listing it</Link>.</p>
 
-      <h2 className={h2}>How to Showcase Work from Private Jobs</h2>
+      <h2 className={h2}>How to show Work from Private Jobs</h2>
       <p>A huge problem for software developers is that their best code is locked behind private corporate repositories. You signed a non-disclosure agreement. You cannot copy code from your day job. If you do you risk legal trouble. But you still need to prove your capabilities to your next employer.</p>
 
       <p>The solution is to build a sanitised mock system. If you built a complex microservice at work do not copy it. Instead write a simple open source library that uses the same architecture pattern. If you used a specific event driven architecture with Kafka write a mini system that shows how you handle message serialization and retry queues in a clean way. This proves you understand the architectural concepts without leaking any proprietary corporate logic.</p>

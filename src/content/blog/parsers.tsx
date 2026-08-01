@@ -57,13 +57,13 @@ export default function ArticleContent() {
           <text x="30" y="118" className="ps-badge fill-zinc-500 dark:fill-zinc-400">EXPERIENCE</text>
 
           <text x="30" y="136" className="ps-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">Senior Backend Engineer</text>
-          <text x="30" y="150" className="ps-small fill-zinc-500 dark:fill-zinc-400">Acme Corp · Jan 2021 – Present</text>
+          <text x="30" y="150" className="ps-small fill-zinc-500 dark:fill-zinc-400">Acme Corp · Jan 2021. Present</text>
           <text x="30" y="164" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Rebuilt payment API handling $4M daily</text>
           <text x="30" y="178" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Migrated from PostgreSQL to CockroachDB</text>
           <text x="30" y="192" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Reduced p99 latency from 800ms to 120ms</text>
 
           <text x="30" y="214" className="ps-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">Software Engineer</text>
-          <text x="30" y="228" className="ps-small fill-zinc-500 dark:fill-zinc-400">StartupX · Mar 2018 – Dec 2020</text>
+          <text x="30" y="228" className="ps-small fill-zinc-500 dark:fill-zinc-400">StartupX · Mar 2018. Dec 2020</text>
           <text x="30" y="242" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Built REST APIs with Go and gRPC</text>
           <text x="30" y="256" className="ps-small fill-zinc-600 dark:fill-zinc-400">• Deployed services on K8s clusters</text>
 
@@ -172,8 +172,8 @@ export default function ArticleContent() {
 
       <p>To improve your score you must write about your skills inside your work history bullets. Explain how you used each tool to solve a specific problem. This context signals deep expertise to the parser.</p>
 
-      <h2 className={h2}>Optimizing Your Profile for API Scoring</h2>
-      <p>You can optimize your document by following standard structure guidelines. Avoid using columns or sidebar sections. Sidebars often cause the extraction tool to read text out of order.</p>
+      <h2 className={h2}>tuning Your Profile for API Scoring</h2>
+      <p>You can tune your document by following standard structure guidelines. Avoid using columns or sidebar sections. Sidebars often cause the extraction tool to read text out of order.</p>
 
       <p>Use simple headers that match the parser dictionary. Standard names like Experience and Education are safe anchors. They help the system identify where sections start and end.</p>
 
@@ -182,7 +182,7 @@ export default function ArticleContent() {
       <p>Avoid placing dates next to unrelated text. Keep dates on the same line as your job title. This close proximity helps the system associate the date with the correct role.</p>
 
       <h2 className={h2}>The Pitfall of AI Profile Summarizers</h2>
-      <p>Some newer parsing systems use large language models to summarize candidate files. These systems write a short bio of your skills for the recruiter. While this sounds helpful it introduces bias.</p>
+      <p>Some newer parsing systems use large language models candidate files. These systems write a short bio of your skills for the recruiter. While this sounds helpful it introduces bias.</p>
 
       <p>The language model might misinterpret your achievements or leave out important details. It might ignore a project because it does not fit the model expectations. You must keep your text clear to guide the summarizer.</p>
 
@@ -202,18 +202,32 @@ export default function ArticleContent() {
 
       <p>This testing process reveals the weaknesses of your document layout. It helps you fix formatting bugs before they affect your applications. A parsed document is the key to landing more interviews.</p>
 
+      <h2 className={h2}>Common Parser Failure Modes</h2>
+      <p>Tables are the most frequent cause of scrambled output. Parsers read cells left to right, top to bottom. A two column layout puts your skills before your job titles in the text stream. The system thinks you worked as a skill name.</p>
+
+      <p>Headers and footers steal content. If your phone number sits in a repeating footer, the parser may attach it to every job entry. Keep contact details in the body of page one only.</p>
+
+      <p>Graphics that look like text fool nobody. Skill bars drawn as images export as empty space. Write proficiency in words or list technologies plainly. Machines cannot read shaded rectangles.</p>
+
+      <h2 className={h2}>When Parsed Data Gets Stale</h2>
+      <p>Once your file enters a recruiter database it may sit there for months. Updating your PDF on a new application does not always refresh the old record. Recruiters searching internal pools still see last year skills unless you reapply or ask them to reparse.</p>
+
+      <p>A live web profile solves the stale data problem. You edit once and every future click shows the current version. Pair file uploads with a profile link so humans always see fresh data even when the database lags.</p>
+
+      <p>Track which portals let you replace an uploaded resume. Some lock the first parse forever. Knowing that policy saves you from wondering why nobody sees your new role.</p>
+
       <h2 className={h2}>Read Next</h2>
       <p>To understand more about automated screening systems check out these helpful guides.</p>
       
       <p>
-        Learn how artificial intelligence is changing recruitment by reading <Link href="/ai" className={link}>AI Agents Are Already Browsing Your Profile</Link>.
-      </p>
+ Learn how artificial intelligence is changing recruitment by reading <Link href="/ai" className={link}>AI Agents Are Already Browsing Your Profile</Link>.
+ </p>
       <p>
-        Discover how to bypass automated screeners by reading <Link href="/bots" className={link}>How to Beat Smart AI Bots</Link>.
-      </p>
+ Discover how to bypass automated screeners by reading <Link href="/bots" className={link}>How to Beat Smart AI Bots</Link>.
+ </p>
       <p>
-        Understand visual scanning patterns by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
-      </p>
+ Understand visual scanning patterns by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
+ </p>
     </div>
   );
 }

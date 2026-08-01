@@ -16,7 +16,7 @@ export default function ArticleContent() {
 
       <p>When a hiring manager selects PostgreSQL they should see every relevant bullet point glow. The unrelated experience should fade slightly to guide their eyes. This keeps the reader focused on the exact skills they want to hire.</p>
 
-      <p>Building this filter is also a great way to showcase clean state management. You prove you can write clean interactive code without relying on heavy third-party libraries. Keep the transitions fast and the layout stable during filtering.</p>
+      <p>Building this filter is also a great way to show clean state management. You prove you can write clean interactive code without relying on heavy third-party libraries. Keep the transitions fast and the layout stable during filtering.</p>
 
       <div className={callout}>
         <h3 className={h3}>Keep Layout Shifts Under Control</h3>
@@ -26,14 +26,14 @@ export default function ArticleContent() {
       <h2 className={h2}>Interactive Architecture Diagrams</h2>
       <p>Listing database engines and messaging queues in a list does not prove you can design systems. An interactive system diagram shows how your components communicate in production. You can use standard vector graphics to map your past systems.</p>
 
-      <p>Allow the reader to hover over a service to reveal its performance metrics. They can click on a database node to see the schema design or query optimization details. This provides deep technical context without cluttering the page.</p>
+      <p>Allow the reader to hover over a service to reveal its performance metrics. They can click on a database node to see the schema design or query tuning details. This provides deep technical context without cluttering the page.</p>
 
       <p>Use simple hover states to explain your scaling choices. Describe why you chose Redis as a cache rather than a simple in-memory store. This turns a static diagram into a deep technical brief.</p>
 
       <p>Make sure the diagram works perfectly on mobile devices. Use responsive wrappers and touch events to handle mobile screens. Many recruiters will view your CV on their phones during transit.</p>
 
       <h2 className={h2}>Live Command Line Mockups</h2>
-      <p>A web CV lets you showcase your familiarity with tools in unique ways. An embedded terminal mockup is a powerful way to engage technical managers. You can build a simple interactive command line component that responds to basic inputs.</p>
+      <p>A web CV lets you show your familiarity with tools in unique ways. An embedded terminal mockup is a powerful way to engage technical managers. You can build a simple interactive command line component that responds to basic inputs.</p>
 
       <p>Let users type help to see a list of custom commands. They can run tests to trigger a mock test suite that prints passing assertions. They can type info to print your contact details in a JSON object.</p>
 
@@ -169,22 +169,34 @@ export default function ArticleContent() {
 
       <p>Do not use scrolljacking on your web profile. Readers want standard scroll behavior when scanning your history. Messing with how the page scrolls is annoying and makes the site feel slow.</p>
 
-      <p>Ensure that all interactive elements are optional. A recruiter should be able to read your entire CV without clicking a single button. The interaction must enhance the experience rather than hide basic facts.</p>
+      <p>Ensure that all interactive elements are optional. A recruiter should be able to read your entire CV without clicking a single button. The interaction must improve the experience rather than hide basic facts.</p>
 
       <p>Test your page on multiple web browsers to ensure compatibility. A broken interactive component is worse than a static page. Keep your JavaScript clean and use modern fallback methods.</p>
+
+      <h2 className={h2}>Performance Budgets for Interactive CVs</h2>
+      <p>Every interactive element you add ships JavaScript to the recruiter's browser. A hiring manager on a train with weak signal will close a page that takes four seconds to become interactive. Set a hard performance budget before you add filters, sandboxes, or terminal mockups.</p>
+
+      <p>Measure your largest contentful paint and time to interactive using browser dev tools. Keep your initial bundle under one hundred kilobytes gzipped if possible. Lazy load anything below the fold so the recruiter sees your name and headline within one second.</p>
+
+      <p>Prefer CSS transitions over JavaScript animation libraries for simple hover states. A fade effect on project cards costs almost nothing. A three-dimensional carousel library costs kilobytes and milliseconds you cannot afford on mobile networks.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>Accessibility is a signal</h3>
+        <p>Keyboard navigation and screen reader labels prove you build software for real users. Add focus rings to filter buttons and aria labels to diagram nodes. Engineering managers notice when a portfolio respects accessibility standards.</p>
+      </div>
 
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on building professional web profiles and portfolios read these detailed guides.</p>
       
       <p>
-        Explore how to choose alternative formats to PDF by reading <Link href="/alternatives" className={link}>Best Alternatives to PDF CVs for Frontend Developers</Link>.
-      </p>
+ Explore how to choose alternative formats to PDF by reading <Link href="/alternatives" className={link}>Best Alternatives to PDF CVs for Frontend Developers</Link>.
+ </p>
       <p>
-        Learn how to build interactive resumes for creative roles by reading <Link href="/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
-      </p>
+ Learn how to build interactive resumes for creative roles by reading <Link href="/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
+ </p>
       <p>
-        Discover where to publish your live profile by reading <Link href="/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
-      </p>
+ Discover where to publish your live profile by reading <Link href="/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
+ </p>
     </div>
   );
 }

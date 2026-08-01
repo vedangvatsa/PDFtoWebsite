@@ -10,7 +10,7 @@ export default function ArticleContent() {
       <p>This is the classic presentation problem that freelancers face. When you list every contract project as a separate job entry you look like an unstable job hopper. The recruiter does not realize you were running your own business. They just see a fragmented timeline with short gaps. You must structure your contracting history to project stability.</p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 300" className="w-full h-auto" role="img" aria-label="Visual comparison of a messy freelance gig list versus a structured project showcase.">
+        <svg viewBox="0 0 700 300" className="w-full h-auto" role="img" aria-label="Visual comparison of a messy freelance gig list versus a structured project show.">
           <text x="170" y="30" textAnchor="middle" fontSize="13" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-red-500 dark:fill-red-400">Messy Gig List (Looks like job hopping)</text>
           
           <rect x="20" y="50" width="300" height="200" rx="6" className="fill-zinc-50 dark:fill-zinc-800/40 stroke-red-200 dark:stroke-red-900/50" strokeWidth="1" />
@@ -26,7 +26,7 @@ export default function ArticleContent() {
           
           <text x="170" y="235" textAnchor="middle" fontSize="11" fontFamily="system-ui, sans-serif" className="fill-red-500 dark:fill-red-400">Looks fragmented and temporary</text>
           
-          <text x="530" y="30" textAnchor="middle" fontSize="13" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-emerald-600 dark:fill-emerald-400">Structured Project Showcase</text>
+          <text x="530" y="30" textAnchor="middle" fontSize="13" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-emerald-600 dark:fill-emerald-400">Structured Project show</text>
           
           <rect x="380" y="50" width="300" height="200" rx="6" className="fill-emerald-50/50 dark:fill-emerald-950/30 stroke-emerald-200 dark:stroke-emerald-900/50" strokeWidth="1" />
           
@@ -54,7 +54,7 @@ export default function ArticleContent() {
       <h2 className={h2}>How to Describe Contract Projects</h2>
       <p>Under your main consultancy heading you must group your work by project. Treat each major client project like a product entry. Give the project a clear title and list the specific technologies you used.</p>
       
-      <p>Focus on the business problem you solved for the client. Do not just list the coding tasks you finished. Explain why the client hired you and what the outcome was. This shows that you work with a business mindset.</p>
+      <p>Focus on the business problem you solved for the client. Do list the coding tasks you finished. Explain why the client hired you and what the outcome was. This shows that you work with a business mindset.</p>
 
       <p>For example write that you rebuilt a legacy database schema to speed up reports. Mention that this change reduced customer wait times. This proves that you brought real value to the client organization during your short contract.</p>
 
@@ -66,14 +66,14 @@ export default function ArticleContent() {
       <h2 className={h2}>Dividing Your Core Services</h2>
       <p>As an independent developer you might feel tempted to state that you do everything. This is a mistake. Clients hire freelancers to solve specific issues not to be general workers. You must define your core services clearly.</p>
 
-      <p>Group your projects under service categories like backend APIs or frontend optimization. This structure helps the hiring manager see your area of specialization immediately. It builds trust in your expertise.</p>
+      <p>Group your projects under service categories like backend APIs or frontend tuning. This structure helps the hiring manager see your area of specialization immediately. It builds trust in your expertise.</p>
 
       <p>For each service area write a brief summary of your technical approach. Explain the stacks you prefer and why you use them. This shows that you have a planned methodology for your work rather than just guessing.</p>
 
       <h2 className={h2}>Dealing with Non Disclosure Agreements</h2>
       <p>Freelancers often sign non disclosure agreements that prevent them from naming their clients. This can make writing your profile difficult. But you must not let these legal contracts stop you from showing your value.</p>
 
-      <p>You can describe your clients by industry and size instead of naming them. For example write that you built a backend for a major healthcare provider or optimized a dashboard for a logistics firm. This protects the client identity while proving you worked in complex environments.</p>
+      <p>You can describe your clients by industry and size instead of naming them. For example write that you built a backend for a major healthcare provider or tuned a dashboard for a logistics firm. This protects the client identity while proving you worked in complex environments.</p>
 
       <p>Focus on the technical challenges you solved. The parser does not care about the company name. It cares about the skills and tools you used to build the solution. Describe your architecture and metrics in detail to prove your capability.</p>
 
@@ -104,6 +104,18 @@ export default function ArticleContent() {
       <p>A web profile solves this issue by letting you embed live links directly in the text. The recruiter can click on a project title and view the live website immediately. This provides instant proof of your work and reduces friction in the hiring process.</p>
 
       <p>A digital profile also allows you to structure your projects into interactive grids. You can show your technical stack next to the project summary without taking up valuable vertical space. This layout is perfect for freelancers who need to show a wide variety of skills.</p>
+
+      <h2 className={h2}>Client References Without Breaking NDAs</h2>
+      <p>Freelancers rarely get formal reference letters. You can still add credibility by listing client titles and industries. Write that a VP of Engineering at a Series C fintech can confirm your API rebuild on request.</p>
+
+      <p>Offer to connect serious employers with past clients over email after an initial screen. This step proves your project history is real without publishing client names on a public page. Full-time hiring managers respect candidates who protect prior employers.</p>
+
+      <p>Keep a private document with contact details for three references ready before interviews start. When a recruiter asks for proof you send the list within an hour. Speed here separates organized consultants from people scrambling to find a name.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>Rate history stays off the CV</h3>
+        <p>Do not list hourly rates on your public profile. Rates belong in contract negotiations, not in a document recruiters forward to five colleagues. Your CV should sell outcomes and systems, not price tags.</p>
+      </div>
 
       <h2 className={h2}>Read Next</h2>
       <p>Once you have organized your freelance projects you should review your layout spacing. Read our guide on the <Link href="/spacing" className={link}>best CV spacing standards</Link> to ensure your page looks clean. You should also check out the <Link href="/fonts" className={link}>best fonts for screen legibility</Link> to make sure your project details are easy to read.</p>

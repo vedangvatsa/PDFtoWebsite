@@ -100,10 +100,66 @@ export default function ArticleContent() {
           </div>
         </div>
 
-        <h2 className={h2}>Further Discovery</h2>
+        <p>Publish on CVin.Bio, share aggressively, refine weekly. Your profile should look sharper in month three of the search than on day one. A PDF from day one stays frozen until you manually re apply everywhere.</p>
+
+        <h2 className={h2}>Read Next</h2>
+        <p>Think of a live profile as main branch. PDFs are frozen forks scattered across inboxes. When you improve a bullet Tuesday night, main branch updates. Every future click shows the improvement. Old PDF forks still show the typo from Monday morning. Over a month of applications that gap compounds.</p>
+        <p>Track what you change. If you rewrite your summary for fintech roles, note the date. If response rates climb, keep that version. If they flatline, try another angle. PDF workflows make this experimentation expensive because each tweak requires a new file and a new send.</p>
+
+        <h2 className={h2}>Tailoring Without Sending Twice</h2>
+        <p>Some candidates maintain two profile variants: one emphasizing backend scale, one emphasizing product leadership. With URLs you can share the right variant per opportunity without re emailing. Same person, different emphasis, zero attachment spam.</p>
+        <div className={callout}>
+          <h3 className={h3}>The Thursday night advantage</h3>
+          <p>Phone screen Monday surfaces that the team cares about observability. You add a Grafana bullet Tuesday, reorder projects Wednesday, and the onsite panel Thursday sees a candidate who already speaks their language. <span className={bold}>PDFs cannot match that timing.</span></p>
+        </div>
+
+        <h2 className={h2}>Fixing Broken Links Instantly</h2>
+        <p>Dead GitHub links and expired demo URLs are resume killers. With a PDF, you discover the broken link when a recruiter tells you they could not open your project. With a web profile you fix the href in thirty seconds. Run a monthly link check on your live page. Treat it like uptime for your career site.</p>
+        <p>Pair live links with <Link href="/code" className={link}>proper code sample presentation</Link> so projects stay deployable. A link that 404s wastes the trust you built in the bullets above it.</p>
+
+        <h2 className={h2}>Confidence During the Search</h2>
+        <p>Psychological benefit matters too. Candidates paralyzed by typo fear delay applications. Live editing removes that block. You send the link, knowing you can patch anything embarrassing before the first click. That speed increases application volume and shortens hiring timelines.</p>
+        <p>Publish on CVin.Bio, share aggressively, refine weekly. Your profile should look sharper in month three of the search than on day one. A PDF from day one stays frozen until you manually re apply everywhere.</p>
+
+        <h2 className={h2}>Stale Profiles Signal Stale Candidates</h2>
+        <p>Recruiters notice dates. A profile whose latest role ends eighteen months ago looks abandoned. A live profile with a recent project added this week looks active. You do not need daily edits. You need visible freshness: current role, recent bullet, updated skills tag for the framework you learned last quarter.</p>
+        <p>Set a recurring calendar reminder during job search season. Thirty minutes every Sunday to tighten one section beats a panic rewrite the night before an interview.</p>
+
+        <h2 className={h2}>Batch Updates Across Applications</h2>
+        <p>You applied to twelve companies with the same link. You improve one bullet Tuesday. All twelve pipelines see the improvement on the next click. PDF workflows would require twelve separate re applications or awkward follow up emails with new attachments.</p>
+        <p>Track which version performed best by noting what you changed before response rate shifted. Simple spreadsheet: date, edit summary, applications in flight, replies that week.</p>
+
+        <h2 className={h2}>Editing Without Breaking Old Links</h2>
+        <p>Your URL stays stable while content changes. Bookmarks recruiters saved last month still work. PDFs they saved last month still show old typos. Stable URLs reward continuous improvement. Stable file paths in email attachments do not exist unless you re email everyone.</p>
+        <p>Use that stability during negotiation stages. Add a case study relevant to the team&apos;s stack before the final round. The panel sees fresh relevance without you sending a correction email that feels desperate.</p>
+
+        <h2 className={h2}>Typos in High Visibility Fields</h2>
+        <p>Misspelling your email domain or GitHub handle costs more than a typo in a 2019 bullet. Audit header fields after every edit session. Copy paste URLs instead of typing them. One wrong character silences the entire pipeline.</p>
+        <p>Live profiles let you fix header typos in seconds. PDF typos in headers propagate to every outbox copy forever.</p>
+
+        <h2 className={h2}>Seasonal Job Search Rhythms</h2>
+        <p>Hiring surges in January and September. Update your profile the week before those waves, not the week after. Fresh dates and new bullets signal readiness. Stale profiles from last cycle blend into the noise.</p>
+        <p>Batch update skills tags when frameworks shift. React Server Components, new cloud regions, and fresh certifications belong on the live page the same week you learn them.</p>
+        <p>Your profile is a living product. Ship small improvements weekly instead of quarterly rewrites. Candidates who iterate faster get better matches faster because every click shows their latest evidence.</p>
+        <p>Keep a short changelog in your private notes if you want discipline. Date, change, reason. Over a search season that log becomes a story of tightening fit you can reuse in interviews.</p>
+        <p>Editable profiles reward momentum. Send the link early, improve in public, and let every recruiter click see your latest strongest version.</p>
+        <p>Waiting for perfection before you share costs weeks of feedback you could have collected from real recruiter clicks. Publish, iterate, and win faster.</p>
+        <p>Live URLs forgive early mistakes and reward steady refinement. PDFs punish both.</p>
+        <p>Edit in minutes, not in follow up panic emails.</p>
+        <p>A live profile turns typos from disasters into five minute fixes.</p>
+        <p>Ship the link, then polish. That order wins more interviews than polish first, ship never.</p>
+        <p>Editable profiles reduce fear. Reduced fear increases applications.</p>
+        <p>Send the URL early and improve it while pipelines are warm.</p>
+        <p>Live profiles beat frozen PDFs on every timeline that matters.</p>
+
+        <h2 className={h2}>Pre-interview profile sprints</h2>
+        <p>Twenty-four hours before a onsite, add one bullet tied to the team&apos;s public blog or open source repos. You are not rewriting history. You are surfacing the overlap that was always there. &quot;Built webhook retry logic similar to your public events API design&quot; gives the panel a hook. They read your profile five minutes before you walk in. Fresh relevance beats a static PDF printed last month.</p>
+        <p>After the interview, add the case study you discussed if you can share sanitized details. Send one follow-up line with the anchor link. Live profiles make post-interview updates feel helpful instead of desperate.</p>
+
+        <h2 className={h2}>Read Next</h2>
         <ul className={ul}>
-          <li><Link href="/attachments" className={link}>Ditching PDFs and mastering the psychological advantage</Link></li>
-          <li><Link href="/tech-keywords" className={link}>How to optimize your profile hierarchy for fast scans</Link></li>
+          <li><Link href="/link" className={link}>Why a URL beats a file attachment</Link></li>
+          <li><Link href="/follow-up" className={link}>Following up after interviews with an updated profile</Link></li>
         </ul>
       </div>
   );

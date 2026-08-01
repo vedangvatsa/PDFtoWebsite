@@ -17,7 +17,7 @@ export default function ArticleContent() {
               .tier-num { font: 700 11px system-ui; fill: white; }
               .tier-heading { font: 600 14px system-ui; }
             `}</style>
-            <text x="240" y="22" textAnchor="middle" className="tier-heading fill-zinc-500 dark:fill-zinc-400">Proof Strength — Strongest to Weakest</text>
+            <text x="240" y="22" textAnchor="middle" className="tier-heading fill-zinc-500 dark:fill-zinc-400">Proof Strength. Strongest to Weakest</text>
             {/* Tier 1 */}
             <rect x="40" y="36" width="400" height="42" rx="6" className="fill-emerald-100 dark:fill-emerald-900/40 stroke-emerald-400 dark:stroke-emerald-600" strokeWidth="1.5" />
             <circle cx="66" cy="57" r="12" className="fill-emerald-600 dark:fill-emerald-500" />
@@ -53,7 +53,7 @@ export default function ArticleContent() {
             <circle cx="66" cy="297" r="12" className="fill-orange-500 dark:fill-orange-500" />
             <text x="66" y="301" textAnchor="middle" className="tier-num">6</text>
             <text x="88" y="293" className="tier-label fill-orange-800 dark:fill-orange-300">Technical Writing / Talks</text>
-            <text x="88" y="308" className="tier-text fill-orange-600 dark:fill-orange-400">Proves understanding, not just ability</text>
+            <text x="88" y="308" className="tier-text fill-orange-600 dark:fill-orange-400">Proves understanding, ability</text>
             {/* Tier 7 */}
             <rect x="40" y="324" width="400" height="42" rx="6" className="fill-zinc-50 dark:fill-zinc-800/50 stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1.5" />
             <circle cx="66" cy="345" r="12" className="fill-zinc-400 dark:fill-zinc-500" />

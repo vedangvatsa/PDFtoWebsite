@@ -103,6 +103,17 @@ export default function ArticleContent() {
           <p>Open your resume right now. Read only the first three words of every bullet point. If those words are &quot;Responsible for the&quot; or &quot;Worked on a&quot;, your keywords are buried. Rewrite each bullet so the technology or skill comes first.</p>
         </div>
 
+        <h2 className={h2}>Mobile, Security, and Platform Keywords</h2>
+        <p><span className={bold}>High signal in 2026:</span> Swift, Kotlin, React Native, Flutter, SwiftUI, Jetpack Compose, mobile CI, App Store deployment, certificate pinning, OWASP mobile top ten.</p>
+        <p>Mobile roles split into native and cross platform camps. Say which camp you belong to. Listing Flutter without mentioning whether you shipped to both stores reads incomplete. Include release metrics if you have them, such as crash free sessions or install counts.</p>
+        <p>Security keywords matter even for non security titles. Write about auth flows, secrets management, and dependency scanning if you touched them. SOC2, SSO, and OAuth2 appear in backend and full stack postings more often than dedicated security roles.</p>
+        <p><span className={bold}>Losing weight:</span> Objective C for new projects, PhoneGap, generic mobile without platform names, security as a buzzword without naming controls you implemented.</p>
+
+        <h2 className={h2}>Keywords for Career Changers</h2>
+        <p>If you are moving from another field into tech, lead with transferable tools. A teacher moving into developer relations might list curriculum design, public speaking, and technical writing before framework names. A nurse moving into health tech should name HIPAA workflows and EHR systems alongside programming languages.</p>
+        <p>Do not hide your prior career. Recruiters search for domain expertise. Healthcare, fintech, and logistics companies want engineers who understand their regulations. Your old job title can be a keyword asset when paired with new technical skills.</p>
+        <p>Take a coding bootcamp certificate and prove it with project keywords. Deployed, tested, and monitored mean more than completed coursework. Link to repos where those words appear in README files and commit messages.</p>
+
         <h2 className={h2}>Read Next</h2>
         <ul className={ul}>
           <li><Link href="/tech-keywords" className={link}>Where to place keywords on a tech resume</Link></li>

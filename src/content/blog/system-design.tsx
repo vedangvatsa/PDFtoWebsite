@@ -6,11 +6,11 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
       <p>
-        Whiteboard diagrams do not prove you can build software. A candidate can draw boxes and label them database, queue, or cache. That is easy. It shows you memorized basic patterns from a video course. Recruiters and hiring managers see through this instantly. They want proof that you understand system physics, trade-offs, and operational realities.
-      </p>
+ Whiteboard diagrams do not prove you can build software. A candidate can draw boxes and label them database, queue, or cache. That is easy. It shows you memorized basic patterns from a video course. Recruiters and hiring managers see through this instantly. They want proof that you understand system physics, trade-offs, and operational realities.
+ </p>
       <p>
-        The challenge is showing this on a short document. You cannot paste your system design document. You cannot show proprietary code. You have to use text to convey deep engineering expertise. You must shift from listing tools to explaining choices. This article will show you how to write about systems on your CV.
-      </p>
+ The challenge is showing this on a short document. You cannot paste your system design document. You cannot show proprietary code. You have to use text to convey deep engineering expertise. You must shift from listing tools to explaining choices. This article will show you how to write about systems on your CV.
+ </p>
 
       <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
         <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Whiteboard boxes versus actual system metrics on a CV">
@@ -69,95 +69,117 @@ export default function ArticleContent() {
 
       <h2 className={h2}>The Shift to Systems Physics</h2>
       <p>
-        System design is not about tool names. Saying you used AWS or Kubernetes does not show engineering skill. You could have used those tools poorly. You could have built a slow system that costs too much. To prove your skill, you must write about systems physics.
-      </p>
+ System design is not about tool names. Saying you used AWS or Kubernetes does not show engineering skill. You could have used those tools poorly. You could have built a slow system that costs too much. To prove your skill, you must write about systems physics.
+ </p>
       <p>
-        Systems physics includes throughput, latency, and space. It includes network round-trips and database input output operations. It includes how data flows when a server dies. When you describe your work, lead with these constraints.
-      </p>
+ Systems physics includes throughput, latency, and space. It includes network round-trips and database input output operations. It includes how data flows when a server dies. When you describe your work, lead with these constraints.
+ </p>
       <p>
-        For instance, consider a system that imports user data. A weak description says you built an importer tool. A strong description focuses on the physics of the process. It states how many gigabytes of data entered the system. It states the speed of the processing. It explains the bottleneck you hit and how you solved it.
-      </p>
+ For instance, consider a system that imports user data. A weak description says you built an importer tool. A strong description focuses on the physics of the process. It states how many gigabytes of data entered the system. It states the speed of the processing. It explains the bottleneck you hit and how you solved it.
+ </p>
       <p>
-        Recruiters read hundreds of profiles daily. They scan for key numbers that match the scale of their own company. If your profile mentions specific load metrics, you stand out. You prove you did not just use a tool but actually managed a system.
-      </p>
+ Recruiters read hundreds of profiles daily. They scan for key numbers that match the scale of their own company. If your profile mentions specific load metrics, you stand out. You prove you did use a tool but actually managed a system.
+ </p>
 
       <h2 className={h2}>Quantifying System Performance</h2>
       <p>
-        If you want to catch the eye of an engineering manager, you must use metrics. You should not say a service was fast. You should state the latency percentile. Mentioning P95 or P99 latency shows you understand real performance. It tells the reader that you know some users experienced slow times and that you fixed those outliers.
-      </p>
+ If you want to catch the eye of an engineering manager, you must use metrics. You should not say a service was fast. You should state the latency percentile. Mentioning P95 or P99 latency shows you understand real performance. It tells the reader that you know some users experienced slow times and that you fixed those outliers.
+ </p>
       <p>
-        Throughput is another key metric. Use requests per second or messages per minute. If you worked on background processing, write about queue depth and drain rates. These numbers give a sense of scale. A system handling ten requests per second is designed differently than one handling ten thousand.
-      </p>
+ Throughput is another key metric. Use requests per second or messages per minute. If you worked on background processing, write about queue depth and drain rates. These numbers give a sense of scale. A system handling ten requests per second is designed differently than one handling ten thousand.
+ </p>
       <p>
-        Here are examples of how to rewrite your project descriptions.
-      </p>
+ Here are examples of how to rewrite your project descriptions.
+ </p>
       <p>
-        Instead of saying you optimized backend queries, write about the result. You could say you reduced database CPU utilization from eighty percent to twenty percent. Explain that you achieved this by restructuring indexes and removing redundant joints. This tells the manager you saved money and made the database stable.
-      </p>
+ Instead of saying you tuned backend queries, write about the result. You could say you reduced database CPU utilization from eighty percent to twenty percent. Explain that you achieved this by restructuring indexes and removing redundant joints. This tells the manager you saved money and made the database stable.
+ </p>
       <p>
-        Instead of writing that you set up a cache, specify the hit rate. Stating that you designed a cache strategy that achieved a ninety-two percent hit rate is impressive. It shows you selected the right keys and eviction policy. It proves you understand memory limits.
-      </p>
+ Instead of writing that you set up a cache, specify the hit rate. Stating that you designed a cache strategy that achieved a ninety-two percent hit rate is impressive. It shows you selected the right keys and eviction policy. It proves you understand memory limits.
+ </p>
 
       <div className={callout}>
         <h3 className={h3}>Measure what matters</h3>
         <p>
-          Do not list random metrics. Only show numbers that directly represent system health or cost. Cutting latency in half is great, but it is better if you explain how that change allowed the system to run on smaller, cheaper servers.
-        </p>
+ Do not list random metrics. Only show numbers that directly represent system health or cost. Cutting latency in half is great, but it is better if you explain how that change allowed the system to run on smaller, cheaper servers.
+ </p>
       </div>
 
       <h2 className={h2}>Describing Architectural Choices and Trade-offs</h2>
       <p>
-        Every system design decision has a downside. If you choose eventual consistency, you sacrifice immediate accuracy. If you normalize your database, you pay a price in joins. If you shard your data, you make cross-shard queries slow and complex.
-      </p>
+ Every system design decision has a downside. If you choose eventual consistency, you sacrifice immediate accuracy. If you normalize your database, you pay a price in joins. If you shard your data, you make cross-shard queries slow and complex.
+ </p>
       <p>
-        Your professional profile should show you understand these trade-offs. Do not write as if every project was perfect. Write about the choices you had to make. Explain why one path was chosen over another.
-      </p>
+ Your professional profile should show you understand these trade-offs. Do not write as if every project was perfect. Write about the choices you had to make. Explain why one path was chosen over another.
+ </p>
       <p>
-        For example, you could write about data store selection. Do not just say you used PostgreSQL. Explain that you selected PostgreSQL because you needed ACID transactions for a payment flow. If you chose a NoSQL database, explain that you needed horizontal write scale for user event logging.
-      </p>
+ For example, you could write about data store selection. Do say you used PostgreSQL. Explain that you selected PostgreSQL because you needed ACID transactions for a payment flow. If you chose a NoSQL database, explain that you needed horizontal write scale for user event logging.
+ </p>
       <p>
-        You can also talk about partition strategies. If you sharded a database, explain the key you used. Did you shard by user ID or by region? What were the hot spot risks? How did you avoid them? Answering these questions in your project bullet points proves senior engineering capability.
-      </p>
+ You can also talk about partition strategies. If you sharded a database, explain the key you used. Did you shard by user ID or by region? What were the hot spot risks? How did you avoid them? Answering these questions in your project bullet points proves senior engineering capability.
+ </p>
       <p>
-        Managers respect candidates who can discuss failures. If a system failed during a migration, write about the roll-back mechanism you designed. This shows you build safe software that can survive the real world.
-      </p>
+ Managers respect candidates who can discuss failures. If a system failed during a migration, write about the roll-back mechanism you designed. This shows you build safe software that can survive the real world.
+ </p>
 
       <h2 className={h2}>Proven Templates for System Design Bullet Points</h2>
       <p>
-        To keep your writing clean, use a structured format for your accomplishments. Lead with the system action and the scale. Then state the technical mechanism. Finish with the measurable business or system outcome.
-      </p>
+ To keep your writing clean, use a structured format for your accomplishments. Lead with the system action and the scale. Then state the technical mechanism. Finish with the measurable business or system outcome.
+ </p>
       <p>
-        Here are three templates you can adapt for your experience section.
-      </p>
+ Here are three templates you can adapt for your experience section.
+ </p>
       <p>
-        First template. Scaled a ingestion pipeline to process four terabytes of daily sensor data by introducing Kafka partition groups. This change eliminated message loss and cut processing delays by sixty percent.
-      </p>
+ First template. Scaled a ingestion pipeline to process four terabytes of daily sensor data by introducing Kafka partition groups. This change eliminated message loss and cut processing delays by sixty percent.
+ </p>
       <p>
-        Second template. Reduced API latency for the checkout service from three hundred milliseconds to forty-five milliseconds. This was done by replacing synchronous database queries with Redis cached lookups. It kept the database stable during peak sale traffic.
-      </p>
+ Second template. Reduced API latency for the checkout service from three hundred milliseconds to forty-five milliseconds. This was done by replacing synchronous database queries with Redis cached lookups. It kept the database stable during peak sale traffic.
+ </p>
       <p>
-        Third template. Migrated a legacy user profile database to a sharded Postgres cluster. This partition strategy prevented write bottlenecks and saved seventy thousand dollars in annual hosting fees.
-      </p>
+ Third template. Migrated a legacy user profile database to a sharded Postgres cluster. This partition strategy prevented write bottlenecks and saved seventy thousand dollars in annual hosting fees.
+ </p>
       <p>
-        These templates put the technical details first. They use active verbs and avoid generic corporate jargon. They do not say the system was amazing. They let the numbers prove the quality of the work.
-      </p>
+ These templates put the technical details first. They use active verbs and avoid generic corporate jargon. They do not say the system was amazing. They let the numbers prove the quality of the work.
+ </p>
 
       <h2 className={h2}>Proving System Ownership</h2>
       <p>
-        Many junior engineers work on large systems, but they only write small features. To stand out as a senior engineer, you must show ownership. You must prove you designed the architecture rather than just writing code for it.
-      </p>
+ Many junior engineers work on large systems, but they only write small features. To stand out as a senior engineer, you must show ownership. You must prove you designed the architecture rather than just writing code for it.
+ </p>
       <p>
-        You can show ownership by writing about migrations. Migrating a live system without downtime is one of the hardest tasks in software engineering. If you planned and ran a migration, highlight it. Explain the dual-write phase, the verification checks, and the final cutover steps.
-      </p>
+ You can show ownership by writing about migrations. Migrating a live system without downtime is one of the hardest tasks in software engineering. If you planned and ran a migration, highlight it. Explain the dual-write phase, the verification checks, and the final cutover steps.
+ </p>
       <p>
-        Another way to show ownership is describing how you handled system alerts. Write about how you set up monitoring and tracing. Mention tools like Prometheus or OpenTelemetry. Explain how you used that telemetry to find and fix a bottleneck in production.
-      </p>
+ Another way to show ownership is describing how you handled system alerts. Write about how you set up monitoring and tracing. Mention tools like Prometheus or OpenTelemetry. Explain how you used that telemetry to find and fix a bottleneck in production.
+ </p>
       <p>
-        When you write your profile, link to your portfolio or web page. Sharing a live link allows recruiters to check your work easily. You can read about how <Link href="/link" className={link}>sharing a web link helps you stand out</Link>.
-      </p>
+ When you write your profile, link to your portfolio or web page. Sharing a live link allows recruiters to check your work easily. You can read about how <Link href="/link" className={link}>sharing a web link helps you stand out</Link>.
+ </p>
       <p>
-        Ensure your profile has a clean layout. A good structure makes it easy for hiring managers to scan your technical details quickly. You can read about <Link href="/spacing" className={link}>margins and layout principles for a professional look</Link> to ensure your writing is readable.
-      </p>
+ Ensure your profile has a clean layout. A good structure makes it easy for hiring managers to scan your technical details quickly. You can read about <Link href="/spacing" className={link}>margins and layout principles for a professional look</Link> to ensure your writing is readable.
+ </p>
+
+      <h2 className={h2}>Reliability and Failure Mode Bullets</h2>
+      <p>
+ Senior engineers get hired for what happens when things break. Add bullets that describe incident response alongside greenfield builds. Write that you designed circuit breakers that stopped cascade failures during a regional outage. Mention mean time to recovery if you tracked it.
+ </p>
+      <p>
+ Describe consistency choices in plain language. Eventual consistency is fine if you explain the user visible trade off. Write that you accepted stale read replicas for catalog pages but kept payment writes strongly consistent. That sentence proves you think about money paths.
+ </p>
+      <p>
+ Capacity planning belongs on your profile too. State peak traffic you planned for and how you tested it. Load tests with realistic payload sizes beat vague claims about scalability every time.
+ </p>
+
+      <h2 className={h2}>What Interviewers Probe After Reading Your CV</h2>
+      <p>
+ Hiring managers will ask follow up questions about any number on your page. Be ready to explain how you measured P99 latency, what tool captured it, and what changed after your fix. If you cannot defend a metric, remove it before the recruiter calls.
+ </p>
+      <p>
+ They will also ask why you rejected alternatives. Prepare one sentence on why you picked Kafka over a simpler queue, or Postgres over a document store. Your CV bullet should hint at the constraint. The interview fills in the reasoning.
+ </p>
+      <p>
+ Link to architecture diagrams or postmortem writeups when policy allows. A public blog post about a migration teaches more than another box diagram on a whiteboard ever will.
+ </p>
 
       <h2 className={h2}>Read Next</h2>
       <ul className={ul}>

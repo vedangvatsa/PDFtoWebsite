@@ -30,7 +30,7 @@ export default function ArticleContent() {
 
       <p>Stick to standard names for every major section of your document. Use Experience for your employment history. Use Education for your academic degrees and Skills for your programming languages.</p>
 
-      {/* SVG: Standard vs. creative headings — ATS recognition table */}
+      {/* SVG: Standard vs. creative headings. ATS recognition table */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
         <svg viewBox="0 0 700 400" className="w-full h-auto" role="img" aria-label="Reference table comparing standard resume section headings that ATS systems recognize versus creative headings that fail to parse">
           <style>{`
@@ -105,7 +105,7 @@ export default function ArticleContent() {
           <text x="620" y="294" className="hd-badge fill-red-500 dark:fill-red-400">✗ MISSED</text>
 
           <text x="525" y="332" textAnchor="middle" className="hd-small fill-red-500 dark:fill-red-400">All content dumped into a single</text>
-          <text x="525" y="346" textAnchor="middle" className="hd-small fill-red-500 dark:fill-red-400">"miscellaneous" field — unsearchable</text>
+          <text x="525" y="346" textAnchor="middle" className="hd-small fill-red-500 dark:fill-red-400">"miscellaneous" field. unsearchable</text>
           <text x="525" y="368" textAnchor="middle" className="hd-badge fill-red-500 dark:fill-red-400">RESULT: PROFILE IS INVISIBLE</text>
 
           {/* Divider */}
@@ -114,7 +114,7 @@ export default function ArticleContent() {
       </div>
 
       <h2 className={h2}>Font Weights and Visual Separation</h2>
-      <p>Section classifiers do not only read the text characters. Modern systems also analyze the font properties and spacing to confirm section boundaries. They look for visual cues that indicate a new block starts.</p>
+      <p>Section classifiers do read the text characters. Modern systems also analyze the font properties and spacing to confirm section boundaries. They look for visual cues that indicate a new block starts.</p>
 
       <p>Ensure your headings are visibly larger than the body text. Use bold formatting to help the parser identify the title line. Add extra spacing before each heading to create a clear physical gap.</p>
 
@@ -171,18 +171,32 @@ export default function ArticleContent() {
 
       <p>Test your final layout using a plain text export. If your headings are merged with the body text add more blank lines. Clean spacing is the best way to guarantee parsing success.</p>
 
+      <h2 className={h2}>Testing Headings Before You Apply</h2>
+      <p>Upload your file to a free parser demo from a major vendor. Compare the JSON output against what you intended. If your skills landed inside education, your heading failed. Fix the title and test again.</p>
+
+      <p>Some portals show a parsed preview after upload. Read that preview as if you were a recruiter searching for Python. If Python appears only in a miscellaneous field, your section anchors failed.</p>
+
+      <p>Keep a plain text version of your CV with standard headings as a backup. When a portal garbles a styled PDF, submit the plain version instead. Ugly parsing beats invisible parsing.</p>
+
+      <h2 className={h2}>International Applications and Heading Language</h2>
+      <p>Applying in Germany or France does not mean you should write headings in German or French unless the job posting is local only. Global ATS dictionaries are trained primarily on English section names. Work Experience parses reliably. Berufserfahrung may not.</p>
+
+      <p>If you must submit a bilingual document, put English headings first on their own line. Repeat content in the second language below if required. Never mix languages inside a single heading string.</p>
+
+      <p>For remote roles at US companies, English headings are mandatory even if you live abroad. Match the language of the job description to match the parser training data.</p>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on formatting your application check out these helpful articles.</p>
       
       <p>
-        Learn how to write effective summaries by reading <Link href="/summaries" className={link}>Best Ways to Write Technical Summaries for Senior Roles</Link>.
-      </p>
+ Learn how to write effective summaries by reading <Link href="/summaries" className={link}>Best Ways to Write Technical Summaries for Senior Roles</Link>.
+ </p>
       <p>
-        Understand spacing requirements by reading <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
-      </p>
+ Understand spacing requirements by reading <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+ </p>
       <p>
-        Discover how to choose the right keywords by reading <Link href="/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
-      </p>
+ Discover how to choose the right keywords by reading <Link href="/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
+ </p>
     </div>
   );
 }

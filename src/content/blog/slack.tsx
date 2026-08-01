@@ -129,7 +129,7 @@ export default function ArticleContent() {
 
       <p>Wait three business days before sending a follow up message. If you write back too quickly you will look desperate. Keep the update short and focus on new details.</p>
 
-      <p>Share a new project you built or a code optimization you completed. This addition shows that you are active and productive. It provides a natural reason to start the conversation again.</p>
+      <p>Share a new project you built or a code tuning you completed. This addition shows that you are active and productive. It provides a natural reason to start the conversation again.</p>
 
       <p>If they do not reply to your second message you should stop writing. Move on to other communities. Continuing to message a silent contact will get your profile flagged as spam.</p>
 
@@ -143,7 +143,7 @@ export default function ArticleContent() {
       <p>Keep your profile details consistent across different workspaces. Hiring managers often belong to multiple regional channels. If they see you posting conflicting details they will reject your profile.</p>
 
       <h2 className={h2}>The Advantage of a Hosted Technical Profile</h2>
-      <p>A web profile centralizes everything a recruiter needs — your stack, your projects, your contact info — behind one link. When you share a web link you invite recruiters to interact with your work.</p>
+      <p>A web profile centralizes everything a recruiter needs. your stack, your projects, your contact info. behind one link. When you share a web link you invite recruiters to interact with your work.</p>
 
       <p>Your web profile can link directly to your GitHub repository and live demonstrations. It allows recruiters to verify your skills with a single click. This speed is critical in fast moving chat feeds.</p>
 
@@ -151,18 +151,30 @@ export default function ArticleContent() {
 
       <p>Using a tool like CVin.Bio allows you to build a clean web link in minutes. You get a mobile responsive page that generates rich previews across all major chat tools. This setup gives you an immediate advantage in competitive hiring channels.</p>
 
+      <h2 className={h2}>Timing Your Posts for Maximum Visibility</h2>
+      <p>Slack hiring channels move fast. A post at midnight local time sinks under hundreds of messages by morning. Post during weekday mornings in the timezone where most channel members work.</p>
+
+      <p>Tuesday through Thursday between nine and eleven in the morning tends to get the highest engagement in developer communities. Avoid Friday afternoons when managers are closing tickets instead of opening new hiring threads.</p>
+
+      <p>Pin your own message only if channel rules allow it. Some workspaces let you pin one self-promotion per month. Use that pin on your strongest technical achievement week, not the day you first join the server.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>One channel per week</h3>
+        <p>Posting the same pitch across ten Slack workspaces on the same day looks like spam. Rotate communities and tailor each message to the channel focus. A backend-heavy group deserves different opening lines than a generalist developer lounge.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on sharing your work and finding hidden roles read these detailed articles.</p>
       
       <p>
-        Discover private channels and job markets by reading <Link href="/communities" className={link}>Best Communities for Finding the Hidden Job Market</Link>.
-      </p>
+ Discover private channels and job markets by reading <Link href="/communities" className={link}>Best Communities for Finding the Hidden Job Market</Link>.
+ </p>
       <p>
-        Learn how to write to hiring managers by reading <Link href="/send" className={link}>Best Ways to Send Your CV to a Recruiter</Link>.
-      </p>
+ Learn how to write to hiring managers by reading <Link href="/send" className={link}>Best Ways to Send Your CV to a Recruiter</Link>.
+ </p>
       <p>
-        Explore the advantages of online profiles by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
-      </p>
+ Explore the advantages of online profiles by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
+ </p>
     </div>
   );
 }

@@ -10,7 +10,7 @@ export default function ArticleContent() {
         <p>That means what you put at the very top is not a design choice. It is a strategic one. Here is what works best, ranked by how much it helps during that first scan.</p>
 
         <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-          <svg viewBox="0 0 400 420" className="w-full h-auto" role="img" aria-label="Resume mockup highlighting the top 2 inches with labeled zones">
+          <svg viewBox="0 0 400 420" className="w-full h-auto" role="img" aria-label="Resume mockup showing the top 2 inches with labeled zones">
             <style>{`
               .mock-title { font: 700 16px system-ui; }
               .mock-label { font: 600 11px system-ui; }
@@ -102,7 +102,7 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>How Recruiters Actually Read</h2>
-        <p>Eye-tracking studies show that recruiters follow a rough F-pattern. They read the top line fully, scan down the left side, and occasionally dart right when something catches their attention. This means the left side of your top section gets the most eyeball time.</p>
+        <p>Eye-tracking research finds that recruiters follow a rough F-pattern. They read the top line fully, scan down the left side, and occasionally dart right when something catches their attention. This means the left side of your top section gets the most eyeball time.</p>
         <p>Put your name and headline flush left. Put your URL directly below. Put your summary next. By the time the recruiter has finished their F-pattern scan of your top section, they should know your level, your specialty, your top skills, and where to learn more. That is enough for them to decide you are worth a real read.</p>
         <p>If your top section is cluttered with a mailing address, a photo, and an objective about what you hope to learn, the recruiter finishes their F-scan without learning anything useful. You just lost your window.</p>
 
@@ -116,6 +116,21 @@ export default function ArticleContent() {
           <li><span className={bold}>Four or five top skills</span> listed as simple text</li>
         </ol>
         <p>That is it. Everything else goes below. Your experience, education, projects, and certifications all get their own sections further down. But the top is reserved for the information that <Link href="/inbox" className={link}>makes you stand out</Link> in the first 6 seconds.</p>
+
+        <h2 className={h2}>Tailoring the Top Section Per Application</h2>
+        <p>The top of your resume should change slightly for every role you apply to. Not a full rewrite. Just the headline, summary, and skills line. If the posting asks for a payments engineer with Go experience, your headline should say payments and Go. If the next posting wants a platform engineer with Kubernetes, swap those words in.</p>
+        <p>This takes five minutes per application and it matters because both humans and parsers weight the top of the document more heavily. A recruiter scanning fifty resumes in an hour will notice when your headline matches their job title. An ATS scoring keyword matches will find your strongest terms in the first screenful of text.</p>
+        <p>Keep a master resume with your full history. Before each submission, copy it and adjust only the top block. Your work experience bullets can stay mostly the same. The headline and summary do the targeting work.</p>
+
+        <h2 className={h2}>What the Top Looks Like on Mobile</h2>
+        <p>More than half of recruiter traffic now comes from phones. If your top section breaks on a small screen, you lose the scan before it starts. Your name should not wrap awkwardly. Your headline should not truncate mid-phrase. Your URL should be tappable without zooming.</p>
+        <p>Test this yourself. Open your resume PDF or web profile on your phone. Can you read the entire top section without scrolling or pinching? If your name is twelve pixels tall and your headline runs off the edge, fix the font sizes before you send another application.</p>
+        <p>Web profiles handle this better than PDFs because responsive CSS reflows the layout automatically. A PDF exported from a desktop tool often looks fine on a laptop and terrible on an iPhone. If you are still sending files, keep the top section in a single column with generous font sizes.</p>
+
+        <div className={callout}>
+          <h3 className={h3}>The six-second drill</h3>
+          <p>Show your resume to someone who does not know your career. Give them six seconds. Ask what you do, what level you are, and what your top skills are. If they cannot answer all three, your top section needs work.</p>
+        </div>
 
         <h2 className={h2}>Read Next</h2>
         <ul className={ul}>

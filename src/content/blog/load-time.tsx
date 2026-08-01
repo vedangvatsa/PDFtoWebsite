@@ -9,7 +9,7 @@ export default function ArticleContent() {
 
       <p>Performance is the most important feature of any web profile. If your portfolio takes more than two seconds to load on a mobile device you will lose half your potential visitors. High-quality design is completely useless if the target audience does not wait around to see it.</p>
 
-      <p>Optimizing page speed is not just about making things fast for recruiters. It is also an active demonstration of your front-end engineering capabilities. A fast loading portfolio proves you care about user experience and understand web standards.</p>
+      <p>tuning page speed is about making things fast for recruiters. It is also an active demonstration of your front-end engineering capabilities. A fast loading portfolio proves you care about user experience and understand web standards.</p>
 
       <h2 className={h2}>Target Load Times for Modern Portfolios</h2>
       <p>You must aim for a Largest Contentful Paint of under one point five seconds. This metric measures when the main content of your page becomes visible to the reader. Anything slower than two seconds triggers immediate reader fatigue.</p>
@@ -23,7 +23,7 @@ export default function ArticleContent() {
         <p>Use PageSpeed Insights to test your site performance under simulated mobile conditions. Pay close attention to the blocking time and cumulative layout shift. These metrics show how stable and fast your page feels to a human reader.</p>
       </div>
 
-      <h2 className={h2}>Optimizing Your Web Images</h2>
+      <h2 className={h2}>tuning Your Web Images</h2>
       <p>Unoptimized images are the single biggest cause of slow portfolios. Candidates often upload giant raw photos directly from their cameras. These files can easily exceed five megabytes and take ages to download.</p>
 
       <p>Always compress your images before uploading them to your server. Use modern formats like WebP or AVIF instead of legacy formats like JPEG. These modern formats offer superior compression ratios and preserve image details.</p>
@@ -41,9 +41,9 @@ export default function ArticleContent() {
 
       <p>Analyze your bundle size regularly to identify bloating dependencies. Modern build tools provide visual maps of your code packages. Remove unused modules and replace heavy packages with lighter alternatives.</p>
 
-      {/* SVG Diagram showing Performance Optimization Pipeline */}
+      {/* SVG Diagram showing Performance tuning Pipeline */}
       <div className="not-prose my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
-        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Web Performance Optimization Stages">
+        <svg viewBox="0 0 700 350" className="w-full h-auto" role="img" aria-label="Diagram of Web Performance tuning Stages">
           <rect width="700" height="350" rx="8" className="fill-zinc-50 dark:fill-zinc-900/30" />
           
           {/* Step 1 */}
@@ -89,27 +89,52 @@ export default function ArticleContent() {
 
       <p>Choose deployment platforms that offer automatic CDN configuration. Most modern developer platforms handle edge caching out of the box with zero setup. This lets you focus on building features rather than managing server networks.</p>
 
-      <h2 className={h2}>Avoiding Common Optimization Mistakes</h2>
+      <h2 className={h2}>Avoiding Common tuning Mistakes</h2>
       <p>Many developers make the mistake of using heavy web fonts. Loading four different weights of a custom font can delay text rendering for seconds. Use standard system fonts or limit custom font weights to keep page loading fast.</p>
 
       <p>Avoid using giant video backgrounds on your homepage. If you must use video ensure it is compressed and lazy-loaded. Never start video downloads before the main content has finished rendering.</p>
 
       <p>Do not use heavy analytical scripts that track every mouse movement. These tools inject heavy tracking codes that block the main thread and slow down interactions. Use lightweight analytics that prioritize reader speed.</p>
 
-      <p>Review your site speed after every major update. It is easy for a new component or image to slow down your page. Keep your optimization steps integrated into your build process to catch issues early.</p>
+      <p>Review your site speed after every major update. It is easy for a new component or image to slow down your page. Keep your tuning steps integrated into your build process to catch issues early.</p>
+
+      <h2 className={h2}>Core Web Vitals Recruiters Feel But Never Name</h2>
+      <p>Largest Contentful Paint, Interaction to Next Paint, and Cumulative Layout Shift are the three metrics Google surfaces in PageSpeed Insights. Recruiters do not know those names. They know when a page feels broken.</p>
+      <p>A layout that jumps when fonts load feels amateur. A hero image that takes four seconds to appear feels like the candidate does not ship polished work. Your portfolio is a product demo. Treat performance budgets like you would on a client project.</p>
+      <ul className={ul}>
+        <li>LCP under 2.5 seconds on simulated mobile</li>
+        <li>CLS under 0.1 so text does not jump while reading</li>
+        <li>Total page weight under 1.5 MB for a text-heavy profile</li>
+      </ul>
+
+      <div className={callout}>
+        <h3 className={h3}>CVin.Bio handles the baseline</h3>
+        <p>Hosted profiles ship with compressed assets, CDN delivery, and mobile layouts tested on real devices. If you are not ready to build and maintain your own site, a hosted profile removes most performance foot-guns while still giving you a fast URL to share.</p>
+      </div>
+
+      <h2 className={h2}>Measuring on Real Devices</h2>
+      <p>Simulated throttling in Chrome DevTools is useful but imperfect. Borrow a mid-range Android phone and load your site on 4G. Note the second your name appears. That subjective moment matters more than a perfect Lighthouse score on desktop.</p>
+      <p>Fix the slowest asset first. Usually it is an unscaled hero PNG or a web font bundle blocking text render.</p>
+
+      <h2 className={h2}>Third-Party Embeds and iframe Tax</h2>
+      <p>Embedding Behance, CodePen, or heavy analytics widgets adds third-party JavaScript you do not control. Lazy-load embeds below the fold. Replace live embeds with a thumbnail and a link when the embed alone costs more than 200 KB.</p>
+      <p>Recruiters on slow networks will thank you. Your PageSpeed score will too.</p>
+
+      <h2 className={h2}>Preload Only What Matters</h2>
+      <p>Use link preload for your hero image and primary font file only. Preloading everything defeats the purpose. Measure after each preload tag you add.</p>
 
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on building fast and reliable developer portfolios read these detailed guides.</p>
       
       <p>
-        Learn how to choose the right static site generator by reading <Link href="/ssg" className={link}>Best Static Site Generators for Developer Portfolios</Link>.
-      </p>
+ Learn how to choose the right static site generator by reading <Link href="/ssg" className={link}>Best Static Site Generators for Developer Portfolios</Link>.
+ </p>
       <p>
-        Discover the best hosting options for your projects by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
-      </p>
+ Discover the best hosting options for your projects by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
+ </p>
       <p>
-        Explore top platforms for hosting your profile by reading <Link href="/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
-      </p>
+ Explore top platforms for hosting your profile by reading <Link href="/portfolio" className={link}>Best Portfolio Platforms for Developers</Link>.
+ </p>
     </div>
   );
 }

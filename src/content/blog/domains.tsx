@@ -77,7 +77,7 @@ export default function ArticleContent() {
       <p>Numbers also raise questions. A manager might wonder if there are ninety eight other John Smiths at your company. It looks like a default username. You want your domain to represent a unique professional brand. Avoid numbers completely.</p>
 
       <h2 className={h2}>Setting Up Professional Email</h2>
-      <p>Once you have a clean domain name do not just use it for your website. Use it to set up a professional email address. An email like contact at johnsmith dot com looks infinitely better than a free email from an old provider.</p>
+      <p>Once you have a clean domain name do use it for your website. Use it to set up a professional email address. An email like contact at johnsmith dot com looks infinitely better than a free email from an old provider.</p>
 
       <p>Using a custom email address shows you understand how domain hosting works. It proves you can configure DNS records like MX and SPF settings. This is a basic technical skill that every developer should have. It also prevents your emails from getting flagged by enterprise spam filters.</p>
 
@@ -101,6 +101,13 @@ export default function ArticleContent() {
       <p>When you have your domain ready link it to your web profile. If you use a platform to host your work make sure it supports custom domains. You do not want to show a long complex address with subdomains from a hosting provider.</p>
 
       <p>A custom domain makes your portfolio feel like an independent product. It shows you take your career seriously. It makes your profile easy to share on your CV on GitHub and on social platforms. You can check out different hosting options in our guide on <Link href="/portfolio" className={link}>best portfolio platforms for developers</Link> to see which ones support custom domains easily.</p>
+
+      <h2 className={h2}>When Your Name Is Already Taken</h2>
+      <p>Common names are almost always gone on dot com. Do not buy a junk extension out of frustration. A strange dot biz address costs you more credibility than it saves in registration fees.</p>
+
+      <p>Try your initials, a middle initial, or the same name on dot dev or dot bio. A clean jsmith dot dev reads better than john-smith-coder-99 dot com with hyphens and numbers.</p>
+
+      <p>Register the domain for at least two years. Short renewal cycles signal a temporary project. A multi-year registration tells recruiters you plan to keep this address for the long run.</p>
 
       <p>Do not ignore the power of a clean domain. Spend the time to find a name that is short professional and easy to spell. It is the foundation of your digital presence and the first step in winning the attention of top engineering managers.</p>
     </div>
