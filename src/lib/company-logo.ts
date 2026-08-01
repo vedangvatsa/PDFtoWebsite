@@ -74,6 +74,8 @@ const DOMAIN_OVERRIDES: Record<string, string> = {
   character: 'character.ai',
   'govtech singapore': 'tech.gov.sg',
   govtech: 'tech.gov.sg',
+  'indian army': 'joinindianarmy.nic.in',
+  'indian-army': 'joinindianarmy.nic.in',
 };
 
 const LEGAL_SUFFIX =

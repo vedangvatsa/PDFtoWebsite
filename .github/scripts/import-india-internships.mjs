@@ -13,6 +13,7 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
 import { pingIndexNow } from './lib/indexnow.mjs';
+import { auditIndiaInternships } from './audit-india-internships.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -1857,6 +1858,19 @@ async function main() {
       ? `  ok status=${ping.status} submitted=${ping.submitted}`
       : `  failed status=${ping.status} ${ping.error || ''}`
   );
+
+  console.log('\n── Post-import audit ──');
+  const audit = await auditIndiaInternships({ fetchDelayMs: 200 });
+  console.log(
+    `  checked ${audit.total} postings (${audit.armyChecked} Army vs AICTE detail pages)`
+  );
+  if (!audit.ok) {
+    for (const f of audit.failures.slice(0, 10)) {
+      console.error(`  FAIL ${f.path}: ${f.type}${f.missing?.length ? ` missing=${f.missing.length}` : ''}${f.issues?.length ? ` ${f.issues.join(',')}` : ''}`);
+    }
+    throw new Error(`Post-import audit failed (${audit.failures.length} issues)`);
+  }
+  console.log('  ✅ all postings pass');
 }
 
 main().catch((e) => {

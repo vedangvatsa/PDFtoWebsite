@@ -20,7 +20,7 @@ import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { unstable_cache } from 'next/cache';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
 import CompanyLogo from '@/components/company-logo';
-import { primaryCompanyLogoUrl } from '@/lib/company-logo';
+import { primaryCompanyLogoUrl, domainForCompany } from '@/lib/company-logo';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -591,6 +591,8 @@ export default async function ProfileSlugPage({ params }: PageProps) {
 
     const { getCompanyMeta } = await import('@/lib/company-data');
     const meta = getCompanyMeta(slug);
+    const companyWebsite =
+      meta?.website || `https://${domainForCompany(companyName)}`;
 
     const orgSchema = {
       "@context": "https://schema.org",
@@ -695,7 +697,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
               </div>
               {/* Social links — show for all companies */}
               <div className="flex items-center gap-1.5 mt-3">
-                <a href={meta?.website || `https://${companyName.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`} target="_blank" rel="noopener noreferrer" title="Website" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                <a href={companyWebsite} target="_blank" rel="noopener noreferrer" title="Website" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
                   <Globe className="w-3.5 h-3.5" />
                 </a>
                 {meta?.socials?.x && (
