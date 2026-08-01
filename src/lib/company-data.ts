@@ -937,6 +937,19 @@ const COMPANIES: Record<string, CompanyMeta> = {
       github: 'https://github.com/wix',
     },
   },
+  'indian-army': {
+    slug: 'indian-army',
+    name: 'Indian Army',
+    website: 'https://www.joinindianarmy.nic.in/default.aspx',
+    founded: 1895,
+    hq: 'New Delhi, India',
+    size: '1.2M+',
+    stage: 'Government',
+    funding: 'Government of India',
+    industry: 'Defence & Armed Forces',
+    description:
+      'The Indian Army is the land-based branch of the Indian Armed Forces. The Indian Army Internship Program (IAIP) is a nationwide internship initiative listed on the AICTE portal, offering students hands-on experience on live military technology and operations projects.',
+  },
 };
 
 export function getCompanyMeta(slug: string): CompanyMeta | null {
