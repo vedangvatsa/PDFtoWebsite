@@ -9,7 +9,7 @@
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 8;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 9;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -324,6 +324,23 @@ function isBulletLine(line: string): boolean {
   return /^[-•*]\s+/.test(line.trim());
 }
 
+/** "Do A. - Do B. - Do C." on one line → separate bullet lines. */
+function expandInlineDashBullets(line: string): string[] {
+  const trimmed = line.trim();
+  if (!trimmed) return [];
+  const body = isBulletLine(trimmed)
+    ? trimmed.replace(/^[-•*]\s+/, '')
+    : trimmed;
+  if (!/\s+-\s+(?=[A-Z])/.test(body)) return [trimmed];
+  const parts = body
+    .split(/\s+-\s+(?=[A-Z])/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (parts.length <= 1) return [trimmed];
+  const prefix = isBulletLine(trimmed) ? '- ' : '';
+  return parts.map((p) => `${prefix}${p}`);
+}
+
 function isOrderedLine(line: string): boolean {
   return /^\d{1,2}\.\s+/.test(line.trim());
 }
@@ -431,7 +448,11 @@ function renderListItems(lines: string[], ordered = false): string {
 
 function renderPlainBlock(block: string): string {
   const trimmed = block.trim();
-  const lines = trimmed.split('\n').map((l) => l.trim()).filter(Boolean);
+  const lines = trimmed
+    .split('\n')
+    .flatMap((l) => expandInlineDashBullets(l.trim()))
+    .map((l) => l.trim())
+    .filter(Boolean);
 
   if (lines.length > 0 && lines.every(isLabelValueLine)) {
     return lines.map((l) => renderLabelValueParagraph(l)).join('\n');

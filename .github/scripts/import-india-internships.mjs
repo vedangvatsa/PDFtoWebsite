@@ -431,6 +431,48 @@ function normalizeSectionText(text) {
     .trim();
 }
 
+/** Comma-separated AICTE specialization lists → readable ", " spacing. */
+function formatCommaList(raw) {
+  if (!raw?.trim()) return '';
+  return String(raw)
+    .split(/,(?=[A-Za-z(])/)
+    .map((s) => s.replace(/\s+/g, ' ').trim())
+    .filter((s) => s.length > 1)
+    .join(', ');
+}
+
+/** One "are from …" chunk may contain B.Tech and M.Tech on the same line. */
+function splitDegreeClauses(from) {
+  const text = String(from || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!text) return [];
+  const chunks = text
+    .split(/(?=\bM\. ?Tech\.? \/ M\.E\b|\bM\. ?Tech\.?\/\s*M\.E\b|\bMCA\b|\bMBA\b|\bPh\.?D\.?\b)/i)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return chunks.length ? chunks : [text];
+}
+
+function formatDegreeEligibilityLine(chunk) {
+  let t = String(chunk || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!t) return '';
+
+  const withSpec = t.match(/^(.+?)\s+with specialisation in\s+(.+)$/i);
+  if (withSpec) {
+    return `${withSpec[1].trim()} with specialisation in ${formatCommaList(withSpec[2])}`;
+  }
+
+  const dashSpec = t.match(/^(.+?)\s+[-—–]\s+(.+)$/);
+  if (dashSpec) {
+    return `${dashSpec[1].trim()}: ${formatCommaList(dashSpec[2])}`;
+  }
+
+  return formatCommaList(t) || t;
+}
+
 /**
  * Eligibility from AICTE "Who can apply?" — keep every degree line intact.
  * Never drop long specialization lists (B.Tech lines often exceed 250 chars).
@@ -464,12 +506,9 @@ function eligibilityBullets(whoText, duration) {
     const from = raw.match(/^are from\s+(.+)$/is)?.[1]?.replace(/\s+/g, ' ').trim();
     if (!from) continue;
 
-    const spec = from.match(/^(.*?)\s+with specialisation in\s+(.+)$/i);
-    if (spec) {
-      // Keep full specialization list — do not truncate
-      out.push(`${spec[1].trim()} — ${spec[2].trim()}`);
-    } else {
-      out.push(from);
+    for (const chunk of splitDegreeClauses(from)) {
+      const line = formatDegreeEligibilityLine(chunk);
+      if (line) out.push(line);
     }
   }
 
@@ -779,8 +818,18 @@ function extractNarrativeDuties(text, max = 8) {
 function splitResponsibilityItems(block) {
   if (!block?.trim()) return [];
   const normalized = block.replace(/\s+/g, ' ').trim();
+
+  // "Assist in X. - Support Y. - Participate in Z." (common AICTE dash bullets)
+  if (/\s+-\s+(?=[A-Z])/.test(normalized)) {
+    const dashItems = normalized
+      .split(/\s+-\s+(?=[A-Z])/)
+      .map((s) => cleanupBullet(s))
+      .filter((s) => s.length >= 12 && s.length < 280);
+    if (dashItems.length > 1) return dashItems;
+  }
+
   const itemSplit =
-    /\s+(?=(?:Create and|Collect,|Perform |Ensure |Support the |Prepare |Develop |Work with |Assist |Design |Build |Implement |Analyze |Manage |Conduct |Review |Update |Monitor |Test |Deploy |Configure |Integrate |Optimize |Document |Research |Collaborate |Experience in |Knowledge of |prepare summary|Create charts))/i;
+    /\s+(?=(?:Create and|Collect,|Perform |Ensure |Support the |Prepare |Develop |Work with |Assist |Design |Build |Implement |Analyze |Manage |Conduct |Review |Update |Monitor |Test |Deploy |Configure |Integrate |Optimize |Document |Research |Collaborate |Experience in |Knowledge of |prepare summary|Create charts|Support integration|Participate in |Contribute to |Follow safety|Collaborate with ))/i;
   return normalized
     .split(itemSplit)
     .map((s) => cleanupBullet(s))
@@ -908,6 +957,16 @@ function parseProjectDetail(project) {
   const workAreas = extractWorkThemes(text);
 
   responsibilities = [...new Set(responsibilities.map(cleanupBullet))].filter(Boolean).slice(0, 10);
+  responsibilities = responsibilities.flatMap((line) => {
+    if (/\s+-\s+(?=[A-Z])/.test(line)) {
+      const parts = line
+        .split(/\s+-\s+(?=[A-Z])/)
+        .map((s) => cleanupBullet(s))
+        .filter((s) => s.length >= 12 && s.length < 280);
+      if (parts.length > 1) return parts;
+    }
+    return [line];
+  });
   const merged = [];
   for (const line of responsibilities) {
     if (merged.length && /\band\s*$/i.test(merged[merged.length - 1])) {
@@ -917,6 +976,14 @@ function parseProjectDetail(project) {
     }
   }
   responsibilities = merged;
+  responsibilities = responsibilities
+    .map((r) =>
+      r
+        .replace(/\s+Desired\s*(?:Skills)?:?\s*$/i, '')
+        .replace(/\s*[—–]\s*/g, ': ')
+        .trim()
+    )
+    .filter(Boolean);
   const parsedSkills = [...new Set(skills.map(cleanupBullet))].filter(Boolean).slice(0, 12);
 
   return { role, intro, responsibilities, skills: parsedSkills, workAreas };
@@ -1576,9 +1643,9 @@ async function fetchNitiAayogInternships() {
   return [job];
 }
 
-async function deleteOldIndiaJobs() {
+async function deleteOldIndiaJobs(sources = ['aicte-indian-army', 'mospi-nios', 'niti-aayog-internship']) {
   console.log('\n── Remove previous India internship rows ──');
-  for (const source of ['aicte-indian-army', 'mospi-nios', 'niti-aayog-internship']) {
+  for (const source of sources) {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/jobs?source=eq.${encodeURIComponent(source)}`,
       {
@@ -1692,9 +1759,10 @@ async function upsertIndiaCompanies(jobs) {
 }
 
 async function main() {
+  const armyOnly = process.argv.includes('--army-only');
   const army = await fetchIndianArmyInternships();
-  const mospi = await fetchMospiInternships();
-  const niti = await fetchNitiAayogInternships();
+  const mospi = armyOnly ? [] : await fetchMospiInternships();
+  const niti = armyOnly ? [] : await fetchNitiAayogInternships();
   const all = [...army, ...mospi, ...niti];
   console.log(`\nTotal to import: ${all.length}`);
   if (!all.length) process.exit(1);
@@ -1705,7 +1773,9 @@ async function main() {
     console.log(`  /${j.company_key}/${slug} — ${j.title.slice(0, 55)}`);
   }
 
-  await deleteOldIndiaJobs();
+  await deleteOldIndiaJobs(
+    armyOnly ? ['aicte-indian-army'] : ['aicte-indian-army', 'mospi-nios', 'niti-aayog-internship']
+  );
   await upsertJobs(all);
   await upsertIndiaCompanies(all);
 
