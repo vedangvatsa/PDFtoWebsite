@@ -394,7 +394,8 @@ async function fetchAicteDetail(applyUrl) {
   const about = stripHtml(sectionHtml(body, 'About the program'));
   const project = stripHtml(sectionHtml(body, 'Description of the Project'));
   const keywords = stripHtml(sectionHtml(body, 'Keywords'));
-  const who = stripHtml(sectionHtml(body, 'Who can apply?'));
+  const whoHtml = sectionHtml(body, 'Who can apply?');
+  const who = stripHtml(whoHtml);
   const terms = stripHtml(sectionHtml(body, 'Terms of Engagement'));
 
   const logoM = body.match(
@@ -417,6 +418,7 @@ async function fetchAicteDetail(applyUrl) {
     project,
     keywords,
     who,
+    whoHtml,
     terms,
     logo,
   };
@@ -431,14 +433,77 @@ function normalizeSectionText(text) {
     .trim();
 }
 
-/** Comma-separated AICTE specialization lists → readable ", " spacing. */
-function formatCommaList(raw) {
-  if (!raw?.trim()) return '';
-  return String(raw)
+/** Comma-separated AICTE specialization tokens (handles missing spaces after commas). */
+function splitCommaSpecs(raw) {
+  return String(raw || '')
     .split(/,(?=[A-Za-z(])/)
     .map((s) => s.replace(/\s+/g, ' ').trim())
-    .filter((s) => s.length > 1)
-    .join(', ');
+    .filter((s) => s.length > 1);
+}
+
+/** Comma-separated AICTE specialization lists → readable ", " spacing. */
+function formatCommaList(raw) {
+  return splitCommaSpecs(raw).join(', ');
+}
+
+function parseWhoListItems(whoHtml) {
+  if (!whoHtml) return [];
+  return [...whoHtml.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
+    .map((m) =>
+      String(m[1] || '')
+        .replace(/<br\s*\/?>/gi, ' ')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    )
+    .filter(Boolean);
+}
+
+function expandEligibilityListItem(liText, duration) {
+  const t = String(liText || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!t || /^only those candidates/i.test(t)) return [];
+
+  if (/^are available for duration/i.test(t)) {
+    const d = t.match(/duration of\s+([^\n.]+)/i)?.[1]?.trim() || duration;
+    return [`Available for the full ${d || 'posted'} internship period`];
+  }
+  if (/^have relevant skills/i.test(t)) {
+    return ['Relevant skills and interest in the project area'];
+  }
+  if (!/^are from\b/i.test(t)) return [];
+
+  const body = t.replace(/^are from\s+/i, '').trim();
+  const withSpec = body.match(/^(.+?)\s+with specialisation in\s+(.+)$/i);
+  if (withSpec) {
+    const degree = withSpec[1].trim();
+    const specs = splitCommaSpecs(withSpec[2]);
+    if (specs.length > 1) {
+      return specs.map((s) => `${degree} with specialisation in ${s}`);
+    }
+    if (specs.length === 1) {
+      return [`${degree} with specialisation in ${specs[0]}`];
+    }
+    return [`${degree} with specialisation in ${formatCommaList(withSpec[2])}`];
+  }
+
+  const out = [];
+  for (const chunk of splitDegreeClauses(body)) {
+    const line = formatDegreeEligibilityLine(chunk);
+    if (!line) continue;
+    const colon = line.match(/^(.+?):\s+(.+)$/);
+    if (colon) {
+      const specs = splitCommaSpecs(colon[2]);
+      if (specs.length > 1) {
+        out.push(...specs.map((s) => `${colon[1].trim()}: ${s}`));
+        continue;
+      }
+    }
+    out.push(line);
+  }
+  return out;
 }
 
 /** One "are from …" chunk may contain B.Tech and M.Tech on the same line. */
@@ -477,47 +542,37 @@ function formatDegreeEligibilityLine(chunk) {
  * Eligibility from AICTE "Who can apply?" — keep every degree line intact.
  * Never drop long specialization lists (B.Tech lines often exceed 250 chars).
  */
-function eligibilityBullets(whoText, duration) {
-  const who = normalizeSectionText(whoText);
-  if (!who) return [];
-
-  // Portal structure: "are from …", "are available …", "have relevant …"
-  // Do NOT split on bare "-" (breaks hyphenated words / mid-list dashes).
-  const clauses = who
-    .replace(/\n-\s+/g, '\n')
-    .split(/(?=\bare from\b)|(?=\bare available\b)|(?=\bhave relevant\b)/i)
-    .map((s) => s.replace(/\s+/g, ' ').trim())
-    .filter(Boolean);
-
+function eligibilityBullets(whoText, duration, whoHtml = '') {
   const out = [];
-  for (const raw of clauses) {
-    if (/^only those candidates/i.test(raw)) continue;
 
-    if (/^are available for duration/i.test(raw)) {
-      const d = raw.match(/duration of\s+([^\n.]+)/i)?.[1]?.trim() || duration;
-      out.push(`Available for the full ${d || 'posted'} internship period`);
-      continue;
+  // Prefer structured <li> items from the official page (one degree path per <li>).
+  const listItems = parseWhoListItems(whoHtml);
+  if (listItems.length) {
+    for (const li of listItems) {
+      out.push(...expandEligibilityListItem(li, duration));
     }
-    if (/^have relevant skills/i.test(raw)) {
-      out.push('Relevant skills and interest in the project area');
-      continue;
-    }
+  } else {
+    const who = normalizeSectionText(whoText);
+    if (!who) return [];
 
-    const from = raw.match(/^are from\s+(.+)$/is)?.[1]?.replace(/\s+/g, ' ').trim();
-    if (!from) continue;
+    const clauses = who
+      .replace(/\n-\s+/g, '\n')
+      .split(/(?=\bare from\b)|(?=\bare available\b)|(?=\bhave relevant\b)/i)
+      .map((s) => s.replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
 
-    for (const chunk of splitDegreeClauses(from)) {
-      const line = formatDegreeEligibilityLine(chunk);
-      if (line) out.push(line);
+    for (const raw of clauses) {
+      out.push(...expandEligibilityListItem(raw, duration));
     }
   }
 
-  // Cap length only for pathological scrapes; official B.Tech lists are ~300–500 chars
   return [...new Set(out)].filter((s) => s.length > 4 && s.length < 900);
 }
 
 /** Count official "are from" degree clauses (unique) for import validation. */
-function countOfficialDegreeClauses(whoText) {
+function countOfficialDegreeClauses(whoText, whoHtml = '') {
+  const fromLis = parseWhoListItems(whoHtml).filter((li) => /^are from\b/i.test(li));
+  if (fromLis.length) return fromLis.length;
   const who = normalizeSectionText(whoText);
   const clauses = who.match(/\bare from\s+.+?(?=\s+are from\b|\s+are available\b|\s+have relevant\b|$)/gi) || [];
   const normalized = clauses.map((c) =>
@@ -996,14 +1051,14 @@ function buildArmyDescription(detail) {
     const lower = s.toLowerCase();
     return !arr.some((other, j) => j !== i && other.length > s.length && other.toLowerCase().includes(lower));
   });
-  const eligibility = eligibilityBullets(detail.who, detail.duration);
+  const eligibility = eligibilityBullets(detail.who, detail.duration, detail.whoHtml);
   const workThemes = [...new Set([...parsed.workAreas, ...extractWorkThemes(detail.project)])].filter(
     (t) => !parsed.responsibilities.some((r) => r.toLowerCase().includes(t.toLowerCase()))
   );
   const notes = practicalNotes(detail);
   const displayTitle = displayArmyTitle(detail.title);
 
-  const officialDegreeCount = countOfficialDegreeClauses(detail.who);
+  const officialDegreeCount = countOfficialDegreeClauses(detail.who, detail.whoHtml);
   const storedDegreeCount = eligibility.filter(
     (e) => !/^Available for the full/i.test(e) && !/^Relevant skills/i.test(e)
   ).length;
