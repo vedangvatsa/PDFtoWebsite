@@ -71,9 +71,9 @@ export default function ArticleContent() {
       <p>Under your promoted title you list strategy and ownership. Focus on system architecture and mentoring. Show that you were in charge of projects and helped others succeed. This contrast proves to the manager that your promotion was earned through real business value.</p>
 
       <h2 className={h2}>Quantifying the Step Up</h2>
-      <p>To prove your growth was real you need numbers. But you must not just list tasks. You must show the difference in your impact before and after the promotion. This shows you stepped up to meet the new expectations.</p>
+      <p>To prove your growth was real you need numbers. But you must list tasks. You must show the difference in your impact before and after the promotion. This shows you stepped up to meet the new expectations.</p>
 
-      <p>For example you can write that you mentored two junior developers after your promotion. You can state that you took ownership of a system that serves double the traffic. This proves you did not just change your title. It proves you expanded your footprint across the team.</p>
+      <p>For example you can write that you mentored two junior developers after your promotion. You can state that you took ownership of a system that serves double the traffic. This proves you did change your title. It proves you expanded your footprint across the team.</p>
 
       <p>If you cannot find company revenue numbers you can use operational numbers. Write about team velocity or deploy speeds. Mention how your new responsibilities reduced bugs or saved development hours. These metrics show you understand the physics of your team.</p>
 
@@ -97,6 +97,13 @@ export default function ArticleContent() {
       <p>A web profile solves this issue. It uses responsive code that adjusts to any screen size. The indents stay clean and the timeline lines render perfectly. The hiring manager can scan your progression on a phone without zooming in or scrolling sideways.</p>
 
       <p>Using a live web link also allows you to update your titles instantly. If you get promoted tomorrow you do not need to send a new file. You edit your profile online and the recruiter sees the updated career growth immediately.</p>
+
+      <h2 className={h2}>Explaining Internal Growth to External Recruiters</h2>
+      <p>External recruiters often skim profiles quickly and misread nested promotions as job hopping. When a recruiter messages you about a role, reply with one sentence that clarifies your tenure. Write something like: "I have been at Acme since 2022, promoted twice internally to my current senior title."</p>
+
+      <p>This single clarification prevents awkward questions in screening calls. It also gives the recruiter a clean story to pass along to the hiring manager. They do not need to decode your timeline or worry that you will leave their client after six months.</p>
+
+      <p>If you are actively interviewing, add a one-line tenure summary at the top of your web profile near your current title. Recruiters who land on your page from a LinkedIn link will see the full picture before they form assumptions based on a quick scan of role headings.</p>
 
       <h2 className={h2}>Read Next</h2>
       <p>To make sure your profile looks clean after updating your promotions you should check your spacing. Read our guide on the <Link href="/spacing" className={link}>best CV spacing standards</Link> to build a clean layout. You can also review the <Link href="/fonts" className={link}>best fonts for screen readability</Link> to ensure your timeline looks crisp.</p>

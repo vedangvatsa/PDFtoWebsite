@@ -24,7 +24,7 @@ export default function ArticleContent() {
       </div>
 
       <h2 className={h2}>Counting Characters and Whitespace</h2>
-      <p>Characters are not just letters and numbers. Every space, tab, and punctuation mark counts toward the database limit. In addition hidden formatting characters from Word or PDF exports consume your character budget.</p>
+      <p>Characters are letters and numbers. Every space, tab, and punctuation mark counts toward the database limit. In addition hidden formatting characters from Word or PDF exports consume your character budget.</p>
 
       <p>A single page of text typically contains three thousand characters. If you use a complex layout you might reach the database limit on a single page. This occurs because the layout tools insert hundreds of invisible tab blocks.</p>
 
@@ -117,7 +117,7 @@ export default function ArticleContent() {
 
       <p>If you apply to a major bank or insurance company you are likely submitting to a legacy system. These environments have the strictest character boundaries. Keeping your document under one page is the safest strategy for these targets.</p>
 
-      <p>You do not need to list every job you held ten years ago. Focus on your last three roles. Delete older entries to keep your character count low while highlighting your current skills.</p>
+      <p>You do not need to list every job you held ten years ago. Focus on your last three roles. Delete older entries to keep your character count low while showing your current skills.</p>
 
       <h2 className={h2}>Maximizing the Value of Saved Space</h2>
       <p>When you edit your writing to save space you also improve readability. Recruiters appreciate concise documents that get straight to the point. A short document forces you to highlight your best achievements.</p>
@@ -128,18 +128,32 @@ export default function ArticleContent() {
 
       <p>This approach saves character budget while showing recruiters you are a high impact developer. Combining dense text with a live web link ensures your complete story is available to hiring managers.</p>
 
+      <h2 className={h2}>Priority Order When You Must Cut Content</h2>
+      <p>If your text export exceeds six thousand characters, cut in a fixed order. First remove duplicate skill lists from older jobs. Second trim jobs older than ten years to one line each. Third shorten education to degree, school, and year.</p>
+
+      <p>Never cut your most recent role to save space. Recruiters weight the last three years heavily. A truncated current job makes you look unemployed or inexperienced even when the problem is database limits.</p>
+
+      <p>Move long project narratives to your web profile. Keep a single sentence and a URL in the file upload. The index stays searchable. The story stays intact online.</p>
+
+      <h2 className={h2}>Why Recruiters See a Different Version Than You Sent</h2>
+      <p>Enterprise portals often reformat parsed text inside their own UI. Line breaks disappear. Bullets become plain dashes. Your carefully spaced sections look like one paragraph. That display problem is separate from truncation but feels the same to candidates.</p>
+
+      <p>Submitting a shorter file reduces both risks. Less text means fewer places for the UI to break. A web link bypasses the reformatting layer entirely because the recruiter views your page in a normal browser.</p>
+
+      <p>Ask recruiters which view they use when they say your CV looked incomplete. Sometimes they opened the attachment. Sometimes they read the parsed preview. Knowing the source tells you which version to fix.</p>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on layout design and concise formatting read these detailed guides.</p>
       
       <p>
-        Learn how to format your page by checking <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
-      </p>
+ Learn how to format your page by checking <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+ </p>
       <p>
-        Understand how to edit your bullets by reading <Link href="/bullets" className={link}>How Long Should Bullets Be</Link>.
-      </p>
+ Understand how to edit your bullets by reading <Link href="/bullets" className={link}>How Long Should Bullets Be</Link>.
+ </p>
       <p>
-        Discover how to share your profile by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
-      </p>
+ Discover how to share your profile by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
+ </p>
     </div>
   );
 }

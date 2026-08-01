@@ -90,7 +90,7 @@ export default function ArticleContent() {
 
       <ul className={ul}>
         <li><span className={bold}>System Architecture</span> Architected a microservice orchestration layer handling millions of daily requests for a major telecom client.</li>
-        <li><span className={bold}>Performance Tuning</span> Optimized query execution paths on a distributed database system to reduce read latency by forty percent.</li>
+        <li><span className={bold}>Performance Tuning</span> tuned query execution paths on a distributed database system to reduce read latency by forty percent.</li>
         <li><span className={bold}>Security Compliance</span> Deployed token based authentication layers following strict industry standards for health data access.</li>
       </ul>
 
@@ -101,7 +101,7 @@ export default function ArticleContent() {
 
       <p>Write that you increased transaction throughput by four hundred percent. State that your refactoring work reduced server infrastructure bills by thirty percent. These percentage ratios prove your value without leaking financial scale.</p>
 
-      <p> Hiding the absolute numbers also focuses the conversation on your technical competence. Engineering managers care about performance ratios. They want to know how you optimized resources rather than absolute business budgets.</p>
+      <p> Hiding the absolute numbers also focuses the conversation on your technical competence. Engineering managers care about performance ratios. They want to know how you tuned resources rather than absolute business budgets.</p>
 
       <h2 className={h2}>Structuring Interviews Around Abstracted Projects</h2>
       <p>Talking about confidential work in job interviews requires confidence. When an interviewer asks about a secret project do not refuse to answer. Explain that you will describe the technical challenges using standard industry terminology.</p>
@@ -128,18 +128,32 @@ export default function ArticleContent() {
 
       <p>Using CVin.Bio allows you to manage these details cleanly. You get a professional web link that is easy to edit. You can keep your public profile fully compliant while presenting your engineering skills in a clean responsive format.</p>
 
+      <h2 className={h2}>Working With Legal and Compliance Teams</h2>
+      <p>Some employers require written approval before you publish any work history online. Submit your abstracted bullets to HR or legal review before they go live. Frame the request as protecting the company, not hiding your career.</p>
+
+      <p>Bring a draft that already strips client names and internal codenames. Legal teams move faster when they edit a safe document instead of writing one from scratch. Ask specifically whether percentage metrics and technology categories are allowed. Policies differ by firm.</p>
+
+      <p>Save the approval email. If a future recruiter questions a vague employer label you can explain that your public profile follows corporate policy. That answer sounds professional, not evasive.</p>
+
+      <h2 className={h2}>Defense, Finance, and Clearance Roles</h2>
+      <p>Candidates with security clearances face extra constraints. You may be unable to name programs, locations, or even broad mission areas. In those cases describe the clearance level and the type of systems you supported without naming the agency.</p>
+
+      <p>Write that you maintained classified network infrastructure under IL4 controls rather than naming a specific program office. Interviewers with clearance backgrounds will read between the lines. General recruiters still see credible technical depth.</p>
+
+      <p>Never attach classified documents to applications. Never discuss classified details in email threads. Keep all sensitive specifics for in-person conversations inside secure facilities.</p>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on formatting freelance work and presenting technical design read these detailed articles.</p>
       
       <p>
-        Learn how to layout consulting contracts by reading <Link href="/freelance" className={link}>Best Freelance Portfolio Formatting Tips for Software Engineers</Link>.
-      </p>
+ Learn how to layout consulting contracts by reading <Link href="/freelance" className={link}>Best Freelance Portfolio Formatting Tips for Software Engineers</Link>.
+ </p>
       <p>
-        Understand how to build trust with technical details by reading <Link href="/trust" className={link}>Stop Faking Your Skills List</Link>.
-      </p>
+ Understand how to build trust with technical details by reading <Link href="/trust" className={link}>Stop Faking Your Skills List</Link>.
+ </p>
       <p>
-        Discover how to prove architecture design by reading <Link href="/system-design" className={link}>Best Ways to Prove System Design Skills on a CV</Link>.
-      </p>
+ Discover how to prove architecture design by reading <Link href="/system-design" className={link}>Best Ways to Prove System Design Skills on a CV</Link>.
+ </p>
     </div>
   );
 }

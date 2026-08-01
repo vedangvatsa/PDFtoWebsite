@@ -63,10 +63,10 @@ export default function ArticleContent() {
 
       <p>To write this you must identify the primary pain point of the team you want to join. If they are struggling with slow deployments your value proposition should focus on infrastructure. Explain how your skills can solve their speed issues.</p>
 
-      <p>Use active verbs to describe your work. Write that you design backend systems or optimize frontends. Avoid generic words. Be specific about the tools you use and the results you deliver.</p>
+      <p>Use active verbs to describe your work. Write that you design backend systems or tune frontends. Avoid generic words. Be specific about the tools you use and the results you deliver.</p>
 
       <h2 className={h2}>Replacement Three Selected Core Highlights</h2>
-      <p>The third option is a bulleted list of highlights. This replaces a paragraph with three or four high impact achievements. This layout is excellent for candidates who want to emphasize results over narrative.</p>
+      <p>The third option is a bulleted list of highlights. This replaces a paragraph with three or four high impact achievements. This layout is excellent for candidates who want to stress results over narrative.</p>
 
       <p>Each highlight must include a number to prove your impact. Write about how you reduced server costs or increased page load speed. These metrics show that you are focused on business outcomes rather than just writing code.</p>
 
@@ -87,7 +87,7 @@ export default function ArticleContent() {
       <p>Instead write that you used Java to build a data pipeline that processed two million records per day. This answers the question instantly. It tells the recruiter exactly why your skill matters to their business.</p>
 
       <h2 className={h2}>Writing Without Corporate Buzzwords</h2>
-      <p>To make your intro stand out you must remove all corporate buzzwords. Delete words like synergize or interface. These words make your writing look generic and hide your actual skills.</p>
+      <p>To make your intro stand out you must remove all corporate buzzwords. Delete words like coordinate or interface. These words make your writing look generic and hide your actual skills.</p>
 
       <p>Instead use simple and direct language. Write that you worked with other teams rather than saying you collaborated across silos. Simple words are much easier to read and sound more authentic.</p>
 
@@ -99,6 +99,20 @@ export default function ArticleContent() {
       <p>A web profile allows you to update your intro in real time. You can adapt your value proposition to match the jobs you are targeting. This flexibility keeps your application fresh and aligned with current market demands.</p>
 
       <p>A digital profile also allows you to link your summary directly to live projects. If you mention a system you built in your intro the recruiter can click a link to view it. This provides instant proof of your work and builds trust.</p>
+
+      <h2 className={h2}>Tailoring Your Summary for Different Roles</h2>
+      <p>One static intro rarely fits every application. A backend role cares about database throughput. A frontend role cares about user interface performance. If you send the same generic summary to both you waste the opening line on irrelevant details.</p>
+
+      <p>Keep a master list of three to five achievement bullets that represent your strongest work. When you apply to a specific posting, pick the two bullets that match the job description. Rewrite your intro to lead with those skills. This takes five minutes and doubles the relevance of your first impression.</p>
+
+      <p>On a web profile you can update the summary without re-exporting a file. Change the headline before you paste your link into an application form. The recruiter sees a version tuned to their stack, not a copy you mass mailed last month.</p>
+
+      <h2 className={h2}>Before and After Examples</h2>
+      <p>Weak opening: Passionate software developer seeking a challenging role in a dynamic environment. The reader learns nothing. They do not know your stack, your years of experience, or what you have shipped.</p>
+
+      <p>Strong opening: Backend engineer with four years building payment APIs in Go. Reduced checkout failures by eighteen percent after rewriting idempotency handling. This version names a specialty, a language, and a measurable outcome in under twenty words.</p>
+
+      <p>Run your draft through the so what test one more time before you publish. Every sentence should answer what problem you solve for the team that might hire you. If it only describes what you want from them, delete it and start over.</p>
 
       <h2 className={h2}>Read Next</h2>
       <p>After upgrading your career objective you should review your layout spacing. Read our guide on the <Link href="/spacing" className={link}>best CV spacing standards</Link> to ensure your page is easy to read. You should also check out the <Link href="/fonts" className={link}>best fonts for screen rendering</Link> to make sure your text looks crisp.</p>

@@ -124,22 +124,41 @@ export default function ArticleContent() {
       <h2 className={h2}>The Dynamic Web Profile Solution</h2>
       <p>A web profile acts as the ultimate hub for all your career channels. It bridges physical handouts, email signatures, and chat pitches. It keeps your professional details organized in a single place.</p>
 
-      <p>Building your web profile on CVin.Bio provides built in QR generation. The system generates a clean high contrast graphic linked directly to your responsive page. You get a professional target layout optimized for mobile scanning.</p>
+      <p>Building your web profile on CVin.Bio provides built in QR generation. The system generates a clean high contrast graphic linked directly to your responsive page. You get a professional target layout tuned for mobile scanning.</p>
 
       <p>This integration ensures your print assets look modern and clean. You can hand paper to managers at events and watch them scan your details instantly. It establishes a fast digital pipeline from first contact to deep technical review.</p>
 
+      <h2 className={h2}>QR Codes on Business Cards and Name Badges</h2>
+      <p>Conference badges have limited space. A QR code on the back of your badge lets people scan you during hallway conversations without exchanging cards. Keep the code on the badge back so it does not compete with your name on the front.</p>
+
+      <p>Business cards follow the same rules as resume printing. One code, one destination, high contrast, quiet zone. Put the code on the back of the card with a short label. The front stays clean with your name and title.</p>
+
+      <p>Some candidates print mini cards with only a QR code and their name. This works at hackathons and career fairs where speed matters more than formality. Test the scan distance. A code that works at arm&apos;s length may fail when someone tries to scan from across a booth table.</p>
+
+      <h2 className={h2}>Accessibility and Fallback Text</h2>
+      <p>Not every recruiter will scan a code. Some prefer typing a URL. Always print the human-readable link below or beside the QR graphic. Write cvin.bio/yourname in plain text so the page works for everyone.</p>
+
+      <p>Colorblind readers and low-light environments make low-contrast codes fail. Stick to black on white. Avoid inverted codes with white blocks on dark backgrounds unless you test them extensively.</p>
+
+      <p>If your audience includes recruiters from regions where QR adoption is lower, lean harder on the printed URL. The code is a convenience layer, not a replacement for a readable link.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>The booth test</h3>
+        <p>Before any event, print one copy and scan it with three different phones in normal room lighting. If any phone fails twice, increase the code size or fix the contrast before printing the full batch.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
-      <p>For more advice on print optimization and PDF compatibility read these detailed articles.</p>
+      <p>For more advice on print tuning and PDF compatibility read these detailed articles.</p>
       
       <p>
-        Learn how to export web pages cleanly by reading <Link href="/printing" className={link}>Best Methods to Print Web CVs to PDF Cleanly</Link>.
-      </p>
+ Learn how to export web pages cleanly by reading <Link href="/printing" className={link}>Best Methods to Print Web CVs to PDF Cleanly</Link>.
+ </p>
       <p>
-        Understand why complex layouts break parsing code by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
-      </p>
+ Understand why complex layouts break parsing code by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
+ </p>
       <p>
-        Explore the advantages of sharing web links by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
-      </p>
+ Explore the advantages of sharing web links by reading <Link href="/link" className={link}>Sending Your CV as a Web Link Instead of a PDF File</Link>.
+ </p>
     </div>
   );
 }

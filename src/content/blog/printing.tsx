@@ -7,9 +7,9 @@ export default function ArticleContent() {
     <div className="flex flex-col gap-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
       <p>A candidate builds a beautiful responsive web profile with interactive project filtering and a dark mode toggle. They apply to a large enterprise company only to find a portal that strictly requires a file upload. They press the print button in their browser and save the page to a PDF. The output is a messy layout with broken grids and split sentences that look completely unprofessional.</p>
 
-      <p>Legacy corporate systems still rely on flat file submissions for their initial application processes. If you do not optimize your web CV for print layout you risk sending a corrupted document to the hiring team. You must use print style sheets to convert your web profile into a clean document.</p>
+      <p>Legacy corporate systems still rely on flat file submissions for their initial application processes. If you do not tune your web CV for print layout you risk sending a corrupted document to the hiring team. You must use print style sheets to convert your web profile into a clean document.</p>
 
-      <p>Optimizing for print is not about abandoning web design. It is about writing simple styles that instruct the browser how to rearrange content on a physical page size. This ensures your profile looks great on screens and remains readable when printed.</p>
+      <p>tuning for print is not about abandoning web design. It is about writing simple styles that instruct the browser how to rearrange content on a physical page size. This ensures your profile looks great on screens and remains readable when printed.</p>
 
       <h2 className={h2}>The Power of Media Print Style Sheets</h2>
       <p>Web browsers use screen media styles by default to render layout pages. To control how your page looks when printed you must write custom media print rules. These rules override screen layouts and apply only during the print phase.</p>
@@ -57,7 +57,7 @@ export default function ArticleContent() {
           {/* Dark navbar still visible */}
           <rect x="20" y="34" width="300" height="28" rx="8" className="fill-zinc-900 dark:fill-zinc-800" />
           <rect x="20" y="50" width="300" height="12" className="fill-zinc-900 dark:fill-zinc-800" />
-          <text x="35" y="52" className="print-small fill-zinc-400 dark:fill-zinc-500">Home    About    Projects    Contact    ☾</text>
+          <text x="35" y="52" className="print-small fill-zinc-400 dark:fill-zinc-500">Home About Projects Contact ☾</text>
 
           {/* Content on dark background = invisible */}
           <text x="35" y="85" className="print-label fill-zinc-400 dark:fill-zinc-500">Jane Developer</text>
@@ -86,7 +86,7 @@ export default function ArticleContent() {
           <text x="530" y="22" textAnchor="middle" className="print-title fill-emerald-600 dark:fill-emerald-400">✓ Printed With @media print</text>
           <rect x="380" y="34" width="300" height="340" rx="8" className="fill-white dark:fill-zinc-100 stroke-emerald-300 dark:stroke-emerald-600" strokeWidth="1.5" />
 
-          {/* Clean header — no nav */}
+          {/* Clean header. no nav */}
           <text x="395" y="60" className="print-label fill-zinc-900 dark:fill-zinc-900" fontWeight="700">Jane Developer</text>
           <text x="395" y="75" className="print-small fill-zinc-600 dark:fill-zinc-600">Full-Stack Engineer · jane.dev · github.com/jane</text>
           <text x="610" y="60" className="print-badge fill-emerald-600 dark:fill-emerald-600">NAV HIDDEN</text>
@@ -100,7 +100,7 @@ export default function ArticleContent() {
 
           {/* break-inside: avoid shown */}
           <rect x="390" y="163" width="275" height="80" rx="4" className="fill-emerald-50 dark:fill-emerald-100 stroke-emerald-200 dark:stroke-emerald-300" strokeWidth="1" strokeDasharray="4 3" />
-          <text x="395" y="180" className="print-badge fill-emerald-700 dark:fill-emerald-700">PROJECTS — break-inside: avoid</text>
+          <text x="395" y="180" className="print-badge fill-emerald-700 dark:fill-emerald-700">PROJECTS. break-inside: avoid</text>
           <text x="400" y="198" className="print-small fill-zinc-800 dark:fill-zinc-800" fontWeight="600">Payment Dashboard</text>
           <rect x="400" y="205" width="250" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-300" />
           <text x="400" y="225" className="print-small fill-zinc-800 dark:fill-zinc-800" fontWeight="600">API Gateway</text>
@@ -148,18 +148,37 @@ export default function ArticleContent() {
 
       <p>Ask a friend to test your printed file on their local printer if possible. Physical page margins can vary slightly depending on printer hardware. A final physical check ensures your profile is ready for corporate review.</p>
 
+      <h2 className={h2}>When to Print Versus When to Send a Link</h2>
+      <p>Default to sending a web link. Print only when the application portal requires a file upload or when you are handing someone a physical document at an event. A link stays current. A printed PDF is frozen the moment you save it.</p>
+
+      <p>If you must upload a file, generate it from your web profile using print styles rather than exporting from a word processor. The web version is your source of truth. The PDF is a snapshot for systems that have not caught up yet.</p>
+
+      <p>CVin.Bio profiles include built-in print styling. The platform strips navigation, forces high-contrast text, and keeps experience blocks intact across page breaks. You get a clean PDF from the browser print dialog without writing custom CSS.</p>
+
+      <h2 className={h2}>Common Print Failures to Avoid</h2>
+      <p>Printing directly from a dark-mode page without print overrides produces gray text on gray backgrounds. Always preview before saving. Using browser zoom above 100% shifts margins and creates unexpected page breaks. Print at actual size.</p>
+
+      <p>Background images and gradients often print as solid ink blobs. Disable background graphics in the print dialog unless you have tested the output. Fixed-position elements like sticky headers repeat on every printed page and waste space.</p>
+
+      <p>Long URLs in the body text wrap across lines and look broken on paper. Use short profile links and let print CSS append full URLs only for essential outbound links.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>The print preview checklist</h3>
+        <p>Before saving any PDF: no navigation bar, no dark backgrounds, no split job entries, all links visible as text, margins at least 0.75 inches, body font at least 10 point. If any item fails, fix your print CSS before submitting.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on layouts and designing profiles that satisfy both human and machine readers read these guides.</p>
       
       <p>
-        Explore why complex structures fail automated scans by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
-      </p>
+ Explore why complex structures fail automated scans by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
+ </p>
       <p>
-        Learn how to layout your profile for maximum scanning speed by reading <Link href="/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
-      </p>
+ Learn how to layout your profile for maximum scanning speed by reading <Link href="/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
+ </p>
       <p>
-        Discover spacing standards for clean layouts by reading <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
-      </p>
+ Discover spacing standards for clean layouts by reading <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+ </p>
     </div>
   );
 }

@@ -59,7 +59,7 @@ export default function ArticleContent() {
       </div>
 
       <h2 className={h2}>Why Static Beats Server Side Rendering for Job Seekers</h2>
-      <p>When you apply for a job you want to remove all friction. If a recruiter clicks your link they expect it to open instantly. If they have to wait for a spinning wheel they will close the page. Studies show that a one second delay in load time reduces reader satisfaction. For a technical candidate a slow page is a direct reflection of your engineering capability.</p>
+      <p>When you apply for a job you want to remove all friction. If a recruiter clicks your link they expect it to open instantly. If they have to wait for a spinning wheel they will close the page. research finds that a one second delay in load time reduces reader satisfaction. For a technical candidate a slow page is a direct reflection of your engineering capability.</p>
 
       <p>Static sites are fast because there is no computational work happening on the server. When a request comes in the network simply sends the pre-built files to the browser. This process takes milliseconds. You can host these files on edge servers all over the world. This means a manager in London gets the same fast load time as a manager in San Francisco.</p>
 
@@ -70,7 +70,7 @@ export default function ArticleContent() {
       <h2 className={h2}>Next.js for React Developers</h2>
       <p>Next.js is the most popular framework in the React ecosystem. It is built by Vercel. It is a great choice if you are a frontend developer who already uses React. Next.js supports static exports. You can write your pages using React components and compile them into flat HTML files.</p>
 
-      <p>Next.js is powerful because it lets you mix static and server rendered features. If you want to pull data from a public API at build time you can do that. If you want to write your blog posts in Markdown files Next.js can parse them and build the pages. The framework handles code splitting and image optimization automatically.</p>
+      <p>Next.js is powerful because it lets you mix static and server rendered features. If you want to pull data from a public API at build time you can do that. If you want to write your blog posts in Markdown files Next.js can parse them and build the pages. The framework handles code splitting and image tuning automatically.</p>
 
       <p>The downside of Next.js is that it can be too heavy for a simple site. It ships a React runtime to the browser. This increases the total size of your page. If you only want to show a single page of text Next.js might be too complex. But if you want to show off your React skills and build interactive components it is a top choice.</p>
 
@@ -106,6 +106,8 @@ export default function ArticleContent() {
       <p>Vercel is the natural choice for Next.js. Netlify is excellent for Astro and Eleventy. GitHub Pages is a great free option for all static sites. All these platforms provide free SSL certificates and global CDN distribution.</p>
 
       <p>You should also buy a custom domain name. A professional domain looks much better than a generic subdomain. You can read our advice on <Link href="/domains" className={link}>choosing a domain name for portfolios</Link> to make sure you get a clean address. Once your static site is live on a custom domain you will have a fast secure and permanent home for your professional profile.</p>
+
+      <p>Static sites also age well. Frameworks change, but plain HTML on a global CDN keeps serving pages. Pick a generator you can still maintain six months after launch weekend.</p>
 
       <p>Do not waste time building complex backends for your portfolio. Choose a static site generator. Keep your code simple and your pages fast. A fast static site shows employers that you understand software efficiency and respect their time.</p>
     </div>

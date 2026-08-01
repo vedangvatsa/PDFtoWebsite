@@ -6,6 +6,10 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
+        <p>It is 7:42 AM on a Tuesday. A technical recruiter opens their inbox before the standup meeting. Forty-seven new messages since yesterday. Thirty-one of them contain the same attachment pattern: a PDF, a generic subject line, and a paragraph that starts with <span className={bold}>Please find my resume attached</span>.</p>
+        <p>They have eleven minutes before their first call. They will open maybe six files. The rest get archived unread. The emails that survive are the ones that require zero setup: a link that renders a preview, a name they can pronounce, and a headline that tells them why this person matters for the role they are filling.</p>
+        <p>Standing out in a recruiter inbox is not about gimmicks. It is about reducing friction at the exact moment attention is scarcest.</p>
+
         <h2 className={h2}>300 Identical Attachments</h2>
         <p>Picture a recruiter&apos;s inbox after posting a Senior Frontend role on LinkedIn. Within 48 hours: <span className={bold}>300 applications</span>. Each one is an email with a PDF. The filenames are all variations of the same thing:</p>
         <ul className={ul}>
@@ -21,7 +25,7 @@ export default function ArticleContent() {
 
             {/* Inbox header bar */}
             <rect x="60" y="10" width="500" height="32" rx="6" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
-            <text x="310" y="31" textAnchor="middle" fontSize="12" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-zinc-500 dark:fill-zinc-400">Inbox — Senior Designer Role (312 applicants)</text>
+            <text x="310" y="31" textAnchor="middle" fontSize="12" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-zinc-500 dark:fill-zinc-400">Inbox. Senior Designer Role (312 applicants)</text>
 
             {/* Row 1 */}
             <rect x="60" y="48" width="500" height="36" rx="4" className="fill-zinc-50 dark:fill-zinc-800/60 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="0.75" />
@@ -48,13 +52,13 @@ export default function ArticleContent() {
             <text x="102" y="191" fontSize="11" fontFamily="system-ui, sans-serif" className="fill-zinc-400 dark:fill-zinc-500">CV_Brown.pdf</text>
             <text x="480" y="191" textAnchor="end" fontSize="10" fontFamily="system-ui, sans-serif" className="fill-zinc-300 dark:fill-zinc-600">276 KB</text>
 
-            {/* Row 5 — identical grey */}
+            {/* Row 5. identical grey */}
             <rect x="60" y="208" width="500" height="36" rx="4" className="fill-zinc-50 dark:fill-zinc-800/60 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="0.75" />
             <path d="M82 218 L82 232 Q82 236 86 236 Q90 236 90 232 L90 222 Q90 216 85 216 Q80 216 80 222 L80 232" className="stroke-zinc-300 dark:stroke-zinc-600" strokeWidth="1" fill="none" strokeLinecap="round" />
             <text x="102" y="231" fontSize="11" fontFamily="system-ui, sans-serif" className="fill-zinc-400 dark:fill-zinc-500">Resume_Taylor_Updated.pdf</text>
             <text x="480" y="231" textAnchor="end" fontSize="10" fontFamily="system-ui, sans-serif" className="fill-zinc-300 dark:fill-zinc-600">220 KB</text>
 
-            {/* Row 6 — THE STANDOUT */}
+            {/* Row 6. THE STANDOUT */}
             <rect x="60" y="252" width="500" height="50" rx="6" className="fill-white dark:fill-zinc-800 stroke-emerald-400 dark:stroke-emerald-600" strokeWidth="2" />
 
             {/* Left accent bar */}
@@ -65,7 +69,7 @@ export default function ArticleContent() {
             <text x="93" y="281" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" className="fill-emerald-600 dark:fill-emerald-300">D</text>
 
             {/* Name & headline */}
-            <text x="122" y="274" fontSize="12" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-zinc-900 dark:fill-zinc-100">David Chen — Senior Product Designer</text>
+            <text x="122" y="274" fontSize="12" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-zinc-900 dark:fill-zinc-100">David Chen. Senior Product Designer</text>
             <text x="122" y="290" fontSize="10" fontFamily="system-ui, sans-serif" className="fill-zinc-500 dark:fill-zinc-400">8 yrs · Figma, Systems, Research · Ex-Spotify</text>
 
             {/* URL label */}
@@ -97,7 +101,58 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>Interactive Portfolios</h2>
-        <p>A web profile is not just for text. You can embed links to live projects, GitHub repositories, or even video introductions. A PDF that says "I built a trading platform" is a claim. A web profile with a "View Live" button that opens the actual platform is proof. Recruiters value proof over claims every single time. This contributes to the <Link href="/link" className={link}>ultimate professional brand image</Link>.</p>
+        <p>A web profile is for text. You can embed links to live projects, GitHub repositories, or even video introductions. A PDF that says "I built a trading platform" is a claim. A web profile with a "View Live" button that opens the actual platform is proof. Recruiters value proof over claims every single time. This contributes to the <Link href="/link" className={link}>ultimate professional brand image</Link>.</p>
+
+        <h2 className={h2}>Subject Lines That Get Opened</h2>
+        <p>Recruiters scan subject lines on mobile lock screens. Vague subjects die unread.</p>
+        <ul className={ul}>
+          <li><span className={bold}>Weak:</span> Application for Senior Role</li>
+          <li><span className={bold}>Better:</span> Senior React engineer, 6 yrs fintech, profile at cvin.bio/alex</li>
+          <li><span className={bold}>Weak:</span> Following up on LinkedIn</li>
+          <li><span className={bold}>Better:</span> Re: Acme backend role, shipped payments at scale</li>
+        </ul>
+        <p>Put your headline and URL in the subject when the platform allows it. Some ATS inboxes strip subjects, but direct email to a hiring manager still respects this pattern.</p>
+
+        <h2 className={h2}>Email Body Length</h2>
+        <p>Three sentences is enough for a cold outreach email. Sentence one: why you are writing and which role. Sentence two: your strongest proof point with a number. Sentence three: your profile link with anchor text.</p>
+        <p>Do not paste your entire CV into the email body. Attachments and pasted walls of text trigger spam filters and mobile scroll fatigue. The email is a trailer. The profile is the film.</p>
+        <div className={callout}>
+          <h3 className={h3}>Deliverability matters</h3>
+          <p>Heavy PDF attachments increase bounce risk on corporate mail servers. A single HTTPS link with plain text weighs a few kilobytes. Your message is more likely to land in the primary tab instead of promotions or spam.</p>
+        </div>
+
+        <h2 className={h2}>Standing Out on LinkedIn InMail</h2>
+        <p>LinkedIn messages compete with connection requests and recruiter spam. Paste your CVin.Bio URL and LinkedIn generates a large preview card with your OpenGraph image. That card occupies more vertical space than a text-only pitch.</p>
+        <p>Lead with the link, then one line of context. Managers on LinkedIn often decide to click before they decide to read. Visual presence wins the first second.</p>
+
+        <h2 className={h2}>Timing and Follow-Up</h2>
+        <p>Tuesday through Thursday mornings see the highest recruiter response rates in most US and European markets. Monday inboxes are backlog. Friday afternoon is shutdown mode.</p>
+        <p>If you sent a link, check view analytics before following up. A follow-up that says <span className={bold}>I saw you opened my profile yesterday</span> is creepy. A follow-up that adds one new data point, like a shipped feature or a talk you gave, is useful.</p>
+        <p>Wait at least five business days before a second touch unless they asked for materials on a deadline.</p>
+
+        <h2 className={h2}>When Attachments Are Still Required</h2>
+        <p>Government contractors, some banks, and legacy HR portals still mandate file uploads. Send the required file and include your URL in the cover letter and the first line of the document. You are covering both compliance and convenience.</p>
+        <p>Our <Link href="/bypass" className={link}>dual-submission guide</Link> explains how to format the robot-safe file while keeping the human path open.</p>
+
+        <h2 className={h2}>Internal Referrals and Slack Shares</h2>
+        <p>When an employee forwards your name in Slack, a URL becomes a rich unfurl with your photo and headline. A PDF becomes a file download prompt that many people ignore on mobile. Referral candidates already have an advantage. Do not waste it with attachment friction.</p>
+        <p>Ask your referrer to paste your link directly in the internal thread. One click for the hiring manager beats <span className={bold}>can someone forward me their CV</span> two days later.</p>
+
+        <h2 className={h2}>Mobile Preview Is the Real Interview</h2>
+        <p>Most first opens happen on a phone. Send yourself your outreach email and open it on cellular data, not office WiFi. Tap your link. If your profile takes more than two seconds to show your name and headline, fix speed before sending more applications. Our <Link href="/load-time" className={link}>load time guide</Link> covers the technical fixes.</p>
+        <p>A recruiter standing in a coffee queue will not pinch-zoom a PDF. They will tap a link or delete the thread.</p>
+
+        <h2 className={h2}>Naming Files When You Must Attach</h2>
+        <p>If a portal forces an attachment, name it <span className={bold}>Firstname_Lastname_Role.pdf</span>. No version numbers. No ALL CAPS. No emoji. Boring names scan cleanly in ATS file lists and look professional when a recruiter searches their downloads folder later.</p>
+        <p>Put the same URL in the first line of that PDF so the attachment and the live profile never diverge.</p>
+
+        <h2 className={h2}>Cold Outreach vs Warm Introductions</h2>
+        <p>Cold email needs a sharper subject line and a link above the fold. Warm intros from employees can be shorter because trust is preloaded. In both cases, never attach a second file when the referrer already shared your URL in the internal thread. Duplicate materials create version confusion and make you look disorganized.</p>
+        <p>Thank the referrer with the exact link you want forwarded so they copy-paste without improvising.</p>
+        <p>One clean URL in a warm intro thread beats three attachments every time.</p>
+
+        <h2 className={h2}>Archive Old Applications Mentally, Not Physically</h2>
+        <p>When a role closes, you do not need to email a new PDF to everyone who passed. Your live profile already reflects new work. The next outreach starts fresh with the same URL and a updated subject line. That continuity is impossible when every touchpoint used a frozen file from last month.</p>
 
         <h2 className={h2}>Frequently Asked Questions</h2>
         <div className="space-y-6">
@@ -119,6 +174,7 @@ export default function ArticleContent() {
         <ul className={ul}>
           <li><Link href="/link" className={link}>How URLs change your professional perception</Link></li>
           <li><Link href="/attachments" className={link}>Stop sending attachments: The technical case against PDFs</Link></li>
+          <li><Link href="/load-time" className={link}>Why slow portfolios lose recruiters in under three seconds</Link></li>
         </ul>
       </div>
   );

@@ -7,7 +7,9 @@ export default function ArticleContent() {
     <div className="flex flex-col gap-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
       <p>You upload your professional CV to a corporate job portal. The web screen blinks. A profile form appears with your name listed as your last employer and your university degree missing entirely.</p>
       
-      <p>This situation happens because the tracking system failed to extract your details. Corporate databases rely on automated software to parse your files. If the software fails to read your layout you get ignored by recruiters.</p>
+      <p>This situation happens because the tracking system failed to extract your details. Corporate databases rely on automated software to parse your files. If the software fails to read your layout you get ignored by recruiters even when a human would have hired you on merit.</p>
+
+      <p>A hiring manager at a mid-size SaaS company told us they review parsed profiles in Greenhouse first and only open the original PDF when something looks wrong. If the parsed version says you have no degree, you never get that second look. Testing is cheap insurance against silent rejection.</p>
 
       <p>You can identify these errors before you send your application. Testing your profile against parsing software reveals exactly what the human recruiter sees. Here is how to audit your document for parser errors.</p>
 
@@ -126,18 +128,35 @@ export default function ArticleContent() {
 
       <p>Taking ten minutes to test your layout prevents your profile from getting lost in database systems. A clean document structure combined with a live web link ensures you get noticed by engineering managers.</p>
 
+      <h2 className={h2}>Side-by-Side Comparison With a Friend&apos;s File</h2>
+      <p>Swap CVs with someone in your network who uses a different template. Run the same plain text paste test on both files. Compare which one preserves date order and section headers. You will often spot problems faster on someone else&apos;s layout than on your own because you are not fighting familiarity blindness.</p>
+      <p>If their file parses cleanly and yours does not, diff the structure. Column count, font choice, and table usage are the usual culprits.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>When to skip PDF entirely for testing</h3>
+        <p>Export a .docx and a .pdf from the same source document. Upload both to the same portal if it accepts multiple formats. Sometimes Word parses better than PDF from the same editor. Pick whichever extraction wins and standardize on that export path.</p>
+      </div>
+
+      <h2 className={h2}>Regression Testing After Every Template Change</h2>
+      <p>Treat your CV like code that needs a smoke test before deploy. Changed fonts? Run the paste test. Added a sidebar? Run the paste test. Moved education above experience for aesthetic reasons? Run the paste test again.</p>
+      <p>Save a screenshot of the parsed Greenhouse profile the first time a file parses correctly. Compare future uploads against that baseline. Regressions are common when designers help you make the layout prettier.</p>
+
+      <h2 className={h2}>Screen Reader Spot Checks</h2>
+      <p>Turn on VoiceOver or NVDA and listen to your pasted plain text export. If the reader announces your skills before your name, your visual order and logical order disagree. Fix the source document until audio order matches human sense.</p>
+      <p>Accessibility order and parser order often fail for the same structural reasons. One fix helps both.</p>
+
       <h2 className={h2}>Read Next</h2>
       <p>To learn more about improving your document layout check out these helpful guides.</p>
       
       <p>
-        Learn why PDF files often fail in systems by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
-      </p>
+ Learn why PDF files often fail in systems by reading <Link href="/pdf" className={link}>Why Complex PDFs Break Recruiter Algorithms</Link>.
+ </p>
       <p>
-        Understand how to format your layout by checking <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
-      </p>
+ Understand how to format your layout by checking <Link href="/spacing" className={link}>Best CV Spacing and Margin Standards for a Professional Look</Link>.
+ </p>
       <p>
-        Discover how to present your profile by reading <Link href="/bypass" className={link}>Bypassing Formatting Destruction with Dual-Submissions</Link>.
-      </p>
+ Discover how to present your profile by reading <Link href="/bypass" className={link}>Bypassing Formatting Destruction with Dual-Submissions</Link>.
+ </p>
     </div>
   );
 }

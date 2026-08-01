@@ -31,7 +31,7 @@ export default function ArticleContent() {
             <rect x="160" y="46" width="6" height="280" rx="3" className="fill-amber-400/40 dark:fill-amber-500/30" />
             <text x="148" y="186" textAnchor="end" fontSize="10" fontFamily="system-ui, sans-serif" className="fill-amber-600 dark:fill-amber-400" transform="rotate(-90 148 186)">Eye lingers here</text>
 
-            {/* Fake resume content — header area */}
+            {/* Fake resume content. header area */}
             <rect x="190" y="62" width="140" height="10" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
             <rect x="190" y="78" width="90" height="6" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="350" y="62" width="130" height="10" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
@@ -40,19 +40,19 @@ export default function ArticleContent() {
             {/* Divider */}
             <line x1="180" y1="98" x2="480" y2="98" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
 
-            {/* Section lines — experience */}
+            {/* Section lines. experience */}
             <rect x="190" y="110" width="80" height="8" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
             <rect x="190" y="128" width="280" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="190" y="140" width="260" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="190" y="152" width="240" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="190" y="164" width="270" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
 
-            {/* Section lines — skills */}
+            {/* Section lines. skills */}
             <rect x="190" y="186" width="60" height="8" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
             <rect x="190" y="204" width="250" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="190" y="216" width="230" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
 
-            {/* Section lines — education */}
+            {/* Section lines. education */}
             <rect x="190" y="238" width="80" height="8" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
             <rect x="190" y="256" width="200" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="190" y="268" width="160" height="5" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
@@ -120,10 +120,62 @@ export default function ArticleContent() {
           </div>
         </div>
 
-        <h2 className={h2}>Recommended Guides</h2>
+        <h2 className={h2}>The Left Margin Is Prime Real Estate</h2>
+        <p>On desktop, eyes snap to the left third of the screen first. Put your current title, top three technologies, and most recent company in that column or in the first lines under your name. On mobile, that same zone is what appears before the first scroll. Do not waste it on a generic summary paragraph about being a passionate team player.</p>
+        <p>Try this layout: Name, title, location, then a single line stack list. &quot;TypeScript · React · Node · AWS · PostgreSQL.&quot; A recruiter searching for PostgreSQL sees it in under two seconds. Buried in paragraph four, it might never register.</p>
+
+        <h2 className={h2}>Front Load Every Bullet</h2>
+        <p>Write bullets as <span className={bold}>Technology + action + outcome</span>. Bad: &quot;Worked with the payments team to improve checkout performance using Redis.&quot; Good: &quot;Redis: cut checkout p99 latency from 2.1s to 320ms by rewriting session cache layer.&quot; The technology is the hook. The outcome is the proof.</p>
+        <div className={callout}>
+          <h3 className={h3}>Mirror the job description safely</h3>
+          <p>Copy exact tool names from the posting if you truly used them. Do not invent skills. ATS filters match strings. Humans match stories. Both need the same keywords visible early. See <Link href="/alignment" className={link}>safe skill alignment</Link> for the ethical line.</p>
+        </div>
+
+        <h2 className={h2}>Headings Beat Clever Labels</h2>
+        <p>Call your sections Experience, Skills, Education. Creative headings like &quot;Where I Have Been&quot; confuse parsers and slow humans. Standard labels route eyes correctly. Under Experience, repeat company names in bold and dates on the same line. Under Skills, use a flat list or grouped tags, never tables.</p>
+        <p>Web profiles handle this automatically. CVin.Bio renders semantic headings and skill tags that both recruiters and <Link href="/bots" className={link}>AI resume bots</Link> can read without guessing.</p>
+
+        <h2 className={h2}>Test Your Own Scan Speed</h2>
+        <p>Open your profile on your phone. Set a timer for six seconds. Close your eyes, open them, look for six seconds, look away. Write down every fact you remember. If you cannot recall your title, top skill, and biggest metric, your hierarchy failed. Reorder until those three stick.</p>
+        <p>Ask a friend to do the same test. Compare notes. This costs five minutes and beats guessing what recruiters see during a <Link href="/scan" className={link}>30 second scan</Link>.</p>
+
+        <h2 className={h2}>Density Versus Clarity</h2>
+        <p>Junior candidates often confuse keyword density with keyword clarity. Stuffing fifteen tools into one paragraph creates noise. Listing five tools in a clean line under your name creates signal. Recruiters remember signal.</p>
+        <p>Repeat important keywords in context, not in repetition. React in your stack line, React in a bullet about the checkout rewrite, React in a project link. Three appearances in meaningful places beat ten appearances in a skills paragraph nobody reads.</p>
+
+        <h2 className={h2}>Role Specific Keyword Sets</h2>
+        <p>Backend roles want infrastructure keywords above the fold. Frontend roles want framework and performance keywords. Data roles want warehouse and pipeline keywords. Copy the same profile structure but swap the top line stack list when you pivot targets. Live URLs make that swap a five minute edit.</p>
+        <p>Keep a master list of every keyword you have ever earned through work. Tag each with a project reference. When a posting emphasizes GraphQL, you know which bullet to move up without inventing new experience.</p>
+
+        <h2 className={h2}>Secondary Scan Zones</h2>
+        <p>After the Z scan, recruiters read your most recent job block if the header hooked them. Put your strongest role first even if another job has a bigger brand name. Stripe intern beats unknown startup lead if the startup bullet is weaker. Hierarchy is attention management, not chronological worship.</p>
+        <p>Education scans last. Keep it short unless you are a recent grad. Ten years of industry work means three lines for school, not half a page.</p>
+
+        <h2 className={h2}>Tools Recruiters Use to Skim</h2>
+        <p>Many recruiters use browser extensions or ATS side panels that extract skills automatically. Those tools read structured tags first. A flat paragraph of prose may never enter their shortlist filter. Tags and bold job titles feed the tools. Prose feeds humans after you pass the filter.</p>
+        <p>CVin.Bio exports skills as readable tags in the page structure. You get human hierarchy and machine extraction without maintaining two documents.</p>
+
+        <h2 className={h2}>Night Mode and Evening Scans</h2>
+        <p>Recruiters review candidates at night on OLED screens. Harsh white PDFs glare. Balanced web themes with dark mode support reduce fatigue and extend reading time. More reading time correlates with more interview invites when the content is strong.</p>
+        <p>Keywords still need to sit in the header and first role. Dark mode does not change scan paths. It changes how long someone tolerates staying on your page.</p>
+        <p>Run the six second phone test after every major profile edit. If your top stack line and latest job title stick, your keyword hierarchy is working. If not, move content up until it does.</p>
+        <p>Recruiters are not lazy. They are overloaded. Keyword hierarchy respects overload by putting signal where eyes already go. Respect that pattern and you borrow their attention instead of begging for it.</p>
+        <p>Build your profile once on CVin.Bio with hierarchy baked in. Then every share benefits from the same scan friendly structure without re exporting PDFs for each application.</p>
+        <p>Keywords are not magic words. They are anchors for human memory under time pressure. Place anchors where eyes land first and your experience gets the reading time it deserves.</p>
+        <p>Front load the stack line, front load the bullets, front load the proof. Everything else on the page supports what the reader already saw in the first pass.</p>
+        <p>Hierarchy is habit. Build it once on your profile template and every application inherits the same scan advantage.</p>
+        <p>Good hierarchy feels invisible until you compare your profile to a wall of dense paragraph resumes.</p>
+        <p>Make the first screen undeniable and the rest of the profile earns the read.</p>
+        <p>Scan paths are predictable. Use them.</p>
+
+        <h2 className={h2}>Acronyms and alternate spellings</h2>
+        <p>Job posts vary language for the same tool. One posting says Kubernetes, another says K8s, a third says container orchestration. If you ran production clusters, use the exact term from the posting in one bullet and spell out the full name once elsewhere. &quot;K8s: cut deploy time 40% after Helm chart standardization&quot; plus a later mention of Kubernetes in a summary line covers both search styles without stuffing.</p>
+        <p>Same rule for JavaScript versus TypeScript, Postgres versus PostgreSQL, and AWS versus Amazon Web Services. Mirror the posting where honest. Humans and parsers both pattern-match strings before they read stories.</p>
+
+        <h2 className={h2}>Read Next</h2>
         <ul className={ul}>
-          <li><Link href="/mobile" className={link}>Designing for the tiny screen: Mobile responsiveness guide</Link></li>
-          <li><Link href="/inbox" className={link}>Standing out in the inbox: Using preview cards and URLs</Link></li>
+          <li><Link href="/keywords" className={link}>Keyword placement for technical CVs</Link></li>
+          <li><Link href="/headings" className={link}>ATS friendly section headings</Link></li>
         </ul>
       </div>
   );

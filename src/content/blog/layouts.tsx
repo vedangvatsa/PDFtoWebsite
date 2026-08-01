@@ -100,8 +100,8 @@ export default function ArticleContent() {
 
       <p>Use list structures to break up long descriptions. List items are easier to read on mobile than massive paragraphs. Limit each item to a single sentence.</p>
 
-      <h2 className={h2}>Optimizing Your Links for Touch Screens</h2>
-      <p>Recruiters click links to view your work. If your links are hard to press the recruiter will skip them. You must optimize your links for physical touch targets.</p>
+      <h2 className={h2}>tuning Your Links for Touch Screens</h2>
+      <p>Recruiters click links to view your work. If your links are hard to press the recruiter will skip them. You must tune your links for physical touch targets.</p>
 
       <p>Ensure your links have a height of at least forty four pixels. This size matches the standard target for mobile interface designs. It prevents misclicks and frustration.</p>
 
@@ -125,7 +125,7 @@ export default function ArticleContent() {
 
       <p>Inspect how your text wraps inside lists. Ensure that bullet indicators align correctly with the first line of text. Fix any overlapping blocks before sharing your profile with recruiters.</p>
 
-      <h2 className={h2}>Optimizing Fonts and Readability on Mobile</h2>
+      <h2 className={h2}>tuning Fonts and Readability on Mobile</h2>
       <p>Typography choices determine how long a reader will stay on your page. Choose standard sans serif fonts for clean digital rendering. Sans serif fonts look sharp on high resolution mobile screens.</p>
 
       <p>Use a line height of at least one point four to separate your lines of text. This spacing prevents lines from merging together when read on small screens. It improves reading velocity and reduces eye strain.</p>
@@ -141,18 +141,30 @@ export default function ArticleContent() {
 
       <p>Building your web profile on a platform like CVin.Bio guarantees mobile responsiveness. The system automatically creates a clean single column flow on mobile screens. It ensures your profile remains readable and professional regardless of the device.</p>
 
+      <h2 className={h2}>Viewport and Load Speed on Cellular Networks</h2>
+      <p>Mobile recruiters often review profiles on cellular data with no WiFi available. Heavy image files and custom web fonts slow the first paint. A profile that loads in under two seconds on a mid-range phone wins attention over one that shows a blank screen.</p>
+
+      <p>Compress headshot images to under one hundred kilobytes. Use system font stacks instead of loading three separate font files from a CDN. These choices do not change how your CV reads but they change whether a recruiter waits long enough to read it.</p>
+
+      <p>Set your viewport meta tag correctly so mobile browsers do not render your page at desktop width and shrink it. A missing viewport tag is a common mistake on self-hosted portfolios. The text becomes unreadable before the recruiter even scrolls.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>Test on a real device</h3>
+        <p>Browser dev tools simulate screen width but not touch targets or scroll momentum. Send your profile link to your own phone and read it on the train. If you struggle to tap a link or read a header, fix it before recruiters see it.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
-      <p>For more advice on mobile optimization and visual hierarchy read these detailed articles.</p>
+      <p>For more advice on mobile tuning and visual hierarchy read these detailed articles.</p>
       
       <p>
-        Understand the importance of responsive design by reading <Link href="/mobile" className={link}>Why Your CV Must Be Mobile Responsive</Link>.
-      </p>
+ Understand the importance of responsive design by reading <Link href="/mobile" className={link}>Why Your CV Must Be Mobile Responsive</Link>.
+ </p>
       <p>
-        Learn how to layout keywords on your page by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
-      </p>
+ Learn how to layout keywords on your page by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
+ </p>
       <p>
-        Explore fundamental design layout rules by reading <Link href="/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
-      </p>
+ Explore fundamental design layout rules by reading <Link href="/design" className={link}>Best CV Design Principles for Software Engineers</Link>.
+ </p>
     </div>
   );
 }

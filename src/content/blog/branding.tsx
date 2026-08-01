@@ -65,7 +65,7 @@ export default function ArticleContent() {
           <rect x="35" y="80" width="270" height="180" rx="4" className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
           <rect x="35" y="80" width="270" height="24" rx="4" className="fill-zinc-100 dark:fill-zinc-800" />
           <rect x="35" y="100" width="270" height="4" className="fill-zinc-100 dark:fill-zinc-800" />
-          <text x="45" y="96" className="br-small fill-zinc-400 dark:fill-zinc-500">Portfolio    Resume    Contact</text>
+          <text x="45" y="96" className="br-small fill-zinc-400 dark:fill-zinc-500">Portfolio Resume Contact</text>
 
           <text x="170" y="125" textAnchor="middle" className="br-label fill-zinc-900 dark:fill-zinc-100" fontWeight="600">John Smith</text>
           <text x="170" y="140" textAnchor="middle" className="br-small fill-zinc-500 dark:fill-zinc-400">Developer</text>
@@ -88,7 +88,7 @@ export default function ArticleContent() {
           {/* No OG */}
           <text x="50" y="248" className="br-badge fill-zinc-400 dark:fill-zinc-500">LINK PREVIEW</text>
           <rect x="50" y="253" width="240" height="30" rx="3" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" />
-          <text x="60" y="272" className="br-small fill-zinc-400 dark:fill-zinc-500">jsmith2847.github.io — No preview</text>
+          <text x="60" y="272" className="br-small fill-zinc-400 dark:fill-zinc-500">jsmith2847.github.io. No preview</text>
 
           <text x="160" y="305" textAnchor="middle" className="br-badge fill-red-400 dark:fill-red-500">LOOKS LIKE EVERY OTHER PORTFOLIO</text>
           <text x="160" y="320" textAnchor="middle" className="br-small fill-zinc-500 dark:fill-zinc-400">Zero recognition · Forgotten in seconds</text>
@@ -107,7 +107,7 @@ export default function ArticleContent() {
           <rect x="395" y="80" width="270" height="24" rx="4" className="fill-zinc-800 dark:fill-zinc-800" />
           <rect x="395" y="100" width="270" height="4" className="fill-zinc-800 dark:fill-zinc-800" />
           <circle cx="410" cy="92" r="5" className="fill-emerald-500" />
-          <text x="420" y="96" className="br-small fill-zinc-300">JD    Work    About</text>
+          <text x="420" y="96" className="br-small fill-zinc-300">JD Work About</text>
 
           <text x="530" y="125" textAnchor="middle" className="br-label fill-white" fontWeight="700">Jane Developer</text>
           <text x="530" y="140" textAnchor="middle" className="br-small fill-emerald-400">Full-Stack Engineer · React · Go</text>
@@ -132,7 +132,7 @@ export default function ArticleContent() {
           <text x="410" y="248" className="br-badge fill-zinc-400">LINK PREVIEW</text>
           <rect x="410" y="253" width="240" height="30" rx="3" className="fill-emerald-50 dark:fill-emerald-900/30 stroke-emerald-200 dark:stroke-emerald-700" strokeWidth="1" />
           <rect x="414" y="257" width="22" height="22" rx="2" className="fill-emerald-200 dark:fill-emerald-800" />
-          <text x="442" y="268" className="br-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">Jane Developer — Portfolio</text>
+          <text x="442" y="268" className="br-small fill-zinc-900 dark:fill-zinc-100" fontWeight="600">Jane Developer. Portfolio</text>
           <text x="442" y="280" className="br-code fill-zinc-500 dark:fill-zinc-400">Full-stack engineer with 6 years...</text>
 
           <text x="530" y="305" textAnchor="middle" className="br-badge fill-emerald-600 dark:fill-emerald-400">INSTANTLY RECOGNIZABLE IDENTITY</text>
@@ -170,18 +170,32 @@ export default function ArticleContent() {
 
       <p>Check the spelling of your domain name carefully before purchasing. A typo in your professional URL looks extremely sloppy and confuses prospective employers. Take time to double-check every letter before paying.</p>
 
+      <h2 className={h2}>Link Previews on Slack and LinkedIn</h2>
+      <p>When you paste your profile URL into Slack or LinkedIn, the platform fetches an Open Graph preview card. That card shows your title, a short description, and sometimes an image. A missing preview makes your link look broken even when the site loads fine.</p>
+
+      <p>Set og:title, og:description, and og:image meta tags on your portfolio page. Use a simple screenshot of your homepage or a clean headshot. Keep the description under one hundred fifty characters so it does not truncate mid sentence on mobile.</p>
+
+      <p>Test the preview using each platform share debugger tool before you apply. Fix broken images and stale titles. Recruiters judge the card before they click.</p>
+
+      <h2 className={h2}>Pointing a Custom Domain at Your Profile</h2>
+      <p>You do not need to build a full portfolio site from scratch to use a custom domain. Services like CVin.Bio host your structured profile and let you attach your own domain. You configure DNS once and keep the same URL even if you change providers later.</p>
+
+      <p>Use a CNAME record for www and an A or ALIAS record for the root domain depending on your DNS host. Cloudflare and most registrars have one click presets for common hosting platforms. Copy their values exactly.</p>
+
+      <p>Wait for SSL to issue before sharing links. Most hosts provision certificates automatically within an hour. Sending HTTP links during DNS propagation creates mixed content warnings that scare non technical readers.</p>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on branding and managing your web presence read these detailed articles.</p>
       
       <p>
-        Learn how to choose domain names for portfolios by reading <Link href="/domains" className={link}>Best Domain Names for Developer Portfolios and Web Resumes</Link>.
-      </p>
+ Learn how to choose domain names for portfolios by reading <Link href="/domains" className={link}>Best Domain Names for Developer Portfolios and Web Resumes</Link>.
+ </p>
       <p>
-        Explore how to host your personal projects by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
-      </p>
+ Explore how to host your personal projects by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
+ </p>
       <p>
-        Discover how clean URLs help you stand out by reading <Link href="/inbox" className={link}>Using Clean URLs to Stand Out in Application Inboxes</Link>.
-      </p>
+ Discover how clean URLs help you stand out by reading <Link href="/inbox" className={link}>Using Clean URLs to Stand Out in Application Inboxes</Link>.
+ </p>
     </div>
   );
 }

@@ -181,18 +181,30 @@ export default function ArticleContent() {
 
       <p>Practice presenting your work without relying on corporate code. You should be able to explain your system designs using simple sketches on a virtual whiteboard. Whiteboard fluency is highly valued by engineering managers.</p>
 
+      <h2 className={h2}>Time-Limited Access and Revocation</h2>
+      <p>Token-based links work best when they expire. Set a thirty-day window on each token you generate for a job application. After the hiring loop ends the link stops working and you reduce the risk of your diagrams circulating indefinitely.</p>
+
+      <p>Log which company received which token. If you reuse the same password across ten applications and one password leaks, all ten companies still have access. Unique tokens per employer let you revoke one application without affecting others.</p>
+
+      <p>Include a short note in your application email explaining that the protected link expires. This sets expectations and signals that you treat confidential work seriously. Recruiters who miss the window can request a fresh token during a live interview.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>When to skip passwords entirely</h3>
+        <p>If your NDA allows sanitized public case studies, publish those instead of locking everything behind a gate. Public proof of architecture skill beats a login screen that ninety percent of recruiters will never type into.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on protecting your data and managing software contracts read these detailed guides.</p>
       
       <p>
-        Learn how to handle remote employment terms by reading <Link href="/contracts" className={link}>Best Methods to Negotiate Remote Software Contracts</Link>.
-      </p>
+ Learn how to handle remote employment terms by reading <Link href="/contracts" className={link}>Best Methods to Negotiate Remote Software Contracts</Link>.
+ </p>
       <p>
-        Understand how to gather feedback on your work by reading <Link href="/feedback" className={link}>Best Ways to Request Portfolio Feedback from Senior Engineers</Link>.
-      </p>
+ Understand how to gather feedback on your work by reading <Link href="/feedback" className={link}>Best Ways to Request Portfolio Feedback from Senior Engineers</Link>.
+ </p>
       <p>
-        Discover how to host your personal projects securely by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
-      </p>
+ Discover how to host your personal projects securely by reading <Link href="/hosting" className={link}>Best Practices for Hosting Personal Projects for Job Hunts</Link>.
+ </p>
     </div>
   );
 }

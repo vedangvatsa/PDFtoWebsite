@@ -98,6 +98,25 @@ export default function ArticleContent() {
 
       <p>By using a dedicated link you ensure your formatting stays locked in. You do not have to worry about different software versions mangling your margins. The page will look exactly the same to the recruiter as it does to you.</p>
 
+      <h2 className={h2}>Bullet Spacing and List Rhythm</h2>
+      <p>Whitespace between bullet points matters as much as whitespace between sections. Crammed bullets with no gap between them read as one dense paragraph. Add a small vertical gap between each bullet so the eye can land on one achievement at a time.</p>
+
+      <p>Keep bullets to one or two lines. A bullet that wraps to four lines defeats the purpose of using a list. If you need four lines, split it into two bullets or cut words.</p>
+
+      <p>Align your bullet indentation consistently. Mixed indentation looks sloppy and confuses parsers that try to detect list structure. Use the same bullet character throughout. Do not mix dashes, circles, and arrows.</p>
+
+      <h2 className={h2}>Spacing Standards for Web Profiles</h2>
+      <p>Web CVs have an advantage over PDFs: CSS handles spacing automatically across devices. Set your section padding to at least 24 pixels on mobile and 32 pixels on desktop. Your line height should be 1.5 or higher for body text.</p>
+
+      <p>Test on a phone held at normal reading distance. If you have to zoom to read a bullet, your font size or line height is too tight. Most readable web profiles use 16 to 18 pixel body text with generous paragraph spacing.</p>
+
+      <p>Dark mode profiles need extra care. Light gray text on a dark background looks fine on a bright monitor and disappears on a dim phone screen. Keep contrast ratios high enough for outdoor reading.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>The squint test</h3>
+        <p>Hold your phone at arm&apos;s length. Squint until the text blurs slightly. Can you still see distinct sections and headers? If everything merges into one gray block, increase your margins and section gaps.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
       <p>Once you have fixed your spacing you should choose the right font. Read our article on the <Link href="/fonts" className={link}>best fonts for ATS parsing</Link> to ensure your text is readable. If you want to replace your outdated career goals check out the <Link href="/replacements" className={link}>best career objective replacements</Link> that recruiters actually value.</p>
     </div>

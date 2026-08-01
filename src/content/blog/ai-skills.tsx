@@ -85,8 +85,72 @@ export default function ArticleContent() {
         </div>
 
         <h2 className={h2}>Avoid the Guru Trap</h2>
-        <p>Never under any circumstances list yourself as an AI Thought Leader. The technology is evolving so violently fast that anyone claiming absolute mastery of the entire space is instantly flagged as a liar by technical recruiters. We respect humility and brutal pragmatism over grandiose titles.</p>
+        <p>Never under any circumstances call yourself a thought leader in AI. The technology is evolving so violently fast that anyone claiming absolute mastery of the entire space is instantly flagged as a liar by technical recruiters. We respect humility and brutal pragmatism over grandiose titles.</p>
         <p>State clearly that you are aggressively and consistently learning how to use new developer tools to ship code faster. This framing proves you possess the hunger required to adapt to a shifting world while firmly keeping your feet planted in the reality of building functional products.</p>
+
+        <h2 className={h2}>Name the Tool and the Task</h2>
+        <p>Vague AI bullets fail. &quot;Used AI to improve workflow&quot; means nothing. Specific bullets win. &quot;Claude Code: generated first pass unit tests for legacy billing module, reduced manual test writing from 12 hours to 3 per sprint.&quot; The tool name is searchable. The task is believable. The hours are verifiable in conversation.</p>
+        <p>Match the tool to the work. Coding assistants for refactors and tests. Chat interfaces for research summaries and spec drafts. Image models for marketing assets when you are a designer. Document APIs for intake pipelines when you are an ops engineer. Random tool soup reads like resume padding.</p>
+
+        <h2 className={h2}>Roles That Want Different AI Proof</h2>
+        <p>Backend engineers should show code velocity and defect rates. Product managers should show spec turnaround and experiment volume. Designers should show iteration cycles and asset production time. Data analysts should show report automation and error reduction. Same technology, different metrics.</p>
+        <ul className={ul}>
+          <li>Engineering: lines refactored, bugs caught pre merge, deploy frequency</li>
+          <li>Product: features specced per week, user research summaries produced</li>
+          <li>Design: mockup variants explored, handoff time to engineering</li>
+          <li>Ops: tickets auto classified, manual hours removed per week</li>
+        </ul>
+
+        <div className={callout}>
+          <h3 className={h3}>Skip the hype stack</h3>
+          <p>Listing Midjourney, ChatGPT, Copilot, Claude, Gemini, and eleven agents in a skills grid screams beginner. Pick the two tools you actually use weekly and tie them to outcomes. <span className={bold}>Depth beats breadth</span> for AI credentials right now.</p>
+        </div>
+
+        <h2 className={h2}>Interview Questions You Should Expect</h2>
+        <p>Hiring managers will ask how you verify model output. Have an answer. You run tests. You read diffs. You spot hallucinated APIs before merge. You never ship generated code without review. Say that plainly on your profile so they know you are safe to put on a production codebase.</p>
+        <p>They may also ask what you still do manually. Good answer: architecture decisions, security review, customer conversations. Bad answer: nothing, AI does it all. Honesty signals senior judgment.</p>
+
+        <h2 className={h2}>Where AI Meets Your Public Profile</h2>
+        <p>Structured web profiles help here too. Skills tags can include tools you use in workflow without a standalone AI section. Bullets carry the proof. Recruiters scanning on <Link href="/mobile" className={link}>mobile</Link> see outcomes first, tools second, hype never.</p>
+        <p>As agents query candidate databases through protocols like MCP, typed skill arrays matter more than titles like Prompt Engineer. The machine matches &quot;Claude&quot; in your skills and &quot;automated test generation&quot; in your bullets. Vanity titles match nothing.</p>
+
+        <h2 className={h2}>Red Flags Hiring Managers Watch For</h2>
+        <p>Overclaiming automation is the fastest red flag. If every bullet says AI did the work, managers assume you cannot code without a model. Balance AI bullets with hard engineering wins: outages fixed, migrations led, incidents owned.</p>
+        <p>Another red flag is tool listing without governance language. Mention review steps, test coverage, and rollback plans. That signals you treat models as tools, not oracles.</p>
+
+        <h2 className={h2}>Portfolio Projects Built With AI</h2>
+        <p>If you built a side project with heavy model assistance, say so in the project description and specify what you owned: schema design, deployment, monitoring, user auth. Recruiters respect honest scope more than mystery repos that look too polished for a weekend build.</p>
+        <p>Link to commits that show your hand edits after generation. Diff history is proof. A single zip file with no history is suspicion.</p>
+
+        <h2 className={h2}>Team Settings for AI Disclosure</h2>
+        <p>Some companies now ask when AI assisted your work. Answer honestly in interviews. On your profile, pre answer by showing review discipline in the same bullets that mention models. &quot;Generated draft tests with Copilot, manually verified edge cases, 94 percent branch coverage before merge.&quot;</p>
+        <p>That sentence tells a manager you speed up without shipping mystery code. It also differentiates you from candidates who list AI skills with zero engineering guardrails.</p>
+
+        <h2 className={h2}>Future Proofing AI Bullets</h2>
+        <p>Model names change fast. Anchor bullets on the task and outcome, mention the tool as secondary detail. &quot;Automated QA script generation, cut regression prep from 12 hours to 3 per sprint (Claude).&quot; If Claude is replaced next year, the outcome still reads true.</p>
+        <p>Rotate tool names in your skills tags as your stack shifts. Keep outcomes stable in bullets. Hiring managers hire for results, not for loyalty to one vendor model.</p>
+
+        <h2 className={h2}>Teaching Others Counts When Framed Right</h2>
+        <p>If you ran internal workshops on prompt patterns for your team, write it as enablement: &quot;Trained eight engineers on review workflows for generated tests; team adopted playbook in two sprints.&quot; That reads as leadership, not hobby AI usage.</p>
+        <p>Enablement bullets age well because they describe organizational impact, not model hype.</p>
+        <p>The best AI skill presentation looks identical to the best pre AI skill presentation: specific tool, specific task, specific measurable result, embedded in real work history. Everything else is noise recruiters have learned to ignore.</p>
+        <p>Publish once, refine weekly, and let your bullets carry the AI story inside normal engineering outcomes. That is how you read as senior in a market flooded with empty AI titles.</p>
+        <p>Let outcomes lead and tools follow. Managers hire operators who ship, not posters who trend.</p>
+        <p>Write AI bullets the same way you would write database or framework bullets: problem, action, result, proof. The tool name is a detail, not the headline.</p>
+        <p>Senior teams want speed with judgment. Show both in the same bullet and you separate from the hype crowd immediately.</p>
+        <p>That separation is worth more than any trendy title line.</p>
+        <p>Prove the work. Skip the title theater.</p>
+        <p>Operators win hiring cycles. Posters lose them.</p>
+
+        <h2 className={h2}>Worked rewrite: hype to proof</h2>
+        <p>Before: &quot;AI Skills: ChatGPT, prompt engineering, LLM automation.&quot; After: &quot;Used Claude to draft unit tests for legacy billing module; coverage rose from 41% to 78% in one sprint; reviewer accepted 90% of generated cases with minor edits.&quot; Same tools. One version triggers skepticism. The other invites a technical follow-up you can defend.</p>
+
+        <h2 className={h2}>Read Next</h2>
+        <ul className={ul}>
+          <li><Link href="/ai" className={link}>How AI agents are changing recruiting discovery</Link></li>
+          <li><Link href="/prompts" className={link}>LLM resume screening prompts and how to beat them</Link></li>
+          <li><Link href="/bots" className={link}>Beating smart AI resume parsers</Link></li>
+        </ul>
       </div>
   );
 }

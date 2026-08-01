@@ -42,7 +42,7 @@ export default function ArticleContent() {
             .ac-badge { font: 700 8px system-ui, sans-serif; letter-spacing: 0.05em; }
           `}</style>
 
-          <text x="350" y="22" textAnchor="middle" className="ac-title fill-zinc-900 dark:fill-zinc-100">ATS Acronym Matching — Write Both Forms</text>
+          <text x="350" y="22" textAnchor="middle" className="ac-title fill-zinc-900 dark:fill-zinc-100">ATS Acronym Matching. Write Both Forms</text>
           <text x="350" y="38" textAnchor="middle" className="ac-small fill-zinc-500 dark:fill-zinc-400">Recruiters search for either form · Only resumes with both get matched</text>
 
           {/* Table header */}
@@ -94,7 +94,7 @@ export default function ArticleContent() {
 
           {/* Bad examples section */}
           <rect x="30" y="280" width="640" height="28" rx="6" className="fill-red-50 dark:fill-red-950/20" />
-          <text x="350" y="298" textAnchor="middle" className="ac-header fill-red-500 dark:fill-red-400">COMMON MISTAKES — ACRONYM ONLY (NO EXPANSION)</text>
+          <text x="350" y="298" textAnchor="middle" className="ac-header fill-red-500 dark:fill-red-400">COMMON MISTAKES. ACRONYM ONLY (NO EXPANSION)</text>
 
           {/* Bad Row 1 */}
           <rect x="30" y="312" width="310" height="36" rx="0" className="fill-white dark:fill-zinc-900/50 stroke-red-100 dark:stroke-red-900/30" strokeWidth="1" />
@@ -109,13 +109,13 @@ export default function ArticleContent() {
           <text x="620" y="334" className="ac-badge fill-red-400 dark:fill-red-500">MISSING EXPANSION</text>
 
           {/* Takeaway */}
-          <text x="350" y="372" textAnchor="middle" className="ac-small fill-zinc-500 dark:fill-zinc-400">ATS keyword search looks for exact text matches · Write "Kubernetes (K8s)" not just "K8s"</text>
+          <text x="350" y="372" textAnchor="middle" className="ac-small fill-zinc-500 dark:fill-zinc-400">ATS keyword search looks for exact text matches · Write "Kubernetes (K8s)" "K8s"</text>
           <text x="350" y="390" textAnchor="middle" className="ac-badge fill-emerald-600 dark:fill-emerald-400">RULE: ALWAYS WRITE THE FULL NAME + ABBREVIATION ON FIRST USE</text>
         </svg>
       </div>
 
       <h2 className={h2}>Positioning Technical Terms in Context</h2>
-      <p>Classifiers do not only look for words. They also analyze where the words are placed in your document structure. Keywords in your job experience carry more weight than keywords in a generic list.</p>
+      <p>Classifiers do look for words. They also analyze where the words are placed in your document structure. Keywords in your job experience carry more weight than keywords in a generic list.</p>
 
       <p>Avoid listing twenty technical acronyms at the bottom of your page. Instead write about how you used those tools in your daily work. Describe the results you achieved using those specific systems.</p>
 
@@ -164,18 +164,30 @@ export default function ArticleContent() {
 
       <p>In addition to search crawlers human interviewers will read your acronyms during technical interviews. If you cannot explain the full meaning of an acronym you list they will assume your skills are fake. Knowing the full terms builds immediate technical credibility.</p>
 
+      <h2 className={h2}>Certifications and Vendor Exam Names</h2>
+      <p>Cloud certifications use official names that parsers index separately from shorthand. AWS Solutions Architect Associate and Amazon Web Services SAA-C03 may appear as different strings in older databases. Write both the vendor name and the exam code on first mention.</p>
+
+      <p>Security credentials follow the same rule. CISSP and Certified Information Systems Security Professional should appear together once in your certifications section. Recruiters searching for either form will then match your profile.</p>
+
+      <p>Do not list expired certifications without the expiry date. An active badge with a 2026 renewal date signals current knowledge. A decade-old cert with no context looks like keyword stuffing and triggers skepticism in technical screens.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>Match the job posting vocabulary</h3>
+        <p>Before you submit, copy three technical terms from the job description verbatim. If they write Kubernetes and you only wrote K8s, add the full name once in your experience section. Mirroring their exact spelling costs thirty seconds and prevents silent filtering.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on keyword strategy and technical presentation read these detailed articles.</p>
       
       <p>
-        Learn which keywords recruiters look for by reading <Link href="/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
-      </p>
+ Learn which keywords recruiters look for by reading <Link href="/keywords" className={link}>Best Keywords for Tech Jobs</Link>.
+ </p>
       <p>
-        Understand how recruiters scan your technical history by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
-      </p>
+ Understand how recruiters scan your technical history by reading <Link href="/tech-keywords" className={link}>Mapping Visual Hierarchy for Technical Recruiters</Link>.
+ </p>
       <p>
-        Discover how to avoid listing fake details by reading <Link href="/trust" className={link}>Stop Faking Your Skills List</Link>.
-      </p>
+ Discover how to avoid listing fake details by reading <Link href="/trust" className={link}>Stop Faking Your Skills List</Link>.
+ </p>
     </div>
   );
 }

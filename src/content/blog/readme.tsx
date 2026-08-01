@@ -95,13 +95,13 @@ export default function ArticleContent() {
       <p>Third provide a direct call to action. Give the reader a clear path to contact you. Link to your live professional web profile. Let them download your clean CV. Do not make them search your website for an email address. Make the transition from your code to your contact details completely frictionless.</p>
 
       <h2 className={h2}>Writing High Impact Project Summaries</h2>
-      <p>When you present your projects do not just write the name of the tool. Explain the architectural challenge. A project named Task Manager with a description that says a todo app built with React is useless. Every junior developer builds a todo app. It does not prove you can build commercial software.</p>
+      <p>When you present your projects do write the name of the tool. Explain the architectural challenge. A project named Task Manager with a description that says a todo app built with React is useless. Every junior developer builds a todo app. It does not prove you can build commercial software.</p>
 
-      <p>Instead focus on performance and systems. If you built a todo app explain how you handled state storage or offline synchronization. Explain how you optimized rendering for large datasets. Use specific terms that show you understand computing limits.</p>
+      <p>Instead focus on performance and systems. If you built a todo app explain how you handled state storage or offline synchronization. Explain how you tuned rendering for large datasets. Use specific terms that show you understand computing limits.</p>
 
       <p>Look at this example of a weak description. A weather application that shows the current temperature using a public API. It is built with Vue and tailwind. Now look at a strong description. A caching proxy for public weather queries. Built with Go and Redis to handle peak traffic. It reduced external API calls by eighty percent and dropped response times to under ten milliseconds.</p>
 
-      <p>The second example shows you understand system design. It shows you think about cost and speed. It gives the manager a reason to look at your source code. If you have open source work make sure to present it cleanly. Check out our tips on <Link href="/open-source" className={link}>how to showcase open source work</Link> to make those entries stand out.</p>
+      <p>The second example shows you understand system design. It shows you think about cost and speed. It gives the manager a reason to look at your source code. If you have open source work make sure to present it cleanly. Check out our tips on <Link href="/open-source" className={link}>how to show open source work</Link> to make those entries stand out.</p>
 
       <h2 className={h2}>Building the Call to Action</h2>
       <p>Many developers forget the primary goal of their GitHub profile. The goal is to get an interview. If a manager loves your code they need an easy way to hire you. Do not expect them to search for your contact info.</p>
@@ -114,6 +114,8 @@ export default function ArticleContent() {
       <p>A good GitHub profile is not a static project. You should update it as your career grows. If you learn a new system update your featured projects. If you write a new technical article link to it. Keep the green contribution graph active by making small consistent updates to your open repositories.</p>
 
       <p>An active profile shows you are a practicing engineer. It shows you care about your craft. When a manager sees a clean README followed by a history of consistent code updates they know they are looking at a serious candidate. They will want to talk to you.</p>
+
+      <p>Pin your two featured repositories to the top of your GitHub profile. GitHub allows six pins, but two strong projects beat six mediocre ones every time.</p>
 
       <p>Spend an hour tonight cleaning up your page. Delete the noise. Highlight your best two repositories. Add a direct link to your professional web CV. Make it easy for employers to see your value and make contact.</p>
     </div>

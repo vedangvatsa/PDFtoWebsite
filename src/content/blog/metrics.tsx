@@ -93,7 +93,7 @@ export default function ArticleContent() {
       <p>Aim for an average read time of over forty seconds. This duration proves that recruiters are reading your work history and project descriptions. It indicates high engagement and increases interview probabilities.</p>
 
       <h2 className={h2}>Measuring Scroll Depth</h2>
-      <p>Scroll depth calculates how far down the page a visitor travels. It tells you which sections are engaging and which ones are ignored. This feedback is critical for design optimization.</p>
+      <p>Scroll depth calculates how far down the page a visitor travels. It tells you which sections are engaging and which ones are ignored. This feedback is critical for design tuning.</p>
 
       <p>If fifty percent of visitors stop scrolling before your skills section you must move that section higher. Place your most impressive achievements above the fold. Do not make readers search for your best work.</p>
 
@@ -114,7 +114,7 @@ export default function ArticleContent() {
       <p>This tracking is particularly useful for verifying application handoffs. If you notice a visit from a company domain name you know your application passed the entry filters. You can prioritize follow up messages to this company.</p>
 
       <h2 className={h2}>Improving Content Based on Analytics Feedback</h2>
-      <p>Data without action is useless. You must review your metrics weekly to make targeted adjustments to your layout. Let the data guide your optimization iterations.</p>
+      <p>Data without action is useless. You must review your metrics weekly to make targeted adjustments to your layout. Let the data guide your tuning iterations.</p>
 
       <p>If you see high traffic but low read times rewrite your summary paragraph. Make it shorter and place your primary stack keywords at the absolute front. Ensure your tech stack is readable in under five seconds.</p>
 
@@ -134,18 +134,37 @@ export default function ArticleContent() {
 
       <p>A platform like CVin.Bio handles these metrics for you natively. It tracks views, read times, and link clicks without bloated scripts. You get the data you need to improve your search while keeping your profile fast and clean.</p>
 
+      <h2 className={h2}>A/B Testing Your Summary and Headline</h2>
+      <p>Your summary paragraph is the most impactful text on your profile. Small changes produce measurable differences in read time. Try two versions for a week each. Version A leads with your job title. Version B leads with your biggest metric.</p>
+
+      <p>Track which version keeps visitors on the page longer. If version B with the metric wins, keep it. If read times drop, revert. This is the same iteration loop you use for product features, applied to your career page.</p>
+
+      <p>Do not change everything at once. One variable per test. Otherwise you cannot tell what caused the shift.</p>
+
+      <h2 className={h2}>The Weekly Metrics Review</h2>
+      <p>Set a recurring calendar reminder to review your analytics every Sunday. Look at four numbers: unique visits, average read time, scroll depth, and outbound click rate. Write one sentence about what each number tells you.</p>
+
+      <p>If visits are up but read time is down, your headline is working but your content is not. If read time is high but clicks are low, your projects need better descriptions or more prominent buttons. If everything is flat, your outbound pitch needs work, not your page.</p>
+
+      <p>Keep a simple log of changes and results. After a month you will have a clear picture of what moves the needle for your specific target roles.</p>
+
+      <div className={callout}>
+        <h3 className={h3}>The one metric that matters most</h3>
+        <p>If you only track one number, track outbound clicks to your GitHub and live projects. Clicks mean the reader wants proof, something beyond a summary. That intent converts to interviews more often than passive page views.</p>
+      </div>
+
       <h2 className={h2}>Read Next</h2>
       <p>For more advice on building interactive layouts and passing recruiter scans read these detailed articles.</p>
       
       <p>
-        Learn how to build interactive elements by reading <Link href="/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
-      </p>
+ Learn how to build interactive elements by reading <Link href="/interactive" className={link}>Best Interactive Resumes for UI and UX Designers</Link>.
+ </p>
       <p>
-        Understand how applicant tracking systems parse data by reading <Link href="/platforms" className={link}>Best Strategies for Navigating Different ATS Platforms</Link>.
-      </p>
+ Understand how applicant tracking systems parse data by reading <Link href="/platforms" className={link}>Best Strategies for working through Different ATS Platforms</Link>.
+ </p>
       <p>
-        Discover how to write for fast scans by reading <Link href="/scan" className={link}>Write For the 30 Second Scan</Link>.
-      </p>
+ Discover how to write for fast scans by reading <Link href="/scan" className={link}>Write For the 30 Second Scan</Link>.
+ </p>
     </div>
   );
 }

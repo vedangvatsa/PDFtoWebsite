@@ -28,27 +28,27 @@ export default function ArticleContent() {
             <circle cx="260" cy="200" r="42" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-400 dark:stroke-zinc-600" strokeWidth="2" />
             <text x="260" y="196" textAnchor="middle" className="hub-label fill-zinc-700 dark:fill-zinc-300">LinkedIn</text>
             <text x="260" y="210" textAnchor="middle" className="spoke-desc fill-zinc-400 dark:fill-zinc-500">baseline</text>
-            {/* Node 1: GitHub — top center */}
+            {/* Node 1: GitHub. top center */}
             <rect x="200" y="28" width="120" height="52" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <text x="260" y="50" textAnchor="middle" className="spoke-name fill-zinc-800 dark:fill-zinc-200">GitHub</text>
             <text x="260" y="68" textAnchor="middle" className="spoke-desc fill-zinc-500 dark:fill-zinc-400">code proof</text>
-            {/* Node 2: Personal Site — top left */}
+            {/* Node 2: Personal Site. top left */}
             <rect x="18" y="82" width="140" height="52" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <text x="88" y="104" textAnchor="middle" className="spoke-name fill-zinc-800 dark:fill-zinc-200">Personal Site</text>
             <text x="88" y="122" textAnchor="middle" className="spoke-desc fill-zinc-500 dark:fill-zinc-400">total control</text>
-            {/* Node 3: CVin.Bio — top right */}
+            {/* Node 3: CVin.Bio. top right */}
             <rect x="370" y="82" width="124" height="52" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <text x="432" y="104" textAnchor="middle" className="spoke-name fill-zinc-800 dark:fill-zinc-200">CVin.Bio</text>
             <text x="432" y="122" textAnchor="middle" className="spoke-desc fill-zinc-500 dark:fill-zinc-400">structured data</text>
-            {/* Node 4: Read.cv — bottom left */}
+            {/* Node 4: Read.cv. bottom left */}
             <rect x="18" y="262" width="140" height="52" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <text x="88" y="284" textAnchor="middle" className="spoke-name fill-zinc-800 dark:fill-zinc-200">Read.cv</text>
             <text x="88" y="302" textAnchor="middle" className="spoke-desc fill-zinc-500 dark:fill-zinc-400">design-first</text>
-            {/* Node 5: Polywork — bottom right */}
+            {/* Node 5: Polywork. bottom right */}
             <rect x="370" y="262" width="124" height="52" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <text x="432" y="284" textAnchor="middle" className="spoke-name fill-zinc-800 dark:fill-zinc-200">Polywork</text>
             <text x="432" y="302" textAnchor="middle" className="spoke-desc fill-zinc-500 dark:fill-zinc-400">project-based</text>
-            {/* Node 6: Mastodon — bottom center */}
+            {/* Node 6: Mastodon. bottom center */}
             <rect x="200" y="320" width="120" height="52" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <text x="260" y="342" textAnchor="middle" className="spoke-name fill-zinc-800 dark:fill-zinc-200">Mastodon</text>
             <text x="260" y="360" textAnchor="middle" className="spoke-desc fill-zinc-500 dark:fill-zinc-400">community ties</text>

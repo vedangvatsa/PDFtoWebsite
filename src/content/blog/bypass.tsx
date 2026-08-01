@@ -6,6 +6,10 @@ export default function ArticleContent() {
   return (
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
+        <p>You spend forty-five minutes polishing a two-column Canva resume. Serif headings, a teal sidebar, skill bars that look sharp on screen. You upload it to a Greenhouse portal for a senior backend role. The confirmation page says your application was received.</p>
+        <p>Two days later a recruiter searches the internal database for candidates with <span className={bold}>PostgreSQL</span> experience. Your name does not appear. The parser merged your sidebar skills with your job titles. Your contact email landed in the education field. The system thinks you worked at your university from 2019 to 2024.</p>
+        <p>You passed the human eye test and failed the machine read. The fix is not choosing between looking good and getting parsed. You can serve both audiences if you understand what each one actually consumes.</p>
+
         <h2 className={h2}>How Parsers Destroy Your Resume</h2>
         <p>Systems like <span className={bold}>Taleo, Workday, Greenhouse, and Lever</span> all process resumes by ripping out every character of text and dropping it into a database. A recruiter then runs keyword searches against that database.</p>
         <p>The problem: the extraction engine reads text from top-left to bottom-right based on character coordinates. It does not understand columns. This is even worse if your <Link href="/pdf" className={link}>PDF contains complex layers</Link> that confuse the robot even more.</p>
@@ -33,11 +37,11 @@ export default function ArticleContent() {
             <text x="61" y="117" textAnchor="middle" fontSize="11" fontWeight="600" fontFamily="system-ui, sans-serif" className="fill-zinc-900 dark:fill-zinc-100">You</text>
             <text x="61" y="132" textAnchor="middle" fontSize="10" fontFamily="system-ui, sans-serif" className="fill-zinc-500 dark:fill-zinc-400">Submit</text>
 
-            {/* Fork — line going up to top track */}
+            {/* Fork. line going up to top track */}
             <line x1="106" y1="110" x2="145" y2="60" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="1.5" />
             <polygon points="141,56 148,56 145,63" className="fill-zinc-400 dark:fill-zinc-500" />
 
-            {/* Fork — line going down to bottom track */}
+            {/* Fork. line going down to bottom track */}
             <line x1="106" y1="130" x2="145" y2="180" className="stroke-zinc-400 dark:stroke-zinc-500" strokeWidth="1.5" />
             <polygon points="141,184 148,184 145,177" className="fill-zinc-400 dark:fill-zinc-500" />
 
@@ -95,8 +99,55 @@ export default function ArticleContent() {
           </svg>
         </div>
 
-        <h2 className={h2}>Keyword Optimization for the Robot</h2>
-        <p>In your plain text document, you can afford to be repetitive. You can include a "Skills Tag Cloud" at the bottom that lists every technology you have ever touched. The robot loves this. It ranks you higher for more searches. But you would never do this on your "real" resume because it looks desperate to a human. This dual-submission flow lets you be optimized for keywords and optimized for design simultaneously. This ensures your <Link href="/tech-keywords" className={link}>visual hierarchy actually works</Link> for the people who view your profile.</p>
+        <h2 className={h2}>Keyword tuning for the Robot</h2>
+        <p>In your plain text document, you can afford to be repetitive. You can include a "Skills Tag Cloud" at the bottom that lists every technology you have ever touched. The robot loves this. It ranks you higher for more searches. But you would never do this on your "real" resume because it looks desperate to a human. This dual-submission flow lets you be tuned for keywords and tuned for design simultaneously. This ensures your <Link href="/tech-keywords" className={link}>visual hierarchy actually works</Link> for the people who view your profile.</p>
+
+        <h2 className={h2}>Building the Robot-Safe Plain Text Version</h2>
+        <p>Open a blank document. Set one-inch margins or use none at all. Pick Arial or Helvetica at 11pt. Type your name on line one. Type your URL on line two. Type your email and phone on line three. Then work straight down the page in a single column.</p>
+        <ol className={ol}>
+          <li>Professional summary: three sentences max</li>
+          <li>Experience: company name, title, city, start date, end date on one line each</li>
+          <li>Bullets under each role, one per line, no indentation tricks</li>
+          <li>Education: school, degree, graduation year</li>
+          <li>Skills: comma-separated list on one or two lines</li>
+        </ol>
+        <p>Export as PDF or DOCX depending on what the portal accepts. The visual result will look boring. That is the point. Boring files parse reliably.</p>
+
+        <h2 className={h2}>Platform-Specific Parser Behavior</h2>
+        <p>Not every ATS fails the same way. Workday tends to choke on tables and text boxes. Taleo often misreads multi-column Word exports. Greenhouse is more forgiving with simple PDFs but still strips styling. Lever preserves hyperlinks better than most legacy systems.</p>
+        <p>You cannot control which system a company uses. You can control sending a layout that survives the worst case. Single column, standard fonts, no icons rendered as images, no skill bars drawn with Unicode block characters.</p>
+        <div className={callout}>
+          <h3 className={h3}>The copy-paste sanity check</h3>
+          <p>Before you upload, select all text in your document and paste it into Notepad or TextEdit. Read top to bottom out loud. If your job title appears before your employer name, fix the order. If dates float alone on a line, move them next to the role they belong to.</p>
+        </div>
+
+        <h2 className={h2}>When the Human Never Leaves the ATS</h2>
+        <p>Some recruiters live entirely inside the ATS sidebar. They never click external links during the first screen. Your plain text version still matters because keyword search runs against parsed fields, not your pretty PDF.</p>
+        <p>Others click every link on page one. Engineering managers and design leads fall into this group. They want to see real work, live repos, and case studies. Your URL is their exit ramp from the ugly parsed view.</p>
+        <p>Assume both personas exist on every hiring loop. Serve the robot with structure. Serve the human with a link above the fold.</p>
+
+        <h2 className={h2}>Graphics, Icons, and Skill Bars</h2>
+        <p>Canva skill meters look sharp. Parsers read them as empty space or random punctuation. Pie charts for language proficiency become nonsense characters in the database. Profile photos embedded in PDF headers sometimes extract as binary blobs with no alt text.</p>
+        <p>Keep graphics on your web profile where humans appreciate them. Keep the ATS upload text-only. If a portal forces PDF, use a text PDF with zero images. Our <Link href="/pdf" className={link}>PDF failure guide</Link> walks through the worst layout patterns in detail.</p>
+
+        <h2 className={h2}>Testing Before You Submit</h2>
+        <p>Run the plain text export test from our <Link href="/test-ats" className={link}>ATS testing checklist</Link>. Upload the same file to a second job portal if you have access to a sandbox account. Compare what fields auto-fill. If your current title imports as your name, stop and simplify layout before sending a real application.</p>
+        <p>Ten minutes of testing beats two weeks of silence because your skills never indexed.</p>
+
+        <h2 className={h2}>Cover Letters and the URL Placement Rule</h2>
+        <p>Put your profile link in the first paragraph of any cover letter, not the signature block alone. Recruiters who read cover letters at all read the opening sentence. <span className={bold}>My full work history and shipped projects are at cvin.bio/name</span> gives them an immediate exit from the letter into your real materials.</p>
+        <p>Keep the letter under 200 words. The dual-submission file handles parser fields. The URL handles proof and design.</p>
+
+        <h2 className={h2}>International Applications and Link Norms</h2>
+        <p>In North American and European tech hiring, profile URLs are normal. In some Asian markets PDFs still dominate formal applications. Check the employer&apos;s careers page examples. If they list portfolio URLs for current employees, match that norm.</p>
+        <p>When in doubt, include both. The URL costs nothing extra and gives mobile-first reviewers an easier path than opening attachments on WeChat or LINE embedded browsers.</p>
+
+        <h2 className={h2}>Re-Applying to the Same Company Later</h2>
+        <p>ATS systems often store your first parsed upload for years. If that parse was wrong, future applications may inherit bad data. Fix the plain text file before reapplying. Update your live profile URL in the new upload header so recruiters see current work even if the parser still carries stale fields.</p>
+        <p>Some teams maintain a spreadsheet of candidates with broken parses. A clean re-upload plus a working link can reset their impression.</p>
+
+        <h2 className={h2}>Portfolio Links Inside the Plain Text File</h2>
+        <p>List GitHub, live demos, and your CVin.Bio URL on one line below your email in the robot file. Parsers often extract URLs even when they destroy layout. Humans who open the raw upload still get clickable paths out of the ATS.</p>
 
         <h2 className={h2}>Common Questions</h2>
         <div className="space-y-6">

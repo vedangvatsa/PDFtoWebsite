@@ -21,14 +21,14 @@ export default function ArticleContent() {
             <text x="160" y="24" textAnchor="middle" className="svg-title fill-zinc-400 dark:fill-zinc-500">❌ Before</text>
             <rect x="30" y="36" width="260" height="270" rx="8" className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-300 dark:stroke-zinc-700" strokeWidth="1.5" />
             <rect x="50" y="52" width="140" height="14" rx="3" className="fill-zinc-300 dark:fill-zinc-600" />
-            <text x="50" y="86" className="svg-small fill-zinc-400 dark:fill-zinc-500">Operations Manager · 2019–2024</text>
+            <text x="50" y="86" className="svg-small fill-zinc-400 dark:fill-zinc-500">Operations Manager · 2019. 2024</text>
             <rect x="50" y="96" width="220" height="8" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="50" y="110" width="200" height="8" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="50" y="124" width="210" height="8" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
-            <text x="50" y="152" className="svg-small fill-zinc-400 dark:fill-zinc-500">Store Supervisor · 2016–2019</text>
+            <text x="50" y="152" className="svg-small fill-zinc-400 dark:fill-zinc-500">Store Supervisor · 2016. 2019</text>
             <rect x="50" y="162" width="220" height="8" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="50" y="176" width="190" height="8" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
-            <text x="50" y="204" className="svg-small fill-zinc-400 dark:fill-zinc-500">Retail Associate · 2014–2016</text>
+            <text x="50" y="204" className="svg-small fill-zinc-400 dark:fill-zinc-500">Retail Associate · 2014. 2016</text>
             <rect x="50" y="214" width="210" height="8" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <rect x="50" y="228" width="180" height="8" rx="2" className="fill-zinc-200 dark:fill-zinc-700" />
             <text x="50" y="260" className="svg-small fill-zinc-400 dark:fill-zinc-500">Skills: Excel, Inventory, Scheduling</text>
@@ -96,7 +96,7 @@ export default function ArticleContent() {
 
         <h2 className={h2}>8. Write a Bridge Summary</h2>
         <p>The very top of your resume should include a two-sentence summary that explains the switch directly. Do not make the recruiter figure out why a former teacher is applying for a data analyst role. Tell them.</p>
-        <p>A good bridge summary sounds like this: &quot;Former operations manager with 6 years of experience in process optimization and data-driven decision making. Completed a data science bootcamp and built 3 end-to-end ML projects focused on supply chain forecasting.&quot;</p>
+        <p>A good bridge summary sounds like this: &quot;Former operations manager with 6 years of experience in process tuning and data-driven decision making. Completed a data science bootcamp and built 3 end-to-end ML projects focused on supply chain forecasting.&quot;</p>
         <p>That is two sentences. Sentence one says where you are coming from and names the transferable skills. Sentence two says what you did to make the switch real. No fluff. No &quot;passionate self-starter.&quot; Just the facts that connect point A to point B.</p>
         <div className={callout}>
           <h3 className={h3}>Bridge summary formula</h3>
@@ -107,6 +107,7 @@ export default function ArticleContent() {
         <h2 className={h2}>The Order Matters</h2>
         <p>If you only do two things from this list, rewrite your bullet points (#2) and write a bridge summary (#8). Those two changes alone will make a bigger difference than anything else because they directly address the objection in the recruiter&apos;s head: &quot;Why is this person applying for this job?&quot;</p>
         <p>Side projects (#3) and certifications (#6) are your strongest proof. Everything else is about presentation, and presentation matters, but proof matters more.</p>
+        <p>Start with the bridge summary and bullet rewrites this weekend. Ship one deployed project next week. Add your web profile link once both are done. Small weekly updates beat one massive rewrite you never finish.</p>
 
         <h2 className={h2}>Read Next</h2>
         <ul className={ul}>

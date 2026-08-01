@@ -30,7 +30,7 @@ export default function ArticleContent() {
             {/* Divider */}
             <line x1="330" y1="10" x2="330" y2="290" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="1" strokeDasharray="4 3" />
 
-            {/* LEFT COLUMN — 6 painful steps */}
+            {/* LEFT COLUMN. 6 painful steps */}
             {/* Step 1 */}
             <rect x="90" y="48" width="150" height="32" rx="6" className="fill-red-50 dark:fill-red-900/20 stroke-red-200 dark:stroke-red-800" strokeWidth="1" />
             <text x="165" y="69" textAnchor="middle" fontSize="11" fontFamily="system-ui, sans-serif" className="fill-zinc-700 dark:fill-zinc-300">Open Email</text>
@@ -66,7 +66,7 @@ export default function ArticleContent() {
             {/* Friction label */}
             <text x="165" y="300" textAnchor="middle" fontSize="10" fontFamily="system-ui, sans-serif" className="fill-red-400 dark:fill-red-500">5 steps of friction</text>
 
-            {/* RIGHT COLUMN — 3 smooth steps */}
+            {/* RIGHT COLUMN. 3 smooth steps */}
             {/* Step 1 */}
             <rect x="420" y="90" width="150" height="36" rx="6" className="fill-emerald-50 dark:fill-emerald-900/20 stroke-emerald-300 dark:stroke-emerald-700" strokeWidth="1" />
             <text x="495" y="113" textAnchor="middle" fontSize="12" fontFamily="system-ui, sans-serif" className="fill-zinc-700 dark:fill-zinc-300">Click Link</text>
@@ -117,10 +117,57 @@ export default function ArticleContent() {
           </div>
         </div>
 
+        <h2 className={h2}>What Happens Inside the ATS</h2>
+        <p>When you attach a PDF to a job portal, the file lands in a parser before any human sees it. The parser extracts text, maps fields, and stores a profile record. If extraction fails, your application still exists, but your skills array might be empty and your job titles might be gibberish. Recruiters filter on structured fields. Empty fields mean you never appear in search results.</p>
+        <p>A URL sidesteps that pipeline for the human review stage. The recruiter clicks, reads a rendered page, and forms an opinion in seconds. You still upload a plain file if the form requires it, but the link is what they remember. This is why <Link href="/bypass" className={link}>dual submission strategies</Link> work: plain text for the bot, rich profile for the person.</p>
+
+        <h2 className={h2}>Email Clients Treat Attachments as Risk</h2>
+        <p>Corporate inboxes flag unknown attachments. Recruiters get dozens of resumes per day from strangers. Security training tells them not to open unexpected files. A link to a known domain feels safer than a binary download. Gmail and Outlook also preview links with titles and snippets. Your name and headline show up before they click. Attachments show a paperclip icon and a file size.</p>
+        <div className={callout}>
+          <h3 className={h3}>The preview card advantage</h3>
+          <p>Paste your CVin.Bio URL into Slack or email and watch the preview load. <span className={bold}>Your face, title, and first line of summary appear inline.</span> That is free marketing in the inbox. PDFs do not get previews. They get ignored.</p>
+        </div>
+
+        <h2 className={h2}>Sharing and Forwarding</h2>
+        <p>Hiring is a team sport. The recruiter forwards your profile to the engineering manager, who forwards it to a tech lead. With a PDF, each forward attaches another copy. Version chaos starts immediately. With a URL, everyone sees the same live page. If you <Link href="/update" className={link}>fix a typo or add a project</Link> at 3 PM, the whole panel sees the update before the 4 PM debrief.</p>
+        <p>URLs also work in every tool: ATS notes, LinkedIn messages, Greenhouse comments, Notion hiring docs. PDFs need to be downloaded, re uploaded, and re opened. Links just work.</p>
+
+        <h2 className={h2}>When You Still Need a File</h2>
+        <p>Some government contractors and legacy portals only accept uploads. Export a single column, 11pt Arial PDF with no graphics. Put your profile URL in the header next to your email. The parser gets clean text. The human gets the real experience. Never send only the file if you have any channel to send the link.</p>
+        <p>For cold outreach, lead with the link in the first sentence. &quot;Profile: cvin.bio/yourname&quot; beats &quot;Attached please find my resume&quot; every time. Respect the reader&apos;s time and device. They are probably on a phone between meetings.</p>
+
+        <h2 className={h2}>Attachment Size and Mobile Downloads</h2>
+        <p>Large PDFs fail on mobile networks before they fail in ATS. A 3 MB file on a subway connection blocks the recruiter from reading anything. They move to the next candidate whose link loaded instantly. Keep files small if you must attach, but default to URLs that load in under two seconds on 4G.</p>
+        <p>Calendar invites and scheduling links also work better as URLs embedded in email signatures. The recruiter books your screen without downloading your life story first.</p>
+
+        <h2 className={h2}>Legal and Compliance Filters</h2>
+        <p>Some enterprises block executable attachments and unknown file types. PDFs usually pass, but macro enabled documents do not. Links to HTTPS profiles pass more consistently because security teams whitelist major hosting patterns. A cvin.bio link looks like any other professional site request.</p>
+        <p>Healthcare and finance recruiters often work inside strict DLP tools. Minimize friction. One click beats one download that triggers a security review queue.</p>
+
+        <h2 className={h2}>Candidate Experience Is Recruiter Experience</h2>
+        <p>Every friction step you add is a micro rejection. Download, open, zoom, scroll sideways, hunt for email, copy email, open mail client. Each step loses a fraction of readers. Links collapse that chain to one tap. Treat your application like a product funnel with measurable drop off. Remove steps.</p>
+        <p>Ask a friend to open your application package on their phone while timed. Count seconds to your strongest bullet. Compare PDF package versus link package. The gap usually shocks candidates who designed on a 27 inch monitor.</p>
+
+        <h2 className={h2}>Subject Line Plus Link Wins</h2>
+        <p>Email subject lines with your target role and one metric outperform generic subjects. Body text should be three sentences max with the profile URL above the fold. Attachments below the fold get ignored even when the email opens.</p>
+        <p>Recruiters forward short emails. They rarely forward attachment heavy threads. Make the forwardable unit a link and two lines of context.</p>
+
+        <h2 className={h2}>Closing the Loop After You Share a Link</h2>
+        <p>When a recruiter clicks your profile, they often decide in one session. Make the top third complete: current role, contact method, strongest metric, link to best project. Missing email or broken LinkedIn in that zone wastes the click you earned.</p>
+        <p>Follow up three days later with one new line of value, not a second attachment. &quot;Added the case study you asked about to my profile&quot; beats &quot;see revised PDF attached.&quot;</p>
+        <p>Treat every outbound application as a product funnel. Measure clicks if you can. Shorten the path from inbox to your best bullet. Remove every step that does not increase clarity or trust.</p>
+        <p>The best candidates make recruiters feel safe clicking. Known domain, clear preview, zero download. That safety converts to interviews faster than polished attachments from strangers.</p>
+        <p>Default to links in 2026. Keep a plain PDF in reserve for legacy portals. Lead with the format that respects how recruiters actually open candidate materials on phones.</p>
+        <p>Every attachment is a request for trust without giving convenience first. Links offer convenience upfront. In competitive inboxes convenience wins attention.</p>
+        <p>Make the link the hero of every application and watch how much faster conversations start.</p>
+
+        <h2 className={h2}>Filename hygiene for the backup PDF</h2>
+        <p>Name files Firstname_Lastname_Role.pdf, not resume_final_v9.pdf. Recruiters search downloads folders by your name days later. Generic filenames get deleted with temp files. The PDF is a fallback. Make it findable when someone finally opens it on desktop.</p>
+
         <h2 className={h2}>Read Next</h2>
         <ul className={ul}>
-          <li><Link href="/mobile" className={link}>Why mobile responsiveness is the new status quo</Link></li>
-          <li><Link href="/link" className={link}>How clean URLs build your professional brand</Link></li>
+          <li><Link href="/pdf" className={link}>Why complex PDFs break recruiter algorithms</Link></li>
+          <li><Link href="/inbox" className={link}>Standing out in crowded application inboxes</Link></li>
         </ul>
       </div>
   );

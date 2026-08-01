@@ -7,7 +7,7 @@ export default function ArticleContent() {
     <div className="space-y-6 text-lg text-zinc-800 dark:text-zinc-300 transition-colors leading-relaxed">
 
         <p>AI screening is the first wall between you and a real conversation with a hiring manager. Roughly 75% of resumes get rejected by automated systems before a person ever looks at them. Some of those rejections are fair. But a lot of good candidates get tossed because of formatting issues, missing keywords, or file types the parser chokes on.</p>
-        <p>These seven tactics are ranked by how much they actually move the needle. The first one is the most effective because it removes the screening step entirely. The rest help you survive the filter when you have no choice but to go through it.</p>
+        <p>These seven tactics are ranked by how much they actually change results. The first one is the most effective because it removes the screening step entirely. The rest help you survive the filter when you have no choice but to go through it.</p>
 
         <div className="my-8 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/50 p-4 sm:p-6">
           <svg viewBox="0 0 560 260" className="w-full h-auto" role="img" aria-label="Two paths to a recruiter: through ATS filter vs direct web link">
@@ -96,12 +96,12 @@ export default function ArticleContent() {
         <p>Instead of just listing &quot;Terraform,&quot; write something like: &quot;Built Terraform modules that cut provisioning time from 4 hours to 15 minutes across 3 AWS regions.&quot; Now the system sees Terraform, AWS, and a quantified result all in one sentence.</p>
         <p>This also helps when a human eventually reads your resume. A list of 30 technologies tells them nothing. A few well-placed keywords inside real stories tell them everything.</p>
 
-        <h2 className={h2}>6. Save as Plain .docx</h2>
-        <p>If the application portal requires a file upload, use .docx over PDF. This is not a style preference. It is a parsing reliability issue. The .docx format stores text as structured XML that machines can read cleanly. PDFs store text as positioned characters on a virtual page, which means the parser has to guess where one word ends and another begins.</p>
-        <p>Keep the .docx simple. One column. Standard fonts like Arial or Calibri. No text boxes, no headers/footers with contact info (many parsers skip those), and no images.</p>
+        <h2 className={h2}>6. Save as Plain.docx</h2>
+        <p>If the application portal requires a file upload, use.docx over PDF. This is not a style preference. It is a parsing reliability issue. The.docx format stores text as structured XML that machines can read cleanly. PDFs store text as positioned characters on a virtual page, which means the parser has to guess where one word ends and another begins.</p>
+        <p>Keep the.docx simple. One column. Standard fonts like Arial or Calibri. No text boxes, no headers/footers with contact info (many parsers skip those), and no images.</p>
         <div className={callout}>
           <h3 className={h3}>When PDF is okay</h3>
-          <p>If you are emailing your resume directly to a person (not uploading to a portal), PDF is fine because no parser is involved. The human just opens the file. But the moment you are going through an ATS, switch to .docx.</p>
+          <p>If you are emailing your resume directly to a person (not uploading to a portal), PDF is fine because no parser is involved. The human just opens the file. But the moment you are going through an ATS, switch to.docx.</p>
         </div>
 
         <h2 className={h2}>7. Add a Clean URL at the Top</h2>
@@ -113,8 +113,23 @@ export default function ArticleContent() {
         <p>The bottom of the list still matters. But if you only have 20 minutes before a deadline, spend those minutes on tactics 1 through 3.</p>
         <div className={callout}>
           <h3 className={h3}>The short version</h3>
-          <p><span className={bold}>Skip the filter entirely</span> by sending a direct link. When that is not possible, <span className={bold}>speak the same language as the job posting</span> and keep your formatting dead simple. Everything else is an optimization on top of those basics.</p>
+          <p><span className={bold}>Skip the filter entirely</span> by sending a direct link. When that is not possible, <span className={bold}>speak the same language as the job posting</span> and keep your formatting dead simple. Everything else is tuning on top of those basics.</p>
         </div>
+
+        <h2 className={h2}>Testing Your Resume Before You Submit</h2>
+        <p>Before you upload to a portal, paste your resume text into a plain text editor. If the structure looks scrambled, the ATS will see the same mess. Job titles mixed with skills, dates separated from company names, bullet points running together into one paragraph. That preview takes thirty seconds and catches most formatting failures.</p>
+        <p>Some tools let you upload a resume and see the parsed output. Jobscan and Resume Worded are popular options. They are not perfect mirrors of every ATS, but they flag obvious problems like missing section headers or unreadable columns.</p>
+        <p>Another quick test: copy your resume into ChatGPT and ask it to extract your job titles, companies, and dates into a table. If the model struggles, a production parser will struggle too.</p>
+
+        <h2 className={h2}>What Happens After You Pass the Filter</h2>
+        <p>Passing AI screening only gets you into the recruiter queue. You still compete against every other candidate who passed. At this stage the recruiter opens your file and spends thirty to sixty seconds deciding if you are worth a phone screen.</p>
+        <p>That means your top section still matters after the bot approves you. The recruiter is looking for a reason to call you, not a reason to reject you. Clear headlines, quantified bullets, and a working profile link all help at this stage. A resume that survived parsing but reads like a wall of undifferentiated text will still get passed over.</p>
+        <p>Think of screening as two gates. The first gate is the machine. The second gate is a tired human with forty more resumes to review today. Win both.</p>
+
+        <h2 className={h2}>Common Mistakes That Kill Good Candidates</h2>
+        <p>Uploading a PDF when the portal accepts.docx. Using a Canva template with icons and color blocks that parsers cannot read. Listing skills in a graphic chart instead of plain text. Putting contact info in the document header, which many parsers skip entirely.</p>
+        <p>Another frequent failure: applying with a resume tailored for a different role. If your headline says frontend engineer but the posting is for a backend role, the keyword match score drops even if your experience section mentions the right tools.</p>
+        <p>Finally, do not rely on a cover letter to rescue a poorly formatted resume. Most screeners never read the cover letter. Some systems do not even parse it. Fix the resume first.</p>
 
         <h2 className={h2}>Read Next</h2>
         <ul className={ul}>

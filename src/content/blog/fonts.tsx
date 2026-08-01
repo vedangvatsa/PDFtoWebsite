@@ -99,6 +99,13 @@ export default function ArticleContent() {
 
       <p>It also allows you to use modern web fonts like Inter or Roboto without worrying about local system compatibility. The web browser handles the rendering work. This guarantees a clean presentation every single time.</p>
 
+      <h2 className={h2}>Testing Font Rendering Across Devices</h2>
+      <p>Before you publish your profile, open it on three different screens. Check a desktop monitor, a phone, and a tablet. Fonts that look crisp on a retina MacBook can look thin and washed out on a budget Android phone. If the text disappears at normal reading distance, increase the font weight or switch to a heavier system font.</p>
+
+      <p>Print a single page of your profile as a final sanity check. Some hiring managers still review candidates on paper during panel reviews. A font that renders well on screen but bleeds together in print will hurt you in those rooms. Arial, Calibri, and Georgia all survive print tests without special tuning.</p>
+
+      <p>Web profiles handle this testing automatically. The platform selects font stacks that degrade gracefully when a preferred font is missing. The recruiter sees readable text regardless of device. That consistency is one reason a live link beats a static file for technical roles. Pair your font choice with proper spacing by reading our guide on <Link href="/spacing" className={link}>CV spacing standards</Link>.</p>
+
       <h2 className={h2}>Read Next</h2>
       <p>Once you have chosen a clean font you must set the correct margins. Read our guide on the <Link href="/spacing" className={link}>best CV spacing standards</Link> to polish your layout. You should also check out the <Link href="/replacements" className={link}>best career objective replacements</Link> to make sure your content is as strong as your formatting.</p>
     </div>
