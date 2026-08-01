@@ -430,13 +430,24 @@ function normalizeSectionText(text) {
     .trim();
 }
 
-/** Short eligibility lines — facts only, not portal prose. */
+/**
+ * Eligibility from AICTE "Who can apply?" — keep every degree line intact.
+ * Never drop long specialization lists (B.Tech lines often exceed 250 chars).
+ */
 function eligibilityBullets(whoText, duration) {
   const who = normalizeSectionText(whoText);
   if (!who) return [];
 
+  // Portal structure: "are from …", "are available …", "have relevant …"
+  // Do NOT split on bare "-" (breaks hyphenated words / mid-list dashes).
+  const clauses = who
+    .replace(/\n-\s+/g, '\n')
+    .split(/(?=\bare from\b)|(?=\bare available\b)|(?=\bhave relevant\b)/i)
+    .map((s) => s.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+
   const out = [];
-  for (const raw of who.split(/\s*-\s*/).map((s) => s.trim()).filter(Boolean)) {
+  for (const raw of clauses) {
     if (/^only those candidates/i.test(raw)) continue;
 
     if (/^are available for duration/i.test(raw)) {
@@ -449,18 +460,30 @@ function eligibilityBullets(whoText, duration) {
       continue;
     }
 
-    const from = raw.match(/^are from\s+(.+)/is)?.[1]?.replace(/\s+/g, ' ').trim();
+    const from = raw.match(/^are from\s+(.+)$/is)?.[1]?.replace(/\s+/g, ' ').trim();
     if (!from) continue;
 
     const spec = from.match(/^(.*?)\s+with specialisation in\s+(.+)$/i);
     if (spec) {
+      // Keep full specialization list — do not truncate
       out.push(`${spec[1].trim()} — ${spec[2].trim()}`);
     } else {
       out.push(from);
     }
   }
 
-  return [...new Set(out)].filter((s) => s.length > 4 && s.length < 220);
+  // Cap length only for pathological scrapes; official B.Tech lists are ~300–500 chars
+  return [...new Set(out)].filter((s) => s.length > 4 && s.length < 900);
+}
+
+/** Count official "are from" degree clauses (unique) for import validation. */
+function countOfficialDegreeClauses(whoText) {
+  const who = normalizeSectionText(whoText);
+  const clauses = who.match(/\bare from\s+.+?(?=\s+are from\b|\s+are available\b|\s+have relevant\b|$)/gi) || [];
+  const normalized = clauses.map((c) =>
+    c.replace(/\s+/g, ' ').trim().replace(/\s+-\s*$/, '').toLowerCase()
+  );
+  return new Set(normalized).size;
 }
 
 /** Role-specific work themes — labels only, no copied sentences. */
@@ -903,6 +926,16 @@ function buildArmyDescription(detail) {
   );
   const notes = practicalNotes(detail);
   const displayTitle = displayArmyTitle(detail.title);
+
+  const officialDegreeCount = countOfficialDegreeClauses(detail.who);
+  const storedDegreeCount = eligibility.filter(
+    (e) => !/^Available for the full/i.test(e) && !/^Relevant skills/i.test(e)
+  ).length;
+  if (officialDegreeCount > 0 && storedDegreeCount < officialDegreeCount) {
+    console.warn(
+      `  ⚠ eligibility drop for "${(detail.title || '').slice(0, 50)}": official degrees=${officialDegreeCount} stored=${storedDegreeCount}`
+    );
+  }
 
   const parts = [
     `Indian Army Internship Program (IAIP) — ${displayTitle}.`,
