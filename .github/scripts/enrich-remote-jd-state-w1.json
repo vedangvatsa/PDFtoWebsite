@@ -5406,8 +5406,9 @@
       "external_id": "deepgram_partner-success"
     },
     "3a0c08b9-0dc4-402d-9463-db80a1634169": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(deepgram_pre-sales) alre"
+      "status": "ok",
+      "path": "/deepgram/pre-sales-c4",
+      "external_id": "deepgram_pre-sales-c4"
     },
     "c57b7991-cd33-47c0-af0a-459094eacfa9": {
       "status": "skip",
@@ -5419,8 +5420,9 @@
       "external_id": "deepgram_corporate-acct"
     },
     "df345b47-ab44-40b1-b28f-043b7e418805": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(deepgram_pre-sales) alre"
+      "status": "ok",
+      "path": "/deepgram/pre-sales-3e",
+      "external_id": "deepgram_pre-sales-3e"
     },
     "61180a33-5080-498c-acd9-5f1904444516": {
       "status": "skip",
@@ -6845,8 +6847,9 @@
       "external_id": "heidihealth-com-au_clinic-dir"
     },
     "32315aba-2ee3-4d7b-83e3-f67a3d8703d0": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(elevenlabs_b2b-mkt-lead)"
+      "status": "ok",
+      "path": "/elevenlabs/b2b-mkt-74",
+      "external_id": "elevenlabs_b2b-mkt-74"
     },
     "ff708fd3-9366-46a2-84df-4ba11511c0b2": {
       "status": "ok",
@@ -6910,8 +6913,9 @@
       "external_id": "wealthsimple_data-sci-ai"
     },
     "e32a8326-8dd3-44e1-be92-62fbc618173d": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(alan_key-acct-mgr) alrea"
+      "status": "ok",
+      "path": "/alan/key-acct-be",
+      "external_id": "alan_key-acct-be"
     },
     "8da81d35-7216-423a-9a03-0f42c90590a2": {
       "status": "ok",
@@ -7307,6 +7311,252 @@
       "status": "ok",
       "path": "/iherb/sw-dev",
       "external_id": "iherb_sw-dev"
+    },
+    "34491c6b-b0d6-4a2f-8578-fcc4f8b807aa": {
+      "status": "ok",
+      "path": "/iherb/eng-catalog",
+      "external_id": "iherb_eng-catalog"
+    },
+    "5baf1aac-ffad-459b-b3f0-8627d95d0340": {
+      "status": "ok",
+      "path": "/gitlab/sol-arch",
+      "external_id": "gitlab_sol-arch"
+    },
+    "b8af5838-15fc-48c0-8110-c368f865c8dc": {
+      "status": "ok",
+      "path": "/gitlab/sol-arch-cf",
+      "external_id": "gitlab_sol-arch-cf"
+    },
+    "3b10352b-bf0c-4dcc-a8c7-fc419e93b65e": {
+      "status": "ok",
+      "path": "/gitlab/prod-mgr",
+      "external_id": "gitlab_prod-mgr"
+    },
+    "49fc237f-770e-4ac7-b1f5-cc6fbf0b4f86": {
+      "status": "ok",
+      "path": "/gitlab/mgr-professional",
+      "external_id": "gitlab_mgr-professional"
+    },
+    "ce502e6c-5432-4aef-b18d-7b02272bb70e": {
+      "status": "ok",
+      "path": "/gitlab/dir-procurement",
+      "external_id": "gitlab_dir-procurement"
+    },
+    "e868a2ce-8a83-46ab-aad8-30b09075c8ea": {
+      "status": "ok",
+      "path": "/gitlab/eng-mgr",
+      "external_id": "gitlab_eng-mgr"
+    },
+    "3a7bf876-51ca-4b34-a766-1440807e12de": {
+      "status": "ok",
+      "path": "/wellhub/biz-dev",
+      "external_id": "wellhub_biz-dev"
+    },
+    "4e9828eb-e79a-4817-bbee-15d150c641ba": {
+      "status": "ok",
+      "path": "/gitlab/cust-success-97",
+      "external_id": "gitlab_cust-success-97"
+    },
+    "b8617998-6bba-40fb-a984-ef7a2508e9d5": {
+      "status": "ok",
+      "path": "/gusto-inc/head-accountant",
+      "external_id": "gusto-inc_head-accountant"
+    },
+    "de2e8016-be96-4ee0-a5b2-dd94637f3254": {
+      "status": "ok",
+      "path": "/grafana-labs/sw-eng",
+      "external_id": "grafana-labs_sw-eng"
+    },
+    "f8d19e99-ab25-4896-a92a-d1f28cc83d63": {
+      "status": "ok",
+      "path": "/grafana-labs/sw-eng-86",
+      "external_id": "grafana-labs_sw-eng-86"
+    },
+    "045a87a7-fef3-4a34-96d5-00ea16348c06": {
+      "status": "ok",
+      "path": "/grafana-labs/sw-eng-7e",
+      "external_id": "grafana-labs_sw-eng-7e"
+    },
+    "4f6a4ab9-c8c6-45ba-8c03-dc755cde7bfd": {
+      "status": "ok",
+      "path": "/grafana-labs/ai-eng",
+      "external_id": "grafana-labs_ai-eng"
+    },
+    "1c38cbc1-73d1-479d-9038-a17a2e606703": {
+      "status": "ok",
+      "path": "/grafana-labs/sw-eng-71",
+      "external_id": "grafana-labs_sw-eng-71"
+    },
+    "c10bb52d-9c3d-49a8-828b-2a4af362e44b": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "e9ca4a90-16f4-4764-aef2-a169d10dd3ab": {
+      "status": "ok",
+      "path": "/grafana-labs/sol-eng",
+      "external_id": "grafana-labs_sol-eng"
+    },
+    "11123dbf-420a-47a7-b26f-fa51829944f7": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_enterprise)"
+    },
+    "accd870f-655c-42ba-b02a-10960d1efcb4": {
+      "status": "ok",
+      "path": "/grafana-labs/commercial",
+      "external_id": "grafana-labs_commercial"
+    },
+    "24418d8d-7ec7-4516-ad72-d8a534d361df": {
+      "status": "ok",
+      "path": "/grafana-labs/commercial-f9",
+      "external_id": "grafana-labs_commercial-f9"
+    },
+    "25aadef8-5a9e-4806-87b5-207a8ecec4e1": {
+      "status": "ok",
+      "path": "/axios/branded-content",
+      "external_id": "axios_branded-content"
+    },
+    "f29d3993-56d7-4e76-8d8d-b77e46d757e8": {
+      "status": "ok",
+      "path": "/grafana-labs/be-eng-plat",
+      "external_id": "grafana-labs_be-eng-plat"
+    },
+    "8dae8906-1191-4d6a-a374-c5b4ddb73a9e": {
+      "status": "ok",
+      "path": "/axios/branded-4c",
+      "external_id": "axios_branded-4c"
+    },
+    "557de486-504e-41f4-a083-34b8b8ba527a": {
+      "status": "ok",
+      "path": "/gather/gtm-ops",
+      "external_id": "gather_gtm-ops"
+    },
+    "1c54350e-8385-4b1a-9882-16e3ffa2fd9f": {
+      "status": "ok",
+      "path": "/fleetio/eng-mgr",
+      "external_id": "fleetio_eng-mgr"
+    },
+    "1bcb4a9b-fe6e-4d84-ac2c-cbc341ead410": {
+      "status": "ok",
+      "path": "/ethos-life/partnerships",
+      "external_id": "ethos-life_partnerships"
+    },
+    "5a3dcef8-a0ab-4fe7-a091-0edb669ba61b": {
+      "status": "ok",
+      "path": "/ethos-life/dir-fin-gtm",
+      "external_id": "ethos-life_dir-fin-gtm"
+    },
+    "af59a388-6f82-49ba-91e4-a46098321437": {
+      "status": "ok",
+      "path": "/ethos-life/dir-prod",
+      "external_id": "ethos-life_dir-prod"
+    },
+    "c2f4a5ad-0eee-4033-abe9-513e4aee4cfb": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "29c80771-329d-49e2-a71f-159344d3f75a": {
+      "status": "ok",
+      "path": "/descript/lead-design",
+      "external_id": "descript_lead-design"
+    },
+    "59af6004-a9b5-4329-bc7a-1efae7981783": {
+      "status": "ok",
+      "path": "/ethos-life/dir-it",
+      "external_id": "ethos-life_dir-it"
+    },
+    "a5e25d02-5c70-4c88-97ab-8f94d5dca531": {
+      "status": "ok",
+      "path": "/airtable/prod-sec-eng",
+      "external_id": "airtable_prod-sec-eng"
+    },
+    "490811ad-dede-4afb-b58e-39896b878fdc": {
+      "status": "ok",
+      "path": "/airtable/dir-ai",
+      "external_id": "airtable_dir-ai"
+    },
+    "fad38241-bc1b-4e13-8157-e0e2705b456d": {
+      "status": "ok",
+      "path": "/algolia/gtm-data-ops",
+      "external_id": "algolia_gtm-data-ops"
+    },
+    "0a5cd32b-d78e-4f3c-b3fb-593ed00faab7": {
+      "status": "ok",
+      "path": "/cloudflare/acct-executive",
+      "external_id": "cloudflare_acct-executive"
+    },
+    "fc01a4da-e6fc-4213-a1d4-a9cbe8e9ea66": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "6412eae6-4293-4af1-860f-c5595c71b088": {
+      "status": "ok",
+      "path": "/cloudflare/partner-sol",
+      "external_id": "cloudflare_partner-sol"
+    },
+    "13660faf-1b56-4647-8bbc-d4ac764fb4dd": {
+      "status": "ok",
+      "path": "/clover-health/mgr-service",
+      "external_id": "clover-health_mgr-service"
+    },
+    "37f78d7f-e895-4380-ac78-674137184d3c": {
+      "status": "ok",
+      "path": "/clover-health/sw-eng",
+      "external_id": "clover-health_sw-eng"
+    },
+    "c536ad18-1e6a-4d08-9efb-59ae928e82ca": {
+      "status": "ok",
+      "path": "/affirm/prod-mgr-86",
+      "external_id": "affirm_prod-mgr-86"
+    },
+    "74bc226b-0262-43ff-8ce4-92ee70366ea4": {
+      "status": "ok",
+      "path": "/affirm/tech-acct",
+      "external_id": "affirm_tech-acct"
+    },
+    "f43fa5e9-1953-4f27-bb5c-dbabba2054b7": {
+      "status": "ok",
+      "path": "/affirm/eng-mgr-ml",
+      "external_id": "affirm_eng-mgr-ml"
+    },
+    "ffecbcb0-7d5c-4c75-913e-392a67e993cd": {
+      "status": "ok",
+      "path": "/affirm/resolutions",
+      "external_id": "affirm_resolutions"
+    },
+    "18692a3c-8cc4-4b86-a8b1-c6908276b659": {
+      "status": "ok",
+      "path": "/affirm/counsel-vendor",
+      "external_id": "affirm_counsel-vendor"
+    },
+    "4242a6d1-6628-4601-a8f6-469053373495": {
+      "status": "ok",
+      "path": "/affirm/chief-dir",
+      "external_id": "affirm_chief-dir"
+    },
+    "e7d9c464-1142-4c92-a185-67403b606c79": {
+      "status": "ok",
+      "path": "/accuweather-careers/mkt-analyst",
+      "external_id": "accuweather-careers_mkt-analyst"
+    },
+    "33df0ec8-5aba-4ef7-acc6-b7715a23b17f": {
+      "status": "ok",
+      "path": "/6sense/acct-executive",
+      "external_id": "6sense_acct-executive"
+    },
+    "38051b66-7a99-4c1c-ba6f-3b91581f816a": {
+      "status": "ok",
+      "path": "/10x-genomics/head-data",
+      "external_id": "10x-genomics_head-data"
+    },
+    "93a11cb5-72b4-4361-9351-026f2678efb8": {
+      "status": "ok",
+      "path": "/6sense/compensation",
+      "external_id": "6sense_compensation"
+    },
+    "f23fa04b-bee3-4d0f-84cd-9f91963fc143": {
+      "status": "ok",
+      "path": "/zscaler/sales-eng-44",
+      "external_id": "zscaler_sales-eng-44"
     }
   },
   "doneIds": [
@@ -8806,7 +9056,60 @@
     "a61646ac-fee6-466c-b51a-ce563ac7172e",
     "e831822b-595d-49ef-9694-0c40660ad473",
     "dd3eb15f-6692-41b6-819d-1f21b51eb168",
-    "6e8cff52-7ac4-4dad-aade-61b9ee151a59"
+    "6e8cff52-7ac4-4dad-aade-61b9ee151a59",
+    "df345b47-ab44-40b1-b28f-043b7e418805",
+    "3a0c08b9-0dc4-402d-9463-db80a1634169",
+    "32315aba-2ee3-4d7b-83e3-f67a3d8703d0",
+    "e32a8326-8dd3-44e1-be92-62fbc618173d",
+    "34491c6b-b0d6-4a2f-8578-fcc4f8b807aa",
+    "5baf1aac-ffad-459b-b3f0-8627d95d0340",
+    "b8af5838-15fc-48c0-8110-c368f865c8dc",
+    "3b10352b-bf0c-4dcc-a8c7-fc419e93b65e",
+    "49fc237f-770e-4ac7-b1f5-cc6fbf0b4f86",
+    "ce502e6c-5432-4aef-b18d-7b02272bb70e",
+    "e868a2ce-8a83-46ab-aad8-30b09075c8ea",
+    "3a7bf876-51ca-4b34-a766-1440807e12de",
+    "4e9828eb-e79a-4817-bbee-15d150c641ba",
+    "b8617998-6bba-40fb-a984-ef7a2508e9d5",
+    "de2e8016-be96-4ee0-a5b2-dd94637f3254",
+    "f8d19e99-ab25-4896-a92a-d1f28cc83d63",
+    "045a87a7-fef3-4a34-96d5-00ea16348c06",
+    "4f6a4ab9-c8c6-45ba-8c03-dc755cde7bfd",
+    "1c38cbc1-73d1-479d-9038-a17a2e606703",
+    "c10bb52d-9c3d-49a8-828b-2a4af362e44b",
+    "e9ca4a90-16f4-4764-aef2-a169d10dd3ab",
+    "accd870f-655c-42ba-b02a-10960d1efcb4",
+    "24418d8d-7ec7-4516-ad72-d8a534d361df",
+    "25aadef8-5a9e-4806-87b5-207a8ecec4e1",
+    "f29d3993-56d7-4e76-8d8d-b77e46d757e8",
+    "8dae8906-1191-4d6a-a374-c5b4ddb73a9e",
+    "557de486-504e-41f4-a083-34b8b8ba527a",
+    "1c54350e-8385-4b1a-9882-16e3ffa2fd9f",
+    "1bcb4a9b-fe6e-4d84-ac2c-cbc341ead410",
+    "5a3dcef8-a0ab-4fe7-a091-0edb669ba61b",
+    "af59a388-6f82-49ba-91e4-a46098321437",
+    "c2f4a5ad-0eee-4033-abe9-513e4aee4cfb",
+    "29c80771-329d-49e2-a71f-159344d3f75a",
+    "59af6004-a9b5-4329-bc7a-1efae7981783",
+    "a5e25d02-5c70-4c88-97ab-8f94d5dca531",
+    "490811ad-dede-4afb-b58e-39896b878fdc",
+    "fad38241-bc1b-4e13-8157-e0e2705b456d",
+    "0a5cd32b-d78e-4f3c-b3fb-593ed00faab7",
+    "fc01a4da-e6fc-4213-a1d4-a9cbe8e9ea66",
+    "6412eae6-4293-4af1-860f-c5595c71b088",
+    "13660faf-1b56-4647-8bbc-d4ac764fb4dd",
+    "37f78d7f-e895-4380-ac78-674137184d3c",
+    "c536ad18-1e6a-4d08-9efb-59ae928e82ca",
+    "74bc226b-0262-43ff-8ce4-92ee70366ea4",
+    "f43fa5e9-1953-4f27-bb5c-dbabba2054b7",
+    "ffecbcb0-7d5c-4c75-913e-392a67e993cd",
+    "18692a3c-8cc4-4b86-a8b1-c6908276b659",
+    "4242a6d1-6628-4601-a8f6-469053373495",
+    "e7d9c464-1142-4c92-a185-67403b606c79",
+    "33df0ec8-5aba-4ef7-acc6-b7715a23b17f",
+    "38051b66-7a99-4c1c-ba6f-3b91581f816a",
+    "93a11cb5-72b4-4361-9351-026f2678efb8",
+    "f23fa04b-bee3-4d0f-84cd-9f91963fc143"
   ],
   "skipped": {},
   "batches": [

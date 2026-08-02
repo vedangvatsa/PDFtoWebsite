@@ -5379,8 +5379,9 @@
       "external_id": "interrahealth_lead-acct"
     },
     "570ba7b2-3796-45d9-8c40-f7846f8b15b6": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(interrahealth_implementa"
+      "status": "ok",
+      "path": "/interrahealth/implementati-cf",
+      "external_id": "interrahealth_implementati-cf"
     },
     "04968e43-ceda-48e8-b41d-eb111ab17c6e": {
       "status": "ok",
@@ -7158,8 +7159,9 @@
       "external_id": "zscaler_sales-eng-c8"
     },
     "482df1b3-5146-4082-8c48-08846c752b74": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(zscaler_ai-sec-spec) alr"
+      "status": "ok",
+      "path": "/zscaler/ai-sec-2d",
+      "external_id": "zscaler_ai-sec-2d"
     },
     "e95e1bbd-e802-48bf-b4b7-2a67579b88e2": {
       "status": "ok",
@@ -7167,8 +7169,9 @@
       "external_id": "zscaler_acct-executive"
     },
     "99ed4aab-e14d-4f22-9fe2-6d6a26197246": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(zscaler_ai-sec-spec) alr"
+      "status": "ok",
+      "path": "/zscaler/ai-sec-d4",
+      "external_id": "zscaler_ai-sec-d4"
     },
     "e100ffde-f890-4400-94b9-183837307a42": {
       "status": "ok",
@@ -7191,8 +7194,9 @@
       "external_id": "reddit_ml-sys-a5"
     },
     "0a8a38ba-4614-4d16-9781-1c7b30ff16a4": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_ml-eng-ads) alrea"
+      "status": "ok",
+      "path": "/reddit/ml-eng-86",
+      "external_id": "reddit_ml-eng-86"
     },
     "76f615c8-c3f6-44cd-9ba0-a2477763f863": {
       "status": "ok",
@@ -7310,8 +7314,9 @@
       "external_id": "smartsheet_fin-analyst"
     },
     "6633486e-4b23-476b-9ce2-0ecfd25b964c": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(smartsheet_prod-mgr) alr"
+      "status": "ok",
+      "path": "/smartsheet/prod-mgr-f3",
+      "external_id": "smartsheet_prod-mgr-f3"
     },
     "a86c212d-fffd-4495-8180-8a689ed9dc35": {
       "status": "ok",
@@ -7395,6 +7400,243 @@
       "status": "ok",
       "path": "/mozilla/ml-eng",
       "external_id": "mozilla_ml-eng"
+    },
+    "99149340-6fbe-4da3-add4-8895fb43e5da": {
+      "status": "ok",
+      "path": "/marqeta/key-acct-mgr",
+      "external_id": "marqeta_key-acct-mgr"
+    },
+    "055788c4-8c17-412f-a8e4-00229d47a853": {
+      "status": "ok",
+      "path": "/marqeta/credit-risk",
+      "external_id": "marqeta_credit-risk"
+    },
+    "0439954e-d576-44bc-8204-2a6c9d499338": {
+      "status": "ok",
+      "path": "/mercury/payment-ops",
+      "external_id": "mercury_payment-ops"
+    },
+    "d58252d0-288e-4599-9462-35020913fde0": {
+      "status": "ok",
+      "path": "/mercury/prod-mgr",
+      "external_id": "mercury_prod-mgr"
+    },
+    "a4f95b80-a8b3-4610-90d4-3523e8b9ae4c": {
+      "status": "ok",
+      "path": "/mercury/prod-design",
+      "external_id": "mercury_prod-design"
+    },
+    "60d78aeb-0edf-4a9e-9e1f-cac1cd49fdbe": {
+      "status": "ok",
+      "path": "/life360/client-partner",
+      "external_id": "life360_client-partner"
+    },
+    "6c814120-8999-4c2d-8e97-edaad11839bf": {
+      "status": "ok",
+      "path": "/lithic/dispute-analyst",
+      "external_id": "lithic_dispute-analyst"
+    },
+    "7967e547-0cd0-43ed-b101-a08500093ffb": {
+      "status": "ok",
+      "path": "/masterclass/admissions",
+      "external_id": "masterclass_admissions"
+    },
+    "dea623eb-7969-4a53-b874-4e33a39a0d83": {
+      "status": "ok",
+      "path": "/launchdarkly/eng-mgr",
+      "external_id": "launchdarkly_eng-mgr"
+    },
+    "e11b53b7-dcc8-4f55-bfb0-f27d5d7ace87": {
+      "status": "ok",
+      "path": "/launchdarkly/sol-eng",
+      "external_id": "launchdarkly_sol-eng"
+    },
+    "a3700c78-df7f-4b32-a7b2-4f458bc1f2b1": {
+      "status": "ok",
+      "path": "/leaflink/corporate",
+      "external_id": "leaflink_corporate"
+    },
+    "f4fb278c-9cce-4653-a0a3-0e68b53d97da": {
+      "status": "ok",
+      "path": "/hopskipdrive/strat-acct",
+      "external_id": "hopskipdrive_strat-acct"
+    },
+    "58d1f5c5-01e7-471d-948f-53c35afa4d8e": {
+      "status": "ok",
+      "path": "/jumio/enterprise",
+      "external_id": "jumio_enterprise"
+    },
+    "8e113ee0-3dc1-422f-835b-918cc47e4e70": {
+      "status": "ok",
+      "path": "/iherb/sw-eng-78",
+      "external_id": "iherb_sw-eng-78"
+    },
+    "93a1315f-e5cc-4963-b492-f4b4c33a58d0": {
+      "status": "ok",
+      "path": "/iherb/dir-prod",
+      "external_id": "iherb_dir-prod"
+    },
+    "eff0600d-70c8-468a-9874-63c29454ab75": {
+      "status": "ok",
+      "path": "/gitlab/people-analytics",
+      "external_id": "gitlab_people-analytics"
+    },
+    "1bb1b95b-c7c7-4a86-a039-9bc2b8b13379": {
+      "status": "ok",
+      "path": "/gitlab/sol-arch-fin",
+      "external_id": "gitlab_sol-arch-fin"
+    },
+    "9be1ed96-17d0-447b-ada9-5b53cf896f70": {
+      "status": "ok",
+      "path": "/gitlab/ecosystem-db",
+      "external_id": "gitlab_ecosystem-db"
+    },
+    "7a68777b-69cf-4880-ae45-79b22af43f72": {
+      "status": "ok",
+      "path": "/gitlab/renewals-mgr",
+      "external_id": "gitlab_renewals-mgr"
+    },
+    "c3e3b0d0-ba9c-4ff8-ab0e-d2b90aaf260c": {
+      "status": "ok",
+      "path": "/gitlab/public-ea",
+      "external_id": "gitlab_public-ea"
+    },
+    "a69e121d-61b4-42fc-a6a4-373e04fe6ac3": {
+      "status": "ok",
+      "path": "/gitlab/mgr-it-sox",
+      "external_id": "gitlab_mgr-it-sox"
+    },
+    "6c250990-b23f-4902-a24f-7e3131cd66da": {
+      "status": "ok",
+      "path": "/gitlab/mgr-biz-dev",
+      "external_id": "gitlab_mgr-biz-dev"
+    },
+    "2ced3de0-d062-40ef-92c3-41aa898ddf43": {
+      "status": "ok",
+      "path": "/gitlab/mgr-cust",
+      "external_id": "gitlab_mgr-cust"
+    },
+    "489f6adb-3606-42ae-a968-b847c341fcf9": {
+      "status": "ok",
+      "path": "/gusto-inc/channel",
+      "external_id": "gusto-inc_channel"
+    },
+    "6f61315a-fe66-4a66-9283-cdfd31b45ef5": {
+      "status": "ok",
+      "path": "/gitlab/high-velocity",
+      "external_id": "gitlab_high-velocity"
+    },
+    "a075af11-6e44-40ed-83ea-cee513b16610": {
+      "status": "ok",
+      "path": "/wellhub/b2b-credit",
+      "external_id": "wellhub_b2b-credit"
+    },
+    "27af57c0-785d-4700-a559-8fef30da8dff": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "f9cb9399-78c7-4c08-981f-62f7341b741f": {
+      "status": "ok",
+      "path": "/wellhub/cust-journey",
+      "external_id": "wellhub_cust-journey"
+    },
+    "f8d1a34a-4749-44ec-a2d1-c2aaa9dd20f8": {
+      "status": "ok",
+      "path": "/homeward/sw-eng-be",
+      "external_id": "homeward_sw-eng-be"
+    },
+    "51c515ba-3ccb-4166-b6ef-3d6dfc2769de": {
+      "status": "ok",
+      "path": "/grafana-labs/ai-eng-1c",
+      "external_id": "grafana-labs_ai-eng-1c"
+    },
+    "9f90f868-e8fc-448b-ade2-4a38bcd5b074": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "18739fb4-f098-4769-b8f1-8dae5b55d82f": {
+      "status": "ok",
+      "path": "/grafana-labs/sw-eng-cf",
+      "external_id": "grafana-labs_sw-eng-cf"
+    },
+    "d66363d4-9ec2-4007-bea9-1ed768490286": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "76e61c02-9bd2-4bbb-be30-85f5da2205c9": {
+      "status": "ok",
+      "path": "/heygen/enterprise",
+      "external_id": "heygen_enterprise"
+    },
+    "daa42a23-f6d3-4641-bc80-a5dc0713381f": {
+      "status": "ok",
+      "path": "/grafana-labs/ai-eng-66",
+      "external_id": "grafana-labs_ai-eng-66"
+    },
+    "e383dec6-99f0-463f-a472-e578ff32a325": {
+      "status": "ok",
+      "path": "/grafana-labs/commercial-12",
+      "external_id": "grafana-labs_commercial-12"
+    },
+    "cb740cf8-bdcf-404b-8383-999952a5303f": {
+      "status": "ok",
+      "path": "/grafana-labs/be-eng-e1",
+      "external_id": "grafana-labs_be-eng-e1"
+    },
+    "8bf8953e-8546-46e1-ab9a-32d85b028a7a": {
+      "status": "ok",
+      "path": "/grafana-labs/be-eng-df",
+      "external_id": "grafana-labs_be-eng-df"
+    },
+    "5a20d45f-6d9b-4f37-9fc2-e01f8952ab59": {
+      "status": "ok",
+      "path": "/greenhouse/corporate",
+      "external_id": "greenhouse_corporate"
+    },
+    "3ee487c9-fa7b-496d-937c-46f7e91bfc03": {
+      "status": "ok",
+      "path": "/greenhouse/fp-mgr",
+      "external_id": "greenhouse_fp-mgr"
+    },
+    "1691d047-8c80-4e14-9f59-0c78bb95546d": {
+      "status": "ok",
+      "path": "/gofundme/social-community",
+      "external_id": "gofundme_social-community"
+    },
+    "41dcf495-8738-445e-be6d-d89f4bacb616": {
+      "status": "ok",
+      "path": "/extend/legal-counsel",
+      "external_id": "extend_legal-counsel"
+    },
+    "1a9a81a2-5a4a-4c27-bfe3-23f672597d34": {
+      "status": "ok",
+      "path": "/careers-at-eucalyptus/health-coach",
+      "external_id": "careers-at-eucalyptus_health-coach"
+    },
+    "9a63e438-2af9-4060-bed5-65a91a516fcf": {
+      "status": "ok",
+      "path": "/gofundme/mgr-strat",
+      "external_id": "gofundme_mgr-strat"
+    },
+    "86398580-f245-4989-9159-3c1dc1b6f541": {
+      "status": "ok",
+      "path": "/ethos-life/ops-acct-mgr",
+      "external_id": "ethos-life_ops-acct-mgr"
+    },
+    "43943345-3c4c-428d-aa6e-a0e683e1aa58": {
+      "status": "ok",
+      "path": "/amplitude/enterprise",
+      "external_id": "amplitude_enterprise"
+    },
+    "ef20387e-18ca-45a7-8fb5-b30a35682a50": {
+      "status": "ok",
+      "path": "/ethos-life/head-life",
+      "external_id": "ethos-life_head-life"
+    },
+    "e0bb25de-a378-4ca8-a917-764abf0a4466": {
+      "status": "ok",
+      "path": "/earnin/plat-eng",
+      "external_id": "earnin_plat-eng"
     }
   },
   "doneIds": [
@@ -8911,7 +9153,60 @@
     "fd90e5e5-5115-465f-ab81-34dbc85dc65d",
     "22f95abf-0c4d-41b9-9316-1d44c0acd5af",
     "c59ae696-e1b5-423d-a948-b96e780c97a6",
-    "193be6e6-f2af-493a-8766-c432c5c0f53d"
+    "193be6e6-f2af-493a-8766-c432c5c0f53d",
+    "570ba7b2-3796-45d9-8c40-f7846f8b15b6",
+    "99ed4aab-e14d-4f22-9fe2-6d6a26197246",
+    "0a8a38ba-4614-4d16-9781-1c7b30ff16a4",
+    "482df1b3-5146-4082-8c48-08846c752b74",
+    "99149340-6fbe-4da3-add4-8895fb43e5da",
+    "055788c4-8c17-412f-a8e4-00229d47a853",
+    "6633486e-4b23-476b-9ce2-0ecfd25b964c",
+    "0439954e-d576-44bc-8204-2a6c9d499338",
+    "d58252d0-288e-4599-9462-35020913fde0",
+    "a4f95b80-a8b3-4610-90d4-3523e8b9ae4c",
+    "60d78aeb-0edf-4a9e-9e1f-cac1cd49fdbe",
+    "6c814120-8999-4c2d-8e97-edaad11839bf",
+    "7967e547-0cd0-43ed-b101-a08500093ffb",
+    "dea623eb-7969-4a53-b874-4e33a39a0d83",
+    "e11b53b7-dcc8-4f55-bfb0-f27d5d7ace87",
+    "a3700c78-df7f-4b32-a7b2-4f458bc1f2b1",
+    "f4fb278c-9cce-4653-a0a3-0e68b53d97da",
+    "58d1f5c5-01e7-471d-948f-53c35afa4d8e",
+    "8e113ee0-3dc1-422f-835b-918cc47e4e70",
+    "93a1315f-e5cc-4963-b492-f4b4c33a58d0",
+    "eff0600d-70c8-468a-9874-63c29454ab75",
+    "1bb1b95b-c7c7-4a86-a039-9bc2b8b13379",
+    "9be1ed96-17d0-447b-ada9-5b53cf896f70",
+    "7a68777b-69cf-4880-ae45-79b22af43f72",
+    "c3e3b0d0-ba9c-4ff8-ab0e-d2b90aaf260c",
+    "a69e121d-61b4-42fc-a6a4-373e04fe6ac3",
+    "6c250990-b23f-4902-a24f-7e3131cd66da",
+    "2ced3de0-d062-40ef-92c3-41aa898ddf43",
+    "489f6adb-3606-42ae-a968-b847c341fcf9",
+    "6f61315a-fe66-4a66-9283-cdfd31b45ef5",
+    "a075af11-6e44-40ed-83ea-cee513b16610",
+    "27af57c0-785d-4700-a559-8fef30da8dff",
+    "f9cb9399-78c7-4c08-981f-62f7341b741f",
+    "f8d1a34a-4749-44ec-a2d1-c2aaa9dd20f8",
+    "51c515ba-3ccb-4166-b6ef-3d6dfc2769de",
+    "9f90f868-e8fc-448b-ade2-4a38bcd5b074",
+    "18739fb4-f098-4769-b8f1-8dae5b55d82f",
+    "d66363d4-9ec2-4007-bea9-1ed768490286",
+    "76e61c02-9bd2-4bbb-be30-85f5da2205c9",
+    "daa42a23-f6d3-4641-bc80-a5dc0713381f",
+    "e383dec6-99f0-463f-a472-e578ff32a325",
+    "cb740cf8-bdcf-404b-8383-999952a5303f",
+    "8bf8953e-8546-46e1-ab9a-32d85b028a7a",
+    "5a20d45f-6d9b-4f37-9fc2-e01f8952ab59",
+    "3ee487c9-fa7b-496d-937c-46f7e91bfc03",
+    "1691d047-8c80-4e14-9f59-0c78bb95546d",
+    "41dcf495-8738-445e-be6d-d89f4bacb616",
+    "1a9a81a2-5a4a-4c27-bfe3-23f672597d34",
+    "9a63e438-2af9-4060-bed5-65a91a516fcf",
+    "86398580-f245-4989-9159-3c1dc1b6f541",
+    "43943345-3c4c-428d-aa6e-a0e683e1aa58",
+    "ef20387e-18ca-45a7-8fb5-b30a35682a50",
+    "e0bb25de-a378-4ca8-a917-764abf0a4466"
   ],
   "skipped": {},
   "batches": [
