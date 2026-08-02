@@ -73,12 +73,56 @@ const DOMAIN_OVERRIDES: Record<string, string> = {
   'character ai': 'character.ai',
   character: 'character.ai',
   'govtech singapore': 'tech.gov.sg',
+  govtech: 'tech.gov.sg',
   mospi: 'mospi.gov.in',
   'niti aayog': 'niti.gov.in',
   'indian army': 'joinindianarmy.nic.in',
-  govtech: 'tech.gov.sg',
-  'indian army': 'joinindianarmy.nic.in',
   'indian-army': 'joinindianarmy.nic.in',
+  cursor: 'cursor.com',
+  applied: 'applied.co',
+  sierra: 'sierra.ai',
+  'field ai': 'fieldai.com',
+  'field-ai': 'fieldai.com',
+  fieldai: 'fieldai.com',
+  horizon3ai: 'horizon3.ai',
+  'horizon3 ai': 'horizon3.ai',
+  'horizon3-ai': 'horizon3.ai',
+  shieldai: 'shield.ai',
+  'shield ai': 'shield.ai',
+  doordash: 'doordash.com',
+  'doordash usa': 'doordash.com',
+  langchain: 'langchain.com',
+  nvidia: 'nvidia.com',
+  hellofresh: 'hellofresh.com',
+  roku: 'roku.com',
+  oracle: 'oracle.com',
+  deloitte: 'deloitte.com',
+  sophos: 'sophos.com',
+  brillio: 'brillio.com',
+  hadrian: 'hadrian.co',
+  skydio: 'skydio.com',
+  workato: 'workato.com',
+  filevine: 'filevine.com',
+  hcltech: 'hcltech.com',
+  'hcl tech': 'hcltech.com',
+  figure: 'figure.ai',
+  'base power': 'basepowercompany.com',
+  'base-power': 'basepowercompany.com',
+  'the exploration company': 'exploration.space',
+  'the-exploration-company': 'exploration.space',
+  doctolib: 'doctolib.com',
+  wellhub: 'wellhub.com',
+  pwc: 'pwc.com',
+  thales: 'thalesgroup.com',
+  aecom: 'aecom.com',
+  leidos: 'leidos.com',
+  citigroup: 'citigroup.com',
+  'jpmorgan chase': 'jpmorganchase.com',
+  'jp morgan chase': 'jpmorganchase.com',
+  'oscar health': 'hioscar.com',
+  'c6 bank': 'c6bank.com.br',
+  deliveryhero: 'deliveryhero.com',
+  'delivery hero': 'deliveryhero.com',
 };
 
 const LEGAL_SUFFIX =
@@ -135,6 +179,40 @@ export function domainForCompany(name: string): string {
   // Default: cleaned name + .com
   const guess = (base || compact || 'example').slice(0, 63);
   return `${guess}.com`;
+}
+
+/**
+ * True when the domain comes from a verified map/meta entry — not a guessed `.com`.
+ * Used to avoid linking company pages to parking / NXDOMAIN hosts.
+ */
+export function isTrustedCompanyDomain(name: string): boolean {
+  const key = name.toLowerCase().trim();
+  if (DOMAIN_OVERRIDES[key]) return true;
+
+  const slug = key.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (getCompanyMeta(slug)?.website) return true;
+
+  const compact = key.replace(/[^a-z0-9]/g, '');
+  if (DOMAIN_OVERRIDES[compact]) return true;
+
+  const base = companyBaseName(name);
+  if (base && DOMAIN_OVERRIDES[base]) return true;
+
+  // Name already looks like a real domain (e.g. "example.io")
+  if (/\.[a-z]{2,}$/i.test(key) && !/\s/.test(key)) return true;
+
+  return false;
+}
+
+/** Official website URL for a company page, or null when we would only be guessing. */
+export function trustedCompanyWebsiteUrl(
+  name: string,
+  slug?: string
+): string | null {
+  const meta = getCompanyMeta(slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  if (meta?.website) return meta.website;
+  if (!isTrustedCompanyDomain(name)) return null;
+  return `https://${domainForCompany(name)}`;
 }
 
 /** Google favicon CDN (reliable, sometimes low-res for unknown domains). */
