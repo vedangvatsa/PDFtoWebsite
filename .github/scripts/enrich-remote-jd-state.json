@@ -1,0 +1,3148 @@
+{
+  "processed": {
+    "90dcadd9-d0db-467d-90c4-0826edd74353": {
+      "status": "ok",
+      "path": "/alan/m-decin-g",
+      "external_id": "alan_m-decin-g"
+    },
+    "2176d76b-8c92-4ac8-87bf-d670d37f92ec": {
+      "status": "ok",
+      "path": "/wealthsimple/aml-analyst",
+      "external_id": "wealthsimple_aml-analyst"
+    },
+    "3ff2ac76-c05d-41c3-a009-6db1711e993f": {
+      "status": "ok",
+      "path": "/openai/industrial",
+      "external_id": "openai_industrial"
+    },
+    "ea1d9934-81ef-4552-a321-3054bd4ac7f0": {
+      "status": "ok",
+      "path": "/wealthsimple/analyst-tax",
+      "external_id": "wealthsimple_analyst-tax"
+    },
+    "8f5cadaa-92a2-4dae-9c96-5b689f037935": {
+      "status": "ok",
+      "path": "/worldly/manager-director",
+      "external_id": "worldly_manager-director"
+    },
+    "46ec6965-f352-41ef-9688-0f1ade68b4a3": {
+      "status": "ok",
+      "path": "/yendo/engineering",
+      "external_id": "yendo_engineering"
+    },
+    "4f597356-8499-4a88-bc6e-d145f62519e4": {
+      "status": "ok",
+      "path": "/virtahealth/software-enginee",
+      "external_id": "virtahealth_software-enginee"
+    },
+    "77e7c0e0-e0ff-494b-b8fd-eb15da066789": {
+      "status": "ok",
+      "path": "/virtahealth/manager-governan",
+      "external_id": "virtahealth_manager-governan"
+    },
+    "54f46d3b-b3cd-42f8-bc60-d06c4516a81a": {
+      "status": "ok",
+      "path": "/supabase/support-engineer",
+      "external_id": "supabase_support-engineer"
+    },
+    "d2390e93-7a95-43bb-ae18-f2e00d5d06e5": {
+      "status": "ok",
+      "path": "/supabase/ai-platform",
+      "external_id": "supabase_ai-platform"
+    },
+    "42100ce8-1ec2-4da8-88a1-1e93a90a162b": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "769e4d32-37dc-422b-8625-af020879fda7": {
+      "status": "ok",
+      "path": "/virtahealth/ai-operations",
+      "external_id": "virtahealth_ai-operations"
+    },
+    "99592966-b8fa-4fe3-85dd-68a4cc07887e": {
+      "status": "ok",
+      "path": "/virtahealth/software-59",
+      "external_id": "virtahealth_software-59"
+    },
+    "c62b8521-7188-4445-bb7e-f3c2bb954f05": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(supabase_support-enginee"
+    },
+    "91eeb927-fab8-4fb5-a63f-698a439e378a": {
+      "status": "ok",
+      "path": "/stable/product-designer",
+      "external_id": "stable_product-designer"
+    },
+    "b1e2755b-5a25-41bc-a9f5-67dcad0929f5": {
+      "status": "ok",
+      "path": "/tensorwave/network-engineer",
+      "external_id": "tensorwave_network-engineer"
+    },
+    "d37b1b8f-6837-46b2-b6bc-d269eee72a1b": {
+      "status": "ok",
+      "path": "/spherical/product-design",
+      "external_id": "spherical_product-design"
+    },
+    "351ceeb2-5e57-425f-b657-6d2e8f9ba3a2": {
+      "status": "ok",
+      "path": "/stacker/demand-generatio",
+      "external_id": "stacker_demand-generatio"
+    },
+    "2f5e7d17-2684-419b-83e0-563ac6b482fe": {
+      "status": "ok",
+      "path": "/stacker/vp-publisher",
+      "external_id": "stacker_vp-publisher"
+    },
+    "dc5f2ef3-0907-4fbb-9c79-4bd068c1bf60": {
+      "status": "ok",
+      "path": "/spherical/communications",
+      "external_id": "spherical_communications"
+    },
+    "f30b534c-600b-4fc3-a9a0-284675635dcf": {
+      "status": "ok",
+      "path": "/rula/strategic-financ",
+      "external_id": "rula_strategic-financ"
+    },
+    "97869f2b-99fe-457e-94ab-15627fd585e0": {
+      "status": "ok",
+      "path": "/rula/health-system",
+      "external_id": "rula_health-system"
+    },
+    "84ce0ce2-ff4b-4110-9934-1d371aedfff9": {
+      "status": "ok",
+      "path": "/rula/director-organic",
+      "external_id": "rula_director-organic"
+    },
+    "7659c79f-2d75-4799-b28c-927a715aebde": {
+      "status": "ok",
+      "path": "/safelease/pricing-speciali",
+      "external_id": "safelease_pricing-speciali"
+    },
+    "be342bca-5b07-46a2-839c-ac7a2259e455": {
+      "status": "ok",
+      "path": "/resend/product-designer",
+      "external_id": "resend_product-designer"
+    },
+    "46c2522e-61fd-4cef-8589-1bf9f7355daf": {
+      "status": "ok",
+      "path": "/safelease/insurance-forms",
+      "external_id": "safelease_insurance-forms"
+    },
+    "b144c815-b320-4972-b02f-1369280c3d53": {
+      "status": "ok",
+      "path": "/protege/strategic-accoun",
+      "external_id": "protege_strategic-accoun"
+    },
+    "68c5de23-c227-4835-ada8-79dc3142075b": {
+      "status": "ok",
+      "path": "/owner/datebase-enginee",
+      "external_id": "owner_datebase-enginee"
+    },
+    "1b5def7b-432a-42d4-88a4-779e6c093ccf": {
+      "status": "ok",
+      "path": "/protege/stack-software",
+      "external_id": "protege_stack-software"
+    },
+    "3c92eaa0-5cc3-4909-9844-807e161edd75": {
+      "status": "ok",
+      "path": "/poolside/member-engineeri",
+      "external_id": "poolside_member-engineeri"
+    },
+    "93839cf0-5598-43e8-b242-b314691094d0": {
+      "status": "ok",
+      "path": "/quora/software-enginee",
+      "external_id": "quora_software-enginee"
+    },
+    "e409e8ec-0463-4aec-b4bc-cb0ff86d77c6": {
+      "status": "ok",
+      "path": "/phantom/head-business",
+      "external_id": "phantom_head-business"
+    },
+    "e54d63b8-6786-4a6e-a375-e3f2661253fd": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "13846228-22d7-4bc2-9fdb-d66fc6f64d3b": {
+      "status": "ok",
+      "path": "/outpost/ml-data",
+      "external_id": "outpost_ml-data"
+    },
+    "9c92d856-ff66-4f3f-899b-a57cc37f0ef2": {
+      "status": "ok",
+      "path": "/perchwell/android-engineer",
+      "external_id": "perchwell_android-engineer"
+    },
+    "dadab444-7b3c-4899-8666-fc466bf94f14": {
+      "status": "ok",
+      "path": "/outpost/site-reliability",
+      "external_id": "outpost_site-reliability"
+    },
+    "c7866cfe-609e-4b43-80f8-65fd7df428c6": {
+      "status": "ok",
+      "path": "/opusclip/creative",
+      "external_id": "opusclip_creative"
+    },
+    "3b57be75-865a-4d3d-a17e-f01e3ba22996": {
+      "status": "ok",
+      "path": "/opusclip/customer-success",
+      "external_id": "opusclip_customer-success"
+    },
+    "b1d53d78-475f-45ce-8d1d-80bf041cdab0": {
+      "status": "ok",
+      "path": "/omni/product-marketin",
+      "external_id": "omni_product-marketin"
+    },
+    "5931d66f-d582-425c-a2c1-dffc98d5d1b5": {
+      "status": "ok",
+      "path": "/nivoda/content-social",
+      "external_id": "nivoda_content-social"
+    },
+    "d8cbb609-318f-4c46-aa01-32d569cc2f7f": {
+      "status": "ok",
+      "path": "/nivoda/product-marketin",
+      "external_id": "nivoda_product-marketin"
+    },
+    "302489aa-0287-46ae-b89d-a6837a30b4d2": {
+      "status": "ok",
+      "path": "/nivoda/growth-demand",
+      "external_id": "nivoda_growth-demand"
+    },
+    "e3317d51-e9ba-4d4a-a5ed-906a6819d61d": {
+      "status": "ok",
+      "path": "/nash/technical",
+      "external_id": "nash_technical"
+    },
+    "b1f3691e-636c-44a7-bf08-8eb26d41c179": {
+      "status": "ok",
+      "path": "/nash/gtm-engineer",
+      "external_id": "nash_gtm-engineer"
+    },
+    "1208c2df-89b4-47ca-a969-bffa8f42d900": {
+      "status": "ok",
+      "path": "/horizon3ai/director",
+      "external_id": "horizon3ai_director"
+    },
+    "66240fe8-7677-4a2f-acd6-9438edaef9f3": {
+      "status": "ok",
+      "path": "/horizon3ai/offensive-securi",
+      "external_id": "horizon3ai_offensive-securi"
+    },
+    "32abcb12-e6ae-4921-83b6-7098fb0a9b39": {
+      "status": "ok",
+      "path": "/horizon3ai/business",
+      "external_id": "horizon3ai_business"
+    },
+    "762625ee-575e-4a86-886c-97dcef4181d0": {
+      "status": "ok",
+      "path": "/hims-and-hers/regional-learnin",
+      "external_id": "hims-and-hers_regional-learnin"
+    },
+    "c6502936-3a8f-4107-8152-92dfee103812": {
+      "status": "ok",
+      "path": "/lendable/compliance",
+      "external_id": "lendable_compliance"
+    },
+    "e429d41a-92d6-4c7d-aac1-e8e9b07caa62": {
+      "status": "ok",
+      "path": "/miter/manager-strategi",
+      "external_id": "miter_manager-strategi"
+    },
+    "a20f9ad9-6f00-41c1-850a-91a5e44c26f3": {
+      "status": "ok",
+      "path": "/hims-and-hers/technical",
+      "external_id": "hims-and-hers_technical"
+    },
+    "db988a8b-b043-4d0d-a4fa-5e674e69c014": {
+      "status": "ok",
+      "path": "/lambda/hpc-support",
+      "external_id": "lambda_hpc-support"
+    },
+    "84eadbe1-8cf1-49f0-8c3b-cda09f6ecd6c": {
+      "status": "ok",
+      "path": "/livekit/partnerships",
+      "external_id": "livekit_partnerships"
+    },
+    "220456be-0ba3-405d-8695-9c5630483079": {
+      "status": "ok",
+      "path": "/livekit/director-sales",
+      "external_id": "livekit_director-sales"
+    },
+    "c118d2cc-c57d-4fa0-9ad5-115b3a72296c": {
+      "status": "ok",
+      "path": "/masabi/customer-success",
+      "external_id": "masabi_customer-success"
+    },
+    "bdf2fc6f-9667-459d-834c-78d6caf2ebf8": {
+      "status": "ok",
+      "path": "/livinghr/manager-payroll",
+      "external_id": "livinghr_manager-payroll"
+    },
+    "3b560d43-18b5-4d6a-817b-65d68de51b4e": {
+      "status": "ok",
+      "path": "/jerry-ai/insurance-sales",
+      "external_id": "jerry-ai_insurance-sales"
+    },
+    "24e4133d-47b4-472c-85d9-08248311de80": {
+      "status": "ok",
+      "path": "/instructure/executive",
+      "external_id": "instructure_executive"
+    },
+    "79104306-069b-4f8d-a00b-a17f45512f5a": {
+      "status": "ok",
+      "path": "/mangomint/associate-creati",
+      "external_id": "mangomint_associate-creati"
+    },
+    "f2716cb1-8c4c-4fcf-bcc5-f0fee61e6b42": {
+      "status": "ok",
+      "path": "/lemonade/decision-science",
+      "external_id": "lemonade_decision-science"
+    },
+    "1aeca817-c34b-4341-b2ad-5bedcf7903fd": {
+      "status": "ok",
+      "path": "/improbable/product-engineer",
+      "external_id": "improbable_product-engineer"
+    },
+    "3249d3d4-4f87-4423-9cd4-ecd21bb2081d": {
+      "status": "ok",
+      "path": "/delinea/enterprise",
+      "external_id": "delinea_enterprise"
+    },
+    "e783fea6-7cf0-4382-a32a-9cd90d275dd8": {
+      "status": "ok",
+      "path": "/hyperhug/ui-ux-designer",
+      "external_id": "hyperhug_ui-ux-designer"
+    },
+    "f92f14d9-5749-48f4-9fa7-231aebbbcd18": {
+      "status": "ok",
+      "path": "/deepgram/federal-partner",
+      "external_id": "deepgram_federal-partner"
+    },
+    "6e5b2e59-5bf4-43bf-9c17-e1f3626aedf7": {
+      "status": "ok",
+      "path": "/cursor/data-analyst",
+      "external_id": "cursor_data-analyst"
+    },
+    "7a355679-b4c8-4875-8c87-e574c2438b36": {
+      "status": "ok",
+      "path": "/general-medicine/technical",
+      "external_id": "general-medicine_technical"
+    },
+    "1dc17fc6-a46c-497f-b30d-0752320128d1": {
+      "status": "ok",
+      "path": "/fieldguide/field-marketing",
+      "external_id": "fieldguide_field-marketing"
+    },
+    "1564c188-32e0-414c-acf0-d215251861f6": {
+      "status": "ok",
+      "path": "/futurefitai/data-engineer",
+      "external_id": "futurefitai_data-engineer"
+    },
+    "41dca1fb-9b97-4907-9f65-179c0ee1ddf0": {
+      "status": "ok",
+      "path": "/alan/head-insurance",
+      "external_id": "alan_head-insurance"
+    },
+    "1c9f03ba-b78a-4d2d-833b-30b88830ae3d": {
+      "status": "ok",
+      "path": "/freshpaint/it-operations",
+      "external_id": "freshpaint_it-operations"
+    },
+    "79ab4c1e-5ef3-4986-a046-e841825a9e60": {
+      "status": "ok",
+      "path": "/ashby/head-customer",
+      "external_id": "ashby_head-customer"
+    },
+    "9531960d-d217-4b40-8de5-7504bedcd174": {
+      "status": "ok",
+      "path": "/demandbase/strategic",
+      "external_id": "demandbase_strategic"
+    },
+    "9b37ecc0-dd98-4a9e-8b60-c94543d65f38": {
+      "status": "ok",
+      "path": "/demandbase/director-demand",
+      "external_id": "demandbase_director-demand"
+    },
+    "6bfe8cbe-94d7-48e6-8d19-8983e5371011": {
+      "status": "ok",
+      "path": "/cruxclimate/revenue-strategy",
+      "external_id": "cruxclimate_revenue-strategy"
+    },
+    "85f13604-67ce-4361-8f1c-a118624bd13f": {
+      "status": "ok",
+      "path": "/cruxclimate/it-lead",
+      "external_id": "cruxclimate_it-lead"
+    },
+    "9887ce65-7914-44a9-be61-b84f3dc89e9e": {
+      "status": "ok",
+      "path": "/camunda/director-product",
+      "external_id": "camunda_director-product"
+    },
+    "b511147e-9687-4314-90a2-fa081c9cc4b0": {
+      "status": "ok",
+      "path": "/cobot/deployment",
+      "external_id": "cobot_deployment"
+    },
+    "8b80fc34-c452-47cb-928f-abfebdfe23e7": {
+      "status": "ok",
+      "path": "/abby-care/revenue-cycle",
+      "external_id": "abby-care_revenue-cycle"
+    },
+    "6f54ef25-56c3-4969-8bdd-dafea51ac232": {
+      "status": "ok",
+      "path": "/centivo/claims-business",
+      "external_id": "centivo_claims-business"
+    },
+    "a411c659-895d-4943-8e72-9accc739976a": {
+      "status": "ok",
+      "path": "/charthop/solutions",
+      "external_id": "charthop_solutions"
+    },
+    "8fb46041-52c5-4a50-918c-0821d3f96247": {
+      "status": "ok",
+      "path": "/airgarage/sales-developmen",
+      "external_id": "airgarage_sales-developmen"
+    },
+    "7f596465-a6b5-438e-89bc-c8a6637fc45c": {
+      "status": "ok",
+      "path": "/bookkeeper360/account-executiv",
+      "external_id": "bookkeeper360_account-executiv"
+    },
+    "dc19a36a-7a59-4e3a-a137-59535c07323d": {
+      "status": "ok",
+      "path": "/airops/lead-product",
+      "external_id": "airops_lead-product"
+    },
+    "bd269c48-2bbd-4d53-8d2d-23d12a33b4f5": {
+      "status": "ok",
+      "path": "/anterior/clinical-solutio",
+      "external_id": "anterior_clinical-solutio"
+    },
+    "adddb2ce-b33a-480c-baa1-90a86a4b2c13": {
+      "status": "ok",
+      "path": "/openai/hardware-platfor",
+      "external_id": "openai_hardware-platfor"
+    },
+    "e2b46a23-c6ac-4a8c-8329-605ed96804a4": {
+      "status": "ok",
+      "path": "/openai/regional-client",
+      "external_id": "openai_regional-client"
+    },
+    "5da55c9f-7ce8-4d96-9421-d3200bffd945": {
+      "status": "ok",
+      "path": "/openai/customer-success",
+      "external_id": "openai_customer-success"
+    },
+    "1d358882-de6c-4b55-9801-fdfce10a698b": {
+      "status": "ok",
+      "path": "/openai/workplace",
+      "external_id": "openai_workplace"
+    },
+    "860dc5c0-85f4-43e0-9f84-01080fe63f01": {
+      "status": "ok",
+      "path": "/openai/land-development",
+      "external_id": "openai_land-development"
+    },
+    "aa894a56-1ea1-4e31-9543-f7a38e7654b8": {
+      "status": "ok",
+      "path": "/openai/power-land",
+      "external_id": "openai_power-land"
+    },
+    "98f12129-c50b-4fcc-a45a-fa0ad6ef9f3f": {
+      "status": "ok",
+      "path": "/openai/sales-strategy",
+      "external_id": "openai_sales-strategy"
+    },
+    "1c62a722-c85e-4fc0-8d4a-f3935fdb6dcd": {
+      "status": "ok",
+      "path": "/openai/program-manager",
+      "external_id": "openai_program-manager"
+    },
+    "772ed055-10c2-47bf-a44c-fbddb744c6cc": {
+      "status": "ok",
+      "path": "/openai/technical-progra",
+      "external_id": "openai_technical-progra"
+    },
+    "3b410849-f2a9-48cc-8de1-e6ec4fd64fa6": {
+      "status": "ok",
+      "path": "/snowflake/project-manager",
+      "external_id": "snowflake_project-manager"
+    },
+    "3b91c70b-f06e-48f2-95c0-a292ead73eea": {
+      "status": "ok",
+      "path": "/snowflake/project-ab",
+      "external_id": "snowflake_project-ab"
+    },
+    "dddcf815-8c8c-4877-9d62-e0497020e03f": {
+      "status": "ok",
+      "path": "/snowflake/project-be",
+      "external_id": "snowflake_project-be"
+    },
+    "ffdcb553-f7fe-44b3-9c33-85d5b17ce46b": {
+      "status": "ok",
+      "path": "/snowflake/partner",
+      "external_id": "snowflake_partner"
+    },
+    "503da06b-c235-4afb-9599-ab861b77cd2c": {
+      "status": "ok",
+      "path": "/snowflake/ai-ml-flex",
+      "external_id": "snowflake_ai-ml-flex"
+    },
+    "9f0389ad-166c-4cb9-9816-04f13d01d996": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "cef7a3ab-51f8-44ab-b779-8b1dfb0ed73b": {
+      "status": "ok",
+      "path": "/snowflake/services-solutio",
+      "external_id": "snowflake_services-solutio"
+    },
+    "b7404403-2696-4369-b7c1-46bb476d284a": {
+      "status": "ok",
+      "path": "/snowflake/cloud-support",
+      "external_id": "snowflake_cloud-support"
+    },
+    "9e1bbc89-740c-4788-9157-c751b193e1d0": {
+      "status": "ok",
+      "path": "/snowflake/partner-b6",
+      "external_id": "snowflake_partner-b6"
+    },
+    "3d221d20-e975-4f5f-9e26-99f56e7d3c67": {
+      "status": "ok",
+      "path": "/snowflake/technical",
+      "external_id": "snowflake_technical"
+    },
+    "43a6f0dd-f08f-4e70-ae05-5410e05be799": {
+      "status": "ok",
+      "path": "/snowflake/ai-solutions",
+      "external_id": "snowflake_ai-solutions"
+    },
+    "f67642f1-21c8-42a7-926e-15f009b52efd": {
+      "status": "ok",
+      "path": "/zip/enterprise",
+      "external_id": "zip_enterprise"
+    },
+    "99467f39-e235-45d6-b4b2-f111862b21ba": {
+      "status": "ok",
+      "path": "/zip/business-value",
+      "external_id": "zip_business-value"
+    },
+    "8f9887f9-b53c-47fb-bfe3-24780d99203b": {
+      "status": "ok",
+      "path": "/talkiatry/gtm-recruiter",
+      "external_id": "talkiatry_gtm-recruiter"
+    },
+    "848126ac-1ea1-4d9e-9a99-423f915edf23": {
+      "status": "ok",
+      "path": "/talkiatry/ai-engineer",
+      "external_id": "talkiatry_ai-engineer"
+    },
+    "daed466c-cedb-4908-b41d-07a99919526a": {
+      "status": "ok",
+      "path": "/vanta/account-executiv",
+      "external_id": "vanta_account-executiv"
+    },
+    "1d8c8d66-3b7f-4eff-8990-e90cb3ebb1f9": {
+      "status": "ok",
+      "path": "/vanta/gl-accountant",
+      "external_id": "vanta_gl-accountant"
+    },
+    "d30b9ccf-7ea6-4640-ba5d-78470f891264": {
+      "status": "ok",
+      "path": "/vanta/revenue-excellen",
+      "external_id": "vanta_revenue-excellen"
+    },
+    "44b33634-cb89-404f-8ca7-84c34216b434": {
+      "status": "ok",
+      "path": "/vanta/head-design",
+      "external_id": "vanta_head-design"
+    },
+    "3c70445e-aaca-4b9d-98ce-80083102857c": {
+      "status": "ok",
+      "path": "/vanta/software-enginee",
+      "external_id": "vanta_software-enginee"
+    },
+    "fc31932d-5620-4f32-9506-9a4fce72c841": {
+      "status": "ok",
+      "path": "/vanta/fullstack-engine",
+      "external_id": "vanta_fullstack-engine"
+    },
+    "1d377b5a-956b-4b3e-8387-cc44354ebfed": {
+      "status": "ok",
+      "path": "/vanta/analytics-engine",
+      "external_id": "vanta_analytics-engine"
+    },
+    "e337d450-6468-45c5-ac37-d86bdeff90b9": {
+      "status": "ok",
+      "path": "/vanta/executive-busine",
+      "external_id": "vanta_executive-busine"
+    },
+    "35ff86b9-160f-41f5-9344-710ce4fe275e": {
+      "status": "ok",
+      "path": "/vanta/account-95",
+      "external_id": "vanta_account-95"
+    },
+    "d0b9384f-46f5-4284-8dcf-46a9213c7241": {
+      "status": "ok",
+      "path": "/vanta/ai-optimization",
+      "external_id": "vanta_ai-optimization"
+    },
+    "8ddf02a1-b690-4ec9-8d95-50feb2c177cf": {
+      "status": "ok",
+      "path": "/vanta/product-manager",
+      "external_id": "vanta_product-manager"
+    },
+    "1e8aca4e-69e8-46c0-a449-7eabf7304f88": {
+      "status": "ok",
+      "path": "/uipath/sales-engineer",
+      "external_id": "uipath_sales-engineer"
+    },
+    "282d7c0a-a8b4-47ab-85f8-3fed2f7ec13f": {
+      "status": "ok",
+      "path": "/uipath/sales-71",
+      "external_id": "uipath_sales-71"
+    },
+    "b5092e5b-b8ce-42c2-8050-2bd331db9dca": {
+      "status": "ok",
+      "path": "/uipath/strategic",
+      "external_id": "uipath_strategic"
+    },
+    "d1d9a788-5f17-42e5-9f23-35ee56090437": {
+      "status": "ok",
+      "path": "/vanta/customer-success",
+      "external_id": "vanta_customer-success"
+    },
+    "60c181c8-6973-44e6-8df7-914b75d77df0": {
+      "status": "ok",
+      "path": "/uipath/solution-enginee",
+      "external_id": "uipath_solution-enginee"
+    },
+    "761008e5-f063-4d93-bca8-7469f0eb055e": {
+      "status": "ok",
+      "path": "/uipath/partner-business",
+      "external_id": "uipath_partner-business"
+    },
+    "80fbcfdf-b568-4b40-b0d6-99c3dc575972": {
+      "status": "ok",
+      "path": "/uipath/associate-sales",
+      "external_id": "uipath_associate-sales"
+    },
+    "c9ae22b8-fd0b-4dca-8dae-943f226b36ab": {
+      "status": "ok",
+      "path": "/uipath/enterprise",
+      "external_id": "uipath_enterprise"
+    },
+    "4a1dd029-bd1a-4a74-9e1e-6ce714e074b8": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "c965c8a4-4ace-47af-b916-934a2f74d1e1": {
+      "status": "ok",
+      "path": "/wealthsimple/product-manager",
+      "external_id": "wealthsimple_product-manager"
+    },
+    "b3a2db60-e882-4f1c-b69c-391de7e99b69": {
+      "status": "ok",
+      "path": "/wealthsimple/lead-people",
+      "external_id": "wealthsimple_lead-people"
+    },
+    "3e740730-65d6-4fcc-9e3c-4efe781326f4": {
+      "status": "ok",
+      "path": "/wealthsimple/creative-executi",
+      "external_id": "wealthsimple_creative-executi"
+    },
+    "463d588a-4d63-4feb-9a3d-33fa9f855f99": {
+      "status": "ok",
+      "path": "/wealthsimple/lead-94",
+      "external_id": "wealthsimple_lead-94"
+    },
+    "deb0138e-5c0c-46f1-b9ad-f773e803f8ab": {
+      "status": "ok",
+      "path": "/wealthsimple/associate-fraud",
+      "external_id": "wealthsimple_associate-fraud"
+    },
+    "39878b7a-ba50-427d-96ab-2b4d376dca0f": {
+      "status": "ok",
+      "path": "/wealthsimple/marketing",
+      "external_id": "wealthsimple_marketing"
+    },
+    "0d44b399-5c63-41ef-aa13-9cdbc2c0e88f": {
+      "status": "ok",
+      "path": "/wealthsimple/software-develop",
+      "external_id": "wealthsimple_software-develop"
+    },
+    "4da0b02f-fd8e-40f0-a0cf-5f818506cb6f": {
+      "status": "ok",
+      "path": "/wealthsimple/manager-capital",
+      "external_id": "wealthsimple_manager-capital"
+    },
+    "7228fd2c-3aef-41da-a302-e3347b0f873a": {
+      "status": "ok",
+      "path": "/wealthsimple/director",
+      "external_id": "wealthsimple_director"
+    },
+    "4895b31f-5a30-4f05-be95-b452c8a98081": {
+      "status": "ok",
+      "path": "/zeely/product-manager",
+      "external_id": "zeely_product-manager"
+    },
+    "e7903866-d034-4964-87fe-ca701d3c2f9c": {
+      "status": "ok",
+      "path": "/zippymh/bankruptcy",
+      "external_id": "zippymh_bankruptcy"
+    },
+    "fe2ce6ef-7935-42dd-9918-4f51d4c34194": {
+      "status": "ok",
+      "path": "/vynca/site-reliability",
+      "external_id": "vynca_site-reliability"
+    },
+    "0f8b1d6c-0016-4573-b80f-0a26005fe4ba": {
+      "status": "ok",
+      "path": "/zippymh/quality-control",
+      "external_id": "zippymh_quality-control"
+    },
+    "6041669b-6732-4de3-90bf-c34743516569": {
+      "status": "ok",
+      "path": "/vynca/clinical-manager",
+      "external_id": "vynca_clinical-manager"
+    },
+    "0a87c5d4-556b-40ad-ace8-9b8929315d32": {
+      "status": "ok",
+      "path": "/vynca/payroll-tax",
+      "external_id": "vynca_payroll-tax"
+    },
+    "21c514ac-b59b-4824-b355-8b828bfe2b7d": {
+      "status": "ok",
+      "path": "/weave/ml-genai",
+      "external_id": "weave_ml-genai"
+    },
+    "7597b142-96a1-4e97-af43-aaa3e83550b6": {
+      "status": "ok",
+      "path": "/vynca/hr-business",
+      "external_id": "vynca_hr-business"
+    },
+    "9575318a-1fa8-4ac4-be34-d5c088edc16f": {
+      "status": "ok",
+      "path": "/wrapbook/director",
+      "external_id": "wrapbook_director"
+    },
+    "50325fc9-31f3-4505-814e-0ab9d9c0b6c5": {
+      "status": "ok",
+      "path": "/wrapbook/manager-risk",
+      "external_id": "wrapbook_manager-risk"
+    },
+    "6d598d53-a5e2-434d-8194-f6bab124eb91": {
+      "status": "ok",
+      "path": "/wrapbook/mid-market",
+      "external_id": "wrapbook_mid-market"
+    },
+    "1efd048d-98f6-495c-a65c-f7571a985e6b": {
+      "status": "ok",
+      "path": "/wrapbook/systems-business",
+      "external_id": "wrapbook_systems-business"
+    },
+    "ba1d44a0-d93b-41db-ad84-56f23ec9887c": {
+      "status": "ok",
+      "path": "/vetcove/engineering",
+      "external_id": "vetcove_engineering"
+    },
+    "8446a2e5-fbda-4931-ba1c-59f43652d282": {
+      "status": "ok",
+      "path": "/vetcove/purchasing",
+      "external_id": "vetcove_purchasing"
+    },
+    "5f790ed1-ea43-4eb6-be81-24d51068caae": {
+      "status": "ok",
+      "path": "/vetcove/product-operatio",
+      "external_id": "vetcove_product-operatio"
+    },
+    "98fcc6d7-8a07-4228-a526-341b559d4c9a": {
+      "status": "ok",
+      "path": "/skydio/customer-success",
+      "external_id": "skydio_customer-success"
+    },
+    "a09f9a69-d15f-43c1-a42d-a1d1b714dbf2": {
+      "status": "ok",
+      "path": "/vetcove/design-engineer",
+      "external_id": "vetcove_design-engineer"
+    },
+    "b4381ed8-44a3-4821-b458-78b4ea974762": {
+      "status": "ok",
+      "path": "/vetcove/customer-support",
+      "external_id": "vetcove_customer-support"
+    },
+    "4fdd28ca-3002-4de4-8ff3-984085a5a0ba": {
+      "status": "ok",
+      "path": "/vetcove/vet-clinic",
+      "external_id": "vetcove_vet-clinic"
+    },
+    "e1f82643-c0bf-4e77-814d-41126c6960ee": {
+      "status": "ok",
+      "path": "/skydio/technical-suppor",
+      "external_id": "skydio_technical-suppor"
+    },
+    "5032fcd2-0404-4f7f-93e1-2e3d442ce4b3": {
+      "status": "ok",
+      "path": "/skydio/deployment",
+      "external_id": "skydio_deployment"
+    },
+    "79d43d28-5269-474c-a520-13d136de6d24": {
+      "status": "ok",
+      "path": "/skydio/program-manager",
+      "external_id": "skydio_program-manager"
+    },
+    "2ea2c824-8a37-4808-8960-c3a207b0b0ed": {
+      "status": "ok",
+      "path": "/skydio/field-support",
+      "external_id": "skydio_field-support"
+    },
+    "d463cd51-5228-43be-97e9-bed83271ebed": {
+      "status": "ok",
+      "path": "/yendo/backend-engineer",
+      "external_id": "yendo_backend-engineer"
+    },
+    "680221f4-794c-4787-ba2f-09b108ca0d86": {
+      "status": "ok",
+      "path": "/virtuous/field-marketing",
+      "external_id": "virtuous_field-marketing"
+    },
+    "e8e8d7bd-bb40-4bc3-b46f-41f9b4a82e95": {
+      "status": "ok",
+      "path": "/the-global-talent-co/performance",
+      "external_id": "the-global-talent-co_performance"
+    },
+    "dcd19710-7d45-4802-857b-b2cc9cbc9cf5": {
+      "status": "ok",
+      "path": "/skydio/field-1e",
+      "external_id": "skydio_field-1e"
+    },
+    "80588898-b353-41f3-b62f-be6c643b8e86": {
+      "status": "ok",
+      "path": "/withwisdom/it-operations",
+      "external_id": "withwisdom_it-operations"
+    },
+    "bb65c0eb-4105-4837-9b5a-054d4f251ecf": {
+      "status": "ok",
+      "path": "/withwisdom/software-enginee",
+      "external_id": "withwisdom_software-enginee"
+    },
+    "c33b5a0b-2522-4b15-ac25-a29db824b156": {
+      "status": "ok",
+      "path": "/witnessai/technical-accoun",
+      "external_id": "witnessai_technical-accoun"
+    },
+    "7d24ed8e-c5b0-4f2d-ab1a-3e527552bc29": {
+      "status": "ok",
+      "path": "/witnessai/technical-suppor",
+      "external_id": "witnessai_technical-suppor"
+    },
+    "7b741e80-0948-4e1a-ad77-a25a89d8224e": {
+      "status": "ok",
+      "path": "/wealth-com/client-support",
+      "external_id": "wealth-com_client-support"
+    },
+    "169de8ba-d65d-493a-bd7f-b10fff78ded9": {
+      "status": "ok",
+      "path": "/wealth-com/business",
+      "external_id": "wealth-com_business"
+    },
+    "060d628f-ec75-4f77-80d8-5a5b64098350": {
+      "status": "ok",
+      "path": "/perk/business-travel",
+      "external_id": "perk_business-travel"
+    },
+    "309e5c35-9144-416a-bb9b-83c827dcd29b": {
+      "status": "ok",
+      "path": "/worldly/product-manager",
+      "external_id": "worldly_product-manager"
+    },
+    "a01ce768-7658-41ef-94b7-a0938c409627": {
+      "status": "ok",
+      "path": "/virtuous/software-enginee",
+      "external_id": "virtuous_software-enginee"
+    },
+    "d8bfb502-be7c-4de9-b8f0-a4053f82047e": {
+      "status": "ok",
+      "path": "/virtahealth/engineering",
+      "external_id": "virtahealth_engineering"
+    },
+    "c8113803-4734-4482-a4fe-964de0718af4": {
+      "status": "ok",
+      "path": "/virtahealth/associate",
+      "external_id": "virtahealth_associate"
+    },
+    "88a5e5dc-eadf-4dfb-9200-c725064d0155": {
+      "status": "ok",
+      "path": "/virtahealth/director-revenue",
+      "external_id": "virtahealth_director-revenue"
+    },
+    "2cd4f2d4-ec48-43dd-8f05-4257cab94ae6": {
+      "status": "ok",
+      "path": "/whippy/founding-account",
+      "external_id": "whippy_founding-account"
+    },
+    "47710011-2fa7-4570-89c3-fa23f597d267": {
+      "status": "ok",
+      "path": "/viz-ai/clinical-sales",
+      "external_id": "viz-ai_clinical-sales"
+    },
+    "98bd846e-20fd-4354-a41d-0f2e80187485": {
+      "status": "ok",
+      "path": "/virtahealth/regional-vice",
+      "external_id": "virtahealth_regional-vice"
+    },
+    "fcc336a9-0702-49d6-b23a-19eff0f1c8a1": {
+      "status": "ok",
+      "path": "/virtahealth/regional-a0",
+      "external_id": "virtahealth_regional-a0"
+    },
+    "56d0e81f-7976-48f7-b325-8c7258382f81": {
+      "status": "ok",
+      "path": "/viz-ai/sales-developmen",
+      "external_id": "viz-ai_sales-developmen"
+    },
+    "f91006d1-28c7-4f00-ade7-8cb54ede8429": {
+      "status": "ok",
+      "path": "/synthesia/site-reliability",
+      "external_id": "synthesia_site-reliability"
+    },
+    "13b653ae-b3ba-4078-bdce-cf2c5b0b74ef": {
+      "status": "ok",
+      "path": "/viz-ai/hrbp",
+      "external_id": "viz-ai_hrbp"
+    },
+    "6da2592f-1de2-4dc9-8030-83fed1d3f03a": {
+      "status": "ok",
+      "path": "/synthesia/revenue-operatio",
+      "external_id": "synthesia_revenue-operatio"
+    },
+    "116cd94b-67c1-46e9-914c-31db2ae583c0": {
+      "status": "ok",
+      "path": "/upside/strategic-accoun",
+      "external_id": "upside_strategic-accoun"
+    },
+    "e33c1b53-d76a-42f0-a182-17809cae3922": {
+      "status": "ok",
+      "path": "/tilthq/credit-manager",
+      "external_id": "tilthq_credit-manager"
+    },
+    "1011f027-60df-4056-a6c2-b6f53cc05f11": {
+      "status": "ok",
+      "path": "/twelve-labs/gtm-systems",
+      "external_id": "twelve-labs_gtm-systems"
+    },
+    "1ed8255e-2e55-4856-8043-3749b7ad3321": {
+      "status": "ok",
+      "path": "/suno/video-editor",
+      "external_id": "suno_video-editor"
+    },
+    "7f6bb3fd-b727-4fed-8381-3027ea2c1870": {
+      "status": "ok",
+      "path": "/suno/motion-designer",
+      "external_id": "suno_motion-designer"
+    },
+    "8f8efea4-b9c4-475b-b574-c6be2988294f": {
+      "status": "ok",
+      "path": "/tilthq/mobile-engineer",
+      "external_id": "tilthq_mobile-engineer"
+    },
+    "0cb16023-7417-4529-8469-507eeba678de": {
+      "status": "ok",
+      "path": "/tigerdata/engineering",
+      "external_id": "tigerdata_engineering"
+    },
+    "e3c143f0-507e-4030-bfdd-91a8e5bd3e83": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(tigerdata_engineering) a"
+    },
+    "8b026b49-b423-4aa1-b7fa-a078e73bd80c": {
+      "status": "ok",
+      "path": "/supabase/performance",
+      "external_id": "supabase_performance"
+    },
+    "59a1e485-df2e-43b1-aed3-276af17b5401": {
+      "status": "ok",
+      "path": "/vantageanalytics/engineer",
+      "external_id": "vantageanalytics_engineer"
+    },
+    "d215e67a-2459-431f-aa08-8b5eb908908d": {
+      "status": "ok",
+      "path": "/turquoise-health/product-manager",
+      "external_id": "turquoise-health_product-manager"
+    },
+    "98c29385-99ea-4a21-8ff7-ee8d08290650": {
+      "status": "ok",
+      "path": "/turquoise-health/product-f8",
+      "external_id": "turquoise-health_product-f8"
+    },
+    "40649fa3-08fa-4021-80df-c3ec1c9036e8": {
+      "status": "ok",
+      "path": "/supabase/performanc-fe",
+      "external_id": "supabase_performanc-fe"
+    },
+    "8587259d-4164-4db2-823b-06992d4dcdf8": {
+      "status": "ok",
+      "path": "/supabase/commercial",
+      "external_id": "supabase_commercial"
+    },
+    "a3813c46-40d9-455f-9422-598235ce02cc": {
+      "status": "ok",
+      "path": "/supabase/brand-designer",
+      "external_id": "supabase_brand-designer"
+    },
+    "81ce7e30-ecd5-4570-9a61-015567c76140": {
+      "status": "ok",
+      "path": "/supabase/release-engineer",
+      "external_id": "supabase_release-engineer"
+    },
+    "23b7521f-8797-4204-9200-9a71ba390d3f": {
+      "status": "ok",
+      "path": "/supabase/site-reliability",
+      "external_id": "supabase_site-reliability"
+    },
+    "e19dbb41-796b-4d9c-97c0-9e9610fc19b8": {
+      "status": "ok",
+      "path": "/supabase/anti-abuse",
+      "external_id": "supabase_anti-abuse"
+    },
+    "d5311825-8bc2-4e96-8e1c-ce074314c66f": {
+      "status": "ok",
+      "path": "/supabase/security",
+      "external_id": "supabase_security"
+    },
+    "4ccb5d50-f225-47e2-a3d4-10c34e0c8040": {
+      "status": "ok",
+      "path": "/supabase/engineering",
+      "external_id": "supabase_engineering"
+    },
+    "c060bace-6c5f-4625-ac69-9c536aeb7e32": {
+      "status": "ok",
+      "path": "/tensorwave/electrical",
+      "external_id": "tensorwave_electrical"
+    },
+    "b4315459-ecb9-4588-9b8b-f16e274efa78": {
+      "status": "ok",
+      "path": "/tensorwave/devops-engineer",
+      "external_id": "tensorwave_devops-engineer"
+    },
+    "d6c5deb8-faab-4318-9863-87a82a58f903": {
+      "status": "ok",
+      "path": "/tensorwave/solutions-engine",
+      "external_id": "tensorwave_solutions-engine"
+    },
+    "57cbb3ab-2c32-4b84-82db-7e63d5bbe49e": {
+      "status": "ok",
+      "path": "/tensorwave/design-manager",
+      "external_id": "tensorwave_design-manager"
+    },
+    "098c2672-921a-4fbe-8c52-9f24430cf93e": {
+      "status": "ok",
+      "path": "/tensorwave/software-enginee",
+      "external_id": "tensorwave_software-enginee"
+    },
+    "8bcd8f72-f8c6-499d-a74b-4b272a9628bf": {
+      "status": "ok",
+      "path": "/trust-wallet/mobile-engineer",
+      "external_id": "trust-wallet_mobile-engineer"
+    },
+    "89ba9af6-d9eb-452d-90aa-8cbe9a42a325": {
+      "status": "ok",
+      "path": "/trust-wallet/design-engineer",
+      "external_id": "trust-wallet_design-engineer"
+    },
+    "f2511b49-b233-46dd-93b0-421675a35989": {
+      "status": "ok",
+      "path": "/ramp/partner-consulta",
+      "external_id": "ramp_partner-consulta"
+    },
+    "14397631-2e92-4132-bf5d-06ad74a9fdb6": {
+      "status": "ok",
+      "path": "/trust-wallet/join-our",
+      "external_id": "trust-wallet_join-our"
+    },
+    "0f71ec67-e4df-4462-932b-a6ed27ddee50": {
+      "status": "ok",
+      "path": "/trust-wallet/product-manager",
+      "external_id": "trust-wallet_product-manager"
+    },
+    "f0340270-2988-490c-af80-841aad101adb": {
+      "status": "ok",
+      "path": "/traversal/field-events",
+      "external_id": "traversal_field-events"
+    },
+    "f17e1ceb-2e53-4b62-80eb-a0d1f9d9046b": {
+      "status": "ok",
+      "path": "/stepful/chief-nursing",
+      "external_id": "stepful_chief-nursing"
+    },
+    "a89c6bbc-bb3d-4e67-a455-a634dd31aa51": {
+      "status": "ok",
+      "path": "/transfr/revenue-operatio",
+      "external_id": "transfr_revenue-operatio"
+    },
+    "b252ed45-8d92-4d93-84a6-299d99937903": {
+      "status": "ok",
+      "path": "/speak/content",
+      "external_id": "speak_content"
+    },
+    "1362f407-a3fc-4d5f-aa9c-608f3270387a": {
+      "status": "ok",
+      "path": "/speak/content-a0",
+      "external_id": "speak_content-a0"
+    },
+    "b13d4694-7b72-4e44-8985-14d08bd81a5d": {
+      "status": "ok",
+      "path": "/speak/content-70",
+      "external_id": "speak_content-70"
+    },
+    "103f2c1d-6fef-43c8-ac3e-83962ac38606": {
+      "status": "ok",
+      "path": "/span/territory-sales",
+      "external_id": "span_territory-sales"
+    },
+    "c588f8f4-0610-4e5b-9859-5cfe1a09e3cf": {
+      "status": "ok",
+      "path": "/tempo-xyz/product-engineer",
+      "external_id": "tempo-xyz_product-engineer"
+    },
+    "c88a37c6-5ebd-4e7c-aa31-ef89e10ed598": {
+      "status": "ok",
+      "path": "/span/territory-80",
+      "external_id": "span_territory-80"
+    },
+    "d58f2ac2-e033-4962-a237-2362ef9b0a65": {
+      "status": "ok",
+      "path": "/tempo/video-editor",
+      "external_id": "tempo_video-editor"
+    },
+    "84c61249-103a-4c4a-b2f2-173f537f1c9e": {
+      "status": "ok",
+      "path": "/teal-health/director-payer",
+      "external_id": "teal-health_director-payer"
+    },
+    "1148f3c0-19a5-4631-9e9e-ded47d8794e5": {
+      "status": "ok",
+      "path": "/teal-health/director-health",
+      "external_id": "teal-health_director-health"
+    },
+    "18794ecf-d889-4dbc-85d3-cb2bf5e0ff19": {
+      "status": "ok",
+      "path": "/sweedpos-com/backend-engineer",
+      "external_id": "sweedpos-com_backend-engineer"
+    },
+    "47d4588c-1a49-4335-b879-2d7cae8e223e": {
+      "status": "ok",
+      "path": "/tavahealth/lifecycle",
+      "external_id": "tavahealth_lifecycle"
+    },
+    "80cf89ec-da2c-44b7-8d8b-bc791e08ba54": {
+      "status": "ok",
+      "path": "/harvey/law-school",
+      "external_id": "harvey_law-school"
+    },
+    "6a533ec7-fdaf-47ee-b4c1-fb607d1594cf": {
+      "status": "ok",
+      "path": "/silver/trashlab-softwar",
+      "external_id": "silver_trashlab-softwar"
+    },
+    "e396b58d-6677-4532-860c-b3be6334100d": {
+      "status": "ok",
+      "path": "/squads/onboarding",
+      "external_id": "squads_onboarding"
+    },
+    "bc6049c9-b163-466c-8016-c393e223d2f7": {
+      "status": "ok",
+      "path": "/spear-ai/proposal-manager",
+      "external_id": "spear-ai_proposal-manager"
+    },
+    "15441309-a45f-4610-929a-7afb56af446c": {
+      "status": "ok",
+      "path": "/somethings/clinical",
+      "external_id": "somethings_clinical"
+    },
+    "89afe6aa-e240-428f-b112-671221c1d3c7": {
+      "status": "ok",
+      "path": "/stayai/director-finance",
+      "external_id": "stayai_director-finance"
+    },
+    "3e7122f5-4ab1-49b6-ada9-53b1989b1626": {
+      "status": "ok",
+      "path": "/stash/product-manager",
+      "external_id": "stash_product-manager"
+    },
+    "458c691d-c5b9-4b07-b35b-ce0b0ecadc15": {
+      "status": "ok",
+      "path": "/stash/product-99",
+      "external_id": "stash_product-99"
+    },
+    "47c9d44d-17df-4c20-a24e-f222dae5637a": {
+      "status": "ok",
+      "path": "/stash/product-d2",
+      "external_id": "stash_product-d2"
+    },
+    "4f93df50-8997-42e7-a6a1-d23bf06e743b": {
+      "status": "ok",
+      "path": "/somnia/engineering",
+      "external_id": "somnia_engineering"
+    },
+    "e7cb5ce3-fc48-4bc2-bd2c-083ab1f514dd": {
+      "status": "ok",
+      "path": "/stackone/account-executiv",
+      "external_id": "stackone_account-executiv"
+    },
+    "0d9eec8e-e833-4aef-bb02-7d1b2ba6e45e": {
+      "status": "ok",
+      "path": "/snowball/video-editor",
+      "external_id": "snowball_video-editor"
+    },
+    "9d137e81-ba2c-40c1-adf4-fa15c0a0fdd7": {
+      "status": "ok",
+      "path": "/snowball/video-director",
+      "external_id": "snowball_video-director"
+    },
+    "c891fa0c-7647-42e8-b5ee-5a9c561c4e87": {
+      "status": "ok",
+      "path": "/snappy/director-revenue",
+      "external_id": "snappy_director-revenue"
+    },
+    "5114cee8-34b1-4c28-94ca-4212744ca111": {
+      "status": "ok",
+      "path": "/snappy/enterprise",
+      "external_id": "snappy_enterprise"
+    },
+    "b815dd1b-550c-40fe-8a95-c8e3417c755e": {
+      "status": "ok",
+      "path": "/snappy/strategic-csm",
+      "external_id": "snappy_strategic-csm"
+    },
+    "670a47c5-82a3-4eec-b5c1-b63c291c1d5b": {
+      "status": "ok",
+      "path": "/siena/product-speciali",
+      "external_id": "siena_product-speciali"
+    },
+    "e55e0b57-c83c-44ec-a85a-3c315feb268a": {
+      "status": "ok",
+      "path": "/siena/solutions-engine",
+      "external_id": "siena_solutions-engine"
+    },
+    "584c451c-4be4-4744-b13f-18a40816d02a": {
+      "status": "ok",
+      "path": "/smalls/growth-creative",
+      "external_id": "smalls_growth-creative"
+    },
+    "eb31eb8a-9af1-4bcd-8a23-64a233a5b243": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "86765d6e-5ed2-46d8-813d-93612d4592af": {
+      "status": "ok",
+      "path": "/smalls/manager-paid",
+      "external_id": "smalls_manager-paid"
+    },
+    "2c5d3a00-a422-4ddc-a574-f6185a8b807d": {
+      "status": "ok",
+      "path": "/sevenai/account-executiv",
+      "external_id": "sevenai_account-executiv"
+    },
+    "fec8e5b2-9772-4373-82dd-25eea94e55d0": {
+      "status": "ok",
+      "path": "/sibill/technical-suppor",
+      "external_id": "sibill_technical-suppor"
+    },
+    "6c334e9c-d894-4dd5-8092-36b94a46c33d": {
+      "status": "ok",
+      "path": "/rula/software-enginee",
+      "external_id": "rula_software-enginee"
+    },
+    "572e2a94-c605-43c8-b4ef-49673c139b5f": {
+      "status": "ok",
+      "path": "/sanity/sales-manager",
+      "external_id": "sanity_sales-manager"
+    },
+    "170f5cf8-db63-498d-8875-4b401b6bb4d5": {
+      "status": "ok",
+      "path": "/rula/healthcare",
+      "external_id": "rula_healthcare"
+    },
+    "7081343c-9706-4a3c-b997-f08320928343": {
+      "status": "ok",
+      "path": "/rula/software-3a",
+      "external_id": "rula_software-3a"
+    },
+    "00218c6a-e68b-40cc-9c8d-b34aa5657583": {
+      "status": "ok",
+      "path": "/rula/ux-researcher",
+      "external_id": "rula_ux-researcher"
+    },
+    "b39e1a1d-6f86-4431-bd5b-c37b97005bba": {
+      "status": "ok",
+      "path": "/rula/product-manager",
+      "external_id": "rula_product-manager"
+    },
+    "bd5cd80b-d821-494b-b307-4e5165dba9ff": {
+      "status": "ok",
+      "path": "/rula/brand-media",
+      "external_id": "rula_brand-media"
+    },
+    "761a91d9-769f-42c3-9671-6c3f0793e070": {
+      "status": "ok",
+      "path": "/rula/billing-support",
+      "external_id": "rula_billing-support"
+    },
+    "76f2de36-f638-4720-8d20-cc82bcc2c963": {
+      "status": "ok",
+      "path": "/rula/software-8e",
+      "external_id": "rula_software-8e"
+    },
+    "92f7dd97-1f66-48d3-883e-b1da10f70fd7": {
+      "status": "ok",
+      "path": "/scan-com/mri-technologist",
+      "external_id": "scan-com_mri-technologist"
+    },
+    "d6b86780-55e2-4616-9198-18ccb46af651": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(scan-com_mri-technologis"
+    },
+    "93c5c4ae-8070-4a60-a8a5-dd3de896cb56": {
+      "status": "ok",
+      "path": "/rula/revenue",
+      "external_id": "rula_revenue"
+    },
+    "ef48fc19-dc64-4db3-93df-a02ec6a3d208": {
+      "status": "ok",
+      "path": "/rula/legal-counsel",
+      "external_id": "rula_legal-counsel"
+    },
+    "3bbcc5a4-400f-4555-b928-eb8812438905": {
+      "status": "ok",
+      "path": "/rula/software-3f",
+      "external_id": "rula_software-3f"
+    },
+    "8b31413b-d94b-430c-bcc2-df6a3eedb608": {
+      "status": "ok",
+      "path": "/rula/strategy",
+      "external_id": "rula_strategy"
+    },
+    "07e5357a-3164-4269-ac10-58cd1b08a05d": {
+      "status": "ok",
+      "path": "/rula/healthcare-82",
+      "external_id": "rula_healthcare-82"
+    },
+    "d6daa3bf-b03c-4ccf-822e-87505896d879": {
+      "status": "ok",
+      "path": "/render/software-enginee",
+      "external_id": "render_software-enginee"
+    },
+    "c22402a3-3f72-4a52-956d-58d1f0317b78": {
+      "status": "ok",
+      "path": "/render/software-f6",
+      "external_id": "render_software-f6"
+    },
+    "b6f6bba0-9387-4fef-8172-a61c456f9c05": {
+      "status": "ok",
+      "path": "/rula/software-a1",
+      "external_id": "rula_software-a1"
+    },
+    "35d18e56-b971-407d-beff-3bae446cd28a": {
+      "status": "ok",
+      "path": "/polymarket/integration",
+      "external_id": "polymarket_integration"
+    },
+    "8e513dca-76a4-4e4f-a7d8-c18283edf586": {
+      "status": "ok",
+      "path": "/render/software-b4",
+      "external_id": "render_software-b4"
+    },
+    "469aa82f-f87b-45e5-b239-b63fddc9534f": {
+      "status": "ok",
+      "path": "/rowan/manager-critical",
+      "external_id": "rowan_manager-critical"
+    },
+    "717cabe7-03fa-4fa7-80d1-bb53316b6d67": {
+      "status": "ok",
+      "path": "/seconddinner/animator",
+      "external_id": "seconddinner_animator"
+    },
+    "31526b34-10f4-42f3-a057-ffa2b8e25bd4": {
+      "status": "ok",
+      "path": "/rowan/project-manager",
+      "external_id": "rowan_project-manager"
+    },
+    "e8d434d9-1ac4-4a08-897f-7108eb49340b": {
+      "status": "ok",
+      "path": "/polymarket/backend-engineer",
+      "external_id": "polymarket_backend-engineer"
+    },
+    "5708818c-0aa2-4314-960a-6a6151e9bd5b": {
+      "status": "ok",
+      "path": "/safelease/account-executiv",
+      "external_id": "safelease_account-executiv"
+    },
+    "9c3c112c-e482-4c99-b668-3b49c4824952": {
+      "status": "ok",
+      "path": "/resend/technical-accoun",
+      "external_id": "resend_technical-accoun"
+    },
+    "b6957de9-024d-482e-9492-f59dfc23abfd": {
+      "status": "ok",
+      "path": "/rescale/head-fp",
+      "external_id": "rescale_head-fp"
+    },
+    "0e6e76b4-74ba-4a51-94ec-7bc520de8122": {
+      "status": "ok",
+      "path": "/prompt/product-designer",
+      "external_id": "prompt_product-designer"
+    },
+    "51f2f4ea-482f-42e1-8c87-9da8a6d0ed93": {
+      "status": "ok",
+      "path": "/prompt/customer-finance",
+      "external_id": "prompt_customer-finance"
+    },
+    "3cfe4e66-f947-4901-8228-aaefb1e9b790": {
+      "status": "ok",
+      "path": "/prompt/accountant",
+      "external_id": "prompt_accountant"
+    },
+    "ef549124-cb06-4baa-bdab-c0ca7ac67200": {
+      "status": "ok",
+      "path": "/prompt/qa-analyst",
+      "external_id": "prompt_qa-analyst"
+    },
+    "3dda681a-4242-47b9-971e-ae32c096f7b9": {
+      "status": "ok",
+      "path": "/prompt/healthcare",
+      "external_id": "prompt_healthcare"
+    },
+    "82ed195d-4468-4303-89ac-de215b9a1cdb": {
+      "status": "ok",
+      "path": "/prompt/rcm-support",
+      "external_id": "prompt_rcm-support"
+    },
+    "0232c33e-cc7c-4715-887d-eadac1d48998": {
+      "status": "ok",
+      "path": "/owner/talent-sourcer",
+      "external_id": "owner_talent-sourcer"
+    },
+    "c187db58-264f-4245-b8c3-d498fdce2636": {
+      "status": "ok",
+      "path": "/prompt/enterprise",
+      "external_id": "prompt_enterprise"
+    },
+    "db336bbe-56d2-45e8-9d0a-2734359faab1": {
+      "status": "ok",
+      "path": "/owner/head-creator",
+      "external_id": "owner_head-creator"
+    },
+    "b13301d2-8010-4eb5-b765-ab3fe5b4a7aa": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "fe953913-db4a-4978-a674-d1ca00490193": {
+      "status": "ok",
+      "path": "/owner/software-enginee",
+      "external_id": "owner_software-enginee"
+    },
+    "2bb085db-497e-4643-991e-1c4267109f4d": {
+      "status": "ok",
+      "path": "/reka/member-sales",
+      "external_id": "reka_member-sales"
+    },
+    "b01fc94e-8ae7-4a95-be69-8417216bfa39": {
+      "status": "ok",
+      "path": "/red-gate/vp-strategic",
+      "external_id": "red-gate_vp-strategic"
+    },
+    "9be41697-ef13-4b19-8f1d-e72763448b74": {
+      "status": "ok",
+      "path": "/real/business",
+      "external_id": "real_business"
+    },
+    "1374a31f-d5fb-40f9-a8dc-b59713013194": {
+      "status": "ok",
+      "path": "/poolside/member-1a",
+      "external_id": "poolside_member-1a"
+    },
+    "1dc17f17-b92c-4f0f-b7ef-01a832b875ee": {
+      "status": "ok",
+      "path": "/poolside/member-d2",
+      "external_id": "poolside_member-d2"
+    },
+    "f069d3e4-8421-4387-b7cc-a690bd211987": {
+      "status": "ok",
+      "path": "/ready/technical-produc",
+      "external_id": "ready_technical-produc"
+    },
+    "62642a91-7c74-477a-921b-3e25b81a1833": {
+      "status": "ok",
+      "path": "/procurify/frontend-enginee",
+      "external_id": "procurify_frontend-enginee"
+    },
+    "6f77557e-e238-41a4-9627-47038cb66e9f": {
+      "status": "ok",
+      "path": "/procurify/manager-accounti",
+      "external_id": "procurify_manager-accounti"
+    },
+    "b48fe2b4-b69f-4daf-94b2-487fb2443bd3": {
+      "status": "ok",
+      "path": "/quora/ai-financial",
+      "external_id": "quora_ai-financial"
+    },
+    "927308fb-5acc-43c9-8654-7f5f1cb13da4": {
+      "status": "ok",
+      "path": "/quora/infrastructure",
+      "external_id": "quora_infrastructure"
+    },
+    "cb71f595-36f2-488a-b880-72465fb884ab": {
+      "status": "ok",
+      "path": "/primer/strategic-financ",
+      "external_id": "primer_strategic-financ"
+    },
+    "2ea9da95-369a-4f68-ba9e-087e92de2689": {
+      "status": "ok",
+      "path": "/posthog/context-engineer",
+      "external_id": "posthog_context-engineer"
+    },
+    "b14b1351-e27d-4314-836d-5805ed1c8590": {
+      "status": "ok",
+      "path": "/posthog/bizops-manager",
+      "external_id": "posthog_bizops-manager"
+    },
+    "5de63523-e82f-4ffd-bd1c-aa951516b82e": {
+      "status": "ok",
+      "path": "/posthog/technical-custom",
+      "external_id": "posthog_technical-custom"
+    },
+    "b388ba09-7f61-4e07-8a52-073db47b1f25": {
+      "status": "ok",
+      "path": "/primer/general-manager",
+      "external_id": "primer_general-manager"
+    },
+    "066c408c-3715-4168-9525-015427649d74": {
+      "status": "ok",
+      "path": "/playson/account-manager",
+      "external_id": "playson_account-manager"
+    },
+    "0c2a0c57-c787-4854-bb57-4b1dc74ea305": {
+      "status": "ok",
+      "path": "/provable/data-platform",
+      "external_id": "provable_data-platform"
+    },
+    "bc7770e6-e109-4979-b649-1e5341829329": {
+      "status": "ok",
+      "path": "/phil/partner-support",
+      "external_id": "phil_partner-support"
+    },
+    "051f0744-e641-4a84-95c2-57b34e656d57": {
+      "status": "ok",
+      "path": "/provable/protocol-enginee",
+      "external_id": "provable_protocol-enginee"
+    },
+    "0a5cd81f-ed46-4bf1-9381-23d9f159fb59": {
+      "status": "ok",
+      "path": "/phil/head-product",
+      "external_id": "phil_head-product"
+    },
+    "a12403d2-8d8c-4730-9980-177d947a80b7": {
+      "status": "ok",
+      "path": "/pmmalliance/marketing",
+      "external_id": "pmmalliance_marketing"
+    },
+    "a834338d-4afe-4482-bcb8-ea3e5db53bfa": {
+      "status": "ok",
+      "path": "/phil/director-quality",
+      "external_id": "phil_director-quality"
+    },
+    "e34a3f6e-947f-4fd0-86db-8997c701b0f1": {
+      "status": "ok",
+      "path": "/phantom/payroll-analyst",
+      "external_id": "phantom_payroll-analyst"
+    },
+    "71758967-f166-4ced-bc13-29b0fb142ce8": {
+      "status": "ok",
+      "path": "/phantom/software-enginee",
+      "external_id": "phantom_software-enginee"
+    },
+    "0a52fbd8-bb9b-46dd-9c08-25f001b85d58": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "00abe598-e631-46bc-a1c8-4b356adf5509": {
+      "status": "ok",
+      "path": "/pod-network/site-reliability",
+      "external_id": "pod-network_site-reliability"
+    },
+    "081b136c-ea62-4188-a84b-ad6f1c68f03d": {
+      "status": "ok",
+      "path": "/posh-ai/security",
+      "external_id": "posh-ai_security"
+    },
+    "bd661711-9d2f-43b3-aa36-f6e16473f8ca": {
+      "status": "ok",
+      "path": "/payabli/data-engineer",
+      "external_id": "payabli_data-engineer"
+    },
+    "13ce5cb1-0de8-4de5-b5d4-66730a6617fb": {
+      "status": "ok",
+      "path": "/onhires/fullstack-engine",
+      "external_id": "onhires_fullstack-engine"
+    },
+    "ba727010-480f-426d-9aea-1f9895da6904": {
+      "status": "ok",
+      "path": "/n8n/engineering",
+      "external_id": "n8n_engineering"
+    },
+    "30b8d539-87b9-448e-a45c-5f449e380901": {
+      "status": "ok",
+      "path": "/onhires/private-pa",
+      "external_id": "onhires_private-pa"
+    },
+    "bcdd68bd-ef43-4637-a52b-0f3765870435": {
+      "status": "ok",
+      "path": "/pano-ai/technical-progra",
+      "external_id": "pano-ai_technical-progra"
+    },
+    "315bccb9-05b3-4981-97c9-7042d811b74e": {
+      "status": "ok",
+      "path": "/pano-ai/strategic-accoun",
+      "external_id": "pano-ai_strategic-accoun"
+    },
+    "683822ee-315a-4fa6-9ff3-dc7bc52013f3": {
+      "status": "ok",
+      "path": "/n8n/director",
+      "external_id": "n8n_director"
+    },
+    "4fff12c0-2d72-4baf-9ac4-df2db57df6c6": {
+      "status": "ok",
+      "path": "/peek/mid-market",
+      "external_id": "peek_mid-market"
+    },
+    "5821a65d-51e8-425f-9a5c-f0665a7cb4e3": {
+      "status": "ok",
+      "path": "/onebrief/program-architec",
+      "external_id": "onebrief_program-architec"
+    },
+    "99364b2b-3a4a-4b9e-9f7f-240ec87fb427": {
+      "status": "ok",
+      "path": "/onebrief/software",
+      "external_id": "onebrief_software"
+    },
+    "de0dcbe9-df77-449a-a4d7-cdae92b55f34": {
+      "status": "ok",
+      "path": "/noda-ai/account-executiv",
+      "external_id": "noda-ai_account-executiv"
+    },
+    "cd092295-ba14-4c5a-8d36-1f6934f5c9b4": {
+      "status": "ok",
+      "path": "/p2p-org/engineer-syncro",
+      "external_id": "p2p-org_engineer-syncro"
+    },
+    "420ec236-0f83-44f4-830c-d8f517f57b21": {
+      "status": "ok",
+      "path": "/oxio/mobile-core",
+      "external_id": "oxio_mobile-core"
+    },
+    "0819b8a6-b9ce-4482-920a-053fafb99789": {
+      "status": "ok",
+      "path": "/oxio/hlr-hss-udm",
+      "external_id": "oxio_hlr-hss-udm"
+    },
+    "93a479b9-33d7-47d4-a9c9-9b96495010d7": {
+      "status": "ok",
+      "path": "/oxio/ims-core",
+      "external_id": "oxio_ims-core"
+    },
+    "67885d4f-6267-4038-8f13-082fc8467c64": {
+      "status": "ok",
+      "path": "/oxio/mobile-telecom",
+      "external_id": "oxio_mobile-telecom"
+    },
+    "1dd6843c-218d-47cc-b58d-7dcaa7309989": {
+      "status": "ok",
+      "path": "/oxio/telecom",
+      "external_id": "oxio_telecom"
+    },
+    "033e38c4-588d-4bd4-8936-9e5eb5e5d908": {
+      "status": "ok",
+      "path": "/parity/core-developer",
+      "external_id": "parity_core-developer"
+    },
+    "482b95ff-03ff-4671-a2bd-9990ad16fcea": {
+      "status": "ok",
+      "path": "/oxio/data-engineer",
+      "external_id": "oxio_data-engineer"
+    },
+    "74214b87-7658-4a97-8e6b-010461dc1038": {
+      "status": "ok",
+      "path": "/parity/sre-manager",
+      "external_id": "parity_sre-manager"
+    },
+    "ca6e1ae0-592f-4302-810a-ec6012641171": {
+      "status": "ok",
+      "path": "/overflow/data-engineer",
+      "external_id": "overflow_data-engineer"
+    },
+    "28cc6f79-8683-4422-adbd-2e3b03395dcb": {
+      "status": "ok",
+      "path": "/oneapp/fraud-strategy",
+      "external_id": "oneapp_fraud-strategy"
+    },
+    "5e1a5dc6-028c-4dbc-9cbb-6cd53d23d23e": {
+      "status": "ok",
+      "path": "/oneapp/creative",
+      "external_id": "oneapp_creative"
+    },
+    "338cc3eb-16e6-4eb0-b151-b08c329d1cc3": {
+      "status": "ok",
+      "path": "/oneapp/software-enginee",
+      "external_id": "oneapp_software-enginee"
+    },
+    "c73a66dd-c2c4-4b43-9292-8fb1f3945d8f": {
+      "status": "ok",
+      "path": "/opusclip/account-executiv",
+      "external_id": "opusclip_account-executiv"
+    },
+    "21bc8c6a-79c2-424e-8630-19838867acbb": {
+      "status": "ok",
+      "path": "/omniscient/recruiter",
+      "external_id": "omniscient_recruiter"
+    },
+    "f1bc12d9-2a3f-4bf0-b9b4-c3fbf9354e50": {
+      "status": "ok",
+      "path": "/openrouter/business",
+      "external_id": "openrouter_business"
+    },
+    "41d1124a-70e3-45ea-8214-a9c7614c69c3": {
+      "status": "ok",
+      "path": "/optimum/data-scientist",
+      "external_id": "optimum_data-scientist"
+    },
+    "4e3cdd4d-900f-48df-8556-0c337a158fd7": {
+      "status": "ok",
+      "path": "/omni/regional-directo",
+      "external_id": "omni_regional-directo"
+    },
+    "ac01ea62-38b2-411a-a669-5feba15db32d": {
+      "status": "ok",
+      "path": "/office-hours/account-executiv",
+      "external_id": "office-hours_account-executiv"
+    },
+    "52ff0edf-24a6-4722-bac8-066f28e4c080": {
+      "status": "ok",
+      "path": "/nest-health/analytics-engine",
+      "external_id": "nest-health_analytics-engine"
+    },
+    "a6ddd3cc-364e-47b0-8522-97bd52cfdbc0": {
+      "status": "ok",
+      "path": "/horizon3ai/alliances",
+      "external_id": "horizon3ai_alliances"
+    },
+    "7679795f-c8c1-4ece-9d00-f664d9da135c": {
+      "status": "ok",
+      "path": "/horizon3ai/revenue-operatio",
+      "external_id": "horizon3ai_revenue-operatio"
+    },
+    "914fa6ec-7e7a-44c1-a058-80b271265b03": {
+      "status": "ok",
+      "path": "/horizon3ai/software-enginee",
+      "external_id": "horizon3ai_software-enginee"
+    },
+    "bffabb30-e865-4c58-812b-1a1297ceb3e2": {
+      "status": "ok",
+      "path": "/horizon3ai/software-a0",
+      "external_id": "horizon3ai_software-a0"
+    },
+    "dfefdebc-89ab-4e6d-80ca-bc0b028dcdce": {
+      "status": "ok",
+      "path": "/horizon3ai/product-marketin",
+      "external_id": "horizon3ai_product-marketin"
+    },
+    "c21fd404-231a-4c9c-8251-4e1d645571ab": {
+      "status": "ok",
+      "path": "/mudflap/settlement",
+      "external_id": "mudflap_settlement"
+    },
+    "50481cc8-84ae-43a6-868c-4b6aae393522": {
+      "status": "ok",
+      "path": "/langchain/system-integrato",
+      "external_id": "langchain_system-integrato"
+    },
+    "ab21ff6c-5b1d-4b1a-bd74-7017640a4412": {
+      "status": "ok",
+      "path": "/miro/head-americas",
+      "external_id": "miro_head-americas"
+    },
+    "8248aeb5-cfb9-4203-a6c5-068b6d749209": {
+      "status": "ok",
+      "path": "/netboxlabs/solutions-engine",
+      "external_id": "netboxlabs_solutions-engine"
+    },
+    "9a8e6e0c-765f-4c82-a6f8-924311537dac": {
+      "status": "ok",
+      "path": "/lendable/php-engineer",
+      "external_id": "lendable_php-engineer"
+    },
+    "fd5f939f-d382-403e-80be-37f02d03889e": {
+      "status": "ok",
+      "path": "/elevenlabs/account-executiv",
+      "external_id": "elevenlabs_account-executiv"
+    },
+    "24ab3053-94fb-4394-b377-def27ce61b1d": {
+      "status": "ok",
+      "path": "/hims-and-hers/business-sourcer",
+      "external_id": "hims-and-hers_business-sourcer"
+    },
+    "d1eae674-5f58-4c3d-867c-d03577b16ff1": {
+      "status": "ok",
+      "path": "/hims-and-hers/technical-source",
+      "external_id": "hims-and-hers_technical-source"
+    },
+    "1d0acb69-cca8-4435-84e2-0e16f0898174": {
+      "status": "ok",
+      "path": "/hims-and-hers/financial-analys",
+      "external_id": "hims-and-hers_financial-analys"
+    },
+    "db2e06a7-a7f9-4f81-9918-c0bbb271f680": {
+      "status": "ok",
+      "path": "/hims-and-hers/lead-product",
+      "external_id": "hims-and-hers_lead-product"
+    },
+    "6f97bb5a-32ac-4b34-9458-cfb1bea30731": {
+      "status": "ok",
+      "path": "/hims-and-hers/producer",
+      "external_id": "hims-and-hers_producer"
+    },
+    "faaf9473-c5a6-4763-9d71-b6b657ca3a06": {
+      "status": "ok",
+      "path": "/hims-and-hers/financial-c6",
+      "external_id": "hims-and-hers_financial-c6"
+    },
+    "e37d5646-c168-45f2-b5f6-a85ca723fd21": {
+      "status": "ok",
+      "path": "/hims-and-hers/manager-legal",
+      "external_id": "hims-and-hers_manager-legal"
+    },
+    "6f6e5db1-af01-4dc4-bc68-f77a11a3887b": {
+      "status": "ok",
+      "path": "/hims-and-hers/product-designer",
+      "external_id": "hims-and-hers_product-designer"
+    },
+    "559884f9-ad2e-41f3-a932-b54e0b373d91": {
+      "status": "ok",
+      "path": "/hims-and-hers/director",
+      "external_id": "hims-and-hers_director"
+    },
+    "ea72ac6a-eae7-4d3f-921a-49b2d20d6251": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "c1a3a1a3-57cb-4552-be5c-2e236de63093": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "76010fc3-6fbf-43d3-81aa-78eea9e27c94": {
+      "status": "ok",
+      "path": "/hims-and-hers/vp-engineering",
+      "external_id": "hims-and-hers_vp-engineering"
+    },
+    "1cc2d01e-0cf5-4206-8431-7803cd92a7ae": {
+      "status": "ok",
+      "path": "/hims-and-hers/platform-enginee",
+      "external_id": "hims-and-hers_platform-enginee"
+    },
+    "565877f2-64ca-4fd5-a71b-c5b7f758afbc": {
+      "status": "ok",
+      "path": "/hims-and-hers/software-enginee",
+      "external_id": "hims-and-hers_software-enginee"
+    },
+    "e0a61f98-7c62-490c-9f0e-791ebee87025": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "de8b7238-49d4-429d-aa81-1e864e5aed64": {
+      "status": "ok",
+      "path": "/mural/product-manager",
+      "external_id": "mural_product-manager"
+    },
+    "800d5c07-f5ce-48ec-8ad8-959984393243": {
+      "status": "ok",
+      "path": "/meridianlink/platform-enginee",
+      "external_id": "meridianlink_platform-enginee"
+    },
+    "9ba62d2f-927d-41ed-b56a-8fc751d8b0bf": {
+      "status": "ok",
+      "path": "/meridianlink/data-engineer",
+      "external_id": "meridianlink_data-engineer"
+    },
+    "51d92bcf-68bf-443f-830c-849203f883bc": {
+      "status": "ok",
+      "path": "/mux/platform-enginee",
+      "external_id": "mux_platform-enginee"
+    },
+    "7672f38a-ef94-4a48-9eed-39136a99bde0": {
+      "status": "ok",
+      "path": "/meridianlink/software-enginee",
+      "external_id": "meridianlink_software-enginee"
+    },
+    "aecd8a5f-c4ab-457a-a0c7-2797d00ef300": {
+      "status": "ok",
+      "path": "/lambda/data-center",
+      "external_id": "lambda_data-center"
+    },
+    "20f3dd26-c3c4-4c56-8fef-cd4191fc85de": {
+      "status": "ok",
+      "path": "/lambda/ai-infrastructur",
+      "external_id": "lambda_ai-infrastructur"
+    },
+    "ddc4e918-87ad-4291-98c6-02d2377955c8": {
+      "status": "ok",
+      "path": "/montecarlodata/ai-marketing",
+      "external_id": "montecarlodata_ai-marketing"
+    },
+    "9e5acf51-2ca4-4f59-badf-f6794dea76bb": {
+      "status": "ok",
+      "path": "/montecarlodata/pre-sales",
+      "external_id": "montecarlodata_pre-sales"
+    },
+    "d9454ff6-ca9f-4563-b694-1987bf0d69de": {
+      "status": "ok",
+      "path": "/mintlify/support-engineer",
+      "external_id": "mintlify_support-engineer"
+    },
+    "0f8eab14-b99a-4b4b-85a4-a581e1c0e413": {
+      "status": "ok",
+      "path": "/mobbin-com/app-capture",
+      "external_id": "mobbin-com_app-capture"
+    },
+    "3c43cb20-755e-4fb3-8431-49c93bbea4f3": {
+      "status": "ok",
+      "path": "/maximustribe/lifecycle",
+      "external_id": "maximustribe_lifecycle"
+    },
+    "7d7e5b1a-c85a-4768-ac1a-e9ddff56659c": {
+      "status": "ok",
+      "path": "/mazehq/machine-learning",
+      "external_id": "mazehq_machine-learning"
+    },
+    "7840b007-20a3-4897-869e-4e78bedb37d5": {
+      "status": "ok",
+      "path": "/merge/accountant",
+      "external_id": "merge_accountant"
+    },
+    "5f3d6d05-f456-4b18-bf01-1e7b18df4a45": {
+      "status": "ok",
+      "path": "/livekit/gtm-systems",
+      "external_id": "livekit_gtm-systems"
+    },
+    "d91603e5-c593-45d1-8b1f-9aa5b384edef": {
+      "status": "ok",
+      "path": "/livekit/head-legal",
+      "external_id": "livekit_head-legal"
+    },
+    "fbf9ce61-9a81-4c74-a168-330e7687e1c1": {
+      "status": "ok",
+      "path": "/handshake/trust-safety",
+      "external_id": "handshake_trust-safety"
+    },
+    "309f3fb2-712e-4b01-b7b3-84e70bdb2675": {
+      "status": "ok",
+      "path": "/mainstay/controller",
+      "external_id": "mainstay_controller"
+    },
+    "62701d75-975d-42aa-a709-deabe458e59c": {
+      "status": "ok",
+      "path": "/macroscopic/future",
+      "external_id": "macroscopic_future"
+    },
+    "b5922285-954f-414a-bb98-fa5bcaba828e": {
+      "status": "ok",
+      "path": "/legionhealth/virtual-executiv",
+      "external_id": "legionhealth_virtual-executiv"
+    },
+    "4c2adb44-80eb-4392-89a6-a8a8f0d639bc": {
+      "status": "ok",
+      "path": "/instructure/vp-bizgov",
+      "external_id": "instructure_vp-bizgov"
+    },
+    "01e8f305-7bb4-4f20-8ce5-85f4b0814218": {
+      "status": "ok",
+      "path": "/instructure/svp-marketing",
+      "external_id": "instructure_svp-marketing"
+    },
+    "8ecd64c9-bef8-4b85-830f-79a94abeec4c": {
+      "status": "ok",
+      "path": "/instructure/product-manager",
+      "external_id": "instructure_product-manager"
+    },
+    "fe522955-d472-4471-8204-ed65e8c638d4": {
+      "status": "ok",
+      "path": "/instructure/sector-vp-k",
+      "external_id": "instructure_sector-vp-k"
+    },
+    "5685765c-16c5-48db-a98e-b6e7f18ff0be": {
+      "status": "ok",
+      "path": "/instructure/graphic-designer",
+      "external_id": "instructure_graphic-designer"
+    },
+    "3b4aa2c1-a1b7-455e-b24b-b60c05c5345a": {
+      "status": "ok",
+      "path": "/instructure/web-producer",
+      "external_id": "instructure_web-producer"
+    },
+    "8d1288d1-fd9e-4114-965e-bacb5ec7c82e": {
+      "status": "ok",
+      "path": "/luminary/product-lead",
+      "external_id": "luminary_product-lead"
+    },
+    "17239e54-2413-4e92-8af1-70b1d3f45ee9": {
+      "status": "ok",
+      "path": "/loot-labs/head-finance",
+      "external_id": "loot-labs_head-finance"
+    },
+    "2a6439d6-cd6c-44e1-8d47-4876de11781c": {
+      "status": "ok",
+      "path": "/loot-labs/product-manager",
+      "external_id": "loot-labs_product-manager"
+    },
+    "7a4a4344-e9e5-4e9f-b04e-8fd32657843b": {
+      "status": "ok",
+      "path": "/loot-labs/product-12",
+      "external_id": "loot-labs_product-12"
+    },
+    "be8376d0-3fe0-4046-b99a-9e115e146b62": {
+      "status": "ok",
+      "path": "/kin/insurance-produc",
+      "external_id": "kin_insurance-produc"
+    },
+    "06f046a4-4449-4a26-8dfc-d66e6ab58446": {
+      "status": "ok",
+      "path": "/kin/director-state",
+      "external_id": "kin_director-state"
+    },
+    "9ce88a94-1ca6-43d0-ac9f-74975832198f": {
+      "status": "ok",
+      "path": "/limble/financial-analys",
+      "external_id": "limble_financial-analys"
+    },
+    "abb5a781-0c9d-451d-9509-7411f7cbc2e6": {
+      "status": "ok",
+      "path": "/kin/product-designer",
+      "external_id": "kin_product-designer"
+    },
+    "deb18583-6374-4ca1-8e38-871b412ca487": {
+      "status": "ok",
+      "path": "/kin/director-product",
+      "external_id": "kin_director-product"
+    },
+    "aee65f15-465d-4ddc-8c08-1d8b6c9ca5cb": {
+      "status": "ok",
+      "path": "/kin/analytics-engine",
+      "external_id": "kin_analytics-engine"
+    },
+    "e4e8377f-582a-472d-8043-06d3587e4be1": {
+      "status": "ok",
+      "path": "/kin/insurance-sales",
+      "external_id": "kin_insurance-sales"
+    },
+    "b3d11361-3b6e-4090-a04c-8894d02626f1": {
+      "status": "ok",
+      "path": "/kin/growth-marketing",
+      "external_id": "kin_growth-marketing"
+    },
+    "04769c59-4cdb-4f9d-ad7f-34fb1c6a61f4": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1bf25288-3692-487f-ae18-a3c1778ce3d0": {
+      "status": "ok",
+      "path": "/hopper/manager-global",
+      "external_id": "hopper_manager-global"
+    },
+    "c2110535-3dc6-4829-939c-604c0febd6a5": {
+      "status": "ok",
+      "path": "/hopper/product-manager",
+      "external_id": "hopper_product-manager"
+    },
+    "94a76d48-97ea-49ea-9142-dc1213ea7cda": {
+      "status": "ok",
+      "path": "/hopper/lead-finance",
+      "external_id": "hopper_lead-finance"
+    },
+    "4f20ad3c-b858-40af-9ce2-6e4396ba46e7": {
+      "status": "ok",
+      "path": "/leap/technical",
+      "external_id": "leap_technical"
+    },
+    "27277848-44ae-4df9-bfcf-52e15c212c26": {
+      "status": "ok",
+      "path": "/leap/director-member",
+      "external_id": "leap_director-member"
+    },
+    "5340cac8-1b64-4e92-a18e-83779f9da05e": {
+      "status": "ok",
+      "path": "/leap/head-engineering",
+      "external_id": "leap_head-engineering"
+    },
+    "342bdc37-5949-42c1-86e5-5f6cb9925b1c": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "96c8b38b-5e9d-4fda-be9e-fc4efc85df80": {
+      "status": "ok",
+      "path": "/leap/member-intake",
+      "external_id": "leap_member-intake"
+    },
+    "836c25e4-dd30-45f3-94e0-edaa7d78c5cf": {
+      "status": "ok",
+      "path": "/leantechniques/java-engineer",
+      "external_id": "leantechniques_java-engineer"
+    },
+    "e1090eae-5389-421e-b940-700a44fa7cad": {
+      "status": "ok",
+      "path": "/illumio/escalation",
+      "external_id": "illumio_escalation"
+    },
+    "2b841c40-4bf9-4e2f-a0d5-16c110ea0367": {
+      "status": "ok",
+      "path": "/kalshi/state-regional",
+      "external_id": "kalshi_state-regional"
+    },
+    "5d394537-d8f1-4c00-bf41-132fcb6ca0fa": {
+      "status": "ok",
+      "path": "/kueski/data-engineer",
+      "external_id": "kueski_data-engineer"
+    },
+    "d2c44df4-2aba-4e76-814e-29d018f384b4": {
+      "status": "ok",
+      "path": "/imprint/data-scientist",
+      "external_id": "imprint_data-scientist"
+    },
+    "6fb9c9ef-300b-4c7f-9095-ac224549840d": {
+      "status": "ok",
+      "path": "/kindred/head-product",
+      "external_id": "kindred_head-product"
+    },
+    "327a191d-00e3-4d83-807b-79cc0cf142d3": {
+      "status": "ok",
+      "path": "/imprint/head-risk",
+      "external_id": "imprint_head-risk"
+    },
+    "308d5ee3-bf45-42b0-9a91-833a8a8b1166": {
+      "status": "ok",
+      "path": "/interrahealth/data-engineer",
+      "external_id": "interrahealth_data-engineer"
+    },
+    "00121d86-f0db-4629-96d5-0f59bb085e06": {
+      "status": "ok",
+      "path": "/intellistack/software-enginee",
+      "external_id": "intellistack_software-enginee"
+    },
+    "5d3d62f7-378e-41b5-a631-270619a0d869": {
+      "status": "ok",
+      "path": "/joinbetter/member-care",
+      "external_id": "joinbetter_member-care"
+    },
+    "3730a607-5ee2-4a1d-8e8b-2c44c940b341": {
+      "status": "ok",
+      "path": "/jellyfish/analytics-engine",
+      "external_id": "jellyfish_analytics-engine"
+    },
+    "62659f28-a216-41a6-a2c1-988bd921ca8e": {
+      "status": "ok",
+      "path": "/hyperhug/3d-artist",
+      "external_id": "hyperhug_3d-artist"
+    },
+    "a147bef1-5c55-40eb-bd6e-48b73cafea97": {
+      "status": "ok",
+      "path": "/hyperhug/support-agent",
+      "external_id": "hyperhug_support-agent"
+    },
+    "4e4fa9cc-37be-4f14-998d-ec02a0ce5886": {
+      "status": "ok",
+      "path": "/hyperhug/3d-environment",
+      "external_id": "hyperhug_3d-environment"
+    },
+    "890c182c-82de-43f6-999a-12bf6adb44fa": {
+      "status": "ok",
+      "path": "/etched/security-enginee",
+      "external_id": "etched_security-enginee"
+    },
+    "0a201928-d51b-40ab-bf6e-774a732497f3": {
+      "status": "ok",
+      "path": "/higharc/vdc-implementati",
+      "external_id": "higharc_vdc-implementati"
+    },
+    "2959fa63-b6be-4488-afd1-e7bea96f88da": {
+      "status": "ok",
+      "path": "/higharc/residential",
+      "external_id": "higharc_residential"
+    },
+    "beec599f-2be1-466e-aecf-3b53792edff5": {
+      "status": "ok",
+      "path": "/higharc/associate",
+      "external_id": "higharc_associate"
+    },
+    "23b0ce7b-f7a0-435d-ae4b-6497ff848584": {
+      "status": "ok",
+      "path": "/hellobrightline/licensing",
+      "external_id": "hellobrightline_licensing"
+    },
+    "4911b8e4-485d-41d3-8065-e486e7bf5a40": {
+      "status": "ok",
+      "path": "/hellobrightline/member-support",
+      "external_id": "hellobrightline_member-support"
+    },
+    "dd871ed4-9ca5-4c49-af14-46065d839d5a": {
+      "status": "ok",
+      "path": "/hellobrightline/insurance-coding",
+      "external_id": "hellobrightline_insurance-coding"
+    },
+    "b51bae92-84e8-453b-b694-fab53fe37d4a": {
+      "status": "ok",
+      "path": "/hellobrightline/executive",
+      "external_id": "hellobrightline_executive"
+    },
+    "f62517ac-1510-42bb-b367-7540a52fe1eb": {
+      "status": "ok",
+      "path": "/higharc/software-enginee",
+      "external_id": "higharc_software-enginee"
+    },
+    "7505179c-3476-485f-93a6-e45d7df1c717": {
+      "status": "ok",
+      "path": "/finni-health/head-payor",
+      "external_id": "finni-health_head-payor"
+    },
+    "39f1f6ee-fffc-469c-bc47-748a536321aa": {
+      "status": "ok",
+      "path": "/helpscout/lead-product",
+      "external_id": "helpscout_lead-product"
+    },
+    "e0c6dc10-baf1-4e08-8184-01ce74f5703d": {
+      "status": "ok",
+      "path": "/hive-co/head-product",
+      "external_id": "hive-co_head-product"
+    },
+    "1d560edb-b07e-4c68-ae7d-c56beb1a539b": {
+      "status": "ok",
+      "path": "/hawk/account-director",
+      "external_id": "hawk_account-director"
+    },
+    "6d02faac-420f-4013-9efc-6c5699cf38be": {
+      "status": "ok",
+      "path": "/honeydew/medical-director",
+      "external_id": "honeydew_medical-director"
+    },
+    "7cf65b05-9cc2-4bd1-8adf-30d013d1f3f5": {
+      "status": "ok",
+      "path": "/everai/security-enginee",
+      "external_id": "everai_security-enginee"
+    },
+    "3eff673c-8581-4235-b6e4-323d450f9380": {
+      "status": "ok",
+      "path": "/everai/security-e9",
+      "external_id": "everai_security-e9"
+    },
+    "ea872c18-8b3a-4db8-8d5b-a290c3c344e8": {
+      "status": "ok",
+      "path": "/everai/security-e6",
+      "external_id": "everai_security-e6"
+    },
+    "72a716e2-70bf-4567-85a9-689e32d2de5a": {
+      "status": "ok",
+      "path": "/everai/security-9a",
+      "external_id": "everai_security-9a"
+    },
+    "11745ae7-c776-453d-89b1-31a15c51c348": {
+      "status": "ok",
+      "path": "/everai/security-75",
+      "external_id": "everai_security-75"
+    },
+    "02270009-49f3-480d-a79f-2408ba38bc2c": {
+      "status": "ok",
+      "path": "/everai/security-be",
+      "external_id": "everai_security-be"
+    },
+    "008dc376-89ee-4412-830b-0c9ce8308f3b": {
+      "status": "ok",
+      "path": "/everai/security-5c",
+      "external_id": "everai_security-5c"
+    },
+    "c6e60345-d018-42f7-ab82-2d9bf3d9c223": {
+      "status": "ok",
+      "path": "/everai/security-58",
+      "external_id": "everai_security-58"
+    },
+    "bf5d7c2b-c364-40b8-b8b9-d7e08281e024": {
+      "status": "ok",
+      "path": "/everai/security-51",
+      "external_id": "everai_security-51"
+    },
+    "7e67b521-44fd-4f1c-abc6-3d1c2d83d0d7": {
+      "status": "ok",
+      "path": "/everai/security-db",
+      "external_id": "everai_security-db"
+    },
+    "6bb16794-09d7-45f5-9ab4-4d3289e296fb": {
+      "status": "ok",
+      "path": "/everai/security-9b",
+      "external_id": "everai_security-9b"
+    },
+    "2cd4bf24-0dde-4afa-9bae-faf130a94329": {
+      "status": "ok",
+      "path": "/everai/security-c8",
+      "external_id": "everai_security-c8"
+    },
+    "90840c2e-8b96-4977-923d-5676eb46c6ec": {
+      "status": "ok",
+      "path": "/everai/security-9f",
+      "external_id": "everai_security-9f"
+    },
+    "4a77a8c4-9b0e-471b-917d-f0b82229e6bf": {
+      "status": "ok",
+      "path": "/everai/security-df",
+      "external_id": "everai_security-df"
+    },
+    "05f953a1-fe97-4187-9495-096776989b26": {
+      "status": "ok",
+      "path": "/everai/security-4a",
+      "external_id": "everai_security-4a"
+    },
+    "b764a47b-952f-4057-97fe-5231c7958395": {
+      "status": "ok",
+      "path": "/everai/security-94",
+      "external_id": "everai_security-94"
+    },
+    "cd68404d-0ea7-434a-b622-68e8e2975c2a": {
+      "status": "ok",
+      "path": "/everai/security-b8",
+      "external_id": "everai_security-b8"
+    },
+    "8faa9adc-81a6-4888-bc7c-428259bcf71c": {
+      "status": "ok",
+      "path": "/everai/security-02",
+      "external_id": "everai_security-02"
+    },
+    "6d18ff11-3d6b-4844-8432-0187268f294a": {
+      "status": "ok",
+      "path": "/everai/security-00",
+      "external_id": "everai_security-00"
+    },
+    "ed3a2349-aa84-43a6-9260-9863d22cb141": {
+      "status": "ok",
+      "path": "/everai/security-c3",
+      "external_id": "everai_security-c3"
+    },
+    "09d8ed7b-50af-434f-a276-c83822a3f437": {
+      "status": "ok",
+      "path": "/everai/performance",
+      "external_id": "everai_performance"
+    },
+    "bfe852bd-ee3c-4b95-be4e-401ff7de58dc": {
+      "status": "ok",
+      "path": "/everai/security-e3",
+      "external_id": "everai_security-e3"
+    },
+    "acf6daaa-0af4-4468-b1fb-3cdcfee8ec26": {
+      "status": "ok",
+      "path": "/greenlitecareers/permit-coordinat",
+      "external_id": "greenlitecareers_permit-coordinat"
+    },
+    "db5ab929-f05d-4462-b5ce-0ff7075299bf": {
+      "status": "ok",
+      "path": "/drata/associate",
+      "external_id": "drata_associate"
+    },
+    "e3b104f3-245d-4828-973d-ad945baa5f26": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "4595a463-eda3-4c92-9df6-763d07958a07": {
+      "status": "ok",
+      "path": "/drata/manager-technica",
+      "external_id": "drata_manager-technica"
+    },
+    "a705a3f2-a94e-4947-81c3-e461f0a26f1c": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(drata_manager-technica) "
+    },
+    "7adefb4f-ab47-4dc3-8d5e-ec7a49e91206": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(drata_manager-technica) "
+    },
+    "0e974e75-99cc-4f8a-a232-967e140fff86": {
+      "status": "ok",
+      "path": "/delinea/enterprise-3d",
+      "external_id": "delinea_enterprise-3d"
+    },
+    "0649d15b-af2d-4b68-ab16-7df06ed79a01": {
+      "status": "ok",
+      "path": "/gridunity/manager-market",
+      "external_id": "gridunity_manager-market"
+    },
+    "59356571-0b53-46f0-abb8-63b339fce43e": {
+      "status": "ok",
+      "path": "/drata/commercial",
+      "external_id": "drata_commercial"
+    },
+    "ad2b529a-5b28-4530-b652-cd1b4de99588": {
+      "status": "ok",
+      "path": "/delinea/enterprise-97",
+      "external_id": "delinea_enterprise-97"
+    },
+    "03a61149-090e-4cf1-9cd5-643efca4cb8c": {
+      "status": "ok",
+      "path": "/delinea/net-software",
+      "external_id": "delinea_net-software"
+    },
+    "bbf59d59-6e0b-4eca-9bac-946f30596b3a": {
+      "status": "ok",
+      "path": "/delinea/manager-offensiv",
+      "external_id": "delinea_manager-offensiv"
+    },
+    "650e9389-e3a5-410b-95dd-0f60d143c3ca": {
+      "status": "ok",
+      "path": "/delinea/product-manager",
+      "external_id": "delinea_product-manager"
+    },
+    "f262ca11-1f58-44e6-94eb-f7a8ff0b2b58": {
+      "status": "ok",
+      "path": "/delinea/director-field",
+      "external_id": "delinea_director-field"
+    },
+    "439736f0-dbee-4f99-bdac-84ac86ff02fb": {
+      "status": "ok",
+      "path": "/delinea/general-manager",
+      "external_id": "delinea_general-manager"
+    },
+    "20224843-9d96-4adb-a330-a06198d55368": {
+      "status": "ok",
+      "path": "/directive/controller",
+      "external_id": "directive_controller"
+    },
+    "d79143ea-1677-45a5-9b3b-23b0e946b116": {
+      "status": "ok",
+      "path": "/fieldguide/sox-ai",
+      "external_id": "fieldguide_sox-ai"
+    },
+    "28d475ec-cbd2-4fb7-ab2d-0932352bd9ce": {
+      "status": "ok",
+      "path": "/delinea/general-77",
+      "external_id": "delinea_general-77"
+    },
+    "685b08ca-7bfb-411a-9228-b9d57677b6fb": {
+      "status": "ok",
+      "path": "/futurefitai/workforce-sales",
+      "external_id": "futurefitai_workforce-sales"
+    },
+    "1b3407f1-ad3d-467d-bfeb-186c861d85fc": {
+      "status": "ok",
+      "path": "/dualentry/solution",
+      "external_id": "dualentry_solution"
+    },
+    "dc8579ca-75f2-462f-a37e-609c42233a63": {
+      "status": "ok",
+      "path": "/dualentry/talent-sourcer",
+      "external_id": "dualentry_talent-sourcer"
+    },
+    "3ed651ab-04b1-4444-84e5-a1b7c95ed8aa": {
+      "status": "ok",
+      "path": "/equip/compliance",
+      "external_id": "equip_compliance"
+    },
+    "4829af8d-4904-498f-a774-14993ebba4da": {
+      "status": "ok",
+      "path": "/dandy/training",
+      "external_id": "dandy_training"
+    },
+    "1d1b8c4a-b1bf-474e-8c69-0fc54888e1dd": {
+      "status": "ok",
+      "path": "/dandy/customer",
+      "external_id": "dandy_customer"
+    },
+    "028e3295-f9b8-4c05-9dde-cce69d2a9356": {
+      "status": "ok",
+      "path": "/dandy/customer-7a",
+      "external_id": "dandy_customer-7a"
+    },
+    "827a82b0-a96f-4cc6-907e-3dce3cd072e6": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "edf9d4bb-9829-449f-a2db-f47b22779ec3": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "c00c112e-d819-4b24-ba3f-8e451185fef3": {
+      "status": "ok",
+      "path": "/dandy/event-associate",
+      "external_id": "dandy_event-associate"
+    },
+    "59ebfae2-36ef-46ae-baa6-4de96bc09271": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "d8d9455a-e1ef-4153-97bf-f979660b0394": {
+      "status": "ok",
+      "path": "/found/product-marketin",
+      "external_id": "found_product-marketin"
+    },
+    "251c98cb-9cf0-4a07-a747-e1900277ecd1": {
+      "status": "ok",
+      "path": "/far-ai/programs-strateg",
+      "external_id": "far-ai_programs-strateg"
+    },
+    "0c3bfbcd-210f-47ad-8791-828386c49da4": {
+      "status": "ok",
+      "path": "/far-ai/project-manager",
+      "external_id": "far-ai_project-manager"
+    },
+    "24139e17-c959-4a1b-9809-7bffb234f965": {
+      "status": "ok",
+      "path": "/dandy/general-manager",
+      "external_id": "dandy_general-manager"
+    },
+    "d6d7e712-2ea7-4edb-8283-5b132c0d3bda": {
+      "status": "ok",
+      "path": "/dandy/account-manager",
+      "external_id": "dandy_account-manager"
+    },
+    "7b49fe8b-244c-4390-9748-cfceda18c9fc": {
+      "status": "ok",
+      "path": "/everfield/forward-deployed",
+      "external_id": "everfield_forward-deployed"
+    },
+    "af5d1671-edf1-4433-b942-91d105f3e81f": {
+      "status": "ok",
+      "path": "/everfield/account-executiv",
+      "external_id": "everfield_account-executiv"
+    },
+    "8a1cf04f-c83b-4736-97ce-f2f1f4ae49e6": {
+      "status": "ok",
+      "path": "/alan/enterprise",
+      "external_id": "alan_enterprise"
+    },
+    "1ab9f205-5a03-4149-8f8f-7cb38f959cfa": {
+      "status": "ok",
+      "path": "/alan/engineering",
+      "external_id": "alan_engineering"
+    },
+    "b3d5618d-92ff-40ef-814d-a66b168042df": {
+      "status": "ok",
+      "path": "/alan/account-executiv",
+      "external_id": "alan_account-executiv"
+    },
+    "e50f669c-a83a-46ff-ae5e-4a282272246a": {
+      "status": "ok",
+      "path": "/alan/business",
+      "external_id": "alan_business"
+    },
+    "afb0b199-4311-49e9-abc9-20ca407fa871": {
+      "status": "ok",
+      "path": "/alan/customer-success",
+      "external_id": "alan_customer-success"
+    },
+    "c00569b3-026b-4345-887e-d4944d4baacc": {
+      "status": "ok",
+      "path": "/alan/portfolio",
+      "external_id": "alan_portfolio"
+    },
+    "ed272b2c-462a-4742-82fd-c9c515b34c1c": {
+      "status": "ok",
+      "path": "/1password/product-designer",
+      "external_id": "1password_product-designer"
+    },
+    "c68a272b-ca41-46a2-a305-9e50690816e7": {
+      "status": "ok",
+      "path": "/commure/operations",
+      "external_id": "commure_operations"
+    },
+    "0cb697eb-4cc8-4c90-9b98-23c52ebf9a7d": {
+      "status": "ok",
+      "path": "/commure/growth-lead",
+      "external_id": "commure_growth-lead"
+    },
+    "c45a72ec-1b06-43f4-bf96-97c093c2daeb": {
+      "status": "ok",
+      "path": "/1password/atlassian",
+      "external_id": "1password_atlassian"
+    },
+    "c4a1c55c-e51d-4ddc-8fc2-ea48f2b6cf5d": {
+      "status": "ok",
+      "path": "/1password/product-manager",
+      "external_id": "1password_product-manager"
+    },
+    "5951c2f6-9596-44ec-a5fa-c6383f57818b": {
+      "status": "ok",
+      "path": "/1password/product-4a",
+      "external_id": "1password_product-4a"
+    },
+    "d3e0974b-19f3-455b-afbb-20c5aaca4909": {
+      "status": "ok",
+      "path": "/1password/engineer-product",
+      "external_id": "1password_engineer-product"
+    },
+    "555dc4bc-2afa-44bd-8117-dda2e058f72c": {
+      "status": "ok",
+      "path": "/1password/developer-open",
+      "external_id": "1password_developer-open"
+    }
+  },
+  "doneIds": [
+    "90dcadd9-d0db-467d-90c4-0826edd74353",
+    "2176d76b-8c92-4ac8-87bf-d670d37f92ec",
+    "3ff2ac76-c05d-41c3-a009-6db1711e993f",
+    "ea1d9934-81ef-4552-a321-3054bd4ac7f0",
+    "8f5cadaa-92a2-4dae-9c96-5b689f037935",
+    "46ec6965-f352-41ef-9688-0f1ade68b4a3",
+    "4f597356-8499-4a88-bc6e-d145f62519e4",
+    "77e7c0e0-e0ff-494b-b8fd-eb15da066789",
+    "54f46d3b-b3cd-42f8-bc60-d06c4516a81a",
+    "d2390e93-7a95-43bb-ae18-f2e00d5d06e5",
+    "42100ce8-1ec2-4da8-88a1-1e93a90a162b",
+    "769e4d32-37dc-422b-8625-af020879fda7",
+    "99592966-b8fa-4fe3-85dd-68a4cc07887e",
+    "91eeb927-fab8-4fb5-a63f-698a439e378a",
+    "b1e2755b-5a25-41bc-a9f5-67dcad0929f5",
+    "d37b1b8f-6837-46b2-b6bc-d269eee72a1b",
+    "351ceeb2-5e57-425f-b657-6d2e8f9ba3a2",
+    "2f5e7d17-2684-419b-83e0-563ac6b482fe",
+    "dc5f2ef3-0907-4fbb-9c79-4bd068c1bf60",
+    "f30b534c-600b-4fc3-a9a0-284675635dcf",
+    "97869f2b-99fe-457e-94ab-15627fd585e0",
+    "84ce0ce2-ff4b-4110-9934-1d371aedfff9",
+    "7659c79f-2d75-4799-b28c-927a715aebde",
+    "be342bca-5b07-46a2-839c-ac7a2259e455",
+    "46c2522e-61fd-4cef-8589-1bf9f7355daf",
+    "b144c815-b320-4972-b02f-1369280c3d53",
+    "68c5de23-c227-4835-ada8-79dc3142075b",
+    "1b5def7b-432a-42d4-88a4-779e6c093ccf",
+    "3c92eaa0-5cc3-4909-9844-807e161edd75",
+    "93839cf0-5598-43e8-b242-b314691094d0",
+    "e409e8ec-0463-4aec-b4bc-cb0ff86d77c6",
+    "e54d63b8-6786-4a6e-a375-e3f2661253fd",
+    "13846228-22d7-4bc2-9fdb-d66fc6f64d3b",
+    "9c92d856-ff66-4f3f-899b-a57cc37f0ef2",
+    "dadab444-7b3c-4899-8666-fc466bf94f14",
+    "c7866cfe-609e-4b43-80f8-65fd7df428c6",
+    "3b57be75-865a-4d3d-a17e-f01e3ba22996",
+    "b1d53d78-475f-45ce-8d1d-80bf041cdab0",
+    "5931d66f-d582-425c-a2c1-dffc98d5d1b5",
+    "d8cbb609-318f-4c46-aa01-32d569cc2f7f",
+    "302489aa-0287-46ae-b89d-a6837a30b4d2",
+    "e3317d51-e9ba-4d4a-a5ed-906a6819d61d",
+    "b1f3691e-636c-44a7-bf08-8eb26d41c179",
+    "1208c2df-89b4-47ca-a969-bffa8f42d900",
+    "66240fe8-7677-4a2f-acd6-9438edaef9f3",
+    "32abcb12-e6ae-4921-83b6-7098fb0a9b39",
+    "762625ee-575e-4a86-886c-97dcef4181d0",
+    "c6502936-3a8f-4107-8152-92dfee103812",
+    "e429d41a-92d6-4c7d-aac1-e8e9b07caa62",
+    "a20f9ad9-6f00-41c1-850a-91a5e44c26f3",
+    "db988a8b-b043-4d0d-a4fa-5e674e69c014",
+    "84eadbe1-8cf1-49f0-8c3b-cda09f6ecd6c",
+    "220456be-0ba3-405d-8695-9c5630483079",
+    "c118d2cc-c57d-4fa0-9ad5-115b3a72296c",
+    "bdf2fc6f-9667-459d-834c-78d6caf2ebf8",
+    "3b560d43-18b5-4d6a-817b-65d68de51b4e",
+    "24e4133d-47b4-472c-85d9-08248311de80",
+    "79104306-069b-4f8d-a00b-a17f45512f5a",
+    "f2716cb1-8c4c-4fcf-bcc5-f0fee61e6b42",
+    "1aeca817-c34b-4341-b2ad-5bedcf7903fd",
+    "3249d3d4-4f87-4423-9cd4-ecd21bb2081d",
+    "e783fea6-7cf0-4382-a32a-9cd90d275dd8",
+    "f92f14d9-5749-48f4-9fa7-231aebbbcd18",
+    "6e5b2e59-5bf4-43bf-9c17-e1f3626aedf7",
+    "7a355679-b4c8-4875-8c87-e574c2438b36",
+    "1dc17fc6-a46c-497f-b30d-0752320128d1",
+    "1564c188-32e0-414c-acf0-d215251861f6",
+    "41dca1fb-9b97-4907-9f65-179c0ee1ddf0",
+    "1c9f03ba-b78a-4d2d-833b-30b88830ae3d",
+    "79ab4c1e-5ef3-4986-a046-e841825a9e60",
+    "9531960d-d217-4b40-8de5-7504bedcd174",
+    "9b37ecc0-dd98-4a9e-8b60-c94543d65f38",
+    "6bfe8cbe-94d7-48e6-8d19-8983e5371011",
+    "85f13604-67ce-4361-8f1c-a118624bd13f",
+    "9887ce65-7914-44a9-be61-b84f3dc89e9e",
+    "b511147e-9687-4314-90a2-fa081c9cc4b0",
+    "8b80fc34-c452-47cb-928f-abfebdfe23e7",
+    "6f54ef25-56c3-4969-8bdd-dafea51ac232",
+    "a411c659-895d-4943-8e72-9accc739976a",
+    "8fb46041-52c5-4a50-918c-0821d3f96247",
+    "7f596465-a6b5-438e-89bc-c8a6637fc45c",
+    "dc19a36a-7a59-4e3a-a137-59535c07323d",
+    "bd269c48-2bbd-4d53-8d2d-23d12a33b4f5",
+    "adddb2ce-b33a-480c-baa1-90a86a4b2c13",
+    "e2b46a23-c6ac-4a8c-8329-605ed96804a4",
+    "5da55c9f-7ce8-4d96-9421-d3200bffd945",
+    "1d358882-de6c-4b55-9801-fdfce10a698b",
+    "860dc5c0-85f4-43e0-9f84-01080fe63f01",
+    "aa894a56-1ea1-4e31-9543-f7a38e7654b8",
+    "98f12129-c50b-4fcc-a45a-fa0ad6ef9f3f",
+    "1c62a722-c85e-4fc0-8d4a-f3935fdb6dcd",
+    "772ed055-10c2-47bf-a44c-fbddb744c6cc",
+    "3b410849-f2a9-48cc-8de1-e6ec4fd64fa6",
+    "3b91c70b-f06e-48f2-95c0-a292ead73eea",
+    "dddcf815-8c8c-4877-9d62-e0497020e03f",
+    "ffdcb553-f7fe-44b3-9c33-85d5b17ce46b",
+    "503da06b-c235-4afb-9599-ab861b77cd2c",
+    "9f0389ad-166c-4cb9-9816-04f13d01d996",
+    "cef7a3ab-51f8-44ab-b779-8b1dfb0ed73b",
+    "b7404403-2696-4369-b7c1-46bb476d284a",
+    "9e1bbc89-740c-4788-9157-c751b193e1d0",
+    "3d221d20-e975-4f5f-9e26-99f56e7d3c67",
+    "43a6f0dd-f08f-4e70-ae05-5410e05be799",
+    "f67642f1-21c8-42a7-926e-15f009b52efd",
+    "99467f39-e235-45d6-b4b2-f111862b21ba",
+    "8f9887f9-b53c-47fb-bfe3-24780d99203b",
+    "848126ac-1ea1-4d9e-9a99-423f915edf23",
+    "daed466c-cedb-4908-b41d-07a99919526a",
+    "1d8c8d66-3b7f-4eff-8990-e90cb3ebb1f9",
+    "d30b9ccf-7ea6-4640-ba5d-78470f891264",
+    "44b33634-cb89-404f-8ca7-84c34216b434",
+    "3c70445e-aaca-4b9d-98ce-80083102857c",
+    "fc31932d-5620-4f32-9506-9a4fce72c841",
+    "1d377b5a-956b-4b3e-8387-cc44354ebfed",
+    "e337d450-6468-45c5-ac37-d86bdeff90b9",
+    "35ff86b9-160f-41f5-9344-710ce4fe275e",
+    "d0b9384f-46f5-4284-8dcf-46a9213c7241",
+    "8ddf02a1-b690-4ec9-8d95-50feb2c177cf",
+    "1e8aca4e-69e8-46c0-a449-7eabf7304f88",
+    "282d7c0a-a8b4-47ab-85f8-3fed2f7ec13f",
+    "b5092e5b-b8ce-42c2-8050-2bd331db9dca",
+    "d1d9a788-5f17-42e5-9f23-35ee56090437",
+    "60c181c8-6973-44e6-8df7-914b75d77df0",
+    "761008e5-f063-4d93-bca8-7469f0eb055e",
+    "80fbcfdf-b568-4b40-b0d6-99c3dc575972",
+    "c9ae22b8-fd0b-4dca-8dae-943f226b36ab",
+    "4a1dd029-bd1a-4a74-9e1e-6ce714e074b8",
+    "c965c8a4-4ace-47af-b916-934a2f74d1e1",
+    "b3a2db60-e882-4f1c-b69c-391de7e99b69",
+    "3e740730-65d6-4fcc-9e3c-4efe781326f4",
+    "463d588a-4d63-4feb-9a3d-33fa9f855f99",
+    "deb0138e-5c0c-46f1-b9ad-f773e803f8ab",
+    "39878b7a-ba50-427d-96ab-2b4d376dca0f",
+    "0d44b399-5c63-41ef-aa13-9cdbc2c0e88f",
+    "4da0b02f-fd8e-40f0-a0cf-5f818506cb6f",
+    "7228fd2c-3aef-41da-a302-e3347b0f873a",
+    "4895b31f-5a30-4f05-be95-b452c8a98081",
+    "e7903866-d034-4964-87fe-ca701d3c2f9c",
+    "fe2ce6ef-7935-42dd-9918-4f51d4c34194",
+    "0f8b1d6c-0016-4573-b80f-0a26005fe4ba",
+    "6041669b-6732-4de3-90bf-c34743516569",
+    "0a87c5d4-556b-40ad-ace8-9b8929315d32",
+    "21c514ac-b59b-4824-b355-8b828bfe2b7d",
+    "7597b142-96a1-4e97-af43-aaa3e83550b6",
+    "9575318a-1fa8-4ac4-be34-d5c088edc16f",
+    "50325fc9-31f3-4505-814e-0ab9d9c0b6c5",
+    "6d598d53-a5e2-434d-8194-f6bab124eb91",
+    "1efd048d-98f6-495c-a65c-f7571a985e6b",
+    "ba1d44a0-d93b-41db-ad84-56f23ec9887c",
+    "8446a2e5-fbda-4931-ba1c-59f43652d282",
+    "5f790ed1-ea43-4eb6-be81-24d51068caae",
+    "98fcc6d7-8a07-4228-a526-341b559d4c9a",
+    "a09f9a69-d15f-43c1-a42d-a1d1b714dbf2",
+    "b4381ed8-44a3-4821-b458-78b4ea974762",
+    "4fdd28ca-3002-4de4-8ff3-984085a5a0ba",
+    "e1f82643-c0bf-4e77-814d-41126c6960ee",
+    "5032fcd2-0404-4f7f-93e1-2e3d442ce4b3",
+    "79d43d28-5269-474c-a520-13d136de6d24",
+    "2ea2c824-8a37-4808-8960-c3a207b0b0ed",
+    "d463cd51-5228-43be-97e9-bed83271ebed",
+    "680221f4-794c-4787-ba2f-09b108ca0d86",
+    "e8e8d7bd-bb40-4bc3-b46f-41f9b4a82e95",
+    "dcd19710-7d45-4802-857b-b2cc9cbc9cf5",
+    "80588898-b353-41f3-b62f-be6c643b8e86",
+    "bb65c0eb-4105-4837-9b5a-054d4f251ecf",
+    "c33b5a0b-2522-4b15-ac25-a29db824b156",
+    "7d24ed8e-c5b0-4f2d-ab1a-3e527552bc29",
+    "7b741e80-0948-4e1a-ad77-a25a89d8224e",
+    "169de8ba-d65d-493a-bd7f-b10fff78ded9",
+    "060d628f-ec75-4f77-80d8-5a5b64098350",
+    "309e5c35-9144-416a-bb9b-83c827dcd29b",
+    "a01ce768-7658-41ef-94b7-a0938c409627",
+    "d8bfb502-be7c-4de9-b8f0-a4053f82047e",
+    "c8113803-4734-4482-a4fe-964de0718af4",
+    "88a5e5dc-eadf-4dfb-9200-c725064d0155",
+    "2cd4f2d4-ec48-43dd-8f05-4257cab94ae6",
+    "47710011-2fa7-4570-89c3-fa23f597d267",
+    "98bd846e-20fd-4354-a41d-0f2e80187485",
+    "fcc336a9-0702-49d6-b23a-19eff0f1c8a1",
+    "56d0e81f-7976-48f7-b325-8c7258382f81",
+    "f91006d1-28c7-4f00-ade7-8cb54ede8429",
+    "13b653ae-b3ba-4078-bdce-cf2c5b0b74ef",
+    "6da2592f-1de2-4dc9-8030-83fed1d3f03a",
+    "116cd94b-67c1-46e9-914c-31db2ae583c0",
+    "e33c1b53-d76a-42f0-a182-17809cae3922",
+    "1011f027-60df-4056-a6c2-b6f53cc05f11",
+    "1ed8255e-2e55-4856-8043-3749b7ad3321",
+    "7f6bb3fd-b727-4fed-8381-3027ea2c1870",
+    "8f8efea4-b9c4-475b-b574-c6be2988294f",
+    "0cb16023-7417-4529-8469-507eeba678de",
+    "8b026b49-b423-4aa1-b7fa-a078e73bd80c",
+    "59a1e485-df2e-43b1-aed3-276af17b5401",
+    "d215e67a-2459-431f-aa08-8b5eb908908d",
+    "98c29385-99ea-4a21-8ff7-ee8d08290650",
+    "40649fa3-08fa-4021-80df-c3ec1c9036e8",
+    "8587259d-4164-4db2-823b-06992d4dcdf8",
+    "a3813c46-40d9-455f-9422-598235ce02cc",
+    "81ce7e30-ecd5-4570-9a61-015567c76140",
+    "23b7521f-8797-4204-9200-9a71ba390d3f",
+    "e19dbb41-796b-4d9c-97c0-9e9610fc19b8",
+    "d5311825-8bc2-4e96-8e1c-ce074314c66f",
+    "4ccb5d50-f225-47e2-a3d4-10c34e0c8040",
+    "c060bace-6c5f-4625-ac69-9c536aeb7e32",
+    "b4315459-ecb9-4588-9b8b-f16e274efa78",
+    "d6c5deb8-faab-4318-9863-87a82a58f903",
+    "57cbb3ab-2c32-4b84-82db-7e63d5bbe49e",
+    "098c2672-921a-4fbe-8c52-9f24430cf93e",
+    "8bcd8f72-f8c6-499d-a74b-4b272a9628bf",
+    "89ba9af6-d9eb-452d-90aa-8cbe9a42a325",
+    "f2511b49-b233-46dd-93b0-421675a35989",
+    "14397631-2e92-4132-bf5d-06ad74a9fdb6",
+    "0f71ec67-e4df-4462-932b-a6ed27ddee50",
+    "f0340270-2988-490c-af80-841aad101adb",
+    "f17e1ceb-2e53-4b62-80eb-a0d1f9d9046b",
+    "a89c6bbc-bb3d-4e67-a455-a634dd31aa51",
+    "b252ed45-8d92-4d93-84a6-299d99937903",
+    "1362f407-a3fc-4d5f-aa9c-608f3270387a",
+    "b13d4694-7b72-4e44-8985-14d08bd81a5d",
+    "103f2c1d-6fef-43c8-ac3e-83962ac38606",
+    "c588f8f4-0610-4e5b-9859-5cfe1a09e3cf",
+    "c88a37c6-5ebd-4e7c-aa31-ef89e10ed598",
+    "d58f2ac2-e033-4962-a237-2362ef9b0a65",
+    "84c61249-103a-4c4a-b2f2-173f537f1c9e",
+    "1148f3c0-19a5-4631-9e9e-ded47d8794e5",
+    "18794ecf-d889-4dbc-85d3-cb2bf5e0ff19",
+    "47d4588c-1a49-4335-b879-2d7cae8e223e",
+    "80cf89ec-da2c-44b7-8d8b-bc791e08ba54",
+    "6a533ec7-fdaf-47ee-b4c1-fb607d1594cf",
+    "e396b58d-6677-4532-860c-b3be6334100d",
+    "bc6049c9-b163-466c-8016-c393e223d2f7",
+    "15441309-a45f-4610-929a-7afb56af446c",
+    "89afe6aa-e240-428f-b112-671221c1d3c7",
+    "3e7122f5-4ab1-49b6-ada9-53b1989b1626",
+    "458c691d-c5b9-4b07-b35b-ce0b0ecadc15",
+    "47c9d44d-17df-4c20-a24e-f222dae5637a",
+    "4f93df50-8997-42e7-a6a1-d23bf06e743b",
+    "e7cb5ce3-fc48-4bc2-bd2c-083ab1f514dd",
+    "0d9eec8e-e833-4aef-bb02-7d1b2ba6e45e",
+    "9d137e81-ba2c-40c1-adf4-fa15c0a0fdd7",
+    "c891fa0c-7647-42e8-b5ee-5a9c561c4e87",
+    "5114cee8-34b1-4c28-94ca-4212744ca111",
+    "b815dd1b-550c-40fe-8a95-c8e3417c755e",
+    "670a47c5-82a3-4eec-b5c1-b63c291c1d5b",
+    "e55e0b57-c83c-44ec-a85a-3c315feb268a",
+    "584c451c-4be4-4744-b13f-18a40816d02a",
+    "eb31eb8a-9af1-4bcd-8a23-64a233a5b243",
+    "86765d6e-5ed2-46d8-813d-93612d4592af",
+    "2c5d3a00-a422-4ddc-a574-f6185a8b807d",
+    "fec8e5b2-9772-4373-82dd-25eea94e55d0",
+    "6c334e9c-d894-4dd5-8092-36b94a46c33d",
+    "572e2a94-c605-43c8-b4ef-49673c139b5f",
+    "170f5cf8-db63-498d-8875-4b401b6bb4d5",
+    "7081343c-9706-4a3c-b997-f08320928343",
+    "00218c6a-e68b-40cc-9c8d-b34aa5657583",
+    "b39e1a1d-6f86-4431-bd5b-c37b97005bba",
+    "bd5cd80b-d821-494b-b307-4e5165dba9ff",
+    "761a91d9-769f-42c3-9671-6c3f0793e070",
+    "76f2de36-f638-4720-8d20-cc82bcc2c963",
+    "92f7dd97-1f66-48d3-883e-b1da10f70fd7",
+    "93c5c4ae-8070-4a60-a8a5-dd3de896cb56",
+    "ef48fc19-dc64-4db3-93df-a02ec6a3d208",
+    "3bbcc5a4-400f-4555-b928-eb8812438905",
+    "8b31413b-d94b-430c-bcc2-df6a3eedb608",
+    "07e5357a-3164-4269-ac10-58cd1b08a05d",
+    "d6daa3bf-b03c-4ccf-822e-87505896d879",
+    "c22402a3-3f72-4a52-956d-58d1f0317b78",
+    "b6f6bba0-9387-4fef-8172-a61c456f9c05",
+    "35d18e56-b971-407d-beff-3bae446cd28a",
+    "8e513dca-76a4-4e4f-a7d8-c18283edf586",
+    "469aa82f-f87b-45e5-b239-b63fddc9534f",
+    "717cabe7-03fa-4fa7-80d1-bb53316b6d67",
+    "31526b34-10f4-42f3-a057-ffa2b8e25bd4",
+    "e8d434d9-1ac4-4a08-897f-7108eb49340b",
+    "5708818c-0aa2-4314-960a-6a6151e9bd5b",
+    "9c3c112c-e482-4c99-b668-3b49c4824952",
+    "b6957de9-024d-482e-9492-f59dfc23abfd",
+    "0e6e76b4-74ba-4a51-94ec-7bc520de8122",
+    "51f2f4ea-482f-42e1-8c87-9da8a6d0ed93",
+    "3cfe4e66-f947-4901-8228-aaefb1e9b790",
+    "ef549124-cb06-4baa-bdab-c0ca7ac67200",
+    "3dda681a-4242-47b9-971e-ae32c096f7b9",
+    "82ed195d-4468-4303-89ac-de215b9a1cdb",
+    "0232c33e-cc7c-4715-887d-eadac1d48998",
+    "c187db58-264f-4245-b8c3-d498fdce2636",
+    "db336bbe-56d2-45e8-9d0a-2734359faab1",
+    "b13301d2-8010-4eb5-b765-ab3fe5b4a7aa",
+    "fe953913-db4a-4978-a674-d1ca00490193",
+    "2bb085db-497e-4643-991e-1c4267109f4d",
+    "b01fc94e-8ae7-4a95-be69-8417216bfa39",
+    "9be41697-ef13-4b19-8f1d-e72763448b74",
+    "1374a31f-d5fb-40f9-a8dc-b59713013194",
+    "1dc17f17-b92c-4f0f-b7ef-01a832b875ee",
+    "f069d3e4-8421-4387-b7cc-a690bd211987",
+    "62642a91-7c74-477a-921b-3e25b81a1833",
+    "6f77557e-e238-41a4-9627-47038cb66e9f",
+    "b48fe2b4-b69f-4daf-94b2-487fb2443bd3",
+    "927308fb-5acc-43c9-8654-7f5f1cb13da4",
+    "cb71f595-36f2-488a-b880-72465fb884ab",
+    "2ea9da95-369a-4f68-ba9e-087e92de2689",
+    "b14b1351-e27d-4314-836d-5805ed1c8590",
+    "5de63523-e82f-4ffd-bd1c-aa951516b82e",
+    "b388ba09-7f61-4e07-8a52-073db47b1f25",
+    "066c408c-3715-4168-9525-015427649d74",
+    "0c2a0c57-c787-4854-bb57-4b1dc74ea305",
+    "bc7770e6-e109-4979-b649-1e5341829329",
+    "051f0744-e641-4a84-95c2-57b34e656d57",
+    "0a5cd81f-ed46-4bf1-9381-23d9f159fb59",
+    "a12403d2-8d8c-4730-9980-177d947a80b7",
+    "a834338d-4afe-4482-bcb8-ea3e5db53bfa",
+    "e34a3f6e-947f-4fd0-86db-8997c701b0f1",
+    "71758967-f166-4ced-bc13-29b0fb142ce8",
+    "0a52fbd8-bb9b-46dd-9c08-25f001b85d58",
+    "00abe598-e631-46bc-a1c8-4b356adf5509",
+    "081b136c-ea62-4188-a84b-ad6f1c68f03d",
+    "bd661711-9d2f-43b3-aa36-f6e16473f8ca",
+    "13ce5cb1-0de8-4de5-b5d4-66730a6617fb",
+    "ba727010-480f-426d-9aea-1f9895da6904",
+    "30b8d539-87b9-448e-a45c-5f449e380901",
+    "bcdd68bd-ef43-4637-a52b-0f3765870435",
+    "315bccb9-05b3-4981-97c9-7042d811b74e",
+    "683822ee-315a-4fa6-9ff3-dc7bc52013f3",
+    "4fff12c0-2d72-4baf-9ac4-df2db57df6c6",
+    "5821a65d-51e8-425f-9a5c-f0665a7cb4e3",
+    "99364b2b-3a4a-4b9e-9f7f-240ec87fb427",
+    "de0dcbe9-df77-449a-a4d7-cdae92b55f34",
+    "cd092295-ba14-4c5a-8d36-1f6934f5c9b4",
+    "420ec236-0f83-44f4-830c-d8f517f57b21",
+    "0819b8a6-b9ce-4482-920a-053fafb99789",
+    "93a479b9-33d7-47d4-a9c9-9b96495010d7",
+    "67885d4f-6267-4038-8f13-082fc8467c64",
+    "1dd6843c-218d-47cc-b58d-7dcaa7309989",
+    "033e38c4-588d-4bd4-8936-9e5eb5e5d908",
+    "482b95ff-03ff-4671-a2bd-9990ad16fcea",
+    "74214b87-7658-4a97-8e6b-010461dc1038",
+    "ca6e1ae0-592f-4302-810a-ec6012641171",
+    "28cc6f79-8683-4422-adbd-2e3b03395dcb",
+    "5e1a5dc6-028c-4dbc-9cbb-6cd53d23d23e",
+    "338cc3eb-16e6-4eb0-b151-b08c329d1cc3",
+    "c73a66dd-c2c4-4b43-9292-8fb1f3945d8f",
+    "21bc8c6a-79c2-424e-8630-19838867acbb",
+    "f1bc12d9-2a3f-4bf0-b9b4-c3fbf9354e50",
+    "41d1124a-70e3-45ea-8214-a9c7614c69c3",
+    "4e3cdd4d-900f-48df-8556-0c337a158fd7",
+    "ac01ea62-38b2-411a-a669-5feba15db32d",
+    "52ff0edf-24a6-4722-bac8-066f28e4c080",
+    "a6ddd3cc-364e-47b0-8522-97bd52cfdbc0",
+    "7679795f-c8c1-4ece-9d00-f664d9da135c",
+    "914fa6ec-7e7a-44c1-a058-80b271265b03",
+    "bffabb30-e865-4c58-812b-1a1297ceb3e2",
+    "dfefdebc-89ab-4e6d-80ca-bc0b028dcdce",
+    "c21fd404-231a-4c9c-8251-4e1d645571ab",
+    "50481cc8-84ae-43a6-868c-4b6aae393522",
+    "ab21ff6c-5b1d-4b1a-bd74-7017640a4412",
+    "8248aeb5-cfb9-4203-a6c5-068b6d749209",
+    "9a8e6e0c-765f-4c82-a6f8-924311537dac",
+    "fd5f939f-d382-403e-80be-37f02d03889e",
+    "24ab3053-94fb-4394-b377-def27ce61b1d",
+    "d1eae674-5f58-4c3d-867c-d03577b16ff1",
+    "1d0acb69-cca8-4435-84e2-0e16f0898174",
+    "db2e06a7-a7f9-4f81-9918-c0bbb271f680",
+    "6f97bb5a-32ac-4b34-9458-cfb1bea30731",
+    "faaf9473-c5a6-4763-9d71-b6b657ca3a06",
+    "e37d5646-c168-45f2-b5f6-a85ca723fd21",
+    "6f6e5db1-af01-4dc4-bc68-f77a11a3887b",
+    "559884f9-ad2e-41f3-a932-b54e0b373d91",
+    "ea72ac6a-eae7-4d3f-921a-49b2d20d6251",
+    "c1a3a1a3-57cb-4552-be5c-2e236de63093",
+    "76010fc3-6fbf-43d3-81aa-78eea9e27c94",
+    "1cc2d01e-0cf5-4206-8431-7803cd92a7ae",
+    "565877f2-64ca-4fd5-a71b-c5b7f758afbc",
+    "e0a61f98-7c62-490c-9f0e-791ebee87025",
+    "de8b7238-49d4-429d-aa81-1e864e5aed64",
+    "800d5c07-f5ce-48ec-8ad8-959984393243",
+    "9ba62d2f-927d-41ed-b56a-8fc751d8b0bf",
+    "51d92bcf-68bf-443f-830c-849203f883bc",
+    "7672f38a-ef94-4a48-9eed-39136a99bde0",
+    "aecd8a5f-c4ab-457a-a0c7-2797d00ef300",
+    "20f3dd26-c3c4-4c56-8fef-cd4191fc85de",
+    "ddc4e918-87ad-4291-98c6-02d2377955c8",
+    "9e5acf51-2ca4-4f59-badf-f6794dea76bb",
+    "d9454ff6-ca9f-4563-b694-1987bf0d69de",
+    "0f8eab14-b99a-4b4b-85a4-a581e1c0e413",
+    "3c43cb20-755e-4fb3-8431-49c93bbea4f3",
+    "7d7e5b1a-c85a-4768-ac1a-e9ddff56659c",
+    "7840b007-20a3-4897-869e-4e78bedb37d5",
+    "5f3d6d05-f456-4b18-bf01-1e7b18df4a45",
+    "d91603e5-c593-45d1-8b1f-9aa5b384edef",
+    "fbf9ce61-9a81-4c74-a168-330e7687e1c1",
+    "309f3fb2-712e-4b01-b7b3-84e70bdb2675",
+    "62701d75-975d-42aa-a709-deabe458e59c",
+    "b5922285-954f-414a-bb98-fa5bcaba828e",
+    "4c2adb44-80eb-4392-89a6-a8a8f0d639bc",
+    "01e8f305-7bb4-4f20-8ce5-85f4b0814218",
+    "8ecd64c9-bef8-4b85-830f-79a94abeec4c",
+    "fe522955-d472-4471-8204-ed65e8c638d4",
+    "5685765c-16c5-48db-a98e-b6e7f18ff0be",
+    "3b4aa2c1-a1b7-455e-b24b-b60c05c5345a",
+    "8d1288d1-fd9e-4114-965e-bacb5ec7c82e",
+    "17239e54-2413-4e92-8af1-70b1d3f45ee9",
+    "2a6439d6-cd6c-44e1-8d47-4876de11781c",
+    "7a4a4344-e9e5-4e9f-b04e-8fd32657843b",
+    "be8376d0-3fe0-4046-b99a-9e115e146b62",
+    "06f046a4-4449-4a26-8dfc-d66e6ab58446",
+    "9ce88a94-1ca6-43d0-ac9f-74975832198f",
+    "abb5a781-0c9d-451d-9509-7411f7cbc2e6",
+    "deb18583-6374-4ca1-8e38-871b412ca487",
+    "aee65f15-465d-4ddc-8c08-1d8b6c9ca5cb",
+    "e4e8377f-582a-472d-8043-06d3587e4be1",
+    "b3d11361-3b6e-4090-a04c-8894d02626f1",
+    "04769c59-4cdb-4f9d-ad7f-34fb1c6a61f4",
+    "1bf25288-3692-487f-ae18-a3c1778ce3d0",
+    "c2110535-3dc6-4829-939c-604c0febd6a5",
+    "94a76d48-97ea-49ea-9142-dc1213ea7cda",
+    "4f20ad3c-b858-40af-9ce2-6e4396ba46e7",
+    "27277848-44ae-4df9-bfcf-52e15c212c26",
+    "5340cac8-1b64-4e92-a18e-83779f9da05e",
+    "342bdc37-5949-42c1-86e5-5f6cb9925b1c",
+    "96c8b38b-5e9d-4fda-be9e-fc4efc85df80",
+    "836c25e4-dd30-45f3-94e0-edaa7d78c5cf",
+    "e1090eae-5389-421e-b940-700a44fa7cad",
+    "2b841c40-4bf9-4e2f-a0d5-16c110ea0367",
+    "5d394537-d8f1-4c00-bf41-132fcb6ca0fa",
+    "d2c44df4-2aba-4e76-814e-29d018f384b4",
+    "6fb9c9ef-300b-4c7f-9095-ac224549840d",
+    "327a191d-00e3-4d83-807b-79cc0cf142d3",
+    "308d5ee3-bf45-42b0-9a91-833a8a8b1166",
+    "00121d86-f0db-4629-96d5-0f59bb085e06",
+    "5d3d62f7-378e-41b5-a631-270619a0d869",
+    "3730a607-5ee2-4a1d-8e8b-2c44c940b341",
+    "62659f28-a216-41a6-a2c1-988bd921ca8e",
+    "a147bef1-5c55-40eb-bd6e-48b73cafea97",
+    "4e4fa9cc-37be-4f14-998d-ec02a0ce5886",
+    "890c182c-82de-43f6-999a-12bf6adb44fa",
+    "0a201928-d51b-40ab-bf6e-774a732497f3",
+    "2959fa63-b6be-4488-afd1-e7bea96f88da",
+    "beec599f-2be1-466e-aecf-3b53792edff5",
+    "23b0ce7b-f7a0-435d-ae4b-6497ff848584",
+    "4911b8e4-485d-41d3-8065-e486e7bf5a40",
+    "dd871ed4-9ca5-4c49-af14-46065d839d5a",
+    "b51bae92-84e8-453b-b694-fab53fe37d4a",
+    "f62517ac-1510-42bb-b367-7540a52fe1eb",
+    "7505179c-3476-485f-93a6-e45d7df1c717",
+    "39f1f6ee-fffc-469c-bc47-748a536321aa",
+    "e0c6dc10-baf1-4e08-8184-01ce74f5703d",
+    "1d560edb-b07e-4c68-ae7d-c56beb1a539b",
+    "6d02faac-420f-4013-9efc-6c5699cf38be",
+    "7cf65b05-9cc2-4bd1-8adf-30d013d1f3f5",
+    "3eff673c-8581-4235-b6e4-323d450f9380",
+    "ea872c18-8b3a-4db8-8d5b-a290c3c344e8",
+    "72a716e2-70bf-4567-85a9-689e32d2de5a",
+    "11745ae7-c776-453d-89b1-31a15c51c348",
+    "02270009-49f3-480d-a79f-2408ba38bc2c",
+    "008dc376-89ee-4412-830b-0c9ce8308f3b",
+    "c6e60345-d018-42f7-ab82-2d9bf3d9c223",
+    "bf5d7c2b-c364-40b8-b8b9-d7e08281e024",
+    "7e67b521-44fd-4f1c-abc6-3d1c2d83d0d7",
+    "6bb16794-09d7-45f5-9ab4-4d3289e296fb",
+    "2cd4bf24-0dde-4afa-9bae-faf130a94329",
+    "90840c2e-8b96-4977-923d-5676eb46c6ec",
+    "4a77a8c4-9b0e-471b-917d-f0b82229e6bf",
+    "05f953a1-fe97-4187-9495-096776989b26",
+    "b764a47b-952f-4057-97fe-5231c7958395",
+    "cd68404d-0ea7-434a-b622-68e8e2975c2a",
+    "8faa9adc-81a6-4888-bc7c-428259bcf71c",
+    "6d18ff11-3d6b-4844-8432-0187268f294a",
+    "ed3a2349-aa84-43a6-9260-9863d22cb141",
+    "09d8ed7b-50af-434f-a276-c83822a3f437",
+    "bfe852bd-ee3c-4b95-be4e-401ff7de58dc",
+    "acf6daaa-0af4-4468-b1fb-3cdcfee8ec26",
+    "db5ab929-f05d-4462-b5ce-0ff7075299bf",
+    "e3b104f3-245d-4828-973d-ad945baa5f26",
+    "4595a463-eda3-4c92-9df6-763d07958a07",
+    "0e974e75-99cc-4f8a-a232-967e140fff86",
+    "0649d15b-af2d-4b68-ab16-7df06ed79a01",
+    "59356571-0b53-46f0-abb8-63b339fce43e",
+    "ad2b529a-5b28-4530-b652-cd1b4de99588",
+    "03a61149-090e-4cf1-9cd5-643efca4cb8c",
+    "bbf59d59-6e0b-4eca-9bac-946f30596b3a",
+    "650e9389-e3a5-410b-95dd-0f60d143c3ca",
+    "f262ca11-1f58-44e6-94eb-f7a8ff0b2b58",
+    "439736f0-dbee-4f99-bdac-84ac86ff02fb",
+    "20224843-9d96-4adb-a330-a06198d55368",
+    "d79143ea-1677-45a5-9b3b-23b0e946b116",
+    "28d475ec-cbd2-4fb7-ab2d-0932352bd9ce",
+    "685b08ca-7bfb-411a-9228-b9d57677b6fb",
+    "1b3407f1-ad3d-467d-bfeb-186c861d85fc",
+    "dc8579ca-75f2-462f-a37e-609c42233a63",
+    "3ed651ab-04b1-4444-84e5-a1b7c95ed8aa",
+    "4829af8d-4904-498f-a774-14993ebba4da",
+    "1d1b8c4a-b1bf-474e-8c69-0fc54888e1dd",
+    "028e3295-f9b8-4c05-9dde-cce69d2a9356",
+    "827a82b0-a96f-4cc6-907e-3dce3cd072e6",
+    "edf9d4bb-9829-449f-a2db-f47b22779ec3",
+    "c00c112e-d819-4b24-ba3f-8e451185fef3",
+    "59ebfae2-36ef-46ae-baa6-4de96bc09271",
+    "d8d9455a-e1ef-4153-97bf-f979660b0394",
+    "251c98cb-9cf0-4a07-a747-e1900277ecd1",
+    "0c3bfbcd-210f-47ad-8791-828386c49da4",
+    "24139e17-c959-4a1b-9809-7bffb234f965",
+    "d6d7e712-2ea7-4edb-8283-5b132c0d3bda",
+    "7b49fe8b-244c-4390-9748-cfceda18c9fc",
+    "af5d1671-edf1-4433-b942-91d105f3e81f",
+    "8a1cf04f-c83b-4736-97ce-f2f1f4ae49e6",
+    "1ab9f205-5a03-4149-8f8f-7cb38f959cfa",
+    "b3d5618d-92ff-40ef-814d-a66b168042df",
+    "e50f669c-a83a-46ff-ae5e-4a282272246a",
+    "afb0b199-4311-49e9-abc9-20ca407fa871",
+    "c00569b3-026b-4345-887e-d4944d4baacc",
+    "ed272b2c-462a-4742-82fd-c9c515b34c1c",
+    "c68a272b-ca41-46a2-a305-9e50690816e7",
+    "0cb697eb-4cc8-4c90-9b98-23c52ebf9a7d",
+    "c45a72ec-1b06-43f4-bf96-97c093c2daeb",
+    "c4a1c55c-e51d-4ddc-8fc2-ea48f2b6cf5d",
+    "5951c2f6-9596-44ec-a5fa-c6383f57818b",
+    "d3e0974b-19f3-455b-afbb-20c5aaca4909",
+    "555dc4bc-2afa-44bd-8117-dda2e058f72c"
+  ],
+  "skipped": {},
+  "batches": [
+    {
+      "batchNum": 1,
+      "at": "2026-08-02T11:28:04.735Z",
+      "attempted": 524,
+      "ok": 500,
+      "skip": 12,
+      "fail": 9,
+      "reasons": {
+        "ashby_not_found": 12,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(supabase_support-enginee": 1,
+        "rewrite_slop": 3,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(tigerdata_engineering) a": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(scan-com_mri-technologis": 1,
+        "rewrite_structure": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(drata_manager-technica) ": 2
+      },
+      "samplePaths": [
+        "/alan/m-decin-g",
+        "/wealthsimple/aml-analyst",
+        "/openai/industrial",
+        "/wealthsimple/analyst-tax",
+        "/worldly/manager-director",
+        "/yendo/engineering",
+        "/virtahealth/software-enginee",
+        "/virtahealth/manager-governan",
+        "/supabase/support-engineer",
+        "/supabase/ai-platform",
+        "/virtahealth/ai-operations",
+        "/virtahealth/software-59",
+        "/stable/product-designer",
+        "/tensorwave/network-engineer",
+        "/spherical/product-design",
+        "/stacker/demand-generatio",
+        "/stacker/vp-publisher",
+        "/spherical/communications",
+        "/rula/strategic-financ",
+        "/rula/health-system"
+      ]
+    }
+  ]
+}
