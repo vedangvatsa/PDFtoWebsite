@@ -950,6 +950,32 @@ const COMPANIES: Record<string, CompanyMeta> = {
     description:
       'The Indian Army is the land-based branch of the Indian Armed Forces. The Indian Army Internship Program (IAIP) is a nationwide internship initiative listed on the AICTE portal, offering students hands-on experience on live military technology and operations projects.',
   },
+  mospi: {
+    slug: 'mospi',
+    name: 'MoSPI',
+    website: 'https://www.mospi.gov.in/',
+    founded: 1999,
+    hq: 'New Delhi, India',
+    size: 'Government',
+    stage: 'Government',
+    funding: 'Government of India',
+    industry: 'Official Statistics',
+    description:
+      'The Ministry of Statistics and Programme Implementation (MoSPI) is the nodal agency for planning and facilitating the integrated development of the national statistical system in India. Its National Internship in Official Statistics (NIOS) places students in official statistics work across MoSPI and related offices.',
+  },
+  'niti-aayog': {
+    slug: 'niti-aayog',
+    name: 'NITI Aayog',
+    website: 'https://www.niti.gov.in/',
+    founded: 2015,
+    hq: 'New Delhi, India',
+    size: 'Government',
+    stage: 'Government',
+    funding: 'Government of India',
+    industry: 'Public Policy',
+    description:
+      'NITI Aayog (National Institution for Transforming India) is the Government of India’s premier policy think tank. Its internship scheme places students across policy domains listed on the official Work for India portal.',
+  },
 };
 
 export function getCompanyMeta(slug: string): CompanyMeta | null {
