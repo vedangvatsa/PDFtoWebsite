@@ -11869,6 +11869,340 @@
       "status": "ok",
       "path": "/accesssoftek/compiler-dev",
       "external_id": "accesssoftek_compiler-dev"
+    },
+    "f14a3f7a-2dac-4390-8a05-5f8d2f6653b1": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(trueml_sales) already ex"
+    },
+    "73bb32bc-429b-48d4-bd29-f229d3452f1e": {
+      "status": "ok",
+      "path": "/pointclickcare/app-eng",
+      "external_id": "pointclickcare_app-eng"
+    },
+    "ab8f25c9-82c1-42e5-b9c1-35da0e500566": {
+      "status": "ok",
+      "path": "/metabase/head",
+      "external_id": "metabase_head"
+    },
+    "40f1101a-e618-4f40-86a1-f3b7c0d400b0": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "14b98cb9-1c9f-4c7e-a493-7b15885204c1": {
+      "status": "ok",
+      "path": "/binance/lead-risk",
+      "external_id": "binance_lead-risk"
+    },
+    "10a139af-cd68-40e5-8dbb-416afd1e47b9": {
+      "status": "ok",
+      "path": "/airalo/legal-counsel",
+      "external_id": "airalo_legal-counsel"
+    },
+    "ded8bc58-33f9-4ac3-a49c-8fe7dde4bbe9": {
+      "status": "ok",
+      "path": "/chownow/outside-sales",
+      "external_id": "chownow_outside-sales"
+    },
+    "8cb348e6-f5c8-44a1-b335-41927cc16ad4": {
+      "status": "ok",
+      "path": "/binance/regulatory-08",
+      "external_id": "binance_regulatory-08"
+    },
+    "580bb837-28c1-47c4-a51a-5ec80b9b0d5c": {
+      "status": "ok",
+      "path": "/trueml/eng",
+      "external_id": "trueml_eng"
+    },
+    "7a3910ca-63f6-4c43-b055-3aff1e4d8a24": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "4e79942d-e4fb-4725-8a37-b90fcc25bed2": {
+      "status": "ok",
+      "path": "/workwave/deal-desk",
+      "external_id": "workwave_deal-desk"
+    },
+    "f0e09f8f-d5f6-403a-99b7-0f454644267a": {
+      "status": "ok",
+      "path": "/proof/strat-d8",
+      "external_id": "proof_strat-d8"
+    },
+    "60e14820-00a3-4e51-a249-f26a6c0f3b0c": {
+      "status": "ok",
+      "path": "/binance/ui-ux-design",
+      "external_id": "binance_ui-ux-design"
+    },
+    "9f1ea517-2b7b-4f1e-b08e-2d0f9e3d28d9": {
+      "status": "ok",
+      "path": "/dronedeploy/mgr-biz-sys",
+      "external_id": "dronedeploy_mgr-biz-sys"
+    },
+    "8c9fc3a6-576f-4a01-a539-ef9473e5600f": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_deputy-mlro) alr"
+    },
+    "32ef73e8-6df8-4916-b411-f3f1901c2081": {
+      "status": "ok",
+      "path": "/greenlight/creative-dir",
+      "external_id": "greenlight_creative-dir"
+    },
+    "d45c227f-0cd9-44e6-a22f-4f2baa37e1c3": {
+      "status": "ok",
+      "path": "/binance/web-app-test",
+      "external_id": "binance_web-app-test"
+    },
+    "aeb10c08-89bc-48e6-84da-3319078c0838": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "98dafdd3-7136-4627-a3d0-e88f48ff1f97": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "9b548146-97f5-45db-ae58-c415a65adfad": {
+      "status": "ok",
+      "path": "/smart-working-solutions/fullstk-dev-15",
+      "external_id": "smart-working-solutions_fullstk-dev-15"
+    },
+    "be077a6f-facb-4062-8916-c70b70d8232c": {
+      "status": "ok",
+      "path": "/spreetail/prog-mgr",
+      "external_id": "spreetail_prog-mgr"
+    },
+    "61dfbee9-7069-4268-ad68-56c791d34833": {
+      "status": "ok",
+      "path": "/sonatype/acct-e4",
+      "external_id": "sonatype_acct-e4"
+    },
+    "54d736c2-c9c9-479a-aa7a-e785669071c1": {
+      "status": "ok",
+      "path": "/sonatype/campaign-mgr",
+      "external_id": "sonatype_campaign-mgr"
+    },
+    "b24cf326-9a14-4f4c-ab9e-d80dee341ca8": {
+      "status": "ok",
+      "path": "/sonatype/channel-partner",
+      "external_id": "sonatype_channel-partner"
+    },
+    "9c46a8a3-22b9-45ba-b6ee-e83bd57d53f3": {
+      "status": "ok",
+      "path": "/people-ai/key-acct",
+      "external_id": "people-ai_key-acct"
+    },
+    "45e676c3-dbcd-41cf-8922-91c81493d813": {
+      "status": "ok",
+      "path": "/airalo/partnerships",
+      "external_id": "airalo_partnerships"
+    },
+    "e8e14b88-8aa9-43ea-ad7a-5eed07cb5683": {
+      "status": "ok",
+      "path": "/surglogs/mid-level",
+      "external_id": "surglogs_mid-level"
+    },
+    "77680242-e0c4-47ea-885c-1ee7ce93ad47": {
+      "status": "ok",
+      "path": "/binance/growth-lead",
+      "external_id": "binance_growth-lead"
+    },
+    "253527c8-feec-4528-b1bd-2b5533d42c42": {
+      "status": "ok",
+      "path": "/everstar/power-bi",
+      "external_id": "everstar_power-bi"
+    },
+    "6f6e5bc0-5f56-4a54-95ec-11dcf9867d76": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "8e57e2ab-0b04-4def-8fe0-281448a0569d": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "1cb7d305-5d76-45a0-aae0-d53e57d901c7": {
+      "status": "ok",
+      "path": "/everstar/penetration",
+      "external_id": "everstar_penetration"
+    },
+    "ea0600ba-846f-4d22-8355-08d44fbd99c6": {
+      "status": "ok",
+      "path": "/navan/event-travel",
+      "external_id": "navan_event-travel"
+    },
+    "1fa4b835-f642-402d-a1f0-e0bf26649560": {
+      "status": "ok",
+      "path": "/qualtrics/analyst-rev",
+      "external_id": "qualtrics_analyst-rev"
+    },
+    "3f82a796-773f-47d6-8b02-e680e8c9fc97": {
+      "status": "ok",
+      "path": "/samsara/mgr-inside",
+      "external_id": "samsara_mgr-inside"
+    },
+    "f3a183b6-8b12-4544-827f-8518ffeb13d1": {
+      "status": "ok",
+      "path": "/lattice/sw-eng-infra",
+      "external_id": "lattice_sw-eng-infra"
+    },
+    "21dbb4a1-64a8-4ea8-8fa8-51d2752c2ac1": {
+      "status": "skip",
+      "reason": "html_blocked"
+    },
+    "76c39e0e-8781-4b37-9321-d797f3586b16": {
+      "status": "skip",
+      "reason": "html_blocked"
+    },
+    "fcc94b08-3523-483a-969c-83aa7536a02a": {
+      "status": "ok",
+      "path": "/lattice/mgr-it",
+      "external_id": "lattice_mgr-it"
+    },
+    "ef7ec967-593d-4b03-b585-f3893f0384ba": {
+      "status": "ok",
+      "path": "/stripe/prod-counsel-61",
+      "external_id": "stripe_prod-counsel-61"
+    },
+    "b0bf05ed-9b18-4140-923d-6ba2ce720e4e": {
+      "status": "ok",
+      "path": "/coinbase/it-service",
+      "external_id": "coinbase_it-service"
+    },
+    "3ee4d4b9-a9c0-47f7-af7b-5ea152950fab": {
+      "status": "ok",
+      "path": "/stripe/people-sol",
+      "external_id": "stripe_people-sol"
+    },
+    "6b12fdbe-a9b9-4629-a4fd-32621911e3e8": {
+      "status": "ok",
+      "path": "/stripe/partnerships",
+      "external_id": "stripe_partnerships"
+    },
+    "381f5478-e70d-4a9c-8e1e-4604880a96fc": {
+      "status": "ok",
+      "path": "/stripe/head-market",
+      "external_id": "stripe_head-market"
+    },
+    "eb3ad1c5-bbcb-428a-986e-53cd0a25eaa9": {
+      "status": "ok",
+      "path": "/stripe/global-filing",
+      "external_id": "stripe_global-filing"
+    },
+    "2e52fb23-eb23-4a97-9c6d-4ea59b611f8a": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4737a715-3e0d-4c03-88a7-94dddbdb2524": {
+      "status": "ok",
+      "path": "/stripe/acct-executive",
+      "external_id": "stripe_acct-executive"
+    },
+    "b178ace1-29ca-46ca-b38f-48393a85d8cc": {
+      "status": "ok",
+      "path": "/stripe/autofile-spec",
+      "external_id": "stripe_autofile-spec"
+    },
+    "3f4a3c64-c989-4308-b659-035267d16e17": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "20a88f65-acad-4c75-a4e5-284eef2e372a": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4f36d7af-14a7-4d1b-8a16-a4d6385b4e95": {
+      "status": "ok",
+      "path": "/zoominfo-technologies-llc/dir-finops",
+      "external_id": "zoominfo-technologies-llc_dir-finops"
+    },
+    "450a2884-0144-48c6-b19a-a8f989d997b6": {
+      "status": "ok",
+      "path": "/samsara/prog-mgr",
+      "external_id": "samsara_prog-mgr"
+    },
+    "a495d94c-fa9b-4656-9c3f-ce1929fd1a0c": {
+      "status": "ok",
+      "path": "/zoominfo-technologies-llc/biz-analyst",
+      "external_id": "zoominfo-technologies-llc_biz-analyst"
+    },
+    "6e24ef87-67dc-4ebe-89ad-1da1d6a4d5ef": {
+      "status": "ok",
+      "path": "/samsara/pipeline",
+      "external_id": "samsara_pipeline"
+    },
+    "f82689f5-3ae7-402d-bace-e34c0e94ba6b": {
+      "status": "ok",
+      "path": "/samsara/lead-ml-eng",
+      "external_id": "samsara_lead-ml-eng"
+    },
+    "ff17db6d-4144-40bc-92c2-e89cc5dbee0f": {
+      "status": "ok",
+      "path": "/samsara/entry-level",
+      "external_id": "samsara_entry-level"
+    },
+    "170c7562-dbe1-4962-a83e-af0b95c0122a": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "7de8b9e8-c012-4846-b88e-af09bc2dee1b": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c722b6b3-f495-4926-8890-242acf9ba9cf": {
+      "status": "ok",
+      "path": "/navan/venue-find",
+      "external_id": "navan_venue-find"
+    },
+    "62154851-7f08-4432-82d5-7718abfd7f8c": {
+      "status": "ok",
+      "path": "/zwift/dir-it",
+      "external_id": "zwift_dir-it"
+    },
+    "c9a65967-8912-4f16-a737-49cb3716d3e7": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "28b261d7-591a-4795-a854-8bd00ce7ea78": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "92cd2fc2-44a2-4a79-8645-9e56ee667ce5": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "3d9f8da8-b9f0-4e89-b31d-b3f4876498e1": {
+      "status": "ok",
+      "path": "/pinterest/sre-eng",
+      "external_id": "pinterest_sre-eng"
+    },
+    "52f1c052-0a20-4748-8f28-e328d078fdac": {
+      "status": "ok",
+      "path": "/pinterest/mgr-trends",
+      "external_id": "pinterest_mgr-trends"
+    },
+    "81d889c1-aa04-49f3-9ccb-b5af37740ee5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "186c05df-4bce-40e1-ae0f-c6daebbf7846": {
+      "status": "ok",
+      "path": "/stitch-fix/integration",
+      "external_id": "stitch-fix_integration"
+    },
+    "3583d839-4b06-46d1-b443-e5eba81f8528": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "245f6332-c6b2-4570-b23c-890b605c202f": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "f2d46f6a-ea34-4452-b477-0b358d2c0f10": {
+      "status": "ok",
+      "path": "/stitch-fix/ml-plat-eng",
+      "external_id": "stitch-fix_ml-plat-eng"
+    },
+    "2783f7bb-ea07-4132-86e6-758f8a2e37ac": {
+      "status": "ok",
+      "path": "/pinterest/prod-design",
+      "external_id": "pinterest_prod-design"
     }
   },
   "doneIds": [
@@ -14314,7 +14648,76 @@
     "b46153f4-386a-43a2-9be5-2ee94d9edfb0",
     "be4f8877-5a7c-443d-b7fd-d88c780e7703",
     "c980d7e4-2150-41c8-b359-a7a211089f3c",
-    "75c73058-ef65-4b4a-8571-fd27ec055c3d"
+    "75c73058-ef65-4b4a-8571-fd27ec055c3d",
+    "73bb32bc-429b-48d4-bd29-f229d3452f1e",
+    "ab8f25c9-82c1-42e5-b9c1-35da0e500566",
+    "40f1101a-e618-4f40-86a1-f3b7c0d400b0",
+    "14b98cb9-1c9f-4c7e-a493-7b15885204c1",
+    "10a139af-cd68-40e5-8dbb-416afd1e47b9",
+    "ded8bc58-33f9-4ac3-a49c-8fe7dde4bbe9",
+    "8cb348e6-f5c8-44a1-b335-41927cc16ad4",
+    "580bb837-28c1-47c4-a51a-5ec80b9b0d5c",
+    "7a3910ca-63f6-4c43-b055-3aff1e4d8a24",
+    "4e79942d-e4fb-4725-8a37-b90fcc25bed2",
+    "f0e09f8f-d5f6-403a-99b7-0f454644267a",
+    "60e14820-00a3-4e51-a249-f26a6c0f3b0c",
+    "9f1ea517-2b7b-4f1e-b08e-2d0f9e3d28d9",
+    "32ef73e8-6df8-4916-b411-f3f1901c2081",
+    "d45c227f-0cd9-44e6-a22f-4f2baa37e1c3",
+    "aeb10c08-89bc-48e6-84da-3319078c0838",
+    "98dafdd3-7136-4627-a3d0-e88f48ff1f97",
+    "9b548146-97f5-45db-ae58-c415a65adfad",
+    "be077a6f-facb-4062-8916-c70b70d8232c",
+    "61dfbee9-7069-4268-ad68-56c791d34833",
+    "54d736c2-c9c9-479a-aa7a-e785669071c1",
+    "b24cf326-9a14-4f4c-ab9e-d80dee341ca8",
+    "9c46a8a3-22b9-45ba-b6ee-e83bd57d53f3",
+    "45e676c3-dbcd-41cf-8922-91c81493d813",
+    "e8e14b88-8aa9-43ea-ad7a-5eed07cb5683",
+    "77680242-e0c4-47ea-885c-1ee7ce93ad47",
+    "253527c8-feec-4528-b1bd-2b5533d42c42",
+    "6f6e5bc0-5f56-4a54-95ec-11dcf9867d76",
+    "8e57e2ab-0b04-4def-8fe0-281448a0569d",
+    "1cb7d305-5d76-45a0-aae0-d53e57d901c7",
+    "ea0600ba-846f-4d22-8355-08d44fbd99c6",
+    "1fa4b835-f642-402d-a1f0-e0bf26649560",
+    "3f82a796-773f-47d6-8b02-e680e8c9fc97",
+    "f3a183b6-8b12-4544-827f-8518ffeb13d1",
+    "21dbb4a1-64a8-4ea8-8fa8-51d2752c2ac1",
+    "76c39e0e-8781-4b37-9321-d797f3586b16",
+    "fcc94b08-3523-483a-969c-83aa7536a02a",
+    "ef7ec967-593d-4b03-b585-f3893f0384ba",
+    "b0bf05ed-9b18-4140-923d-6ba2ce720e4e",
+    "3ee4d4b9-a9c0-47f7-af7b-5ea152950fab",
+    "6b12fdbe-a9b9-4629-a4fd-32621911e3e8",
+    "381f5478-e70d-4a9c-8e1e-4604880a96fc",
+    "eb3ad1c5-bbcb-428a-986e-53cd0a25eaa9",
+    "2e52fb23-eb23-4a97-9c6d-4ea59b611f8a",
+    "4737a715-3e0d-4c03-88a7-94dddbdb2524",
+    "b178ace1-29ca-46ca-b38f-48393a85d8cc",
+    "3f4a3c64-c989-4308-b659-035267d16e17",
+    "20a88f65-acad-4c75-a4e5-284eef2e372a",
+    "4f36d7af-14a7-4d1b-8a16-a4d6385b4e95",
+    "450a2884-0144-48c6-b19a-a8f989d997b6",
+    "a495d94c-fa9b-4656-9c3f-ce1929fd1a0c",
+    "6e24ef87-67dc-4ebe-89ad-1da1d6a4d5ef",
+    "f82689f5-3ae7-402d-bace-e34c0e94ba6b",
+    "ff17db6d-4144-40bc-92c2-e89cc5dbee0f",
+    "170c7562-dbe1-4962-a83e-af0b95c0122a",
+    "7de8b9e8-c012-4846-b88e-af09bc2dee1b",
+    "c722b6b3-f495-4926-8890-242acf9ba9cf",
+    "62154851-7f08-4432-82d5-7718abfd7f8c",
+    "c9a65967-8912-4f16-a737-49cb3716d3e7",
+    "28b261d7-591a-4795-a854-8bd00ce7ea78",
+    "92cd2fc2-44a2-4a79-8645-9e56ee667ce5",
+    "3d9f8da8-b9f0-4e89-b31d-b3f4876498e1",
+    "52f1c052-0a20-4748-8f28-e328d078fdac",
+    "81d889c1-aa04-49f3-9ccb-b5af37740ee5",
+    "186c05df-4bce-40e1-ae0f-c6daebbf7846",
+    "3583d839-4b06-46d1-b443-e5eba81f8528",
+    "245f6332-c6b2-4570-b23c-890b605c202f",
+    "f2d46f6a-ea34-4452-b477-0b358d2c0f10",
+    "2783f7bb-ea07-4132-86e6-758f8a2e37ac"
   ],
   "skipped": {},
   "batches": [
@@ -14491,6 +14894,59 @@
         "/natera/iop-psc-team",
         "/natera/forward-deployed",
         "/natera/forward-2a"
+      ]
+    },
+    {
+      "batchNum": 5,
+      "worker": 2,
+      "at": "2026-08-02T12:31:06.343Z",
+      "attempted": 504,
+      "ok": 400,
+      "skip": 84,
+      "fail": 19,
+      "reasons": {
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_eng-mgr) already e": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_sw-eng-prod) alrea": 1,
+        "rewrite_slop": 5,
+        "gh_404": 27,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_strat) already e": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(bybit_client-service) al": 1,
+        "lever_404": 43,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pointclickcare_applied) ": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ninjavan_pre-sales) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_qa-eng-fe) alrea": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_fe-eng) already ": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_creator) already": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_affiliate-bd) al": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(bluecatnetworks_enterpri": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anchorage_member-global)": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(trueml_sales) already ex": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_deputy-mlro) alr": 1,
+        "html_short": 10,
+        "html_blocked": 2,
+        "html_403": 2
+      },
+      "samplePaths": [
+        "/leaflink/fullstk-eng-b2",
+        "/grafana-labs/be-eng-d8",
+        "/twilio/prod-mgr-d9",
+        "/grafana-labs/be-eng-c0",
+        "/grafana-labs/mgr-sol-c4",
+        "/twilio/design-72",
+        "/twilio/prod-9a",
+        "/zscaler/partner-biz-b9",
+        "/zscaler/spec-sales-0d",
+        "/doordash-usa/mgr-sales-68",
+        "/doordash-usa/assoc-mgr-5a",
+        "/ziprecruiter/enterprise-84",
+        "/doordash-usa/mgr-fin-2a",
+        "/reddit/data-sci-05",
+        "/reddit/data-sci-9f",
+        "/reddit/eng-mgr-cd",
+        "/webflow/corporate-d9",
+        "/twilio/presales-eng-07",
+        "/twilio/tech-prog-ec",
+        "/twilio/acct-e7"
       ]
     }
   ]

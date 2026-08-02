@@ -11555,6 +11555,646 @@
       "status": "ok",
       "path": "/proper/accountant-b4",
       "external_id": "proper_accountant-b4"
+    },
+    "498d1dfc-908e-423c-bf06-636acb0c9474": {
+      "status": "ok",
+      "path": "/planettechnologies/power-plat",
+      "external_id": "planettechnologies_power-plat"
+    },
+    "faf4961c-d63a-437f-8a01-1e3eccb900c3": {
+      "status": "ok",
+      "path": "/binance/sw-dev-eng",
+      "external_id": "binance_sw-dev-eng"
+    },
+    "6aa71418-a304-4acc-b066-6cbe6a26ae8b": {
+      "status": "ok",
+      "path": "/prismic/cust-success",
+      "external_id": "prismic_cust-success"
+    },
+    "67f57fd4-e4c5-45f1-abf0-6719a8c4c754": {
+      "status": "ok",
+      "path": "/binance/qa-eng-be",
+      "external_id": "binance_qa-eng-be"
+    },
+    "50e141af-34f5-4a4e-b55d-44caf4823dc4": {
+      "status": "ok",
+      "path": "/binance/qa-eng-com",
+      "external_id": "binance_qa-eng-com"
+    },
+    "4a153a4d-4e24-4312-8e77-b4548fb43e47": {
+      "status": "ok",
+      "path": "/binance/prod-mgr-kyb",
+      "external_id": "binance_prod-mgr-kyb"
+    },
+    "2b96e2ec-43d6-4aef-8e77-780520f11d6e": {
+      "status": "ok",
+      "path": "/binance/mkt-mgr-b0",
+      "external_id": "binance_mkt-mgr-b0"
+    },
+    "41f4f9ab-a59f-4376-bff6-77161b9852fa": {
+      "status": "ok",
+      "path": "/binance/large-language",
+      "external_id": "binance_large-language"
+    },
+    "a6cb9f71-a0db-41c4-b94e-2a45e257a1d8": {
+      "status": "ok",
+      "path": "/binance/institutiona-c7",
+      "external_id": "binance_institutiona-c7"
+    },
+    "08e557e0-b9e0-409a-9764-a8f1620a64da": {
+      "status": "ok",
+      "path": "/binance/fe-dev",
+      "external_id": "binance_fe-dev"
+    },
+    "d8c48a8c-e862-4327-b58e-e03e8a85966e": {
+      "status": "ok",
+      "path": "/binance/research-sci",
+      "external_id": "binance_research-sci"
+    },
+    "1c671a6f-089a-4593-bb6d-b2565c59a44e": {
+      "status": "ok",
+      "path": "/binance/growth-campaign",
+      "external_id": "binance_growth-campaign"
+    },
+    "270f1e4a-1028-4638-8c51-1099559ae7f3": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_regulatory) alre"
+    },
+    "155ee09b-972d-4ca6-b1e6-b9fc363f08af": {
+      "status": "ok",
+      "path": "/binance/golang-eng",
+      "external_id": "binance_golang-eng"
+    },
+    "35fc7a31-8faf-4770-a931-b5de03cc0a30": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_regulatory) alre"
+    },
+    "3dc78730-a46f-406e-b965-33e8012da078": {
+      "status": "ok",
+      "path": "/binance/global-fin",
+      "external_id": "binance_global-fin"
+    },
+    "fbfb194c-1997-4148-97ab-62c3c4517c9b": {
+      "status": "ok",
+      "path": "/binance/prod-spec",
+      "external_id": "binance_prod-spec"
+    },
+    "0034ca97-cdc3-487a-a365-e8f9a9d3e0ce": {
+      "status": "ok",
+      "path": "/binance/prod-mgr-7c",
+      "external_id": "binance_prod-mgr-7c"
+    },
+    "c321aaa7-4486-41f7-b658-6197641955ee": {
+      "status": "ok",
+      "path": "/binance/deputy-mlro",
+      "external_id": "binance_deputy-mlro"
+    },
+    "fdefc9ab-bbc9-4e9d-bd9a-9cfb372a9676": {
+      "status": "ok",
+      "path": "/binance/data-java",
+      "external_id": "binance_data-java"
+    },
+    "d9deb7ab-4939-4547-b74a-b9b3a8b78e25": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_data-sci) alread"
+    },
+    "ff2617bb-4db3-414a-88d3-c93bd294f2c6": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_data-sci) alread"
+    },
+    "8cffa2ef-4680-4eba-8d1f-f420f779edbc": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "ca675d05-2b2b-4afa-bd07-a08e6545a5fa": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "0259ce12-4152-402f-b14d-f19d2adbaa8d": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "9cd2914e-f2e9-40ae-996e-2da591316764": {
+      "status": "ok",
+      "path": "/binance/ops-spec-ba",
+      "external_id": "binance_ops-spec-ba"
+    },
+    "bf84e7de-c93d-47dc-a514-a09e2dc132ae": {
+      "status": "ok",
+      "path": "/binance/ios-eng-7e",
+      "external_id": "binance_ios-eng-7e"
+    },
+    "9a19ef5c-391a-46da-a55e-dd6f999e013c": {
+      "status": "ok",
+      "path": "/binance/internal-audit",
+      "external_id": "binance_internal-audit"
+    },
+    "74716ca6-929a-46d0-bc22-c3b7d205665a": {
+      "status": "ok",
+      "path": "/offchainlabs/be-eng",
+      "external_id": "offchainlabs_be-eng"
+    },
+    "2ad19c85-e54c-4287-9e66-790561e6e73b": {
+      "status": "ok",
+      "path": "/offchainlabs/sec-eng-cf",
+      "external_id": "offchainlabs_sec-eng-cf"
+    },
+    "37ef6655-6bda-4392-83db-2450572f3ba9": {
+      "status": "ok",
+      "path": "/offchainlabs/pr",
+      "external_id": "offchainlabs_pr"
+    },
+    "8ed88c9b-0ee9-4726-b731-0a6f7fd808f1": {
+      "status": "ok",
+      "path": "/offchainlabs/head-fin",
+      "external_id": "offchainlabs_head-fin"
+    },
+    "96cab1f2-f79f-43f8-900c-83ad3b887330": {
+      "status": "ok",
+      "path": "/openx/biz-data",
+      "external_id": "openx_biz-data"
+    },
+    "d1f76756-1b82-4f36-98f6-d3aeb81e2409": {
+      "status": "ok",
+      "path": "/binance/affiliate",
+      "external_id": "binance_affiliate"
+    },
+    "9c7e4c39-98ed-4660-9463-0fc63e555316": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "18781bb3-27a4-4113-a2c8-35b6fd746cf6": {
+      "status": "ok",
+      "path": "/dlocal/talent-pool",
+      "external_id": "dlocal_talent-pool"
+    },
+    "cb0015da-908e-4d27-861b-a6c19dd7ef85": {
+      "status": "ok",
+      "path": "/luxurypresence/biz-dev",
+      "external_id": "luxurypresence_biz-dev"
+    },
+    "0414de18-ee2d-4b6f-ba3d-5e7744c22111": {
+      "status": "ok",
+      "path": "/newton/devops-eng",
+      "external_id": "newton_devops-eng"
+    },
+    "b73f56e0-828b-4db3-ba54-2ed03151fba0": {
+      "status": "ok",
+      "path": "/mactores/tech-proj",
+      "external_id": "mactores_tech-proj"
+    },
+    "6a0100ab-4d4f-47aa-b76f-74d04328820b": {
+      "status": "ok",
+      "path": "/mactores/sales-ops-17",
+      "external_id": "mactores_sales-ops-17"
+    },
+    "2965c244-a53f-4c33-8e74-ba1194e4a6d2": {
+      "status": "ok",
+      "path": "/mactores/tech-content",
+      "external_id": "mactores_tech-content"
+    },
+    "89a821b3-d458-4185-ab6d-4ab9e0638227": {
+      "status": "ok",
+      "path": "/metabase/success-eng-c3",
+      "external_id": "metabase_success-eng-c3"
+    },
+    "818f898c-0f51-464c-b70d-e9d59625f869": {
+      "status": "ok",
+      "path": "/metabase/sw-eng-fe",
+      "external_id": "metabase_sw-eng-fe"
+    },
+    "72cccdba-526a-4977-a65f-d0fcbecccd48": {
+      "status": "ok",
+      "path": "/metabase/sw-eng-be",
+      "external_id": "metabase_sw-eng-be"
+    },
+    "d15cd1fc-6da1-46ce-9875-5cef5291b5a3": {
+      "status": "ok",
+      "path": "/mactores/java-eng-app",
+      "external_id": "mactores_java-eng-app"
+    },
+    "703e533d-4152-4240-955a-7e7be46c53bf": {
+      "status": "ok",
+      "path": "/metabase/prod-marketer",
+      "external_id": "metabase_prod-marketer"
+    },
+    "64e94434-032c-4975-ad0a-f0edb663b382": {
+      "status": "ok",
+      "path": "/metabase/enterprise",
+      "external_id": "metabase_enterprise"
+    },
+    "e9b361d8-754b-4f2a-83a1-078f2f10428c": {
+      "status": "ok",
+      "path": "/metabase/controller",
+      "external_id": "metabase_controller"
+    },
+    "717a442e-9856-4037-af83-834c3556dd69": {
+      "status": "ok",
+      "path": "/mactores/aws-devops-b0",
+      "external_id": "mactores_aws-devops-b0"
+    },
+    "6355a78a-244d-40d6-999f-39e70336722a": {
+      "status": "ok",
+      "path": "/mactores/generative",
+      "external_id": "mactores_generative"
+    },
+    "1804b3e8-829a-4bcd-929c-3d4e464172c3": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "8ff0e3d1-1306-4876-9b76-2f74d90fe901": {
+      "status": "ok",
+      "path": "/mactores/aws-data-46",
+      "external_id": "mactores_aws-data-46"
+    },
+    "b9a1cd88-8cfc-4160-9ef5-ae221d1ec898": {
+      "status": "ok",
+      "path": "/mactores/aws-data-7e",
+      "external_id": "mactores_aws-data-7e"
+    },
+    "9710b53b-d66f-4ecc-a402-8def2b5f8d15": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "841ccc47-a6f1-4850-9993-ae066269ca60": {
+      "status": "ok",
+      "path": "/heartbeathealth/clinic-research",
+      "external_id": "heartbeathealth_clinic-research"
+    },
+    "65e4a07f-2bb3-4aed-8147-7b7ed47a936e": {
+      "status": "ok",
+      "path": "/jobandtalent/it-support",
+      "external_id": "jobandtalent_it-support"
+    },
+    "fccd4f52-f56b-4d14-ac63-745968813d13": {
+      "status": "ok",
+      "path": "/jumpcloud/channel-rev",
+      "external_id": "jumpcloud_channel-rev"
+    },
+    "9f15c3a6-ac7e-4a7c-be2c-e2de17d111ab": {
+      "status": "ok",
+      "path": "/jumpcloud/partner-acct",
+      "external_id": "jumpcloud_partner-acct"
+    },
+    "c57cdfef-ab40-48c0-bf22-4cf78c334bd5": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "ba52e800-789f-4879-b61d-013ca247c2ef": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "62a8519c-a2ff-4b03-8d63-45bfa34ede42": {
+      "status": "ok",
+      "path": "/freedompay/sales-executive",
+      "external_id": "freedompay_sales-executive"
+    },
+    "6fd641ad-181f-46ac-ac58-a56e6ab7974e": {
+      "status": "ok",
+      "path": "/freedompay/strat-acct-e9",
+      "external_id": "freedompay_strat-acct-e9"
+    },
+    "e61a7136-5f2e-44fd-9cb4-784f837d51f0": {
+      "status": "ok",
+      "path": "/kinsta/biz-dev",
+      "external_id": "kinsta_biz-dev"
+    },
+    "1437c110-4ff4-4bee-9d9b-5553b7a3b2b6": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "a90e139d-b5a4-42f5-84d3-25e72b599474": {
+      "status": "ok",
+      "path": "/capital/devops-sre",
+      "external_id": "capital_devops-sre"
+    },
+    "97ba5071-ec89-4586-9890-e28c6f87d7bc": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "d8b9293f-3388-4e19-b576-17dabf1d0b78": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "1bf448dd-03a0-4eb0-8a6d-cfaf72fa115a": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "a94f40e0-8709-4e50-a81d-6e73d37fc383": {
+      "status": "ok",
+      "path": "/esper/strat-acct",
+      "external_id": "esper_strat-acct"
+    },
+    "a0b1fb14-d501-4e53-a53f-a7f1937a7a85": {
+      "status": "ok",
+      "path": "/greenlight/sw-eng-31",
+      "external_id": "greenlight_sw-eng-31"
+    },
+    "f4f1499f-4f89-41db-b347-1d48e4677d91": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "e10df4a0-24d9-4c19-99e1-fee930b7f964": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(captivateiq_sw-eng) alre"
+    },
+    "8edb8839-f4d5-4c5b-9842-3437428de79f": {
+      "status": "ok",
+      "path": "/captivateiq/mgr-eng",
+      "external_id": "captivateiq_mgr-eng"
+    },
+    "d7fc64e2-0cab-4b2d-9c3b-383a5dbfdfb3": {
+      "status": "ok",
+      "path": "/captivateiq/dir-prod-mkt",
+      "external_id": "captivateiq_dir-prod-mkt"
+    },
+    "832b2a5a-9789-4e36-81b6-38d54865431d": {
+      "status": "ok",
+      "path": "/bluecatnetworks/mid-market-80",
+      "external_id": "bluecatnetworks_mid-market-80"
+    },
+    "aee62fef-2747-4228-8668-c5c277d81e17": {
+      "status": "ok",
+      "path": "/bluecatnetworks/sales-eng",
+      "external_id": "bluecatnetworks_sales-eng"
+    },
+    "a3b8d233-fdba-4dd7-9692-c50eaaad8917": {
+      "status": "ok",
+      "path": "/bluecatnetworks/enterprise-a6",
+      "external_id": "bluecatnetworks_enterprise-a6"
+    },
+    "682603ca-949b-4727-80bc-822e5649b077": {
+      "status": "ok",
+      "path": "/bluecatnetworks/course-dev",
+      "external_id": "bluecatnetworks_course-dev"
+    },
+    "946656c6-efab-4bbd-a294-c374070c8641": {
+      "status": "ok",
+      "path": "/anchorage/eng-lead-sec",
+      "external_id": "anchorage_eng-lead-sec"
+    },
+    "5b3b2a2e-bcd0-469a-ada4-5c1a60074e48": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "e8b5d5e7-7937-499c-b76a-9b668c50c64e": {
+      "status": "ok",
+      "path": "/anchorage/member-prod-e4",
+      "external_id": "anchorage_member-prod-e4"
+    },
+    "b7192123-b061-48b9-8aea-f586f2825ad2": {
+      "status": "ok",
+      "path": "/anchorage/member-tech-8e",
+      "external_id": "anchorage_member-tech-8e"
+    },
+    "a7e3eb16-b9e6-4d2e-aa26-9f6502c36721": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "3e2a17de-a7b7-4919-a5c3-4eb78e9d014b": {
+      "status": "ok",
+      "path": "/anchorage/member-tech-d7",
+      "external_id": "anchorage_member-tech-d7"
+    },
+    "27362f9b-e8a5-43a3-b388-f631d465b626": {
+      "status": "ok",
+      "path": "/anchorage/relationship",
+      "external_id": "anchorage_relationship"
+    },
+    "b1c6c8fe-744d-43f3-8b37-18bc2a013922": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anchorage_derivatives) a"
+    },
+    "ba980df2-b8e2-410b-81ca-e1fd5437afe9": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "7ab81562-2112-465b-a122-ddd4fe7d7ef0": {
+      "status": "ok",
+      "path": "/anchorage/prod-lead",
+      "external_id": "anchorage_prod-lead"
+    },
+    "3ff1e46d-5b57-4e06-b975-e81f1e1047cf": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "38689498-429e-4597-95f5-c65eb6f68da8": {
+      "status": "ok",
+      "path": "/doola/tax-preparer",
+      "external_id": "doola_tax-preparer"
+    },
+    "585e1ee6-29ce-4041-b0aa-1730675f1506": {
+      "status": "ok",
+      "path": "/arcadia/implementation",
+      "external_id": "arcadia_implementation"
+    },
+    "0ce3600c-5ba9-495b-b936-24fd7ed42ab5": {
+      "status": "ok",
+      "path": "/arcadia/mgr-training",
+      "external_id": "arcadia_mgr-training"
+    },
+    "253d4387-4621-4eda-bcb1-f8f72209345d": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(arcadia_vp-sales) alread"
+    },
+    "01ee3c4a-7026-41fc-97f1-1881fd535a6a": {
+      "status": "ok",
+      "path": "/anchorage/partnerships",
+      "external_id": "anchorage_partnerships"
+    },
+    "ccac4a52-d222-42e4-8c07-9a66d682911e": {
+      "status": "ok",
+      "path": "/airalo/cust-retention",
+      "external_id": "airalo_cust-retention"
+    },
+    "05ba6abf-33d3-46b0-ba89-aa22791c5a2a": {
+      "status": "ok",
+      "path": "/civitech/rev-ops-spec",
+      "external_id": "civitech_rev-ops-spec"
+    },
+    "1ff3478f-7bc2-4223-8176-f301d942a843": {
+      "status": "ok",
+      "path": "/appzen/enterprise",
+      "external_id": "appzen_enterprise"
+    },
+    "1c210550-bc40-478e-8779-9b02a9b22863": {
+      "status": "ok",
+      "path": "/artera/sw-eng",
+      "external_id": "artera_sw-eng"
+    },
+    "25b83a96-99c3-4792-a466-ff0287ebe4b5": {
+      "status": "ok",
+      "path": "/artera/sales-acct-60",
+      "external_id": "artera_sales-acct-60"
+    },
+    "aa67c1bc-e47d-4f62-964e-346130f70ea1": {
+      "status": "ok",
+      "path": "/artera/sales-acct-b0",
+      "external_id": "artera_sales-acct-b0"
+    },
+    "60508571-5a17-432f-9ee4-083d61b27cd9": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "fc24b26f-51b4-4f4b-bb49-a719d654f929": {
+      "status": "ok",
+      "path": "/artera/sales-acct-a3",
+      "external_id": "artera_sales-acct-a3"
+    },
+    "fe83872c-8009-479e-b167-6457e7a6a746": {
+      "status": "ok",
+      "path": "/centrifuge/tokenization",
+      "external_id": "centrifuge_tokenization"
+    },
+    "34b77fe6-cf40-4780-9730-12a2a1977e46": {
+      "status": "ok",
+      "path": "/collabora/embedded-linux",
+      "external_id": "collabora_embedded-linux"
+    },
+    "cc3ffac1-f69b-4d78-9d2d-f8d3a94b58b0": {
+      "status": "ok",
+      "path": "/collabora/linux-kernel",
+      "external_id": "collabora_linux-kernel"
+    },
+    "2961de2c-1c47-4106-a236-6450fe586be9": {
+      "status": "ok",
+      "path": "/clarifyhealth/engagement",
+      "external_id": "clarifyhealth_engagement"
+    },
+    "79359795-8105-4174-bf56-98d8c3cb6e3b": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "f6e5cbd5-9f6d-44e6-bb9d-ce821851d070": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "0bb07f78-48bb-4159-a613-2e0da0db6049": {
+      "status": "ok",
+      "path": "/binance/prod-design",
+      "external_id": "binance_prod-design"
+    },
+    "761d09f1-35bf-4dc0-b97a-08e82ef09031": {
+      "status": "ok",
+      "path": "/bloom/dir-brand",
+      "external_id": "bloom_dir-brand"
+    },
+    "183b2efd-b5cb-42c9-aab3-c50d5fbcc268": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "2927a7d8-0094-45b1-8b68-fc6fefddfca4": {
+      "status": "ok",
+      "path": "/peoplegrove/client",
+      "external_id": "peoplegrove_client"
+    },
+    "665f3a4a-e2f5-4b15-ace1-94a59602d629": {
+      "status": "ok",
+      "path": "/peoplegrove/prog-coord",
+      "external_id": "peoplegrove_prog-coord"
+    },
+    "84f3ec3a-a6c0-41d0-a2fd-38195b9aaf7f": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "5461b4ec-da98-4aae-adf9-6904aa63ea33": {
+      "status": "ok",
+      "path": "/pointclickcare/cust-ops-f9",
+      "external_id": "pointclickcare_cust-ops-f9"
+    },
+    "19462313-307e-4fba-8204-6beeb9382523": {
+      "status": "ok",
+      "path": "/binance/app-sec-arch",
+      "external_id": "binance_app-sec-arch"
+    },
+    "43b6f626-08ce-4609-8124-9c45052fdeb9": {
+      "status": "ok",
+      "path": "/jumpcloud/tech-prog",
+      "external_id": "jumpcloud_tech-prog"
+    },
+    "64c892c9-51a7-43cb-8df7-06410191104c": {
+      "status": "ok",
+      "path": "/aircall/number-ops",
+      "external_id": "aircall_number-ops"
+    },
+    "56721a8d-b757-4b6c-90fb-1029ec86986e": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "5dfb2fdd-605d-4855-b8e8-1f013f61ed27": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "4828c1d5-5467-42a6-83aa-dc7005b96718": {
+      "status": "ok",
+      "path": "/aircall/billing-spec",
+      "external_id": "aircall_billing-spec"
+    },
+    "d9a900d4-3205-4d1e-aeb8-0752593ffb3b": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pointclickcare_partner-m"
+    },
+    "3996d9a9-0d3b-463c-8aa0-b1ece8021de4": {
+      "status": "ok",
+      "path": "/people-ai/lead-cust",
+      "external_id": "people-ai_lead-cust"
+    },
+    "6d20ec52-e8db-4112-9043-58ad85253b6f": {
+      "status": "ok",
+      "path": "/fiscalnote/policy-analyst",
+      "external_id": "fiscalnote_policy-analyst"
+    },
+    "0204e519-4f3e-4180-aaa5-e4b98c1a2351": {
+      "status": "ok",
+      "path": "/captivateiq/mgr-events",
+      "external_id": "captivateiq_mgr-events"
+    },
+    "0a3be9e1-f97d-44ad-ae34-c003b0f8a83a": {
+      "status": "skip",
+      "reason": "lever_404"
+    },
+    "1511e4db-e24b-4e6d-bb05-c8d4b36eab45": {
+      "status": "ok",
+      "path": "/bloom/logistics-coord",
+      "external_id": "bloom_logistics-coord"
+    },
+    "d61f37ef-f1fd-4c4d-9e49-8ce29407cb76": {
+      "status": "ok",
+      "path": "/jumpcloud/acct-mgr-79",
+      "external_id": "jumpcloud_acct-mgr-79"
+    },
+    "19c97a66-0f23-413a-89c1-d209333b825e": {
+      "status": "ok",
+      "path": "/heartbeathealth/prod-mgr",
+      "external_id": "heartbeathealth_prod-mgr"
+    },
+    "cb74cc4c-1f1e-40ad-a514-978ad61eb110": {
+      "status": "ok",
+      "path": "/15five/dir-prod",
+      "external_id": "15five_dir-prod"
+    },
+    "45707789-740f-4867-b1cc-59075481ecd8": {
+      "status": "ok",
+      "path": "/everstar/lead-mechanical",
+      "external_id": "everstar_lead-mechanical"
+    },
+    "3a1c9f07-e142-4481-9467-e4a4aabf2ea8": {
+      "status": "ok",
+      "path": "/everstar/qa-eng-uav",
+      "external_id": "everstar_qa-eng-uav"
+    },
+    "303ee9e8-4686-4aab-8ebe-0dd4cb979f98": {
+      "status": "ok",
+      "path": "/everstar/prod-mkt-mgr",
+      "external_id": "everstar_prod-mkt-mgr"
+    },
+    "b6c36c7f-a30d-48ff-850f-ec53f1ce8841": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "bd72c011-cb49-4bdd-9294-109379c74d55": {
+      "status": "skip",
+      "reason": "html_short"
     }
   },
   "doneIds": [
@@ -13939,7 +14579,134 @@
     "41ba09c5-f9b6-4485-80fe-9952f84d8d5c",
     "152047df-fe72-475e-ba5f-2a948f42addb",
     "6d8e7e87-6421-4e21-9433-b497432eb904",
-    "cd4e8f7e-a305-44f9-a577-4ec5668054b9"
+    "cd4e8f7e-a305-44f9-a577-4ec5668054b9",
+    "498d1dfc-908e-423c-bf06-636acb0c9474",
+    "faf4961c-d63a-437f-8a01-1e3eccb900c3",
+    "6aa71418-a304-4acc-b066-6cbe6a26ae8b",
+    "67f57fd4-e4c5-45f1-abf0-6719a8c4c754",
+    "50e141af-34f5-4a4e-b55d-44caf4823dc4",
+    "4a153a4d-4e24-4312-8e77-b4548fb43e47",
+    "2b96e2ec-43d6-4aef-8e77-780520f11d6e",
+    "41f4f9ab-a59f-4376-bff6-77161b9852fa",
+    "a6cb9f71-a0db-41c4-b94e-2a45e257a1d8",
+    "08e557e0-b9e0-409a-9764-a8f1620a64da",
+    "d8c48a8c-e862-4327-b58e-e03e8a85966e",
+    "1c671a6f-089a-4593-bb6d-b2565c59a44e",
+    "155ee09b-972d-4ca6-b1e6-b9fc363f08af",
+    "3dc78730-a46f-406e-b965-33e8012da078",
+    "fbfb194c-1997-4148-97ab-62c3c4517c9b",
+    "0034ca97-cdc3-487a-a365-e8f9a9d3e0ce",
+    "c321aaa7-4486-41f7-b658-6197641955ee",
+    "fdefc9ab-bbc9-4e9d-bd9a-9cfb372a9676",
+    "8cffa2ef-4680-4eba-8d1f-f420f779edbc",
+    "ca675d05-2b2b-4afa-bd07-a08e6545a5fa",
+    "0259ce12-4152-402f-b14d-f19d2adbaa8d",
+    "9cd2914e-f2e9-40ae-996e-2da591316764",
+    "bf84e7de-c93d-47dc-a514-a09e2dc132ae",
+    "9a19ef5c-391a-46da-a55e-dd6f999e013c",
+    "74716ca6-929a-46d0-bc22-c3b7d205665a",
+    "2ad19c85-e54c-4287-9e66-790561e6e73b",
+    "37ef6655-6bda-4392-83db-2450572f3ba9",
+    "8ed88c9b-0ee9-4726-b731-0a6f7fd808f1",
+    "96cab1f2-f79f-43f8-900c-83ad3b887330",
+    "d1f76756-1b82-4f36-98f6-d3aeb81e2409",
+    "9c7e4c39-98ed-4660-9463-0fc63e555316",
+    "18781bb3-27a4-4113-a2c8-35b6fd746cf6",
+    "cb0015da-908e-4d27-861b-a6c19dd7ef85",
+    "0414de18-ee2d-4b6f-ba3d-5e7744c22111",
+    "b73f56e0-828b-4db3-ba54-2ed03151fba0",
+    "6a0100ab-4d4f-47aa-b76f-74d04328820b",
+    "2965c244-a53f-4c33-8e74-ba1194e4a6d2",
+    "89a821b3-d458-4185-ab6d-4ab9e0638227",
+    "818f898c-0f51-464c-b70d-e9d59625f869",
+    "72cccdba-526a-4977-a65f-d0fcbecccd48",
+    "d15cd1fc-6da1-46ce-9875-5cef5291b5a3",
+    "703e533d-4152-4240-955a-7e7be46c53bf",
+    "64e94434-032c-4975-ad0a-f0edb663b382",
+    "e9b361d8-754b-4f2a-83a1-078f2f10428c",
+    "717a442e-9856-4037-af83-834c3556dd69",
+    "6355a78a-244d-40d6-999f-39e70336722a",
+    "1804b3e8-829a-4bcd-929c-3d4e464172c3",
+    "8ff0e3d1-1306-4876-9b76-2f74d90fe901",
+    "b9a1cd88-8cfc-4160-9ef5-ae221d1ec898",
+    "9710b53b-d66f-4ecc-a402-8def2b5f8d15",
+    "841ccc47-a6f1-4850-9993-ae066269ca60",
+    "65e4a07f-2bb3-4aed-8147-7b7ed47a936e",
+    "fccd4f52-f56b-4d14-ac63-745968813d13",
+    "9f15c3a6-ac7e-4a7c-be2c-e2de17d111ab",
+    "c57cdfef-ab40-48c0-bf22-4cf78c334bd5",
+    "ba52e800-789f-4879-b61d-013ca247c2ef",
+    "62a8519c-a2ff-4b03-8d63-45bfa34ede42",
+    "6fd641ad-181f-46ac-ac58-a56e6ab7974e",
+    "e61a7136-5f2e-44fd-9cb4-784f837d51f0",
+    "1437c110-4ff4-4bee-9d9b-5553b7a3b2b6",
+    "a90e139d-b5a4-42f5-84d3-25e72b599474",
+    "97ba5071-ec89-4586-9890-e28c6f87d7bc",
+    "d8b9293f-3388-4e19-b576-17dabf1d0b78",
+    "1bf448dd-03a0-4eb0-8a6d-cfaf72fa115a",
+    "a94f40e0-8709-4e50-a81d-6e73d37fc383",
+    "a0b1fb14-d501-4e53-a53f-a7f1937a7a85",
+    "f4f1499f-4f89-41db-b347-1d48e4677d91",
+    "8edb8839-f4d5-4c5b-9842-3437428de79f",
+    "d7fc64e2-0cab-4b2d-9c3b-383a5dbfdfb3",
+    "832b2a5a-9789-4e36-81b6-38d54865431d",
+    "aee62fef-2747-4228-8668-c5c277d81e17",
+    "a3b8d233-fdba-4dd7-9692-c50eaaad8917",
+    "682603ca-949b-4727-80bc-822e5649b077",
+    "946656c6-efab-4bbd-a294-c374070c8641",
+    "5b3b2a2e-bcd0-469a-ada4-5c1a60074e48",
+    "e8b5d5e7-7937-499c-b76a-9b668c50c64e",
+    "b7192123-b061-48b9-8aea-f586f2825ad2",
+    "a7e3eb16-b9e6-4d2e-aa26-9f6502c36721",
+    "3e2a17de-a7b7-4919-a5c3-4eb78e9d014b",
+    "27362f9b-e8a5-43a3-b388-f631d465b626",
+    "ba980df2-b8e2-410b-81ca-e1fd5437afe9",
+    "7ab81562-2112-465b-a122-ddd4fe7d7ef0",
+    "3ff1e46d-5b57-4e06-b975-e81f1e1047cf",
+    "38689498-429e-4597-95f5-c65eb6f68da8",
+    "585e1ee6-29ce-4041-b0aa-1730675f1506",
+    "0ce3600c-5ba9-495b-b936-24fd7ed42ab5",
+    "01ee3c4a-7026-41fc-97f1-1881fd535a6a",
+    "ccac4a52-d222-42e4-8c07-9a66d682911e",
+    "05ba6abf-33d3-46b0-ba89-aa22791c5a2a",
+    "1ff3478f-7bc2-4223-8176-f301d942a843",
+    "1c210550-bc40-478e-8779-9b02a9b22863",
+    "25b83a96-99c3-4792-a466-ff0287ebe4b5",
+    "aa67c1bc-e47d-4f62-964e-346130f70ea1",
+    "60508571-5a17-432f-9ee4-083d61b27cd9",
+    "fc24b26f-51b4-4f4b-bb49-a719d654f929",
+    "fe83872c-8009-479e-b167-6457e7a6a746",
+    "34b77fe6-cf40-4780-9730-12a2a1977e46",
+    "cc3ffac1-f69b-4d78-9d2d-f8d3a94b58b0",
+    "2961de2c-1c47-4106-a236-6450fe586be9",
+    "79359795-8105-4174-bf56-98d8c3cb6e3b",
+    "f6e5cbd5-9f6d-44e6-bb9d-ce821851d070",
+    "0bb07f78-48bb-4159-a613-2e0da0db6049",
+    "761d09f1-35bf-4dc0-b97a-08e82ef09031",
+    "183b2efd-b5cb-42c9-aab3-c50d5fbcc268",
+    "2927a7d8-0094-45b1-8b68-fc6fefddfca4",
+    "665f3a4a-e2f5-4b15-ace1-94a59602d629",
+    "84f3ec3a-a6c0-41d0-a2fd-38195b9aaf7f",
+    "5461b4ec-da98-4aae-adf9-6904aa63ea33",
+    "19462313-307e-4fba-8204-6beeb9382523",
+    "43b6f626-08ce-4609-8124-9c45052fdeb9",
+    "64c892c9-51a7-43cb-8df7-06410191104c",
+    "56721a8d-b757-4b6c-90fb-1029ec86986e",
+    "5dfb2fdd-605d-4855-b8e8-1f013f61ed27",
+    "4828c1d5-5467-42a6-83aa-dc7005b96718",
+    "3996d9a9-0d3b-463c-8aa0-b1ece8021de4",
+    "6d20ec52-e8db-4112-9043-58ad85253b6f",
+    "0204e519-4f3e-4180-aaa5-e4b98c1a2351",
+    "0a3be9e1-f97d-44ad-ae34-c003b0f8a83a",
+    "1511e4db-e24b-4e6d-bb05-c8d4b36eab45",
+    "d61f37ef-f1fd-4c4d-9e49-8ce29407cb76",
+    "19c97a66-0f23-413a-89c1-d209333b825e",
+    "cb74cc4c-1f1e-40ad-a514-978ad61eb110",
+    "45707789-740f-4867-b1cc-59075481ecd8",
+    "3a1c9f07-e142-4481-9467-e4a4aabf2ea8",
+    "303ee9e8-4686-4aab-8ebe-0dd4cb979f98",
+    "b6c36c7f-a30d-48ff-850f-ec53f1ce8841",
+    "bd72c011-cb49-4bdd-9294-109379c74d55"
   ],
   "skipped": {},
   "batches": [
@@ -14109,6 +14876,56 @@
         "/jumio/enterprise",
         "/iherb/sw-eng-78",
         "/iherb/dir-prod"
+      ]
+    },
+    {
+      "batchNum": 5,
+      "worker": 0,
+      "at": "2026-08-02T12:32:27.172Z",
+      "attempted": 497,
+      "ok": 400,
+      "skip": 78,
+      "fail": 19,
+      "reasons": {
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_prod-eng) already ": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_eng-mgr) already e": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_prod-support) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_enterprise) alread": 2,
+        "rewrite_slop": 4,
+        "gh_404": 31,
+        "gh_short": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(gitlab_biz-acct) already": 1,
+        "lever_404": 44,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_cust-service) al": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_regulatory) alre": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_data-sci) alread": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(captivateiq_sw-eng) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anchorage_derivatives) a": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(arcadia_vp-sales) alread": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pointclickcare_partner-m": 1,
+        "html_short": 2
+      },
+      "samplePaths": [
+        "/grafana-labs/be-eng-4c",
+        "/grafana-labs/be-eng-d7",
+        "/grafana-labs/be-eng-1e",
+        "/grafana-labs/be-eng-aa",
+        "/grafana-labs/ml-eng-2a",
+        "/grafana-labs/ml-eng-47",
+        "/gitlab/mgr-sol-b3",
+        "/grafana-labs/ml-eng-99",
+        "/grafana-labs/ml-eng-c9",
+        "/gitlab/mgr-sol-b5",
+        "/cloudflare/distributed-40",
+        "/gitlab/mgr-b2",
+        "/reddit/data-sci-f3",
+        "/zscaler/tech-prog-b7",
+        "/zscaler/sre-eng-d0",
+        "/doordash-usa/assoc-mgr-19",
+        "/ziprecruiter/sw-eng-80",
+        "/reddit/sw-eng-ee",
+        "/reddit/eng-mgr-8e",
+        "/reddit/data-sci-7d"
       ]
     }
   ]
