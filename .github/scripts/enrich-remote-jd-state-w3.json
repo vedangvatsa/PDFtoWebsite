@@ -8174,6 +8174,678 @@
       "status": "ok",
       "path": "/zscaler/sales-ops",
       "external_id": "zscaler_sales-ops"
+    },
+    "10497647-9ddc-4209-a008-9a9e3a72f894": {
+      "status": "ok",
+      "path": "/zscaler/sales-eng-64",
+      "external_id": "zscaler_sales-eng-64"
+    },
+    "a1c4802e-59cc-42b6-a06d-2cd5550a20b8": {
+      "status": "ok",
+      "path": "/zscaler/sales-eng-32",
+      "external_id": "zscaler_sales-eng-32"
+    },
+    "f09a106a-a243-4742-a4b6-0169891494e8": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "70fb4080-4937-437d-b6ea-704c16cc3b7a": {
+      "status": "ok",
+      "path": "/zscaler/acct-ce",
+      "external_id": "zscaler_acct-ce"
+    },
+    "68df7fbb-05eb-4048-8089-2c52cef56744": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "be5f14c2-9afa-4bf9-aed9-48debff1d759": {
+      "status": "ok",
+      "path": "/zscaler/partner-biz",
+      "external_id": "zscaler_partner-biz"
+    },
+    "914b72b6-d214-4738-971e-3f188281f414": {
+      "status": "ok",
+      "path": "/zscaler/partner-sol",
+      "external_id": "zscaler_partner-sol"
+    },
+    "5a6d2501-e302-4f59-aa20-76d8f62a9139": {
+      "status": "ok",
+      "path": "/zscaler/insider-risk",
+      "external_id": "zscaler_insider-risk"
+    },
+    "4dddcbf2-2c55-48a2-b73c-da00d88a17a3": {
+      "status": "ok",
+      "path": "/zscaler/acct-d1",
+      "external_id": "zscaler_acct-d1"
+    },
+    "cb28c655-d021-42c6-bac3-f2f5b92f979f": {
+      "status": "ok",
+      "path": "/zscaler/dir-prod",
+      "external_id": "zscaler_dir-prod"
+    },
+    "d4077b00-6a41-497f-95a9-8c0cb9b1b642": {
+      "status": "ok",
+      "path": "/zuora/enterprise",
+      "external_id": "zuora_enterprise"
+    },
+    "d6580d23-317e-4e24-a0ea-8445eb6a1990": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "d9a7887c-e521-4ef4-83af-4f100ef332cd": {
+      "status": "ok",
+      "path": "/spacexai/fin-expert",
+      "external_id": "spacexai_fin-expert"
+    },
+    "d7ecf0f6-5a3d-4cfb-878e-f196da1edcda": {
+      "status": "ok",
+      "path": "/doordash-usa/biz-eng",
+      "external_id": "doordash-usa_biz-eng"
+    },
+    "19e14928-0124-4ef3-bf93-8728cb3b9acf": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(doordash-usa_sec-eng) al"
+    },
+    "c1fde53b-960f-4727-9ec4-4506fcde265c": {
+      "status": "ok",
+      "path": "/doordash-usa/sec-eng-cust",
+      "external_id": "doordash-usa_sec-eng-cust"
+    },
+    "c81c0135-676d-4dc8-83f1-256a5550efe5": {
+      "status": "ok",
+      "path": "/doordash-usa/workplace",
+      "external_id": "doordash-usa_workplace"
+    },
+    "2ac3f3eb-9200-4768-8175-406098f14ae6": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "3d70dc0e-879a-4a0f-819e-0148c09cb362": {
+      "status": "ok",
+      "path": "/doordash-usa/sec-eng-red",
+      "external_id": "doordash-usa_sec-eng-red"
+    },
+    "d9d9efab-2ad2-4dbb-a749-d9d98fea2ce0": {
+      "status": "ok",
+      "path": "/doordash-usa/mgr-fin",
+      "external_id": "doordash-usa_mgr-fin"
+    },
+    "f8637e70-07c8-45b0-9cf0-0ed37e7264a3": {
+      "status": "ok",
+      "path": "/doordash-usa/assoc-sales",
+      "external_id": "doordash-usa_assoc-sales"
+    },
+    "a807e3dc-1b50-4be7-8d96-9fd78a8ff5ff": {
+      "status": "ok",
+      "path": "/doordash-usa/assoc-dasher",
+      "external_id": "doordash-usa_assoc-dasher"
+    },
+    "014799a7-c24d-4585-88b5-8d8a7dd30bf9": {
+      "status": "ok",
+      "path": "/doordash-usa/assoc-innovation",
+      "external_id": "doordash-usa_assoc-innovation"
+    },
+    "61b644b0-c0ad-46cb-8f7e-ca24ab4c3850": {
+      "status": "ok",
+      "path": "/doordash-usa/dir-enterprise",
+      "external_id": "doordash-usa_dir-enterprise"
+    },
+    "9dafc6c0-af6d-4818-a118-2bef351a7b94": {
+      "status": "ok",
+      "path": "/doordash-usa/enterprise",
+      "external_id": "doordash-usa_enterprise"
+    },
+    "10ffbdba-ea09-466a-b3ab-18e52deb41fa": {
+      "status": "ok",
+      "path": "/doordash-usa/assoc-mgr",
+      "external_id": "doordash-usa_assoc-mgr"
+    },
+    "47b031d5-cc2d-427d-8683-cfc4d70e8767": {
+      "status": "ok",
+      "path": "/zenoti/acct-mgr",
+      "external_id": "zenoti_acct-mgr"
+    },
+    "27330634-01c4-4b1e-95b1-8fccf122a1d8": {
+      "status": "ok",
+      "path": "/ziprecruiter/sw-eng-ml",
+      "external_id": "ziprecruiter_sw-eng-ml"
+    },
+    "7e98ed66-a972-4759-ae7f-f40b6218cec5": {
+      "status": "ok",
+      "path": "/ziprecruiter/people-biz",
+      "external_id": "ziprecruiter_people-biz"
+    },
+    "dd6f0a75-c0ae-4a97-b0d6-36a654df0563": {
+      "status": "ok",
+      "path": "/ziprecruiter/enterprise",
+      "external_id": "ziprecruiter_enterprise"
+    },
+    "a8837d0f-4c4e-4a3f-b43a-8c84ebbadc5f": {
+      "status": "ok",
+      "path": "/ziprecruiter/dir-prod",
+      "external_id": "ziprecruiter_dir-prod"
+    },
+    "9f373972-5621-4ad8-9976-2fdf1d4d0fc8": {
+      "status": "ok",
+      "path": "/wonderschool/government",
+      "external_id": "wonderschool_government"
+    },
+    "a03a6fd2-ab5e-418e-b06f-d91426b5d8c8": {
+      "status": "ok",
+      "path": "/reddit/eng-ads-biz",
+      "external_id": "reddit_eng-ads-biz"
+    },
+    "871fcc9c-3f3a-449a-848b-3a151ba34d6b": {
+      "status": "ok",
+      "path": "/reddit/sre-eng",
+      "external_id": "reddit_sre-eng"
+    },
+    "f47a48ff-4a00-4800-8264-3eb53c0bb3d5": {
+      "status": "ok",
+      "path": "/reddit/ml-eng-d6",
+      "external_id": "reddit_ml-eng-d6"
+    },
+    "fbd5e3b7-9f88-4192-9ee3-4d9e840751fb": {
+      "status": "ok",
+      "path": "/reddit/sw-eng-data",
+      "external_id": "reddit_sw-eng-data"
+    },
+    "3ce71242-509e-4442-9165-8392f4f3a16d": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "eb62582d-6ac1-4394-aa90-7856f3ae17e0": {
+      "status": "ok",
+      "path": "/reddit/sw-eng-ads",
+      "external_id": "reddit_sw-eng-ads"
+    },
+    "3fe18add-febd-4892-9040-33d7d06f5186": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_data-sci-ads) alr"
+    },
+    "66148595-63a1-421d-9e81-fed58a92f740": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_data-sci) already"
+    },
+    "8707b70d-8e84-4464-8610-e1126a95f571": {
+      "status": "ok",
+      "path": "/reddit/sw-eng-8b",
+      "external_id": "reddit_sw-eng-8b"
+    },
+    "96620cd8-085b-476c-b7e5-67c809d58361": {
+      "status": "ok",
+      "path": "/reddit/tax-mgr",
+      "external_id": "reddit_tax-mgr"
+    },
+    "03a0237c-284d-4342-aede-d1fe4d35f93c": {
+      "status": "ok",
+      "path": "/reddit/ml-eng-genai",
+      "external_id": "reddit_ml-eng-genai"
+    },
+    "2c38410e-aa61-4fb8-930d-04654490799b": {
+      "status": "ok",
+      "path": "/reddit/ml-22",
+      "external_id": "reddit_ml-22"
+    },
+    "28de5b2b-6c9a-49c6-b2c7-78abee44cddf": {
+      "status": "ok",
+      "path": "/reddit/ads-conversion",
+      "external_id": "reddit_ads-conversion"
+    },
+    "8a87d5fb-3582-4a96-9e09-074dcf4a76dd": {
+      "status": "ok",
+      "path": "/webflow/sw-eng-8d",
+      "external_id": "webflow_sw-eng-8d"
+    },
+    "23ecabab-70c6-44f5-aaa1-dcc95368029b": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "f8e7546b-85fc-41c4-a1d2-941be93f5245": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "5eebb2ec-f4af-452d-8956-ffc85b75b1ff": {
+      "status": "ok",
+      "path": "/reddit/fe-sw-eng",
+      "external_id": "reddit_fe-sw-eng"
+    },
+    "969490b8-fb07-4d01-92bb-1dbc8a9110c5": {
+      "status": "ok",
+      "path": "/webflow/infra-eng",
+      "external_id": "webflow_infra-eng"
+    },
+    "0f5ff093-e485-46e4-869b-8dd874aa1f61": {
+      "status": "ok",
+      "path": "/webflow/corporate-acct",
+      "external_id": "webflow_corporate-acct"
+    },
+    "ab299f38-26d2-42bc-917b-9977aeadbb25": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_tech-prog) alread"
+    },
+    "3f19659c-21a4-475a-812d-55eb3cf2ef6f": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_data-sci-ads) alr"
+    },
+    "51e0a2fe-25fd-4be8-b5ec-70acacea4fba": {
+      "status": "ok",
+      "path": "/reddit/fullstk-sw",
+      "external_id": "reddit_fullstk-sw"
+    },
+    "83d71f4e-7eda-4b0e-9480-867953270358": {
+      "status": "ok",
+      "path": "/twilio/transfer-pricing",
+      "external_id": "twilio_transfer-pricing"
+    },
+    "68c467c9-5a10-4934-a61b-c5db84523777": {
+      "status": "ok",
+      "path": "/reddit/eng-mgr",
+      "external_id": "reddit_eng-mgr"
+    },
+    "d51817a2-b914-4359-a967-15abcbc4eb12": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "b8105ebf-b2c2-48dc-a56d-75670d25eaf9": {
+      "status": "ok",
+      "path": "/twilio/sw-eng-91",
+      "external_id": "twilio_sw-eng-91"
+    },
+    "47c0cbfc-d400-4c83-bff2-594ca5843761": {
+      "status": "ok",
+      "path": "/twilio/strat-acct",
+      "external_id": "twilio_strat-acct"
+    },
+    "6c735e31-1624-4847-8fd2-c072782ef16d": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "9c3c3560-bcf7-4856-a866-ac88c6d773d4": {
+      "status": "ok",
+      "path": "/reddit/dir-eng-dev",
+      "external_id": "reddit_dir-eng-dev"
+    },
+    "aeac8a29-21e8-4052-8245-13a8d994b2cf": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "f1c6281d-24a3-4323-a9f5-b7b5a8ac6f8a": {
+      "status": "ok",
+      "path": "/twilio/sol-arch",
+      "external_id": "twilio_sol-arch"
+    },
+    "96a1008c-dc98-4b15-a8c9-9957e2b34d12": {
+      "status": "ok",
+      "path": "/twilio/strat-acct-35",
+      "external_id": "twilio_strat-acct-35"
+    },
+    "61eee106-3466-43f3-9938-f6636aa7b8e8": {
+      "status": "ok",
+      "path": "/twilio/mgr-tech",
+      "external_id": "twilio_mgr-tech"
+    },
+    "01fa6941-ee6a-4912-9274-1078d7713427": {
+      "status": "ok",
+      "path": "/twilio/it-internal",
+      "external_id": "twilio_it-internal"
+    },
+    "734c0b7c-4ec3-46c1-9d5a-4b7d3d6170b1": {
+      "status": "ok",
+      "path": "/twilio/fe-sw-eng",
+      "external_id": "twilio_fe-sw-eng"
+    },
+    "24a4d87f-42f8-4985-be31-ad7405ecb5b7": {
+      "status": "ok",
+      "path": "/twilio/dir-strat-67",
+      "external_id": "twilio_dir-strat-67"
+    },
+    "6381aa45-97a5-455a-8205-a1b00e5ac353": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "99483efd-18a5-456c-bd0e-6d9057fd3abe": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "18f2537f-0644-4798-bf0d-ca348eec861a": {
+      "status": "ok",
+      "path": "/twilio/dir-prod",
+      "external_id": "twilio_dir-prod"
+    },
+    "f4a0c1a8-f334-4b5f-8175-111cc8e45f16": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "b758970e-beba-4071-9054-39021405cf4f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "308afb20-4824-46e0-b64e-7d95ab0b2055": {
+      "status": "ok",
+      "path": "/twilio/mgr-gtma",
+      "external_id": "twilio_mgr-gtma"
+    },
+    "0904a3e9-50a3-4057-af10-f0d217c37d2c": {
+      "status": "ok",
+      "path": "/twilio/sw-eng-10",
+      "external_id": "twilio_sw-eng-10"
+    },
+    "1eff3908-cc3f-419d-9f63-f4f354fccc8f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "51cb3c41-de7e-4302-84d3-55cd83261ff4": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "4b5c8b0d-b8de-479a-b4cc-2dc285b03d78": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "bdda67c0-a641-4804-9122-209f9e632030": {
+      "status": "ok",
+      "path": "/verve/ios-eng-sdk",
+      "external_id": "verve_ios-eng-sdk"
+    },
+    "3997e5ca-006a-493e-a1c5-6cafc725649f": {
+      "status": "ok",
+      "path": "/waymark/data-eng",
+      "external_id": "waymark_data-eng"
+    },
+    "2fc1d114-5eb8-465e-b36d-7a76e20f3dd4": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "d189bfa1-d5d3-4988-a961-c2deaff5f8ae": {
+      "status": "ok",
+      "path": "/vonage/sales-dev-09",
+      "external_id": "vonage_sales-dev-09"
+    },
+    "4a8ab67b-cc99-4a06-a26d-41bb9207da01": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "5b787bee-7a8f-4b22-9169-4bf844d9d6e4": {
+      "status": "ok",
+      "path": "/vonage/sales-dev-2b",
+      "external_id": "vonage_sales-dev-2b"
+    },
+    "4b4dc770-a67e-4709-badc-4fb1b53fb658": {
+      "status": "ok",
+      "path": "/vonage/cust-success",
+      "external_id": "vonage_cust-success"
+    },
+    "ffae4cc1-f22f-45a4-a4d3-310fed417556": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "0d2e01b8-ea4f-40f1-b58d-9abba83931c4": {
+      "status": "ok",
+      "path": "/upwork/general-upwork",
+      "external_id": "upwork_general-upwork"
+    },
+    "6a8a4a0e-a25b-4458-bfc4-9c84744f1a3d": {
+      "status": "ok",
+      "path": "/vercel/sw-eng-be",
+      "external_id": "vercel_sw-eng-be"
+    },
+    "a751396e-956e-4e9e-bd42-79d37b4fd768": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "a441b446-4696-4454-bd26-4fd5b38094b7": {
+      "status": "ok",
+      "path": "/vectara/acct-executive",
+      "external_id": "vectara_acct-executive"
+    },
+    "bba2773c-2960-45a8-928f-9547b22a49ff": {
+      "status": "ok",
+      "path": "/udacity/call-video",
+      "external_id": "udacity_call-video"
+    },
+    "7c28b418-4a93-461f-aa0f-0bc49edc5514": {
+      "status": "ok",
+      "path": "/vonage/dir-prod",
+      "external_id": "vonage_dir-prod"
+    },
+    "8a23cfe1-2e8f-4c0f-8a9f-cb6ffbcda3d3": {
+      "status": "ok",
+      "path": "/udacity/ai-tech",
+      "external_id": "udacity_ai-tech"
+    },
+    "487e363d-9efa-4372-b780-62c4ca6cf3d9": {
+      "status": "ok",
+      "path": "/udacity/cloud-tech",
+      "external_id": "udacity_cloud-tech"
+    },
+    "a582b58c-d3b9-491d-83d1-835814490cb5": {
+      "status": "ok",
+      "path": "/udacity/cloud-devops",
+      "external_id": "udacity_cloud-devops"
+    },
+    "3db75967-e3c3-487e-8c1b-3a34626177cd": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "46ee2956-a745-46d0-bd94-d4f70e32bc9c": {
+      "status": "ok",
+      "path": "/udacity/agentic-ai",
+      "external_id": "udacity_agentic-ai"
+    },
+    "d97b9a50-7211-485e-9682-5aa8971ae517": {
+      "status": "ok",
+      "path": "/typeform/sales-dev",
+      "external_id": "typeform_sales-dev"
+    },
+    "5ebdb0c0-3724-4473-a749-79efac112c28": {
+      "status": "ok",
+      "path": "/udio/prod-design",
+      "external_id": "udio_prod-design"
+    },
+    "33410a5d-9a41-4e2a-a89c-218a23a1f477": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "ef07e4df-217c-46e1-b234-e56cd9d4a523": {
+      "status": "ok",
+      "path": "/together-ai/dir-data",
+      "external_id": "together-ai_dir-data"
+    },
+    "ec53b96b-b452-4c3d-94c7-24ba411c8c8b": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "763d4027-0cd0-4aa9-b62b-503b7239cd49": {
+      "status": "ok",
+      "path": "/dutchie/lead-go",
+      "external_id": "dutchie_lead-go"
+    },
+    "f181e4e3-0bfe-498d-8663-ddc480bcc9a3": {
+      "status": "ok",
+      "path": "/tanium/dir-strat-52",
+      "external_id": "tanium_dir-strat-52"
+    },
+    "7aa1c9a1-a094-4996-af00-ec5727f61d1d": {
+      "status": "ok",
+      "path": "/tailscale/infra-eng",
+      "external_id": "tailscale_infra-eng"
+    },
+    "6a96a446-8006-4545-9c8a-5b125995efe2": {
+      "status": "ok",
+      "path": "/tailscale/sec-infra",
+      "external_id": "tailscale_sec-infra"
+    },
+    "01e53ed5-d1ed-4d7a-bfc9-019cc0be3259": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "db783986-9251-4206-b1cf-12d94d11a292": {
+      "status": "ok",
+      "path": "/smartsheet/sw-eng-5b",
+      "external_id": "smartsheet_sw-eng-5b"
+    },
+    "b7090728-c159-414f-ac1d-295707da9e00": {
+      "status": "ok",
+      "path": "/smartsheet/dir-prod",
+      "external_id": "smartsheet_dir-prod"
+    },
+    "e919a117-60e6-489e-bd0d-cb30cca9fba4": {
+      "status": "ok",
+      "path": "/smartsheet/partner-mkt",
+      "external_id": "smartsheet_partner-mkt"
+    },
+    "144ad2df-2215-4d0d-ac08-0050380257b4": {
+      "status": "ok",
+      "path": "/smartsheet/sec-eng-grc",
+      "external_id": "smartsheet_sec-eng-grc"
+    },
+    "d4f98860-ee38-4905-9fd5-5911fdc8e6d4": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "d04fbdfc-6312-4254-a216-f5316c5baacb": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_ai-eng-mkt) alrea"
+    },
+    "aa28a3b1-94b6-41dc-aad6-2a20e49997d6": {
+      "status": "ok",
+      "path": "/snorkel-ai/engagement-60",
+      "external_id": "snorkel-ai_engagement-60"
+    },
+    "e3bb97f8-2a37-4252-987e-2b8889e2b124": {
+      "status": "ok",
+      "path": "/stockx/category-mgr",
+      "external_id": "stockx_category-mgr"
+    },
+    "4e5f5c3a-c4d9-4c13-b097-bca554c64e9f": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_sw-eng-acct) alre"
+    },
+    "98158824-cd60-4cc0-b02e-ac2f018ca9c8": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "a1887ce2-310e-4b5a-9664-42bcdc9c01bf": {
+      "status": "ok",
+      "path": "/sezzle/sw-eng-2f",
+      "external_id": "sezzle_sw-eng-2f"
+    },
+    "cc7b4cfa-a81a-47e4-86ce-fed756c31d9e": {
+      "status": "ok",
+      "path": "/sezzle/sw-eng-63",
+      "external_id": "sezzle_sw-eng-63"
+    },
+    "c4648420-9c12-4589-b69a-49300b978c1d": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_sw-eng-acct) alre"
+    },
+    "23f2492b-ecd6-4f15-8228-f4fd7ae71c4d": {
+      "status": "ok",
+      "path": "/sezzle/sw-eng-6b",
+      "external_id": "sezzle_sw-eng-6b"
+    },
+    "18fe4f7d-2c9a-4f31-8a0c-54bafee62eef": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "368b7162-f965-4638-92a1-e593f96cd37c": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "3b6c2c32-50e4-4cd2-a0a8-20a20595b584": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "a24650e7-82b7-4246-b365-a724f330df6c": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_sw-eng-acct) alre"
+    },
+    "8d3203dc-5f75-41f3-940b-c8dae215be85": {
+      "status": "ok",
+      "path": "/sidecar-health/vp-strat",
+      "external_id": "sidecar-health_vp-strat"
+    },
+    "51c0ebaf-a8f9-4c0e-92f4-94b86f7b4f19": {
+      "status": "ok",
+      "path": "/sezzle/ai-eng-88",
+      "external_id": "sezzle_ai-eng-88"
+    },
+    "ee7b4059-802a-466f-b818-f8fcced67571": {
+      "status": "ok",
+      "path": "/sidecar-health/sw-eng-44",
+      "external_id": "sidecar-health_sw-eng-44"
+    },
+    "4ff4821f-bb4f-4ea7-ac58-f3fd18dc5450": {
+      "status": "ok",
+      "path": "/sidecar-health/sw-dev-eng",
+      "external_id": "sidecar-health_sw-dev-eng"
+    },
+    "7b7e56a5-f022-4f02-95e2-c257036dad44": {
+      "status": "ok",
+      "path": "/okx/vip-46",
+      "external_id": "okx_vip-46"
+    },
+    "eb1902d0-e674-43eb-80b2-96f7c45f0b87": {
+      "status": "ok",
+      "path": "/okx/relationship",
+      "external_id": "okx_relationship"
+    },
+    "38fd787a-e563-4f06-bc56-cdbd41d865f2": {
+      "status": "ok",
+      "path": "/okx/affiliate-9a",
+      "external_id": "okx_affiliate-9a"
+    },
+    "67e40ad3-71de-477f-b933-52828dc56c9c": {
+      "status": "ok",
+      "path": "/okx/affiliate-bd",
+      "external_id": "okx_affiliate-bd"
+    },
+    "1b8d6b94-74e5-4096-9260-a47aa13f51cd": {
+      "status": "ok",
+      "path": "/okx/prod-mgr",
+      "external_id": "okx_prod-mgr"
+    },
+    "937214f4-58f0-41a4-8caf-79cb7065a8f7": {
+      "status": "ok",
+      "path": "/shakepay/eng-mgr-plat",
+      "external_id": "shakepay_eng-mgr-plat"
+    },
+    "263e67d2-828d-4f68-9c42-9e460190e7f1": {
+      "status": "ok",
+      "path": "/okx/operational",
+      "external_id": "okx_operational"
+    },
+    "cbb00fd8-d0f8-427c-aef6-6caa2a4b2aec": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "8b292937-47fc-4c35-b3b3-40e9f0735b31": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "7b7adf6d-aea1-4b28-ad56-1552d6a9a79c": {
+      "status": "ok",
+      "path": "/okx/institutional",
+      "external_id": "okx_institutional"
+    },
+    "eed3457f-c57a-4883-acab-48da72b828b1": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(natera_med-dir) already "
+    },
+    "cbd33347-f7e8-40bb-bcc8-aaba7e44de49": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "bb845d06-1b5d-47c2-8176-7390ec97ae1c": {
+      "status": "ok",
+      "path": "/ritual/validator-eng",
+      "external_id": "ritual_validator-eng"
+    },
+    "b3fd4769-2efb-43a2-b9f1-45b6678a56aa": {
+      "status": "ok",
+      "path": "/natera/assoc-dir-0a",
+      "external_id": "natera_assoc-dir-0a"
     }
   },
   "doneIds": [
@@ -9846,7 +10518,140 @@
     "f094b90f-4ae6-43fa-ab80-2447f383231d",
     "539ca3a9-f837-4a4b-b534-600db0a09af2",
     "8872211f-e09c-4e9a-8cdc-98ff62563fb2",
-    "828f8ec5-0ae0-442c-8236-9e67cb2eab4e"
+    "828f8ec5-0ae0-442c-8236-9e67cb2eab4e",
+    "10497647-9ddc-4209-a008-9a9e3a72f894",
+    "a1c4802e-59cc-42b6-a06d-2cd5550a20b8",
+    "f09a106a-a243-4742-a4b6-0169891494e8",
+    "70fb4080-4937-437d-b6ea-704c16cc3b7a",
+    "68df7fbb-05eb-4048-8089-2c52cef56744",
+    "be5f14c2-9afa-4bf9-aed9-48debff1d759",
+    "914b72b6-d214-4738-971e-3f188281f414",
+    "5a6d2501-e302-4f59-aa20-76d8f62a9139",
+    "4dddcbf2-2c55-48a2-b73c-da00d88a17a3",
+    "cb28c655-d021-42c6-bac3-f2f5b92f979f",
+    "d4077b00-6a41-497f-95a9-8c0cb9b1b642",
+    "d6580d23-317e-4e24-a0ea-8445eb6a1990",
+    "d9a7887c-e521-4ef4-83af-4f100ef332cd",
+    "d7ecf0f6-5a3d-4cfb-878e-f196da1edcda",
+    "c1fde53b-960f-4727-9ec4-4506fcde265c",
+    "c81c0135-676d-4dc8-83f1-256a5550efe5",
+    "2ac3f3eb-9200-4768-8175-406098f14ae6",
+    "3d70dc0e-879a-4a0f-819e-0148c09cb362",
+    "d9d9efab-2ad2-4dbb-a749-d9d98fea2ce0",
+    "f8637e70-07c8-45b0-9cf0-0ed37e7264a3",
+    "a807e3dc-1b50-4be7-8d96-9fd78a8ff5ff",
+    "014799a7-c24d-4585-88b5-8d8a7dd30bf9",
+    "61b644b0-c0ad-46cb-8f7e-ca24ab4c3850",
+    "9dafc6c0-af6d-4818-a118-2bef351a7b94",
+    "10ffbdba-ea09-466a-b3ab-18e52deb41fa",
+    "47b031d5-cc2d-427d-8683-cfc4d70e8767",
+    "27330634-01c4-4b1e-95b1-8fccf122a1d8",
+    "7e98ed66-a972-4759-ae7f-f40b6218cec5",
+    "dd6f0a75-c0ae-4a97-b0d6-36a654df0563",
+    "a8837d0f-4c4e-4a3f-b43a-8c84ebbadc5f",
+    "9f373972-5621-4ad8-9976-2fdf1d4d0fc8",
+    "a03a6fd2-ab5e-418e-b06f-d91426b5d8c8",
+    "871fcc9c-3f3a-449a-848b-3a151ba34d6b",
+    "f47a48ff-4a00-4800-8264-3eb53c0bb3d5",
+    "fbd5e3b7-9f88-4192-9ee3-4d9e840751fb",
+    "3ce71242-509e-4442-9165-8392f4f3a16d",
+    "eb62582d-6ac1-4394-aa90-7856f3ae17e0",
+    "8707b70d-8e84-4464-8610-e1126a95f571",
+    "96620cd8-085b-476c-b7e5-67c809d58361",
+    "03a0237c-284d-4342-aede-d1fe4d35f93c",
+    "2c38410e-aa61-4fb8-930d-04654490799b",
+    "28de5b2b-6c9a-49c6-b2c7-78abee44cddf",
+    "8a87d5fb-3582-4a96-9e09-074dcf4a76dd",
+    "23ecabab-70c6-44f5-aaa1-dcc95368029b",
+    "f8e7546b-85fc-41c4-a1d2-941be93f5245",
+    "5eebb2ec-f4af-452d-8956-ffc85b75b1ff",
+    "969490b8-fb07-4d01-92bb-1dbc8a9110c5",
+    "0f5ff093-e485-46e4-869b-8dd874aa1f61",
+    "51e0a2fe-25fd-4be8-b5ec-70acacea4fba",
+    "83d71f4e-7eda-4b0e-9480-867953270358",
+    "68c467c9-5a10-4934-a61b-c5db84523777",
+    "d51817a2-b914-4359-a967-15abcbc4eb12",
+    "b8105ebf-b2c2-48dc-a56d-75670d25eaf9",
+    "47c0cbfc-d400-4c83-bff2-594ca5843761",
+    "6c735e31-1624-4847-8fd2-c072782ef16d",
+    "9c3c3560-bcf7-4856-a866-ac88c6d773d4",
+    "aeac8a29-21e8-4052-8245-13a8d994b2cf",
+    "f1c6281d-24a3-4323-a9f5-b7b5a8ac6f8a",
+    "96a1008c-dc98-4b15-a8c9-9957e2b34d12",
+    "61eee106-3466-43f3-9938-f6636aa7b8e8",
+    "01fa6941-ee6a-4912-9274-1078d7713427",
+    "734c0b7c-4ec3-46c1-9d5a-4b7d3d6170b1",
+    "24a4d87f-42f8-4985-be31-ad7405ecb5b7",
+    "6381aa45-97a5-455a-8205-a1b00e5ac353",
+    "99483efd-18a5-456c-bd0e-6d9057fd3abe",
+    "18f2537f-0644-4798-bf0d-ca348eec861a",
+    "f4a0c1a8-f334-4b5f-8175-111cc8e45f16",
+    "b758970e-beba-4071-9054-39021405cf4f",
+    "308afb20-4824-46e0-b64e-7d95ab0b2055",
+    "0904a3e9-50a3-4057-af10-f0d217c37d2c",
+    "1eff3908-cc3f-419d-9f63-f4f354fccc8f",
+    "51cb3c41-de7e-4302-84d3-55cd83261ff4",
+    "4b5c8b0d-b8de-479a-b4cc-2dc285b03d78",
+    "bdda67c0-a641-4804-9122-209f9e632030",
+    "3997e5ca-006a-493e-a1c5-6cafc725649f",
+    "2fc1d114-5eb8-465e-b36d-7a76e20f3dd4",
+    "d189bfa1-d5d3-4988-a961-c2deaff5f8ae",
+    "4a8ab67b-cc99-4a06-a26d-41bb9207da01",
+    "5b787bee-7a8f-4b22-9169-4bf844d9d6e4",
+    "4b4dc770-a67e-4709-badc-4fb1b53fb658",
+    "ffae4cc1-f22f-45a4-a4d3-310fed417556",
+    "0d2e01b8-ea4f-40f1-b58d-9abba83931c4",
+    "6a8a4a0e-a25b-4458-bfc4-9c84744f1a3d",
+    "a751396e-956e-4e9e-bd42-79d37b4fd768",
+    "a441b446-4696-4454-bd26-4fd5b38094b7",
+    "bba2773c-2960-45a8-928f-9547b22a49ff",
+    "7c28b418-4a93-461f-aa0f-0bc49edc5514",
+    "8a23cfe1-2e8f-4c0f-8a9f-cb6ffbcda3d3",
+    "487e363d-9efa-4372-b780-62c4ca6cf3d9",
+    "a582b58c-d3b9-491d-83d1-835814490cb5",
+    "3db75967-e3c3-487e-8c1b-3a34626177cd",
+    "46ee2956-a745-46d0-bd94-d4f70e32bc9c",
+    "d97b9a50-7211-485e-9682-5aa8971ae517",
+    "5ebdb0c0-3724-4473-a749-79efac112c28",
+    "33410a5d-9a41-4e2a-a89c-218a23a1f477",
+    "ef07e4df-217c-46e1-b234-e56cd9d4a523",
+    "ec53b96b-b452-4c3d-94c7-24ba411c8c8b",
+    "763d4027-0cd0-4aa9-b62b-503b7239cd49",
+    "f181e4e3-0bfe-498d-8663-ddc480bcc9a3",
+    "7aa1c9a1-a094-4996-af00-ec5727f61d1d",
+    "6a96a446-8006-4545-9c8a-5b125995efe2",
+    "01e53ed5-d1ed-4d7a-bfc9-019cc0be3259",
+    "db783986-9251-4206-b1cf-12d94d11a292",
+    "b7090728-c159-414f-ac1d-295707da9e00",
+    "e919a117-60e6-489e-bd0d-cb30cca9fba4",
+    "144ad2df-2215-4d0d-ac08-0050380257b4",
+    "d4f98860-ee38-4905-9fd5-5911fdc8e6d4",
+    "aa28a3b1-94b6-41dc-aad6-2a20e49997d6",
+    "e3bb97f8-2a37-4252-987e-2b8889e2b124",
+    "98158824-cd60-4cc0-b02e-ac2f018ca9c8",
+    "a1887ce2-310e-4b5a-9664-42bcdc9c01bf",
+    "cc7b4cfa-a81a-47e4-86ce-fed756c31d9e",
+    "23f2492b-ecd6-4f15-8228-f4fd7ae71c4d",
+    "18fe4f7d-2c9a-4f31-8a0c-54bafee62eef",
+    "368b7162-f965-4638-92a1-e593f96cd37c",
+    "3b6c2c32-50e4-4cd2-a0a8-20a20595b584",
+    "8d3203dc-5f75-41f3-940b-c8dae215be85",
+    "51c0ebaf-a8f9-4c0e-92f4-94b86f7b4f19",
+    "ee7b4059-802a-466f-b818-f8fcced67571",
+    "4ff4821f-bb4f-4ea7-ac58-f3fd18dc5450",
+    "7b7e56a5-f022-4f02-95e2-c257036dad44",
+    "eb1902d0-e674-43eb-80b2-96f7c45f0b87",
+    "38fd787a-e563-4f06-bc56-cdbd41d865f2",
+    "67e40ad3-71de-477f-b933-52828dc56c9c",
+    "1b8d6b94-74e5-4096-9260-a47aa13f51cd",
+    "937214f4-58f0-41a4-8caf-79cb7065a8f7",
+    "263e67d2-828d-4f68-9c42-9e460190e7f1",
+    "cbb00fd8-d0f8-427c-aef6-6caa2a4b2aec",
+    "8b292937-47fc-4c35-b3b3-40e9f0735b31",
+    "7b7adf6d-aea1-4b28-ad56-1552d6a9a79c",
+    "cbd33347-f7e8-40bb-bcc8-aaba7e44de49",
+    "bb845d06-1b5d-47c2-8176-7390ec97ae1c",
+    "b3fd4769-2efb-43a2-b9f1-45b6678a56aa"
   ],
   "skipped": {},
   "batches": [
