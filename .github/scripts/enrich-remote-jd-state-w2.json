@@ -10405,8 +10405,9 @@
       "external_id": "mozilla_executive-asst"
     },
     "47a561c5-7527-4640-acd0-35856ecbc00b": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_strat) already e"
+      "status": "ok",
+      "path": "/mercury/strat-10",
+      "external_id": "mercury_strat-10"
     },
     "59c7b7a0-2231-4edf-92e3-a452623e2a5e": {
       "status": "ok",
@@ -10636,8 +10637,9 @@
       "reason": "gh_404"
     },
     "6b820686-0bbb-4b8e-bfae-00be5f550a16": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(bybit_client-service) al"
+      "status": "ok",
+      "path": "/bybit/client-93",
+      "external_id": "bybit_client-93"
     },
     "cb474d41-5937-4f52-aba9-f26d54843604": {
       "status": "skip",
@@ -11216,8 +11218,9 @@
       "external_id": "pointclickcare_canada-prod"
     },
     "a72a127b-4516-41d5-a7e1-509b2dc7f1be": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pointclickcare_applied) "
+      "status": "ok",
+      "path": "/pointclickcare/applied-23",
+      "external_id": "pointclickcare_applied-23"
     },
     "9ca34bb6-9ae3-469c-99ab-8d7f587957d2": {
       "status": "ok",
@@ -11378,8 +11381,9 @@
       "external_id": "proper_sales-dev"
     },
     "7c7ff31e-7948-41e4-8d3f-58b93cbcad9c": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ninjavan_pre-sales) alre"
+      "status": "ok",
+      "path": "/ninjavan/pre-sales-46",
+      "external_id": "ninjavan_pre-sales-46"
     },
     "2da02f3e-cb3b-4312-9c3f-f145a3b84667": {
       "status": "ok",
@@ -11444,8 +11448,9 @@
       "reason": "rewrite_slop"
     },
     "ac475c10-06ec-4371-822f-df821b9caad5": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_qa-eng-fe) alrea"
+      "status": "ok",
+      "path": "/binance/qa-eng-49",
+      "external_id": "binance_qa-eng-49"
     },
     "52d01884-0c38-4f64-bc02-fe8081fc61c5": {
       "status": "ok",
@@ -11463,8 +11468,9 @@
       "external_id": "binance_prod-operation"
     },
     "cbb0a253-adea-4f01-8196-26e7489e5d9c": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_fe-eng) already "
+      "status": "ok",
+      "path": "/binance/fe-eng-0c",
+      "external_id": "binance_fe-eng-0c"
     },
     "32d33218-6538-4542-98f3-5ae3eabc23b0": {
       "status": "ok",
@@ -11477,8 +11483,9 @@
       "external_id": "binance_graphic-design"
     },
     "7c3ea04c-9460-438e-aca2-8609e5798097": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_creator) already"
+      "status": "ok",
+      "path": "/binance/creator-30",
+      "external_id": "binance_creator-30"
     },
     "54d3c08d-e932-4b44-9e6b-eb02b6dfaaf6": {
       "status": "ok",
@@ -11564,8 +11571,9 @@
       "reason": "lever_404"
     },
     "89e192e9-6916-478c-a430-7b88012202d9": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_affiliate-bd) al"
+      "status": "ok",
+      "path": "/binance/affiliate-bd-63",
+      "external_id": "binance_affiliate-bd-63"
     },
     "b2afbba0-34c8-4bd3-84c5-f89b0365f234": {
       "status": "ok",
@@ -11742,12 +11750,14 @@
       "external_id": "bluecatnetworks_mid-market"
     },
     "79738f6e-df2e-40cc-b0a3-465750929dea": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(bluecatnetworks_enterpri"
+      "status": "ok",
+      "path": "/bluecatnetworks/enterprise-1b",
+      "external_id": "bluecatnetworks_enterprise-1b"
     },
     "d72dcb17-188a-4fce-adc9-d6bec93b8813": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anchorage_member-global)"
+      "status": "ok",
+      "path": "/anchorage/member-42",
+      "external_id": "anchorage_member-42"
     },
     "c5f9458b-0110-4d3a-b329-7e3e76f928c6": {
       "status": "ok",
@@ -11871,8 +11881,9 @@
       "external_id": "accesssoftek_compiler-dev"
     },
     "f14a3f7a-2dac-4390-8a05-5f8d2f6653b1": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(trueml_sales) already ex"
+      "status": "ok",
+      "path": "/trueml/sales-45",
+      "external_id": "trueml_sales-45"
     },
     "73bb32bc-429b-48d4-bd29-f229d3452f1e": {
       "status": "ok",
@@ -11938,8 +11949,9 @@
       "external_id": "dronedeploy_mgr-biz-sys"
     },
     "8c9fc3a6-576f-4a01-a539-ef9473e5600f": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_deputy-mlro) alr"
+      "status": "ok",
+      "path": "/binance/deputy-mlro-07",
+      "external_id": "binance_deputy-mlro-07"
     },
     "32ef73e8-6df8-4916-b411-f3f1901c2081": {
       "status": "ok",
@@ -12203,6 +12215,71 @@
       "status": "ok",
       "path": "/pinterest/prod-design",
       "external_id": "pinterest_prod-design"
+    },
+    "e47527d3-5db3-4908-a477-765c49d05067": {
+      "status": "ok",
+      "path": "/salsify/accountant",
+      "external_id": "salsify_accountant"
+    },
+    "ff22b7e5-13f6-483f-a961-1afe4acada7b": {
+      "status": "ok",
+      "path": "/platform-sh/vp-prod",
+      "external_id": "platform-sh_vp-prod"
+    },
+    "6c40e980-831e-4c07-9345-0670b10caf53": {
+      "status": "ok",
+      "path": "/motional/sw-eng",
+      "external_id": "motional_sw-eng"
+    },
+    "62cca0cf-e7f8-4f18-bff0-5488c4f87407": {
+      "status": "ok",
+      "path": "/databricks/sol-arch-e0",
+      "external_id": "databricks_sol-arch-e0"
+    },
+    "45a26086-43a0-4f92-9642-9eae10d6adc0": {
+      "status": "ok",
+      "path": "/nextiva/cx-spec",
+      "external_id": "nextiva_cx-spec"
+    },
+    "0072d9eb-3bb4-4ed9-92ea-d9019dd25de1": {
+      "status": "ok",
+      "path": "/instacart/sol-arch",
+      "external_id": "instacart_sol-arch"
+    },
+    "ff89ed55-e14c-437e-a931-9e510e70dcf6": {
+      "status": "ok",
+      "path": "/instacart/sw-eng-mkt",
+      "external_id": "instacart_sw-eng-mkt"
+    },
+    "802ebc3e-379d-440f-8b1f-23e7fc818015": {
+      "status": "ok",
+      "path": "/instacart/prod-mgr",
+      "external_id": "instacart_prod-mgr"
+    },
+    "24007cf1-d101-4ac2-af0b-9cc6ea7bbb3f": {
+      "status": "ok",
+      "path": "/datadog/tech-acct",
+      "external_id": "datadog_tech-acct"
+    },
+    "9c8fbf1d-b151-4f26-911b-52dc9f98499f": {
+      "status": "ok",
+      "path": "/instacart/sales-dev",
+      "external_id": "instacart_sales-dev"
+    },
+    "57060cab-c103-4d46-b886-ec53e87973d7": {
+      "status": "ok",
+      "path": "/datadog/enterprise",
+      "external_id": "datadog_enterprise"
+    },
+    "ba8655bf-e9e4-47ff-a026-9b9fc714f4ce": {
+      "status": "ok",
+      "path": "/lokalise/content-brand",
+      "external_id": "lokalise_content-brand"
+    },
+    "fd2723f7-e2bc-4a4a-92c7-1ac0ce1f742b": {
+      "status": "ok",
+      "path": "/fivetran/vp-government",
+      "external_id": "fivetran_vp-government"
     }
   },
   "doneIds": [
@@ -14717,7 +14794,32 @@
     "3583d839-4b06-46d1-b443-e5eba81f8528",
     "245f6332-c6b2-4570-b23c-890b605c202f",
     "f2d46f6a-ea34-4452-b477-0b358d2c0f10",
-    "2783f7bb-ea07-4132-86e6-758f8a2e37ac"
+    "2783f7bb-ea07-4132-86e6-758f8a2e37ac",
+    "47a561c5-7527-4640-acd0-35856ecbc00b",
+    "6b820686-0bbb-4b8e-bfae-00be5f550a16",
+    "a72a127b-4516-41d5-a7e1-509b2dc7f1be",
+    "7c7ff31e-7948-41e4-8d3f-58b93cbcad9c",
+    "ac475c10-06ec-4371-822f-df821b9caad5",
+    "cbb0a253-adea-4f01-8196-26e7489e5d9c",
+    "89e192e9-6916-478c-a430-7b88012202d9",
+    "7c3ea04c-9460-438e-aca2-8609e5798097",
+    "d72dcb17-188a-4fce-adc9-d6bec93b8813",
+    "79738f6e-df2e-40cc-b0a3-465750929dea",
+    "e47527d3-5db3-4908-a477-765c49d05067",
+    "8c9fc3a6-576f-4a01-a539-ef9473e5600f",
+    "f14a3f7a-2dac-4390-8a05-5f8d2f6653b1",
+    "ff22b7e5-13f6-483f-a961-1afe4acada7b",
+    "6c40e980-831e-4c07-9345-0670b10caf53",
+    "62cca0cf-e7f8-4f18-bff0-5488c4f87407",
+    "45a26086-43a0-4f92-9642-9eae10d6adc0",
+    "0072d9eb-3bb4-4ed9-92ea-d9019dd25de1",
+    "ff89ed55-e14c-437e-a931-9e510e70dcf6",
+    "802ebc3e-379d-440f-8b1f-23e7fc818015",
+    "24007cf1-d101-4ac2-af0b-9cc6ea7bbb3f",
+    "9c8fbf1d-b151-4f26-911b-52dc9f98499f",
+    "57060cab-c103-4d46-b886-ec53e87973d7",
+    "ba8655bf-e9e4-47ff-a026-9b9fc714f4ce",
+    "fd2723f7-e2bc-4a4a-92c7-1ac0ce1f742b"
   ],
   "skipped": {},
   "batches": [
