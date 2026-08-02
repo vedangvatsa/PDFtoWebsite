@@ -8846,6 +8846,718 @@
       "status": "ok",
       "path": "/natera/assoc-dir-0a",
       "external_id": "natera_assoc-dir-0a"
+    },
+    "7830c463-c5db-4c0e-a6ee-acb8413e87a0": {
+      "status": "ok",
+      "path": "/ritual/growth-eng",
+      "external_id": "ritual_growth-eng"
+    },
+    "6c9364f1-a0f9-425b-aef9-7d7f6c298f35": {
+      "status": "ok",
+      "path": "/planetscale/sw-eng",
+      "external_id": "planetscale_sw-eng"
+    },
+    "6db1eede-7cf0-4119-9068-61ccd9dbe526": {
+      "status": "ok",
+      "path": "/ritual/controller",
+      "external_id": "ritual_controller"
+    },
+    "fac8fd98-4acb-465b-9e02-01db1534d480": {
+      "status": "ok",
+      "path": "/ritual/fe-eng",
+      "external_id": "ritual_fe-eng"
+    },
+    "2b20f8b3-26c9-4315-ab18-053e0ba31c7f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "b25f4788-ec75-4fec-93c4-7b2ff4fc9e6e": {
+      "status": "ok",
+      "path": "/planetscale/sw-eng-89",
+      "external_id": "planetscale_sw-eng-89"
+    },
+    "7474570c-7647-41ba-82cf-ed6a1b95f4bc": {
+      "status": "ok",
+      "path": "/planetscale/sw-eng-d3",
+      "external_id": "planetscale_sw-eng-d3"
+    },
+    "1381cbed-5896-4c44-94f6-d5119a459866": {
+      "status": "ok",
+      "path": "/postscript/cust-success-55",
+      "external_id": "postscript_cust-success-55"
+    },
+    "07690e61-0a70-42a4-8858-829ff73fbe1e": {
+      "status": "ok",
+      "path": "/philo/lead-be-sw",
+      "external_id": "philo_lead-be-sw"
+    },
+    "bb0d8bb1-8cb2-4584-85ef-4877e3f8d4ed": {
+      "status": "ok",
+      "path": "/pandadoc/sre-eng",
+      "external_id": "pandadoc_sre-eng"
+    },
+    "3b0f4923-a708-4a10-8391-a43862e4be53": {
+      "status": "ok",
+      "path": "/philo/head-data",
+      "external_id": "philo_head-data"
+    },
+    "7ac3b38a-d95c-48f4-96bd-e8d82143d5cc": {
+      "status": "ok",
+      "path": "/pendo/executive-biz",
+      "external_id": "pendo_executive-biz"
+    },
+    "f146cd86-df0f-44d6-baa3-61407305d230": {
+      "status": "ok",
+      "path": "/pandadoc/python-eng-3c",
+      "external_id": "pandadoc_python-eng-3c"
+    },
+    "20b3eea4-1150-47ae-8f7d-74ef97d9b8bb": {
+      "status": "ok",
+      "path": "/pagerduty/enterprise",
+      "external_id": "pagerduty_enterprise"
+    },
+    "c6324a61-74fb-402e-a16b-6d5193267735": {
+      "status": "ok",
+      "path": "/pandadoc/lifecycle-mkt",
+      "external_id": "pandadoc_lifecycle-mkt"
+    },
+    "ad3fb597-5fa4-4510-ae0c-c1f125e848d1": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "c23a4812-79f6-4c6f-9214-75dbe5eef3b0": {
+      "status": "ok",
+      "path": "/pagerduty/enterprise-c7",
+      "external_id": "pagerduty_enterprise-c7"
+    },
+    "1b5ba92a-151c-4141-95f9-cd78fea2de27": {
+      "status": "ok",
+      "path": "/outschool/support",
+      "external_id": "outschool_support"
+    },
+    "6d5c3861-650f-48fc-838a-8d51ee612e33": {
+      "status": "ok",
+      "path": "/omada-health/sw-eng-plat",
+      "external_id": "omada-health_sw-eng-plat"
+    },
+    "c095562a-edcc-444f-b318-97f39592228f": {
+      "status": "ok",
+      "path": "/omada-health/vp-commercial",
+      "external_id": "omada-health_vp-commercial"
+    },
+    "53786c30-83ae-4b46-896b-83814be421ad": {
+      "status": "ok",
+      "path": "/omada-health/sw-eng-d4",
+      "external_id": "omada-health_sw-eng-d4"
+    },
+    "9380f699-2ef1-4171-bc2f-5b92e508ed94": {
+      "status": "ok",
+      "path": "/omada-health/national-vp",
+      "external_id": "omada-health_national-vp"
+    },
+    "c1f9e512-9d7c-4540-bb69-0bca07dad2e0": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "b3a799f5-bbc9-4b39-93be-1bf749192e41": {
+      "status": "ok",
+      "path": "/omada-health/dir-privacy",
+      "external_id": "omada-health_dir-privacy"
+    },
+    "e94ccd8f-a868-405d-bf6a-89370cbea566": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "b50481dd-650e-4fbc-b615-75d5cf417fa0": {
+      "status": "ok",
+      "path": "/omada-health/eng-mgr",
+      "external_id": "omada-health_eng-mgr"
+    },
+    "16f61012-ab70-4bc0-afa4-26742c92a129": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "934fb760-983b-42bf-99c7-49f8a6b39f61": {
+      "status": "ok",
+      "path": "/mozilla/necko-student",
+      "external_id": "mozilla_necko-student"
+    },
+    "d2dc4ecf-5bb8-427e-bbb8-a4b40f0fb7ac": {
+      "status": "ok",
+      "path": "/mozilla/prod-dir",
+      "external_id": "mozilla_prod-dir"
+    },
+    "286f9041-ca67-4f34-bed0-b564deb11c75": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "af00b9a8-d7e5-4293-9128-ad1b387324ab": {
+      "status": "ok",
+      "path": "/offerup/sw-dev-eng",
+      "external_id": "offerup_sw-dev-eng"
+    },
+    "3841f323-0e5c-40f5-a1bf-1622a89ac1bf": {
+      "status": "ok",
+      "path": "/nerdy/eng-ai",
+      "external_id": "nerdy_eng-ai"
+    },
+    "5760bebc-cc83-41d9-a715-60f327faa5bf": {
+      "status": "ok",
+      "path": "/monzo/analytics-f0",
+      "external_id": "monzo_analytics-f0"
+    },
+    "ee7c3123-fe70-4ba4-bc4a-1e880a30de98": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "f470237f-52cd-4bbe-b534-5a6d6199df6a": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "3cc255c8-bb49-4b4d-a86e-f2fab16e394f": {
+      "status": "ok",
+      "path": "/nerdy/sw-eng-e2",
+      "external_id": "nerdy_sw-eng-e2"
+    },
+    "b4183343-2033-46e1-8921-233ba983aab7": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "58f6cd2d-250e-4c7f-a16e-743bc0e33131": {
+      "status": "ok",
+      "path": "/mixpanel/sw-eng",
+      "external_id": "mixpanel_sw-eng"
+    },
+    "f684fab8-5f99-4aea-897b-6238dcac6f8e": {
+      "status": "ok",
+      "path": "/mercury/sw-eng-prod",
+      "external_id": "mercury_sw-eng-prod"
+    },
+    "749cd69c-242b-4cc0-b0ef-7ddffc35482d": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_prod-mgr) alread"
+    },
+    "98d1a42d-94e4-4ace-9fcb-0172c43bd4cc": {
+      "status": "ok",
+      "path": "/mercury/fullstk-eng",
+      "external_id": "mercury_fullstk-eng"
+    },
+    "1de576bd-728a-4cc2-a241-105e899a3461": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "23d70f2b-1c54-44f7-924a-9ba4a29f02aa": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_sw-eng) already "
+    },
+    "c30278db-8619-451a-9e9c-370e2531421a": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "1ef42611-fbb7-4c44-9a6f-492b72e53968": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_prod-design) alr"
+    },
+    "c7155835-6e85-43d5-953a-cfb12ebe4267": {
+      "status": "ok",
+      "path": "/marqeta/counsel-prod",
+      "external_id": "marqeta_counsel-prod"
+    },
+    "8bfc260b-3601-46c1-b770-dcdf6407e4bb": {
+      "status": "ok",
+      "path": "/marqeta/asst-general",
+      "external_id": "marqeta_asst-general"
+    },
+    "9bb6f72e-59ba-4b0b-a87e-273ce2c8a7f2": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "e488fd32-499b-4164-83a1-8d9fe75ae65a": {
+      "status": "ok",
+      "path": "/mercury/prod-mkt",
+      "external_id": "mercury_prod-mkt"
+    },
+    "17739320-af42-4470-bd4c-fef09d2d9c1f": {
+      "status": "ok",
+      "path": "/marqeta/sw-eng",
+      "external_id": "marqeta_sw-eng"
+    },
+    "8b910169-1afa-42f1-8467-5e64d4104990": {
+      "status": "ok",
+      "path": "/marqeta/acct-executive",
+      "external_id": "marqeta_acct-executive"
+    },
+    "9af1a433-45d6-49c4-8848-1185e1731d29": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "6a808949-5e33-45cd-9565-c0cde3400d20": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "d6a46731-2a1c-4f91-a2ad-fa1122da91d3": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "601c92e9-4edb-4449-9508-b90c542fcde0": {
+      "status": "ok",
+      "path": "/marqeta/dir-mkt",
+      "external_id": "marqeta_dir-mkt"
+    },
+    "162119ca-7a86-4db1-bb58-1858abc1d696": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "12eed27c-904e-403a-b37f-78cc80501222": {
+      "status": "ok",
+      "path": "/jetbrains/ai-eng-core",
+      "external_id": "jetbrains_ai-eng-core"
+    },
+    "9ed7305e-0cc9-4c22-a3d5-748549efc5d1": {
+      "status": "ok",
+      "path": "/jetbrains/email-mkt",
+      "external_id": "jetbrains_email-mkt"
+    },
+    "f36a12a0-8a9e-41c4-8078-7a970614eefa": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "5f13a209-955e-4449-8e0e-e3d0cd71ae1f": {
+      "status": "ok",
+      "path": "/jetbrains/email-mkt-78",
+      "external_id": "jetbrains_email-mkt-78"
+    },
+    "7b300d36-4052-4f1e-8ce1-44c233d5300b": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "85e4a94b-2303-422f-9468-7fa57087be1d": {
+      "status": "ok",
+      "path": "/fin/acct-23",
+      "external_id": "fin_acct-23"
+    },
+    "81ced4a7-ff57-4bcd-9e37-f97bdbfe6f0a": {
+      "status": "ok",
+      "path": "/karbon/join-our",
+      "external_id": "karbon_join-our"
+    },
+    "6390acd9-b407-4cbc-8a40-124f7a24743f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "f29384e2-dc68-4f78-9316-85dc7872b3b3": {
+      "status": "ok",
+      "path": "/life360/decision-sci",
+      "external_id": "life360_decision-sci"
+    },
+    "7a0aadd2-f0a2-40a4-833a-ae3721b2da03": {
+      "status": "ok",
+      "path": "/life360/ml-ops-eng",
+      "external_id": "life360_ml-ops-eng"
+    },
+    "2ceb8853-ccbe-475d-9b2a-c44454bd371b": {
+      "status": "ok",
+      "path": "/liveperson/appsec-eng",
+      "external_id": "liveperson_appsec-eng"
+    },
+    "6707d230-ab16-436e-9986-24b51ac9d130": {
+      "status": "ok",
+      "path": "/launchdarkly/ai-spec",
+      "external_id": "launchdarkly_ai-spec"
+    },
+    "0e25a72d-8b46-40d9-a5d1-76cfc84c6b17": {
+      "status": "ok",
+      "path": "/launchdarkly/sol-eng-d1",
+      "external_id": "launchdarkly_sol-eng-d1"
+    },
+    "7916f118-3201-4e56-aa81-e229457e5c2a": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "ef690d07-496e-4d0c-af74-3233eba1843a": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "749a0af4-896a-4e03-9508-41d899bf87bf": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "00638460-3235-453c-b926-bb1e27923daf": {
+      "status": "ok",
+      "path": "/jumio/devops-eng",
+      "external_id": "jumio_devops-eng"
+    },
+    "05295ecd-1a98-4165-b38e-d126a7cd7638": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "8abb92bb-1c16-4faa-9cb3-428765cf74e1": {
+      "status": "ok",
+      "path": "/karat/community-eng",
+      "external_id": "karat_community-eng"
+    },
+    "eb722b53-c33c-41b4-ba1e-0575f7564c4b": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "13bb2965-aa64-403a-bf20-0eb63d35337c": {
+      "status": "ok",
+      "path": "/later/vp-creator",
+      "external_id": "later_vp-creator"
+    },
+    "fa6e7e08-e123-49c2-a2ce-cd5a6825d325": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "c0efab60-1b23-494d-a9fa-d4786de876dd": {
+      "status": "ok",
+      "path": "/gusto-inc/sw-eng-ai",
+      "external_id": "gusto-inc_sw-eng-ai"
+    },
+    "9f5702da-5ea5-4da3-869a-738238483444": {
+      "status": "ok",
+      "path": "/iherb/app-sec-eng",
+      "external_id": "iherb_app-sec-eng"
+    },
+    "c6e26cfe-5f36-4178-9793-a24d57148bbf": {
+      "status": "ok",
+      "path": "/hopskipdrive/regional-acct",
+      "external_id": "hopskipdrive_regional-acct"
+    },
+    "4065e135-7b85-4266-b576-e7611ebb8e3f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "aaaa9488-dd86-4c38-a30d-5ae944293601": {
+      "status": "ok",
+      "path": "/hopskipdrive/data-analyst",
+      "external_id": "hopskipdrive_data-analyst"
+    },
+    "5f1258cf-b978-4c00-859e-2c2a9f08b3bf": {
+      "status": "ok",
+      "path": "/hopskipdrive/gtm-eng",
+      "external_id": "hopskipdrive_gtm-eng"
+    },
+    "b55d7984-4d7a-4339-9737-2d001f800f4f": {
+      "status": "ok",
+      "path": "/gusto-inc/sales",
+      "external_id": "gusto-inc_sales"
+    },
+    "282780f9-057a-4c4b-bcaa-82b4d1f03894": {
+      "status": "ok",
+      "path": "/heygen/commercial",
+      "external_id": "heygen_commercial"
+    },
+    "f58e7ebd-df68-47c3-88bf-49fda7c99999": {
+      "status": "ok",
+      "path": "/hologram/gtm-eng-post",
+      "external_id": "hologram_gtm-eng-post"
+    },
+    "392ac391-60be-4a39-9838-6b4f055cebed": {
+      "status": "ok",
+      "path": "/wellhub/mlops-eng",
+      "external_id": "wellhub_mlops-eng"
+    },
+    "9afb68b1-62d8-48eb-b640-fc3a4d389c3e": {
+      "status": "ok",
+      "path": "/heygen/social-content",
+      "external_id": "heygen_social-content"
+    },
+    "2cf2d2f3-021b-40b5-aeb2-2598517b7303": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "ba07eb59-6752-4ae9-ae5b-e83037300c30": {
+      "status": "ok",
+      "path": "/wellhub/ai-plat-eng",
+      "external_id": "wellhub_ai-plat-eng"
+    },
+    "f08306b5-9652-40e0-85a6-806820fabb42": {
+      "status": "ok",
+      "path": "/wellhub/channel-mkt",
+      "external_id": "wellhub_channel-mkt"
+    },
+    "2f73340e-615f-460b-a14a-578f3f0f27d5": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(wellhub_plat-eng) alread"
+    },
+    "3d61c884-2ae6-4843-af7b-e12f44af1d5e": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "953897f9-2535-4320-8984-e36879307689": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_ai-eng-2nd)"
+    },
+    "8b5eb294-4133-4c85-bcd0-2f0516916355": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "a16502d5-2c48-4f8e-835d-b94099e3cf2d": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_sw-eng) alr"
+    },
+    "f4d76579-9af5-49db-9e6a-9991a812af75": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "eb8e6d35-039b-4419-8ee5-6e4631f25058": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_sw-eng) alr"
+    },
+    "eade6844-f346-4cc0-8bc6-fb3aacd50e3b": {
+      "status": "ok",
+      "path": "/grafana-labs/future-sales",
+      "external_id": "grafana-labs_future-sales"
+    },
+    "26e06ff6-0fc8-459c-8458-0ad1ef27fee4": {
+      "status": "ok",
+      "path": "/grafana-labs/enterprise-03",
+      "external_id": "grafana-labs_enterprise-03"
+    },
+    "ca8888b0-9b40-486c-9baa-659a1e9cb738": {
+      "status": "ok",
+      "path": "/grafana-labs/be-eng-f4",
+      "external_id": "grafana-labs_be-eng-f4"
+    },
+    "be181f96-19c8-4af8-975d-5c45a797689a": {
+      "status": "ok",
+      "path": "/b12/web-design",
+      "external_id": "b12_web-design"
+    },
+    "5eb3c0b1-9328-4060-b620-b838c9f2a153": {
+      "status": "ok",
+      "path": "/b12/web-design-ff",
+      "external_id": "b12_web-design-ff"
+    },
+    "657209cf-38ea-4445-8a3d-8302376f0c66": {
+      "status": "ok",
+      "path": "/anthropic/tech-cbrn-e",
+      "external_id": "anthropic_tech-cbrn-e"
+    },
+    "f75eac1e-6dda-4ba9-8d43-c9468e3786bb": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "04d73d49-c195-4443-98ae-ab8337132b03": {
+      "status": "ok",
+      "path": "/anthropic/enterprise",
+      "external_id": "anthropic_enterprise"
+    },
+    "b3c182c3-3503-4c2d-a928-8fb14077ebfc": {
+      "status": "ok",
+      "path": "/anthropic/field-mkt",
+      "external_id": "anthropic_field-mkt"
+    },
+    "29219939-2c06-4fc6-acc5-aa52fbde1584": {
+      "status": "ok",
+      "path": "/anthropic/infra-tax",
+      "external_id": "anthropic_infra-tax"
+    },
+    "60ae11af-2ed1-4a51-84db-d791b886651c": {
+      "status": "ok",
+      "path": "/gitlab/threat-eng",
+      "external_id": "gitlab_threat-eng"
+    },
+    "1a8764a0-1d39-4b19-9676-962fae11dc50": {
+      "status": "ok",
+      "path": "/gitlab/commercial-cc",
+      "external_id": "gitlab_commercial-cc"
+    },
+    "dad953d0-92ff-4b8b-940b-919e05dc28aa": {
+      "status": "ok",
+      "path": "/gitlab/be-eng-4f",
+      "external_id": "gitlab_be-eng-4f"
+    },
+    "8a3b0332-e352-4ca4-991c-6004ec239d4e": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "7039e66d-cf8a-4b2e-b591-5c4019471d73": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anthropic_anthropic) alr"
+    },
+    "ee7418cd-ec07-42a7-9449-ee3a557437ab": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anthropic_anthropic) alr"
+    },
+    "a52c01cd-550a-45f9-ac4e-2faf9ab70dba": {
+      "status": "ok",
+      "path": "/gitlab/major-acct",
+      "external_id": "gitlab_major-acct"
+    },
+    "173e015d-878d-4f0a-8c4a-8a56af079658": {
+      "status": "ok",
+      "path": "/gitlab/support-eng-70",
+      "external_id": "gitlab_support-eng-70"
+    },
+    "1b430f2b-e491-4caf-baab-f78d014de3c0": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "5c4c592a-a0eb-48e6-ae37-2a9fab42e801": {
+      "status": "ok",
+      "path": "/gitlab/intermediate",
+      "external_id": "gitlab_intermediate"
+    },
+    "f4ccf1e9-3c50-4820-b596-20efa33c474b": {
+      "status": "ok",
+      "path": "/gitlab/strat-acct-75",
+      "external_id": "gitlab_strat-acct-75"
+    },
+    "dc1ecea8-c33e-40e8-b2c8-d566722d05d3": {
+      "status": "ok",
+      "path": "/gitlab/enterprise-44",
+      "external_id": "gitlab_enterprise-44"
+    },
+    "14ca5f52-57ab-4583-b924-710513de7a14": {
+      "status": "ok",
+      "path": "/gitlab/dir-enterprise",
+      "external_id": "gitlab_dir-enterprise"
+    },
+    "cd5988b7-1fd1-453e-b345-b96a0976afe9": {
+      "status": "ok",
+      "path": "/gitlab/ecosystem-b3",
+      "external_id": "gitlab_ecosystem-b3"
+    },
+    "395839ba-add8-4a2f-98f6-c8b7cd74aa12": {
+      "status": "ok",
+      "path": "/gitlab/cust-success-dc",
+      "external_id": "gitlab_cust-success-dc"
+    },
+    "e721f6ce-eb90-4534-8a7a-8b537e8df703": {
+      "status": "ok",
+      "path": "/gitlab/cust-success-a1",
+      "external_id": "gitlab_cust-success-a1"
+    },
+    "3cd35e81-fafc-4ffe-9a63-40236298c571": {
+      "status": "ok",
+      "path": "/gitlab/cust-success-80",
+      "external_id": "gitlab_cust-success-80"
+    },
+    "5db69c38-b535-4f7e-bd6c-01a48d0f10d9": {
+      "status": "ok",
+      "path": "/gitlab/commercial-01",
+      "external_id": "gitlab_commercial-01"
+    },
+    "e31dd63c-9c69-4017-bbde-24d78ed279fc": {
+      "status": "ok",
+      "path": "/gitlab/commercial-bc",
+      "external_id": "gitlab_commercial-bc"
+    },
+    "2cbb9d08-04c6-420c-87fd-65a1006ce4f2": {
+      "status": "ok",
+      "path": "/gitlab/biz-dev",
+      "external_id": "gitlab_biz-dev"
+    },
+    "1903d059-e777-451a-873f-b3ddabd32214": {
+      "status": "ok",
+      "path": "/gitlab/acct-executive",
+      "external_id": "gitlab_acct-executive"
+    },
+    "5f39627f-0ff3-4704-afac-9a4d4e14b26c": {
+      "status": "ok",
+      "path": "/axios/analytics-eng",
+      "external_id": "axios_analytics-eng"
+    },
+    "3456f5e5-363a-4e9e-b685-ca7ee900d813": {
+      "status": "ok",
+      "path": "/gofundme/events-content",
+      "external_id": "gofundme_events-content"
+    },
+    "d947f93e-6bc5-46ad-ae55-6190af647ac4": {
+      "status": "ok",
+      "path": "/axios/acct-mgr",
+      "external_id": "axios_acct-mgr"
+    },
+    "9f7d7854-959f-4bd4-a3b5-13fa638d92e6": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "d791f705-4750-4ca1-bb0f-ef1fd549c399": {
+      "status": "ok",
+      "path": "/gofundme/acct-executive",
+      "external_id": "gofundme_acct-executive"
+    },
+    "e52c5f62-a914-4eaa-9bed-dc5835851dac": {
+      "status": "ok",
+      "path": "/gofundme/lead-knowledge",
+      "external_id": "gofundme_lead-knowledge"
+    },
+    "ac6dd5e1-a05d-4e73-b38b-4444a128471e": {
+      "status": "ok",
+      "path": "/greenhouse/smb-acct-mgr",
+      "external_id": "greenhouse_smb-acct-mgr"
+    },
+    "6728c0de-eb50-447e-ad31-0302fca0480e": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "e0362281-b990-4a44-b4a7-1140915dc077": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "b71e41c2-c1fc-4dd5-9ea1-24ca784f204b": {
+      "status": "ok",
+      "path": "/goat-group/supply-analyst",
+      "external_id": "goat-group_supply-analyst"
+    },
+    "8e7865c2-3d01-4882-9300-904160891914": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(arize-ai_ai-sol-mgr) alr"
+    },
+    "5952f24f-745e-43ed-8e64-8952aae4204d": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "a2840019-7835-4802-ab9e-e74938cd6f8d": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "17ed6324-5514-4bc0-8300-84952557a34f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "a66ae3cb-871c-4d40-a124-a40d2c7083fd": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "a374c303-5f63-415d-93d7-830d9f4e32af": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "94ac5a56-ba1c-4dcb-a2b6-bba745269827": {
+      "status": "ok",
+      "path": "/aptos/head-enterprise",
+      "external_id": "aptos_head-enterprise"
+    },
+    "acdfeb3d-dfcd-43ef-adbf-b0c626663af9": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "22699d36-7602-4d6e-a55a-47336e725c75": {
+      "status": "ok",
+      "path": "/fleetio/acct-25",
+      "external_id": "fleetio_acct-25"
+    },
+    "5fd46194-8e82-45dd-8032-3b80cfb855f8": {
+      "status": "ok",
+      "path": "/careers-at-eucalyptus/general",
+      "external_id": "careers-at-eucalyptus_general"
+    },
+    "530bd416-b52d-4bb4-8d2c-f10ca6bf8927": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "12467e05-d9cc-4245-b743-bae795f57db9": {
+      "status": "ok",
+      "path": "/figma/sw-eng",
+      "external_id": "figma_sw-eng"
+    },
+    "73b64af7-5516-4267-8cf0-54d57f7ed15f": {
+      "status": "ok",
+      "path": "/ethos-life/dir-sales",
+      "external_id": "ethos-life_dir-sales"
     }
   },
   "doneIds": [
@@ -10651,7 +11363,150 @@
     "7b7adf6d-aea1-4b28-ad56-1552d6a9a79c",
     "cbd33347-f7e8-40bb-bcc8-aaba7e44de49",
     "bb845d06-1b5d-47c2-8176-7390ec97ae1c",
-    "b3fd4769-2efb-43a2-b9f1-45b6678a56aa"
+    "b3fd4769-2efb-43a2-b9f1-45b6678a56aa",
+    "7830c463-c5db-4c0e-a6ee-acb8413e87a0",
+    "6c9364f1-a0f9-425b-aef9-7d7f6c298f35",
+    "6db1eede-7cf0-4119-9068-61ccd9dbe526",
+    "fac8fd98-4acb-465b-9e02-01db1534d480",
+    "2b20f8b3-26c9-4315-ab18-053e0ba31c7f",
+    "b25f4788-ec75-4fec-93c4-7b2ff4fc9e6e",
+    "7474570c-7647-41ba-82cf-ed6a1b95f4bc",
+    "1381cbed-5896-4c44-94f6-d5119a459866",
+    "07690e61-0a70-42a4-8858-829ff73fbe1e",
+    "bb0d8bb1-8cb2-4584-85ef-4877e3f8d4ed",
+    "3b0f4923-a708-4a10-8391-a43862e4be53",
+    "7ac3b38a-d95c-48f4-96bd-e8d82143d5cc",
+    "f146cd86-df0f-44d6-baa3-61407305d230",
+    "20b3eea4-1150-47ae-8f7d-74ef97d9b8bb",
+    "c6324a61-74fb-402e-a16b-6d5193267735",
+    "ad3fb597-5fa4-4510-ae0c-c1f125e848d1",
+    "c23a4812-79f6-4c6f-9214-75dbe5eef3b0",
+    "1b5ba92a-151c-4141-95f9-cd78fea2de27",
+    "6d5c3861-650f-48fc-838a-8d51ee612e33",
+    "c095562a-edcc-444f-b318-97f39592228f",
+    "53786c30-83ae-4b46-896b-83814be421ad",
+    "9380f699-2ef1-4171-bc2f-5b92e508ed94",
+    "c1f9e512-9d7c-4540-bb69-0bca07dad2e0",
+    "b3a799f5-bbc9-4b39-93be-1bf749192e41",
+    "e94ccd8f-a868-405d-bf6a-89370cbea566",
+    "b50481dd-650e-4fbc-b615-75d5cf417fa0",
+    "16f61012-ab70-4bc0-afa4-26742c92a129",
+    "934fb760-983b-42bf-99c7-49f8a6b39f61",
+    "d2dc4ecf-5bb8-427e-bbb8-a4b40f0fb7ac",
+    "286f9041-ca67-4f34-bed0-b564deb11c75",
+    "af00b9a8-d7e5-4293-9128-ad1b387324ab",
+    "3841f323-0e5c-40f5-a1bf-1622a89ac1bf",
+    "5760bebc-cc83-41d9-a715-60f327faa5bf",
+    "ee7c3123-fe70-4ba4-bc4a-1e880a30de98",
+    "f470237f-52cd-4bbe-b534-5a6d6199df6a",
+    "3cc255c8-bb49-4b4d-a86e-f2fab16e394f",
+    "b4183343-2033-46e1-8921-233ba983aab7",
+    "58f6cd2d-250e-4c7f-a16e-743bc0e33131",
+    "f684fab8-5f99-4aea-897b-6238dcac6f8e",
+    "98d1a42d-94e4-4ace-9fcb-0172c43bd4cc",
+    "1de576bd-728a-4cc2-a241-105e899a3461",
+    "c30278db-8619-451a-9e9c-370e2531421a",
+    "c7155835-6e85-43d5-953a-cfb12ebe4267",
+    "8bfc260b-3601-46c1-b770-dcdf6407e4bb",
+    "9bb6f72e-59ba-4b0b-a87e-273ce2c8a7f2",
+    "e488fd32-499b-4164-83a1-8d9fe75ae65a",
+    "17739320-af42-4470-bd4c-fef09d2d9c1f",
+    "8b910169-1afa-42f1-8467-5e64d4104990",
+    "9af1a433-45d6-49c4-8848-1185e1731d29",
+    "6a808949-5e33-45cd-9565-c0cde3400d20",
+    "d6a46731-2a1c-4f91-a2ad-fa1122da91d3",
+    "601c92e9-4edb-4449-9508-b90c542fcde0",
+    "162119ca-7a86-4db1-bb58-1858abc1d696",
+    "12eed27c-904e-403a-b37f-78cc80501222",
+    "9ed7305e-0cc9-4c22-a3d5-748549efc5d1",
+    "f36a12a0-8a9e-41c4-8078-7a970614eefa",
+    "5f13a209-955e-4449-8e0e-e3d0cd71ae1f",
+    "7b300d36-4052-4f1e-8ce1-44c233d5300b",
+    "85e4a94b-2303-422f-9468-7fa57087be1d",
+    "81ced4a7-ff57-4bcd-9e37-f97bdbfe6f0a",
+    "6390acd9-b407-4cbc-8a40-124f7a24743f",
+    "f29384e2-dc68-4f78-9316-85dc7872b3b3",
+    "7a0aadd2-f0a2-40a4-833a-ae3721b2da03",
+    "2ceb8853-ccbe-475d-9b2a-c44454bd371b",
+    "6707d230-ab16-436e-9986-24b51ac9d130",
+    "0e25a72d-8b46-40d9-a5d1-76cfc84c6b17",
+    "7916f118-3201-4e56-aa81-e229457e5c2a",
+    "ef690d07-496e-4d0c-af74-3233eba1843a",
+    "749a0af4-896a-4e03-9508-41d899bf87bf",
+    "00638460-3235-453c-b926-bb1e27923daf",
+    "05295ecd-1a98-4165-b38e-d126a7cd7638",
+    "8abb92bb-1c16-4faa-9cb3-428765cf74e1",
+    "eb722b53-c33c-41b4-ba1e-0575f7564c4b",
+    "13bb2965-aa64-403a-bf20-0eb63d35337c",
+    "fa6e7e08-e123-49c2-a2ce-cd5a6825d325",
+    "c0efab60-1b23-494d-a9fa-d4786de876dd",
+    "9f5702da-5ea5-4da3-869a-738238483444",
+    "c6e26cfe-5f36-4178-9793-a24d57148bbf",
+    "4065e135-7b85-4266-b576-e7611ebb8e3f",
+    "aaaa9488-dd86-4c38-a30d-5ae944293601",
+    "5f1258cf-b978-4c00-859e-2c2a9f08b3bf",
+    "b55d7984-4d7a-4339-9737-2d001f800f4f",
+    "282780f9-057a-4c4b-bcaa-82b4d1f03894",
+    "f58e7ebd-df68-47c3-88bf-49fda7c99999",
+    "392ac391-60be-4a39-9838-6b4f055cebed",
+    "9afb68b1-62d8-48eb-b640-fc3a4d389c3e",
+    "2cf2d2f3-021b-40b5-aeb2-2598517b7303",
+    "ba07eb59-6752-4ae9-ae5b-e83037300c30",
+    "f08306b5-9652-40e0-85a6-806820fabb42",
+    "3d61c884-2ae6-4843-af7b-e12f44af1d5e",
+    "8b5eb294-4133-4c85-bcd0-2f0516916355",
+    "f4d76579-9af5-49db-9e6a-9991a812af75",
+    "eade6844-f346-4cc0-8bc6-fb3aacd50e3b",
+    "26e06ff6-0fc8-459c-8458-0ad1ef27fee4",
+    "ca8888b0-9b40-486c-9baa-659a1e9cb738",
+    "be181f96-19c8-4af8-975d-5c45a797689a",
+    "5eb3c0b1-9328-4060-b620-b838c9f2a153",
+    "657209cf-38ea-4445-8a3d-8302376f0c66",
+    "f75eac1e-6dda-4ba9-8d43-c9468e3786bb",
+    "04d73d49-c195-4443-98ae-ab8337132b03",
+    "b3c182c3-3503-4c2d-a928-8fb14077ebfc",
+    "29219939-2c06-4fc6-acc5-aa52fbde1584",
+    "60ae11af-2ed1-4a51-84db-d791b886651c",
+    "1a8764a0-1d39-4b19-9676-962fae11dc50",
+    "dad953d0-92ff-4b8b-940b-919e05dc28aa",
+    "8a3b0332-e352-4ca4-991c-6004ec239d4e",
+    "a52c01cd-550a-45f9-ac4e-2faf9ab70dba",
+    "173e015d-878d-4f0a-8c4a-8a56af079658",
+    "1b430f2b-e491-4caf-baab-f78d014de3c0",
+    "5c4c592a-a0eb-48e6-ae37-2a9fab42e801",
+    "f4ccf1e9-3c50-4820-b596-20efa33c474b",
+    "dc1ecea8-c33e-40e8-b2c8-d566722d05d3",
+    "14ca5f52-57ab-4583-b924-710513de7a14",
+    "cd5988b7-1fd1-453e-b345-b96a0976afe9",
+    "395839ba-add8-4a2f-98f6-c8b7cd74aa12",
+    "e721f6ce-eb90-4534-8a7a-8b537e8df703",
+    "3cd35e81-fafc-4ffe-9a63-40236298c571",
+    "5db69c38-b535-4f7e-bd6c-01a48d0f10d9",
+    "e31dd63c-9c69-4017-bbde-24d78ed279fc",
+    "2cbb9d08-04c6-420c-87fd-65a1006ce4f2",
+    "1903d059-e777-451a-873f-b3ddabd32214",
+    "5f39627f-0ff3-4704-afac-9a4d4e14b26c",
+    "3456f5e5-363a-4e9e-b685-ca7ee900d813",
+    "d947f93e-6bc5-46ad-ae55-6190af647ac4",
+    "9f7d7854-959f-4bd4-a3b5-13fa638d92e6",
+    "d791f705-4750-4ca1-bb0f-ef1fd549c399",
+    "e52c5f62-a914-4eaa-9bed-dc5835851dac",
+    "ac6dd5e1-a05d-4e73-b38b-4444a128471e",
+    "6728c0de-eb50-447e-ad31-0302fca0480e",
+    "e0362281-b990-4a44-b4a7-1140915dc077",
+    "b71e41c2-c1fc-4dd5-9ea1-24ca784f204b",
+    "5952f24f-745e-43ed-8e64-8952aae4204d",
+    "a2840019-7835-4802-ab9e-e74938cd6f8d",
+    "17ed6324-5514-4bc0-8300-84952557a34f",
+    "a66ae3cb-871c-4d40-a124-a40d2c7083fd",
+    "a374c303-5f63-415d-93d7-830d9f4e32af",
+    "94ac5a56-ba1c-4dcb-a2b6-bba745269827",
+    "acdfeb3d-dfcd-43ef-adbf-b0c626663af9",
+    "22699d36-7602-4d6e-a55a-47336e725c75",
+    "5fd46194-8e82-45dd-8032-3b80cfb855f8",
+    "530bd416-b52d-4bb4-8d2c-f10ca6bf8927",
+    "12467e05-d9cc-4245-b743-bae795f57db9",
+    "73b64af7-5516-4267-8cf0-54d57f7ed15f"
   ],
   "skipped": {},
   "batches": [
