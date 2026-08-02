@@ -15,7 +15,7 @@ import fs from 'fs';
 import path from 'path';
 import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
-import { toCompanyKey } from '@/lib/company-directory';
+import { toCompanyKey, COMPANY_BLOCKLIST } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { unstable_cache } from 'next/cache';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
@@ -117,9 +117,16 @@ async function loadCompanyJobs(
 
 /** Directory row and/or recent jobs — same gate as the company page body. */
 async function resolveCompanyPage(slug: string) {
+  const blockKey = slug.toLowerCase().replace(/-/g, ' ').trim();
+  if (COMPANY_BLOCKLIST.has(blockKey) || COMPANY_BLOCKLIST.has(slug.toLowerCase())) {
+    return null;
+  }
   const dir = await getCompanyDirectory(slug);
   const jobs = await loadCompanyJobs(slug, dir?.name);
   if ((!jobs || jobs.length === 0) && !dir) return null;
+  // Also block if the resolved company name is junk
+  const name = (dir?.name || jobs[0]?.company || '').toLowerCase().trim();
+  if (name && COMPANY_BLOCKLIST.has(name)) return null;
   return { dir, jobs };
 }
 
