@@ -1,15 +1,17 @@
 {
   "facebook": {
     "index": 183,
-    "retries": 1,
+    "retries": 2,
     "retryIndex": 183
   },
   "instagram": {
-    "index": 149
+    "index": 149,
+    "retries": 1,
+    "retryIndex": 149
   },
   "threads": {
-    "index": 234,
-    "lastPostedAt": "2026-08-01T16:47:27.228Z"
+    "index": 235,
+    "lastPostedAt": "2026-08-02T01:04:32.142Z"
   },
-  "lastPostedAt": "2026-08-01T16:47:27.228Z"
+  "lastPostedAt": "2026-08-02T01:04:32.142Z"
 }
