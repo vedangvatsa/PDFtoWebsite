@@ -68,44 +68,93 @@ async function loadCompanyJobs(
       ).toISOString();
       const companyKey = toCompanyKey(dirName || slug);
 
-      // Prefer company_key (indexed equality). Falls back to exact name if key empty.
-      if (companyKey) {
-        const byKey = await withTimeoutFallback(
-          supabaseForCompany
+      async function fetchJobs(since: string | null): Promise<any[]> {
+        if (companyKey) {
+          let q = supabaseForCompany
             .from('jobs')
             .select(SELECT_JOB_COLS)
-            .eq('company_key', companyKey)
-            .gt('created_at', thirtyDaysAgo)
-            .order('published_at', { ascending: false, nullsFirst: false })
-            .limit(50),
-          DB_BUDGET.list,
-          { data: null, error: { message: 'timeout' } } as any,
-          `company-jobs-key:${companyKey}`
-        );
-        if (byKey.data && byKey.data.length > 0) return byKey.data;
-      }
+            .eq('company_key', companyKey);
+          if (since) q = q.gt('created_at', since);
+          const byKey = await withTimeoutFallback(
+            q
+              .order('published_at', { ascending: false, nullsFirst: false })
+              .limit(50),
+            DB_BUDGET.list,
+            { data: null, error: { message: 'timeout' } } as any,
+            `company-jobs-key:${companyKey}:${since || 'all'}`
+          );
+          if (byKey.data && byKey.data.length > 0) return byKey.data;
+        }
 
-      if (dirName) {
-        const byName = await withTimeoutFallback(
-          supabaseForCompany
+        if (dirName) {
+          let q = supabaseForCompany
             .from('jobs')
             .select(SELECT_JOB_COLS)
-            .eq('company', dirName)
-            .gt('created_at', thirtyDaysAgo)
-            .order('published_at', { ascending: false, nullsFirst: false })
-            .limit(50),
-          DB_BUDGET.list,
-          { data: null, error: { message: 'timeout' } } as any,
-          `company-jobs-name:${dirName}`
-        );
-        if (byName.data && byName.data.length > 0) return byName.data;
+            .eq('company', dirName);
+          if (since) q = q.gt('created_at', since);
+          const byName = await withTimeoutFallback(
+            q
+              .order('published_at', { ascending: false, nullsFirst: false })
+              .limit(50),
+            DB_BUDGET.list,
+            { data: null, error: { message: 'timeout' } } as any,
+            `company-jobs-name:${dirName}:${since || 'all'}`
+          );
+          if (byName.data && byName.data.length > 0) return byName.data;
+        }
+
+        return [];
       }
 
-      return [];
+      const recent = await fetchJobs(thirtyDaysAgo);
+      if (recent.length > 0) return recent;
+      return fetchJobs(null);
     },
-    ['company-jobs-v2', slug, dirName || ''],
+    ['company-jobs-v3', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
+}
+
+/** Directory row and/or recent jobs — same gate as the company page body. */
+async function resolveCompanyPage(slug: string) {
+  const dir = await getCompanyDirectory(slug);
+  const jobs = await loadCompanyJobs(slug, dir?.name);
+  if ((!jobs || jobs.length === 0) && !dir) return null;
+  return { dir, jobs };
+}
+
+/** Shared company careers metadata — mirrors page render (dir OR jobs). */
+async function buildCompanyPageMetadata(
+  slug: string,
+  canonicalUrl: string,
+  resolved?: Awaited<ReturnType<typeof resolveCompanyPage>>
+): Promise<Metadata | null> {
+  const ctx = resolved ?? (await resolveCompanyPage(slug));
+  if (!ctx) return null;
+  const { dir, jobs } = ctx;
+  const { getCompanyMeta } = await import('@/lib/company-data');
+  const meta = getCompanyMeta(slug);
+  const companyDisplay = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
+  const jobCount = dir?.role_count || jobs.length || 1;
+  const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
+  const desc = meta
+    ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
+    : `${companyDisplay} is hiring — ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
+  const description = desc.slice(0, 160);
+  return {
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      type: 'website',
+      url: canonicalUrl,
+      title,
+      description,
+      siteName: 'CVin.Bio',
+    },
+    twitter: { card: 'summary_large_image', title, description },
+    robots: { index: true, follow: true },
+  };
 }
 
 type PageProps = {
@@ -119,6 +168,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const canonicalUrl = `${siteUrl}/${slug}`;
 
   if (post) {
+    const companyMeta = await buildCompanyPageMetadata(slug, canonicalUrl);
+    if (companyMeta) return companyMeta;
     return {
       title: post.title,
       description: post.excerpt,
@@ -169,32 +220,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const data = await getProfileBySlug(slug);
   if (!data) {
-    // Prefer companies directory (cheap PK lookup) over dual exact COUNT on jobs.
-    const dir = await getCompanyDirectory(slug);
-    if (dir) {
-      const { getCompanyMeta } = await import('@/lib/company-data');
-      const meta = getCompanyMeta(slug);
-      const companyDisplay = dir.name || slug.replace(/-/g, ' ');
-      const jobCount = dir.role_count || 1;
-      const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
-      const desc = meta
-        ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
-        : `${companyDisplay} is hiring — ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
-      return {
-        title,
-        description: desc.slice(0, 160),
-        alternates: { canonical: canonicalUrl },
-        openGraph: {
-          type: 'website',
-          url: canonicalUrl,
-          title,
-          description: desc.slice(0, 160),
-          siteName: 'CVin.Bio',
-        },
-        twitter: { card: 'summary_large_image', title, description: desc.slice(0, 160) },
-        robots: { index: true, follow: true },
-      };
-    }
+    const companyMeta = await buildCompanyPageMetadata(slug, canonicalUrl);
+    if (companyMeta) return companyMeta;
     notFound();
   }
 
@@ -214,25 +241,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // If profile is empty, check if this slug matches an active company page.
   // Company careers pages should take priority over abandoned user profiles.
   if (isEmptyProfile) {
-    const dir = await getCompanyDirectory(slug);
-    if (dir) {
-      const { getCompanyMeta } = await import('@/lib/company-data');
-      const meta = getCompanyMeta(slug);
-      const companyDisplay = dir.name || slug.replace(/-/g, ' ');
-      const jobCount = dir.role_count || 1;
-      const compTitle = `${companyDisplay} Careers - ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
-      const compDesc = meta
-        ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
-        : `${companyDisplay} is hiring with ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
-      return {
-        title: compTitle,
-        description: compDesc.slice(0, 160),
-        alternates: { canonical: canonicalUrl },
-        openGraph: { type: 'website', url: canonicalUrl, title: compTitle, description: compDesc.slice(0, 160), siteName: 'CVin.Bio' },
-        twitter: { card: 'summary_large_image', title: compTitle, description: compDesc.slice(0, 160) },
-        robots: { index: true, follow: true },
-      };
-    }
+    const companyMeta = await buildCompanyPageMetadata(slug, canonicalUrl);
+    if (companyMeta) return companyMeta;
   }
 
   return {
@@ -393,15 +403,17 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       'where-to-put-ai-skills': 'ai-skills',
       'show-your-code': 'code',
       'college-degrees-matter-less': 'degrees',
-      'two-page-resume-myth': 'two-pages'
+      'two-page-resume-myth': 'two-pages',
     };
-    
+
     if (legacyRedirects[slug]) {
       permanentRedirect(`/${legacyRedirects[slug]}`);
     }
   }
 
-  if (post) {
+  const companyHub = post ? await resolveCompanyPage(slug) : null;
+
+  if (post && !companyHub) {
     let PostContent: React.ComponentType | null = null;
     try {
       const module = await import(`@/content/blog/${post.slug}`);
@@ -557,23 +569,19 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     const isEmpty = (!p.fullName || p.fullName === 'Professional Profile' || p.fullName === 'Your Name')
       || (!p.summary && data.workExperience.length === 0 && data.education.length === 0 && (!p.skills || p.skills.length === 0));
     if (isEmpty) {
-      const dirHit = await getCompanyDirectory(slug);
-      if (dirHit) {
+      const hub = companyHub ?? (await resolveCompanyPage(slug));
+      if (hub) {
         data = null; // Fall through to company page render below
       }
     }
   }
 
   if (!data) {
-    // Directory first (cheap PK). Jobs load is equality-only + timeout fail-open.
-    // Never ILIKE company on public SSR — that path hung the site under load.
-    const dir = await getCompanyDirectory(slug);
-    const jobs = await loadCompanyJobs(slug, dir?.name);
-
-    // Need either directory membership or at least one job to render a company page.
-    if ((!jobs || jobs.length === 0) && !dir) {
+    const hub = companyHub ?? (await resolveCompanyPage(slug));
+    if (!hub) {
       notFound();
     }
+    const { dir, jobs } = hub;
 
     const companyName = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
     
