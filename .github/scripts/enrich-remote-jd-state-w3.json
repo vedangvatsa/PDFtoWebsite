@@ -7671,8 +7671,9 @@
       "external_id": "omada-health_sw-eng"
     },
     "abedb5ab-f647-4acd-9dd9-4cab1b9f9e0a": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_prod-mgr) alread"
+      "status": "ok",
+      "path": "/mercury/prod-mgr-c8",
+      "external_id": "mercury_prod-mgr-c8"
     },
     "7e56c74f-ad21-4c09-b160-f3c7ce01dc47": {
       "status": "ok",
@@ -7700,12 +7701,14 @@
       "external_id": "gitlab_rev-strategist"
     },
     "4af0a289-6d7f-4467-a899-6a1598d9b7b4": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(life360_client-partner) "
+      "status": "ok",
+      "path": "/life360/client-62",
+      "external_id": "life360_client-62"
     },
     "afb55e42-e2fd-4d43-9710-b5d8b541d0a5": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(life360_client-partner) "
+      "status": "ok",
+      "path": "/life360/client-70",
+      "external_id": "life360_client-70"
     },
     "6288adbb-6c94-4875-94ff-8f9084cf4ef7": {
       "status": "ok",
@@ -7920,16 +7923,19 @@
       "external_id": "indigo_avp-facilities"
     },
     "edc54405-d8a6-4abd-b4a9-026e074ae9cd": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_sol-eng) al"
+      "status": "ok",
+      "path": "/grafana-labs/sol-eng-c9",
+      "external_id": "grafana-labs_sol-eng-c9"
     },
     "2ab3736e-c1ec-400f-97f2-fada30b1e574": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_ml-eng-dev)"
+      "status": "ok",
+      "path": "/grafana-labs/ml-eng-f6",
+      "external_id": "grafana-labs_ml-eng-f6"
     },
     "9b6dcc1a-66bd-4d4b-a59c-fe617a334f3f": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_ml-eng-dev)"
+      "status": "ok",
+      "path": "/grafana-labs/ml-eng-e3",
+      "external_id": "grafana-labs_ml-eng-e3"
     },
     "74fb0348-b4e5-4f91-a1e5-372108b1a782": {
       "status": "ok",
@@ -8140,8 +8146,9 @@
       "reason": "gh_404"
     },
     "819eb4d2-4b04-40ca-a912-d5d276774a6c": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(zscaler_tech-prog) alrea"
+      "status": "ok",
+      "path": "/zscaler/tech-prog-04",
+      "external_id": "zscaler_tech-prog-04"
     },
     "00272afd-478b-49e6-9586-07a9f015c8f3": {
       "status": "skip",
@@ -8167,8 +8174,9 @@
       "external_id": "zscaler_sec-arch"
     },
     "58db2e79-dc6b-4769-b924-9648cce3c6db": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(zscaler_spec-sales) alre"
+      "status": "ok",
+      "path": "/zscaler/spec-sales-75",
+      "external_id": "zscaler_spec-sales-75"
     },
     "828f8ec5-0ae0-442c-8236-9e67cb2eab4e": {
       "status": "ok",
@@ -8243,8 +8251,9 @@
       "external_id": "doordash-usa_biz-eng"
     },
     "19e14928-0124-4ef3-bf93-8728cb3b9acf": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(doordash-usa_sec-eng) al"
+      "status": "ok",
+      "path": "/doordash-usa/sec-eng-49",
+      "external_id": "doordash-usa_sec-eng-49"
     },
     "c1fde53b-960f-4727-9ec4-4506fcde265c": {
       "status": "ok",
@@ -8360,12 +8369,14 @@
       "external_id": "reddit_sw-eng-ads"
     },
     "3fe18add-febd-4892-9040-33d7d06f5186": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_data-sci-ads) alr"
+      "status": "ok",
+      "path": "/reddit/data-sci-0b",
+      "external_id": "reddit_data-sci-0b"
     },
     "66148595-63a1-421d-9e81-fed58a92f740": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_data-sci) already"
+      "status": "ok",
+      "path": "/reddit/data-sci-2a",
+      "external_id": "reddit_data-sci-2a"
     },
     "8707b70d-8e84-4464-8610-e1126a95f571": {
       "status": "ok",
@@ -8421,12 +8432,14 @@
       "external_id": "webflow_corporate-acct"
     },
     "ab299f38-26d2-42bc-917b-9977aeadbb25": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_tech-prog) alread"
+      "status": "ok",
+      "path": "/reddit/tech-prog-62",
+      "external_id": "reddit_tech-prog-62"
     },
     "3f19659c-21a4-475a-812d-55eb3cf2ef6f": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(reddit_data-sci-ads) alr"
+      "status": "ok",
+      "path": "/reddit/data-sci-5a",
+      "external_id": "reddit_data-sci-5a"
     },
     "51e0a2fe-25fd-4be8-b5ec-70acacea4fba": {
       "status": "ok",
@@ -8705,8 +8718,9 @@
       "reason": "gh_404"
     },
     "d04fbdfc-6312-4254-a216-f5316c5baacb": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_ai-eng-mkt) alrea"
+      "status": "ok",
+      "path": "/sezzle/ai-eng-e9",
+      "external_id": "sezzle_ai-eng-e9"
     },
     "aa28a3b1-94b6-41dc-aad6-2a20e49997d6": {
       "status": "ok",
@@ -8719,8 +8733,9 @@
       "external_id": "stockx_category-mgr"
     },
     "4e5f5c3a-c4d9-4c13-b097-bca554c64e9f": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_sw-eng-acct) alre"
+      "status": "ok",
+      "path": "/sezzle/sw-eng-9c",
+      "external_id": "sezzle_sw-eng-9c"
     },
     "98158824-cd60-4cc0-b02e-ac2f018ca9c8": {
       "status": "skip",
@@ -8737,8 +8752,9 @@
       "external_id": "sezzle_sw-eng-63"
     },
     "c4648420-9c12-4589-b69a-49300b978c1d": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_sw-eng-acct) alre"
+      "status": "ok",
+      "path": "/sezzle/sw-eng-21",
+      "external_id": "sezzle_sw-eng-21"
     },
     "23f2492b-ecd6-4f15-8228-f4fd7ae71c4d": {
       "status": "ok",
@@ -8758,8 +8774,9 @@
       "reason": "gh_404"
     },
     "a24650e7-82b7-4246-b365-a724f330df6c": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(sezzle_sw-eng-acct) alre"
+      "status": "ok",
+      "path": "/sezzle/sw-d8",
+      "external_id": "sezzle_sw-d8"
     },
     "8d3203dc-5f75-41f3-940b-c8dae215be85": {
       "status": "ok",
@@ -8830,8 +8847,9 @@
       "external_id": "okx_institutional"
     },
     "eed3457f-c57a-4883-acab-48da72b828b1": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(natera_med-dir) already "
+      "status": "ok",
+      "path": "/natera/med-dir-ee",
+      "external_id": "natera_med-dir-ee"
     },
     "cbd33347-f7e8-40bb-bcc8-aaba7e44de49": {
       "status": "skip",
@@ -9034,8 +9052,9 @@
       "external_id": "mercury_sw-eng-prod"
     },
     "749cd69c-242b-4cc0-b0ef-7ddffc35482d": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_prod-mgr) alread"
+      "status": "ok",
+      "path": "/mercury/prod-mgr-de",
+      "external_id": "mercury_prod-mgr-de"
     },
     "98d1a42d-94e4-4ace-9fcb-0172c43bd4cc": {
       "status": "ok",
@@ -9047,16 +9066,18 @@
       "reason": "gh_404"
     },
     "23d70f2b-1c54-44f7-924a-9ba4a29f02aa": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_sw-eng) already "
+      "status": "ok",
+      "path": "/mercury/sw-eng-b3",
+      "external_id": "mercury_sw-eng-b3"
     },
     "c30278db-8619-451a-9e9c-370e2531421a": {
       "status": "skip",
       "reason": "gh_404"
     },
     "1ef42611-fbb7-4c44-9a6f-492b72e53968": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(mercury_prod-design) alr"
+      "status": "ok",
+      "path": "/mercury/prod-design-84",
+      "external_id": "mercury_prod-design-84"
     },
     "c7155835-6e85-43d5-953a-cfb12ebe4267": {
       "status": "ok",
@@ -9278,32 +9299,36 @@
       "external_id": "wellhub_channel-mkt"
     },
     "2f73340e-615f-460b-a14a-578f3f0f27d5": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(wellhub_plat-eng) alread"
+      "status": "ok",
+      "path": "/wellhub/plat-eng-3b",
+      "external_id": "wellhub_plat-eng-3b"
     },
     "3d61c884-2ae6-4843-af7b-e12f44af1d5e": {
       "status": "skip",
       "reason": "gh_404"
     },
     "953897f9-2535-4320-8984-e36879307689": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_ai-eng-2nd)"
+      "status": "ok",
+      "path": "/grafana-labs/ai-eng-07",
+      "external_id": "grafana-labs_ai-eng-07"
     },
     "8b5eb294-4133-4c85-bcd0-2f0516916355": {
       "status": "skip",
       "reason": "gh_404"
     },
     "a16502d5-2c48-4f8e-835d-b94099e3cf2d": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_sw-eng) alr"
+      "status": "ok",
+      "path": "/grafana-labs/sw-eng-21",
+      "external_id": "grafana-labs_sw-eng-21"
     },
     "f4d76579-9af5-49db-9e6a-9991a812af75": {
       "status": "skip",
       "reason": "gh_404"
     },
     "eb8e6d35-039b-4419-8ee5-6e4631f25058": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(grafana-labs_sw-eng) alr"
+      "status": "ok",
+      "path": "/grafana-labs/sw-eng-93",
+      "external_id": "grafana-labs_sw-eng-93"
     },
     "eade6844-f346-4cc0-8bc6-fb3aacd50e3b": {
       "status": "ok",
@@ -9374,12 +9399,14 @@
       "reason": "gh_404"
     },
     "7039e66d-cf8a-4b2e-b591-5c4019471d73": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anthropic_anthropic) alr"
+      "status": "ok",
+      "path": "/anthropic/anthropic-62",
+      "external_id": "anthropic_anthropic-62"
     },
     "ee7418cd-ec07-42a7-9449-ee3a557437ab": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anthropic_anthropic) alr"
+      "status": "ok",
+      "path": "/anthropic/anthropic-a5",
+      "external_id": "anthropic_anthropic-a5"
     },
     "a52c01cd-550a-45f9-ac4e-2faf9ab70dba": {
       "status": "ok",
@@ -9503,8 +9530,9 @@
       "external_id": "goat-group_supply-analyst"
     },
     "8e7865c2-3d01-4882-9300-904160891914": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(arize-ai_ai-sol-mgr) alr"
+      "status": "ok",
+      "path": "/arize-ai/ai-sol-73",
+      "external_id": "arize-ai_ai-sol-73"
     },
     "5952f24f-745e-43ed-8e64-8952aae4204d": {
       "status": "skip",
@@ -9583,16 +9611,18 @@
       "external_id": "extend_fraud-ops"
     },
     "629e88e4-a693-4649-86a4-21b54f93c37e": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(alpaca_sw-eng) already e"
+      "status": "ok",
+      "path": "/alpaca/sw-eng-2d",
+      "external_id": "alpaca_sw-eng-2d"
     },
     "932d7e2b-462d-4ea2-a001-0b3b4080bcf8": {
       "status": "skip",
       "reason": "gh_404"
     },
     "e758a68e-8d6c-4a82-a726-7d8fd64a86ad": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(alpaca_sw-eng) already e"
+      "status": "ok",
+      "path": "/alpaca/sw-eng-ca",
+      "external_id": "alpaca_sw-eng-ca"
     },
     "dad1caaf-10bf-48d6-ae79-271c4498df95": {
       "status": "skip",
@@ -9608,8 +9638,9 @@
       "external_id": "alpaca_fullstk-eng"
     },
     "e96c21b1-6349-486a-b4eb-f49e4f4dfefd": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(alpaca_prod-mgr) already"
+      "status": "ok",
+      "path": "/alpaca/prod-mgr-e0",
+      "external_id": "alpaca_prod-mgr-e0"
     },
     "6d506414-f07d-43ed-966d-993b4879dc62": {
       "status": "ok",
@@ -9662,8 +9693,9 @@
       "external_id": "discord_data-eng-ads"
     },
     "cd1d95fd-baef-4f11-84e9-62d1745ab09c": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(airtable_acct-executive)"
+      "status": "ok",
+      "path": "/airtable/acct-93",
+      "external_id": "airtable_acct-93"
     },
     "0992fd2a-514e-4777-8439-b2178476b987": {
       "status": "ok",
@@ -9718,8 +9750,9 @@
       "external_id": "customer-io_tech-ops-mgr"
     },
     "d3742d41-a15e-4f19-9a87-02c38d995bc6": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cresta_strat-sales) alre"
+      "status": "ok",
+      "path": "/cresta/strat-sales-17",
+      "external_id": "cresta_strat-sales-17"
     },
     "faf681ca-2570-467d-9d25-299a0a9d2bb0": {
       "status": "ok",
@@ -9788,8 +9821,9 @@
       "reason": "gh_404"
     },
     "9049be57-dd93-4f21-89f7-e799d3497c6f": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cloudflare_sol-eng) alre"
+      "status": "ok",
+      "path": "/cloudflare/sol-eng-ad",
+      "external_id": "cloudflare_sol-eng-ad"
     },
     "e8aac7dc-1e94-413c-b583-66e4378a23cf": {
       "status": "ok",
@@ -9801,8 +9835,9 @@
       "reason": "gh_404"
     },
     "f3c8e9e8-8b41-41bb-84c3-ff5d42df694e": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cloudflare_sol-eng) alre"
+      "status": "ok",
+      "path": "/cloudflare/sol-eng-60",
+      "external_id": "cloudflare_sol-eng-60"
     },
     "eca6f1d1-ed0b-48ae-8995-d6d7ce2acb04": {
       "status": "ok",
@@ -9834,8 +9869,9 @@
       "external_id": "affirm_prod-design"
     },
     "613e6e44-bf40-44cb-a58b-9af9eecb38d8": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cloudflare_cust-eng) alr"
+      "status": "ok",
+      "path": "/cloudflare/cust-eng-7a",
+      "external_id": "cloudflare_cust-eng-7a"
     },
     "0f01407f-a66b-4535-8f28-f7048ffebfd0": {
       "status": "skip",
@@ -9856,8 +9892,9 @@
       "external_id": "affirm_talent-brand"
     },
     "6789bc91-d7fd-48b0-9703-2e3654fee6ac": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(affirm_strat-fin) alread"
+      "status": "ok",
+      "path": "/affirm/strat-fin-b1",
+      "external_id": "affirm_strat-fin-b1"
     },
     "90326544-2033-4e58-a6c2-38b8a12d8176": {
       "status": "ok",
@@ -9865,8 +9902,9 @@
       "external_id": "affirm_sw-eng-7e"
     },
     "dadd6dd3-aacf-46a8-bb3f-82fb41cc2c16": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(affirm_eng-mgr-ml) alrea"
+      "status": "ok",
+      "path": "/affirm/eng-mgr-a6",
+      "external_id": "affirm_eng-mgr-a6"
     },
     "4ee2bc2e-103b-4129-912b-20790c6ec28a": {
       "status": "ok",
@@ -9940,6 +9978,239 @@
       "status": "ok",
       "path": "/checkr/strat-acct",
       "external_id": "checkr_strat-acct"
+    },
+    "fa82811e-0daa-4bf3-b53a-d045b2af598f": {
+      "status": "ok",
+      "path": "/bybit/l-c-mlro",
+      "external_id": "bybit_l-c-mlro"
+    },
+    "79c31766-f5a9-4072-98d0-0d6b362f22b4": {
+      "status": "ok",
+      "path": "/bugcrowd/reinforcement",
+      "external_id": "bugcrowd_reinforcement"
+    },
+    "64291d0c-6550-49b8-be37-bd293c77a63f": {
+      "status": "ok",
+      "path": "/bugcrowd/enterprise",
+      "external_id": "bugcrowd_enterprise"
+    },
+    "bb0d9f51-3505-4bf9-a589-e9b875be5132": {
+      "status": "ok",
+      "path": "/bugcrowd/mgr-sec-ops",
+      "external_id": "bugcrowd_mgr-sec-ops"
+    },
+    "aa2e7f82-5d04-402b-ae5e-5d4a59c724f9": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "bc50a72b-3483-4b46-939b-c8bd8048f581": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(bybit_country-mgr) alrea"
+    },
+    "aedcd8fd-a4e8-47ed-9ca7-dfe706f2815c": {
+      "status": "ok",
+      "path": "/builder-io/enterprise",
+      "external_id": "builder-io_enterprise"
+    },
+    "44099fe4-464a-460b-b3e7-2bb7ccc5b3e6": {
+      "status": "ok",
+      "path": "/bybit/blockchain",
+      "external_id": "bybit_blockchain"
+    },
+    "611c536e-e5cb-4295-a325-62e1b3834d79": {
+      "status": "ok",
+      "path": "/able/sw-eng",
+      "external_id": "able_sw-eng"
+    },
+    "2e8c0371-776e-4fbc-ad4f-3b6ed50e4c8e": {
+      "status": "ok",
+      "path": "/able/ai-eng",
+      "external_id": "able_ai-eng"
+    },
+    "295f698a-6e2f-4828-ba6d-01b08672ef4a": {
+      "status": "ok",
+      "path": "/accuweather-careers/rev-ops",
+      "external_id": "accuweather-careers_rev-ops"
+    },
+    "5cc41ebb-bfa8-4b9b-aa58-87d3ddfd611f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "c558826d-d3fc-4b77-b131-7f06dad9fe6b": {
+      "status": "ok",
+      "path": "/accuweather-careers/prod-analyst",
+      "external_id": "accuweather-careers_prod-analyst"
+    },
+    "501b7ff3-63d9-40f7-95f1-1fae40a3c6ce": {
+      "status": "ok",
+      "path": "/accuweather-careers/mgr-government",
+      "external_id": "accuweather-careers_mgr-government"
+    },
+    "f9b74a50-47d5-4770-b364-2a6bc16b5c0d": {
+      "status": "ok",
+      "path": "/6sense/cust-success",
+      "external_id": "6sense_cust-success"
+    },
+    "786bd16d-a033-4946-8962-06bb3dc49925": {
+      "status": "ok",
+      "path": "/6sense/sec-eng",
+      "external_id": "6sense_sec-eng"
+    },
+    "463a7352-74db-4d8f-a447-f51d26676b63": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "636eea85-9b6c-46c0-932c-45081a27f4e4": {
+      "status": "ok",
+      "path": "/6sense/prod-mgr-8e",
+      "external_id": "6sense_prod-mgr-8e"
+    },
+    "4d882318-c37e-4a4c-bd3b-c06490ff7943": {
+      "status": "ok",
+      "path": "/udacity/claude-ai",
+      "external_id": "udacity_claude-ai"
+    },
+    "9cea31ab-e887-4601-b26d-9c82e06449bd": {
+      "status": "ok",
+      "path": "/sidecar-health/tech-recruit",
+      "external_id": "sidecar-health_tech-recruit"
+    },
+    "0a1e6903-6ef0-47d5-be9b-1d2ddea7e834": {
+      "status": "ok",
+      "path": "/anthropic/safeguards-21",
+      "external_id": "anthropic_safeguards-21"
+    },
+    "97c24710-d939-4438-8a12-85b183fefb52": {
+      "status": "ok",
+      "path": "/anthropic/safeguards-66",
+      "external_id": "anthropic_safeguards-66"
+    },
+    "cac517a6-b6f6-4d3a-ba83-4f4f13e56054": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "7e166089-b46b-4e87-9175-65f0848caab4": {
+      "status": "ok",
+      "path": "/bybit/mkt-spec",
+      "external_id": "bybit_mkt-spec"
+    },
+    "e17bf485-cac0-4701-a761-1f04209c7833": {
+      "status": "ok",
+      "path": "/verve/ml-eng",
+      "external_id": "verve_ml-eng"
+    },
+    "f1ae20f6-c953-44c8-86a4-7038e9affd99": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "abfbf232-6974-4597-b8ab-7ef8a83ccbc7": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "429769bc-e402-4a69-b7f3-0d3012f4497a": {
+      "status": "ok",
+      "path": "/affirm/sw-ab",
+      "external_id": "affirm_sw-ab"
+    },
+    "ae28c8df-3471-4df2-96c4-8fde1072990c": {
+      "status": "ok",
+      "path": "/natera/patient-mkt",
+      "external_id": "natera_patient-mkt"
+    },
+    "3b418e26-c71c-401f-9886-ec1a261645e8": {
+      "status": "ok",
+      "path": "/gitlab/sol-arch-ee",
+      "external_id": "gitlab_sol-arch-ee"
+    },
+    "531d2a7a-d4fb-4004-9ac7-727edcf34421": {
+      "status": "ok",
+      "path": "/gitlab/rev-tech",
+      "external_id": "gitlab_rev-tech"
+    },
+    "71d32e40-a70a-4784-acf6-71bdd94cd7da": {
+      "status": "ok",
+      "path": "/gitlab/intermedia-86",
+      "external_id": "gitlab_intermedia-86"
+    },
+    "0169a6b9-136f-4ae3-9646-258d8adcb2f5": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "520c3bae-194b-4d89-859a-553b3980292a": {
+      "status": "ok",
+      "path": "/gitlab/mgr-eng-git",
+      "external_id": "gitlab_mgr-eng-git"
+    },
+    "0d3864ba-f617-4814-b774-562361ad360b": {
+      "status": "ok",
+      "path": "/gitlab/rev-5a",
+      "external_id": "gitlab_rev-5a"
+    },
+    "c3256132-9747-43c2-a156-4a65870170c3": {
+      "status": "ok",
+      "path": "/fleetio/sw-eng-8a",
+      "external_id": "fleetio_sw-eng-8a"
+    },
+    "7db187c2-0489-4e33-8b7b-38e59f7b6b33": {
+      "status": "ok",
+      "path": "/affirm/sw-eng-bd",
+      "external_id": "affirm_sw-eng-bd"
+    },
+    "452b438a-dfc5-4ff5-8451-5bf18d866734": {
+      "status": "ok",
+      "path": "/affirm/sw-eng-a1",
+      "external_id": "affirm_sw-eng-a1"
+    },
+    "38d29889-954f-4f94-a51a-1b5f6ab4951f": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "e3420eed-5745-4a93-8cff-dee53c1d2588": {
+      "status": "ok",
+      "path": "/alpaca/japan-broker",
+      "external_id": "alpaca_japan-broker"
+    },
+    "3dff7b59-a0b3-4b17-a350-0ca9b1868124": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "dd1fbf83-fd36-460f-af8a-80d818201be8": {
+      "status": "ok",
+      "path": "/amplitude/sales-eng",
+      "external_id": "amplitude_sales-eng"
+    },
+    "96dd260f-c681-4566-af6d-eb6885f2db3b": {
+      "status": "ok",
+      "path": "/algolia/sw-eng-bc",
+      "external_id": "algolia_sw-eng-bc"
+    },
+    "4377be85-b4f6-49e4-a130-f22bcd4f43fb": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "ec334676-43c4-4457-b31b-b1ca6e946932": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "17135516-1984-4b9d-b2d7-210209671337": {
+      "status": "ok",
+      "path": "/reddit/android-eng",
+      "external_id": "reddit_android-eng"
+    },
+    "439414fe-6b4f-4c45-ae18-b8129b60773f": {
+      "status": "ok",
+      "path": "/offerup/sw-dev-c2",
+      "external_id": "offerup_sw-dev-c2"
+    },
+    "e3a74c43-17cc-462a-b8ee-be96da6413c9": {
+      "status": "ok",
+      "path": "/mercury/strat",
+      "external_id": "mercury_strat"
+    },
+    "491caf5f-c375-44ae-882d-85fe192cc7aa": {
+      "status": "ok",
+      "path": "/mercury/content-94",
+      "external_id": "mercury_content-94"
     }
   },
   "doneIds": [
@@ -11961,7 +12232,93 @@
     "e3c512e2-196d-4c33-80c9-3c8224c48707",
     "18522bd5-9822-4969-9e57-be39039b445f",
     "0da097a9-e3b4-408f-a6ed-c5fa807f2403",
-    "fd25e33e-9779-4e61-8e43-e406cbeca0ae"
+    "fd25e33e-9779-4e61-8e43-e406cbeca0ae",
+    "abedb5ab-f647-4acd-9dd9-4cab1b9f9e0a",
+    "4af0a289-6d7f-4467-a899-6a1598d9b7b4",
+    "afb55e42-e2fd-4d43-9710-b5d8b541d0a5",
+    "edc54405-d8a6-4abd-b4a9-026e074ae9cd",
+    "2ab3736e-c1ec-400f-97f2-fada30b1e574",
+    "9b6dcc1a-66bd-4d4b-a59c-fe617a334f3f",
+    "58db2e79-dc6b-4769-b924-9648cce3c6db",
+    "819eb4d2-4b04-40ca-a912-d5d276774a6c",
+    "19e14928-0124-4ef3-bf93-8728cb3b9acf",
+    "3fe18add-febd-4892-9040-33d7d06f5186",
+    "66148595-63a1-421d-9e81-fed58a92f740",
+    "ab299f38-26d2-42bc-917b-9977aeadbb25",
+    "d04fbdfc-6312-4254-a216-f5316c5baacb",
+    "3f19659c-21a4-475a-812d-55eb3cf2ef6f",
+    "4e5f5c3a-c4d9-4c13-b097-bca554c64e9f",
+    "a24650e7-82b7-4246-b365-a724f330df6c",
+    "c4648420-9c12-4589-b69a-49300b978c1d",
+    "eed3457f-c57a-4883-acab-48da72b828b1",
+    "749cd69c-242b-4cc0-b0ef-7ddffc35482d",
+    "1ef42611-fbb7-4c44-9a6f-492b72e53968",
+    "23d70f2b-1c54-44f7-924a-9ba4a29f02aa",
+    "2f73340e-615f-460b-a14a-578f3f0f27d5",
+    "953897f9-2535-4320-8984-e36879307689",
+    "eb8e6d35-039b-4419-8ee5-6e4631f25058",
+    "a16502d5-2c48-4f8e-835d-b94099e3cf2d",
+    "7039e66d-cf8a-4b2e-b591-5c4019471d73",
+    "ee7418cd-ec07-42a7-9449-ee3a557437ab",
+    "629e88e4-a693-4649-86a4-21b54f93c37e",
+    "8e7865c2-3d01-4882-9300-904160891914",
+    "e758a68e-8d6c-4a82-a726-7d8fd64a86ad",
+    "e96c21b1-6349-486a-b4eb-f49e4f4dfefd",
+    "cd1d95fd-baef-4f11-84e9-62d1745ab09c",
+    "d3742d41-a15e-4f19-9a87-02c38d995bc6",
+    "613e6e44-bf40-44cb-a58b-9af9eecb38d8",
+    "9049be57-dd93-4f21-89f7-e799d3497c6f",
+    "f3c8e9e8-8b41-41bb-84c3-ff5d42df694e",
+    "6789bc91-d7fd-48b0-9703-2e3654fee6ac",
+    "dadd6dd3-aacf-46a8-bb3f-82fb41cc2c16",
+    "fa82811e-0daa-4bf3-b53a-d045b2af598f",
+    "79c31766-f5a9-4072-98d0-0d6b362f22b4",
+    "64291d0c-6550-49b8-be37-bd293c77a63f",
+    "bb0d9f51-3505-4bf9-a589-e9b875be5132",
+    "aa2e7f82-5d04-402b-ae5e-5d4a59c724f9",
+    "aedcd8fd-a4e8-47ed-9ca7-dfe706f2815c",
+    "44099fe4-464a-460b-b3e7-2bb7ccc5b3e6",
+    "611c536e-e5cb-4295-a325-62e1b3834d79",
+    "2e8c0371-776e-4fbc-ad4f-3b6ed50e4c8e",
+    "295f698a-6e2f-4828-ba6d-01b08672ef4a",
+    "5cc41ebb-bfa8-4b9b-aa58-87d3ddfd611f",
+    "c558826d-d3fc-4b77-b131-7f06dad9fe6b",
+    "501b7ff3-63d9-40f7-95f1-1fae40a3c6ce",
+    "f9b74a50-47d5-4770-b364-2a6bc16b5c0d",
+    "786bd16d-a033-4946-8962-06bb3dc49925",
+    "463a7352-74db-4d8f-a447-f51d26676b63",
+    "636eea85-9b6c-46c0-932c-45081a27f4e4",
+    "4d882318-c37e-4a4c-bd3b-c06490ff7943",
+    "9cea31ab-e887-4601-b26d-9c82e06449bd",
+    "0a1e6903-6ef0-47d5-be9b-1d2ddea7e834",
+    "97c24710-d939-4438-8a12-85b183fefb52",
+    "cac517a6-b6f6-4d3a-ba83-4f4f13e56054",
+    "7e166089-b46b-4e87-9175-65f0848caab4",
+    "e17bf485-cac0-4701-a761-1f04209c7833",
+    "f1ae20f6-c953-44c8-86a4-7038e9affd99",
+    "abfbf232-6974-4597-b8ab-7ef8a83ccbc7",
+    "429769bc-e402-4a69-b7f3-0d3012f4497a",
+    "ae28c8df-3471-4df2-96c4-8fde1072990c",
+    "3b418e26-c71c-401f-9886-ec1a261645e8",
+    "531d2a7a-d4fb-4004-9ac7-727edcf34421",
+    "71d32e40-a70a-4784-acf6-71bdd94cd7da",
+    "0169a6b9-136f-4ae3-9646-258d8adcb2f5",
+    "520c3bae-194b-4d89-859a-553b3980292a",
+    "0d3864ba-f617-4814-b774-562361ad360b",
+    "c3256132-9747-43c2-a156-4a65870170c3",
+    "7db187c2-0489-4e33-8b7b-38e59f7b6b33",
+    "452b438a-dfc5-4ff5-8451-5bf18d866734",
+    "38d29889-954f-4f94-a51a-1b5f6ab4951f",
+    "e3420eed-5745-4a93-8cff-dee53c1d2588",
+    "3dff7b59-a0b3-4b17-a350-0ca9b1868124",
+    "dd1fbf83-fd36-460f-af8a-80d818201be8",
+    "96dd260f-c681-4566-af6d-eb6885f2db3b",
+    "4377be85-b4f6-49e4-a130-f22bcd4f43fb",
+    "ec334676-43c4-4457-b31b-b1ca6e946932",
+    "17135516-1984-4b9d-b2d7-210209671337",
+    "439414fe-6b4f-4c45-ae18-b8129b60773f",
+    "e3a74c43-17cc-462a-b8ee-be96da6413c9",
+    "491caf5f-c375-44ae-882d-85fe192cc7aa"
   ],
   "skipped": {},
   "batches": [
