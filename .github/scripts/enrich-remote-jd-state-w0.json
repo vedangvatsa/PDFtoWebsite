@@ -14430,7 +14430,7 @@
     },
     "0992f90e-3dee-43e1-acaa-96a9fe780d51": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "4570b3ee-f46c-4619-8bfb-007e3bf7c581": {
       "status": "skip",
@@ -25916,7 +25916,7 @@
     },
     "07ed3829-e6b1-4ccb-ae7d-f3dbe24549d0": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "01206c68-2dfb-4ebb-aa4f-df20c78497cc": {
       "status": "skip",
@@ -26052,7 +26052,7 @@
     },
     "04fb79f3-1f5b-499b-9a7c-f954c3d4596e": {
       "status": "fail",
-      "reason": "all_providers_failed: anthropic_claude-sonnet-4-5_err:The operation was aborted "
+      "reason": "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop"
     },
     "079cc130-0236-4d06-8af8-edff4c25d273": {
       "status": "skip",
@@ -49013,7 +49013,7 @@
     },
     "0e3b79e6-2dc1-4a11-92a4-c4b4677fe8b1": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "0e712901-8ee3-4f59-8a0f-f65c5744b951": {
       "status": "ok",
@@ -49032,7 +49032,7 @@
     },
     "028d0082-6912-4263-aff2-c5d62ee9b24a": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "00d15fa6-d23b-4337-acd7-4427ae1bcb83": {
       "status": "ok",
@@ -49236,7 +49236,7 @@
     },
     "0673e182-b46e-4f77-a6c7-99fea8b3fd82": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "0ff18a34-c0ec-4bc0-a2ef-6b6d6b38dadc": {
       "status": "ok",
@@ -49383,7 +49383,7 @@
     },
     "00f3e20c-dfe7-4ec9-822e-7701c155114d": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "0c5427eb-5adb-42e4-80da-c5e4a86804ba": {
       "status": "ok",
@@ -50413,7 +50413,7 @@
     },
     "09743218-1d3d-49a5-92f1-4380c8f35775": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "0aefc165-626f-480c-88c4-7ee024238c09": {
       "status": "skip",
@@ -50461,7 +50461,7 @@
     },
     "0f7c0178-e73e-4c20-9b0a-b80bce4def71": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0503ce1f-f51c-4c7e-82db-22ddacd75a03": {
       "status": "skip",
@@ -50509,11 +50509,11 @@
     },
     "0c6d9349-ddf2-4728-ad20-9278a1a1d311": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "05188ba0-c010-436f-8a88-9108061d8523": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "05e0ca66-7af4-4cf6-85b6-9ea481049ac4": {
       "status": "skip",
@@ -50521,11 +50521,11 @@
     },
     "0596760c-8d55-4107-bf01-289e3f6d63da": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0a932e69-4365-4416-9265-cc94bd58a71c": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0617e018-cdeb-4f90-bdd1-7d1d7dfbbb77": {
       "status": "skip",
@@ -50533,7 +50533,7 @@
     },
     "0c3c4da5-e7f7-40dc-9d64-ec464aec578e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0c540ef9-6e0c-46d4-b312-ae24f0e93a30": {
       "status": "ok",
@@ -65884,6 +65884,25 @@
       "samplePaths": [
         "/upstart/ops-mgr-loan"
       ]
+    },
+    {
+      "batchNum": 10,
+      "worker": 0,
+      "at": "2026-08-03T22:16:02.241Z",
+      "attempted": 698,
+      "ok": 0,
+      "skip": 697,
+      "fail": 1,
+      "reasons": {
+        "html_short": 650,
+        "html_403": 22,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_404": 2,
+        "html_429": 4,
+        "err_TimeoutError": 14,
+        "err_TypeError": 5
+      },
+      "samplePaths": []
     }
   ]
 }
