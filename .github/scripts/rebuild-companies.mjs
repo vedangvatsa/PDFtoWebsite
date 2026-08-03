@@ -1,5 +1,8 @@
 /**
- * Rebuild public.companies from jobs (last N days).
+ * Refresh public.companies from jobs (last N days).
+ *
+ * Companies that stop hiring are marked inactive (role_count = 0) but NOT
+ * deleted, so /<slug> company pages stay live even with no current jobs.
  *
  * Paths (first success wins):
  *  1. Management API SQL (SUPABASE_ACCESS_TOKEN) — best for large tables
@@ -12,6 +15,7 @@
  *   SUPABASE_ACCESS_TOKEN (optional, project management token)
  *   SUPABASE_PROJECT_REF (optional, default from URL)
  *   COMPANIES_STATS_DAYS (default 30)
+ *   COMPANIES_MIN_COUNT (default 1000; abort if a rebuild yields fewer)
  *
  * Usage: node .github/scripts/rebuild-companies.mjs
  */
@@ -368,8 +372,18 @@ async function main() {
   const companies = mergeCanonical(raw);
   console.log(`  after normalize: ${companies.length} companies (${Date.now() - t0}ms)`);
 
+  // Guard against partial/failed queries: a healthy rebuild yields thousands of
+  // companies, and the inactive-mark pass below would zero out everyone missing
+  // from a truncated result. Abort loudly instead of silently destroying counts.
+  const MIN_COMPANIES = Math.max(1, Number(process.env.COMPANIES_MIN_COUNT || 1000));
   if (companies.length === 0) {
-    console.error('No companies produced — aborting (will not wipe table)');
+    console.error('No companies produced — aborting (will not touch table)');
+    process.exit(1);
+  }
+  if (companies.length < MIN_COMPANIES) {
+    console.error(
+      `Suspiciously few companies (${companies.length} < ${MIN_COMPANIES}) — aborting so the directory isn't zeroed by a partial query. Set COMPANIES_MIN_COUNT to override.`
+    );
     process.exit(1);
   }
 
@@ -390,14 +404,14 @@ async function main() {
 
   const keep = new Set(companies.map((c) => c.slug));
   let page = 0;
-  let pruned = 0;
+  let markedInactive = 0;
   while (page < 50) {
     const { data: existing, error: listErr } = await sb
       .from('companies')
       .select('slug')
       .range(page * 1000, (page + 1) * 1000 - 1);
     if (listErr) {
-      console.warn('prune list failed:', listErr.message);
+      console.warn('inactive-mark list failed:', listErr.message);
       break;
     }
     if (!existing?.length) break;
@@ -405,15 +419,18 @@ async function main() {
     if (stale.length) {
       for (let i = 0; i < stale.length; i += 200) {
         const chunk = stale.slice(i, i + 200);
-        const { error: delErr } = await sb.from('companies').delete().in('slug', chunk);
-        if (delErr) console.warn('prune failed:', delErr.message);
-        else pruned += chunk.length;
+        const { error: upErr } = await sb
+          .from('companies')
+          .update({ role_count: 0, updated_at: new Date().toISOString() })
+          .in('slug', chunk);
+        if (upErr) console.warn('inactive-mark failed:', upErr.message);
+        else markedInactive += chunk.length;
       }
     }
     if (existing.length < 1000) break;
     page++;
   }
-  console.log(`  pruned ${pruned} stale companies`);
+  console.log(`  marked ${markedInactive} companies inactive (role_count=0, pages kept)`);
 
   const top = companies
     .slice(0, 5)
