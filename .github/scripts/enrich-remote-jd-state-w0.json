@@ -49569,8 +49569,9 @@
       "external_id": "lightricks_prod-mkt-mgr"
     },
     "0063187b-894f-4373-9901-5508c0c39611": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/godaddy/mgr-sys-eng",
+      "external_id": "godaddy_mgr-sys-eng"
     },
     "03b60354-c810-4437-a9ad-fabb051a6ddb": {
       "status": "ok",
@@ -65689,6 +65690,26 @@
       },
       "samplePaths": [
         "/godaddy/sw-dev-eng"
+      ]
+    },
+    {
+      "batchNum": 4,
+      "worker": 0,
+      "at": "2026-08-03T18:47:34.198Z",
+      "attempted": 736,
+      "ok": 1,
+      "skip": 734,
+      "fail": 1,
+      "reasons": {
+        "html_short": 688,
+        "html_403": 23,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 14,
+        "err_TypeError": 5
+      },
+      "samplePaths": [
+        "/godaddy/mgr-sys-eng"
       ]
     }
   ]
