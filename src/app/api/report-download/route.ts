@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { Resend } from 'resend';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -64,6 +65,9 @@ function buildPlainText(reportKey: string) {
 
 export async function POST(request: NextRequest) {
   try {
+    const { limited, retryAfter } = rateLimit(request, { windowMs: 60 * 60 * 1000, max: 3, scope: 'report-download' });
+    if (limited) return rateLimitResponse(retryAfter);
+
     const body = await request.json();
     const { email, report } = body;
 

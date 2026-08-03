@@ -76,6 +76,11 @@ export async function GET(request: NextRequest) {
     }
 
     const slug = profile.username;
+    // Defense-in-depth: the slug is interpolated into HogQL strings, so it must
+    // be strictly validated even though it originates from the profiles table.
+    if (typeof slug !== 'string' || !/^[a-zA-Z0-9_-]{1,40}$/.test(slug)) {
+      return NextResponse.json({ error: 'Invalid profile' }, { status: 400 });
+    }
     const profilePath = `/${slug}`;
 
     // Run PostHog queries in parallel — all scoped to this user's slug

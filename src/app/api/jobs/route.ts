@@ -57,6 +57,16 @@ function isNonEnglishTitle(title: string): boolean {
   return NON_ENGLISH_PATTERNS.some(p => p.test(title));
 }
 
+// PostgREST or()/ov() filters are parsed as a filter string — strip characters
+// that could break out of the intended filter expression (e.g. `,` or `)`).
+function sanitizeFilterTerm(term: string): string {
+  return term
+    .replace(/[,(){}[\]]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 60);
+}
+
 // ── Role keyword families for title matching ──
 const ROLE_FAMILIES: Record<string, string[]> = {
   frontend:    ['frontend', 'front-end', 'front end', 'react', 'vue', 'angular', 'ui engineer', 'ui developer', 'css', 'next.js', 'nextjs'],
@@ -244,7 +254,7 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') || '20')));
   const type = searchParams.get('type'); // full_time, contract, etc.
   const loc = searchParams.get('loc');   // remote, hybrid, onsite
-  const q = searchParams.get('q')?.toLowerCase().trim();
+  const q = sanitizeFilterTerm(searchParams.get('q')?.toLowerCase().trim() || '');
   const offset = (page - 1) * limit;
 
   // Try to get authenticated user's profile for matching
@@ -264,7 +274,7 @@ export async function GET(request: NextRequest) {
         .eq('id', user.id)
         .single();
       if (profile) {
-        const skills = (profile.skills || []).map((s: string) => s.trim()).filter(Boolean);
+        const skills = (profile.skills || []).map((s: string) => sanitizeFilterTerm(s)).filter(Boolean);
         const links = profile.links || [];
         const location = links.find((l: any) => l.type === 'location')?.value || '';
         userProfile = {
@@ -297,7 +307,7 @@ export async function GET(request: NextRequest) {
   if (userProfile?.location) {
     const userLoc = normalizeLocation(userProfile.location);
     if (!userLoc.isRemote && userLoc.tokens.length > 0) {
-      priorityFilter += ',' + userLoc.tokens.map(t => `location.ilike.%${t}%`).join(',');
+      priorityFilter += ',' + userLoc.tokens.map(t => `location.ilike.%${sanitizeFilterTerm(t)}%`).join(',');
     }
   }
 
@@ -357,7 +367,7 @@ export async function GET(request: NextRequest) {
           'location.ilike.%anywhere%',
           'location.ilike.%worldwide%',
           'location.ilike.%distributed%',
-          ...userLoc.tokens.map(t => `location.ilike.%${t}%`)
+          ...userLoc.tokens.map(t => `location.ilike.%${sanitizeFilterTerm(t)}%`)
         ].join(',');
         query = query.or(locFilters);
       }

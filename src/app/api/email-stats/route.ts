@@ -1,7 +1,25 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { createServerClient } from '@supabase/ssr';
 
-export async function GET() {
+const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
+
+export async function GET(request: NextRequest) {
+  // Internal stats — admin-only. Verify session cookie, then email allowlist.
+  try {
+    const anonClient = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { cookies: { getAll: () => request.cookies.getAll().map(c => ({ name: c.name, value: c.value })) } }
+    );
+    const { data: { user } } = await anonClient.auth.getUser();
+    if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const supabase = supabaseAdmin;
   // Count opens per campaign
   const { data: events, error } = await supabase

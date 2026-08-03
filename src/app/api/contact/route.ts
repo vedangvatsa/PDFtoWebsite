@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { Resend } from 'resend';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 const VALID_PURPOSES = ['feedback', 'partnership', 'support', 'bug-report', 'feature-request', 'other'];
 
@@ -15,6 +16,9 @@ const PURPOSE_LABELS: Record<string, string> = {
 
 export async function POST(request: NextRequest) {
   try {
+    const { limited, retryAfter } = rateLimit(request, { windowMs: 60 * 60 * 1000, max: 5, scope: 'contact' });
+    if (limited) return rateLimitResponse(retryAfter);
+
     const body = await request.json();
     const { email, purpose, message } = body;
 
