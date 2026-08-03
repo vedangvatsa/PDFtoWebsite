@@ -5,13 +5,15 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 files=(
-  .github/scripts/enrich-remote-job-descriptions.mjs
-  .github/scripts/run-enrich-remote-parallel.sh
   .github/scripts/enrich-remote-jd-state.json
   .github/scripts/enrich-remote-jd-state-w0.json
   .github/scripts/enrich-remote-jd-state-w1.json
   .github/scripts/enrich-remote-jd-state-w2.json
   .github/scripts/enrich-remote-jd-state-w3.json
+  .github/scripts/enrich-remote-jd-state-w4.json
+  .github/scripts/enrich-remote-jd-state-w5.json
+  .github/scripts/enrich-remote-jd-state-w6.json
+  .github/scripts/enrich-remote-jd-state-w7.json
 )
 
 # Only stage existing files

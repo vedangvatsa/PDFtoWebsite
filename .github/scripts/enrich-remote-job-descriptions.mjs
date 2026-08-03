@@ -25,17 +25,28 @@ require('dotenv').config();
 
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
+const unquote = (v) => (v || '').replace(/"/g, '').trim();
 const GEMINI_KEYS = [
-  (process.env.GEMINI_API_KEY || '').replace(/"/g, ''),
-  (process.env.GEMINI_API_KEY_2 || '').replace(/"/g, ''),
-  (process.env.GEMINI_API_KEY_3 || '').replace(/"/g, ''),
-  (process.env.GEMINI_API_KEY_4 || '').replace(/"/g, ''),
+  unquote(process.env.GEMINI_API_KEY),
+  unquote(process.env.GEMINI_API_KEY_2),
+  unquote(process.env.GEMINI_API_KEY_3),
+  unquote(process.env.GEMINI_API_KEY_4),
 ].filter(Boolean);
 
-const GEMINI_KEY = GEMINI_KEYS[0] || (process.env.GEMINI_API_KEY || '').replace(/"/g, '');
-const COHERE_KEY = (process.env.COHERE_API_KEY || '').replace(/"/g, '');
-const GROQ_KEY = (process.env.GROQ_API_KEY || '').replace(/"/g, '');
-const ANTHROPIC_KEY = (process.env.ANTHROPIC_API_KEY || '').replace(/"/g, '');
+const COHERE_KEYS = [
+  unquote(process.env.COHERE_API_KEY),
+  unquote(process.env.COHERE_API_KEY_2),
+  unquote(process.env.COHERE_API_KEY_3),
+  unquote(process.env.COHERE_API_KEY_4),
+  unquote(process.env.COHERE_API_KEY_5),
+].filter(Boolean);
+
+const GROQ_KEYS = [
+  unquote(process.env.GROQ_API_KEY),
+  unquote(process.env.GROQ_API_KEY_2),
+].filter(Boolean);
+const OPENAI_KEYS = [unquote(process.env.OPENAI_API_KEY)].filter(Boolean);
+const ANTHROPIC_KEY = unquote(process.env.ANTHROPIC_API_KEY);
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
@@ -624,45 +635,51 @@ function finalizeText(text) {
   return text.slice(0, 8000);
 }
 
+const geminiKeyCooldown = new Map();
+
 async function rewriteWithGemini(job, sourceText, extras) {
-  if (!GEMINI_KEY) throw new Error('Missing GEMINI_API_KEY');
+  if (!GEMINI_KEYS.length) throw new Error('Missing GEMINI_API_KEY');
   const prompt = buildJobPrompt(job, sourceText, extras);
 
   const models = ['gemini-3.6-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
-  const cooldown = geminiCooldown;
   let lastErr = '';
   let data = null;
 
   for (const model of models) {
-    if (cooldown[model] && Date.now() - cooldown[model] < 60000) continue;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
-    try {
-      const r = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.4,
-            maxOutputTokens: 4096,
-            topP: 0.9,
-            thinkingConfig: { thinkingBudget: 0 },
-          },
-        }),
-      });
-      if (r.ok) {
-        data = await r.json();
-        break;
+    if (geminiKeyCooldown.get(model) && Date.now() - geminiKeyCooldown.get(model) < 60000) continue;
+
+    // Try each key for this model
+    for (const key of GEMINI_KEYS) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+      try {
+        const r = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.4,
+              maxOutputTokens: 4096,
+              topP: 0.9,
+              thinkingConfig: { thinkingBudget: 0 },
+            },
+          }),
+        });
+        if (r.ok) {
+          data = await r.json();
+          break;
+        }
+        const err = await r.text();
+        lastErr = `gemini_${model}_${r.status}:${err.slice(0, 180)}`;
+        if (r.status === 429) {
+          geminiKeyCooldown.set(model, Date.now());
+          break; // Try next model
+        }
+      } catch (e) {
+        lastErr = `gemini_${model}_err:${String(e.message||e).slice(0, 100)}`;
       }
-      const err = await r.text();
-      lastErr = `gemini_${model}_${r.status}:${err.slice(0, 180)}`;
-      if (r.status === 429) {
-        cooldown[model] = Date.now();
-        await sleep(1000);
-      }
-    } catch (e) {
-      lastErr = `gemini_${model}_err:${String(e.message||e).slice(0, 100)}`;
     }
+    if (data) break;
   }
 
   if (!data) throw new Error(lastErr || 'gemini_failed');
@@ -670,38 +687,43 @@ async function rewriteWithGemini(job, sourceText, extras) {
   return finalizeText(text);
 }
 
+const cohereKeyIndex = new Map();
+const groqKeyIndex = new Map();
+
 async function rewriteWithCohere(job, sourceText, extras) {
-  if (!COHERE_KEY) throw new Error('Missing COHERE_API_KEY');
+  if (!COHERE_KEYS.length) throw new Error('Missing COHERE_API_KEY');
   const prompt = buildJobPrompt(job, sourceText, extras);
 
   const models = ['command-r-plus', 'command-r', 'command-light'];
   let lastErr = '';
 
   for (const model of models) {
-    try {
-      const r = await fetch('https://api.cohere.ai/v1/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${COHERE_KEY}`,
-        },
-        body: JSON.stringify({
-          model,
-          message: prompt,
-          temperature: 0.4,
-          max_tokens: 4096,
-        }),
-      });
-      if (r.ok) {
-        const data = await r.json();
-        const text = data.text || '';
-        return finalizeText(text);
+    for (const key of COHERE_KEYS) {
+      try {
+        const r = await fetch('https://api.cohere.ai/v1/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${key}`,
+          },
+          body: JSON.stringify({
+            model,
+            message: prompt,
+            temperature: 0.4,
+            max_tokens: 4096,
+          }),
+        });
+        if (r.ok) {
+          const data = await r.json();
+          const text = data.text || '';
+          return finalizeText(text);
+        }
+        const err = await r.text();
+        lastErr = `cohere_${model}_${r.status}:${err.slice(0, 180)}`;
+        if (r.status === 429) await sleep(1000);
+      } catch (e) {
+        lastErr = `cohere_${model}_err:${String(e.message||e).slice(0, 100)}`;
       }
-      const err = await r.text();
-      lastErr = `cohere_${model}_${r.status}:${err.slice(0, 180)}`;
-      if (r.status === 429) await sleep(1000);
-    } catch (e) {
-      lastErr = `cohere_${model}_err:${String(e.message||e).slice(0, 100)}`;
     }
   }
 
@@ -709,42 +731,85 @@ async function rewriteWithCohere(job, sourceText, extras) {
 }
 
 async function rewriteWithGroq(job, sourceText, extras) {
-  if (!GROQ_KEY) throw new Error('Missing GROQ_API_KEY');
+  if (!GROQ_KEYS.length) throw new Error('Missing GROQ_API_KEY');
   const prompt = buildJobPrompt(job, sourceText, extras);
 
   const models = ['llama-3.3-70b-versatile', 'llama-3.1-70b-versatile', 'mixtral-8x7b-32768'];
   let lastErr = '';
 
   for (const model of models) {
-    try {
-      const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${GROQ_KEY}`,
-        },
-        body: JSON.stringify({
-          model,
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.4,
-          max_tokens: 4096,
-          top_p: 0.9,
-        }),
-      });
-      if (r.ok) {
-        const data = await r.json();
-        const text = data.choices?.[0]?.message?.content || '';
-        return finalizeText(text);
+    for (const key of GROQ_KEYS) {
+      try {
+        const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${key}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.4,
+            max_tokens: 4096,
+            top_p: 0.9,
+          }),
+        });
+        if (r.ok) {
+          const data = await r.json();
+          const text = data.choices?.[0]?.message?.content || '';
+          return finalizeText(text);
+        }
+        const err = await r.text();
+        lastErr = `groq_${model}_${r.status}:${err.slice(0, 180)}`;
+        if (r.status === 429) await sleep(1000);
+      } catch (e) {
+        lastErr = `groq_${model}_err:${String(e.message||e).slice(0, 100)}`;
       }
-      const err = await r.text();
-      lastErr = `groq_${model}_${r.status}:${err.slice(0, 180)}`;
-      if (r.status === 429) await sleep(1000);
-    } catch (e) {
-      lastErr = `groq_${model}_err:${String(e.message||e).slice(0, 100)}`;
     }
   }
 
   throw new Error(lastErr || 'groq_failed');
+}
+
+async function rewriteWithOpenAI(job, sourceText, extras) {
+  if (!OPENAI_KEYS.length) throw new Error('Missing OPENAI_API_KEY');
+  const prompt = buildJobPrompt(job, sourceText, extras);
+
+  const models = ['gpt-4o-mini', 'gpt-4o'];
+  let lastErr = '';
+
+  for (const model of models) {
+    for (const key of OPENAI_KEYS) {
+      try {
+        const r = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${key}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.4,
+            max_tokens: 4096,
+            top_p: 0.9,
+          }),
+        });
+        if (r.ok) {
+          const data = await r.json();
+          const text = data.choices?.[0]?.message?.content || '';
+          return finalizeText(text);
+        }
+        const err = await r.text();
+        lastErr = `openai_${model}_${r.status}:${err.slice(0, 180)}`;
+        if (r.status === 429) await sleep(1000);
+      } catch (e) {
+        lastErr = `openai_${model}_err:${String(e.message||e).slice(0, 100)}`;
+      }
+    }
+  }
+
+  throw new Error(lastErr || 'openai_failed');
 }
 
 async function rewriteWithAnthropic(job, sourceText, extras) {
@@ -788,8 +853,9 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
 // primary provider; if it fails, fall back to the other provider.
 async function rewriteJobPage(job, sourceText, extras) {
   const providers = [rewriteWithGemini];
-  if (COHERE_KEY) providers.push(rewriteWithCohere);
-  if (GROQ_KEY) providers.push(rewriteWithGroq);
+  if (COHERE_KEYS.length) providers.push(rewriteWithCohere);
+  if (GROQ_KEYS.length) providers.push(rewriteWithGroq);
+  if (OPENAI_KEYS.length) providers.push(rewriteWithOpenAI);
   if (ANTHROPIC_KEY) providers.push(rewriteWithAnthropic);
 
   let lastErr = '';
@@ -816,7 +882,14 @@ function loadState() {
   if (!existsSync(STATE_PATH)) {
     return { processed: {}, doneIds: [], skipped: {}, batches: [] };
   }
-  return JSON.parse(readFileSync(STATE_PATH, 'utf8'));
+  try {
+    const parsed = JSON.parse(readFileSync(STATE_PATH, 'utf8'));
+    if (!parsed || typeof parsed !== 'object') throw new Error('empty state');
+    return parsed;
+  } catch (e) {
+    console.error(`Corrupt state file ${STATE_PATH}, starting fresh`);
+    return { processed: {}, doneIds: [], skipped: {}, batches: [] };
+  }
 }
 
 function saveState(state) {
@@ -1097,7 +1170,7 @@ async function main() {
     console.error('Need Supabase env');
     process.exit(1);
   }
-  if (!GEMINI_KEY && !ANTHROPIC_KEY && !DRY_RUN) {
+  if (!GEMINI_KEYS.length && !ANTHROPIC_KEY && !DRY_RUN) {
     console.error('Need GEMINI_API_KEY or ANTHROPIC_API_KEY');
     process.exit(1);
   }
