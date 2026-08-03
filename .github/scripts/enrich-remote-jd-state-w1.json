@@ -52911,7 +52911,7 @@
     },
     "18896207-7813-403d-8c2b-06a2974ba598": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1d1809d8-3ef9-49a6-92f9-58e303bbd35e": {
       "status": "skip",
@@ -52923,7 +52923,7 @@
     },
     "1f0b6427-e0fe-4d93-8afa-0621dee54bf8": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1bb64079-3bf9-4b8b-bd8e-1a313199ff42": {
       "status": "skip",
@@ -52931,11 +52931,11 @@
     },
     "118246e0-5f7e-4daf-b0fa-062c2b36c83e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1ab1ca2b-2080-4b0b-9505-9f00f26ac556": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1d657e9e-e29a-48e0-b1fa-26429ad26b7a": {
       "status": "skip",
@@ -52963,7 +52963,7 @@
     },
     "1f63e4b1-e09b-49f3-884c-aecb8b5bf967": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "19ac6339-8247-4b31-a78e-b3a6a7fe1305": {
       "status": "skip",
@@ -53621,7 +53621,7 @@
     },
     "14691aaf-71a7-4160-ac96-ee36abbde524": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "1be5e81b-6649-49cc-9be3-ec4c1154f46d": {
       "status": "skip",
@@ -54000,7 +54000,7 @@
     },
     "19b884d4-c7ad-4a41-99e8-1f04acd600a1": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "12983b7c-5b9f-4b8d-92b2-ea376b41dc38": {
       "status": "skip",
@@ -54268,7 +54268,7 @@
     },
     "19df432c-f710-4942-8b5a-1a55f7979670": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "12fab65e-1655-46d4-b8cb-7423f8c38d48": {
       "status": "skip",
@@ -54592,7 +54592,7 @@
     },
     "14629813-cd46-41c6-aa98-85b77241099c": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "19f66e66-82f4-40f7-84ac-8cb3567d848b": {
       "status": "skip",
@@ -55975,7 +55975,7 @@
     },
     "118189f0-9c16-41a9-816a-3108a0130b3e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "16585e51-7087-4960-b7d6-7d630b0af999": {
       "status": "skip",
@@ -56101,7 +56101,7 @@
     },
     "14ea9b6f-c469-4aa4-a90a-10787f9fc7af": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "1f073f82-7ad4-41b0-8a11-8397e7be97a6": {
       "status": "ok",
@@ -56491,7 +56491,7 @@
     },
     "14d5180d-fa89-4f7c-a83b-d07130d701b8": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "137f6e21-2cbd-4ecb-a317-0a52b15a623a": {
       "status": "ok",
@@ -57238,8 +57238,9 @@
       "external_id": "stripe_startup-venture"
     },
     "19d61e5b-744e-41aa-a4c3-3c8cf78b7c1c": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/materials-prog",
+      "external_id": "waymo_materials-prog"
     },
     "16246247-91b5-4cec-b704-f676ec23b998": {
       "status": "skip",
@@ -57250,8 +57251,9 @@
       "reason": "html_short"
     },
     "1a4d405b-a075-497c-82e2-50ee8a5e91e4": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/sw-eng-61",
+      "external_id": "toast_sw-eng-61"
     },
     "185b64d7-29ee-41b7-93e3-8ba69591d3ea": {
       "status": "skip",
@@ -57317,7 +57319,7 @@
     },
     "12421586-34ca-42af-acea-19eef1092f21": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "18e5cd5e-2b7f-4030-8d64-bd9163d38236": {
       "status": "ok",
@@ -57364,7 +57366,7 @@
     },
     "1bcbadd8-a6e5-4215-b32d-0a811a332a35": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "17d9c182-af7c-4516-a625-0b9650e4955f": {
       "status": "ok",
@@ -74024,6 +74026,26 @@
         "html_429": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T18:12:06.643Z",
+      "attempted": 798,
+      "ok": 2,
+      "skip": 796,
+      "fail": 0,
+      "reasons": {
+        "html_short": 722,
+        "html_403": 46,
+        "err_TypeError": 3,
+        "err_TimeoutError": 23,
+        "html_429": 2
+      },
+      "samplePaths": [
+        "/toast/sw-eng-61",
+        "/waymo/materials-prog"
+      ]
     }
   ]
 }

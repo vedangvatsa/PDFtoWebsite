@@ -50462,7 +50462,7 @@
     },
     "3700b3af-61e3-47bd-b55a-b508041a946c": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "lever_short"
     },
     "38bbb64d-2bfd-4449-a032-e65e433dd81c": {
       "status": "skip",
@@ -52582,7 +52582,7 @@
     },
     "3d82279e-6a3d-485d-aa44-51ad07695dd3": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "3f7b946d-e741-459f-b045-9799798efeef": {
       "status": "skip",
@@ -52606,11 +52606,11 @@
     },
     "3a69deda-e556-42d1-bd8b-664d135cb420": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "33fa2ae3-2ada-4ea7-9857-d231a39ca4f4": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "389f78fd-bc85-4c7c-9ecc-9e8712856b67": {
       "status": "skip",
@@ -52618,11 +52618,11 @@
     },
     "3e4a35cf-ef86-4ed9-899c-16df9edb0521": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "3b3f3ea3-0ab2-43cc-aef9-f46ec4a276e7": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "3ee37639-f95f-45e6-9486-06f65a1fb09e": {
       "status": "skip",
@@ -52630,7 +52630,7 @@
     },
     "39d11f43-083c-405d-b4d2-213125493378": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "31bd3c8f-22d4-47de-bf5e-3227f732df8b": {
       "status": "skip",
@@ -52642,7 +52642,7 @@
     },
     "3a70d100-9395-4fb7-82b8-b568e780b468": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "31ef079c-209a-4d5b-9ce2-63dfb06bacd0": {
       "status": "skip",
@@ -52654,11 +52654,11 @@
     },
     "3d40d13a-c0f9-496c-8c51-2280d01fc535": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "38b975c2-5faf-41df-b173-4a1de9111910": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "3181a427-5c27-49c7-a5ee-c6f77d9ba665": {
       "status": "skip",
@@ -52666,7 +52666,7 @@
     },
     "32f54750-8a19-4942-8575-2b42f6ce5052": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "3f7b45ad-b471-4f41-b098-7c4e99bf8918": {
       "status": "skip",
@@ -52674,11 +52674,11 @@
     },
     "313118f3-e365-43f7-8430-ddbda0658be9": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "37f7d228-9471-4a6c-a87e-72bced101f53": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "33dfa7c7-182e-4426-b19e-7faef7bbbe30": {
       "status": "skip",
@@ -53456,7 +53456,7 @@
     },
     "3965bed3-6923-4c64-ac74-c22d3704a494": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "347763f3-beff-409b-97c1-8cf72b27ecb8": {
       "status": "skip",
@@ -53888,7 +53888,7 @@
     },
     "360ef798-a0d2-48ef-a70b-4904ddfa0996": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "3e3aa2c6-9dfd-49ed-a58c-5bd5cede103b": {
       "status": "skip",
@@ -54224,7 +54224,7 @@
     },
     "37eab869-2c05-42ab-b119-150ad6129791": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "3fcec7a3-dc63-4fa0-b1f4-442d05c83f0d": {
       "status": "skip",
@@ -54336,7 +54336,7 @@
     },
     "3ac16baa-799e-4aae-b52b-1419dfe39984": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "3d248e05-5e7b-4e7a-a59b-d306201eac42": {
       "status": "skip",
@@ -73114,6 +73114,24 @@
         "err_TimeoutError": 18,
         "html_403": 35,
         "html_429": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 3,
+      "at": "2026-08-03T18:11:42.043Z",
+      "attempted": 768,
+      "ok": 0,
+      "skip": 768,
+      "fail": 0,
+      "reasons": {
+        "html_short": 718,
+        "html_403": 35,
+        "lever_short": 1,
+        "err_TimeoutError": 11,
+        "html_429": 2,
+        "err_TypeError": 1
       },
       "samplePaths": []
     }
