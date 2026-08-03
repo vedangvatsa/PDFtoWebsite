@@ -38538,7 +38538,7 @@
     },
     "652833c3-a040-44a7-b0f0-67fb383dcbbf": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "67e4a36b-7b59-4219-93fc-6bfdc04365a4": {
       "status": "skip",
@@ -39235,7 +39235,7 @@
     },
     "627e742a-9eef-4369-aa41-a17a1fe8de60": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "635bb1b8-8756-424b-98b7-5a78e38ebf32": {
       "status": "skip",
@@ -42797,8 +42797,9 @@
       "reason": "html_short"
     },
     "670399a7-011c-4ec2-9265-4cbbb3e7b419": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/upstart/comply-risk",
+      "external_id": "upstart_comply-risk"
     },
     "62abdbe1-829d-4119-acbf-a8b8acd2881d": {
       "status": "skip",
@@ -43558,11 +43559,11 @@
     },
     "693269bb-b01a-4ea5-81c7-1d3255775e0d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "64191fe8-db4d-4c5b-9380-6b9dc97a099a": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "61986c23-f39e-4641-9dc3-dbbb674849bf": {
       "status": "skip",
@@ -43570,11 +43571,11 @@
     },
     "687e21ea-292c-494e-a071-8b2c3f193fc7": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "linkedin_429"
     },
     "6e8edd5e-6752-49c3-bb36-06c7b837d273": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6e2b7644-8ef2-4d89-9a86-2462f99d880a": {
       "status": "skip",
@@ -43597,11 +43598,11 @@
     },
     "6c8c567e-6c38-4516-9794-262697d0430a": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "63beb32b-3b4a-4f0a-81c0-1a0db594a3c4": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6473445d-c5d1-47d1-bce8-27894a90c2d3": {
       "status": "skip",
@@ -43609,7 +43610,7 @@
     },
     "608c35c8-c523-4891-8ac9-e598391d9d50": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "68660597-997f-4174-a529-eb183986704f": {
       "status": "skip",
@@ -43617,11 +43618,11 @@
     },
     "6ef03608-e853-4222-8084-91efbfc3ebe8": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6a9d37e0-828d-411a-973c-42b2ba993596": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6fe09a7b-fbfa-405e-90f4-12b02b694f93": {
       "status": "skip",
@@ -43662,19 +43663,19 @@
     },
     "61d272f0-3393-4d09-ab73-a57fbf7f32ae": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "67b7c10e-3d7c-47a8-bee8-1ed0ae9095eb": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "651bcdef-038b-436e-bc99-52545a3267d1": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "60548434-d0a7-4dad-a1de-d89a0edd26e4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "69480e77-b979-4ee9-a986-6fe2be5d3155": {
       "status": "skip",
@@ -43690,19 +43691,20 @@
     },
     "6263b1b1-4128-4940-ac79-4f9f0678f61c": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "69fc8d5b-3696-436d-bfe3-4e68847be201": {
-      "status": "skip",
-      "reason": "err_TypeError"
+      "status": "ok",
+      "path": "/shields-group-search/lead-prod",
+      "external_id": "shields-group-search_lead-prod"
     },
     "64bf499d-01b5-4bd3-afb3-fa953363abbc": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "64aa6825-ea16-436e-a1ae-94ffed151a5d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "69c1360a-1661-40dc-b550-58bf056ddff9": {
       "status": "skip",
@@ -43710,15 +43712,16 @@
     },
     "64675a68-9e11-4f3d-8dcf-54694341456b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "62daf965-7818-4f85-9b17-65938c2185ac": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/ikuto/sw-eng",
+      "external_id": "ikuto_sw-eng"
     },
     "6b3ecfa7-d244-49d7-994e-94fcc42b8876": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "64d5bf97-4aec-41ad-825e-3f324b843315": {
       "status": "skip",
@@ -43735,7 +43738,7 @@
     },
     "66d43453-82a5-463e-b78f-5e1ba5ece077": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "62c8c79d-d40d-49d5-824c-fc89f7a87eb3": {
       "status": "skip",
@@ -43759,7 +43762,7 @@
     },
     "61b5d849-22e4-46ee-869d-c4b0de531d40": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "61caa288-e571-487c-b10a-6bba8242d8ab": {
       "status": "skip",
@@ -43779,7 +43782,7 @@
     },
     "61132571-d80c-493a-9ff7-6b10ef898820": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "627788d5-f326-4bf2-997a-dbff00c4e10b": {
       "status": "ok",
@@ -43804,11 +43807,11 @@
     },
     "6e090fea-2e24-459f-96eb-1a5c925ffa98": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "66d59624-f0ef-4844-889f-ee38804fb3a4": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "679ab33f-3df1-4af3-9ac3-ac55c15ab5bf": {
       "status": "skip",
@@ -43816,7 +43819,7 @@
     },
     "6d398753-506f-43a3-8aaa-8cb1833f30a2": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "647584eb-be28-4745-8ee2-71be6b37bdbf": {
       "status": "skip",
@@ -43824,7 +43827,7 @@
     },
     "66efc4a1-4509-44c5-a462-37acd51cc324": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "628bda41-b98b-4dc6-ac3d-a230e9cdc14d": {
       "status": "skip",
@@ -43848,7 +43851,7 @@
     },
     "6313bce8-2913-4282-894a-4ffe228e8989": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "652e417d-8504-4d57-9783-298ee46e7b5e": {
       "status": "ok",
@@ -43857,11 +43860,11 @@
     },
     "63995ca5-ff3a-4716-a098-56fda3c129e5": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6804940c-360b-483d-9d53-27df9e592d2d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "67b26e93-9fae-452b-8b82-df6633995f7f": {
       "status": "skip",
@@ -43869,7 +43872,7 @@
     },
     "6d1f3022-5e24-45d9-b862-8ad09401ecfa": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "67db93f0-227f-4b28-9bb5-e135a3dd5091": {
       "status": "skip",
@@ -43877,7 +43880,7 @@
     },
     "63b5e58f-666f-4cfd-bd39-38c79e1419b2": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6286f736-978a-493c-83bc-8022bdc2d30c": {
       "status": "skip",
@@ -43952,7 +43955,7 @@
     },
     "67b88df0-9447-47db-bed1-ee18e7549ff9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6efae548-befe-48cd-ba5e-3419f4fa082a": {
       "status": "skip",
@@ -43976,7 +43979,7 @@
     },
     "6857e17e-d643-4888-8251-9f0520fb234b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6f7a654a-dfdd-456e-85a8-d9f3b0092768": {
       "status": "skip",
@@ -43984,7 +43987,7 @@
     },
     "6788376c-68b9-4266-8f5f-c56c2a85414b": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "67f34b77-0093-4b9a-a3d1-c32ed08a6514": {
       "status": "skip",
@@ -44015,8 +44018,9 @@
       "reason": "linkedin_429"
     },
     "6206a607-0673-4233-a6cb-7aaae9a52af4": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/general-motors/ai-ml-c7",
+      "external_id": "general-motors_ai-ml-c7"
     },
     "66a512bb-de33-493c-b003-fd46ecbb71d4": {
       "status": "skip",
@@ -44081,15 +44085,15 @@
     },
     "6ef5d2fa-85ef-4e83-834c-34994165cef9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6ea5902c-ff12-4c5d-b093-b3569e0bce32": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6a0f1aed-b43c-49da-9715-83039111e975": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "63bf6bff-5cfe-485c-8b96-f6271a8ceb29": {
       "status": "skip",
@@ -44097,7 +44101,7 @@
     },
     "68de135a-ad93-427a-be46-efb6c1b7892d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6727639b-cb04-4afc-998e-b3bd0f440820": {
       "status": "skip",
@@ -44105,11 +44109,11 @@
     },
     "670c6a3a-0634-4fdd-b44b-7e23682d91da": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6cdc7299-c3de-47dd-b3cc-479d184d6be7": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "68434247-9c12-4a10-b1af-78f269cdcc54": {
       "status": "skip",
@@ -44121,7 +44125,7 @@
     },
     "6b30b527-d53f-423c-a2e3-c7981f4d79e5": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6981e920-8cc9-483d-8f86-2c4b35455395": {
       "status": "skip",
@@ -44145,7 +44149,7 @@
     },
     "6d446cd5-1a0a-4864-b035-05e191a85a83": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "69320f66-00f7-4a90-84db-938d8e59a563": {
       "status": "ok",
@@ -44158,7 +44162,7 @@
     },
     "6d38d045-1698-4c2c-8c74-9b62d3cd99cb": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6d7fff95-ee3a-4ed6-a912-e9ceb9ad3c44": {
       "status": "skip",
@@ -44181,7 +44185,7 @@
     },
     "6ef18209-1f11-4f9d-b96b-5c1d0ba8f3ec": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6c5d6fbe-2c01-4866-aa33-88f60cb9126e": {
       "status": "skip",
@@ -44209,8 +44213,9 @@
       "reason": "linkedin_429"
     },
     "63f99ad3-1850-40ea-9ba5-6c6fad8f7b59": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/analyticsclub/delete-acct",
+      "external_id": "analyticsclub_delete-acct"
     },
     "698b9a32-2f2a-4b73-ac26-7f5528b5edc1": {
       "status": "skip",
@@ -44223,7 +44228,7 @@
     },
     "636c27e2-d762-49e5-b967-18f97c0f4882": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6cc2eec6-8a85-4bc1-b9bb-d0e38ea6dc61": {
       "status": "skip",
@@ -44261,7 +44266,7 @@
     },
     "63435b13-f904-4ff1-8733-5e909c54c213": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "66c882fd-bf27-43e7-af11-be46ad5d2fd3": {
       "status": "ok",
@@ -44331,7 +44336,7 @@
     },
     "6df3d626-010d-4195-9bdf-653b29008d5a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6168cb94-f194-4e3b-879d-9c06b4f7e271": {
       "status": "skip",
@@ -44347,15 +44352,15 @@
     },
     "604f2357-73be-4404-9ce7-f6775684d33e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6dceb3d8-532e-426b-9fb0-51c2603eaa60": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "60107561-a3db-43cf-8724-350f569df2b4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6664a1ed-22d7-479d-ab4f-175e29f24314": {
       "status": "skip",
@@ -44375,8 +44380,9 @@
       "external_id": "gradial_plat-eng"
     },
     "6aba4d67-1920-4763-9474-193ec0cffa8a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/tier4-group/sys-net-eng",
+      "external_id": "tier4-group_sys-net-eng"
     },
     "6b579a23-e63d-4c0f-9ea0-4dfff609275e": {
       "status": "skip",
@@ -44384,7 +44390,7 @@
     },
     "6308786d-017e-499f-8aa5-aebb97d92f9b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "680d198c-261f-42ad-8f14-8fc205e7d7fc": {
       "status": "skip",
@@ -44392,7 +44398,7 @@
     },
     "69c0df05-6293-40ce-9d30-01d49ec98a27": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6b08a748-ac84-4a42-b45b-3e1b6f9b45de": {
       "status": "skip",
@@ -44403,8 +44409,9 @@
       "reason": "linkedin_429"
     },
     "65f8758a-5bfa-41c7-8c38-3fd55f70b660": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/stanford-university/sre-eng",
+      "external_id": "stanford-university_sre-eng"
     },
     "6890f3a4-7cb3-4c2d-b81c-06e9fe07e199": {
       "status": "skip",
@@ -44412,15 +44419,15 @@
     },
     "607fc4e4-074a-4ffd-82dd-a0b7f66cae73": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6012d496-572f-44a5-a763-4ea03bf11ff2": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6720d941-c0a9-4b7a-99cd-1c298d6f521e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6e3c2d05-e342-4a88-bf25-167f17ee22fb": {
       "status": "skip",
@@ -44527,7 +44534,7 @@
     },
     "62540b0e-c922-4221-bdcf-dfb936342666": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "60d004b1-8d14-4212-b75f-2e4a262dd53d": {
       "status": "skip",
@@ -44551,11 +44558,11 @@
     },
     "6e6b25bc-d6d4-4db8-9e21-91cf2bdd25b0": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "632eaa90-cb63-4cb4-b6aa-cf1ba41fdd6a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "64dcbe15-c194-4a68-9f0e-3eb0c05d020f": {
       "status": "skip",
@@ -44567,7 +44574,7 @@
     },
     "695db00d-ff2d-4dd5-9e96-d156a7d48cc6": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6209995f-6d39-4d44-8715-ca0165823dac": {
       "status": "skip",
@@ -44580,7 +44587,7 @@
     },
     "61ac28f5-5f46-4cff-bbea-ddd954281561": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "630ff23c-0f5d-423b-8bed-722c048b663b": {
       "status": "skip",
@@ -44588,11 +44595,11 @@
     },
     "6b9ffcce-afde-49d2-a6da-06552f6ac496": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "604b9e13-ba9f-40fa-b4c0-7e9fcdd5dd05": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "694af237-b52f-4952-ab13-bd1040897135": {
       "status": "skip",
@@ -44608,7 +44615,7 @@
     },
     "64ec2316-8168-4038-891a-88a67ede1303": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "608ce214-2570-4946-9bc6-6b62df33118d": {
       "status": "skip",
@@ -44620,7 +44627,7 @@
     },
     "6c0d6943-a909-4ffa-a529-0ec0795c1220": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6694b3c1-0e12-4f1e-a496-89ead1a203c0": {
       "status": "skip",
@@ -44632,7 +44639,7 @@
     },
     "62e9e7dd-7cf4-4d11-b74a-a0d13cc7b1e8": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "62741f7e-b497-4c8a-8ff4-f33d0615f686": {
       "status": "skip",
@@ -44649,43 +44656,43 @@
     },
     "664885cf-39bf-41a8-83be-7a8744631359": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6db11550-3cce-450a-91ec-0b8c217d1e03": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6e1a54de-3cdc-420e-95a7-01b90d448cb4": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "63e52dea-43a9-4696-ac72-0d25f7ee0eaa": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "68e52b06-b8ed-46b1-bce8-37c02007af79": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "64164120-5a81-4f5c-b464-9c8184af9191": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6d4eed41-2bc5-4a80-9469-56ab46a1ef00": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6ff43013-69a1-48a6-9be8-1b5060f36523": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6ebabd00-52ac-4012-b35d-5f72ccd39fc9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6cfd75bb-1f9e-4877-a277-b48129882027": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "64011c28-d687-4d08-8882-5a60aa42dac0": {
       "status": "skip",
@@ -44693,7 +44700,7 @@
     },
     "65e42366-6a95-47e5-85a7-2a428f3c870e": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6700c698-945e-420f-846b-fbf07c6a772f": {
       "status": "ok",
@@ -44745,7 +44752,7 @@
     },
     "65939b7d-fff1-42b8-8522-c57e033382e0": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "60edba55-5dbb-4086-9154-d90473054f6e": {
       "status": "ok",
@@ -44858,8 +44865,9 @@
       "reason": "linkedin_429"
     },
     "63e7d20e-88b9-48dc-8bdf-0f2ae4b7b0e0": {
-      "status": "skip",
-      "reason": "err_TypeError"
+      "status": "ok",
+      "path": "/microsoft/sre-eng",
+      "external_id": "microsoft_sre-eng"
     },
     "6e7e3dfe-5117-4872-8739-b2dc5d3c1e5e": {
       "status": "skip",
@@ -44871,7 +44879,7 @@
     },
     "61c53ddd-6189-4d62-b3c7-0c005ada3ba2": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6255bc57-45aa-45d9-bfb8-fcc4481f8cc5": {
       "status": "skip",
@@ -44883,7 +44891,7 @@
     },
     "65e1d788-9838-49eb-b0e1-19050934d103": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "67cfa299-cef8-422b-af9b-c910e2f85040": {
       "status": "skip",
@@ -44935,7 +44943,7 @@
     },
     "66ce6f39-89ba-433c-ad94-162ba6bd67a9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6098dddd-90eb-40f8-8e21-d69ae3727efe": {
       "status": "skip",
@@ -44963,7 +44971,7 @@
     },
     "6277b10a-e75d-4f11-8f86-3fbe2b22d2ea": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6f2a582e-09b4-497f-a182-193b9258da88": {
       "status": "skip",
@@ -44993,7 +45001,7 @@
     },
     "69ab74b5-2e7f-46a5-b099-9601fc43f152": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "6eda4840-bedc-45a3-b95e-16f438dba9fa": {
       "status": "skip",
@@ -45013,7 +45021,7 @@
     },
     "608b9326-ffec-4f10-97b4-04a25b79a705": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "608ef4c7-36cb-4624-9ba7-31d5f66f29c6": {
       "status": "skip",
@@ -55765,6 +55773,35 @@
         "/superhuman/sw-eng-be",
         "/american-unit-inc/sre-eng",
         "/blueprint/sys-sec-sw"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-03T17:15:47.909Z",
+      "attempted": 1072,
+      "ok": 8,
+      "skip": 1064,
+      "fail": 0,
+      "reasons": {
+        "html_short": 712,
+        "sr_400": 1,
+        "html_403": 39,
+        "err_TimeoutError": 11,
+        "html_429": 2,
+        "html_404": 2,
+        "err_TypeError": 23,
+        "linkedin_429": 274
+      },
+      "samplePaths": [
+        "/upstart/comply-risk",
+        "/shields-group-search/lead-prod",
+        "/ikuto/sw-eng",
+        "/general-motors/ai-ml-c7",
+        "/analyticsclub/delete-acct",
+        "/tier4-group/sys-net-eng",
+        "/stanford-university/sre-eng",
+        "/microsoft/sre-eng"
       ]
     }
   ]

@@ -38827,8 +38827,9 @@
       "external_id": "avride_lead-ai"
     },
     "40748764-4435-4e2a-b03f-daee51241e46": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/nooks/sw-eng",
+      "external_id": "nooks_sw-eng"
     },
     "46b3c02e-ffda-464e-899a-8734f609407f": {
       "status": "ok",
@@ -38836,20 +38837,24 @@
       "external_id": "general-motors_fullstk-sw"
     },
     "438593b6-f369-48a4-8ae3-fd36cf0965c7": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/akima/sw-eng",
+      "external_id": "akima_sw-eng"
     },
     "40c30abc-4e72-4e71-878c-079630fedd98": {
-      "status": "skip",
-      "reason": "err_TypeError"
+      "status": "ok",
+      "path": "/avride/sw-eng-ml",
+      "external_id": "avride_sw-eng-ml"
     },
     "4bd549a4-ab0e-466f-bf0e-c928a8b8e431": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/geico/distinguished",
+      "external_id": "geico_distinguished"
     },
     "4ec14a19-d35e-42ad-bd44-c9c4ddea0b7b": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/electronic-arts-ea/support-eng",
+      "external_id": "electronic-arts-ea_support-eng"
     },
     "4d7e667c-44da-47e7-96f8-572f66898b12": {
       "status": "ok",
@@ -38857,24 +38862,28 @@
       "external_id": "auger_sw-dev-eng"
     },
     "41b30cde-4071-4d91-9f22-d74fb1f3cd1e": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/nvidia/cloud-sw-eng",
+      "external_id": "nvidia_cloud-sw-eng"
     },
     "424ae43f-1d84-4e25-9e18-63e08ed3db2d": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/amazon-web-services-aws/sw-dev-21",
+      "external_id": "amazon-web-services-aws_sw-dev-21"
     },
     "42273f32-e30e-48e9-9e94-948da3080411": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/microsoft/sw-eng-7f",
+      "external_id": "microsoft_sw-eng-7f"
     },
     "4905a2ff-a326-41d1-b42a-95061aa095a8": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "44b86166-d75f-48a9-9797-edcbbcfda4f8": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/hackajob/dir-tech",
+      "external_id": "hackajob_dir-tech"
     },
     "449bd801-5171-4a15-adef-a63d1c549975": {
       "status": "skip",
@@ -38894,7 +38903,7 @@
     },
     "4e56b593-fcd2-4c39-8335-b69f2cd83f66": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "4cce6181-03f7-433f-bc27-e806434cb517": {
       "status": "skip",
@@ -38941,7 +38950,7 @@
     },
     "495f970f-d6e5-41c0-9f9c-c430662b132b": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4ee9307c-7728-4ceb-860a-7c0a41146ed4": {
       "status": "skip",
@@ -38978,7 +38987,7 @@
     },
     "435a5f5e-e7ae-4568-9a00-8f175fbf8c65": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4cc5f069-c614-45a7-ae80-e6e27f8b42e0": {
       "status": "skip",
@@ -39007,7 +39016,7 @@
     },
     "428256a7-3290-4705-bcf0-af6ef3d89b23": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4fbab142-3756-4a32-8777-c2cfee3061c2": {
       "status": "skip",
@@ -39022,8 +39031,9 @@
       "reason": "linkedin_429"
     },
     "4fc9b7d7-7d7e-4be8-ad4d-c4143ecc5905": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/loop/sw-eng-sys",
+      "external_id": "loop_sw-eng-sys"
     },
     "44ca448c-b6b2-44bd-bcd0-78194b8c7073": {
       "status": "skip",
@@ -39071,7 +39081,7 @@
     },
     "49dc54b6-a5ee-43b7-a965-6db267764bad": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "409b575f-e934-4427-ae5c-d6aa812ad33c": {
       "status": "ok",
@@ -39100,7 +39110,7 @@
     },
     "4199bbab-fc2e-4053-b7a0-7fc4ac0e7a30": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4eeefa50-d4cb-4d73-bd89-2a4828b0460b": {
       "status": "skip",
@@ -39112,7 +39122,7 @@
     },
     "40625b9b-c750-4b19-b578-ae1f4d1de6dd": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "48f3aa71-174c-4806-b9c4-8eb8c5a4368f": {
       "status": "skip",
@@ -39128,15 +39138,15 @@
     },
     "49b7c76f-d8ef-4cab-8e46-292844454fe6": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "47ce6fe9-8ca0-45a8-a6dd-ec0196331381": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "4ea3bd64-3b8c-4bae-be5a-8fd1e7c2b45e": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "457b2386-26fb-4692-abe6-3ece05c50e0a": {
       "status": "skip",
@@ -39161,15 +39171,16 @@
     },
     "40c6d3d6-8643-4bd7-95b4-ade7b9ef4dbb": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "4e481054-ebdc-4c25-b814-1ba3e3db72a1": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "47948ce1-543c-49f0-b181-fd41af4c9803": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/vendra-yc-s24/fullstk-ml",
+      "external_id": "vendra-yc-s24_fullstk-ml"
     },
     "4d81cbb8-b3d4-402c-b9a3-04dc54a2c94e": {
       "status": "skip",
@@ -39220,7 +39231,7 @@
     },
     "43a8f874-f7cd-4835-baae-1ab13882620e": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "4b5a8997-fc1f-4dda-a9b8-4f8f0f446e9e": {
       "status": "skip",
@@ -39251,8 +39262,9 @@
       "reason": "linkedin_429"
     },
     "4cca745b-0749-4bf4-be61-6a1e4b9e618a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/microsoft/sw-eng-57",
+      "external_id": "microsoft_sw-eng-57"
     },
     "4a6e1b96-a42b-48f4-a2d1-4f190ae94e46": {
       "status": "skip",
@@ -39280,7 +39292,7 @@
     },
     "4fd3e24e-1094-4693-8227-2dda1503d1a9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "47a8b282-fa26-4606-bbfd-205aedb38e5a": {
       "status": "ok",
@@ -39289,11 +39301,11 @@
     },
     "4a4aa9b2-f083-4721-a2e6-191de2328fb7": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "4de54357-7e95-4867-a74e-90ca41b19f66": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "44bbfeb8-cc83-4c46-96c4-45f62652eb6d": {
       "status": "skip",
@@ -39301,7 +39313,7 @@
     },
     "464b7c91-ca2d-4bd3-91ff-a1d9728b319d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "4271f860-b041-4e91-a31f-2657da199188": {
       "status": "skip",
@@ -39355,7 +39367,7 @@
     },
     "4008280d-941c-405d-8367-796f59b68075": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4249082a-27d4-475d-b550-75a56642b309": {
       "status": "skip",
@@ -39363,11 +39375,12 @@
     },
     "4424ebe1-2292-48ae-a292-7976235e64c6": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4d51b095-cc4c-4318-a928-8cba2876bffa": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/meta/prod-mgr",
+      "external_id": "meta_prod-mgr"
     },
     "4f0efa5b-a964-4c59-822d-8c51ace29d00": {
       "status": "skip",
@@ -39382,16 +39395,18 @@
       "reason": "linkedin_429"
     },
     "48cc13a2-50d9-4b73-b022-5be7fd3fc60c": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/betr/manual-qa",
+      "external_id": "betr_manual-qa"
     },
     "4682a11e-4c40-46da-9e92-b3c67a2a3dc1": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "4755d88d-c478-4029-a03c-37937c025b2e": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/jmd-technologies-inc/devops-eng",
+      "external_id": "jmd-technologies-inc_devops-eng"
     },
     "49c8b356-fa89-4334-8fd8-ad4babc71dc9": {
       "status": "skip",
@@ -39402,8 +39417,9 @@
       "reason": "linkedin_429"
     },
     "47cb380a-763a-40b9-98e4-edd70d28738b": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/platinum-commerce/fullstk-sw",
+      "external_id": "platinum-commerce_fullstk-sw"
     },
     "4ffe7c1c-dfb1-4611-b533-ce71d4656e61": {
       "status": "skip",
@@ -39414,8 +39430,9 @@
       "reason": "linkedin_429"
     },
     "43ac8c3e-0a19-4df9-8252-9b66358f4771": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/harpercollins-publishers/growth-analyst",
+      "external_id": "harpercollins-publishers_growth-analyst"
     },
     "4da49fd3-2b94-4efc-b0c9-94d66b92b79a": {
       "status": "skip",
@@ -39461,7 +39478,7 @@
     },
     "460fae4f-faa9-481f-bd4f-855091934c23": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "451d980e-00f7-4ddc-9152-145a5174da84": {
       "status": "skip",
@@ -39477,11 +39494,11 @@
     },
     "4ba7da9f-50ab-4db5-a2c5-e3a6cc1bb4a7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "47efaf6f-f413-4990-bbe8-4b0961236a69": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "40704b81-11bc-4170-9056-8767233f7eac": {
       "status": "skip",
@@ -39505,7 +39522,7 @@
     },
     "4e91b093-e4e1-4f6b-834a-fc27feabeedc": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "49120d6b-b572-4e1d-8644-e7bfb2973525": {
       "status": "skip",
@@ -39537,7 +39554,7 @@
     },
     "45980631-5628-4c35-b318-deae6645efd7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4ed48b40-c4ef-4df5-838a-60a3294ca91c": {
       "status": "skip",
@@ -39678,7 +39695,7 @@
     },
     "449387ae-90d3-4db3-8ddb-cc39c47e857f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "47719fdd-0179-4007-b199-72ba7c141d37": {
       "status": "skip",
@@ -39721,7 +39738,7 @@
     },
     "45088471-e4d8-41b0-90f8-562bc60fa2de": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "46658029-5303-48b0-b51e-4e82c23157de": {
       "status": "skip",
@@ -39760,8 +39777,9 @@
       "reason": "linkedin_429"
     },
     "4920fda8-c9fd-42ff-bc63-f6bcad660959": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/saragossa/data-sci",
+      "external_id": "saragossa_data-sci"
     },
     "4d848586-34d8-4282-8054-03b308e9bb5e": {
       "status": "skip",
@@ -39841,7 +39859,7 @@
     },
     "44be5cc8-b468-4f2d-b45d-e0a21ea86aa0": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4ad8232e-d85f-4326-b39e-0a1e6b4aac46": {
       "status": "skip",
@@ -39861,31 +39879,34 @@
     },
     "48ac80f9-dad3-4b33-b368-ecbba163d21d": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "449dbd25-9c0f-47d2-ab55-01bbb63840c3": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "408e03f1-8bba-4a93-8563-8954ddd22c04": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/nvidia/ml-eng",
+      "external_id": "nvidia_ml-eng"
     },
     "435695e7-9852-4c74-99ed-dd1bbb5ff4cd": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "4c269a24-f3f3-4c32-915c-81649a1a42ea": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/ibm/be-sw-dev",
+      "external_id": "ibm_be-sw-dev"
     },
     "4758c03a-f6d1-4a5b-b97c-d6c4562c78c9": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4025c308-cb34-48bd-87c0-cfa3a4610f3a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/ascendion/sw-eng",
+      "external_id": "ascendion_sw-eng"
     },
     "4057e7e6-a7e3-4a76-9748-d6564bd763a4": {
       "status": "skip",
@@ -39933,7 +39954,7 @@
     },
     "48abca83-fb2e-4a73-9ca7-afdd4913a315": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4a10b072-0af1-41a7-85ff-d287a32fe816": {
       "status": "skip",
@@ -39941,7 +39962,7 @@
     },
     "47ab9f73-94c0-4c65-8091-425ed9fdc4a7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4b200011-86ba-4324-8cb4-f6169427396f": {
       "status": "ok",
@@ -39963,7 +39984,7 @@
     },
     "41c75a24-60a5-4e53-adb0-21e4d6a1e65e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "43fdc5d8-1639-49f6-b697-8892894ec0ac": {
       "status": "skip",
@@ -39979,7 +40000,7 @@
     },
     "48850504-b227-497e-982f-81fc04ba360f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4fdbf63c-f019-46a3-a974-37d1538925c4": {
       "status": "skip",
@@ -40035,7 +40056,7 @@
     },
     "422a3b2c-29d8-43f1-9c0b-3bfbe3394d2b": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4b1415f4-947e-4850-9da3-75b6615a8aa7": {
       "status": "skip",
@@ -40050,8 +40071,9 @@
       "reason": "linkedin_429"
     },
     "4f7aa23a-b7c1-4fe9-a3f2-7c76cd03170c": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/obsidian-security/devops-eng",
+      "external_id": "obsidian-security_devops-eng"
     },
     "4ed1550c-4d48-4997-a51e-8978437394ae": {
       "status": "skip",
@@ -40067,7 +40089,7 @@
     },
     "4da3c76b-c300-4e62-b6d9-30309c8d02c2": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "475ace29-9fcb-49a8-8c2b-bc756ae0c2af": {
       "status": "skip",
@@ -40141,7 +40163,7 @@
     },
     "4e9adea3-5249-46c9-a96a-45200bc914b7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4606d1ac-c511-4aed-a8d0-4165d92cf9f5": {
       "status": "skip",
@@ -40152,24 +40174,25 @@
       "reason": "linkedin_429"
     },
     "46d144a6-c10c-4fe6-a6a7-5dfd44eb68e3": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/meta/ai-research-31",
+      "external_id": "meta_ai-research-31"
     },
     "44edd9b1-0578-46ac-b260-2827948518f7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "46ee0db1-d38a-4710-b530-624ced9e51c8": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "45e0716e-9572-463c-995f-01ccf28c67ec": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "45b46e7a-2573-4826-9a98-30f1d797db75": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "4924a8f6-59f7-4a17-86db-47949f033d55": {
       "status": "skip",
@@ -40192,8 +40215,9 @@
       "reason": "linkedin_429"
     },
     "4f7891a0-3f72-4d91-bcb4-c662b6f961db": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/redfin/ios-mobile",
+      "external_id": "redfin_ios-mobile"
     },
     "4781c20c-cbfe-4edb-abd4-d6b70e901694": {
       "status": "skip",
@@ -51628,6 +51652,48 @@
         "/gusto/prod-mgr",
         "/teza-technologies/core-java",
         "/nvidia/ai-inference"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T17:15:57.474Z",
+      "attempted": 1082,
+      "ok": 24,
+      "skip": 1058,
+      "fail": 0,
+      "reasons": {
+        "html_short": 706,
+        "html_429": 5,
+        "lever_short": 1,
+        "html_403": 32,
+        "err_TimeoutError": 12,
+        "err_TypeError": 32,
+        "html_405": 2,
+        "html_410": 1,
+        "linkedin_429": 267
+      },
+      "samplePaths": [
+        "/nvidia/cloud-sw-eng",
+        "/nooks/sw-eng",
+        "/avride/sw-eng-ml",
+        "/akima/sw-eng",
+        "/geico/distinguished",
+        "/electronic-arts-ea/support-eng",
+        "/microsoft/sw-eng-7f",
+        "/hackajob/dir-tech",
+        "/amazon-web-services-aws/sw-dev-21",
+        "/loop/sw-eng-sys",
+        "/vendra-yc-s24/fullstk-ml",
+        "/microsoft/sw-eng-57",
+        "/meta/prod-mgr",
+        "/jmd-technologies-inc/devops-eng",
+        "/harpercollins-publishers/growth-analyst",
+        "/betr/manual-qa",
+        "/platinum-commerce/fullstk-sw",
+        "/saragossa/data-sci",
+        "/ascendion/sw-eng",
+        "/ibm/be-sw-dev"
       ]
     }
   ]

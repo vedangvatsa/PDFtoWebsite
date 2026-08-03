@@ -26751,7 +26751,7 @@
     },
     "59483814-06c7-49e4-9353-3c4b99ad6541": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "582126a6-949a-4831-be30-55b2c79f49f5": {
       "status": "skip",
@@ -29810,7 +29810,7 @@
     },
     "5305db07-153c-4ecb-9a47-9bf8ce7138ad": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "53bcc2b4-d4a6-4a12-b598-78d89d6f3fa3": {
       "status": "skip",
@@ -29818,7 +29818,7 @@
     },
     "5c79e316-41f9-4db4-8d3f-e038da926cb4": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5e127a6c-0479-421d-aae4-db14fe38bbd9": {
       "status": "ok",
@@ -29831,11 +29831,11 @@
     },
     "5a8846a5-ade2-488b-8684-0a44f25f9364": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5ad0c7c3-1148-4b3d-aebf-00bbd14797d8": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5949278e-3098-4ecd-b2c1-50cd73bcccaf": {
       "status": "skip",
@@ -29843,7 +29843,7 @@
     },
     "5d1e1565-1a8a-4543-b83c-29d334e94a36": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "59a6c188-db20-4d9b-8e5e-e7ec4b136ea4": {
       "status": "ok",
@@ -29885,7 +29885,7 @@
     },
     "507ab9ca-e2a8-42d4-9db2-2082e841a249": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5fa5fb36-718e-4e34-82f1-e97781d76a48": {
       "status": "skip",
@@ -29902,7 +29902,7 @@
     },
     "53dbb7da-5efa-4616-bb2a-b05fa9693c59": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5057e74f-1cf1-4dd0-9d71-d8611aa627bd": {
       "status": "ok",
@@ -29955,7 +29955,7 @@
     },
     "5704984e-b70b-4f41-b14a-9a78be6df9b1": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "57d6d1b4-67c1-4797-9dca-846ee30e950a": {
       "status": "skip",
@@ -29999,8 +29999,9 @@
       "external_id": "broadridge_prod-analyst"
     },
     "5cb77191-8a84-42b5-ad8f-4ee7178a397e": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/twg-ai/data-sci-ed",
+      "external_id": "twg-ai_data-sci-ed"
     },
     "5608b857-82aa-4dd2-af2e-4a9be68dbc48": {
       "status": "ok",
@@ -30062,7 +30063,7 @@
     },
     "5eadd584-0e75-4fbb-85a4-a99ae6f79295": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "52cab35d-6bfc-48bc-8e19-9c39191efdb6": {
       "status": "skip",
@@ -30078,15 +30079,15 @@
     },
     "55be5481-8048-4d53-b870-bcf37c2f11ce": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "581881f5-ae05-4139-a714-7e9f041901a9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "55217efe-f1b2-4164-b74b-a078554da0b5": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5a6c52dd-dfad-4eac-8a30-a424c31f37ff": {
       "status": "skip",
@@ -30094,7 +30095,7 @@
     },
     "570b913b-3636-49c5-bf7e-0184395815fd": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5d016462-af19-494b-9043-402477bd2c68": {
       "status": "skip",
@@ -30102,11 +30103,11 @@
     },
     "528ffc48-3ce9-428d-b991-8145ceff7ed3": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5b5e5550-b134-4a10-80b5-4ec3670f557d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5c7cda1f-4c78-48b2-8c55-c63b12d72c86": {
       "status": "skip",
@@ -30114,7 +30115,7 @@
     },
     "55c0a87f-3215-4fb3-9173-6bc6a34bbd2c": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "58a30b88-d6c0-4492-88de-fc358daaba1e": {
       "status": "skip",
@@ -30122,7 +30123,7 @@
     },
     "52a508dd-4cc3-417a-bfd6-5f1a7dfba3a8": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5fbcfc4b-1d87-47ea-af04-013bac3e2647": {
       "status": "skip",
@@ -30151,7 +30152,7 @@
     },
     "5b81e1de-4f2b-4c03-b0b9-87a209bcc521": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "5a56e2b9-1741-450d-8360-facb4d1060d5": {
       "status": "skip",
@@ -30219,27 +30220,27 @@
     },
     "55bb0e58-5c74-4283-806f-1f2d6ed7b82c": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5f9f6c9a-96fa-44df-86a1-bd142420f0fa": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "502e7440-572f-4abc-a1fc-ce51a762da74": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "55d69102-d021-495a-9031-acc52c274a7d": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "564249fa-21b0-46b5-a1c2-fdb07554efd7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "55e8a12c-75c1-49f7-82c0-54a85eba9366": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5bedba56-afc8-4276-b5b2-fe04da8eae40": {
       "status": "skip",
@@ -30247,23 +30248,25 @@
     },
     "5683d68a-5b7b-4cf1-90d9-8ac20fda1568": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "57b7c716-51d2-4c03-b97f-6180ff1199b9": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "541c3550-c77c-4b7d-bedc-1abcaca7ba8c": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/orion-worldwide/vp",
+      "external_id": "orion-worldwide_vp"
     },
     "592252f4-5017-48a3-a08b-3fbe489e2273": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "502da84f-46fc-40c0-a4f3-2eb40e60128a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/kforce-inc/prod-mgr",
+      "external_id": "kforce-inc_prod-mgr"
     },
     "5c9ad347-faa5-43d2-90a0-feabd7cfaba7": {
       "status": "skip",
@@ -30384,7 +30387,7 @@
     },
     "568ea202-65e5-482f-a389-f3621111ea80": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5dcdcf31-6ec5-4385-bd9d-475a02b2ddec": {
       "status": "skip",
@@ -30396,7 +30399,7 @@
     },
     "5f895720-6ad3-4742-af3f-593c63ac26b5": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "53fe6ada-709f-4756-9034-99dbbe120039": {
       "status": "skip",
@@ -30498,7 +30501,7 @@
     },
     "5ae72627-dd7d-47ae-b7a5-15b9d7b9d69f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5bdb3928-0e65-46d0-9f89-bc541c7df313": {
       "status": "skip",
@@ -30518,7 +30521,7 @@
     },
     "5b40c799-46e3-4e63-b0b2-72c26a93cb90": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "567b77d3-2380-4d86-b00b-f5439cfd5680": {
       "status": "skip",
@@ -30621,7 +30624,7 @@
     },
     "545a3f2e-b437-4420-8b96-1d4ab2c65ad1": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5516fcc0-7b83-44ff-9a11-f9a9879e7566": {
       "status": "skip",
@@ -30653,11 +30656,11 @@
     },
     "54aaa123-70f5-4f3f-a105-c8056328bba1": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5fdfa95a-9149-40af-bd02-67a47fa50963": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "509cee0f-3277-4f96-abcd-0a396f4f02e2": {
       "status": "skip",
@@ -30729,7 +30732,7 @@
     },
     "5762efac-3987-4800-acba-748434b67d28": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "54adf242-22ed-4555-bbcd-7dc9b236aaaa": {
       "status": "skip",
@@ -30789,11 +30792,11 @@
     },
     "5a8bfa86-f29d-437f-bdf4-c11da38dfe27": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "57198ef0-42f3-41f0-a076-2de69a7c377f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "597a3e55-8cda-4b7b-8b5b-82faf48be730": {
       "status": "skip",
@@ -30883,7 +30886,7 @@
     },
     "5a41420b-d0db-4a30-935d-16f07c050e92": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5b75394a-95b9-4bb8-bf38-6d2d1415dcd2": {
       "status": "skip",
@@ -30891,7 +30894,7 @@
     },
     "518a3c9d-4ca8-4297-9d3e-743e567f4cfc": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "557fd31c-be7d-4ac0-adea-e4f9c7e4298d": {
       "status": "skip",
@@ -30989,7 +30992,7 @@
     },
     "596649f7-5f35-42ae-9de2-653b3c23443e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "50b64035-0021-4f7f-8364-18c9dd0fae35": {
       "status": "skip",
@@ -31020,8 +31023,9 @@
       "reason": "linkedin_429"
     },
     "5eaaf1d1-6c97-40a0-b8f8-c47558f86256": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/everly/sol-arch",
+      "external_id": "everly_sol-arch"
     },
     "5d1104f5-9575-47b6-a3b5-928b39694815": {
       "status": "skip",
@@ -31139,7 +31143,7 @@
     },
     "51bddb26-97cb-4fd8-950b-af5ea7b6034a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "5f61f7ab-7048-45de-b982-853cc9410b9d": {
       "status": "skip",
@@ -31277,7 +31281,7 @@
     },
     "5d2c0385-9316-4010-b549-d79547c8c990": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "546d8c3e-71b9-4d81-af65-2965a44a1db4": {
       "status": "skip",
@@ -44548,6 +44552,32 @@
         "no_company": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 5,
+      "at": "2026-08-03T17:16:04.311Z",
+      "attempted": 1043,
+      "ok": 4,
+      "skip": 1038,
+      "fail": 1,
+      "reasons": {
+        "html_short": 669,
+        "html_403": 54,
+        "lever_short": 1,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "err_TimeoutError": 10,
+        "html_429": 3,
+        "err_TypeError": 28,
+        "html_410": 1,
+        "linkedin_429": 272
+      },
+      "samplePaths": [
+        "/twg-ai/data-sci-ed",
+        "/kforce-inc/prod-mgr",
+        "/orion-worldwide/vp",
+        "/everly/sol-arch"
+      ]
     }
   ]
 }

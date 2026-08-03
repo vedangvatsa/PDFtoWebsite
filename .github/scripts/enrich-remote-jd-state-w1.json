@@ -52927,7 +52927,7 @@
     },
     "1bb64079-3bf9-4b8b-bd8e-1a313199ff42": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "118246e0-5f7e-4daf-b0fa-062c2b36c83e": {
       "status": "skip",
@@ -55468,8 +55468,9 @@
       "external_id": "mongodb_enterprise-0d"
     },
     "1cbd3c53-e90f-49d2-89f5-3e48941bdbde": {
-      "status": "skip",
-      "reason": "html_503"
+      "status": "ok",
+      "path": "/mongodb/prod-mgr-cb",
+      "external_id": "mongodb_prod-mgr-cb"
     },
     "1ef2fa26-4a82-4603-af09-79818753460b": {
       "status": "skip",
@@ -57359,11 +57360,11 @@
     },
     "104ef0ff-8908-4037-ae16-0beaef6cadae": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "1bcbadd8-a6e5-4215-b32d-0a811a332a35": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "17d9c182-af7c-4516-a625-0b9650e4955f": {
       "status": "ok",
@@ -57893,7 +57894,7 @@
     },
     "12ed7bf8-710c-4632-a5a6-c4114d24a7c7": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "html_410"
     },
     "17eb8dcb-60b8-4b4a-b498-1c0d2d392dc2": {
       "status": "skip",
@@ -57947,7 +57948,7 @@
     },
     "12ee643e-be1f-49a2-9030-0d5386594d76": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "html_410"
     },
     "19f1da67-e17c-4d9c-9efa-1c6828f2b415": {
       "status": "skip",
@@ -58148,7 +58149,7 @@
     },
     "16c145ae-d21a-4afd-8cac-2d2143eecc57": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "12cb44f1-d608-4d12-8a70-e73177af1e53": {
       "status": "skip",
@@ -58156,7 +58157,7 @@
     },
     "16d12976-e5e3-464d-8e36-b60303756846": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "18c51ad6-572f-49ae-9b10-2fbf409d31f7": {
       "status": "skip",
@@ -58164,7 +58165,7 @@
     },
     "132ff703-92e2-4cf7-9a14-ab938114d71d": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "168b6f09-a0e9-4b7b-9778-1eb999490f0a": {
       "status": "skip",
@@ -58176,7 +58177,7 @@
     },
     "1a39b5f9-036d-45fd-afc0-5b3cd71eecee": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1e302f0c-a474-46de-b560-44f401215bba": {
       "status": "skip",
@@ -58184,19 +58185,19 @@
     },
     "104802d8-7c09-4f7d-b9e9-efa77055d254": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1023c43f-5025-4f98-bab1-784544d91a3f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1be674e8-5c0a-4e6a-bb11-af0082aca1bd": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "13d1851a-2b6c-4472-9f9b-e9264ba413c4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "10ca8fe2-3d5f-4c1e-b3cf-46ed3dcaaeae": {
       "status": "skip",
@@ -58211,12 +58212,14 @@
       "reason": "linkedin_429"
     },
     "12012af9-51e9-40b5-915b-ff167c3533cd": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/nvidia/ml-simulation",
+      "external_id": "nvidia_ml-simulation"
     },
     "15891690-8f62-4b28-a7b1-4ac65d10a149": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/chalk/forward-deployed",
+      "external_id": "chalk_forward-deployed"
     },
     "1f4e6db9-3ed4-48af-b457-878ca3094262": {
       "status": "skip",
@@ -58227,12 +58230,14 @@
       "reason": "linkedin_429"
     },
     "195ba5bb-2d5f-410e-9759-24f8ab5801f5": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/sap/ml-eng",
+      "external_id": "sap_ml-eng"
     },
     "16008088-909a-4d3a-95e6-770de3109274": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/handshake/ml-eng",
+      "external_id": "handshake_ml-eng"
     },
     "1a625906-efaf-43fc-86d9-24a1acd18c03": {
       "status": "skip",
@@ -58272,7 +58277,7 @@
     },
     "1692fac5-0915-4986-9193-48715ccffa67": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1e51c023-1813-4dac-afb7-04cefa2301e8": {
       "status": "skip",
@@ -58299,8 +58304,9 @@
       "reason": "linkedin_429"
     },
     "1df955bc-04af-4952-afd9-d498152f2742": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/opspro/it-cybersecurity",
+      "external_id": "opspro_it-cybersecurity"
     },
     "164b0e56-12f2-4d23-a1e9-98353649336b": {
       "status": "skip",
@@ -58324,7 +58330,7 @@
     },
     "159e5cbc-ebcc-4feb-9760-01c964330897": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1009ebb4-33f0-4ca4-a685-93b5203d09c7": {
       "status": "skip",
@@ -58337,7 +58343,7 @@
     },
     "1d306091-dc80-48be-82e6-1c077f4a6e16": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "104c8401-ec85-4687-a288-7372df50d313": {
       "status": "skip",
@@ -58671,7 +58677,7 @@
     },
     "1de92b7c-9e93-4a72-8534-8ff8af704fdb": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1d9db1b0-3f75-4e04-b9e1-7a30579df357": {
       "status": "skip",
@@ -58679,11 +58685,11 @@
     },
     "1e7addec-d989-466e-ba09-c937e8b662c2": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "18d492fa-c73d-4b15-a345-92e9ad59dc5b": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1afc7261-1c5b-46dc-bd8c-580933bfb330": {
       "status": "skip",
@@ -58691,23 +58697,26 @@
     },
     "15a338b5-2ad1-4c95-9530-4c5c3ee0d519": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "153cfa75-7cb4-44c7-b0c8-6cc8281633b9": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "113f6730-243b-462a-899c-f6ba37e58e24": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/meltwater/fe-eng",
+      "external_id": "meltwater_fe-eng"
     },
     "1c47f790-677e-42c1-b0fb-3b8382966636": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/vision-square-inc/chief-ai",
+      "external_id": "vision-square-inc_chief-ai"
     },
     "1b7e0757-dc72-4f3f-a397-8cb419056bb8": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/raspberry-ai/ai-growth",
+      "external_id": "raspberry-ai_ai-growth"
     },
     "1ca857b5-6299-4e29-95be-6988097d8f53": {
       "status": "skip",
@@ -58761,7 +58770,7 @@
     },
     "1a82b818-110d-40c3-adc0-5b00db416de4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "12d8806d-54d1-49e7-aeb4-380bd5fe314a": {
       "status": "skip",
@@ -58882,8 +58891,9 @@
       "reason": "linkedin_429"
     },
     "199d3ef3-da7a-4891-a074-16c8921fe3ad": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/pineq-lab-technology/sre-eng",
+      "external_id": "pineq-lab-technology_sre-eng"
     },
     "12845f6d-bf1a-4583-a8d3-5e226c238ff0": {
       "status": "skip",
@@ -58947,7 +58957,7 @@
     },
     "1611c34d-6677-4743-af28-71fd67e28101": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "12435701-a636-4979-a60f-f0ef9325a635": {
       "status": "skip",
@@ -59019,7 +59029,7 @@
     },
     "1326c5cf-9e54-4fe2-987a-a69bf88a9a48": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "17ddc7c8-2202-48ff-88a0-705e45396bfa": {
       "status": "skip",
@@ -59090,8 +59100,9 @@
       "reason": "linkedin_429"
     },
     "1ed4105a-5eb4-43d3-87dd-15fd571174c2": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/doordash/mgr-strat",
+      "external_id": "doordash_mgr-strat"
     },
     "1d0af164-4717-4890-89ad-bba42c9e24c2": {
       "status": "skip",
@@ -59107,7 +59118,7 @@
     },
     "1b2bb315-799e-4cd4-b4e5-cfb03b90a308": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1cef5a91-193b-4c5d-b38f-d60fa05680e4": {
       "status": "ok",
@@ -59191,8 +59202,9 @@
       "external_id": "expert-technical-solutions_qa-eng"
     },
     "1cecdfca-3296-4a06-b618-6851524d7daa": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/jack-amp-jill/research-eng",
+      "external_id": "jack-amp-jill_research-eng"
     },
     "16abe12e-ae07-4096-bd14-8a1db0f0f506": {
       "status": "skip",
@@ -59252,8 +59264,9 @@
       "external_id": "staffing-science_sre-eng"
     },
     "12ed1d1b-2637-4b55-91df-eb12ff3038d2": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/strativ-group/sw-eng",
+      "external_id": "strativ-group_sw-eng"
     },
     "1edebd82-c837-40ab-bd3e-4cb4cafb9cda": {
       "status": "skip",
@@ -59301,7 +59314,7 @@
     },
     "1d5984fd-81f2-4549-aab9-9b7be87bd229": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1984b8f0-83a9-4841-b17d-a01764f93542": {
       "status": "skip",
@@ -59328,8 +59341,9 @@
       "reason": "linkedin_429"
     },
     "14a3cc3e-d491-4576-ba16-58685b52463e": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/scout-motors-inc/sw-eng-ios",
+      "external_id": "scout-motors-inc_sw-eng-ios"
     },
     "1f6f06d5-825b-4a68-9a4a-3f96dc6b056b": {
       "status": "skip",
@@ -59439,7 +59453,7 @@
     },
     "184691ee-8791-47fd-b7d4-47fef6fb8f99": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "13a24bf6-f145-4df8-b3c7-750e0e05b3d2": {
       "status": "skip",
@@ -59475,7 +59489,7 @@
     },
     "1d15c008-609f-4f07-a968-75955296d326": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1a33ef69-bbc5-4232-b411-afbcd2731f9d": {
       "status": "skip",
@@ -59516,7 +59530,7 @@
     },
     "1f8c5c72-2893-4a2a-a931-57c9c60354ab": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "1e0cbadd-1b70-461a-a0d9-876ff87726cc": {
       "status": "skip",
@@ -59535,8 +59549,9 @@
       "reason": "linkedin_429"
     },
     "1573250f-e9d0-47c7-88b8-b27e7d0c94f1": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/vizio/usa-data",
+      "external_id": "vizio_usa-data"
     },
     "18839e14-b59f-4838-b60d-3a3763f0534e": {
       "status": "skip",
@@ -73790,6 +73805,43 @@
         "linkedin_429": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T17:18:14.433Z",
+      "attempted": 1174,
+      "ok": 15,
+      "skip": 1159,
+      "fail": 0,
+      "reasons": {
+        "html_short": 727,
+        "html_403": 51,
+        "html_500": 1,
+        "err_TimeoutError": 21,
+        "html_429": 2,
+        "html_404": 2,
+        "err_TypeError": 27,
+        "html_410": 2,
+        "linkedin_429": 326
+      },
+      "samplePaths": [
+        "/mongodb/prod-mgr-cb",
+        "/handshake/ml-eng",
+        "/sap/ml-eng",
+        "/nvidia/ml-simulation",
+        "/chalk/forward-deployed",
+        "/opspro/it-cybersecurity",
+        "/vision-square-inc/chief-ai",
+        "/raspberry-ai/ai-growth",
+        "/meltwater/fe-eng",
+        "/pineq-lab-technology/sre-eng",
+        "/doordash/mgr-strat",
+        "/jack-amp-jill/research-eng",
+        "/strativ-group/sw-eng",
+        "/scout-motors-inc/sw-eng-ios",
+        "/vizio/usa-data"
+      ]
     }
   ]
 }
