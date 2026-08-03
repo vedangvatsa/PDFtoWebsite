@@ -63,3 +63,10 @@ cloudflare-env.d.ts
 # Cloudflare local tokens (never commit)
 cf-deploy-api.token
 cf-refresh-rotated.token
+
+# credentials — never commit
+.github/scripts/*accounts*.json
+.github/scripts/*inbox*.json
+.github/scripts/INBOX_CREDENTIALS*.md
+.github/scripts/voidmail-accounts.json
+.github/scripts/*credentials*.json
