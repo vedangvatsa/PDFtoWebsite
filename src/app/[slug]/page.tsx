@@ -141,7 +141,7 @@ async function buildCompanyPageMetadata(
   const { getCompanyMeta } = await import('@/lib/company-data');
   const meta = getCompanyMeta(slug);
   const companyDisplay = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
-  const jobCount = dir?.role_count || jobs.length || 1;
+  const jobCount = dir?.role_count ?? jobs.length;
   const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
   const desc = meta
     ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
@@ -638,14 +638,14 @@ export default async function ProfileSlugPage({ params }: PageProps) {
         q: `How many open positions does ${companyName} have right now?`,
         a: `${companyName} currently has ${totalJobs} open positions listed on CVin.Bio. ${last30d} of these were posted in the last 30 days. ${remotePercent}% of all roles are listed as remote-friendly.`,
       },
-      {
+      ...(topLocs.length > 0 ? [{
         q: `Where are ${companyName} jobs located?`,
         a: `The top hiring locations for ${companyName} are ${topLocs.map(([l, c]) => `${l} (${c} roles)`).join(', ')}.`,
-      },
-      {
+      }] : []),
+      ...(Object.keys(catCount).length > 0 ? [{
         q: `What departments is ${companyName} hiring for?`,
         a: `${companyName} is actively hiring across ${Object.keys(catCount).length} departments. The most active are ${topCats.map(([c, n]) => `${c} (${n} roles)`).join(', ')}.`,
-      },
+      }] : []),
       ...(topSkills.length > 0 ? [{
         q: `What skills does ${companyName} look for in candidates?`,
         a: `Based on current job listings, the most frequently requested skills at ${companyName} are ${topSkills.join(', ')}. These appear across multiple open roles and departments.`,
@@ -805,6 +805,12 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-12">
+            {jobs.length === 0 && (
+              <div className="col-span-full p-8 rounded-xl bg-white border border-zinc-200 text-center">
+                <p className="text-[14px] font-semibold text-zinc-700 mb-1">No open roles right now</p>
+                <p className="text-[13px] text-zinc-500">Check back soon — {companyName} careers are updated regularly.</p>
+              </div>
+            )}
             {jobs.map((job: any) => (
               <Link
                 key={job.id}
