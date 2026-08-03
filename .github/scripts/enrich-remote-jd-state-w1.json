@@ -53621,7 +53621,7 @@
     },
     "14691aaf-71a7-4160-ac96-ee36abbde524": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "1be5e81b-6649-49cc-9be3-ec4c1154f46d": {
       "status": "skip",
@@ -55975,7 +55975,7 @@
     },
     "118189f0-9c16-41a9-816a-3108a0130b3e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "16585e51-7087-4960-b7d6-7d630b0af999": {
       "status": "skip",
@@ -56491,7 +56491,7 @@
     },
     "14d5180d-fa89-4f7c-a83b-d07130d701b8": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "137f6e21-2cbd-4ecb-a317-0a52b15a623a": {
       "status": "ok",
@@ -74046,6 +74046,23 @@
         "/toast/sw-eng-61",
         "/waymo/materials-prog"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 1,
+      "at": "2026-08-03T18:15:26.064Z",
+      "attempted": 796,
+      "ok": 0,
+      "skip": 796,
+      "fail": 0,
+      "reasons": {
+        "html_short": 724,
+        "html_403": 46,
+        "err_TimeoutError": 21,
+        "html_429": 2,
+        "err_TypeError": 3
+      },
+      "samplePaths": []
     }
   ]
 }
