@@ -48951,7 +48951,7 @@
     },
     "061f0ba0-4ccd-44c7-972e-8b357c8ad060": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_503"
     },
     "039cbeb4-ff0f-4c26-88fc-5ac8c1590130": {
       "status": "ok",
@@ -51728,7 +51728,7 @@
     },
     "0b2a0e4d-cfbb-4019-836f-c660262d37a1": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "018ca9eb-4a86-4406-bca6-ea97920be816": {
       "status": "skip",
@@ -51792,7 +51792,7 @@
     },
     "0e1e11f5-264f-4bc1-b415-de791957f069": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "05dcac1c-5ce1-4733-830b-561580a13e55": {
       "status": "ok",
@@ -51801,7 +51801,7 @@
     },
     "06d66140-f871-4cc9-9198-8b2565b07150": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "068f83f7-1f23-432b-9437-6b295bbccb59": {
       "status": "ok",
@@ -52155,12 +52155,13 @@
       "external_id": "tiffany-amp-co_analyst-high"
     },
     "0b9852ba-8640-4c57-a86c-fab4fd69558f": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/stoke-space/net-sys-eng",
+      "external_id": "stoke-space_net-sys-eng"
     },
     "0e709e86-5adc-46a8-a2c5-8163963c0286": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "00263f53-edbd-411d-ab9e-2d5cbf82edfb": {
       "status": "ok",
@@ -52263,7 +52264,7 @@
     },
     "0c894db2-a58e-4d98-afcb-ee96c47c2e7f": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "0e7d2699-06bf-41f2-aec2-f2b50b5844e3": {
       "status": "skip",
@@ -52416,7 +52417,7 @@
     },
     "0b7c6108-2a36-4528-bb57-d6a3d67ffe6c": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "0140e3ca-b565-450b-9783-d35bf0d51904": {
       "status": "ok",
@@ -52458,7 +52459,7 @@
     },
     "0bdae580-8631-43c0-a274-778103549441": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "0ae50493-a261-466a-a1fa-fb7d9bf2f855": {
       "status": "ok",
@@ -52571,7 +52572,7 @@
     },
     "0f066f3b-eb42-4acd-90b7-a3ac8f4f5574": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "0463e2f8-572c-4ba2-8e91-6b2f188605c7": {
       "status": "ok",
@@ -52593,7 +52594,7 @@
     },
     "01583476-2a6d-47ef-ae11-de4fbef3604f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "08b9773a-a77a-49cd-a53e-3849d9a096fc": {
       "status": "ok",
@@ -52611,7 +52612,7 @@
     },
     "07d28ea1-54b4-4343-8d36-dcb54fbdcb23": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "0f032f58-f678-4717-b6d4-50822a67b756": {
       "status": "ok",
@@ -52689,7 +52690,7 @@
     },
     "032a492c-eca4-4fa7-9afb-eaeb6e0a6f9d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "008424e8-440e-41ec-b65a-f82e2f5a82bf": {
       "status": "ok",
@@ -65375,6 +65376,29 @@
         "/block/asic-validation",
         "/cargurus/brand-mkt-c3",
         "/mongodb/compensation"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T17:06:30.593Z",
+      "attempted": 803,
+      "ok": 1,
+      "skip": 801,
+      "fail": 1,
+      "reasons": {
+        "html_short": 690,
+        "html_403": 32,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 15,
+        "html_503": 1,
+        "err_TypeError": 7,
+        "html_405": 1,
+        "linkedin_429": 51
+      },
+      "samplePaths": [
+        "/stoke-space/net-sys-eng"
       ]
     }
   ]
