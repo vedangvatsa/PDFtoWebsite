@@ -25199,7 +25199,7 @@
     },
     "07074af7-0014-4d5e-aead-584f08481a7e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "011f1801-6e90-4462-b278-ab4e30b9db4f": {
       "status": "skip",
@@ -47050,7 +47050,7 @@
     },
     "0bc02db6-bf3f-4c35-9ca0-4185f58dc262": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "1f0c2890-b9c3-48e8-902a-e697225378e7": {
       "status": "skip",
@@ -47622,7 +47622,7 @@
     },
     "02d1b99f-6440-4aa6-a2c4-5f7c8d6fdc5d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0c93b98a-c3b5-479c-9f58-5301a4fd0409": {
       "status": "skip",
@@ -47970,7 +47970,7 @@
     },
     "0281541d-ee27-4dca-8c8f-ec9cff84b3a8": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0a510ce7-a2f1-402a-80db-18accdf5a901": {
       "status": "skip",
@@ -49720,7 +49720,7 @@
     },
     "02548ca4-b968-4f5e-aa3d-0d95a3cd79b3": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0a33a5c3-d2c2-4392-b479-1408dd30e3ad": {
       "status": "skip",
@@ -65419,6 +65419,25 @@
         "err_TypeError": 8,
         "html_405": 1,
         "linkedin_429": 50
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T17:34:34.233Z",
+      "attempted": 748,
+      "ok": 0,
+      "skip": 747,
+      "fail": 1,
+      "reasons": {
+        "html_short": 686,
+        "html_403": 32,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 20,
+        "err_TypeError": 4,
+        "html_405": 1
       },
       "samplePaths": []
     }

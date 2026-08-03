@@ -25724,7 +25724,7 @@
     },
     "5b7b8a92-7a15-4ff3-b45d-6187a8e378ca": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "57759c38-622e-4455-8778-4af3d45772f6": {
       "status": "skip",
@@ -25744,7 +25744,7 @@
     },
     "515f4f08-1312-4f6f-b6c9-c0a6778df714": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "5d3d03b8-4c6b-4ff8-87ed-1a83b80dc819": {
       "status": "skip",
@@ -25982,7 +25982,7 @@
     },
     "5c32aec0-7b6c-4a95-8be4-8939af618b50": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "538f05e2-a4d9-4e9a-b159-fd15e8254d54": {
       "status": "skip",
@@ -28524,7 +28524,7 @@
     },
     "5a01289f-aabf-4b64-beaa-dac2dbd1ed7d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "51ec6c55-85d6-414d-a6b0-fc991af9b6a9": {
       "status": "skip",
@@ -28557,7 +28557,7 @@
     },
     "5bb132d5-4a54-46ec-bb8c-086e42d0a6c1": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "5515e3f8-362a-42b5-97d0-d3368d94a609": {
       "status": "ok",
@@ -29801,7 +29801,7 @@
     },
     "5e6d42b6-2923-4cd8-b51d-e63cc2f7daa1": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_too_many_redirects"
     },
     "527afec0-d761-4cd7-aaef-1ce8640e6a9a": {
       "status": "ok",
@@ -44578,6 +44578,26 @@
         "/orion-worldwide/vp",
         "/everly/sol-arch"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 5,
+      "at": "2026-08-03T17:34:21.027Z",
+      "attempted": 741,
+      "ok": 0,
+      "skip": 740,
+      "fail": 1,
+      "reasons": {
+        "html_short": 665,
+        "lever_short": 1,
+        "html_403": 54,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "err_TypeError": 2,
+        "err_TimeoutError": 14,
+        "html_429": 3,
+        "html_too_many_redirects": 1
+      },
+      "samplePaths": []
     }
   ]
 }

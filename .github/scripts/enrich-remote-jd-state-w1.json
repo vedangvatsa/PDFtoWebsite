@@ -53059,7 +53059,7 @@
     },
     "15e7b3e3-0de9-49f0-81f8-08a7c6a2e284": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "11a06d5e-7144-4e3c-8f45-639f4fb31bb9": {
       "status": "skip",
@@ -53936,7 +53936,7 @@
     },
     "1ee7a55f-ab15-41f9-bd98-5ae93cb3f387": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "1e0d284a-bb2e-4087-b396-317af0e6e33b": {
       "status": "skip",
@@ -57571,8 +57571,9 @@
       "reason": "html_short"
     },
     "12fe6e28-554b-481a-8217-c5fcb1f77b89": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/ascensus/devops-eng",
+      "external_id": "ascensus_devops-eng"
     },
     "191df817-687c-4166-a4f8-576a1e579a9e": {
       "status": "skip",
@@ -73841,6 +73842,26 @@
         "/strativ-group/sw-eng",
         "/scout-motors-inc/sw-eng-ios",
         "/vizio/usa-data"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T17:34:38.337Z",
+      "attempted": 805,
+      "ok": 1,
+      "skip": 804,
+      "fail": 0,
+      "reasons": {
+        "html_short": 724,
+        "err_TypeError": 4,
+        "html_403": 51,
+        "html_500": 1,
+        "err_TimeoutError": 22,
+        "html_429": 2
+      },
+      "samplePaths": [
+        "/ascensus/devops-eng"
       ]
     }
   ]

@@ -38832,7 +38832,7 @@
     },
     "762e500b-f45b-4f72-a3fe-b3ba4ad8d43f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "7e7fcb42-90eb-4899-b92f-ee2c00cef382": {
       "status": "skip",
@@ -42148,7 +42148,7 @@
     },
     "79656613-120e-4db2-bd7e-a5a1e014557b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "7299d99e-bcf3-4236-8730-bb75128c5d1f": {
       "status": "ok",
@@ -43053,7 +43053,7 @@
     },
     "78a4a730-6b57-4202-ad85-66d6ab76d4f8": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "779a52fd-7261-4640-82dc-a9aa9d0f7c00": {
       "status": "skip",
@@ -55909,6 +55909,26 @@
         "/wizards-of-the-coast/ai-eng",
         "/architect-labs/member-tech"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 7,
+      "at": "2026-08-03T17:33:58.752Z",
+      "attempted": 780,
+      "ok": 0,
+      "skip": 780,
+      "fail": 0,
+      "reasons": {
+        "html_short": 721,
+        "gh_short": 1,
+        "sr_400": 1,
+        "err_TimeoutError": 16,
+        "err_TypeError": 4,
+        "html_403": 33,
+        "html_429": 2,
+        "html_405": 2
+      },
+      "samplePaths": []
     }
   ]
 }

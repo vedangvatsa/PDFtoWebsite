@@ -37130,7 +37130,7 @@
     },
     "4f175b07-5cfa-46f9-bd65-87138177650b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "4b07e779-c6ae-40d9-801d-94005d839026": {
       "status": "ok",
@@ -51695,6 +51695,25 @@
         "/ascendion/sw-eng",
         "/ibm/be-sw-dev"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T17:34:00.991Z",
+      "attempted": 760,
+      "ok": 0,
+      "skip": 760,
+      "fail": 0,
+      "reasons": {
+        "html_short": 706,
+        "lever_short": 1,
+        "html_429": 5,
+        "html_403": 32,
+        "err_TimeoutError": 13,
+        "err_TypeError": 1,
+        "html_405": 2
+      },
+      "samplePaths": []
     }
   ]
 }
