@@ -10705,6 +10705,84 @@
         "no_company": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T12:10:18.572Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T12:10:45.243Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T12:11:07.042Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T12:11:32.201Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T12:11:55.798Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T12:12:19.758Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
     }
   ]
 }

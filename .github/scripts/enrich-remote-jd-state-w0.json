@@ -25983,6 +25983,66 @@
     "0c9a535c-fea3-4e0b-a122-3ec9875d625a": {
       "status": "skip",
       "reason": "err_TypeError"
+    },
+    "015f6736-ed04-4459-9a9f-284cb1777013": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "1de537d2-3c1c-4b34-920f-f0ceb4c06ab7": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "04fb79f3-1f5b-499b-9a7c-f954c3d4596e": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "079cc130-0236-4d06-8af8-edff4c25d273": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "18a65d9b-41b4-40e2-97be-261d6bb13eb5": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "01b74d07-77ee-421e-9b84-95aa6eccbcee": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "18e19736-0aa2-4a55-be12-a446a8e7f3fc": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "122bd3ab-0543-4374-8cd5-534716da2eeb": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "0fa9b102-e925-400b-a7d7-c137aecc7b6f": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "0d3b5c7c-0c71-4893-97b2-5e4a009e175b": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "031a3afc-64dd-4c48-852c-a34267fa1270": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "0662f8a7-b442-472a-8001-fefed60b2cbd": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "1b1cc2ff-1b2b-40dc-a27c-61b75c326dc0": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "03ddba3d-218c-4ae9-88ba-23afdd2a36c4": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "17a40af3-9f53-47b9-8909-6a155c074af7": {
+      "status": "fail",
+      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
     }
   },
   "doneIds": [
@@ -31657,7 +31717,22 @@
     "0532f7ed-975d-4f18-b081-067e42a8283b",
     "0d2ca8bf-1cb0-4433-b045-ac1bc47e94a4",
     "1041eef0-ee05-4fd4-86b3-c8416de6f38e",
-    "0c9a535c-fea3-4e0b-a122-3ec9875d625a"
+    "0c9a535c-fea3-4e0b-a122-3ec9875d625a",
+    "015f6736-ed04-4459-9a9f-284cb1777013",
+    "1de537d2-3c1c-4b34-920f-f0ceb4c06ab7",
+    "04fb79f3-1f5b-499b-9a7c-f954c3d4596e",
+    "079cc130-0236-4d06-8af8-edff4c25d273",
+    "18a65d9b-41b4-40e2-97be-261d6bb13eb5",
+    "01b74d07-77ee-421e-9b84-95aa6eccbcee",
+    "18e19736-0aa2-4a55-be12-a446a8e7f3fc",
+    "122bd3ab-0543-4374-8cd5-534716da2eeb",
+    "0fa9b102-e925-400b-a7d7-c137aecc7b6f",
+    "0d3b5c7c-0c71-4893-97b2-5e4a009e175b",
+    "031a3afc-64dd-4c48-852c-a34267fa1270",
+    "0662f8a7-b442-472a-8001-fefed60b2cbd",
+    "1b1cc2ff-1b2b-40dc-a27c-61b75c326dc0",
+    "03ddba3d-218c-4ae9-88ba-23afdd2a36c4",
+    "17a40af3-9f53-47b9-8909-6a155c074af7"
   ],
   "skipped": {},
   "batches": [
@@ -32053,6 +32128,20 @@
         "html_404": 8,
         "html_429": 2,
         "err_TypeError": 3
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-03T12:12:59.571Z",
+      "attempted": 15,
+      "ok": 0,
+      "skip": 6,
+      "fail": 9,
+      "reasons": {
+        "ashby_not_found": 6,
+        "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode": 9
       },
       "samplePaths": []
     }
