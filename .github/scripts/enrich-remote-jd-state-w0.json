@@ -14767,8 +14767,9 @@
       "external_id": "remote-click-jobs_drupal-fullstk"
     },
     "00ee7c70-07ca-4be0-9cb8-8d370c1770c5": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/digitaltolk/laravel-be",
+      "external_id": "digitaltolk_laravel-be"
     },
     "7b6bcdd7-54fe-412c-9f84-144b87946e18": {
       "status": "ok",
@@ -25988,12 +25989,14 @@
       "external_id": "defdone_sw-dev-fe"
     },
     "0431e8fa-05eb-46ee-a822-46273aad357c": {
-      "status": "fail",
-      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+      "status": "ok",
+      "path": "/tus-media/clases-de",
+      "external_id": "tus-media_clases-de"
     },
     "0beaf51f-fc0a-4214-ba17-ad57b018d429": {
-      "status": "fail",
-      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+      "status": "ok",
+      "path": "/opsarmy-careers/australian-5f",
+      "external_id": "opsarmy-careers_australian-5f"
     },
     "1f5fd368-bf62-40a1-917b-33a4399c6a23": {
       "status": "fail",
@@ -26012,12 +26015,14 @@
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
     },
     "0532f7ed-975d-4f18-b081-067e42a8283b": {
-      "status": "fail",
-      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+      "status": "ok",
+      "path": "/accenture-australia/expression",
+      "external_id": "accenture-australia_expression"
     },
     "0d2ca8bf-1cb0-4433-b045-ac1bc47e94a4": {
-      "status": "fail",
-      "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+      "status": "ok",
+      "path": "/gold-standard/qa-test",
+      "external_id": "gold-standard_qa-test"
     },
     "1041eef0-ee05-4fd4-86b3-c8416de6f38e": {
       "status": "fail",
@@ -26025,7 +26030,7 @@
     },
     "0c9a535c-fea3-4e0b-a122-3ec9875d625a": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "015f6736-ed04-4459-9a9f-284cb1777013": {
       "status": "skip",
@@ -51723,7 +51728,7 @@
     },
     "0b2a0e4d-cfbb-4019-836f-c660262d37a1": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "018ca9eb-4a86-4406-bca6-ea97920be816": {
       "status": "skip",
@@ -51783,19 +51788,20 @@
     },
     "030a4442-60a9-49d3-9cf5-8c5dc14e8985": {
       "status": "skip",
-      "reason": "linkedin_short"
+      "reason": "linkedin_429"
     },
     "0e1e11f5-264f-4bc1-b415-de791957f069": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "05dcac1c-5ce1-4733-830b-561580a13e55": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/philips/ai-sol-eng",
+      "external_id": "philips_ai-sol-eng"
     },
     "06d66140-f871-4cc9-9198-8b2565b07150": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "068f83f7-1f23-432b-9437-6b295bbccb59": {
       "status": "ok",
@@ -51885,8 +51891,9 @@
       "reason": "linkedin_429"
     },
     "0de0c604-5926-46a3-8816-291b35edac4a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/encorus-group/assoc-mechanical",
+      "external_id": "encorus-group_assoc-mechanical"
     },
     "0f93fd08-7644-49f8-b95f-4d59a5d9c196": {
       "status": "skip",
@@ -52153,7 +52160,7 @@
     },
     "0e709e86-5adc-46a8-a2c5-8163963c0286": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "00263f53-edbd-411d-ab9e-2d5cbf82edfb": {
       "status": "ok",
@@ -52256,7 +52263,7 @@
     },
     "0c894db2-a58e-4d98-afcb-ee96c47c2e7f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "0e7d2699-06bf-41f2-aec2-f2b50b5844e3": {
       "status": "skip",
@@ -52409,7 +52416,7 @@
     },
     "0b7c6108-2a36-4528-bb57-d6a3d67ffe6c": {
       "status": "skip",
-      "reason": "linkedin_short"
+      "reason": "err_TypeError"
     },
     "0140e3ca-b565-450b-9783-d35bf0d51904": {
       "status": "ok",
@@ -52445,12 +52452,13 @@
       "external_id": "imprint_prod-mgr-mid"
     },
     "06e78fb7-b0b4-46d2-a441-72da8c940aef": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/ey-parthenon/ey-parthenon",
+      "external_id": "ey-parthenon_ey-parthenon"
     },
     "0bdae580-8631-43c0-a274-778103549441": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "0ae50493-a261-466a-a1fa-fb7d9bf2f855": {
       "status": "ok",
@@ -52496,7 +52504,7 @@
     },
     "0804ae84-b921-4de4-9b47-d7fe396df12b": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "0191193e-27da-40a8-b649-3ed5a5cb8305": {
       "status": "ok",
@@ -52563,7 +52571,7 @@
     },
     "0f066f3b-eb42-4acd-90b7-a3ac8f4f5574": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "0463e2f8-572c-4ba2-8e91-6b2f188605c7": {
       "status": "ok",
@@ -52603,7 +52611,7 @@
     },
     "07d28ea1-54b4-4343-8d36-dcb54fbdcb23": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "0f032f58-f678-4717-b6d4-50822a67b756": {
       "status": "ok",
@@ -52680,8 +52688,8 @@
       "external_id": "raindrop_ml-eng"
     },
     "032a492c-eca4-4fa7-9afb-eaeb6e0a6f9d": {
-      "status": "fail",
-      "reason": "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop"
+      "status": "skip",
+      "reason": "err_TypeError"
     },
     "008424e8-440e-41ec-b65a-f82e2f5a82bf": {
       "status": "ok",
@@ -52789,8 +52797,9 @@
       "external_id": "crossing-hurdles_computer-vision"
     },
     "05ba9691-c0c8-41e9-a2be-a2c86dde6a72": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/microsoft-ai/mts-plat-eng",
+      "external_id": "microsoft-ai_mts-plat-eng"
     },
     "09888f44-955e-404f-9ac3-d7225f3bbfc1": {
       "status": "ok",
@@ -65323,6 +65332,49 @@
         "/google/global-prod",
         "/webull-financial/proj-mgr",
         "/new-york-state-department-of-health/asst-research"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T16:58:21.286Z",
+      "attempted": 842,
+      "ok": 34,
+      "skip": 807,
+      "fail": 1,
+      "reasons": {
+        "html_short": 693,
+        "html_403": 32,
+        "posting_older_than_30d": 2,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 15,
+        "html_404": 1,
+        "err_TypeError": 16,
+        "html_405": 1,
+        "linkedin_429": 43
+      },
+      "samplePaths": [
+        "/mongodb/strat-cust",
+        "/rubrik-job-board/acct-68",
+        "/govtech/lead-72",
+        "/govtech/sw-eng-c8",
+        "/five9/sw-eng-30",
+        "/betterment/prod-mgr",
+        "/klaviyo/sw-eng-ai",
+        "/asana/prod-mgr-d8",
+        "/klaviyo/sw-eng-agent",
+        "/instacart/sw-eng-43",
+        "/coreweave/fin-accountant",
+        "/airbnb/advanced-analyst",
+        "/carvana/ops-mgr-d0",
+        "/databricks/sol-5f",
+        "/airbnb/strat-fin",
+        "/databricks/lakebase-bb",
+        "/branch-metrics/performance",
+        "/block/asic-validation",
+        "/cargurus/brand-mkt-c3",
+        "/mongodb/compensation"
       ]
     }
   ]
