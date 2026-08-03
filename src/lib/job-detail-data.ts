@@ -37,6 +37,7 @@ export type JobRow = {
   category: string | null;
   source: string;
   published_at: string | null;
+  created_at: string | null;
   description: string | null;
   external_id: string | null;
 };

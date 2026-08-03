@@ -107,8 +107,7 @@ async function loadCompanyJobs(
       }
 
       const recent = await fetchJobs(thirtyDaysAgo);
-      if (recent.length > 0) return recent;
-      return fetchJobs(null);
+      return recent;
     },
     ['company-jobs-v3', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }

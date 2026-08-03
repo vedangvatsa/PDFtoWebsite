@@ -250,5 +250,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Sitemap: failed to fetch companies', e);
   }
 
-  return [...staticEntries, ...blogEntries, ...profileEntries, ...companyEntries];
+  // Dynamic curated job URLs created in last 30 days
+  let jobEntries: MetadataRoute.Sitemap = [];
+  try {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: curatedJobs } = await supabase
+      .from('jobs')
+      .select('company, external_id, created_at')
+      .contains('tags', ['curated-jd'])
+      .gt('created_at', thirtyDaysAgo)
+      .order('created_at', { ascending: false })
+      .limit(3000);
+
+    if (curatedJobs) {
+      const toSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+      curatedJobs.forEach(j => {
+        if (!j.company || !j.external_id) return;
+        const cSlug = toSlug(j.company);
+        const prefix = `${cSlug}_`;
+        if (j.external_id.toLowerCase().startsWith(prefix)) {
+          const jSlug = j.external_id.slice(prefix.length);
+          jobEntries.push({
+            url: `${siteUrl}/${cSlug}/${jSlug}`,
+            lastModified: j.created_at ? new Date(j.created_at) : new Date(),
+            changeFrequency: 'weekly' as const,
+            priority: 0.7,
+          });
+        }
+      });
+    }
+  } catch (e) {
+    console.error('Sitemap: failed to fetch curated jobs', e);
+  }
+
+  return [...staticEntries, ...blogEntries, ...profileEntries, ...companyEntries, ...jobEntries];
 }
