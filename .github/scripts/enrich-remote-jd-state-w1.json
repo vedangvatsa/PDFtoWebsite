@@ -53059,7 +53059,7 @@
     },
     "15e7b3e3-0de9-49f0-81f8-08a7c6a2e284": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "11a06d5e-7144-4e3c-8f45-639f4fb31bb9": {
       "status": "skip",
@@ -53936,7 +53936,7 @@
     },
     "1ee7a55f-ab15-41f9-bd98-5ae93cb3f387": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1e0d284a-bb2e-4087-b396-317af0e6e33b": {
       "status": "skip",
@@ -57481,7 +57481,7 @@
     },
     "1a04f0ae-d337-499f-95f6-dde23cb028a7": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "162eeeba-ef65-4f71-8be4-6d39c4b18fa6": {
       "status": "ok",
@@ -73863,6 +73863,25 @@
       "samplePaths": [
         "/ascensus/devops-eng"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 1,
+      "at": "2026-08-03T17:38:15.396Z",
+      "attempted": 804,
+      "ok": 0,
+      "skip": 804,
+      "fail": 0,
+      "reasons": {
+        "html_short": 725,
+        "html_403": 51,
+        "html_500": 1,
+        "err_TimeoutError": 21,
+        "html_429": 2,
+        "err_TypeError": 3,
+        "html_404": 1
+      },
+      "samplePaths": []
     }
   ]
 }
