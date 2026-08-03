@@ -57202,7 +57202,7 @@
     },
     "20debf13-5fc3-4385-957b-a74c8ef86ec0": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_403"
     },
     "2d74b93b-6d88-45d3-bc72-76d32019b2ea": {
       "status": "skip",
@@ -57586,11 +57586,11 @@
     },
     "294f461f-3a51-4315-b500-0626e191f919": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TimeoutError"
     },
     "25639f6a-1262-422f-a697-e5b00942df0b": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TimeoutError"
     },
     "2d76eb28-3997-47e7-82a8-ac27d7c32607": {
       "status": "skip",
@@ -57622,7 +57622,7 @@
     },
     "2ba17a65-e6b0-4442-8e0f-9efb878df415": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "2179e82d-cd86-46e3-a485-4c3b82ef9ec6": {
       "status": "skip",
@@ -57630,11 +57630,11 @@
     },
     "2128f963-3ecf-4b66-9787-f5333d39556f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "2c1f1e8d-5fb8-474a-8f2b-2a75179b40ca": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "2e72a42d-6942-44a3-a1bc-2a68acd001a0": {
       "status": "skip",
@@ -57876,7 +57876,7 @@
     },
     "2617ffeb-519f-415e-8969-d8880d82e3a1": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "html_404"
     },
     "2f3d29da-e65d-4add-95a9-6779a626110e": {
       "status": "skip",
@@ -59481,7 +59481,7 @@
     },
     "29700ff1-d701-4ad4-ad06-3c4e793db346": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "html_404"
     },
     "2743e00f-08e9-4c25-9a03-e4bee6167dfe": {
       "status": "ok",
@@ -78452,6 +78452,24 @@
         "lever_short": 1,
         "html_403": 37,
         "err_TimeoutError": 12,
+        "html_429": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-03T18:30:50.918Z",
+      "attempted": 681,
+      "ok": 0,
+      "skip": 681,
+      "fail": 0,
+      "reasons": {
+        "html_short": 626,
+        "lever_short": 1,
+        "html_403": 34,
+        "err_TimeoutError": 16,
+        "html_404": 2,
         "html_429": 2
       },
       "samplePaths": []
