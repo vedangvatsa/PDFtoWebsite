@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import pdf from 'pdf-parse';
 import mammoth from 'mammoth';
 import { parseResumeText, reconstructMissingSpaces } from '@/lib/resume-parser';
+import { getClientIp } from '@/lib/rate-limit';
 
 export const maxDuration = 60;
 
@@ -89,7 +90,9 @@ async function logParseEvent(userId: string | null, ip: string): Promise<void> {
 }
 
 export async function POST(request: NextRequest) {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  // cf-connecting-ip is set by Cloudflare and cannot be spoofed by the
+  // client (x-forwarded-for alone is user-controlled).
+  const ip = getClientIp(request);
 
   // Auth-based rate limiting (persistent across cold starts)
   let authUserId: string | null = null;

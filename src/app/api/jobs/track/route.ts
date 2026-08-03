@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 const supabase = supabaseAdmin;
 
 export async function POST(request: NextRequest) {
   try {
+    const { limited, retryAfter } = rateLimit(request, { windowMs: 60 * 60 * 1000, max: 120, scope: 'jobs-track' });
+    if (limited) return rateLimitResponse(retryAfter);
+
     const { ids, action } = await request.json();
 
     if (!ids || !Array.isArray(ids) || ids.length === 0 || ids.length > 50) {

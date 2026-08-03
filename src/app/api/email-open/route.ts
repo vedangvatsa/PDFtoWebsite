@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 export async function GET(request: NextRequest) {
+  // Pixel is embedded in outbound mail; still cap it so a single IP can't
+  // flood email_opens. Generous window to absorb corporate mail servers.
+  const { limited, retryAfter } = rateLimit(request, { windowMs: 15 * 60 * 1000, max: 600, scope: 'email-open' });
+  if (limited) return rateLimitResponse(retryAfter);
+
   const { searchParams } = new URL(request.url);
   const campaign = searchParams.get('campaign') || 'unknown';
   const content = searchParams.get('content') || 'unknown';

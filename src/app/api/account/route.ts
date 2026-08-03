@@ -30,10 +30,16 @@ export async function DELETE() {
 
     if (authDeleteError) {
       console.error('Auth user deletion failed:', authDeleteError);
-      // Profile is already deleted, log the orphan but don't fail the user locally
+      // Profile is already deleted — surface the partial failure instead of
+      // silently reporting a clean success.
+      return NextResponse.json({
+        success: true,
+        partial: true,
+        warning: 'Profile deleted, but the account could not be fully removed. Contact support if you need help.',
+      }, { status: 200 });
     }
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json({ success: true, partial: false }, { status: 200 });
   } catch (error) {
     console.error('Account deletion error:', error);
     const message = error instanceof Error ? error.message : 'Unknown error';

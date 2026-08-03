@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createServerClient } from '@supabase/ssr';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 const supabase = supabaseAdmin;
 
@@ -55,6 +56,17 @@ export async function POST(
 
   if (alreadyViewed) {
     return NextResponse.json({ success: true, deduplicated: true }, { status: 200 });
+  }
+
+  // Per-slug rate limit — caps view inflation from a single client while
+  // letting genuine unique visitors through (they're deduped by cookie first).
+  const { limited, retryAfter } = rateLimit(request, {
+    windowMs: 15 * 60 * 1000,
+    max: 60,
+    scope: `views:${slug}`,
+  });
+  if (limited) {
+    return rateLimitResponse(retryAfter);
   }
 
   try {

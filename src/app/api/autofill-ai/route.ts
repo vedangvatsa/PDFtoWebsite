@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getProfileBySlug } from '@/lib/supabase-server';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 export const maxDuration = 60;
 
@@ -9,11 +10,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'AI not configured' }, { status: 500 });
   }
 
+  // Public, CORS-open AI endpoint — cost control is the priority here.
+  const { limited, retryAfter } = rateLimit(req, { windowMs: 60 * 60 * 1000, max: 10, scope: 'autofill-ai' });
+  if (limited) return rateLimitResponse(retryAfter);
+
   const { username, question, jobTitle, company } = await req.json();
 
-  if (!username || !question) {
+  if (!username || typeof username !== 'string' || !question || typeof question !== 'string') {
     return NextResponse.json({ error: 'Missing username or question' }, { status: 400 });
   }
+  if (question.length > 500) {
+    return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
+  }
+  if ((jobTitle && typeof jobTitle !== 'string') || (company && typeof company !== 'string')) {
+    return NextResponse.json({ error: 'Invalid jobTitle or company' }, { status: 400 });
+  }
+  const cleanQuestion = question.slice(0, 500);
+  const cleanJobTitle = (jobTitle || '').slice(0, 200);
+  const cleanCompany = (company || '').slice(0, 200);
 
   // Fetch profile
   const result = await getProfileBySlug(username);
@@ -39,11 +53,11 @@ PROFILE:
 - Recent Experience:
 ${experienceSummary || 'N/A'}
 
-${company ? `COMPANY: ${company}` : ''}
-${jobTitle ? `JOB TITLE: ${jobTitle}` : ''}
+${cleanCompany ? `COMPANY: ${cleanCompany}` : ''}
+${cleanJobTitle ? `JOB TITLE: ${cleanJobTitle}` : ''}
 
 APPLICATION QUESTION:
-"${question}"
+"${cleanQuestion}"
 
 Write a compelling, specific, and authentic answer to this question using the profile information above. 
 Rules:
@@ -62,6 +76,7 @@ Rules:
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(15000),
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
