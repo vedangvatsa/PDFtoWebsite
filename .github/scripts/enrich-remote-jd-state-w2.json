@@ -57832,7 +57832,7 @@
     },
     "2100ccf1-87f0-43b5-81fb-49099c077d1f": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TypeError"
     },
     "27297fcf-fd73-4f83-af7d-cffda8f4a4d0": {
       "status": "skip",
@@ -57876,7 +57876,7 @@
     },
     "2617ffeb-519f-415e-8969-d8880d82e3a1": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "html_404"
     },
     "2f3d29da-e65d-4add-95a9-6779a626110e": {
       "status": "skip",
@@ -57901,7 +57901,7 @@
     },
     "20ac2f07-4b18-4f8b-98b5-642635283ff6": {
       "status": "skip",
-      "reason": "html_429"
+      "reason": "err_TypeError"
     },
     "21190ac6-5ab8-4c91-8363-d575db12c6e3": {
       "status": "skip",
@@ -58749,15 +58749,15 @@
     },
     "21193803-10b2-45ab-bc84-e06d168e5bf0": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "2f599ff5-9faf-42ad-9418-03339291374f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "2e66d0d7-0821-40c3-a807-ca293c44a00a": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "291be23c-de00-4158-aeb7-313c9189506e": {
       "status": "skip",
@@ -78488,6 +78488,25 @@
         "lever_short": 1,
         "err_TimeoutError": 11,
         "html_429": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-03T22:19:30.922Z",
+      "attempted": 681,
+      "ok": 0,
+      "skip": 681,
+      "fail": 0,
+      "reasons": {
+        "html_short": 626,
+        "html_403": 36,
+        "lever_short": 1,
+        "err_TimeoutError": 11,
+        "html_404": 1,
+        "html_429": 1,
+        "err_TypeError": 5
       },
       "samplePaths": []
     }
