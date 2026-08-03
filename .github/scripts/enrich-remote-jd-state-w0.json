@@ -25591,8 +25591,9 @@
       "reason": "html_short"
     },
     "05007154-4e8b-4231-8609-1db79e37dbed": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/sys-integration",
+      "external_id": "waymo_sys-integration"
     },
     "1ef2fa26-4a82-4603-af09-79818753460b": {
       "status": "skip",
@@ -45899,7 +45900,7 @@
     },
     "0afe63ae-2217-4696-abd1-34d26d9739e4": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "0d438053-aa0c-4a18-b816-45a86becac5d": {
       "status": "ok",
@@ -48937,16 +48938,19 @@
       "reason": "html_short"
     },
     "06ed1e0f-0c3f-4091-891d-cfc70a44820b": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/territory-d7",
+      "external_id": "toast_territory-d7"
     },
     "0b4279d8-6122-4d08-9172-94ddb32cba41": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/bilingual-strat",
+      "external_id": "toast_bilingual-strat"
     },
     "0e3ff6fe-fa1b-4ceb-a2c0-a99bc70b4bd9": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/sw-eng-36",
+      "external_id": "toast_sw-eng-36"
     },
     "0616c143-fb22-4b1a-8b0e-9cfccb55143f": {
       "status": "ok",
@@ -48980,16 +48984,19 @@
       "reason": "html_short"
     },
     "03e0347b-df89-4e10-adc2-13350b712f91": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/sw-eng-59",
+      "external_id": "waymo_sw-eng-59"
     },
     "094aabce-2013-4792-b652-90b44f4db2ad": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/research-sci",
+      "external_id": "waymo_research-sci"
     },
     "0e31e860-0af0-4949-82c1-3ec1c0d473f7": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/sw-eng-e2",
+      "external_id": "waymo_sw-eng-e2"
     },
     "01e17067-88a6-436d-a33b-f93f646bb2ad": {
       "status": "skip",
@@ -49008,12 +49015,13 @@
       "reason": "html_short"
     },
     "07bf380c-91a9-4feb-9091-8d302166b593": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/sw-eng-cf",
+      "external_id": "waymo_sw-eng-cf"
     },
     "028d0082-6912-4263-aff2-c5d62ee9b24a": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "00d15fa6-d23b-4337-acd7-4427ae1bcb83": {
       "status": "skip",
@@ -49040,8 +49048,9 @@
       "reason": "html_404"
     },
     "038a24fd-d718-481e-9621-e13586dc938b": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/zoominfo-technologies-llc/dir-sec-arch",
+      "external_id": "zoominfo-technologies-llc_dir-sec-arch"
     },
     "03decae5-65a5-421f-9ca1-c867ac49a09f": {
       "status": "skip",
@@ -50305,7 +50314,7 @@
     },
     "04e61919-7aaf-4e39-8a7a-4585ab09afbd": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "05fc64cd-06f8-4a49-b9df-d1470a8c553c": {
       "status": "skip",
@@ -65738,6 +65747,35 @@
         "/waymo/prod-dev",
         "/toast/strat-cuisines",
         "/toast/territory-e0"
+      ]
+    },
+    {
+      "batchNum": 6,
+      "worker": 0,
+      "at": "2026-08-03T18:56:04.986Z",
+      "attempted": 731,
+      "ok": 9,
+      "skip": 721,
+      "fail": 1,
+      "reasons": {
+        "html_short": 674,
+        "html_403": 22,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 14,
+        "html_404": 2,
+        "err_TypeError": 5
+      },
+      "samplePaths": [
+        "/waymo/sw-eng-cf",
+        "/waymo/sys-integration",
+        "/waymo/sw-eng-e2",
+        "/toast/territory-d7",
+        "/zoominfo-technologies-llc/dir-sec-arch",
+        "/waymo/sw-eng-59",
+        "/toast/bilingual-strat",
+        "/toast/sw-eng-36",
+        "/waymo/research-sci"
       ]
     }
   ]
