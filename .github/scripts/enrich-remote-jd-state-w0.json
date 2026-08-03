@@ -24952,8 +24952,9 @@
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
     },
     "05c63168-6867-4877-a1bf-bb64ba8043bb": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/strat-cuisines",
+      "external_id": "toast_strat-cuisines"
     },
     "017261cb-b9c0-46a0-8186-77555a9a44fe": {
       "status": "ok",
@@ -45863,8 +45864,9 @@
       "reason": "html_403"
     },
     "0ec9b58a-f487-471d-b8fd-417168b8d0d1": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/prod-dev",
+      "external_id": "waymo_prod-dev"
     },
     "0c97e931-1d1d-4b3d-b817-9aa4ee945047": {
       "status": "skip",
@@ -45887,8 +45889,9 @@
       "reason": "html_short"
     },
     "0fe1f768-5dcb-464e-8a83-ce07766f1256": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/ml-eng-84",
+      "external_id": "waymo_ml-eng-84"
     },
     "1fe1fb9b-0da2-4848-afa7-a9385bda0074": {
       "status": "skip",
@@ -45896,11 +45899,12 @@
     },
     "0afe63ae-2217-4696-abd1-34d26d9739e4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "0d438053-aa0c-4a18-b816-45a86becac5d": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/territory-e0",
+      "external_id": "toast_territory-e0"
     },
     "12882d70-47b9-4808-a65f-56e72a2aea29": {
       "status": "skip",
@@ -65710,6 +65714,30 @@
       },
       "samplePaths": [
         "/godaddy/mgr-sys-eng"
+      ]
+    },
+    {
+      "batchNum": 5,
+      "worker": 0,
+      "at": "2026-08-03T18:51:57.498Z",
+      "attempted": 735,
+      "ok": 4,
+      "skip": 730,
+      "fail": 1,
+      "reasons": {
+        "html_short": 683,
+        "html_403": 23,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_404": 1,
+        "err_TimeoutError": 14,
+        "html_429": 4,
+        "err_TypeError": 5
+      },
+      "samplePaths": [
+        "/waymo/ml-eng-84",
+        "/waymo/prod-dev",
+        "/toast/strat-cuisines",
+        "/toast/territory-e0"
       ]
     }
   ]
