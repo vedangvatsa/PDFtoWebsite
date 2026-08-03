@@ -25249,7 +25249,7 @@
     },
     "55cb274e-c75b-4535-aa90-87c2730d6bc4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "535a92a2-2baa-4035-ac25-0db8ffb9381e": {
       "status": "skip",
@@ -25958,7 +25958,7 @@
     },
     "5d5a2867-ce24-4f19-8e44-dfc4b07ec65c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "54f0ff4b-4de0-4358-8d2b-a7455f29a8d2": {
       "status": "skip",
@@ -26079,7 +26079,7 @@
     },
     "5907b95d-4550-428d-8b43-31ae383d3834": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_429"
     },
     "54e73f1f-1a66-4b30-a619-7a6ada4deb43": {
       "status": "skip",
@@ -28528,7 +28528,7 @@
     },
     "51ec6c55-85d6-414d-a6b0-fc991af9b6a9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "50a87b78-46c4-41ad-8fc2-753b79e8666d": {
       "status": "ok",
@@ -28557,7 +28557,7 @@
     },
     "5bb132d5-4a54-46ec-bb8c-086e42d0a6c1": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "5515e3f8-362a-42b5-97d0-d3368d94a609": {
       "status": "ok",
@@ -29079,7 +29079,7 @@
     },
     "52f71474-c533-4bee-bed0-0e774ff49edb": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "5c803380-885e-4cd5-a5a4-75f4d9153892": {
       "status": "skip",
@@ -29091,11 +29091,11 @@
     },
     "5917503f-cd4d-4e0e-9427-0dd15714dcb7": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "5bc4e57b-2990-43be-9464-ff2f6b75b61d": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "5b898abe-0ca2-42ff-9be2-f336899b6965": {
       "status": "skip",
@@ -29221,7 +29221,7 @@
     },
     "59b57cd5-eebe-4dfb-9368-58521a338c82": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "5bd6b341-56e7-49b4-8814-e633670c66ec": {
       "status": "skip",
@@ -29354,11 +29354,11 @@
     },
     "58e0cadf-9035-461d-802f-63c4b0372320": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "546cd0a9-1495-4a45-a056-7e8f54ed8c59": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "54268a78-55cc-4445-8687-de96ae8a7fae": {
       "status": "skip",
@@ -44639,6 +44639,26 @@
         "/alpha-business-solutions/ml-eng",
         "/lemon-io/graphic-design"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 5,
+      "at": "2026-08-03T17:49:28.294Z",
+      "attempted": 731,
+      "ok": 0,
+      "skip": 730,
+      "fail": 1,
+      "reasons": {
+        "html_short": 665,
+        "html_405": 1,
+        "lever_short": 1,
+        "html_403": 45,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "err_TimeoutError": 14,
+        "html_429": 3,
+        "err_TypeError": 1
+      },
+      "samplePaths": []
     }
   ]
 }
