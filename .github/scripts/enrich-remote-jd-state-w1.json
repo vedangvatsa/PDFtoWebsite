@@ -53469,7 +53469,7 @@
     },
     "1da938ad-ce79-4b24-8a45-ae25a1f7b156": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_403"
     },
     "1e6f9273-50eb-4347-9dba-7399bc2cde5b": {
       "status": "ok",
@@ -53498,7 +53498,7 @@
     },
     "1fe5fa90-5f8a-4f43-a036-f606679e6430": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "184bf26b-2f50-4452-adc5-b566251a97de": {
       "status": "ok",
@@ -53511,11 +53511,11 @@
     },
     "1199b3b3-012f-46db-b322-391e09c2f5b1": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1b64cffe-318c-483e-9002-88387ee6d87d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "14560fed-ea0a-4c7e-8ede-06b5ad889cf9": {
       "status": "skip",
@@ -54768,7 +54768,7 @@
     },
     "16519ad1-2385-452e-aed3-c1f5b3599b18": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "1c4c3bdd-c9d0-4459-aa3c-0ea6eb0b1b46": {
       "status": "skip",
@@ -56491,7 +56491,7 @@
     },
     "14d5180d-fa89-4f7c-a83b-d07130d701b8": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "137f6e21-2cbd-4ecb-a317-0a52b15a623a": {
       "status": "ok",
@@ -74095,6 +74095,23 @@
         "err_TypeError": 5,
         "err_TimeoutError": 24,
         "html_429": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T18:39:19.712Z",
+      "attempted": 796,
+      "ok": 0,
+      "skip": 796,
+      "fail": 0,
+      "reasons": {
+        "html_short": 724,
+        "html_403": 46,
+        "err_TimeoutError": 21,
+        "html_429": 2,
+        "err_TypeError": 3
       },
       "samplePaths": []
     }

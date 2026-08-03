@@ -39062,7 +39062,7 @@
     },
     "62c17d67-2131-4158-b2f5-d6e8395aa3d2": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "629bb3ad-31c7-4087-be65-da320612e5bc": {
       "status": "skip",
@@ -39115,7 +39115,7 @@
     },
     "68c06afa-2cc7-41dc-bd7d-d674e11ba883": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "6d3c6798-d57e-4a62-9cf5-c268a5a23a40": {
       "status": "skip",
@@ -42037,7 +42037,7 @@
     },
     "6af32dcc-e30d-4d40-9045-cdf0ec1df430": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "6a664196-40e8-4c8d-9d21-9ec2867bd45f": {
       "status": "ok",
@@ -56010,6 +56010,24 @@
         "err_TypeError": 1,
         "err_TimeoutError": 13,
         "html_429": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-03T18:38:48.951Z",
+      "attempted": 755,
+      "ok": 0,
+      "skip": 755,
+      "fail": 0,
+      "reasons": {
+        "html_short": 712,
+        "sr_400": 1,
+        "html_403": 28,
+        "err_TimeoutError": 11,
+        "html_429": 2,
+        "err_TypeError": 1
       },
       "samplePaths": []
     }

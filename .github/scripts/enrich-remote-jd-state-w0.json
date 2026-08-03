@@ -1562,8 +1562,9 @@
       "external_id": "phantom_software-enginee"
     },
     "0a52fbd8-bb9b-46dd-9c08-25f001b85d58": {
-      "status": "fail",
-      "reason": "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop"
+      "status": "ok",
+      "path": "/pod-network/prod-design",
+      "external_id": "pod-network_prod-design"
     },
     "00abe598-e631-46bc-a1c8-4b356adf5509": {
       "status": "ok",
@@ -46772,7 +46773,7 @@
     },
     "0f5ceba7-63ac-44dd-af51-a6d2e14e1436": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "022a348d-7645-4234-85f0-9fb11e010094": {
       "status": "skip",
@@ -47124,7 +47125,7 @@
     },
     "00b542b9-2edd-4369-a9c6-40736257520e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "1aa7a164-5150-417b-8ea1-bcb075aba617": {
       "status": "ok",
@@ -65648,6 +65649,26 @@
         "err_TypeError": 5
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T18:39:16.623Z",
+      "attempted": 738,
+      "ok": 1,
+      "skip": 736,
+      "fail": 1,
+      "reasons": {
+        "html_short": 688,
+        "html_403": 23,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 16,
+        "err_TypeError": 5
+      },
+      "samplePaths": [
+        "/pod-network/prod-design"
+      ]
     }
   ]
 }
