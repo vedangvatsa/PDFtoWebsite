@@ -164,6 +164,8 @@ async function fetchSourceText(job) {
   if (meta.kind === 'none' || meta.kind === 'skip') return { ok: false, reason: meta.kind || 'skip' };
 
   try {
+    const thirtyDaysAgoMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
+
     if (meta.kind === 'greenhouse' && meta.board && meta.id) {
       const r = await fetch(
         `https://boards-api.greenhouse.io/v1/boards/${encodeURIComponent(meta.board)}/jobs/${meta.id}`,
@@ -171,12 +173,17 @@ async function fetchSourceText(job) {
       );
       if (!r.ok) return { ok: false, reason: `gh_${r.status}` };
       const d = await r.json();
+      const publishedAt = d.updated_at || d.created_at;
+      if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
+        return { ok: false, reason: 'posting_older_than_30d' };
+      }
       const text = stripHtml(d.content || '');
       if (text.length < 280) return { ok: false, reason: 'gh_short' };
       return {
         ok: true,
         text,
         extras: {
+          publishedAt,
           location: d.location?.name,
           departments: (d.departments || []).map((x) => x.name).filter(Boolean),
         },
@@ -187,12 +194,17 @@ async function fetchSourceText(job) {
       const map = await fetchAshbyBoard(meta.board);
       const j = map?.get(meta.id);
       if (!j) return { ok: false, reason: 'ashby_not_found' };
+      const publishedAt = j.publishedAt;
+      if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
+        return { ok: false, reason: 'posting_older_than_30d' };
+      }
       const text = stripHtml(j.descriptionHtml || j.descriptionPlain || '');
       if (text.length < 280) return { ok: false, reason: 'ashby_short' };
       return {
         ok: true,
         text,
         extras: {
+          publishedAt,
           location: j.location,
           employmentType: j.employmentType,
           department: j.department,
@@ -209,6 +221,10 @@ async function fetchSourceText(job) {
       );
       if (!r.ok) return { ok: false, reason: `lever_${r.status}` };
       const d = await r.json();
+      const publishedAt = d.createdAt ? new Date(d.createdAt).toISOString() : null;
+      if (d.createdAt && d.createdAt < thirtyDaysAgoMs) {
+        return { ok: false, reason: 'posting_older_than_30d' };
+      }
       const lists = (d.lists || [])
         .map((l) => `${l.text || ''}\n${stripHtml(l.content || '')}`)
         .join('\n\n');
@@ -221,6 +237,7 @@ async function fetchSourceText(job) {
         ok: true,
         text,
         extras: {
+          publishedAt,
           location: d.categories?.location,
           commitment: d.categories?.commitment,
           team: d.categories?.team,
@@ -236,6 +253,10 @@ async function fetchSourceText(job) {
       );
       if (!r.ok) return { ok: false, reason: `sr_${r.status}` };
       const d = await r.json();
+      const publishedAt = d.releasedDate;
+      if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
+        return { ok: false, reason: 'posting_older_than_30d' };
+      }
       const sections = d.jobAd?.sections || {};
       const text = stripHtml(
         [
@@ -248,7 +269,7 @@ async function fetchSourceText(job) {
           .join('\n\n')
       );
       if (text.length < 280) return { ok: false, reason: 'sr_short' };
-      return { ok: true, text, extras: { location: d.location?.city } };
+      return { ok: true, text, extras: { publishedAt, location: d.location?.city } };
     }
 
     if (meta.kind === 'html') {
@@ -533,7 +554,7 @@ ${metaBits}
 SOURCE (facts only — rewrite, do not quote):
 ${sourceText.slice(0, 12000)}`;
 
-  const models = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-1.5-flash'];
+  const models = ['gemini-3.6-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
   let lastErr = '';
   let data = null;
 
@@ -694,7 +715,6 @@ async function runOneBatch(batchNum, state, done) {
   console.log(`Total jobs loaded: ${all.length}`);
 
   const candidates = all
-    .filter((j) => shardOf(j.id) === WORKER_ID)
     .filter((j) => j.apply_url && !done.has(j.id))
     .filter((j) => {
       const tags = j.tags || [];
@@ -792,25 +812,25 @@ async function runOneBatch(batchNum, state, done) {
 
       try {
         if (!DRY_RUN) {
+          const patchObj = {
+            description,
+            external_id,
+            tags,
+            company_key: job.company_key || companySlug,
+          };
+          if (scraped.extras?.publishedAt) {
+            patchObj.published_at = scraped.extras.publishedAt;
+          }
           try {
-            await updateJob(job.id, {
-              description,
-              external_id,
-              tags,
-              company_key: job.company_key || companySlug,
-            });
+            await updateJob(job.id, patchObj);
           } catch (patchErr) {
             if (String(patchErr.message || patchErr).includes('23505') || String(patchErr.message || patchErr).includes('409')) {
               const hash = createHash('md5').update(job.id).digest('hex').slice(0, 4);
               jobSlug = `${jobSlug.slice(0, 18)}-${hash}`;
               external_id = `${companySlug}_${jobSlug}`;
               path = `/${companySlug}/${jobSlug}`;
-              await updateJob(job.id, {
-                description,
-                external_id,
-                tags,
-                company_key: job.company_key || companySlug,
-              });
+              patchObj.external_id = external_id;
+              await updateJob(job.id, patchObj);
             } else {
               throw patchErr;
             }

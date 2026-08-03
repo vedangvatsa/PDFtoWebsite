@@ -23,10 +23,17 @@ import type { JobRow } from '@/lib/job-detail-data';
 const SELECT_COLS =
   'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at';
 
-function isExpiredJob(createdAt?: string | null): boolean {
-  if (!createdAt) return false;
-  const ageMs = Date.now() - new Date(createdAt).getTime();
-  return ageMs > 30 * 24 * 60 * 60 * 1000;
+function isExpiredJob(createdAt?: string | null, publishedAt?: string | null): boolean {
+  const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  if (publishedAt) {
+    const pubMs = new Date(publishedAt).getTime();
+    if (pubMs > 0 && pubMs < thirtyDaysAgo) return true;
+  }
+  if (createdAt) {
+    const createdMs = new Date(createdAt).getTime();
+    if (createdMs > 0 && createdMs < thirtyDaysAgo) return true;
+  }
+  return false;
 }
 
 async function loadJobByIdLive(id: string): Promise<JobRow | null> {
@@ -38,7 +45,7 @@ async function loadJobByIdLive(id: string): Promise<JobRow | null> {
   );
   if (result.error || !result.data) return null;
   const row = result.data as JobRow;
-  if (isExpiredJob(row.created_at)) return null;
+  if (isExpiredJob(row.created_at, row.published_at)) return null;
   return row;
 }
 
@@ -59,7 +66,7 @@ async function loadJobByExternalIdLive(
   );
   if (result.error || !result.data) return null;
   const row = result.data as JobRow;
-  if (isExpiredJob(row.created_at)) return null;
+  if (isExpiredJob(row.created_at, row.published_at)) return null;
   if (companyToSlug(row.company) !== companySlug.toLowerCase()) return null;
   return row;
 }
