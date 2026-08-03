@@ -60307,11 +60307,11 @@
     },
     "21f21e06-d265-444f-a5b2-346069787f8d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "255c5995-8b5b-442f-bbe0-f8d79201b085": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "25aa9424-617b-499c-bced-1f90b9b48ab0": {
       "status": "skip",
@@ -78268,6 +78268,23 @@
         "/m-amp-t-bank/android-dev",
         "/rockstar-games/assoc-devops"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-03T17:33:33.572Z",
+      "attempted": 689,
+      "ok": 0,
+      "skip": 689,
+      "fail": 0,
+      "reasons": {
+        "html_short": 628,
+        "lever_short": 1,
+        "html_403": 43,
+        "err_TimeoutError": 15,
+        "html_429": 2
+      },
+      "samplePaths": []
     }
   ]
 }

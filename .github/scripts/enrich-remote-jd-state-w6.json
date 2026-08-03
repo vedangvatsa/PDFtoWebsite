@@ -38914,7 +38914,7 @@
     },
     "636c1a77-60ee-4f7b-8125-97b7dab2882d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6f068bf0-c9ae-4d15-985f-aec68877421d": {
       "status": "skip",
@@ -39074,7 +39074,7 @@
     },
     "68b6c4e7-ecdb-4f43-bf75-b63c93277930": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TypeError"
     },
     "61337d91-8dfb-4034-ba12-cc1ed3b848dc": {
       "status": "skip",
@@ -40325,7 +40325,7 @@
     },
     "650d6ff2-bfd6-4860-b9da-51bf859e7146": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "68526341-6413-43fe-86cd-76c3e7365dfe": {
       "status": "skip",
@@ -41588,7 +41588,7 @@
     },
     "6c6a0572-3037-4583-8b7c-7bfa99a82e6e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "65eca3d8-9e0a-465e-b158-8d43493ccd49": {
       "status": "skip",
@@ -41596,7 +41596,7 @@
     },
     "6fe4cda3-7c0f-4bad-95a7-e56f8327800d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "62ab95f4-edfc-440f-9789-fbda66f7422f": {
       "status": "ok",
@@ -42037,7 +42037,7 @@
     },
     "6af32dcc-e30d-4d40-9045-cdf0ec1df430": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "6a664196-40e8-4c8d-9d21-9ec2867bd45f": {
       "status": "ok",
@@ -43082,7 +43082,7 @@
     },
     "6395dcd5-8259-46b8-9ab0-9c223bdefc39": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TimeoutError"
     },
     "6754e5c0-61a7-49c0-8425-5e0e16462e5b": {
       "status": "ok",
@@ -55803,6 +55803,24 @@
         "/stanford-university/sre-eng",
         "/microsoft/sre-eng"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-03T17:33:31.082Z",
+      "attempted": 766,
+      "ok": 0,
+      "skip": 766,
+      "fail": 0,
+      "reasons": {
+        "html_short": 708,
+        "html_403": 37,
+        "sr_400": 1,
+        "err_TypeError": 2,
+        "err_TimeoutError": 16,
+        "html_429": 2
+      },
+      "samplePaths": []
     }
   ]
 }
