@@ -7339,6 +7339,171 @@
     "8b1805a1-53e4-4a48-97ff-31f70406b570": {
       "status": "fail",
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "80c11973-b700-411b-9e36-ed9f67dcf088": {
+      "status": "skip",
+      "reason": "ashby_short"
+    },
+    "98e96691-4270-4d2d-bf60-a3563338af9f": {
+      "status": "skip",
+      "reason": "ashby_short"
+    },
+    "984520df-93d6-4603-a8b2-75e4cac402d1": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "9f560403-eb92-4c5c-a46f-7dbe42ca37aa": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "902aa87e-f7f9-4087-9188-b3b73a6e5f35": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "95f78790-ba06-4ad0-b5a1-de91ab0323ea": {
+      "status": "ok",
+      "path": "/snowflake/enterprise-04",
+      "external_id": "snowflake_enterprise-04"
+    },
+    "9f278a7c-6c6a-457d-af84-8924b686f0be": {
+      "status": "ok",
+      "path": "/achira/ml-1f",
+      "external_id": "achira_ml-1f"
+    },
+    "9193a831-47e6-4b30-9181-c599e079046d": {
+      "status": "ok",
+      "path": "/airwallex/go-market-01",
+      "external_id": "airwallex_go-market-01"
+    },
+    "9d36591d-4e21-4fce-82fa-f45d6344523b": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "93f64ace-3337-4c71-9dd3-61fe7811c167": {
+      "status": "ok",
+      "path": "/hawkeyeinnovations/baseball-9a",
+      "external_id": "hawkeyeinnovations_baseball-9a"
+    },
+    "8ee98979-1cb4-48b2-9810-c0e914fbf688": {
+      "status": "ok",
+      "path": "/legionhealth/office-db",
+      "external_id": "legionhealth_office-db"
+    },
+    "9d38e296-2826-4dbd-8722-73e15daaf715": {
+      "status": "ok",
+      "path": "/eliseai/enterprise-26",
+      "external_id": "eliseai_enterprise-26"
+    },
+    "8f299283-3fec-4546-bb65-825e8390452f": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "896392ed-02f2-4bcf-b310-e0b97faf3be7": {
+      "status": "ok",
+      "path": "/gorgias/sw-eng-9d",
+      "external_id": "gorgias_sw-eng-9d"
+    },
+    "81c3cf4c-3b46-4e4f-bf6a-7fdb5499a549": {
+      "status": "ok",
+      "path": "/docker/sw-eng-fb",
+      "external_id": "docker_sw-eng-fb"
+    },
+    "998aa828-18fd-40d0-8a49-d0e0e0494acd": {
+      "status": "ok",
+      "path": "/cambio/sw-c9",
+      "external_id": "cambio_sw-c9"
+    },
+    "8666d58b-f0a7-4016-b51a-45c293a0eb2a": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "8978475c-7d74-4f9d-93bb-2e596214f8f9": {
+      "status": "ok",
+      "path": "/basiccapital/sw-eng-e9",
+      "external_id": "basiccapital_sw-eng-e9"
+    },
+    "85bc6679-24fc-4bed-a0ac-ad4bd315ed55": {
+      "status": "ok",
+      "path": "/almedia/venture-mgr-1e",
+      "external_id": "almedia_venture-mgr-1e"
+    },
+    "8f631b3d-6602-4705-b4e6-66240ba3515c": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "8b3d267c-f5f1-44a2-b612-5376257c214b": {
+      "status": "ok",
+      "path": "/blacksmith/enterprise-6c",
+      "external_id": "blacksmith_enterprise-6c"
+    },
+    "89ca2ede-84b7-41f5-9275-1f70c988bddb": {
+      "status": "ok",
+      "path": "/assembledhq/prod-mgr-ea",
+      "external_id": "assembledhq_prod-mgr-ea"
+    },
+    "807dee36-ae4f-4de7-9d4a-0f65db4858b2": {
+      "status": "ok",
+      "path": "/airbyte/sw-eng-db",
+      "external_id": "airbyte_sw-eng-db"
+    },
+    "872c2009-be2c-45c4-bac8-52132f7157f2": {
+      "status": "ok",
+      "path": "/elevenlabs/acct-mgr-dc",
+      "external_id": "elevenlabs_acct-mgr-dc"
+    },
+    "8dffed74-49a2-42f7-b129-5697cc8a0ac3": {
+      "status": "ok",
+      "path": "/adonis/head-people-01",
+      "external_id": "adonis_head-people-01"
+    },
+    "8a01aa26-6167-4ffa-a65b-b6f0eedbc56c": {
+      "status": "ok",
+      "path": "/mach/facilities-46",
+      "external_id": "mach_facilities-46"
+    },
+    "848afa18-0916-44c7-abf5-b6a45a81bc60": {
+      "status": "ok",
+      "path": "/newform/biz-dev-5a",
+      "external_id": "newform_biz-dev-5a"
+    },
+    "8a07b6f1-4b59-4c5d-8176-9e0f3c64addb": {
+      "status": "ok",
+      "path": "/meshy/fullstk-eng-3f",
+      "external_id": "meshy_fullstk-eng-3f"
+    },
+    "958e2083-65da-4f7e-8d00-1a38b179c82a": {
+      "status": "ok",
+      "path": "/kraken-com/ai-eng-c6",
+      "external_id": "kraken-com_ai-eng-c6"
+    },
+    "8c24ee9d-786b-45e2-b50d-d0d14948d8ff": {
+      "status": "ok",
+      "path": "/noise-labs/sw-eng-75",
+      "external_id": "noise-labs_sw-eng-75"
+    },
+    "82829915-2acb-4db7-bd64-f9e289fa35ab": {
+      "status": "ok",
+      "path": "/hims-and-hers/compoundin-0d",
+      "external_id": "hims-and-hers_compoundin-0d"
+    },
+    "9eeb1812-7afd-404c-9261-2ab27d985f3b": {
+      "status": "ok",
+      "path": "/mindly/prod-mkt-17",
+      "external_id": "mindly_prod-mkt-17"
+    },
+    "8c9dfd19-6616-4d48-b405-9532c8948e0a": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "98204ed7-77d3-4ffc-8875-594f972eb681": {
+      "status": "ok",
+      "path": "/handshake/executive-09",
+      "external_id": "handshake_executive-09"
+    },
+    "9f5fd5fe-0431-469a-a4e7-7ac3ce347904": {
+      "status": "ok",
+      "path": "/applied/hil-39",
+      "external_id": "applied_hil-39"
     }
   },
   "doneIds": [
@@ -8946,7 +9111,42 @@
     "9d32648b-5752-487e-b509-e877655fd737",
     "94fc4142-c848-40e7-a6f2-d8ad9612cd2f",
     "81e68037-a0bc-44a5-a0ae-6852f822de28",
-    "8b1805a1-53e4-4a48-97ff-31f70406b570"
+    "8b1805a1-53e4-4a48-97ff-31f70406b570",
+    "80c11973-b700-411b-9e36-ed9f67dcf088",
+    "98e96691-4270-4d2d-bf60-a3563338af9f",
+    "984520df-93d6-4603-a8b2-75e4cac402d1",
+    "9f560403-eb92-4c5c-a46f-7dbe42ca37aa",
+    "902aa87e-f7f9-4087-9188-b3b73a6e5f35",
+    "95f78790-ba06-4ad0-b5a1-de91ab0323ea",
+    "9f278a7c-6c6a-457d-af84-8924b686f0be",
+    "9193a831-47e6-4b30-9181-c599e079046d",
+    "9d36591d-4e21-4fce-82fa-f45d6344523b",
+    "93f64ace-3337-4c71-9dd3-61fe7811c167",
+    "8ee98979-1cb4-48b2-9810-c0e914fbf688",
+    "9d38e296-2826-4dbd-8722-73e15daaf715",
+    "8f299283-3fec-4546-bb65-825e8390452f",
+    "896392ed-02f2-4bcf-b310-e0b97faf3be7",
+    "81c3cf4c-3b46-4e4f-bf6a-7fdb5499a549",
+    "998aa828-18fd-40d0-8a49-d0e0e0494acd",
+    "8666d58b-f0a7-4016-b51a-45c293a0eb2a",
+    "8978475c-7d74-4f9d-93bb-2e596214f8f9",
+    "85bc6679-24fc-4bed-a0ac-ad4bd315ed55",
+    "8f631b3d-6602-4705-b4e6-66240ba3515c",
+    "8b3d267c-f5f1-44a2-b612-5376257c214b",
+    "89ca2ede-84b7-41f5-9275-1f70c988bddb",
+    "807dee36-ae4f-4de7-9d4a-0f65db4858b2",
+    "872c2009-be2c-45c4-bac8-52132f7157f2",
+    "8dffed74-49a2-42f7-b129-5697cc8a0ac3",
+    "8a01aa26-6167-4ffa-a65b-b6f0eedbc56c",
+    "848afa18-0916-44c7-abf5-b6a45a81bc60",
+    "8a07b6f1-4b59-4c5d-8176-9e0f3c64addb",
+    "958e2083-65da-4f7e-8d00-1a38b179c82a",
+    "8c24ee9d-786b-45e2-b50d-d0d14948d8ff",
+    "82829915-2acb-4db7-bd64-f9e289fa35ab",
+    "9eeb1812-7afd-404c-9261-2ab27d985f3b",
+    "8c9dfd19-6616-4d48-b405-9532c8948e0a",
+    "98204ed7-77d3-4ffc-8875-594f972eb681",
+    "9f5fd5fe-0431-469a-a4e7-7ac3ce347904"
   ],
   "skipped": {},
   "batches": [

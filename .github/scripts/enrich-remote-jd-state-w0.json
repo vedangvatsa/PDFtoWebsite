@@ -26043,6 +26043,245 @@
     "17a40af3-9f53-47b9-8909-6a155c074af7": {
       "status": "fail",
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "1791d0ed-bb8c-4ff3-a74d-6e43258fdb4a": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "1d5baf4b-1688-4d7d-a262-e2c166c4865e": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "02bb4a5c-d2f3-41a0-a947-07815558eea2": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "1ed49291-7e3e-41a7-a185-5073587393ce": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "0ea3329c-388c-46de-8024-02d5029054c8": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "0f6fcdd1-6ab6-45c2-a567-14374314a30c": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "1773eeec-39d1-409e-b851-b381fbf47c61": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "070c5396-233d-4554-bc90-26036f50c2b5": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "17901ffb-57e9-4b1a-9770-838c33f32a30": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "18e975bb-b0db-40bf-975f-49ba20391dd9": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "0756419a-7565-45a5-86bf-90e133f5a145": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "1f6838db-0a8a-4136-9839-a7f7ad9fbb0f": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "07fe2937-20c6-4425-a8f0-f3f4214aa631": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "1b1d6e9c-bd92-4c15-9644-6c95212ca9e4": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "1b17f9a1-3e11-46db-b8fe-ceb3105f7bc7": {
+      "status": "fail",
+      "reason": "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex"
+    },
+    "19065e12-f621-484f-a206-7052feb35e51": {
+      "status": "ok",
+      "path": "/jimdo-com/prod-design",
+      "external_id": "jimdo-com_prod-design"
+    },
+    "1acde6ff-be3c-47cc-9da7-0caa6bdd0361": {
+      "status": "ok",
+      "path": "/drata/dir-strat",
+      "external_id": "drata_dir-strat"
+    },
+    "166ac187-98c4-4566-a3d9-a74d573578a9": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "03439968-c2c5-4422-9a6e-c600b913ba9f": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "111379ec-db5f-4b04-aa53-25fc7790f95e": {
+      "status": "ok",
+      "path": "/geoforce/cust-success",
+      "external_id": "geoforce_cust-success"
+    },
+    "15cfea79-072e-4fa4-8976-ab8c61e50bfc": {
+      "status": "ok",
+      "path": "/decagon/sw-eng-ai",
+      "external_id": "decagon_sw-eng-ai"
+    },
+    "1c862eaf-3144-4cb3-945f-775e5593ce43": {
+      "status": "ok",
+      "path": "/embedding-vc/biz-ops",
+      "external_id": "embedding-vc_biz-ops"
+    },
+    "194c1b66-0dc4-4700-9095-37eb4fdffddf": {
+      "status": "ok",
+      "path": "/farsight/ai-eng",
+      "external_id": "farsight_ai-eng"
+    },
+    "02798ac9-0b1f-4bea-a1a8-010af70f9280": {
+      "status": "ok",
+      "path": "/embedding-vc/member-ee",
+      "external_id": "embedding-vc_member-ee"
+    },
+    "05d266d7-ee82-4c82-aaa5-82b4ff4506d8": {
+      "status": "ok",
+      "path": "/kraken-com/growth-36",
+      "external_id": "kraken-com_growth-36"
+    },
+    "1bc86b8e-d037-4053-ad5a-f2406d16efbc": {
+      "status": "ok",
+      "path": "/legionhealth/go-market-59",
+      "external_id": "legionhealth_go-market-59"
+    },
+    "011b8afc-1059-4880-a68e-69fd5a68aa0c": {
+      "status": "ok",
+      "path": "/embedding-vc/founding-ai-83",
+      "external_id": "embedding-vc_founding-ai-83"
+    },
+    "17190810-5121-4215-9ce2-c5e911248ed8": {
+      "status": "ok",
+      "path": "/kraken-com/snr-qa-dd",
+      "external_id": "kraken-com_snr-qa-dd"
+    },
+    "0cb38c42-ec76-424d-ad74-b3cc7dda4487": {
+      "status": "ok",
+      "path": "/ataraxis-ai/scientific-6d",
+      "external_id": "ataraxis-ai_scientific-6d"
+    },
+    "1f23ab02-4b35-4c32-ab87-67967413507a": {
+      "status": "ok",
+      "path": "/airwallex/prod-29",
+      "external_id": "airwallex_prod-29"
+    },
+    "0a22a7e9-1502-449e-8826-b57b55e6edfb": {
+      "status": "ok",
+      "path": "/airwallex/head-4d",
+      "external_id": "airwallex_head-4d"
+    },
+    "0b979f5b-8e95-43da-860f-1c9bdc617790": {
+      "status": "ok",
+      "path": "/openai/applied-88",
+      "external_id": "openai_applied-88"
+    },
+    "0df231c7-00a0-4272-a855-7768a619f7ba": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "1d796d4c-d538-46d7-a06f-111ac73ada35": {
+      "status": "ok",
+      "path": "/renuity/event-mkt-a7",
+      "external_id": "renuity_event-mkt-a7"
+    },
+    "03d9ea50-c5e3-48ff-ba53-a211ac924e29": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "198e7f8a-103b-4246-9fcb-b61e35929e04": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "10cfc493-ddf9-4988-8938-2532bfc1f41e": {
+      "status": "ok",
+      "path": "/renuity/event-ec",
+      "external_id": "renuity_event-ec"
+    },
+    "18d4e4b9-f171-4429-b807-12621900f9a5": {
+      "status": "ok",
+      "path": "/talkiatry/mgr-d6",
+      "external_id": "talkiatry_mgr-d6"
+    },
+    "1f4f8c26-4511-459f-8d14-f0da392a6cda": {
+      "status": "ok",
+      "path": "/the-exploration-company/working-a9",
+      "external_id": "the-exploration-company_working-a9"
+    },
+    "1f06cee4-07bd-488f-9bba-9653e632d23f": {
+      "status": "ok",
+      "path": "/specter/eng-ops-ae",
+      "external_id": "specter_eng-ops-ae"
+    },
+    "1f274677-b7fb-4906-bd0d-4160dd31cce6": {
+      "status": "ok",
+      "path": "/teambridge/sales-dev-ee",
+      "external_id": "teambridge_sales-dev-ee"
+    },
+    "04adb0d2-9cd9-4101-9796-3edb5e20f726": {
+      "status": "ok",
+      "path": "/strategic-growth-partners/information-51",
+      "external_id": "strategic-growth-partners_information-51"
+    },
+    "171a0ce2-0d99-4c5c-af5f-abd1e2047c3e": {
+      "status": "ok",
+      "path": "/solace/corporate-fb",
+      "external_id": "solace_corporate-fb"
+    },
+    "0deb5f7c-b9c3-4c92-8636-02a954be7e2c": {
+      "status": "ok",
+      "path": "/harvey/user-ops-6b",
+      "external_id": "harvey_user-ops-6b"
+    },
+    "05495e46-9bd5-462e-a6cf-ebc2d8a8db3f": {
+      "status": "ok",
+      "path": "/plaid/commercial-b0",
+      "external_id": "plaid_commercial-b0"
+    },
+    "02375ef6-a9e2-4637-84a0-547c55e82354": {
+      "status": "ok",
+      "path": "/sandboxaq/materials-21",
+      "external_id": "sandboxaq_materials-21"
+    },
+    "0e550543-b2bc-4e4f-8bed-5ea94b14a4c8": {
+      "status": "ok",
+      "path": "/relayfi/comply-b4",
+      "external_id": "relayfi_comply-b4"
+    },
+    "11f9e37b-604d-4855-a09a-9c98401923d0": {
+      "status": "ok",
+      "path": "/relayfi/risk-strategist",
+      "external_id": "relayfi_risk-strategist"
+    },
+    "084c6d9d-7828-4e16-92b9-557af36d8320": {
+      "status": "ok",
+      "path": "/red-gate/people-69",
+      "external_id": "red-gate_people-69"
+    },
+    "0f6678fe-c67e-4a5f-bcf7-b8f01574f9bd": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "055486ce-01a1-4430-baab-54fa396fc291": {
+      "status": "ok",
+      "path": "/profound/head-talent-3e",
+      "external_id": "profound_head-talent-3e"
+    },
+    "00073081-3573-4996-805b-93becf3501a9": {
+      "status": "ok",
+      "path": "/polymarket/be-e1",
+      "external_id": "polymarket_be-e1"
     }
   },
   "doneIds": [
@@ -31732,7 +31971,59 @@
     "0662f8a7-b442-472a-8001-fefed60b2cbd",
     "1b1cc2ff-1b2b-40dc-a27c-61b75c326dc0",
     "03ddba3d-218c-4ae9-88ba-23afdd2a36c4",
-    "17a40af3-9f53-47b9-8909-6a155c074af7"
+    "17a40af3-9f53-47b9-8909-6a155c074af7",
+    "1791d0ed-bb8c-4ff3-a74d-6e43258fdb4a",
+    "1d5baf4b-1688-4d7d-a262-e2c166c4865e",
+    "02bb4a5c-d2f3-41a0-a947-07815558eea2",
+    "1ed49291-7e3e-41a7-a185-5073587393ce",
+    "0ea3329c-388c-46de-8024-02d5029054c8",
+    "0f6fcdd1-6ab6-45c2-a567-14374314a30c",
+    "1773eeec-39d1-409e-b851-b381fbf47c61",
+    "070c5396-233d-4554-bc90-26036f50c2b5",
+    "17901ffb-57e9-4b1a-9770-838c33f32a30",
+    "18e975bb-b0db-40bf-975f-49ba20391dd9",
+    "0756419a-7565-45a5-86bf-90e133f5a145",
+    "1f6838db-0a8a-4136-9839-a7f7ad9fbb0f",
+    "07fe2937-20c6-4425-a8f0-f3f4214aa631",
+    "1b1d6e9c-bd92-4c15-9644-6c95212ca9e4",
+    "1b17f9a1-3e11-46db-b8fe-ceb3105f7bc7",
+    "19065e12-f621-484f-a206-7052feb35e51",
+    "1acde6ff-be3c-47cc-9da7-0caa6bdd0361",
+    "166ac187-98c4-4566-a3d9-a74d573578a9",
+    "03439968-c2c5-4422-9a6e-c600b913ba9f",
+    "111379ec-db5f-4b04-aa53-25fc7790f95e",
+    "15cfea79-072e-4fa4-8976-ab8c61e50bfc",
+    "1c862eaf-3144-4cb3-945f-775e5593ce43",
+    "194c1b66-0dc4-4700-9095-37eb4fdffddf",
+    "02798ac9-0b1f-4bea-a1a8-010af70f9280",
+    "05d266d7-ee82-4c82-aaa5-82b4ff4506d8",
+    "1bc86b8e-d037-4053-ad5a-f2406d16efbc",
+    "011b8afc-1059-4880-a68e-69fd5a68aa0c",
+    "17190810-5121-4215-9ce2-c5e911248ed8",
+    "0cb38c42-ec76-424d-ad74-b3cc7dda4487",
+    "1f23ab02-4b35-4c32-ab87-67967413507a",
+    "0a22a7e9-1502-449e-8826-b57b55e6edfb",
+    "0b979f5b-8e95-43da-860f-1c9bdc617790",
+    "0df231c7-00a0-4272-a855-7768a619f7ba",
+    "1d796d4c-d538-46d7-a06f-111ac73ada35",
+    "03d9ea50-c5e3-48ff-ba53-a211ac924e29",
+    "198e7f8a-103b-4246-9fcb-b61e35929e04",
+    "10cfc493-ddf9-4988-8938-2532bfc1f41e",
+    "18d4e4b9-f171-4429-b807-12621900f9a5",
+    "1f4f8c26-4511-459f-8d14-f0da392a6cda",
+    "1f06cee4-07bd-488f-9bba-9653e632d23f",
+    "1f274677-b7fb-4906-bd0d-4160dd31cce6",
+    "04adb0d2-9cd9-4101-9796-3edb5e20f726",
+    "171a0ce2-0d99-4c5c-af5f-abd1e2047c3e",
+    "0deb5f7c-b9c3-4c92-8636-02a954be7e2c",
+    "05495e46-9bd5-462e-a6cf-ebc2d8a8db3f",
+    "02375ef6-a9e2-4637-84a0-547c55e82354",
+    "0e550543-b2bc-4e4f-8bed-5ea94b14a4c8",
+    "11f9e37b-604d-4855-a09a-9c98401923d0",
+    "084c6d9d-7828-4e16-92b9-557af36d8320",
+    "0f6678fe-c67e-4a5f-bcf7-b8f01574f9bd",
+    "055486ce-01a1-4430-baab-54fa396fc291",
+    "00073081-3573-4996-805b-93becf3501a9"
   ],
   "skipped": {},
   "batches": [
@@ -32144,6 +32435,40 @@
         "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode": 9
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-03T12:13:43.608Z",
+      "attempted": 15,
+      "ok": 0,
+      "skip": 2,
+      "fail": 13,
+      "reasons": {
+        "ashby_not_found": 2,
+        "gemini_gemini-2.5-pro_429:{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You ex": 13
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-03T12:14:46.784Z",
+      "attempted": 8,
+      "ok": 6,
+      "skip": 2,
+      "fail": 0,
+      "reasons": {
+        "ashby_not_found": 2
+      },
+      "samplePaths": [
+        "/jimdo-com/prod-design",
+        "/drata/dir-strat",
+        "/geoforce/cust-success",
+        "/decagon/sw-eng-ai",
+        "/embedding-vc/biz-ops",
+        "/farsight/ai-eng"
+      ]
     }
   ]
 }

@@ -7405,6 +7405,183 @@
     "f2776f80-8980-4aaa-b4ea-1287255d76de": {
       "status": "fail",
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "eb29c1fe-a6ee-4d65-88cc-030e3381317f": {
+      "status": "skip",
+      "reason": "ashby_short"
+    },
+    "ef5d82da-f8d1-4391-9813-43c5862f80fc": {
+      "status": "skip",
+      "reason": "ashby_short"
+    },
+    "e6e5c063-25db-4ab9-b542-4e212152665c": {
+      "status": "skip",
+      "reason": "ashby_short"
+    },
+    "f756ede1-bab5-443f-86f7-d5d34237d97d": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "e016466e-18b2-438d-8831-d1f2283338ba": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "fc19bdd5-c7c2-44ed-b38c-bb40027a3136": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "fd59288c-7be3-4515-8fb0-b2021af34a32": {
+      "status": "ok",
+      "path": "/skydio/global-4f",
+      "external_id": "skydio_global-4f"
+    },
+    "ec649584-3957-4ad4-9ebf-2ea960a2745b": {
+      "status": "ok",
+      "path": "/perk/treasury-fc",
+      "external_id": "perk_treasury-fc"
+    },
+    "e2c95e3d-ff49-4f9d-b149-cf7dcdec7f9a": {
+      "status": "ok",
+      "path": "/taxfix-com/prod-design-90",
+      "external_id": "taxfix-com_prod-design-90"
+    },
+    "f75d0f1a-4272-4e17-88e9-4e06035d47a1": {
+      "status": "ok",
+      "path": "/riveron/identity-d9",
+      "external_id": "riveron_identity-d9"
+    },
+    "e1b48ad6-3239-42a2-a3c8-34bc1a6f20ad": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "eb19e4f6-58dd-4f57-be04-8e0b6c0cba84": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "eba2a4af-ce43-430a-938c-a11a6c65582b": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "f6379446-5bba-479b-b495-8cd2b8196b37": {
+      "status": "ok",
+      "path": "/streetgroup/prod-mgr-b4",
+      "external_id": "streetgroup_prod-mgr-b4"
+    },
+    "e74cfb13-3718-4a99-9ba5-b657bd99f76a": {
+      "status": "ok",
+      "path": "/notion/cx-knowledge-40",
+      "external_id": "notion_cx-knowledge-40"
+    },
+    "e843049f-b0df-4462-8e02-537e63dc9243": {
+      "status": "ok",
+      "path": "/peek/market-mgr-c4",
+      "external_id": "peek_market-mgr-c4"
+    },
+    "e5fdfcbb-b35b-485e-bc40-fefde56ebeb4": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "fce2360d-a40f-4bd5-a408-712e140d2c2a": {
+      "status": "ok",
+      "path": "/alcazar-energy/proj-fa",
+      "external_id": "alcazar-energy_proj-fa"
+    },
+    "f656d374-34ce-44f4-b654-604babf810c9": {
+      "status": "ok",
+      "path": "/deliveroo/tech-sourcer-ab",
+      "external_id": "deliveroo_tech-sourcer-ab"
+    },
+    "ec62511c-9e11-4d5a-b55e-02cd1dc343e0": {
+      "status": "ok",
+      "path": "/backmarket/prod-mgr-55",
+      "external_id": "backmarket_prod-mgr-55"
+    },
+    "e34b452c-4c35-4b95-b77b-cdf5834394c1": {
+      "status": "ok",
+      "path": "/elevenlabs/enterprise-02",
+      "external_id": "elevenlabs_enterprise-02"
+    },
+    "e056f595-0fa6-4977-ae12-ec2675da050e": {
+      "status": "ok",
+      "path": "/numeric/eng-mgr-3d",
+      "external_id": "numeric_eng-mgr-3d"
+    },
+    "f87b2797-2775-4604-9886-54f9057b1dcb": {
+      "status": "ok",
+      "path": "/netwealth/eng-acurity-16",
+      "external_id": "netwealth_eng-acurity-16"
+    },
+    "e1dcf9ec-6b16-407d-b5b3-7d75895d876e": {
+      "status": "ok",
+      "path": "/kraken-com/chief-31",
+      "external_id": "kraken-com_chief-31"
+    },
+    "f06e4c50-0b10-49ff-9b26-a41477e263a4": {
+      "status": "ok",
+      "path": "/lpadesignstudios/graphic-79",
+      "external_id": "lpadesignstudios_graphic-79"
+    },
+    "f908efb9-b159-4557-9400-f4e683a29154": {
+      "status": "ok",
+      "path": "/hirehangar/amazon-fba-78",
+      "external_id": "hirehangar_amazon-fba-78"
+    },
+    "f13ce336-3c41-4892-a6fa-836c5bf6c46b": {
+      "status": "ok",
+      "path": "/hirehangar/underwriting-d1",
+      "external_id": "hirehangar_underwriting-d1"
+    },
+    "e4803b9d-0702-409c-9216-3accdb572203": {
+      "status": "ok",
+      "path": "/ideals/biz-dev-c8",
+      "external_id": "ideals_biz-dev-c8"
+    },
+    "ea1781b6-7dfb-4b81-a45c-337909054d52": {
+      "status": "ok",
+      "path": "/lap/student-bb",
+      "external_id": "lap_student-bb"
+    },
+    "fb807b82-bfb9-43b7-b39c-666653756203": {
+      "status": "ok",
+      "path": "/hiive/fe-eng-a8",
+      "external_id": "hiive_fe-eng-a8"
+    },
+    "ec947101-e6e6-4674-af79-26142d0bf5a2": {
+      "status": "ok",
+      "path": "/cohere/acct-13",
+      "external_id": "cohere_acct-13"
+    },
+    "f7ac27ce-b4cf-4edf-8996-4639f7b81157": {
+      "status": "ok",
+      "path": "/genomics/genomics-52",
+      "external_id": "genomics_genomics-52"
+    },
+    "e9519241-dd29-4592-b4ee-47b8ca3386de": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "f9561b06-a56f-4e56-9139-2fc556f6555c": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "f926df74-f059-47ec-be50-3bd6fb42d588": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "fdb4ab99-c3c7-48c8-8842-990685f3cad9": {
+      "status": "ok",
+      "path": "/embedding-vc/fe-eng-23",
+      "external_id": "embedding-vc_fe-eng-23"
+    },
+    "f5ff6dc3-b572-4f4f-89e6-2af1e19646bc": {
+      "status": "ok",
+      "path": "/embedding-vc/embedded-sw-9d",
+      "external_id": "embedding-vc_embedded-sw-9d"
+    },
+    "f08d4807-cdb0-4a91-a006-e7c5cd82ee97": {
+      "status": "ok",
+      "path": "/mercor/prod-3d",
+      "external_id": "mercor_prod-3d"
     }
   },
   "doneIds": [
@@ -9030,7 +9207,45 @@
     "ef7bd449-9353-4564-8514-6809f9c95bb3",
     "f800cf69-aaa0-431d-a755-9e0f944a40dc",
     "e572ba81-416f-4e14-89da-070d52af77d5",
-    "f2776f80-8980-4aaa-b4ea-1287255d76de"
+    "f2776f80-8980-4aaa-b4ea-1287255d76de",
+    "eb29c1fe-a6ee-4d65-88cc-030e3381317f",
+    "ef5d82da-f8d1-4391-9813-43c5862f80fc",
+    "e6e5c063-25db-4ab9-b542-4e212152665c",
+    "f756ede1-bab5-443f-86f7-d5d34237d97d",
+    "e016466e-18b2-438d-8831-d1f2283338ba",
+    "fc19bdd5-c7c2-44ed-b38c-bb40027a3136",
+    "fd59288c-7be3-4515-8fb0-b2021af34a32",
+    "ec649584-3957-4ad4-9ebf-2ea960a2745b",
+    "e2c95e3d-ff49-4f9d-b149-cf7dcdec7f9a",
+    "f75d0f1a-4272-4e17-88e9-4e06035d47a1",
+    "e1b48ad6-3239-42a2-a3c8-34bc1a6f20ad",
+    "eb19e4f6-58dd-4f57-be04-8e0b6c0cba84",
+    "eba2a4af-ce43-430a-938c-a11a6c65582b",
+    "f6379446-5bba-479b-b495-8cd2b8196b37",
+    "e74cfb13-3718-4a99-9ba5-b657bd99f76a",
+    "e843049f-b0df-4462-8e02-537e63dc9243",
+    "e5fdfcbb-b35b-485e-bc40-fefde56ebeb4",
+    "fce2360d-a40f-4bd5-a408-712e140d2c2a",
+    "f656d374-34ce-44f4-b654-604babf810c9",
+    "ec62511c-9e11-4d5a-b55e-02cd1dc343e0",
+    "e34b452c-4c35-4b95-b77b-cdf5834394c1",
+    "e056f595-0fa6-4977-ae12-ec2675da050e",
+    "f87b2797-2775-4604-9886-54f9057b1dcb",
+    "e1dcf9ec-6b16-407d-b5b3-7d75895d876e",
+    "f06e4c50-0b10-49ff-9b26-a41477e263a4",
+    "f908efb9-b159-4557-9400-f4e683a29154",
+    "f13ce336-3c41-4892-a6fa-836c5bf6c46b",
+    "e4803b9d-0702-409c-9216-3accdb572203",
+    "ea1781b6-7dfb-4b81-a45c-337909054d52",
+    "fb807b82-bfb9-43b7-b39c-666653756203",
+    "ec947101-e6e6-4674-af79-26142d0bf5a2",
+    "f7ac27ce-b4cf-4edf-8996-4639f7b81157",
+    "e9519241-dd29-4592-b4ee-47b8ca3386de",
+    "f9561b06-a56f-4e56-9139-2fc556f6555c",
+    "f926df74-f059-47ec-be50-3bd6fb42d588",
+    "fdb4ab99-c3c7-48c8-8842-990685f3cad9",
+    "f5ff6dc3-b572-4f4f-89e6-2af1e19646bc",
+    "f08d4807-cdb0-4a91-a006-e7c5cd82ee97"
   ],
   "skipped": {},
   "batches": [

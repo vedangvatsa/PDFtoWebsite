@@ -7381,6 +7381,280 @@
     "a563582d-f72a-4280-8682-396d196b7bb3": {
       "status": "fail",
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
+    },
+    "a88022b0-2171-4cdd-a227-509ed4980b6d": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "b019c33e-da1f-426f-acc0-e631e07a6644": {
+      "status": "skip",
+      "reason": "ashby_short"
+    },
+    "bd0c1527-a67d-4595-8772-46007faf0934": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "a7357101-9267-45d9-b694-8480fef344b6": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "a5989648-d4af-43d6-b419-f6b027da706d": {
+      "status": "ok",
+      "path": "/notion/qa-mgr",
+      "external_id": "notion_qa-mgr"
+    },
+    "b425ad29-c444-4b85-a4ba-e99015d4239f": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "b78cd027-439e-4992-aca1-7a6cd9fcfffd": {
+      "status": "ok",
+      "path": "/juicebox/mgr-cust",
+      "external_id": "juicebox_mgr-cust"
+    },
+    "a73d77d9-0036-4fbf-a0e4-00aaa426eb68": {
+      "status": "ok",
+      "path": "/brightwheel/ai-sw-eng",
+      "external_id": "brightwheel_ai-sw-eng"
+    },
+    "b76bf2c6-ea18-4ee0-9cf4-983251c9a0e1": {
+      "status": "ok",
+      "path": "/claylabs/head-arc",
+      "external_id": "claylabs_head-arc"
+    },
+    "bd55e67b-1393-42dc-aa6d-b99580adc090": {
+      "status": "ok",
+      "path": "/1password/tech-acct-fb",
+      "external_id": "1password_tech-acct-fb"
+    },
+    "a142fb58-9161-4645-9d55-1c7663ef0e1e": {
+      "status": "ok",
+      "path": "/blacksmith/gtm-ops",
+      "external_id": "blacksmith_gtm-ops"
+    },
+    "b30a6fce-d51b-4d3f-92c7-5d1c93f23cf8": {
+      "status": "ok",
+      "path": "/artemis/sales-dev",
+      "external_id": "artemis_sales-dev"
+    },
+    "aa619d10-be52-4b74-ab07-b40064a1db1b": {
+      "status": "ok",
+      "path": "/arlo/head-data-ml",
+      "external_id": "arlo_head-data-ml"
+    },
+    "b0bc5ddb-80dc-41dd-aae0-a98b70d76af3": {
+      "status": "ok",
+      "path": "/april/tier-tax",
+      "external_id": "april_tier-tax"
+    },
+    "b08c3e9b-6820-4b9b-a1b3-4f971bff27d1": {
+      "status": "ok",
+      "path": "/antithesis/vp-cust",
+      "external_id": "antithesis_vp-cust"
+    },
+    "acd3ad5e-3c01-457b-8d79-da9718c6676f": {
+      "status": "ok",
+      "path": "/amperos/billing-spec",
+      "external_id": "amperos_billing-spec"
+    },
+    "a7d02ca3-4ee5-454d-9bd3-6bcbc808f720": {
+      "status": "ok",
+      "path": "/cyberhaven/tech-support",
+      "external_id": "cyberhaven_tech-support"
+    },
+    "a2b256f4-de0b-4597-9599-5db574fff649": {
+      "status": "ok",
+      "path": "/alchemy/tech-recruit",
+      "external_id": "alchemy_tech-recruit"
+    },
+    "b4b6168e-0912-49d7-b1a6-7ae12b53dbd7": {
+      "status": "ok",
+      "path": "/airbyte/ai-plat-eng",
+      "external_id": "airbyte_ai-plat-eng"
+    },
+    "b6a7921a-8eb9-4ea2-9819-0b813043f1a0": {
+      "status": "ok",
+      "path": "/airspace-intelligence-com/it-support",
+      "external_id": "airspace-intelligence-com_it-support"
+    },
+    "b4a0eeee-f1df-430f-a423-1b46a60bfc1f": {
+      "status": "ok",
+      "path": "/alephalpha/talent",
+      "external_id": "alephalpha_talent"
+    },
+    "bca96814-cb4f-4ee9-aadc-c50319322be9": {
+      "status": "ok",
+      "path": "/elevenlabs/acct-7b",
+      "external_id": "elevenlabs_acct-7b"
+    },
+    "a0424612-7dec-4b77-aa6c-0825de23243b": {
+      "status": "ok",
+      "path": "/mach/ml-eng",
+      "external_id": "mach_ml-eng"
+    },
+    "a4dd3547-e214-4644-818e-1afec2e000f6": {
+      "status": "ok",
+      "path": "/outtake/founding-applied",
+      "external_id": "outtake_founding-applied"
+    },
+    "ae699234-03da-4734-a611-540dd04a57d3": {
+      "status": "ok",
+      "path": "/outpost/head-prod",
+      "external_id": "outpost_head-prod"
+    },
+    "a0805376-f81c-472b-a79d-ff98dc90b8b1": {
+      "status": "ok",
+      "path": "/montecarlodata/partner-mgr",
+      "external_id": "montecarlodata_partner-mgr"
+    },
+    "a49fcb63-924a-4396-adeb-ddd927232488": {
+      "status": "ok",
+      "path": "/metaforms/prod-eng",
+      "external_id": "metaforms_prod-eng"
+    },
+    "a338caf1-ef9c-4312-a4e2-0d4f697c8072": {
+      "status": "ok",
+      "path": "/netwealth/mgr-client",
+      "external_id": "netwealth_mgr-client"
+    },
+    "b9fa7c43-1fb0-4fc1-b68c-695aaf444084": {
+      "status": "ok",
+      "path": "/lydian/process-dev",
+      "external_id": "lydian_process-dev"
+    },
+    "bbfd0f63-3f61-40ba-826d-bd1d4f8ee9e7": {
+      "status": "ok",
+      "path": "/cohere/acct-c8",
+      "external_id": "cohere_acct-c8"
+    },
+    "beba7cf6-4a63-4329-9ea2-ff32871ae461": {
+      "status": "ok",
+      "path": "/etched/prototype-eng",
+      "external_id": "etched_prototype-eng"
+    },
+    "b9dbd54e-3ab9-4a84-bb29-7caa22e071ff": {
+      "status": "ok",
+      "path": "/human/threat-research",
+      "external_id": "human_threat-research"
+    },
+    "be90df58-a3e6-476f-87d7-bd67298a6775": {
+      "status": "ok",
+      "path": "/eightsleep/be-eng-f1",
+      "external_id": "eightsleep_be-eng-f1"
+    },
+    "bf491fc0-b541-4483-93aa-c3081199a43e": {
+      "status": "ok",
+      "path": "/eliza/mkt-mgr",
+      "external_id": "eliza_mkt-mgr"
+    },
+    "bbbc8d94-7bd9-4de8-811e-ad0e7688ee5c": {
+      "status": "ok",
+      "path": "/gigaml/forward-deployed",
+      "external_id": "gigaml_forward-deployed"
+    },
+    "a486323f-9886-48ab-bf42-597c11178378": {
+      "status": "ok",
+      "path": "/cursor/enterprise",
+      "external_id": "cursor_enterprise"
+    },
+    "aefdb347-2ab0-4666-8ef7-0b7663ffc9bc": {
+      "status": "ok",
+      "path": "/mercor/member-tech-8a",
+      "external_id": "mercor_member-tech-8a"
+    },
+    "b40530f3-2ed7-46ef-b385-c29448f650c0": {
+      "status": "ok",
+      "path": "/eliseai/acct-lead",
+      "external_id": "eliseai_acct-lead"
+    },
+    "ad72bd3f-131b-4763-9024-e8f6f7ec26a5": {
+      "status": "ok",
+      "path": "/nevoya/founding-head",
+      "external_id": "nevoya_founding-head"
+    },
+    "a5727379-7607-4c52-8fc0-1e39392df5d5": {
+      "status": "ok",
+      "path": "/thndr/cyber-sec",
+      "external_id": "thndr_cyber-sec"
+    },
+    "ba3367c5-3140-48b8-8d2b-2b26ca5a4aa7": {
+      "status": "ok",
+      "path": "/nango/founder-s",
+      "external_id": "nango_founder-s"
+    },
+    "a2094c42-59ef-454e-a9e0-7ce7c01891ad": {
+      "status": "ok",
+      "path": "/openai/mid-market",
+      "external_id": "openai_mid-market"
+    },
+    "b4cec969-bc8c-45d4-9184-9fa409120157": {
+      "status": "ok",
+      "path": "/openai/mgr-ads-rev",
+      "external_id": "openai_mgr-ads-rev"
+    },
+    "bf3f58e8-725c-4d67-b36b-7bcc11ba2fb4": {
+      "status": "ok",
+      "path": "/airwallex/grc-spec",
+      "external_id": "airwallex_grc-spec"
+    },
+    "b8f9ec3b-6529-4554-a0c1-58df4bf4172a": {
+      "status": "ok",
+      "path": "/snowflake/prog-mgr-a7",
+      "external_id": "snowflake_prog-mgr-a7"
+    },
+    "b6b26b97-1955-40ac-a11d-e94ee1402de5": {
+      "status": "ok",
+      "path": "/talkiatry/mgr-provider-f1",
+      "external_id": "talkiatry_mgr-provider-f1"
+    },
+    "b6db2b87-33be-40c4-b088-a4890c310261": {
+      "status": "ok",
+      "path": "/talkiatry/mgr-provider-4b",
+      "external_id": "talkiatry_mgr-provider-4b"
+    },
+    "b9bffb55-d99a-44f0-8c0f-85a80012aec6": {
+      "status": "ok",
+      "path": "/sierra/biz-recruit",
+      "external_id": "sierra_biz-recruit"
+    },
+    "b38d2025-56ca-4c66-9369-3c0bdfb6c4b6": {
+      "status": "ok",
+      "path": "/zeely/prod-design",
+      "external_id": "zeely_prod-design"
+    },
+    "a2987b4d-8e6e-4041-abf8-d7f832f40815": {
+      "status": "ok",
+      "path": "/trainline/treasury-analyst",
+      "external_id": "trainline_treasury-analyst"
+    },
+    "a0b76606-a4f8-4f20-bf6c-c6f963663438": {
+      "status": "ok",
+      "path": "/trainline/pigment-analyst",
+      "external_id": "trainline_pigment-analyst"
+    },
+    "bd8a55f1-568b-47d7-9cb8-aeb51cad6e3f": {
+      "status": "ok",
+      "path": "/zayzoon/dev",
+      "external_id": "zayzoon_dev"
+    },
+    "a9cdfef7-77bf-4546-895b-c58fd061d91e": {
+      "status": "skip",
+      "reason": "ashby_not_found"
+    },
+    "b8ce0d32-cc1a-4036-887d-4d77f68b75b5": {
+      "status": "ok",
+      "path": "/verto/growth-mkt",
+      "external_id": "verto_growth-mkt"
+    },
+    "b7d60dbb-df0c-4d0c-a296-0f25aa809bc2": {
+      "status": "ok",
+      "path": "/swarmer/head-people",
+      "external_id": "swarmer_head-people"
+    },
+    "ba32c1fc-65d2-4a95-9500-4904513f64fb": {
+      "status": "ok",
+      "path": "/stepful/executive-asst",
+      "external_id": "stepful_executive-asst"
     }
   },
   "doneIds": [
@@ -8976,7 +9250,63 @@
     "b3de6abd-708c-444f-a04d-91b3950a437f",
     "bdb12096-6b47-4fbb-abf0-d06af0ad2e85",
     "a17e431e-9ed8-47fe-9db8-f7aad6b6ef68",
-    "a563582d-f72a-4280-8682-396d196b7bb3"
+    "a563582d-f72a-4280-8682-396d196b7bb3",
+    "a88022b0-2171-4cdd-a227-509ed4980b6d",
+    "b019c33e-da1f-426f-acc0-e631e07a6644",
+    "bd0c1527-a67d-4595-8772-46007faf0934",
+    "a7357101-9267-45d9-b694-8480fef344b6",
+    "a5989648-d4af-43d6-b419-f6b027da706d",
+    "b425ad29-c444-4b85-a4ba-e99015d4239f",
+    "b78cd027-439e-4992-aca1-7a6cd9fcfffd",
+    "a73d77d9-0036-4fbf-a0e4-00aaa426eb68",
+    "b76bf2c6-ea18-4ee0-9cf4-983251c9a0e1",
+    "bd55e67b-1393-42dc-aa6d-b99580adc090",
+    "a142fb58-9161-4645-9d55-1c7663ef0e1e",
+    "b30a6fce-d51b-4d3f-92c7-5d1c93f23cf8",
+    "aa619d10-be52-4b74-ab07-b40064a1db1b",
+    "b0bc5ddb-80dc-41dd-aae0-a98b70d76af3",
+    "b08c3e9b-6820-4b9b-a1b3-4f971bff27d1",
+    "acd3ad5e-3c01-457b-8d79-da9718c6676f",
+    "a7d02ca3-4ee5-454d-9bd3-6bcbc808f720",
+    "a2b256f4-de0b-4597-9599-5db574fff649",
+    "b4b6168e-0912-49d7-b1a6-7ae12b53dbd7",
+    "b6a7921a-8eb9-4ea2-9819-0b813043f1a0",
+    "b4a0eeee-f1df-430f-a423-1b46a60bfc1f",
+    "bca96814-cb4f-4ee9-aadc-c50319322be9",
+    "a0424612-7dec-4b77-aa6c-0825de23243b",
+    "a4dd3547-e214-4644-818e-1afec2e000f6",
+    "ae699234-03da-4734-a611-540dd04a57d3",
+    "a0805376-f81c-472b-a79d-ff98dc90b8b1",
+    "a49fcb63-924a-4396-adeb-ddd927232488",
+    "a338caf1-ef9c-4312-a4e2-0d4f697c8072",
+    "b9fa7c43-1fb0-4fc1-b68c-695aaf444084",
+    "bbfd0f63-3f61-40ba-826d-bd1d4f8ee9e7",
+    "beba7cf6-4a63-4329-9ea2-ff32871ae461",
+    "b9dbd54e-3ab9-4a84-bb29-7caa22e071ff",
+    "be90df58-a3e6-476f-87d7-bd67298a6775",
+    "bf491fc0-b541-4483-93aa-c3081199a43e",
+    "bbbc8d94-7bd9-4de8-811e-ad0e7688ee5c",
+    "a486323f-9886-48ab-bf42-597c11178378",
+    "aefdb347-2ab0-4666-8ef7-0b7663ffc9bc",
+    "b40530f3-2ed7-46ef-b385-c29448f650c0",
+    "ad72bd3f-131b-4763-9024-e8f6f7ec26a5",
+    "a5727379-7607-4c52-8fc0-1e39392df5d5",
+    "ba3367c5-3140-48b8-8d2b-2b26ca5a4aa7",
+    "a2094c42-59ef-454e-a9e0-7ce7c01891ad",
+    "b4cec969-bc8c-45d4-9184-9fa409120157",
+    "bf3f58e8-725c-4d67-b36b-7bcc11ba2fb4",
+    "b8f9ec3b-6529-4554-a0c1-58df4bf4172a",
+    "b6b26b97-1955-40ac-a11d-e94ee1402de5",
+    "b6db2b87-33be-40c4-b088-a4890c310261",
+    "b9bffb55-d99a-44f0-8c0f-85a80012aec6",
+    "b38d2025-56ca-4c66-9369-3c0bdfb6c4b6",
+    "a2987b4d-8e6e-4041-abf8-d7f832f40815",
+    "a0b76606-a4f8-4f20-bf6c-c6f963663438",
+    "bd8a55f1-568b-47d7-9cb8-aeb51cad6e3f",
+    "a9cdfef7-77bf-4546-895b-c58fd061d91e",
+    "b8ce0d32-cc1a-4036-887d-4d77f68b75b5",
+    "b7d60dbb-df0c-4d0c-a296-0f25aa809bc2",
+    "ba32c1fc-65d2-4a95-9500-4904513f64fb"
   ],
   "skipped": {},
   "batches": [
