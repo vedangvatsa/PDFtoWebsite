@@ -2583,6 +2583,30 @@
       "status": "ok",
       "path": "/1password/developer-open",
       "external_id": "1password_developer-open"
+    },
+    "ef5d82da-f8d1-4391-9813-43c5862f80fc": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "e6e5c063-25db-4ab9-b542-4e212152665c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "cf626151-4961-4ecf-a3d3-97fa5b292284": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "d82b4c6c-a882-4efe-990f-fa7b2f3ebc0c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "eb29c1fe-a6ee-4d65-88cc-030e3381317f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "dfaee12c-c8de-4fb0-8738-815a6a609be8": {
+      "status": "skip",
+      "reason": "ashby_not_found"
     }
   },
   "doneIds": [
@@ -3101,7 +3125,13 @@
     "c4a1c55c-e51d-4ddc-8fc2-ea48f2b6cf5d",
     "5951c2f6-9596-44ec-a5fa-c6383f57818b",
     "d3e0974b-19f3-455b-afbb-20c5aaca4909",
-    "555dc4bc-2afa-44bd-8117-dda2e058f72c"
+    "555dc4bc-2afa-44bd-8117-dda2e058f72c",
+    "ef5d82da-f8d1-4391-9813-43c5862f80fc",
+    "e6e5c063-25db-4ab9-b542-4e212152665c",
+    "cf626151-4961-4ecf-a3d3-97fa5b292284",
+    "d82b4c6c-a882-4efe-990f-fa7b2f3ebc0c",
+    "eb29c1fe-a6ee-4d65-88cc-030e3381317f",
+    "dfaee12c-c8de-4fb0-8738-815a6a609be8"
   ],
   "skipped": {},
   "batches": [
@@ -3143,6 +3173,20 @@
         "/rula/strategic-financ",
         "/rula/health-system"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-03T13:27:43.910Z",
+      "attempted": 6,
+      "ok": 0,
+      "skip": 6,
+      "fail": 0,
+      "reasons": {
+        "posting_older_than_30d": 5,
+        "ashby_not_found": 1
+      },
+      "samplePaths": []
     }
   ]
 }
