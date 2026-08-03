@@ -46325,8 +46325,9 @@
       "external_id": "asana_mgr-offensive"
     },
     "00679085-59ea-42f4-a021-831107bf8e9f": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/godaddy/sw-dev-eng",
+      "external_id": "godaddy_sw-dev-eng"
     },
     "014c7123-e82a-4d54-891c-ca5b224710cc": {
       "status": "skip",
@@ -46773,7 +46774,7 @@
     },
     "0f5ceba7-63ac-44dd-af51-a6d2e14e1436": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "022a348d-7645-4234-85f0-9fb11e010094": {
       "status": "skip",
@@ -47125,7 +47126,7 @@
     },
     "00b542b9-2edd-4369-a9c6-40736257520e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1aa7a164-5150-417b-8ea1-bcb075aba617": {
       "status": "ok",
@@ -65668,6 +65669,26 @@
       },
       "samplePaths": [
         "/pod-network/prod-design"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 0,
+      "at": "2026-08-03T18:43:18.899Z",
+      "attempted": 737,
+      "ok": 1,
+      "skip": 735,
+      "fail": 1,
+      "reasons": {
+        "html_short": 689,
+        "html_403": 23,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 14,
+        "err_TypeError": 5
+      },
+      "samplePaths": [
+        "/godaddy/sw-dev-eng"
       ]
     }
   ]
