@@ -136,3 +136,5 @@ export default function ArticleContent() {
           <li><Link href="/code" className={link}>How to show projects on your resume</Link></li>
         </ul>
       </div>
+  );
+}
