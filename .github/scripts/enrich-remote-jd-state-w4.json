@@ -37130,7 +37130,7 @@
     },
     "4f175b07-5cfa-46f9-bd65-87138177650b": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "4b07e779-c6ae-40d9-801d-94005d839026": {
       "status": "ok",
@@ -38055,11 +38055,11 @@
     },
     "4570b3ee-f46c-4619-8bfb-007e3bf7c581": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "4666e925-90e6-4ff7-9a1a-6fd1be64552c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "4c171cd6-954e-4e94-a800-e80242702294": {
       "status": "skip",
@@ -38214,7 +38214,7 @@
     },
     "4599b43f-89c7-4550-a049-17256b39fdf5": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "402a53fe-dd14-4eb4-88ab-bf1d9ef1a1b3": {
       "status": "skip",
@@ -38489,12 +38489,14 @@
       "external_id": "almaviva-de-belgique_java-fullstk"
     },
     "475b89ad-9363-44fb-84c5-297683784014": {
-      "status": "skip",
-      "reason": "html_405"
+      "status": "ok",
+      "path": "/crometrics/ux-ui-design",
+      "external_id": "crometrics_ux-ui-design"
     },
     "45cebd72-87bc-4f53-aa41-7c73dfc1e624": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/state-tech/fullstk-dev",
+      "external_id": "state-tech_fullstk-dev"
     },
     "44c5ab89-4121-4fd3-a962-611f3100af46": {
       "status": "ok",
@@ -38537,16 +38539,18 @@
       "external_id": "fundraise-up_devops-eng"
     },
     "4c301e36-89bb-4558-a650-c96c883d18cd": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/ascensus/devops-eng-3a",
+      "external_id": "ascensus_devops-eng-3a"
     },
     "4c02eb49-7d3e-40e6-888c-899104c1bb88": {
       "status": "skip",
       "reason": "html_410"
     },
     "45e6e704-4e30-4167-9b30-c2bd8b1366c2": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/accenture-federal-services/consumer-prod",
+      "external_id": "accenture-federal-services_consumer-prod"
     },
     "41ad73b1-cf25-4ccf-b71c-dbd0cb8be667": {
       "status": "ok",
@@ -38583,12 +38587,14 @@
       "reason": "html_403"
     },
     "40ea3b8a-7472-4fce-a13a-82980433fe26": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/archesys-inc/hiring-fhir",
+      "external_id": "archesys-inc_hiring-fhir"
     },
     "4d24e983-722a-4d67-9dd9-fae3fc7dbb60": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/simspace/sw-eng",
+      "external_id": "simspace_sw-eng"
     },
     "439f9694-e46a-4546-a76e-705aed73b9e7": {
       "status": "ok",
@@ -38631,12 +38637,14 @@
       "external_id": "universidad-privada-del-norte_docente-b4"
     },
     "4c225606-04c7-4cd6-a286-75c6cfb86529": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/lawnstarter/sw-eng-prod",
+      "external_id": "lawnstarter_sw-eng-prod"
     },
     "4c667205-6b6a-4532-8f1a-a7ada0a3712f": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/mitre-media/tech-lead",
+      "external_id": "mitre-media_tech-lead"
     },
     "432f093f-13e6-479a-9dda-731ad4917f2d": {
       "status": "ok",
@@ -38738,8 +38746,9 @@
       "external_id": "moda-health_health-navigator"
     },
     "445eacc1-cd5c-4fdd-b5b4-04e5b49cf11d": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/situsamc/fullstk-sw",
+      "external_id": "situsamc_fullstk-sw"
     },
     "4302fdb9-e057-4cc7-a936-f7f2aa11ab86": {
       "status": "ok",
@@ -51714,6 +51723,35 @@
         "html_405": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T17:44:54.024Z",
+      "attempted": 760,
+      "ok": 9,
+      "skip": 751,
+      "fail": 0,
+      "reasons": {
+        "html_short": 702,
+        "lever_short": 1,
+        "html_429": 5,
+        "html_403": 25,
+        "err_TimeoutError": 12,
+        "err_TypeError": 2,
+        "html_405": 4
+      },
+      "samplePaths": [
+        "/state-tech/fullstk-dev",
+        "/accenture-federal-services/consumer-prod",
+        "/crometrics/ux-ui-design",
+        "/lawnstarter/sw-eng-prod",
+        "/mitre-media/tech-lead",
+        "/simspace/sw-eng",
+        "/ascensus/devops-eng-3a",
+        "/situsamc/fullstk-sw",
+        "/archesys-inc/hiring-fhir"
+      ]
     }
   ]
 }

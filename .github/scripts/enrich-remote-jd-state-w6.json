@@ -38914,7 +38914,7 @@
     },
     "636c1a77-60ee-4f7b-8125-97b7dab2882d": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "6f068bf0-c9ae-4d15-985f-aec68877421d": {
       "status": "skip",
@@ -39074,7 +39074,7 @@
     },
     "68b6c4e7-ecdb-4f43-bf75-b63c93277930": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_403"
     },
     "61337d91-8dfb-4034-ba12-cc1ed3b848dc": {
       "status": "skip",
@@ -40325,7 +40325,7 @@
     },
     "650d6ff2-bfd6-4860-b9da-51bf859e7146": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "68526341-6413-43fe-86cd-76c3e7365dfe": {
       "status": "skip",
@@ -41588,7 +41588,7 @@
     },
     "6c6a0572-3037-4583-8b7c-7bfa99a82e6e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "65eca3d8-9e0a-465e-b158-8d43493ccd49": {
       "status": "skip",
@@ -41596,7 +41596,7 @@
     },
     "6fe4cda3-7c0f-4bad-95a7-e56f8327800d": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "62ab95f4-edfc-440f-9789-fbda66f7422f": {
       "status": "ok",
@@ -42037,7 +42037,7 @@
     },
     "6af32dcc-e30d-4d40-9045-cdf0ec1df430": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "6a664196-40e8-4c8d-9d21-9ec2867bd45f": {
       "status": "ok",
@@ -42790,7 +42790,7 @@
     },
     "6928850c-5232-4ae8-a2a0-b433ef321411": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "6a8b437c-5951-442c-8ad5-16b896518f30": {
       "status": "skip",
@@ -42803,7 +42803,7 @@
     },
     "62abdbe1-829d-4119-acbf-a8b8acd2881d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "6be97f58-f9da-4da3-a239-9a983a4757dc": {
       "status": "ok",
@@ -42922,11 +42922,11 @@
     },
     "69b72708-975a-424c-9eba-02f2ae5c69a2": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "601ee4da-ab0d-4c94-b895-b3809ef74fd8": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "686056c1-8ffc-4a72-822e-970ddec27877": {
       "status": "skip",
@@ -43061,12 +43061,14 @@
       "reason": "err_TimeoutError"
     },
     "60136b23-ac94-4b17-ba8a-ed80318ddbfd": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/upwork/devops-eng",
+      "external_id": "upwork_devops-eng"
     },
     "6a4d484e-6238-4765-8dd5-44b7d8b05c90": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/thrive/cloud-eng",
+      "external_id": "thrive_cloud-eng"
     },
     "61f75c3f-c9c8-41b3-b86e-92e719a5cc5a": {
       "status": "skip",
@@ -43077,12 +43079,14 @@
       "reason": "html_410"
     },
     "6a308ed3-6aa1-45fb-a275-0e74c761ee46": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/hugging-face/open-source",
+      "external_id": "hugging-face_open-source"
     },
     "6395dcd5-8259-46b8-9ab0-9c223bdefc39": {
-      "status": "skip",
-      "reason": "err_TimeoutError"
+      "status": "ok",
+      "path": "/omegahires/cloud-devops",
+      "external_id": "omegahires_cloud-devops"
     },
     "6754e5c0-61a7-49c0-8425-5e0e16462e5b": {
       "status": "ok",
@@ -43125,8 +43129,9 @@
       "external_id": "alayacare_app-support"
     },
     "672ea747-721f-47e4-b9e9-0cc9f4f8d77e": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/rr-donnelley/il0219-data",
+      "external_id": "rr-donnelley_il0219-data"
     },
     "6ce933a0-6d95-4d2d-81a4-6e36e740bfee": {
       "status": "ok",
@@ -43164,8 +43169,9 @@
       "external_id": "ipid_sales-dir"
     },
     "60cc5fc5-c19b-43ca-a803-d920a679417e": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/mercor/fe-eng",
+      "external_id": "mercor_fe-eng"
     },
     "606942c2-ecd3-4ae3-ae25-820819258b23": {
       "status": "ok",
@@ -43213,12 +43219,14 @@
       "external_id": "obelisk-support_biz-ops"
     },
     "68c8bf98-05a1-452f-87f0-9f3b12bbc905": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/providence-health-services/sw-eng",
+      "external_id": "providence-health-services_sw-eng"
     },
     "6fc6ce1a-d8a4-4730-a133-e57f234ce01a": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/mercola/sw-eng",
+      "external_id": "mercola_sw-eng"
     },
     "66bb7db8-3844-4859-ad41-4eb60a6ae6d4": {
       "status": "skip",
@@ -43235,8 +43243,9 @@
       "external_id": "gritter-francona_animated-graphic"
     },
     "6098e34a-bd06-4e43-81e9-4d99c05ff730": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/fse-llc/high-ticket",
+      "external_id": "fse-llc_high-ticket"
     },
     "6f59c334-3be7-4c8b-8cc8-e0035091d906": {
       "status": "ok",
@@ -43289,8 +43298,9 @@
       "external_id": "tus-media_copywriter"
     },
     "6fec34ef-50d7-46a2-83a3-4ead7d46b112": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/mazictools/data-sci-eng",
+      "external_id": "mazictools_data-sci-eng"
     },
     "610a90ec-b6e5-405b-8334-02ed983a6d81": {
       "status": "ok",
@@ -43308,8 +43318,9 @@
       "external_id": "unilever_key-accounts"
     },
     "6de7b7c7-7f4b-4de7-a5f5-76ddf97f476e": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/merci-technologies-talent/hiring-aws",
+      "external_id": "merci-technologies-talent_hiring-aws"
     },
     "623235bc-06ed-4360-9236-808cefab3e2a": {
       "status": "ok",
@@ -55821,6 +55832,37 @@
         "html_429": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-03T17:44:35.605Z",
+      "attempted": 766,
+      "ok": 11,
+      "skip": 755,
+      "fail": 0,
+      "reasons": {
+        "html_short": 708,
+        "html_403": 28,
+        "sr_400": 1,
+        "err_TimeoutError": 11,
+        "html_429": 2,
+        "err_TypeError": 1,
+        "html_405": 4
+      },
+      "samplePaths": [
+        "/providence-health-services/sw-eng",
+        "/mazictools/data-sci-eng",
+        "/omegahires/cloud-devops",
+        "/fse-llc/high-ticket",
+        "/mercola/sw-eng",
+        "/upwork/devops-eng",
+        "/thrive/cloud-eng",
+        "/rr-donnelley/il0219-data",
+        "/merci-technologies-talent/hiring-aws",
+        "/mercor/fe-eng",
+        "/hugging-face/open-source"
+      ]
     }
   ]
 }

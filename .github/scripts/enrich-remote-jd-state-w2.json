@@ -59905,7 +59905,7 @@
     },
     "2f290f59-91d3-4062-97a4-9a9486a0591f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "23219e1d-36a2-4a14-b560-0093da26d0e1": {
       "status": "ok",
@@ -60311,7 +60311,7 @@
     },
     "255c5995-8b5b-442f-bbe0-f8d79201b085": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "25aa9424-617b-499c-bced-1f90b9b48ab0": {
       "status": "skip",
@@ -61426,12 +61426,14 @@
       "external_id": "lsn_laborer-needed"
     },
     "23c6e5ce-8509-4b00-a686-e2c48796e958": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/the-nippon-telegraph-and-telephone-corporation-ntt/prod-mgr",
+      "external_id": "the-nippon-telegraph-and-telephone-corporation-ntt_prod-mgr"
     },
     "227fb053-e165-45d9-a273-db63ee499aa0": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/bending-spoons/graduate-data",
+      "external_id": "bending-spoons_graduate-data"
     },
     "2d310ede-0729-4e2b-b9ac-0489ae2b9fb6": {
       "status": "ok",
@@ -61518,8 +61520,9 @@
       "external_id": "remote-zest-jobs_sol-arch-6b"
     },
     "24fbebc2-ddf1-437d-b685-e04bc7bcc638": {
-      "status": "skip",
-      "reason": "err_TimeoutError"
+      "status": "ok",
+      "path": "/type-one-energy-group/sw-eng",
+      "external_id": "type-one-energy-group_sw-eng"
     },
     "2dcf7a65-bc32-4505-b86e-9124bebef4b0": {
       "status": "ok",
@@ -61537,8 +61540,9 @@
       "external_id": "rose-klein-amp-marias_digital-media"
     },
     "268fd801-7295-4121-b119-9c9507abea74": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/clerky-inc/cust-ops",
+      "external_id": "clerky-inc_cust-ops"
     },
     "236a73b9-a0de-49d6-9182-4186328641c4": {
       "status": "ok",
@@ -61610,8 +61614,9 @@
       "reason": "html_503"
     },
     "2bd3e3b7-0923-4f30-be40-ab916ee3f615": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/pierce-washington/sales-sol",
+      "external_id": "pierce-washington_sales-sol"
     },
     "220400bf-2494-4ca9-8876-c95cada140df": {
       "status": "ok",
@@ -61633,8 +61638,9 @@
       "reason": "html_503"
     },
     "2b0522b5-2522-49f4-a7a3-d738dfe02034": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/semper-valens-solutions/ui-ux-design",
+      "external_id": "semper-valens-solutions_ui-ux-design"
     },
     "2edbe35b-b5e5-43d0-b7ba-29055d0034a6": {
       "status": "ok",
@@ -61670,8 +61676,9 @@
       "external_id": "recruitlytixs-hirings_entry-level"
     },
     "2a4f5210-ceeb-4bb1-aaba-9328ada89f11": {
-      "status": "skip",
-      "reason": "err_TimeoutError"
+      "status": "ok",
+      "path": "/diversified-services-network-inc/ux-design",
+      "external_id": "diversified-services-network-inc_ux-design"
     },
     "2709fec7-4763-4563-8879-6886e98ef97b": {
       "status": "ok",
@@ -78285,6 +78292,31 @@
         "html_429": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-03T17:44:04.697Z",
+      "attempted": 689,
+      "ok": 7,
+      "skip": 682,
+      "fail": 0,
+      "reasons": {
+        "html_short": 628,
+        "lever_short": 1,
+        "html_403": 38,
+        "err_TimeoutError": 13,
+        "html_429": 2
+      },
+      "samplePaths": [
+        "/pierce-washington/sales-sol",
+        "/clerky-inc/cust-ops",
+        "/bending-spoons/graduate-data",
+        "/semper-valens-solutions/ui-ux-design",
+        "/diversified-services-network-inc/ux-design",
+        "/the-nippon-telegraph-and-telephone-corporation-ntt/prod-mgr",
+        "/type-one-energy-group/sw-eng"
+      ]
     }
   ]
 }

@@ -57239,7 +57239,7 @@
     },
     "19d61e5b-744e-41aa-a4c3-3c8cf78b7c1c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "16246247-91b5-4cec-b704-f676ec23b998": {
       "status": "skip",
@@ -57251,7 +57251,7 @@
     },
     "1a4d405b-a075-497c-82e2-50ee8a5e91e4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "185b64d7-29ee-41b7-93e3-8ba69591d3ea": {
       "status": "skip",
@@ -57430,7 +57430,7 @@
     },
     "14634685-4895-41cb-8509-8ca347c086f1": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "14f24c68-4d2a-4927-a952-fa23e37fed46": {
       "status": "skip",
@@ -57481,7 +57481,7 @@
     },
     "1a04f0ae-d337-499f-95f6-dde23cb028a7": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "162eeeba-ef65-4f71-8be4-6d39c4b18fa6": {
       "status": "ok",
@@ -57584,8 +57584,9 @@
       "reason": "html_short"
     },
     "10e44f6e-6583-4cd8-adb4-ad1604ddf0c0": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/ad-hoc/devops-eng",
+      "external_id": "ad-hoc_devops-eng"
     },
     "18601ac7-bc8d-4308-86da-b2f3f973b0c5": {
       "status": "ok",
@@ -57616,8 +57617,9 @@
       "external_id": "citywire_journalist"
     },
     "1d78991f-9a5d-4b8f-84e5-61fe9ced6367": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/outsite/biz-dev",
+      "external_id": "outsite_biz-dev"
     },
     "1538ddaa-3a6c-4435-8c6b-d14faa138bbb": {
       "status": "ok",
@@ -57768,8 +57770,9 @@
       "external_id": "jmk-developers_labor"
     },
     "1bdd241f-0e47-4e8c-afc7-72e4067f2135": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/hr-co-llc/founding-sw",
+      "external_id": "hr-co-llc_founding-sw"
     },
     "1b242bc2-00bf-44e9-8a0c-699bee0999de": {
       "status": "ok",
@@ -57805,8 +57808,9 @@
       "external_id": "buzzmonitor_closer-saas"
     },
     "1bab9fef-3ba2-44ea-8448-b38b4f27e892": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/teemagroup/sol-arch",
+      "external_id": "teemagroup_sol-arch"
     },
     "1c57c5d4-0a2e-4724-8e07-a8f334b922db": {
       "status": "ok",
@@ -57952,8 +57956,9 @@
       "reason": "html_410"
     },
     "19f1da67-e17c-4d9c-9efa-1c6828f2b415": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/baynova-llc/fullstk-eng",
+      "external_id": "baynova-llc_fullstk-eng"
     },
     "1782ecea-ff00-4d5f-a3c0-cc0b98c8fa2f": {
       "status": "skip",
@@ -73882,6 +73887,30 @@
         "html_404": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T17:44:47.004Z",
+      "attempted": 803,
+      "ok": 5,
+      "skip": 798,
+      "fail": 0,
+      "reasons": {
+        "html_short": 723,
+        "html_403": 46,
+        "err_TimeoutError": 21,
+        "html_429": 2,
+        "err_TypeError": 3,
+        "html_405": 3
+      },
+      "samplePaths": [
+        "/hr-co-llc/founding-sw",
+        "/baynova-llc/fullstk-eng",
+        "/outsite/biz-dev",
+        "/teemagroup/sol-arch",
+        "/ad-hoc/devops-eng"
+      ]
     }
   ]
 }

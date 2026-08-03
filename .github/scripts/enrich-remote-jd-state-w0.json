@@ -14923,8 +14923,9 @@
       "reason": "html_403"
     },
     "09009983-97d6-4bc6-829e-069cd643896d": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/photon/biz-analyst",
+      "external_id": "photon_biz-analyst"
     },
     "5c772bae-2344-4fdd-bc7e-8abad1b0ecbb": {
       "status": "ok",
@@ -25199,7 +25200,7 @@
     },
     "07074af7-0014-4d5e-aead-584f08481a7e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "011f1801-6e90-4462-b278-ab4e30b9db4f": {
       "status": "skip",
@@ -25925,11 +25926,11 @@
     },
     "064b7bff-ffb8-4658-9b75-0224ae6a973d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "0efe24d8-8b04-47eb-8bcd-03127b22eed9": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "15567e8f-7344-4195-ab07-b8b47d03cd4f": {
       "status": "fail",
@@ -25976,8 +25977,9 @@
       "reason": "html_403"
     },
     "05a56e1a-005c-4491-80a7-34f1d230f7a8": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/lawnstarter/sw-eng-33",
+      "external_id": "lawnstarter_sw-eng-33"
     },
     "1d78991f-9a5d-4b8f-84e5-61fe9ced6367": {
       "status": "skip",
@@ -26003,8 +26005,9 @@
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
     },
     "0268ba5e-52bf-41c0-a115-49e5164d4e9e": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/telus-digital/embodied-ai",
+      "external_id": "telus-digital_embodied-ai"
     },
     "1782ecea-ff00-4d5f-a3c0-cc0b98c8fa2f": {
       "status": "skip",
@@ -26029,8 +26032,9 @@
       "reason": "gemini_gemini-1.5-flash_404:{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"mode"
     },
     "0c9a535c-fea3-4e0b-a122-3ec9875d625a": {
-      "status": "skip",
-      "reason": "err_TimeoutError"
+      "status": "ok",
+      "path": "/rightworks-llc/microsoft",
+      "external_id": "rightworks-llc_microsoft"
     },
     "015f6736-ed04-4459-9a9f-284cb1777013": {
       "status": "skip",
@@ -45329,7 +45333,7 @@
     },
     "096ca720-80fa-4c85-bc72-378dbfadac00": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "067e0792-d02e-4819-ad7e-eca81c39a14c": {
       "status": "skip",
@@ -47050,7 +47054,7 @@
     },
     "0bc02db6-bf3f-4c35-9ca0-4185f58dc262": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1f0c2890-b9c3-48e8-902a-e697225378e7": {
       "status": "skip",
@@ -47622,7 +47626,7 @@
     },
     "02d1b99f-6440-4aa6-a2c4-5f7c8d6fdc5d": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0c93b98a-c3b5-479c-9f58-5301a4fd0409": {
       "status": "skip",
@@ -47970,7 +47974,7 @@
     },
     "0281541d-ee27-4dca-8c8f-ec9cff84b3a8": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0a510ce7-a2f1-402a-80db-18accdf5a901": {
       "status": "skip",
@@ -49720,7 +49724,7 @@
     },
     "02548ca4-b968-4f5e-aa3d-0d95a3cd79b3": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "0a33a5c3-d2c2-4392-b479-1408dd30e3ad": {
       "status": "skip",
@@ -50272,7 +50276,7 @@
     },
     "05d26263-d779-42b1-8133-2a51c6aa723c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "038b2d1d-8a9a-4aa9-8d1c-5ff4a0bb485f": {
       "status": "skip",
@@ -50315,11 +50319,11 @@
     },
     "0be30a03-2792-4c08-aa5e-50259ee8fdcd": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "0b44b75d-5938-40c6-a4f3-79a8f3838f3c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "0f016566-6477-49ee-915c-a4b1bcb479f6": {
       "status": "ok",
@@ -50379,7 +50383,7 @@
     },
     "086cd005-afa1-4976-a9c8-0b962bd8da58": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "08c769ae-723c-438e-966f-0afc2e821f04": {
       "status": "skip",
@@ -50442,19 +50446,19 @@
     },
     "080d6c83-82de-4ed4-9e57-39c3b45dc7b5": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "011a3dc0-ac59-4581-ba45-91e78eb33c96": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "087052ce-fb00-476d-9949-228d1e9be350": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "040d8590-db23-43c9-b7af-0bd94a70f0ff": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "085fa36c-0067-4b0a-beb6-dcbe1025ccba": {
       "status": "ok",
@@ -50471,7 +50475,7 @@
     },
     "05e0ca66-7af4-4cf6-85b6-9ea481049ac4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "0596760c-8d55-4107-bf01-289e3f6d63da": {
       "status": "skip",
@@ -50596,7 +50600,7 @@
     },
     "08f3f82c-5440-482e-849e-f5b75c8f3a58": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "080d3740-9ca1-45fa-bdb8-6900fdfa9c1a": {
       "status": "skip",
@@ -50608,7 +50612,7 @@
     },
     "0264f349-02db-4746-a0a5-fae8585f3876": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "05179d2f-cd09-4a84-9382-084d760c029d": {
       "status": "ok",
@@ -50681,7 +50685,7 @@
     },
     "005ad8f4-86b3-4fbf-ae2a-80178512f15b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "001d2cfc-cd50-4c17-bce6-f4207adee8b2": {
       "status": "skip",
@@ -50710,12 +50714,14 @@
       "external_id": "airbnb_social"
     },
     "04af3f2e-a06e-45f8-a827-ea794d9104ba": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/pyramid-consulting-inc/data-sci-90",
+      "external_id": "pyramid-consulting-inc_data-sci-90"
     },
     "08429bb0-9024-467b-9075-886998ba9577": {
-      "status": "skip",
-      "reason": "html_405"
+      "status": "ok",
+      "path": "/dermalogica/tech-prod",
+      "external_id": "dermalogica_tech-prod"
     },
     "0f40a590-4a68-495d-aaa2-9a1d02ef8c31": {
       "status": "skip",
@@ -50885,8 +50891,9 @@
       "external_id": "tsc-travels_job"
     },
     "0933e305-746a-4a33-bfb3-5620b7275cd7": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/abnormal-security/sw-eng",
+      "external_id": "abnormal-security_sw-eng"
     },
     "05228b58-299b-45f5-9025-cff5a0bb605f": {
       "status": "ok",
@@ -50944,16 +50951,19 @@
       "external_id": "avalon-administrative-services_devops-eng"
     },
     "000e121f-2f2c-47d8-9855-475196b54c33": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/everai/mid-ai",
+      "external_id": "everai_mid-ai"
     },
     "020ba671-d5d7-4203-87b4-8e5eed59695f": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/lawnstarter/prod-eng-cf",
+      "external_id": "lawnstarter_prod-eng-cf"
     },
     "04d8d3d2-619b-472c-a056-d587e2edcdbb": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/clipster/prod-eng",
+      "external_id": "clipster_prod-eng"
     },
     "0c11b651-5fcd-4392-a12e-3de1d0dbe781": {
       "status": "skip",
@@ -51043,8 +51053,9 @@
       "external_id": "once-upon-a-farm_social-media"
     },
     "0118aba5-b34a-43d1-bc88-e6df7e444167": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/vmysmartpros/enterprise",
+      "external_id": "vmysmartpros_enterprise"
     },
     "0bc05054-1d09-4c3e-8b7b-798bd2c8529f": {
       "status": "ok",
@@ -65440,6 +65451,37 @@
         "html_405": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T17:45:14.191Z",
+      "attempted": 748,
+      "ok": 11,
+      "skip": 736,
+      "fail": 1,
+      "reasons": {
+        "html_short": 675,
+        "html_403": 23,
+        "err_TypeError": 6,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 14,
+        "html_405": 14
+      },
+      "samplePaths": [
+        "/telus-digital/embodied-ai",
+        "/clipster/prod-eng",
+        "/dermalogica/tech-prod",
+        "/lawnstarter/sw-eng-33",
+        "/vmysmartpros/enterprise",
+        "/everai/mid-ai",
+        "/rightworks-llc/microsoft",
+        "/lawnstarter/prod-eng-cf",
+        "/pyramid-consulting-inc/data-sci-90",
+        "/abnormal-security/sw-eng",
+        "/photon/biz-analyst"
+      ]
     }
   ]
 }

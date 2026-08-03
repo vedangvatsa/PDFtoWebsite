@@ -38832,7 +38832,7 @@
     },
     "762e500b-f45b-4f72-a3fe-b3ba4ad8d43f": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "7e7fcb42-90eb-4899-b92f-ee2c00cef382": {
       "status": "skip",
@@ -42148,7 +42148,7 @@
     },
     "79656613-120e-4db2-bd7e-a5a1e014557b": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "7299d99e-bcf3-4236-8730-bb75128c5d1f": {
       "status": "ok",
@@ -42655,7 +42655,7 @@
     },
     "790050b5-b3e8-46c5-a124-4dcfab2f3ba5": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "724bf4d1-268e-45aa-9565-827befb6f7d0": {
       "status": "skip",
@@ -42698,7 +42698,7 @@
     },
     "724a0f44-7a40-45fd-8705-1ec20d6449b1": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "73e131f1-37c7-4926-abcd-b023c115a2b6": {
       "status": "ok",
@@ -42858,7 +42858,7 @@
     },
     "7ea626df-bf4d-44dc-94c1-6d705ddf671f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "788f8d9e-cc68-40e1-a198-bd55c900e4df": {
       "status": "skip",
@@ -42921,7 +42921,7 @@
     },
     "7043338b-8891-4b82-b841-922ebf210667": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "742a1f3c-10a3-4a7c-9934-8da78967b5a1": {
       "status": "skip",
@@ -43053,7 +43053,7 @@
     },
     "78a4a730-6b57-4202-ad85-66d6ab76d4f8": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "779a52fd-7261-4640-82dc-a9aa9d0f7c00": {
       "status": "skip",
@@ -43201,12 +43201,14 @@
       "external_id": "sumup_outbound-acct"
     },
     "7dd6ecd6-1779-4a59-9bba-2d50cb669535": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/servicelink/data-sci",
+      "external_id": "servicelink_data-sci"
     },
     "78e89471-3ccb-47b6-8bed-5c2ffdd0118a": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/puttshack/entry-level",
+      "external_id": "puttshack_entry-level"
     },
     "716e5378-9e1f-46f4-9c69-27249906045c": {
       "status": "ok",
@@ -43281,8 +43283,9 @@
       "external_id": "hometown-deli-amp-grocery_hospice"
     },
     "7f610b8f-92c5-40bd-af52-91902928efab": {
-      "status": "skip",
-      "reason": "html_405"
+      "status": "ok",
+      "path": "/david-s-bridal/graphic-ux",
+      "external_id": "david-s-bridal_graphic-ux"
     },
     "780fdf4f-cc6e-4756-b18d-8d075e57e4d2": {
       "status": "skip",
@@ -43352,8 +43355,9 @@
       "external_id": "tebra_acct-32"
     },
     "7e31e587-6589-4090-b279-41b73389ecd6": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/pointclickcare/prod-mgr-19",
+      "external_id": "pointclickcare_prod-mgr-19"
     },
     "7024b798-2828-4771-b469-1807d442c693": {
       "status": "ok",
@@ -43396,8 +43400,9 @@
       "external_id": "humana_engagement"
     },
     "7a7180e9-0d6b-4937-8f31-55ec7d2be7ff": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/jobgether/sw-dev",
+      "external_id": "jobgether_sw-dev"
     },
     "73ed2149-fc5c-4c79-8b0f-5a862bb5f1c3": {
       "status": "ok",
@@ -43405,12 +43410,14 @@
       "external_id": "crowdgen-by-appen_ml-translation"
     },
     "700a637a-a65b-4f4a-b72a-a486530f002b": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/inflect/hosting-sol",
+      "external_id": "inflect_hosting-sol"
     },
     "786e3473-e6b6-49a1-8497-6e717eff341d": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/garden3d/head-mkt-17",
+      "external_id": "garden3d_head-mkt-17"
     },
     "7fad097a-d00f-4afb-9e7a-0d5eb6490b02": {
       "status": "skip",
@@ -43432,12 +43439,14 @@
       "external_id": "jobsinmass-com_entry-level-a2"
     },
     "7c02e607-cec7-424b-91aa-31155be59aaa": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/lawnstarter/prod-eng-ae",
+      "external_id": "lawnstarter_prod-eng-ae"
     },
     "7c547f85-2af7-4708-81e0-28d55f37f555": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/lawnstarter/sw-eng-f3",
+      "external_id": "lawnstarter_sw-eng-f3"
     },
     "7e8bd775-8c43-434c-8dee-b1fba39a9bbd": {
       "status": "ok",
@@ -43555,8 +43564,9 @@
       "external_id": "recruitgo-careers_cad-asst"
     },
     "7fded2be-0786-4747-86c7-13b9e0af5c77": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/itlearn360/ui-ux-design",
+      "external_id": "itlearn360_ui-ux-design"
     },
     "74d885f8-963c-4a30-949f-3936f4ee5f2e": {
       "status": "ok",
@@ -43569,8 +43579,9 @@
       "external_id": "ubt_influencer"
     },
     "7c65da2c-feae-4246-9d7a-bd607231821e": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/fuku/ml-eng",
+      "external_id": "fuku_ml-eng"
     },
     "7d4e5a8a-55ec-4f85-b1e9-fce80b9d9f93": {
       "status": "ok",
@@ -55929,6 +55940,38 @@
         "html_405": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 7,
+      "at": "2026-08-03T17:45:01.449Z",
+      "attempted": 780,
+      "ok": 11,
+      "skip": 769,
+      "fail": 0,
+      "reasons": {
+        "gh_short": 1,
+        "html_short": 718,
+        "sr_400": 1,
+        "err_TimeoutError": 14,
+        "html_403": 23,
+        "err_TypeError": 5,
+        "html_429": 2,
+        "html_405": 5
+      },
+      "samplePaths": [
+        "/servicelink/data-sci",
+        "/puttshack/entry-level",
+        "/david-s-bridal/graphic-ux",
+        "/garden3d/head-mkt-17",
+        "/itlearn360/ui-ux-design",
+        "/pointclickcare/prod-mgr-19",
+        "/lawnstarter/sw-eng-f3",
+        "/lawnstarter/prod-eng-ae",
+        "/jobgether/sw-dev",
+        "/inflect/hosting-sol",
+        "/fuku/ml-eng"
+      ]
     }
   ]
 }

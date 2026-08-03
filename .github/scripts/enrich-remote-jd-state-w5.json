@@ -25724,7 +25724,7 @@
     },
     "5b7b8a92-7a15-4ff3-b45d-6187a8e378ca": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "57759c38-622e-4455-8778-4af3d45772f6": {
       "status": "skip",
@@ -25744,7 +25744,7 @@
     },
     "515f4f08-1312-4f6f-b6c9-c0a6778df714": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "5d3d03b8-4c6b-4ff8-87ed-1a83b80dc819": {
       "status": "skip",
@@ -25982,7 +25982,7 @@
     },
     "5c32aec0-7b6c-4a95-8be4-8939af618b50": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "538f05e2-a4d9-4e9a-b159-fd15e8254d54": {
       "status": "skip",
@@ -26059,7 +26059,7 @@
     },
     "5a620d83-c7c5-4a11-9c8c-9bffe5f1e0e4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "5cdb4945-6d3a-4bfd-8fc0-2fc05cf920a1": {
       "status": "skip",
@@ -26079,7 +26079,7 @@
     },
     "5907b95d-4550-428d-8b43-31ae383d3834": {
       "status": "skip",
-      "reason": "html_429"
+      "reason": "err_TypeError"
     },
     "54e73f1f-1a66-4b30-a619-7a6ada4deb43": {
       "status": "skip",
@@ -28524,7 +28524,7 @@
     },
     "5a01289f-aabf-4b64-beaa-dac2dbd1ed7d": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "51ec6c55-85d6-414d-a6b0-fc991af9b6a9": {
       "status": "skip",
@@ -28557,7 +28557,7 @@
     },
     "5bb132d5-4a54-46ec-bb8c-086e42d0a6c1": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "5515e3f8-362a-42b5-97d0-d3368d94a609": {
       "status": "ok",
@@ -29079,7 +29079,7 @@
     },
     "52f71474-c533-4bee-bed0-0e774ff49edb": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "5c803380-885e-4cd5-a5a4-75f4d9153892": {
       "status": "skip",
@@ -29091,11 +29091,11 @@
     },
     "5917503f-cd4d-4e0e-9427-0dd15714dcb7": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "5bc4e57b-2990-43be-9464-ff2f6b75b61d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "5b898abe-0ca2-42ff-9be2-f336899b6965": {
       "status": "skip",
@@ -29221,7 +29221,7 @@
     },
     "59b57cd5-eebe-4dfb-9368-58521a338c82": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "5bd6b341-56e7-49b4-8814-e633670c66ec": {
       "status": "skip",
@@ -29354,11 +29354,11 @@
     },
     "58e0cadf-9035-461d-802f-63c4b0372320": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "546cd0a9-1495-4a45-a056-7e8f54ed8c59": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "54268a78-55cc-4445-8687-de96ae8a7fae": {
       "status": "skip",
@@ -29494,8 +29494,9 @@
       "external_id": "sparksoft-corporation_data-analyst"
     },
     "518d7f0d-b6cc-4c04-b279-9feeb53575c0": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/lemon-io/graphic-design",
+      "external_id": "lemon-io_graphic-design"
     },
     "5bfa22e3-35bc-44ce-8ce9-ed5001e2e6be": {
       "status": "ok",
@@ -29518,8 +29519,9 @@
       "external_id": "vacancy-global-pro_prod-mgr"
     },
     "500082f3-2974-4a7b-b340-0105660aa4b5": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/osc-global/open-shift",
+      "external_id": "osc-global_open-shift"
     },
     "5fee78f8-57b5-4754-890b-981184751027": {
       "status": "ok",
@@ -29532,8 +29534,9 @@
       "external_id": "mrbeast_video-editor"
     },
     "5c40bb89-91f0-42ca-8e53-626ed1de9e8e": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/nvidia/deep-sw-eng",
+      "external_id": "nvidia_deep-sw-eng"
     },
     "5a19343c-3143-433b-af04-1df3545bc161": {
       "status": "ok",
@@ -29673,12 +29676,14 @@
       "external_id": "adani-skills-amp-education_contribute"
     },
     "523dfadb-9a2a-497c-8422-edd80a955d99": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/coalition-technologies/freelance",
+      "external_id": "coalition-technologies_freelance"
     },
     "5203866f-d101-4312-b8b1-d28b9c8feeb0": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/credit-wellness-llc/inside-sales",
+      "external_id": "credit-wellness-llc_inside-sales"
     },
     "5151a3c6-f360-43c0-b15c-623d7ddeefa9": {
       "status": "ok",
@@ -29741,12 +29746,14 @@
       "external_id": "haystack_ecommerce-spec"
     },
     "51625c4c-66e0-47d8-9a09-feb2baaeb8b9": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/upwork/experienced",
+      "external_id": "upwork_experienced"
     },
     "56ae6377-166f-4e3f-ac78-1a8097ba8154": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/framework-ventures/gtm-analytics",
+      "external_id": "framework-ventures_gtm-analytics"
     },
     "52eade29-0deb-4207-a5e6-be5eee963a87": {
       "status": "ok",
@@ -29768,12 +29775,14 @@
       "external_id": "royal-caribbean-international_attractions"
     },
     "50125890-6e20-4e85-a11d-e3c17a3f8051": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/synergisticit/fullstk-java",
+      "external_id": "synergisticit_fullstk-java"
     },
     "5a660da0-2745-4d9f-8b07-5d9417c8a2d4": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/alpha-business-solutions/ml-eng",
+      "external_id": "alpha-business-solutions_ml-eng"
     },
     "51553fc9-506b-4c84-bca8-ed952a4e36d8": {
       "status": "skip",
@@ -29800,8 +29809,9 @@
       "external_id": "vidalytics_ai-native-25"
     },
     "5e6d42b6-2923-4cd8-b51d-e63cc2f7daa1": {
-      "status": "skip",
-      "reason": "html_too_many_redirects"
+      "status": "ok",
+      "path": "/orlando/fullstk-dev",
+      "external_id": "orlando_fullstk-dev"
     },
     "527afec0-d761-4cd7-aaef-1ce8640e6a9a": {
       "status": "ok",
@@ -44598,6 +44608,37 @@
         "html_too_many_redirects": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 5,
+      "at": "2026-08-03T17:45:09.037Z",
+      "attempted": 741,
+      "ok": 10,
+      "skip": 730,
+      "fail": 1,
+      "reasons": {
+        "html_short": 661,
+        "lever_short": 1,
+        "html_403": 45,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "err_TimeoutError": 11,
+        "html_429": 2,
+        "err_TypeError": 4,
+        "html_405": 6
+      },
+      "samplePaths": [
+        "/upwork/experienced",
+        "/credit-wellness-llc/inside-sales",
+        "/framework-ventures/gtm-analytics",
+        "/synergisticit/fullstk-java",
+        "/nvidia/deep-sw-eng",
+        "/coalition-technologies/freelance",
+        "/osc-global/open-shift",
+        "/orlando/fullstk-dev",
+        "/alpha-business-solutions/ml-eng",
+        "/lemon-io/graphic-design"
+      ]
     }
   ]
 }

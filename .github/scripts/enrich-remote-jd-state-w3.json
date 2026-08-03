@@ -14330,8 +14330,9 @@
       "external_id": "remote-zest-jobs_fullstk-dev-c2"
     },
     "3e298c6f-70e9-42c0-a0f0-919ab72131f3": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/ebsco-industries-inc/fullstk-dev",
+      "external_id": "ebsco-industries-inc_fullstk-dev"
     },
     "3c18bf28-5797-4b51-ad78-a3e4943684ce": {
       "status": "ok",
@@ -14791,8 +14792,9 @@
       "external_id": "alayacare_fullstk-dev"
     },
     "332b49b6-a940-43ca-9614-f29a94085970": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/inaturalist/computer-vision",
+      "external_id": "inaturalist_computer-vision"
     },
     "da3e9736-0237-4eb4-b49f-57c005eb8c0d": {
       "status": "skip",
@@ -46617,8 +46619,9 @@
       "reason": "ashby_not_found"
     },
     "3f8e6db2-b664-4e7f-ab68-f71bfaa84d75": {
-      "status": "skip",
-      "reason": "ashby_short"
+      "status": "ok",
+      "path": "/addi/agente-de",
+      "external_id": "addi_agente-de"
     },
     "358be7f2-aabd-44ee-986b-1dcf9e5d1bd1": {
       "status": "skip",
@@ -53489,7 +53492,7 @@
     },
     "318792ce-5184-4108-9ced-39eb597678c1": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "3377f138-9860-4e0c-b0d3-b0874dadadd7": {
       "status": "skip",
@@ -53981,7 +53984,7 @@
     },
     "38ce3333-1237-4fe5-84d3-462c1db012ce": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "3a0d46cb-b671-4b9b-b718-b9510fb58fc5": {
       "status": "skip",
@@ -54693,7 +54696,7 @@
     },
     "36dcb252-83b8-4852-81e7-1cef05bca3ac": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "311729ab-4b42-4b40-93b3-ccdae5b444dc": {
       "status": "skip",
@@ -55980,7 +55983,7 @@
     },
     "348c2990-ef93-4082-b3df-6576ccf70f32": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "389334f8-bf44-4f32-9b2a-c55d8e1be9bf": {
       "status": "ok",
@@ -56716,11 +56719,11 @@
     },
     "36099360-514b-45a7-928c-55dbfa6d9e63": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "3d42bc41-2572-4336-adbc-f97a43f232ac": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "30f9bca1-b493-4919-b6f4-3110caa67811": {
       "status": "skip",
@@ -56736,7 +56739,7 @@
     },
     "35fb7d21-5f28-42ff-b108-a246b58b9cef": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "3fb18abe-7377-432e-aa66-6600eb0dda78": {
       "status": "skip",
@@ -56912,7 +56915,7 @@
     },
     "39cda3a7-07d0-40af-974f-2f1a21249a62": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "3a978276-a38f-49a9-8a72-ef00ef0598fb": {
       "status": "skip",
@@ -56936,7 +56939,7 @@
     },
     "38ed9aad-13b8-4859-ad92-2092044f88eb": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "35abc5ac-f2c1-4ba9-896f-6c3dc455ea41": {
       "status": "skip",
@@ -57033,8 +57036,9 @@
       "reason": "html_403"
     },
     "3017b33f-1ff0-4232-9993-78422e6f2a85": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/golden-1/it-infra-sys",
+      "external_id": "golden-1_it-infra-sys"
     },
     "3596ce72-eff5-4e53-938c-d57b1733aa84": {
       "status": "ok",
@@ -57209,8 +57213,9 @@
       "external_id": "warwick-valley-chamber-of-cmrc_join-our"
     },
     "32240588-872c-4974-b2b0-fef6737fa158": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/upwork/be-dev-build",
+      "external_id": "upwork_be-dev-build"
     },
     "3c38b268-8b6e-4818-adcf-db9b4071a62a": {
       "status": "ok",
@@ -57223,8 +57228,9 @@
       "external_id": "freestar_dream-job"
     },
     "31665273-bdeb-43cf-884d-82c7c641b26a": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/swisslog-holding-ag/controls-sw",
+      "external_id": "swisslog-holding-ag_controls-sw"
     },
     "34d5b2a0-0d99-4163-b1ee-8fb5a00eb829": {
       "status": "ok",
@@ -57232,8 +57238,9 @@
       "external_id": "hubspot_sol-arch"
     },
     "36908028-7201-4019-9e30-c38062ecc141": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/upwork/fe-dev",
+      "external_id": "upwork_fe-dev"
     },
     "36e79552-7e47-442c-b2c1-885adaf6dd86": {
       "status": "skip",
@@ -57290,12 +57297,14 @@
       "external_id": "jobsinmass-com_data-entry-b0"
     },
     "31547aed-0976-43db-83e9-f15940b36a7a": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/the-obesity-society/asst-acct",
+      "external_id": "the-obesity-society_asst-acct"
     },
     "3c144c34-e0e4-4c14-b3ae-1f65ab183125": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/lemon-io/devops-eng",
+      "external_id": "lemon-io_devops-eng"
     },
     "32d87bcf-002a-4382-bbdc-65b60a994ef8": {
       "status": "ok",
@@ -57393,8 +57402,9 @@
       "external_id": "wisefind_coordinador"
     },
     "3d6b2b24-2db3-4382-9b38-310bbba8538e": {
-      "status": "skip",
-      "reason": "html_405"
+      "status": "ok",
+      "path": "/gravity-engineering-services-pvt-ltd/fullstk-dev",
+      "external_id": "gravity-engineering-services-pvt-ltd_fullstk-dev"
     },
     "3cd607be-ab9d-4e28-b79b-b5793a6b3ba8": {
       "status": "ok",
@@ -57407,8 +57417,9 @@
       "external_id": "crypto-com_comply-market"
     },
     "32020615-f8fc-4031-bbc4-d937f1e79ed5": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/pacific-life-insurance-company/ux-design",
+      "external_id": "pacific-life-insurance-company_ux-design"
     },
     "3f418e12-e48a-4ef7-9742-3c6923493ae2": {
       "status": "ok",
@@ -72969,6 +72980,36 @@
         "html_405": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 3,
+      "at": "2026-08-03T17:44:50.999Z",
+      "attempted": 779,
+      "ok": 11,
+      "skip": 768,
+      "fail": 0,
+      "reasons": {
+        "html_short": 713,
+        "html_403": 35,
+        "lever_short": 1,
+        "err_TimeoutError": 12,
+        "html_429": 2,
+        "html_405": 5
+      },
+      "samplePaths": [
+        "/addi/agente-de",
+        "/ebsco-industries-inc/fullstk-dev",
+        "/swisslog-holding-ag/controls-sw",
+        "/upwork/be-dev-build",
+        "/the-obesity-society/asst-acct",
+        "/gravity-engineering-services-pvt-ltd/fullstk-dev",
+        "/inaturalist/computer-vision",
+        "/lemon-io/devops-eng",
+        "/pacific-life-insurance-company/ux-design",
+        "/upwork/fe-dev",
+        "/golden-1/it-infra-sys"
+      ]
     }
   ]
 }
