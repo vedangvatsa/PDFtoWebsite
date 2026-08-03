@@ -27566,7 +27566,7 @@
     },
     "5429991a-e84e-407a-9293-185c84cbc86a": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "57a1090b-c4b5-4301-8e6f-79c96bebc050": {
       "status": "ok",
@@ -27575,7 +27575,7 @@
     },
     "5604f013-8dfb-44d9-bf15-8f8a5f903a3f": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "515e09f2-61ad-45c3-90f4-969db2759248": {
       "status": "skip",
@@ -27583,11 +27583,11 @@
     },
     "5cdfb636-27bc-4845-be53-ed1ced664e01": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "55f7548e-9a16-4ee1-9433-4396c4d90777": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "54822c3e-87d8-4628-8a91-860b8760b227": {
       "status": "skip",
@@ -27614,7 +27614,7 @@
     },
     "50591c06-1ced-40d7-a58a-a78a05a84c91": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "59e0d8d1-d979-441f-afc1-097f4a3ce75a": {
       "status": "ok",
@@ -28311,7 +28311,7 @@
     },
     "5372a627-7b6e-4dc7-b96b-42ba3af79667": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "5ad17733-ea86-4fa3-b378-ee5532b928c2": {
       "status": "ok",
@@ -44766,6 +44766,25 @@
         "/toast/territory-e5",
         "/toast/talent"
       ]
+    },
+    {
+      "batchNum": 4,
+      "worker": 5,
+      "at": "2026-08-03T18:27:22.300Z",
+      "attempted": 726,
+      "ok": 0,
+      "skip": 725,
+      "fail": 1,
+      "reasons": {
+        "html_short": 663,
+        "lever_short": 1,
+        "html_403": 45,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "err_TypeError": 4,
+        "err_TimeoutError": 9,
+        "html_429": 3
+      },
+      "samplePaths": []
     }
   ]
 }
