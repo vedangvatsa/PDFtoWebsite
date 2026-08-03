@@ -62028,7 +62028,7 @@
     },
     "2350a2ec-7b33-4c72-9353-ef1485e4d332": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2aeb1278-a34c-418c-960e-0aaa7faf0b5b": {
       "status": "skip",
@@ -62036,11 +62036,11 @@
     },
     "2b13d978-7fdb-410d-86e8-1629dfd72e2f": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2afe0fa2-9e07-4659-af66-cb2d2a017458": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "23b7a396-bf36-4b9a-aa6d-6a0744dfdb24": {
       "status": "skip",
@@ -62048,7 +62048,7 @@
     },
     "2d6c69c1-12da-4d58-a73a-8342e67338bc": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "20c074bb-1b1e-4902-8b23-57a024d887b8": {
       "status": "skip",
@@ -62073,7 +62073,7 @@
     },
     "24cba5a8-4012-4619-8fb8-82e96482b2df": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "238c38f5-c60b-427c-9e44-d9d0c0eb619b": {
       "status": "skip",
@@ -62081,7 +62081,7 @@
     },
     "29f15ca0-fcab-4fdc-a21a-e3635f039da1": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2674c512-fd27-4c75-964b-ead90a92a469": {
       "status": "skip",
@@ -62089,7 +62089,7 @@
     },
     "200897ea-2f7a-4504-9f94-db4cdbcd440c": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "272f0516-aa1c-4215-b474-0d92b3603021": {
       "status": "skip",
@@ -62101,7 +62101,7 @@
     },
     "29c854ab-d870-4f74-8680-7934a9460760": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "299f2a0e-3349-4493-80a5-28c11521ca62": {
       "status": "skip",
@@ -62118,7 +62118,7 @@
     },
     "28a23ee3-800c-4408-a1a9-588e188eb60c": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2d14fb4f-0160-4697-9f08-d6a222644992": {
       "status": "skip",
@@ -62139,11 +62139,11 @@
     },
     "20b5cac7-bb43-408f-9c51-a823ffe85385": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "21d289e1-9696-485b-ac85-1278318d8ecf": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "21b93f66-ea37-4526-9c98-9a471faf0f3c": {
       "status": "skip",
@@ -62270,7 +62270,7 @@
     },
     "20af2583-64df-4ee5-a494-31fabdc86823": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "20319f49-11de-4f33-bc73-aee3aa3fa0d6": {
       "status": "skip",
@@ -62374,7 +62374,7 @@
     },
     "26a38499-578e-4bf0-90a6-8464730a8880": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2f7b41a0-645b-41a9-b7fd-bd777ab1bb15": {
       "status": "skip",
@@ -62393,8 +62393,9 @@
       "reason": "linkedin_429"
     },
     "26f7ee0e-5f8c-435d-a526-5691e6df4584": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/reddit-inc/ui-ux-design",
+      "external_id": "reddit-inc_ui-ux-design"
     },
     "263a1df4-a7a0-4c5f-bed2-5737feed95e1": {
       "status": "skip",
@@ -62438,7 +62439,7 @@
     },
     "20f7ceea-d52f-48e0-ba90-d88d64ccfb69": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2beea90b-1c15-4335-b2f5-2787ccdbc838": {
       "status": "skip",
@@ -62477,8 +62478,9 @@
       "reason": "linkedin_429"
     },
     "2728e95a-906a-4109-ab6c-2bcf76dac8cd": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/mistral/applied-ai",
+      "external_id": "mistral_applied-ai"
     },
     "24b96d9e-a560-4e0f-b77a-40d6161d38d7": {
       "status": "skip",
@@ -62490,7 +62492,7 @@
     },
     "225579f4-5434-46a9-9cbf-60660cc5e282": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2d7e1ea4-22bd-43e3-8b5e-544a3aec97de": {
       "status": "skip",
@@ -62510,7 +62512,7 @@
     },
     "2bfe2160-1046-4ec2-81d9-f8b17462a803": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "26cc99ff-c47c-46c1-ba07-fb46a8019b5b": {
       "status": "skip",
@@ -62554,19 +62556,21 @@
     },
     "2cca90d5-e807-4bb8-bf74-92b01b36a8f0": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "29f4cc5b-a55b-4a96-85e3-6b1a90797034": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "2890610c-25bb-4f64-9d31-2037323b3374": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/dynamo-ai/prod-analyst",
+      "external_id": "dynamo-ai_prod-analyst"
     },
     "2aa7ced3-a0d3-4263-af2e-b88a54c352f5": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/shepherd-insurance-agency/actuarial-data",
+      "external_id": "shepherd-insurance-agency_actuarial-data"
     },
     "26ce0541-9e30-4423-83f3-f14f3bb890ea": {
       "status": "skip",
@@ -62590,7 +62594,7 @@
     },
     "2d3d4a2a-6d6a-44ba-bbb4-e4b1b4bf7e77": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2873b13a-f82c-43db-8790-d1a1afe332ed": {
       "status": "skip",
@@ -62634,7 +62638,7 @@
     },
     "2ed5ef16-ed43-471f-b5a8-2bed3cb6e11d": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2a83096a-fa67-4d1c-bc76-b5e954a6e05a": {
       "status": "skip",
@@ -62658,7 +62662,7 @@
     },
     "28ba762d-076c-4ae9-97d3-9abe3a2d543e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "27bde16a-e6f2-4fa1-924c-faf44a2532e7": {
       "status": "skip",
@@ -62666,7 +62670,7 @@
     },
     "2119ea26-193d-45c7-a59d-223fb62f5cd2": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2f457379-8a09-4998-802b-2f0e45754854": {
       "status": "skip",
@@ -62678,7 +62682,7 @@
     },
     "24295603-bd55-4f94-bcb2-2ce8cf53f584": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2d9bc706-df43-4868-9eac-72b5bbb42480": {
       "status": "skip",
@@ -62686,7 +62690,7 @@
     },
     "27ccf95a-3e97-4720-8b63-cfbd647cd33e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "21ef9d02-321d-421f-9d31-05f01ecc1be4": {
       "status": "skip",
@@ -62819,7 +62823,7 @@
     },
     "21b0fb7c-a648-4196-b986-24280a0667c5": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2ac36349-4901-4534-a853-7ea5dadc73f1": {
       "status": "skip",
@@ -62847,7 +62851,7 @@
     },
     "29993413-c2d2-4ac4-8fd2-66e6b448ae10": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "22271f54-d8f7-4bb0-9ec1-a9a551c6b848": {
       "status": "skip",
@@ -63079,8 +63083,9 @@
       "reason": "linkedin_429"
     },
     "20bf8f2b-f731-4e5f-98e6-bdfda808a8df": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/tessera-data/knowledge-base",
+      "external_id": "tessera-data_knowledge-base"
     },
     "2d361c35-dfd6-4ea3-b4ae-70e2a907ae3f": {
       "status": "skip",
@@ -63095,8 +63100,9 @@
       "reason": "linkedin_429"
     },
     "26328924-1c98-418b-8eb3-1751e1466de5": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/innodata-inc/applied-data",
+      "external_id": "innodata-inc_applied-data"
     },
     "283564a7-c65e-40a6-af8a-b23ea5b75127": {
       "status": "skip",
@@ -63116,7 +63122,7 @@
     },
     "2c0ed435-294f-41b8-9799-ca44c77b8873": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "20b92a24-fd46-4d6b-b1de-24feabbce55a": {
       "status": "skip",
@@ -63131,8 +63137,9 @@
       "reason": "linkedin_429"
     },
     "2cf8b669-cb75-4c1e-b1e0-753e5013c5ae": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/google/sw-eng-ml",
+      "external_id": "google_sw-eng-ml"
     },
     "24552ab4-786b-4e6e-b65b-6eb615810d06": {
       "status": "ok",
@@ -78189,6 +78196,49 @@
         "/stripe/acct-96",
         "/stripe/acct-54",
         "/stripe/executive-mkt"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-03T17:14:29.941Z",
+      "attempted": 977,
+      "ok": 32,
+      "skip": 945,
+      "fail": 0,
+      "reasons": {
+        "html_short": 630,
+        "html_403": 43,
+        "lever_short": 1,
+        "err_TimeoutError": 13,
+        "html_429": 2,
+        "html_404": 4,
+        "linkedin_404": 1,
+        "linkedin_short": 1,
+        "err_TypeError": 18,
+        "linkedin_429": 232
+      },
+      "samplePaths": [
+        "/jack-amp-jill/founding-eng-8d",
+        "/garner-health/sw-eng",
+        "/harrison-clarke/research-eng",
+        "/mbn-solutions/ml-eng",
+        "/grail/data-sci",
+        "/qualcomm/dsp-app-sw",
+        "/harnham/sw-eng",
+        "/pilot-com/sw-eng",
+        "/alexander-chapman/robotics-eng",
+        "/nvidia/applied-ai",
+        "/storm3/ml-sys-eng",
+        "/tilde-research/ml-eng",
+        "/attentive/sw-eng-c5",
+        "/dfnd-security-inc/sec-eng",
+        "/softpro/sre-eng",
+        "/google/sec-eng-50",
+        "/prestige-staffing/sec-eng",
+        "/millennium/sec-eng",
+        "/whitley-penn/it-sec",
+        "/epitec/sec-analyst"
       ]
     }
   ]
