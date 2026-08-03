@@ -48951,7 +48951,7 @@
     },
     "061f0ba0-4ccd-44c7-972e-8b357c8ad060": {
       "status": "skip",
-      "reason": "html_503"
+      "reason": "html_404"
     },
     "039cbeb4-ff0f-4c26-88fc-5ac8c1590130": {
       "status": "ok",
@@ -51888,7 +51888,7 @@
     },
     "0e511591-1df4-4224-bcf6-784e6985980a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "0de0c604-5926-46a3-8816-291b35edac4a": {
       "status": "ok",
@@ -51957,7 +51957,7 @@
     },
     "0e8dc440-bf9a-4a38-9c98-97ffbbc9f2d3": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "048775dc-1806-4b0e-a4a9-da34728c17b9": {
       "status": "ok",
@@ -52505,7 +52505,7 @@
     },
     "0804ae84-b921-4de4-9b47-d7fe396df12b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "0191193e-27da-40a8-b649-3ed5a5cb8305": {
       "status": "ok",
@@ -52572,7 +52572,7 @@
     },
     "0f066f3b-eb42-4acd-90b7-a3ac8f4f5574": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "0463e2f8-572c-4ba2-8e91-6b2f188605c7": {
       "status": "ok",
@@ -52594,7 +52594,7 @@
     },
     "01583476-2a6d-47ef-ae11-de4fbef3604f": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "08b9773a-a77a-49cd-a53e-3849d9a096fc": {
       "status": "ok",
@@ -65400,6 +65400,27 @@
       "samplePaths": [
         "/stoke-space/net-sys-eng"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 0,
+      "at": "2026-08-03T17:12:02.824Z",
+      "attempted": 802,
+      "ok": 0,
+      "skip": 801,
+      "fail": 1,
+      "reasons": {
+        "html_short": 690,
+        "html_403": 32,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 15,
+        "html_404": 1,
+        "err_TypeError": 8,
+        "html_405": 1,
+        "linkedin_429": 50
+      },
+      "samplePaths": []
     }
   ]
 }
