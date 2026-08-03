@@ -16,8 +16,8 @@ export function CompanyLogoBadge({ logoSrc, size = 88 }: CompanyLogoBadgeProps) 
       style={{
         width: size,
         height: size,
-        borderRadius: size >= 96 ? 18 : 16,
-        objectFit: 'contain',
+        borderRadius: 9999,
+        objectFit: 'cover',
         backgroundColor: '#ffffff',
         border: '1px solid #e4e4e7',
       }}

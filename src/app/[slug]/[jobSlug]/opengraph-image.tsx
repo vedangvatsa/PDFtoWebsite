@@ -5,6 +5,7 @@ import { jobTypeLabel, isShortJobSlug } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
+import { loadInterFont } from '@/lib/og-fonts';
 
 export const runtime = 'nodejs';
 export const revalidate = 3600;
@@ -40,6 +41,7 @@ export default async function Image({ params }: Props) {
   }
 
   const logoSrc = await resolveOgCompanyLogo({ slug, companyName: company, storedLogo });
+  const fonts = await loadInterFont([400, 500, 700, 800]);
 
   const displayTitle = title.length > 72 ? title.slice(0, 69).trimEnd() + '...' : title;
   const metaBits = [company, location, typeLabel].filter(Boolean).join('  ·  ');
@@ -52,9 +54,9 @@ export default async function Image({ params }: Props) {
           flexDirection: 'column',
           width: '100%',
           height: '100%',
-          backgroundColor: '#fafafa',
-          fontFamily: 'sans-serif',
-          padding: '56px 72px',
+          backgroundColor: '#ffffff',
+          fontFamily: 'Inter',
+          padding: 70,
           justifyContent: 'space-between',
         }}
       >
@@ -71,7 +73,7 @@ export default async function Image({ params }: Props) {
               display: 'flex',
               fontSize: 14,
               fontWeight: 600,
-              color: '#a1a1aa',
+              color: '#71717a',
               letterSpacing: '0.15em',
               textTransform: 'uppercase' as const,
             }}
@@ -88,7 +90,7 @@ export default async function Image({ params }: Props) {
               fontSize: 56,
               fontWeight: 800,
               color: '#09090b',
-              letterSpacing: '-0.03em',
+              letterSpacing: '-0.05em',
               lineHeight: 1.12,
               maxWidth: 1000,
             }}
@@ -100,7 +102,7 @@ export default async function Image({ params }: Props) {
               display: 'flex',
               fontSize: 28,
               fontWeight: 500,
-              color: '#52525b',
+              color: '#71717a',
               flexWrap: 'wrap' as const,
             }}
           >
@@ -130,6 +132,7 @@ export default async function Image({ params }: Props) {
     ),
     {
       ...size,
+      fonts,
       headers: {
         'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
       },
