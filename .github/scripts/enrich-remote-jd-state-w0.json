@@ -14430,7 +14430,7 @@
     },
     "0992f90e-3dee-43e1-acaa-96a9fe780d51": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4570b3ee-f46c-4619-8bfb-007e3bf7c581": {
       "status": "skip",
@@ -25006,7 +25006,7 @@
     },
     "0cd07374-73ae-4dcc-99ee-a243b4fb7e16": {
       "status": "skip",
-      "reason": "html_429"
+      "reason": "err_TypeError"
     },
     "1e6f9273-50eb-4347-9dba-7399bc2cde5b": {
       "status": "fail",
@@ -25024,7 +25024,7 @@
     },
     "09d4fe1b-d938-435a-bfac-afd6d7863da5": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TypeError"
     },
     "0b0316ea-57c0-461a-93b5-c56b8f2ec865": {
       "status": "ok",
@@ -25228,7 +25228,7 @@
     },
     "028777a5-f376-4044-aa5b-54552a6334fa": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "04077c0e-65cc-4b6e-a7cd-f256d2195dc9": {
       "status": "skip",
@@ -25524,7 +25524,7 @@
     },
     "0f6cf7ce-6f43-4235-a311-e3ad2b4d7950": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1affff91-2783-4d4a-bf33-153ad12af138": {
       "status": "skip",
@@ -25776,7 +25776,7 @@
     },
     "0311fe67-cf83-4c73-9d4f-cafe927366d2": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "0f91e83e-cbd2-4994-af16-1e3a15ce5f48": {
       "status": "skip",
@@ -25916,7 +25916,7 @@
     },
     "07ed3829-e6b1-4ccb-ae7d-f3dbe24549d0": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "01206c68-2dfb-4ebb-aa4f-df20c78497cc": {
       "status": "skip",
@@ -45887,8 +45887,9 @@
       "reason": "html_short"
     },
     "0af3a50d-7c66-46f4-bc73-815a4ca44e42": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/prod-mgr-19",
+      "external_id": "waymo_prod-mgr-19"
     },
     "0fe1f768-5dcb-464e-8a83-ce07766f1256": {
       "status": "ok",
@@ -45901,7 +45902,7 @@
     },
     "0afe63ae-2217-4696-abd1-34d26d9739e4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "0d438053-aa0c-4a18-b816-45a86becac5d": {
       "status": "ok",
@@ -45913,12 +45914,14 @@
       "reason": "html_short"
     },
     "05dcca34-05c9-4a69-bfd8-9c615a527b7e": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/cust-care-7d",
+      "external_id": "toast_cust-care-7d"
     },
     "09d0d8a7-bce7-40c6-9389-3d1c64bb7143": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/bilingual-53",
+      "external_id": "toast_bilingual-53"
     },
     "184a4cca-80b7-406b-9e65-a5e45440fcf8": {
       "status": "skip",
@@ -45958,8 +45961,9 @@
       "reason": "html_short"
     },
     "0a915320-c133-4e97-a5ee-3f17c36313ac": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/upstart/mobile-sw",
+      "external_id": "upstart_mobile-sw"
     },
     "170c7562-dbe1-4962-a83e-af0b95c0122a": {
       "status": "skip",
@@ -46701,8 +46705,9 @@
       "reason": "html_short"
     },
     "0bd6022d-b29e-4f35-a8bb-fa9192620985": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/regional-fleet",
+      "external_id": "waymo_regional-fleet"
     },
     "1bd8816f-793f-433a-987c-5bc6bd9402bb": {
       "status": "ok",
@@ -47220,8 +47225,9 @@
       "external_id": "zoominfo-technologies-llc_hr-biz"
     },
     "0ca83b2e-3211-47ce-8af3-5966adf7c484": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/toast/territory-a9",
+      "external_id": "toast_territory-a9"
     },
     "03826d5a-5b15-47aa-ba34-803ec88c28ec": {
       "status": "ok",
@@ -47696,7 +47702,7 @@
     },
     "07d928ad-5eaf-4582-9301-7378506c6fd5": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "091e8d53-d207-4fc9-b263-9d6036cd0d04": {
       "status": "skip",
@@ -47708,7 +47714,7 @@
     },
     "096f49b7-8e20-4e61-b4f5-df07e7e85a46": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0aef115f-4979-457c-a97b-78884ea7ce71": {
       "status": "skip",
@@ -47736,7 +47742,7 @@
     },
     "07672327-f1ca-4a02-bf85-5b5bf8bc0132": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "013d8bca-ba3b-4774-9075-cd157fc0a765": {
       "status": "skip",
@@ -47756,15 +47762,15 @@
     },
     "08e6c08f-b2e5-4834-a946-d37633cde85b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "09a2a9f8-e7e6-467c-bb93-b15b30e44cf8": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "01ba8262-cfa5-405c-8420-81fcb77a5e89": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "08d22637-cb4f-40e4-b183-13dc4bb8efc8": {
       "status": "skip",
@@ -47832,7 +47838,7 @@
     },
     "0ef5a963-81e3-412d-b73a-8c9f134c2856": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0d975023-8820-459a-bd93-87640c245008": {
       "status": "skip",
@@ -48304,7 +48310,7 @@
     },
     "08e6c76a-c320-4bee-9f1b-67f2fcc3017c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0f8d18b9-bac9-4bc2-b559-d0751e6c2053": {
       "status": "skip",
@@ -48312,11 +48318,11 @@
     },
     "0fc1a0fb-ff67-4dd7-bc5a-e253a9750fbc": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0d078bd6-2d4e-4688-808a-e9869eba89b8": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0b2a5aea-9fd6-4894-be44-bd960566e6a0": {
       "status": "skip",
@@ -48332,23 +48338,23 @@
     },
     "0d8d1bad-8c89-4ca1-8f55-4a290e4db240": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0f33e032-af5f-4493-a86f-9e9dc44bd652": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "08468ceb-0251-4934-b4a7-92634f8b17b8": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0d3809df-53e3-40e1-a700-487d47fe3bef": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "010bf1eb-670f-434c-9668-bcbd75886b32": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "09d8ee5d-773a-42c7-ab4b-bc2ecd3abcdd": {
       "status": "skip",
@@ -48356,11 +48362,11 @@
     },
     "0f33b4a0-f38e-479a-bffb-164d5120f2bb": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "007e61f4-0284-4a56-b8ed-58fa12f59346": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "000dfa3c-2d0d-4320-8ee8-80722ff64ff9": {
       "status": "skip",
@@ -48372,7 +48378,7 @@
     },
     "0b4203c7-41fb-464d-b5f4-fcd32f5ee046": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "06c2a985-e0c5-4911-a56f-cdcb9bf59513": {
       "status": "skip",
@@ -48380,7 +48386,7 @@
     },
     "02956589-177c-45c0-a733-6ce3027acef4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0b6537d7-2ff2-49ea-9ab1-a8782823a5a0": {
       "status": "skip",
@@ -48756,7 +48762,7 @@
     },
     "0be8b5b2-c757-4256-b705-639c65c81906": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "094ecf64-de13-4287-8218-6956b2e0f803": {
       "status": "skip",
@@ -48772,19 +48778,19 @@
     },
     "0fd2ce7e-f50c-4536-90a9-2eec08efee9f": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0c4049ea-2054-4d1e-a90a-639c910e29e8": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0f336b77-130f-4c38-86bf-54ebad406efd": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "03f72007-fc97-4500-851c-f2ec41154b12": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "06f8983c-304e-46fc-bba8-a0b08a7e4c78": {
       "status": "skip",
@@ -48792,15 +48798,15 @@
     },
     "04457132-d76a-4cab-a281-c087250b877e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "086807bd-3b9c-417f-819a-5a071d84e683": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "01af98ec-441a-4ce9-887b-970fc116d836": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "000bd72e-5df8-430b-885c-2dafd478a434": {
       "status": "skip",
@@ -48812,7 +48818,7 @@
     },
     "0a337766-d926-46fc-ac2d-d416da17552f": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "027e6315-944b-4e30-b7c4-f147d3eb6621": {
       "status": "skip",
@@ -48824,7 +48830,7 @@
     },
     "019f6862-8f07-4205-8ae1-b1284a05a982": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0fc957da-8a5d-471e-a01d-a443fa9c247f": {
       "status": "skip",
@@ -48844,7 +48850,7 @@
     },
     "09631a1a-c935-435e-9725-2daf4505757f": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "05e900a7-4e78-4520-993d-a2d0af28212f": {
       "status": "skip",
@@ -49025,7 +49031,7 @@
     },
     "028d0082-6912-4263-aff2-c5d62ee9b24a": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "00d15fa6-d23b-4337-acd7-4427ae1bcb83": {
       "status": "ok",
@@ -49038,16 +49044,19 @@
       "external_id": "waymo_fullstk-eng"
     },
     "0ddbdcb9-3c20-4e45-bfda-03bef04cac03": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/hardware-sre",
+      "external_id": "waymo_hardware-sre"
     },
     "0f0abc34-3e53-4631-9ede-47f8d343c4eb": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/ml-eng-6b",
+      "external_id": "waymo_ml-eng-6b"
     },
     "0ff48b03-d014-4af7-b5a7-16fd812bf668": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/fullstk-sw",
+      "external_id": "waymo_fullstk-sw"
     },
     "06f7f1eb-5ec2-4e37-a31a-8f09a79a2aab": {
       "status": "skip",
@@ -49216,8 +49225,9 @@
       "external_id": "sumup_field-sales-82"
     },
     "00ba4e0d-7d15-4108-b8f8-b70ec7e74f00": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/upstart/sw-eng-75",
+      "external_id": "upstart_sw-eng-75"
     },
     "0cedab42-ab7b-4184-9a3b-4ac7a4d517c5": {
       "status": "skip",
@@ -49225,7 +49235,7 @@
     },
     "0673e182-b46e-4f77-a6c7-99fea8b3fd82": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "0ff18a34-c0ec-4bc0-a2ef-6b6d6b38dadc": {
       "status": "ok",
@@ -49356,24 +49366,28 @@
       "reason": "err_TimeoutError"
     },
     "061c25cb-661c-4514-a64b-bf05630c22a4": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/roku/sw-eng-sre",
+      "external_id": "roku_sw-eng-sre"
     },
     "0601a673-0b7d-4acc-8262-1cd3f690e463": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/roku/sw-eng-ui",
+      "external_id": "roku_sw-eng-ui"
     },
     "011ad2b6-a32a-4fae-9568-88371610f2e9": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/roku/sw-eng-34",
+      "external_id": "roku_sw-eng-34"
     },
     "00f3e20c-dfe7-4ec9-822e-7701c155114d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "0c5427eb-5adb-42e4-80da-c5e4a86804ba": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/roku/sw-eng-ad",
+      "external_id": "roku_sw-eng-ad"
     },
     "088cef9b-518c-4e22-b615-5a64541b21c2": {
       "status": "ok",
@@ -49527,7 +49541,7 @@
     },
     "069e2d8e-2e91-44ae-9e83-d7ede6aaf67b": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_403"
     },
     "02784208-114a-443d-bfc1-cea65d83333a": {
       "status": "skip",
@@ -49535,7 +49549,7 @@
     },
     "0ff6bd3a-e5c7-40c3-a0df-e8668c24c61a": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "019c4cf3-5799-4727-b652-ed1e23f5e637": {
       "status": "skip",
@@ -49543,7 +49557,7 @@
     },
     "0131221c-1f83-4884-a1f0-1ae5e31d5991": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "04b76dda-ff77-4bea-88db-14f8208abef9": {
       "status": "skip",
@@ -49560,7 +49574,7 @@
     },
     "06e86368-a0f0-45cb-b6b2-53eb1515437b": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "08b0911c-1ca4-4b3e-a4f1-eca4f8578123": {
       "status": "ok",
@@ -49756,7 +49770,7 @@
     },
     "0a90f518-4134-4d2e-a5e1-ccbdb585c242": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "0dd7ad90-9589-4208-87e2-47f1829e9ebb": {
       "status": "ok",
@@ -50398,7 +50412,7 @@
     },
     "09743218-1d3d-49a5-92f1-4380c8f35775": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0aefc165-626f-480c-88c4-7ee024238c09": {
       "status": "skip",
@@ -50446,7 +50460,7 @@
     },
     "0f7c0178-e73e-4c20-9b0a-b80bce4def71": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0503ce1f-f51c-4c7e-82db-22ddacd75a03": {
       "status": "skip",
@@ -50494,11 +50508,11 @@
     },
     "0c6d9349-ddf2-4728-ad20-9278a1a1d311": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "05188ba0-c010-436f-8a88-9108061d8523": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "05e0ca66-7af4-4cf6-85b6-9ea481049ac4": {
       "status": "skip",
@@ -50506,11 +50520,11 @@
     },
     "0596760c-8d55-4107-bf01-289e3f6d63da": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0a932e69-4365-4416-9265-cc94bd58a71c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0617e018-cdeb-4f90-bdd1-7d1d7dfbbb77": {
       "status": "skip",
@@ -50518,7 +50532,7 @@
     },
     "0c3c4da5-e7f7-40dc-9d64-ec464aec578e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0c540ef9-6e0c-46d4-b312-ae24f0e93a30": {
       "status": "ok",
@@ -50712,7 +50726,7 @@
     },
     "005ad8f4-86b3-4fbf-ae2a-80178512f15b": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "001d2cfc-cd50-4c17-bce6-f4207adee8b2": {
       "status": "skip",
@@ -65814,6 +65828,40 @@
         "/waymo/net-ops-mgr",
         "/toast/bilingual-f3",
         "/waymo/prod-mgr-geo"
+      ]
+    },
+    {
+      "batchNum": 8,
+      "worker": 0,
+      "at": "2026-08-03T21:39:27.493Z",
+      "attempted": 713,
+      "ok": 14,
+      "skip": 698,
+      "fail": 1,
+      "reasons": {
+        "html_short": 619,
+        "html_403": 21,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_404": 6,
+        "err_TimeoutError": 43,
+        "err_TypeError": 6,
+        "html_429": 3
+      },
+      "samplePaths": [
+        "/toast/cust-care-7d",
+        "/waymo/prod-mgr-19",
+        "/toast/bilingual-53",
+        "/upstart/mobile-sw",
+        "/waymo/regional-fleet",
+        "/toast/territory-a9",
+        "/waymo/hardware-sre",
+        "/waymo/fullstk-sw",
+        "/waymo/ml-eng-6b",
+        "/upstart/sw-eng-75",
+        "/roku/sw-eng-ad",
+        "/roku/sw-eng-ui",
+        "/roku/sw-eng-sre",
+        "/roku/sw-eng-34"
       ]
     }
   ]
