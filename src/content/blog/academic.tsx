@@ -160,5 +160,6 @@ export default function ArticleContent() {
           <li><Link href="/tenure" className={link}>How to explain short job stints after leaving academia</Link></li>
           <li><Link href="/impact" className={link}>How to show value without dollar metrics</Link></li>
         </ul>
+      </div>
   );
 }
