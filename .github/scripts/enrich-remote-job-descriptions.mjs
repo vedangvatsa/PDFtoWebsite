@@ -533,25 +533,39 @@ ${metaBits}
 SOURCE (facts only — rewrite, do not quote):
 ${sourceText.slice(0, 12000)}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_KEY}`;
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.4,
-        maxOutputTokens: 4096,
-        topP: 0.9,
-        thinkingConfig: { thinkingBudget: 0 },
-      },
-    }),
-  });
-  if (!r.ok) {
-    const err = await r.text();
-    throw new Error(`gemini_${r.status}:${err.slice(0, 180)}`);
+  const models = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-1.5-flash'];
+  let lastErr = '';
+  let data = null;
+
+  for (const model of models) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
+    try {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 4096,
+            topP: 0.9,
+            thinkingConfig: { thinkingBudget: 0 },
+          },
+        }),
+      });
+      if (r.ok) {
+        data = await r.json();
+        break;
+      }
+      const err = await r.text();
+      lastErr = `gemini_${model}_${r.status}:${err.slice(0, 180)}`;
+      if (r.status === 429) await sleep(1000);
+    } catch (e) {
+      lastErr = `gemini_${model}_err:${String(e.message||e).slice(0, 100)}`;
+    }
   }
-  const data = await r.json();
+
+  if (!data) throw new Error(lastErr || 'gemini_failed');
   let text = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
   text = text.trim();
   if (text.startsWith('```')) {
@@ -584,11 +598,21 @@ async function fetchAllJobs() {
   let offset = 0;
   const page = 1000;
   const since = new Date(Date.now() - 30 * 86400000).toISOString();
+
+  const hex = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+  const chunkSize = Math.max(1, Math.floor(hex.length / WORKERS));
+  const startHex = hex[Math.min(WORKER_ID * chunkSize, hex.length - 1)];
+  const endHex = (WORKER_ID === WORKERS - 1) ? null : hex[Math.min((WORKER_ID + 1) * chunkSize, hex.length - 1)];
+
   while (true) {
-    const r = await fetch(
-      `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&limit=${page}&offset=${offset}`,
-      { headers }
-    );
+    let url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash&created_at=gte.${encodeURIComponent(since)}&tags=not.cs.{"curated-jd"}&apply_url=not.is.null`;
+    if (WORKERS > 1) {
+      url += `&id=gte.${startHex}0000000-0000-0000-0000-000000000000`;
+      if (endHex) url += `&id=lt.${endHex}0000000-0000-0000-0000-000000000000`;
+    }
+    url += `&order=created_at.desc&limit=${page}&offset=${offset}`;
+
+    const r = await fetch(url, { headers });
     const rows = await r.json();
     if (!Array.isArray(rows) || !rows.length) break;
     out.push(...rows);
@@ -667,10 +691,9 @@ async function runOneBatch(batchNum, state, done) {
 
   console.log('Loading jobs…');
   const all = await fetchAllJobs();
-  const remote = all.filter(isRemote);
-  console.log(`Remote (broad): ${remote.length}`);
+  console.log(`Total jobs loaded: ${all.length}`);
 
-  const candidates = remote
+  const candidates = all
     .filter((j) => shardOf(j.id) === WORKER_ID)
     .filter((j) => j.apply_url && !done.has(j.id))
     .filter((j) => {
@@ -769,12 +792,29 @@ async function runOneBatch(batchNum, state, done) {
 
       try {
         if (!DRY_RUN) {
-          await updateJob(job.id, {
-            description,
-            external_id,
-            tags,
-            company_key: job.company_key || companySlug,
-          });
+          try {
+            await updateJob(job.id, {
+              description,
+              external_id,
+              tags,
+              company_key: job.company_key || companySlug,
+            });
+          } catch (patchErr) {
+            if (String(patchErr.message || patchErr).includes('23505') || String(patchErr.message || patchErr).includes('409')) {
+              const hash = createHash('md5').update(job.id).digest('hex').slice(0, 4);
+              jobSlug = `${jobSlug.slice(0, 18)}-${hash}`;
+              external_id = `${companySlug}_${jobSlug}`;
+              path = `/${companySlug}/${jobSlug}`;
+              await updateJob(job.id, {
+                description,
+                external_id,
+                tags,
+                company_key: job.company_key || companySlug,
+              });
+            } else {
+              throw patchErr;
+            }
+          }
         }
         stats.ok++;
         successes.push({ id: job.id, path, title: job.title, company: job.company });

@@ -21,7 +21,13 @@ import {
 import type { JobRow } from '@/lib/job-detail-data';
 
 const SELECT_COLS =
-  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id';
+  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at';
+
+function isExpiredJob(createdAt?: string | null): boolean {
+  if (!createdAt) return false;
+  const ageMs = Date.now() - new Date(createdAt).getTime();
+  return ageMs > 30 * 24 * 60 * 60 * 1000;
+}
 
 async function loadJobByIdLive(id: string): Promise<JobRow | null> {
   const result = await withTimeoutFallback(
@@ -31,7 +37,9 @@ async function loadJobByIdLive(id: string): Promise<JobRow | null> {
     `job-by-id:${id.slice(0, 8)}`
   );
   if (result.error || !result.data) return null;
-  return result.data as JobRow;
+  const row = result.data as JobRow;
+  if (isExpiredJob(row.created_at)) return null;
+  return row;
 }
 
 async function loadJobByExternalIdLive(
@@ -51,6 +59,7 @@ async function loadJobByExternalIdLive(
   );
   if (result.error || !result.data) return null;
   const row = result.data as JobRow;
+  if (isExpiredJob(row.created_at)) return null;
   if (companyToSlug(row.company) !== companySlug.toLowerCase()) return null;
   return row;
 }
