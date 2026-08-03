@@ -1,7 +1,6 @@
 import './report.css';
-import fs from 'fs';
-import path from 'path';
 import { CITY_IMAGES, CITY_IMAGE_FALLBACK } from '@/lib/utils';
+import nomadCities from '@/lib/nomad-cities';
 import { ReportCover } from '@/components/report/report-cover';
 import { ReportTOC } from '@/components/report/report-toc';
 import { ReportMethodology } from '@/components/report/report-methodology';
@@ -70,9 +69,7 @@ function computeWeatherScore(city: CityData): number {
 }
 
 export default function ReportPage() {
-  const citiesPath = path.join(process.cwd(), 'public', 'nomad-cities.json');
-  const raw = fs.readFileSync(citiesPath, 'utf-8');
-  const allCities: CityData[] = JSON.parse(raw);
+  const allCities: CityData[] = nomadCities as CityData[];
 
   // Sort by nomad_score, take top 50
   const sorted = [...allCities]

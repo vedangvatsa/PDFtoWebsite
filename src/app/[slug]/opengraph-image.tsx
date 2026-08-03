@@ -3,8 +3,7 @@ import { getProfileBySlug } from '@/lib/supabase-server';
 import { blogMetadata } from '@/lib/blog-metadata';
 import { getCompanyDirectoryForOg, resolveOgCompanyLogo } from '@/lib/og-company-logo';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
-import path from 'path';
-import fs from 'fs';
+import nomadCities from '@/lib/nomad-cities';
 
 export const runtime = 'nodejs';
 
@@ -47,13 +46,7 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
   }
 
   // Check if it is a city guide
-  const citiesPath = path.join(process.cwd(), 'public', 'nomad-cities.json');
-  let cityData = null;
-  if (fs.existsSync(citiesPath)) {
-    const raw = fs.readFileSync(citiesPath, 'utf-8');
-    const cities = JSON.parse(raw);
-    cityData = cities.find((c: any) => c.slug === slug);
-  }
+  const cityData = nomadCities.find((c) => c.slug === slug) ?? null;
 
   if (cityData) {
     const costDisplay = `$${cityData.cost?.monthly_total?.toLocaleString() ?? '1,500'}`;

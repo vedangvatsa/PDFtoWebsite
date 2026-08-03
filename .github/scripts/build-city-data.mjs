@@ -12,7 +12,7 @@
  *  5. Find 5 nearest cities by Haversine distance
  *  6. Add cost-of-living estimates
  * 
- * Output: /public/nomad-cities.json
+ * Output: /public/nomad-cities.json + /src/lib/nomad-cities.json (bundled copy for server-side imports)
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -25,6 +25,7 @@ const ROOT = join(__dirname, '..', '..');
 
 const INPUT  = join(ROOT, 'public', 'nomad-data-slim.json');
 const OUTPUT = join(ROOT, 'public', 'nomad-cities.json');
+const OUTPUT_SRC = join(ROOT, 'src', 'lib', 'nomad-cities.json');
 
 // ─── Country Mapping ───────────────────────────────────────────
 const COUNTRY_TO_CODE = {
@@ -590,7 +591,8 @@ async function main() {
   output.sort((a, b) => b.nomad_score - a.nomad_score);
   
   writeFileSync(OUTPUT, JSON.stringify(output, null, 2));
-  console.log(`💾 Saved to ${OUTPUT}\n`);
+  writeFileSync(OUTPUT_SRC, JSON.stringify(output, null, 2));
+  console.log(`💾 Saved to ${OUTPUT}\n💾 Bundled copy to ${OUTPUT_SRC}\n`);
   
   // ── Stats ────────────────────────────────────────────────────
   console.log('═══════════════════════════════════════════════════');

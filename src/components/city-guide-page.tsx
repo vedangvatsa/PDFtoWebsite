@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import fs from 'fs';
-import path from 'path';
 import { notFound } from 'next/navigation';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
@@ -8,6 +6,8 @@ import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { NomadMapWrapper } from '@/components/nomad-map-wrapper';
 import { ArrowLeft, MapPin, Thermometer, Droplets, CloudRain, Building2, DollarSign, Wifi, Info, Users, Facebook, Send, MessageCircle, Globe, Slack } from 'lucide-react';
 import { CITY_IMAGES, CITY_IMAGE_FALLBACK } from '@/lib/utils';
+import nomadCities from '@/lib/nomad-cities';
+import nomadCommunities from '@/lib/nomad-communities.json';
 
 interface CityWeatherMonth {
   month: string;
@@ -59,9 +59,7 @@ interface CityData {
 }
 
 function loadCities(): CityData[] {
-  const filePath = path.join(process.cwd(), 'public', 'nomad-cities.json');
-  const raw = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
+  return nomadCities as CityData[];
 }
 
 interface Community {
@@ -71,16 +69,7 @@ interface Community {
 }
 
 function loadCommunities(): Record<string, Community[]> {
-  try {
-    const filePath = path.join(process.cwd(), 'public', 'nomad-communities.json');
-    if (fs.existsSync(filePath)) {
-      const raw = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(raw);
-    }
-  } catch (err) {
-    console.error("Failed to load communities:", err);
-  }
-  return {};
+  return nomadCommunities as unknown as Record<string, Community[]>;
 }
 
 function ScoreBar({ score }: { score: number }) {
