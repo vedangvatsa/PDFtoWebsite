@@ -57368,7 +57368,7 @@
     },
     "1bcbadd8-a6e5-4215-b32d-0a811a332a35": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "17d9c182-af7c-4516-a625-0b9650e4955f": {
       "status": "ok",
@@ -74136,6 +74136,23 @@
         "/zoominfo-technologies-llc/acct-mgr",
         "/zoominfo-technologies-llc/devops-eng"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 1,
+      "at": "2026-08-03T22:23:27.309Z",
+      "attempted": 794,
+      "ok": 0,
+      "skip": 794,
+      "fail": 0,
+      "reasons": {
+        "html_short": 724,
+        "html_403": 44,
+        "err_TimeoutError": 21,
+        "html_429": 2,
+        "err_TypeError": 3
+      },
+      "samplePaths": []
     }
   ]
 }

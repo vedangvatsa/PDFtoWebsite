@@ -34631,7 +34631,7 @@
     },
     "46f59071-eb62-47c1-a110-969025573588": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "4c3a0cbf-0e15-4c08-b63d-85b76f5e61d7": {
       "status": "skip",
@@ -35644,7 +35644,7 @@
     },
     "42a4c97f-cdfd-441e-ac1d-324b2779a6e2": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "48adfa92-81ca-49bc-8f55-eb0aaa18539b": {
       "status": "skip",
@@ -36248,19 +36248,19 @@
     },
     "49c67dd9-4647-4065-bec1-cfe185d93ac4": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "47672eef-8b2b-453b-bfa4-53a1b3585759": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "4614f3e0-a221-4853-9c48-3343c5de8ee9": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "472876db-1765-488a-b57e-30905593b17e": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "4ffb0c00-6c83-4995-8cb5-0a93d59366ba": {
       "status": "skip",
@@ -36478,7 +36478,7 @@
     },
     "40bbfb0a-212f-446e-b46a-a5800403c9e4": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_403"
     },
     "4aefffdc-9cca-4295-af7d-187e73467739": {
       "status": "skip",
@@ -37916,7 +37916,7 @@
     },
     "4399949c-1edd-4de4-b99c-7ea91123f137": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_404"
     },
     "4dfadabe-f363-41c2-b634-5af76234689d": {
       "status": "skip",
@@ -51952,6 +51952,26 @@
         "/zoominfo-technologies-llc/smb-biz-acct",
         "/zoominfo-technologies-llc/prod-mgr-ff"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 4,
+      "at": "2026-08-03T22:22:53.153Z",
+      "attempted": 749,
+      "ok": 0,
+      "skip": 749,
+      "fail": 0,
+      "reasons": {
+        "html_short": 704,
+        "lever_short": 1,
+        "html_429": 5,
+        "html_403": 23,
+        "err_TimeoutError": 12,
+        "err_TypeError": 2,
+        "html_404": 1,
+        "html_405": 1
+      },
+      "samplePaths": []
     }
   ]
 }
