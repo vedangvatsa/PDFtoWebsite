@@ -44725,8 +44725,9 @@
       "external_id": "aaa-global_ai-agentic"
     },
     "64cc4190-e26e-46db-bddf-06fc1339c064": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/affinity-co/prod-mgr-crm",
+      "external_id": "affinity-co_prod-mgr-crm"
     },
     "6ae799c4-e9ab-4924-a626-e1e55bf42a00": {
       "status": "ok",
@@ -44734,8 +44735,9 @@
       "external_id": "jack-amp-jill_fe-eng"
     },
     "6fe79b54-d570-4fcd-a808-7d11ad961022": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/jpmorganchase/prod-mgr-a6",
+      "external_id": "jpmorganchase_prod-mgr-a6"
     },
     "6e62dc02-8356-45f0-8ed8-60713ee418f0": {
       "status": "skip",
@@ -44743,11 +44745,12 @@
     },
     "65939b7d-fff1-42b8-8522-c57e033382e0": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "60edba55-5dbb-4086-9154-d90473054f6e": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/qualified-technical-services-inc/qa-eng",
+      "external_id": "qualified-technical-services-inc_qa-eng"
     },
     "636f3b5b-4bf5-4a1a-8d01-c5bb6bd70c32": {
       "status": "skip",
@@ -44772,8 +44775,9 @@
       "reason": "linkedin_429"
     },
     "6ad96a06-0c73-447c-813f-78f0e6397175": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/oho-group/ai-sys-eng",
+      "external_id": "oho-group_ai-sys-eng"
     },
     "65c5d923-677e-40d7-bc46-d905419e82ee": {
       "status": "skip",
@@ -44855,7 +44859,7 @@
     },
     "63e7d20e-88b9-48dc-8bdf-0f2ae4b7b0e0": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6e7e3dfe-5117-4872-8739-b2dc5d3c1e5e": {
       "status": "skip",
@@ -44931,7 +44935,7 @@
     },
     "66ce6f39-89ba-433c-ad94-162ba6bd67a9": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6098dddd-90eb-40f8-8e21-d69ae3727efe": {
       "status": "skip",
@@ -44989,7 +44993,7 @@
     },
     "69ab74b5-2e7f-46a5-b099-9601fc43f152": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "6eda4840-bedc-45a3-b95e-16f438dba9fa": {
       "status": "skip",
@@ -45009,7 +45013,7 @@
     },
     "608b9326-ffec-4f10-97b4-04a25b79a705": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "608ef4c7-36cb-4624-9ba7-31d5f66f29c6": {
       "status": "skip",
@@ -55718,6 +55722,49 @@
         "/klaviyo/smb-partner",
         "/pinterest/ml-eng-aa",
         "/sumup/sales-dev"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-03T16:48:52.784Z",
+      "attempted": 1145,
+      "ok": 54,
+      "skip": 1091,
+      "fail": 0,
+      "reasons": {
+        "html_short": 713,
+        "posting_older_than_30d": 2,
+        "html_403": 40,
+        "sr_400": 1,
+        "err_TypeError": 71,
+        "err_TimeoutError": 11,
+        "html_429": 2,
+        "html_404": 2,
+        "html_503": 1,
+        "linkedin_429": 248
+      },
+      "samplePaths": [
+        "/mongodb/mgr-cust",
+        "/mongodb/vp-global",
+        "/mongodb/payroll-tax",
+        "/mongodb/tech-prog-11",
+        "/mongodb/growth-mkt",
+        "/mongodb/dir-global-f2",
+        "/mongodb/acct-dev-16",
+        "/mongodb/lead-cloud",
+        "/mongodb/sales-ops",
+        "/ripple/mgr-fin-risk",
+        "/rubrik-job-board/regional-dir",
+        "/rubrik-job-board/dir-corporate",
+        "/rubrik-job-board/field-consult",
+        "/trivago/prod-mgr",
+        "/rubrik-job-board/dir-field",
+        "/rubrik-job-board/strat-sales",
+        "/mongodb/eng-mgr-ae91",
+        "/superhuman/sw-eng-be",
+        "/american-unit-inc/sre-eng",
+        "/blueprint/sys-sec-sw"
       ]
     }
   ]

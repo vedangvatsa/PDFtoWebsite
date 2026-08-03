@@ -43663,8 +43663,9 @@
       "reason": "err_TypeError"
     },
     "797b7780-ad06-4839-b359-bc31fd42aaaf": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/armada/sw-eng",
+      "external_id": "armada_sw-eng"
     },
     "7adfd560-1710-4b34-993e-81776777aef5": {
       "status": "skip",
@@ -43690,11 +43691,12 @@
     },
     "73f9022f-37f6-4239-8117-65f7d65c16fe": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "76d08cec-df68-4af9-a853-ca0ce1cd01dd": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/ntt-data-north-america/ai-prod-mgr",
+      "external_id": "ntt-data-north-america_ai-prod-mgr"
     },
     "704416d5-ea06-4095-ae7a-dd85b0028b6e": {
       "status": "skip",
@@ -43709,8 +43711,9 @@
       "reason": "linkedin_429"
     },
     "7adcb3c4-e765-4dae-9a96-3e99eccda496": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/prophet/prod-mgr-ai",
+      "external_id": "prophet_prod-mgr-ai"
     },
     "7aa87a2f-30da-4790-86a9-bad6839847a8": {
       "status": "skip",
@@ -43761,12 +43764,13 @@
       "reason": "linkedin_429"
     },
     "7337a17c-7b63-47b9-823b-b30719a74113": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/astor-group/sw-dev-hedge",
+      "external_id": "astor-group_sw-dev-hedge"
     },
     "73330d5c-7960-4410-ba25-a43dc1b5aec9": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7f059e24-e683-4580-b7da-0479d67e8111": {
       "status": "skip",
@@ -43784,7 +43788,7 @@
     },
     "75bc3cc4-177b-4df9-9223-049119d3faa7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "78ab5d3b-5338-4ccf-9011-8a3655469da4": {
       "status": "skip",
@@ -43796,7 +43800,7 @@
     },
     "7d6cb65b-fbe5-4450-9a1e-cf1daf1c0950": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "75591f67-d0a0-4d95-8010-75ece3397ca4": {
       "status": "skip",
@@ -43804,19 +43808,19 @@
     },
     "7ad275ac-782f-4545-8a2e-326a0b90c65d": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7201ad97-002b-4da2-a1ea-35eae9f4b185": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "746af285-6f9c-4437-b681-033999e78a71": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7c22112a-e338-4a60-8bce-c85b7e5d201f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "70f3945d-8ead-4210-b977-c3e83fa625c1": {
       "status": "skip",
@@ -43828,47 +43832,49 @@
     },
     "7a62e309-e86d-4135-b813-1b6e7f8443b6": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "72b468b6-b708-47a2-8ee8-e2778a7e8880": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "74a28180-0744-46d5-abef-a49ef4e04ec4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7c7dcbd3-1f8f-4c8d-9fc8-ab93d07fae93": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7d408084-1a84-4f13-b9ee-16ca1ab0096a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TimeoutError"
     },
     "7edf6067-d07c-465b-83cc-1fb2fab87daa": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "7e474142-0f74-4c86-aed9-fcc3629e98a8": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/v-soft-consulting-group-inc/devops-eng",
+      "external_id": "v-soft-consulting-group-inc_devops-eng"
     },
     "7a828114-1373-476e-aaef-f5fb5280c11e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7abf4201-a1ed-4a5e-ad6b-6b5ea771c753": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "74715f30-adfd-4100-a310-c84f2f0082fb": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "73c0458c-25e6-471d-9370-a1c7ba3c2a40": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/google/sw-eng-ec",
+      "external_id": "google_sw-eng-ec"
     },
     "7387b193-56ab-48f8-bd5c-b1299914b959": {
       "status": "skip",
@@ -43904,7 +43910,7 @@
     },
     "70d6cddf-bf2c-4e8f-9631-0a995e5222e8": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7511bc71-7510-4836-9403-d67937b3046b": {
       "status": "ok",
@@ -43912,8 +43918,9 @@
       "external_id": "golden-state-warriors_web-dev"
     },
     "73f43be1-d34e-4f9d-91bc-af1f1672c37a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/rippling/prod-lead-1a",
+      "external_id": "rippling_prod-lead-1a"
     },
     "7745c003-3b2d-4464-a05b-7a3ae7d919d5": {
       "status": "skip",
@@ -43921,7 +43928,7 @@
     },
     "7b7207f3-a2f6-4c8f-9d67-434b49d19a81": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7e0a05ef-d7a0-4909-bb8b-9c06ced04cd2": {
       "status": "skip",
@@ -43941,7 +43948,7 @@
     },
     "739dea49-05d4-4683-8752-13c1a3b87969": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "77ca2799-84e8-4c20-adaf-d5d31daa2b48": {
       "status": "skip",
@@ -43957,7 +43964,7 @@
     },
     "7f6fb5ff-2402-4633-be8e-03788507d178": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7b0b2346-3b71-4f93-a214-8c7c74a7cd51": {
       "status": "skip",
@@ -43965,7 +43972,7 @@
     },
     "72225f91-d573-4910-b810-ebd107280dfb": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7ca4cd4a-5792-4bf2-a813-97e6ba9d4679": {
       "status": "skip",
@@ -43977,7 +43984,7 @@
     },
     "7a0c4cfa-c5be-4267-9895-8713302c1b6a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "linkedin_404"
     },
     "702d504b-f533-4918-b36a-aff6747634f7": {
       "status": "skip",
@@ -43985,7 +43992,7 @@
     },
     "77fab8f1-c327-4ff4-9c98-c7e3302dea5e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "743defdd-46b5-4bcf-9f69-c9efca75089e": {
       "status": "skip",
@@ -44005,7 +44012,7 @@
     },
     "720d48f0-36d4-4518-af64-3f215517d194": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "79692fda-f14c-4a39-8366-c784d318c085": {
       "status": "skip",
@@ -44047,11 +44054,11 @@
     },
     "7425747f-2614-4dc4-a649-6ab5c1ba220e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7dee9e4f-829b-470f-b2a9-50af3aeeede3": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7cef8328-77ef-4d58-bdc5-83310fe615ab": {
       "status": "skip",
@@ -44059,11 +44066,11 @@
     },
     "7f407d9f-1af2-4220-971f-1be013024601": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7ca30b22-2fac-4889-887a-0a931b158da0": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "77c29cc4-d829-462e-b8df-719790ab659a": {
       "status": "skip",
@@ -44071,15 +44078,16 @@
     },
     "7bd44dba-7001-48a8-8585-337de6f6317c": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "70aaa03b-a0d6-4945-bd5c-78ac86f5c67f": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "78a5eb5a-d6bc-473d-ae90-84beafd6d0bc": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/wpp-media/mgr-innovation",
+      "external_id": "wpp-media_mgr-innovation"
     },
     "773d80ee-962f-4044-adb2-c93c19f5c901": {
       "status": "skip",
@@ -44090,12 +44098,13 @@
       "reason": "linkedin_429"
     },
     "798d5b35-4249-4204-b1a6-9931425e2f70": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/russell-tobin/sw-eng",
+      "external_id": "russell-tobin_sw-eng"
     },
     "7ff4234e-f07b-450e-a7a6-d45c4661a26f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "78026d36-9a0c-4af2-b659-4b17d33c61eb": {
       "status": "skip",
@@ -44111,7 +44120,7 @@
     },
     "746e5f49-a9d4-4c32-b567-50f66f9fdbc3": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "70d008a2-39df-4f71-8ec1-8d85713c2510": {
       "status": "skip",
@@ -44123,7 +44132,7 @@
     },
     "7730073b-f61f-4e78-8173-20c8af1bb163": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "716449fd-6e37-4e55-81df-31832ef9bc17": {
       "status": "skip",
@@ -44143,11 +44152,11 @@
     },
     "77f6e62a-d2f6-4895-9768-9e975515fa4d": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7ed78a26-013b-4de4-a0e2-c07bac78ccfd": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "79641aa4-1a64-42e2-9844-2eb349efc80b": {
       "status": "skip",
@@ -44179,11 +44188,11 @@
     },
     "76ce1303-05d4-47ce-9816-f4d4bf67ab99": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7fb156b3-9161-4a83-a297-736a4317e375": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "74a65151-d600-4cd1-8bc8-130ea0275435": {
       "status": "skip",
@@ -44191,7 +44200,7 @@
     },
     "7af4001a-9ea9-439d-aaec-d71e8b25e0dd": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "78298216-e67a-4452-b5b8-78791204f361": {
       "status": "skip",
@@ -44199,19 +44208,19 @@
     },
     "7fda0ade-d3ee-4ce8-87c5-06190705c02c": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "71bc0d01-d5e9-47eb-bd07-c4a2a718b528": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7bcafa86-f03a-4655-a4b5-0692b7c15a96": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7257bd60-8540-49e7-a943-4f4373e2e3d4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7f44e302-8a9d-43c8-9a64-0e988ac0e2aa": {
       "status": "skip",
@@ -44223,7 +44232,7 @@
     },
     "7b173006-1662-4e80-a6af-7e6fb70deecd": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "72885e3d-7651-48d8-a879-ffd97badcdc4": {
       "status": "skip",
@@ -44238,20 +44247,22 @@
       "reason": "linkedin_429"
     },
     "74d57d11-e313-47bd-b9d5-5e1588951a6b": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/avride/sw-eng-b2",
+      "external_id": "avride_sw-eng-b2"
     },
     "7f44c444-1227-43a0-b90e-27fff74454d2": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "7c599568-6fa3-4996-a13c-32d83312195d": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/atomic-machines/sw-app-eng",
+      "external_id": "atomic-machines_sw-app-eng"
     },
     "70aef62d-f86b-460a-bdd4-2db13ea82818": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "726c82f0-a7a4-49de-bd46-2c826197ded3": {
       "status": "skip",
@@ -44271,7 +44282,7 @@
     },
     "7a103c83-f851-4291-bd0e-93251d5b1264": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7edae8c6-2945-47ea-8853-258839f7867b": {
       "status": "skip",
@@ -44356,7 +44367,7 @@
     },
     "759a48d7-53e7-4efa-98cf-f488f88112bf": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7676a66e-027d-40a3-859c-70b6059cf08d": {
       "status": "skip",
@@ -44376,7 +44387,7 @@
     },
     "7af46546-ee15-4fae-8833-bb6ce0257bf7": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "73f45f29-62ef-4f47-9258-bbe3883d4a2d": {
       "status": "skip",
@@ -44392,7 +44403,7 @@
     },
     "778f57cb-88c6-40d9-8504-7354031b064f": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7403ea29-b3b3-44cf-ae43-3b045b484e59": {
       "status": "skip",
@@ -44404,7 +44415,7 @@
     },
     "7936a63e-ec95-4d6e-8512-bba885ab24e1": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "74a65d02-37ca-4012-a2d9-87f97a15ea77": {
       "status": "skip",
@@ -44416,7 +44427,7 @@
     },
     "74cbf064-10f6-4c64-9d0f-10800b45a2b3": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "748b9189-6225-4482-90b0-12856d8374fd": {
       "status": "skip",
@@ -44424,7 +44435,7 @@
     },
     "7c8178db-083a-4470-86bd-a883abcacbd9": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7eb04c6c-b8cb-48ae-a363-7610e4e3d813": {
       "status": "ok",
@@ -44437,7 +44448,7 @@
     },
     "7cb56794-fa22-4c5f-a870-95db8e8d7587": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "75af6206-256b-42de-bf74-40074e2e11bb": {
       "status": "skip",
@@ -44449,7 +44460,7 @@
     },
     "7ef11ddc-893e-4030-81cc-a1726d38a3c1": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "76bf32f0-a337-40fe-ad0c-d0b3713a74c1": {
       "status": "skip",
@@ -44461,19 +44472,21 @@
     },
     "7b55f040-93a6-4749-bc45-882e90547e8e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "750ae060-b2d6-49a8-8cb4-e283a4e5a994": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/pine-park-health/sw-eng",
+      "external_id": "pine-park-health_sw-eng"
     },
     "7fb4d2ec-715c-4d3c-b8ac-31c222c162c8": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/paramount/lead-sw-eng",
+      "external_id": "paramount_lead-sw-eng"
     },
     "78eeb570-fe9a-4e7e-bab4-c82988a19cd4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7ab1d5ca-ddb7-4bbf-a426-c4b14ddd9d73": {
       "status": "skip",
@@ -44488,8 +44501,9 @@
       "reason": "linkedin_429"
     },
     "7424665d-d920-4acf-b8b8-22fbed108515": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/beezwax-datatools-inc/mkt-data-sci",
+      "external_id": "beezwax-datatools-inc_mkt-data-sci"
     },
     "746e9f85-a2da-4bdc-8da5-a31ea5eeee4e": {
       "status": "skip",
@@ -44505,11 +44519,11 @@
     },
     "7e726199-2b9d-45f5-98d3-e58ef82e1bc4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7470f64c-3e92-4b54-9b25-2dd7d5381fb8": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "79a99a91-07b8-48f9-a84b-b781640d0bec": {
       "status": "skip",
@@ -44773,8 +44787,9 @@
       "reason": "linkedin_429"
     },
     "71ba1243-3de9-4d29-9331-83c61973f00b": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/simplesense/plat-eng-sec",
+      "external_id": "simplesense_plat-eng-sec"
     },
     "749f45e7-b044-4cc0-859d-b8f3bd9d34f1": {
       "status": "skip",
@@ -44818,7 +44833,7 @@
     },
     "73bb95e9-f8bb-4376-ab64-de91a503eab2": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "782dc5f1-12b4-46a1-9079-b469aca1ce81": {
       "status": "skip",
@@ -44838,7 +44853,7 @@
     },
     "75c7bea9-586a-4026-9107-ee968f7e21bc": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "742d6e2a-cfd2-4656-a178-2e0df6b378c2": {
       "status": "skip",
@@ -44854,11 +44869,12 @@
     },
     "7b6527d6-fd2e-4b45-a6ba-44da692df1bf": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7209be2d-284b-47e8-a1c1-6c26b8e2edd3": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/kiss-beauty-group/assoc-prod",
+      "external_id": "kiss-beauty-group_assoc-prod"
     },
     "75f08ed6-a2e0-44f3-8c6f-fb29cd3cb2a3": {
       "status": "skip",
@@ -44870,23 +44886,26 @@
     },
     "7bee671b-d745-4d8f-b0c9-f2adf44d6867": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "71c80ef5-a286-4766-9349-df7bda708336": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/sullivan-amp-cromwell-llp/fintech-analyst",
+      "external_id": "sullivan-amp-cromwell-llp_fintech-analyst"
     },
     "77bbc80d-cfd1-4f29-9364-b1e931510d50": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/jobgether/biz-analyst",
+      "external_id": "jobgether_biz-analyst"
     },
     "7a144527-e7ea-4018-8dae-44f9fc341fd8": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/costco-wholesale/sec-eng-data",
+      "external_id": "costco-wholesale_sec-eng-data"
     },
     "7c5dd5cf-5505-4f34-8868-46e30256256e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "753e8514-3bd5-438f-b051-b03d5f5abff9": {
       "status": "skip",
@@ -44901,8 +44920,9 @@
       "reason": "linkedin_429"
     },
     "7920d67e-a745-403d-a296-a381821660a8": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/ahold-delhaize-usa/cloud-sre",
+      "external_id": "ahold-delhaize-usa_cloud-sre"
     },
     "7c25e250-ca96-48c1-a6f2-63378f088ebb": {
       "status": "skip",
@@ -44913,8 +44933,9 @@
       "reason": "linkedin_429"
     },
     "730a6408-6589-4fb1-a27d-ce29eec7b64a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/rhombus-power-inc/sw-eng",
+      "external_id": "rhombus-power-inc_sw-eng"
     },
     "769dcad2-c43c-46d7-98ec-f4ccc8af2136": {
       "status": "skip",
@@ -44934,8 +44955,9 @@
       "reason": "linkedin_429"
     },
     "7154f43f-0ab1-43fd-883b-ee705d7980f1": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/transfotech-academy/ai-ml-eng",
+      "external_id": "transfotech-academy_ai-ml-eng"
     },
     "7d394e97-3077-46e3-9363-53272ec6161c": {
       "status": "skip",
@@ -44943,7 +44965,7 @@
     },
     "7ecb5fe9-b5d0-4862-8469-f581352adaab": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "77deb0c6-1276-4e5e-9e84-428c65d66599": {
       "status": "skip",
@@ -44966,8 +44988,9 @@
       "reason": "linkedin_429"
     },
     "71830e6d-5512-484b-82fe-135f8c2304e4": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/call-for-referral/natural-language",
+      "external_id": "call-for-referral_natural-language"
     },
     "70121632-e4c0-4110-9571-8410bebd987b": {
       "status": "skip",
@@ -44987,7 +45010,7 @@
     },
     "79352455-0da3-48be-bc83-9dd36e07e364": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "780ffd2f-c5a8-4f64-94f6-32271764033d": {
       "status": "skip",
@@ -45019,7 +45042,7 @@
     },
     "76689ede-511d-4aad-892b-95fb080b80f4": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "7cd8a274-0935-40ba-a75d-7447fa5083f5": {
       "status": "skip",
@@ -45035,11 +45058,12 @@
     },
     "79c3fa5e-93f0-4236-a42f-6e9c7b6ecc48": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "74a46db5-f745-449e-9e44-89943ce18367": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/jpmorganchase/android-mobile",
+      "external_id": "jpmorganchase_android-mobile"
     },
     "734f1726-8ed6-4f31-ae2b-92300a2540e9": {
       "status": "skip",
@@ -45084,7 +45108,7 @@
     },
     "742e36bf-e4bf-4eec-98ca-2c7685b287ed": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "73a8f13d-420a-466e-bc43-8e64e83e2db9": {
       "status": "skip",
@@ -55809,6 +55833,52 @@
       "samplePaths": [
         "/the-lubrizol-corporation/sec-eng",
         "/jpmorganchase/client360-biz"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 7,
+      "at": "2026-08-03T16:49:17.082Z",
+      "attempted": 1163,
+      "ok": 49,
+      "skip": 1114,
+      "fail": 0,
+      "reasons": {
+        "posting_older_than_30d": 2,
+        "gh_short": 1,
+        "html_short": 706,
+        "sr_400": 1,
+        "ashby_not_found": 1,
+        "err_TimeoutError": 21,
+        "html_403": 30,
+        "err_TypeError": 96,
+        "html_429": 2,
+        "html_503": 3,
+        "html_405": 1,
+        "linkedin_429": 249,
+        "linkedin_404": 1
+      },
+      "samplePaths": [
+        "/mongodb/eng-mgr-dev",
+        "/mongodb/relationship-fd",
+        "/mongodb/eng-62",
+        "/mongodb/tech-ce",
+        "/mongodb/mgr-premium",
+        "/mongodb/technologist",
+        "/mongodb/eng-gtm-tech-1216",
+        "/mongodb/sol-arch-7a12",
+        "/mongodb/sw-eng-ea",
+        "/mongodb/engagement",
+        "/mongodb/engagement-c3",
+        "/mongodb/international",
+        "/mongodb/dir-isv",
+        "/mongodb/mkt-ops-mgr",
+        "/rubrik-job-board/sec-risk",
+        "/mongodb/acct-dev-ff",
+        "/rubrik-job-board/enterprise-ee",
+        "/rubrik-job-board/iam-eng",
+        "/rubrik-job-board/sled-acct-6f",
+        "/mongodb/biz-ops"
       ]
     }
   ]
