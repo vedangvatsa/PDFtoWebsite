@@ -10185,6 +10185,110 @@
         "no_company": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:54:39.925Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:55:04.522Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:55:27.597Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:55:51.465Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:56:14.008Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:56:37.749Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:57:01.490Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-03T11:57:24.426Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 1,
+      "fail": 0,
+      "reasons": {
+        "no_company": 1
+      },
+      "samplePaths": []
     }
   ]
 }
