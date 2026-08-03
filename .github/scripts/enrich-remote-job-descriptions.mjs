@@ -128,9 +128,13 @@ function classifyApplyUrl(url) {
   m = host.includes('smartrecruiters.com') && path.match(/\/([^/]+)\/(\d+)/);
   if (m) return { kind: 'smartrecruiters', board: m[1], id: m[2] };
 
+  // LinkedIn
+  m = host.includes('linkedin.com') && (url.match(/\/jobs\/view\/.*?(\d{8,})/i) || url.match(/\/jobs\/view\/(\d{8,})/i) || url.match(/[?&]currentJobId=(\d{8,})/i) || path.match(/(\d{8,})/));
+  if (m) return { kind: 'linkedin', id: m[1] };
+
   // Skip known-bad / thin aggregators
   if (
-    /linkedin\.com|jooble\.org|jobviewtrack\.com|adzuna\.|indeed\.|glassdoor\.|ziprecruiter\./i.test(
+    /jooble\.org|jobviewtrack\.com|adzuna\.|indeed\.|glassdoor\.|ziprecruiter\./i.test(
       host
     )
   ) {
@@ -270,6 +274,46 @@ async function fetchSourceText(job) {
       );
       if (text.length < 280) return { ok: false, reason: 'sr_short' };
       return { ok: true, text, extras: { publishedAt, location: d.location?.city } };
+    }
+
+    if (meta.kind === 'linkedin' && meta.id) {
+      const r = await fetch(
+        `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/${meta.id}`,
+        {
+          headers: {
+            'User-Agent':
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+          },
+        }
+      );
+      if (!r.ok) return { ok: false, reason: `linkedin_${r.status}` };
+      const html = await r.text();
+      const match = html.match(/<div class=\"show-more-less-html__markup[^\"]*\">([\s\S]*?)<\/div>/i);
+      if (!match) return { ok: false, reason: 'linkedin_no_markup' };
+      const text = stripHtml(match[1]);
+      if (text.length < 280) return { ok: false, reason: 'linkedin_short' };
+
+      let location = null;
+      const locMatch = html.match(/class=\"topcard__flavor topcard__flavor--bullet\">([^<]+)<\/span>/i);
+      if (locMatch) location = stripHtml(locMatch[1]);
+
+      let publishedAt = null;
+      const dateMatch = html.match(/datetime=\"([^\"]+)\"/i);
+      if (dateMatch && dateMatch[1].includes('-')) publishedAt = dateMatch[1];
+      if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
+        return { ok: false, reason: 'posting_older_than_30d' };
+      }
+
+      return {
+        ok: true,
+        text,
+        extras: {
+          publishedAt,
+          location,
+        },
+      };
     }
 
     if (meta.kind === 'html') {
