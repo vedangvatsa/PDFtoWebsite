@@ -26,6 +26,8 @@ require('dotenv').config();
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').replace(/"/g, '');
+const ANTHROPIC_KEY = (process.env.ANTHROPIC_API_KEY || '').replace(/"/g, '');
+const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
 const DRY_RUN = process.env.DRY_RUN === '1';
@@ -534,9 +536,7 @@ function prettyJobSlug(title, uniqueSeed, used) {
   return slug;
 }
 
-async function rewriteWithGemini(job, sourceText, extras) {
-  if (!GEMINI_KEY) throw new Error('Missing GEMINI_API_KEY');
-
+function buildJobPrompt(job, sourceText, extras) {
   const metaBits = [
     `Company: ${job.company}`,
     `Title: ${job.title}`,
@@ -551,7 +551,7 @@ async function rewriteWithGemini(job, sourceText, extras) {
     .filter(Boolean)
     .join('\n');
 
-  const prompt = `You write original job description pages for cvin.bio.
+  return `You write original job description pages for cvin.bio.
 
 TASK: Rewrite the source posting into a clear, original job page. Do NOT copy sentences or bullet wording from the source. Paraphrase everything. Keep EVERY concrete fact: tech, years of experience, degrees, locations, salary/comp numbers, visas, deadlines, team names, product names, must-haves, nice-to-haves.
 
@@ -597,6 +597,27 @@ ${metaBits}
 
 SOURCE (facts only — rewrite, do not quote):
 ${sourceText.slice(0, 12000)}`;
+}
+
+function finalizeText(text) {
+  text = (text || '').trim();
+  if (text.startsWith('```')) {
+    text = text.replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/, '').trim();
+  }
+  // Light quality gates
+  if (text.length < 350) throw new Error('rewrite_short');
+  if (/leverage|delve into|cutting-edge|exciting opportunity to join/i.test(text)) {
+    throw new Error('rewrite_slop');
+  }
+  if (!/About the role|What you'll do|Requirements/i.test(text)) {
+    throw new Error('rewrite_structure');
+  }
+  return text.slice(0, 8000);
+}
+
+async function rewriteWithGemini(job, sourceText, extras) {
+  if (!GEMINI_KEY) throw new Error('Missing GEMINI_API_KEY');
+  const prompt = buildJobPrompt(job, sourceText, extras);
 
   const models = ['gemini-3.6-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
   let lastErr = '';
@@ -631,20 +652,66 @@ ${sourceText.slice(0, 12000)}`;
   }
 
   if (!data) throw new Error(lastErr || 'gemini_failed');
-  let text = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
-  text = text.trim();
-  if (text.startsWith('```')) {
-    text = text.replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/, '').trim();
+  const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
+  return finalizeText(text);
+}
+
+async function rewriteWithAnthropic(job, sourceText, extras) {
+  if (!ANTHROPIC_KEY) throw new Error('Missing ANTHROPIC_API_KEY');
+  const prompt = buildJobPrompt(job, sourceText, extras);
+
+  const models = [ANTHROPIC_MODEL, 'claude-sonnet-4-5'];
+  let lastErr = '';
+  for (const model of models) {
+    try {
+      const r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': ANTHROPIC_KEY,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 4096,
+          temperature: 0.4,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const text = (data.content || []).map((p) => p.text || '').join('');
+        return finalizeText(text);
+      }
+      const err = await r.text();
+      lastErr = `anthropic_${model}_${r.status}:${err.slice(0, 180)}`;
+      if (r.status === 429) await sleep(1000);
+    } catch (e) {
+      lastErr = `anthropic_${model}_err:${String(e.message||e).slice(0, 100)}`;
+    }
   }
-  // Light quality gates
-  if (text.length < 350) throw new Error('rewrite_short');
-  if (/leverage|delve into|cutting-edge|exciting opportunity to join/i.test(text)) {
-    throw new Error('rewrite_slop');
+  throw new Error(lastErr || 'anthropic_failed');
+}
+
+// Load-balance across providers by job hash: each job is written ONCE by its
+// primary provider; if it fails, fall back to the other provider.
+async function rewriteJobPage(job, sourceText, extras) {
+  const useGemini = job && hashString(job.id || job.title) % 2 === 0;
+  if (!ANTHROPIC_KEY) return rewriteWithGemini(job, sourceText, extras);
+  try {
+    return await (useGemini ? rewriteWithGemini(job, sourceText, extras) : rewriteWithAnthropic(job, sourceText, extras));
+  } catch (e) {
+    return useGemini ? rewriteWithAnthropic(job, sourceText, extras) : rewriteWithGemini(job, sourceText, extras);
   }
-  if (!/About the role|What you'll do|Requirements/i.test(text)) {
-    throw new Error('rewrite_structure');
+}
+
+function hashString(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
   }
-  return text.slice(0, 8000);
+  return h >>> 0;
 }
 
 function loadState() {
@@ -821,7 +888,7 @@ async function runOneBatch(batchNum, state, done) {
 
       let description;
       try {
-        description = await rewriteWithGemini(job, scraped.text, scraped.extras);
+        description = await rewriteJobPage(job, scraped.text, scraped.extras);
         await sleep(80);
       } catch (e) {
         stats.fail++;
@@ -932,8 +999,8 @@ async function main() {
     console.error('Need Supabase env');
     process.exit(1);
   }
-  if (!GEMINI_KEY && !DRY_RUN) {
-    console.error('Need GEMINI_API_KEY');
+  if (!GEMINI_KEY && !ANTHROPIC_KEY && !DRY_RUN) {
+    console.error('Need GEMINI_API_KEY or ANTHROPIC_API_KEY');
     process.exit(1);
   }
 
