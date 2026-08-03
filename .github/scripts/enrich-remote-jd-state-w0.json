@@ -45902,7 +45902,7 @@
     },
     "0afe63ae-2217-4696-abd1-34d26d9739e4": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "0d438053-aa0c-4a18-b816-45a86becac5d": {
       "status": "ok",
@@ -46315,7 +46315,7 @@
     },
     "0b18c1c8-3800-4d60-8606-574b35865935": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "11b0e144-b603-4222-85e7-6c1cb1c76eb5": {
       "status": "skip",
@@ -50336,7 +50336,7 @@
     },
     "04e61919-7aaf-4e39-8a7a-4585ab09afbd": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "05fc64cd-06f8-4a49-b9df-d1470a8c553c": {
       "status": "skip",
@@ -65900,6 +65900,24 @@
         "html_404": 2,
         "html_429": 4,
         "err_TimeoutError": 14,
+        "err_TypeError": 5
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T22:19:47.053Z",
+      "attempted": 698,
+      "ok": 0,
+      "skip": 697,
+      "fail": 1,
+      "reasons": {
+        "html_short": 651,
+        "html_403": 22,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 4,
+        "err_TimeoutError": 15,
         "err_TypeError": 5
       },
       "samplePaths": []

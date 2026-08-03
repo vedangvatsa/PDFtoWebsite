@@ -55554,8 +55554,9 @@
       "reason": "html_short"
     },
     "15bc4ce3-afc3-4eda-9f85-d88c416b19ae": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/zoominfo-technologies-llc/acct-mgr",
+      "external_id": "zoominfo-technologies-llc_acct-mgr"
     },
     "11d8391e-0f7c-473a-b3d7-3ec28943cf97": {
       "status": "ok",
@@ -55563,8 +55564,9 @@
       "external_id": "mongodb_mgr-sales-e1"
     },
     "141783f5-527f-43a9-a2ca-e949053abaee": {
-      "status": "skip",
-      "reason": "html_403"
+      "status": "ok",
+      "path": "/zoominfo-technologies-llc/devops-eng",
+      "external_id": "zoominfo-technologies-llc_devops-eng"
     },
     "15b352b6-4bd7-442c-b10f-10008f85d62f": {
       "status": "ok",
@@ -57366,7 +57368,7 @@
     },
     "1bcbadd8-a6e5-4215-b32d-0a811a332a35": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "17d9c182-af7c-4516-a625-0b9650e4955f": {
       "status": "ok",
@@ -74114,6 +74116,26 @@
         "err_TypeError": 3
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T22:20:11.463Z",
+      "attempted": 796,
+      "ok": 2,
+      "skip": 794,
+      "fail": 0,
+      "reasons": {
+        "html_short": 724,
+        "html_403": 44,
+        "err_TimeoutError": 22,
+        "html_429": 2,
+        "err_TypeError": 2
+      },
+      "samplePaths": [
+        "/zoominfo-technologies-llc/acct-mgr",
+        "/zoominfo-technologies-llc/devops-eng"
+      ]
     }
   ]
 }
