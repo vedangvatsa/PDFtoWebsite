@@ -41976,7 +41976,7 @@
     },
     "65592cac-1356-41f6-b0c9-be9c04c88906": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6b44cbba-1e54-4254-9315-aa0a062d7ab4": {
       "status": "ok",
@@ -42037,7 +42037,7 @@
     },
     "6af32dcc-e30d-4d40-9045-cdf0ec1df430": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "6a664196-40e8-4c8d-9d21-9ec2867bd45f": {
       "status": "ok",
@@ -42701,7 +42701,7 @@
     },
     "691d0895-3b98-4fb4-ae61-abc3f4bf0e08": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6571e13f-610c-4b35-81e9-11b4b553f9d3": {
       "status": "skip",
@@ -42709,7 +42709,7 @@
     },
     "69f4ecb6-0cf9-428c-bd27-5ea0c7a3ef43": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6658e921-ea5f-4e4e-a9a3-d5e3667cab0d": {
       "status": "skip",
@@ -42721,11 +42721,11 @@
     },
     "660fe966-0e73-4a0a-9238-6a15c0272e5d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6eac46a5-6c3c-43bd-98c0-9ddce5f5d13e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6e5afe26-562a-401b-9256-c5d8f9080279": {
       "status": "skip",
@@ -42750,11 +42750,11 @@
     },
     "6af8d68f-32d2-4d8e-ac5f-5a5ef66346fc": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6d682f0c-d893-4fed-9ec7-848f60d4eec0": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6a513f9a-6e82-49ff-ae6a-11c0c58ff83a": {
       "status": "skip",
@@ -42786,11 +42786,11 @@
     },
     "6e144124-0590-49a5-95dc-0b735ac1d3f5": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6928850c-5232-4ae8-a2a0-b433ef321411": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6a8b437c-5951-442c-8ad5-16b896518f30": {
       "status": "skip",
@@ -42838,11 +42838,11 @@
     },
     "61b37a08-53a7-462e-ba7b-4288b3ebbc99": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "6dcb2e8d-e6ad-490b-abf2-09d4b27812fb": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "6637d457-0c75-47f9-ae26-6ec19a5c99fc": {
       "status": "ok",
@@ -43008,7 +43008,7 @@
     },
     "6e829e62-b569-4319-964c-b7edc6bf0308": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "66a54c6c-a875-4754-9fd0-98200ff045a8": {
       "status": "skip",
@@ -43042,7 +43042,7 @@
     },
     "66d2bf0a-cb82-4642-8eb0-79d221601770": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6238702f-2acc-43db-bcb4-0c9aee189637": {
       "status": "skip",
@@ -43050,7 +43050,7 @@
     },
     "6bb4f6a3-8719-4a41-86d9-bb1e0044cb6f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "61bed47d-3fad-42c8-804d-34c1b54c21cf": {
       "status": "skip",
@@ -43058,7 +43058,7 @@
     },
     "62f59eb5-3cd3-4687-befc-1e2db2525f2c": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "60136b23-ac94-4b17-ba8a-ed80318ddbfd": {
       "status": "ok",
@@ -55922,6 +55922,24 @@
         "/indian-army/elastic-stack",
         "/indian-army/drone-eng"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 6,
+      "at": "2026-08-03T17:57:10.886Z",
+      "attempted": 755,
+      "ok": 0,
+      "skip": 755,
+      "fail": 0,
+      "reasons": {
+        "html_short": 698,
+        "sr_400": 1,
+        "html_403": 28,
+        "err_TimeoutError": 22,
+        "html_429": 2,
+        "err_TypeError": 4
+      },
+      "samplePaths": []
     }
   ]
 }

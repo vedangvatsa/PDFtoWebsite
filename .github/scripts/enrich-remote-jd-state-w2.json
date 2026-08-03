@@ -57206,7 +57206,7 @@
     },
     "2d74b93b-6d88-45d3-bc72-76d32019b2ea": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "2c2a1034-29a1-4bb1-a3ee-a2ffc1c3a37f": {
       "status": "skip",
@@ -57905,7 +57905,7 @@
     },
     "21190ac6-5ab8-4c91-8363-d575db12c6e3": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "26282538-9934-4a46-a26b-b6fd40c4aa16": {
       "status": "skip",
@@ -60966,7 +60966,7 @@
     },
     "29869c24-af64-4bb6-af6d-a5becd45f9e2": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "236b5d4a-e66c-4868-b549-1245b30ec3c4": {
       "status": "skip",
@@ -61239,7 +61239,7 @@
     },
     "2957db75-401d-4a41-8b00-3fbd6c9761ff": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "24db5cf1-bfa9-4318-b1de-ddb35ae94a28": {
       "status": "ok",
@@ -61281,11 +61281,11 @@
     },
     "2bf32916-efc0-40d8-bd80-9e142bfd36ed": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "2b0cf0d1-1f00-4b3a-9141-b3bac9ba4ec6": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "2c440882-f505-4908-8d6e-96bc89296ac3": {
       "status": "skip",
@@ -78387,6 +78387,23 @@
         "/indian-army/robotics",
         "/indian-army/cybersecurity"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 2,
+      "at": "2026-08-03T17:56:41.239Z",
+      "attempted": 681,
+      "ok": 0,
+      "skip": 681,
+      "fail": 0,
+      "reasons": {
+        "html_short": 625,
+        "html_403": 38,
+        "lever_short": 1,
+        "err_TimeoutError": 15,
+        "html_429": 2
+      },
+      "samplePaths": []
     }
   ]
 }

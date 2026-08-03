@@ -34591,7 +34591,7 @@
     },
     "4f16c53a-d905-471e-9002-45327cc514f7": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "4f4d4693-1967-448c-92b0-ab28f950f2f3": {
       "status": "skip",
@@ -34723,7 +34723,7 @@
     },
     "482ba031-a17d-4570-b844-98cdaa8db90f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4070dee4-1cf7-406c-b0cd-d3de8c9a88a6": {
       "status": "skip",
@@ -34756,7 +34756,7 @@
     },
     "4b7f37bb-2e39-45de-b509-bafb3eaff7be": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "48ec2b6f-a08e-4cbb-925f-bd9df7a510cc": {
       "status": "skip",
@@ -36164,7 +36164,7 @@
     },
     "4bd0f18d-40f7-480d-a5ec-ddbd3faf268e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "44706dbd-568e-46cc-870b-3cb8116c7a99": {
       "status": "skip",
@@ -36586,31 +36586,31 @@
     },
     "4fa64e25-88b1-4f49-980e-7d5f365cb3ec": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "4252e46f-fc6c-4a2d-961f-5a2570b9b574": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4999eb8b-1abb-4f9d-b138-6675bb9f8657": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "43fe56a9-abbc-4a5a-b5d3-308b304bbddd": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "40ed49f2-63bb-4488-a4ac-99de4ac504a0": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "436d9079-fc39-4f57-a4c4-e8c34e25ebf3": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4a507c1b-c54e-42d7-8fc3-4cb7fa01538b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4e535517-3150-45a9-8ed2-29049c16866d": {
       "status": "skip",
@@ -36618,7 +36618,7 @@
     },
     "46ea3a5f-eb29-48ff-8042-bff66f00ee9b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4d76a1c2-50f4-40c7-8678-d70a976c1525": {
       "status": "ok",
@@ -36910,11 +36910,11 @@
     },
     "4d0a336f-c2df-487c-a860-327898aba641": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "437d32ea-0b57-4c85-b439-646e9bcb2ac3": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "4a85253c-8677-416b-b746-8d9e896688b8": {
       "status": "ok",
@@ -36928,7 +36928,7 @@
     },
     "454f44fc-283f-4415-8593-7b800cf6982d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "48095b6b-08b5-4067-a6cd-d3ecb4ddd6cf": {
       "status": "ok",
@@ -36942,7 +36942,7 @@
     },
     "4e355bc8-dedc-4425-8878-48ef08a165b2": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "401e79ab-7dbf-4950-a7a6-84f1cc56c313": {
       "status": "ok",
@@ -37090,19 +37090,19 @@
     },
     "4d377636-80c1-4e0e-bfe1-f3cdc1f8259b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "46d26bff-8973-478b-965f-f0c9aa22539d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "409f204c-7ab5-42e9-9f2d-3d16aa8330e4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "4f94c837-3cb3-410f-aee9-c5632bb3e88b": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TypeError"
     },
     "451068c7-9d16-4474-b6b5-44678e232faf": {
       "status": "ok",
@@ -37131,7 +37131,7 @@
     },
     "4f175b07-5cfa-46f9-bd65-87138177650b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "4b07e779-c6ae-40d9-801d-94005d839026": {
       "status": "ok",
@@ -37379,7 +37379,7 @@
     },
     "4cbba6f2-b419-4075-9591-78b080613eae": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "48a0ae6c-d0de-4f62-899d-9cd441126aa7": {
       "status": "ok",
@@ -37472,7 +37472,7 @@
     },
     "43c619a9-c29e-4763-a8ac-aad689a52a00": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "45150f7a-657d-4167-93c8-b684918cab19": {
       "status": "ok",
@@ -37800,7 +37800,7 @@
     },
     "4394fb99-194b-4794-82e5-16567c103115": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "42cc8670-0780-4fb8-8d13-f00fb6ff1e3f": {
       "status": "skip",
@@ -37832,7 +37832,7 @@
     },
     "431013b5-a1dc-4aca-8dd1-14ac562ed9f3": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "42bd15af-98fd-4ade-94be-aef8b76d248c": {
       "status": "ok",
@@ -37880,7 +37880,7 @@
     },
     "40232e7d-85e3-44f7-8d89-0102852ab87f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "436532ff-775f-4a7e-98f8-b3be27e0b3a8": {
       "status": "ok",
@@ -37946,7 +37946,7 @@
     },
     "46b090c9-961f-4a4f-bc2d-8f52e6045bc7": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "49c7e3a6-8f28-4150-a9c2-de541a9d52d7": {
       "status": "ok",
@@ -37960,7 +37960,7 @@
     },
     "45a9cb64-f968-4818-8818-d0f1a46ede78": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "47069510-7273-4420-9d6e-1a809c5a1421": {
       "status": "skip",
@@ -38031,11 +38031,11 @@
     },
     "4be552b5-27d1-43ca-81d7-179ffc029a9e": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "4d87d1bd-28e7-4fcd-9b6c-d9905b171683": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "49d9c512-fbd6-4d06-bdc6-6d64494ee83f": {
       "status": "skip",
@@ -38272,7 +38272,7 @@
     },
     "43d1f871-821c-4590-9927-7b7e98f2ca4a": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4f3e3069-3c83-4426-8994-1ba0ec7506b1": {
       "status": "skip",
@@ -51814,6 +51814,25 @@
         "/indian-army/ai-ml-d6",
         "/google/sw-app-dev"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 4,
+      "at": "2026-08-03T17:58:07.883Z",
+      "attempted": 751,
+      "ok": 0,
+      "skip": 751,
+      "fail": 0,
+      "reasons": {
+        "html_short": 676,
+        "lever_short": 1,
+        "html_429": 5,
+        "html_403": 24,
+        "err_TimeoutError": 24,
+        "err_TypeError": 20,
+        "html_405": 1
+      },
+      "samplePaths": []
     }
   ]
 }
