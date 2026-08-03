@@ -32,6 +32,7 @@ async function sendBatchToTelegram(text: string): Promise<boolean> {
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(15000),
     body: JSON.stringify({
       chat_id: TELEGRAM_CHANNEL_ID,
       text,

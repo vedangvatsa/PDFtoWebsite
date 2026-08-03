@@ -53,6 +53,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/scripts/ses-sent.json .github/scripts/ses-logs.json .github/scripts/ses-recipients.json .github/scripts/ses-verified.json .github/scripts/ses-rejected.json
+          git add -f .github/scripts/ses-sent.json .github/scripts/ses-logs.json .github/scripts/ses-recipients.json .github/scripts/ses-verified.json .github/scripts/ses-rejected.json
           git commit -m "Update SES campaign state [skip ci]" || echo "No changes to commit"
           git push

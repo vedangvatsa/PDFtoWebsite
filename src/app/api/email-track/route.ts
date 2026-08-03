@@ -12,7 +12,8 @@ export async function GET(request: Request) {
   const url = searchParams.get('url') || '';
 
   // Store to Supabase (fire-and-forget, don't block response)
-  const decodedEmail = decodeURIComponent(email);
+  let decodedEmail = email;
+  try { decodedEmail = decodeURIComponent(email); } catch {}
   supabaseAdmin.from('email_events').insert({
     action,
     campaign: cid,
@@ -21,7 +22,11 @@ export async function GET(request: Request) {
   }).then(null, () => {});
 
   if (action === 'click' && url) {
-    return NextResponse.redirect(url, 302);
+    let redirectUrl: URL | null = null;
+    try { redirectUrl = new URL(url); } catch {}
+    if (redirectUrl && (redirectUrl.protocol === 'http:' || redirectUrl.protocol === 'https:')) {
+      return NextResponse.redirect(redirectUrl.toString(), 302);
+    }
   }
 
   // Return 1x1 transparent GIF for open tracking
