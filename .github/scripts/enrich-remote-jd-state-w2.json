@@ -12099,7 +12099,7 @@
     },
     "2e52fb23-eb23-4a97-9c6d-4ea59b611f8a": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "4737a715-3e0d-4c03-88a7-94dddbdb2524": {
       "status": "ok",
@@ -12117,7 +12117,7 @@
     },
     "20a88f65-acad-4c75-a4e5-284eef2e372a": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "4f36d7af-14a7-4d1b-8a16-a4d6385b4e95": {
       "status": "ok",
@@ -12173,7 +12173,7 @@
     },
     "28b261d7-591a-4795-a854-8bd00ce7ea78": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "92cd2fc2-44a2-4a79-8645-9e56ee667ce5": {
       "status": "fail",
@@ -57206,7 +57206,7 @@
     },
     "2d74b93b-6d88-45d3-bc72-76d32019b2ea": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "2c2a1034-29a1-4bb1-a3ee-a2ffc1c3a37f": {
       "status": "skip",
@@ -57522,15 +57522,15 @@
     },
     "2f1800ae-f9bd-4a28-8b81-ef201ad40682": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2502f07d-0949-48fa-98cb-260ce05bd183": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2d9f4ea2-02c7-4288-919a-3096bde7a022": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "23b0162c-b9c3-4a9e-9f46-3e1088722d16": {
       "status": "skip",
@@ -57538,27 +57538,27 @@
     },
     "2e73894f-4f73-42ad-b277-b93d7276ef5f": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "27054b58-1201-4375-a7d9-506cbd0adeeb": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "26111a95-3789-400c-a1fd-654e9c5c3df2": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2d63cd2d-c30d-4004-85f5-4473e46086a5": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "262c5720-f283-4b0e-a4c6-a034baaf915f": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "214daedb-a924-4e51-a859-8df858bb21e5": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "206c826e-aaaa-4e95-b56b-ec04801a346c": {
       "status": "skip",
@@ -57778,15 +57778,15 @@
     },
     "2bdc89de-8da8-40dc-b75a-0ea145df9b72": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "201a490f-581e-488e-99f1-665b0a3690ed": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2f4bc271-f1a3-44a8-983c-1154f6ae0bc5": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "25d558da-7b85-4c50-8912-01877401a37a": {
       "status": "skip",
@@ -57856,11 +57856,11 @@
     },
     "2e5ddb2d-f47b-4d92-a28c-3bbf1e8f4f8e": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2d16571d-cf3b-4f5b-8d0b-65f29471526f": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2b61c871-63ec-4144-8049-b0cb1d0df1cc": {
       "status": "skip",
@@ -57905,7 +57905,7 @@
     },
     "21190ac6-5ab8-4c91-8363-d575db12c6e3": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "26282538-9934-4a46-a26b-b6fd40c4aa16": {
       "status": "skip",
@@ -59317,7 +59317,7 @@
     },
     "2750fd00-05e6-4324-b414-80933ac0e3d4": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2aa6e269-4c36-47bd-9258-93886a57a25e": {
       "status": "skip",
@@ -59325,7 +59325,7 @@
     },
     "22555226-32ba-4fd0-bc0f-405b66a8fa88": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "22d66c63-99f1-48ac-b2bc-7f41f745bf4f": {
       "status": "skip",
@@ -59371,43 +59371,43 @@
     },
     "2380082d-432e-401e-aee9-81c62148ccfd": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2befa3d9-5bb2-401a-85c4-c00694f72eac": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "230f33a5-b2c4-4275-ac8d-e053d5e34fc6": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "24fc1a3f-fa8e-4eae-a01f-d8fb6d7b5f61": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "27412cbe-1d2b-4d48-bc14-ef711214a638": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "26810a96-8adb-40af-b023-46c575356a63": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2d73aa20-cae7-463d-976e-365f3f13c631": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2cf38db7-5381-40b8-9185-8322b3d863a3": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2125fde2-7ec7-4963-b848-f469cf705929": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "2daa3847-b058-447f-8c49-534188214381": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "2d1f24d9-bc69-45a1-92e9-64b579e689ec": {
       "status": "skip",
@@ -59462,7 +59462,7 @@
     },
     "224a1171-27ce-4051-b794-a467f6de7c6a": {
       "status": "skip",
-      "reason": "html_404"
+      "reason": "html_short"
     },
     "2246d2a3-b687-43ea-a6f3-786b3964b7b8": {
       "status": "ok",
@@ -60304,15 +60304,15 @@
     },
     "2dbbf897-ad89-40d9-94e5-43f691e6f41d": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "21f21e06-d265-444f-a5b2-346069787f8d": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "255c5995-8b5b-442f-bbe0-f8d79201b085": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "25aa9424-617b-499c-bced-1f90b9b48ab0": {
       "status": "skip",
@@ -60990,7 +60990,7 @@
     },
     "2f79d6a4-bfcd-4e0b-95c9-f7d657f50134": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "2072e838-5fac-4e58-aec0-8d87d645713b": {
       "status": "ok",
@@ -63196,6 +63196,26 @@
     "2808f111-49cd-4c10-9c4f-98a71f970925": {
       "status": "skip",
       "reason": "linkedin_429"
+    },
+    "2b37cc03-6355-4e7b-9170-5308fb02230c": {
+      "status": "ok",
+      "path": "/indian-army/ai-infusion",
+      "external_id": "indian-army_ai-infusion"
+    },
+    "2f35d66a-d82a-4b87-a439-9969c16bcaa6": {
+      "status": "ok",
+      "path": "/indian-army/ai-ml",
+      "external_id": "indian-army_ai-ml"
+    },
+    "2439204f-2139-40c0-9b2d-c4ae765df33a": {
+      "status": "ok",
+      "path": "/indian-army/robotics",
+      "external_id": "indian-army_robotics"
+    },
+    "22ac197e-53a6-4e85-b751-d0b91833fc58": {
+      "status": "ok",
+      "path": "/indian-army/cybersecurity",
+      "external_id": "indian-army_cybersecurity"
     }
   },
   "doneIds": [
@@ -77651,7 +77671,11 @@
     "2b8adce4-8b28-4d4d-b1ca-09b45b0078e0",
     "2cf565fa-f1b3-406d-a6a4-10289284803b",
     "2dffeba6-485b-4cca-a92c-ac56f8d6b36e",
-    "2808f111-49cd-4c10-9c4f-98a71f970925"
+    "2808f111-49cd-4c10-9c4f-98a71f970925",
+    "2b37cc03-6355-4e7b-9170-5308fb02230c",
+    "2f35d66a-d82a-4b87-a439-9969c16bcaa6",
+    "2439204f-2139-40c0-9b2d-c4ae765df33a",
+    "22ac197e-53a6-4e85-b751-d0b91833fc58"
   ],
   "skipped": {},
   "batches": [
@@ -78339,6 +78363,29 @@
       },
       "samplePaths": [
         "/waymo/electrical"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-03T17:53:06.579Z",
+      "attempted": 685,
+      "ok": 4,
+      "skip": 681,
+      "fail": 0,
+      "reasons": {
+        "html_short": 627,
+        "lever_short": 1,
+        "html_403": 38,
+        "err_TypeError": 1,
+        "err_TimeoutError": 12,
+        "html_429": 2
+      },
+      "samplePaths": [
+        "/indian-army/ai-infusion",
+        "/indian-army/ai-ml",
+        "/indian-army/robotics",
+        "/indian-army/cybersecurity"
       ]
     }
   ]

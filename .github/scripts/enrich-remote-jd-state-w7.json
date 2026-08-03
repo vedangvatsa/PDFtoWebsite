@@ -38996,11 +38996,11 @@
     },
     "7fa67776-50f5-4d55-8587-f35601fa3d29": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "7a528570-ae82-451a-8da1-013750f93aa3": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "76a6c93b-a72f-40b5-91fb-9f7145863902": {
       "status": "skip",
@@ -39012,11 +39012,11 @@
     },
     "72901718-7ae4-4e16-b4ef-550146db85dd": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "78fc911a-2d1f-407b-9357-f54f49133c47": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "75379745-1d69-4849-9fc7-51fdb8add973": {
       "status": "skip",
@@ -39024,7 +39024,7 @@
     },
     "7947a40c-010f-4b2d-be5a-a4634967e22c": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "79b3c392-a3ff-420e-9ed3-15393de23c64": {
       "status": "skip",
@@ -39064,7 +39064,7 @@
     },
     "7de8b9e8-c012-4846-b88e-af09bc2dee1b": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "70072938-d1cf-4aa8-ab22-32dfb5d5e62f": {
       "status": "skip",
@@ -39169,23 +39169,23 @@
     },
     "7c1be850-0ffb-43af-ba45-3357409682a7": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "72ff795c-882d-49ef-a46e-65c1b36764de": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "7d018d7c-9a41-48e7-a22e-f7072c756916": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "7829b002-172a-4733-ab00-e6240a83cc9c": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "7d16097e-8f7a-497a-ad5f-557cbf33f7dc": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "726e5e06-9936-44fa-ace7-b15f1cc7783c": {
       "status": "skip",
@@ -42913,7 +42913,7 @@
     },
     "79252595-d2a1-4ef3-8c6b-187404c7085f": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "7141a43f-8de9-42af-a8f7-daf948ec52c2": {
       "status": "skip",
@@ -43053,7 +43053,7 @@
     },
     "78a4a730-6b57-4202-ad85-66d6ab76d4f8": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "779a52fd-7261-4640-82dc-a9aa9d0f7c00": {
       "status": "skip",
@@ -45131,6 +45131,11 @@
     "7d5cf521-16ce-4cb0-ab15-ffdd2f1ebf65": {
       "status": "skip",
       "reason": "linkedin_429"
+    },
+    "7d9896f4-dc0e-437a-bbc5-04170dc6269f": {
+      "status": "ok",
+      "path": "/google/digital-biz",
+      "external_id": "google_digital-biz"
     }
   },
   "doneIds": [
@@ -55641,7 +55646,8 @@
     "77060d21-26e4-48fa-988d-59f84d6eae00",
     "742e36bf-e4bf-4eec-98ca-2c7685b287ed",
     "73a8f13d-420a-466e-bc43-8e64e83e2db9",
-    "7d5cf521-16ce-4cb0-ab15-ffdd2f1ebf65"
+    "7d5cf521-16ce-4cb0-ab15-ffdd2f1ebf65",
+    "7d9896f4-dc0e-437a-bbc5-04170dc6269f"
   ],
   "skipped": {},
   "batches": [
@@ -55992,6 +55998,28 @@
         "html_429": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 7,
+      "at": "2026-08-03T17:53:33.732Z",
+      "attempted": 770,
+      "ok": 1,
+      "skip": 769,
+      "fail": 0,
+      "reasons": {
+        "html_short": 722,
+        "gh_short": 1,
+        "sr_400": 1,
+        "err_TimeoutError": 16,
+        "html_403": 23,
+        "err_TypeError": 3,
+        "html_429": 2,
+        "html_405": 1
+      },
+      "samplePaths": [
+        "/google/digital-biz"
+      ]
     }
   ]
 }

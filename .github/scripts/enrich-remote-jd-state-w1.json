@@ -52890,7 +52890,7 @@
     },
     "11469dfd-210f-4bab-8f16-eb742de6b865": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "1ff5b262-dede-49d0-bfb5-2dfbfa4df038": {
       "status": "skip",
@@ -53323,7 +53323,7 @@
     },
     "1e67e8ad-d780-43c6-8d07-7ba6cbf98bee": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1bcff5ed-a479-4801-85ba-7697841d705e": {
       "status": "skip",
@@ -53335,7 +53335,7 @@
     },
     "1869ce31-a5a1-4192-872d-83a74202f295": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1fce809d-cbda-4760-b50c-7c5a6a7d7135": {
       "status": "skip",
@@ -53351,11 +53351,11 @@
     },
     "1fe1fb9b-0da2-4848-afa7-a9385bda0074": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "12882d70-47b9-4808-a65f-56e72a2aea29": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1d172105-6a2c-4319-9bb3-dc54256aef2b": {
       "status": "skip",
@@ -53363,11 +53363,11 @@
     },
     "170c7562-dbe1-4962-a83e-af0b95c0122a": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1428b634-a81e-4a4b-9cb2-587309a7d601": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1f0c3d2e-4fb3-4118-ad69-9a3ad6dc3b48": {
       "status": "skip",
@@ -53544,11 +53544,11 @@
     },
     "18739df9-3d6c-4b82-9412-b607d8bb86b8": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1e560881-567a-4b3e-94a0-4e35f6f01ff0": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1f56a628-1ff9-43b5-ad7e-ad0ea4ea3ae7": {
       "status": "skip",
@@ -53560,7 +53560,7 @@
     },
     "19278fce-d2d1-4dd2-9678-7cab62fdde75": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "1cc7d5df-caa4-4443-9b65-d0ae4c330ed1": {
       "status": "skip",
@@ -53600,7 +53600,7 @@
     },
     "11799fac-fec1-41e4-aa94-2fb523c16c3c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "1012a552-5694-4948-9cc3-1d49fb988fff": {
       "status": "ok",
@@ -53625,7 +53625,7 @@
     },
     "1be5e81b-6649-49cc-9be3-ec4c1154f46d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "120c91bc-cf5b-4b8e-b019-a7381c0fba3a": {
       "status": "skip",
@@ -57053,7 +57053,7 @@
     },
     "1e249fac-a271-43d1-acb9-639b247ad9a8": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "116e2021-fca1-4b13-b47b-52122d10c5bb": {
       "status": "ok",
@@ -57360,7 +57360,7 @@
     },
     "104ef0ff-8908-4037-ae16-0beaef6cadae": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "1bcbadd8-a6e5-4215-b32d-0a811a332a35": {
       "status": "skip",
@@ -57665,8 +57665,9 @@
       "reason": "html_403"
     },
     "1fd04e41-5de5-4cc6-88ed-f98275878014": {
-      "status": "skip",
-      "reason": "html_blocked"
+      "status": "ok",
+      "path": "/paired/lead-fullstk",
+      "external_id": "paired_lead-fullstk"
     },
     "16621815-c471-4000-bbd6-ec72d1bfc322": {
       "status": "skip",
@@ -59652,6 +59653,36 @@
     "18b081fe-3826-4021-94ad-5e3f00b3f633": {
       "status": "skip",
       "reason": "linkedin_429"
+    },
+    "1f382e1f-9c30-46b6-a177-53e48f825409": {
+      "status": "ok",
+      "path": "/indian-army/auto",
+      "external_id": "indian-army_auto"
+    },
+    "10545d5f-349e-4645-a37d-5e0ebbb133c1": {
+      "status": "ok",
+      "path": "/indian-army/ai-model",
+      "external_id": "indian-army_ai-model"
+    },
+    "10328099-09ba-4bac-b368-3b549baeb1c5": {
+      "status": "ok",
+      "path": "/indian-army/dev-wargaming",
+      "external_id": "indian-army_dev-wargaming"
+    },
+    "1e53d43d-b322-4db4-a36b-fc6cbe5cf1f3": {
+      "status": "ok",
+      "path": "/indian-army/dev-drone",
+      "external_id": "indian-army_dev-drone"
+    },
+    "1a15e67b-3461-4c38-aa82-8afc1997a5d1": {
+      "status": "ok",
+      "path": "/indian-army/ai-eng",
+      "external_id": "indian-army_ai-eng"
+    },
+    "17730d17-d8c6-4469-9b3e-2253d070ec61": {
+      "status": "ok",
+      "path": "/indian-army/sap-erp-ecc",
+      "external_id": "indian-army_sap-erp-ecc"
     }
   },
   "doneIds": [
@@ -73279,7 +73310,13 @@
     "1dd39c0e-1c99-4240-80a6-14f3dd4ffa78",
     "1e749e47-ada3-4712-8009-56427ecbeefd",
     "11153f4d-bf23-4da6-b5aa-bdb3b38e764e",
-    "18b081fe-3826-4021-94ad-5e3f00b3f633"
+    "18b081fe-3826-4021-94ad-5e3f00b3f633",
+    "1f382e1f-9c30-46b6-a177-53e48f825409",
+    "10545d5f-349e-4645-a37d-5e0ebbb133c1",
+    "10328099-09ba-4bac-b368-3b549baeb1c5",
+    "1e53d43d-b322-4db4-a36b-fc6cbe5cf1f3",
+    "1a15e67b-3461-4c38-aa82-8afc1997a5d1",
+    "17730d17-d8c6-4469-9b3e-2253d070ec61"
   ],
   "skipped": {},
   "batches": [
@@ -73928,6 +73965,31 @@
         "html_429": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T17:54:01.269Z",
+      "attempted": 805,
+      "ok": 7,
+      "skip": 798,
+      "fail": 0,
+      "reasons": {
+        "html_short": 723,
+        "html_403": 46,
+        "err_TimeoutError": 25,
+        "err_TypeError": 2,
+        "html_429": 2
+      },
+      "samplePaths": [
+        "/indian-army/auto",
+        "/indian-army/ai-model",
+        "/indian-army/dev-wargaming",
+        "/indian-army/dev-drone",
+        "/indian-army/ai-eng",
+        "/paired/lead-fullstk",
+        "/indian-army/sap-erp-ecc"
+      ]
     }
   ]
 }

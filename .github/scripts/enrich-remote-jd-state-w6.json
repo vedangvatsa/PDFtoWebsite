@@ -38934,11 +38934,11 @@
     },
     "6aba4832-82f4-40db-b5e9-ffef19e16b99": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "6f7d1b3e-7f26-4508-8390-96c6e901447a": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "60f4660c-1fd9-465f-ba25-61d052779210": {
       "status": "skip",
@@ -38982,15 +38982,15 @@
     },
     "674c1e09-b70f-4344-8578-b7d89474209b": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "62693b49-ad06-4b9d-8412-92654e4384cd": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "6188125a-d2f2-4af0-9b92-f5c0c4cec338": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "695f64b8-0723-4be6-be50-71f4bcc0b6eb": {
       "status": "skip",
@@ -39369,7 +39369,7 @@
     },
     "6885f57d-19d2-485f-a475-f6a6471a0544": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "641a9d54-5be6-497c-978c-debe28ac39f3": {
       "status": "skip",
@@ -41584,7 +41584,7 @@
     },
     "6c683e74-b4ed-495d-b5e7-def4895c5869": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "6c6a0572-3037-4583-8b7c-7bfa99a82e6e": {
       "status": "skip",
@@ -41592,7 +41592,7 @@
     },
     "65eca3d8-9e0a-465e-b158-8d43493ccd49": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "6fe4cda3-7c0f-4bad-95a7-e56f8327800d": {
       "status": "skip",
@@ -41609,7 +41609,7 @@
     },
     "650cc2f5-b41c-4801-9453-1fe78e5bb4a9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "680b5c5d-1de5-4d93-85f7-3485c7d14bfd": {
       "status": "ok",
@@ -42037,7 +42037,7 @@
     },
     "6af32dcc-e30d-4d40-9045-cdf0ec1df430": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "6a664196-40e8-4c8d-9d21-9ec2867bd45f": {
       "status": "ok",
@@ -42838,7 +42838,7 @@
     },
     "61b37a08-53a7-462e-ba7b-4288b3ebbc99": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "6dcb2e8d-e6ad-490b-abf2-09d4b27812fb": {
       "status": "skip",
@@ -45045,6 +45045,21 @@
     "659e6db5-a7bd-4762-b94d-8fe212552fad": {
       "status": "skip",
       "reason": "linkedin_429"
+    },
+    "67b7b753-8dd5-4533-8b97-11f1374bfafc": {
+      "status": "ok",
+      "path": "/indian-army/tech-assesment",
+      "external_id": "indian-army_tech-assesment"
+    },
+    "61b0b9f5-88b1-429c-ab30-8c690caf48bd": {
+      "status": "ok",
+      "path": "/indian-army/elastic-stack",
+      "external_id": "indian-army_elastic-stack"
+    },
+    "6845f4e0-f6c2-40c0-95f4-b8bbc56d1197": {
+      "status": "ok",
+      "path": "/indian-army/drone-eng",
+      "external_id": "indian-army_drone-eng"
     }
   },
   "doneIds": [
@@ -55538,7 +55553,10 @@
     "608b9326-ffec-4f10-97b4-04a25b79a705",
     "608ef4c7-36cb-4624-9ba7-31d5f66f29c6",
     "6fa67fa8-c355-406e-8930-9bf292a4db05",
-    "659e6db5-a7bd-4762-b94d-8fe212552fad"
+    "659e6db5-a7bd-4762-b94d-8fe212552fad",
+    "67b7b753-8dd5-4533-8b97-11f1374bfafc",
+    "61b0b9f5-88b1-429c-ab30-8c690caf48bd",
+    "6845f4e0-f6c2-40c0-95f4-b8bbc56d1197"
   ],
   "skipped": {},
   "batches": [
@@ -55882,6 +55900,28 @@
         "err_TypeError": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-03T17:53:07.159Z",
+      "attempted": 758,
+      "ok": 3,
+      "skip": 755,
+      "fail": 0,
+      "reasons": {
+        "html_short": 712,
+        "sr_400": 1,
+        "html_403": 28,
+        "err_TimeoutError": 11,
+        "html_429": 2,
+        "err_TypeError": 1
+      },
+      "samplePaths": [
+        "/indian-army/tech-assesment",
+        "/indian-army/elastic-stack",
+        "/indian-army/drone-eng"
+      ]
     }
   ]
 }

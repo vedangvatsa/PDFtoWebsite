@@ -1563,7 +1563,7 @@
     },
     "0a52fbd8-bb9b-46dd-9c08-25f001b85d58": {
       "status": "fail",
-      "reason": "rewrite_slop"
+      "reason": "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop"
     },
     "00abe598-e631-46bc-a1c8-4b356adf5509": {
       "status": "ok",
@@ -3138,8 +3138,9 @@
       "external_id": "campus_ai-instructor"
     },
     "015e901d-bb5e-4be1-8f73-c0f4c34e84d6": {
-      "status": "fail",
-      "reason": "rewrite_slop"
+      "status": "ok",
+      "path": "/transfr/seo-organic",
+      "external_id": "transfr_seo-organic"
     },
     "3a98d11f-e287-4daf-98a3-be89f74e0bdb": {
       "status": "ok",
@@ -5553,8 +5554,9 @@
       "reason": "ashby_not_found"
     },
     "0cb6a319-2159-49df-9c70-82aef11ebda9": {
-      "status": "fail",
-      "reason": "rewrite_slop"
+      "status": "ok",
+      "path": "/faculty/lead-computer",
+      "external_id": "faculty_lead-computer"
     },
     "fce794ce-e466-4f9a-8054-182d96d76f15": {
       "status": "ok",
@@ -24959,7 +24961,7 @@
     },
     "09bad5c0-ee87-4041-8b40-50e78c8d35f7": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0323f9d2-9478-43f0-b762-91a29c880df9": {
       "status": "skip",
@@ -25770,7 +25772,7 @@
     },
     "0311fe67-cf83-4c73-9d4f-cafe927366d2": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0f91e83e-cbd2-4994-af16-1e3a15ce5f48": {
       "status": "skip",
@@ -45193,7 +45195,7 @@
     },
     "09ba07e1-13c0-46c0-a85c-ec6a5ecd3ab5": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "173fdae2-315e-4975-bd69-af743566548f": {
       "status": "skip",
@@ -45989,7 +45991,7 @@
     },
     "0fef1908-a63c-4245-aca8-e35a11b2ec59": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "002afd12-3d92-41f9-8a89-b6dcfa2f583f": {
       "status": "ok",
@@ -46301,7 +46303,7 @@
     },
     "0b18c1c8-3800-4d60-8606-574b35865935": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "11b0e144-b603-4222-85e7-6c1cb1c76eb5": {
       "status": "skip",
@@ -46770,7 +46772,7 @@
     },
     "0f5ceba7-63ac-44dd-af51-a6d2e14e1436": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "022a348d-7645-4234-85f0-9fb11e010094": {
       "status": "skip",
@@ -47054,7 +47056,7 @@
     },
     "0bc02db6-bf3f-4c35-9ca0-4185f58dc262": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "1f0c2890-b9c3-48e8-902a-e697225378e7": {
       "status": "skip",
@@ -47122,7 +47124,7 @@
     },
     "00b542b9-2edd-4369-a9c6-40736257520e": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1aa7a164-5150-417b-8ea1-bcb075aba617": {
       "status": "ok",
@@ -47268,7 +47270,7 @@
     },
     "01c0568d-c3ea-448a-ab80-ff8b82c54f27": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0546877a-7750-407e-8871-e76f26b51861": {
       "status": "ok",
@@ -49724,7 +49726,7 @@
     },
     "02548ca4-b968-4f5e-aa3d-0d95a3cd79b3": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0a33a5c3-d2c2-4392-b479-1408dd30e3ad": {
       "status": "skip",
@@ -49732,7 +49734,7 @@
     },
     "0a90f518-4134-4d2e-a5e1-ccbdb585c242": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0dd7ad90-9589-4208-87e2-47f1829e9ebb": {
       "status": "ok",
@@ -50371,7 +50373,7 @@
     },
     "09743218-1d3d-49a5-92f1-4380c8f35775": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0aefc165-626f-480c-88c4-7ee024238c09": {
       "status": "skip",
@@ -52961,6 +52963,31 @@
       "status": "ok",
       "path": "/resolve-tech-solutions/ai-ml-sol",
       "external_id": "resolve-tech-solutions_ai-ml-sol"
+    },
+    "04d1daf1-d9f7-4257-9500-91a985d1b19e": {
+      "status": "ok",
+      "path": "/indian-army/data-analyst",
+      "external_id": "indian-army_data-analyst"
+    },
+    "0521f91f-dfbf-4e58-ab39-251def0b8ea0": {
+      "status": "ok",
+      "path": "/indian-army/drone-uav",
+      "external_id": "indian-army_drone-uav"
+    },
+    "09cf9270-c5ef-4cac-8939-eab834d8609a": {
+      "status": "ok",
+      "path": "/google/data-analytics",
+      "external_id": "google_data-analytics"
+    },
+    "0a1028db-298e-49d4-bf5f-bb2f1830852a": {
+      "status": "ok",
+      "path": "/indian-army/cybersecurit-7b",
+      "external_id": "indian-army_cybersecurit-7b"
+    },
+    "011ba73f-a3df-4eba-b350-e23122539043": {
+      "status": "ok",
+      "path": "/indian-army/ai-sec-soc",
+      "external_id": "indian-army_ai-sec-soc"
     }
   },
   "doneIds": [
@@ -64779,7 +64806,12 @@
     "001d904c-1ddc-4cb7-b872-51fc4d437da5",
     "0e8378d7-2fb8-4c8c-bf33-9ace086ae0ed",
     "0d486d9d-8502-47ef-825f-3e88f8c85bae",
-    "065434fb-09c1-47ff-b133-986ea18f83b2"
+    "065434fb-09c1-47ff-b133-986ea18f83b2",
+    "04d1daf1-d9f7-4257-9500-91a985d1b19e",
+    "0521f91f-dfbf-4e58-ab39-251def0b8ea0",
+    "09cf9270-c5ef-4cac-8939-eab834d8609a",
+    "0a1028db-298e-49d4-bf5f-bb2f1830852a",
+    "011ba73f-a3df-4eba-b350-e23122539043"
   ],
   "skipped": {},
   "batches": [
@@ -65500,6 +65532,32 @@
         "err_TimeoutError": 19
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T17:54:13.213Z",
+      "attempted": 745,
+      "ok": 7,
+      "skip": 736,
+      "fail": 2,
+      "reasons": {
+        "html_short": 689,
+        "html_403": 23,
+        "err_TimeoutError": 19,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 2,
+        "html_429": 4,
+        "err_TypeError": 1
+      },
+      "samplePaths": [
+        "/faculty/lead-computer",
+        "/transfr/seo-organic",
+        "/indian-army/data-analyst",
+        "/indian-army/drone-uav",
+        "/google/data-analytics",
+        "/indian-army/cybersecurit-7b",
+        "/indian-army/ai-sec-soc"
+      ]
     }
   ]
 }
