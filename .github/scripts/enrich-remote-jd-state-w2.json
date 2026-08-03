@@ -59429,7 +59429,7 @@
     },
     "2c17da88-7ed6-4c09-a587-4816b65edde0": {
       "status": "skip",
-      "reason": "html_503"
+      "reason": "html_404"
     },
     "202cf52b-7c0f-4af2-87b9-a565716740df": {
       "status": "skip",
@@ -61750,8 +61750,9 @@
       "external_id": "procore-technologies_sw-eng-be"
     },
     "240c0f62-ec1f-4d30-9041-3094534db6bf": {
-      "status": "skip",
-      "reason": "err_TypeError"
+      "status": "ok",
+      "path": "/qualcomm/dsp-app-sw",
+      "external_id": "qualcomm_dsp-app-sw"
     },
     "258f8bc8-3a06-4f30-ac69-fd4b014ede90": {
       "status": "ok",
@@ -61857,12 +61858,14 @@
       "external_id": "dataannotation_physics-data"
     },
     "2a820148-6a66-4abb-b894-cb1ed4cfc101": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/jack-amp-jill/founding-eng-8d",
+      "external_id": "jack-amp-jill_founding-eng-8d"
     },
     "2b65af9a-c2d8-4b56-9397-0f582a16e9ae": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/capital-one/data-sci-ai",
+      "external_id": "capital-one_data-sci-ai"
     },
     "20863cf5-8b9b-4733-a9b9-c8740c8d9a8d": {
       "status": "ok",
@@ -61870,12 +61873,14 @@
       "external_id": "synergisticit_sw-dev-data"
     },
     "2e52eff6-ad2e-48fb-95a8-4a20cdd05a54": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/garner-health/sw-eng",
+      "external_id": "garner-health_sw-eng"
     },
     "2964f4c0-b8bf-4ee4-b68e-70741f42f00f": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/grail/data-sci",
+      "external_id": "grail_data-sci"
     },
     "2c024843-7988-439d-b0af-ef4f955e3aec": {
       "status": "ok",
@@ -61893,64 +61898,77 @@
       "external_id": "tiktok-usds-joint-venture_data-sci-64"
     },
     "22026953-de69-4967-865d-5b362bfeceab": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/harrison-clarke/research-eng",
+      "external_id": "harrison-clarke_research-eng"
     },
     "27719613-e3bf-41df-a72d-1c3829f9ebbe": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/nvidia/applied-ai",
+      "external_id": "nvidia_applied-ai"
     },
     "24b19eda-96e6-462a-aaea-4426e59234af": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/storm3/ml-sys-eng",
+      "external_id": "storm3_ml-sys-eng"
     },
     "2afca3dc-4cce-4579-bfcf-95c915b4b338": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/magic/member-tech",
+      "external_id": "magic_member-tech"
     },
     "22377989-f45e-4ace-848e-e3cb27f8bd58": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/mbn-solutions/ml-eng",
+      "external_id": "mbn-solutions_ml-eng"
     },
     "2c767cba-78b1-4c79-94be-05a8b9565762": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "linkedin_404"
     },
     "254c041a-5a0b-462a-b75b-54d1e788f804": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/tilde-research/ml-eng",
+      "external_id": "tilde-research_ml-eng"
     },
     "2b373d6c-1eda-47c3-a2ff-5ba1f8ff876a": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/pilot-com/sw-eng",
+      "external_id": "pilot-com_sw-eng"
     },
     "298fe334-1535-4fa6-9f76-3c9e2a15f086": {
-      "status": "skip",
-      "reason": "err_TypeError"
+      "status": "ok",
+      "path": "/harnham/sw-eng",
+      "external_id": "harnham_sw-eng"
     },
     "2df1c2bc-646c-48bb-be10-422426a53452": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/virtu-financial/information",
+      "external_id": "virtu-financial_information"
     },
     "28c20792-b6b7-4b6d-9e1a-31aee6a4c447": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/alexander-chapman/robotics-eng",
+      "external_id": "alexander-chapman_robotics-eng"
     },
     "23181463-7cb0-4311-adcd-4cd91c748e84": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "linkedin_short"
     },
     "28917f79-4688-4a53-b8ea-8cc29b02b54e": {
-      "status": "skip",
-      "reason": "err_TypeError"
+      "status": "ok",
+      "path": "/cyberjobs-com/sec-eng",
+      "external_id": "cyberjobs-com_sec-eng"
     },
     "261161a2-b5cf-43ad-8cb4-f04d3c634eeb": {
-      "status": "skip",
-      "reason": "err_TypeError"
+      "status": "ok",
+      "path": "/attentive/sw-eng-c5",
+      "external_id": "attentive_sw-eng-c5"
     },
     "23f6823b-93b7-42cb-903a-a75834885d34": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/dfnd-security-inc/sec-eng",
+      "external_id": "dfnd-security-inc_sec-eng"
     },
     "281eeeca-40d3-476f-9268-3c6f68074d8c": {
       "status": "ok",
@@ -61958,36 +61976,43 @@
       "external_id": "skild-ai_ml-eng"
     },
     "2a740205-44e9-4ff7-8b67-c66e4c22ec83": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/prestige-staffing/sec-eng",
+      "external_id": "prestige-staffing_sec-eng"
     },
     "2eff1aa4-728f-4314-9a82-595585ab11eb": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/millennium/sec-eng",
+      "external_id": "millennium_sec-eng"
     },
     "24d47bde-6a61-4815-b408-4210ca34f4d3": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/paragon-cyber-solutions-8a-edwosb-sdvosb-cmmc-c3pao/cyber-sec",
+      "external_id": "paragon-cyber-solutions-8a-edwosb-sdvosb-cmmc-c3pao_cyber-sec"
     },
     "26ae80ab-053f-4bff-89ed-cd9cfb02bd73": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/whitley-penn/it-sec",
+      "external_id": "whitley-penn_it-sec"
     },
     "273cb6c8-0083-499a-bb65-3dca52f915b3": {
       "status": "skip",
       "reason": "linkedin_429"
     },
     "2cb23bb2-335d-4fb2-9a72-6ca99375cf8b": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/softpro/sre-eng",
+      "external_id": "softpro_sre-eng"
     },
     "2f0efc3e-0697-4b55-9773-a3ae7dcfd553": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/google/sec-eng-50",
+      "external_id": "google_sec-eng-50"
     },
     "2d0f839a-b55e-461c-81e6-bbea787e2175": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/epitec/sec-analyst",
+      "external_id": "epitec_sec-analyst"
     },
     "22886cf0-c456-413b-bab1-7dae768d52bc": {
       "status": "skip",
