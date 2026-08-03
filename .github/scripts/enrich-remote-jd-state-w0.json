@@ -10775,8 +10775,9 @@
       "external_id": "gitlab_prog-mgr"
     },
     "99f50b41-df39-4eb1-87f6-5821e897fa39": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(gitlab_biz-acct) already"
+      "status": "ok",
+      "path": "/gitlab/biz-acct-9b",
+      "external_id": "gitlab_biz-acct-9b"
     },
     "e2ed0527-1636-49af-b0bc-3e1fc7d5280b": {
       "status": "ok",
@@ -11147,8 +11148,9 @@
       "reason": "lever_404"
     },
     "e6252e2b-f917-4bb4-9855-b27579f7e06d": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_cust-service) al"
+      "status": "ok",
+      "path": "/binance/cust-service-35",
+      "external_id": "binance_cust-service-35"
     },
     "3ca9f7cb-308b-423c-b8da-cccc0adb4a0c": {
       "status": "ok",
@@ -11617,8 +11619,9 @@
       "external_id": "binance_growth-campaign"
     },
     "270f1e4a-1028-4638-8c51-1099559ae7f3": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_regulatory) alre"
+      "status": "ok",
+      "path": "/binance/regulatory-0d",
+      "external_id": "binance_regulatory-0d"
     },
     "155ee09b-972d-4ca6-b1e6-b9fc363f08af": {
       "status": "ok",
@@ -11626,8 +11629,9 @@
       "external_id": "binance_golang-eng"
     },
     "35fc7a31-8faf-4770-a931-b5de03cc0a30": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_regulatory) alre"
+      "status": "ok",
+      "path": "/binance/regulatory-91",
+      "external_id": "binance_regulatory-91"
     },
     "3dc78730-a46f-406e-b965-33e8012da078": {
       "status": "ok",
@@ -11655,12 +11659,14 @@
       "external_id": "binance_data-java"
     },
     "d9deb7ab-4939-4547-b74a-b9b3a8b78e25": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_data-sci) alread"
+      "status": "ok",
+      "path": "/binance/data-sci-67",
+      "external_id": "binance_data-sci-67"
     },
     "ff2617bb-4db3-414a-88d3-c93bd294f2c6": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(binance_data-sci) alread"
+      "status": "ok",
+      "path": "/binance/data-sci-bd",
+      "external_id": "binance_data-sci-bd"
     },
     "8cffa2ef-4680-4eba-8d1f-f420f779edbc": {
       "status": "skip",
@@ -11895,8 +11901,9 @@
       "reason": "lever_404"
     },
     "e10df4a0-24d9-4c19-99e1-fee930b7f964": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(captivateiq_sw-eng) alre"
+      "status": "ok",
+      "path": "/captivateiq/sw-eng-54",
+      "external_id": "captivateiq_sw-eng-54"
     },
     "8edb8839-f4d5-4c5b-9842-3437428de79f": {
       "status": "ok",
@@ -11962,8 +11969,9 @@
       "external_id": "anchorage_relationship"
     },
     "b1c6c8fe-744d-43f3-8b37-18bc2a013922": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(anchorage_derivatives) a"
+      "status": "ok",
+      "path": "/anchorage/derivatives-ad",
+      "external_id": "anchorage_derivatives-ad"
     },
     "ba980df2-b8e2-410b-81ca-e1fd5437afe9": {
       "status": "skip",
@@ -11994,8 +12002,9 @@
       "external_id": "arcadia_mgr-training"
     },
     "253d4387-4621-4eda-bcb1-f8f72209345d": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(arcadia_vp-sales) alread"
+      "status": "ok",
+      "path": "/arcadia/vp-sales-0d",
+      "external_id": "arcadia_vp-sales-0d"
     },
     "01ee3c4a-7026-41fc-97f1-1881fd535a6a": {
       "status": "ok",
@@ -12131,8 +12140,9 @@
       "external_id": "aircall_billing-spec"
     },
     "d9a900d4-3205-4d1e-aeb8-0752593ffb3b": {
-      "status": "fail",
-      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pointclickcare_partner-m"
+      "status": "ok",
+      "path": "/pointclickcare/partner-mgr-5e",
+      "external_id": "pointclickcare_partner-mgr-5e"
     },
     "3996d9a9-0d3b-463c-8aa0-b1ece8021de4": {
       "status": "ok",
@@ -12195,6 +12205,2848 @@
     "bd72c011-cb49-4bdd-9294-109379c74d55": {
       "status": "skip",
       "reason": "html_short"
+    },
+    "f17fa5b4-6def-4d86-831b-cac6dbe524cf": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "950ee56b-6f7c-4a4e-9e44-4ea82a2d02dc": {
+      "status": "ok",
+      "path": "/wizeline/salesforce",
+      "external_id": "wizeline_salesforce"
+    },
+    "3019a0f5-45bc-4295-93bc-272b2030dc1a": {
+      "status": "ok",
+      "path": "/pinterest/measurement-a9",
+      "external_id": "pinterest_measurement-a9"
+    },
+    "460ed89f-2cc0-4090-84c3-229906383fea": {
+      "status": "ok",
+      "path": "/fivetran/biz-value",
+      "external_id": "fivetran_biz-value"
+    },
+    "454aec01-9f1e-48e4-8f75-bac66ee1d047": {
+      "status": "ok",
+      "path": "/asana/privacy-eng",
+      "external_id": "asana_privacy-eng"
+    },
+    "1ba720ac-96e8-44b5-9657-a821bbd89d67": {
+      "status": "ok",
+      "path": "/cribl/sec-ops-eng",
+      "external_id": "cribl_sec-ops-eng"
+    },
+    "db6766b5-aa44-4983-9c19-46ecda4aed6b": {
+      "status": "ok",
+      "path": "/coinbase/social-a1",
+      "external_id": "coinbase_social-a1"
+    },
+    "d935e905-2330-4984-98f1-b877f577e792": {
+      "status": "ok",
+      "path": "/coinbase/researcher",
+      "external_id": "coinbase_researcher"
+    },
+    "3e9727e8-1e11-4952-9b16-ca631e730361": {
+      "status": "skip",
+      "reason": "err_TypeError"
+    },
+    "790e5dbc-f0c2-4bd5-a941-15baa65eb430": {
+      "status": "ok",
+      "path": "/stripe/prod-mkt-ed",
+      "external_id": "stripe_prod-mkt-ed"
+    },
+    "a4eaf824-ff08-4a94-bbd8-a52cfad46253": {
+      "status": "ok",
+      "path": "/stripe/prod-mgr-08",
+      "external_id": "stripe_prod-mgr-08"
+    },
+    "5e7f2f4b-0c92-4381-a5e0-64edefc1f3ae": {
+      "status": "ok",
+      "path": "/stripe/risk-c0",
+      "external_id": "stripe_risk-c0"
+    },
+    "674c1e09-b70f-4344-8578-b7d89474209b": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "548b2d04-c14f-42a7-a747-898b73c08cc3": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "b6405cf0-9063-4731-967e-1ea0eb336a33": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "3bf171e7-dd60-4e92-bb03-382325006e66": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "2d63cd2d-c30d-4004-85f5-4473e46086a5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "2dc49b5f-d3c1-455f-b16c-efaae95fda7c": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "cd7fa8cf-11b3-44ab-925f-2e917f2e6e07": {
+      "status": "ok",
+      "path": "/stripe/gtm-ops",
+      "external_id": "stripe_gtm-ops"
+    },
+    "e96a501a-884d-4d0c-87fa-413faa03dc1c": {
+      "status": "ok",
+      "path": "/stripe/global-sales",
+      "external_id": "stripe_global-sales"
+    },
+    "be7e20da-b9c1-44f4-b339-408cf4c58b88": {
+      "status": "ok",
+      "path": "/samsara/sec-ops-eng",
+      "external_id": "samsara_sec-ops-eng"
+    },
+    "a3e7a7d6-edcd-459f-b94e-1ab5727bf327": {
+      "status": "ok",
+      "path": "/samsara/litigation",
+      "external_id": "samsara_litigation"
+    },
+    "d0139796-a626-4b21-90d7-6e826b44989e": {
+      "status": "ok",
+      "path": "/samsara/people-ops",
+      "external_id": "samsara_people-ops"
+    },
+    "634b6050-a351-4448-94fa-359e68804fa6": {
+      "status": "ok",
+      "path": "/samsara/biz-tech-c7",
+      "external_id": "samsara_biz-tech-c7"
+    },
+    "5e22ddc2-90a2-4c9d-a993-f80d4ca5f6af": {
+      "status": "ok",
+      "path": "/samsara/implementation",
+      "external_id": "samsara_implementation"
+    },
+    "ffde2c5c-5327-465a-9147-33525e5a7089": {
+      "status": "ok",
+      "path": "/samsara/enterprise",
+      "external_id": "samsara_enterprise"
+    },
+    "f5bcfb0f-7d69-422a-9fdd-1eb4c7aaae05": {
+      "status": "ok",
+      "path": "/samsara/enterprise-e6",
+      "external_id": "samsara_enterprise-e6"
+    },
+    "534e1290-f3b6-40e4-b17a-8948bb6d05c6": {
+      "status": "ok",
+      "path": "/samsara/cust-success-f4",
+      "external_id": "samsara_cust-success-f4"
+    },
+    "40a2d668-4e31-4de4-94d8-b5c9bd53ebed": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "1428b634-a81e-4a4b-9cb2-587309a7d601": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "214daedb-a924-4e51-a859-8df858bb21e5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "43490640-2273-4e39-b251-bfbe251f1215": {
+      "status": "ok",
+      "path": "/samsara/dir-gtm-biz",
+      "external_id": "samsara_dir-gtm-biz"
+    },
+    "9d66ee15-27f5-4cba-b5fe-cda5f9f72cf4": {
+      "status": "ok",
+      "path": "/navan/event-coord",
+      "external_id": "navan_event-coord"
+    },
+    "4a3659ac-97cf-4f5e-b487-7e1be23d3e31": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "f1ee059d-4805-4cfc-97cb-4672ed3e10ef": {
+      "status": "ok",
+      "path": "/pinterest/sw-eng-68",
+      "external_id": "pinterest_sw-eng-68"
+    },
+    "06760b7d-0415-4e0b-8944-f1b8960920e7": {
+      "status": "ok",
+      "path": "/pinterest/sw-eng-ml",
+      "external_id": "pinterest_sw-eng-ml"
+    },
+    "d398dac7-ab37-4315-b06e-bff942fcfdfc": {
+      "status": "ok",
+      "path": "/pinterest/sys-eng-36",
+      "external_id": "pinterest_sys-eng-36"
+    },
+    "6e340f75-7bdb-447e-999d-271b63cf9518": {
+      "status": "ok",
+      "path": "/pinterest/lead",
+      "external_id": "pinterest_lead"
+    },
+    "455eec1f-bcd5-4e1f-bfaf-3080d7f04950": {
+      "status": "ok",
+      "path": "/pinterest/distinguished",
+      "external_id": "pinterest_distinguished"
+    },
+    "a9ad79bd-6723-4a2e-8093-96a8fe3a133f": {
+      "status": "ok",
+      "path": "/pinterest/lead-strat",
+      "external_id": "pinterest_lead-strat"
+    },
+    "d07aa7fe-d16d-4187-b657-4ccd322043fe": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "67c4cde2-ad5f-4d84-b243-5f8cb64f17ac": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "719dae41-6f7c-4cbd-9bb9-0e09c5827038": {
+      "status": "ok",
+      "path": "/veriff/sw-eng-47",
+      "external_id": "veriff_sw-eng-47"
+    },
+    "45467ee6-4095-4114-879e-4b4695f9ba39": {
+      "status": "ok",
+      "path": "/pinterest/data-sci-mkt",
+      "external_id": "pinterest_data-sci-mkt"
+    },
+    "31912e02-5d0b-4e69-9441-2acee7924fd7": {
+      "status": "ok",
+      "path": "/payoneer/prog-mgr",
+      "external_id": "payoneer_prog-mgr"
+    },
+    "e3a89519-311d-4830-81b0-d9760255c514": {
+      "status": "ok",
+      "path": "/route/cust-success",
+      "external_id": "route_cust-success"
+    },
+    "9d897c62-3c35-40a8-babe-5b77e3100851": {
+      "status": "ok",
+      "path": "/clari-salesloft/prod-mgr-19",
+      "external_id": "clari-salesloft_prod-mgr-19"
+    },
+    "6d688625-198f-4890-9377-1578aec1dd19": {
+      "status": "ok",
+      "path": "/payoneer/partnerships",
+      "external_id": "payoneer_partnerships"
+    },
+    "26b35f74-55d7-4d26-b5ec-7413833d437a": {
+      "status": "ok",
+      "path": "/databricks/strat-core",
+      "external_id": "databricks_strat-core"
+    },
+    "ad2f340d-c335-4260-b228-2db780204721": {
+      "status": "ok",
+      "path": "/databricks/mgr-forward-f3",
+      "external_id": "databricks_mgr-forward-f3"
+    },
+    "3b2acf6b-53c8-41ec-9228-6d22c551fa62": {
+      "status": "ok",
+      "path": "/databricks/sol-arch-6a",
+      "external_id": "databricks_sol-arch-6a"
+    },
+    "dbfd5b9a-59bb-4821-ba7e-83165d77b575": {
+      "status": "ok",
+      "path": "/outside/sales-acct",
+      "external_id": "outside_sales-acct"
+    },
+    "fcbc4572-b1ab-4ac1-bfbc-5927c5838b43": {
+      "status": "ok",
+      "path": "/instacart/prod-sec-eng",
+      "external_id": "instacart_prod-sec-eng"
+    },
+    "f66b5572-9425-46f4-87b4-00393abc94ad": {
+      "status": "ok",
+      "path": "/instacart/experience",
+      "external_id": "instacart_experience"
+    },
+    "9f9f9faf-e83a-4ca3-a9a0-cf5a1af55294": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(fivetran_sales-eng) alre"
+    },
+    "8cc19210-bab7-4a84-b04d-9f90ac8febee": {
+      "status": "ok",
+      "path": "/five9/tech-prog",
+      "external_id": "five9_tech-prog"
+    },
+    "f4e6c60f-1a1c-4326-b419-ecae287c50da": {
+      "status": "ok",
+      "path": "/five9/channel-dev",
+      "external_id": "five9_channel-dev"
+    },
+    "bb14c699-3ec3-4c3b-a3e5-d7b8a3d00c14": {
+      "status": "ok",
+      "path": "/five9/biz-dev",
+      "external_id": "five9_biz-dev"
+    },
+    "0afcc45f-0487-49b3-8c8e-48e27cf3b8ac": {
+      "status": "ok",
+      "path": "/five9/devops-eng",
+      "external_id": "five9_devops-eng"
+    },
+    "0e0ebc0d-fb12-4d86-98dd-3ae813689d80": {
+      "status": "ok",
+      "path": "/dropbox/prod-design",
+      "external_id": "dropbox_prod-design"
+    },
+    "a9a2fd5d-c2f4-46b8-8ce5-ab3c44909176": {
+      "status": "ok",
+      "path": "/dropbox/biz-dev-17",
+      "external_id": "dropbox_biz-dev-17"
+    },
+    "3e8b8604-8b2b-4297-8ca4-3dcc661a5fa0": {
+      "status": "ok",
+      "path": "/d2l/community-spec",
+      "external_id": "d2l_community-spec"
+    },
+    "897d49c7-50fb-460c-b5ee-5a88167e41e2": {
+      "status": "ok",
+      "path": "/cribl/information",
+      "external_id": "cribl_information"
+    },
+    "e91df9df-3014-4627-94c9-9af95b6f3abe": {
+      "status": "ok",
+      "path": "/cribl/eng-mgr",
+      "external_id": "cribl_eng-mgr"
+    },
+    "587dee33-dac1-41fd-8bc4-5a59756d25c4": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "2be94b70-140c-4ba1-8b8d-66787cd7d053": {
+      "status": "ok",
+      "path": "/coinbase/it-auto-eng",
+      "external_id": "coinbase_it-auto-eng"
+    },
+    "6183b4ea-b5ef-46d1-b10b-15c920d89499": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "901cb329-59b4-48f2-a9f7-195a1492873c": {
+      "status": "ok",
+      "path": "/coinbase/biz-controller",
+      "external_id": "coinbase_biz-controller"
+    },
+    "3cf7a453-6b3a-4513-a41f-3040cab1782e": {
+      "status": "ok",
+      "path": "/coinbase/sw-eng-ec",
+      "external_id": "coinbase_sw-eng-ec"
+    },
+    "717ce30b-4d1c-4508-a2da-7391661f0519": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "bdb67b23-f5ce-47cc-ac01-acb075239e4e": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "61f3eb12-1a21-4781-a228-9c66fdc7129c": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "6cc3246a-72a7-47dc-bd8b-43004b303d23": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "a7fb4c00-0068-4871-8aef-4680a61ff5c2": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "db91dbbd-0d13-4f00-973e-0cde74b65e35": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "ed3b2964-0031-40ad-8b36-2d30bd953088": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "46a62253-de07-48a1-9192-6bc53ded2874": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "dacfe881-4dfc-4ca1-8fd8-d9d3609f9a3e": {
+      "status": "ok",
+      "path": "/collibra/acct-executive",
+      "external_id": "collibra_acct-executive"
+    },
+    "c303a3dc-67bf-4bc0-96d0-369216190476": {
+      "status": "ok",
+      "path": "/consensys/prod-mkt",
+      "external_id": "consensys_prod-mkt"
+    },
+    "c774b008-aee7-4bb9-9f0a-e4a349532c99": {
+      "status": "ok",
+      "path": "/airbnb/be-eng-bc",
+      "external_id": "airbnb_be-eng-bc"
+    },
+    "3205e536-eff2-4d24-9e97-80f8b355b556": {
+      "status": "ok",
+      "path": "/airbnb/sw-eng-mkt",
+      "external_id": "airbnb_sw-eng-mkt"
+    },
+    "1987a38b-6eaa-4087-9a78-5eb595a93af6": {
+      "status": "ok",
+      "path": "/airbnb/data-sci-64",
+      "external_id": "airbnb_data-sci-64"
+    },
+    "b060977e-55b0-416a-b853-55a37be3aadd": {
+      "status": "ok",
+      "path": "/airbnb/sw-eng-infra",
+      "external_id": "airbnb_sw-eng-infra"
+    },
+    "879d0d77-e7a7-45c0-ad6a-9b6b1a5653b1": {
+      "status": "ok",
+      "path": "/carvana/team-lead",
+      "external_id": "carvana_team-lead"
+    },
+    "4691ab21-424c-4ba2-9f8b-86c342464462": {
+      "status": "ok",
+      "path": "/abnormal/sales-dev-0a",
+      "external_id": "abnormal_sales-dev-0a"
+    },
+    "9e37f9e7-2828-4412-9d64-993f9b7dd11e": {
+      "status": "ok",
+      "path": "/abnormal/cust-success-b8",
+      "external_id": "abnormal_cust-success-b8"
+    },
+    "eee7f9cd-2f2b-40e5-ab4c-6eb9f2a80369": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4fe08720-d78e-452d-9339-0654d2d3a85f": {
+      "status": "ok",
+      "path": "/abnormal/major-acct",
+      "external_id": "abnormal_major-acct"
+    },
+    "33dae4be-af47-4a68-b3bb-9a5a588bad22": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "502bb0ef-53d8-4418-a89b-6c6ef7d571bf": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5583466d-2ce6-4959-b419-043bb7ec7ecb": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(stripe_partner-dev) alre"
+    },
+    "1eb91afb-4888-43ea-a4ba-268c61509b6a": {
+      "status": "ok",
+      "path": "/stripe/investment",
+      "external_id": "stripe_investment"
+    },
+    "6aa66891-fc60-485a-99e4-82ff3ca2e991": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-a0",
+      "external_id": "samsara_sw-eng-a0"
+    },
+    "9a195edd-044c-4697-8d27-b661caea4974": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "25ae709a-c6df-4a01-a571-9c9eb5fe0543": {
+      "status": "ok",
+      "path": "/platform-sh/dir-sales",
+      "external_id": "platform-sh_dir-sales"
+    },
+    "f1a8dc2d-ff78-48e9-8804-8876c7f2d3bc": {
+      "status": "ok",
+      "path": "/pinterest/data-sci-ml",
+      "external_id": "pinterest_data-sci-ml"
+    },
+    "bb979d7a-9b30-4fb3-8921-250cd023c852": {
+      "status": "ok",
+      "path": "/outside/eng-mgr",
+      "external_id": "outside_eng-mgr"
+    },
+    "fc6b2916-4cda-40d2-a8b6-3a57daa7cc1e": {
+      "status": "ok",
+      "path": "/instacart/prod-mgr-ads",
+      "external_id": "instacart_prod-mgr-ads"
+    },
+    "d53b0077-a03e-4403-9319-47e557ad8221": {
+      "status": "ok",
+      "path": "/mark43/tech-prog",
+      "external_id": "mark43_tech-prog"
+    },
+    "105fce1b-814f-4495-a93c-cb6c395a401d": {
+      "status": "ok",
+      "path": "/coinbase/sw-eng-data",
+      "external_id": "coinbase_sw-eng-data"
+    },
+    "11ea4061-9e15-436c-bad5-29e353954e5c": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "fd73aa64-7bac-46ff-a087-a33eeee654a7": {
+      "status": "ok",
+      "path": "/cribl/partner-biz",
+      "external_id": "cribl_partner-biz"
+    },
+    "0ade0d3d-4fd2-47f4-a7f5-23afef2e8c4c": {
+      "status": "ok",
+      "path": "/dropbox/fullstk-prod",
+      "external_id": "dropbox_fullstk-prod"
+    },
+    "5d056b70-b4a8-4e1d-8715-eaf14a675c1d": {
+      "status": "ok",
+      "path": "/collibra/mgr-plat-ops",
+      "external_id": "collibra_mgr-plat-ops"
+    },
+    "47b05180-7a46-40d1-a330-080893219d7e": {
+      "status": "ok",
+      "path": "/abnormal/spec-sales",
+      "external_id": "abnormal_spec-sales"
+    },
+    "7fc56ac7-d956-4736-a7fc-0a3821c57794": {
+      "status": "skip",
+      "reason": "err_TypeError"
+    },
+    "20144eaf-3f55-4896-947a-20ed3d81a8ed": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "149b98d8-168b-46a2-832f-406727c0fb26": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "d74b37c4-4dd9-4c12-8ac2-532081dde882": {
+      "status": "ok",
+      "path": "/duolingo/bicultural",
+      "external_id": "duolingo_bicultural"
+    },
+    "32803b2d-f388-43ee-90fd-a6e0f83daa21": {
+      "status": "ok",
+      "path": "/abnormal/cust-success-d6",
+      "external_id": "abnormal_cust-success-d6"
+    },
+    "9404728d-ec56-4b62-9453-33bb02dc4fe9": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "76075223-0d37-456b-9432-efe1fb0afbf8": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c2645ae5-2043-4085-ae96-6466fee4cee0": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "51bb91dc-b383-41af-ae18-154c889eeeec": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "2517077a-5f52-44d1-b260-7dbf22e2a087": {
+      "status": "ok",
+      "path": "/stripe/privacy-ops",
+      "external_id": "stripe_privacy-ops"
+    },
+    "0be32b13-72ad-402d-a830-8efcd6fc7829": {
+      "status": "ok",
+      "path": "/samsara/support-prod",
+      "external_id": "samsara_support-prod"
+    },
+    "a66aa5fb-1170-459b-9ca8-12d7790007b8": {
+      "status": "ok",
+      "path": "/samsara/mgr-products",
+      "external_id": "samsara_mgr-products"
+    },
+    "031d8e81-18b0-404c-b325-2939ebd5dcfc": {
+      "status": "ok",
+      "path": "/outside/assoc-editor",
+      "external_id": "outside_assoc-editor"
+    },
+    "7e55d6a5-33c8-4d16-87d7-d6942ecde00e": {
+      "status": "ok",
+      "path": "/samsara/head-gtm-ai",
+      "external_id": "samsara_head-gtm-ai"
+    },
+    "27ee8ffd-f2b1-4077-b4ed-5a90db7f602d": {
+      "status": "ok",
+      "path": "/samsara/bilingual-cust",
+      "external_id": "samsara_bilingual-cust"
+    },
+    "e8a19464-11df-45c1-8d39-10794ca98c18": {
+      "status": "ok",
+      "path": "/instacart/mgr-tech",
+      "external_id": "instacart_mgr-tech"
+    },
+    "c41efe98-1b86-4733-bc75-f033b0df5c69": {
+      "status": "ok",
+      "path": "/fivetran/dir-global",
+      "external_id": "fivetran_dir-global"
+    },
+    "3cd7faf7-b9fc-4039-b6c4-333590687432": {
+      "status": "ok",
+      "path": "/instacart/sw-eng-bazel",
+      "external_id": "instacart_sw-eng-bazel"
+    },
+    "bda1a8d9-73a4-40a1-bf6e-0fe000a57573": {
+      "status": "ok",
+      "path": "/five9/wem-aqm-ae",
+      "external_id": "five9_wem-aqm-ae"
+    },
+    "df1395b2-103f-4dab-9681-dab114d704ce": {
+      "status": "ok",
+      "path": "/collibra/acct-5d",
+      "external_id": "collibra_acct-5d"
+    },
+    "682c5a71-67ba-4b46-bf22-4b7417a9f1ae": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cribl_tech-prog) already"
+    },
+    "300eaa53-e52f-4f2d-8683-e870810bff78": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(coinbase_sw-eng-be) alre"
+    },
+    "1e1b0fd6-4612-4f65-93de-7eede55798a6": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "e5241e43-95b1-4b28-8093-bb7c9e47ff91": {
+      "status": "ok",
+      "path": "/alphasights/be-eng-96",
+      "external_id": "alphasights_be-eng-96"
+    },
+    "9b885262-7553-43ea-9393-251fa8a73e0c": {
+      "status": "ok",
+      "path": "/abnormal/mgr-cust",
+      "external_id": "abnormal_mgr-cust"
+    },
+    "74340c82-62ab-40e4-8acd-5a8627c5b816": {
+      "status": "ok",
+      "path": "/abnormal/salesforce",
+      "external_id": "abnormal_salesforce"
+    },
+    "3acd9d2b-cdfc-4fcd-91bb-59ec41254695": {
+      "status": "ok",
+      "path": "/adaptive-biotechnologies/ai-governance",
+      "external_id": "adaptive-biotechnologies_ai-governance"
+    },
+    "17930900-b357-4d4e-8423-75734a4706c4": {
+      "status": "ok",
+      "path": "/samsara/recruit",
+      "external_id": "samsara_recruit"
+    },
+    "7c279f10-8b5a-4e31-b012-cd6cfef3b4c3": {
+      "status": "ok",
+      "path": "/stripe/sec-analyst",
+      "external_id": "stripe_sec-analyst"
+    },
+    "7fd07f33-adc0-4364-9b04-3359045e10c1": {
+      "status": "ok",
+      "path": "/instacart/dir-cust",
+      "external_id": "instacart_dir-cust"
+    },
+    "c9dbb846-0364-46f0-b4f1-d0c4234c2ed9": {
+      "status": "ok",
+      "path": "/cockroach-labs/sales-eng",
+      "external_id": "cockroach-labs_sales-eng"
+    },
+    "4b31cc18-0f19-470a-9f7e-8e696354dff1": {
+      "status": "ok",
+      "path": "/airbnb/ops-eng",
+      "external_id": "airbnb_ops-eng"
+    },
+    "a4140610-0eff-4c89-9f1b-ae61b2058d25": {
+      "status": "ok",
+      "path": "/d2l/prod-mkt-mgr",
+      "external_id": "d2l_prod-mkt-mgr"
+    },
+    "cd920388-19df-4971-b721-05f2c8c063ba": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-9b",
+      "external_id": "samsara_sw-eng-9b"
+    },
+    "60db9ca0-9c5a-49b9-a330-789028c54c5c": {
+      "status": "ok",
+      "path": "/samsara/especialista",
+      "external_id": "samsara_especialista"
+    },
+    "dd6b64a1-463d-460d-864d-9fc2a91bcb79": {
+      "status": "ok",
+      "path": "/samsara/especialista-9d",
+      "external_id": "samsara_especialista-9d"
+    },
+    "39a90648-ba0a-45bf-ac06-fdf0bbd43054": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "302faa1a-d8ae-41c5-bc94-eb2442a04a6f": {
+      "status": "ok",
+      "path": "/clari-salesloft/prod-mgr-49",
+      "external_id": "clari-salesloft_prod-mgr-49"
+    },
+    "2322674b-77c1-4bee-907b-740d9c40ca9e": {
+      "status": "ok",
+      "path": "/salsify/b2b-content",
+      "external_id": "salsify_b2b-content"
+    },
+    "ebd1545e-629a-43de-ab32-456f0ad6e100": {
+      "status": "ok",
+      "path": "/pinterest/prod-mgr",
+      "external_id": "pinterest_prod-mgr"
+    },
+    "966c8604-b9dc-442e-b317-fce4f259879a": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "d412460f-c4d6-4f23-812e-eec7a163afa7": {
+      "status": "ok",
+      "path": "/coinbase/assoc-fin",
+      "external_id": "coinbase_assoc-fin"
+    },
+    "e929967a-ce85-49b5-a827-16f46163e34a": {
+      "status": "ok",
+      "path": "/coinbase/counsel-prod",
+      "external_id": "coinbase_counsel-prod"
+    },
+    "2f8828a6-c369-4e9f-8b3d-d95376412de0": {
+      "status": "ok",
+      "path": "/airbnb/web-auto-eng",
+      "external_id": "airbnb_web-auto-eng"
+    },
+    "fb023756-8055-4a50-82db-5f0efb0c5e2e": {
+      "status": "ok",
+      "path": "/abnormal/sales-dev-2e",
+      "external_id": "abnormal_sales-dev-2e"
+    },
+    "286b5a71-a655-49e4-9ef8-eb9549f8f204": {
+      "status": "ok",
+      "path": "/abnormal/major-acct-0d",
+      "external_id": "abnormal_major-acct-0d"
+    },
+    "bad4a607-7a58-42a1-a9ac-479bb47c2cbd": {
+      "status": "ok",
+      "path": "/everstar/international",
+      "external_id": "everstar_international"
+    },
+    "0c4e52ab-47b0-4717-a8b4-dd5f2e839eef": {
+      "status": "ok",
+      "path": "/everstar/mdm-analyst",
+      "external_id": "everstar_mdm-analyst"
+    },
+    "c342a1d3-2f1c-4995-9ab3-1eeeb5690260": {
+      "status": "ok",
+      "path": "/everstar/image-qa-eng",
+      "external_id": "everstar_image-qa-eng"
+    },
+    "ac373c16-5625-44ca-8a7d-c49b2d7e5636": {
+      "status": "ok",
+      "path": "/everstar/head-logistics",
+      "external_id": "everstar_head-logistics"
+    },
+    "90967d04-eedc-46d3-ab06-8b921a504f03": {
+      "status": "ok",
+      "path": "/everstar/tech-lead-8b",
+      "external_id": "everstar_tech-lead-8b"
+    },
+    "6595eba7-cc7a-4848-863a-c2e43c0b25c9": {
+      "status": "ok",
+      "path": "/everstar/fpga-eng",
+      "external_id": "everstar_fpga-eng"
+    },
+    "3cb4783b-b6c0-4740-81e1-51d19f160506": {
+      "status": "ok",
+      "path": "/everstar/hrbp-rd",
+      "external_id": "everstar_hrbp-rd"
+    },
+    "d6c42baa-6d38-4228-9305-91bbbdf42ba9": {
+      "status": "ok",
+      "path": "/everstar/c-plus",
+      "external_id": "everstar_c-plus"
+    },
+    "8cb840ec-8b10-4907-9f0c-0d8d4352d700": {
+      "status": "ok",
+      "path": "/everstar/uav-qa-eng",
+      "external_id": "everstar_uav-qa-eng"
+    },
+    "5e486981-5500-4f4f-88f7-47f0ba5c2a83": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e0134081-b0e7-4bf3-9d08-1b9cb1114e31": {
+      "status": "ok",
+      "path": "/everstar/uav-electronics",
+      "external_id": "everstar_uav-electronics"
+    },
+    "594bc49e-31ef-4cbf-840e-7b27a7dbd072": {
+      "status": "ok",
+      "path": "/everstar/engagement",
+      "external_id": "everstar_engagement"
+    },
+    "3780fede-5d7a-43ef-83e2-f597579e4f2c": {
+      "status": "ok",
+      "path": "/everstar/sys",
+      "external_id": "everstar_sys"
+    },
+    "f31c8827-80b8-4c76-9411-3ae2f6d3aaae": {
+      "status": "ok",
+      "path": "/everstar/embedded-eng-6c",
+      "external_id": "everstar_embedded-eng-6c"
+    },
+    "b50c4c57-41e7-4f34-ada2-241d9f1774cf": {
+      "status": "ok",
+      "path": "/everstar/erp-support",
+      "external_id": "everstar_erp-support"
+    },
+    "d779ee85-0501-4f9e-879b-cc75cb84cbba": {
+      "status": "ok",
+      "path": "/everstar/creative",
+      "external_id": "everstar_creative"
+    },
+    "55dac5d8-c5ac-46ca-81d0-146208bdd95f": {
+      "status": "ok",
+      "path": "/everstar/smm-mgr",
+      "external_id": "everstar_smm-mgr"
+    },
+    "8f8f99ea-ff52-422e-9d99-bf92783073b3": {
+      "status": "ok",
+      "path": "/everstar/qa-eng-46",
+      "external_id": "everstar_qa-eng-46"
+    },
+    "4ce9bd41-2b67-4406-88c4-e34e319038c1": {
+      "status": "ok",
+      "path": "/everstar/organizational",
+      "external_id": "everstar_organizational"
+    },
+    "76f80c64-eeda-4e43-95bd-effde0d38076": {
+      "status": "ok",
+      "path": "/everstar/organization-84",
+      "external_id": "everstar_organization-84"
+    },
+    "fe49b42a-4f68-4a80-83bc-dd8019c53534": {
+      "status": "ok",
+      "path": "/everstar/middle-ml-76",
+      "external_id": "everstar_middle-ml-76"
+    },
+    "4af1b047-619c-4f0e-87a4-23a5f29f59e9": {
+      "status": "ok",
+      "path": "/everstar/middle-plus",
+      "external_id": "everstar_middle-plus"
+    },
+    "fbbd93da-e83a-49eb-9d33-7d106fec6774": {
+      "status": "ok",
+      "path": "/everstar/ml-cv-eng",
+      "external_id": "everstar_ml-cv-eng"
+    },
+    "626103bc-c74b-405d-bfe0-99ac207863bf": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "88ff56ef-fafb-46ed-bdc2-633fca9e8b91": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "7c17c401-4cf7-476d-98d1-ad7fb3bac9d2": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c206e5f0-a25c-4a18-8b65-23ab5e65cc7b": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "6fd536d2-5c85-49eb-9884-c8c43babe534": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "462a8568-71dc-47c5-bf86-3925cf245ea6": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "3a1fb341-feae-4414-9fc9-b163cd94057a": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "b886ec76-d781-4941-b175-d1a192a3e5fe": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "d54ef618-14bb-4838-a99f-cbe284854c4e": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "a82d3ae4-d886-4b2d-bcf7-fcdf4958a548": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "9c362d4b-6bc8-4860-ba09-9e666a3cced4": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "3d559070-bc88-4661-9d36-ef3d78bbc174": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "6622ee04-39c8-4200-ab2b-be5aac2be504": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "d3f0500e-9dbe-47f7-bbfc-0d01bb324018": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "7c0875f2-2a8e-4985-88b6-0cbf2077fc56": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "64f479b0-c923-4f4a-aba8-53ebe20b05a7": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c856b6fc-f37f-46da-9bd6-9f12c57d8b01": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "fa633347-0bff-494f-b7bf-7f7a0d3fafc2": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "61fb248d-d2e4-449b-b771-752b251e8d42": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c53a5649-c070-47df-9677-74733b51dad0": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "ae15e7bd-f1ab-4c4c-8aae-f1b2da4a35f3": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "456dcbd5-acdd-44c8-ac2b-c0f88df297c5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e8867497-bad5-4b19-ba05-efaf559d0381": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "bd7b34d6-054e-43c3-9eab-8482ef6f5746": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "29b13126-efcd-4264-88c8-35288f738f44": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "9f49af5d-bbc2-4d31-8e42-2934ca45ed34": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "15e07ec6-e31c-4db4-816d-94399d17b686": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "480a9951-6cab-4062-9e78-c57f8cef7487": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "66019486-7793-4a59-bbbc-eb6a41372345": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c0ac6e41-5ff2-46ed-9dda-adc6dc53fd78": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "7726f9df-8375-41b6-b4d8-8391af1498e1": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "41a7098d-3cba-41be-8164-118d78876ff9": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "3684c097-390c-4857-9576-69bba43edd21": {
+      "status": "skip",
+      "reason": "html_blocked"
+    },
+    "d5ccc817-a37d-46c9-a1d6-b351dc9233c6": {
+      "status": "skip",
+      "reason": "html_blocked"
+    },
+    "da5a475b-a6ed-43ce-bde2-150592057a85": {
+      "status": "skip",
+      "reason": "html_blocked"
+    },
+    "2aa6e269-4c36-47bd-9258-93886a57a25e": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "69649fe0-3e97-4161-8bba-9c51fe3f594e": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4ffb0c00-6c83-4995-8cb5-0a93d59366ba": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "3cdb42e5-1cb6-41b5-b50b-6ad44dbdf52f": {
+      "status": "ok",
+      "path": "/toast/prod-mgr",
+      "external_id": "toast_prod-mgr"
+    },
+    "ee33754c-bf20-44ad-8cbb-95e44e75a04c": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "933bb801-7422-4f3e-a3b0-ab8a14684c6d": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "167b2952-3972-4d9c-8c2b-b54a4487a5c5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "8ac2e8a4-c0cc-44ee-8ac3-11b3a805e23f": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "07d61c10-0d68-428d-a757-5b2f9c4f643a": {
+      "status": "ok",
+      "path": "/lattice/acct-c6",
+      "external_id": "lattice_acct-c6"
+    },
+    "e1f9006f-bdba-4b9c-85df-cf11cc4ea07b": {
+      "status": "ok",
+      "path": "/lattice/gtm-eng",
+      "external_id": "lattice_gtm-eng"
+    },
+    "15bc4ce3-afc3-4eda-9f85-d88c416b19ae": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "cc63abfa-0b81-4f58-8bfa-30bbce3138d1": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "4a8015ea-c40d-44e2-a949-31c651cfd810": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "54efa691-f809-4fcd-b10d-3cf9c301f42c": {
+      "status": "ok",
+      "path": "/ifit/dir-treasury",
+      "external_id": "ifit_dir-treasury"
+    },
+    "bc58e66a-fc60-46f7-abd5-7fdb8ade7a93": {
+      "status": "ok",
+      "path": "/stripe/user-risk",
+      "external_id": "stripe_user-risk"
+    },
+    "229357ea-deb9-44c8-8385-f096392101cd": {
+      "status": "ok",
+      "path": "/stripe/workday",
+      "external_id": "stripe_workday"
+    },
+    "1cec89d9-2e86-4365-8ca5-8587348cce32": {
+      "status": "ok",
+      "path": "/stripe/tech-sol-eng",
+      "external_id": "stripe_tech-sol-eng"
+    },
+    "63dd896a-a55d-4bae-85b3-a7e324f7200f": {
+      "status": "ok",
+      "path": "/stripe/tech-prog-6d",
+      "external_id": "stripe_tech-prog-6d"
+    },
+    "c8e9e35e-2963-4fc9-9086-709e9cbe4805": {
+      "status": "ok",
+      "path": "/stripe/tech-prog-ad",
+      "external_id": "stripe_tech-prog-ad"
+    },
+    "4e009eab-2447-4995-9b8c-53646207c9e9": {
+      "status": "ok",
+      "path": "/stripe/sales",
+      "external_id": "stripe_sales"
+    },
+    "0e0857c3-d2fe-4594-bbf7-51a6b9a9c9d0": {
+      "status": "ok",
+      "path": "/stripe/tech-acct",
+      "external_id": "stripe_tech-acct"
+    },
+    "cddc60e1-0cf5-46ab-89f5-20a8fbaf5ce7": {
+      "status": "ok",
+      "path": "/stripe/risk-84",
+      "external_id": "stripe_risk-84"
+    },
+    "90dd0387-37db-4183-8a02-ca60c97c69bb": {
+      "status": "ok",
+      "path": "/stripe/sw-eng-sec",
+      "external_id": "stripe_sw-eng-sec"
+    },
+    "e50da7d4-b9ea-493c-9be1-843ec721b0f1": {
+      "status": "ok",
+      "path": "/stripe/fullstk-eng-82",
+      "external_id": "stripe_fullstk-eng-82"
+    },
+    "2b0e6a1e-e758-4519-aafd-210c87e3b145": {
+      "status": "ok",
+      "path": "/stripe/prod-mkt-63",
+      "external_id": "stripe_prod-mkt-63"
+    },
+    "8a7e41bb-a43a-4cf2-815e-100b38005102": {
+      "status": "ok",
+      "path": "/stripe/prod-mkt-fb",
+      "external_id": "stripe_prod-mkt-fb"
+    },
+    "fe1642aa-69c8-4efb-be80-03a75e03a7a2": {
+      "status": "ok",
+      "path": "/stripe/prod-design",
+      "external_id": "stripe_prod-design"
+    },
+    "ba5f2c15-fea6-4863-90b1-41eb4ea5c616": {
+      "status": "ok",
+      "path": "/stripe/sci-lead",
+      "external_id": "stripe_sci-lead"
+    },
+    "ca5c5b0e-c4d5-4848-99ad-3cdc6fc35aa2": {
+      "status": "ok",
+      "path": "/stripe/indirect-tax",
+      "external_id": "stripe_indirect-tax"
+    },
+    "412ba6f6-cc86-4dbb-a55d-2399638bba03": {
+      "status": "ok",
+      "path": "/stripe/payments",
+      "external_id": "stripe_payments"
+    },
+    "2e21b78e-a702-4aa9-a9bb-ac7b1138f3c0": {
+      "status": "ok",
+      "path": "/stripe/people-proj",
+      "external_id": "stripe_people-proj"
+    },
+    "afacd88c-ddc0-4d83-8eb0-81d0b434e500": {
+      "status": "ok",
+      "path": "/stripe/payments-fraud",
+      "external_id": "stripe_payments-fraud"
+    },
+    "2ae1005d-ab28-4c39-b939-b71deca5bd2b": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(stripe_partner-dev) alre"
+    },
+    "5e8e6ef6-589d-4c90-ad6e-ebd9085b4051": {
+      "status": "ok",
+      "path": "/stripe/deal-pricing",
+      "external_id": "stripe_deal-pricing"
+    },
+    "604d3f3a-c802-4a5a-9d69-9006468b733f": {
+      "status": "ok",
+      "path": "/stripe/data-sci-mgr",
+      "external_id": "stripe_data-sci-mgr"
+    },
+    "7036fe29-5bee-4b2d-95e9-26ad392f2cfd": {
+      "status": "ok",
+      "path": "/stripe/corporate-net",
+      "external_id": "stripe_corporate-net"
+    },
+    "3e5286f2-81c5-48f4-9ee4-d3568d48d7f1": {
+      "status": "ok",
+      "path": "/stripe/credit-risk-3e",
+      "external_id": "stripe_credit-risk-3e"
+    },
+    "b3d50bf6-dc81-4fb1-a043-498a33a3ce2b": {
+      "status": "ok",
+      "path": "/stripe/consumer-prod",
+      "external_id": "stripe_consumer-prod"
+    },
+    "cf084399-720b-43a8-be80-4be5d519e18f": {
+      "status": "ok",
+      "path": "/zwift/sw-eng-game",
+      "external_id": "zwift_sw-eng-game"
+    },
+    "38b43a85-6b19-4d78-b68d-5895d2a623b3": {
+      "status": "ok",
+      "path": "/zwift/sw-eng-7a",
+      "external_id": "zwift_sw-eng-7a"
+    },
+    "d4d19581-5050-494a-a2b1-26c3490b0396": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e57fb635-5702-457b-819e-5273ad6e6b04": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5acffaa6-037f-48de-abb4-6a57547c23a8": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5ddbc6d7-8d8e-48d8-b6e6-230cd9e2df99": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e16d52b1-f056-494a-8a54-0d595fdc4fc1": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "6ff2017e-53f0-4a2c-966e-1f5d5b1b47b9": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "844cac93-442b-4e7c-9e63-98dd71b6a4a5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5ee900a9-9bdb-407f-87b3-ef3f94b5dd25": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e9faede0-e36c-4d89-89dc-2db7463c690b": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c920c274-41c2-4675-8f12-38a4aa5d293c": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "1e4a3aba-7439-47a0-99ab-d7a5ac049937": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "547d3202-549e-4eba-92aa-1b99644ba7c6": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e54fc242-4696-4adc-8afe-fae6822dbba6": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "764dbe95-3b2d-4ac5-8f8c-43271bb5b84f": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "56f2f11b-f9af-416b-993c-bebe9fcf2acc": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "98765d68-841c-46e2-ae6e-33b63e6d7e33": {
+      "status": "ok",
+      "path": "/veriff/tech-support",
+      "external_id": "veriff_tech-support"
+    },
+    "1ecef9ce-9428-4c36-9430-0e8f11e7ef21": {
+      "status": "ok",
+      "path": "/navan/biz-travel-9a",
+      "external_id": "navan_biz-travel-9a"
+    },
+    "7770b4db-b127-4aee-b46a-35ed8f5779a8": {
+      "status": "skip",
+      "reason": "err_TypeError"
+    },
+    "7b7a8dc6-c834-4019-926b-f62b2441be28": {
+      "status": "skip",
+      "reason": "err_TypeError"
+    },
+    "93ad85f6-2d22-4e29-90ee-5390e8238f9f": {
+      "status": "skip",
+      "reason": "err_TypeError"
+    },
+    "8427fa55-5f0e-4ca9-8f37-0573e1aa37f1": {
+      "status": "ok",
+      "path": "/samsara/spec-seller-93",
+      "external_id": "samsara_spec-seller-93"
+    },
+    "71584db7-37ba-4cad-b9db-315a4e0ab93a": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sol-integration)"
+    },
+    "dd0e9b25-0c14-402c-831e-b44175c06738": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sol-integration)"
+    },
+    "0d78fcfe-58cf-41f9-93d2-b1d1e569b5c5": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-26",
+      "external_id": "samsara_sw-eng-26"
+    },
+    "6cfc76d7-fe49-40f9-ac49-3bc67a745784": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_strat) already e"
+    },
+    "09da87bc-2854-4f8d-8df9-b90ea1a7a6d0": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-9f",
+      "external_id": "samsara_sw-eng-9f"
+    },
+    "025eda7c-a07a-4e27-9981-e76ad183bb74": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-dev",
+      "external_id": "samsara_sw-eng-dev"
+    },
+    "f1850904-66b3-4119-9d84-2edf4c89b8d8": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-49",
+      "external_id": "samsara_sw-eng-49"
+    },
+    "c67e2109-c1ce-44a7-bb4f-3dd23863bc15": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sales-ops) alrea"
+    },
+    "2519acdc-7252-4eac-8161-1b26daac67c8": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-75",
+      "external_id": "samsara_sw-eng-75"
+    },
+    "1fa5514a-52bd-4165-ac54-c82120f57e73": {
+      "status": "ok",
+      "path": "/samsara/support-tools",
+      "external_id": "samsara_support-tools"
+    },
+    "dac3e03d-e7e6-4874-8982-9fe91bd1760a": {
+      "status": "ok",
+      "path": "/samsara/sw-eng-ec",
+      "external_id": "samsara_sw-eng-ec"
+    },
+    "c14f4376-0844-4257-8462-e789913ea9f4": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sw-eng-cc) alrea"
+    },
+    "31b9002f-1a7a-448d-bd75-93ef6488f63f": {
+      "status": "ok",
+      "path": "/samsara/mkt-ops-mgr",
+      "external_id": "samsara_mkt-ops-mgr"
+    },
+    "24712608-089d-46a3-9a17-d609d6f42ca1": {
+      "status": "ok",
+      "path": "/samsara/image-qa",
+      "external_id": "samsara_image-qa"
+    },
+    "8d0b527c-9bd0-4950-ac50-f7f50f3863fd": {
+      "status": "ok",
+      "path": "/samsara/analyst-sales",
+      "external_id": "samsara_analyst-sales"
+    },
+    "3e4b7d86-ba13-4b32-99e6-621392d60c94": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_select-major) al"
+    },
+    "8bd8cb2d-543a-4146-8b59-0c0f44de742a": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_mgr-cust) alread"
+    },
+    "d7b2696b-f482-4f35-99c6-7770f0776b74": {
+      "status": "ok",
+      "path": "/samsara/biz-value",
+      "external_id": "samsara_biz-value"
+    },
+    "00f0d7be-23b7-4cb2-bb16-c79e4f5861fe": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sales-eng) alrea"
+    },
+    "25c38689-7a3c-49d1-a1c2-6ddef3274e95": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sales-eng) alrea"
+    },
+    "900f6273-8aba-4b94-ab50-d51090eab97d": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sales-eng-se) al"
+    },
+    "ca8d6d48-0398-464e-a4d2-e9d5a0080773": {
+      "status": "ok",
+      "path": "/samsara/global-ops",
+      "external_id": "samsara_global-ops"
+    },
+    "7c2082a1-885e-4c4c-9551-9538e47e71c8": {
+      "status": "ok",
+      "path": "/samsara/enterprise-f4",
+      "external_id": "samsara_enterprise-f4"
+    },
+    "b00e42a6-5f66-4e73-8e8d-a0b774d725b9": {
+      "status": "ok",
+      "path": "/samsara/enterprise-77",
+      "external_id": "samsara_enterprise-77"
+    },
+    "4ad4cea8-17b8-45d7-b695-2cef6ad67890": {
+      "status": "ok",
+      "path": "/samsara/enterprise-e3",
+      "external_id": "samsara_enterprise-e3"
+    },
+    "39bfedfa-2d24-4e08-9a44-f3c5179addf9": {
+      "status": "ok",
+      "path": "/samsara/enterprise-cd",
+      "external_id": "samsara_enterprise-cd"
+    },
+    "be1c8026-1779-4b21-807d-551424771884": {
+      "status": "ok",
+      "path": "/samsara/plm-data",
+      "external_id": "samsara_plm-data"
+    },
+    "f4eb07d7-1442-45b1-88ee-83b388d58a27": {
+      "status": "ok",
+      "path": "/samsara/dir-global",
+      "external_id": "samsara_dir-global"
+    },
+    "e7b40c1a-f76f-4167-b0be-acc0c32a13ce": {
+      "status": "ok",
+      "path": "/samsara/eng-mgr",
+      "external_id": "samsara_eng-mgr"
+    },
+    "56a37df3-6f07-473f-b765-9d5852d42bc1": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_mid-market) alre"
+    },
+    "4610b78d-3d09-4211-af9f-6b13a540c3a8": {
+      "status": "ok",
+      "path": "/samsara/cust-success-30",
+      "external_id": "samsara_cust-success-30"
+    },
+    "80c84e9d-5d84-418d-b325-1490f565bf51": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_mid-market) alre"
+    },
+    "1a9e1270-f865-4aaf-9fa2-182d27852061": {
+      "status": "ok",
+      "path": "/samsara/ai-eng",
+      "external_id": "samsara_ai-eng"
+    },
+    "b36f19ab-1d46-4e0c-bf52-caa6617a20f5": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_acct-executive) "
+    },
+    "bda72570-707b-49b9-85e2-e543893f7144": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_acct-executive) "
+    },
+    "138f9900-aa07-49a1-96f0-dca0b2369c67": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "0e663282-2081-4006-8ac0-2a710235ad46": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_acct-executive) "
+    },
+    "c266f603-2827-466b-a231-e82aab0b4fe5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "650cc2f5-b41c-4801-9453-1fe78e5bb4a9": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "8297e5d6-4d98-4ccd-9ae2-685213e52970": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e8ec7f91-372d-4a96-baa1-f5b6df411571": {
+      "status": "ok",
+      "path": "/sisense/community-mgr",
+      "external_id": "sisense_community-mgr"
+    },
+    "82319d00-8319-402f-b20c-6f66b2e2f205": {
+      "status": "ok",
+      "path": "/pinterest/sw-eng-e2",
+      "external_id": "pinterest_sw-eng-e2"
+    },
+    "b8be2a85-cd6c-4e27-914d-18a0337f3183": {
+      "status": "ok",
+      "path": "/pinterest/sw-eng-e0",
+      "external_id": "pinterest_sw-eng-e0"
+    },
+    "dd1379d7-5e61-40c6-915e-a2a97043c6fd": {
+      "status": "ok",
+      "path": "/pinterest/sw-eng-batch",
+      "external_id": "pinterest_sw-eng-batch"
+    },
+    "67fde216-3aaf-42ab-b501-748a9d251225": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pinterest_sw-eng-ads) al"
+    },
+    "1f804ccf-95e6-4ff7-9875-44d5c0431cdb": {
+      "status": "ok",
+      "path": "/pinterest/sw-eng-data",
+      "external_id": "pinterest_sw-eng-data"
+    },
+    "ce126a9e-5af6-4132-b6c7-4a36e38fd669": {
+      "status": "ok",
+      "path": "/pinterest/prod-design-d6",
+      "external_id": "pinterest_prod-design-d6"
+    },
+    "4812cef2-a3ff-4b43-9b35-f092ea69c8fe": {
+      "status": "ok",
+      "path": "/pinterest/ml-eng-a8",
+      "external_id": "pinterest_ml-eng-a8"
+    },
+    "ec325011-e54f-4c06-a15d-2edd6f50c411": {
+      "status": "ok",
+      "path": "/pinterest/sw-eng-be",
+      "external_id": "pinterest_sw-eng-be"
+    },
+    "88349705-d656-469e-8140-f691b2673696": {
+      "status": "ok",
+      "path": "/pinterest/ml-eng-3e",
+      "external_id": "pinterest_ml-eng-3e"
+    },
+    "5910b497-3fae-4693-b22b-32a45245c251": {
+      "status": "ok",
+      "path": "/pinterest/prod-design-63",
+      "external_id": "pinterest_prod-design-63"
+    },
+    "11b3ef5f-5d2b-4971-936d-48cb55e1df8c": {
+      "status": "ok",
+      "path": "/pinterest/prod-design-6f",
+      "external_id": "pinterest_prod-design-6f"
+    },
+    "f9db1ca2-9429-4f1c-bb72-03abc4e35044": {
+      "status": "ok",
+      "path": "/pinterest/eng-ai-plat",
+      "external_id": "pinterest_eng-ai-plat"
+    },
+    "d9a83ded-2b79-489f-84cf-e2ea7be37df8": {
+      "status": "ok",
+      "path": "/pinterest/ml-eng-e6",
+      "external_id": "pinterest_ml-eng-e6"
+    },
+    "2018ca22-d515-461b-913a-4543d57524d3": {
+      "status": "ok",
+      "path": "/sambanova-systems/sw-eng-ml",
+      "external_id": "sambanova-systems_sw-eng-ml"
+    },
+    "25e89012-8cba-4eef-b8bf-92870412bb9c": {
+      "status": "ok",
+      "path": "/salsify/net-acct",
+      "external_id": "salsify_net-acct"
+    },
+    "e426fa7b-80f1-460b-a813-16cea9ca6661": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(clari-salesloft_eng-rev-"
+    },
+    "c11827b3-d7c7-4d47-9867-cc0d8d8f0c01": {
+      "status": "ok",
+      "path": "/route/fp-analyst",
+      "external_id": "route_fp-analyst"
+    },
+    "a11cefe7-5648-4db8-9ec0-234ed2a7c7b6": {
+      "status": "ok",
+      "path": "/route/tech-prod",
+      "external_id": "route_tech-prod"
+    },
+    "0adda681-8d13-41b2-b28f-ca2c438eabf9": {
+      "status": "ok",
+      "path": "/route/mgr-sales",
+      "external_id": "route_mgr-sales"
+    },
+    "2396e79b-b00f-4fcc-873b-302be165a60c": {
+      "status": "ok",
+      "path": "/clari-salesloft/dir-prod",
+      "external_id": "clari-salesloft_dir-prod"
+    },
+    "647a508a-5897-40de-9e44-2f5a38ab10dd": {
+      "status": "ok",
+      "path": "/red-badger/ux-design",
+      "external_id": "red-badger_ux-design"
+    },
+    "c1509638-be2d-4ac1-8470-e692516403ea": {
+      "status": "ok",
+      "path": "/qualtrics/enterprise-d9",
+      "external_id": "qualtrics_enterprise-d9"
+    },
+    "eb158057-b490-4c8d-ba81-ca659d8eb496": {
+      "status": "ok",
+      "path": "/pathai/ml-eng",
+      "external_id": "pathai_ml-eng"
+    },
+    "460a49e9-8da6-4127-8211-7a6f4745866f": {
+      "status": "ok",
+      "path": "/platform-sh/sw-eng",
+      "external_id": "platform-sh_sw-eng"
+    },
+    "3220a152-b224-4f12-8ece-52dc36af2885": {
+      "status": "ok",
+      "path": "/pathai/pathologist",
+      "external_id": "pathai_pathologist"
+    },
+    "04ab6daa-77ae-4543-8028-60b2a5c90de5": {
+      "status": "ok",
+      "path": "/motional/ml-eng",
+      "external_id": "motional_ml-eng"
+    },
+    "4da1c284-82ad-4300-bfca-8a665df5e783": {
+      "status": "ok",
+      "path": "/motional/eng-77",
+      "external_id": "motional_eng-77"
+    },
+    "e9b087bb-3db0-473f-bbf1-ca17f926043f": {
+      "status": "ok",
+      "path": "/motional/ml-eng-d6",
+      "external_id": "motional_ml-eng-d6"
+    },
+    "7e06b2e8-e15e-43a3-b10a-4fa9e687826a": {
+      "status": "ok",
+      "path": "/motional/vehicle",
+      "external_id": "motional_vehicle"
+    },
+    "66b1af37-2a13-4bdd-a8a2-0b001734b3ca": {
+      "status": "ok",
+      "path": "/motional/eng-tech",
+      "external_id": "motional_eng-tech"
+    },
+    "8de23c91-bf76-4bce-9ce7-af19e6819f50": {
+      "status": "ok",
+      "path": "/motional/eng-av",
+      "external_id": "motional_eng-av"
+    },
+    "8ccae7fd-ce12-4d30-90e2-ffaf5763010c": {
+      "status": "ok",
+      "path": "/motional/eng-team",
+      "external_id": "motional_eng-team"
+    },
+    "001e1b05-7da6-411a-aadf-5cef13f24a5e": {
+      "status": "ok",
+      "path": "/motional/eng-team-8e",
+      "external_id": "motional_eng-team-8e"
+    },
+    "24255d73-33a5-46b6-bb43-f5b582c792de": {
+      "status": "ok",
+      "path": "/motional/eng-team-af",
+      "external_id": "motional_eng-team-af"
+    },
+    "6424110a-63ac-4ebc-b095-a2bd9561fb96": {
+      "status": "ok",
+      "path": "/observe-ai/enterprise-43",
+      "external_id": "observe-ai_enterprise-43"
+    },
+    "3932bd54-1bdf-4417-bf38-922f1c022712": {
+      "status": "ok",
+      "path": "/motional/eng-motion",
+      "external_id": "motional_eng-motion"
+    },
+    "8517a555-7ba2-4786-9dbb-428744ef0a41": {
+      "status": "ok",
+      "path": "/motional/fellow-autonomy",
+      "external_id": "motional_fellow-autonomy"
+    },
+    "e7be135d-41fd-4539-9386-a9250ee92760": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_sw-eng-ai) alr"
+    },
+    "401e79ab-7dbf-4950-a7a6-84f1cc56c313": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_sw-eng-ads) al"
+    },
+    "e321a0a4-8fbf-4257-9152-b330a0d2bc52": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_sw-eng-data) a"
+    },
+    "032bd341-991f-4d46-911f-d4b18ff9aba4": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_sw-eng-ads) al"
+    },
+    "301aabbb-c1b6-42a5-a0a0-ce4c37c9cb25": {
+      "status": "ok",
+      "path": "/instacart/sw-eng-dev",
+      "external_id": "instacart_sw-eng-dev"
+    },
+    "7b2deb14-b68d-4243-a6e3-3c1182861250": {
+      "status": "ok",
+      "path": "/instacart/people-data",
+      "external_id": "instacart_people-data"
+    },
+    "d43b80c4-e439-4501-b124-4a3a00ac3a2d": {
+      "status": "ok",
+      "path": "/mark43/eng",
+      "external_id": "mark43_eng"
+    },
+    "99127710-5f2e-40d5-b610-1bfa2871f166": {
+      "status": "ok",
+      "path": "/instacart/detection-da",
+      "external_id": "instacart_detection-da"
+    },
+    "c8e8cd1a-f10d-43dc-b25f-333c8e56bb2f": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_data-sci) alre"
+    },
+    "7625acef-8066-48e4-8d8b-3f82501f7078": {
+      "status": "ok",
+      "path": "/instacart/data-analyst",
+      "external_id": "instacart_data-analyst"
+    },
+    "a1a8e4cd-b18d-471f-af2c-1cf0600ba61c": {
+      "status": "ok",
+      "path": "/mark43/lead-sw-eng",
+      "external_id": "mark43_lead-sw-eng"
+    },
+    "c8532df7-b993-4cac-97d5-e00780e4cde9": {
+      "status": "ok",
+      "path": "/mark43/rms-arch",
+      "external_id": "mark43_rms-arch"
+    },
+    "9d97e1b1-c682-4493-a0bd-ac4150b087ae": {
+      "status": "ok",
+      "path": "/instacart/sales-40",
+      "external_id": "instacart_sales-40"
+    },
+    "5263f576-a293-41ad-a3c1-96c1603be97e": {
+      "status": "ok",
+      "path": "/mark43/devops-eng",
+      "external_id": "mark43_devops-eng"
+    },
+    "1a278dec-9b6a-49c7-890e-3d4292b6ddba": {
+      "status": "ok",
+      "path": "/mark43/cust-c4",
+      "external_id": "mark43_cust-c4"
+    },
+    "35ced6df-efc7-4959-98bd-78b57b281b3e": {
+      "status": "ok",
+      "path": "/instacart/fraud-identity",
+      "external_id": "instacart_fraud-identity"
+    },
+    "5f313a99-098b-4135-943d-f2ac0198566c": {
+      "status": "ok",
+      "path": "/instacart/eng-mgr-sw",
+      "external_id": "instacart_eng-mgr-sw"
+    },
+    "e2332b3f-b99d-40d1-8f44-a6639819a2b2": {
+      "status": "ok",
+      "path": "/instacart/dir-prod",
+      "external_id": "instacart_dir-prod"
+    },
+    "af347e0c-1af4-4c12-bd48-cfd11399d6d2": {
+      "status": "ok",
+      "path": "/instacart/dir-enterprise",
+      "external_id": "instacart_dir-enterprise"
+    },
+    "4b668495-8dd8-4ec6-a5f5-403596eec9a2": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_acct-mgr) alre"
+    },
+    "808e2fec-b035-4eee-a21e-974ac621c068": {
+      "status": "ok",
+      "path": "/liftoff/sales-dir",
+      "external_id": "liftoff_sales-dir"
+    },
+    "f8d95b81-36c4-4b49-9d1f-3b5db1606912": {
+      "status": "ok",
+      "path": "/five9/sre-eng",
+      "external_id": "five9_sre-eng"
+    },
+    "39b055b1-0ec5-4a87-a654-13bf67fae6b2": {
+      "status": "ok",
+      "path": "/liftoff/dir-prod",
+      "external_id": "liftoff_dir-prod"
+    },
+    "4e095def-b707-4625-be25-865055bbe293": {
+      "status": "ok",
+      "path": "/betterment/cx-auto",
+      "external_id": "betterment_cx-auto"
+    },
+    "ad8e44ad-fa47-4c04-8bc0-7c8d81c8ba96": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(five9_professional) alre"
+    },
+    "2ea6d307-26ba-4b02-b0cb-8493b87e98e5": {
+      "status": "ok",
+      "path": "/five9/vp-data-sci",
+      "external_id": "five9_vp-data-sci"
+    },
+    "caa9a2ac-9233-4561-a831-4108388f292a": {
+      "status": "ok",
+      "path": "/five9/cloud-infra",
+      "external_id": "five9_cloud-infra"
+    },
+    "3cd210f0-2898-41c9-b63b-30f578d7e943": {
+      "status": "ok",
+      "path": "/five9/mkt-programs",
+      "external_id": "five9_mkt-programs"
+    },
+    "daccbd5a-2855-4aba-94e7-a0b31882f6ec": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(five9_enterprise) alread"
+    },
+    "642d457b-8783-4f27-8cd9-ba64fc9c9db9": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(five9_enterprise) alread"
+    },
+    "e122afb9-183c-46e0-963c-abf99877c936": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(five9_enterprise) alread"
+    },
+    "46ccec33-ad3a-4209-b614-78ce2e9dd685": {
+      "status": "ok",
+      "path": "/five9/dir-internal",
+      "external_id": "five9_dir-internal"
+    },
+    "b3c5cecf-e44b-45c5-88f5-02215dc7e6fe": {
+      "status": "ok",
+      "path": "/asana/enterprise",
+      "external_id": "asana_enterprise"
+    },
+    "1ad38828-3c16-4409-9556-52e3bfa347cf": {
+      "status": "ok",
+      "path": "/fivetran/majors-sales",
+      "external_id": "fivetran_majors-sales"
+    },
+    "9f79ecad-4a1a-46be-9b7c-45147c5890ff": {
+      "status": "ok",
+      "path": "/gostudent/cust-service",
+      "external_id": "gostudent_cust-service"
+    },
+    "6b1950d7-45f0-47a0-9349-c5b1be85c94b": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "d0ef9a8d-e68d-46de-9a89-db492ed879c4": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "b2086a37-84be-4e21-b00c-af71027c5d7a": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "6296b534-4e4b-4405-aca5-46f94f6ed899": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "30b4a16b-e445-4666-8893-d155147549dc": {
+      "status": "ok",
+      "path": "/grin/acct-executive",
+      "external_id": "grin_acct-executive"
+    },
+    "673b17d4-90cc-4eb9-8f2a-9fb796ac08df": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "4b95f4a1-03ff-41bc-885b-3209ef0b5c57": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(adaptive-biotechnologies"
+    },
+    "bf75c58d-9ccd-4063-a59d-455c4cf6e270": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(airbnb_sw-eng) already e"
+    },
+    "31982ba1-2f5f-4e18-8614-41bb4b929081": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(airbnb_sw-eng) already e"
+    },
+    "66d81644-84ec-4db2-bdef-7e8b6b09e9ea": {
+      "status": "ok",
+      "path": "/airbnb/ops-eng-7a",
+      "external_id": "airbnb_ops-eng-7a"
+    },
+    "5a8d6203-41bd-4eaa-9043-5cc58805d441": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "1aee3694-1302-4c70-818a-f2add84d9245": {
+      "status": "ok",
+      "path": "/databricks/strat-core-55",
+      "external_id": "databricks_strat-core-55"
+    },
+    "e8960886-6f54-4116-9424-ffb390556519": {
+      "status": "ok",
+      "path": "/databricks/strat-core-30",
+      "external_id": "databricks_strat-core-30"
+    },
+    "2727ff5d-ad71-4566-9606-e0b5ada2dbc4": {
+      "status": "ok",
+      "path": "/databricks/strat-core-19",
+      "external_id": "databricks_strat-core-19"
+    },
+    "b8f4e80f-86a1-4a70-b87c-c249715e09e0": {
+      "status": "ok",
+      "path": "/databricks/sol-arch-16",
+      "external_id": "databricks_sol-arch-16"
+    },
+    "33239e4c-cb7e-46f4-8120-4ada0a16df61": {
+      "status": "ok",
+      "path": "/databricks/dir-enterprise",
+      "external_id": "databricks_dir-enterprise"
+    },
+    "bdf972cf-0282-41a5-a2c1-03b4669ade48": {
+      "status": "ok",
+      "path": "/databricks/engagement",
+      "external_id": "databricks_engagement"
+    },
+    "575a3368-d688-41bc-8dd0-b909145277f3": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "e4988f29-5d6a-4b5d-ac8f-a6a9b1e7e57b": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "ae9fb85a-6a50-4a35-be2f-2f6b8335bc51": {
+      "status": "ok",
+      "path": "/databricks/mgr-professional",
+      "external_id": "databricks_mgr-professional"
+    },
+    "e89cda82-c80d-4688-82ea-2c7f85728693": {
+      "status": "ok",
+      "path": "/databricks/lakebase-sales",
+      "external_id": "databricks_lakebase-sales"
+    },
+    "b6d21121-21cc-4d58-939a-6d4165d89c59": {
+      "status": "ok",
+      "path": "/datadog/sales-eng-4b",
+      "external_id": "datadog_sales-eng-4b"
+    },
+    "a3b68343-9b1f-436e-991a-902c0fec3fc9": {
+      "status": "ok",
+      "path": "/datadog/dev-advocate-9b",
+      "external_id": "datadog_dev-advocate-9b"
+    },
+    "138d8224-bef4-4462-ba54-e8e87c1b643d": {
+      "status": "ok",
+      "path": "/datadog/strat-acct",
+      "external_id": "datadog_strat-acct"
+    },
+    "71251bfd-85d9-4147-9b4f-aae17e1485bd": {
+      "status": "ok",
+      "path": "/datadog/strat-acct-ce",
+      "external_id": "datadog_strat-acct-ce"
+    },
+    "ad3259a1-b0ef-40dd-94d1-915a0b9f194a": {
+      "status": "ok",
+      "path": "/datadog/partner-mgr-fb",
+      "external_id": "datadog_partner-mgr-fb"
+    },
+    "7746825d-5b12-46b4-ba26-91f67e618da5": {
+      "status": "ok",
+      "path": "/disco/proj-mgr",
+      "external_id": "disco_proj-mgr"
+    },
+    "f626118d-7d61-45e3-ad2b-349d28d2160d": {
+      "status": "ok",
+      "path": "/disco/regional-sales",
+      "external_id": "disco_regional-sales"
+    },
+    "7ef5a4e5-e62c-41f3-86d1-997f296bd819": {
+      "status": "ok",
+      "path": "/d2l/prod-support",
+      "external_id": "d2l_prod-support"
+    },
+    "c100d7ce-4ced-46e3-9e3a-b9cb1c0662f0": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(d2l_sw-dev) already exis"
+    },
+    "829c07c8-c7b8-41f5-aef3-ae5695827f0d": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(d2l_sw-dev) already exis"
+    },
+    "2ce4b634-576d-4218-86dd-20b073a20b4d": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cribl_sw-eng-cribl) alre"
+    },
+    "4ef05630-6251-4c4e-95c3-98942f38b209": {
+      "status": "ok",
+      "path": "/cribl/rev-ops",
+      "external_id": "cribl_rev-ops"
+    },
+    "2ab667d6-e7bb-4a2d-bbb1-3381d4f28406": {
+      "status": "ok",
+      "path": "/cribl/mgr-mkt-ops",
+      "external_id": "cribl_mgr-mkt-ops"
+    },
+    "95722a52-db59-4ef4-acd6-e05bbd67dad9": {
+      "status": "ok",
+      "path": "/cribl/ml-eng-ai",
+      "external_id": "cribl_ml-eng-ai"
+    },
+    "72f613bb-4080-4e64-814f-b637c26d13a6": {
+      "status": "ok",
+      "path": "/cribl/sw-eng-infra",
+      "external_id": "cribl_sw-eng-infra"
+    },
+    "2944b199-d825-4b1e-9883-3aee0f75b73d": {
+      "status": "ok",
+      "path": "/cribl/rev-eb",
+      "external_id": "cribl_rev-eb"
+    },
+    "a3b81842-8721-4026-952d-8fd43e9f43a3": {
+      "status": "ok",
+      "path": "/cribl/regional-b4",
+      "external_id": "cribl_regional-b4"
+    },
+    "e5bdefe9-a8cd-46d9-a825-dca33a5c2398": {
+      "status": "ok",
+      "path": "/cribl/regional-b2",
+      "external_id": "cribl_regional-b2"
+    },
+    "48aebade-6acc-4319-ac88-e70fd2271aaa": {
+      "status": "ok",
+      "path": "/cribl/prod-sales",
+      "external_id": "cribl_prod-sales"
+    },
+    "a8d63945-ca69-451d-bea2-b03c0442b2b2": {
+      "status": "ok",
+      "path": "/consensys/prod-mgr",
+      "external_id": "consensys_prod-mgr"
+    },
+    "505140c8-b158-4d75-8e62-5a525cb2eb42": {
+      "status": "ok",
+      "path": "/collibra/plat-eng-3f",
+      "external_id": "collibra_plat-eng-3f"
+    },
+    "db037a05-0e86-4f32-be41-40baab82445b": {
+      "status": "ok",
+      "path": "/coreweave/prod-strat",
+      "external_id": "coreweave_prod-strat"
+    },
+    "e7ea533e-3a6c-4bf2-a967-d6b041b51273": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "39b5421c-b8e5-4894-a5ce-96d68dd190e9": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(coinbase_sw-eng-be) alre"
+    },
+    "31f7023e-5944-49da-9e1f-0dd8c3cf5b21": {
+      "status": "ok",
+      "path": "/collibra/prod-sec-eng",
+      "external_id": "collibra_prod-sec-eng"
+    },
+    "9d727380-eae8-4437-bb08-6389f24284f0": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "282120f3-c48f-4c40-b36e-7f364f7ac8d6": {
+      "status": "ok",
+      "path": "/coinbase/sre-eng-core",
+      "external_id": "coinbase_sre-eng-core"
+    },
+    "84d69049-4f2f-4f75-995c-9bbc578680c2": {
+      "status": "ok",
+      "path": "/coinbase/internal-90",
+      "external_id": "coinbase_internal-90"
+    },
+    "dfe88cd9-1b90-4937-8197-98a2cd87ed5b": {
+      "status": "ok",
+      "path": "/coinbase/prod-mgr-cx",
+      "external_id": "coinbase_prod-mgr-cx"
+    },
+    "46d0fdb0-7ac3-409d-9e74-c2db70aff543": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "6c8b0fa0-bf3f-489c-ad7b-89eb12b944bd": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "b535869e-8634-4bc8-b93f-9829c3eebc47": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "b78df180-5ae6-457f-b21a-1546cd133563": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "248138a0-607a-415b-a64a-f2ba05a124ee": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "a26c59f8-5452-4ffc-b71b-9cd4d44ff0db": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "b82d1c14-8615-4c8c-8f31-842e2b3512c1": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "86aeff50-1433-40bb-af54-95d9fafa3c48": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(coinbase_strat-prog) alr"
+    },
+    "68a2ad97-9ec0-4519-8d15-82219eb54b3d": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "f17cb1c0-b0b5-4b48-aa5d-a6b059528c7d": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "8cf8e2d5-bfcd-40c2-bd50-9a97d32854af": {
+      "status": "skip",
+      "reason": "html_429"
+    },
+    "06c95963-f78d-4ac6-91e5-eae9b8404337": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "4d92b3b5-dbef-4fad-8656-062755cb69ec": {
+      "status": "ok",
+      "path": "/circleci/sw-eng-1e",
+      "external_id": "circleci_sw-eng-1e"
+    },
+    "9cdc3c49-a200-4d32-bb3c-5fdae34ef7a2": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cockroach-labs_cust-succ"
+    },
+    "9b95cac3-7faf-496c-9250-7eaec6efa8af": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "4dd2683c-d8a7-426b-aafc-e18ece3bea66": {
+      "status": "ok",
+      "path": "/abnormal/transformation",
+      "external_id": "abnormal_transformation"
+    },
+    "b1be4c14-1e67-438f-9690-20e9b0956e73": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "bccd025b-b2a5-480b-a3bc-0ecaa270b2a9": {
+      "status": "ok",
+      "path": "/abnormal/sw-eng-9a",
+      "external_id": "abnormal_sw-eng-9a"
+    },
+    "d9820e0c-131a-4fd3-a637-c16bb6872786": {
+      "status": "ok",
+      "path": "/abnormal/sw-eng-92",
+      "external_id": "abnormal_sw-eng-92"
+    },
+    "d4476e04-ddf5-48fe-8680-0cddcfe681a4": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(abnormal_mid-market) alr"
+    },
+    "99ae0567-0745-4b03-af75-6ed1e2bafaec": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "7ab0c669-2ca8-4da3-9564-6d0d0f9481b7": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "790050b5-b3e8-46c5-a124-4dcfab2f3ba5": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "90d5a220-c042-486d-a4d8-0d1d86dbb9b2": {
+      "status": "ok",
+      "path": "/abnormal/enterprise-fb",
+      "external_id": "abnormal_enterprise-fb"
+    },
+    "e0d3c7d8-88e5-4d35-99bc-f26ecd1ed5dc": {
+      "status": "ok",
+      "path": "/everstar/head-sourcing",
+      "external_id": "everstar_head-sourcing"
+    },
+    "5917503f-cd4d-4e0e-9427-0dd15714dcb7": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "b4fdb284-ab8d-403c-9b5f-1bf5138d9d7f": {
+      "status": "ok",
+      "path": "/samsara/recruit-gtm",
+      "external_id": "samsara_recruit-gtm"
+    },
+    "31393374-b5be-4dd2-84b4-bd310eb7ba8a": {
+      "status": "ok",
+      "path": "/samsara/executive-biz",
+      "external_id": "samsara_executive-biz"
+    },
+    "1b672892-a644-4124-862d-cd7fc6014bf4": {
+      "status": "ok",
+      "path": "/pinterest/client-partner",
+      "external_id": "pinterest_client-partner"
+    },
+    "2646611f-61c3-4602-a6d5-aea1df36031a": {
+      "status": "ok",
+      "path": "/cribl/tech-support",
+      "external_id": "cribl_tech-support"
+    },
+    "003a57fc-901e-4603-a94e-b913cbaea5e2": {
+      "status": "ok",
+      "path": "/collective-health/member",
+      "external_id": "collective-health_member"
+    },
+    "d8506ca0-3c45-4baa-a38e-7dde7926d5d1": {
+      "status": "ok",
+      "path": "/coinbase/sourcing-analyst",
+      "external_id": "coinbase_sourcing-analyst"
+    },
+    "d659c062-f4c0-4855-a192-33ebff830a45": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "bc1f15c9-81ea-4232-a306-d2bac994e4ea": {
+      "status": "ok",
+      "path": "/pinterest/creative-dir",
+      "external_id": "pinterest_creative-dir"
+    },
+    "641f3655-11b5-48d7-bfeb-ce3e3559c12b": {
+      "status": "ok",
+      "path": "/route/core-be-eng",
+      "external_id": "route_core-be-eng"
+    },
+    "97cca6f7-cf96-431f-84c6-0eee7aeaf6af": {
+      "status": "ok",
+      "path": "/instacart/cust-experience",
+      "external_id": "instacart_cust-experience"
+    },
+    "4006641e-5580-4991-a7fd-6e9a6e0b2880": {
+      "status": "ok",
+      "path": "/fivetran/majors-sales-91",
+      "external_id": "fivetran_majors-sales-91"
+    },
+    "ed8d1ab5-e299-4101-a9ba-4eea34eec3fc": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "aa91c7e0-5412-4c75-8ec7-42e0fc3fe63e": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cribl_sales-eng) already"
+    },
+    "20858eb8-a8c6-412a-85ad-95cb7ead2f67": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "ff2b19fb-e135-4087-a85a-514749742c2a": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "8b1f62e0-6dec-4e13-851f-c4d5a2dd642a": {
+      "status": "ok",
+      "path": "/wandelbots/enterprise-35",
+      "external_id": "wandelbots_enterprise-35"
+    },
+    "2a26ad79-b4bf-4595-81fb-07c44c5e3942": {
+      "status": "ok",
+      "path": "/everstar/design-eng",
+      "external_id": "everstar_design-eng"
+    },
+    "a6c79edb-253b-4a7e-a24e-7b8175008634": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_dir-field) alrea"
+    },
+    "ce549657-7533-409e-be8d-a2645751fd14": {
+      "status": "ok",
+      "path": "/stitch-fix/accounts-payable",
+      "external_id": "stitch-fix_accounts-payable"
+    },
+    "4a74d323-404b-4f52-970c-9d4652dce8d5": {
+      "status": "ok",
+      "path": "/sambanova-systems/cust-success",
+      "external_id": "sambanova-systems_cust-success"
+    },
+    "b4459cc2-aa40-4ee7-8ba7-f0651b8e2694": {
+      "status": "ok",
+      "path": "/mark43/comply-reporting",
+      "external_id": "mark43_comply-reporting"
+    },
+    "0992f90e-3dee-43e1-acaa-96a9fe780d51": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4570b3ee-f46c-4619-8bfb-007e3bf7c581": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "1a4d405b-a075-497c-82e2-50ee8a5e91e4": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "d034fa14-c61e-42c8-8712-39631a462f8e": {
+      "status": "ok",
+      "path": "/five9/devops-eng-f9",
+      "external_id": "five9_devops-eng-f9"
+    },
+    "d1893876-9a67-4e49-a729-4f196a2a83e1": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "62d8530a-f50f-46d0-b6f2-50f5c2c67ce6": {
+      "status": "ok",
+      "path": "/veriff/head-prod",
+      "external_id": "veriff_head-prod"
+    },
+    "abef719b-7938-4610-aa68-c49b866b7ee9": {
+      "status": "ok",
+      "path": "/samsara/procurement",
+      "external_id": "samsara_procurement"
+    },
+    "68720f01-b81e-480f-910f-fb554ecf45cc": {
+      "status": "ok",
+      "path": "/wunderkind/implementation",
+      "external_id": "wunderkind_implementation"
+    },
+    "8c43469a-cb86-4772-bfab-3ec5979410a4": {
+      "status": "ok",
+      "path": "/observe-ai/sales-eng",
+      "external_id": "observe-ai_sales-eng"
+    },
+    "7c640844-55ad-4962-969e-0a9c3da71854": {
+      "status": "ok",
+      "path": "/coinbase/tech-prog",
+      "external_id": "coinbase_tech-prog"
+    },
+    "ebacaf01-ce0a-4990-bd63-9f797826dfe3": {
+      "status": "ok",
+      "path": "/instacart/prod-mgr-de",
+      "external_id": "instacart_prod-mgr-de"
+    },
+    "d7013584-e4d3-4464-9574-39f75f8d3469": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "cc28d040-2d21-45bc-b40b-c1c548ccc869": {
+      "status": "ok",
+      "path": "/ifit/consumer",
+      "external_id": "ifit_consumer"
+    },
+    "f04e5159-d3c7-435e-933f-2ab881fa6f4d": {
+      "status": "ok",
+      "path": "/coinbase/sw-eng-cust",
+      "external_id": "coinbase_sw-eng-cust"
+    },
+    "9507b407-79a3-419d-b5d6-c8ad4bc16c18": {
+      "status": "ok",
+      "path": "/everstar/head-asset",
+      "external_id": "everstar_head-asset"
+    },
+    "1396c487-5c65-480b-9ec3-a0de1b21b8ab": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "c620cf9d-4954-4fbc-b9be-ea284158067f": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "f2e7a324-2bff-4df7-93ff-78efc39dd0de": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "7603483b-79c2-4f2b-a08c-7e2f1760dffa": {
+      "status": "ok",
+      "path": "/brilliant/go-market",
+      "external_id": "brilliant_go-market"
+    },
+    "5e2e89ab-91c0-42b7-8bed-e6152d65eb26": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(databricks_sec-field) al"
+    },
+    "2d9fcafa-3aa7-4ffa-a119-c12f2f4ea67c": {
+      "status": "ok",
+      "path": "/samsara/tech-prod",
+      "external_id": "samsara_tech-prod"
+    },
+    "2c6041a8-c3f4-4123-b9eb-921f6b9692f2": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pinterest_apprentice) al"
+    },
+    "ca84880b-8669-40fa-a63d-1e9c13b8025d": {
+      "status": "ok",
+      "path": "/platform-sh/acct-executive",
+      "external_id": "platform-sh_acct-executive"
+    },
+    "93a47c21-4562-41ef-b0a7-e4c9fa6181d2": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pinterest_apprentice) al"
+    },
+    "630ba203-f4cb-4e5b-b400-3d39a16690c6": {
+      "status": "ok",
+      "path": "/instacart/prod-counsel",
+      "external_id": "instacart_prod-counsel"
+    },
+    "6480f070-9475-46ec-9cb5-378af4fbea72": {
+      "status": "ok",
+      "path": "/cribl/regional-28",
+      "external_id": "cribl_regional-28"
+    },
+    "e52456c7-a7ce-424f-b105-340d2a581220": {
+      "status": "ok",
+      "path": "/coinbase/tech-prog-ab",
+      "external_id": "coinbase_tech-prog-ab"
+    },
+    "2c6758d6-3a56-408f-91f6-d2f60e2d9d1d": {
+      "status": "ok",
+      "path": "/cribl/regional-ff",
+      "external_id": "cribl_regional-ff"
+    },
+    "f86df386-d401-4101-baa2-8fe648700797": {
+      "status": "ok",
+      "path": "/zicasso/growth-prod",
+      "external_id": "zicasso_growth-prod"
+    },
+    "186185c3-5881-46e3-8c76-a16df97bde92": {
+      "status": "ok",
+      "path": "/remote-click-jobs/prod-mgr-ai",
+      "external_id": "remote-click-jobs_prod-mgr-ai"
+    },
+    "a3f1be47-985e-4cc1-b920-fbf241bb3375": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/prod-mgr-70",
+      "external_id": "remote-zest-jobs_prod-mgr-70"
+    },
+    "b8b53934-ad82-401e-ba49-5eeeca173247": {
+      "status": "ok",
+      "path": "/remote-click-jobs/prod-mgr-9c",
+      "external_id": "remote-click-jobs_prod-mgr-9c"
+    },
+    "fb9c1d82-9de0-47d3-b572-61c73ce334ec": {
+      "status": "ok",
+      "path": "/remote-click-jobs/data-sci-e6",
+      "external_id": "remote-click-jobs_data-sci-e6"
+    },
+    "25020da8-f15d-4a92-8d31-2c2d0c03e99c": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "25ecd6f6-974c-4813-a259-e303a84ec741": {
+      "status": "ok",
+      "path": "/netcyberops/be-python",
+      "external_id": "netcyberops_be-python"
+    },
+    "58ace9e1-a7fa-4ad2-9621-a0c55f8f399c": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/ai-data-sci",
+      "external_id": "remote-zest-jobs_ai-data-sci"
+    },
+    "dc7d0755-bc58-4adf-b426-c34fdd1662e5": {
+      "status": "ok",
+      "path": "/remote-click-jobs/be-integration",
+      "external_id": "remote-click-jobs_be-integration"
+    },
+    "4768ce00-6a6f-41a3-a22c-57a740fd48ff": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "42ef3c8d-4a91-4992-bf42-aea5d202cf5a": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/hiring-be",
+      "external_id": "remote-zest-jobs_hiring-be"
+    },
+    "7cd10100-b1a5-450e-b2bb-0eb48ad04710": {
+      "status": "skip",
+      "reason": "html_504"
+    },
+    "9db34994-8b21-4c32-b7da-75ecb1d0f33c": {
+      "status": "skip",
+      "reason": "html_410"
+    },
+    "6dbc5cff-58dd-4b6f-bbee-5540106a2c99": {
+      "status": "ok",
+      "path": "/remote-click-jobs/be-dev-entry",
+      "external_id": "remote-click-jobs_be-dev-entry"
+    },
+    "53db16bb-c5f9-4971-b41f-68609ac30669": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "cfdaa230-f02c-4785-aa5b-1901f7c4bf88": {
+      "status": "ok",
+      "path": "/hired/java-be-dev",
+      "external_id": "hired_java-be-dev"
+    },
+    "b98f3468-ff2b-4b71-b272-82b2086abed0": {
+      "status": "ok",
+      "path": "/remote-click-jobs/intermediate",
+      "external_id": "remote-click-jobs_intermediate"
+    },
+    "27842518-edda-4852-8beb-4ce0eed5b823": {
+      "status": "ok",
+      "path": "/yeah-global/fe-dev",
+      "external_id": "yeah-global_fe-dev"
+    },
+    "83421cf6-a1fc-498f-a503-ccb328074ebf": {
+      "status": "ok",
+      "path": "/toptal/fe-dev-job",
+      "external_id": "toptal_fe-dev-job"
+    },
+    "b874c41b-d734-4919-84d3-1057267083cd": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "973e75c3-c2b3-4a26-8228-f8a584a1fbfb": {
+      "status": "ok",
+      "path": "/remote-click-jobs/fe-dev-react",
+      "external_id": "remote-click-jobs_fe-dev-react"
+    },
+    "5e8eb8fe-5408-4b18-bf16-4b55bb50a0b8": {
+      "status": "ok",
+      "path": "/6-figure-creative/high-ticket",
+      "external_id": "6-figure-creative_high-ticket"
+    },
+    "c9033532-ab67-4267-8ae9-df441aa2f262": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/fe-dev-64",
+      "external_id": "remote-zest-jobs_fe-dev-64"
+    },
+    "dc4742b7-4422-40cb-a55d-2c770897f913": {
+      "status": "ok",
+      "path": "/lyric/growth",
+      "external_id": "lyric_growth"
+    },
+    "38526451-a0cf-4435-9666-715c1c0204ee": {
+      "status": "ok",
+      "path": "/turtles/cust-happiness",
+      "external_id": "turtles_cust-happiness"
+    },
+    "086abd1c-3be5-42fc-8d4d-cd1e0a517e95": {
+      "status": "ok",
+      "path": "/remote-click-jobs/data-sci-06",
+      "external_id": "remote-click-jobs_data-sci-06"
+    },
+    "317f427a-b78c-4ab1-bb71-3416e17ea924": {
+      "status": "ok",
+      "path": "/toptal/mobile-mkt",
+      "external_id": "toptal_mobile-mkt"
+    },
+    "a85c2fcb-b473-43c7-8fdb-a466fa35c80c": {
+      "status": "ok",
+      "path": "/numotion/documentation",
+      "external_id": "numotion_documentation"
+    },
+    "ff77ad7a-fc95-440e-bd79-3821586c5951": {
+      "status": "ok",
+      "path": "/weekday-ai/legal-expert",
+      "external_id": "weekday-ai_legal-expert"
+    },
+    "cd373101-629b-44e9-bcbe-2ee6e0714689": {
+      "status": "skip",
+      "reason": "html_410"
+    },
+    "b31728d8-e2ef-41d0-b932-6d6c67cce459": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "4ad3f6b0-e741-4039-82b5-126fe677f17c": {
+      "status": "ok",
+      "path": "/tekleaders-inc/google-cloud",
+      "external_id": "tekleaders-inc_google-cloud"
+    },
+    "a7690b82-e010-4eeb-bbdf-09994eb3c4ce": {
+      "status": "ok",
+      "path": "/remote-click-jobs/fullstk-dev-87",
+      "external_id": "remote-click-jobs_fullstk-dev-87"
+    },
+    "a6e38725-615e-4d5c-8b2f-0fde44c5435d": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "f76bdd5d-01f1-4568-ba98-d6a54affbb78": {
+      "status": "ok",
+      "path": "/city-of-san-jose/cloud-infra",
+      "external_id": "city-of-san-jose_cloud-infra"
+    },
+    "16052fc2-c63d-4347-9bbc-85875b46a790": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/fullstk-dev-b2",
+      "external_id": "remote-zest-jobs_fullstk-dev-b2"
+    },
+    "cc83d1ad-2241-43da-b3ad-6e93bffee02b": {
+      "status": "ok",
+      "path": "/covet/fullstk-sw",
+      "external_id": "covet_fullstk-sw"
+    },
+    "61d1c96e-32c1-4f1b-8d96-cd47f7b679a3": {
+      "status": "skip",
+      "reason": "html_410"
+    },
+    "ba4b12a6-f27d-4403-998c-3080c05bf819": {
+      "status": "ok",
+      "path": "/accountingsuite/mean-stack",
+      "external_id": "accountingsuite_mean-stack"
+    },
+    "56c9209f-35e4-4ec0-99e6-3301cee3885e": {
+      "status": "ok",
+      "path": "/career/enterprise",
+      "external_id": "career_enterprise"
+    },
+    "33c540ed-afee-4f59-91f2-47b505dbafd7": {
+      "status": "ok",
+      "path": "/designmeshai/content-producer",
+      "external_id": "designmeshai_content-producer"
+    },
+    "dfaec681-7a1c-4007-9f75-e321159a043c": {
+      "status": "skip",
+      "reason": "html_405"
+    },
+    "780fdf4f-cc6e-4756-b18d-8d075e57e4d2": {
+      "status": "skip",
+      "reason": "html_405"
+    },
+    "a2e490c0-77d8-4ffd-8869-06fc1b48253d": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "843d22d0-536b-408f-ab05-744bfc38e0ce": {
+      "status": "ok",
+      "path": "/remote-click-jobs/drupal-fullstk",
+      "external_id": "remote-click-jobs_drupal-fullstk"
+    },
+    "00ee7c70-07ca-4be0-9cb8-8d370c1770c5": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "7b6bcdd7-54fe-412c-9f84-144b87946e18": {
+      "status": "ok",
+      "path": "/umb-bank-na/fullstk-dev",
+      "external_id": "umb-bank-na_fullstk-dev"
+    },
+    "0c1e2b52-b7dd-4075-adf0-b6acfc3d66ad": {
+      "status": "ok",
+      "path": "/newsbreak/ml-eng-local",
+      "external_id": "newsbreak_ml-eng-local"
+    },
+    "b0a38f53-5db6-42fe-8445-e9612ed1f23b": {
+      "status": "ok",
+      "path": "/remote-click-jobs/ux-design-ee",
+      "external_id": "remote-click-jobs_ux-design-ee"
+    },
+    "ba7e9bc2-815d-4eb7-b9b7-2a7f76640d69": {
+      "status": "ok",
+      "path": "/remote-click-jobs/ml-eng-bb",
+      "external_id": "remote-click-jobs_ml-eng-bb"
+    },
+    "23fbe410-9524-4e7e-8757-29af0c167599": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/ai-ml-eng",
+      "external_id": "remote-zest-jobs_ai-ml-eng"
+    },
+    "be4b8840-d0b8-43f5-88c2-5ebb95616efc": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/fullstk-dev-a2",
+      "external_id": "remote-zest-jobs_fullstk-dev-a2"
+    },
+    "9216adc0-684a-497b-95c6-89ae8a676040": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/fullstk-dev-ea",
+      "external_id": "remote-zest-jobs_fullstk-dev-ea"
+    },
+    "828d158a-76dc-4a84-a7df-b9cbe90c455f": {
+      "status": "ok",
+      "path": "/mind-computing/fullstk-dev",
+      "external_id": "mind-computing_fullstk-dev"
+    },
+    "8fb98b26-2dd8-4713-8c5e-e0763f9f739e": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/ml-eng-99",
+      "external_id": "remote-zest-jobs_ml-eng-99"
+    },
+    "4f28ff9d-7fc4-40b4-a916-5366564ed764": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/fullstk-dev-42",
+      "external_id": "remote-zest-jobs_fullstk-dev-42"
+    },
+    "9a045088-c9b2-49fd-93b9-45a0e34fa88c": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/ml-eng-6d",
+      "external_id": "remote-zest-jobs_ml-eng-6d"
+    },
+    "a654bf70-c0f1-4bf2-ac3a-61182a6af525": {
+      "status": "ok",
+      "path": "/grafana-labs/ml-eng-35",
+      "external_id": "grafana-labs_ml-eng-35"
+    },
+    "1165c2e0-6217-4662-a809-f9e4b1012d0b": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "1cfa6a9e-a155-405e-8d47-274b9ed91d16": {
+      "status": "ok",
+      "path": "/remote-click-jobs/ml-eng-ai",
+      "external_id": "remote-click-jobs_ml-eng-ai"
+    },
+    "ea580a19-3c20-4188-bd28-b45c30ad5670": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/ml-eng-ai",
+      "external_id": "remote-zest-jobs_ml-eng-ai"
+    },
+    "b68e96ba-4c06-4aea-a136-5b862f45aa03": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "c35b08d4-60aa-4a15-8b4b-5466b7337213": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "91468678-e8e7-45cf-9598-d67e2b2fcfef": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/devops-eng-dd",
+      "external_id": "remote-zest-jobs_devops-eng-dd"
+    },
+    "e3f2fbd5-2da1-4476-ad8a-8b01bda89b9c": {
+      "status": "skip",
+      "reason": "err_TypeError"
+    },
+    "94aecde5-c7ae-4d87-942d-0df5a385b944": {
+      "status": "skip",
+      "reason": "html_410"
+    },
+    "770f5919-7c97-474d-b7f8-ea8a3a514daa": {
+      "status": "ok",
+      "path": "/mvp-ventures/head-people",
+      "external_id": "mvp-ventures_head-people"
+    },
+    "bc44efdd-98ad-4fa1-8865-2694c8b43502": {
+      "status": "ok",
+      "path": "/remote-click-jobs/mobile-devops",
+      "external_id": "remote-click-jobs_mobile-devops"
+    },
+    "4bee218a-3dd7-4cc8-a88a-14e368cdc2ca": {
+      "status": "ok",
+      "path": "/toptal/fullstk-ai",
+      "external_id": "toptal_fullstk-ai"
+    },
+    "71adcd5d-affe-4c78-84f3-4f880f7871fb": {
+      "status": "ok",
+      "path": "/fit-solutions-llc/hr-generalist",
+      "external_id": "fit-solutions-llc_hr-generalist"
+    },
+    "76d9e69e-ea90-4dfa-b5fe-10f304123f42": {
+      "status": "ok",
+      "path": "/emergence/dir-it",
+      "external_id": "emergence_dir-it"
+    },
+    "a1792f5c-40ee-4468-9619-01e261f63132": {
+      "status": "ok",
+      "path": "/outsource-access-careers/biz-dev",
+      "external_id": "outsource-access-careers_biz-dev"
+    },
+    "40cdb880-307f-48cb-9140-a404186a48f2": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "db874bec-f55a-4fa9-b405-88f9e19f5733": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "670a9d17-63bf-4721-b7f0-c667d34427d2": {
+      "status": "ok",
+      "path": "/alixpartners/prod-mkt-mgr",
+      "external_id": "alixpartners_prod-mkt-mgr"
+    },
+    "99a51e00-9fb6-4341-8683-e826367ca8e5": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(remote-click-jobs_devops"
+    },
+    "bd1139c7-6f8c-4dd5-95d7-2315e53bdff0": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/devops-eng-e0",
+      "external_id": "remote-zest-jobs_devops-eng-e0"
+    },
+    "eb75b7ad-132b-4a3a-980a-e537abaf53f5": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "09009983-97d6-4bc6-829e-069cd643896d": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "5c772bae-2344-4fdd-bc7e-8abad1b0ecbb": {
+      "status": "ok",
+      "path": "/stripe/prod-mgr-70",
+      "external_id": "stripe_prod-mgr-70"
+    },
+    "e6520650-8bdd-4d07-bc92-db618214ff8c": {
+      "status": "ok",
+      "path": "/mdu-medtronic-usa-inc/prod-mgr",
+      "external_id": "mdu-medtronic-usa-inc_prod-mgr"
+    },
+    "adec195f-cc9d-48c7-afdb-cfd9f7188bbc": {
+      "status": "ok",
+      "path": "/remote-click-jobs/prod-mgr-0f",
+      "external_id": "remote-click-jobs_prod-mgr-0f"
+    },
+    "bc865f23-cd22-43e1-a6e1-0f0ea84c32c6": {
+      "status": "ok",
+      "path": "/remote-click-jobs/prod-mgr-a0",
+      "external_id": "remote-click-jobs_prod-mgr-a0"
+    },
+    "bb493ec3-88c7-46ed-a26b-6b9875cc92d4": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/prod-mgr-c0",
+      "external_id": "remote-zest-jobs_prod-mgr-c0"
+    },
+    "969a1b54-8367-4047-8b3f-9c9e3f075d09": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/data-sci-db",
+      "external_id": "remote-zest-jobs_data-sci-db"
+    },
+    "26990861-2609-4a11-86e4-9f648b4bf1bc": {
+      "status": "fail",
+      "reason": "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(remote-zest-jobs_experie"
+    },
+    "27136dc9-0a64-49f0-bc02-d4ec19ae9776": {
+      "status": "ok",
+      "path": "/remote-click-jobs/data-sci-eng",
+      "external_id": "remote-click-jobs_data-sci-eng"
+    },
+    "027abe39-8e0b-476a-a786-78d9b9791f47": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/data-sci-f1",
+      "external_id": "remote-zest-jobs_data-sci-f1"
+    },
+    "b49ff5b3-1165-4dff-aa35-47c27226ae15": {
+      "status": "skip",
+      "reason": "err_TypeError"
+    },
+    "26e7747a-ca5b-4e03-8310-201336f47c24": {
+      "status": "ok",
+      "path": "/precision-medicine-group/acct-dev-mgr",
+      "external_id": "precision-medicine-group_acct-dev-mgr"
+    },
+    "0b0229e9-ba99-45b3-ad82-fca8939aada2": {
+      "status": "ok",
+      "path": "/boldly/executive-asst",
+      "external_id": "boldly_executive-asst"
+    },
+    "12785db1-8ab9-4400-bb8b-4a733492638e": {
+      "status": "ok",
+      "path": "/starbucks/data-sci",
+      "external_id": "starbucks_data-sci"
+    },
+    "572a951c-61c6-426c-a81a-ca6bdfadbf1d": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "32240588-872c-4974-b2b0-fef6737fa158": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "76ca197c-bf3e-431f-b7aa-f8ad1b697b2a": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/hiring-be-e4",
+      "external_id": "remote-zest-jobs_hiring-be-e4"
+    },
+    "a5461590-88ae-4460-bb07-63ab6cb0615d": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/intermediate",
+      "external_id": "remote-zest-jobs_intermediate"
+    },
+    "3c6355ba-0831-4d89-a86b-bd60f1ef43ff": {
+      "status": "ok",
+      "path": "/remote-zest-jobs/be-dev-fa",
+      "external_id": "remote-zest-jobs_be-dev-fa"
+    },
+    "de64ef53-c6e5-4134-a368-15b31717ca47": {
+      "status": "ok",
+      "path": "/skinnify/hr-mgr-fast",
+      "external_id": "skinnify_hr-mgr-fast"
+    },
+    "d585fc8d-6671-47ed-8bf3-13f3e3c561de": {
+      "status": "ok",
+      "path": "/toptal/oracle",
+      "external_id": "toptal_oracle"
+    },
+    "c0c47395-7fed-4064-840e-2761adcbe42a": {
+      "status": "ok",
+      "path": "/speechify-inc/tech-lead",
+      "external_id": "speechify-inc_tech-lead"
+    },
+    "d8872f53-0424-4b5c-9bd8-6e9f202d77b9": {
+      "status": "ok",
+      "path": "/buyers-edge-platform-llc/data-mapping",
+      "external_id": "buyers-edge-platform-llc_data-mapping"
+    },
+    "31665273-bdeb-43cf-884d-82c7c641b26a": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "51fcb20a-b20e-488b-b62b-0b829fcccfd4": {
+      "status": "ok",
+      "path": "/kainos/d365-sol",
+      "external_id": "kainos_d365-sol"
+    },
+    "7fad097a-d00f-4afb-9e7a-0d5eb6490b02": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "1c8d3f6c-76ae-4a14-bd94-1c22030f3cbb": {
+      "status": "ok",
+      "path": "/huntress/sw-eng-espm",
+      "external_id": "huntress_sw-eng-espm"
     }
   },
   "doneIds": [
@@ -14706,7 +17558,581 @@
     "3a1c9f07-e142-4481-9467-e4a4aabf2ea8",
     "303ee9e8-4686-4aab-8ebe-0dd4cb979f98",
     "b6c36c7f-a30d-48ff-850f-ec53f1ce8841",
-    "bd72c011-cb49-4bdd-9294-109379c74d55"
+    "bd72c011-cb49-4bdd-9294-109379c74d55",
+    "99f50b41-df39-4eb1-87f6-5821e897fa39",
+    "e6252e2b-f917-4bb4-9855-b27579f7e06d",
+    "270f1e4a-1028-4638-8c51-1099559ae7f3",
+    "35fc7a31-8faf-4770-a931-b5de03cc0a30",
+    "ff2617bb-4db3-414a-88d3-c93bd294f2c6",
+    "d9deb7ab-4939-4547-b74a-b9b3a8b78e25",
+    "e10df4a0-24d9-4c19-99e1-fee930b7f964",
+    "253d4387-4621-4eda-bcb1-f8f72209345d",
+    "d9a900d4-3205-4d1e-aeb8-0752593ffb3b",
+    "f17fa5b4-6def-4d86-831b-cac6dbe524cf",
+    "b1c6c8fe-744d-43f3-8b37-18bc2a013922",
+    "950ee56b-6f7c-4a4e-9e44-4ea82a2d02dc",
+    "3019a0f5-45bc-4295-93bc-272b2030dc1a",
+    "460ed89f-2cc0-4090-84c3-229906383fea",
+    "454aec01-9f1e-48e4-8f75-bac66ee1d047",
+    "1ba720ac-96e8-44b5-9657-a821bbd89d67",
+    "db6766b5-aa44-4983-9c19-46ecda4aed6b",
+    "d935e905-2330-4984-98f1-b877f577e792",
+    "3e9727e8-1e11-4952-9b16-ca631e730361",
+    "790e5dbc-f0c2-4bd5-a941-15baa65eb430",
+    "a4eaf824-ff08-4a94-bbd8-a52cfad46253",
+    "5e7f2f4b-0c92-4381-a5e0-64edefc1f3ae",
+    "674c1e09-b70f-4344-8578-b7d89474209b",
+    "548b2d04-c14f-42a7-a747-898b73c08cc3",
+    "b6405cf0-9063-4731-967e-1ea0eb336a33",
+    "3bf171e7-dd60-4e92-bb03-382325006e66",
+    "2d63cd2d-c30d-4004-85f5-4473e46086a5",
+    "2dc49b5f-d3c1-455f-b16c-efaae95fda7c",
+    "cd7fa8cf-11b3-44ab-925f-2e917f2e6e07",
+    "e96a501a-884d-4d0c-87fa-413faa03dc1c",
+    "be7e20da-b9c1-44f4-b339-408cf4c58b88",
+    "a3e7a7d6-edcd-459f-b94e-1ab5727bf327",
+    "d0139796-a626-4b21-90d7-6e826b44989e",
+    "634b6050-a351-4448-94fa-359e68804fa6",
+    "5e22ddc2-90a2-4c9d-a993-f80d4ca5f6af",
+    "ffde2c5c-5327-465a-9147-33525e5a7089",
+    "f5bcfb0f-7d69-422a-9fdd-1eb4c7aaae05",
+    "534e1290-f3b6-40e4-b17a-8948bb6d05c6",
+    "40a2d668-4e31-4de4-94d8-b5c9bd53ebed",
+    "1428b634-a81e-4a4b-9cb2-587309a7d601",
+    "214daedb-a924-4e51-a859-8df858bb21e5",
+    "43490640-2273-4e39-b251-bfbe251f1215",
+    "9d66ee15-27f5-4cba-b5fe-cda5f9f72cf4",
+    "4a3659ac-97cf-4f5e-b487-7e1be23d3e31",
+    "f1ee059d-4805-4cfc-97cb-4672ed3e10ef",
+    "06760b7d-0415-4e0b-8944-f1b8960920e7",
+    "d398dac7-ab37-4315-b06e-bff942fcfdfc",
+    "6e340f75-7bdb-447e-999d-271b63cf9518",
+    "455eec1f-bcd5-4e1f-bfaf-3080d7f04950",
+    "a9ad79bd-6723-4a2e-8093-96a8fe3a133f",
+    "d07aa7fe-d16d-4187-b657-4ccd322043fe",
+    "67c4cde2-ad5f-4d84-b243-5f8cb64f17ac",
+    "719dae41-6f7c-4cbd-9bb9-0e09c5827038",
+    "45467ee6-4095-4114-879e-4b4695f9ba39",
+    "31912e02-5d0b-4e69-9441-2acee7924fd7",
+    "e3a89519-311d-4830-81b0-d9760255c514",
+    "9d897c62-3c35-40a8-babe-5b77e3100851",
+    "6d688625-198f-4890-9377-1578aec1dd19",
+    "26b35f74-55d7-4d26-b5ec-7413833d437a",
+    "ad2f340d-c335-4260-b228-2db780204721",
+    "3b2acf6b-53c8-41ec-9228-6d22c551fa62",
+    "dbfd5b9a-59bb-4821-ba7e-83165d77b575",
+    "fcbc4572-b1ab-4ac1-bfbc-5927c5838b43",
+    "f66b5572-9425-46f4-87b4-00393abc94ad",
+    "8cc19210-bab7-4a84-b04d-9f90ac8febee",
+    "f4e6c60f-1a1c-4326-b419-ecae287c50da",
+    "bb14c699-3ec3-4c3b-a3e5-d7b8a3d00c14",
+    "0afcc45f-0487-49b3-8c8e-48e27cf3b8ac",
+    "0e0ebc0d-fb12-4d86-98dd-3ae813689d80",
+    "a9a2fd5d-c2f4-46b8-8ce5-ab3c44909176",
+    "3e8b8604-8b2b-4297-8ca4-3dcc661a5fa0",
+    "897d49c7-50fb-460c-b5ee-5a88167e41e2",
+    "e91df9df-3014-4627-94c9-9af95b6f3abe",
+    "587dee33-dac1-41fd-8bc4-5a59756d25c4",
+    "2be94b70-140c-4ba1-8b8d-66787cd7d053",
+    "6183b4ea-b5ef-46d1-b10b-15c920d89499",
+    "901cb329-59b4-48f2-a9f7-195a1492873c",
+    "3cf7a453-6b3a-4513-a41f-3040cab1782e",
+    "717ce30b-4d1c-4508-a2da-7391661f0519",
+    "bdb67b23-f5ce-47cc-ac01-acb075239e4e",
+    "61f3eb12-1a21-4781-a228-9c66fdc7129c",
+    "6cc3246a-72a7-47dc-bd8b-43004b303d23",
+    "a7fb4c00-0068-4871-8aef-4680a61ff5c2",
+    "db91dbbd-0d13-4f00-973e-0cde74b65e35",
+    "ed3b2964-0031-40ad-8b36-2d30bd953088",
+    "46a62253-de07-48a1-9192-6bc53ded2874",
+    "dacfe881-4dfc-4ca1-8fd8-d9d3609f9a3e",
+    "c303a3dc-67bf-4bc0-96d0-369216190476",
+    "c774b008-aee7-4bb9-9f0a-e4a349532c99",
+    "3205e536-eff2-4d24-9e97-80f8b355b556",
+    "1987a38b-6eaa-4087-9a78-5eb595a93af6",
+    "b060977e-55b0-416a-b853-55a37be3aadd",
+    "879d0d77-e7a7-45c0-ad6a-9b6b1a5653b1",
+    "4691ab21-424c-4ba2-9f8b-86c342464462",
+    "9e37f9e7-2828-4412-9d64-993f9b7dd11e",
+    "eee7f9cd-2f2b-40e5-ab4c-6eb9f2a80369",
+    "4fe08720-d78e-452d-9339-0654d2d3a85f",
+    "33dae4be-af47-4a68-b3bb-9a5a588bad22",
+    "502bb0ef-53d8-4418-a89b-6c6ef7d571bf",
+    "1eb91afb-4888-43ea-a4ba-268c61509b6a",
+    "6aa66891-fc60-485a-99e4-82ff3ca2e991",
+    "9a195edd-044c-4697-8d27-b661caea4974",
+    "25ae709a-c6df-4a01-a571-9c9eb5fe0543",
+    "f1a8dc2d-ff78-48e9-8804-8876c7f2d3bc",
+    "bb979d7a-9b30-4fb3-8921-250cd023c852",
+    "fc6b2916-4cda-40d2-a8b6-3a57daa7cc1e",
+    "d53b0077-a03e-4403-9319-47e557ad8221",
+    "105fce1b-814f-4495-a93c-cb6c395a401d",
+    "11ea4061-9e15-436c-bad5-29e353954e5c",
+    "fd73aa64-7bac-46ff-a087-a33eeee654a7",
+    "0ade0d3d-4fd2-47f4-a7f5-23afef2e8c4c",
+    "5d056b70-b4a8-4e1d-8715-eaf14a675c1d",
+    "47b05180-7a46-40d1-a330-080893219d7e",
+    "7fc56ac7-d956-4736-a7fc-0a3821c57794",
+    "20144eaf-3f55-4896-947a-20ed3d81a8ed",
+    "149b98d8-168b-46a2-832f-406727c0fb26",
+    "d74b37c4-4dd9-4c12-8ac2-532081dde882",
+    "32803b2d-f388-43ee-90fd-a6e0f83daa21",
+    "9404728d-ec56-4b62-9453-33bb02dc4fe9",
+    "76075223-0d37-456b-9432-efe1fb0afbf8",
+    "c2645ae5-2043-4085-ae96-6466fee4cee0",
+    "51bb91dc-b383-41af-ae18-154c889eeeec",
+    "2517077a-5f52-44d1-b260-7dbf22e2a087",
+    "0be32b13-72ad-402d-a830-8efcd6fc7829",
+    "a66aa5fb-1170-459b-9ca8-12d7790007b8",
+    "031d8e81-18b0-404c-b325-2939ebd5dcfc",
+    "7e55d6a5-33c8-4d16-87d7-d6942ecde00e",
+    "27ee8ffd-f2b1-4077-b4ed-5a90db7f602d",
+    "e8a19464-11df-45c1-8d39-10794ca98c18",
+    "c41efe98-1b86-4733-bc75-f033b0df5c69",
+    "3cd7faf7-b9fc-4039-b6c4-333590687432",
+    "bda1a8d9-73a4-40a1-bf6e-0fe000a57573",
+    "df1395b2-103f-4dab-9681-dab114d704ce",
+    "1e1b0fd6-4612-4f65-93de-7eede55798a6",
+    "e5241e43-95b1-4b28-8093-bb7c9e47ff91",
+    "9b885262-7553-43ea-9393-251fa8a73e0c",
+    "74340c82-62ab-40e4-8acd-5a8627c5b816",
+    "3acd9d2b-cdfc-4fcd-91bb-59ec41254695",
+    "17930900-b357-4d4e-8423-75734a4706c4",
+    "7c279f10-8b5a-4e31-b012-cd6cfef3b4c3",
+    "7fd07f33-adc0-4364-9b04-3359045e10c1",
+    "c9dbb846-0364-46f0-b4f1-d0c4234c2ed9",
+    "4b31cc18-0f19-470a-9f7e-8e696354dff1",
+    "a4140610-0eff-4c89-9f1b-ae61b2058d25",
+    "cd920388-19df-4971-b721-05f2c8c063ba",
+    "60db9ca0-9c5a-49b9-a330-789028c54c5c",
+    "dd6b64a1-463d-460d-864d-9fc2a91bcb79",
+    "39a90648-ba0a-45bf-ac06-fdf0bbd43054",
+    "302faa1a-d8ae-41c5-bc94-eb2442a04a6f",
+    "2322674b-77c1-4bee-907b-740d9c40ca9e",
+    "ebd1545e-629a-43de-ab32-456f0ad6e100",
+    "966c8604-b9dc-442e-b317-fce4f259879a",
+    "d412460f-c4d6-4f23-812e-eec7a163afa7",
+    "e929967a-ce85-49b5-a827-16f46163e34a",
+    "2f8828a6-c369-4e9f-8b3d-d95376412de0",
+    "fb023756-8055-4a50-82db-5f0efb0c5e2e",
+    "286b5a71-a655-49e4-9ef8-eb9549f8f204",
+    "bad4a607-7a58-42a1-a9ac-479bb47c2cbd",
+    "0c4e52ab-47b0-4717-a8b4-dd5f2e839eef",
+    "c342a1d3-2f1c-4995-9ab3-1eeeb5690260",
+    "ac373c16-5625-44ca-8a7d-c49b2d7e5636",
+    "90967d04-eedc-46d3-ab06-8b921a504f03",
+    "6595eba7-cc7a-4848-863a-c2e43c0b25c9",
+    "3cb4783b-b6c0-4740-81e1-51d19f160506",
+    "d6c42baa-6d38-4228-9305-91bbbdf42ba9",
+    "8cb840ec-8b10-4907-9f0c-0d8d4352d700",
+    "5e486981-5500-4f4f-88f7-47f0ba5c2a83",
+    "e0134081-b0e7-4bf3-9d08-1b9cb1114e31",
+    "594bc49e-31ef-4cbf-840e-7b27a7dbd072",
+    "3780fede-5d7a-43ef-83e2-f597579e4f2c",
+    "f31c8827-80b8-4c76-9411-3ae2f6d3aaae",
+    "b50c4c57-41e7-4f34-ada2-241d9f1774cf",
+    "d779ee85-0501-4f9e-879b-cc75cb84cbba",
+    "55dac5d8-c5ac-46ca-81d0-146208bdd95f",
+    "8f8f99ea-ff52-422e-9d99-bf92783073b3",
+    "4ce9bd41-2b67-4406-88c4-e34e319038c1",
+    "76f80c64-eeda-4e43-95bd-effde0d38076",
+    "fe49b42a-4f68-4a80-83bc-dd8019c53534",
+    "4af1b047-619c-4f0e-87a4-23a5f29f59e9",
+    "fbbd93da-e83a-49eb-9d33-7d106fec6774",
+    "626103bc-c74b-405d-bfe0-99ac207863bf",
+    "88ff56ef-fafb-46ed-bdc2-633fca9e8b91",
+    "7c17c401-4cf7-476d-98d1-ad7fb3bac9d2",
+    "c206e5f0-a25c-4a18-8b65-23ab5e65cc7b",
+    "6fd536d2-5c85-49eb-9884-c8c43babe534",
+    "462a8568-71dc-47c5-bf86-3925cf245ea6",
+    "3a1fb341-feae-4414-9fc9-b163cd94057a",
+    "b886ec76-d781-4941-b175-d1a192a3e5fe",
+    "d54ef618-14bb-4838-a99f-cbe284854c4e",
+    "a82d3ae4-d886-4b2d-bcf7-fcdf4958a548",
+    "9c362d4b-6bc8-4860-ba09-9e666a3cced4",
+    "3d559070-bc88-4661-9d36-ef3d78bbc174",
+    "6622ee04-39c8-4200-ab2b-be5aac2be504",
+    "d3f0500e-9dbe-47f7-bbfc-0d01bb324018",
+    "7c0875f2-2a8e-4985-88b6-0cbf2077fc56",
+    "64f479b0-c923-4f4a-aba8-53ebe20b05a7",
+    "c856b6fc-f37f-46da-9bd6-9f12c57d8b01",
+    "fa633347-0bff-494f-b7bf-7f7a0d3fafc2",
+    "61fb248d-d2e4-449b-b771-752b251e8d42",
+    "c53a5649-c070-47df-9677-74733b51dad0",
+    "ae15e7bd-f1ab-4c4c-8aae-f1b2da4a35f3",
+    "456dcbd5-acdd-44c8-ac2b-c0f88df297c5",
+    "e8867497-bad5-4b19-ba05-efaf559d0381",
+    "bd7b34d6-054e-43c3-9eab-8482ef6f5746",
+    "29b13126-efcd-4264-88c8-35288f738f44",
+    "9f49af5d-bbc2-4d31-8e42-2934ca45ed34",
+    "15e07ec6-e31c-4db4-816d-94399d17b686",
+    "480a9951-6cab-4062-9e78-c57f8cef7487",
+    "66019486-7793-4a59-bbbc-eb6a41372345",
+    "c0ac6e41-5ff2-46ed-9dda-adc6dc53fd78",
+    "7726f9df-8375-41b6-b4d8-8391af1498e1",
+    "41a7098d-3cba-41be-8164-118d78876ff9",
+    "3684c097-390c-4857-9576-69bba43edd21",
+    "d5ccc817-a37d-46c9-a1d6-b351dc9233c6",
+    "da5a475b-a6ed-43ce-bde2-150592057a85",
+    "2aa6e269-4c36-47bd-9258-93886a57a25e",
+    "69649fe0-3e97-4161-8bba-9c51fe3f594e",
+    "4ffb0c00-6c83-4995-8cb5-0a93d59366ba",
+    "3cdb42e5-1cb6-41b5-b50b-6ad44dbdf52f",
+    "ee33754c-bf20-44ad-8cbb-95e44e75a04c",
+    "933bb801-7422-4f3e-a3b0-ab8a14684c6d",
+    "167b2952-3972-4d9c-8c2b-b54a4487a5c5",
+    "8ac2e8a4-c0cc-44ee-8ac3-11b3a805e23f",
+    "07d61c10-0d68-428d-a757-5b2f9c4f643a",
+    "e1f9006f-bdba-4b9c-85df-cf11cc4ea07b",
+    "15bc4ce3-afc3-4eda-9f85-d88c416b19ae",
+    "cc63abfa-0b81-4f58-8bfa-30bbce3138d1",
+    "4a8015ea-c40d-44e2-a949-31c651cfd810",
+    "54efa691-f809-4fcd-b10d-3cf9c301f42c",
+    "bc58e66a-fc60-46f7-abd5-7fdb8ade7a93",
+    "229357ea-deb9-44c8-8385-f096392101cd",
+    "1cec89d9-2e86-4365-8ca5-8587348cce32",
+    "63dd896a-a55d-4bae-85b3-a7e324f7200f",
+    "c8e9e35e-2963-4fc9-9086-709e9cbe4805",
+    "4e009eab-2447-4995-9b8c-53646207c9e9",
+    "0e0857c3-d2fe-4594-bbf7-51a6b9a9c9d0",
+    "cddc60e1-0cf5-46ab-89f5-20a8fbaf5ce7",
+    "90dd0387-37db-4183-8a02-ca60c97c69bb",
+    "e50da7d4-b9ea-493c-9be1-843ec721b0f1",
+    "2b0e6a1e-e758-4519-aafd-210c87e3b145",
+    "8a7e41bb-a43a-4cf2-815e-100b38005102",
+    "fe1642aa-69c8-4efb-be80-03a75e03a7a2",
+    "ba5f2c15-fea6-4863-90b1-41eb4ea5c616",
+    "ca5c5b0e-c4d5-4848-99ad-3cdc6fc35aa2",
+    "412ba6f6-cc86-4dbb-a55d-2399638bba03",
+    "2e21b78e-a702-4aa9-a9bb-ac7b1138f3c0",
+    "afacd88c-ddc0-4d83-8eb0-81d0b434e500",
+    "5e8e6ef6-589d-4c90-ad6e-ebd9085b4051",
+    "604d3f3a-c802-4a5a-9d69-9006468b733f",
+    "7036fe29-5bee-4b2d-95e9-26ad392f2cfd",
+    "3e5286f2-81c5-48f4-9ee4-d3568d48d7f1",
+    "b3d50bf6-dc81-4fb1-a043-498a33a3ce2b",
+    "cf084399-720b-43a8-be80-4be5d519e18f",
+    "38b43a85-6b19-4d78-b68d-5895d2a623b3",
+    "d4d19581-5050-494a-a2b1-26c3490b0396",
+    "e57fb635-5702-457b-819e-5273ad6e6b04",
+    "5acffaa6-037f-48de-abb4-6a57547c23a8",
+    "5ddbc6d7-8d8e-48d8-b6e6-230cd9e2df99",
+    "e16d52b1-f056-494a-8a54-0d595fdc4fc1",
+    "6ff2017e-53f0-4a2c-966e-1f5d5b1b47b9",
+    "844cac93-442b-4e7c-9e63-98dd71b6a4a5",
+    "5ee900a9-9bdb-407f-87b3-ef3f94b5dd25",
+    "e9faede0-e36c-4d89-89dc-2db7463c690b",
+    "c920c274-41c2-4675-8f12-38a4aa5d293c",
+    "1e4a3aba-7439-47a0-99ab-d7a5ac049937",
+    "547d3202-549e-4eba-92aa-1b99644ba7c6",
+    "e54fc242-4696-4adc-8afe-fae6822dbba6",
+    "764dbe95-3b2d-4ac5-8f8c-43271bb5b84f",
+    "56f2f11b-f9af-416b-993c-bebe9fcf2acc",
+    "98765d68-841c-46e2-ae6e-33b63e6d7e33",
+    "1ecef9ce-9428-4c36-9430-0e8f11e7ef21",
+    "7770b4db-b127-4aee-b46a-35ed8f5779a8",
+    "7b7a8dc6-c834-4019-926b-f62b2441be28",
+    "93ad85f6-2d22-4e29-90ee-5390e8238f9f",
+    "8427fa55-5f0e-4ca9-8f37-0573e1aa37f1",
+    "0d78fcfe-58cf-41f9-93d2-b1d1e569b5c5",
+    "09da87bc-2854-4f8d-8df9-b90ea1a7a6d0",
+    "025eda7c-a07a-4e27-9981-e76ad183bb74",
+    "f1850904-66b3-4119-9d84-2edf4c89b8d8",
+    "2519acdc-7252-4eac-8161-1b26daac67c8",
+    "1fa5514a-52bd-4165-ac54-c82120f57e73",
+    "dac3e03d-e7e6-4874-8982-9fe91bd1760a",
+    "31b9002f-1a7a-448d-bd75-93ef6488f63f",
+    "24712608-089d-46a3-9a17-d609d6f42ca1",
+    "8d0b527c-9bd0-4950-ac50-f7f50f3863fd",
+    "d7b2696b-f482-4f35-99c6-7770f0776b74",
+    "ca8d6d48-0398-464e-a4d2-e9d5a0080773",
+    "7c2082a1-885e-4c4c-9551-9538e47e71c8",
+    "b00e42a6-5f66-4e73-8e8d-a0b774d725b9",
+    "4ad4cea8-17b8-45d7-b695-2cef6ad67890",
+    "39bfedfa-2d24-4e08-9a44-f3c5179addf9",
+    "be1c8026-1779-4b21-807d-551424771884",
+    "f4eb07d7-1442-45b1-88ee-83b388d58a27",
+    "e7b40c1a-f76f-4167-b0be-acc0c32a13ce",
+    "4610b78d-3d09-4211-af9f-6b13a540c3a8",
+    "1a9e1270-f865-4aaf-9fa2-182d27852061",
+    "138f9900-aa07-49a1-96f0-dca0b2369c67",
+    "c266f603-2827-466b-a231-e82aab0b4fe5",
+    "650cc2f5-b41c-4801-9453-1fe78e5bb4a9",
+    "8297e5d6-4d98-4ccd-9ae2-685213e52970",
+    "e8ec7f91-372d-4a96-baa1-f5b6df411571",
+    "82319d00-8319-402f-b20c-6f66b2e2f205",
+    "b8be2a85-cd6c-4e27-914d-18a0337f3183",
+    "dd1379d7-5e61-40c6-915e-a2a97043c6fd",
+    "1f804ccf-95e6-4ff7-9875-44d5c0431cdb",
+    "ce126a9e-5af6-4132-b6c7-4a36e38fd669",
+    "4812cef2-a3ff-4b43-9b35-f092ea69c8fe",
+    "ec325011-e54f-4c06-a15d-2edd6f50c411",
+    "88349705-d656-469e-8140-f691b2673696",
+    "5910b497-3fae-4693-b22b-32a45245c251",
+    "11b3ef5f-5d2b-4971-936d-48cb55e1df8c",
+    "f9db1ca2-9429-4f1c-bb72-03abc4e35044",
+    "d9a83ded-2b79-489f-84cf-e2ea7be37df8",
+    "2018ca22-d515-461b-913a-4543d57524d3",
+    "25e89012-8cba-4eef-b8bf-92870412bb9c",
+    "c11827b3-d7c7-4d47-9867-cc0d8d8f0c01",
+    "a11cefe7-5648-4db8-9ec0-234ed2a7c7b6",
+    "0adda681-8d13-41b2-b28f-ca2c438eabf9",
+    "2396e79b-b00f-4fcc-873b-302be165a60c",
+    "647a508a-5897-40de-9e44-2f5a38ab10dd",
+    "c1509638-be2d-4ac1-8470-e692516403ea",
+    "eb158057-b490-4c8d-ba81-ca659d8eb496",
+    "460a49e9-8da6-4127-8211-7a6f4745866f",
+    "3220a152-b224-4f12-8ece-52dc36af2885",
+    "04ab6daa-77ae-4543-8028-60b2a5c90de5",
+    "4da1c284-82ad-4300-bfca-8a665df5e783",
+    "e9b087bb-3db0-473f-bbf1-ca17f926043f",
+    "7e06b2e8-e15e-43a3-b10a-4fa9e687826a",
+    "66b1af37-2a13-4bdd-a8a2-0b001734b3ca",
+    "8de23c91-bf76-4bce-9ce7-af19e6819f50",
+    "8ccae7fd-ce12-4d30-90e2-ffaf5763010c",
+    "001e1b05-7da6-411a-aadf-5cef13f24a5e",
+    "24255d73-33a5-46b6-bb43-f5b582c792de",
+    "6424110a-63ac-4ebc-b095-a2bd9561fb96",
+    "3932bd54-1bdf-4417-bf38-922f1c022712",
+    "8517a555-7ba2-4786-9dbb-428744ef0a41",
+    "301aabbb-c1b6-42a5-a0a0-ce4c37c9cb25",
+    "7b2deb14-b68d-4243-a6e3-3c1182861250",
+    "d43b80c4-e439-4501-b124-4a3a00ac3a2d",
+    "99127710-5f2e-40d5-b610-1bfa2871f166",
+    "7625acef-8066-48e4-8d8b-3f82501f7078",
+    "a1a8e4cd-b18d-471f-af2c-1cf0600ba61c",
+    "c8532df7-b993-4cac-97d5-e00780e4cde9",
+    "9d97e1b1-c682-4493-a0bd-ac4150b087ae",
+    "5263f576-a293-41ad-a3c1-96c1603be97e",
+    "1a278dec-9b6a-49c7-890e-3d4292b6ddba",
+    "35ced6df-efc7-4959-98bd-78b57b281b3e",
+    "5f313a99-098b-4135-943d-f2ac0198566c",
+    "e2332b3f-b99d-40d1-8f44-a6639819a2b2",
+    "af347e0c-1af4-4c12-bd48-cfd11399d6d2",
+    "808e2fec-b035-4eee-a21e-974ac621c068",
+    "f8d95b81-36c4-4b49-9d1f-3b5db1606912",
+    "39b055b1-0ec5-4a87-a654-13bf67fae6b2",
+    "4e095def-b707-4625-be25-865055bbe293",
+    "2ea6d307-26ba-4b02-b0cb-8493b87e98e5",
+    "caa9a2ac-9233-4561-a831-4108388f292a",
+    "3cd210f0-2898-41c9-b63b-30f578d7e943",
+    "46ccec33-ad3a-4209-b614-78ce2e9dd685",
+    "b3c5cecf-e44b-45c5-88f5-02215dc7e6fe",
+    "1ad38828-3c16-4409-9556-52e3bfa347cf",
+    "9f79ecad-4a1a-46be-9b7c-45147c5890ff",
+    "6b1950d7-45f0-47a0-9349-c5b1be85c94b",
+    "d0ef9a8d-e68d-46de-9a89-db492ed879c4",
+    "b2086a37-84be-4e21-b00c-af71027c5d7a",
+    "6296b534-4e4b-4405-aca5-46f94f6ed899",
+    "30b4a16b-e445-4666-8893-d155147549dc",
+    "673b17d4-90cc-4eb9-8f2a-9fb796ac08df",
+    "66d81644-84ec-4db2-bdef-7e8b6b09e9ea",
+    "5a8d6203-41bd-4eaa-9043-5cc58805d441",
+    "1aee3694-1302-4c70-818a-f2add84d9245",
+    "e8960886-6f54-4116-9424-ffb390556519",
+    "2727ff5d-ad71-4566-9606-e0b5ada2dbc4",
+    "b8f4e80f-86a1-4a70-b87c-c249715e09e0",
+    "33239e4c-cb7e-46f4-8120-4ada0a16df61",
+    "bdf972cf-0282-41a5-a2c1-03b4669ade48",
+    "575a3368-d688-41bc-8dd0-b909145277f3",
+    "e4988f29-5d6a-4b5d-ac8f-a6a9b1e7e57b",
+    "ae9fb85a-6a50-4a35-be2f-2f6b8335bc51",
+    "e89cda82-c80d-4688-82ea-2c7f85728693",
+    "b6d21121-21cc-4d58-939a-6d4165d89c59",
+    "a3b68343-9b1f-436e-991a-902c0fec3fc9",
+    "138d8224-bef4-4462-ba54-e8e87c1b643d",
+    "71251bfd-85d9-4147-9b4f-aae17e1485bd",
+    "ad3259a1-b0ef-40dd-94d1-915a0b9f194a",
+    "7746825d-5b12-46b4-ba26-91f67e618da5",
+    "f626118d-7d61-45e3-ad2b-349d28d2160d",
+    "7ef5a4e5-e62c-41f3-86d1-997f296bd819",
+    "4ef05630-6251-4c4e-95c3-98942f38b209",
+    "2ab667d6-e7bb-4a2d-bbb1-3381d4f28406",
+    "95722a52-db59-4ef4-acd6-e05bbd67dad9",
+    "72f613bb-4080-4e64-814f-b637c26d13a6",
+    "2944b199-d825-4b1e-9883-3aee0f75b73d",
+    "a3b81842-8721-4026-952d-8fd43e9f43a3",
+    "e5bdefe9-a8cd-46d9-a825-dca33a5c2398",
+    "48aebade-6acc-4319-ac88-e70fd2271aaa",
+    "a8d63945-ca69-451d-bea2-b03c0442b2b2",
+    "505140c8-b158-4d75-8e62-5a525cb2eb42",
+    "db037a05-0e86-4f32-be41-40baab82445b",
+    "e7ea533e-3a6c-4bf2-a967-d6b041b51273",
+    "31f7023e-5944-49da-9e1f-0dd8c3cf5b21",
+    "9d727380-eae8-4437-bb08-6389f24284f0",
+    "282120f3-c48f-4c40-b36e-7f364f7ac8d6",
+    "84d69049-4f2f-4f75-995c-9bbc578680c2",
+    "dfe88cd9-1b90-4937-8197-98a2cd87ed5b",
+    "46d0fdb0-7ac3-409d-9e74-c2db70aff543",
+    "6c8b0fa0-bf3f-489c-ad7b-89eb12b944bd",
+    "b535869e-8634-4bc8-b93f-9829c3eebc47",
+    "b78df180-5ae6-457f-b21a-1546cd133563",
+    "248138a0-607a-415b-a64a-f2ba05a124ee",
+    "a26c59f8-5452-4ffc-b71b-9cd4d44ff0db",
+    "b82d1c14-8615-4c8c-8f31-842e2b3512c1",
+    "68a2ad97-9ec0-4519-8d15-82219eb54b3d",
+    "f17cb1c0-b0b5-4b48-aa5d-a6b059528c7d",
+    "8cf8e2d5-bfcd-40c2-bd50-9a97d32854af",
+    "06c95963-f78d-4ac6-91e5-eae9b8404337",
+    "4d92b3b5-dbef-4fad-8656-062755cb69ec",
+    "9b95cac3-7faf-496c-9250-7eaec6efa8af",
+    "4dd2683c-d8a7-426b-aafc-e18ece3bea66",
+    "b1be4c14-1e67-438f-9690-20e9b0956e73",
+    "bccd025b-b2a5-480b-a3bc-0ecaa270b2a9",
+    "d9820e0c-131a-4fd3-a637-c16bb6872786",
+    "99ae0567-0745-4b03-af75-6ed1e2bafaec",
+    "7ab0c669-2ca8-4da3-9564-6d0d0f9481b7",
+    "790050b5-b3e8-46c5-a124-4dcfab2f3ba5",
+    "90d5a220-c042-486d-a4d8-0d1d86dbb9b2",
+    "e0d3c7d8-88e5-4d35-99bc-f26ecd1ed5dc",
+    "5917503f-cd4d-4e0e-9427-0dd15714dcb7",
+    "b4fdb284-ab8d-403c-9b5f-1bf5138d9d7f",
+    "31393374-b5be-4dd2-84b4-bd310eb7ba8a",
+    "1b672892-a644-4124-862d-cd7fc6014bf4",
+    "2646611f-61c3-4602-a6d5-aea1df36031a",
+    "003a57fc-901e-4603-a94e-b913cbaea5e2",
+    "d8506ca0-3c45-4baa-a38e-7dde7926d5d1",
+    "d659c062-f4c0-4855-a192-33ebff830a45",
+    "bc1f15c9-81ea-4232-a306-d2bac994e4ea",
+    "641f3655-11b5-48d7-bfeb-ce3e3559c12b",
+    "97cca6f7-cf96-431f-84c6-0eee7aeaf6af",
+    "4006641e-5580-4991-a7fd-6e9a6e0b2880",
+    "ed8d1ab5-e299-4101-a9ba-4eea34eec3fc",
+    "20858eb8-a8c6-412a-85ad-95cb7ead2f67",
+    "ff2b19fb-e135-4087-a85a-514749742c2a",
+    "8b1f62e0-6dec-4e13-851f-c4d5a2dd642a",
+    "2a26ad79-b4bf-4595-81fb-07c44c5e3942",
+    "ce549657-7533-409e-be8d-a2645751fd14",
+    "4a74d323-404b-4f52-970c-9d4652dce8d5",
+    "b4459cc2-aa40-4ee7-8ba7-f0651b8e2694",
+    "0992f90e-3dee-43e1-acaa-96a9fe780d51",
+    "4570b3ee-f46c-4619-8bfb-007e3bf7c581",
+    "1a4d405b-a075-497c-82e2-50ee8a5e91e4",
+    "d034fa14-c61e-42c8-8712-39631a462f8e",
+    "d1893876-9a67-4e49-a729-4f196a2a83e1",
+    "62d8530a-f50f-46d0-b6f2-50f5c2c67ce6",
+    "abef719b-7938-4610-aa68-c49b866b7ee9",
+    "68720f01-b81e-480f-910f-fb554ecf45cc",
+    "8c43469a-cb86-4772-bfab-3ec5979410a4",
+    "7c640844-55ad-4962-969e-0a9c3da71854",
+    "ebacaf01-ce0a-4990-bd63-9f797826dfe3",
+    "d7013584-e4d3-4464-9574-39f75f8d3469",
+    "cc28d040-2d21-45bc-b40b-c1c548ccc869",
+    "f04e5159-d3c7-435e-933f-2ab881fa6f4d",
+    "9507b407-79a3-419d-b5d6-c8ad4bc16c18",
+    "1396c487-5c65-480b-9ec3-a0de1b21b8ab",
+    "c620cf9d-4954-4fbc-b9be-ea284158067f",
+    "f2e7a324-2bff-4df7-93ff-78efc39dd0de",
+    "7603483b-79c2-4f2b-a08c-7e2f1760dffa",
+    "2d9fcafa-3aa7-4ffa-a119-c12f2f4ea67c",
+    "ca84880b-8669-40fa-a63d-1e9c13b8025d",
+    "630ba203-f4cb-4e5b-b400-3d39a16690c6",
+    "6480f070-9475-46ec-9cb5-378af4fbea72",
+    "e52456c7-a7ce-424f-b105-340d2a581220",
+    "2c6758d6-3a56-408f-91f6-d2f60e2d9d1d",
+    "f86df386-d401-4101-baa2-8fe648700797",
+    "186185c3-5881-46e3-8c76-a16df97bde92",
+    "a3f1be47-985e-4cc1-b920-fbf241bb3375",
+    "b8b53934-ad82-401e-ba49-5eeeca173247",
+    "fb9c1d82-9de0-47d3-b572-61c73ce334ec",
+    "25020da8-f15d-4a92-8d31-2c2d0c03e99c",
+    "25ecd6f6-974c-4813-a259-e303a84ec741",
+    "58ace9e1-a7fa-4ad2-9621-a0c55f8f399c",
+    "dc7d0755-bc58-4adf-b426-c34fdd1662e5",
+    "4768ce00-6a6f-41a3-a22c-57a740fd48ff",
+    "42ef3c8d-4a91-4992-bf42-aea5d202cf5a",
+    "7cd10100-b1a5-450e-b2bb-0eb48ad04710",
+    "9db34994-8b21-4c32-b7da-75ecb1d0f33c",
+    "6dbc5cff-58dd-4b6f-bbee-5540106a2c99",
+    "53db16bb-c5f9-4971-b41f-68609ac30669",
+    "cfdaa230-f02c-4785-aa5b-1901f7c4bf88",
+    "b98f3468-ff2b-4b71-b272-82b2086abed0",
+    "27842518-edda-4852-8beb-4ce0eed5b823",
+    "83421cf6-a1fc-498f-a503-ccb328074ebf",
+    "b874c41b-d734-4919-84d3-1057267083cd",
+    "973e75c3-c2b3-4a26-8228-f8a584a1fbfb",
+    "5e8eb8fe-5408-4b18-bf16-4b55bb50a0b8",
+    "c9033532-ab67-4267-8ae9-df441aa2f262",
+    "dc4742b7-4422-40cb-a55d-2c770897f913",
+    "38526451-a0cf-4435-9666-715c1c0204ee",
+    "086abd1c-3be5-42fc-8d4d-cd1e0a517e95",
+    "317f427a-b78c-4ab1-bb71-3416e17ea924",
+    "a85c2fcb-b473-43c7-8fdb-a466fa35c80c",
+    "ff77ad7a-fc95-440e-bd79-3821586c5951",
+    "cd373101-629b-44e9-bcbe-2ee6e0714689",
+    "b31728d8-e2ef-41d0-b932-6d6c67cce459",
+    "4ad3f6b0-e741-4039-82b5-126fe677f17c",
+    "a7690b82-e010-4eeb-bbdf-09994eb3c4ce",
+    "a6e38725-615e-4d5c-8b2f-0fde44c5435d",
+    "f76bdd5d-01f1-4568-ba98-d6a54affbb78",
+    "16052fc2-c63d-4347-9bbc-85875b46a790",
+    "cc83d1ad-2241-43da-b3ad-6e93bffee02b",
+    "61d1c96e-32c1-4f1b-8d96-cd47f7b679a3",
+    "ba4b12a6-f27d-4403-998c-3080c05bf819",
+    "56c9209f-35e4-4ec0-99e6-3301cee3885e",
+    "33c540ed-afee-4f59-91f2-47b505dbafd7",
+    "dfaec681-7a1c-4007-9f75-e321159a043c",
+    "780fdf4f-cc6e-4756-b18d-8d075e57e4d2",
+    "a2e490c0-77d8-4ffd-8869-06fc1b48253d",
+    "843d22d0-536b-408f-ab05-744bfc38e0ce",
+    "00ee7c70-07ca-4be0-9cb8-8d370c1770c5",
+    "7b6bcdd7-54fe-412c-9f84-144b87946e18",
+    "0c1e2b52-b7dd-4075-adf0-b6acfc3d66ad",
+    "b0a38f53-5db6-42fe-8445-e9612ed1f23b",
+    "ba7e9bc2-815d-4eb7-b9b7-2a7f76640d69",
+    "23fbe410-9524-4e7e-8757-29af0c167599",
+    "be4b8840-d0b8-43f5-88c2-5ebb95616efc",
+    "9216adc0-684a-497b-95c6-89ae8a676040",
+    "828d158a-76dc-4a84-a7df-b9cbe90c455f",
+    "8fb98b26-2dd8-4713-8c5e-e0763f9f739e",
+    "4f28ff9d-7fc4-40b4-a916-5366564ed764",
+    "9a045088-c9b2-49fd-93b9-45a0e34fa88c",
+    "a654bf70-c0f1-4bf2-ac3a-61182a6af525",
+    "1165c2e0-6217-4662-a809-f9e4b1012d0b",
+    "1cfa6a9e-a155-405e-8d47-274b9ed91d16",
+    "ea580a19-3c20-4188-bd28-b45c30ad5670",
+    "b68e96ba-4c06-4aea-a136-5b862f45aa03",
+    "c35b08d4-60aa-4a15-8b4b-5466b7337213",
+    "91468678-e8e7-45cf-9598-d67e2b2fcfef",
+    "e3f2fbd5-2da1-4476-ad8a-8b01bda89b9c",
+    "94aecde5-c7ae-4d87-942d-0df5a385b944",
+    "770f5919-7c97-474d-b7f8-ea8a3a514daa",
+    "bc44efdd-98ad-4fa1-8865-2694c8b43502",
+    "4bee218a-3dd7-4cc8-a88a-14e368cdc2ca",
+    "71adcd5d-affe-4c78-84f3-4f880f7871fb",
+    "76d9e69e-ea90-4dfa-b5fe-10f304123f42",
+    "a1792f5c-40ee-4468-9619-01e261f63132",
+    "40cdb880-307f-48cb-9140-a404186a48f2",
+    "db874bec-f55a-4fa9-b405-88f9e19f5733",
+    "670a9d17-63bf-4721-b7f0-c667d34427d2",
+    "bd1139c7-6f8c-4dd5-95d7-2315e53bdff0",
+    "eb75b7ad-132b-4a3a-980a-e537abaf53f5",
+    "09009983-97d6-4bc6-829e-069cd643896d",
+    "5c772bae-2344-4fdd-bc7e-8abad1b0ecbb",
+    "e6520650-8bdd-4d07-bc92-db618214ff8c",
+    "adec195f-cc9d-48c7-afdb-cfd9f7188bbc",
+    "bc865f23-cd22-43e1-a6e1-0f0ea84c32c6",
+    "bb493ec3-88c7-46ed-a26b-6b9875cc92d4",
+    "969a1b54-8367-4047-8b3f-9c9e3f075d09",
+    "27136dc9-0a64-49f0-bc02-d4ec19ae9776",
+    "027abe39-8e0b-476a-a786-78d9b9791f47",
+    "b49ff5b3-1165-4dff-aa35-47c27226ae15",
+    "26e7747a-ca5b-4e03-8310-201336f47c24",
+    "0b0229e9-ba99-45b3-ad82-fca8939aada2",
+    "12785db1-8ab9-4400-bb8b-4a733492638e",
+    "572a951c-61c6-426c-a81a-ca6bdfadbf1d",
+    "32240588-872c-4974-b2b0-fef6737fa158",
+    "76ca197c-bf3e-431f-b7aa-f8ad1b697b2a",
+    "a5461590-88ae-4460-bb07-63ab6cb0615d",
+    "3c6355ba-0831-4d89-a86b-bd60f1ef43ff",
+    "de64ef53-c6e5-4134-a368-15b31717ca47",
+    "d585fc8d-6671-47ed-8bf3-13f3e3c561de",
+    "c0c47395-7fed-4064-840e-2761adcbe42a",
+    "d8872f53-0424-4b5c-9bd8-6e9f202d77b9",
+    "31665273-bdeb-43cf-884d-82c7c641b26a",
+    "51fcb20a-b20e-488b-b62b-0b829fcccfd4",
+    "7fad097a-d00f-4afb-9e7a-0d5eb6490b02",
+    "1c8d3f6c-76ae-4a14-bd94-1c22030f3cbb"
   ],
   "skipped": {},
   "batches": [
@@ -14926,6 +18352,88 @@
         "/reddit/sw-eng-ee",
         "/reddit/eng-mgr-8e",
         "/reddit/data-sci-7d"
+      ]
+    },
+    {
+      "batchNum": 6,
+      "worker": 0,
+      "at": "2026-08-02T13:12:14.641Z",
+      "attempted": 630,
+      "ok": 400,
+      "skip": 174,
+      "fail": 54,
+      "reasons": {
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_prod-eng) already ": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_prod-support) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_eng-mgr) already e": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(ashby_enterprise) alread": 2,
+        "html_short": 95,
+        "err_TypeError": 7,
+        "html_403": 20,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(fivetran_sales-eng) alre": 1,
+        "html_429": 22,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(stripe_partner-dev) alre": 2,
+        "html_404": 20,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cribl_tech-prog) already": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(coinbase_sw-eng-be) alre": 2,
+        "html_blocked": 3,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sol-integration)": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_strat) already e": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sales-ops) alrea": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sw-eng-cc) alrea": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_select-major) al": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_mgr-cust) alread": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sales-eng) alrea": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_sales-eng-se) al": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_mid-market) alre": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_acct-executive) ": 3,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pinterest_sw-eng-ads) al": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(clari-salesloft_eng-rev-": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_sw-eng-ai) alr": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_sw-eng-ads) al": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_sw-eng-data) a": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_data-sci) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(instacart_acct-mgr) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(five9_professional) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(five9_enterprise) alread": 3,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(adaptive-biotechnologies": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(airbnb_sw-eng) already e": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(d2l_sw-dev) already exis": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cribl_sw-eng-cribl) alre": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(coinbase_strat-prog) alr": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cockroach-labs_cust-succ": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(abnormal_mid-market) alr": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(cribl_sales-eng) already": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(samsara_dir-field) alrea": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(databricks_sec-field) al": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(pinterest_apprentice) al": 2,
+        "html_504": 1,
+        "html_410": 4,
+        "html_405": 2,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(remote-click-jobs_devops": 1,
+        "patch_409:{\"code\":\"23505\",\"details\":\"Key (external_id)=(remote-zest-jobs_experie": 1
+      },
+      "samplePaths": [
+        "/gitlab/biz-acct-9b",
+        "/binance/cust-service-35",
+        "/binance/regulatory-0d",
+        "/binance/regulatory-91",
+        "/binance/data-sci-bd",
+        "/binance/data-sci-67",
+        "/captivateiq/sw-eng-54",
+        "/arcadia/vp-sales-0d",
+        "/pointclickcare/partner-mgr-5e",
+        "/anchorage/derivatives-ad",
+        "/wizeline/salesforce",
+        "/pinterest/measurement-a9",
+        "/fivetran/biz-value",
+        "/asana/privacy-eng",
+        "/cribl/sec-ops-eng",
+        "/coinbase/social-a1",
+        "/coinbase/researcher",
+        "/stripe/prod-mkt-ed",
+        "/stripe/prod-mgr-08",
+        "/stripe/risk-c0"
       ]
     }
   ]
