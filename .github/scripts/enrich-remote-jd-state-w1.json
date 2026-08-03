@@ -74063,6 +74063,23 @@
         "err_TypeError": 3
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 1,
+      "at": "2026-08-03T18:19:14.904Z",
+      "attempted": 796,
+      "ok": 0,
+      "skip": 796,
+      "fail": 0,
+      "reasons": {
+        "html_short": 724,
+        "html_403": 46,
+        "err_TimeoutError": 21,
+        "html_429": 2,
+        "err_TypeError": 3
+      },
+      "samplePaths": []
     }
   ]
 }

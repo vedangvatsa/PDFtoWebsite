@@ -57202,7 +57202,7 @@
     },
     "20debf13-5fc3-4385-957b-a74c8ef86ec0": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TimeoutError"
     },
     "2d74b93b-6d88-45d3-bc72-76d32019b2ea": {
       "status": "skip",
@@ -78435,6 +78435,23 @@
         "lever_short": 1,
         "html_403": 38,
         "err_TimeoutError": 11,
+        "html_429": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-03T18:18:43.206Z",
+      "attempted": 681,
+      "ok": 0,
+      "skip": 681,
+      "fail": 0,
+      "reasons": {
+        "html_short": 629,
+        "lever_short": 1,
+        "html_403": 37,
+        "err_TimeoutError": 12,
         "html_429": 2
       },
       "samplePaths": []

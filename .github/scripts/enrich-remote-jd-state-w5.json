@@ -25265,7 +25265,7 @@
     },
     "5393a157-ac42-40de-b3c7-7267cb8751dd": {
       "status": "skip",
-      "reason": "html_403"
+      "reason": "err_TimeoutError"
     },
     "5cf7d543-efa7-43ba-9436-3fad632b0e69": {
       "status": "skip",
@@ -25639,8 +25639,9 @@
       "reason": "html_short"
     },
     "59556a66-40c3-4e40-8771-880da0ddc04b": {
-      "status": "skip",
-      "reason": "html_short"
+      "status": "ok",
+      "path": "/waymo/ml-eng-4b",
+      "external_id": "waymo_ml-eng-4b"
     },
     "57e7a03f-b33f-4754-86c2-d2352bfbce7a": {
       "status": "skip",
@@ -25982,7 +25983,7 @@
     },
     "5c32aec0-7b6c-4a95-8be4-8939af618b50": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "538f05e2-a4d9-4e9a-b159-fd15e8254d54": {
       "status": "skip",
@@ -26059,7 +26060,7 @@
     },
     "5a620d83-c7c5-4a11-9c8c-9bffe5f1e0e4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "5cdb4945-6d3a-4bfd-8fc0-2fc05cf920a1": {
       "status": "skip",
@@ -26071,7 +26072,7 @@
     },
     "5ea6964b-d656-4d59-ba07-2cf92a5e86f5": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_429"
     },
     "5c6d282c-f943-4aa3-97a0-ed2b8a364ba8": {
       "status": "skip",
@@ -26099,7 +26100,7 @@
     },
     "5d6a242a-0db6-4132-942a-e3053f04ca3d": {
       "status": "skip",
-      "reason": "html_429"
+      "reason": "err_TypeError"
     },
     "57163c4e-b020-4359-900a-6a3a396884f0": {
       "status": "skip",
@@ -44715,6 +44716,27 @@
         "html_429": 2
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 5,
+      "at": "2026-08-03T18:19:40.271Z",
+      "attempted": 731,
+      "ok": 1,
+      "skip": 729,
+      "fail": 1,
+      "reasons": {
+        "html_short": 665,
+        "html_403": 44,
+        "lever_short": 1,
+        "err_TimeoutError": 12,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "err_TypeError": 5,
+        "html_429": 2
+      },
+      "samplePaths": [
+        "/waymo/ml-eng-4b"
+      ]
     }
   ]
 }
