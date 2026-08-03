@@ -49115,16 +49115,19 @@
       "reason": "err_TypeError"
     },
     "0370e81e-37f4-4dfd-bad5-d16c802943fa": {
-      "status": "fail",
-      "reason": "fetch failed"
+      "status": "ok",
+      "path": "/okta/enterprise-9f",
+      "external_id": "okta_enterprise-9f"
     },
     "081112f2-1533-4ea1-88f5-717a0b548473": {
-      "status": "fail",
-      "reason": "fetch failed"
+      "status": "ok",
+      "path": "/okta/alliances-sol",
+      "external_id": "okta_alliances-sol"
     },
     "054e3d37-6178-49d5-b8bf-d83ce8fc9a05": {
-      "status": "fail",
-      "reason": "fetch failed"
+      "status": "ok",
+      "path": "/okta/prod-ops-a1",
+      "external_id": "okta_prod-ops-a1"
     },
     "0595411b-aa22-41f6-98fe-be6fc886a33f": {
       "status": "skip",
@@ -51447,6 +51450,1371 @@
       "status": "ok",
       "path": "/ethos/expert-head",
       "external_id": "ethos_expert-head"
+    },
+    "0a1a9b8a-0918-445a-9e6e-b82afbd49469": {
+      "status": "ok",
+      "path": "/texas-research-international/electrical",
+      "external_id": "texas-research-international_electrical"
+    },
+    "038da4f7-6743-4edb-ac0e-c005b6420d5e": {
+      "status": "ok",
+      "path": "/impruvon/sys",
+      "external_id": "impruvon_sys"
+    },
+    "0db30949-dbdb-43a1-9c39-c68fa69364fe": {
+      "status": "ok",
+      "path": "/keyrus/forward-deployed",
+      "external_id": "keyrus_forward-deployed"
+    },
+    "066cb4ca-afa1-4e0e-a658-b58099873010": {
+      "status": "ok",
+      "path": "/alignerr/computer-vision",
+      "external_id": "alignerr_computer-vision"
+    },
+    "05582a83-1b68-43bc-b13e-32172fd1a513": {
+      "status": "ok",
+      "path": "/ultimate-knowledge-institute/ai-workflow",
+      "external_id": "ultimate-knowledge-institute_ai-workflow"
+    },
+    "03c4232d-8e57-455d-8378-1c4c1547feb4": {
+      "status": "ok",
+      "path": "/vigilant-engineering/assoc-it-sys",
+      "external_id": "vigilant-engineering_assoc-it-sys"
+    },
+    "0a5c7a26-33e4-4ed1-9741-a991b7717093": {
+      "status": "ok",
+      "path": "/federal-bureau-of-investigation-fbi/special-agent",
+      "external_id": "federal-bureau-of-investigation-fbi_special-agent"
+    },
+    "0f9eda9c-a85d-4ec7-a433-478ce96c6076": {
+      "status": "ok",
+      "path": "/warner-bros-discovery/prod-mgr",
+      "external_id": "warner-bros-discovery_prod-mgr"
+    },
+    "01f490e7-1035-476a-b0f0-6e45d18e08e8": {
+      "status": "ok",
+      "path": "/hofstra-university/proj-data",
+      "external_id": "hofstra-university_proj-data"
+    },
+    "05a7bfbd-fea3-47ae-b51e-ab4e9b82fc39": {
+      "status": "ok",
+      "path": "/newyork-presbyterian-hospital/data-sci",
+      "external_id": "newyork-presbyterian-hospital_data-sci"
+    },
+    "03c4c049-16de-423b-9869-b4b87e2d184e": {
+      "status": "ok",
+      "path": "/siemens/research-sci",
+      "external_id": "siemens_research-sci"
+    },
+    "02120cc7-83f9-4ea1-b3ac-52e9773f110a": {
+      "status": "ok",
+      "path": "/coreweave/sw-eng-d1",
+      "external_id": "coreweave_sw-eng-d1"
+    },
+    "04c49ca4-9183-4743-ab88-493efc76503f": {
+      "status": "ok",
+      "path": "/rippling/sw-eng-be",
+      "external_id": "rippling_sw-eng-be"
+    },
+    "0224c6f1-09df-46a0-967c-d4b02262a734": {
+      "status": "ok",
+      "path": "/acrisure/sw-eng",
+      "external_id": "acrisure_sw-eng"
+    },
+    "0a908e60-785e-45f3-8a79-c6bea134b3e3": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "07b2247c-024c-47df-99ed-f2875fe07a21": {
+      "status": "ok",
+      "path": "/jack-amp-jill/forward-deployed",
+      "external_id": "jack-amp-jill_forward-deployed"
+    },
+    "075352fd-b779-4524-b162-4034fdc06d36": {
+      "status": "ok",
+      "path": "/google/data-sci",
+      "external_id": "google_data-sci"
+    },
+    "098fbe0c-70a0-49b8-88fd-fe3fa8b14faa": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0f675ba7-a868-409a-a1ae-86808f8ce5f7": {
+      "status": "ok",
+      "path": "/the-product-club-pm/data-sci-ai",
+      "external_id": "the-product-club-pm_data-sci-ai"
+    },
+    "07f647a5-08de-4b0b-b880-822787080d28": {
+      "status": "ok",
+      "path": "/vigil/sw-eng-gtm",
+      "external_id": "vigil_sw-eng-gtm"
+    },
+    "05a5b0c2-a9b3-443d-b3f6-ab5e05e8ff84": {
+      "status": "ok",
+      "path": "/gridware/ml-eng-multi",
+      "external_id": "gridware_ml-eng-multi"
+    },
+    "0e3fb82a-6968-4f01-9cba-2d4372da9ecd": {
+      "status": "ok",
+      "path": "/jecona/ai-eng-yrs",
+      "external_id": "jecona_ai-eng-yrs"
+    },
+    "08865174-8569-44eb-847c-41e09ae38c2c": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "077e2fbc-b7dd-4cbb-89a6-be6a5facbe87": {
+      "status": "skip",
+      "reason": "linkedin_404"
+    },
+    "0f073474-5b1c-423a-b54c-8fc26df38f2a": {
+      "status": "ok",
+      "path": "/voyage/founding-ml",
+      "external_id": "voyage_founding-ml"
+    },
+    "0257e60f-6494-431b-977e-421b201ae381": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0863f2e4-d938-44d5-8f84-9c71a7e48106": {
+      "status": "ok",
+      "path": "/ltimindtree/etl-test-eng",
+      "external_id": "ltimindtree_etl-test-eng"
+    },
+    "09fc2f4e-2ac5-4ae5-9ea1-0c0252cc2153": {
+      "status": "ok",
+      "path": "/voice-ai-space/sw-eng-core",
+      "external_id": "voice-ai-space_sw-eng-core"
+    },
+    "0c32ed3e-59e9-47dd-a63b-a2fb35907dec": {
+      "status": "ok",
+      "path": "/franklin-fitch/sys",
+      "external_id": "franklin-fitch_sys"
+    },
+    "0f28ab43-e5bb-45ba-b312-402e68bd5cf0": {
+      "status": "ok",
+      "path": "/infleqtion/cloud-infra",
+      "external_id": "infleqtion_cloud-infra"
+    },
+    "0b2a0e4d-cfbb-4019-836f-c660262d37a1": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "018ca9eb-4a86-4406-bca6-ea97920be816": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "077afadb-d5ce-4e8a-a0bc-cc64c35bde55": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "028194ee-0f92-469f-8a9c-64ce9b00b007": {
+      "status": "ok",
+      "path": "/akrup/deep-eng",
+      "external_id": "akrup_deep-eng"
+    },
+    "0b12e738-4e7f-47cb-9f16-fddf124b26c0": {
+      "status": "ok",
+      "path": "/insulet-corporation/sw-eng-ios",
+      "external_id": "insulet-corporation_sw-eng-ios"
+    },
+    "0ac27b24-91bf-4d60-9154-bd4f1bc5cbd0": {
+      "status": "ok",
+      "path": "/burjline-builders/sys",
+      "external_id": "burjline-builders_sys"
+    },
+    "01b1e2a1-9be6-4a77-b5c3-48524d8daa5d": {
+      "status": "ok",
+      "path": "/3-soft-inc/sw-dev",
+      "external_id": "3-soft-inc_sw-dev"
+    },
+    "08794eec-885d-4640-ad77-49f5c2c05d1f": {
+      "status": "ok",
+      "path": "/equal-opportunity-ventures/prod-mgr-b2b",
+      "external_id": "equal-opportunity-ventures_prod-mgr-b2b"
+    },
+    "0f6e1bc6-c503-421e-8f1c-4275c202afbb": {
+      "status": "ok",
+      "path": "/sigma-ai/computational",
+      "external_id": "sigma-ai_computational"
+    },
+    "02b62b4e-4c6f-44aa-8141-f580e43ffca5": {
+      "status": "ok",
+      "path": "/hsbc/mgr-biz",
+      "external_id": "hsbc_mgr-biz"
+    },
+    "0510a2e4-846a-47e6-842b-b1323adb2119": {
+      "status": "ok",
+      "path": "/brain-co/ai-plat-eng",
+      "external_id": "brain-co_ai-plat-eng"
+    },
+    "0f83adc8-d3f0-45c5-97ea-f4dc8ffc10ff": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0b140a3e-f98b-427c-9e0d-f728abd8b452": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "030a4442-60a9-49d3-9cf5-8c5dc14e8985": {
+      "status": "skip",
+      "reason": "linkedin_short"
+    },
+    "0e1e11f5-264f-4bc1-b415-de791957f069": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "05dcac1c-5ce1-4733-830b-561580a13e55": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "06d66140-f871-4cc9-9198-8b2565b07150": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "068f83f7-1f23-432b-9437-6b295bbccb59": {
+      "status": "ok",
+      "path": "/cassidy/fullstk-sw",
+      "external_id": "cassidy_fullstk-sw"
+    },
+    "02af0d8a-4b51-4274-aa0f-c725ad77f94a": {
+      "status": "ok",
+      "path": "/inaipro-point-private-limited/deep-eng",
+      "external_id": "inaipro-point-private-limited_deep-eng"
+    },
+    "09f44b7b-e81f-469f-a77c-ee2f72e6b9c6": {
+      "status": "ok",
+      "path": "/apollo-solutions/fullstk-eng",
+      "external_id": "apollo-solutions_fullstk-eng"
+    },
+    "06d76a6e-46be-438c-81f5-0c2d37c52412": {
+      "status": "ok",
+      "path": "/zyxware-technologies/fullstk-dev",
+      "external_id": "zyxware-technologies_fullstk-dev"
+    },
+    "0b4190cb-5eae-4505-b605-6cdc6b642e96": {
+      "status": "ok",
+      "path": "/glocomms/spec-sw-eng",
+      "external_id": "glocomms_spec-sw-eng"
+    },
+    "0baa6b3c-7225-432f-8d18-29dd26d9a3e8": {
+      "status": "ok",
+      "path": "/aret/sw-eng",
+      "external_id": "aret_sw-eng"
+    },
+    "05ed7bfb-68c5-4909-8eab-09efaea326ab": {
+      "status": "ok",
+      "path": "/carbon/sw-eng",
+      "external_id": "carbon_sw-eng"
+    },
+    "0dd60017-e5d5-42f0-97df-8f232e8bc13f": {
+      "status": "ok",
+      "path": "/softdocs/cloud-ops",
+      "external_id": "softdocs_cloud-ops"
+    },
+    "052419dc-d444-46bd-b307-bd3fceb12226": {
+      "status": "ok",
+      "path": "/amazon/sw-dev-ea",
+      "external_id": "amazon_sw-dev-ea"
+    },
+    "01c6fc25-5083-4b52-9965-4742d85bed5e": {
+      "status": "ok",
+      "path": "/sharp-electronics-corporation-usa/automotive",
+      "external_id": "sharp-electronics-corporation-usa_automotive"
+    },
+    "0a11eb64-431d-411e-b7ea-f806a9a9a7f7": {
+      "status": "ok",
+      "path": "/eci/design-qa",
+      "external_id": "eci_design-qa"
+    },
+    "0ce86838-8800-4127-af5f-2783fffcabf6": {
+      "status": "ok",
+      "path": "/re-build-manufacturing/sw-eng",
+      "external_id": "re-build-manufacturing_sw-eng"
+    },
+    "0134356a-a790-42fb-b97c-75e38558f0f7": {
+      "status": "ok",
+      "path": "/hashorn/ml-eng",
+      "external_id": "hashorn_ml-eng"
+    },
+    "0171274d-c2c3-4576-8428-347a00e835c5": {
+      "status": "ok",
+      "path": "/actalent/embedded-sw",
+      "external_id": "actalent_embedded-sw"
+    },
+    "019fcbca-b38c-4106-a3fa-666d34344dc3": {
+      "status": "ok",
+      "path": "/ispot/sw-dev-eng",
+      "external_id": "ispot_sw-dev-eng"
+    },
+    "036f752c-b2c8-412f-b09f-7d47b06e584d": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "05ac8296-6ead-4fbf-8e7d-5b61dfb08e38": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0e511591-1df4-4224-bcf6-784e6985980a": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0de0c604-5926-46a3-8816-291b35edac4a": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0f93fd08-7644-49f8-b95f-4d59a5d9c196": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "05557570-1c32-4fff-a2d1-0a5ce3461eda": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "03b93e85-4bbe-4b4d-a6c9-615923d3cb14": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0ef73bbc-db4c-4dff-8108-6d0d61f0a3cb": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0cd371fe-de95-49a1-90cc-5692d9a03a6b": {
+      "status": "ok",
+      "path": "/call-for-referral/sw-eng",
+      "external_id": "call-for-referral_sw-eng"
+    },
+    "03db6c13-3372-4c7d-8144-db9c755a9c68": {
+      "status": "ok",
+      "path": "/cloudflare/sys-eng-08",
+      "external_id": "cloudflare_sys-eng-08"
+    },
+    "098af894-7a05-4768-84c7-9d10b1517d8c": {
+      "status": "ok",
+      "path": "/visa/ml-eng",
+      "external_id": "visa_ml-eng"
+    },
+    "0efec7f1-8e01-4f7b-afb5-3feeeb0b0727": {
+      "status": "ok",
+      "path": "/softstandard-solutions/ai-ml-eng",
+      "external_id": "softstandard-solutions_ai-ml-eng"
+    },
+    "05d11350-376d-4385-8e9d-dd01bc766463": {
+      "status": "ok",
+      "path": "/tandem/ml-eng",
+      "external_id": "tandem_ml-eng"
+    },
+    "0bbe92a7-7b21-4796-96dc-a3cb90a7cf3d": {
+      "status": "ok",
+      "path": "/teza-technologies/trading-ops",
+      "external_id": "teza-technologies_trading-ops"
+    },
+    "02c642fe-8396-4bac-af76-fbad1c8e7cb9": {
+      "status": "ok",
+      "path": "/revin/sw-eng",
+      "external_id": "revin_sw-eng"
+    },
+    "09ddc4d5-a577-4781-a24e-95a0a59cbdb9": {
+      "status": "ok",
+      "path": "/google/sw-eng-ai",
+      "external_id": "google_sw-eng-ai"
+    },
+    "037feffc-eb34-4c1e-a283-e896f9d84438": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0e8dc440-bf9a-4a38-9c98-97ffbbc9f2d3": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "048775dc-1806-4b0e-a4a9-da34728c17b9": {
+      "status": "ok",
+      "path": "/jobright-ai/ai-eng",
+      "external_id": "jobright-ai_ai-eng"
+    },
+    "0381db61-cba9-4d8e-a509-67e5f7fc9c0e": {
+      "status": "ok",
+      "path": "/burtch-works/dir-data-sci",
+      "external_id": "burtch-works_dir-data-sci"
+    },
+    "03ef6f22-2a62-4c41-ae0e-e789460bbce4": {
+      "status": "ok",
+      "path": "/akkodis/prod-owner",
+      "external_id": "akkodis_prod-owner"
+    },
+    "06d8c541-3e1d-4b27-824d-52fcdd3073a5": {
+      "status": "ok",
+      "path": "/opal-security/sw-eng",
+      "external_id": "opal-security_sw-eng"
+    },
+    "0036ac73-a354-43ce-9c1e-670aed7079fb": {
+      "status": "ok",
+      "path": "/pure-insurance/prod-mgr",
+      "external_id": "pure-insurance_prod-mgr"
+    },
+    "01b530d3-ae85-4547-a624-a4eb3d21033a": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "02e9a05f-6247-420a-a44a-e6aaed30bb5a": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0000fee4-060a-4abc-8b30-96d21b835bc8": {
+      "status": "ok",
+      "path": "/recruiting-from-scratch/sw-eng",
+      "external_id": "recruiting-from-scratch_sw-eng"
+    },
+    "0bb4af28-7ecb-4c05-b046-3c01b018f465": {
+      "status": "ok",
+      "path": "/wellfit-technologies/devops-eng",
+      "external_id": "wellfit-technologies_devops-eng"
+    },
+    "01ed1460-8a12-409b-a99d-eaffe32d2a24": {
+      "status": "ok",
+      "path": "/nvidia/prod-mgr",
+      "external_id": "nvidia_prod-mgr"
+    },
+    "0b5f5090-2c11-4ba7-b49f-c03fdefe0ea7": {
+      "status": "ok",
+      "path": "/snap-inc/sec-eng",
+      "external_id": "snap-inc_sec-eng"
+    },
+    "0835251b-a21c-453a-ac27-e77861f6b387": {
+      "status": "ok",
+      "path": "/accelint/ml-eng",
+      "external_id": "accelint_ml-eng"
+    },
+    "08a7fbb1-00c3-4234-b27b-419bfd60b19e": {
+      "status": "ok",
+      "path": "/bloom-energy/stack-data",
+      "external_id": "bloom-energy_stack-data"
+    },
+    "0be74da7-2a3a-47cd-971a-4612083f4596": {
+      "status": "ok",
+      "path": "/adobe/sw-dev-eng",
+      "external_id": "adobe_sw-dev-eng"
+    },
+    "06d7d634-f2de-451e-a069-9e1ba4a099ab": {
+      "status": "skip",
+      "reason": "linkedin_404"
+    },
+    "0bd17470-2427-49b9-9079-e2bb0090b5ce": {
+      "status": "ok",
+      "path": "/sr2-socially-responsible-recruitment-certified-b-corporation/computer-vision",
+      "external_id": "sr2-socially-responsible-recruitment-certified-b-corporation_computer-vision"
+    },
+    "03677f6b-b49e-4348-b668-0fff7a9e4c5e": {
+      "status": "ok",
+      "path": "/space-capital/algorithms",
+      "external_id": "space-capital_algorithms"
+    },
+    "0cc3495c-c708-40d9-b408-fd3dbf484911": {
+      "status": "ok",
+      "path": "/federal-transit-administration/data-sci",
+      "external_id": "federal-transit-administration_data-sci"
+    },
+    "080ed432-45c5-4864-b306-49758ddabf1f": {
+      "status": "ok",
+      "path": "/roshay-services/ai-sw-eng",
+      "external_id": "roshay-services_ai-sw-eng"
+    },
+    "04f4b9b0-698a-4a64-be71-ff7e2d914180": {
+      "status": "ok",
+      "path": "/effective-altruism-global/prod-eng",
+      "external_id": "effective-altruism-global_prod-eng"
+    },
+    "0799e147-2428-4971-bbb6-8f2a3890c771": {
+      "status": "skip",
+      "reason": "linkedin_404"
+    },
+    "03febd72-b56b-4251-bfe4-27964597e882": {
+      "status": "ok",
+      "path": "/x-bow-systems/sw-eng",
+      "external_id": "x-bow-systems_sw-eng"
+    },
+    "0b2539ee-97bd-480d-8918-523d94d0e050": {
+      "status": "ok",
+      "path": "/booz-allen-hamilton/salesforce",
+      "external_id": "booz-allen-hamilton_salesforce"
+    },
+    "0a399599-bc40-4243-a064-e6858f48a094": {
+      "status": "ok",
+      "path": "/slack/ml-eng-fine",
+      "external_id": "slack_ml-eng-fine"
+    },
+    "0d06fded-1b70-4d78-97dd-b79451ab8054": {
+      "status": "ok",
+      "path": "/data-nexus-ai/sre-eng",
+      "external_id": "data-nexus-ai_sre-eng"
+    },
+    "04258407-2cf2-4705-861b-80901c3bae1d": {
+      "status": "ok",
+      "path": "/open-systems-technologies/python-dev",
+      "external_id": "open-systems-technologies_python-dev"
+    },
+    "09b50971-e8fd-4475-a788-3b2e3e1ec192": {
+      "status": "ok",
+      "path": "/google/biz-data-e5",
+      "external_id": "google_biz-data-e5"
+    },
+    "052ee2bb-c744-4dfc-af92-47a653f7db88": {
+      "status": "ok",
+      "path": "/kla/ai-eng",
+      "external_id": "kla_ai-eng"
+    },
+    "00638315-7b67-4d2b-bf94-da8686fc4bd0": {
+      "status": "ok",
+      "path": "/bairesdev/ml-eng",
+      "external_id": "bairesdev_ml-eng"
+    },
+    "01acdb21-98b1-4bd9-86ce-9fa099704de5": {
+      "status": "ok",
+      "path": "/form-energy/sw-eng-power",
+      "external_id": "form-energy_sw-eng-power"
+    },
+    "0f916250-750c-4392-a0ab-d68ba68e7371": {
+      "status": "ok",
+      "path": "/amazon-web-services-aws/mla-dv-eng",
+      "external_id": "amazon-web-services-aws_mla-dv-eng"
+    },
+    "0d9b3747-b28d-454d-b948-7578fb9ea277": {
+      "status": "ok",
+      "path": "/ttec-digital/sw-eng-azure",
+      "external_id": "ttec-digital_sw-eng-azure"
+    },
+    "03a54698-d30f-4139-8221-d4acf052c27c": {
+      "status": "ok",
+      "path": "/amazon/prod-mgr",
+      "external_id": "amazon_prod-mgr"
+    },
+    "09ae475d-a65a-4df9-867d-66a59cc0f767": {
+      "status": "ok",
+      "path": "/sport-clips-haircuts/sol-arch",
+      "external_id": "sport-clips-haircuts_sol-arch"
+    },
+    "0f99a59a-f367-4cbe-891b-df08263dff53": {
+      "status": "ok",
+      "path": "/ladders/prod-mgr",
+      "external_id": "ladders_prod-mgr"
+    },
+    "035b3041-52ec-49d4-bab0-05324795f7ef": {
+      "status": "ok",
+      "path": "/a-to-z-media/prod-dev",
+      "external_id": "a-to-z-media_prod-dev"
+    },
+    "0df5be89-7e3d-4d15-af8e-667a3f956f75": {
+      "status": "ok",
+      "path": "/oracle/app-dev",
+      "external_id": "oracle_app-dev"
+    },
+    "055f44f2-9c72-440a-8e9b-914a82e3a440": {
+      "status": "ok",
+      "path": "/the-d-e-shaw-group/ai-prod-eng",
+      "external_id": "the-d-e-shaw-group_ai-prod-eng"
+    },
+    "07e1a51b-e7ad-4548-bf35-4d422b4bfada": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "02d7e680-1140-4a1f-963a-fbfb5cde84fb": {
+      "status": "ok",
+      "path": "/tiffany-amp-co/analyst-high",
+      "external_id": "tiffany-amp-co_analyst-high"
+    },
+    "0b9852ba-8640-4c57-a86c-fab4fd69558f": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0e709e86-5adc-46a8-a2c5-8163963c0286": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "00263f53-edbd-411d-ab9e-2d5cbf82edfb": {
+      "status": "ok",
+      "path": "/change-order/prod-mgr",
+      "external_id": "change-order_prod-mgr"
+    },
+    "0dda3654-4c00-4692-a8b7-df72e1f4dc04": {
+      "status": "ok",
+      "path": "/mars/data-analytics",
+      "external_id": "mars_data-analytics"
+    },
+    "0affd472-de54-4c8b-8b98-7877945aba2e": {
+      "status": "ok",
+      "path": "/m-amp-t-bank/prod-owner",
+      "external_id": "m-amp-t-bank_prod-owner"
+    },
+    "0b38e4a7-51b7-4398-a2be-b75c714eb7c9": {
+      "status": "ok",
+      "path": "/right-systems-inc/net-eng",
+      "external_id": "right-systems-inc_net-eng"
+    },
+    "0d1182e4-4715-4799-a554-101e87450b24": {
+      "status": "ok",
+      "path": "/lumicity/sw-test-eng",
+      "external_id": "lumicity_sw-test-eng"
+    },
+    "0935380a-929e-4e17-b778-caff93518dba": {
+      "status": "ok",
+      "path": "/pylon/sw-eng",
+      "external_id": "pylon_sw-eng"
+    },
+    "08f6e574-3665-4570-b257-c9fbca679a1a": {
+      "status": "ok",
+      "path": "/google/sw-eng-early",
+      "external_id": "google_sw-eng-early"
+    },
+    "02ab7c89-28e9-4954-abd2-7f601266c233": {
+      "status": "ok",
+      "path": "/motion-recruitment/devops-eng",
+      "external_id": "motion-recruitment_devops-eng"
+    },
+    "041b1c51-51c2-4dac-8989-2548b8947fb2": {
+      "status": "ok",
+      "path": "/allocate/ml-eng",
+      "external_id": "allocate_ml-eng"
+    },
+    "082f6316-9f68-41a3-ab5d-5c9216d6fa8f": {
+      "status": "ok",
+      "path": "/matroid/deep-eng",
+      "external_id": "matroid_deep-eng"
+    },
+    "0819a1db-5dfa-49d3-a82d-e36b5cb88ed8": {
+      "status": "ok",
+      "path": "/amazon/ux-design",
+      "external_id": "amazon_ux-design"
+    },
+    "087b6516-d90d-4049-8d98-69a9aeffeb95": {
+      "status": "skip",
+      "reason": "linkedin_404"
+    },
+    "054ddc67-2b40-45e1-8bca-354e58b5d9b2": {
+      "status": "ok",
+      "path": "/accord-technologies-inc/it-sec",
+      "external_id": "accord-technologies-inc_it-sec"
+    },
+    "07a728c7-25be-4651-b343-d7760ec0579c": {
+      "status": "ok",
+      "path": "/ledgent-technology/infra-eng",
+      "external_id": "ledgent-technology_infra-eng"
+    },
+    "0d013a21-f097-42eb-bf89-6533a38ac57d": {
+      "status": "ok",
+      "path": "/ls-solutions/ios-sw-eng",
+      "external_id": "ls-solutions_ios-sw-eng"
+    },
+    "0b0b1ccf-6f6f-43f4-bab5-b80af854f3a2": {
+      "status": "ok",
+      "path": "/national-indemnity-company/auto-qa-eng",
+      "external_id": "national-indemnity-company_auto-qa-eng"
+    },
+    "0ce21d61-717a-4ecd-9a43-c0d35ebf38c5": {
+      "status": "ok",
+      "path": "/matlen-silver/qa-eng",
+      "external_id": "matlen-silver_qa-eng"
+    },
+    "07d592fe-69bc-4d86-8f7b-088775d47c51": {
+      "status": "ok",
+      "path": "/jeppesen-foreflight/qa-eng",
+      "external_id": "jeppesen-foreflight_qa-eng"
+    },
+    "0f138460-15f3-4533-8417-1d696dd7e0e1": {
+      "status": "ok",
+      "path": "/comfrt/qa-eng",
+      "external_id": "comfrt_qa-eng"
+    },
+    "0e425586-ffd8-4bc0-bcd4-4c2b2bbdc0c4": {
+      "status": "ok",
+      "path": "/thumbtack/ios-eng-cust",
+      "external_id": "thumbtack_ios-eng-cust"
+    },
+    "0c894db2-a58e-4d98-afcb-ee96c47c2e7f": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0e7d2699-06bf-41f2-aec2-f2b50b5844e3": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "079d2c62-ed2e-42c2-bcab-ab52297d1bc8": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "00932ad4-9751-4ee3-ab33-9fa6616a4cc6": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0c160b90-3920-428a-abf1-cc008c9fc9b0": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "094a2f67-2de3-452d-90a0-5e8f2c2f92be": {
+      "status": "ok",
+      "path": "/aster/be-dev",
+      "external_id": "aster_be-dev"
+    },
+    "0e430f48-e31d-48ec-897b-291085fd8e20": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "08e7d23b-a408-40e4-8a0d-c7a779329dd8": {
+      "status": "ok",
+      "path": "/amazon-web-services-aws/sw-dev-eng",
+      "external_id": "amazon-web-services-aws_sw-dev-eng"
+    },
+    "0eb8bd3c-e3b0-4d05-b1ff-b617931385dc": {
+      "status": "ok",
+      "path": "/confidential/ai-plat",
+      "external_id": "confidential_ai-plat"
+    },
+    "0c3cff5b-e420-4c9a-919c-d9c79661fa64": {
+      "status": "ok",
+      "path": "/servicenow/sys-eng-70",
+      "external_id": "servicenow_sys-eng-70"
+    },
+    "02a39d3e-15d7-4dd4-9cf9-4f9c02c7f852": {
+      "status": "ok",
+      "path": "/ptr-global/devops-eng",
+      "external_id": "ptr-global_devops-eng"
+    },
+    "07debadd-1262-49a2-94bb-ef89e57e283f": {
+      "status": "ok",
+      "path": "/hudson-it-and-manpower/ios-dev",
+      "external_id": "hudson-it-and-manpower_ios-dev"
+    },
+    "0e2a0dfb-2179-4b7f-8bbc-49b047e326a7": {
+      "status": "ok",
+      "path": "/discernis/ai-eng",
+      "external_id": "discernis_ai-eng"
+    },
+    "0a5e15f1-547c-4990-a135-729801ad4866": {
+      "status": "ok",
+      "path": "/nvidia/deep-compiler",
+      "external_id": "nvidia_deep-compiler"
+    },
+    "033d29eb-b276-4c18-ae9e-1622236ee50a": {
+      "status": "ok",
+      "path": "/nesco-resource/fullstk-net",
+      "external_id": "nesco-resource_fullstk-net"
+    },
+    "089131f1-1a96-4540-9d9b-50e459d14332": {
+      "status": "ok",
+      "path": "/adobe/prod-enablement",
+      "external_id": "adobe_prod-enablement"
+    },
+    "09dd823c-d9ef-4fe2-a93d-81dda2e47aca": {
+      "status": "ok",
+      "path": "/zipline/sw-eng",
+      "external_id": "zipline_sw-eng"
+    },
+    "05b3bf77-8107-4942-842e-d1ccf1bc20bb": {
+      "status": "ok",
+      "path": "/capital-one/prod-mgr",
+      "external_id": "capital-one_prod-mgr"
+    },
+    "03471927-ebda-4c31-a75e-79fed7a9fdc5": {
+      "status": "ok",
+      "path": "/joby-aviation/qa-eng",
+      "external_id": "joby-aviation_qa-eng"
+    },
+    "0f7c2064-605e-43dc-a72d-da5f91dec2fc": {
+      "status": "ok",
+      "path": "/abbott/postmarket",
+      "external_id": "abbott_postmarket"
+    },
+    "0b38fde7-b4ef-4a97-84fa-04b0118ec86b": {
+      "status": "ok",
+      "path": "/roo/sw-eng-fe",
+      "external_id": "roo_sw-eng-fe"
+    },
+    "0de97c60-5caa-4d23-aef3-5485a54b92c0": {
+      "status": "ok",
+      "path": "/stanford-university/research-eng",
+      "external_id": "stanford-university_research-eng"
+    },
+    "0f45520a-b750-4011-b204-4f53d1c2e2f8": {
+      "status": "ok",
+      "path": "/veho/prod-mgr",
+      "external_id": "veho_prod-mgr"
+    },
+    "098999cc-8c27-43e1-80a3-c042cb1ec108": {
+      "status": "ok",
+      "path": "/adobe/data-sci-eng",
+      "external_id": "adobe_data-sci-eng"
+    },
+    "06ef299c-1e61-4de9-9908-1fd226c1a559": {
+      "status": "ok",
+      "path": "/bristlecone/qa-eng",
+      "external_id": "bristlecone_qa-eng"
+    },
+    "0a259020-521e-48cc-9565-445aa06fc0d9": {
+      "status": "ok",
+      "path": "/whatnot/llm-plat-eng",
+      "external_id": "whatnot_llm-plat-eng"
+    },
+    "052ad85f-c248-43b9-bd02-bc9c29a25272": {
+      "status": "ok",
+      "path": "/unconventional-ai/ai-theory",
+      "external_id": "unconventional-ai_ai-theory"
+    },
+    "064eea4d-ceab-43c2-99a5-63747847a508": {
+      "status": "ok",
+      "path": "/amazon-science/data-sci",
+      "external_id": "amazon-science_data-sci"
+    },
+    "071f833e-884a-40c4-901e-7b53d90e0ea9": {
+      "status": "skip",
+      "reason": "linkedin_404"
+    },
+    "05ec4532-d500-4022-93b3-76abcc75c10d": {
+      "status": "ok",
+      "path": "/chatgpt-jobs/lead-ml-eng",
+      "external_id": "chatgpt-jobs_lead-ml-eng"
+    },
+    "0be182d1-73e3-44c1-9147-d416a3acac8d": {
+      "status": "ok",
+      "path": "/pepsico/data-sci",
+      "external_id": "pepsico_data-sci"
+    },
+    "0869f32c-7f15-4ea5-a69a-a72b78b1f591": {
+      "status": "ok",
+      "path": "/modo-energy/market-analyst",
+      "external_id": "modo-energy_market-analyst"
+    },
+    "0b7c6108-2a36-4528-bb57-d6a3d67ffe6c": {
+      "status": "skip",
+      "reason": "linkedin_short"
+    },
+    "0140e3ca-b565-450b-9783-d35bf0d51904": {
+      "status": "ok",
+      "path": "/robert-half/sw-eng-ai",
+      "external_id": "robert-half_sw-eng-ai"
+    },
+    "0b4e83a2-96f3-4f51-98d7-b723f7082f75": {
+      "status": "ok",
+      "path": "/stellar-consulting-solutions-llc/cloud-arch",
+      "external_id": "stellar-consulting-solutions-llc_cloud-arch"
+    },
+    "02dbf921-624a-4d19-971c-605395b7f6b1": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0c3aa600-5ff9-4b22-aead-711bb3f067bb": {
+      "status": "ok",
+      "path": "/entangl-inc/fullstk-eng",
+      "external_id": "entangl-inc_fullstk-eng"
+    },
+    "018d93b1-1f89-48ac-95a9-7d928b7d0c0d": {
+      "status": "ok",
+      "path": "/nayax/sw-eng",
+      "external_id": "nayax_sw-eng"
+    },
+    "067299a2-c183-4c4c-bf58-41c1d15bd6d1": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "043d2b0d-df93-4172-ad75-32e3952ef426": {
+      "status": "ok",
+      "path": "/imprint/prod-mgr-mid",
+      "external_id": "imprint_prod-mgr-mid"
+    },
+    "06e78fb7-b0b4-46d2-a441-72da8c940aef": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0bdae580-8631-43c0-a274-778103549441": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0ae50493-a261-466a-a1fa-fb7d9bf2f855": {
+      "status": "ok",
+      "path": "/uber/eng-core",
+      "external_id": "uber_eng-core"
+    },
+    "012da896-a772-4438-a2fa-f84d343b3e4e": {
+      "status": "ok",
+      "path": "/chime/data-sci-fin",
+      "external_id": "chime_data-sci-fin"
+    },
+    "0b427252-6d54-45dc-a013-fff556e7d8f0": {
+      "status": "ok",
+      "path": "/wizards-of-the-coast/mgr-net",
+      "external_id": "wizards-of-the-coast_mgr-net"
+    },
+    "01eb2275-3704-4e66-9e7b-0073c8be09ab": {
+      "status": "ok",
+      "path": "/slac-national-accelerator-laboratory/sw-dev",
+      "external_id": "slac-national-accelerator-laboratory_sw-dev"
+    },
+    "0bf6c01a-d4ab-4ef3-b505-ac1cedea420d": {
+      "status": "ok",
+      "path": "/ihealth-labs/health-ai",
+      "external_id": "ihealth-labs_health-ai"
+    },
+    "00efcbf2-fc93-44c9-b878-98c7b43bc892": {
+      "status": "ok",
+      "path": "/tata-consultancy-services/applied-ai",
+      "external_id": "tata-consultancy-services_applied-ai"
+    },
+    "0237c683-dfea-464e-817a-d67c7765ef45": {
+      "status": "skip",
+      "reason": "linkedin_404"
+    },
+    "087d79f9-fe62-4f9e-9dba-3814d717f876": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "06ee000f-4ae6-44d8-bea2-fb71081c2cf3": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0804ae84-b921-4de4-9b47-d7fe396df12b": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0191193e-27da-40a8-b649-3ed5a5cb8305": {
+      "status": "ok",
+      "path": "/mercor/ml-research",
+      "external_id": "mercor_ml-research"
+    },
+    "0e3f73bb-be9d-43b6-9acd-5e2a8ddee0b5": {
+      "status": "ok",
+      "path": "/mpower-plus/ai-plat",
+      "external_id": "mpower-plus_ai-plat"
+    },
+    "023d3139-c492-4f2e-8a4c-76941215dc42": {
+      "status": "ok",
+      "path": "/confido/sw-eng",
+      "external_id": "confido_sw-eng"
+    },
+    "0f159ffc-1c0f-4a6f-bce4-e9ca1f9cf9c3": {
+      "status": "ok",
+      "path": "/nvidia/eda-workflow",
+      "external_id": "nvidia_eda-workflow"
+    },
+    "02515ad8-ea7b-4544-90bf-edb5e18662fd": {
+      "status": "ok",
+      "path": "/netflix/sw-eng-data",
+      "external_id": "netflix_sw-eng-data"
+    },
+    "0ce02be4-f51b-4ce2-b2d0-55f24ed167fb": {
+      "status": "ok",
+      "path": "/lpl-financial/avp-ai-sol",
+      "external_id": "lpl-financial_avp-ai-sol"
+    },
+    "00accc51-8927-45db-b7d7-da68c92a00d6": {
+      "status": "ok",
+      "path": "/at-amp-t/sys-eng",
+      "external_id": "at-amp-t_sys-eng"
+    },
+    "0d461ec6-cef6-496c-8b41-7262aa320095": {
+      "status": "ok",
+      "path": "/fountain/sw-eng",
+      "external_id": "fountain_sw-eng"
+    },
+    "0586bf8f-a3af-42b0-866f-63127a23c932": {
+      "status": "ok",
+      "path": "/honda-south-carolina-manufacturing/sw-sys-test",
+      "external_id": "honda-south-carolina-manufacturing_sw-sys-test"
+    },
+    "0deb8dbf-14f7-42c1-9d16-cbcb738689d7": {
+      "status": "ok",
+      "path": "/tata-consultancy-services/ai-auto-eng",
+      "external_id": "tata-consultancy-services_ai-auto-eng"
+    },
+    "0596d86b-9070-4cbe-8ada-20df9ad9b095": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0e29184e-e943-45d7-b1ce-5719c021acb7": {
+      "status": "ok",
+      "path": "/weekday-yc-w21/ml-eng",
+      "external_id": "weekday-yc-w21_ml-eng"
+    },
+    "04475368-9dac-4120-82b6-8fdefa8b22a8": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0f066f3b-eb42-4acd-90b7-a3ac8f4f5574": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0463e2f8-572c-4ba2-8e91-6b2f188605c7": {
+      "status": "ok",
+      "path": "/trilon/qa-eng",
+      "external_id": "trilon_qa-eng"
+    },
+    "0355b591-5d12-4ae2-bf45-29b922627c5f": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0dfab1b3-3ee6-4a5f-b4bb-621b1de7ffe8": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "056f2462-0fe8-4618-9a49-cb2daf57a267": {
+      "status": "ok",
+      "path": "/sotalent/qa-auto-eng",
+      "external_id": "sotalent_qa-auto-eng"
+    },
+    "01583476-2a6d-47ef-ae11-de4fbef3604f": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "08b9773a-a77a-49cd-a53e-3849d9a096fc": {
+      "status": "ok",
+      "path": "/general-motors/fall-research",
+      "external_id": "general-motors_fall-research"
+    },
+    "09f989c5-8f13-4911-9b98-0155236d9356": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0cee1d1d-fdd7-4ca6-9fae-c4f1923870e8": {
+      "status": "ok",
+      "path": "/workday/people-analytics",
+      "external_id": "workday_people-analytics"
+    },
+    "07d28ea1-54b4-4343-8d36-dcb54fbdcb23": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0f032f58-f678-4717-b6d4-50822a67b756": {
+      "status": "ok",
+      "path": "/taboola-dach/qa-eng",
+      "external_id": "taboola-dach_qa-eng"
+    },
+    "0d9a0977-7ed4-4c0d-a789-1605cde27744": {
+      "status": "ok",
+      "path": "/demandtec/lead-data",
+      "external_id": "demandtec_lead-data"
+    },
+    "08137fdf-2fd7-4b67-ba19-00e02afe0516": {
+      "status": "ok",
+      "path": "/samba/ontologist",
+      "external_id": "samba_ontologist"
+    },
+    "0f7f358c-01c4-4299-bfc4-ccba8d4a4052": {
+      "status": "ok",
+      "path": "/warner-bros-discovery/prod-mgr-2c",
+      "external_id": "warner-bros-discovery_prod-mgr-2c"
+    },
+    "0dbc2f0a-b2b0-45ba-8c34-d3634dce8e4b": {
+      "status": "ok",
+      "path": "/capstone-development-services-co-llc/qa-eng",
+      "external_id": "capstone-development-services-co-llc_qa-eng"
+    },
+    "09e09167-6e37-4255-bf69-eacf87184371": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "0be4f248-3439-480e-8787-61fad7e5b506": {
+      "status": "ok",
+      "path": "/aptask/quantitative",
+      "external_id": "aptask_quantitative"
+    },
+    "0f9061c0-d289-40ee-82b0-558d74aaefa5": {
+      "status": "ok",
+      "path": "/crossing-hurdles/qa-auto-eng",
+      "external_id": "crossing-hurdles_qa-auto-eng"
+    },
+    "0cd1d269-52fe-435a-b59d-43018e6f2663": {
+      "status": "ok",
+      "path": "/giga/sec-eng",
+      "external_id": "giga_sec-eng"
+    },
+    "05ffbe0b-ebf8-4b06-a5f0-4b1e36148a7a": {
+      "status": "ok",
+      "path": "/minitab/sw-qa-eng",
+      "external_id": "minitab_sw-qa-eng"
+    },
+    "0a3c3416-4f00-4564-9c9d-cf01156d8bd0": {
+      "status": "ok",
+      "path": "/resilience/sec-eng",
+      "external_id": "resilience_sec-eng"
+    },
+    "023b0550-e0ce-4a5f-8753-33e544c8a721": {
+      "status": "ok",
+      "path": "/the-knot-worldwide/vp-data-sci",
+      "external_id": "the-knot-worldwide_vp-data-sci"
+    },
+    "0b27c8c6-5252-472c-86ac-626dcca84c48": {
+      "status": "ok",
+      "path": "/starbucks/cybersecurity",
+      "external_id": "starbucks_cybersecurity"
+    },
+    "03f70fd9-9011-40c2-bd30-647da4c804ea": {
+      "status": "ok",
+      "path": "/whitridge-associates/biz-analyst",
+      "external_id": "whitridge-associates_biz-analyst"
+    },
+    "0a681d5d-bc71-44be-9e03-69dc7a7c1bb4": {
+      "status": "ok",
+      "path": "/raindrop/ml-eng",
+      "external_id": "raindrop_ml-eng"
+    },
+    "032a492c-eca4-4fa7-9afb-eaeb6e0a6f9d": {
+      "status": "fail",
+      "reason": "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop"
+    },
+    "008424e8-440e-41ec-b65a-f82e2f5a82bf": {
+      "status": "ok",
+      "path": "/amazon-web-services-aws/sw-dev-4c",
+      "external_id": "amazon-web-services-aws_sw-dev-4c"
+    },
+    "0d5b9cc5-3cb3-498f-aa8e-d09996f1616c": {
+      "status": "ok",
+      "path": "/rise-technical/sw-eng",
+      "external_id": "rise-technical_sw-eng"
+    },
+    "08905136-239e-4c4c-911d-31adce693c71": {
+      "status": "ok",
+      "path": "/rebar/sw-eng-data",
+      "external_id": "rebar_sw-eng-data"
+    },
+    "0d793f78-bac5-48fe-ac1c-4ca4c3153dbc": {
+      "status": "ok",
+      "path": "/vintti/cocos2d-x",
+      "external_id": "vintti_cocos2d-x"
+    },
+    "038baa4f-dc18-46ff-8a3f-ea9f3e1f1dab": {
+      "status": "ok",
+      "path": "/parasail/sw-eng",
+      "external_id": "parasail_sw-eng"
+    },
+    "05322222-6c6a-44ea-b4dc-315645a51e98": {
+      "status": "ok",
+      "path": "/stubhub/sw-eng",
+      "external_id": "stubhub_sw-eng"
+    },
+    "095784ae-263a-4784-a4e2-c4929224123b": {
+      "status": "ok",
+      "path": "/tiktok/be-sw-eng",
+      "external_id": "tiktok_be-sw-eng"
+    },
+    "01494e25-d8f6-4eb7-83cd-eaa99d310ce2": {
+      "status": "ok",
+      "path": "/saragossa/lead-sre",
+      "external_id": "saragossa_lead-sre"
+    },
+    "05b799cb-8859-47b0-86e2-feca84dc3df5": {
+      "status": "ok",
+      "path": "/emerson/sw-defined",
+      "external_id": "emerson_sw-defined"
+    },
+    "03f82309-c2af-4cfb-b908-b592d1a0e4e8": {
+      "status": "ok",
+      "path": "/sessioncam/devops-eng",
+      "external_id": "sessioncam_devops-eng"
+    },
+    "0059f55f-5683-4fc5-9674-806911d7c412": {
+      "status": "ok",
+      "path": "/tetrascience/applied-ai",
+      "external_id": "tetrascience_applied-ai"
+    },
+    "0857542f-d906-49c6-aa84-a1f6d0738204": {
+      "status": "ok",
+      "path": "/qualcomm/lead-cpu",
+      "external_id": "qualcomm_lead-cpu"
+    },
+    "02d42d25-6864-4790-b2e9-c08147b696c5": {
+      "status": "ok",
+      "path": "/oracle/sw-eng",
+      "external_id": "oracle_sw-eng"
+    },
+    "09d1f8c3-1e49-4905-ba8d-14c5222a1cdb": {
+      "status": "ok",
+      "path": "/neuralink/sw-eng",
+      "external_id": "neuralink_sw-eng"
+    },
+    "08c85cef-9844-4ea6-976c-886f44e51471": {
+      "status": "ok",
+      "path": "/google/global-prod",
+      "external_id": "google_global-prod"
+    },
+    "032dd306-be7c-4fc0-b11c-6342f526ecbc": {
+      "status": "ok",
+      "path": "/webull-financial/proj-mgr",
+      "external_id": "webull-financial_proj-mgr"
+    },
+    "015dd509-7efc-4d67-9481-b3557721d755": {
+      "status": "ok",
+      "path": "/new-york-state-department-of-health/asst-research",
+      "external_id": "new-york-state-department-of-health_asst-research"
+    },
+    "088f937d-2955-4576-ae57-e4df8bc5fd71": {
+      "status": "ok",
+      "path": "/jpmorganchase/vp-prod-mgr",
+      "external_id": "jpmorganchase_vp-prod-mgr"
+    },
+    "00618416-a0c5-4ba7-8f55-d472bfdd9669": {
+      "status": "ok",
+      "path": "/jpmorganchase/prod-assoc",
+      "external_id": "jpmorganchase_prod-assoc"
+    },
+    "040fd735-a854-4799-b948-d67fbc1b6de2": {
+      "status": "ok",
+      "path": "/booz-allen-hamilton/net-ops-eng",
+      "external_id": "booz-allen-hamilton_net-ops-eng"
+    },
+    "07057785-5eb3-4859-b4f5-592bfa5744d4": {
+      "status": "ok",
+      "path": "/crossing-hurdles/computer-vision",
+      "external_id": "crossing-hurdles_computer-vision"
+    },
+    "05ba9691-c0c8-41e9-a2be-a2c86dde6a72": {
+      "status": "skip",
+      "reason": "linkedin_429"
+    },
+    "09888f44-955e-404f-9ac3-d7225f3bbfc1": {
+      "status": "ok",
+      "path": "/kpg99-inc/fullstk-be",
+      "external_id": "kpg99-inc_fullstk-be"
+    },
+    "0fd0fd9e-a9cf-4957-bfb4-bc7f10422fb1": {
+      "status": "ok",
+      "path": "/genoa-ventures/ai-eng-lead",
+      "external_id": "genoa-ventures_ai-eng-lead"
+    },
+    "0c49674d-8618-421c-9c2a-2bb408aba1a5": {
+      "status": "ok",
+      "path": "/peak-nano/ai-eng",
+      "external_id": "peak-nano_ai-eng"
+    },
+    "075d52bc-66e2-461a-9e73-80fa4d2bc1e8": {
+      "status": "ok",
+      "path": "/fintal-partners/ml-eng",
+      "external_id": "fintal-partners_ml-eng"
+    },
+    "07af33d7-b5ff-44c1-9401-0200865c0dd3": {
+      "status": "ok",
+      "path": "/docusign/sw-eng",
+      "external_id": "docusign_sw-eng"
+    },
+    "0e772d0c-9323-496d-bf33-aedccb90bbc4": {
+      "status": "ok",
+      "path": "/fustis-llc/data-sci-nlp",
+      "external_id": "fustis-llc_data-sci-nlp"
+    },
+    "024fa880-4e06-40b2-9e0f-399226286c03": {
+      "status": "ok",
+      "path": "/timeleft/auto-eng",
+      "external_id": "timeleft_auto-eng"
+    },
+    "0c048c1e-e564-4922-89ac-089db56ff8f3": {
+      "status": "ok",
+      "path": "/shrinq-consulting-group-inc/sw-eng",
+      "external_id": "shrinq-consulting-group-inc_sw-eng"
+    },
+    "0b7fb8df-cb51-49ab-8650-8ee426ada7b9": {
+      "status": "ok",
+      "path": "/mind-robotics/research-plus",
+      "external_id": "mind-robotics_research-plus"
+    },
+    "02f2daa9-df01-4049-b885-81723532eabd": {
+      "status": "ok",
+      "path": "/google/research-data",
+      "external_id": "google_research-data"
+    },
+    "06e2a633-7cca-4f9c-a74c-9fe9d0d1fb59": {
+      "status": "ok",
+      "path": "/snap-inc/sw-eng-ios",
+      "external_id": "snap-inc_sw-eng-ios"
+    },
+    "0971fbca-5ab9-4388-99e9-df3672ae9b8e": {
+      "status": "ok",
+      "path": "/salesforce/data-sci",
+      "external_id": "salesforce_data-sci"
+    },
+    "096521da-c7a3-4d57-b935-392af4e9e326": {
+      "status": "skip",
+      "reason": "linkedin_404"
+    },
+    "04d4d3d3-b73c-4247-a59b-5874104d143e": {
+      "status": "ok",
+      "path": "/mcafee/mobile-fullstk",
+      "external_id": "mcafee_mobile-fullstk"
+    },
+    "04467e52-769d-4479-9b96-d36123aa9914": {
+      "status": "ok",
+      "path": "/meta/sw-eng",
+      "external_id": "meta_sw-eng"
+    },
+    "05bdb7b1-8636-41d1-8809-4d033a17e0ea": {
+      "status": "ok",
+      "path": "/tiktok/data-sci",
+      "external_id": "tiktok_data-sci"
+    },
+    "0aec1106-d334-4bb2-bebb-62e7875da340": {
+      "status": "ok",
+      "path": "/u-s-bank/mobile-eng",
+      "external_id": "u-s-bank_mobile-eng"
+    },
+    "001450ff-1c53-49c9-8f1b-187daba0e0d3": {
+      "status": "ok",
+      "path": "/mercor/health-sw",
+      "external_id": "mercor_health-sw"
+    },
+    "09bc018b-abec-43be-a0b6-41f0e59f0198": {
+      "status": "ok",
+      "path": "/jobgether/devops-eng",
+      "external_id": "jobgether_devops-eng"
+    },
+    "0555860f-11a0-41e6-a7a4-91d008327629": {
+      "status": "ok",
+      "path": "/mercor/symbolic-ai",
+      "external_id": "mercor_symbolic-ai"
+    },
+    "01f0cdb0-0b3b-41e7-90fd-e545235c320d": {
+      "status": "ok",
+      "path": "/reflection/member-tech",
+      "external_id": "reflection_member-tech"
+    },
+    "09e7bafe-5815-4541-b9ef-28565450d30c": {
+      "status": "ok",
+      "path": "/welo-data/canadian-english",
+      "external_id": "welo-data_canadian-english"
+    },
+    "0b89dfbb-905d-4f18-af29-e926f3c193af": {
+      "status": "ok",
+      "path": "/unity/ml-eng",
+      "external_id": "unity_ml-eng"
+    },
+    "09c78288-dc25-4e04-99e9-3a663a911d7f": {
+      "status": "ok",
+      "path": "/adobe/ml-eng-ai",
+      "external_id": "adobe_ml-eng-ai"
+    },
+    "05d70ebe-9405-4def-9fd4-3e48480e038c": {
+      "status": "ok",
+      "path": "/servicelink/devops-eng",
+      "external_id": "servicelink_devops-eng"
+    },
+    "045ab9d8-e43e-438d-bbde-09eace5a7627": {
+      "status": "ok",
+      "path": "/3lc-ai/cloud-devops",
+      "external_id": "3lc-ai_cloud-devops"
+    },
+    "001d904c-1ddc-4cb7-b872-51fc4d437da5": {
+      "status": "ok",
+      "path": "/sephora/lead-ml-eng",
+      "external_id": "sephora_lead-ml-eng"
+    },
+    "0e8378d7-2fb8-4c8c-bf33-9ace086ae0ed": {
+      "status": "ok",
+      "path": "/alignerr/be-eng-c",
+      "external_id": "alignerr_be-eng-c"
+    },
+    "0d486d9d-8502-47ef-825f-3e88f8c85bae": {
+      "status": "ok",
+      "path": "/calabria-group-innovation-technology-delivery/devops",
+      "external_id": "calabria-group-innovation-technology-delivery_devops"
+    },
+    "065434fb-09c1-47ff-b133-986ea18f83b2": {
+      "status": "ok",
+      "path": "/resolve-tech-solutions/ai-ml-sol",
+      "external_id": "resolve-tech-solutions_ai-ml-sol"
     }
   },
   "doneIds": [
@@ -62977,7 +64345,295 @@
     "08db2dbe-49c4-4136-9ad1-c4924be8d133",
     "08f2d969-7e86-4044-823a-a507ac9ea4e2",
     "0030cdb5-1364-4128-8990-e9b05271f0e6",
-    "07e4216e-e100-4ca7-a788-37e0b64f1ba8"
+    "07e4216e-e100-4ca7-a788-37e0b64f1ba8",
+    "0a1a9b8a-0918-445a-9e6e-b82afbd49469",
+    "038da4f7-6743-4edb-ac0e-c005b6420d5e",
+    "0db30949-dbdb-43a1-9c39-c68fa69364fe",
+    "066cb4ca-afa1-4e0e-a658-b58099873010",
+    "05582a83-1b68-43bc-b13e-32172fd1a513",
+    "03c4232d-8e57-455d-8378-1c4c1547feb4",
+    "0a5c7a26-33e4-4ed1-9741-a991b7717093",
+    "0f9eda9c-a85d-4ec7-a433-478ce96c6076",
+    "01f490e7-1035-476a-b0f0-6e45d18e08e8",
+    "05a7bfbd-fea3-47ae-b51e-ab4e9b82fc39",
+    "03c4c049-16de-423b-9869-b4b87e2d184e",
+    "02120cc7-83f9-4ea1-b3ac-52e9773f110a",
+    "04c49ca4-9183-4743-ab88-493efc76503f",
+    "0224c6f1-09df-46a0-967c-d4b02262a734",
+    "0a908e60-785e-45f3-8a79-c6bea134b3e3",
+    "07b2247c-024c-47df-99ed-f2875fe07a21",
+    "075352fd-b779-4524-b162-4034fdc06d36",
+    "098fbe0c-70a0-49b8-88fd-fe3fa8b14faa",
+    "0f675ba7-a868-409a-a1ae-86808f8ce5f7",
+    "07f647a5-08de-4b0b-b880-822787080d28",
+    "05a5b0c2-a9b3-443d-b3f6-ab5e05e8ff84",
+    "0e3fb82a-6968-4f01-9cba-2d4372da9ecd",
+    "08865174-8569-44eb-847c-41e09ae38c2c",
+    "077e2fbc-b7dd-4cbb-89a6-be6a5facbe87",
+    "0f073474-5b1c-423a-b54c-8fc26df38f2a",
+    "0257e60f-6494-431b-977e-421b201ae381",
+    "0863f2e4-d938-44d5-8f84-9c71a7e48106",
+    "09fc2f4e-2ac5-4ae5-9ea1-0c0252cc2153",
+    "0c32ed3e-59e9-47dd-a63b-a2fb35907dec",
+    "0f28ab43-e5bb-45ba-b312-402e68bd5cf0",
+    "0b2a0e4d-cfbb-4019-836f-c660262d37a1",
+    "018ca9eb-4a86-4406-bca6-ea97920be816",
+    "077afadb-d5ce-4e8a-a0bc-cc64c35bde55",
+    "028194ee-0f92-469f-8a9c-64ce9b00b007",
+    "0b12e738-4e7f-47cb-9f16-fddf124b26c0",
+    "0ac27b24-91bf-4d60-9154-bd4f1bc5cbd0",
+    "01b1e2a1-9be6-4a77-b5c3-48524d8daa5d",
+    "08794eec-885d-4640-ad77-49f5c2c05d1f",
+    "0f6e1bc6-c503-421e-8f1c-4275c202afbb",
+    "02b62b4e-4c6f-44aa-8141-f580e43ffca5",
+    "0510a2e4-846a-47e6-842b-b1323adb2119",
+    "0f83adc8-d3f0-45c5-97ea-f4dc8ffc10ff",
+    "0b140a3e-f98b-427c-9e0d-f728abd8b452",
+    "030a4442-60a9-49d3-9cf5-8c5dc14e8985",
+    "0e1e11f5-264f-4bc1-b415-de791957f069",
+    "05dcac1c-5ce1-4733-830b-561580a13e55",
+    "06d66140-f871-4cc9-9198-8b2565b07150",
+    "068f83f7-1f23-432b-9437-6b295bbccb59",
+    "02af0d8a-4b51-4274-aa0f-c725ad77f94a",
+    "09f44b7b-e81f-469f-a77c-ee2f72e6b9c6",
+    "06d76a6e-46be-438c-81f5-0c2d37c52412",
+    "0b4190cb-5eae-4505-b605-6cdc6b642e96",
+    "0baa6b3c-7225-432f-8d18-29dd26d9a3e8",
+    "05ed7bfb-68c5-4909-8eab-09efaea326ab",
+    "0dd60017-e5d5-42f0-97df-8f232e8bc13f",
+    "052419dc-d444-46bd-b307-bd3fceb12226",
+    "01c6fc25-5083-4b52-9965-4742d85bed5e",
+    "0a11eb64-431d-411e-b7ea-f806a9a9a7f7",
+    "0ce86838-8800-4127-af5f-2783fffcabf6",
+    "0134356a-a790-42fb-b97c-75e38558f0f7",
+    "0171274d-c2c3-4576-8428-347a00e835c5",
+    "019fcbca-b38c-4106-a3fa-666d34344dc3",
+    "036f752c-b2c8-412f-b09f-7d47b06e584d",
+    "05ac8296-6ead-4fbf-8e7d-5b61dfb08e38",
+    "0e511591-1df4-4224-bcf6-784e6985980a",
+    "0de0c604-5926-46a3-8816-291b35edac4a",
+    "0f93fd08-7644-49f8-b95f-4d59a5d9c196",
+    "05557570-1c32-4fff-a2d1-0a5ce3461eda",
+    "03b93e85-4bbe-4b4d-a6c9-615923d3cb14",
+    "0ef73bbc-db4c-4dff-8108-6d0d61f0a3cb",
+    "0cd371fe-de95-49a1-90cc-5692d9a03a6b",
+    "03db6c13-3372-4c7d-8144-db9c755a9c68",
+    "098af894-7a05-4768-84c7-9d10b1517d8c",
+    "0efec7f1-8e01-4f7b-afb5-3feeeb0b0727",
+    "05d11350-376d-4385-8e9d-dd01bc766463",
+    "0bbe92a7-7b21-4796-96dc-a3cb90a7cf3d",
+    "02c642fe-8396-4bac-af76-fbad1c8e7cb9",
+    "09ddc4d5-a577-4781-a24e-95a0a59cbdb9",
+    "037feffc-eb34-4c1e-a283-e896f9d84438",
+    "0e8dc440-bf9a-4a38-9c98-97ffbbc9f2d3",
+    "048775dc-1806-4b0e-a4a9-da34728c17b9",
+    "0381db61-cba9-4d8e-a509-67e5f7fc9c0e",
+    "03ef6f22-2a62-4c41-ae0e-e789460bbce4",
+    "06d8c541-3e1d-4b27-824d-52fcdd3073a5",
+    "0036ac73-a354-43ce-9c1e-670aed7079fb",
+    "01b530d3-ae85-4547-a624-a4eb3d21033a",
+    "02e9a05f-6247-420a-a44a-e6aaed30bb5a",
+    "0000fee4-060a-4abc-8b30-96d21b835bc8",
+    "0bb4af28-7ecb-4c05-b046-3c01b018f465",
+    "01ed1460-8a12-409b-a99d-eaffe32d2a24",
+    "0b5f5090-2c11-4ba7-b49f-c03fdefe0ea7",
+    "0835251b-a21c-453a-ac27-e77861f6b387",
+    "08a7fbb1-00c3-4234-b27b-419bfd60b19e",
+    "0be74da7-2a3a-47cd-971a-4612083f4596",
+    "06d7d634-f2de-451e-a069-9e1ba4a099ab",
+    "0bd17470-2427-49b9-9079-e2bb0090b5ce",
+    "03677f6b-b49e-4348-b668-0fff7a9e4c5e",
+    "0cc3495c-c708-40d9-b408-fd3dbf484911",
+    "080ed432-45c5-4864-b306-49758ddabf1f",
+    "04f4b9b0-698a-4a64-be71-ff7e2d914180",
+    "0799e147-2428-4971-bbb6-8f2a3890c771",
+    "03febd72-b56b-4251-bfe4-27964597e882",
+    "0b2539ee-97bd-480d-8918-523d94d0e050",
+    "0a399599-bc40-4243-a064-e6858f48a094",
+    "0d06fded-1b70-4d78-97dd-b79451ab8054",
+    "04258407-2cf2-4705-861b-80901c3bae1d",
+    "09b50971-e8fd-4475-a788-3b2e3e1ec192",
+    "052ee2bb-c744-4dfc-af92-47a653f7db88",
+    "00638315-7b67-4d2b-bf94-da8686fc4bd0",
+    "01acdb21-98b1-4bd9-86ce-9fa099704de5",
+    "0f916250-750c-4392-a0ab-d68ba68e7371",
+    "0d9b3747-b28d-454d-b948-7578fb9ea277",
+    "03a54698-d30f-4139-8221-d4acf052c27c",
+    "09ae475d-a65a-4df9-867d-66a59cc0f767",
+    "0f99a59a-f367-4cbe-891b-df08263dff53",
+    "035b3041-52ec-49d4-bab0-05324795f7ef",
+    "0df5be89-7e3d-4d15-af8e-667a3f956f75",
+    "055f44f2-9c72-440a-8e9b-914a82e3a440",
+    "07e1a51b-e7ad-4548-bf35-4d422b4bfada",
+    "02d7e680-1140-4a1f-963a-fbfb5cde84fb",
+    "0b9852ba-8640-4c57-a86c-fab4fd69558f",
+    "0e709e86-5adc-46a8-a2c5-8163963c0286",
+    "00263f53-edbd-411d-ab9e-2d5cbf82edfb",
+    "0dda3654-4c00-4692-a8b7-df72e1f4dc04",
+    "0affd472-de54-4c8b-8b98-7877945aba2e",
+    "0b38e4a7-51b7-4398-a2be-b75c714eb7c9",
+    "0d1182e4-4715-4799-a554-101e87450b24",
+    "0935380a-929e-4e17-b778-caff93518dba",
+    "08f6e574-3665-4570-b257-c9fbca679a1a",
+    "02ab7c89-28e9-4954-abd2-7f601266c233",
+    "041b1c51-51c2-4dac-8989-2548b8947fb2",
+    "082f6316-9f68-41a3-ab5d-5c9216d6fa8f",
+    "0819a1db-5dfa-49d3-a82d-e36b5cb88ed8",
+    "087b6516-d90d-4049-8d98-69a9aeffeb95",
+    "054ddc67-2b40-45e1-8bca-354e58b5d9b2",
+    "07a728c7-25be-4651-b343-d7760ec0579c",
+    "0d013a21-f097-42eb-bf89-6533a38ac57d",
+    "0b0b1ccf-6f6f-43f4-bab5-b80af854f3a2",
+    "0ce21d61-717a-4ecd-9a43-c0d35ebf38c5",
+    "07d592fe-69bc-4d86-8f7b-088775d47c51",
+    "0f138460-15f3-4533-8417-1d696dd7e0e1",
+    "0e425586-ffd8-4bc0-bcd4-4c2b2bbdc0c4",
+    "0c894db2-a58e-4d98-afcb-ee96c47c2e7f",
+    "0e7d2699-06bf-41f2-aec2-f2b50b5844e3",
+    "079d2c62-ed2e-42c2-bcab-ab52297d1bc8",
+    "00932ad4-9751-4ee3-ab33-9fa6616a4cc6",
+    "0c160b90-3920-428a-abf1-cc008c9fc9b0",
+    "094a2f67-2de3-452d-90a0-5e8f2c2f92be",
+    "0e430f48-e31d-48ec-897b-291085fd8e20",
+    "08e7d23b-a408-40e4-8a0d-c7a779329dd8",
+    "0eb8bd3c-e3b0-4d05-b1ff-b617931385dc",
+    "0c3cff5b-e420-4c9a-919c-d9c79661fa64",
+    "02a39d3e-15d7-4dd4-9cf9-4f9c02c7f852",
+    "07debadd-1262-49a2-94bb-ef89e57e283f",
+    "0e2a0dfb-2179-4b7f-8bbc-49b047e326a7",
+    "0a5e15f1-547c-4990-a135-729801ad4866",
+    "033d29eb-b276-4c18-ae9e-1622236ee50a",
+    "089131f1-1a96-4540-9d9b-50e459d14332",
+    "09dd823c-d9ef-4fe2-a93d-81dda2e47aca",
+    "05b3bf77-8107-4942-842e-d1ccf1bc20bb",
+    "03471927-ebda-4c31-a75e-79fed7a9fdc5",
+    "0f7c2064-605e-43dc-a72d-da5f91dec2fc",
+    "0b38fde7-b4ef-4a97-84fa-04b0118ec86b",
+    "0de97c60-5caa-4d23-aef3-5485a54b92c0",
+    "0f45520a-b750-4011-b204-4f53d1c2e2f8",
+    "098999cc-8c27-43e1-80a3-c042cb1ec108",
+    "06ef299c-1e61-4de9-9908-1fd226c1a559",
+    "0a259020-521e-48cc-9565-445aa06fc0d9",
+    "052ad85f-c248-43b9-bd02-bc9c29a25272",
+    "064eea4d-ceab-43c2-99a5-63747847a508",
+    "071f833e-884a-40c4-901e-7b53d90e0ea9",
+    "05ec4532-d500-4022-93b3-76abcc75c10d",
+    "0be182d1-73e3-44c1-9147-d416a3acac8d",
+    "0869f32c-7f15-4ea5-a69a-a72b78b1f591",
+    "0b7c6108-2a36-4528-bb57-d6a3d67ffe6c",
+    "0140e3ca-b565-450b-9783-d35bf0d51904",
+    "0b4e83a2-96f3-4f51-98d7-b723f7082f75",
+    "02dbf921-624a-4d19-971c-605395b7f6b1",
+    "0c3aa600-5ff9-4b22-aead-711bb3f067bb",
+    "018d93b1-1f89-48ac-95a9-7d928b7d0c0d",
+    "067299a2-c183-4c4c-bf58-41c1d15bd6d1",
+    "043d2b0d-df93-4172-ad75-32e3952ef426",
+    "06e78fb7-b0b4-46d2-a441-72da8c940aef",
+    "0bdae580-8631-43c0-a274-778103549441",
+    "0ae50493-a261-466a-a1fa-fb7d9bf2f855",
+    "012da896-a772-4438-a2fa-f84d343b3e4e",
+    "0b427252-6d54-45dc-a013-fff556e7d8f0",
+    "01eb2275-3704-4e66-9e7b-0073c8be09ab",
+    "0bf6c01a-d4ab-4ef3-b505-ac1cedea420d",
+    "00efcbf2-fc93-44c9-b878-98c7b43bc892",
+    "0237c683-dfea-464e-817a-d67c7765ef45",
+    "087d79f9-fe62-4f9e-9dba-3814d717f876",
+    "06ee000f-4ae6-44d8-bea2-fb71081c2cf3",
+    "0804ae84-b921-4de4-9b47-d7fe396df12b",
+    "0191193e-27da-40a8-b649-3ed5a5cb8305",
+    "0e3f73bb-be9d-43b6-9acd-5e2a8ddee0b5",
+    "023d3139-c492-4f2e-8a4c-76941215dc42",
+    "0f159ffc-1c0f-4a6f-bce4-e9ca1f9cf9c3",
+    "02515ad8-ea7b-4544-90bf-edb5e18662fd",
+    "0ce02be4-f51b-4ce2-b2d0-55f24ed167fb",
+    "00accc51-8927-45db-b7d7-da68c92a00d6",
+    "0d461ec6-cef6-496c-8b41-7262aa320095",
+    "0586bf8f-a3af-42b0-866f-63127a23c932",
+    "0deb8dbf-14f7-42c1-9d16-cbcb738689d7",
+    "0596d86b-9070-4cbe-8ada-20df9ad9b095",
+    "0e29184e-e943-45d7-b1ce-5719c021acb7",
+    "04475368-9dac-4120-82b6-8fdefa8b22a8",
+    "0f066f3b-eb42-4acd-90b7-a3ac8f4f5574",
+    "0463e2f8-572c-4ba2-8e91-6b2f188605c7",
+    "0355b591-5d12-4ae2-bf45-29b922627c5f",
+    "0dfab1b3-3ee6-4a5f-b4bb-621b1de7ffe8",
+    "056f2462-0fe8-4618-9a49-cb2daf57a267",
+    "01583476-2a6d-47ef-ae11-de4fbef3604f",
+    "08b9773a-a77a-49cd-a53e-3849d9a096fc",
+    "09f989c5-8f13-4911-9b98-0155236d9356",
+    "0cee1d1d-fdd7-4ca6-9fae-c4f1923870e8",
+    "07d28ea1-54b4-4343-8d36-dcb54fbdcb23",
+    "0f032f58-f678-4717-b6d4-50822a67b756",
+    "0d9a0977-7ed4-4c0d-a789-1605cde27744",
+    "08137fdf-2fd7-4b67-ba19-00e02afe0516",
+    "0f7f358c-01c4-4299-bfc4-ccba8d4a4052",
+    "0dbc2f0a-b2b0-45ba-8c34-d3634dce8e4b",
+    "09e09167-6e37-4255-bf69-eacf87184371",
+    "0be4f248-3439-480e-8787-61fad7e5b506",
+    "0f9061c0-d289-40ee-82b0-558d74aaefa5",
+    "0cd1d269-52fe-435a-b59d-43018e6f2663",
+    "05ffbe0b-ebf8-4b06-a5f0-4b1e36148a7a",
+    "0a3c3416-4f00-4564-9c9d-cf01156d8bd0",
+    "023b0550-e0ce-4a5f-8753-33e544c8a721",
+    "0b27c8c6-5252-472c-86ac-626dcca84c48",
+    "03f70fd9-9011-40c2-bd30-647da4c804ea",
+    "0a681d5d-bc71-44be-9e03-69dc7a7c1bb4",
+    "032a492c-eca4-4fa7-9afb-eaeb6e0a6f9d",
+    "008424e8-440e-41ec-b65a-f82e2f5a82bf",
+    "0d5b9cc5-3cb3-498f-aa8e-d09996f1616c",
+    "08905136-239e-4c4c-911d-31adce693c71",
+    "0d793f78-bac5-48fe-ac1c-4ca4c3153dbc",
+    "038baa4f-dc18-46ff-8a3f-ea9f3e1f1dab",
+    "054e3d37-6178-49d5-b8bf-d83ce8fc9a05",
+    "0370e81e-37f4-4dfd-bad5-d16c802943fa",
+    "081112f2-1533-4ea1-88f5-717a0b548473",
+    "05322222-6c6a-44ea-b4dc-315645a51e98",
+    "095784ae-263a-4784-a4e2-c4929224123b",
+    "01494e25-d8f6-4eb7-83cd-eaa99d310ce2",
+    "05b799cb-8859-47b0-86e2-feca84dc3df5",
+    "03f82309-c2af-4cfb-b908-b592d1a0e4e8",
+    "0059f55f-5683-4fc5-9674-806911d7c412",
+    "0857542f-d906-49c6-aa84-a1f6d0738204",
+    "02d42d25-6864-4790-b2e9-c08147b696c5",
+    "09d1f8c3-1e49-4905-ba8d-14c5222a1cdb",
+    "08c85cef-9844-4ea6-976c-886f44e51471",
+    "032dd306-be7c-4fc0-b11c-6342f526ecbc",
+    "015dd509-7efc-4d67-9481-b3557721d755",
+    "088f937d-2955-4576-ae57-e4df8bc5fd71",
+    "00618416-a0c5-4ba7-8f55-d472bfdd9669",
+    "040fd735-a854-4799-b948-d67fbc1b6de2",
+    "07057785-5eb3-4859-b4f5-592bfa5744d4",
+    "05ba9691-c0c8-41e9-a2be-a2c86dde6a72",
+    "09888f44-955e-404f-9ac3-d7225f3bbfc1",
+    "0fd0fd9e-a9cf-4957-bfb4-bc7f10422fb1",
+    "0c49674d-8618-421c-9c2a-2bb408aba1a5",
+    "075d52bc-66e2-461a-9e73-80fa4d2bc1e8",
+    "07af33d7-b5ff-44c1-9401-0200865c0dd3",
+    "0e772d0c-9323-496d-bf33-aedccb90bbc4",
+    "024fa880-4e06-40b2-9e0f-399226286c03",
+    "0c048c1e-e564-4922-89ac-089db56ff8f3",
+    "0b7fb8df-cb51-49ab-8650-8ee426ada7b9",
+    "02f2daa9-df01-4049-b885-81723532eabd",
+    "06e2a633-7cca-4f9c-a74c-9fe9d0d1fb59",
+    "0971fbca-5ab9-4388-99e9-df3672ae9b8e",
+    "096521da-c7a3-4d57-b935-392af4e9e326",
+    "04d4d3d3-b73c-4247-a59b-5874104d143e",
+    "04467e52-769d-4479-9b96-d36123aa9914",
+    "05bdb7b1-8636-41d1-8809-4d033a17e0ea",
+    "0aec1106-d334-4bb2-bebb-62e7875da340",
+    "001450ff-1c53-49c9-8f1b-187daba0e0d3",
+    "09bc018b-abec-43be-a0b6-41f0e59f0198",
+    "0555860f-11a0-41e6-a7a4-91d008327629",
+    "01f0cdb0-0b3b-41e7-90fd-e545235c320d",
+    "09e7bafe-5815-4541-b9ef-28565450d30c",
+    "0b89dfbb-905d-4f18-af29-e926f3c193af",
+    "09c78288-dc25-4e04-99e9-3a663a911d7f",
+    "05d70ebe-9405-4def-9fd4-3e48480e038c",
+    "045ab9d8-e43e-438d-bbde-09eace5a7627",
+    "001d904c-1ddc-4cb7-b872-51fc4d437da5",
+    "0e8378d7-2fb8-4c8c-bf33-9ace086ae0ed",
+    "0d486d9d-8502-47ef-825f-3e88f8c85bae",
+    "065434fb-09c1-47ff-b133-986ea18f83b2"
   ],
   "skipped": {},
   "batches": [
@@ -63461,6 +65117,87 @@
         "/vonage/fullstk-sw",
         "/vtex/summer-sw-0c",
         "/xendit/data-ml-auto"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T14:17:20.975Z",
+      "attempted": 753,
+      "ok": 500,
+      "skip": 243,
+      "fail": 4,
+      "reasons": {
+        "html_short": 92,
+        "html_404": 35,
+        "err_TypeError": 17,
+        "fetch failed": 3,
+        "err_TimeoutError": 8,
+        "html_403": 22,
+        "html_429": 1,
+        "html_410": 5,
+        "html_405": 1,
+        "linkedin_429": 54,
+        "linkedin_404": 6,
+        "linkedin_short": 2,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1
+      },
+      "samplePaths": [
+        "/okta/sw-f3",
+        "/okta/proposal-mgr",
+        "/okta/mgr-global",
+        "/transmit-security/devops-eng",
+        "/samsara/mgr-deal",
+        "/tempo/plat-sw-eng",
+        "/sendbird/enterprise-79",
+        "/payoneer/client-biz",
+        "/payoneer/pricing-ops",
+        "/pinterest/performance-db",
+        "/ripple/comply-mgr",
+        "/ripple/dir-sec-eng",
+        "/payoneer/cust-success",
+        "/govtech/prod-mgr-sci",
+        "/govtech/sw-eng-gobiz",
+        "/govtech/prod-mgr-97",
+        "/govtech/design-ai-e6",
+        "/govtech/eng-mgr",
+        "/govtech/lead-prod-c1",
+        "/govtech/enterprise-d5"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 0,
+      "at": "2026-08-03T14:17:57.134Z",
+      "attempted": 55,
+      "ok": 53,
+      "skip": 2,
+      "fail": 0,
+      "reasons": {
+        "linkedin_429": 1,
+        "linkedin_404": 1
+      },
+      "samplePaths": [
+        "/amazon-web-services-aws/sw-dev-4c",
+        "/rise-technical/sw-eng",
+        "/rebar/sw-eng-data",
+        "/vintti/cocos2d-x",
+        "/parasail/sw-eng",
+        "/okta/prod-ops-a1",
+        "/okta/enterprise-9f",
+        "/okta/alliances-sol",
+        "/stubhub/sw-eng",
+        "/tiktok/be-sw-eng",
+        "/saragossa/lead-sre",
+        "/emerson/sw-defined",
+        "/sessioncam/devops-eng",
+        "/tetrascience/applied-ai",
+        "/qualcomm/lead-cpu",
+        "/oracle/sw-eng",
+        "/neuralink/sw-eng",
+        "/google/global-prod",
+        "/webull-financial/proj-mgr",
+        "/new-york-state-department-of-health/asst-research"
       ]
     }
   ]
