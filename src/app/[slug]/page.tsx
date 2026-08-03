@@ -11,9 +11,8 @@ import Link from 'next/link';
 import { ArrowLeft, Briefcase, MapPin, Monitor, Clock, ExternalLink, Github, Linkedin, Twitter, Globe } from 'lucide-react';
 import { blogPosts } from '@/lib/blog-data';
 import nomadCities from '@/lib/nomad-cities';
+import companyDescriptions from '@/lib/company-descriptions.json';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import fs from 'fs';
-import path from 'path';
 import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
 import { toCompanyKey, COMPANY_BLOCKLIST } from '@/lib/company-directory';
@@ -727,16 +726,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           {(() => {
             const topLocations = [...new Set(jobs.map((j: any) => normalizeLocation(j.location)).filter(l => l && l !== 'Remote'))].slice(0, 5);
 
-            // Load cached descriptions via fs at runtime — NOT bundled into the lambda
-            let cachedDesc = '';
-            try {
-              const fs = eval("require('fs')");
-              const path = eval("require('path')");
-              const filePath = path.join(process.cwd(), 'src', 'lib', 'company-descriptions.json');
-              const raw = fs.readFileSync(filePath, 'utf8');
-              const descCache = JSON.parse(raw);
-              cachedDesc = descCache[slug] || '';
-            } catch {}
+            const cachedDesc = companyDescriptions[slug as keyof typeof companyDescriptions] || '';
 
             const description = meta?.description
               || (cachedDesc ? `${cachedDesc} ${companyName} has ${totalJobs} open positions.` : '')

@@ -27,7 +27,7 @@ on:
         default: false
 
 concurrency:
-  group: jobs-sync-${{ github.event.schedule || 'manual' }}
+  group: jobs-sync
   cancel-in-progress: true
 
 jobs:
@@ -75,7 +75,7 @@ jobs:
           JOBS_SYNC_BATCH_SIZE: '75'
           JOBS_SYNC_CONCURRENCY: '2'
           # LinkedIn only on Sunday cron or manual include_linkedin
-          INCLUDE_LINKEDIN: ${{ github.event.schedule == '0 3 * * 0' || github.event.inputs.include_linkedin == true }}
+          INCLUDE_LINKEDIN: ${{ github.event.schedule == '0 3 * * 0' || github.event.inputs.include_linkedin == 'true' }}
         run: node .github/scripts/jobs-sync.mjs
 
       # Prune is heavy (HTTP checks + DB). Off on schedule; only when manually requested.
