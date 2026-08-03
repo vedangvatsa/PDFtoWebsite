@@ -46632,6 +46632,259 @@
       "status": "ok",
       "path": "/block/regional-sales",
       "external_id": "block_regional-sales"
+    },
+    "50f00b33-d198-45c9-99a5-cb266903afe1": {
+      "status": "ok",
+      "path": "/block/mgr-smb",
+      "external_id": "block_mgr-smb"
+    },
+    "4236fa38-c41a-4d9c-aedc-2927557c0538": {
+      "status": "ok",
+      "path": "/block/strat-acct",
+      "external_id": "block_strat-acct"
+    },
+    "50f9f8ac-e920-4494-a1f2-5a38605daf65": {
+      "status": "ok",
+      "path": "/bitso/sw-eng",
+      "external_id": "bitso_sw-eng"
+    },
+    "53fb74db-f088-42cf-8773-3316318a1c7e": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "55c103d7-3dea-4059-90c4-c7a93642b3eb": {
+      "status": "ok",
+      "path": "/bitwarden/eng-mgr",
+      "external_id": "bitwarden_eng-mgr"
+    },
+    "55c44092-6140-491c-9259-0f2b9b4dd06d": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "47d6f0a3-1ce3-4781-897c-24419a4b6f60": {
+      "status": "skip",
+      "reason": "html_404"
+    },
+    "41c37ad8-341d-468d-9576-4c0aa969402a": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "44ad6cae-f7f0-4984-a83a-1bb20483c6d8": {
+      "status": "ok",
+      "path": "/okta/regional-sales",
+      "external_id": "okta_regional-sales"
+    },
+    "5d3d03b8-4c6b-4ff8-87ed-1a83b80dc819": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4f80998a-a9ef-453f-bb36-64a96b1c6ef7": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4f9fe812-29a8-40ac-990d-e5d4742dc985": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "429fc92b-85f5-4e16-84f3-3453d9d08faa": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4f21f949-ab29-45d6-a8ad-d3f554741ccf": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "57759c38-622e-4455-8778-4af3d45772f6": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4b10e910-513e-4d1c-a589-009c0a7b79de": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "414a2c2f-c735-4cc5-b530-897641e84d8e": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5ea843a5-dd0f-4bea-ac37-54fc72eeef16": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4512234c-e332-4be4-9c6a-30515053a70e": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4f793fb1-5f23-4676-a468-af7f03f9ea7b": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5c038e1e-8438-474b-989b-0cc13c9b7692": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4d0fbaed-c1e8-4196-affc-b84b1efce3cb": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4c576611-1634-4e3e-bf7e-b6e0e1de654c": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "49754ba0-4f41-4478-9a16-719ac3e13237": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "51871d1b-cb35-4399-9129-a4a35231d9fb": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5458b03c-cf86-4b2f-a90c-626b33713fc6": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4a4e4358-9bd4-480b-92ac-a47862c6d507": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4c6ab866-dec8-4cdc-994c-95f3abe52b81": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5705289f-0c6a-44b4-aebc-e04668ec7dc8": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5080e67c-1b4c-424a-ae23-de256214975e": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5d90a03f-a1b1-4ed7-8f57-91029a019c82": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "41b00f0a-f533-4905-821c-268068af1399": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4fb12f0f-be93-4c48-b85c-e74c977c5931": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "4a2d5bf2-2383-4e5d-ae73-2dcf7acee690": {
+      "status": "ok",
+      "path": "/carvana/lube-tech",
+      "external_id": "carvana_lube-tech"
+    },
+    "59b287e4-8b7d-4e3d-86ea-abd13dff5a60": {
+      "status": "ok",
+      "path": "/carvana/qa-control",
+      "external_id": "carvana_qa-control"
+    },
+    "5fbd36d3-29fd-4290-9e11-4ac27274f87d": {
+      "status": "ok",
+      "path": "/carvana/auto-prepper",
+      "external_id": "carvana_auto-prepper"
+    },
+    "44cbfa5b-886a-4285-96c7-ee7d79804972": {
+      "status": "ok",
+      "path": "/waymo/lead-sys",
+      "external_id": "waymo_lead-sys"
+    },
+    "441a39f2-1af5-4bb9-a004-b139298cd24c": {
+      "status": "ok",
+      "path": "/okta/sox-it",
+      "external_id": "okta_sox-it"
+    },
+    "4dacf3c8-21b5-4ebd-99a3-4f4470bebf92": {
+      "status": "ok",
+      "path": "/okta/acct-74",
+      "external_id": "okta_acct-74"
+    },
+    "5627aac8-863e-40eb-a6aa-7deee7545518": {
+      "status": "ok",
+      "path": "/okta/category-mgr",
+      "external_id": "okta_category-mgr"
+    },
+    "40907646-5532-44a5-bafe-b60d01a25b35": {
+      "status": "ok",
+      "path": "/stripe/risk-ops-mgr",
+      "external_id": "stripe_risk-ops-mgr"
+    },
+    "4ed95a0e-2600-4ef2-8d74-f2950d177110": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "502bb0ef-53d8-4418-a89b-6c6ef7d571bf": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "50cf022f-f88d-4dcb-b46c-cdf31dce15e3": {
+      "status": "skip",
+      "reason": "html_short"
+    },
+    "5583466d-2ce6-4959-b419-043bb7ec7ecb": {
+      "status": "ok",
+      "path": "/stripe/partner-dev-90",
+      "external_id": "stripe_partner-dev-90"
+    },
+    "5d8c76f3-d819-4e6e-bcec-d2052e886e41": {
+      "status": "ok",
+      "path": "/riot-games/game-prod",
+      "external_id": "riot-games_game-prod"
+    },
+    "5646c58e-b84f-44d2-bdc6-cf7f67f0cd0c": {
+      "status": "ok",
+      "path": "/zoominfo-technologies-llc/sw-eng-70",
+      "external_id": "zoominfo-technologies-llc_sw-eng-70"
+    },
+    "5a43045a-a961-43e1-9acf-93bd9d7b108b": {
+      "status": "ok",
+      "path": "/riot-games/game-design",
+      "external_id": "riot-games_game-design"
+    },
+    "5cac1e52-2ec7-42f1-afa4-63ece3c00e17": {
+      "status": "ok",
+      "path": "/zoominfo-technologies-llc/sw-eng-73",
+      "external_id": "zoominfo-technologies-llc_sw-eng-73"
+    },
+    "5b11aa59-14fa-4b9a-aeca-ba30329c21f3": {
+      "status": "ok",
+      "path": "/riot-games/game-design-51",
+      "external_id": "riot-games_game-design-51"
+    },
+    "5f2c4298-83de-487c-8b12-64efda57c2b8": {
+      "status": "ok",
+      "path": "/databricks/dir-procure",
+      "external_id": "databricks_dir-procure"
+    },
+    "50ba3a5a-6c73-4813-a975-86e6ba5231a3": {
+      "status": "ok",
+      "path": "/databricks/forward-69",
+      "external_id": "databricks_forward-69"
+    },
+    "57bec6b9-af63-4739-9765-cf10bc27ac85": {
+      "status": "ok",
+      "path": "/navan/change-mgr",
+      "external_id": "navan_change-mgr"
+    },
+    "4293b048-906a-4d5e-8d1e-a4fd1aeac221": {
+      "status": "ok",
+      "path": "/navan/sw-eng-10",
+      "external_id": "navan_sw-eng-10"
+    },
+    "5e483020-c9ce-432c-bf6d-8189b153c0e7": {
+      "status": "skip",
+      "reason": "html_403"
+    },
+    "51d50008-551d-47d3-9fc9-25946a97fe52": {
+      "status": "ok",
+      "path": "/navan/mgr-commercial",
+      "external_id": "navan_mgr-commercial"
+    },
+    "5d085d20-0f82-4fc7-9128-2f5ae458de06": {
+      "status": "ok",
+      "path": "/taboola/fp-mgr",
+      "external_id": "taboola_fp-mgr"
     }
   },
   "doneIds": [
@@ -57105,7 +57358,64 @@
     "46a6ecfb-1259-4291-9146-c58c1ed37343",
     "5bdd629c-9776-4bd1-b6b0-be6a731af498",
     "5d88a8dc-6413-4f3d-a8e0-8ef93e326fc0",
-    "5f4746e3-d9a1-4a55-b034-8cfbed1c6f12"
+    "5f4746e3-d9a1-4a55-b034-8cfbed1c6f12",
+    "50f00b33-d198-45c9-99a5-cb266903afe1",
+    "4236fa38-c41a-4d9c-aedc-2927557c0538",
+    "50f9f8ac-e920-4494-a1f2-5a38605daf65",
+    "53fb74db-f088-42cf-8773-3316318a1c7e",
+    "55c103d7-3dea-4059-90c4-c7a93642b3eb",
+    "55c44092-6140-491c-9259-0f2b9b4dd06d",
+    "47d6f0a3-1ce3-4781-897c-24419a4b6f60",
+    "41c37ad8-341d-468d-9576-4c0aa969402a",
+    "44ad6cae-f7f0-4984-a83a-1bb20483c6d8",
+    "5d3d03b8-4c6b-4ff8-87ed-1a83b80dc819",
+    "4f80998a-a9ef-453f-bb36-64a96b1c6ef7",
+    "4f9fe812-29a8-40ac-990d-e5d4742dc985",
+    "429fc92b-85f5-4e16-84f3-3453d9d08faa",
+    "4f21f949-ab29-45d6-a8ad-d3f554741ccf",
+    "57759c38-622e-4455-8778-4af3d45772f6",
+    "4b10e910-513e-4d1c-a589-009c0a7b79de",
+    "414a2c2f-c735-4cc5-b530-897641e84d8e",
+    "5ea843a5-dd0f-4bea-ac37-54fc72eeef16",
+    "4512234c-e332-4be4-9c6a-30515053a70e",
+    "4f793fb1-5f23-4676-a468-af7f03f9ea7b",
+    "5c038e1e-8438-474b-989b-0cc13c9b7692",
+    "4d0fbaed-c1e8-4196-affc-b84b1efce3cb",
+    "4c576611-1634-4e3e-bf7e-b6e0e1de654c",
+    "49754ba0-4f41-4478-9a16-719ac3e13237",
+    "51871d1b-cb35-4399-9129-a4a35231d9fb",
+    "5458b03c-cf86-4b2f-a90c-626b33713fc6",
+    "4a4e4358-9bd4-480b-92ac-a47862c6d507",
+    "4c6ab866-dec8-4cdc-994c-95f3abe52b81",
+    "5705289f-0c6a-44b4-aebc-e04668ec7dc8",
+    "5080e67c-1b4c-424a-ae23-de256214975e",
+    "5d90a03f-a1b1-4ed7-8f57-91029a019c82",
+    "41b00f0a-f533-4905-821c-268068af1399",
+    "4fb12f0f-be93-4c48-b85c-e74c977c5931",
+    "4a2d5bf2-2383-4e5d-ae73-2dcf7acee690",
+    "59b287e4-8b7d-4e3d-86ea-abd13dff5a60",
+    "5fbd36d3-29fd-4290-9e11-4ac27274f87d",
+    "44cbfa5b-886a-4285-96c7-ee7d79804972",
+    "441a39f2-1af5-4bb9-a004-b139298cd24c",
+    "4dacf3c8-21b5-4ebd-99a3-4f4470bebf92",
+    "5627aac8-863e-40eb-a6aa-7deee7545518",
+    "40907646-5532-44a5-bafe-b60d01a25b35",
+    "4ed95a0e-2600-4ef2-8d74-f2950d177110",
+    "502bb0ef-53d8-4418-a89b-6c6ef7d571bf",
+    "50cf022f-f88d-4dcb-b46c-cdf31dce15e3",
+    "5583466d-2ce6-4959-b419-043bb7ec7ecb",
+    "5d8c76f3-d819-4e6e-bcec-d2052e886e41",
+    "5646c58e-b84f-44d2-bdc6-cf7f67f0cd0c",
+    "5a43045a-a961-43e1-9acf-93bd9d7b108b",
+    "5cac1e52-2ec7-42f1-afa4-63ece3c00e17",
+    "5b11aa59-14fa-4b9a-aeca-ba30329c21f3",
+    "5f2c4298-83de-487c-8b12-64efda57c2b8",
+    "50ba3a5a-6c73-4813-a975-86e6ba5231a3",
+    "57bec6b9-af63-4739-9765-cf10bc27ac85",
+    "4293b048-906a-4d5e-8d1e-a4fd1aeac221",
+    "5e483020-c9ce-432c-bf6d-8189b153c0e7",
+    "51d50008-551d-47d3-9fc9-25946a97fe52",
+    "5d085d20-0f82-4fc7-9128-2f5ae458de06"
   ],
   "skipped": {},
   "batches": [
