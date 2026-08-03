@@ -25,7 +25,14 @@ require('dotenv').config();
 
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
-const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').replace(/"/g, '');
+const GEMINI_KEYS = [
+  (process.env.GEMINI_API_KEY || '').replace(/"/g, ''),
+  (process.env.GEMINI_API_KEY_2 || '').replace(/"/g, ''),
+  (process.env.GEMINI_API_KEY_3 || '').replace(/"/g, ''),
+  (process.env.GEMINI_API_KEY_4 || '').replace(/"/g, ''),
+].filter(Boolean);
+
+const GEMINI_KEY = GEMINI_KEYS[0] || (process.env.GEMINI_API_KEY || '').replace(/"/g, '');
 const COHERE_KEY = (process.env.COHERE_API_KEY || '').replace(/"/g, '');
 const GROQ_KEY = (process.env.GROQ_API_KEY || '').replace(/"/g, '');
 const ANTHROPIC_KEY = (process.env.ANTHROPIC_API_KEY || '').replace(/"/g, '');
@@ -33,7 +40,7 @@ const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
 const DRY_RUN = process.env.DRY_RUN === '1';
-const CONCURRENCY = Math.max(1, Math.min(8, Number(process.env.CONCURRENCY || 4)));
+const CONCURRENCY = Math.max(1, Math.min(16, Number(process.env.CONCURRENCY || 4)));
 const WORKERS = Math.max(1, Number(process.env.WORKERS || 1));
 const WORKER_ID = Math.max(0, Number(process.env.WORKER_ID || 0)) % WORKERS;
 const CONTINUOUS = process.env.CONTINUOUS === '1';
@@ -622,10 +629,12 @@ async function rewriteWithGemini(job, sourceText, extras) {
   const prompt = buildJobPrompt(job, sourceText, extras);
 
   const models = ['gemini-3.6-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
+  const cooldown = geminiCooldown;
   let lastErr = '';
   let data = null;
 
   for (const model of models) {
+    if (cooldown[model] && Date.now() - cooldown[model] < 60000) continue;
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
     try {
       const r = await fetch(url, {
@@ -647,7 +656,10 @@ async function rewriteWithGemini(job, sourceText, extras) {
       }
       const err = await r.text();
       lastErr = `gemini_${model}_${r.status}:${err.slice(0, 180)}`;
-      if (r.status === 429) await sleep(1000);
+      if (r.status === 429) {
+        cooldown[model] = Date.now();
+        await sleep(1000);
+      }
     } catch (e) {
       lastErr = `gemini_${model}_err:${String(e.message||e).slice(0, 100)}`;
     }
@@ -656,6 +668,83 @@ async function rewriteWithGemini(job, sourceText, extras) {
   if (!data) throw new Error(lastErr || 'gemini_failed');
   const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
   return finalizeText(text);
+}
+
+async function rewriteWithCohere(job, sourceText, extras) {
+  if (!COHERE_KEY) throw new Error('Missing COHERE_API_KEY');
+  const prompt = buildJobPrompt(job, sourceText, extras);
+
+  const models = ['command-r-plus', 'command-r', 'command-light'];
+  let lastErr = '';
+
+  for (const model of models) {
+    try {
+      const r = await fetch('https://api.cohere.ai/v1/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${COHERE_KEY}`,
+        },
+        body: JSON.stringify({
+          model,
+          message: prompt,
+          temperature: 0.4,
+          max_tokens: 4096,
+        }),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const text = data.text || '';
+        return finalizeText(text);
+      }
+      const err = await r.text();
+      lastErr = `cohere_${model}_${r.status}:${err.slice(0, 180)}`;
+      if (r.status === 429) await sleep(1000);
+    } catch (e) {
+      lastErr = `cohere_${model}_err:${String(e.message||e).slice(0, 100)}`;
+    }
+  }
+
+  throw new Error(lastErr || 'cohere_failed');
+}
+
+async function rewriteWithGroq(job, sourceText, extras) {
+  if (!GROQ_KEY) throw new Error('Missing GROQ_API_KEY');
+  const prompt = buildJobPrompt(job, sourceText, extras);
+
+  const models = ['llama-3.3-70b-versatile', 'llama-3.1-70b-versatile', 'mixtral-8x7b-32768'];
+  let lastErr = '';
+
+  for (const model of models) {
+    try {
+      const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${GROQ_KEY}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.4,
+          max_tokens: 4096,
+          top_p: 0.9,
+        }),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const text = data.choices?.[0]?.message?.content || '';
+        return finalizeText(text);
+      }
+      const err = await r.text();
+      lastErr = `groq_${model}_${r.status}:${err.slice(0, 180)}`;
+      if (r.status === 429) await sleep(1000);
+    } catch (e) {
+      lastErr = `groq_${model}_err:${String(e.message||e).slice(0, 100)}`;
+    }
+  }
+
+  throw new Error(lastErr || 'groq_failed');
 }
 
 async function rewriteWithAnthropic(job, sourceText, extras) {
@@ -698,13 +787,20 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
 // Load-balance across providers by job hash: each job is written ONCE by its
 // primary provider; if it fails, fall back to the other provider.
 async function rewriteJobPage(job, sourceText, extras) {
-  const useGemini = job && hashString(job.id || job.title) % 2 === 0;
-  if (!ANTHROPIC_KEY) return rewriteWithGemini(job, sourceText, extras);
-  try {
-    return await (useGemini ? rewriteWithGemini(job, sourceText, extras) : rewriteWithAnthropic(job, sourceText, extras));
-  } catch (e) {
-    return useGemini ? rewriteWithAnthropic(job, sourceText, extras) : rewriteWithGemini(job, sourceText, extras);
+  const providers = [rewriteWithGemini];
+  if (COHERE_KEY) providers.push(rewriteWithCohere);
+  if (GROQ_KEY) providers.push(rewriteWithGroq);
+  if (ANTHROPIC_KEY) providers.push(rewriteWithAnthropic);
+
+  let lastErr = '';
+  for (const provider of providers) {
+    try {
+      return await provider(job, sourceText, extras);
+    } catch (e) {
+      lastErr = String(e.message || e).slice(0, 120);
+    }
   }
+  throw new Error(`all_providers_failed: ${lastErr}`);
 }
 
 function hashString(s) {
