@@ -26,6 +26,8 @@ require('dotenv').config();
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').replace(/"/g, '');
+const COHERE_KEY = (process.env.COHERE_API_KEY || '').replace(/"/g, '');
+const GROQ_KEY = (process.env.GROQ_API_KEY || '').replace(/"/g, '');
 const ANTHROPIC_KEY = (process.env.ANTHROPIC_API_KEY || '').replace(/"/g, '');
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
