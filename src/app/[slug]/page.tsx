@@ -10,6 +10,7 @@ import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import Link from 'next/link';
 import { ArrowLeft, Briefcase, MapPin, Monitor, Clock, ExternalLink, Github, Linkedin, Twitter, Globe } from 'lucide-react';
 import { blogPosts } from '@/lib/blog-data';
+import nomadCities from '@/lib/nomad-cities';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import fs from 'fs';
 import path from 'path';
@@ -192,17 +193,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   // Check if city guide
-  const citiesPath = path.join(process.cwd(), 'public', 'nomad-cities.json');
-  let cityData = null;
-  if (fs.existsSync(citiesPath)) {
-    const raw = fs.readFileSync(citiesPath, 'utf-8');
-    const cities = JSON.parse(raw);
-    cityData = cities.find((c: any) => c.slug === slug);
-  }
+  const cityData = nomadCities.find((c) => c.slug === slug) ?? null;
 
   if (cityData) {
     const title = `Digital Nomad Guide: ${cityData.name}, ${cityData.country}`;
-    const description = `${cityData.name} nomad guide · $${cityData.cost.monthly_total.toLocaleString()}/mo cost of living, ${Math.round(cityData.weather.avg_temp)}°C avg temperature, ${cityData.spaces.total} coliving & coworking spaces.`;
+    const description = `${cityData.name} nomad guide · $${cityData.cost.monthly_total.toLocaleString()}/mo cost of living, ${Math.round(cityData.weather.avg_temp ?? 0)}°C avg temperature, ${cityData.spaces.total} coliving & coworking spaces.`;
 
     return {
       title,
@@ -361,13 +356,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   const { slug } = await params;
   
   // Check if city guide
-  const citiesPath = path.join(process.cwd(), 'public', 'nomad-cities.json');
-  let isCity = false;
-  if (fs.existsSync(citiesPath)) {
-    const raw = fs.readFileSync(citiesPath, 'utf-8');
-    const cities = JSON.parse(raw);
-    isCity = cities.some((c: any) => c.slug === slug);
-  }
+  const isCity = nomadCities.some((c) => c.slug === slug);
 
   if (isCity) {
     return <CityGuidePage citySlug={slug} />;
@@ -896,12 +885,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
 
 export async function generateStaticParams() {
   try {
-    const filePath = path.join(process.cwd(), 'public', 'nomad-cities.json');
-    if (fs.existsSync(filePath)) {
-      const raw = fs.readFileSync(filePath, 'utf-8');
-      const cities = JSON.parse(raw);
-      return cities.map((c: any) => ({ slug: c.slug }));
-    }
+    return nomadCities.map((c) => ({ slug: c.slug }));
   } catch (err) {
     console.error("Failed to generate static params for cities:", err);
   }
