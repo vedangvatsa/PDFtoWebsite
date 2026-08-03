@@ -24961,7 +24961,7 @@
     },
     "09bad5c0-ee87-4041-8b40-50e78c8d35f7": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "0323f9d2-9478-43f0-b762-91a29c880df9": {
       "status": "skip",
@@ -25772,7 +25772,7 @@
     },
     "0311fe67-cf83-4c73-9d4f-cafe927366d2": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0f91e83e-cbd2-4994-af16-1e3a15ce5f48": {
       "status": "skip",
@@ -45411,11 +45411,11 @@
     },
     "0c37407c-a2cf-49d8-9cf8-1b27f56991d2": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "06093446-7e5e-4475-933a-531bdd33a14b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "1d388947-8e0e-400f-bed9-5eac1f4f80d5": {
       "status": "skip",
@@ -45467,7 +45467,7 @@
     },
     "0abdfe1a-9ed9-490e-a4b4-b3f356d71211": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "01e10820-70f6-4433-a48c-288bd9ffd810": {
       "status": "skip",
@@ -45991,7 +45991,7 @@
     },
     "0fef1908-a63c-4245-aca8-e35a11b2ec59": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "002afd12-3d92-41f9-8a89-b6dcfa2f583f": {
       "status": "ok",
@@ -46303,7 +46303,7 @@
     },
     "0b18c1c8-3800-4d60-8606-574b35865935": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "11b0e144-b603-4222-85e7-6c1cb1c76eb5": {
       "status": "skip",
@@ -47180,7 +47180,7 @@
     },
     "07331065-455c-4875-a392-f59c69553722": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "1dbf8f30-6d8f-4d8a-9b7d-3447017f11f9": {
       "status": "skip",
@@ -47668,7 +47668,7 @@
     },
     "0f14bf07-6e8a-4e75-98e3-9b9ad8b02812": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "008b26f1-4720-4bed-9737-dd21c99b1916": {
       "status": "skip",
@@ -47764,11 +47764,11 @@
     },
     "0c88bc78-a0cd-4dc0-aeb1-142eacf6ff16": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "04341c0b-1ddb-4900-9f41-a37f180d0e09": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0535cf6d-72ea-4de8-80c2-6aa0684e17fc": {
       "status": "skip",
@@ -47780,7 +47780,7 @@
     },
     "072871f9-b8b8-42f3-8ec3-50ac415a4166": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "093f9baa-3b0e-470c-bd4a-91c44af70d1b": {
       "status": "skip",
@@ -47792,7 +47792,7 @@
     },
     "072d5bb3-1a8c-4e76-bc0e-14acd7fec75b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "065b064f-fdc8-41a2-99d3-6753ad089b6b": {
       "status": "skip",
@@ -47812,7 +47812,7 @@
     },
     "06b88601-2237-4e90-b743-dd7b909fe584": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "0a6ad23f-8414-436a-962d-2214a7a36813": {
       "status": "skip",
@@ -47832,7 +47832,7 @@
     },
     "03918f51-5a49-4a9f-bc19-dbf191f52f5f": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "00ea96b9-3a23-45ac-9121-161c80f3ac23": {
       "status": "skip",
@@ -47856,7 +47856,7 @@
     },
     "067dd2e4-ed80-4feb-a547-198ed6259fc5": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "02fcde35-3b25-4f48-88d1-348852e37356": {
       "status": "skip",
@@ -48076,7 +48076,7 @@
     },
     "0654e708-fb2b-4fef-b3cc-123700559b41": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0ad864df-1357-4df2-8794-a3b451b9a9fc": {
       "status": "skip",
@@ -48084,7 +48084,7 @@
     },
     "088dac75-b096-494f-bb9a-bf3c020fab39": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "03ecf3a3-b401-447a-95e2-653852a47397": {
       "status": "skip",
@@ -48096,11 +48096,11 @@
     },
     "02a00a27-f26b-433f-9d55-d850e3b9e9ef": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "096568e5-1e92-4894-9e31-472bfcead0c9": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "0bef1de8-15cd-4569-a98a-b47b7f3ce99d": {
       "status": "skip",
@@ -48136,7 +48136,7 @@
     },
     "07f00b34-1b68-4614-a20d-a79fe0aa14fc": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "01188287-a4b1-4080-8aa3-ab0df5dbd3ae": {
       "status": "skip",
@@ -48684,7 +48684,7 @@
     },
     "0754b356-6110-4edd-8c23-f3994f3da084": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0aa18566-f7fd-400c-9938-78a29f6aacb6": {
       "status": "skip",
@@ -48712,7 +48712,7 @@
     },
     "0fc07641-9c08-43bf-bf6f-0141113141e2": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "html_short"
     },
     "0eae7295-1cd4-44d7-b3d2-b00ca520ddcb": {
       "status": "skip",
@@ -49734,7 +49734,7 @@
     },
     "0a90f518-4134-4d2e-a5e1-ccbdb585c242": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "0dd7ad90-9589-4208-87e2-47f1829e9ebb": {
       "status": "ok",
@@ -65574,6 +65574,24 @@
         "html_429": 4,
         "err_TimeoutError": 25,
         "err_TypeError": 11
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-03T18:06:20.177Z",
+      "attempted": 738,
+      "ok": 0,
+      "skip": 736,
+      "fail": 2,
+      "reasons": {
+        "html_short": 685,
+        "html_403": 23,
+        "err_TypeError": 6,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 2,
+        "html_429": 4,
+        "err_TimeoutError": 18
       },
       "samplePaths": []
     }

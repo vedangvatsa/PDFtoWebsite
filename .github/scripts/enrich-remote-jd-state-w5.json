@@ -22766,7 +22766,7 @@
     },
     "5bd80fd8-34bc-4439-a8b3-1d8a3df21934": {
       "status": "skip",
-      "reason": "lever_short"
+      "reason": "err_TypeError"
     },
     "507bbc30-0619-468f-8088-719d2893143a": {
       "status": "skip",
@@ -25249,7 +25249,7 @@
     },
     "55cb274e-c75b-4535-aa90-87c2730d6bc4": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "535a92a2-2baa-4035-ac25-0db8ffb9381e": {
       "status": "skip",
@@ -25269,7 +25269,7 @@
     },
     "5cf7d543-efa7-43ba-9436-3fad632b0e69": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "5dfcc38a-5394-44cd-93d4-adb2d5b9a6cc": {
       "status": "skip",
@@ -25285,7 +25285,7 @@
     },
     "5f00e0ec-049c-40e8-8e38-ec9c8a766989": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "53782608-1c26-4178-97c5-d3c2864864de": {
       "status": "skip",
@@ -25325,7 +25325,7 @@
     },
     "5cc63bb5-8e23-48a3-8c73-c0c75c299c7f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "5fbe804c-5116-4fc2-ab38-99271bf7c089": {
       "status": "skip",
@@ -25337,23 +25337,23 @@
     },
     "572bc539-3147-47bd-8490-1b1f4df48e20": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "5085bb4f-80a6-4438-aa30-5ea5762680e6": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "56a2ab3a-4dad-4261-84c0-502b656bcc3f": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "5943e9ac-2be8-49b2-9532-d340377dbb3a": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "56090920-a91d-4199-9904-39e8fb11b089": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "55093cd6-c678-4ceb-a22f-f1f04b8d7d58": {
       "status": "ok",
@@ -25367,7 +25367,7 @@
     },
     "50e6ea30-62c8-4176-bc79-8adce74fb492": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "5aa98c9e-2d61-45f8-b841-9fbcc5b99824": {
       "status": "skip",
@@ -25761,7 +25761,7 @@
     },
     "58ae68f7-7dd5-417c-bc4f-1a154b746ac3": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "502bb0ef-53d8-4418-a89b-6c6ef7d571bf": {
       "status": "skip",
@@ -25982,7 +25982,7 @@
     },
     "5c32aec0-7b6c-4a95-8be4-8939af618b50": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "538f05e2-a4d9-4e9a-b159-fd15e8254d54": {
       "status": "skip",
@@ -26467,7 +26467,7 @@
     },
     "50e5b39f-54f4-4859-b166-2ea099f5a7da": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "html_short"
     },
     "54125315-5853-4135-8149-8491dc5ccf57": {
       "status": "skip",
@@ -26723,7 +26723,7 @@
     },
     "5d04095b-e265-4e61-be41-2b3e648b7fa2": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "5f27e6ad-a425-4600-9975-a86ae8df9a91": {
       "status": "skip",
@@ -26743,7 +26743,7 @@
     },
     "5bd5df14-2c8f-4892-8a2c-3180bcba4f97": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "52cc12b0-7e84-4e0c-8d74-e9a844437953": {
       "status": "skip",
@@ -28528,7 +28528,7 @@
     },
     "51ec6c55-85d6-414d-a6b0-fc991af9b6a9": {
       "status": "skip",
-      "reason": "err_TimeoutError"
+      "reason": "err_TypeError"
     },
     "50a87b78-46c4-41ad-8fc2-753b79e8666d": {
       "status": "ok",
@@ -44676,6 +44676,24 @@
         "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
         "html_429": 3,
         "err_TypeError": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 2,
+      "worker": 5,
+      "at": "2026-08-03T18:06:17.202Z",
+      "attempted": 731,
+      "ok": 0,
+      "skip": 730,
+      "fail": 1,
+      "reasons": {
+        "html_short": 654,
+        "err_TypeError": 13,
+        "html_403": 45,
+        "err_TimeoutError": 15,
+        "all_providers_failed: anthropic_claude-sonnet-4-5_err:rewrite_slop": 1,
+        "html_429": 3
       },
       "samplePaths": []
     }
