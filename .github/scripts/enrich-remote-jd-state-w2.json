@@ -61924,7 +61924,7 @@
     },
     "2c767cba-78b1-4c79-94be-05a8b9565762": {
       "status": "skip",
-      "reason": "linkedin_404"
+      "reason": "linkedin_429"
     },
     "254c041a-5a0b-462a-b75b-54d1e788f804": {
       "status": "ok",
@@ -61953,7 +61953,7 @@
     },
     "23181463-7cb0-4311-adcd-4cd91c748e84": {
       "status": "skip",
-      "reason": "linkedin_short"
+      "reason": "err_TypeError"
     },
     "28917f79-4688-4a53-b8ea-8cc29b02b54e": {
       "status": "ok",
@@ -62024,11 +62024,11 @@
     },
     "260a08cb-d99c-407f-a3ac-9d4805c9d088": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2350a2ec-7b33-4c72-9353-ef1485e4d332": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2aeb1278-a34c-418c-960e-0aaa7faf0b5b": {
       "status": "skip",
@@ -62052,7 +62052,7 @@
     },
     "20c074bb-1b1e-4902-8b23-57a024d887b8": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2674d33f-8e62-4ca2-9583-dd47a5bf9fad": {
       "status": "skip",
@@ -62089,11 +62089,11 @@
     },
     "200897ea-2f7a-4504-9f94-db4cdbcd440c": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "272f0516-aa1c-4215-b474-0d92b3603021": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2a0bc92a-d4c5-41a7-ac41-439685e6b132": {
       "status": "skip",
@@ -62101,7 +62101,7 @@
     },
     "29c854ab-d870-4f74-8680-7934a9460760": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "299f2a0e-3349-4493-80a5-28c11521ca62": {
       "status": "skip",
@@ -62122,7 +62122,7 @@
     },
     "2d14fb4f-0160-4697-9f08-d6a222644992": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "20255e24-68a0-4bb0-a6bb-aeb57bf7947a": {
       "status": "skip",
@@ -62139,7 +62139,7 @@
     },
     "20b5cac7-bb43-408f-9c51-a823ffe85385": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "21d289e1-9696-485b-ac85-1278318d8ecf": {
       "status": "skip",
@@ -62155,7 +62155,7 @@
     },
     "29ff025b-0a4d-4e1f-a64f-1940716dfb26": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "288b32f3-d357-42a5-8a37-4e8dff396257": {
       "status": "skip",
@@ -62166,8 +62166,9 @@
       "reason": "linkedin_429"
     },
     "245509ae-2693-457a-94d0-c88c89862c02": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/fab2/sw-eng",
+      "external_id": "fab2_sw-eng"
     },
     "24ade066-5395-4796-b480-12bd0cbd1dc6": {
       "status": "skip",
@@ -62270,7 +62271,7 @@
     },
     "20af2583-64df-4ee5-a494-31fabdc86823": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "20319f49-11de-4f33-bc73-aee3aa3fa0d6": {
       "status": "skip",
@@ -62278,7 +62279,7 @@
     },
     "259c92ae-02d8-404a-8c34-93b30945278e": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "28fa10b6-5793-4db9-ad06-bca7bf24ac71": {
       "status": "skip",
@@ -62293,8 +62294,9 @@
       "reason": "linkedin_429"
     },
     "276ec4d1-0758-44da-b80b-89e95c904933": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/m-amp-t-bank/android-dev",
+      "external_id": "m-amp-t-bank_android-dev"
     },
     "2a9c455d-fc11-4bed-9a07-a514bcc5183d": {
       "status": "skip",
@@ -62314,11 +62316,11 @@
     },
     "25631fb2-7301-4bc9-ac7c-357e1f28089d": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2be9aec2-1964-4f18-8a48-3b382e0c7f03": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "22e87f91-3c61-4aaa-b8fc-af546142105b": {
       "status": "skip",
@@ -62338,7 +62340,7 @@
     },
     "238676d9-3165-4a34-af01-414013c947ba": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2f0074fd-ad09-4133-8986-44ffb488bbfc": {
       "status": "skip",
@@ -62374,7 +62376,7 @@
     },
     "26a38499-578e-4bf0-90a6-8464730a8880": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2f7b41a0-645b-41a9-b7fd-bd777ab1bb15": {
       "status": "skip",
@@ -62439,7 +62441,7 @@
     },
     "20f7ceea-d52f-48e0-ba90-d88d64ccfb69": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2beea90b-1c15-4335-b2f5-2787ccdbc838": {
       "status": "skip",
@@ -62463,11 +62465,11 @@
     },
     "2acc2289-d8db-48fe-82a9-793e0409fae1": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2beaa8db-b363-4c6f-88f5-3510f082d1e1": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2dd59708-a61c-4913-a22e-3d7dd39dc4a9": {
       "status": "skip",
@@ -62492,7 +62494,7 @@
     },
     "225579f4-5434-46a9-9cbf-60660cc5e282": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2d7e1ea4-22bd-43e3-8b5e-544a3aec97de": {
       "status": "skip",
@@ -62512,7 +62514,7 @@
     },
     "2bfe2160-1046-4ec2-81d9-f8b17462a803": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "26cc99ff-c47c-46c1-ba07-fb46a8019b5b": {
       "status": "skip",
@@ -62528,7 +62530,7 @@
     },
     "2218ab27-7dee-4d58-b389-f63fbaada411": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2c5b83d5-71a3-4313-b146-95490ca1ea15": {
       "status": "skip",
@@ -62556,7 +62558,7 @@
     },
     "2cca90d5-e807-4bb8-bf74-92b01b36a8f0": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "29f4cc5b-a55b-4a96-85e3-6b1a90797034": {
       "status": "skip",
@@ -62594,7 +62596,7 @@
     },
     "2d3d4a2a-6d6a-44ba-bbb4-e4b1b4bf7e77": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2873b13a-f82c-43db-8790-d1a1afe332ed": {
       "status": "skip",
@@ -62606,7 +62608,7 @@
     },
     "225ebd49-9118-4e4e-8788-2ec5a52b2a84": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2fa88506-9d19-4ec8-a61a-02c3021e1df9": {
       "status": "skip",
@@ -62638,7 +62640,7 @@
     },
     "2ed5ef16-ed43-471f-b5a8-2bed3cb6e11d": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2a83096a-fa67-4d1c-bc76-b5e954a6e05a": {
       "status": "skip",
@@ -62658,11 +62660,11 @@
     },
     "2b0c00d0-48a3-469a-a05d-00bec5312f22": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "28ba762d-076c-4ae9-97d3-9abe3a2d543e": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "27bde16a-e6f2-4fa1-924c-faf44a2532e7": {
       "status": "skip",
@@ -62670,7 +62672,7 @@
     },
     "2119ea26-193d-45c7-a59d-223fb62f5cd2": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2f457379-8a09-4998-802b-2f0e45754854": {
       "status": "skip",
@@ -62678,7 +62680,7 @@
     },
     "2596e3fb-3588-49e7-bcef-dcc7a9b60c81": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "24295603-bd55-4f94-bcb2-2ce8cf53f584": {
       "status": "skip",
@@ -62690,7 +62692,7 @@
     },
     "27ccf95a-3e97-4720-8b63-cfbd647cd33e": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "21ef9d02-321d-421f-9d31-05f01ecc1be4": {
       "status": "skip",
@@ -62706,7 +62708,7 @@
     },
     "220b50b1-0bd2-4b10-8a83-1acf0b99c583": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2a126d51-9e26-44d9-b7b1-81c14ec3ee90": {
       "status": "skip",
@@ -62714,7 +62716,7 @@
     },
     "298d6e02-66e3-4f26-b2c3-8ee3ae3af381": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2da7ec8c-3db5-47c5-98b5-b84ce4f84e50": {
       "status": "skip",
@@ -62823,7 +62825,7 @@
     },
     "21b0fb7c-a648-4196-b986-24280a0667c5": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "2ac36349-4901-4534-a853-7ea5dadc73f1": {
       "status": "skip",
@@ -62851,7 +62853,7 @@
     },
     "29993413-c2d2-4ac4-8fd2-66e6b448ae10": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "22271f54-d8f7-4bb0-9ec1-a9a551c6b848": {
       "status": "skip",
@@ -63064,7 +63066,7 @@
     },
     "29e1e063-fd2b-42d8-8e88-ccb9beadfb3a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "linkedin_404"
     },
     "22773d92-7c23-42a1-83b2-0bd58163f48e": {
       "status": "skip",
@@ -63114,7 +63116,7 @@
     },
     "2c7ba66a-2d61-4a6f-9af6-486c955d08f5": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "21b29309-c16a-4128-aef4-eb8d1acfc494": {
       "status": "skip",
@@ -63122,19 +63124,20 @@
     },
     "2c0ed435-294f-41b8-9799-ca44c77b8873": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "linkedin_429"
     },
     "20b92a24-fd46-4d6b-b1de-24feabbce55a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2b200586-45fd-4353-bf46-964761d97b8a": {
       "status": "skip",
-      "reason": "linkedin_429"
+      "reason": "err_TypeError"
     },
     "2d720449-6ce5-4a30-9242-21d034fabe7c": {
-      "status": "skip",
-      "reason": "linkedin_429"
+      "status": "ok",
+      "path": "/rockstar-games/assoc-devops",
+      "external_id": "rockstar-games_assoc-devops"
     },
     "2cf8b669-cb75-4c1e-b1e0-753e5013c5ae": {
       "status": "ok",
@@ -78239,6 +78242,31 @@
         "/millennium/sec-eng",
         "/whitley-penn/it-sec",
         "/epitec/sec-analyst"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 2,
+      "at": "2026-08-03T17:26:30.613Z",
+      "attempted": 945,
+      "ok": 3,
+      "skip": 942,
+      "fail": 0,
+      "reasons": {
+        "html_short": 630,
+        "lever_short": 1,
+        "html_403": 43,
+        "err_TimeoutError": 13,
+        "html_429": 2,
+        "html_404": 4,
+        "err_TypeError": 23,
+        "linkedin_429": 225,
+        "linkedin_404": 1
+      },
+      "samplePaths": [
+        "/fab2/sw-eng",
+        "/m-amp-t-bank/android-dev",
+        "/rockstar-games/assoc-devops"
       ]
     }
   ]
