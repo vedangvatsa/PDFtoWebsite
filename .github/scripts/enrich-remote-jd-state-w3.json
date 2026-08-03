@@ -52970,7 +52970,7 @@
     },
     "3b33df05-87c3-4583-b986-56e5256c1e0c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "3a3c731c-088b-4f27-a658-eb9de830a23b": {
       "status": "skip",
@@ -52986,11 +52986,11 @@
     },
     "3f4a3c64-c989-4308-b659-035267d16e17": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "3bf171e7-dd60-4e92-bb03-382325006e66": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "308ee4d3-05e3-4b7b-b151-f7a895a451b2": {
       "status": "skip",
@@ -53006,7 +53006,7 @@
     },
     "396fb694-432c-48c1-8497-4a4a63841cc3": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "3e377ec7-6b89-4e93-b350-57f2134e54e6": {
       "status": "skip",
@@ -53014,7 +53014,7 @@
     },
     "30078f8a-c97c-4483-b634-30fbff9f7673": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "3f4f46f2-2deb-44d1-babd-9096648dcc21": {
       "status": "skip",
@@ -53174,7 +53174,7 @@
     },
     "3d3c9d84-61de-4df8-81ac-9ea0651c55a6": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "37f963df-445a-4129-b5eb-9e3aff6fc5be": {
       "status": "skip",
@@ -56719,11 +56719,11 @@
     },
     "36099360-514b-45a7-928c-55dbfa6d9e63": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "3d42bc41-2572-4336-adbc-f97a43f232ac": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "30f9bca1-b493-4919-b6f4-3110caa67811": {
       "status": "skip",
@@ -56739,7 +56739,7 @@
     },
     "35fb7d21-5f28-42ff-b108-a246b58b9cef": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "3fb18abe-7377-432e-aa66-6600eb0dda78": {
       "status": "skip",
@@ -56915,7 +56915,7 @@
     },
     "39cda3a7-07d0-40af-974f-2f1a21249a62": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "3a978276-a38f-49a9-8a72-ef00ef0598fb": {
       "status": "skip",
@@ -56939,7 +56939,7 @@
     },
     "38ed9aad-13b8-4859-ad92-2092044f88eb": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "35abc5ac-f2c1-4ba9-896f-6c3dc455ea41": {
       "status": "skip",
@@ -73010,6 +73010,24 @@
         "/upwork/fe-dev",
         "/golden-1/it-infra-sys"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 3,
+      "at": "2026-08-03T17:48:32.573Z",
+      "attempted": 768,
+      "ok": 0,
+      "skip": 768,
+      "fail": 0,
+      "reasons": {
+        "html_short": 712,
+        "lever_short": 1,
+        "html_403": 35,
+        "err_TimeoutError": 13,
+        "html_405": 5,
+        "html_429": 2
+      },
+      "samplePaths": []
     }
   ]
 }

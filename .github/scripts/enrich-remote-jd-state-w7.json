@@ -38996,11 +38996,11 @@
     },
     "7fa67776-50f5-4d55-8587-f35601fa3d29": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "7a528570-ae82-451a-8da1-013750f93aa3": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "76a6c93b-a72f-40b5-91fb-9f7145863902": {
       "status": "skip",
@@ -39012,11 +39012,11 @@
     },
     "72901718-7ae4-4e16-b4ef-550146db85dd": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "78fc911a-2d1f-407b-9357-f54f49133c47": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "75379745-1d69-4849-9fc7-51fdb8add973": {
       "status": "skip",
@@ -39024,7 +39024,7 @@
     },
     "7947a40c-010f-4b2d-be5a-a4634967e22c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "79b3c392-a3ff-420e-9ed3-15393de23c64": {
       "status": "skip",
@@ -39064,7 +39064,7 @@
     },
     "7de8b9e8-c012-4846-b88e-af09bc2dee1b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "70072938-d1cf-4aa8-ab22-32dfb5d5e62f": {
       "status": "skip",
@@ -39169,23 +39169,23 @@
     },
     "7c1be850-0ffb-43af-ba45-3357409682a7": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "72ff795c-882d-49ef-a46e-65c1b36764de": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "7d018d7c-9a41-48e7-a22e-f7072c756916": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "7829b002-172a-4733-ab00-e6240a83cc9c": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "7d16097e-8f7a-497a-ad5f-557cbf33f7dc": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "726e5e06-9936-44fa-ace7-b15f1cc7783c": {
       "status": "skip",
@@ -42148,7 +42148,7 @@
     },
     "79656613-120e-4db2-bd7e-a5a1e014557b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "7299d99e-bcf3-4236-8730-bb75128c5d1f": {
       "status": "ok",
@@ -42655,7 +42655,7 @@
     },
     "790050b5-b3e8-46c5-a124-4dcfab2f3ba5": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "724bf4d1-268e-45aa-9565-827befb6f7d0": {
       "status": "skip",
@@ -42698,7 +42698,7 @@
     },
     "724a0f44-7a40-45fd-8705-1ec20d6449b1": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "73e131f1-37c7-4926-abcd-b023c115a2b6": {
       "status": "ok",
@@ -42858,7 +42858,7 @@
     },
     "7ea626df-bf4d-44dc-94c1-6d705ddf671f": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "788f8d9e-cc68-40e1-a198-bd55c900e4df": {
       "status": "skip",
@@ -42913,7 +42913,7 @@
     },
     "79252595-d2a1-4ef3-8c6b-187404c7085f": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "7141a43f-8de9-42af-a8f7-daf948ec52c2": {
       "status": "skip",
@@ -42921,7 +42921,7 @@
     },
     "7043338b-8891-4b82-b841-922ebf210667": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "742a1f3c-10a3-4a7c-9934-8da78967b5a1": {
       "status": "skip",
@@ -55972,6 +55972,26 @@
         "/inflect/hosting-sol",
         "/fuku/ml-eng"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 7,
+      "at": "2026-08-03T17:49:03.655Z",
+      "attempted": 769,
+      "ok": 0,
+      "skip": 769,
+      "fail": 0,
+      "reasons": {
+        "gh_short": 1,
+        "html_short": 711,
+        "sr_400": 1,
+        "err_TimeoutError": 16,
+        "html_405": 12,
+        "html_403": 23,
+        "err_TypeError": 3,
+        "html_429": 2
+      },
+      "samplePaths": []
     }
   ]
 }

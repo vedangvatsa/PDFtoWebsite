@@ -38934,11 +38934,11 @@
     },
     "6aba4832-82f4-40db-b5e9-ffef19e16b99": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "6f7d1b3e-7f26-4508-8390-96c6e901447a": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "60f4660c-1fd9-465f-ba25-61d052779210": {
       "status": "skip",
@@ -38982,15 +38982,15 @@
     },
     "674c1e09-b70f-4344-8578-b7d89474209b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "62693b49-ad06-4b9d-8412-92654e4384cd": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "6188125a-d2f2-4af0-9b92-f5c0c4cec338": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "695f64b8-0723-4be6-be50-71f4bcc0b6eb": {
       "status": "skip",
@@ -39369,7 +39369,7 @@
     },
     "6885f57d-19d2-485f-a475-f6a6471a0544": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "641a9d54-5be6-497c-978c-debe28ac39f3": {
       "status": "skip",
@@ -41584,7 +41584,7 @@
     },
     "6c683e74-b4ed-495d-b5e7-def4895c5869": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6c6a0572-3037-4583-8b7c-7bfa99a82e6e": {
       "status": "skip",
@@ -41592,7 +41592,7 @@
     },
     "65eca3d8-9e0a-465e-b158-8d43493ccd49": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6fe4cda3-7c0f-4bad-95a7-e56f8327800d": {
       "status": "skip",
@@ -41609,7 +41609,7 @@
     },
     "650cc2f5-b41c-4801-9453-1fe78e5bb4a9": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TypeError"
     },
     "680b5c5d-1de5-4d93-85f7-3485c7d14bfd": {
       "status": "ok",
@@ -42037,7 +42037,7 @@
     },
     "6af32dcc-e30d-4d40-9045-cdf0ec1df430": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "6a664196-40e8-4c8d-9d21-9ec2867bd45f": {
       "status": "ok",
@@ -42790,7 +42790,7 @@
     },
     "6928850c-5232-4ae8-a2a0-b433ef321411": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "6a8b437c-5951-442c-8ad5-16b896518f30": {
       "status": "skip",
@@ -42803,7 +42803,7 @@
     },
     "62abdbe1-829d-4119-acbf-a8b8acd2881d": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "6be97f58-f9da-4da3-a239-9a983a4757dc": {
       "status": "ok",
@@ -42838,7 +42838,7 @@
     },
     "61b37a08-53a7-462e-ba7b-4288b3ebbc99": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "6dcb2e8d-e6ad-490b-abf2-09d4b27812fb": {
       "status": "skip",
@@ -42922,11 +42922,11 @@
     },
     "69b72708-975a-424c-9eba-02f2ae5c69a2": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "601ee4da-ab0d-4c94-b895-b3809ef74fd8": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "686056c1-8ffc-4a72-822e-970ddec27877": {
       "status": "skip",
@@ -55863,6 +55863,25 @@
         "/mercor/fe-eng",
         "/hugging-face/open-source"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 6,
+      "at": "2026-08-03T17:48:19.472Z",
+      "attempted": 755,
+      "ok": 0,
+      "skip": 755,
+      "fail": 0,
+      "reasons": {
+        "html_short": 702,
+        "sr_400": 1,
+        "html_403": 28,
+        "html_405": 6,
+        "err_TimeoutError": 15,
+        "html_429": 2,
+        "err_TypeError": 1
+      },
+      "samplePaths": []
     }
   ]
 }

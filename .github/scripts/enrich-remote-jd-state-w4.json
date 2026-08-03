@@ -34181,11 +34181,11 @@
     },
     "4f3c0eb2-0e5b-4b38-8b0f-ddf9be53a294": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "4d9d14ba-caee-4c3a-934b-715f973bd79b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "4527ab1b-dcbc-412a-a65a-2aa9ac65426e": {
       "status": "skip",
@@ -34201,7 +34201,7 @@
     },
     "4a8c5ece-9e14-493b-a040-f742df9f7b89": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "4617f888-f12f-4ab1-896b-85be15b8b69f": {
       "status": "skip",
@@ -34241,11 +34241,11 @@
     },
     "46f932b8-1911-4dbf-9c8b-49423b519ff1": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "40a2d668-4e31-4de4-94d8-b5c9bd53ebed": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "4410f59d-a3a8-4138-8094-59775afec329": {
       "status": "skip",
@@ -34253,7 +34253,7 @@
     },
     "4be311ad-c36c-41de-8c0d-5e86880c3161": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "49f24917-5284-4aa0-92ef-3666914966f1": {
       "status": "skip",
@@ -34335,7 +34335,7 @@
     },
     "4a9bf0b3-0914-4cac-ab0f-a3c58d576c7d": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "460c3de4-8c9c-4cc0-a8ec-4255a33d50b0": {
       "status": "ok",
@@ -34422,7 +34422,7 @@
     },
     "4ed95a0e-2600-4ef2-8d74-f2950d177110": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "html_405"
     },
     "4fb12f0f-be93-4c48-b85c-e74c977c5931": {
       "status": "skip",
@@ -36597,11 +36597,11 @@
     },
     "43fe56a9-abbc-4a5a-b5d3-308b304bbddd": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "40ed49f2-63bb-4488-a4ac-99de4ac504a0": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "436d9079-fc39-4f57-a4c4-e8c34e25ebf3": {
       "status": "skip",
@@ -36609,7 +36609,7 @@
     },
     "4a507c1b-c54e-42d7-8fc3-4cb7fa01538b": {
       "status": "skip",
-      "reason": "html_short"
+      "reason": "err_TimeoutError"
     },
     "4e535517-3150-45a9-8ed2-29049c16866d": {
       "status": "skip",
@@ -37130,7 +37130,7 @@
     },
     "4f175b07-5cfa-46f9-bd65-87138177650b": {
       "status": "skip",
-      "reason": "err_TypeError"
+      "reason": "err_TimeoutError"
     },
     "4b07e779-c6ae-40d9-801d-94005d839026": {
       "status": "ok",
@@ -38055,11 +38055,11 @@
     },
     "4570b3ee-f46c-4619-8bfb-007e3bf7c581": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "4666e925-90e6-4ff7-9a1a-6fd1be64552c": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "4c171cd6-954e-4e94-a800-e80242702294": {
       "status": "skip",
@@ -38214,7 +38214,7 @@
     },
     "4599b43f-89c7-4550-a049-17256b39fdf5": {
       "status": "skip",
-      "reason": "html_405"
+      "reason": "html_short"
     },
     "402a53fe-dd14-4eb4-88ab-bf1d9ef1a1b3": {
       "status": "skip",
@@ -51752,6 +51752,25 @@
         "/situsamc/fullstk-sw",
         "/archesys-inc/hiring-fhir"
       ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 4,
+      "at": "2026-08-03T17:49:09.304Z",
+      "attempted": 751,
+      "ok": 0,
+      "skip": 751,
+      "fail": 0,
+      "reasons": {
+        "html_short": 694,
+        "lever_short": 1,
+        "html_429": 5,
+        "html_405": 8,
+        "html_403": 25,
+        "err_TimeoutError": 17,
+        "err_TypeError": 1
+      },
+      "samplePaths": []
     }
   ]
 }
