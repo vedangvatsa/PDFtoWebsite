@@ -48,6 +48,10 @@ const MONTH = '(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?
 // "173384" are never mistaken for dates and stripped from the text.
 const DATE_TOKEN = `(?:${MONTH}[,.\\/\\s]*\\d{4}|\\d{1,2}\\/\\d{2,4}|(?:19|20)\\d{2})`;
 const DATE_RE = new RegExp(DATE_TOKEN, 'i');
+// Document labels that are never a person's name ("Curriculum Vitae", "Resume", "CV").
+const RESUME_LABEL_RE = /^(curriculum\s*vitae|cv|r[eé]sum[eé]|resumes?|professional\s+profile|profile|bio(?:data)?|bio)$/i;
+// Acronyms / initials-only strings ("H.R.M", "A.K.S") — not full names.
+const INITIALS_ONLY_RE = /^([A-Z]\.?)\s*([A-Z]\.?)(\s*([A-Z]\.?))?$/;
 // Date range: <date> – <date|present>
 const DATE_RANGE_RE = new RegExp(
   `(${DATE_TOKEN})\\s*(?:[-–—]+|\\bto\\b|\\btill\\b|\\buntil\\b)\\s*(${DATE_TOKEN}|[Pp]resent|[Cc]urrent|[Nn]ow|[Oo]ngoing|[Tt]oday)`,
@@ -486,6 +490,8 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
       !/^\d/.test(clean) &&
       !DATE_RE.test(clean) &&
       !/^(phone|email|address|location|linkedin|github|website|portfolio)/i.test(clean)
+      && !RESUME_LABEL_RE.test(clean)
+      && !INITIALS_ONLY_RE.test(clean)
     ) {
       // Convert ALL CAPS to Title Case
       fullName = clean === clean.toUpperCase()

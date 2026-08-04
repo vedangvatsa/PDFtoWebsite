@@ -614,7 +614,7 @@ export default function TemplateModern(props: ProfileData) {
                         key={idx}
                         className="inline-block rounded-md border border-indigo-500/20 bg-indigo-50/50 text-indigo-700 text-xs px-2.5 py-1 mb-1.5 mr-1.5"
                       >
-                        {skill}
+                        {typeof skill === 'string' ? skill : String((skill as any)?.name ?? '').trim()}
                       </span>
                     ))}
                   </div>
