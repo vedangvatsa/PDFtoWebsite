@@ -28,6 +28,11 @@ import { LoginDialog } from '@/components/login-dialog';
 import TemplateModern from '@/app/[slug]/templates/modern-creative';
 import CustomSectionsEditor from './custom-sections-editor';
 import { AvatarCropper } from '@/components/avatar-cropper';
+import {
+  isDisposableProfileSlug,
+  nameToProfileSlug,
+  enrichNameFromContact,
+} from '@/lib/parse-guard';
 
 function dataURLtoFile(dataurl: string, filename: string): File | null {
     const arr = dataurl.split(',');
@@ -44,34 +49,15 @@ function dataURLtoFile(dataurl: string, filename: string): File | null {
     return new File([u8arr], filename, {type:mime});
 }
 
-/** Pretty profile slug from a person's name (not from URLs). */
+/** Pretty profile slug from a person's name (not from URLs / user96 defaults). */
 function generateBaseSlug(name: string) {
-  const parts = String(name || '')
-    .trim()
-    .toLowerCase()
-    .split(/\s+/)
-    .map((p) => p.replace(/[^a-z0-9]/g, ''))
-    .filter(Boolean)
-    // drop pure noise / URL fragments if a bad value was passed as "name"
-    .filter((p) => !['https', 'http', 'www', 'com', 'linkedin', 'github', 'in'].includes(p));
-  if (!parts.length) return 'user';
-  // first + up to 2 more tokens (e.g. sanjana-s-huggi), max 40 chars
-  const base = parts.slice(0, 3).join('-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-  return (base || 'user').slice(0, 40);
+  const base = nameToProfileSlug(name || '');
+  return base && base !== 'profile' ? base : 'profile';
 }
 
-/** Reject UUID defaults, pasted LinkedIn/URLs, and other unusable slugs. */
+/** Reject UUID defaults, user96, LinkedIn/URLs, and other unusable public slugs. */
 function isBadSlug(slug: string | null | undefined): boolean {
-  if (!slug) return true;
-  const s = String(slug).toLowerCase().trim();
-  if (s.length < 2 || s.length > 48) return true;
-  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s)) return true;
-  if (s.includes('http') || s.includes('www') || s.includes('linkedin') || s.includes('github.com')) return true;
-  if (s.startsWith('https') || s.startsWith('httpwww') || s.startsWith('wwwlinkedin')) return true;
-  // slugified full URL: httpswwwlinkedincomin...
-  if (/^(https?|www)/.test(s) || s.includes('linkedincom') || s.includes('githubcom')) return true;
-  if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(s)) return true;
-  return false;
+  return isDisposableProfileSlug(slug);
 }
 
 async function mintUniqueSlug(
@@ -492,17 +478,34 @@ export default function EditorPage() {
                 const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || '';
 
                 let finalSlug = p.username || '';
+                const authName = user.user_metadata?.full_name || user.user_metadata?.name || '';
+                let displayName = smartTitleCase(
+                  enrichNameFromContact(p.full_name || '', {
+                    email: getLink('email') || user.email || '',
+                    github: getLink('github'),
+                    linkedin: getLink('linkedin'),
+                    authName,
+                  })
+                );
                 
-                // Fix UUID defaults, LinkedIn/URL paste-slugs, and other unusable usernames.
+                // Fix UUID / user96 / LinkedIn-URL / other disposable public usernames.
                 if (finalSlug === user.id || isBadSlug(finalSlug)) {
-                    const baseSlug = generateBaseSlug(user.user_metadata?.full_name || p.full_name || 'user');
+                    const baseSlug = generateBaseSlug(displayName || authName || 'profile');
                     finalSlug = await mintUniqueSlug(supabase, baseSlug, user.id);
-                    await supabase.from('profiles').update({ username: finalSlug }).eq('id', user.id);
+                    await supabase.from('profiles').update({
+                      username: finalSlug,
+                      ...(displayName && displayName !== p.full_name ? { full_name: displayName } : {}),
+                      ...(!p.profile_picture_url && user.user_metadata?.avatar_url
+                        ? { profile_picture_url: user.user_metadata.avatar_url }
+                        : {}),
+                    }).eq('id', user.id);
+                } else if (displayName && displayName !== p.full_name && /screenshot|your name/i.test(p.full_name || '')) {
+                    await supabase.from('profiles').update({ full_name: displayName }).eq('id', user.id);
                 }
 
                 profileData = {
                     userId: p.id,
-                    fullName: smartTitleCase(p.full_name || ''),
+                    fullName: displayName || smartTitleCase(p.full_name || ''),
                     email: getLink('email') || user.email || '',
                     phone: getLink('phone'),
                     location: getLink('location'),
@@ -511,7 +514,7 @@ export default function EditorPage() {
                     linkedin: getLink('linkedin'),
                     summary: p.about || '',
                     slug: finalSlug,
-                    avatarUrl: p.profile_picture_url || '',
+                    avatarUrl: p.profile_picture_url || user.user_metadata?.avatar_url || '',
                     avatarHint: 'person portrait',
                     themeId: p.theme_id || 'modern-creative',
                     viewCount: p.views || 0,
@@ -722,15 +725,29 @@ export default function EditorPage() {
             // --- DATABASE SYNC (If Auth) ---
             if (user) {
                 const { data: currentProfile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-                const baseSlug = generateBaseSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
+                const authName = user.user_metadata?.full_name || user.user_metadata?.name || '';
+                const resolvedName = smartTitleCase(
+                  enrichNameFromContact(extractedData.personalInfo?.fullName || '', {
+                    email: extractedData.personalInfo?.email || user.email || '',
+                    github: extractedData.personalInfo?.github,
+                    linkedin: extractedData.personalInfo?.linkedin,
+                    authName,
+                  })
+                ) || currentProfile?.full_name || authName || '';
+                const baseSlug = generateBaseSlug(resolvedName || 'profile');
+                // Always remint disposable slugs (user96, UUID, URLs) after a successful CV parse
                 const usernameCandidate =
                   (!isBadSlug(currentProfile?.username) && currentProfile?.username) ||
                   (!isBadSlug(parsedSlug) && parsedSlug) ||
                   baseSlug;
-                const username = await mintUniqueSlug(supabase, String(usernameCandidate), user.id);
+                const username = await mintUniqueSlug(
+                  supabase,
+                  isBadSlug(String(usernameCandidate)) ? baseSlug : String(usernameCandidate),
+                  user.id
+                );
                 const updatedProfile = {
                     id: user.id,
-                    full_name: smartTitleCase(extractedData.personalInfo?.fullName || '') || currentProfile?.full_name || '',
+                    full_name: resolvedName,
                     username,
                     about: extractedData.summary || currentProfile?.about || '',
                     profile_picture_url: currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
@@ -827,19 +844,30 @@ export default function EditorPage() {
                         
                         const combinedLinks = Array.from(newLinksMap.entries()).map(([type, value]) => ({ type, value })).filter(l => !!l.value);
 
-                        const baseSlug = generateBaseSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
-                        // Prefer existing *good* slug; never keep URL/LinkedIn garbage or use a URL as slug.
+                        const authName = user.user_metadata?.full_name || user.user_metadata?.name || '';
+                        const resolvedName = smartTitleCase(
+                          enrichNameFromContact(extractedData.personalInfo?.fullName || '', {
+                            email: extractedData.personalInfo?.email || user.email || '',
+                            github: extractedData.personalInfo?.github,
+                            linkedin: extractedData.personalInfo?.linkedin,
+                            authName,
+                          })
+                        ) || currentProfile?.full_name || authName || '';
+                        const baseSlug = generateBaseSlug(resolvedName || 'profile');
+                        // Prefer existing *good* slug; never keep user96 / URL garbage after parse.
                         const candidate =
                           (!isBadSlug(currentProfile?.username) && currentProfile?.username) ||
                           (!isBadSlug(extractedData.personalInfo?.slug) && extractedData.personalInfo?.slug) ||
                           baseSlug;
-                        const finalSlug = isBadSlug(candidate)
-                          ? await mintUniqueSlug(supabase, baseSlug, user.id)
-                          : await mintUniqueSlug(supabase, String(candidate), user.id);
+                        const finalSlug = await mintUniqueSlug(
+                          supabase,
+                          isBadSlug(String(candidate)) ? baseSlug : String(candidate),
+                          user.id
+                        );
 
                         const updatedProfile = {
                             id: user.id,
-                            full_name: smartTitleCase(extractedData.personalInfo?.fullName || '') || currentProfile?.full_name || user.user_metadata?.full_name || '',
+                            full_name: resolvedName,
                             username: finalSlug,
                             about: extractedData.summary || currentProfile?.about || '',
                             profile_picture_url: extractedData.personalInfo?.avatarUrl || currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
