@@ -74,7 +74,10 @@ async function loadCompanyJobs(
             .from('jobs')
             .select(SELECT_JOB_COLS)
             .eq('company_key', companyKey);
-          if (since) q = q.gt('created_at', since);
+          if (since) {
+            q = q.gt('created_at', since);
+            q = q.or(`published_at.is.null,published_at.gt.${since}`);
+          }
           const byKey = await withTimeoutFallback(
             q
               .order('published_at', { ascending: false, nullsFirst: false })
@@ -91,7 +94,10 @@ async function loadCompanyJobs(
             .from('jobs')
             .select(SELECT_JOB_COLS)
             .eq('company', dirName);
-          if (since) q = q.gt('created_at', since);
+          if (since) {
+            q = q.gt('created_at', since);
+            q = q.or(`published_at.is.null,published_at.gt.${since}`);
+          }
           const byName = await withTimeoutFallback(
             q
               .order('published_at', { ascending: false, nullsFirst: false })
@@ -679,10 +685,10 @@ export default async function ProfileSlugPage({ params }: PageProps) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchema) }} />
         <Header />
         
-        <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-10">
+        <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-6">
           
           {/* Company Header */}
-          <div className="flex items-start gap-4 sm:gap-6 mb-8">
+          <div className="flex items-start gap-4 sm:gap-6 mb-6">
             <CompanyLogo
               name={companyName}
               logo={storedLogo}
