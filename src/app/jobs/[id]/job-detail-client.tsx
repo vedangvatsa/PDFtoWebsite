@@ -275,36 +275,39 @@ export default function JobDetailClient({
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 leading-snug sm:leading-tight break-words">
                 {job.title}
               </h1>
-              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-1.5 gap-x-3 mt-2 text-[13px] sm:text-sm text-zinc-600">
-                <span className="inline-flex items-center gap-1.5 font-semibold text-zinc-800 min-w-0">
-                  <Building2 className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-                  <span className="truncate">{job.company}</span>
-                </span>
-                {job.location && (
-                  <span className="inline-flex items-start gap-1.5 min-w-0">
-                    <MapPin className="h-3.5 w-3.5 text-zinc-400 shrink-0 mt-0.5" />
-                    <span className="break-words">{job.location}</span>
+              <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
+                <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Key facts</h2>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-1.5 gap-x-3 text-[13px] sm:text-sm text-zinc-600">
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-zinc-800 min-w-0">
+                    <Building2 className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                    <span className="truncate">{job.company}</span>
                   </span>
-                )}
-                {typeLabel && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Briefcase className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-                    {typeLabel}
-                  </span>
-                )}
-                {job.published_at && (
-                  <span className="inline-flex items-center gap-1.5 text-zinc-400">
-                    <Clock className="h-3.5 w-3.5 shrink-0" />
-                    {timeAgo(job.published_at)}
-                  </span>
-                )}
+                  {job.location && (
+                    <span className="inline-flex items-start gap-1.5 min-w-0">
+                      <MapPin className="h-3.5 w-3.5 text-zinc-400 shrink-0 mt-0.5" />
+                      <span className="break-words">{job.location}</span>
+                    </span>
+                  )}
+                  {typeLabel && (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Briefcase className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                      {typeLabel}
+                    </span>
+                  )}
+                  {job.published_at && (
+                    <span className="inline-flex items-center gap-1.5 text-zinc-400">
+                      <Clock className="h-3.5 w-3.5 shrink-0" />
+                      {timeAgo(job.published_at)}
+                    </span>
+                  )}
+                  {job.salary && (
+                    <span className="inline-flex items-center gap-1 font-medium text-emerald-700">
+                      <DollarSign className="h-3.5 w-3.5 shrink-0" />
+                      {job.salary}
+                    </span>
+                  )}
+                </div>
               </div>
-              {job.salary && (
-                <p className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-emerald-700 break-words">
-                  <DollarSign className="h-3.5 w-3.5 shrink-0" />
-                  {job.salary}
-                </p>
-              )}
             </div>
           </div>
 
