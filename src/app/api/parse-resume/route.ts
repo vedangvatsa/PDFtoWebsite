@@ -9,6 +9,9 @@ import {
   repairParsedData,
   extractSalvageResumeText,
   ensureMinimalProfile,
+  isDisposableProfileSlug,
+  nameToProfileSlug,
+  enrichNameFromContact,
 } from '@/lib/parse-guard';
 
 export const maxDuration = 60;
@@ -781,11 +784,13 @@ export async function POST(request: NextRequest) {
           'Your previous parse was INCORRECT. Fix these problems and re-extract the FULL resume:',
           issueLines,
           'Critical instructions:',
-          '- fullName MUST be the candidate\'s real first + last name only (Title Case). NEVER append city/country (wrong: "Yash Kathait New Delhi").',
+          '- fullName MUST be the candidate\'s real first + last name only (Title Case). NEVER append city/country (wrong: "Yash Kathait New Delhi"). NEVER use screenshot/file names as the name.',
+          '- If the CV shows only one name token, still recover full name from the email handle when possible (e.g. shivamrajput@… → Shivam Rajput).',
           '- education MUST contain ONE entry per real degree/institution with a SHORT description (max 3 lines). NEVER put the contact header, email, phone, LinkedIn, or the whole resume into institution/description.',
-          '- Map EVERY job/internship into workExperience (separate entry per role). Map Projects, Certifications, Achievements into customSections.',
-          '- skills MUST be a flat array of individual skill strings.',
-          '- summary MUST be a short professional summary if present on the CV.',
+          '- Map EVERY job/internship into workExperience (separate entry per role). If one job has multiple named projects, keep them under that role with clear project headings and bullet lines — do not glue two project names mid-sentence.',
+          '- company field: one employer name (use "A / B" only if dual-badge is required). Do not dump product codes without context.',
+          '- skills MUST be a flat array of individual skill strings; no version dups like both Python and Python 3.11+.',
+          '- summary MUST be a short professional summary (2–4 sentences) when experience exists — never leave summary empty if the CV has jobs.',
           'Return ONLY the corrected JSON for the ENTIRE resume. Do not lose any data.',
         ].join('\n');
 
@@ -824,11 +829,28 @@ export async function POST(request: NextRequest) {
       }
 
       // Always return best-effort structured data — never 422 the user.
-      aiStructuredData = repairParsedData(aiStructuredData);
+      // Auth name/email hints applied again after repair for last-mile name recovery.
+      let authHint = '';
+      try {
+        const supabaseUserClient = await createClient();
+        const { data: { user: u } } = await supabaseUserClient.auth.getUser();
+        authHint =
+          (u?.user_metadata?.full_name as string) ||
+          (u?.user_metadata?.name as string) ||
+          '';
+        if (aiStructuredData?.personalInfo && !aiStructuredData.personalInfo.email && u?.email) {
+          aiStructuredData.personalInfo.email = u.email;
+        }
+      } catch {
+        /* non-fatal */
+      }
+      aiStructuredData = repairParsedData(aiStructuredData, { authName: authHint });
       aiStructuredData = ensureMinimalProfile(aiStructuredData, { fileName: file.name });
-      if (validation.critical) {
+      // Re-validate soft warnings after repair (do not re-loop AI)
+      validation = validateParsedData(aiStructuredData);
+      if (validation.issues.length) {
         console.warn(
-          'Returning partial parse after recovery attempts. Remaining issues:',
+          'Parse warnings after repair:',
           validation.issues.join(' | ')
         );
         aiStructuredData._parseWarnings = validation.issues;
@@ -873,31 +895,39 @@ export async function POST(request: NextRequest) {
 
         const isBadProfileSlug = (s: string | null | undefined) => {
           if (!s) return true;
-          const x = String(s).toLowerCase();
-          if (x.length < 2 || x.length > 48) return true;
-          if (x === user.id) return true;
-          if (x.includes('http') || x.includes('www') || x.includes('linkedin') || x.includes('github')) return true;
-          if (/^(https?|www)/.test(x) || x.includes('linkedincom') || x.includes('githubcom')) return true;
-          if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(x)) return true;
-          return false;
+          if (s === user.id) return true;
+          return isDisposableProfileSlug(s);
         };
 
-        const nameToSlug = (name: string) => {
-          const parts = String(name || '')
-            .trim()
-            .toLowerCase()
-            .split(/\s+/)
-            .map((p) => p.replace(/[^a-z0-9]/g, ''))
-            .filter((p) => p && !['https', 'http', 'www', 'com', 'linkedin', 'github', 'in'].includes(p));
-          const base = parts.slice(0, 3).join('-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-          return (base || 'profile').slice(0, 40);
-        };
+        const nameToSlug = (name: string) => nameToProfileSlug(name || 'profile');
+
+        // Prefer auth display name when parse name is weak
+        const authName =
+          (user.user_metadata?.full_name as string) ||
+          (user.user_metadata?.name as string) ||
+          '';
+        if (aiStructuredData?.personalInfo) {
+          aiStructuredData.personalInfo.fullName = enrichNameFromContact(
+            aiStructuredData.personalInfo.fullName || '',
+            {
+              email: aiStructuredData.personalInfo.email || user.email || '',
+              github: aiStructuredData.personalInfo.github,
+              linkedin: aiStructuredData.personalInfo.linkedin,
+              authName,
+            }
+          );
+          if (!aiStructuredData.personalInfo.email && user.email) {
+            aiStructuredData.personalInfo.email = user.email;
+          }
+        }
 
         let finalSlug: string;
         if (currentProfile?.username && !isBadProfileSlug(currentProfile.username)) {
           finalSlug = currentProfile.username;
         } else {
-          const prefixSlug = nameToSlug(aiStructuredData.personalInfo?.fullName || 'profile');
+          const prefixSlug = nameToSlug(
+            aiStructuredData.personalInfo?.fullName || authName || 'profile'
+          );
           finalSlug = prefixSlug;
           let isUnique = false;
           let attempt = 0;
