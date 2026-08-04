@@ -494,7 +494,7 @@ function formatJobsMessage(jobs, category) {
   }
 
   let text = header + '\n\n' + lines.join('\n');
-  text += `\n\n_\nTurn your CV into a Website: <a href="https://cvin.bio?utm_source=social&amp;utm_medium=telegram">cvin.bio</a>`;
+  text += `\n\n_\nTurn your CV into a Website: <a href="https://cvin.bio/tg">cvin.bio</a>`;
   return text;
 }
 
