@@ -11,6 +11,10 @@
  *   DRY_RUN=1 node .github/scripts/mint-slugs.mjs        # count only
  *   CONCURRENCY=12 node .github/scripts/mint-slugs.mjs   # mint for real
  *   FORCE=1 CONCURRENCY=12 node .github/scripts/mint-slugs.mjs  # re-mint ALL live jobs (short rule)
+ *
+ * WARNING: FORCE rewrites external_id and therefore public URLs. There are no
+ * redirects from old pretty slugs → new ones. Prefer FORCE only for staging or
+ * when you accept breaking shared/indexed /{company}/{slug} links.
  */
 import { createHash } from 'crypto';
 import { createRequire } from 'module';
@@ -55,13 +59,36 @@ function companyToSlug(company) {
     .replace(/^-|-$/g, '');
 }
 
+/** UTM suffixes + app routes — never emit these as standalone job slug segments. */
+const RESERVED_SLUGS = new Set([
+  'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
+  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+]);
+
+/**
+ * Short pretty slug only:
+ *  - `{company}_{slug}` where slug is 1–2 tokens
+ *  - 1 token ≤ 12 chars; 2 semantic tokens total ≤ 8 chars
+ *  - collision form: `{head≤6}-{2hex}` (e.g. eng-a3)
+ * Longer / ATS / multi-token ids are NOT pretty → will be reminted.
+ */
 function isPrettyExternalId(company, externalId) {
   if (!externalId) return false;
   const co = companyToSlug(company);
+  if (!co) return false;
   const prefix = `${co}_`;
   if (!externalId.toLowerCase().startsWith(prefix)) return false;
-  const rest = externalId.slice(prefix.length);
-  return /^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest) && !/^[0-9a-f]{8,}$/i.test(rest);
+  const rest = externalId.slice(prefix.length).toLowerCase();
+  if (RESERVED_SLUGS.has(rest)) return false;
+  if (!/^[a-z0-9][a-z0-9-]{0,23}$/.test(rest)) return false;
+  if (/^[0-9a-f]{8,}$/.test(rest)) return false;
+  if (rest.length > 12 && /^\d+$/.test(rest)) return false;
+  const parts = rest.split('-').filter(Boolean);
+  if (parts.length === 0 || parts.length > 2) return false;
+  if (parts.length === 1) return parts[0].length <= 12;
+  // two parts: either short semantic (≤8) or head+hash collision
+  if (/^[0-9a-f]{2,4}$/.test(parts[1])) return parts[0].length <= 6;
+  return rest.length <= 8;
 }
 
 const SLUG_STOP = new Set([
@@ -143,13 +170,18 @@ function prettyJobSlug(title, uniqueSeed, used) {
   base = base.replace(/-+/g, '-').replace(/^-|-$/g, '') || 'role';
 
   let slug = base;
-  if (used.has(slug)) {
+  // Collisions + reserved path segments (UTM suffixes / app routes) → disambiguate
+  if (used.has(slug) || RESERVED_SLUGS.has(slug)) {
     const h = createHash('md5').update(String(uniqueSeed)).digest('hex').slice(0, 2);
     const first = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${first}-${h}`;
   }
   let n = 2;
-  while (used.has(slug) || !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)) {
+  while (
+    used.has(slug) ||
+    RESERVED_SLUGS.has(slug) ||
+    !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)
+  ) {
     const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, 2);
     const head = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${head}-${h}`;
@@ -189,6 +221,9 @@ async function pageAll({ select, extraFilters, limit = 1000, label }) {
     const rows = await fetchRows(url, `${label}-${offset}`);
     if (!Array.isArray(rows) || !rows.length) break;
     out.push(...rows);
+    if (out.length % 10000 === 0 || rows.length < limit) {
+      console.log(`  … ${label}: ${out.length} rows`);
+    }
     if (rows.length < limit) break;
     offset += limit;
   }
@@ -200,16 +235,16 @@ async function main() {
   console.log(`mint-slugs: dry=${DRY_RUN ? 1 : 0} concurrency=${CONCURRENCY} onlyCompany=${ONLY_COMPANY || 'all'}`);
 
   const since = new Date(Date.now() - 30 * 86400000).toISOString();
+  // Always include curated + non-curated live jobs — every public URL must be short/pretty.
   const jobs = await pageAll({
     select: 'id,title,company,external_id',
     extraFilters:
-      (FORCE ? '' : `&tags=not.cs.{"curated-jd"}`) +
       `&apply_url=not.is.null` +
       `&created_at=gt.${encodeURIComponent(since)}&or=(published_at.is.null,published_at.gt.${encodeURIComponent(since)})` +
       `&order=created_at.desc`,
     label: 'jobs',
   });
-  console.log(`Fetched ${jobs.length} live jobs (${FORCE ? 'FORCE all' : 'non-curated'} — ${Math.round((Date.now() - t0) / 1000)}s)`);
+  console.log(`Fetched ${jobs.length} live jobs (${Math.round((Date.now() - t0) / 1000)}s)`);
 
   const need = [];
   const already = [];
@@ -217,6 +252,7 @@ async function main() {
   for (const j of jobs) {
     const co = companyToSlug(j.company);
     if (ONLY_COMPANY && co !== ONLY_COMPANY) continue;
+    // FORCE remints even short/pretty; default only remints long/ATS/missing slugs
     if (!FORCE && isPrettyExternalId(j.company, j.external_id)) {
       already.push(j);
     } else if (!j.title || !String(j.title).trim()) {
@@ -225,25 +261,36 @@ async function main() {
       need.push(j);
     }
   }
-  console.log(`  already pretty: ${already.length} | need slug: ${need.length} | no title: ${noTitle.length}`);
+  console.log(
+    `  already short-pretty: ${already.length} | need remint: ${need.length} | no title: ${noTitle.length}${FORCE ? ' (FORCE)' : ''}`
+  );
 
-  if (need.length === 0) return;
+  if (need.length === 0) {
+    console.log('Nothing to remint.');
+    return;
+  }
 
-  // Pre-load ALL existing external_ids → used-set per company (one paged pass).
-  console.log('Pre-loading existing external_ids…');
+  // Build used-set from the live jobs we already fetched (no second full-table scan).
+  // Global unique conflicts still resolve via 23505 → short hash collision path.
+  console.log('Building used-sets from live job external_ids…');
   const usedByCompany = new Map();
-  const extRows = await pageAll({
-    select: 'company,external_id',
-    extraFilters: '&external_id=not.is.null&order=company.asc',
-    label: 'extids',
-  });
-  for (const row of extRows) {
+  let extCount = 0;
+  for (const row of jobs) {
     if (!row.external_id) continue;
     const co = companyToSlug(row.company);
+    if (!co) continue;
     if (!usedByCompany.has(co)) usedByCompany.set(co, new Set());
-    usedByCompany.get(co).add(row.external_id.toLowerCase());
+    const prefix = `${co}_`;
+    const ext = String(row.external_id);
+    if (ext.toLowerCase().startsWith(prefix)) {
+      usedByCompany.get(co).add(ext.slice(prefix.length).toLowerCase());
+    } else {
+      usedByCompany.get(co).add(ext.toLowerCase());
+    }
+    extCount++;
   }
-  console.log(`  ${extRows.length} external_ids across ${usedByCompany.size} companies (${Math.round((Date.now() - t0) / 1000)}s)`);
+  console.log(`  ${extCount} external_ids across ${usedByCompany.size} companies (${Math.round((Date.now() - t0) / 1000)}s)`);
+  console.log(`Reminting ${need.length} jobs (concurrency=${CONCURRENCY})…`);
 
   const stats = { ok: 0, fail: 0, collision: 0, reasons: {} };
   let idx = 0;
@@ -271,10 +318,21 @@ async function main() {
             await patchExternalId(job.id, externalId);
           } catch (e) {
             if (String(e.message || e).includes('23505') || String(e.message || e).includes('409')) {
-              const hash = createHash('md5').update(job.id).digest('hex').slice(0, 4);
-              slug = `${slug.slice(0, 18)}-${hash}`;
+              // Stay short: head≤6 + 2-hex (matches prettyJobSlug collision form)
+              const hash = createHash('md5').update(job.id).digest('hex').slice(0, 2);
+              const head = (slug.split('-')[0] || 'role').slice(0, 6);
+              slug = `${head}-${hash}`;
               externalId = `${co}_${slug}`;
-              await patchExternalId(job.id, externalId);
+              // if still colliding, one more unique try
+              try {
+                await patchExternalId(job.id, externalId);
+              } catch (e2) {
+                const hash2 = createHash('md5').update(`${job.id}:x`).digest('hex').slice(0, 2);
+                slug = `${head.slice(0, 5)}${hash2}`;
+                if (slug.length > 8) slug = slug.slice(0, 8);
+                externalId = `${co}_${slug}`;
+                await patchExternalId(job.id, externalId);
+              }
               used.add(slug);
               stats.collision++;
             } else {

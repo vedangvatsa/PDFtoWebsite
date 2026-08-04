@@ -277,6 +277,11 @@ function companyToSlug(company) {
     .replace(/^-|-$/g, '');
 }
 
+const RESERVED_JOB_SEGMENTS = new Set([
+  'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
+  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+]);
+
 function shortJobSlug(company, externalId) {
   if (!externalId) return null;
   const co = companyToSlug(company);
@@ -284,11 +289,12 @@ function shortJobSlug(company, externalId) {
   const prefix = `${co}_`;
   const lower = externalId.toLowerCase();
   if (!lower.startsWith(prefix)) return null;
-  const rest = externalId.slice(prefix.length);
+  const rest = externalId.slice(prefix.length).toLowerCase();
+  if (RESERVED_JOB_SEGMENTS.has(rest)) return null;
   if (!/^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest)) return null;
   if (/^[0-9a-f]{8,}$/i.test(rest)) return null;
   if (rest.length > 12 && /^\d+$/.test(rest)) return null;
-  return rest.toLowerCase();
+  return rest;
 }
 
 function jobPublicPath(job) {

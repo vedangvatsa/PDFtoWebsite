@@ -313,7 +313,7 @@ export default function JobsPage() {
                 id="jobs-cv-upload"
                 type="file"
                 className="hidden"
-                accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+                accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
                 disabled={isUploading}
                 onChange={async (e) => {
                   const file = e.target.files?.[0];

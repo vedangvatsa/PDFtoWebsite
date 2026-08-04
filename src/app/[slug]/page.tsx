@@ -147,7 +147,11 @@ async function buildCompanyPageMetadata(
   const { getCompanyMeta } = await import('@/lib/company-data');
   const meta = getCompanyMeta(slug);
   const companyDisplay = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
-  const jobCount = jobs.length;
+  // loadCompanyJobs caps at 50; if we hit the cap prefer directory total when larger
+  const jobCount =
+    jobs.length >= 50 && dir?.role_count && dir.role_count > jobs.length
+      ? dir.role_count
+      : jobs.length;
   const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
   const desc = meta
     ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
@@ -590,8 +594,11 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       jobs.find((j: any) => j.company_logo)?.company_logo;
     const logo = primaryCompanyLogoUrl(companyName, storedLogo, 128);
     
-    // jobs[] is filtered by 30-day window in loadCompanyJobs; use actual loaded count.
-    const totalJobs = jobs.length || 0;
+    // jobs[] is 30-day window, capped at 50. Prefer directory total only when sample is full.
+    const totalJobs =
+      (jobs.length >= 50 && dir?.role_count && dir.role_count > jobs.length
+        ? dir.role_count
+        : jobs.length) || 0;
     const remoteJobs = jobs.filter(j => j.location?.toLowerCase().includes('remote')).length;
     const remotePercent = jobs.length > 0 ? Math.round((remoteJobs / jobs.length) * 100) : 0;
     

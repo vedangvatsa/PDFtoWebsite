@@ -45,13 +45,21 @@ const GROQ_KEYS = [
   unquote(process.env.GROQ_API_KEY),
   unquote(process.env.GROQ_API_KEY_2),
 ].filter(Boolean);
-const OPENAI_KEYS = [unquote(process.env.OPENAI_API_KEY)].filter(Boolean);
+const OPENAI_KEYS = [
+  unquote(process.env.OPENAI_API_KEY),
+  unquote(process.env.OPENAI_API_KEY_2),
+  unquote(process.env.OPENAI_API_KEY_3),
+  unquote(process.env.OPENAI_API_KEY_4),
+].filter(Boolean);
 const ANTHROPIC_KEY = unquote(process.env.ANTHROPIC_API_KEY);
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
 const DRY_RUN = process.env.DRY_RUN === '1';
-const CONCURRENCY = Math.max(1, Math.min(16, Number(process.env.CONCURRENCY || 4)));
+// TURBO=1: max parallel, mini model, no sleep, keep existing pretty slugs
+const TURBO = process.env.TURBO === '1';
+// Hard cap high so one machine can saturate API keys (429s self-throttle)
+const CONCURRENCY = Math.max(1, Math.min(TURBO ? 256 : 16, Number(process.env.CONCURRENCY || 4)));
 const WORKERS = Math.max(1, Number(process.env.WORKERS || 1));
 const WORKER_ID = Math.max(0, Number(process.env.WORKER_ID || 0)) % WORKERS;
 const CONTINUOUS = process.env.CONTINUOUS === '1';
@@ -59,6 +67,10 @@ const RETRY_ONLY = process.env.RETRY_ONLY === '1';
 const LINKEDIN_ONLY = process.env.LINKEDIN_ONLY === '1';
 const RE_ENRICH = process.env.RE_ENRICH === '1';
 const MIN_REWRITE_WORDS = 600;
+const OPENAI_FAST_MODEL = process.env.OPENAI_FAST_MODEL || 'gpt-4o-mini';
+// TURBO scrapes must fail fast — long LinkedIn/HTML retries were killing throughput (~20 ok/min).
+const SCRAPE_MS = TURBO ? 4000 : 15000;
+const HTML_MS = TURBO ? 4000 : 20000;
 const PERMANENT_REASONS = new Set(['posting_older_than_30d', 'html_blocked', 'rewrite_slop', 'no_company', 'unsupported']);
 const STATE_PATH = resolve(
   __dirname,
@@ -100,13 +112,33 @@ function isRemote(j) {
   return /\bremote\b|work from home|\bwfh\b|distributed|anywhere|fully remote|remote-first|remote first/.test(s);
 }
 
+/** UTM suffixes + app routes — never emit these as standalone job slug segments. */
+const RESERVED_SLUGS = new Set([
+  'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
+  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+]);
+
+/**
+ * Short pretty slug only (must match mint-slugs.mjs):
+ *  - 1–2 tokens; 1-token ≤12; 2 semantic tokens total ≤8
+ *  - collision form: `{head≤6}-{2hex}`
+ */
 function isPrettyExternalId(company, externalId) {
   if (!externalId) return false;
   const co = companyToSlug(company);
+  if (!co) return false;
   const prefix = `${co}_`;
   if (!externalId.toLowerCase().startsWith(prefix)) return false;
-  const rest = externalId.slice(prefix.length);
-  return /^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest) && !/^[0-9a-f]{8,}$/i.test(rest);
+  const rest = externalId.slice(prefix.length).toLowerCase();
+  if (RESERVED_SLUGS.has(rest)) return false;
+  if (!/^[a-z0-9][a-z0-9-]{0,23}$/.test(rest)) return false;
+  if (/^[0-9a-f]{8,}$/.test(rest)) return false;
+  if (rest.length > 12 && /^\d+$/.test(rest)) return false;
+  const parts = rest.split('-').filter(Boolean);
+  if (parts.length === 0 || parts.length > 2) return false;
+  if (parts.length === 1) return parts[0].length <= 12;
+  if (/^[0-9a-f]{2,4}$/.test(parts[1])) return parts[0].length <= 6;
+  return rest.length <= 8;
 }
 
 function stripHtml(html) {
@@ -187,8 +219,9 @@ const BROWSER_UA =
 // Scrape a job page as raw HTML: JSON-LD first, then SPA embedded JSON, then text.
 async function scrapeAsHtml(url) {
   let current = url;
-  for (let hop = 0; hop < 4; hop++) {
-    if (hop > 0) await sleep(300);
+  const maxHops = TURBO ? 1 : 4;
+  for (let hop = 0; hop < maxHops; hop++) {
+    if (hop > 0 && !TURBO) await sleep(300);
     let r;
     try {
       r = await jfetch(
@@ -196,16 +229,17 @@ async function scrapeAsHtml(url) {
         {
           redirect: 'follow',
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; cvin-jd-enrich/1.0; +https://cvin.bio)',
+            'User-Agent': BROWSER_UA,
             Accept: 'text/html,application/xhtml+xml',
           },
         },
-        20000
+        HTML_MS
       );
     } catch (e) {
       return { ok: false, reason: `err_${e.name || 'fetch'}` };
     }
     if ([403, 429, 503].includes(r.status)) {
+      if (TURBO) return { ok: false, reason: `html_${r.status}` };
       await sleep(1500);
       try {
         r = await jfetch(
@@ -221,7 +255,7 @@ async function scrapeAsHtml(url) {
       }
     }
     if (!r.ok) {
-      if (r.status !== 404 && r.status !== 410) {
+      if (!TURBO && r.status !== 404 && r.status !== 410) {
         const wb = await waybackExtract(url);
         if (wb) return wb;
       }
@@ -229,13 +263,15 @@ async function scrapeAsHtml(url) {
     }
     const html = await r.text();
     if (/cf-browser-verification|captcha|access denied|login to continue/i.test(html) && html.length < 8000) {
-      const wb = await waybackExtract(url);
-      if (wb) return wb;
+      if (!TURBO) {
+        const wb = await waybackExtract(url);
+        if (wb) return wb;
+      }
       return { ok: false, reason: 'html_blocked' };
     }
     const extracted = extractFromHtml(html);
     if (extracted.ok) return extracted;
-    if (extracted.reason === 'html_short') {
+    if (extracted.reason === 'html_short' && !TURBO) {
       const target = resolveRedirectShell(html);
       if (target) {
         current = target;
@@ -406,7 +442,7 @@ function extractEmbeddedJson(html) {
   return text.slice(0, 14000);
 }
 
-const jfetch = (url, opts = {}, ms = 15000) =>
+const jfetch = (url, opts = {}, ms = SCRAPE_MS) =>
   fetch(url, { ...opts, signal: opts.signal || AbortSignal.timeout(ms) });
 
 async function fetchAshbyBoard(board) {
@@ -556,20 +592,19 @@ async function fetchSourceText(job) {
     }
 
     if (meta.kind === 'linkedin' && meta.id) {
-      const r = await jfetch(
+      // TURBO: one attempt only (3–26s LinkedIn retry loops destroyed fleet throughput)
+      let r = await jfetch(
         `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/${meta.id}`,
         {
           headers: {
-            'User-Agent':
-              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'User-Agent': BROWSER_UA,
             Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9',
           },
         },
-        20000
+        SCRAPE_MS
       );
-      if (r.status === 429) {
-        // LinkedIn rate limit: back off and retry up to 3 times
+      if (r.status === 429 && !TURBO) {
         for (const delay of [3000, 8000, 15000]) {
           await sleep(delay);
           const retry = await jfetch(
@@ -772,13 +807,18 @@ function prettyJobSlug(title, uniqueSeed, used) {
   base = base.replace(/-+/g, '-').replace(/^-|-$/g, '') || 'role';
 
   let slug = base;
-  if (used.has(slug)) {
+  // Collisions + reserved path segments (UTM suffixes / app routes) → disambiguate
+  if (used.has(slug) || RESERVED_SLUGS.has(slug)) {
     const h = createHash('md5').update(String(uniqueSeed)).digest('hex').slice(0, 2);
     const first = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${first}-${h}`;
   }
   let n = 2;
-  while (used.has(slug) || !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)) {
+  while (
+    used.has(slug) ||
+    RESERVED_SLUGS.has(slug) ||
+    !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)
+  ) {
     const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, 2);
     const head = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${head}-${h}`;
@@ -801,6 +841,45 @@ function buildJobPrompt(job, sourceText, extras) {
   ]
     .filter(Boolean)
     .join('\n');
+
+  // TURBO: shorter prompt → fewer input tokens + faster completions
+  if (TURBO) {
+    return `Expand this into a cvin.bio job page. Output ONLY plain text.
+
+MUST be ≥600 words. Keep every concrete fact (stack, years, location, salary, visa). Paraphrase; do not copy sentences.
+
+Format (exact headers, blank line between sections):
+${job.title} at ${job.company}.
+
+About the role
+(3-5 sentences)
+
+Key facts
+Location: ...
+Engagement: ...
+${job.salary || extras?.compensation ? 'Compensation: ...' : ''}
+
+What you'll do
+- (8-12 detailed bullets)
+
+Requirements
+- (6-10 bullets)
+
+Nice to have
+- (3-6 bullets)
+
+Skills & tools
+- ...
+
+Practical notes
+- ...
+
+META
+${metaBits}
+
+SOURCE:
+${sourceText.slice(0, 8000)}`;
+  }
 
   return `You write original job description pages for cvin.bio.
 
@@ -842,7 +921,7 @@ Rules:
 - No HTML, no markdown bold/italic, no em dashes, no filler AI tone
 - Avoid words: leverage, delve, robust, seamless, passionate, cutting-edge, exciting opportunity
 - Keep all numbers, stack names, and hard requirements
-- Max ~4500 characters
+- Target 600-900 words (do not stop early)
 - Output ONLY the job page text
 
 META
@@ -1012,8 +1091,8 @@ async function rewriteWithGroq(job, sourceText, extras) {
 async function rewriteWithOpenAI(job, sourceText, extras) {
   if (!OPENAI_KEYS.length) throw new Error('Missing OPENAI_API_KEY');
   const prompt = buildJobPrompt(job, sourceText, extras);
-
-  const models = ['gpt-4o-mini', 'gpt-4o'];
+  // TURBO: mini only (fast). Normal: mini then full.
+  const models = TURBO ? [OPENAI_FAST_MODEL] : [OPENAI_FAST_MODEL, 'gpt-4o'];
   let lastErr = '';
 
   for (const model of models) {
@@ -1028,11 +1107,11 @@ async function rewriteWithOpenAI(job, sourceText, extras) {
           body: JSON.stringify({
             model,
             messages: [{ role: 'user', content: prompt }],
-            temperature: 0.4,
+            temperature: TURBO ? 0.3 : 0.4,
             max_tokens: 4096,
             top_p: 0.9,
           }),
-        }, 45000);
+        }, TURBO ? 60000 : 45000);
         if (r.ok) {
           const data = await r.json();
           const text = data.choices?.[0]?.message?.content || '';
@@ -1040,7 +1119,7 @@ async function rewriteWithOpenAI(job, sourceText, extras) {
         }
         const err = await r.text();
         lastErr = `openai_${model}_${r.status}:${err.slice(0, 180)}`;
-        if (r.status === 429) await sleep(1000);
+        if (r.status === 429) await sleep(TURBO ? 250 : 1000);
       } catch (e) {
         lastErr = `openai_${model}_err:${String(e.message||e).slice(0, 100)}`;
       }
@@ -1087,14 +1166,17 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
   throw new Error(lastErr || 'anthropic_failed');
 }
 
-// Load-balance across providers by job hash: each job is written ONCE by its
-// primary provider; if it fails, fall back to the other provider.
+// OpenAI is always primary. Many workers/concurrency share the same key in parallel
+// (no mutex) — OpenAI rate-limits via 429, we backoff and retry then fall back.
 async function rewriteJobPage(job, sourceText, extras) {
-  const providers = [rewriteWithGemini];
-  if (COHERE_KEYS.length) providers.push(rewriteWithCohere);
-  if (GROQ_KEYS.length) providers.push(rewriteWithGroq);
+  const providers = [];
+  // Always OpenAI first (all workers hit the same key(s) concurrently)
   if (OPENAI_KEYS.length) providers.push(rewriteWithOpenAI);
+  if (GEMINI_KEYS.length) providers.push(rewriteWithGemini);
+  if (GROQ_KEYS.length) providers.push(rewriteWithGroq);
+  if (COHERE_KEYS.length) providers.push(rewriteWithCohere);
   if (ANTHROPIC_KEY) providers.push(rewriteWithAnthropic);
+  if (!providers.length) throw new Error('No AI providers configured (OPENAI_API_KEY / GEMINI_API_KEY)');
 
   let lastErr = '';
   for (const provider of providers) {
@@ -1134,6 +1216,27 @@ function saveState(state) {
   writeFileSync(STATE_PATH, JSON.stringify(state, null, 2));
 }
 
+/** Seed text when scrape fails / stub has no JD — enough for mini to hit ≥600w. */
+function buildMetaSeed(job) {
+  const bits = [
+    `Job title: ${job.title || 'Unknown role'}`,
+    `Company: ${job.company || 'Unknown company'}`,
+    job.location ? `Location: ${job.location}` : null,
+    job.job_type ? `Job type / engagement: ${job.job_type}` : null,
+    job.salary ? `Listed compensation: ${job.salary}` : null,
+    job.apply_url ? `Apply URL: ${job.apply_url}` : null,
+    Array.isArray(job.tags) && job.tags.length ? `Tags: ${job.tags.filter((t) => t !== 'curated-jd').join(', ')}` : null,
+  ].filter(Boolean);
+  return [
+    bits.join('\n'),
+    '',
+    'No full posting body was available. Write a thorough, original ≥600-word job page',
+    'using the title, company, and any facts above. Be specific to this role title and',
+    'company domain; avoid generic placeholder fluff. Infer reasonable responsibilities,',
+    'requirements, and skills that fit the role name — mark unknowns only in Practical notes.',
+  ].join('\n');
+}
+
 async function fetchAllJobs() {
   const out = [];
   let offset = 0;
@@ -1147,7 +1250,12 @@ async function fetchAllJobs() {
   const endHex = (WORKER_ID === WORKERS - 1) ? null : hex[Math.min((WORKER_ID + 1) * chunkSize, hex.length - 1)];
 
   while (true) {
-    let url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash&created_at=gte.${encodeURIComponent(since)}&tags=not.cs.{"curated-jd"}&apply_url=not.is.null`;
+    // RE_ENRICH must include curated-jd rows that are still under 600w (old short rewrites).
+    // Fresh enrich still skips already-curated jobs.
+    let url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash&created_at=gte.${encodeURIComponent(since)}&apply_url=not.is.null`;
+    if (!RE_ENRICH) {
+      url += `&tags=not.cs.{"curated-jd"}`;
+    }
     if (WORKERS > 1) {
       url += `&id=gte.${startHex}0000000-0000-0000-0000-000000000000`;
       if (endHex) url += `&id=lt.${endHex}0000000-0000-0000-0000-000000000000`;
@@ -1310,9 +1418,17 @@ async function runOneBatch(batchNum, state, done) {
       return true;
     })
     .sort((a, b) => {
+      // TURBO RE_ENRICH: expand existing text first (no scrape). Stubs last.
+      // Normal: prefer ATS + empty (need scrape) so we fill blanks with real source.
       const rank = (j) => {
         const k = classifyApplyUrl(j.apply_url).kind;
         const ats = { ashby: 0, greenhouse: 1, lever: 2, smartrecruiters: 3, html: 4 }[k] ?? 9;
+        const words = (j.description || '').split(/\s+/).filter(Boolean).length;
+        if (TURBO && RE_ENRICH) {
+          // more words → earlier (negated); then ATS rank
+          const bodyScore = words >= 40 ? 0 : words >= 15 ? 1 : 2;
+          return bodyScore * 100 + ats;
+        }
         const empty = (j.description || '').length < 200 ? 0 : 1;
         return ats * 10 + empty;
       };
@@ -1350,7 +1466,15 @@ async function runOneBatch(batchNum, state, done) {
 
     async function processOne(job) {
       if (stats.ok >= BATCH_SIZE) return;
-      if (done.has(job.id) && state.processed[job.id]?.status === 'ok') return;
+      // RE_ENRICH targets under-600-word pages even if previously marked ok.
+      // Without this, short "ok" jobs are permanently stuck below the SEO floor.
+      if (
+        !RE_ENRICH &&
+        done.has(job.id) &&
+        state.processed[job.id]?.status === 'ok'
+      ) {
+        return;
+      }
       attempted++;
 
       const companySlug = companyToSlug(job.company);
@@ -1362,12 +1486,28 @@ async function runOneBatch(batchNum, state, done) {
       }
 
       const existing = (job.description || '').trim();
+      const existingWords = existing.split(/\s+/).filter(Boolean).length;
       let scraped;
+      // Usable hosted body: expand without scraping (main throughput path).
+      const canUseExisting = existingWords >= 15 || existing.length >= 80;
       if (RE_ENRICH) {
-        if (existing.length >= 200) {
+        if (TURBO && canUseExisting) {
           scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+        } else if (canUseExisting) {
+          // Non-turbo: try scrape first for quality, fall back to existing
+          scraped = await fetchSourceText(job);
+          if (!scraped.ok) {
+            scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+          }
+        } else if (TURBO) {
+          // Empty/stub in TURBO: do NOT scrape (4s×40 concurrent timeouts = ~0 ok/min).
+          // Expand from title/company/meta so the SEO floor still lands.
+          scraped = { ok: true, text: buildMetaSeed(job), extras: {}, fromMeta: true };
         } else {
           scraped = await fetchSourceText(job);
+          if (!scraped.ok) {
+            scraped = { ok: true, text: buildMetaSeed(job), extras: {}, fromMeta: true };
+          }
         }
       } else if (existing.length >= 500 && RETRY_ONLY) {
         const thirtyDaysAgoMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
@@ -1378,25 +1518,37 @@ async function runOneBatch(batchNum, state, done) {
         }
       } else {
         scraped = await fetchSourceText(job);
+        // Never burn a job on scrape fail if we can still write a page from meta
+        if (!scraped.ok && TURBO) {
+          scraped = { ok: true, text: existing || buildMetaSeed(job), extras: {}, fromMeta: true };
+        }
       }
       if (!scraped.ok) {
         stats.skip++;
         stats.reasons[scraped.reason] = (stats.reasons[scraped.reason] || 0) + 1;
         state.processed[job.id] = { status: 'skip', reason: scraped.reason };
-        done.add(job.id);
+        // RE_ENRICH: don't permanently burn — allow retry next batch with different path
+        if (!RE_ENRICH) done.add(job.id);
         return;
+      }
+      if (scraped.fromMeta) {
+        stats.reasons.meta_seed = (stats.reasons.meta_seed || 0) + 1;
+      } else if (scraped.fromExisting) {
+        stats.reasons.expand_existing = (stats.reasons.expand_existing || 0) + 1;
       }
 
       let description;
       try {
         description = await rewriteJobPage(job, scraped.text, scraped.extras);
-        await sleep(80);
+        // Normal mode soft-throttles; TURBO relies on API 429 backoff only
+        if (!TURBO) await sleep(80);
       } catch (e) {
         stats.fail++;
         const reason = String(e.message || e).slice(0, 80);
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
-        done.add(job.id);
+        // Don't permanently burn RE_ENRICH fails — allow retry next batch
+        if (!RE_ENRICH) done.add(job.id);
         return;
       }
 
@@ -1406,24 +1558,34 @@ async function runOneBatch(batchNum, state, done) {
       let external_id;
       let path;
       try {
-        await withCompanyLock(companySlug, async () => {
-          if (!usedByCompany.has(companySlug)) {
-            usedByCompany.set(companySlug, await loadUsedSlugs(companySlug));
-          }
-          const used = usedByCompany.get(companySlug);
-          if (isPrettyExternalId(job.company, job.external_id)) {
-            used.delete(job.external_id.slice(companySlug.length + 1).toLowerCase());
-          }
-          jobSlug = prettyJobSlug(job.title, job.id, used);
-          external_id = `${companySlug}_${jobSlug}`;
-          path = `/${companySlug}/${jobSlug}`;
-        });
+        // Keep existing short pretty slug (fast path) — remint only when missing/long
+        if (isPrettyExternalId(job.company, job.external_id)) {
+          const co = companySlug;
+          const prefix = `${co}_`;
+          const rest = job.external_id.slice(prefix.length);
+          jobSlug = rest;
+          external_id = job.external_id;
+          path = `/${co}/${jobSlug}`;
+        } else {
+          await withCompanyLock(companySlug, async () => {
+            if (!usedByCompany.has(companySlug)) {
+              usedByCompany.set(companySlug, await loadUsedSlugs(companySlug));
+            }
+            const used = usedByCompany.get(companySlug);
+            if (job.external_id && String(job.external_id).toLowerCase().startsWith(`${companySlug}_`)) {
+              used.delete(job.external_id.slice(companySlug.length + 1).toLowerCase());
+            }
+            jobSlug = prettyJobSlug(job.title, job.id, used);
+            external_id = `${companySlug}_${jobSlug}`;
+            path = `/${companySlug}/${jobSlug}`;
+          });
+        }
       } catch (e) {
         stats.fail++;
         const reason = String(e.message || e).slice(0, 80);
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
-        done.add(job.id);
+        if (!RE_ENRICH) done.add(job.id);
         return;
       }
 
@@ -1446,8 +1608,10 @@ async function runOneBatch(batchNum, state, done) {
             await updateJob(job.id, patchObj);
           } catch (patchErr) {
             if (String(patchErr.message || patchErr).includes('23505') || String(patchErr.message || patchErr).includes('409')) {
-              const hash = createHash('md5').update(job.id).digest('hex').slice(0, 4);
-              jobSlug = `${jobSlug.slice(0, 18)}-${hash}`;
+              // Stay short: head≤6 + 2-hex (same as mint-slugs collision form)
+              const hash = createHash('md5').update(job.id).digest('hex').slice(0, 2);
+              const head = (jobSlug.split('-')[0] || 'role').slice(0, 6);
+              jobSlug = `${head}-${hash}`;
               external_id = `${companySlug}_${jobSlug}`;
               path = `/${companySlug}/${jobSlug}`;
               patchObj.external_id = external_id;
@@ -1509,10 +1673,13 @@ async function main() {
     console.error('Need Supabase env');
     process.exit(1);
   }
-  if (!GEMINI_KEYS.length && !ANTHROPIC_KEY && !DRY_RUN) {
-    console.error('Need GEMINI_API_KEY or ANTHROPIC_API_KEY');
+  if (!OPENAI_KEYS.length && !GEMINI_KEYS.length && !ANTHROPIC_KEY && !DRY_RUN) {
+    console.error('Need OPENAI_API_KEY (primary) and/or GEMINI_API_KEY (fallback)');
     process.exit(1);
   }
+  console.log(
+    `AI providers: openai=${OPENAI_KEYS.length ? 'yes' : 'no'} gemini=${GEMINI_KEYS.length} cohere=${COHERE_KEYS.length} groq=${GROQ_KEYS.length} anthropic=${ANTHROPIC_KEY ? 'yes' : 'no'} minWords=${MIN_REWRITE_WORDS} turbo=${TURBO ? 1 : 0} concurrency=${CONCURRENCY} workers=${WORKERS}/${WORKER_ID}`
+  );
 
   const state = loadState();
   const done = new Set(state.doneIds || []);
@@ -1540,11 +1707,25 @@ async function main() {
     totalOk += result.ok;
     if (result.complete || (result.ok === 0 && result.attempted === 0)) {
       console.log(`ENRICH_COMPLETE worker=${WORKER_ID} totalOk=${totalOk}`);
+      // TURBO supervisors restart us immediately; short sleep avoids tight spin
+      if (TURBO && RE_ENRICH && CONTINUOUS) {
+        console.log(`worker ${WORKER_ID}: empty shard — sleep 15s then recheck`);
+        await sleep(15000);
+        batchNum++;
+        continue;
+      }
       process.exit(0);
     }
-    // If a full pass only skipped/failed, shard is effectively done for now
+    // Skip-only batch: don't kill the worker forever (that shrank fleet to 2)
     if (result.ok === 0) {
-      console.log(`ENRICH_COMPLETE worker=${WORKER_ID} totalOk=${totalOk} (no more writable)`);
+      console.log(
+        `ENRICH_IDLE worker=${WORKER_ID} totalOk=${totalOk} (skip-only batch attempt=${result.attempted})`
+      );
+      if (TURBO && RE_ENRICH && CONTINUOUS) {
+        await sleep(5000);
+        batchNum++;
+        continue;
+      }
       process.exit(0);
     }
     batchNum++;

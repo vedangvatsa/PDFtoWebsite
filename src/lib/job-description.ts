@@ -702,6 +702,12 @@ export function companyToSlug(company: string): string {
     .replace(/^-|-$/g, '');
 }
 
+/** Valid short job slug segment (not a UTM suffix / reserved path). */
+export const RESERVED_JOB_SEGMENTS = new Set([
+  'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
+  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+]);
+
 /**
  * Short job slug from external_id when curated as `{company}_{slug}`
  * e.g. external_id `google_mkt` + company Google → `mkt`
@@ -717,12 +723,23 @@ export function shortJobSlug(
   const prefix = `${co}_`;
   const lower = externalId.toLowerCase();
   if (!lower.startsWith(prefix)) return null;
-  const rest = externalId.slice(prefix.length);
-  // Short pretty slug: 1-24 chars, no uuid-ish noise
-  if (!/^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest)) return null;
+  const rest = externalId.slice(prefix.length).toLowerCase();
+  // Must be a routeable short pretty slug (rejects reserved, hex, long/multi-token).
+  if (!isShortJobSlug(rest)) return null;
   if (/^[0-9a-f]{8,}$/i.test(rest)) return null; // reject pure hex ids
   if (rest.length > 12 && /^\d+$/.test(rest)) return null; // reject google numeric job ids
-  return rest.toLowerCase();
+  const parts = rest.split('-').filter(Boolean);
+  if (parts.length === 0 || parts.length > 2) return null;
+  if (parts.length === 1 && parts[0].length > 12) return null;
+  if (parts.length === 2) {
+    // collision: eng-a3  OR short semantic: sw-eng (≤8)
+    if (/^[0-9a-f]{2,4}$/.test(parts[1])) {
+      if (parts[0].length > 6) return null;
+    } else if (rest.length > 8) {
+      return null;
+    }
+  }
+  return rest;
 }
 
 /**
@@ -745,13 +762,7 @@ export function jobExternalIdFromSlugs(companySlug: string, jobSlug: string): st
   return `${companySlug.toLowerCase()}_${jobSlug.toLowerCase()}`;
 }
 
-/** Valid short job slug segment (not a UTM suffix / reserved). */
-const RESERVED_SEGMENTS = new Set([
-  'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
-  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
-]);
-
 export function isShortJobSlug(s: string): boolean {
-  if (!s || RESERVED_SEGMENTS.has(s.toLowerCase())) return false;
+  if (!s || RESERVED_JOB_SEGMENTS.has(s.toLowerCase())) return false;
   return /^[a-z0-9][a-z0-9-]{0,23}$/i.test(s);
 }

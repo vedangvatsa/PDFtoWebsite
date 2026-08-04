@@ -20,8 +20,8 @@ export default function BlogCTA() {
         return;
       }
       
-      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/rtf', 'text/rtf', 'text/plain'];
-      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|rtf|txt)$/i)) {
+      const allowedTypes = ['application/pdf', 'application/x-pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/rtf', 'text/rtf', 'text/plain', 'text/markdown', 'text/csv', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/bmp', 'image/tiff', 'image/tif', 'image/heic', 'image/heif', 'application/octet-stream'];
+      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|rtf|txt|md|markdown|csv|jpg|jpeg|png|webp|gif|bmp|tif|tiff|heic|heif)$/i)) {
          toast({ variant: 'destructive', title: 'Invalid Format', description: 'Please select a PDF, Word, or text file.' });
          event.target.value = '';
          return;
@@ -77,7 +77,7 @@ export default function BlogCTA() {
           <input 
             id="blog-cta-cv-upload"
             type="file" 
-            accept=".pdf,.docx,.txt,.rtf" 
+            accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" 
             onChange={handleFileChange} 
             disabled={isProcessingFile}
             aria-label="Upload your CV file"

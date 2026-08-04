@@ -56,8 +56,8 @@ export default function Home() {
         return;
       }
       
-      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/rtf', 'text/rtf', 'text/plain', 'image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
-      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|rtf|txt|jpg|jpeg|png|webp|heic|heif)$/i)) {
+      const allowedTypes = ['application/pdf', 'application/x-pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/rtf', 'text/rtf', 'text/plain', 'text/markdown', 'text/csv', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/bmp', 'image/tiff', 'image/tif', 'image/heic', 'image/heif', 'application/octet-stream'];
+      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|rtf|txt|md|markdown|csv|jpg|jpeg|png|webp|gif|bmp|tif|tiff|heic|heif)$/i)) {
          posthog.capture(LANDING_EVENTS.CV_INVALID_FORMAT, { file_type: file.type, file_name: file.name });
          toast({ variant: 'destructive', title: 'Invalid Format', description: 'Please select a PDF, Word, text, or image file.' });
          event.target.value = '';
@@ -157,7 +157,7 @@ export default function Home() {
                               </span>
                          </>
                       )}
-                      <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isProcessingFile} />
+                      <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" onChange={handleFileChange} disabled={isProcessingFile} />
                   </label>
 
                   <div className="flex items-center gap-3">

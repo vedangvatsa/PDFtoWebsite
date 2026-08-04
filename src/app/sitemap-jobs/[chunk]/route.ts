@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { companyToSlug } from '@/lib/job-description';
+import { companyToSlug, shortJobSlug } from '@/lib/job-description';
 
 export const revalidate = 21600;
 
@@ -40,10 +40,10 @@ export async function GET(_req: Request, ctx: Props) {
 
       if (!data || !data.length) break;
       for (const j of data) {
-        const slug = companyToSlug(j.company);
-        const prefix = `${slug}_`;
-        if (j.external_id.toLowerCase().startsWith(prefix)) {
-          urls.push(`${siteUrl}/${slug}/${j.external_id.slice(prefix.length)}`);
+        // Only emit routeable pretty URLs (rejects reserved UTM segments, hex ids, junk)
+        const jobSlug = shortJobSlug(j.company, j.external_id);
+        if (jobSlug) {
+          urls.push(`${siteUrl}/${companyToSlug(j.company)}/${jobSlug}`);
         } else if (j.id) {
           urls.push(`${siteUrl}/jobs/${j.id}`);
         }
