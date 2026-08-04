@@ -77,8 +77,18 @@ function shardOf(id) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+function decodeHtmlEntities(s) {
+  return String(s || '')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0*39;|&apos;/gi, "'")
+    .replace(/&nbsp;/gi, ' ');
+}
+
 function companyToSlug(company) {
-  return (company || '')
+  return decodeHtmlEntities(company)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/-+/g, '-')
@@ -746,35 +756,31 @@ function prettyJobSlug(title, uniqueSeed, used) {
     // machine + learning → already aliased machine=ml, skip learning
     if (out.includes(t)) continue;
     const next = out.length ? `${out.join('-')}-${t}` : t;
-    // Prefer ≤12; hard cap 16 with whole tokens only
-    if (out.length >= 1 && next.length > 12 && out.length >= 2) break;
-    if (out.length >= 1 && next.length > 16) break;
+    // SHORT slugs: max 2 tokens; 2-token job slug ≤ 8 chars
+    if (out.length >= 1 && next.length > 8) break;
     out.push(t);
-    if (out.length >= 3 || next.length >= 10) break;
+    if (out.length >= 2) break;
   }
 
   let base = out.join('-') || 'role';
-  if (base.length > 16) {
+  if (base.length > 12) {
     const parts = base.split('-');
-    while (parts.length > 1 && parts.join('-').length > 16) parts.pop();
+    while (parts.length > 1 && parts.join('-').length > 12) parts.pop();
     base = parts.join('-');
+    if (base.length > 12) base = base.slice(0, 12);
   }
   base = base.replace(/-+/g, '-').replace(/^-|-$/g, '') || 'role';
 
   let slug = base;
   if (used.has(slug)) {
     const h = createHash('md5').update(String(uniqueSeed)).digest('hex').slice(0, 2);
-    const parts = base.split('-');
-    let shortBase = parts.slice(0, 2).join('-');
-    if (shortBase.length > 12) shortBase = parts[0];
-    shortBase = (shortBase || 'role').slice(0, 12).replace(/-+$/, '') || 'role';
-    // Prefer whole-token shortBase + hash (still meaningful)
-    slug = `${shortBase}-${h}`.slice(0, 16).replace(/-+$/, '');
+    const first = (base.split('-')[0] || 'role').slice(0, 6);
+    slug = `${first}-${h}`;
   }
   let n = 2;
   while (used.has(slug) || !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)) {
     const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, 2);
-    const head = (base.split('-')[0] || 'role').slice(0, 10);
+    const head = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${head}-${h}`;
   }
   used.add(slug);
