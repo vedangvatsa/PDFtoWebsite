@@ -8,6 +8,28 @@ import { getClientIp } from '@/lib/rate-limit';
 
 export const maxDuration = 60;
 
+// Defense-in-depth: reconstruction markers ("__PROT 0__") must NEVER reach the
+// database or the user. If a token survives the parser, strip it from every
+// string in the AI output instead of persisting the artifact.
+const TOKEN_ARTIFACT_RE = /__PROT\s*\d+\s*__/g;
+
+function scrubProtectedArtifacts(value: unknown): unknown {
+  if (typeof value === 'string') {
+    return value.replace(TOKEN_ARTIFACT_RE, '').trim();
+  }
+  if (Array.isArray(value)) {
+    return value.map(scrubProtectedArtifacts);
+  }
+  if (value && typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      out[k] = scrubProtectedArtifacts(v);
+    }
+    return out;
+  }
+  return value;
+}
+
 const systemInstruction = `You are a strict, highly accurate JSON API extracting candidate resumes.
 Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks):
 {
@@ -276,7 +298,7 @@ export async function POST(request: NextRequest) {
           const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
 
           const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -349,6 +371,10 @@ export async function POST(request: NextRequest) {
       // Fallback
       aiStructuredData = parseResumeText(extractedText);
     }
+    
+    // Strip any residual reconstruction markers from the parsed output before
+    // it can be stored/returned to the client.
+    aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
     
     // Resume processing after successful extraction (AI or Fallback)
     const duration = Date.now() - startTime;
