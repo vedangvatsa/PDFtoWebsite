@@ -310,7 +310,10 @@ export default function JobDetailClient({
 
           {job.tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-5 sm:mb-6">
-              {job.tags.slice(0, 12).map((tag) => (
+              {job.tags
+                .filter((tag) => tag !== 'curated-jd')
+                .slice(0, 12)
+                .map((tag) => (
                 <span
                   key={tag}
                   className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 max-w-full truncate"
