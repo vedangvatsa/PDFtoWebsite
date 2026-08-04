@@ -55,6 +55,9 @@ const CONCURRENCY = Math.max(1, Math.min(16, Number(process.env.CONCURRENCY || 4
 const WORKERS = Math.max(1, Number(process.env.WORKERS || 1));
 const WORKER_ID = Math.max(0, Number(process.env.WORKER_ID || 0)) % WORKERS;
 const CONTINUOUS = process.env.CONTINUOUS === '1';
+const RETRY_ONLY = process.env.RETRY_ONLY === '1';
+const LINKEDIN_ONLY = process.env.LINKEDIN_ONLY === '1';
+const PERMANENT_REASONS = new Set(['posting_older_than_30d', 'html_blocked', 'rewrite_slop', 'no_company', 'unsupported']);
 const STATE_PATH = resolve(
   __dirname,
   WORKERS > 1 ? `enrich-remote-jd-state-w${WORKER_ID}.json` : 'enrich-remote-jd-state.json'
@@ -166,11 +169,237 @@ function classifyApplyUrl(url) {
   return { kind: 'html', url };
 }
 
+const BROWSER_UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+
+// Scrape a job page as raw HTML: JSON-LD first, then SPA embedded JSON, then text.
+async function scrapeAsHtml(url) {
+  let current = url;
+  for (let hop = 0; hop < 4; hop++) {
+    if (hop > 0) await sleep(300);
+    let r;
+    try {
+      r = await jfetch(
+        current,
+        {
+          redirect: 'follow',
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; cvin-jd-enrich/1.0; +https://cvin.bio)',
+            Accept: 'text/html,application/xhtml+xml',
+          },
+        },
+        20000
+      );
+    } catch (e) {
+      return { ok: false, reason: `err_${e.name || 'fetch'}` };
+    }
+    if ([403, 429, 503].includes(r.status)) {
+      await sleep(1500);
+      try {
+        r = await jfetch(
+          current,
+          {
+            redirect: 'follow',
+            headers: { 'User-Agent': BROWSER_UA, Accept: 'text/html,application/xhtml+xml', Referer: 'https://www.google.com/' },
+          },
+          25000
+        );
+      } catch (e) {
+        return { ok: false, reason: `err_${e.name || 'fetch'}` };
+      }
+    }
+    if (!r.ok) {
+      if (r.status !== 404 && r.status !== 410) {
+        const wb = await waybackExtract(url);
+        if (wb) return wb;
+      }
+      return { ok: false, reason: `html_${r.status}` };
+    }
+    const html = await r.text();
+    if (/cf-browser-verification|captcha|access denied|login to continue/i.test(html) && html.length < 8000) {
+      const wb = await waybackExtract(url);
+      if (wb) return wb;
+      return { ok: false, reason: 'html_blocked' };
+    }
+    const extracted = extractFromHtml(html);
+    if (extracted.ok) return extracted;
+    if (extracted.reason === 'html_short') {
+      const target = resolveRedirectShell(html);
+      if (target) {
+        current = target;
+        continue;
+      }
+    }
+    return extracted;
+  }
+  return { ok: false, reason: 'html_too_many_redirects' };
+}
+
+function extractFromHtml(html) {
+  const ld = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+  for (const match of ld) {
+    try {
+      const data = JSON.parse(match[1]);
+      const nodes = Array.isArray(data) ? data : data['@graph'] || [data];
+      for (const n of nodes) {
+        if (n && /JobPosting/i.test(String(n['@type'] || ''))) {
+          const text = stripHtml(n.description || '');
+          if (text.length >= 280) {
+            return {
+              ok: true,
+              text,
+              extras: {
+                location: n.jobLocation?.address?.addressLocality || n.jobLocationType,
+                salary: n.baseSalary,
+              },
+            };
+          }
+        }
+      }
+    } catch {
+      /* ignore bad json-ld */
+    }
+  }
+  const embedded = extractEmbeddedJson(html);
+  if (embedded) return { ok: true, text: embedded, extras: {} };
+  const text = stripHtml(html).slice(0, 20000);
+  if (text.length < 400) return { ok: false, reason: 'html_short' };
+  if (text.length > 400 && text.split(/\s+/).length < 80) return { ok: false, reason: 'html_thin' };
+  return { ok: true, text: text.slice(0, 14000), extras: {} };
+}
+
+function resolveRedirectShell(html) {
+  const meta = html.match(/<meta[^>]+http-equiv=["']?refresh["']?[^>]*content=["']?[^"']*url=([^"'>]+)/i);
+  if (meta) return meta[1].trim().replace(/&amp;/g, '&');
+  const loc = html.match(/(?:window\.|top\.|document\.|self\.)?location(?:\.(?:href|replace|assign))?\s*=\s*["'](https?:\/\/[^"']+)["']/i);
+  if (loc) return loc[1].replace(/&amp;/g, '&');
+  return null;
+}
+
+async function waybackExtract(url) {
+  try {
+    await sleep(500);
+    const cdx = await jfetch(
+      `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&fl=timestamp,original,statuscode&filter=statuscode:200&collapse=digest&limit=5`,
+      { headers: { 'User-Agent': 'cvin-jd-enrich/1.0 (+https://cvin.bio)' } },
+      20000
+    );
+    if (!cdx.ok) return null;
+    const rows = await cdx.json();
+    if (!Array.isArray(rows) || rows.length < 2) return null;
+    const original = rows[rows.length - 1][1];
+    await sleep(500);
+    const r = await jfetch(
+      `https://web.archive.org/web/2id_/${original}`,
+      { redirect: 'follow', headers: { 'User-Agent': BROWSER_UA, Accept: 'text/html,application/xhtml+xml' } },
+      25000
+    );
+    if (!r.ok) return null;
+    const out = extractFromHtml(await r.text());
+    if (!out.ok) return null;
+    return { ok: true, text: out.text, extras: out.extras };
+  } catch {
+    return null;
+  }
+}
+
 const ashbyBoardCache = new Map();
+
+// SPA pages ship the job description inside embedded JSON state. Try to pull a
+// long, sentence-like string out of it (Next.js __NEXT_DATA__, window.__STATE__
+// etc.) that looks like a real job description.
+function extractEmbeddedJson(html) {
+  const blocks = [];
+  const scriptRe = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = scriptRe.exec(html)) !== null) blocks.push(m[1]);
+
+  const candidates = [];
+  for (const block of blocks) {
+    let json = null;
+    if (/__NEXT_DATA__|__INITIAL_STATE__|__APP_STATE__|__PRELOADED_STATE__|__SERVER_STATE__|__DATA__/i.test(block)) {
+      const inner = block.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+      const raw = inner ? inner[1] : block;
+      const stripped = raw.replace(/^\s*\w+\s*=\s*/, '').replace(/;?\s*$/, '').replace(/^JSON\.parse\(\s*['"]/, '').replace(/['"]\s*\)\s*;?\s*$/, '');
+      try { json = JSON.parse(stripped); } catch (e) {}
+      if (!json && /JSON\.parse/.test(raw)) {
+        const q = raw.match(/JSON\.parse\(\s*['"]([\s\S]*?)['"]\s*\)/i);
+        if (q) { try { json = JSON.parse(q[1].replace(/\\"/g, '"').replace(/\\\\/g, '\\')); } catch (e) {} }
+      }
+      if (!json) {
+        const brace = raw.indexOf('{');
+        if (brace >= 0) {
+          try { json = JSON.parse(raw.slice(brace)); } catch (e) {}
+        }
+      }
+    } else {
+      const brace = block.indexOf('{');
+      const eq = block.indexOf('=');
+      const start = eq >= 0 && brace >= 0 ? Math.min(brace, eq + 1) : Math.max(brace, eq + 1);
+      if (brace >= 0) {
+        try { json = JSON.parse(block.slice(brace)); } catch (e) {}
+      }
+    }
+    if (!json) continue;
+
+    const strings = [];
+    const walk = (node) => {
+      if (typeof node === 'string') {
+        if (node.length >= 600) strings.push(node);
+      } else if (Array.isArray(node)) {
+        node.forEach(walk);
+      } else if (node && typeof node === 'object') {
+        Object.values(node).forEach(walk);
+      }
+    };
+    walk(json);
+    const jdLike = strings
+      .filter((s) => /(responsibilities|requirements|qualifications|about the (role|job|position)|what you'?ll do|what you will do|the role|we are looking for|you will|experience|skills)/i.test(s))
+      .sort((a, b) => b.length - a.length);
+    if (jdLike.length) candidates.push(jdLike[0]);
+  }
+
+  // Next.js App Router ships the page content in the flight stream as escaped
+  // quoted strings (self.__next_f.push([1,"\u003ch2\u003e..."])). Extract them.
+  const quoted = [];
+  const unesc = (s) =>
+    s
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, '\\');
+  for (const block of blocks) {
+    const qRe = /"(?:[^"\\]|\\.)*"/g;
+    let qm;
+    while ((qm = qRe.exec(block)) !== null) {
+      const s = unesc(qm[0].slice(1, -1));
+      if (s.length >= 600) quoted.push(s);
+    }
+  }
+  const htmlCands = quoted
+    .filter((s) => /<p[ >]/.test(s) && /<\/p>/.test(s) && /<h[1-4][ >]/.test(s) && /<\/h[1-4]>/.test(s))
+    .filter((s) => /(About the Role|Responsibilities|Requirements|Qualifications|What you'?ll do|What You Will Do|You Will|We are looking for)/i.test(s))
+    .map((s) => ({ tags: (s.match(/<p[ >]/g) || []).length, text: stripHtml(s) }))
+    .filter((x) => x.text.length >= 400)
+    .sort((a, b) => b.tags - a.tags || b.text.length - a.text.length);
+  if (htmlCands.length) {
+    const best = htmlCands[0];
+    if (best.text.length >= 280) return best.text.slice(0, 14000);
+  }
+
+  if (!candidates.length) return null;
+  candidates.sort((a, b) => b.length - a.length);
+  const best = candidates[0];
+  const text = stripHtml(best);
+  if (text.length < 280) return null;
+  return text.slice(0, 14000);
+}
+
+const jfetch = (url, opts = {}, ms = 15000) =>
+  fetch(url, { ...opts, signal: opts.signal || AbortSignal.timeout(ms) });
 
 async function fetchAshbyBoard(board) {
   if (ashbyBoardCache.has(board)) return ashbyBoardCache.get(board);
-  const r = await fetch(
+  const r = await jfetch(
     `https://api.ashbyhq.com/posting-api/job-board/${encodeURIComponent(board)}?includeCompensation=true`,
     { headers: { 'User-Agent': 'cvin-jd-enrich/1.0' } }
   );
@@ -193,11 +422,15 @@ async function fetchSourceText(job) {
     const thirtyDaysAgoMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
 
     if (meta.kind === 'greenhouse' && meta.board && meta.id) {
-      const r = await fetch(
+      const r = await jfetch(
         `https://boards-api.greenhouse.io/v1/boards/${encodeURIComponent(meta.board)}/jobs/${meta.id}`,
         { headers: { 'User-Agent': 'cvin-jd-enrich/1.0' } }
       );
-      if (!r.ok) return { ok: false, reason: `gh_${r.status}` };
+      if (!r.ok) {
+        const fb = await scrapeAsHtml(job.apply_url);
+        if (fb.ok) return fb;
+        return { ok: false, reason: `gh_${r.status}` };
+      }
       const d = await r.json();
       const publishedAt = d.updated_at || d.created_at;
       if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
@@ -218,8 +451,12 @@ async function fetchSourceText(job) {
 
     if (meta.kind === 'ashby' && meta.board && meta.id) {
       const map = await fetchAshbyBoard(meta.board);
-      const j = map?.get(meta.id);
-      if (!j) return { ok: false, reason: 'ashby_not_found' };
+      let j = map?.get(meta.id);
+      if (!j) {
+        const fb = await scrapeAsHtml(job.apply_url);
+        if (fb.ok) return fb;
+        return { ok: false, reason: 'ashby_not_found' };
+      }
       const publishedAt = j.publishedAt;
       if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
         return { ok: false, reason: 'posting_older_than_30d' };
@@ -241,11 +478,15 @@ async function fetchSourceText(job) {
     }
 
     if (meta.kind === 'lever' && meta.board && meta.id) {
-      const r = await fetch(
+      const r = await jfetch(
         `https://api.lever.co/v0/postings/${encodeURIComponent(meta.board)}/${meta.id}`,
         { headers: { 'User-Agent': 'cvin-jd-enrich/1.0' } }
       );
-      if (!r.ok) return { ok: false, reason: `lever_${r.status}` };
+      if (!r.ok) {
+        const fb = await scrapeAsHtml(job.apply_url);
+        if (fb.ok) return fb;
+        return { ok: false, reason: `lever_${r.status}` };
+      }
       const d = await r.json();
       const publishedAt = d.createdAt ? new Date(d.createdAt).toISOString() : null;
       if (d.createdAt && d.createdAt < thirtyDaysAgoMs) {
@@ -273,11 +514,15 @@ async function fetchSourceText(job) {
     }
 
     if (meta.kind === 'smartrecruiters' && meta.board && meta.id) {
-      const r = await fetch(
+      const r = await jfetch(
         `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(meta.board)}/postings/${meta.id}`,
         { headers: { 'User-Agent': 'cvin-jd-enrich/1.0' } }
       );
-      if (!r.ok) return { ok: false, reason: `sr_${r.status}` };
+      if (!r.ok) {
+        const fb = await scrapeAsHtml(job.apply_url);
+        if (fb.ok) return fb;
+        return { ok: false, reason: `sr_${r.status}` };
+      }
       const d = await r.json();
       const publishedAt = d.releasedDate;
       if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
@@ -299,7 +544,7 @@ async function fetchSourceText(job) {
     }
 
     if (meta.kind === 'linkedin' && meta.id) {
-      const r = await fetch(
+      const r = await jfetch(
         `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/${meta.id}`,
         {
           headers: {
@@ -308,8 +553,28 @@ async function fetchSourceText(job) {
             Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9',
           },
-        }
+        },
+        20000
       );
+      if (r.status === 429) {
+        // LinkedIn rate limit: back off and retry up to 3 times
+        for (const delay of [3000, 8000, 15000]) {
+          await sleep(delay);
+          const retry = await jfetch(
+            `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/${meta.id}`,
+            {
+              headers: {
+                'User-Agent': BROWSER_UA,
+                Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9',
+              },
+            },
+            20000
+          );
+          if (retry.ok) { r = retry; break; }
+          if (retry.status !== 429) { r = retry; break; }
+        }
+      }
       if (!r.ok) return { ok: false, reason: `linkedin_${r.status}` };
       const html = await r.text();
       const match = html.match(/<div class=\"show-more-less-html__markup[^\"]*\">([\s\S]*?)<\/div>/i);
@@ -339,49 +604,7 @@ async function fetchSourceText(job) {
     }
 
     if (meta.kind === 'html') {
-      const r = await fetch(meta.url, {
-        redirect: 'follow',
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (compatible; cvin-jd-enrich/1.0; +https://cvin.bio)',
-          Accept: 'text/html,application/xhtml+xml',
-        },
-      });
-      if (!r.ok) return { ok: false, reason: `html_${r.status}` };
-      const html = await r.text();
-      if (/cf-browser-verification|captcha|access denied|login to continue/i.test(html) && html.length < 8000) {
-        return { ok: false, reason: 'html_blocked' };
-      }
-      // Prefer JSON-LD JobPosting
-      const ld = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
-      for (const match of ld) {
-        try {
-          const data = JSON.parse(match[1]);
-          const nodes = Array.isArray(data) ? data : data['@graph'] || [data];
-          for (const n of nodes) {
-            if (n && /JobPosting/i.test(String(n['@type'] || ''))) {
-              const text = stripHtml(n.description || '');
-              if (text.length >= 280) {
-                return {
-                  ok: true,
-                  text,
-                  extras: {
-                    location: n.jobLocation?.address?.addressLocality || n.jobLocationType,
-                    salary: n.baseSalary,
-                  },
-                };
-              }
-            }
-          }
-        } catch {
-          /* ignore bad json-ld */
-        }
-      }
-      const text = stripHtml(html).slice(0, 20000);
-      if (text.length < 400) return { ok: false, reason: 'html_short' };
-      // Too much chrome / nav noise
-      if (text.length > 400 && text.split(/\s+/).length < 80) return { ok: false, reason: 'html_thin' };
-      return { ok: true, text: text.slice(0, 14000), extras: {} };
+      return await scrapeAsHtml(meta.url);
     }
   } catch (e) {
     return { ok: false, reason: `err_${e.name || 'fetch'}` };
@@ -652,19 +875,23 @@ async function rewriteWithGemini(job, sourceText, extras) {
     for (const key of GEMINI_KEYS) {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
       try {
-        const r = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.4,
-              maxOutputTokens: 4096,
-              topP: 0.9,
-              thinkingConfig: { thinkingBudget: 0 },
-            },
-          }),
-        });
+        const r = await jfetch(
+          url,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: {
+                temperature: 0.4,
+                maxOutputTokens: 4096,
+                topP: 0.9,
+                thinkingConfig: { thinkingBudget: 0 },
+              },
+            }),
+          },
+          45000
+        );
         if (r.ok) {
           data = await r.json();
           break;
@@ -700,7 +927,7 @@ async function rewriteWithCohere(job, sourceText, extras) {
   for (const model of models) {
     for (const key of COHERE_KEYS) {
       try {
-        const r = await fetch('https://api.cohere.ai/v1/chat', {
+        const r = await jfetch('https://api.cohere.ai/v1/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -712,7 +939,7 @@ async function rewriteWithCohere(job, sourceText, extras) {
             temperature: 0.4,
             max_tokens: 4096,
           }),
-        });
+        }, 45000);
         if (r.ok) {
           const data = await r.json();
           const text = data.text || '';
@@ -740,7 +967,7 @@ async function rewriteWithGroq(job, sourceText, extras) {
   for (const model of models) {
     for (const key of GROQ_KEYS) {
       try {
-        const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        const r = await jfetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -753,7 +980,7 @@ async function rewriteWithGroq(job, sourceText, extras) {
             max_tokens: 4096,
             top_p: 0.9,
           }),
-        });
+        }, 45000);
         if (r.ok) {
           const data = await r.json();
           const text = data.choices?.[0]?.message?.content || '';
@@ -781,7 +1008,7 @@ async function rewriteWithOpenAI(job, sourceText, extras) {
   for (const model of models) {
     for (const key of OPENAI_KEYS) {
       try {
-        const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        const r = await jfetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -794,7 +1021,7 @@ async function rewriteWithOpenAI(job, sourceText, extras) {
             max_tokens: 4096,
             top_p: 0.9,
           }),
-        });
+        }, 45000);
         if (r.ok) {
           const data = await r.json();
           const text = data.choices?.[0]?.message?.content || '';
@@ -820,7 +1047,7 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
   let lastErr = '';
   for (const model of models) {
     try {
-      const r = await fetch('https://api.anthropic.com/v1/messages', {
+      const r = await jfetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
           'x-api-key': ANTHROPIC_KEY,
@@ -833,7 +1060,7 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
           temperature: 0.4,
           messages: [{ role: 'user', content: prompt }],
         }),
-      });
+      }, 45000);
       if (r.ok) {
         const data = await r.json();
         const text = (data.content || []).map((p) => p.text || '').join('');
@@ -900,7 +1127,8 @@ async function fetchAllJobs() {
   const out = [];
   let offset = 0;
   const page = 1000;
-  const since = new Date(Date.now() - 30 * 86400000).toISOString();
+  const since = RETRY_ONLY || LINKEDIN_ONLY ? new Date(0).toISOString() : new Date(Date.now() - 30 * 86400000).toISOString();
+  const orderDir = RETRY_ONLY || LINKEDIN_ONLY ? 'created_at.asc' : 'created_at.desc';
 
   const hex = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
   const chunkSize = Math.max(1, Math.floor(hex.length / WORKERS));
@@ -913,9 +1141,22 @@ async function fetchAllJobs() {
       url += `&id=gte.${startHex}0000000-0000-0000-0000-000000000000`;
       if (endHex) url += `&id=lt.${endHex}0000000-0000-0000-0000-000000000000`;
     }
-    url += `&order=created_at.desc&limit=${page}&offset=${offset}`;
+    url += `&order=${orderDir}&limit=${page}&offset=${offset}`;
 
-    const r = await fetch(url, { headers });
+    let r;
+    let ok = false;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        r = await jfetch(url, { headers }, 60000);
+        ok = true;
+        break;
+      } catch (e) {
+        if (attempt < 2) { await sleep(1500 * (attempt + 1)); continue; }
+        console.error(`fetchAllJobs page error (${e.name || e.message}); returning ${out.length} rows`);
+        return out;
+      }
+    }
+    if (!ok) return out;
     const rows = await r.json();
     if (!Array.isArray(rows) || !rows.length) break;
     out.push(...rows);
@@ -928,11 +1169,22 @@ async function fetchAllJobs() {
 async function loadUsedSlugs(companySlug) {
   const used = new Set();
   const prefix = `${companySlug}_`;
-  const r = await fetch(
-    `${U}/rest/v1/jobs?select=external_id&external_id=like.${encodeURIComponent(prefix + '*')}&limit=1000`,
-    { headers }
-  );
-  const rows = await r.json();
+  const url = `${U}/rest/v1/jobs?select=external_id&external_id=like.${encodeURIComponent(prefix + '*')}&limit=1000`;
+  let r;
+  let rows;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      r = await jfetch(url, { headers }, 30000);
+      rows = await r.json();
+      break;
+    } catch (e) {
+      if (attempt < 2) {
+        await sleep(800 * (attempt + 1));
+        continue;
+      }
+      throw e;
+    }
+  }
   if (Array.isArray(rows)) {
     for (const row of rows) {
       const ext = row.external_id || '';
@@ -943,15 +1195,35 @@ async function loadUsedSlugs(companySlug) {
 }
 
 async function updateJob(id, patch) {
-  const r = await fetch(`${U}/rest/v1/jobs?id=eq.${id}`, {
-    method: 'PATCH',
-    headers: { ...headers, Prefer: 'return=minimal' },
-    body: JSON.stringify(patch),
-  });
-  if (!r.ok) {
-    const t = await r.text();
-    throw new Error(`patch_${r.status}:${t.slice(0, 200)}`);
+  const url = `${U}/rest/v1/jobs?id=eq.${id}`;
+  let lastErr;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const r = await jfetch(
+        url,
+        {
+          method: 'PATCH',
+          headers: { ...headers, Prefer: 'return=minimal' },
+          body: JSON.stringify(patch),
+        },
+        30000
+      );
+      if (!r.ok) {
+        const t = await r.text();
+        throw new Error(`patch_${r.status}:${t.slice(0, 200)}`);
+      }
+      return;
+    } catch (e) {
+      const msg = String(e.message || e);
+      if (attempt < 2 && (msg.includes('CONNECT_TIMEOUT') || msg.includes('fetch failed') || /^patch_5\d\d:/.test(msg))) {
+        lastErr = e;
+        await sleep(1000 * (attempt + 1));
+        continue;
+      }
+      throw e;
+    }
   }
+  throw lastErr;
 }
 
 /** Serialize slug minting per company (concurrent workers race on `used`). */
@@ -993,17 +1265,32 @@ async function runOneBatch(batchNum, state, done) {
   );
 
   console.log('Loading jobs…');
-  const all = await fetchAllJobs();
+  let all;
+  try {
+    all = await fetchAllJobs();
+  } catch (e) {
+    console.error(`fetchAllJobs failed: ${String(e.message || e).slice(0, 120)}`);
+    return { attempted: 0, ok: 0, skip: 0, fail: 1, reasons: {} };
+  }
   console.log(`Total jobs loaded: ${all.length}`);
 
   const candidates = all
-    .filter((j) => j.apply_url && !done.has(j.id))
+    .filter((j) =>
+      RETRY_ONLY
+        ? j.apply_url &&
+          ((j.description || '').length >= 500 ||
+            (state.processed[j.id] && state.processed[j.id].status !== 'ok' && !PERMANENT_REASONS.has(String(state.processed[j.id].reason || '').trim())))
+        : j.apply_url && !done.has(j.id)
+    )
     .filter((j) => {
       const tags = j.tags || [];
       if (tags.includes('curated-jd')) return false;
       const kind = classifyApplyUrl(j.apply_url).kind;
-      if (kind === 'skip' || kind === 'none') return false;
-      if (isPrettyExternalId(j.company, j.external_id) && (j.description || '').length >= 500) {
+      if (kind === 'none') return false;
+      if (kind === 'skip' && (j.description || '').length < 500) return false;
+      if (LINKEDIN_ONLY && kind !== 'linkedin') return false;
+      if (RETRY_ONLY && !LINKEDIN_ONLY && kind === 'linkedin') return false;
+      if (!RETRY_ONLY && isPrettyExternalId(j.company, j.external_id) && (j.description || '').length >= 500) {
         return false;
       }
       return true;
@@ -1036,6 +1323,18 @@ async function runOneBatch(batchNum, state, done) {
   for (let start = 0; start < queue.length && stats.ok < BATCH_SIZE; start += waveSize) {
     const wave = queue.slice(start, Math.min(start + waveSize, queue.length));
     await mapPool(wave, CONCURRENCY, async (job) => {
+      try {
+        await processOne(job);
+      } catch (e) {
+        stats.fail++;
+        const reason = String(e.message || e).slice(0, 80);
+        stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
+        state.processed[job.id] = { status: 'fail', reason };
+        done.add(job.id);
+      }
+    });
+
+    async function processOne(job) {
       if (stats.ok >= BATCH_SIZE) return;
       if (done.has(job.id) && state.processed[job.id]?.status === 'ok') return;
       attempted++;
@@ -1048,7 +1347,18 @@ async function runOneBatch(batchNum, state, done) {
         return;
       }
 
-      const scraped = await fetchSourceText(job);
+      const existing = (job.description || '').trim();
+      let scraped;
+      if (existing.length >= 500 && RETRY_ONLY) {
+        const thirtyDaysAgoMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
+        if (job.posted_at && new Date(job.posted_at).getTime() < thirtyDaysAgoMs) {
+          scraped = { ok: false, reason: 'posting_older_than_30d' };
+        } else {
+          scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+        }
+      } else {
+        scraped = await fetchSourceText(job);
+      }
       if (!scraped.ok) {
         stats.skip++;
         stats.reasons[scraped.reason] = (stats.reasons[scraped.reason] || 0) + 1;
@@ -1075,18 +1385,27 @@ async function runOneBatch(batchNum, state, done) {
       let jobSlug;
       let external_id;
       let path;
-      await withCompanyLock(companySlug, async () => {
-        if (!usedByCompany.has(companySlug)) {
-          usedByCompany.set(companySlug, await loadUsedSlugs(companySlug));
-        }
-        const used = usedByCompany.get(companySlug);
-        if (isPrettyExternalId(job.company, job.external_id)) {
-          used.delete(job.external_id.slice(companySlug.length + 1).toLowerCase());
-        }
-        jobSlug = prettyJobSlug(job.title, job.id, used);
-        external_id = `${companySlug}_${jobSlug}`;
-        path = `/${companySlug}/${jobSlug}`;
-      });
+      try {
+        await withCompanyLock(companySlug, async () => {
+          if (!usedByCompany.has(companySlug)) {
+            usedByCompany.set(companySlug, await loadUsedSlugs(companySlug));
+          }
+          const used = usedByCompany.get(companySlug);
+          if (isPrettyExternalId(job.company, job.external_id)) {
+            used.delete(job.external_id.slice(companySlug.length + 1).toLowerCase());
+          }
+          jobSlug = prettyJobSlug(job.title, job.id, used);
+          external_id = `${companySlug}_${jobSlug}`;
+          path = `/${companySlug}/${jobSlug}`;
+        });
+      } catch (e) {
+        stats.fail++;
+        const reason = String(e.message || e).slice(0, 80);
+        stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
+        state.processed[job.id] = { status: 'fail', reason };
+        done.add(job.id);
+        return;
+      }
 
       const tags = Array.isArray(job.tags) ? [...job.tags] : [];
       if (!tags.includes('remote')) tags.push('remote');
@@ -1140,7 +1459,7 @@ async function runOneBatch(batchNum, state, done) {
           usedByCompany.get(companySlug)?.delete(jobSlug);
         });
       }
-    });
+    }
   }
 
   state.doneIds = [...done];
