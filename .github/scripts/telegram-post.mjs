@@ -214,7 +214,7 @@ async function fetchJobsPage({ days, limit, label }) {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
     // Minimal columns — less IO on free tier
-    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at',
+    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id',
     source: `in.(${sourceFilter})`,
     published_at: `gt.${since}`,
     order: 'published_at.desc',
@@ -366,6 +366,8 @@ function pickJobs(jobs, limit, category) {
     if (!job.company || job.company.includes('...') || job.company.length <= 2) continue;
     if (!job.title || /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) continue;
     if (BANNED_REGEX.test(job.title)) continue;
+    // Never post a UUID-fallback URL — every posted link must be /{company}/{slug}
+    if (!shortJobSlug(job.company, job.external_id)) continue;
 
     if (catRegex && catRegex.test(job.title)) {
       matchingJobs.push(job);

@@ -316,7 +316,7 @@ function mergeByUrl(into, rows) {
 async function fetchRecentJobs() {
   const since = new Date(Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
-    select: 'id,title,company,location,apply_url,source,created_at',
+    select: 'id,title,company,location,apply_url,source,created_at,external_id',
     created_at: `gt.${since}`,
     order: 'created_at.desc',
     limit: String(RECENT_LIMIT),
@@ -348,7 +348,7 @@ async function fetchByCompanyNames(names) {
       })
       .join(',');
     const url = restUrl(SUPABASE_URL, 'jobs', {
-      select: 'id,title,company,location,apply_url,source,created_at',
+      select: 'id,title,company,location,apply_url,source,created_at,external_id',
       or: `(${or})`,
       order: 'created_at.desc',
       limit: '30',
@@ -397,7 +397,7 @@ async function fetchJobs() {
     try {
       const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,source,created_at',
+        select: 'id,title,company,location,apply_url,source,created_at,external_id',
         created_at: `gt.${since}`,
         order: 'created_at.desc',
         limit: '400',
@@ -442,6 +442,8 @@ function pickJobs(jobs, postedUrls) {
     if (!job.company || !job.title || !job.apply_url) return false;
     if (postedSet.has(job.apply_url)) return false;
     if (SKIP_RE.test(job.title)) return false;
+    // Never post a UUID-fallback URL — every posted link must be /{company}/{slug}
+    if (!shortJobSlug(job.company, job.external_id)) return false;
     // Skip non-English titles
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) return false;
 
