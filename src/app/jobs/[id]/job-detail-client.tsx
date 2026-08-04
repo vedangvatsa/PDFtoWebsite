@@ -239,7 +239,7 @@ export default function JobDetailClient({
   return (
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
       <Header />
-      <main id="main-content" className={`${PAGE_CONTAINER} min-w-0`}>
+      <main id="main-content" className="w-full max-w-5xl mx-auto px-6 pt-4 sm:pt-6 md:pt-8 pb-32 flex-1 min-w-0">
         <Link
           href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
           className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-4 sm:mb-6 min-h-[44px] sm:min-h-0"
@@ -275,9 +275,8 @@ export default function JobDetailClient({
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 leading-snug sm:leading-tight break-words">
                 {job.title}
               </h1>
-              <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
-                <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Key facts</h2>
-                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-1.5 gap-x-3 text-[13px] sm:text-sm text-zinc-600">
+                <div className="mt-2 sm:mt-3">
+                  <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-1.5 gap-x-3 text-[13px] sm:text-sm text-zinc-600">
                   <span className="inline-flex items-center gap-1.5 font-semibold text-zinc-800 min-w-0">
                     <Building2 className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
                     <span className="truncate">{job.company}</span>
