@@ -51,6 +51,14 @@ const OPENAI_KEYS = [
   unquote(process.env.OPENAI_API_KEY_3),
   unquote(process.env.OPENAI_API_KEY_4),
 ].filter(Boolean);
+const NVIDIA_KEYS = [
+  unquote(process.env.NVIDIA_API_KEY),
+  unquote(process.env.NVIDIA_API_KEY_2),
+  unquote(process.env.NVIDIA_API_KEY_3),
+].filter(Boolean);
+// OpenAI-compatible NIM / integrate.api.nvidia.com
+const NVIDIA_BASE = (process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1').replace(/\/$/, '');
+const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'nvidia/nemotron-3-ultra-550b-a55b';
 const ANTHROPIC_KEY = unquote(process.env.ANTHROPIC_API_KEY);
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
@@ -1119,14 +1127,72 @@ async function rewriteWithOpenAI(job, sourceText, extras) {
         }
         const err = await r.text();
         lastErr = `openai_${model}_${r.status}:${err.slice(0, 180)}`;
-        if (r.status === 429) await sleep(TURBO ? 250 : 1000);
+        // TURBO: fail over to Gemini quickly on 429 instead of burning the whole key ring
+        if (r.status === 429) {
+          if (TURBO) throw new Error(lastErr);
+          await sleep(1000);
+        }
       } catch (e) {
         lastErr = `openai_${model}_err:${String(e.message||e).slice(0, 100)}`;
+        if (TURBO && /429/.test(lastErr)) throw new Error(lastErr);
       }
     }
   }
 
   throw new Error(lastErr || 'openai_failed');
+}
+
+/** NVIDIA NIM — OpenAI-compatible chat completions (helps when OpenAI 429s). */
+async function rewriteWithNvidia(job, sourceText, extras) {
+  if (!NVIDIA_KEYS.length) throw new Error('Missing NVIDIA_API_KEY');
+  const prompt = buildJobPrompt(job, sourceText, extras);
+  // Prefer configured model (e.g. nvidia/nemotron-3-ultra-550b-a55b); optional fallbacks
+  const models = TURBO
+    ? [NVIDIA_MODEL]
+    : [NVIDIA_MODEL, 'meta/llama-3.3-70b-instruct', 'meta/llama-3.1-70b-instruct'];
+  let lastErr = '';
+
+  for (const model of models) {
+    for (const key of NVIDIA_KEYS) {
+      try {
+        const r = await jfetch(`${NVIDIA_BASE}/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${key}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: TURBO ? 0.3 : 0.4,
+            max_tokens: 4096,
+            top_p: 0.9,
+            stream: false,
+            // Nemotron ultra can emit reasoning; disable so `content` is clean job text
+            chat_template_kwargs: { enable_thinking: false },
+          }),
+        }, TURBO ? 120000 : 90000);
+        if (r.ok) {
+          const data = await r.json();
+          const msg = data.choices?.[0]?.message || {};
+          // Prefer final content; never use reasoning_content as the JD body
+          const text = (msg.content || '').trim() || (msg.reasoning_content || '').trim();
+          return finalizeText(text);
+        }
+        const err = await r.text();
+        lastErr = `http_${r.status}:${err.slice(0, 120)}`;
+        // Rate limited / overloaded — fall through to OpenAI/Gemini immediately
+        if (r.status === 429 || r.status === 503) throw new Error(lastErr);
+        if (r.status >= 500) await sleep(TURBO ? 200 : 800);
+      } catch (e) {
+        const msg = String(e.message || e);
+        // Don't double-prefix if we already threw lastErr
+        lastErr = msg.startsWith('http_') || msg.startsWith('rewrite_') ? msg.slice(0, 140) : `err:${msg.slice(0, 120)}`;
+        if (/429|503|rate/i.test(lastErr)) throw new Error(lastErr);
+      }
+    }
+  }
+  throw new Error(lastErr || 'nvidia_failed');
 }
 
 async function rewriteWithAnthropic(job, sourceText, extras) {
@@ -1170,23 +1236,41 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
 // (no mutex) — OpenAI rate-limits via 429, we backoff and retry then fall back.
 async function rewriteJobPage(job, sourceText, extras) {
   const providers = [];
-  // Always OpenAI first (all workers hit the same key(s) concurrently)
-  if (OPENAI_KEYS.length) providers.push(rewriteWithOpenAI);
-  if (GEMINI_KEYS.length) providers.push(rewriteWithGemini);
-  if (GROQ_KEYS.length) providers.push(rewriteWithGroq);
-  if (COHERE_KEYS.length) providers.push(rewriteWithCohere);
-  if (ANTHROPIC_KEY) providers.push(rewriteWithAnthropic);
-  if (!providers.length) throw new Error('No AI providers configured (OPENAI_API_KEY / GEMINI_API_KEY)');
+  // Prefer providers that still have quota. NVIDIA_ONLY=1 skips OpenAI/Gemini (useful when both 429).
+  const nvidiaOnly = process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true';
+  if (nvidiaOnly && NVIDIA_KEYS.length) {
+    providers.push(['nvidia', rewriteWithNvidia]);
+  } else if (TURBO) {
+    // TURBO: Gemini → OpenAI → NVIDIA (Nemotron is powerful but rate-limits hard in parallel)
+    if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
+    if (OPENAI_KEYS.length) providers.push(['openai', rewriteWithOpenAI]);
+    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
+  } else {
+    if (OPENAI_KEYS.length) providers.push(['openai', rewriteWithOpenAI]);
+    if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
+    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
+  }
+  // TURBO: skip slow/broken tail (Groq/Cohere/Anthropic). Cascading to Anthropic was
+  // burning every fail as anthropic_400 and hiding the real OpenAI/Gemini error.
+  if (!TURBO) {
+    if (GROQ_KEYS.length) providers.push(['groq', rewriteWithGroq]);
+    if (COHERE_KEYS.length) providers.push(['cohere', rewriteWithCohere]);
+    if (ANTHROPIC_KEY) providers.push(['anthropic', rewriteWithAnthropic]);
+  }
+  if (!providers.length) {
+    throw new Error('No AI providers configured (OPENAI_API_KEY / NVIDIA_API_KEY / GEMINI_API_KEY)');
+  }
 
-  let lastErr = '';
-  for (const provider of providers) {
+  const errors = [];
+  for (const [name, provider] of providers) {
     try {
       return await provider(job, sourceText, extras);
     } catch (e) {
-      lastErr = String(e.message || e).slice(0, 120);
+      errors.push(`${name}:${String(e.message || e).slice(0, 100)}`);
     }
   }
-  throw new Error(`all_providers_failed: ${lastErr}`);
+  // Prefer first error (usually OpenAI) so logs show the real bottleneck
+  throw new Error(`all_providers_failed: ${errors.join(' | ')}`.slice(0, 200));
 }
 
 function hashString(s) {
@@ -1678,7 +1762,7 @@ async function main() {
     process.exit(1);
   }
   console.log(
-    `AI providers: openai=${OPENAI_KEYS.length ? 'yes' : 'no'} gemini=${GEMINI_KEYS.length} cohere=${COHERE_KEYS.length} groq=${GROQ_KEYS.length} anthropic=${ANTHROPIC_KEY ? 'yes' : 'no'} minWords=${MIN_REWRITE_WORDS} turbo=${TURBO ? 1 : 0} concurrency=${CONCURRENCY} workers=${WORKERS}/${WORKER_ID}`
+    `AI providers: openai=${OPENAI_KEYS.length ? 'yes' : 'no'} nvidia=${NVIDIA_KEYS.length} gemini=${GEMINI_KEYS.length} cohere=${COHERE_KEYS.length} groq=${GROQ_KEYS.length} anthropic=${ANTHROPIC_KEY ? 'yes' : 'no'} minWords=${MIN_REWRITE_WORDS} turbo=${TURBO ? 1 : 0} concurrency=${CONCURRENCY} workers=${WORKERS}/${WORKER_ID}`
   );
 
   const state = loadState();
