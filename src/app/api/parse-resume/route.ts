@@ -3,8 +3,8 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createClient } from '@/utils/supabase/server';
 import pdf from 'pdf-parse';
 import mammoth from 'mammoth';
-import { parseResumeText, reconstructMissingSpaces } from '@/lib/resume-parser';
 import { getClientIp } from '@/lib/rate-limit';
+import { validateParsedData, repairParsedData } from '@/lib/parse-guard';
 
 export const maxDuration = 60;
 
@@ -31,11 +31,11 @@ function scrubProtectedArtifacts(value: unknown): unknown {
 }
 
 const systemInstruction = `You are a strict, highly accurate JSON API extracting candidate resumes.
-Return ONLY RAW JSON matching EXACTLY this structure (do not use markdown blocks):
+Return ONLY JSON matching EXACTLY the provided schema (do not use markdown blocks).
 {
   "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "website": "", "github": "", "linkedin": "", "additionalLinks": [{ "label": "", "url": "" }] },
   "summary": "",
-  "workExperience": [{ "company": "", "title": "", "location": "", "startDate": "", "endDate": "", "description": "" }], 
+  "workExperience": [{ "company": "", "title": "", "location": "", "startDate": "", "endDate": "", "description": "" }],
   "education": [{ "institution": "", "degree": "", "fieldOfStudy": "", "startDate": "", "endDate": "", "description": "" }],
   "skills": [""],
   "customSections": []
@@ -62,6 +62,172 @@ CRITICAL RULES:
 17. DATE RULE: If a role or education is ongoing, set "endDate" to "Present" and "startDate" to the actual start date. NEVER put placeholder text like "Still ongoing" in "startDate" or "endDate". If a date is unknown, leave the field as an empty string.
 DO NOT THROW ANY REAL WORK DATA AWAY!`;
 
+// Strict JSON schema for OpenAI structured outputs — guarantees schema-valid JSON.
+const OPENAI_SCHEMA = {
+  type: 'json_schema' as const,
+  json_schema: {
+    name: 'resume_parse',
+    strict: true,
+    schema: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['personalInfo', 'summary', 'workExperience', 'education', 'skills', 'customSections'],
+      properties: {
+        personalInfo: {
+          type: 'object',
+          additionalProperties: false,
+          required: ['fullName', 'email', 'phone', 'location', 'website', 'github', 'linkedin', 'additionalLinks'],
+          properties: {
+            fullName: { type: 'string' },
+            email: { type: 'string' },
+            phone: { type: 'string' },
+            location: { type: 'string' },
+            website: { type: 'string' },
+            github: { type: 'string' },
+            linkedin: { type: 'string' },
+            additionalLinks: {
+              type: 'array',
+              items: {
+                type: 'object',
+                additionalProperties: false,
+                required: ['label', 'url'],
+                properties: { label: { type: 'string' }, url: { type: 'string' } },
+              },
+            },
+          },
+        },
+        summary: { type: 'string' },
+        workExperience: {
+          type: 'array',
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['company', 'title', 'location', 'startDate', 'endDate', 'description'],
+            properties: {
+              company: { type: 'string' },
+              title: { type: 'string' },
+              location: { type: 'string' },
+              startDate: { type: 'string' },
+              endDate: { type: 'string' },
+              description: { type: 'string' },
+            },
+          },
+        },
+        education: {
+          type: 'array',
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['institution', 'degree', 'fieldOfStudy', 'startDate', 'endDate', 'description'],
+            properties: {
+              institution: { type: 'string' },
+              degree: { type: 'string' },
+              fieldOfStudy: { type: 'string' },
+              startDate: { type: 'string' },
+              endDate: { type: 'string' },
+              description: { type: 'string' },
+            },
+          },
+        },
+        skills: { type: 'array', items: { type: 'string' } },
+        customSections: {
+          type: 'array',
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['sectionTitle', 'items'],
+            properties: {
+              sectionTitle: { type: 'string' },
+              items: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  additionalProperties: false,
+                  required: ['title', 'subtitle', 'description', 'date'],
+                  properties: {
+                    title: { type: 'string' },
+                    subtitle: { type: 'string' },
+                    description: { type: 'string' },
+                    date: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+const DEFAULT_MODEL = 'gpt-4.1';
+const MAX_RETRIES = 2;
+
+interface OpenAIMessage {
+  role: 'system' | 'user';
+  content: string | Array<{ type: string; text?: string; image_url?: { url: string } }>;
+}
+
+async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
+  const apiKey = process.env.OPENAI_API_KEY?.trim();
+  if (!apiKey) throw new Error('OPENAI_API_KEY is missing');
+  const model = process.env.OPENAI_MODEL?.trim() || DEFAULT_MODEL;
+
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 45000);
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          temperature: 0,
+          messages,
+          response_format: OPENAI_SCHEMA,
+        }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const statusCode = response.status;
+        const errorMsg = errorData.error?.message || `API Error ${statusCode}`;
+        // Retry on transient errors (429 rate limit, 500 internal, 503 overloaded)
+        if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
+          console.warn(`OpenAI API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`);
+          lastError = new Error(errorMsg);
+          await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+          continue;
+        }
+        throw new Error(errorMsg);
+      }
+
+      const result = await response.json();
+      const content = result.choices?.[0]?.message?.content;
+      if (!content) throw new Error('Empty response from AI engine');
+
+      let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(raw);
+    } catch (err: any) {
+      lastError = err instanceof Error ? err : new Error('Unknown AI error');
+      if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
+        console.warn(`OpenAI request failed (attempt ${attempt + 1}), retrying...`, lastError.message);
+        await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+        continue;
+      }
+      throw lastError;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  throw lastError || new Error('AI parsing failed');
+}
+
 // Supported file types
 const ALLOWED_TYPES: Record<string, string> = {
   'application/pdf': 'pdf',
@@ -73,8 +239,8 @@ const ALLOWED_TYPES: Record<string, string> = {
   'image/jpeg': 'image',
   'image/png': 'image',
   'image/webp': 'image',
-  'image/heic': 'image',
-  'image/heif': 'image',
+  'image/heic': 'image-heic',
+  'image/heif': 'image-heic',
 };
 
 // Rate Limiter: In-memory for guests (best-effort in serverless), Supabase-backed for auth users
@@ -148,8 +314,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided.' }, { status: 400 });
     }
 
-    // .doc files and images are handled natively by Gemini's vision/document understanding
-
     if (file.size > 10 * 1024 * 1024) {
       return NextResponse.json({ error: 'File too large. Max 10MB.' }, { status: 400 });
     }
@@ -163,22 +327,22 @@ export async function POST(request: NextRequest) {
       else if (ext === 'doc') fileType = 'doc';
       else if (ext === 'rtf') fileType = 'rtf';
       else if (ext === 'txt') fileType = 'txt';
-      else if (ext && ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'].includes(ext)) fileType = 'image';
+      else if (ext && ['jpg', 'jpeg', 'png', 'webp'].includes(ext)) fileType = 'image';
+      else if (ext && ['heic', 'heif'].includes(ext)) fileType = 'image-heic';
       else return NextResponse.json({ error: 'Unsupported file type. Please upload your CV as PDF, Word, text, or image.' }, { status: 400 });
+    }
+
+    if (fileType === 'image-heic') {
+      return NextResponse.json({ error: 'HEIC images are not supported. Please save your resume as a PDF, JPG, or PNG and try again.' }, { status: 400 });
     }
 
     const fileBuffer = Buffer.from(await file.arrayBuffer());
     const startTime = Date.now();
 
-    const apiKey = process.env.GEMINI_API_KEY?.trim();
-    if (!apiKey) {
-      return NextResponse.json({ error: 'GEMINI_API_KEY is missing.' }, { status: 500 });
-    }
-
-    let requestBody;
     let pageCount = 0;
     let extractedText = '';
     let aiStructuredData: any = null;
+    let imageDataUri = '';
 
     try {
       if (fileType === 'pdf') {
@@ -191,51 +355,26 @@ export async function POST(request: NextRequest) {
           }
           throw err;
         }
-        
+
         pageCount = pdfData.numpages;
-        extractedText = reconstructMissingSpaces(pdfData.text || '');
         if (pdfData.numpages > 10) {
           return NextResponse.json({ error: `Document is ${pdfData.numpages} pages. Max 10.` }, { status: 400 });
         }
 
-        // Use text-only path when pdf-parse got enough text (cheaper). Fall back to inline_data for scanned PDFs.
-        if (extractedText && extractedText.trim().length >= 50) {
-          requestBody = {
-            contents: [{
-              parts: [
-                { text: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` }
-              ]
-            }],
-            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
-          };
+        extractedText = pdfData.text || '';
+        // Text path: send text for extraction (OpenAI reconstructs lost spaces itself).
+        if (extractedText.trim().length >= 50) {
+          // text path handled below via messages
         } else {
-          // Scanned/image PDF — send binary for Gemini Vision
-          requestBody = {
-            contents: [{
-              parts: [
-                { text: systemInstruction },
-                { inline_data: { mime_type: 'application/pdf', data: fileBuffer.toString('base64') } }
-              ]
-            }],
-            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
-          };
+          // Scanned/image PDF — send the PDF bytes to the vision model
+          imageDataUri = `data:application/pdf;base64,${fileBuffer.toString('base64')}`;
         }
 
       } else if (fileType === 'image') {
-        // Send image directly to Gemini Vision — it can read CV screenshots/photos
         const mimeType = file.type.startsWith('image/') ? file.type : 'image/jpeg';
-        requestBody = {
-          contents: [{
-            parts: [
-              { text: systemInstruction },
-              { inline_data: { mime_type: mimeType, data: fileBuffer.toString('base64') } }
-            ]
-          }],
-          generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
-        };
+        imageDataUri = `data:${mimeType};base64,${fileBuffer.toString('base64')}`;
 
       } else if (fileType === 'doc') {
-        // Use word-extractor for legacy .doc files
         try {
           const WordExtractor = require('word-extractor');
           const extractor = new WordExtractor();
@@ -243,19 +382,6 @@ export async function POST(request: NextRequest) {
           extractedText = doc.getBody();
         } catch (err) {
           return NextResponse.json({ error: 'This Word document could not be read. Please save it as a PDF or .docx and try again.' }, { status: 400 });
-        }
-        
-        if (extractedText && extractedText.trim().length >= 50) {
-          requestBody = {
-            contents: [{
-              parts: [
-                { text: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` }
-              ]
-            }],
-            generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
-          };
-        } else {
-          return NextResponse.json({ error: 'Could not extract enough text from this document.' }, { status: 400 });
         }
 
       } else {
@@ -267,7 +393,6 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'This Word document appears to be corrupted or password-protected. Please save it as a PDF and try again.' }, { status: 400 });
           }
         } else if (fileType === 'rtf') {
-          // RTF: strip formatting tags and extract plain text
           const rtfContent = fileBuffer.toString('utf-8');
           extractedText = rtfContent
             .replace(/\\[a-z]+\d*\s?/gi, '')
@@ -275,127 +400,101 @@ export async function POST(request: NextRequest) {
             .replace(new RegExp("\\\\'[0-9a-f]{2}", 'gi'), '')
             .trim();
         } else {
-          // TXT: direct read
           extractedText = fileBuffer.toString('utf-8');
         }
+      }
 
+      // Build the AI payload
+      let baseMessages: OpenAIMessage[];
+      if (imageDataUri) {
+        baseMessages = [
+          { role: 'system', content: systemInstruction },
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: 'Parse this resume document into the required JSON schema. Extract the candidate name, contact info, summary, all work experience, all education, skills, and every other section as customSections. Follow all rules exactly.' },
+              { type: 'image_url', image_url: { url: imageDataUri } },
+            ],
+          },
+        ];
+      } else {
         if (!extractedText || extractedText.trim().length < 50) {
           return NextResponse.json({ error: 'Could not extract enough text from this document.' }, { status: 400 });
         }
-
-        requestBody = {
-          contents: [{
-            parts: [
-              { text: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` }
-            ]
-          }],
-          generationConfig: { temperature: 0.1, maxOutputTokens: 8192, responseMimeType: 'application/json' }
-        };
+        baseMessages = [
+          { role: 'system', content: systemInstruction },
+          { role: 'user', content: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` },
+        ];
       }
 
-      // Retry loop for transient Gemini API failures (429 rate limit, 503 overloaded, timeouts)
-      const MAX_RETRIES = 2;
-      let lastError: Error | null = null;
-      
-      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
+      aiStructuredData = await callOpenAI(baseMessages);
 
-          const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(requestBody),
-              signal: controller.signal
-            }
-          );
+      // Always run deterministic repair + validation before persisting anything.
+      aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
+      aiStructuredData = repairParsedData(aiStructuredData);
+      let validation = validateParsedData(aiStructuredData);
 
-          clearTimeout(timeout);
+      // Critical failure → one corrective re-parse with the raw source + the bad
+      // output + explicit instructions. This recovers education-dump corruption.
+      if (validation.critical) {
+        const correctionText =
+          (imageDataUri
+            ? 'Re-parse the resume document shown to you in the earlier message.'
+            : `RAW RESUME TEXT:\n${extractedText}`) +
+          `\n\nYour previous parse was INCORRECT. Fix these problems and re-extract the FULL resume:
+${validation.issues.map((i) => `- ${i}`).join('\n')}
+Critical instructions:
+- fullName MUST be the candidate's real name (Title Case), never a label, "Unknown", or a location.
+- education MUST contain ONE entry per real degree/institution with a SHORT description (max 3 lines). NEVER dump the whole resume, skills, projects, or contact info into an education record.
+- work experience, skills, projects, certifications MUST go into their proper arrays.
+Return ONLY the corrected JSON for the ENTIRE resume. Do not lose any data.`;
 
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            const statusCode = response.status;
-            const errorMsg = errorData.error?.message || `API Error ${statusCode}`;
-            
-            // Retry on transient errors (429 rate limit, 500 internal, 503 overloaded)
-            if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
-              console.warn(`Gemini API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`);
-              lastError = new Error(errorMsg);
-              await new Promise(r => setTimeout(r, 1500 * (attempt + 1))); // 1.5s, then 3s backoff
-              continue;
-            }
-            throw new Error(errorMsg);
-          }
-
-          const result = await response.json();
-          const parts = result.candidates?.[0]?.content?.parts || [];
-          
-          let responseText = '';
-          for (const part of parts) {
-            if (part.text) responseText = part.text;
-          }
-          if (!responseText) throw new Error('Empty response from AI engine');
-
-          let rawResponse = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-          aiStructuredData = JSON.parse(rawResponse);
-          break; // Success — exit retry loop
-          
-        } catch (retryError) {
-          lastError = retryError instanceof Error ? retryError : new Error('Unknown error');
-          if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
-            console.warn(`Gemini request failed (attempt ${attempt + 1}), retrying...`, lastError.message);
-            await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
-            continue;
-          }
-          throw lastError;
+        console.warn('Parse failed validation; re-parsing. Issues:', validation.issues.join(' | '));
+        const correctionMessages: OpenAIMessage[] = [{ role: 'system', content: systemInstruction }];
+        if (imageDataUri) {
+          correctionMessages.push({
+            role: 'user',
+            content: [
+              { type: 'text', text: correctionText },
+              { type: 'image_url', image_url: { url: imageDataUri } },
+            ],
+          });
+        } else {
+          correctionMessages.push({ role: 'user', content: correctionText });
         }
-      }
-      
-      if (!aiStructuredData && lastError) throw lastError;
 
-      // Post-processing: normalize skills to plain strings and cap at 30 to prevent bloated profiles
-      if (Array.isArray(aiStructuredData?.skills)) {
-        aiStructuredData.skills = aiStructuredData.skills
-          .map((s: any) => typeof s === 'string' ? s.trim() : String(s?.name ?? '').trim())
-          .filter(Boolean);
-        if (aiStructuredData.skills.length > 30) {
-          console.warn(`Skills cap: truncating ${aiStructuredData.skills.length} skills to 30`);
-          aiStructuredData.skills = aiStructuredData.skills.slice(0, 30);
+        aiStructuredData = await callOpenAI(correctionMessages);
+        aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
+        aiStructuredData = repairParsedData(aiStructuredData);
+        validation = validateParsedData(aiStructuredData);
+
+        if (validation.critical) {
+          console.error('Parse still invalid after corrective re-parse. Issues:', validation.issues.join(' | '));
+          return NextResponse.json(
+            { error: 'We could not extract this resume reliably. Please try a clearer PDF or image, or fill in your details manually.' },
+            { status: 422 }
+          );
         }
       }
 
     } catch (aiError) {
-      console.warn("AI extraction failed after retries, attempting regex fallback...", aiError);
-      
-      if (!extractedText || extractedText.trim().length < 50) {
-          const message = aiError instanceof Error ? aiError.message : 'Unknown error';
-          // For images, there's no text fallback — give a helpful hint
-          if (fileType === 'image') {
-            return NextResponse.json({ error: 'Could not read the image. Please try a clearer photo or upload your CV as a PDF instead.' }, { status: 500 });
-          }
-          return NextResponse.json({ error: `Parse failed: ${message}` }, { status: 500 });
-      }
-      
-      // Fallback
-      aiStructuredData = parseResumeText(extractedText);
+      console.error('AI parsing failed:', aiError);
+      const message = aiError instanceof Error ? aiError.message : 'Unknown error';
+      return NextResponse.json({ error: `Failed to process resume: ${message}` }, { status: 500 });
     }
-    
-    // Strip any residual reconstruction markers from the parsed output before
-    // it can be stored/returned to the client.
+
+    // Strip any residual reconstruction markers before returning to the client.
     aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
-    
-    // Resume processing after successful extraction (AI or Fallback)
+
+    // Resume processing after successful extraction
     const duration = Date.now() - startTime;
-    
+
     // ---------- Option C: Safe Slug Generation (Non-Fatal — frontend has its own fallback) ----------
     try {
       const supabaseUserClient = await createClient();
       const { data: { user } } = await supabaseUserClient.auth.getUser();
 
       if (user && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        // 1. Prioritize keeping their existing URL stable if they already have one
         const { data: currentProfile } = await supabaseAdmin
           .from('profiles')
           .select('username')
@@ -406,10 +505,9 @@ export async function POST(request: NextRequest) {
         if (currentProfile && currentProfile.username) {
           finalSlug = currentProfile.username;
         } else {
-          // 2. Generate a new universally unique slug for them using FIRST NAME only
           const rawFullName = aiStructuredData.personalInfo?.fullName || 'profile';
           const firstNameOnly = rawFullName.trim().split(/\s+/)[0].toLowerCase();
-          
+
           const prefixSlug = firstNameOnly
             .replace(/[^a-z0-9-]/g, '')
             .slice(0, 40) || 'profile';
@@ -417,17 +515,17 @@ export async function POST(request: NextRequest) {
           finalSlug = prefixSlug;
           let isUnique = false;
           let attempt = 0;
-          
+
           while (!isUnique && attempt < 100) {
             const { data: existingProfile, error: existErr } = await supabaseAdmin
               .from('profiles')
               .select('id')
               .eq('username', finalSlug)
               .maybeSingle();
-            
+
             if (existErr) {
               console.error("Slug uniqueness check failed, frontend will handle:", existErr);
-              break; // Non-fatal — let frontend handle slug
+              break;
             }
 
             if (!existingProfile || existingProfile.id === user.id) {
@@ -438,8 +536,7 @@ export async function POST(request: NextRequest) {
             }
           }
         }
-        
-        // Inject the safe unique slug into the payload
+
         if (finalSlug) {
           if (!aiStructuredData.personalInfo) {
             aiStructuredData.personalInfo = {};
@@ -451,25 +548,24 @@ export async function POST(request: NextRequest) {
       console.warn('Slug generation failed (non-fatal, frontend will handle):', slugError);
     }
 
-      console.log(JSON.stringify({
-        event: 'cv_parse_success',
-        fileType,
-        fileSizeKB: Math.round(file.size / 1024),
-        pageCount,
-        durationMs: duration,
-        sectionsFound: {
-          work: aiStructuredData.workExperience?.length || 0,
-          education: aiStructuredData.education?.length || 0,
-          skills: aiStructuredData.skills?.length || 0,
-          custom: aiStructuredData.customSections?.length || 0,
-        },
-        ip,
-      }));
+    console.log(JSON.stringify({
+      event: 'cv_parse_success',
+      fileType,
+      fileSizeKB: Math.round(file.size / 1024),
+      pageCount,
+      durationMs: duration,
+      sectionsFound: {
+        work: aiStructuredData.workExperience?.length || 0,
+        education: aiStructuredData.education?.length || 0,
+        skills: aiStructuredData.skills?.length || 0,
+        custom: aiStructuredData.customSections?.length || 0,
+      },
+      ip,
+    }));
 
-      // Log parse event for rate limiting (non-blocking)
-      logParseEvent(authUserId, ip);
+    logParseEvent(authUserId, ip);
 
-      return NextResponse.json(aiStructuredData, { status: 200 });
+    return NextResponse.json(aiStructuredData, { status: 200 });
 
   } catch (error) {
     console.error('Fatal API Error:', error);
