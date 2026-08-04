@@ -86,7 +86,7 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
             github: getLink('github'),
             linkedin: getLink('linkedin'),
             viewCount: profile.views || 0,
-            skills: profile.skills || [],
+            skills: (profile.skills || []).map((s: any) => typeof s === 'string' ? s.trim() : String(s?.name ?? '').trim()).filter(Boolean),
             links: profile.links || []
         },
         workExperience: profile.experience || [],

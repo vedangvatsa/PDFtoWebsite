@@ -55,6 +55,11 @@ CRITICAL RULES:
 10. WORK LOCATION RULE: For each work experience entry, extract the work location (city, country or city, state) into the "location" field. This is where the job was performed, NOT the candidate's home address. If multiple locations, combine them (e.g. "Dubai & London"). If remote, put "Remote". If hybrid, put "Hybrid, [City]". If not mentioned anywhere in that role's context, leave as empty string. Do NOT guess a location that is not stated or clearly implied. Do NOT put the location inside the description field.
 11. SKILLS SEGREGATION RULE: The "skills" field MUST be a flat array of individual, short, clean, distinct keywords or brief tech/business skill phrases (e.g., "React", "SQL", "Product Discovery"). If the resume groups skills under category lines or lists them as long comma-separated lines (e.g., "Product Management: Product Discovery, PRDs", "Languages: JavaScript, TypeScript"), you MUST segregate them. Split these categories into individual, separate strings in the "skills" array (e.g., ["Product Management", "Product Discovery", "PRDs", "JavaScript", "TypeScript"]). Do NOT include trailing commas, colons, or category prefixes within the individual skill strings, and NEVER output an entire long multi-skill line or category block as a single array element!
 12. SKILLS CAP RULE: Output AT MOST 30 skills. Only include actual technical skills, tools, methodologies, and core competencies that the candidate would list in a "Skills" section. Do NOT extract project topics, domain-specific nouns from job descriptions, or industry verticals as skills. For example, "Hyperledger Fabric" is a skill, but "rural road verification" or "birth and death registration" are project topics, NOT skills. Prioritize hard skills and widely-recognized competencies over vague or overly-specific phrases.
+13. NAME RULE: The "fullName" field MUST be the candidate's real first + last name. NEVER return document labels such as "Curriculum Vitae", "Resume", "Résumé", "CV", "Profile", "Bio", or any abbreviation/acronym (e.g. "H.R.M", "A.K.") as the name. If the header line mixes a name with contact info or a location, extract ONLY the name. Convert ALL-CAPS names to normal Title Case ("REDDY SUMANTH" → "Reddy Sumanth"). NEVER append a city, state, or country to the name (e.g. "Reddy Sumanth Chittoor" is WRONG — "Chittoor" is a location). Do NOT add periods between initials ("H.R.M" is wrong; spell out the name you can see).
+14. EDUCATION RULE: Create ONE education entry per distinct degree/institution. "institution" and "degree" MUST both be populated with real values. The "description" must be SHORT (max 3 lines) and must NOT contain the candidate's name, email, phone, GitHub/LinkedIn URLs, or the header/contact block. NEVER dump the candidate's whole resume (projects, skills, experience, certifications) into a single education entry's description — that is a critical failure.
+15. NO-DUMP RULE: Every distinct section of the CV (skills, projects, certifications, achievements, publications, experience) MUST be extracted into its proper array (skills, workExperience, or customSections). A rich CV must NEVER collapse into a single education record with everything in "description". If the CV clearly contains work experience or skills, "workExperience" and "skills" MUST NOT be empty arrays.
+16. LOCATION FORMAT RULE: Location fields must be formatted "City, Country" or "City, State" with a SINGLE space after the comma. NEVER concatenate like "Nigeria,Lagos" — that is wrong.
+17. DATE RULE: If a role or education is ongoing, set "endDate" to "Present" and "startDate" to the actual start date. NEVER put placeholder text like "Still ongoing" in "startDate" or "endDate". If a date is unknown, leave the field as an empty string.
 DO NOT THROW ANY REAL WORK DATA AWAY!`;
 
 // Supported file types
@@ -350,10 +355,15 @@ export async function POST(request: NextRequest) {
       
       if (!aiStructuredData && lastError) throw lastError;
 
-      // Post-processing: cap skills at 30 to prevent bloated profiles
-      if (Array.isArray(aiStructuredData?.skills) && aiStructuredData.skills.length > 30) {
-        console.warn(`Skills cap: truncating ${aiStructuredData.skills.length} skills to 30`);
-        aiStructuredData.skills = aiStructuredData.skills.slice(0, 30);
+      // Post-processing: normalize skills to plain strings and cap at 30 to prevent bloated profiles
+      if (Array.isArray(aiStructuredData?.skills)) {
+        aiStructuredData.skills = aiStructuredData.skills
+          .map((s: any) => typeof s === 'string' ? s.trim() : String(s?.name ?? '').trim())
+          .filter(Boolean);
+        if (aiStructuredData.skills.length > 30) {
+          console.warn(`Skills cap: truncating ${aiStructuredData.skills.length} skills to 30`);
+          aiStructuredData.skills = aiStructuredData.skills.slice(0, 30);
+        }
       }
 
     } catch (aiError) {
