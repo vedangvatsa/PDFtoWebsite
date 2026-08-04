@@ -37,18 +37,18 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         }
     }
 
-  return (
+return (
     <header className="sticky top-0 z-50 w-full" role="banner">
-      <nav className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-8" aria-label="Main navigation">
-        <div className="flex items-center space-x-2">
+      <nav className="mx-auto grid grid-cols-3 h-16 w-full max-w-screen-2xl items-center gap-4 px-4 sm:px-8" aria-label="Main navigation">
+        <div className="col-start-1">
           <Link href="/" className="flex items-center space-x-2" aria-label="CVin.Bio home">
             <Icons.logo className="h-6 w-6" />
           </Link>
         </div>
-
-        {children}
-
-        <div className="flex items-center gap-1">
+        <div className="col-start-2 flex justify-center">
+          {children}
+        </div>
+        <div className="col-start-3 flex justify-end items-center gap-1">
           {pathname !== '/jobs' && (
             <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
               <Link href="/jobs">Jobs</Link>
@@ -60,16 +60,16 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             </Button>
           )}
           {!isUserLoading && user && (
-              <>
-                {pathname !== '/editor' && (
-                  <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
-                    <Link href="/editor">Editor</Link>
-                  </Button>
-                )}
-                <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
-                  Logout
+            <>
+              {pathname !== '/editor' && (
+                <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+                  <Link href="/editor">Editor</Link>
                 </Button>
-              </>
+              )}
+              <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+                Logout
+              </Button>
+            </>
           )}
         </div>
       </nav>
