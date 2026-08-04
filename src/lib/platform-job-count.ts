@@ -7,5 +7,5 @@
  *
  * Bump when the board order-of-magnitude changes.
  */
-export const PLATFORM_JOBS_TOTAL = 100_000;
+export const PLATFORM_JOBS_TOTAL = 108_000;
 export const PLATFORM_JOBS_DISPLAY = '100k+';
