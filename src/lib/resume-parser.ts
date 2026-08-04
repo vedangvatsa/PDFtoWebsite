@@ -22,6 +22,7 @@ export interface ParsedResume {
     degree: string;
     startDate: string;
     endDate?: string;
+    description?: string;
   }[];
   skills: { name: string }[];
 }
@@ -33,14 +34,19 @@ const EMAIL_RE = /[\w.+-]+@[\w-]+\.[a-z]{2,}/i;
 // Phone: handles international formats, parentheses, dots, dashes, continuous digits with country code
 const PHONE_RE = /(?:(?:tel:\s*)?\+?\d{1,4}[\s.\-/]?)?\(?\d{2,5}\)?[\s.\-/]?\d{2,5}[\s.\-/]?\d{2,5}(?:[\s.\-/]?\d{1,5})?/;
 
-// URL patterns - broader to catch LinkedIn, GitHub, personal sites
-const URL_RE = /(?:https?:\/\/)?(?:www\.)?(?:linkedin\.com\/in\/[\w-]+|github\.com\/[\w-]+|[\w-]+\.(?:com|org|net|io|dev|me|co|app|xyz|tech|design|page|site|portfolio)(?:\/[\w./-]*)?)/i;
+// URL patterns - broader to catch LinkedIn, GitHub, personal sites.
+// Leading lookbehind prevents matching "email.com" inside an email address,
+// and the 2+ char domain prefix prevents matching degree abbreviations like
+// "B.Tech" or "M.Sc".
+const URL_RE = /(?<![\w.+-@])(?:https?:\/\/)?(?:www\.)?(?:linkedin\.com\/in\/[\w-]+|github\.com\/[\w-]+|[\w-]{2,}\.(?:com|org|net|io|dev|me|co|app|xyz|tech|design|page|site|portfolio|bio|ai|in|info|online|link|live|us|uk|de|fr|ca|au|blog|studio)(?:\/[\w./-]*)?)/i;
 const STRICT_URL_RE = /https?:\/\/[^\s<>"]+/i;
 
 // Month names (full or abbreviated)
 const MONTH = '(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)';
 // Date token: "Jan 2021" | "01/2021" | "2021" | "Jan. 2021" | "January, 2021"
-const DATE_TOKEN = `(?:${MONTH}[,.\\/\\s]*\\d{4}|\\d{1,2}\\/\\d{2,4}|\\d{4})`;
+// Bare 4-digit years are restricted to 19xx/20xx so phone-number runs like
+// "173384" are never mistaken for dates and stripped from the text.
+const DATE_TOKEN = `(?:${MONTH}[,.\\/\\s]*\\d{4}|\\d{1,2}\\/\\d{2,4}|(?:19|20)\\d{2})`;
 const DATE_RE = new RegExp(DATE_TOKEN, 'i');
 // Date range: <date> – <date|present>
 const DATE_RANGE_RE = new RegExp(
@@ -87,17 +93,35 @@ const NO_SPLIT_CAMELCASE = new Set([
   'PowerPoint', 'AccessDB', 'MySpace', 'ChatGPT',
 ]);
 
+// URL/email protection marker. NOTE: the space-reconstruction rules below run
+// AFTER tokenization and can split a token like "__PROT0__" into "__PROT 0__"
+// (letter→digit rule). The restore regex must therefore tolerate optional
+// whitespace, and we harden the whole function with a final fail-safe pass so
+// no raw token can ever leak into the text sent downstream.
+const TOKEN_RE = /__PROT\s*(\d+)\s*__/g;
+
 export function reconstructMissingSpaces(text: string): string {
   // Protect known multi-word terms and tech names from being split
   const protections: string[] = [];
   let safe = text;
 
-  // Protect URLs, emails, and file paths
+  // ORDER MATTERS: emails must be protected BEFORE URLs. URL_RE's generic
+  // "word.tld" alternative otherwise matches "email.com" inside an email
+  // address ("veer.b@email.com" → grabs "email.com"), which steals the slot
+  // and leaves the real URL unprotected.
+  safe = safe.replace(/[\w.+-]+@[\w-]+\.[a-z]{2,}/gi, (m) => {
+    protections.push(m);
+    return `__PROT${protections.length - 1}__`;
+  });
+
+  // Protect URLs, file paths, and other web references. Emails are already
+  // tokens by this point, so the generic "word.tld" alternative below can no
+  // longer steal "email.com" out of an email address.
   safe = safe.replace(/(?:https?:\/\/|www\.)\S+/gi, (m) => {
     protections.push(m);
     return `__PROT${protections.length - 1}__`;
   });
-  safe = safe.replace(/[\w.+-]+@[\w-]+\.[a-z]{2,}/gi, (m) => {
+  safe = safe.replace(URL_RE, (m) => {
     protections.push(m);
     return `__PROT${protections.length - 1}__`;
   });
@@ -160,8 +184,19 @@ export function reconstructMissingSpaces(text: string): string {
   // Collapse multiple spaces
   safe = safe.replace(/\s+/g, ' ').trim();
 
-  // Restore protected tokens
-  safe = safe.replace(/__PROT(\d+)__/g, (_, i) => protections[parseInt(i)]);
+  // Restore protected tokens. The space-insertion rules above can split a
+  // token ("__PROT0__" → "__PROT 0__"), so tolerate whitespace around the id.
+  safe = safe.replace(TOKEN_RE, (m, i) => {
+    const idx = parseInt(i);
+    if (idx >= 0 && idx < protections.length) return protections[idx];
+    return '';
+  });
+
+  // Fail-safe: if any token could not be restored (shouldn't happen), strip
+  // the artifact instead of letting raw markers leak into the downstream text.
+  if (/__PROT\s*\d+\s*__/.test(safe)) {
+    safe = safe.replace(TOKEN_RE, '');
+  }
 
   return safe;
 }
@@ -237,27 +272,44 @@ function normalizeHeader(line: string): string {
 function isSectionHeader(line: string): string | null {
   // Check original line for ALL CAPS pattern (common in resumes)
   const cleanedLine = line.replace(/[:\-_•*|#=~\[\]()]+/g, '').trim();
-  
+
   // Lines that are very long can't be section headers
   if (cleanedLine.length > 80 || cleanedLine.length < 3) return null;
   if (cleanedLine.split(/\s+/).length > 8) return null;
-  
+
   const norm = normalizeHeader(line);
   if (norm.length > 80 || norm.length < 3) return null;
   if (norm.split(/\s+/).length > 8) return null;
-  
+
+  // A line with a date range is almost always a job/education entry, never a
+  // header ("Software Engineer - Acme Corp 2020-2024").
+  if (DATE_RANGE_RE.test(line)) return null;
+
+  // A header candidate must be the keyword (plus a short rest). If the rest of
+  // the line after the matched keyword contains job-title words, it is a job
+  // line, not a header (e.g. "Software Engineer at Acme" starts with
+  // "software" but is a role, not a skills section).
+  const matchKeyword = (re: RegExp, text: string): boolean => {
+    if (!re.test(text)) return false;
+    const rest = text.replace(re, '').trim();
+    if (rest.length > 40) return false;
+    if (JOB_TITLE_RE.test(rest)) return false;
+    if (DATE_RE.test(rest)) return false;
+    return true;
+  };
+
   for (const [key, re] of SECTION_MAP) {
-    if (re.test(norm)) return key;
+    if (matchKeyword(re, norm)) return key;
   }
-  
+
   // Also check if the line is ALL CAPS and matches
   if (cleanedLine === cleanedLine.toUpperCase() && cleanedLine.length > 3 && cleanedLine.length < 40) {
     const lower = cleanedLine.toLowerCase();
     for (const [key, re] of SECTION_MAP) {
-      if (re.test(lower)) return key;
+      if (matchKeyword(re, lower)) return key;
     }
   }
-  
+
   return null;
 }
 
@@ -278,7 +330,12 @@ function stripDates(line: string): string {
   return line
     .replace(DATE_RANGE_RE, '')
     .replace(DATE_RE, '')
-    .replace(/\s*[-–—|,·•]+\s*/g, ' ')
+    // Remove dangling separators (leftover " - ", " | " after date removal)
+    // only when they sit next to whitespace/edges, so internal hyphens like
+    // "veer-bhanushali" or "full-stack" are preserved.
+    .replace(/(^|[\s(])\s*[-–—|,·•]+(?=[\s)]|$)/g, '$1 ')
+    .replace(/^[-–—|,·•]+/, '')
+    .replace(/[-–—|,·•]+$/, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -408,7 +465,6 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
 
   // Find name: first short line that looks like a proper name
   for (const line of lines.slice(0, 15)) {
-    if (EMAIL_RE.test(line) || URL_RE.test(line) || PHONE_RE.test(line)) continue;
     if (isSectionHeader(line)) break;
     
     const clean = line
@@ -416,7 +472,11 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
       .replace(/[,|·•].*$/, '') // Remove trailing separators and content
       .trim();
     
+    // Candidate 1: whole line is a clean 1-5 word proper name (no contact info)
     if (
+      !EMAIL_RE.test(clean) &&
+      !URL_RE.test(clean) &&
+      !PHONE_RE.test(clean) &&
       /^[A-Za-z'-]+(?:\s+[A-Za-z.'-]+){1,4}$/.test(clean) &&
       clean.length >= 4 &&
       clean.length < 60 &&
@@ -433,9 +493,33 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
         : clean;
       break;
     }
+
+    // Candidate 2: PDF extraction sometimes merges the whole header into one
+    // giant line ("VEER NARESH BHANUSHALI Cybersecurity Specialist BCA ...").
+    // If the line STARTS with a run of ALL-CAPS words, treat that run as the
+    // name. Reject anything containing digits or job/degree keywords.
+    if (!fullName && clean.length > 60) {
+      const capsRun = clean.match(/^([A-Z]{2,}(?:[\s.'-]+[A-Z]{2,}){1,4})/);
+      if (capsRun) {
+        const candidate = capsRun[1].trim();
+        if (
+          candidate.length >= 4 &&
+          candidate.length < 60 &&
+          !/\d/.test(candidate) &&
+          !JOB_TITLE_RE.test(candidate) &&
+          !DEGREE_RE.test(candidate)
+        ) {
+          fullName = candidate
+            .split(/\s+/)
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+            .join(' ');
+          break;
+        }
+      }
+    }
   }
 
-  return { fullName: fullName || 'Unknown', email, phone, location, website, github, linkedin };
+  return { fullName: fullName || '', email, phone, location, website, github, linkedin };
 }
 
 // ─── Section Splitter ─────────────────────────────────────────────────────────
@@ -825,20 +909,27 @@ function fallbackParse(lines: string[]): Pick<ParsedResume, 'workExperience' | '
 
       if (DEGREE_RE.test(prevLine) || INSTITUTION_RE.test(prevLine) || DEGREE_RE.test(line) || INSTITUTION_RE.test(line)) {
         const rest = stripDates(line);
+        // PDF extraction can merge the ENTIRE resume into a single line. Guard
+        // against storing a giant blob as the institution/degree name.
+        const restIsGiant = rest.length > 160;
+        const instLine = restIsGiant ? rest.slice(0, 120) : rest;
+        const degLine = restIsGiant ? '' : rest;
         education.push({
-          institution: INSTITUTION_RE.test(prevLine) ? prevLine : rest || prevLine || 'Institution',
-          degree: DEGREE_RE.test(prevLine) ? prevLine : DEGREE_RE.test(line) ? rest : prevLine || 'Degree',
+          institution: INSTITUTION_RE.test(prevLine) ? prevLine : instLine || prevLine || 'Institution',
+          degree: DEGREE_RE.test(prevLine) ? prevLine : DEGREE_RE.test(line) ? degLine : prevLine || 'Degree',
           startDate: dr.startDate,
           endDate: dr.endDate,
+          description: restIsGiant ? rest : undefined,
         });
       } else {
         const rest = stripDates(line);
+        const restIsGiant = rest.length > 300;
         workExperience.push({
-          title: JOB_TITLE_RE.test(prevLine) ? prevLine : rest || prevLine || 'Position',
-          company: rest || 'Company',
+          title: JOB_TITLE_RE.test(prevLine) ? prevLine : restIsGiant ? 'Position' : rest || prevLine || 'Position',
+          company: restIsGiant ? 'Company' : rest || 'Company',
           startDate: dr.startDate,
           endDate: dr.endDate,
-          description: descLines.join('\n'),
+          description: restIsGiant ? rest : descLines.join('\n'),
         });
       }
     }
