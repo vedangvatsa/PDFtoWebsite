@@ -57,6 +57,8 @@ const WORKER_ID = Math.max(0, Number(process.env.WORKER_ID || 0)) % WORKERS;
 const CONTINUOUS = process.env.CONTINUOUS === '1';
 const RETRY_ONLY = process.env.RETRY_ONLY === '1';
 const LINKEDIN_ONLY = process.env.LINKEDIN_ONLY === '1';
+const RE_ENRICH = process.env.RE_ENRICH === '1';
+const MIN_REWRITE_WORDS = 600;
 const PERMANENT_REASONS = new Set(['posting_older_than_30d', 'html_blocked', 'rewrite_slop', 'no_company', 'unsupported']);
 const STATE_PATH = resolve(
   __dirname,
@@ -798,6 +800,8 @@ function buildJobPrompt(job, sourceText, extras) {
 
 TASK: Rewrite the source posting into a clear, original job page. Do NOT copy sentences or bullet wording from the source. Paraphrase everything. Keep EVERY concrete fact: tech, years of experience, degrees, locations, salary/comp numbers, visas, deadlines, team names, product names, must-haves, nice-to-haves.
 
+LENGTH: The final output MUST be at least 600 words. Expand each section with specific detail grounded in the source facts — do not pad with generic filler. Write in complete, informative sentences and thorough bullet points.
+
 FORMAT — plain text only, exact section headers, blank line between sections:
 
 ${job.title} at ${job.company}.
@@ -848,7 +852,8 @@ function finalizeText(text) {
     text = text.replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/, '').trim();
   }
   // Light quality gates
-  if (text.length < 350) throw new Error('rewrite_short');
+  const wordCount = text.split(/\s+/).filter(Boolean).length;
+  if (wordCount < 600) throw new Error('rewrite_short');
   if (/leverage|delve into|cutting-edge|exciting opportunity to join/i.test(text)) {
     throw new Error('rewrite_slop');
   }
@@ -1127,8 +1132,8 @@ async function fetchAllJobs() {
   const out = [];
   let offset = 0;
   const page = 1000;
-  const since = RETRY_ONLY || LINKEDIN_ONLY ? new Date(0).toISOString() : new Date(Date.now() - 30 * 86400000).toISOString();
-  const orderDir = RETRY_ONLY || LINKEDIN_ONLY ? 'created_at.asc' : 'created_at.desc';
+  const since = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? new Date(0).toISOString() : new Date(Date.now() - 30 * 86400000).toISOString();
+  const orderDir = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? 'created_at.asc' : 'created_at.desc';
 
   const hex = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
   const chunkSize = Math.max(1, Math.floor(hex.length / WORKERS));
@@ -1276,7 +1281,10 @@ async function runOneBatch(batchNum, state, done) {
 
   const candidates = all
     .filter((j) =>
-      RETRY_ONLY
+      RE_ENRICH
+        ? j.apply_url &&
+          (j.description || '').split(/\s+/).filter(Boolean).length < MIN_REWRITE_WORDS
+        : RETRY_ONLY
         ? j.apply_url &&
           ((j.description || '').length >= 500 ||
             (state.processed[j.id] && state.processed[j.id].status !== 'ok' && !PERMANENT_REASONS.has(String(state.processed[j.id].reason || '').trim())))
@@ -1284,13 +1292,13 @@ async function runOneBatch(batchNum, state, done) {
     )
     .filter((j) => {
       const tags = j.tags || [];
-      if (tags.includes('curated-jd')) return false;
+      if (!RE_ENRICH && tags.includes('curated-jd')) return false;
       const kind = classifyApplyUrl(j.apply_url).kind;
       if (kind === 'none') return false;
       if (kind === 'skip' && (j.description || '').length < 500) return false;
       if (LINKEDIN_ONLY && kind !== 'linkedin') return false;
       if (RETRY_ONLY && !LINKEDIN_ONLY && kind === 'linkedin') return false;
-      if (!RETRY_ONLY && isPrettyExternalId(j.company, j.external_id) && (j.description || '').length >= 500) {
+      if (!RETRY_ONLY && !RE_ENRICH && isPrettyExternalId(j.company, j.external_id) && (j.description || '').length >= 500) {
         return false;
       }
       return true;
@@ -1349,7 +1357,13 @@ async function runOneBatch(batchNum, state, done) {
 
       const existing = (job.description || '').trim();
       let scraped;
-      if (existing.length >= 500 && RETRY_ONLY) {
+      if (RE_ENRICH) {
+        if (existing.length >= 200) {
+          scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+        } else {
+          scraped = await fetchSourceText(job);
+        }
+      } else if (existing.length >= 500 && RETRY_ONLY) {
         const thirtyDaysAgoMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
         if (job.posted_at && new Date(job.posted_at).getTime() < thirtyDaysAgoMs) {
           scraped = { ok: false, reason: 'posting_older_than_30d' };
