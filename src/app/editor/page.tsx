@@ -722,10 +722,16 @@ export default function EditorPage() {
             // --- DATABASE SYNC (If Auth) ---
             if (user) {
                 const { data: currentProfile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+                const baseSlug = generateBaseSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
+                const usernameCandidate =
+                  (!isBadSlug(currentProfile?.username) && currentProfile?.username) ||
+                  (!isBadSlug(parsedSlug) && parsedSlug) ||
+                  baseSlug;
+                const username = await mintUniqueSlug(supabase, String(usernameCandidate), user.id);
                 const updatedProfile = {
                     id: user.id,
                     full_name: smartTitleCase(extractedData.personalInfo?.fullName || '') || currentProfile?.full_name || '',
-                    username: currentProfile?.username || slug,
+                    username,
                     about: extractedData.summary || currentProfile?.about || '',
                     profile_picture_url: currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
                     skills: skillsArr,
