@@ -675,3 +675,34 @@ main().catch(e => {
   console.error('Telegram post failed:', e.message);
   process.exit(1);
 });
+
+// ── Job public path helpers (same as telegram-ai-jobs.mjs) ───────────────
+
+function companyToSlug(company) {
+  return (company || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function shortJobSlug(company, externalId) {
+  if (!externalId) return null;
+  const co = companyToSlug(company);
+  if (!co) return null;
+  const prefix = `${co}_`;
+  const lower = externalId.toLowerCase();
+  if (!lower.startsWith(prefix)) return null;
+  const rest = externalId.slice(prefix.length);
+  if (!/^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest)) return null;
+  if (/^[0-9a-f]{8,}$/i.test(rest)) return null;
+  if (rest.length > 12 && /^\d+$/.test(rest)) return null;
+  return rest.toLowerCase();
+}
+
+function jobPublicPath(job) {
+  const jobSlug = shortJobSlug(job.company, job.external_id);
+  if (jobSlug) return `/${companyToSlug(job.company)}/${jobSlug}`;
+  return `/jobs/${job.id}`;
+}
+
