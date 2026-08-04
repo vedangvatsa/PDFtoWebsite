@@ -287,8 +287,8 @@ function shortJobSlug(company, externalId) {
 
 function jobPublicPath(job) {
   const jobSlug = shortJobSlug(job.company, job.external_id);
-  if (jobSlug) return `/${companyToSlug(job.company)}/${jobSlug}`;
-  return `/jobs/${job.id}`;
+  if (jobSlug) return `https://cvin.bio/${companyToSlug(job.company)}/${jobSlug}`;
+  return `https://cvin.bio/jobs/${job.id}`;
 }
 
 function cleanLocation(loc) {
