@@ -153,13 +153,60 @@ function calculateLinearRegression(y: number[]) {
   return { slope, intercept };
 }
 
+/** Supabase caps each select at 1000 rows — page through the full table. */
+async function fetchAllProfiles(supabase: typeof supabaseAdmin) {
+  const pageSize = 1000;
+  const cols =
+    'id, full_name, username, profile_picture_url, views, skills, experience, education, custom_sections, links, created_at, updated_at';
+  const all: any[] = [];
+  let from = 0;
+  for (;;) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select(cols)
+      .order('created_at', { ascending: true })
+      .range(from, from + pageSize - 1);
+    if (error) {
+      console.error('profiles page failed:', error.message);
+      break;
+    }
+    if (!data?.length) break;
+    all.push(...data);
+    if (data.length < pageSize) break;
+    from += pageSize;
+    // Safety: avoid runaway loops on free-tier quirks
+    if (from > 50_000) break;
+  }
+  return all;
+}
+
+/** Auth admin listUsers is also capped per page. */
+async function fetchAllAuthUsers(supabase: typeof supabaseAdmin) {
+  const all: any[] = [];
+  let page = 1;
+  const perPage = 1000;
+  for (;;) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage });
+    if (error) {
+      console.error('listUsers page failed:', error.message);
+      break;
+    }
+    const users = data?.users || [];
+    if (!users.length) break;
+    all.push(...users);
+    if (users.length < perPage) break;
+    page += 1;
+    if (page > 50) break;
+  }
+  return all;
+}
+
 async function fetchAnalyticsDataRaw() {
   try {
     const supabase = supabaseAdmin;
-    // ── Supabase queries (existing) ───────────────────────────────────────
-    const [profilesRes] = await Promise.all([
-      supabase.from('profiles').select('id, full_name, username, profile_picture_url, views, skills, experience, education, custom_sections, links, created_at, updated_at'),
-    ]);
+    // ── Supabase queries ──────────────────────────────────────────────────
+    // Profiles must be fully paginated (default PostgREST max is 1000).
+    const profilesPromise = fetchAllProfiles(supabase);
 
     let parseLogsRes: any = { data: null };
     try { parseLogsRes = await supabase.from('parse_logs').select('id, user_id, ip, created_at').order('created_at', { ascending: false }).limit(500); } catch { /* table may not exist */ }
@@ -167,19 +214,20 @@ async function fetchAnalyticsDataRaw() {
     let contactRes: any = { data: null };
     try { contactRes = await supabase.from('contact_submissions').select('id, email, purpose, message, is_read, created_at').order('created_at', { ascending: false }).limit(50); } catch { /* table may not exist */ }
 
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    // Full board count (not last-30d only — admin "Active Jobs" was undercounting ~100k+).
     let jobsRes: any = { count: 0 };
-    try { jobsRes = await supabase.from('jobs').select('*', { count: 'exact', head: true }).gt('created_at', thirtyDaysAgo); } catch { /* table may not exist */ }
+    try {
+      jobsRes = await supabase.from('jobs').select('*', { count: 'exact', head: true });
+    } catch { /* table may not exist */ }
 
     let authUsers: any[] = [];
     if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
       try {
-        const authUsersRes = await supabase.auth.admin.listUsers({ perPage: 1000 });
-        authUsers = authUsersRes.data?.users || [];
+        authUsers = await fetchAllAuthUsers(supabase);
       } catch { /* service role key not available */ }
     }
 
-    const profiles = profilesRes.data || [];
+    const profiles = await profilesPromise;
     const parseLogs = parseLogsRes.data || [];
     const contactSubmissions = contactRes.data || [];
 
@@ -691,6 +739,13 @@ async function fetchAnalyticsDataRaw() {
 
     // ── Product Timeline ──
     const productTimeline = [
+      { date: '2026-08-05', tag: 'parse', title: 'Parse-Guard Profile Quality', desc: 'Server-side guards block empty/summary-only resumes, screenshot-filename names (IMG_*, WhatsApp Image…), and disposable userN slugs. Name is preferred from contact block; skills preserve C++/C#; company/JD cleanup on save.' },
+      { date: '2026-08-05', tag: 'fix', title: 'Disposable Profile Slug Remints', desc: 'Editor + parse path remint pretty name-based slugs when username is userN or image-derived junk. Fixed real profiles (e.g. shivam-rajput, faisal-shaharyar) and Google avatar fallbacks.' },
+      { date: '2026-08-04', tag: 'ai', title: 'OpenAI gpt-4.1 Resume Parser', desc: 'Primary parse switched to OpenAI gpt-4.1 with strict JSON schema, validation, and corrective re-parse. Gemini remains fallback; regex-only parse path removed. CF build wires OPENAI_API_KEY.' },
+      { date: '2026-08-04', tag: 'jobs', title: 'SEO Job Description RE_ENRICH Turbo', desc: 'Fleet re-enriched short JDs to ≥600 words for SEO. NVIDIA Nemotron-3 Ultra provider + TURBO multi-model fallbacks (OpenAI/Gemini/NVIDIA). Corpus ≥600w climbed from ~4% toward ~30%+ of 100k+ jobs before fleet stop latch.' },
+      { date: '2026-08-04', tag: 'seo', title: 'Short Pretty Job Slugs', desc: 'Job public URLs mint ≤2-token ~8-char pretty slugs; HTML entities decoded in company slugs. Telegram/LinkedIn posts only use absolute cvin.bio pretty-slug job URLs.' },
+      { date: '2026-08-04', tag: 'jobs', title: 'ATS Discovery + Sitemap Scale', desc: 'Added 575 ATS companies (+16.5k jobs). Sitemap index with chunked job sitemaps for all live pages; llms.txt updated for curated job corpus across ~10k companies.' },
+      { date: '2026-08-04', tag: 'design', title: 'Job Detail UI Tighten', desc: 'Removed redundant tags/Key facts blocks (info already in metadata row); less top padding for cleaner job pages.' },
       { date: '2026-07-16', tag: 'infra', title: 'Free-Tier Supabase Hardening', desc: 'Cut jobs-sync load for Free Nano: bi-daily schedule, LinkedIn scrape weekly only, smaller insert batches, 30-day job purge (~100k+ stale rows removed), and indexes on jobs/profiles hot columns (created_at, external_id, dedup_hash, telegram_posted_at, username).' },
       { date: '2026-07-16', tag: 'perf', title: 'Public Routes Cached Harder', desc: 'Lengthened cache for platform stats (6h), sitemap (6h), and llms.txt (12h) with capped profile/company scans so crawlers and pageviews no longer thrash Postgres.' },
       { date: '2026-07-15', tag: 'email', title: 'Cloudflare Marketing Email Sending', desc: 'Marketing sends via Cloudflare Email Service from news@cvin.bio (site on Cloudflare Workers + Resend onboarding untouched). Domain DNS, BIMI logo, open/click tracking via /api/email-track, List-Unsubscribe headers.' },

@@ -201,7 +201,7 @@ export default function AdminPage() {
             <Stat v={kpis.totalUsers} label="Users" />
             <Stat v={kpis.totalViews} label="Total Views" sub={`avg ${kpis.avgViews} · median ${kpis.medianViews}`} />
             <Stat v={kpis.totalParses} label="CV Parses" />
-            <Stat v={kpis.totalJobs} label="Active Jobs" />
+            <Stat v={kpis.totalJobs} label="Jobs in DB" sub="Full board count" />
             <Stat v={kpis.usersUpdatedLast7d} label="Active Profiles (7d)" />
             <Stat v={kpis.zeroViewProfiles} label="Zero-View Profiles" sub={`${kpis.totalUsers > 0 ? Math.round((kpis.zeroViewProfiles / kpis.totalUsers) * 100) : 0}% of total`} />
             <Stat v={ph.activeToday || 0} label="Active Today" />
