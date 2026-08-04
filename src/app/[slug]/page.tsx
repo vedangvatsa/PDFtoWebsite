@@ -685,10 +685,10 @@ export default async function ProfileSlugPage({ params }: PageProps) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchema) }} />
         <Header />
         
-        <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-6">
+        <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-4">
           
           {/* Company Header */}
-          <div className="flex items-start gap-4 sm:gap-6 mb-6">
+          <div className="flex items-start gap-4 sm:gap-6 mb-4">
             <CompanyLogo
               name={companyName}
               logo={storedLogo}
