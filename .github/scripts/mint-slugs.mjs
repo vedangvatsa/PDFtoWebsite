@@ -10,6 +10,7 @@
  * Usage:
  *   DRY_RUN=1 node .github/scripts/mint-slugs.mjs        # count only
  *   CONCURRENCY=12 node .github/scripts/mint-slugs.mjs   # mint for real
+ *   FORCE=1 CONCURRENCY=12 node .github/scripts/mint-slugs.mjs  # re-mint ALL live jobs (short rule)
  */
 import { createHash } from 'crypto';
 import { createRequire } from 'module';
@@ -24,6 +25,7 @@ require('dotenv').config();
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const DRY_RUN = process.env.DRY_RUN === '1';
+const FORCE = process.env.FORCE === '1';
 const CONCURRENCY = Math.max(1, Math.min(16, Number(process.env.CONCURRENCY || 8)));
 const ONLY_COMPANY = process.env.ONLY_COMPANY ? companyToSlug(process.env.ONLY_COMPANY) : null;
 
@@ -35,8 +37,18 @@ if (!U || !K) {
 const headers = { apikey: K, Authorization: `Bearer ${K}`, 'Content-Type': 'application/json' };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+function decodeHtmlEntities(s) {
+  return String(s || '')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0*39;|&apos;/gi, "'")
+    .replace(/&nbsp;/gi, ' ');
+}
+
 function companyToSlug(company) {
-  return (company || '')
+  return decodeHtmlEntities(company)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/-+/g, '-')
@@ -115,33 +127,31 @@ function prettyJobSlug(title, uniqueSeed, used) {
     }
     if (out.includes(t)) continue;
     const next = out.length ? `${out.join('-')}-${t}` : t;
-    if (out.length >= 1 && next.length > 12 && out.length >= 2) break;
-    if (out.length >= 1 && next.length > 16) break;
+    // SHORT slugs: max 2 tokens; 2-token job slug ≤ 8 chars
+    if (out.length >= 1 && next.length > 8) break;
     out.push(t);
-    if (out.length >= 3 || next.length >= 10) break;
+    if (out.length >= 2) break;
   }
 
   let base = out.join('-') || 'role';
-  if (base.length > 16) {
+  if (base.length > 12) {
     const parts = base.split('-');
-    while (parts.length > 1 && parts.join('-').length > 16) parts.pop();
+    while (parts.length > 1 && parts.join('-').length > 12) parts.pop();
     base = parts.join('-');
+    if (base.length > 12) base = base.slice(0, 12);
   }
   base = base.replace(/-+/g, '-').replace(/^-|-$/g, '') || 'role';
 
   let slug = base;
   if (used.has(slug)) {
     const h = createHash('md5').update(String(uniqueSeed)).digest('hex').slice(0, 2);
-    const parts = base.split('-');
-    let shortBase = parts.slice(0, 2).join('-');
-    if (shortBase.length > 12) shortBase = parts[0];
-    shortBase = (shortBase || 'role').slice(0, 12).replace(/-+$/, '') || 'role';
-    slug = `${shortBase}-${h}`.slice(0, 16).replace(/-+$/, '');
+    const first = (base.split('-')[0] || 'role').slice(0, 6);
+    slug = `${first}-${h}`;
   }
   let n = 2;
   while (used.has(slug) || !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)) {
     const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, 2);
-    const head = (base.split('-')[0] || 'role').slice(0, 10);
+    const head = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${head}-${h}`;
   }
   used.add(slug);
@@ -193,12 +203,13 @@ async function main() {
   const jobs = await pageAll({
     select: 'id,title,company,external_id',
     extraFilters:
-      `&tags=not.cs.{"curated-jd"}&apply_url=not.is.null` +
+      (FORCE ? '' : `&tags=not.cs.{"curated-jd"}`) +
+      `&apply_url=not.is.null` +
       `&created_at=gt.${encodeURIComponent(since)}&or=(published_at.is.null,published_at.gt.${encodeURIComponent(since)})` +
       `&order=created_at.desc`,
     label: 'jobs',
   });
-  console.log(`Fetched ${jobs.length} live non-curated jobs (${Math.round((Date.now() - t0) / 1000)}s)`);
+  console.log(`Fetched ${jobs.length} live jobs (${FORCE ? 'FORCE all' : 'non-curated'} — ${Math.round((Date.now() - t0) / 1000)}s)`);
 
   const need = [];
   const already = [];
@@ -206,7 +217,7 @@ async function main() {
   for (const j of jobs) {
     const co = companyToSlug(j.company);
     if (ONLY_COMPANY && co !== ONLY_COMPANY) continue;
-    if (isPrettyExternalId(j.company, j.external_id)) {
+    if (!FORCE && isPrettyExternalId(j.company, j.external_id)) {
       already.push(j);
     } else if (!j.title || !String(j.title).trim()) {
       noTitle.push(j);

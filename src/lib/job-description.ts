@@ -690,6 +690,12 @@ export function isJobId(id: string): boolean {
 /** Company display name → URL segment (`Google` → `google`). */
 export function companyToSlug(company: string): string {
   return (company || '')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0*39;|&apos;/gi, "'")
+    .replace(/&nbsp;/gi, ' ')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/-+/g, '-')
