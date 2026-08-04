@@ -477,7 +477,7 @@ function formatJobsMessage(jobs, category) {
   for (const job of jobs) {
     const title = truncate(cleanTitle(job.title), 60);
     const company = escapeHTML(cleanCompany(job.company));
-    const url = escapeHTML(job.apply_url);
+    const url = escapeHTML(jobPublicPath(job));
 
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
   }

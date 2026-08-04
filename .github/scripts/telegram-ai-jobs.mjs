@@ -263,6 +263,34 @@ function cleanCompany(name) {
   return clean || decodeHTML(name);
 }
 
+function companyToSlug(company) {
+  return (company || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function shortJobSlug(company, externalId) {
+  if (!externalId) return null;
+  const co = companyToSlug(company);
+  if (!co) return null;
+  const prefix = `${co}_`;
+  const lower = externalId.toLowerCase();
+  if (!lower.startsWith(prefix)) return null;
+  const rest = externalId.slice(prefix.length);
+  if (!/^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest)) return null;
+  if (/^[0-9a-f]{8,}$/i.test(rest)) return null;
+  if (rest.length > 12 && /^\d+$/.test(rest)) return null;
+  return rest.toLowerCase();
+}
+
+function jobPublicPath(job) {
+  const jobSlug = shortJobSlug(job.company, job.external_id);
+  if (jobSlug) return `/${companyToSlug(job.company)}/${jobSlug}`;
+  return `/jobs/${job.id}`;
+}
+
 function cleanLocation(loc) {
   if (!loc) return 'Remote';
   let clean = decodeHTML(loc);
@@ -470,7 +498,7 @@ function formatMessage(jobs) {
   for (const job of jobs) {
     const title = truncate(cleanTitle(job.title), 60);
     const company = escapeHTML(cleanCompany(job.company));
-    const url = escapeHTML(job.apply_url);
+    const url = escapeHTML(jobPublicPath(job));
 
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
   }
