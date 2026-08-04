@@ -44,10 +44,50 @@ function dataURLtoFile(dataurl: string, filename: string): File | null {
     return new File([u8arr], filename, {type:mime});
 }
 
+/** Pretty profile slug from a person's name (not from URLs). */
 function generateBaseSlug(name: string) {
-  const firstName = name.trim().split(/\s+/)[0] || 'user';
-  const base = firstName.toLowerCase().replace(/[^a-z0-9]/g, '');
-  return base || 'user';
+  const parts = String(name || '')
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .map((p) => p.replace(/[^a-z0-9]/g, ''))
+    .filter(Boolean)
+    // drop pure noise / URL fragments if a bad value was passed as "name"
+    .filter((p) => !['https', 'http', 'www', 'com', 'linkedin', 'github', 'in'].includes(p));
+  if (!parts.length) return 'user';
+  // first + up to 2 more tokens (e.g. sanjana-s-huggi), max 40 chars
+  const base = parts.slice(0, 3).join('-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  return (base || 'user').slice(0, 40);
+}
+
+/** Reject UUID defaults, pasted LinkedIn/URLs, and other unusable slugs. */
+function isBadSlug(slug: string | null | undefined): boolean {
+  if (!slug) return true;
+  const s = String(slug).toLowerCase().trim();
+  if (s.length < 2 || s.length > 48) return true;
+  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s)) return true;
+  if (s.includes('http') || s.includes('www') || s.includes('linkedin') || s.includes('github.com')) return true;
+  if (s.startsWith('https') || s.startsWith('httpwww') || s.startsWith('wwwlinkedin')) return true;
+  // slugified full URL: httpswwwlinkedincomin...
+  if (/^(https?|www)/.test(s) || s.includes('linkedincom') || s.includes('githubcom')) return true;
+  if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(s)) return true;
+  return false;
+}
+
+async function mintUniqueSlug(
+  supabase: ReturnType<typeof createClient>,
+  baseSlug: string,
+  userId: string
+): Promise<string> {
+  let newSlug = baseSlug || 'user';
+  let attempt = 0;
+  while (attempt < 100) {
+    const { data: existing } = await supabase.from('profiles').select('id').eq('username', newSlug).maybeSingle();
+    if (!existing || existing.id === userId) return newSlug;
+    attempt++;
+    newSlug = `${baseSlug}${attempt}`;
+  }
+  return `${baseSlug}-${Date.now().toString(36).slice(-4)}`;
 }
 
 // Convert ALL CAPS names to Title Case (leaves mixed-case names untouched)
@@ -69,7 +109,7 @@ const ResumeUploadPrompt = ({ onFileChange, isGenerating }: { onFileChange: (e: 
         ) : (
             <><UploadCloud className="mr-2 h-4 w-4 text-primary" /><span className="text-sm font-medium text-primary">Upload your CV to automatically fill details</span></>
         )}
-        <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={onFileChange} disabled={isGenerating} />
+        <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" onChange={onFileChange} disabled={isGenerating} />
     </label>
 );
 
@@ -453,22 +493,10 @@ export default function EditorPage() {
 
                 let finalSlug = p.username || '';
                 
-                // If the database trigger defaulted their slug to their long UUID, generate a prettier one.
-                if (finalSlug === user.id) {
-                    let baseSlug = generateBaseSlug(user.user_metadata?.full_name || p.full_name || 'user');
-                    let newSlug = baseSlug;
-                    let isUnique = false;
-                    let attempt = 0;
-                    while (!isUnique && attempt < 100) {
-                        const { data: existing } = await supabase.from('profiles').select('id').eq('username', newSlug).maybeSingle();
-                        if (!existing || existing.id === user.id) {
-                            isUnique = true;
-                        } else {
-                            attempt++;
-                            newSlug = `${baseSlug}${attempt}`;
-                        }
-                    }
-                    finalSlug = newSlug;
+                // Fix UUID defaults, LinkedIn/URL paste-slugs, and other unusable usernames.
+                if (finalSlug === user.id || isBadSlug(finalSlug)) {
+                    const baseSlug = generateBaseSlug(user.user_metadata?.full_name || p.full_name || 'user');
+                    finalSlug = await mintUniqueSlug(supabase, baseSlug, user.id);
                     await supabase.from('profiles').update({ username: finalSlug }).eq('id', user.id);
                 }
 
@@ -498,20 +526,8 @@ export default function EditorPage() {
                 setCustomSections(p.custom_sections || []);
             } else {
                 // New user — create a blank profile with a unique slug
-                let baseSlug = generateBaseSlug(user.user_metadata?.full_name || 'user');
-                let newSlug = baseSlug;
-                // Ensure slug uniqueness before insert
-                let isUnique = false;
-                let attempt = 0;
-                while (!isUnique && attempt < 100) {
-                    const { data: existing } = await supabase.from('profiles').select('id').eq('username', newSlug).maybeSingle();
-                    if (!existing || existing.id === user.id) {
-                        isUnique = true;
-                    } else {
-                        attempt++;
-                        newSlug = `${baseSlug}${attempt}`;
-                    }
-                }
+                const baseSlug = generateBaseSlug(user.user_metadata?.full_name || 'user');
+                const newSlug = await mintUniqueSlug(supabase, baseSlug, user.id);
                 const initialLinks = user.email ? [{ type: 'email', value: user.email }] : [];
                 const newProfile = { id: user.id, username: newSlug, full_name: user.user_metadata?.full_name || 'Your Name', profile_picture_url: user.user_metadata?.avatar_url || '', experience: [], education: [], custom_sections: [], skills: [], links: initialLinks };
                 const { error: insertError } = await supabase.from('profiles').upsert(newProfile);
@@ -541,7 +557,11 @@ export default function EditorPage() {
                 if ('fullName' in data) map.full_name = data.fullName;
                 if ('summary' in data) map.about = data.summary;
                 if ('avatarUrl' in data) map.profile_picture_url = data.avatarUrl;
-                if ('slug' in data) map.username = data.slug?.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-');
+                if ('slug' in data) {
+                  const cleaned = String(data.slug || '').toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
+                  // Never persist a LinkedIn/URL-derived slug into username
+                  if (!isBadSlug(cleaned)) map.username = cleaned;
+                }
                 if ('skills' in data) map.skills = data.skills;
                 if ('links' in data) map.links = data.links;
                 if (Object.keys(map).length > 0) {
@@ -647,7 +667,9 @@ export default function EditorPage() {
             console.log('CV Parsed Successfully:', extractedData);
 
             const skillsArr = (extractedData.skills || []).map(cleanSkill);
-            const slug = extractedData.personalInfo?.slug || generateBaseSlug(extractedData.personalInfo?.fullName || 'user');
+            const parsedSlug = !isBadSlug(extractedData.personalInfo?.slug)
+              ? extractedData.personalInfo.slug
+              : generateBaseSlug(extractedData.personalInfo?.fullName || 'user');
 
             // --- SHARED UI UPDATE (Instant) ---
             setProfile(prev => ({
@@ -658,7 +680,8 @@ export default function EditorPage() {
                 location: extractedData.personalInfo?.location || prev.location || '',
                 website: extractedData.personalInfo?.website || prev.website || '',
                 summary: extractedData.summary || prev.summary || '',
-                slug: prev.slug || slug,
+                // Keep a good existing slug; replace URL/LinkedIn garbage with a name-based one
+                slug: (!isBadSlug(prev.slug) && prev.slug) ? prev.slug : parsedSlug,
                 skills: skillsArr,
             }));
             
@@ -798,19 +821,15 @@ export default function EditorPage() {
                         
                         const combinedLinks = Array.from(newLinksMap.entries()).map(([type, value]) => ({ type, value })).filter(l => !!l.value);
 
-                        let baseSlug = generateBaseSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
-                        let finalSlug = currentProfile?.username || extractedData.personalInfo?.slug || baseSlug;
-                        let isUnique = false;
-                        let attempt = 0;
-                        while (!isUnique && attempt < 100) {
-                            const { data: existing } = await supabase.from('profiles').select('id').eq('username', finalSlug).maybeSingle();
-                            if (!existing || existing.id === user.id) {
-                                isUnique = true;
-                            } else {
-                                attempt++;
-                                finalSlug = `${baseSlug}${attempt}`;
-                            }
-                        }
+                        const baseSlug = generateBaseSlug(extractedData.personalInfo?.fullName || user.user_metadata?.full_name || 'user');
+                        // Prefer existing *good* slug; never keep URL/LinkedIn garbage or use a URL as slug.
+                        const candidate =
+                          (!isBadSlug(currentProfile?.username) && currentProfile?.username) ||
+                          (!isBadSlug(extractedData.personalInfo?.slug) && extractedData.personalInfo?.slug) ||
+                          baseSlug;
+                        const finalSlug = isBadSlug(candidate)
+                          ? await mintUniqueSlug(supabase, baseSlug, user.id)
+                          : await mintUniqueSlug(supabase, String(candidate), user.id);
 
                         const updatedProfile = {
                             id: user.id,
@@ -854,9 +873,14 @@ export default function EditorPage() {
             return;
         }
         
-        const cleanSlug = profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-');
+        const cleanSlug = profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
         if (cleanSlug.length < 3) {
             setSlugError('Must be at least 3 characters.');
+            setSlugSuccess(false);
+            return;
+        }
+        if (isBadSlug(cleanSlug)) {
+            setSlugError('Use a short name-based URL (not a LinkedIn or website link).');
             setSlugSuccess(false);
             return;
         }
@@ -1076,21 +1100,9 @@ export default function EditorPage() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const f = e.target.files?.[0];
         if (f) {
-            const allowedTypes = [
-                'application/pdf',
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'application/rtf',
-                'text/rtf',
-                'text/plain',
-                'image/jpeg',
-                'image/png',
-                'image/webp',
-                'image/heic',
-                'image/heif'
-            ];
+            const allowedTypes = ['application/pdf', 'application/x-pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/rtf', 'text/rtf', 'text/plain', 'text/markdown', 'text/csv', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/bmp', 'image/tiff', 'image/tif', 'image/heic', 'image/heif', 'application/octet-stream'];
             
-            if ((!allowedTypes.includes(f.type) && !f.name.match(/\.(pdf|doc|docx|rtf|txt|jpg|jpeg|png|webp|heic|heif)$/i)) || f.size > 10 * 1024 * 1024) {
+            if ((!allowedTypes.includes(f.type) && !f.name.match(/\.(pdf|doc|docx|rtf|txt|md|markdown|csv|jpg|jpeg|png|webp|gif|bmp|tif|tiff|heic|heif)$/i)) || f.size > 10 * 1024 * 1024) {
                 toast({ variant: 'destructive', title: 'Invalid File', description: 'Please select a PDF, Word, text, or image file under 10MB.' });
                 setFile(null); setFileName(null);
             } else {
@@ -1296,7 +1308,7 @@ export default function EditorPage() {
                            {user && (
                                 <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                     <span className="text-xs md:text-sm">{isGenerating ? 'Processing...' : 'Update CV'}</span>
-                                    <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic" onChange={handleFileChange} disabled={isGenerating} />
+                                    <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" onChange={handleFileChange} disabled={isGenerating} />
                                 </label>
                            )}
                            {user && (

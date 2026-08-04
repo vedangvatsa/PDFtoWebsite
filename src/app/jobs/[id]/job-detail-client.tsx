@@ -121,7 +121,12 @@ export default function JobDetailClient({
       fd.append('resume', file);
       const res = await fetch('/api/parse-resume', { method: 'POST', body: fd });
       if (!res.ok) {
-        toast({ variant: 'destructive', title: 'Failed', description: 'Could not parse your CV.' });
+        let description = 'Could not parse your CV.';
+        try {
+          const errData = await res.json();
+          if (errData?.error && typeof errData.error === 'string') description = errData.error;
+        } catch { /* keep default */ }
+        toast({ variant: 'destructive', title: 'Failed', description });
         return;
       }
       const parsed = await res.json();
@@ -223,7 +228,7 @@ export default function JobDetailClient({
           id="jd-cv-primary"
           type="file"
           className="hidden"
-          accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+          accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
           disabled={isUploading}
           onChange={(e) => onFileChange(e, 'primary')}
         />
@@ -376,7 +381,7 @@ export default function JobDetailClient({
           ref={fileInputRef}
           type="file"
           className="hidden"
-          accept=".pdf,.doc,.docx,.rtf,.txt,.jpg,.jpeg,.png,.webp,.heic"
+          accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
           disabled={isUploading}
           onChange={(e) => onFileChange(e, 'mobile_float')}
         />

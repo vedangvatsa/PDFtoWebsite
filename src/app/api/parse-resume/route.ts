@@ -4,7 +4,12 @@ import { createClient } from '@/utils/supabase/server';
 import pdf from 'pdf-parse';
 import mammoth from 'mammoth';
 import { getClientIp } from '@/lib/rate-limit';
-import { validateParsedData, repairParsedData } from '@/lib/parse-guard';
+import {
+  validateParsedData,
+  repairParsedData,
+  extractSalvageResumeText,
+  ensureMinimalProfile,
+} from '@/lib/parse-guard';
 
 export const maxDuration = 60;
 
@@ -45,7 +50,7 @@ CRITICAL RULES:
 1. ONLY extract information that is explicitly present in the provided resume text. DO NOT hallucinate, guess, or invent ANY details or dummy placeholders.
 2. If a section (like workExperience, education) doesn't exist, leave that array completely EMPTY ([]). Do NOT populate [] with dummy objects.
 3. EXTRACT ALL PROFESSIONAL EXPERIENCE into "workExperience"! Even if it is labeled irregularly (e.g. 'Internships', 'Freelance', 'Partnerships', 'Self-Employed', 'Leadership'), aggressively map it to "workExperience" to ensure no primary job data is lost.
-4. CUSTOM SECTIONS RULE: If the CV contains ANY supplementary sections beyond work/education/skills, you MUST map them into "customSections". This includes but is not limited to: 'Awards', 'Achievements', 'Honors', 'Certifications', 'Licenses', 'Publications', 'Patents', 'Projects', 'Volunteering', 'Community Service', 'Languages', 'Interests', 'Hobbies', 'Testimonials', 'References', 'Courses', 'Training', 'Conferences', 'Memberships', 'Professional Affiliations', 'Research', 'Presentations', 'Extracurricular Activities', 'Competitions', 'Scholarships', 'Fellowships', 'Grants'. EXCLUSION: Do NOT create a customSection for Summary, Professional Summary, Profile, Objective, About Me, Career Summary, Executive Summary, Personal Statement, or Overview — these MUST go into the top-level "summary" field ONLY, never into customSections. Use this schema: { "id": "1", "userProfileId": "", "sectionTitle": "Exact Section Name From CV", "order": 1, "items": [{ "id": "1", "title": "", "subtitle": "", "description": "", "date": "" }] }. EVERY distinct section in the CV that is not work/education/skills/summary MUST appear as a separate customSection. Do NOT silently skip any section!
+4. CUSTOM SECTIONS RULE: If the CV contains ANY supplementary sections beyond work/education/skills, you MUST map them into "customSections". This includes but is not limited to: 'Awards', 'Achievements', 'Honors', 'Certifications', 'Licenses', 'Publications', 'Patents', 'Projects', 'Volunteering', 'Community Service', 'Languages', 'Interests', 'Hobbies', 'Testimonials', 'References', 'Courses', 'Training', 'Conferences', 'Memberships', 'Professional Affiliations', 'Research', 'Presentations', 'Extracurricular Activities', 'Competitions', 'Scholarships', 'Fellowships', 'Grants'. EXCLUSION: Do NOT create a customSection for Summary, Professional Summary, Profile, Objective, About Me, Career Summary, Executive Summary, Personal Statement, or Overview — these MUST go into the top-level "summary" field ONLY, never into customSections. Schema per section: { "sectionTitle": "Exact Section Name From CV", "items": [{ "title": "", "subtitle": "", "description": "", "date": "" }] }. EVERY distinct section in the CV that is not work/education/skills/summary MUST appear as a separate customSection. Do NOT silently skip any section!
 5. OCR CLEANING RULE: If the input contains garbled characters, aggressively apply reasoning to reconstruct the intended words. Maintain detailed descriptions and retain bullet point formatting.
 5b. SPACE RECONSTRUCTION RULE: PDF extraction often loses spaces between words, producing text like "Assistedinacquisitionof10+clients". You MUST reconstruct the correct spacing in ALL output fields. Carefully split concatenated words (e.g. "Assistedinacquisition" → "Assisted in acquisition", "proactive&reactiveselling" → "proactive & reactive selling", "winningcontractworth$10Mn" → "winning contract worth $10Mn"). Apply this to EVERY field including descriptions, titles, companies, degrees, and skills. Output text must read as natural English with proper word boundaries.
 6. LOCATION PRIVACY RULE: Do NOT extract full specific street addresses. ONLY output the generalized "City, Country" (e.g., "San Francisco, USA", "London, UK") for the personal location field!
@@ -160,18 +165,49 @@ const OPENAI_SCHEMA = {
   },
 };
 
-const DEFAULT_MODEL = 'gpt-4.1';
+const DEFAULT_OPENAI_MODEL = 'gpt-4.1';
+const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 const MAX_RETRIES = 2;
+/** Prefer vision/document path when extractable text is shorter than this. */
+const MIN_TEXT_CHARS = 50;
 
 interface OpenAIMessage {
   role: 'system' | 'user';
-  content: string | Array<{ type: string; text?: string; image_url?: { url: string } }>;
+  content: string | Array<{ type: string; text?: string; image_url?: { url: string }; file?: { filename: string; file_data: string } }>;
+}
+
+type ParseMedia =
+  | { kind: 'none' }
+  | { kind: 'image'; dataUri: string; mimeType: string }
+  | { kind: 'pdf'; base64: string };
+
+function hasOpenAI(): boolean {
+  return Boolean(process.env.OPENAI_API_KEY?.trim());
+}
+
+function hasGemini(): boolean {
+  return Boolean(process.env.GEMINI_API_KEY?.trim());
+}
+
+const PARSE_USER_PROMPT =
+  'Parse this resume into the required JSON schema. Extract the candidate name, contact info, summary, all work experience, all education, skills, and every other section as customSections. Follow all rules exactly.';
+
+/** iPhone photos (HEIC/HEIF) → JPEG so both OpenAI and Gemini vision accept them. */
+async function convertHeicToJpeg(input: Buffer): Promise<Buffer> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const convert = require('heic-convert') as (opts: {
+    buffer: Buffer;
+    format: 'JPEG' | 'PNG';
+    quality: number;
+  }) => Promise<ArrayBuffer>;
+  const out = await convert({ buffer: input, format: 'JPEG', quality: 0.9 });
+  return Buffer.from(out);
 }
 
 async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
   const apiKey = process.env.OPENAI_API_KEY?.trim();
   if (!apiKey) throw new Error('OPENAI_API_KEY is missing');
-  const model = process.env.OPENAI_MODEL?.trim() || DEFAULT_MODEL;
+  const model = process.env.OPENAI_MODEL?.trim() || DEFAULT_OPENAI_MODEL;
 
   let lastError: Error | null = null;
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
@@ -197,7 +233,6 @@ async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
         const errorData = await response.json().catch(() => ({}));
         const statusCode = response.status;
         const errorMsg = errorData.error?.message || `API Error ${statusCode}`;
-        // Retry on transient errors (429 rate limit, 500 internal, 503 overloaded)
         if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
           console.warn(`OpenAI API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`);
           lastError = new Error(errorMsg);
@@ -228,19 +263,218 @@ async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
   throw lastError || new Error('AI parsing failed');
 }
 
-// Supported file types
+/** Build OpenAI user content that can include images and/or PDF file parts. */
+function buildOpenAIUserContent(
+  text: string,
+  media: ParseMedia
+): OpenAIMessage['content'] {
+  if (media.kind === 'image') {
+    return [
+      { type: 'text', text },
+      { type: 'image_url', image_url: { url: media.dataUri } },
+    ];
+  }
+  if (media.kind === 'pdf') {
+    // OpenAI file input (models that accept PDF). If the model rejects it,
+    // callParseAI falls through to Gemini which accepts PDF natively.
+    return [
+      { type: 'text', text },
+      {
+        type: 'file',
+        file: {
+          filename: 'resume.pdf',
+          file_data: `data:application/pdf;base64,${media.base64}`,
+        },
+      },
+    ];
+  }
+  return text;
+}
+
+/** Gemini — text, images, or multi-page PDF bytes (best path for scans). */
+async function callGemini(
+  userText: string,
+  media: ParseMedia = { kind: 'none' }
+): Promise<any> {
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  if (!apiKey) throw new Error('GEMINI_API_KEY is missing');
+  const model = process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
+
+  const parts: Array<Record<string, unknown>> = [
+    { text: `${systemInstruction}\n\n${userText}` },
+  ];
+  if (media.kind === 'image') {
+    const b64 = media.dataUri.includes(',') ? media.dataUri.split(',')[1]! : media.dataUri;
+    parts.push({ inline_data: { mime_type: media.mimeType, data: b64 } });
+  } else if (media.kind === 'pdf') {
+    parts.push({ inline_data: { mime_type: 'application/pdf', data: media.base64 } });
+  }
+
+  const requestBody = {
+    contents: [{ parts }],
+    generationConfig: {
+      temperature: 0.1,
+      maxOutputTokens: 8192,
+      responseMimeType: 'application/json',
+    },
+  };
+
+  // Prefer stronger flash models for document/vision; fall back down the list.
+  const models = Array.from(
+    new Set([
+      model,
+      'gemini-2.5-flash',
+      'gemini-2.5-flash-lite',
+      'gemini-flash-latest',
+    ])
+  );
+
+  let lastError: Error | null = null;
+  for (const m of models) {
+    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 45000);
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+            signal: controller.signal,
+          }
+        );
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          const statusCode = response.status;
+          const errorMsg = errorData.error?.message || `Gemini API Error ${statusCode}`;
+          lastError = new Error(errorMsg);
+          if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
+            console.warn(`Gemini ${m} returned ${statusCode}, retrying...`);
+            await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+            continue;
+          }
+          // try next model
+          break;
+        }
+        const result = await response.json();
+        const content =
+          result.candidates?.[0]?.content?.parts?.map((p: any) => p.text || '').join('') || '';
+        if (!content) {
+          lastError = new Error('Empty response from Gemini');
+          break;
+        }
+        let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
+        return JSON.parse(raw);
+      } catch (err: any) {
+        lastError = err instanceof Error ? err : new Error('Unknown Gemini error');
+        if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
+          console.warn(`Gemini ${m} failed (attempt ${attempt + 1}), retrying...`, lastError.message);
+          await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+          continue;
+        }
+        break;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+  }
+  throw lastError || new Error('Gemini parsing failed');
+}
+
+/**
+ * ALWAYS OpenAI primary (higher limits). Gemini only if OpenAI is missing or fails.
+ * Applies to text, images, scanned PDFs, and HEIC — no Gemini-first special cases.
+ */
+async function callParseAI(
+  messages: OpenAIMessage[],
+  opts: { media?: ParseMedia; forceProvider?: 'openai' | 'gemini' } = {}
+): Promise<any> {
+  const media = opts.media || { kind: 'none' };
+  const force = opts.forceProvider;
+  const wantOpenAI = hasOpenAI() && force !== 'gemini';
+  const wantGemini = hasGemini() && force !== 'openai';
+
+  if (!wantOpenAI && !wantGemini) {
+    throw new Error(
+      'No AI keys configured. Set OPENAI_API_KEY (primary) and optionally GEMINI_API_KEY (fallback).'
+    );
+  }
+
+  // Extract the latest user text prompt for Gemini / rebuild
+  let userText = PARSE_USER_PROMPT;
+  const lastUser = [...messages].reverse().find((m) => m.role === 'user');
+  if (lastUser && typeof lastUser.content === 'string') {
+    userText = lastUser.content;
+  } else if (lastUser && Array.isArray(lastUser.content)) {
+    const t = lastUser.content.find((p) => p.type === 'text' && p.text);
+    if (t?.text) userText = t.text;
+  }
+
+  const tryOpenAI = async () => {
+    // Rebuild messages so image/PDF parts are attached for this provider
+    const rebuilt: OpenAIMessage[] = [{ role: 'system', content: systemInstruction }];
+    rebuilt.push({
+      role: 'user',
+      content: buildOpenAIUserContent(userText, media),
+    });
+    return callOpenAI(rebuilt);
+  };
+
+  const tryGemini = async () => callGemini(userText, media);
+
+  const errors: string[] = [];
+
+  // 1) OpenAI always first when available
+  if (wantOpenAI) {
+    try {
+      return await tryOpenAI();
+    } catch (err) {
+      errors.push(`openai: ${err instanceof Error ? err.message : err}`);
+      console.warn('OpenAI parse failed; falling back to Gemini…', errors[errors.length - 1]);
+    }
+  }
+
+  // 2) Gemini only as fallback (rate-limit / outage / unsupported modality)
+  if (wantGemini) {
+    try {
+      return await tryGemini();
+    } catch (err) {
+      errors.push(`gemini: ${err instanceof Error ? err.message : err}`);
+    }
+  }
+
+  throw new Error(
+    media.kind === 'pdf'
+      ? `Could not read this scanned PDF (${errors.join(' | ')}). Try exporting as a text PDF or uploading a clear JPG/PNG photo.`
+      : `Failed to process resume (${errors.join(' | ') || 'no provider available'}).`
+  );
+}
+
+
+// Supported file types — accept everything users commonly send as a CV.
 const ALLOWED_TYPES: Record<string, string> = {
   'application/pdf': 'pdf',
+  'application/x-pdf': 'pdf',
   'application/msword': 'doc',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
   'application/rtf': 'rtf',
   'text/rtf': 'rtf',
   'text/plain': 'txt',
+  'text/markdown': 'txt',
+  'text/csv': 'txt',
   'image/jpeg': 'image',
+  'image/jpg': 'image',
   'image/png': 'image',
   'image/webp': 'image',
+  'image/gif': 'image',
+  'image/bmp': 'image',
+  'image/tiff': 'image',
+  'image/tif': 'image',
   'image/heic': 'image-heic',
   'image/heif': 'image-heic',
+  // Some browsers send octet-stream / empty MIME — extension fallback handles these.
+  'application/octet-stream': 'binary',
 };
 
 // Rate Limiter: In-memory for guests (best-effort in serverless), Supabase-backed for auth users
@@ -319,168 +553,304 @@ export async function POST(request: NextRequest) {
     }
 
     let fileType = ALLOWED_TYPES[file.type];
-    // Fallback: check extension if MIME type not in map (some OS report wrong MIME for HEIC etc.)
-    if (!fileType) {
+    // Fallback: extension when MIME is wrong/empty (common for HEIC, mobile, Windows).
+    if (!fileType || fileType === 'binary') {
       const ext = file.name.split('.').pop()?.toLowerCase();
       if (ext === 'pdf') fileType = 'pdf';
       else if (ext === 'docx') fileType = 'docx';
       else if (ext === 'doc') fileType = 'doc';
       else if (ext === 'rtf') fileType = 'rtf';
-      else if (ext === 'txt') fileType = 'txt';
-      else if (ext && ['jpg', 'jpeg', 'png', 'webp'].includes(ext)) fileType = 'image';
+      else if (ext === 'txt' || ext === 'md' || ext === 'markdown' || ext === 'csv') fileType = 'txt';
+      else if (ext && ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tif', 'tiff'].includes(ext)) fileType = 'image';
       else if (ext && ['heic', 'heif'].includes(ext)) fileType = 'image-heic';
-      else return NextResponse.json({ error: 'Unsupported file type. Please upload your CV as PDF, Word, text, or image.' }, { status: 400 });
+      else if (!fileType) {
+        // Best-effort: sniff magic bytes, then fall through as text/pdf/image
+        fileType = 'unknown';
+      }
     }
 
-    if (fileType === 'image-heic') {
-      return NextResponse.json({ error: 'HEIC images are not supported. Please save your resume as a PDF, JPG, or PNG and try again.' }, { status: 400 });
-    }
-
-    const fileBuffer = Buffer.from(await file.arrayBuffer());
+    let fileBuffer = Buffer.from(await file.arrayBuffer());
     const startTime = Date.now();
+
+    // HEIC/HEIF (iPhone photos) → JPEG for vision models
+    if (fileType === 'image-heic') {
+      try {
+        fileBuffer = await convertHeicToJpeg(fileBuffer);
+        fileType = 'image';
+      } catch (err) {
+        console.warn('HEIC conversion failed; sending original bytes to vision:', err);
+        fileType = 'image-heic-raw';
+      }
+    }
 
     let pageCount = 0;
     let extractedText = '';
     let aiStructuredData: any = null;
     let imageDataUri = '';
+    let parseMedia: ParseMedia = { kind: 'none' };
+    /** Keep original PDF bytes so a bad text parse can re-try as a scanned document. */
+    let pdfBase64ForFallback: string | null = null;
 
     try {
       if (fileType === 'pdf') {
-        let pdfData;
+        pdfBase64ForFallback = fileBuffer.toString('base64');
+        let pdfData: { text?: string; numpages?: number } | null = null;
         try {
           pdfData = await pdf(fileBuffer);
         } catch (err: any) {
-          if (err?.name === 'PasswordException' || err?.message?.toLowerCase().includes('password')) {
-            return NextResponse.json({ error: 'This PDF is password-protected. Please unlock your resume and try again.' }, { status: 400 });
-          }
-          throw err;
+          // Password / corrupt PDF — still attempt vision/document models with raw bytes
+          console.warn('pdf-parse failed; routing to document vision:', err?.message || err);
+          pdfData = null;
         }
 
-        pageCount = pdfData.numpages;
-        if (pdfData.numpages > 10) {
-          return NextResponse.json({ error: `Document is ${pdfData.numpages} pages. Max 10.` }, { status: 400 });
-        }
+        pageCount = pdfData?.numpages || 0;
+        // Don't reject long CVs — keep text from all pages for the model (capped later)
 
-        extractedText = pdfData.text || '';
-        // Text path: send text for extraction (OpenAI reconstructs lost spaces itself).
-        if (extractedText.trim().length >= 50) {
-          // text path handled below via messages
+        extractedText = (pdfData?.text || '').trim();
+        // Enough selectable text → text path (cheaper, structured). Sparse/empty →
+        // treat as image-only/scanned PDF and send document bytes to vision models.
+        if (extractedText.length >= MIN_TEXT_CHARS) {
+          parseMedia = { kind: 'none' };
         } else {
-          // Scanned/image PDF — send the PDF bytes to the vision model
-          imageDataUri = `data:application/pdf;base64,${fileBuffer.toString('base64')}`;
+          parseMedia = { kind: 'pdf', base64: pdfBase64ForFallback };
+          // Keep any sparse OCR crumbs for the prompt
         }
 
       } else if (fileType === 'image') {
-        const mimeType = file.type.startsWith('image/') ? file.type : 'image/jpeg';
+        const mimeType =
+          file.type && file.type.startsWith('image/') && !file.type.includes('heic') && !file.type.includes('heif')
+            ? file.type === 'image/jpg'
+              ? 'image/jpeg'
+              : file.type
+            : 'image/jpeg';
         imageDataUri = `data:${mimeType};base64,${fileBuffer.toString('base64')}`;
+        parseMedia = { kind: 'image', dataUri: imageDataUri, mimeType };
+
+      } else if (fileType === 'image-heic-raw') {
+        // Unconverted HEIC — Gemini only
+        imageDataUri = `data:image/heic;base64,${fileBuffer.toString('base64')}`;
+        parseMedia = { kind: 'image', dataUri: imageDataUri, mimeType: 'image/heic' };
 
       } else if (fileType === 'doc') {
         try {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           const WordExtractor = require('word-extractor');
           const extractor = new WordExtractor();
           const doc = await extractor.extract(fileBuffer);
-          extractedText = doc.getBody();
+          extractedText = doc.getBody() || '';
         } catch (err) {
-          return NextResponse.json({ error: 'This Word document could not be read. Please save it as a PDF or .docx and try again.' }, { status: 400 });
+          console.warn('word-extractor failed; trying latin1 text fallback:', err);
+          extractedText = fileBuffer.toString('latin1').replace(/[^\x09\x0A\x0D\x20-\x7E]/g, ' ');
         }
 
-      } else {
-        if (fileType === 'docx') {
-          try {
-            const mammothResult = await mammoth.extractRawText({ buffer: fileBuffer });
-            extractedText = mammothResult.value;
-          } catch (err) {
-            return NextResponse.json({ error: 'This Word document appears to be corrupted or password-protected. Please save it as a PDF and try again.' }, { status: 400 });
+      } else if (fileType === 'docx') {
+        try {
+          const mammothResult = await mammoth.extractRawText({ buffer: fileBuffer });
+          extractedText = mammothResult.value || '';
+        } catch (err) {
+          console.warn('mammoth failed; trying buffer as text/pdf vision:', err);
+          extractedText = fileBuffer.toString('utf-8').replace(/\0/g, ' ');
+          if (extractedText.trim().length < MIN_TEXT_CHARS) {
+            pdfBase64ForFallback = fileBuffer.toString('base64');
+            parseMedia = { kind: 'pdf', base64: pdfBase64ForFallback };
           }
-        } else if (fileType === 'rtf') {
-          const rtfContent = fileBuffer.toString('utf-8');
-          extractedText = rtfContent
-            .replace(/\\[a-z]+\d*\s?/gi, '')
-            .replace(/[{}]/g, '')
-            .replace(new RegExp("\\\\'[0-9a-f]{2}", 'gi'), '')
-            .trim();
-        } else {
-          extractedText = fileBuffer.toString('utf-8');
         }
+
+      } else if (fileType === 'rtf') {
+        const rtfContent = fileBuffer.toString('utf-8');
+        extractedText = rtfContent
+          .replace(/\\[a-z]+\d*\s?/gi, '')
+          .replace(/[{}]/g, '')
+          .replace(new RegExp("\\\\'[0-9a-f]{2}", 'gi'), '')
+          .trim();
+
+      } else if (fileType === 'unknown') {
+        // Sniff: PDF magic, image magic, else text
+        const head = fileBuffer.subarray(0, 8);
+        const isPdf = head[0] === 0x25 && head[1] === 0x50 && head[2] === 0x44 && head[3] === 0x46; // %PDF
+        const isPng = head[0] === 0x89 && head[1] === 0x50;
+        const isJpg = head[0] === 0xff && head[1] === 0xd8;
+        const isGif = head[0] === 0x47 && head[1] === 0x49;
+        const isWebp = fileBuffer.length > 12 && fileBuffer.toString('ascii', 0, 4) === 'RIFF';
+        if (isPdf) {
+          pdfBase64ForFallback = fileBuffer.toString('base64');
+          try {
+            const pdfData = await pdf(fileBuffer);
+            extractedText = (pdfData?.text || '').trim();
+            pageCount = pdfData?.numpages || 0;
+          } catch { /* vision path */ }
+          if (extractedText.length < MIN_TEXT_CHARS) {
+            parseMedia = { kind: 'pdf', base64: pdfBase64ForFallback };
+          }
+        } else if (isPng || isJpg || isGif || isWebp) {
+          const mime = isPng ? 'image/png' : isGif ? 'image/gif' : isWebp ? 'image/webp' : 'image/jpeg';
+          imageDataUri = `data:${mime};base64,${fileBuffer.toString('base64')}`;
+          parseMedia = { kind: 'image', dataUri: imageDataUri, mimeType: mime };
+        } else {
+          extractedText = fileBuffer.toString('utf-8').replace(/\0/g, ' ');
+          if (extractedText.trim().length < MIN_TEXT_CHARS) {
+            // Last resort: treat as PDF bytes for vision models
+            pdfBase64ForFallback = fileBuffer.toString('base64');
+            parseMedia = { kind: 'pdf', base64: pdfBase64ForFallback };
+          }
+        }
+      } else {
+        // txt / markdown / csv
+        extractedText = fileBuffer.toString('utf-8');
       }
 
       // Build the AI payload
       let baseMessages: OpenAIMessage[];
-      if (imageDataUri) {
+      if (parseMedia.kind === 'image') {
         baseMessages = [
           { role: 'system', content: systemInstruction },
           {
             role: 'user',
             content: [
-              { type: 'text', text: 'Parse this resume document into the required JSON schema. Extract the candidate name, contact info, summary, all work experience, all education, skills, and every other section as customSections. Follow all rules exactly.' },
+              { type: 'text', text: PARSE_USER_PROMPT },
               { type: 'image_url', image_url: { url: imageDataUri } },
             ],
           },
         ];
-      } else {
-        if (!extractedText || extractedText.trim().length < 50) {
-          return NextResponse.json({ error: 'Could not extract enough text from this document.' }, { status: 400 });
-        }
+      } else if (parseMedia.kind === 'pdf') {
+        const crumbs =
+          extractedText && extractedText.length > 0
+            ? `\n\nPartial text extracted from the PDF (may be incomplete — prefer the document image):\n${extractedText.slice(0, 4000)}`
+            : '';
         baseMessages = [
           { role: 'system', content: systemInstruction },
-          { role: 'user', content: `${systemInstruction}\n\nRESUME TEXT:\n${extractedText}` },
+          {
+            role: 'user',
+            content:
+              `${PARSE_USER_PROMPT}\n\nThis is a scanned or image-based PDF resume. Read every page carefully.${crumbs}`,
+          },
         ];
+      } else {
+        if (!extractedText || extractedText.trim().length < MIN_TEXT_CHARS) {
+          // Never reject — push whatever bytes we have to vision/document models
+          if (pdfBase64ForFallback) {
+            parseMedia = { kind: 'pdf', base64: pdfBase64ForFallback };
+          } else if (!imageDataUri && fileBuffer.length > 0) {
+            pdfBase64ForFallback = fileBuffer.toString('base64');
+            parseMedia = { kind: 'pdf', base64: pdfBase64ForFallback };
+          }
+          baseMessages = [
+            { role: 'system', content: systemInstruction },
+            {
+              role: 'user',
+              content:
+                `${PARSE_USER_PROMPT}\n\nExtract every detail from this resume document. Read pages carefully even if text extraction was empty.`,
+            },
+          ];
+        } else {
+          baseMessages = [
+            { role: 'system', content: systemInstruction },
+            {
+              role: 'user',
+              content: `${PARSE_USER_PROMPT}\n\nRESUME TEXT:\n${extractedText}`,
+            },
+          ];
+        }
       }
 
-      aiStructuredData = await callOpenAI(baseMessages);
+      aiStructuredData = await callParseAI(baseMessages, { media: parseMedia });
 
-      // Always run deterministic repair + validation before persisting anything.
+      // Validate RAW model output FIRST. Repair used to truncate education dumps
+      // to 500 chars, which hid the dump from validators (yash2 / education-dump bug).
       aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
-      aiStructuredData = repairParsedData(aiStructuredData);
       let validation = validateParsedData(aiStructuredData);
 
       // Critical failure → one corrective re-parse with the raw source + the bad
       // output + explicit instructions. This recovers education-dump corruption.
       if (validation.critical) {
-        const correctionText =
-          (imageDataUri
-            ? 'Re-parse the resume document shown to you in the earlier message.'
-            : `RAW RESUME TEXT:\n${extractedText}`) +
-          `\n\nYour previous parse was INCORRECT. Fix these problems and re-extract the FULL resume:
-${validation.issues.map((i) => `- ${i}`).join('\n')}
-Critical instructions:
-- fullName MUST be the candidate's real name (Title Case), never a label, "Unknown", or a location.
-- education MUST contain ONE entry per real degree/institution with a SHORT description (max 3 lines). NEVER dump the whole resume, skills, projects, or contact info into an education record.
-- work experience, skills, projects, certifications MUST go into their proper arrays.
-Return ONLY the corrected JSON for the ENTIRE resume. Do not lose any data.`;
-
-        console.warn('Parse failed validation; re-parsing. Issues:', validation.issues.join(' | '));
-        const correctionMessages: OpenAIMessage[] = [{ role: 'system', content: systemInstruction }];
-        if (imageDataUri) {
-          correctionMessages.push({
-            role: 'user',
-            content: [
-              { type: 'text', text: correctionText },
-              { type: 'image_url', image_url: { url: imageDataUri } },
-            ],
-          });
-        } else {
-          correctionMessages.push({ role: 'user', content: correctionText });
+        // If text parse of a PDF was bad, escalate to full document vision.
+        let corrMedia = parseMedia;
+        if (corrMedia.kind === 'none' && pdfBase64ForFallback) {
+          corrMedia = { kind: 'pdf', base64: pdfBase64ForFallback };
         }
 
-        aiStructuredData = await callOpenAI(correctionMessages);
-        aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
-        aiStructuredData = repairParsedData(aiStructuredData);
-        validation = validateParsedData(aiStructuredData);
+        const issueLines = validation.issues.map((i) => `- ${i}`).join('\n');
+        const sourceHint =
+          corrMedia.kind === 'image' || corrMedia.kind === 'pdf'
+            ? 'Re-parse the resume document attached to this message (image or PDF).'
+            : `RAW RESUME TEXT:\n${extractedText}`;
 
-        if (validation.critical) {
-          console.error('Parse still invalid after corrective re-parse. Issues:', validation.issues.join(' | '));
-          return NextResponse.json(
-            { error: 'We could not extract this resume reliably. Please try a clearer PDF or image, or fill in your details manually.' },
-            { status: 422 }
-          );
+        const correctionText = [
+          sourceHint,
+          '',
+          'Your previous parse was INCORRECT. Fix these problems and re-extract the FULL resume:',
+          issueLines,
+          'Critical instructions:',
+          '- fullName MUST be the candidate\'s real first + last name only (Title Case). NEVER append city/country (wrong: "Yash Kathait New Delhi").',
+          '- education MUST contain ONE entry per real degree/institution with a SHORT description (max 3 lines). NEVER put the contact header, email, phone, LinkedIn, or the whole resume into institution/description.',
+          '- Map EVERY job/internship into workExperience (separate entry per role). Map Projects, Certifications, Achievements into customSections.',
+          '- skills MUST be a flat array of individual skill strings.',
+          '- summary MUST be a short professional summary if present on the CV.',
+          'Return ONLY the corrected JSON for the ENTIRE resume. Do not lose any data.',
+        ].join('\n');
+
+        console.warn('Parse failed validation; re-parsing. Issues:', validation.issues.join(' | '));
+        const correctionMessages: OpenAIMessage[] = [
+          { role: 'system', content: systemInstruction },
+          { role: 'user', content: correctionText },
+        ];
+
+        aiStructuredData = await callParseAI(correctionMessages, { media: corrMedia });
+        aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
+        validation = validateParsedData(aiStructuredData);
+      }
+
+      // If still critical, re-parse using the dump blob as resume text (yash2 recovery)
+      if (validation.critical) {
+        const salvage = extractSalvageResumeText(aiStructuredData);
+        if (salvage && salvage.length >= 200) {
+          console.warn('Salvaging resume from dumped education/work blob…');
+          try {
+            const salvageMessages: OpenAIMessage[] = [
+              { role: 'system', content: systemInstruction },
+              {
+                role: 'user',
+                content:
+                  `${PARSE_USER_PROMPT}\n\nThe previous extract collapsed the CV into one field. Re-parse this full resume text carefully. Split education, experience, projects, skills, certifications into the correct arrays.\n\nRESUME TEXT:\n${salvage}`,
+              },
+            ];
+            aiStructuredData = await callParseAI(salvageMessages, { media: { kind: 'none' } });
+            aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
+            validation = validateParsedData(aiStructuredData);
+          } catch (salvageErr) {
+            console.warn('Salvage re-parse failed:', salvageErr);
+          }
         }
       }
 
+      // Always return best-effort structured data — never 422 the user.
+      aiStructuredData = repairParsedData(aiStructuredData);
+      aiStructuredData = ensureMinimalProfile(aiStructuredData, { fileName: file.name });
+      if (validation.critical) {
+        console.warn(
+          'Returning partial parse after recovery attempts. Remaining issues:',
+          validation.issues.join(' | ')
+        );
+        aiStructuredData._parseWarnings = validation.issues;
+      }
+
     } catch (aiError) {
-      console.error('AI parsing failed:', aiError);
-      const message = aiError instanceof Error ? aiError.message : 'Unknown error';
-      return NextResponse.json({ error: `Failed to process resume: ${message}` }, { status: 500 });
+      console.error('AI parsing failed; returning minimal profile shell:', aiError);
+      // Last resort UX: never block the user — open editor with a usable shell
+      aiStructuredData = ensureMinimalProfile(
+        {
+          personalInfo: {},
+          summary: '',
+          workExperience: [],
+          education: [],
+          skills: [],
+          customSections: [],
+        },
+        { fileName: file.name }
+      );
+      aiStructuredData._parseWarnings = [
+        aiError instanceof Error ? aiError.message : 'AI parsing failed',
+      ];
     }
 
     // Strip any residual reconstruction markers before returning to the client.
@@ -501,17 +871,33 @@ Return ONLY the corrected JSON for the ENTIRE resume. Do not lose any data.`;
           .eq('id', user.id)
           .maybeSingle();
 
-        let finalSlug;
-        if (currentProfile && currentProfile.username) {
+        const isBadProfileSlug = (s: string | null | undefined) => {
+          if (!s) return true;
+          const x = String(s).toLowerCase();
+          if (x.length < 2 || x.length > 48) return true;
+          if (x === user.id) return true;
+          if (x.includes('http') || x.includes('www') || x.includes('linkedin') || x.includes('github')) return true;
+          if (/^(https?|www)/.test(x) || x.includes('linkedincom') || x.includes('githubcom')) return true;
+          if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(x)) return true;
+          return false;
+        };
+
+        const nameToSlug = (name: string) => {
+          const parts = String(name || '')
+            .trim()
+            .toLowerCase()
+            .split(/\s+/)
+            .map((p) => p.replace(/[^a-z0-9]/g, ''))
+            .filter((p) => p && !['https', 'http', 'www', 'com', 'linkedin', 'github', 'in'].includes(p));
+          const base = parts.slice(0, 3).join('-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+          return (base || 'profile').slice(0, 40);
+        };
+
+        let finalSlug: string;
+        if (currentProfile?.username && !isBadProfileSlug(currentProfile.username)) {
           finalSlug = currentProfile.username;
         } else {
-          const rawFullName = aiStructuredData.personalInfo?.fullName || 'profile';
-          const firstNameOnly = rawFullName.trim().split(/\s+/)[0].toLowerCase();
-
-          const prefixSlug = firstNameOnly
-            .replace(/[^a-z0-9-]/g, '')
-            .slice(0, 40) || 'profile';
-
+          const prefixSlug = nameToSlug(aiStructuredData.personalInfo?.fullName || 'profile');
           finalSlug = prefixSlug;
           let isUnique = false;
           let attempt = 0;
@@ -568,8 +954,21 @@ Return ONLY the corrected JSON for the ENTIRE resume. Do not lose any data.`;
     return NextResponse.json(aiStructuredData, { status: 200 });
 
   } catch (error) {
-    console.error('Fatal API Error:', error);
+    console.error('Fatal API Error (returning empty shell for UX):', error);
     const message = error instanceof Error ? error.message : 'Unknown error';
-    return NextResponse.json({ error: `Failed to process resume: ${message}` }, { status: 500 });
+    // Still never hard-block the user: open editor with a shell they can fill in
+    const shell = ensureMinimalProfile(
+      {
+        personalInfo: {},
+        summary: '',
+        workExperience: [],
+        education: [],
+        skills: [],
+        customSections: [],
+      },
+      {}
+    );
+    shell._parseWarnings = [message];
+    return NextResponse.json(shell, { status: 200 });
   }
 }
