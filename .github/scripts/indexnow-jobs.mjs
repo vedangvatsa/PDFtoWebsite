@@ -118,7 +118,7 @@ async function main() {
   let skippedThin = 0;
   let skippedUgly = 0;
   for (const j of jobs) {
-    if (wordCount(j.description) < 200) {
+    if (wordCount(j.description) < 250) {
       skippedThin++;
       continue;
     }

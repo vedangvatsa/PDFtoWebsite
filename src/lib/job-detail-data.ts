@@ -445,72 +445,131 @@ export function parseBaseSalary(salary: string | null | undefined): Record<strin
   return undefined;
 }
 
-/** Parse free-text location into PostalAddress fields for JobPosting. */
+const US_STATE_ABBR = new Set([
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
+  'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
+  'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC',
+]);
+
+const COUNTRY_ALIASES: Record<string, string> = {
+  usa: 'US', us: 'US', 'u.s.': 'US', 'u.s.a.': 'US',
+  'united states': 'US', 'united states of america': 'US',
+  uk: 'GB', 'u.k.': 'GB', 'united kingdom': 'GB', 'great britain': 'GB', england: 'GB',
+  germany: 'DE', deutschland: 'DE', france: 'FR', canada: 'CA', india: 'IN',
+  australia: 'AU', netherlands: 'NL', singapore: 'SG', ireland: 'IE', spain: 'ES',
+  italy: 'IT', brazil: 'BR', japan: 'JP', mexico: 'MX', poland: 'PL', sweden: 'SE',
+  switzerland: 'CH', portugal: 'PT', israel: 'IL', 'south korea': 'KR', korea: 'KR',
+  'hong kong': 'HK', 'new zealand': 'NZ', uae: 'AE', 'united arab emirates': 'AE',
+  remote: 'Worldwide', worldwide: 'Worldwide', global: 'Worldwide', anywhere: 'Worldwide',
+};
+
+/**
+ * Parse free-text location into PostalAddress for JobPosting.
+ * Uses RAW ATS location (do not collapse via display normalizeLocation — that maps
+ * "San Francisco" → "USA" and destroys city-level Google Jobs structure).
+ */
 export function parseJobLocationAddress(
   location: string | null | undefined
 ): Record<string, unknown> | undefined {
   if (!location) return undefined;
-  const loc = cleanPublishText(normalizeLocation(location) || location).trim();
+  // Light clean only — keep city/region tokens for schema
+  const loc = cleanPublishText(
+    String(location)
+      .replace(/\s+/g, ' ')
+      .replace(/\b(remote|hybrid|onsite|on-site)\b/gi, (m) => m) // keep for remote detect
+      .trim()
+  );
   if (!loc) return undefined;
 
   const remote = isRemoteLocation(loc);
-  // "San Francisco, CA, United States" | "London, UK" | "Berlin, Germany"
-  const parts = loc
+  // Strip leading "Remote - " / "Remote," wrappers for address parts
+  const stripped = loc
+    .replace(/^(remote|hybrid)\s*[-–—:,|]\s*/i, '')
+    .replace(/\s*[-–—|,]\s*(remote|hybrid)\s*$/i, '')
+    .trim() || loc;
+
+  const parts = stripped
     .split(',')
     .map((p) => p.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((p) => !/^(remote|hybrid|onsite|on-site)$/i.test(p));
+
+  if (!parts.length && remote) {
+    return { '@type': 'PostalAddress', addressCountry: 'Worldwide' };
+  }
+  if (!parts.length) return undefined;
 
   const address: Record<string, unknown> = { '@type': 'PostalAddress' };
-
-  const countryAliases: Record<string, string> = {
-    usa: 'US',
-    us: 'US',
-    'united states': 'US',
-    'united states of america': 'US',
-    uk: 'GB',
-    'united kingdom': 'GB',
-    'great britain': 'GB',
-    england: 'GB',
-    germany: 'DE',
-    deutschland: 'DE',
-    france: 'FR',
-    canada: 'CA',
-    india: 'IN',
-    australia: 'AU',
-    netherlands: 'NL',
-    singapore: 'SG',
-    ireland: 'IE',
-    spain: 'ES',
-    italy: 'IT',
-    brazil: 'BR',
-    japan: 'JP',
-    'remote': 'Worldwide',
-    worldwide: 'Worldwide',
-    global: 'Worldwide',
-    anywhere: 'Worldwide',
-  };
+  const last = parts[parts.length - 1];
+  const lastLower = last.toLowerCase();
+  const lastCountry = COUNTRY_ALIASES[lastLower] || (/^[A-Z]{2}$/i.test(last) && !US_STATE_ABBR.has(last.toUpperCase()) ? last.toUpperCase() : null);
 
   if (parts.length >= 3) {
     address.addressLocality = parts[0];
-    address.addressRegion = parts[1];
-    const c = countryAliases[parts[parts.length - 1].toLowerCase()] || parts[parts.length - 1];
-    address.addressCountry = c;
+    // middle may be state
+    const mid = parts[1];
+    if (US_STATE_ABBR.has(mid.toUpperCase()) || mid.length <= 20) {
+      address.addressRegion = US_STATE_ABBR.has(mid.toUpperCase()) ? mid.toUpperCase() : mid;
+    } else {
+      address.addressRegion = mid;
+    }
+    address.addressCountry = lastCountry || last;
   } else if (parts.length === 2) {
     address.addressLocality = parts[0];
-    const maybeCountry = countryAliases[parts[1].toLowerCase()];
-    if (maybeCountry) address.addressCountry = maybeCountry;
-    else if (/^[A-Z]{2}$/i.test(parts[1]) && parts[1].length === 2) {
+    if (lastCountry) {
+      address.addressCountry = lastCountry;
+    } else if (US_STATE_ABBR.has(parts[1].toUpperCase())) {
       address.addressRegion = parts[1].toUpperCase();
-      address.addressCountry = 'US'; // common US state abbreviation pair
+      address.addressCountry = 'US';
     } else {
       address.addressRegion = parts[1];
     }
   } else {
-    address.addressLocality = parts[0] || loc;
-    if (remote) address.addressCountry = 'Worldwide';
+    const one = parts[0];
+    if (COUNTRY_ALIASES[one.toLowerCase()]) {
+      address.addressCountry = COUNTRY_ALIASES[one.toLowerCase()];
+    } else if (US_STATE_ABBR.has(one.toUpperCase())) {
+      address.addressRegion = one.toUpperCase();
+      address.addressCountry = 'US';
+    } else {
+      address.addressLocality = one;
+      // Infer country from known city names lightly
+      if (/^(london|manchester|edinburgh|birmingham)$/i.test(one)) address.addressCountry = 'GB';
+      else if (/^(berlin|munich|münchen|hamburg)$/i.test(one)) address.addressCountry = 'DE';
+      else if (/^(paris|lyon|marseille)$/i.test(one)) address.addressCountry = 'FR';
+      else if (/^(toronto|vancouver|montreal|ottawa)$/i.test(one)) address.addressCountry = 'CA';
+      else if (/^(bangalore|bengaluru|mumbai|delhi|hyderabad|chennai|pune)$/i.test(one)) {
+        address.addressCountry = 'IN';
+      } else if (/^(singapore)$/i.test(one)) address.addressCountry = 'SG';
+      else if (
+        /^(san francisco|new york|nyc|seattle|austin|boston|chicago|los angeles|denver|atlanta|miami)$/i.test(
+          one
+        )
+      ) {
+        address.addressCountry = 'US';
+      }
+    }
+    if (remote && !address.addressCountry) address.addressCountry = 'Worldwide';
   }
 
   return address;
+}
+
+/** Pull compensation from JD body when salary column empty. */
+export function extractSalaryFromText(text: string | null | undefined): string | null {
+  if (!text) return null;
+  const plain = jobDescriptionPlainText(text).slice(0, 4000);
+  const patterns = [
+    /(?:salary|compensation|pay|base)\s*(?:range)?\s*[:\-]?\s*(\$?\s*\d[\d,]*(?:\.\d+)?\s*k?\s*[-–—to]+\s*\$?\s*\d[\d,]*(?:\.\d+)?\s*k?)/i,
+    /(\$\s*\d{2,3}\s*k\s*[-–—to]+\s*\$?\s*\d{2,3}\s*k)/i,
+    /(\$\s*\d{5,7}\s*[-–—to]+\s*\$?\s*\d{5,7})/i,
+    /(?:salary|compensation|pay)\s*[:\-]?\s*(\$\s*\d[\d,]*(?:\.\d+)?\s*k?)/i,
+  ];
+  for (const re of patterns) {
+    const m = plain.match(re);
+    if (m?.[1]) return m[1].replace(/\s+/g, ' ').trim();
+  }
+  return null;
 }
 
 export function buildJobJsonLd(job: JobRow, detail: JobDetail, siteUrl: string) {
@@ -565,25 +624,40 @@ export function buildJobJsonLd(job: JobRow, detail: JobDetail, siteUrl: string) 
 
   if (employmentType) jsonLd.employmentType = employmentType;
 
+  // Prefer RAW job.location for schema (display may collapse cities → "USA")
+  const address = parseJobLocationAddress(job.location);
   if (remote) {
     jsonLd.jobLocationType = 'TELECOMMUTE';
-    // Google recommends applicantLocationRequirements for fully remote roles
+    const ac = address?.addressCountry ? String(address.addressCountry) : 'Worldwide';
     jsonLd.applicantLocationRequirements = {
       '@type': 'Country',
-      name: 'Worldwide',
+      name: ac || 'Worldwide',
     };
   }
 
-  const address = parseJobLocationAddress(job.location || detail.location);
   if (address) {
-    jsonLd.jobLocation = {
-      '@type': 'Place',
-      address,
-    };
+    const hasCity = Boolean(address.addressLocality);
+    const hasRegion = Boolean(address.addressRegion);
+    const country = address.addressCountry ? String(address.addressCountry) : '';
+    const hasSpecificCountry = Boolean(country && country !== 'Worldwide');
+    // Emit Place when we have structured locality/region/country (not only TELECOMMUTE worldwide)
+    if (hasCity || hasRegion || hasSpecificCountry) {
+      jsonLd.jobLocation = {
+        '@type': 'Place',
+        address,
+      };
+    }
   }
 
-  const salary = parseBaseSalary(job.salary);
+  const salaryRaw = job.salary || extractSalaryFromText(job.description);
+  const salary = parseBaseSalary(salaryRaw);
   if (salary) jsonLd.baseSalary = salary;
+
+  // Occupational category from tags when present
+  const occ = (job.tags || []).find(
+    (t) => t && !/remote|curated|full.?time|part.?time/i.test(String(t)) && String(t).length < 40
+  );
+  if (occ) jsonLd.occupationalCategory = String(occ);
 
   return jsonLd;
 }

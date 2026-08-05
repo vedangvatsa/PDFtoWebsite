@@ -154,6 +154,7 @@ export default function AdminPage() {
   const router = useRouter();
   const [data, setData] = useState<Analytics | null>(null);
   const [socialData, setSocialData] = useState<any>(null);
+  const [jobSeo, setJobSeo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -169,9 +170,12 @@ export default function AdminPage() {
           .then(async r => { if (!r.ok) { const d = await r.json(); throw new Error(JSON.stringify(d)); } return r.json(); }),
         fetch('/api/admin/social', { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' })
           .then(async r => r.ok ? r.json() : null).catch(() => null),
-      ]).then(([analytics, social]) => {
+        fetch('/api/admin/job-seo', { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' })
+          .then(async r => (r.ok ? r.json() : null)).catch(() => null),
+      ]).then(([analytics, social, seo]) => {
         setData(analytics);
         setSocialData(social);
+        setJobSeo(seo);
       }).catch(e => setError(e.message)).finally(() => setLoading(false));
     });
   }, [user, isUserLoading, router]);
@@ -208,6 +212,37 @@ export default function AdminPage() {
             <Stat v={ph.jobClicksTotal || 0} label="Job Apply Clicks" sub="Last 30 days" />
           </div>
         </Section>
+
+        {jobSeo && (
+          <Section title="Job SEO / Google Jobs readiness" badge={`sample ${jobSeo.sampleSize}`}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6 mb-6">
+              <Stat v={`${jobSeo.indexablePct}%`} label="Indexable (≥250w)" sub={`${jobSeo.indexable}/${jobSeo.sampleSize}`} />
+              <Stat v={`${jobSeo.prettyPct}%`} label="Pretty URLs" sub={`${jobSeo.prettyUrls}/${jobSeo.sampleSize}`} />
+              <Stat v={jobSeo.schema?.ok ?? 0} label="Schema clean" sub="no errors/warns" />
+              <Stat v={jobSeo.schema?.warnOnly ?? 0} label="Schema warn-only" />
+              <Stat v={jobSeo.schema?.errors ?? 0} label="Schema errors" />
+            </div>
+            {jobSeo.issueCodes && Object.keys(jobSeo.issueCodes).length > 0 && (
+              <div className="mb-4 flex flex-wrap gap-2">
+                {Object.entries(jobSeo.issueCodes as Record<string, number>)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 12)
+                  .map(([code, n]) => (
+                    <span key={code} className="text-[11px] font-mono px-2 py-1 rounded-md bg-muted text-muted-foreground">
+                      {code}: {n}
+                    </span>
+                  ))}
+              </div>
+            )}
+            {Array.isArray(jobSeo.gscChecklist) && (
+              <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
+                {jobSeo.gscChecklist.map((line: string) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            )}
+          </Section>
+        )}
 
         {/* ═══ SOCIAL MEDIA STATS ═══ */}
         {socialData && (
