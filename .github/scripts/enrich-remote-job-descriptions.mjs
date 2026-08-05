@@ -1502,6 +1502,31 @@ async function updateJob(id, patch) {
   throw lastErr;
 }
 
+/** Soft IndexNow ping for SEO (Bing). Every N successful enriches. Google uses crawl/GSC. */
+const INDEXNOW_EVERY = Math.max(0, Number(process.env.INDEXNOW_EVERY || 25));
+const INDEXNOW_KEY = '6db32ca940dd46cab89375c221953bd6';
+let enrichOkSinceIndexNow = 0;
+async function maybePingIndexNow(publicPath) {
+  if (!INDEXNOW_EVERY || DRY_RUN || !publicPath) return;
+  enrichOkSinceIndexNow++;
+  if (enrichOkSinceIndexNow % INDEXNOW_EVERY !== 0) return;
+  const abs = publicPath.startsWith('http') ? publicPath : `https://cvin.bio${publicPath}`;
+  try {
+    await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({
+        host: 'cvin.bio',
+        key: INDEXNOW_KEY,
+        keyLocation: `https://cvin.bio/${INDEXNOW_KEY}.txt`,
+        urlList: [abs],
+      }),
+    });
+  } catch {
+    /* ignore */
+  }
+}
+
 /** Serialize slug minting per company (concurrent workers race on `used`). */
 const companyLocks = new Map();
 async function withCompanyLock(companySlug, fn) {
@@ -1813,7 +1838,11 @@ async function runOneBatch(batchNum, state, done) {
           path,
           external_id,
         };
-        if (!DRY_RUN) done.add(job.id);
+        if (!DRY_RUN) {
+          done.add(job.id);
+          // Fire-and-forget IndexNow every N oks (does not block throughput)
+          maybePingIndexNow(path).catch(() => {});
+        }
         if (stats.ok % 25 === 0) {
           console.log(`  … ok ${stats.ok} / skip ${stats.skip} / fail ${stats.fail}`);
           state.doneIds = [...done];

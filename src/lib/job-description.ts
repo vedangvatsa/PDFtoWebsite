@@ -633,8 +633,9 @@ export function jobDescriptionWordCount(raw: string | null | undefined): number 
 /**
  * Thin JD floor for indexation. Below this we noindex and skip sitemap
  * so Google doesn't treat meta-seed stubs as soft-404s.
+ * 250 ≈ Google Jobs prefers real body content over stubs.
  */
-export const JOB_INDEXABLE_MIN_WORDS = 200;
+export const JOB_INDEXABLE_MIN_WORDS = 250;
 
 export function isJobDescriptionIndexable(raw: string | null | undefined): boolean {
   return jobDescriptionWordCount(raw) >= JOB_INDEXABLE_MIN_WORDS;
