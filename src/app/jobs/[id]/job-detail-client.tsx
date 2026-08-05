@@ -257,41 +257,15 @@ export default function JobDetailClient({
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
       <Header />
       <main id="main-content" className="w-full max-w-5xl mx-auto px-6 pt-4 sm:pt-6 md:pt-8 pb-32 flex-1 min-w-0">
-        <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6">
-          <ol className="flex flex-wrap items-center gap-1.5 text-sm text-zinc-500">
-            <li>
-              <Link href="/jobs" className="hover:text-zinc-900 transition-colors">
-                Jobs
-              </Link>
-            </li>
-            {job.company_slug ? (
-              <>
-                <li aria-hidden className="text-zinc-300">/</li>
-                <li className="min-w-0">
-                  <Link
-                    href={`/${job.company_slug}`}
-                    className="hover:text-zinc-900 transition-colors truncate max-w-[40vw] sm:max-w-none inline-block align-bottom"
-                  >
-                    {job.company}
-                  </Link>
-                </li>
-              </>
-            ) : null}
-            <li aria-hidden className="text-zinc-300">/</li>
-            <li className="text-zinc-800 font-medium truncate max-w-[50vw] sm:max-w-md" aria-current="page">
-              {job.title}
-            </li>
-          </ol>
-          <Link
-            href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
-            className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mt-2 min-h-[44px] sm:min-h-0"
-          >
-            <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate max-w-[70vw] sm:max-w-none">
-              {job.company_slug ? `${job.company} careers` : 'All jobs'}
-            </span>
-          </Link>
-        </nav>
+        <Link
+          href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-4 sm:mb-6 min-h-[44px] sm:min-h-0"
+        >
+          <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
+          <span className="truncate max-w-[70vw] sm:max-w-none">
+            {job.company_slug ? `${job.company} careers` : 'All jobs'}
+          </span>
+        </Link>
 
         <article className="bg-white border border-zinc-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm min-w-0 overflow-hidden">
           <div className="flex items-start gap-3 sm:gap-4 mb-5 sm:mb-6">

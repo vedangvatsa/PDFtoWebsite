@@ -33,6 +33,9 @@ const SKILL_TAG_BLOCKLIST = new Set([
   'sales',
   'marketing',
   'hiring',
+  'curated',
+  'curated-jd',
+  'curated job',
 ]);
 
 function normalizeTag(tag: string): string {
