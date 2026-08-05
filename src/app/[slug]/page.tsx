@@ -232,7 +232,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!data) {
     const companyMeta = await buildCompanyPageMetadata(slug, canonicalUrl);
     if (companyMeta) return companyMeta;
-    notFound();
+    // Let the page component throw notFound() so dead slugs return a real 404.
+    // Calling notFound() here returns 200 + noindex on this ISR stack.
+    return { title: 'Not Found', robots: { index: false, follow: false } };
   }
 
   const { profile } = data;
