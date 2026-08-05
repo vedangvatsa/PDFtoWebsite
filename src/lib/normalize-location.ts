@@ -35,7 +35,7 @@ const US_STATES: Record<string, string> = {
 
 // Exact-match overrides (lowercased)
 const EXACT_MAP: Record<string, string> = {
-  'unknown': 'Remote',
+  'unknown': '',
   'hybrid': 'Hybrid',
   'worldwide': 'Remote',
   'anywhere': 'Remote',
@@ -151,7 +151,7 @@ const CITY_PATTERNS: [RegExp, string][] = [
 ];
 
 export function normalizeLocation(raw: string): string {
-  if (!raw) return 'Remote';
+  if (!raw) return '';
   let loc = raw.trim();
 
   // Strip common suffixes/noise

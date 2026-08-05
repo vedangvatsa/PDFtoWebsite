@@ -16,6 +16,7 @@ import {
   isShortJobSlug,
   companyToSlug,
   shortJobSlug,
+  jobStoredSlug,
   jobPublicPath,
   jobTypeLabel,
 } from '@/lib/job-description';
@@ -43,6 +44,7 @@ export type JobRow = {
   created_at: string | null;
   description: string | null;
   external_id: string | null;
+  slug: string | null;
 };
 
 export async function fetchJobById(id: string): Promise<JobRow | null> {
@@ -60,14 +62,15 @@ export async function fetchJobByCompanyAndSlug(
 }
 
 export function toJobDetail(job: JobRow): JobDetail {
-  const descriptionHtml = formatJobDescription(job.description);
+  const location = cleanPublishText(normalizeLocation(job.location || ''));
+  const descriptionHtml = formatJobDescription(job.description, location);
   const wordCount = jobDescriptionWordCount(job.description);
   return {
     id: job.id,
     title: cleanPublishText(job.title),
     company: cleanPublishText(job.company),
     company_logo: job.company_logo,
-    location: cleanPublishText(normalizeLocation(job.location || '')),
+    location,
     job_type: job.job_type,
     salary: job.salary ? cleanPublishText(job.salary) : job.salary,
     tags: job.tags || [],
@@ -82,7 +85,7 @@ export function toJobDetail(job: JobRow): JobDetail {
     description_word_count: wordCount,
     is_indexable: isJobDescriptionIndexable(job.description),
     company_slug: companyToSlug(job.company),
-    job_slug: shortJobSlug(job.company, job.external_id),
+    job_slug: jobStoredSlug(job) ?? shortJobSlug(job.company, job.external_id),
     public_path: jobPublicPath(job),
   };
 }
@@ -150,7 +153,7 @@ export async function fetchRelatedJobs(
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const titleTokens = titleSearchTokens(job.title, 4);
   const selectCols =
-    'id, title, company, location, external_id, description, published_at, created_at, tags';
+    'id, title, company, location, external_id, slug, description, published_at, created_at, tags';
 
   try {
     const queries: PromiseLike<{ data: any }>[] = [];
@@ -312,14 +315,15 @@ export async function getViewerJobContext(): Promise<{
 }
 
 export function buildJobMetadata(job: JobRow, siteUrl: string) {
-  const location = cleanPublishText(normalizeLocation(job.location || '') || 'Remote');
+  const location = cleanPublishText(normalizeLocation(job.location || ''));
   const type = jobTypeLabel(job.job_type);
   const jobTitle = cleanPublishText(job.title);
   const company = cleanPublishText(job.company);
   const title = `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
   const excerpt = jobDescriptionExcerpt(job.description, 140);
+  const locationSuffix = location ? `${location}. ` : '';
   const description =
-    excerpt || `${jobTitle} at ${company}. ${location}. Apply on CVin.Bio.`;
+    excerpt || `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
   const indexable = isJobDescriptionIndexable(job.description);
 

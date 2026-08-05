@@ -976,6 +976,19 @@ const COMPANIES: Record<string, CompanyMeta> = {
     description:
       'NITI Aayog (National Institution for Transforming India) is the Government of India’s premier policy think tank. Its internship scheme places students across policy domains listed on the official Work for India portal.',
   },
+  'iit-bombay': {
+    slug: 'iit-bombay',
+    name: 'IIT Bombay',
+    website: 'https://www.iitb.ac.in',
+    founded: 1958,
+    hq: 'Powai, Mumbai, Maharashtra, India',
+    size: '700+ faculty · 13,000+ students',
+    stage: 'Institute of National Importance',
+    funding: 'Government of India',
+    industry: 'Technical Education & Research',
+    description:
+      'Indian Institute of Technology Bombay is a public research university in Mumbai, established in 1958 as the second Indian Institute of Technology. Its 545-acre Powai campus hosts 17 academic departments, three schools, and more than 35 research centres spanning engineering, science, design, and management. Named an Institution of Eminence in 2018, it consistently ranks among India’s top technical institutes and runs one of the country’s most competitive undergraduate admissions. Its Shailesh J. Mehta School of Management (SJMSOM) regularly recruits faculty across finance, marketing, operations, and other management disciplines.',
+  },
 };
 
 export function getCompanyMeta(slug: string): CompanyMeta | null {

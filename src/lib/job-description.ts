@@ -64,6 +64,27 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;');
 }
 
+/** Escape HTML then turn bare http(s) URLs into clickable links. */
+function escapeHtmlWithLinks(s: string): string {
+  let out = escapeHtml(s);
+  out = out.replace(
+    /https?:\/\/[^\s<>"']+/g,
+    (m) => {
+      let url = m;
+      let suffix = '';
+      // Trim trailing punctuation that is not part of the URL.
+      const m2 = url.match(/^(.*?)([.,;:!?]+)$/);
+      if (m2 && m2[2].length <= 3) {
+        url = m2[1];
+        suffix = m2[2];
+      }
+      if (url.length < 12) return m; // too short to be a real URL
+      return `<a href="${url}" rel="noopener noreferrer nofollow" target="_blank">${url}</a>${suffix}`;
+    }
+  );
+  return out;
+}
+
 /** Strip scripts, styles, comments, and MS Office cruft. */
 function stripUnsafe(html: string): string {
   return html
@@ -194,17 +215,17 @@ function renderIntroBlock(lines: string[]): string {
     if (!t) continue;
     const role = t.match(/^Role:\s*(.+)$/i);
     if (role) {
-      parts.push(`<p><strong>Role:</strong> ${escapeHtml(role[1].trim())}</p>`);
+      parts.push(`<p><strong>Role:</strong> ${escapeHtmlWithLinks(role[1].trim())}</p>`);
       continue;
     }
     const labeled = t.match(/^([^:\n]{2,48}):\s+(.+)$/);
     if (labeled && !isMetaSectionHeading(t)) {
       parts.push(
-        `<p><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtml(labeled[2].trim())}</p>`
+        `<p><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtmlWithLinks(labeled[2].trim())}</p>`
       );
       continue;
     }
-    parts.push(`<p>${escapeHtml(t)}</p>`);
+    parts.push(`<p>${escapeHtmlWithLinks(t)}</p>`);
   }
   return `<div class="jd-intro">${parts.join('\n')}</div>`;
 }
@@ -424,8 +445,8 @@ function isLabelValueLine(line: string): boolean {
 
 function renderLabelValueParagraph(line: string): string {
   const m = line.trim().match(/^([^:\n]{2,48}):\s+(.+)$/);
-  if (!m) return `<p>${escapeHtml(line.trim())}</p>`;
-  return `<p><strong>${escapeHtml(m[1].trim())}:</strong> ${escapeHtml(m[2].trim())}</p>`;
+  if (!m) return `<p>${escapeHtmlWithLinks(line.trim())}</p>`;
+  return `<p><strong>${escapeHtml(m[1].trim())}:</strong> ${escapeHtmlWithLinks(m[2].trim())}</p>`;
 }
 
 function renderListItems(lines: string[], ordered = false): string {
@@ -438,9 +459,9 @@ function renderListItems(lines: string[], ordered = false): string {
         .replace(/^[-•*]\s+/, '');
       const labeled = text.match(/^([^:]+):\s+(.+)$/);
       if (labeled && !/^-/.test(l.trim())) {
-        return `<li><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtml(labeled[2].trim())}</li>`;
+        return `<li><strong>${escapeHtml(labeled[1].trim())}:</strong> ${escapeHtmlWithLinks(labeled[2].trim())}</li>`;
       }
-      return `<li>${escapeHtml(text)}</li>`;
+      return `<li>${escapeHtmlWithLinks(text)}</li>`;
     })
     .join('');
   return `<${tag}>${items}</${tag}>`;
@@ -488,7 +509,7 @@ function renderPlainBlock(block: string): string {
     return renderLabelValueParagraph(lines[0]);
   }
 
-  return `<p>${escapeHtml(trimmed)}</p>`;
+  return `<p>${escapeHtmlWithLinks(trimmed)}</p>`;
 }
 
 function decodeHtmlEntities(s: string): string {
@@ -584,8 +605,16 @@ function structureJobHtml(html: string): string {
 /**
  * Normalize stored description into safe HTML for display.
  * Structure cleanup + mandatory noslop punctuation pass.
+ *
+ * When `authoritativeLocation` is provided, the first `Location:` entry inside
+ * the "Key facts" block is replaced with it so the displayed page can never
+ * contradict the authoritative DB `location` column (the LLM rewrite may
+ * hallucinate a "Remote" location for an on-site role).
  */
-export function formatJobDescription(raw: string | null | undefined): string {
+export function formatJobDescription(
+  raw: string | null | undefined,
+  authoritativeLocation?: string | null
+): string {
   if (!raw || !raw.trim()) return '';
 
   const cleaned = stripAggregatorDisclaimers(raw);
@@ -602,7 +631,32 @@ export function formatJobDescription(raw: string | null | undefined): string {
       structured = structureJobHtml(cleaned);
     }
   }
-  return cleanPublishHtml(structured);
+
+  let html = cleanPublishHtml(structured);
+
+  // Correct the Key facts "Location:" line ONLY when it makes an ungrounded
+  // "Remote" claim. The LLM rewrite may label an on-site role as remote even
+  // though the authoritative DB location is a specific office. Accurate,
+  // more-specific stored values (e.g. "Mumbai, India") are left untouched so we
+  // never downgrade real location data.
+  const loc = String(authoritativeLocation || '').trim();
+  if (loc) {
+    const REMOTE_CLAIM_RE =
+      /remote|work from home|\bwfh\b|work from anywhere|anywhere in the|distributed|worldwide|telecommute/i;
+    html = html.replace(
+      /(<p><strong>Location:<\/strong>\s*)([^<]*)(<\/p>)/i,
+      (full, open: string, val: string, close: string) => {
+        const valText = val.trim();
+        const falseRemote =
+          valText &&
+          REMOTE_CLAIM_RE.test(valText) &&
+          !REMOTE_CLAIM_RE.test(loc);
+        return falseRemote ? `${open}${escapeHtml(loc)}${close}` : full;
+      }
+    );
+  }
+
+  return html;
 }
 
 /** Strip HTML → plain text for excerpts / schema. */
@@ -631,11 +685,13 @@ export function jobDescriptionWordCount(raw: string | null | undefined): number 
 }
 
 /**
- * Thin JD floor for indexation. Below this we noindex and skip sitemap
- * so Google doesn't treat meta-seed stubs as soft-404s.
- * 250 ≈ Google Jobs prefers real body content over stubs.
+ * Minimum words for a job page to be considered publishable/indexable.
+ * Below this we noindex and skip sitemap so thin pages never rank.
+ * Site rule: every curated/enriched job page must carry a 600+ word body
+ * (mirrors MIN_REWRITE_WORDS in the enrichment pipeline). Short ATS stubs
+ * fall under this floor and are held out of Google until enriched.
  */
-export const JOB_INDEXABLE_MIN_WORDS = 250;
+export const JOB_INDEXABLE_MIN_WORDS = 600;
 
 export function isJobDescriptionIndexable(raw: string | null | undefined): boolean {
   return jobDescriptionWordCount(raw) >= JOB_INDEXABLE_MIN_WORDS;
@@ -678,6 +734,10 @@ export function companyLogoFallback(company: string, logo: string | null | undef
   if (key === 'niti aayog') {
     const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
     return `${site}/company-logos/niti-aayog.png`;
+  }
+  if (key === 'iit bombay' || key === 'iit bombay (sjmsom)') {
+    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
+    return `${site}/company-logos/iit-bombay.png`;
   }
   const domainGuess = company.toLowerCase().replace(/[^a-z0-9]/g, '');
   return `https://www.google.com/s2/favicons?domain=${domainGuess}.com&sz=128`;
@@ -732,10 +792,187 @@ export const RESERVED_JOB_SEGMENTS = new Set([
   'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
 ]);
 
+/** Noise words never used as slug tokens (matches .github/scripts/mint-slugs.mjs). */
+const SLUG_STOP = new Set([
+  'a', 'an', 'the', 'and', 'or', 'of', 'for', 'to', 'in', 'on', 'at', 'by', 'with',
+  'from', 'as', 'is', 'are', 'be', 'remote', 'full', 'time', 'fulltime', 'part',
+  'contract', 'intern', 'internship', 'senior', 'junior', 'staff', 'principal',
+  'i', 'ii', 'iii', 'iv', 'sr', 'jr', 'us', 'uk', 'eu', 'emea', 'apac', 'americas',
+  'month', 'months', 'fixed', 'term', 'temporary', 'opening', 'role', 'position',
+  'opportunity', 'new', 'based',
+]);
+
+/** Token → short alias (matches .github/scripts/mint-slugs.mjs). */
+const SLUG_ALIAS: Record<string, string | null> = {
+  software: 'sw', engineer: 'eng', engineering: 'eng', engineers: 'eng',
+  manager: 'mgr', management: 'mgmt', director: 'dir', product: 'prod',
+  platform: 'plat', developer: 'dev', development: 'dev', designer: 'design',
+  design: 'design', analyst: 'analyst', analytics: 'analytics',
+  scientist: 'sci', science: 'sci', specialist: 'spec', operations: 'ops',
+  operator: 'ops', technical: 'tech', technology: 'tech', solutions: 'sol',
+  solution: 'sol', architect: 'arch', architecture: 'arch',
+  infrastructure: 'infra', security: 'sec', compliance: 'comply',
+  marketing: 'mkt', sales: 'sales', customer: 'cust', support: 'support',
+  research: 'research', machine: 'ml', learning: null, artificial: 'ai',
+  intelligence: null, frontend: 'fe', backend: 'be', fullstack: 'fullstk',
+  'full-stack': 'fullstk', mobile: 'mobile', data: 'data', cloud: 'cloud',
+  devops: 'devops', reliability: 'sre', site: null, lead: 'lead', head: 'head',
+  vice: 'vp', president: null, associate: 'assoc', assistant: 'asst',
+  coordinator: 'coord', consultant: 'consult', partner: 'partner',
+  account: 'acct', finance: 'fin', financial: 'fin', accounting: 'acct',
+  legal: 'legal', people: 'people', human: 'hr', resources: null,
+  recruiter: 'recruit', recruiting: 'recruit', growth: 'growth',
+  revenue: 'rev', strategy: 'strat', strategic: 'strat', business: 'biz',
+  program: 'prog', project: 'proj', network: 'net', systems: 'sys',
+  system: 'sys', application: 'app', applications: 'app', quality: 'qa',
+  assurance: null, testing: 'qa', automation: 'auto', healthcare: 'health',
+  health: 'health', clinical: 'clinic', medical: 'med',
+  generaliste: 'gp', medecin: 'md', médecin: 'md',
+};
+
+/**
+ * Deterministic short pretty job slug from a title.
+ * Same algorithm as .github/scripts/mint-slugs.mjs / enrich-remote-job-descriptions.mjs,
+ * so write-path minting and any read-path fallback produce identical values.
+ * `used` is the set of slug segments already taken at this company (per-company
+ * collisions get a `{head≤6}-{2hex}` suffix); when omitted, collisions fall back
+ * to the seeded hash directly so the result is still unique-per-seed.
+ */
+export function mintPrettyJobSlug(
+  title: string,
+  uniqueSeed: string,
+  used?: Set<string>
+): string {
+  const tokens = String(title || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/r\s*&\s*d|\br\s+and\s+d\b/gi, ' rd ')
+    .replace(/ai\s*[&/]\s*ml/gi, ' ai ml ')
+    .replace(/full[\s-]*stack/gi, ' fullstack ')
+    .replace(/front[\s-]*end/gi, ' frontend ')
+    .replace(/back[\s-]*end/gi, ' backend ')
+    .replace(/&/g, ' ')
+    .replace(/\+/g, ' plus ')
+    .replace(/[^a-z0-9\s]+/g, ' ')
+    .split(/\s+/)
+    .filter((t) => t && !/^\d+$/.test(t) && t.length < 18);
+
+  const out: string[] = [];
+  for (const raw of tokens) {
+    let t = raw;
+    if (SLUG_STOP.has(t)) continue;
+    if (Object.prototype.hasOwnProperty.call(SLUG_ALIAS, t)) {
+      const a = SLUG_ALIAS[t];
+      if (a == null) continue;
+      t = a;
+    }
+    if (out.includes(t)) continue;
+    const next = out.length ? `${out.join('-')}-${t}` : t;
+    // SHORT slugs: max 2 tokens; 2-token job slug ≤ 8 chars
+    if (out.length >= 1 && next.length > 8) break;
+    out.push(t);
+    if (out.length >= 2) break;
+  }
+
+  let base = out.join('-') || 'role';
+  if (base.length > 12) {
+    const parts = base.split('-');
+    while (parts.length > 1 && parts.join('-').length > 12) parts.pop();
+    base = parts.join('-');
+    if (base.length > 12) base = base.slice(0, 12);
+  }
+  base = base.replace(/-+/g, '-').replace(/^-|-$/g, '') || 'role';
+
+  const taken = used ? used.has.bind(used) : () => false;
+  let slug = base;
+  if (taken(slug) || RESERVED_JOB_SEGMENTS.has(slug)) {
+    const h = md5Hex(uniqueSeed).slice(0, 2);
+    const first = (base.split('-')[0] || 'role').slice(0, 6);
+    slug = `${first}-${h}`;
+  }
+  let n = 2;
+  while (
+    taken(slug) ||
+    RESERVED_JOB_SEGMENTS.has(slug) ||
+    !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)
+  ) {
+    // Widen the hash space as collisions pile up (2 hex → 4 hex → …) so the loop
+    // always terminates even for hundreds of same-prefix titles at one company.
+    const width = Math.min(2 + Math.floor(n / 8), 8);
+    const h = md5Hex(`${uniqueSeed}:${n++}`).slice(0, width);
+    const head = (base.split('-')[0] || 'role').slice(0, 6);
+    slug = `${head}-${h}`;
+  }
+  used?.add(slug);
+  return slug;
+}
+
+/**
+ * Pure-JS MD5 — edge-safe (no node:crypto) yet byte-identical to the crypto
+ * MD5 used by .github/scripts minting, so read-path and write-path slugs agree.
+ */
+function md5Hex(s: string): string {
+  const K = new Uint32Array([
+    0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
+    0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be, 0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
+    0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa, 0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
+    0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed, 0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
+    0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c, 0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
+    0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05, 0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
+    0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039, 0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
+    0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1, 0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391,
+  ]);
+  const S: number[] = [7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+    5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
+    4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
+    6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21];
+
+  const str = String(s);
+  const bytes = new Uint8Array(new TextEncoder().encode(str));
+
+  const bitLen = bytes.length * 8;
+  const paddedLen = (((bytes.length + 8) >> 6) + 1) << 6;
+  const msg = new Uint8Array(paddedLen);
+  msg.set(bytes);
+  msg[bytes.length] = 0x80;
+  const dv = new DataView(msg.buffer);
+  dv.setUint32(paddedLen - 8, bitLen >>> 0, true);
+  dv.setUint32(paddedLen - 4, Math.floor(bitLen / 0x100000000), true);
+
+  let a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
+  for (let off = 0; off < paddedLen; off += 64) {
+    const M = new Uint32Array(16);
+    for (let j = 0; j < 16; j++) M[j] = dv.getUint32(off + j * 4, true);
+    let A = a0, B = b0, C = c0, D = d0;
+    for (let i = 0; i < 64; i++) {
+      let F: number, g: number;
+      if (i < 16) { F = (B & C) | (~B & D); g = i; }
+      else if (i < 32) { F = (D & B) | (~D & C); g = (5 * i + 1) % 16; }
+      else if (i < 48) { F = B ^ C ^ D; g = (3 * i + 5) % 16; }
+      else { F = C ^ (B | ~D); g = (7 * i) % 16; }
+      const Fn = (F + A + K[i] + M[g]) | 0;
+      A = D; D = C; C = B;
+      B = (B + ((Fn << S[i]) | (Fn >>> (32 - S[i])))) | 0;
+    }
+    a0 = (a0 + A) | 0; b0 = (b0 + B) | 0; c0 = (c0 + C) | 0; d0 = (d0 + D) | 0;
+  }
+  const hex = (n: number) => {
+    const w = n >>> 0;
+    return (
+      (w & 0xff).toString(16).padStart(2, '0') +
+      ((w >>> 8) & 0xff).toString(16).padStart(2, '0') +
+      ((w >>> 16) & 0xff).toString(16).padStart(2, '0') +
+      ((w >>> 24) & 0xff).toString(16).padStart(2, '0')
+    );
+  };
+  return hex(a0) + hex(b0) + hex(c0) + hex(d0);
+}
+
 /**
  * Short job slug from external_id when curated as `{company}_{slug}`
  * e.g. external_id `google_mkt` + company Google → `mkt`
- * Otherwise null (fall back to /jobs/{uuid}).
+ * Otherwise null (callers fall back to the persisted slug column or mint).
  */
 export function shortJobSlug(
   company: string,
@@ -767,18 +1004,46 @@ export function shortJobSlug(
 }
 
 /**
- * Canonical public path for a job.
- * Prefer company-scoped short URLs: `/google/mkt`
- * Fallback: `/jobs/{uuid}`
+ * The pretty job slug segment for a job, in priority order:
+ *  1. Persisted `slug` column ({company_slug}_{jobSlug}) — canonical, minted at insert.
+ *  2. Routeable `external_id` ({company}_{short slug}) — legacy pretty rows.
+ * Returns null only when the company slug is empty.
+ */
+export function jobStoredSlug(job: {
+  company: string;
+  external_id?: string | null;
+  slug?: string | null;
+}): string | null {
+  const co = companyToSlug(job.company);
+  if (!co) return null;
+  if (job.slug) {
+    const s = String(job.slug).toLowerCase();
+    const prefix = `${co}_`;
+    if (s.startsWith(prefix)) {
+      const rest = s.slice(prefix.length);
+      if (isShortJobSlug(rest) && !/^[0-9a-f]{8,}$/i.test(rest)) return rest;
+    }
+  }
+  return shortJobSlug(job.company, job.external_id);
+}
+
+/**
+ * Canonical public path for a job — ALWAYS /{company}/{jobSlug}.
+ * Persisted slug wins, then routeable external_id, then a deterministic
+ * mint from the title. Never /jobs/{uuid} except when the company has no
+ * routeable slug segment at all (pathological data).
  */
 export function jobPublicPath(job: {
   id: string;
   company: string;
+  title?: string | null;
   external_id?: string | null;
+  slug?: string | null;
 }): string {
-  const jobSlug = shortJobSlug(job.company, job.external_id);
-  if (jobSlug) return `/${companyToSlug(job.company)}/${jobSlug}`;
-  return `/jobs/${job.id}`;
+  const co = companyToSlug(job.company);
+  if (!co) return `/jobs/${job.id}`;
+  const jobSlug = jobStoredSlug(job) ?? mintPrettyJobSlug(job.title ?? '', job.id);
+  return `/${co}/${jobSlug}`;
 }
 
 /** external_id used to resolve `/google/mkt` → `google_mkt` */
@@ -792,23 +1057,20 @@ export function isShortJobSlug(s: string): boolean {
 }
 
 /**
- * Path for sitemaps / crawl: any URL the /[company]/[jobSlug] route can resolve.
- * Broader than shortJobSlug (mint rules) so enriched multi-token slugs still get listed.
- * Returns null for non-pretty external_ids (do not emit /jobs/{uuid} — weak SEO).
+ * Path for sitemaps / crawl: pretty /{company}/{slug} for ANY job the
+ * /[company]/[jobSlug] route can resolve. Broader than shortJobSlug (mint rules)
+ * so enriched multi-token slugs still get listed. Never /jobs/{uuid} and never
+ * null unless the company has no routeable slug segment.
  */
 export function jobSitemapPath(job: {
   company: string;
   external_id?: string | null;
+  slug?: string | null;
+  title?: string | null;
 }): string | null {
   const co = companyToSlug(job.company);
-  const ext = job.external_id;
-  if (!co || !ext) return null;
-  const strict = shortJobSlug(job.company, ext);
-  if (strict) return `/${co}/${strict}`;
-  const prefix = `${co}_`;
-  if (!ext.toLowerCase().startsWith(prefix)) return null;
-  const rest = ext.slice(prefix.length).toLowerCase();
-  if (!isShortJobSlug(rest)) return null;
-  if (/^[0-9a-f]{8,}$/i.test(rest)) return null;
-  return `/${co}/${rest}`;
+  if (!co) return null;
+  const jobSlug = jobStoredSlug(job);
+  if (jobSlug) return `/${co}/${jobSlug}`;
+  return null;
 }
