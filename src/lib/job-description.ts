@@ -605,10 +605,10 @@ export function formatJobDescription(raw: string | null | undefined): string {
   return cleanPublishHtml(structured);
 }
 
-/** Plain excerpt for meta description / OG. */
-export function jobDescriptionExcerpt(raw: string | null | undefined, max = 160): string {
+/** Strip HTML → plain text for excerpts / schema. */
+export function jobDescriptionPlainText(raw: string | null | undefined): string {
   if (!raw) return '';
-  const text = cleanPublishText(
+  return cleanPublishText(
     stripAggregatorDisclaimers(raw)
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '')
@@ -621,6 +621,29 @@ export function jobDescriptionExcerpt(raw: string | null | undefined, max = 160)
       .replace(/\s+/g, ' ')
       .trim()
   );
+}
+
+/** Word count of job body (for quality / noindex / sitemap). */
+export function jobDescriptionWordCount(raw: string | null | undefined): number {
+  const text = jobDescriptionPlainText(raw);
+  if (!text) return 0;
+  return text.split(/\s+/).filter(Boolean).length;
+}
+
+/**
+ * Thin JD floor for indexation. Below this we noindex and skip sitemap
+ * so Google doesn't treat meta-seed stubs as soft-404s.
+ */
+export const JOB_INDEXABLE_MIN_WORDS = 200;
+
+export function isJobDescriptionIndexable(raw: string | null | undefined): boolean {
+  return jobDescriptionWordCount(raw) >= JOB_INDEXABLE_MIN_WORDS;
+}
+
+/** Plain excerpt for meta description / OG. */
+export function jobDescriptionExcerpt(raw: string | null | undefined, max = 160): string {
+  const text = jobDescriptionPlainText(raw);
+  if (!text) return '';
   if (text.length <= max) return text;
   return text.slice(0, max - 1).trimEnd() + '...';
 }
@@ -765,4 +788,26 @@ export function jobExternalIdFromSlugs(companySlug: string, jobSlug: string): st
 export function isShortJobSlug(s: string): boolean {
   if (!s || RESERVED_JOB_SEGMENTS.has(s.toLowerCase())) return false;
   return /^[a-z0-9][a-z0-9-]{0,23}$/i.test(s);
+}
+
+/**
+ * Path for sitemaps / crawl: any URL the /[company]/[jobSlug] route can resolve.
+ * Broader than shortJobSlug (mint rules) so enriched multi-token slugs still get listed.
+ * Returns null for non-pretty external_ids (do not emit /jobs/{uuid} — weak SEO).
+ */
+export function jobSitemapPath(job: {
+  company: string;
+  external_id?: string | null;
+}): string | null {
+  const co = companyToSlug(job.company);
+  const ext = job.external_id;
+  if (!co || !ext) return null;
+  const strict = shortJobSlug(job.company, ext);
+  if (strict) return `/${co}/${strict}`;
+  const prefix = `${co}_`;
+  if (!ext.toLowerCase().startsWith(prefix)) return null;
+  const rest = ext.slice(prefix.length).toLowerCase();
+  if (!isShortJobSlug(rest)) return null;
+  if (/^[0-9a-f]{8,}$/i.test(rest)) return null;
+  return `/${co}/${rest}`;
 }

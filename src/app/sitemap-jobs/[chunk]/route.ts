@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { companyToSlug, shortJobSlug } from '@/lib/job-description';
+import { jobSitemapPath, isJobDescriptionIndexable } from '@/lib/job-description';
 
 export const revalidate = 21600;
 
@@ -23,14 +23,14 @@ export async function GET(_req: Request, ctx: Props) {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const offset = chunkIdx * CHUNK;
 
-  const urls: string[] = [];
+  const urls: { loc: string; lastmod?: string }[] = [];
   let from = offset;
   let done = false;
   try {
     while (urls.length < CHUNK && !done) {
       const { data } = await supabaseAdmin
         .from('jobs')
-        .select('id, company, external_id')
+        .select('id, company, external_id, description, created_at, published_at')
         .not('external_id', 'is', null)
         .not('company', 'is', null)
         .gt('created_at', thirtyDaysAgo)
@@ -40,13 +40,17 @@ export async function GET(_req: Request, ctx: Props) {
 
       if (!data || !data.length) break;
       for (const j of data) {
-        // Only emit routeable pretty URLs (rejects reserved UTM segments, hex ids, junk)
-        const jobSlug = shortJobSlug(j.company, j.external_id);
-        if (jobSlug) {
-          urls.push(`${siteUrl}/${companyToSlug(j.company)}/${jobSlug}`);
-        } else if (j.id) {
-          urls.push(`${siteUrl}/jobs/${j.id}`);
-        }
+        // Skip thin / meta-seed bodies (noindex on page; keep crawl budget clean)
+        if (!isJobDescriptionIndexable(j.description)) continue;
+        // Pretty company/slug only — no /jobs/{uuid} (weak SEO; 301s when pretty exists)
+        const path = jobSitemapPath(j);
+        if (!path) continue;
+        const last =
+          (j.published_at || j.created_at || '').toString().slice(0, 10) || undefined;
+        urls.push({
+          loc: `${siteUrl}${path}`,
+          lastmod: last,
+        });
       }
       from += PAGE;
       if (data.length < PAGE) done = true;
@@ -58,7 +62,10 @@ export async function GET(_req: Request, ctx: Props) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
-  .map((u) => `  <url><loc>${escapeXml(u)}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`)
+  .map((u) => {
+    const last = u.lastmod ? `<lastmod>${escapeXml(u.lastmod)}</lastmod>` : '';
+    return `  <url><loc>${escapeXml(u.loc)}</loc>${last}<changefreq>weekly</changefreq><priority>0.7</priority></url>`;
+  })
   .join('\n')}
 </urlset>`;
 
