@@ -15,6 +15,13 @@ dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 import { supabaseFetch, restUrl } from './supabase-fetch.mjs';
+import {
+  companyToSlug,
+  jobPublicUrl,
+  isRouteableExternalId,
+  isJobPubliclyLive,
+  assertJobUrlLive,
+} from './lib/job-public-url.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -263,44 +270,9 @@ function cleanCompany(name) {
   return clean || decodeHTML(name);
 }
 
-function companyToSlug(company) {
-  return (company || '')
-    .replace(/&amp;/gi, '&')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#0*39;|&apos;/gi, "'")
-    .replace(/&nbsp;/gi, ' ')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-const RESERVED_JOB_SEGMENTS = new Set([
-  'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
-  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
-]);
-
-function shortJobSlug(company, externalId) {
-  if (!externalId) return null;
-  const co = companyToSlug(company);
-  if (!co) return null;
-  const prefix = `${co}_`;
-  const lower = externalId.toLowerCase();
-  if (!lower.startsWith(prefix)) return null;
-  const rest = externalId.slice(prefix.length).toLowerCase();
-  if (RESERVED_JOB_SEGMENTS.has(rest)) return null;
-  if (!/^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest)) return null;
-  if (/^[0-9a-f]{8,}$/i.test(rest)) return null;
-  if (rest.length > 12 && /^\d+$/.test(rest)) return null;
-  return rest;
-}
-
+/** Pretty-only public URL for Telegram (null if not routeable on site). */
 function jobPublicPath(job) {
-  const jobSlug = shortJobSlug(job.company, job.external_id);
-  if (jobSlug) return `https://cvin.bio/${companyToSlug(job.company)}/${jobSlug}`;
-  return `https://cvin.bio/jobs/${job.id}`;
+  return jobPublicUrl(job, { prettyOnly: true });
 }
 
 function cleanLocation(loc) {
@@ -328,7 +300,7 @@ function mergeByUrl(into, rows) {
 async function fetchRecentJobs() {
   const since = new Date(Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
-    select: 'id,title,company,location,apply_url,source,created_at,external_id',
+    select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
     created_at: `gt.${since}`,
     order: 'created_at.desc',
     limit: String(RECENT_LIMIT),
@@ -360,7 +332,7 @@ async function fetchByCompanyNames(names) {
       })
       .join(',');
     const url = restUrl(SUPABASE_URL, 'jobs', {
-      select: 'id,title,company,location,apply_url,source,created_at,external_id',
+      select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
       or: `(${or})`,
       order: 'created_at.desc',
       limit: '30',
@@ -404,12 +376,47 @@ async function fetchJobs() {
     console.warn(`  ⚠️  pure-AI fetch failed: ${e.message}`);
   }
 
+  // Pass 2b: pretty-minted external_ids (openai_*, anthropic_*, …) — these are the
+  // only links Telegram can post. Company.ilike often returns raw ashby_/greenhouse_ rows.
+  try {
+    const slugs = [
+      'openai', 'anthropic', 'elevenlabs', 'cursor', 'perplexity', 'xai', 'deepmind',
+      'google-deepmind', 'groq', 'cohere', 'mistral', 'scale-ai', 'scaleai', 'cerebras',
+      'together-ai', 'fireworks', 'fireworks-ai', 'baseten', 'replicate', 'hugging-face',
+      'langchain', 'pinecone', 'figure', 'waymo', 'coreweave', 'lambda', 'databricks',
+      'character', 'reka', 'runway', 'suno', 'livekit', 'deepgram', 'cognition', 'poolside',
+    ];
+    // PostgREST or=(external_id.like.openai_*,…)
+    for (let i = 0; i < slugs.length; i += 10) {
+      const batch = slugs.slice(i, i + 10);
+      const or = batch.map((s) => `external_id.like.${s}_*`).join(',');
+      const since = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString();
+      const url = restUrl(SUPABASE_URL, 'jobs', {
+        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
+        or: `(${or})`,
+        created_at: `gt.${since}`,
+        order: 'created_at.desc',
+        limit: '80',
+      });
+      const rows = await supabaseFetch(url, {
+        apiKey: SUPABASE_KEY,
+        timeoutMs: 25_000,
+        retries: 3,
+        label: `ai-jobs-pretty-${i}`,
+      });
+      mergeByUrl(byUrl, rows);
+    }
+    console.log(`  After pretty-id pass: ${byUrl.size} unique jobs`);
+  } catch (e) {
+    console.warn(`  ⚠️  pretty-id fetch failed: ${e.message}`);
+  }
+
   // Pass 3: if still thin, one slightly larger recent pull (not 3000)
   if (byUrl.size < 40) {
     try {
       const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,source,created_at,external_id',
+        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
         created_at: `gt.${since}`,
         order: 'created_at.desc',
         limit: '400',
@@ -444,7 +451,7 @@ function shuffle(arr) {
   return a;
 }
 
-function pickJobs(jobs, postedUrls) {
+function pickJobs(jobs, postedUrls, limit = JOBS_PER_POST * 4) {
   const postedSet = new Set(postedUrls);
   const companySeen = new Set();
   const picked = [];
@@ -454,8 +461,11 @@ function pickJobs(jobs, postedUrls) {
     if (!job.company || !job.title || !job.apply_url) return false;
     if (postedSet.has(job.apply_url)) return false;
     if (SKIP_RE.test(job.title)) return false;
-    // Never post a UUID-fallback URL — every posted link must be /{company}/{slug}
-    if (!shortJobSlug(job.company, job.external_id)) return false;
+    // Public pages 404 after ~30d — keep a buffer
+    if (!isJobPubliclyLive(job)) return false;
+    // Routeable /{company}/{slug} only (no /jobs/uuid). Preflight checks live 200 later.
+    if (!isRouteableExternalId(job.company, job.external_id)) return false;
+    if (!jobPublicPath(job)) return false;
     // Skip non-English titles
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) return false;
 
@@ -471,16 +481,16 @@ function pickJobs(jobs, postedUrls) {
 
   // First pass: Try to get one per company
   for (const job of candidates) {
-    if (picked.length >= JOBS_PER_POST) break;
+    if (picked.length >= limit) break;
     const key = job.company.toLowerCase().trim();
     if (companySeen.has(key)) continue;
     companySeen.add(key);
     picked.push(job);
   }
 
-  // Second pass: Fill remaining slots if we couldn't find 5 unique companies
+  // Second pass: Fill remaining slots
   for (const job of candidates) {
-    if (picked.length >= JOBS_PER_POST) break;
+    if (picked.length >= limit) break;
     if (!picked.includes(job)) {
       picked.push(job);
     }
@@ -556,21 +566,63 @@ async function main() {
   const allJobs = await fetchJobs();
   console.log(`  Fetched: ${allJobs.length} jobs from DB`);
 
-  // 3. Pick 5 AI jobs
-  const jobs = pickJobs(allJobs, postedUrls);
-  console.log(`  Picked: ${jobs.length} AI jobs`);
+  // 3. Pick candidates (more than needed — preflight will drop dead links)
+  let jobs = pickJobs(allJobs, postedUrls);
+  console.log(`  Picked: ${jobs.length} AI jobs (pre-preflight)`);
 
   if (jobs.length === 0) {
     console.log('  No new AI jobs to post. Done.');
     return;
   }
 
-  // 4. Preview
+  // 4. Live URL preflight — never post a link that already 404s on cvin.bio
+  const live = [];
   for (const job of jobs) {
-    console.log(`  • ${cleanCompany(job.company)} — ${job.title}`);
+    const url = jobPublicPath(job);
+    if (!url) {
+      console.log(`  ⛔ skip (no pretty url): ${job.company} — ${job.title}`);
+      continue;
+    }
+    const check = await assertJobUrlLive(url, { allowNetworkFail: false });
+    if (!check.ok) {
+      console.log(`  ⛔ skip ${check.reason}: ${url}`);
+      continue;
+    }
+    console.log(`  ✓ live ${check.status}: ${url}`);
+    live.push(job);
+    if (live.length >= JOBS_PER_POST) break;
+  }
+  // If first pass failed, try more candidates from pool
+  if (live.length < JOBS_PER_POST) {
+    const more = pickJobs(allJobs, [...postedUrls, ...live.map((j) => j.apply_url)]);
+    for (const job of more) {
+      if (live.some((j) => j.id === job.id)) continue;
+      const url = jobPublicPath(job);
+      if (!url) continue;
+      const check = await assertJobUrlLive(url, { allowNetworkFail: false });
+      if (!check.ok) {
+        console.log(`  ⛔ skip ${check.reason}: ${url}`);
+        continue;
+      }
+      console.log(`  ✓ live ${check.status}: ${url}`);
+      live.push(job);
+      if (live.length >= JOBS_PER_POST) break;
+    }
+  }
+  jobs = live.slice(0, JOBS_PER_POST);
+  console.log(`  After preflight: ${jobs.length} jobs`);
+
+  if (jobs.length === 0) {
+    console.log('  No live AI job URLs to post. Done.');
+    return;
   }
 
-  // 5. Format and send
+  // 5. Preview
+  for (const job of jobs) {
+    console.log(`  • ${cleanCompany(job.company)} — ${job.title} → ${jobPublicPath(job)}`);
+  }
+
+  // 6. Format and send
   const message = formatMessage(jobs);
   console.log(`  Message: ${message.length} chars`);
   console.log('---');
@@ -582,7 +634,7 @@ async function main() {
     return;
   }
 
-  // 6. Send + update dedup only on real posts
+  // 7. Send + update dedup only on real posts
   const result = await sendTelegram(message);
   console.log(`  ✅ Posted. Message ID: ${result.message_id}`);
 

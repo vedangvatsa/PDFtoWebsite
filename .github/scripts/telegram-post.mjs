@@ -9,6 +9,13 @@ dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 import { supabaseFetch, restUrl } from './supabase-fetch.mjs';
+import {
+  companyToSlug as companyToSlugShared,
+  isRouteableExternalId,
+  isJobPubliclyLive,
+  jobPublicUrl,
+  assertJobUrlLive,
+} from './lib/job-public-url.mjs';
 
 // ─── Banned Jobs Filter (must match jobs-sync.mjs) ───
 const BANNED_PATTERNS = [
@@ -366,8 +373,9 @@ function pickJobs(jobs, limit, category) {
     if (!job.company || job.company.includes('...') || job.company.length <= 2) continue;
     if (!job.title || /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) continue;
     if (BANNED_REGEX.test(job.title)) continue;
-    // Never post a UUID-fallback URL — every posted link must be /{company}/{slug}
-    if (!shortJobSlug(job.company, job.external_id)) continue;
+    // Routeable pretty slug + still live on public pages (30d expiry buffer)
+    if (!isRouteableExternalId(job.company, job.external_id)) continue;
+    if (!isJobPubliclyLive(job)) continue;
 
     if (catRegex && catRegex.test(job.title)) {
       matchingJobs.push(job);
@@ -618,13 +626,37 @@ async function main() {
   }
 
   // 2. Shuffle for source diversity, then pick category-matching remote-preferred roles
-  const jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST, category);
+  //    Over-pick for live URL preflight (drop 404s before posting)
+  let jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST * 4, category);
   if (jobs.length === 0) {
     console.log('  No jobs matched category filters.');
     return;
   }
+
+  const liveJobs = [];
+  for (const job of jobs) {
+    const url = jobPublicPath(job);
+    if (!url) {
+      console.log(`  ⛔ skip (no pretty url): ${job.company} — ${job.title}`);
+      continue;
+    }
+    const check = await assertJobUrlLive(url, { allowNetworkFail: false });
+    if (!check.ok) {
+      console.log(`  ⛔ skip ${check.reason}: ${url}`);
+      continue;
+    }
+    console.log(`  ✓ live ${check.status}: ${url}`);
+    liveJobs.push(job);
+    if (liveJobs.length >= JOBS_PER_POST) break;
+  }
+  jobs = liveJobs;
+  if (jobs.length === 0) {
+    console.log('  No live job URLs after preflight.');
+    return;
+  }
+
   const remoteCount = jobs.filter(j => isRemote(j.location)).length;
-  console.log(`  ${allJobs.length} unposted -> ${jobs.length} picked (${remoteCount} remote)`);
+  console.log(`  ${allJobs.length} unposted -> ${jobs.length} live (${remoteCount} remote)`);
 
   // 3. Format once — post TG and LinkedIn independently so one failure doesn't block the other
   const message = formatJobsMessage(jobs, category);
@@ -678,45 +710,13 @@ main().catch(e => {
   process.exit(1);
 });
 
-// ── Job public path helpers (same as telegram-ai-jobs.mjs) ───────────────
+// ── Job public path helpers (shared with telegram-ai-jobs / site mint rules) ─
 
 function companyToSlug(company) {
-  return (company || '')
-    .replace(/&amp;/gi, '&')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#0*39;|&apos;/gi, "'")
-    .replace(/&nbsp;/gi, ' ')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-const RESERVED_JOB_SEGMENTS = new Set([
-  'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
-  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
-]);
-
-function shortJobSlug(company, externalId) {
-  if (!externalId) return null;
-  const co = companyToSlug(company);
-  if (!co) return null;
-  const prefix = `${co}_`;
-  const lower = externalId.toLowerCase();
-  if (!lower.startsWith(prefix)) return null;
-  const rest = externalId.slice(prefix.length).toLowerCase();
-  if (RESERVED_JOB_SEGMENTS.has(rest)) return null;
-  if (!/^[a-z0-9][a-z0-9-]{0,23}$/i.test(rest)) return null;
-  if (/^[0-9a-f]{8,}$/i.test(rest)) return null;
-  if (rest.length > 12 && /^\d+$/.test(rest)) return null;
-  return rest;
+  return companyToSlugShared(company);
 }
 
 function jobPublicPath(job) {
-  const jobSlug = shortJobSlug(job.company, job.external_id);
-  if (jobSlug) return `https://cvin.bio/${companyToSlug(job.company)}/${jobSlug}`;
-  return `https://cvin.bio/jobs/${job.id}`;
+  return jobPublicUrl(job, { prettyOnly: true });
 }
 
