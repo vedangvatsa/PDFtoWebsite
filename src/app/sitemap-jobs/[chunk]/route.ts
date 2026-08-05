@@ -30,7 +30,7 @@ export async function GET(_req: Request, ctx: Props) {
     while (urls.length < CHUNK && !done) {
       const { data } = await supabaseAdmin
         .from('jobs')
-        .select('id, company, external_id, description, created_at, published_at')
+        .select('id, company, external_id, slug, title, description, created_at, published_at')
         .not('external_id', 'is', null)
         .not('company', 'is', null)
         .gt('created_at', thirtyDaysAgo)
