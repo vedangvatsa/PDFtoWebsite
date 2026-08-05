@@ -6,6 +6,25 @@ import { useEffect, Suspense } from 'react'
 import { useUser } from '@/auth'
 import { usePathname, useSearchParams } from 'next/navigation'
 
+/**
+ * Detect headless browsers / scrapers so their pageviews never pollute
+ * analytics. Real browsers report navigator.webdriver === false. Headless
+ * Chrome (Chrome 114 was crawling cvin.bio ~10k pages/day on 2026-08-05)
+ * reports true, with a fresh anonymous PostHog id per pageview.
+ */
+function isBotOrHeadless(): boolean {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.webdriver === true) return true
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent || '' : ''
+    if (ua && /bot|crawl|spider|slurp|lighthouse|headless|phantom|puppeteer|playwright|selenium|htmlunit|scrapy|heritrix/i.test(ua)) {
+      return true
+    }
+  } catch {
+    /* ignore */
+  }
+  return false
+}
+
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
@@ -30,6 +49,8 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       respect_dnt: false,
       before_send: (event) => {
         if (!event) return event;
+        // Drop scraper/headless traffic before it reaches PostHog.
+        if (isBotOrHeadless()) return null;
         if (event.properties?.['$current_url']) {
           event.properties['$current_url'] = event.properties['$current_url'].replace(/email=[^&]+/g, 'email=REDACTED');
         }

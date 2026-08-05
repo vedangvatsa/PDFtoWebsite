@@ -17,6 +17,14 @@ const PH_API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
 const PH_PROJECT_ID = process.env.POSTHOG_PROJECT_ID;
 const PH_HOST = 'https://us.posthog.com';
 
+/**
+ * Headless Chrome-114 / macOS-10.15.7 crawler that inflated Aug-5 pageviews
+ * (~10.6k one-page "visits"). Excluded from traffic KPIs so analytics reflect
+ * real users. Client-side before_send also drops future headless traffic.
+ */
+const NOT_BOT =
+  `AND NOT (properties.$browser = 'Chrome' AND properties.$browser_version = '114' AND properties.$os = 'Mac OS X' AND properties.$os_version = '10.15.7')`;
+
 /** Map raw referrer domains AND utm_source values to friendly names */
 const SOURCE_MAP: Record<string, string> = {
   // Direct / empty
@@ -261,6 +269,7 @@ async function fetchAnalyticsDataRaw() {
         FROM events
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 30 day
+          ${NOT_BOT}
         GROUP BY day
         ORDER BY day
       `, 'admin_pageviews_by_day'),
@@ -273,6 +282,7 @@ async function fetchAnalyticsDataRaw() {
         FROM events
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 14 day
+          ${NOT_BOT}
       `, 'admin_unique_visitors'),
 
       // 3. Top pages by pageviews (last 7 days)
@@ -285,6 +295,7 @@ async function fetchAnalyticsDataRaw() {
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 7 day
           AND properties.$pathname != ''
+          ${NOT_BOT}
         GROUP BY page
         ORDER BY views DESC
         LIMIT 20
@@ -302,6 +313,7 @@ async function fetchAnalyticsDataRaw() {
         FROM events
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 7 day
+          ${NOT_BOT}
         GROUP BY referrer
         ORDER BY visits DESC
         LIMIT 100
@@ -315,6 +327,7 @@ async function fetchAnalyticsDataRaw() {
         FROM events
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 7 day
+          ${NOT_BOT}
         GROUP BY device
         ORDER BY cnt DESC
       `, 'admin_device_types'),
@@ -328,6 +341,7 @@ async function fetchAnalyticsDataRaw() {
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 7 day
           AND properties.$geoip_country_name != ''
+          ${NOT_BOT}
         GROUP BY country
         ORDER BY visits DESC
         LIMIT 10
@@ -342,6 +356,7 @@ async function fetchAnalyticsDataRaw() {
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 7 day
           AND properties.$browser != ''
+          ${NOT_BOT}
         GROUP BY browser
         ORDER BY cnt DESC
         LIMIT 8
@@ -435,6 +450,7 @@ async function fetchAnalyticsDataRaw() {
         FROM events
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 14 day
+          ${NOT_BOT}
       `, 'admin_pageviews_wow'),
 
       // 13. Active distinct users today
@@ -443,6 +459,7 @@ async function fetchAnalyticsDataRaw() {
         FROM events
         WHERE timestamp >= now() - interval 24 hour
           AND event = '$pageview'
+          ${NOT_BOT}
       `, 'admin_active_today'),
 
       // 14. Total CV parses (PostHog)
@@ -478,6 +495,7 @@ async function fetchAnalyticsDataRaw() {
         FROM events
         WHERE event = '$pageview'
           AND timestamp >= now() - interval 7 day
+          ${NOT_BOT}
         GROUP BY os
         ORDER BY cnt DESC
       `, 'admin_os_types'),
