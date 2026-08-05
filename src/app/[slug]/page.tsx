@@ -50,7 +50,7 @@ async function getCompanyDirectory(slug: string) {
 }
 
 const SELECT_JOB_COLS =
-  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id';
+  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug';
 
 /**
  * Load recent jobs for a company page.
