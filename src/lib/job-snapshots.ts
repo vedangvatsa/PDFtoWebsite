@@ -21,7 +21,7 @@ import {
 import type { JobRow } from '@/lib/job-detail-data';
 
 const SELECT_COLS =
-  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at';
+  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at,slug';
 
 function isExpiredJob(createdAt?: string | null, publishedAt?: string | null): boolean {
   const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
@@ -54,11 +54,12 @@ async function loadJobByExternalIdLive(
   jobSlug: string
 ): Promise<JobRow | null> {
   const externalId = jobExternalIdFromSlugs(companySlug, jobSlug);
+  // Canonical: persisted slug column. Legacy: pretty external_id {company}_{slug}.
   const result = await withTimeoutFallback(
     supabaseAdmin
       .from('jobs')
       .select(SELECT_COLS)
-      .eq('external_id', externalId)
+      .or(`slug.eq.${externalId},external_id.eq.${externalId}`)
       .maybeSingle(),
     DB_BUDGET.fast,
     { data: null, error: { message: 'timeout' } } as any,

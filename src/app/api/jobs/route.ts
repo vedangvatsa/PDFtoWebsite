@@ -294,7 +294,7 @@ export async function GET(request: NextRequest) {
 
   // Build query — select only needed columns (skip description to reduce payload)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,external_id';
+  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,external_id,slug';
 
   // Base filters shared by all queries
   function applyBaseFilters(q: any) {
