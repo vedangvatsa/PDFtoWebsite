@@ -45,12 +45,26 @@ const GROQ_KEYS = [
   unquote(process.env.GROQ_API_KEY),
   unquote(process.env.GROQ_API_KEY_2),
 ].filter(Boolean);
-const OPENAI_KEYS = [
-  unquote(process.env.OPENAI_API_KEY),
-  unquote(process.env.OPENAI_API_KEY_2),
-  unquote(process.env.OPENAI_API_KEY_3),
-  unquote(process.env.OPENAI_API_KEY_4),
-].filter(Boolean);
+// dotenv reloads .env.local after shell unset — honor SKIP_OPENAI / GEMINI_NVIDIA_ONLY
+const SKIP_OPENAI =
+  process.env.SKIP_OPENAI === '1' ||
+  process.env.SKIP_OPENAI === 'true' ||
+  process.env.GEMINI_NVIDIA_ONLY === '1' ||
+  process.env.GEMINI_NVIDIA_ONLY === 'true';
+const OPENAI_KEYS = SKIP_OPENAI
+  ? []
+  : [
+      unquote(process.env.OPENAI_API_KEY),
+      unquote(process.env.OPENAI_API_KEY_2),
+      unquote(process.env.OPENAI_API_KEY_3),
+      unquote(process.env.OPENAI_API_KEY_4),
+    ].filter(Boolean);
+if (SKIP_OPENAI) {
+  delete process.env.OPENAI_API_KEY;
+  delete process.env.OPENAI_API_KEY_2;
+  delete process.env.OPENAI_API_KEY_3;
+  delete process.env.OPENAI_API_KEY_4;
+}
 const NVIDIA_KEYS = [
   unquote(process.env.NVIDIA_API_KEY),
   unquote(process.env.NVIDIA_API_KEY_2),
@@ -147,6 +161,23 @@ function isPrettyExternalId(company, externalId) {
   if (parts.length === 1) return parts[0].length <= 12;
   if (/^[0-9a-f]{2,4}$/.test(parts[1])) return parts[0].length <= 6;
   return rest.length <= 8;
+}
+
+/**
+ * Already live on site as /{company}/{slug}. Never remint these during RE_ENRICH —
+ * Telegram (@hashtag_ai / techjobsdaily) posts these URLs; reminting = permanent 404.
+ */
+function isRouteableExternalId(company, externalId) {
+  if (!externalId) return false;
+  const co = companyToSlug(company);
+  if (!co) return false;
+  const prefix = `${co}_`;
+  if (!externalId.toLowerCase().startsWith(prefix)) return false;
+  const rest = externalId.slice(prefix.length).toLowerCase();
+  if (RESERVED_SLUGS.has(rest)) return false;
+  if (!/^[a-z0-9][a-z0-9-]{0,23}$/.test(rest)) return false;
+  if (/^[0-9a-f]{8,}$/.test(rest)) return false;
+  return true;
 }
 
 function stripHtml(html) {
@@ -956,23 +987,35 @@ function finalizeText(text) {
   return text.slice(0, 8000);
 }
 
+// Per-key(+model) cooldowns so one 429 does not burn the whole key ring
 const geminiKeyCooldown = new Map();
+function geminiCooldownKey(model, key) {
+  return `${model}::${key.slice(0, 12)}`;
+}
 
 async function rewriteWithGemini(job, sourceText, extras) {
   if (!GEMINI_KEYS.length) throw new Error('Missing GEMINI_API_KEY');
   const prompt = buildJobPrompt(job, sourceText, extras);
 
-  const models = ['gemini-3.6-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
+  // Prefer models confirmed working on free/paid keys (avoid 2.0-flash free limit:0).
+  const models = [
+    process.env.GEMINI_MODEL,
+    'gemini-flash-latest',
+    'gemini-2.5-flash',
+    'gemini-2.5-flash-lite',
+  ].filter(Boolean);
   let lastErr = '';
   let data = null;
 
   for (const model of models) {
-    if (geminiKeyCooldown.get(model) && Date.now() - geminiKeyCooldown.get(model) < 60000) continue;
-
-    // Try each key for this model
     for (const key of GEMINI_KEYS) {
+      const cdKey = geminiCooldownKey(model, key);
+      const until = geminiKeyCooldown.get(cdKey) || 0;
+      if (Date.now() < until) continue;
+
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
       try {
+        // Keep generationConfig simple — thinkingConfig 400s on some flash variants
         const r = await jfetch(
           url,
           {
@@ -982,13 +1025,12 @@ async function rewriteWithGemini(job, sourceText, extras) {
               contents: [{ parts: [{ text: prompt }] }],
               generationConfig: {
                 temperature: 0.4,
-                maxOutputTokens: 4096,
+                maxOutputTokens: 8192,
                 topP: 0.9,
-                thinkingConfig: { thinkingBudget: 0 },
               },
             }),
           },
-          45000
+          90000
         );
         if (r.ok) {
           data = await r.json();
@@ -997,18 +1039,29 @@ async function rewriteWithGemini(job, sourceText, extras) {
         const err = await r.text();
         lastErr = `gemini_${model}_${r.status}:${err.slice(0, 180)}`;
         if (r.status === 429) {
-          geminiKeyCooldown.set(model, Date.now());
-          break; // Try next model
+          // key-specific cooldown; try other keys / models
+          geminiKeyCooldown.set(cdKey, Date.now() + 45_000);
+          continue;
+        }
+        if (r.status === 404) {
+          // model unavailable for this key — skip remaining keys for this model name
+          geminiKeyCooldown.set(cdKey, Date.now() + 600_000);
+          break;
         }
       } catch (e) {
-        lastErr = `gemini_${model}_err:${String(e.message||e).slice(0, 100)}`;
+        lastErr = `gemini_${model}_err:${String(e.message || e).slice(0, 100)}`;
       }
     }
     if (data) break;
   }
 
   if (!data) throw new Error(lastErr || 'gemini_failed');
-  const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const text = parts.map((p) => p.text || '').join('');
+  if (!text.trim()) {
+    const reason = data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'empty';
+    throw new Error(`gemini_empty:${reason}`);
+  }
   return finalizeText(text);
 }
 
@@ -1142,7 +1195,8 @@ async function rewriteWithOpenAI(job, sourceText, extras) {
   throw new Error(lastErr || 'openai_failed');
 }
 
-/** NVIDIA NIM — OpenAI-compatible chat completions (helps when OpenAI 429s). */
+/** NVIDIA NIM — OpenAI-compatible chat completions (Nemotron). */
+let nvidiaNextAllowedAt = 0;
 async function rewriteWithNvidia(job, sourceText, extras) {
   if (!NVIDIA_KEYS.length) throw new Error('Missing NVIDIA_API_KEY');
   const prompt = buildJobPrompt(job, sourceText, extras);
@@ -1151,6 +1205,11 @@ async function rewriteWithNvidia(job, sourceText, extras) {
     ? [NVIDIA_MODEL]
     : [NVIDIA_MODEL, 'meta/llama-3.3-70b-instruct', 'meta/llama-3.1-70b-instruct'];
   let lastErr = '';
+
+  // Global min spacing across workers on this machine (~1 rps soft cap)
+  const waitMs = nvidiaNextAllowedAt - Date.now();
+  if (waitMs > 0) await sleep(Math.min(waitMs, 15_000));
+  nvidiaNextAllowedAt = Date.now() + 1200;
 
   for (const model of models) {
     for (const key of NVIDIA_KEYS) {
@@ -1181,9 +1240,13 @@ async function rewriteWithNvidia(job, sourceText, extras) {
         }
         const err = await r.text();
         lastErr = `http_${r.status}:${err.slice(0, 120)}`;
-        // Rate limited / overloaded — fall through to OpenAI/Gemini immediately
-        if (r.status === 429 || r.status === 503) throw new Error(lastErr);
-        if (r.status >= 500) await sleep(TURBO ? 200 : 800);
+        // Rate limited — back off then throw so caller can skip this job
+        if (r.status === 429 || r.status === 503) {
+          nvidiaNextAllowedAt = Date.now() + 20_000;
+          await sleep(2000);
+          throw new Error(lastErr);
+        }
+        if (r.status >= 500) await sleep(TURBO ? 400 : 800);
       } catch (e) {
         const msg = String(e.message || e);
         // Don't double-prefix if we already threw lastErr
@@ -1232,14 +1295,24 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
   throw new Error(lastErr || 'anthropic_failed');
 }
 
-// OpenAI is always primary. Many workers/concurrency share the same key in parallel
-// (no mutex) — OpenAI rate-limits via 429, we backoff and retry then fall back.
+// Provider order controlled by env:
+//   NVIDIA_ONLY=1           → nvidia only
+//   GEMINI_NVIDIA_ONLY=1    → gemini → nvidia (no OpenAI)
+//   SKIP_OPENAI=1           → same as GEMINI_NVIDIA_ONLY when both keys exist
+//   TURBO default           → gemini → openai → nvidia
 async function rewriteJobPage(job, sourceText, extras) {
   const providers = [];
-  // Prefer providers that still have quota. NVIDIA_ONLY=1 skips OpenAI/Gemini (useful when both 429).
   const nvidiaOnly = process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true';
+  const geminiNvidiaOnly =
+    process.env.GEMINI_NVIDIA_ONLY === '1' ||
+    process.env.GEMINI_NVIDIA_ONLY === 'true' ||
+    process.env.SKIP_OPENAI === '1' ||
+    process.env.SKIP_OPENAI === 'true';
   if (nvidiaOnly && NVIDIA_KEYS.length) {
     providers.push(['nvidia', rewriteWithNvidia]);
+  } else if (geminiNvidiaOnly) {
+    if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
+    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
   } else if (TURBO) {
     // TURBO: Gemini → OpenAI → NVIDIA (Nemotron is powerful but rate-limits hard in parallel)
     if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
@@ -1532,9 +1605,19 @@ async function runOneBatch(batchNum, state, done) {
   const stats = { ok: 0, skip: 0, fail: 0, reasons: {} };
   const successes = [];
   let attempted = 0;
+  let consecutiveProviderFails = 0;
+  const tBatch = Date.now();
 
-  const waveSize = Math.max(CONCURRENCY * 4, 12);
+  // Small waves under rate limits so we log progress and bail instead of silent multi-hour hangs
+  const waveSize = Math.max(CONCURRENCY * 2, Math.min(6, CONCURRENCY * 4));
   for (let start = 0; start < queue.length && stats.ok < BATCH_SIZE; start += waveSize) {
+    // Circuit breaker: providers are 429-dead — stop burning the rest of the queue this batch
+    if (consecutiveProviderFails >= 8 && stats.ok === 0) {
+      console.log(
+        `[${new Date().toISOString()}] circuit_open worker=${WORKER_ID} consecutive_fails=${consecutiveProviderFails} ok=0 — end batch early`
+      );
+      break;
+    }
     const wave = queue.slice(start, Math.min(start + waveSize, queue.length));
     await mapPool(wave, CONCURRENCY, async (job) => {
       try {
@@ -1545,8 +1628,22 @@ async function runOneBatch(batchNum, state, done) {
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
         done.add(job.id);
+        if (/429|rate|all_providers_failed/i.test(reason)) consecutiveProviderFails++;
+        else consecutiveProviderFails = 0;
+      }
+      if (attempted > 0 && attempted % 5 === 0) {
+        const elapsed = ((Date.now() - tBatch) / 1000).toFixed(0);
+        console.log(
+          `[${new Date().toISOString()}] progress worker=${WORKER_ID} attempted=${attempted} ok=${stats.ok} fail=${stats.fail} skip=${stats.skip} ${elapsed}s`
+        );
       }
     });
+    // Persist state between waves so a kill mid-batch keeps partial progress
+    try {
+      saveState(state);
+    } catch {
+      /* ignore */
+    }
 
     async function processOne(job) {
       if (stats.ok >= BATCH_SIZE) return;
@@ -1624,6 +1721,7 @@ async function runOneBatch(batchNum, state, done) {
       let description;
       try {
         description = await rewriteJobPage(job, scraped.text, scraped.extras);
+        consecutiveProviderFails = 0;
         // Normal mode soft-throttles; TURBO relies on API 429 backoff only
         if (!TURBO) await sleep(80);
       } catch (e) {
@@ -1631,6 +1729,8 @@ async function runOneBatch(batchNum, state, done) {
         const reason = String(e.message || e).slice(0, 80);
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
+        if (/429|rate|all_providers_failed/i.test(reason)) consecutiveProviderFails++;
+        else consecutiveProviderFails = 0;
         // Don't permanently burn RE_ENRICH fails — allow retry next batch
         if (!RE_ENRICH) done.add(job.id);
         return;
@@ -1642,8 +1742,9 @@ async function runOneBatch(batchNum, state, done) {
       let external_id;
       let path;
       try {
-        // Keep existing short pretty slug (fast path) — remint only when missing/long
-        if (isPrettyExternalId(job.company, job.external_id)) {
+        // Keep any already-routeable external_id (not only "strict pretty").
+        // Reminting breaks Telegram / social links that already went out.
+        if (isPrettyExternalId(job.company, job.external_id) || isRouteableExternalId(job.company, job.external_id)) {
           const co = companySlug;
           const prefix = `${co}_`;
           const rest = job.external_id.slice(prefix.length);
@@ -1757,12 +1858,23 @@ async function main() {
     console.error('Need Supabase env');
     process.exit(1);
   }
-  if (!OPENAI_KEYS.length && !GEMINI_KEYS.length && !ANTHROPIC_KEY && !DRY_RUN) {
-    console.error('Need OPENAI_API_KEY (primary) and/or GEMINI_API_KEY (fallback)');
+  if (!OPENAI_KEYS.length && !GEMINI_KEYS.length && !NVIDIA_KEYS.length && !ANTHROPIC_KEY && !DRY_RUN) {
+    console.error('Need GEMINI_API_KEY and/or NVIDIA_API_KEY and/or OPENAI_API_KEY');
     process.exit(1);
   }
+  const mode =
+    process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true'
+      ? 'nvidia_only'
+      : process.env.GEMINI_NVIDIA_ONLY === '1' ||
+          process.env.GEMINI_NVIDIA_ONLY === 'true' ||
+          process.env.SKIP_OPENAI === '1' ||
+          process.env.SKIP_OPENAI === 'true'
+        ? 'gemini+nvidia'
+        : TURBO
+          ? 'turbo_all'
+          : 'default';
   console.log(
-    `AI providers: openai=${OPENAI_KEYS.length ? 'yes' : 'no'} nvidia=${NVIDIA_KEYS.length} gemini=${GEMINI_KEYS.length} cohere=${COHERE_KEYS.length} groq=${GROQ_KEYS.length} anthropic=${ANTHROPIC_KEY ? 'yes' : 'no'} minWords=${MIN_REWRITE_WORDS} turbo=${TURBO ? 1 : 0} concurrency=${CONCURRENCY} workers=${WORKERS}/${WORKER_ID}`
+    `AI providers mode=${mode}: openai=${OPENAI_KEYS.length ? 'yes' : 'no'} nvidia=${NVIDIA_KEYS.length} gemini=${GEMINI_KEYS.length} cohere=${COHERE_KEYS.length} groq=${GROQ_KEYS.length} anthropic=${ANTHROPIC_KEY ? 'yes' : 'no'} minWords=${MIN_REWRITE_WORDS} turbo=${TURBO ? 1 : 0} concurrency=${CONCURRENCY} workers=${WORKERS}/${WORKER_ID}`
   );
 
   const state = loadState();
