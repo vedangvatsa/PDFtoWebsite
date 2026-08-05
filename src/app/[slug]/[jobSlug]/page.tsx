@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import {
   fetchJobByCompanyAndSlug,
@@ -9,7 +9,15 @@ import {
   buildJobBreadcrumbJsonLd,
   fetchRelatedJobs,
 } from '@/lib/job-detail-data';
-import { isShortJobSlug } from '@/lib/job-description';
+import {
+  isShortJobSlug,
+  mintPrettyJobSlug,
+  shortJobSlug,
+  jobPublicPath,
+} from '@/lib/job-description';
+import { toCompanyKey } from '@/lib/company-directory';
+import { supabaseAdmin } from '@/lib/supabase-admin';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import JobDetailClient from '@/app/jobs/[id]/job-detail-client';
 
 // Longer ISR: job snapshots revalidate in loaders (900s); page can stay warm longer.
@@ -23,8 +31,48 @@ type PageProps = {
 
 /**
  * Company-scoped job pages: /google/mkt, /google/swe, …
- * Resolved via jobs.external_id = `{companySlug}_{jobSlug}`.
+ * Resolved via jobs.slug / jobs.external_id = `{companySlug}_{jobSlug}`.
  */
+
+/**
+ * Legacy / stale URL fallback. Earlier builds minted short slugs from the title
+ * (e.g. /iit-bombay/foreign) for jobs whose pretty slug is multi-token. Those
+ * URLs were 404 once the real slug column was used. Resolve any job in the
+ * company whose minted/legacy slug equals the requested one and redirect to its
+ * canonical path so old links and stale caches never dead-end.
+ */
+async function resolveLegacySlugPath(
+  companySlug: string,
+  jobSlug: string
+): Promise<string | null> {
+  const companyKey = toCompanyKey(companySlug);
+  if (!companyKey || !isShortJobSlug(jobSlug)) return null;
+  const { data } = await withTimeoutFallback(
+    supabaseAdmin
+      .from('jobs')
+      .select('id,title,company,external_id,slug')
+      .eq('company_key', companyKey)
+      .limit(100),
+    DB_BUDGET.fast,
+    { data: [] } as any,
+    `legacy-slug:${companyKey}`
+  );
+  const want = jobSlug.toLowerCase();
+  for (const job of (data || []) as Array<{
+    id: string;
+    title: string;
+    company: string;
+    external_id: string | null;
+    slug: string | null;
+  }>) {
+    if (!job.id || !job.title) continue;
+    const minted = mintPrettyJobSlug(job.title, job.id).toLowerCase();
+    const short = shortJobSlug(job.company, job.external_id)?.toLowerCase();
+    if (minted === want || short === want) return jobPublicPath(job);
+  }
+  return null;
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug, jobSlug } = await params;
   if (!isShortJobSlug(jobSlug)) {
@@ -41,10 +89,22 @@ export default async function CompanyJobPage({ params }: PageProps) {
   const { slug, jobSlug } = await params;
   if (!isShortJobSlug(jobSlug)) notFound();
 
-  const job = await fetchJobByCompanyAndSlug(slug, jobSlug);
-  if (!job) notFound();
+  let job = await fetchJobByCompanyAndSlug(slug, jobSlug);
+  if (!job) {
+    const legacyPath = await resolveLegacySlugPath(slug, jobSlug);
+    if (legacyPath) permanentRedirect(legacyPath);
+    notFound();
+  }
 
   const detail = toJobDetail(job);
+
+  // Jobs with no body content serve no page — send users straight to the real
+  // listing. Once enrichment writes a real description, this flips back to a page.
+  if (detail.description_word_count === 0) {
+    if (job.apply_url) redirect(job.apply_url);
+    notFound();
+  }
+
   const [viewer, relatedJobs] = await Promise.all([
     getViewerJobContext(),
     fetchRelatedJobs(job, 6),
