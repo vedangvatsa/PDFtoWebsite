@@ -40,12 +40,22 @@ export interface JobDetail {
   category: string | null;
   source: string;
   published_at: string | null;
+  created_at?: string | null;
   description_html: string;
   has_description: boolean;
   excerpt: string;
+  description_word_count?: number;
+  is_indexable?: boolean;
   company_slug?: string | null;
   job_slug?: string | null;
   public_path?: string | null;
+}
+
+export interface RelatedJobCard {
+  id: string;
+  title: string;
+  location: string;
+  href: string;
 }
 
 interface Props {
@@ -53,12 +63,14 @@ interface Props {
   userSkills: string[];
   profileComplete: boolean;
   isAuthenticated: boolean;
+  relatedJobs?: RelatedJobCard[];
 }
 
 export default function JobDetailClient({
   job,
   userSkills: initialSkills,
   isAuthenticated,
+  relatedJobs = [],
 }: Props) {
   const [userSkills] = useState(initialSkills);
   const [isUploading, setIsUploading] = useState(false);
@@ -245,15 +257,41 @@ export default function JobDetailClient({
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
       <Header />
       <main id="main-content" className="w-full max-w-5xl mx-auto px-6 pt-4 sm:pt-6 md:pt-8 pb-32 flex-1 min-w-0">
-        <Link
-          href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-4 sm:mb-6 min-h-[44px] sm:min-h-0"
-        >
-          <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
-          <span className="truncate max-w-[70vw] sm:max-w-none">
-            {job.company_slug ? `${job.company} careers` : 'All jobs'}
-          </span>
-        </Link>
+        <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6">
+          <ol className="flex flex-wrap items-center gap-1.5 text-sm text-zinc-500">
+            <li>
+              <Link href="/jobs" className="hover:text-zinc-900 transition-colors">
+                Jobs
+              </Link>
+            </li>
+            {job.company_slug ? (
+              <>
+                <li aria-hidden className="text-zinc-300">/</li>
+                <li className="min-w-0">
+                  <Link
+                    href={`/${job.company_slug}`}
+                    className="hover:text-zinc-900 transition-colors truncate max-w-[40vw] sm:max-w-none inline-block align-bottom"
+                  >
+                    {job.company}
+                  </Link>
+                </li>
+              </>
+            ) : null}
+            <li aria-hidden className="text-zinc-300">/</li>
+            <li className="text-zinc-800 font-medium truncate max-w-[50vw] sm:max-w-md" aria-current="page">
+              {job.title}
+            </li>
+          </ol>
+          <Link
+            href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
+            className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mt-2 min-h-[44px] sm:min-h-0"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate max-w-[70vw] sm:max-w-none">
+              {job.company_slug ? `${job.company} careers` : 'All jobs'}
+            </span>
+          </Link>
+        </nav>
 
         <article className="bg-white border border-zinc-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm min-w-0 overflow-hidden">
           <div className="flex items-start gap-3 sm:gap-4 mb-5 sm:mb-6">
@@ -347,6 +385,44 @@ export default function JobDetailClient({
             <CompanyApplyLink />
           </div>
         </article>
+
+        {relatedJobs.length > 0 && (
+          <section className="mt-8 sm:mt-10" aria-labelledby="related-jobs-heading">
+            <h2
+              id="related-jobs-heading"
+              className="text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-3 sm:mb-4"
+            >
+              More roles at {job.company}
+            </h2>
+            <ul className="grid gap-2 sm:gap-3 sm:grid-cols-2">
+              {relatedJobs.map((r) => (
+                <li key={r.id}>
+                  <Link
+                    href={r.href}
+                    className="block rounded-xl border border-zinc-200 bg-white px-4 py-3 hover:border-zinc-300 hover:shadow-sm transition-all min-w-0"
+                  >
+                    <span className="block text-sm font-semibold text-zinc-900 leading-snug break-words">
+                      {r.title}
+                    </span>
+                    {r.location ? (
+                      <span className="mt-1 block text-xs text-zinc-500 truncate">{r.location}</span>
+                    ) : null}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            {job.company_slug ? (
+              <p className="mt-3 text-sm">
+                <Link
+                  href={`/${job.company_slug}`}
+                  className="font-medium text-zinc-700 hover:text-zinc-900 underline-offset-2 hover:underline"
+                >
+                  View all {job.company} jobs →
+                </Link>
+              </p>
+            ) : null}
+          </section>
+        )}
       </main>
 
       {/* Mobile float: Apply when profile exists, else Upload CV */}

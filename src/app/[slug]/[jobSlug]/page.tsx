@@ -6,6 +6,8 @@ import {
   getViewerJobContext,
   buildJobMetadata,
   buildJobJsonLd,
+  buildJobBreadcrumbJsonLd,
+  fetchRelatedJobs,
 } from '@/lib/job-detail-data';
 import { isShortJobSlug } from '@/lib/job-description';
 import JobDetailClient from '@/app/jobs/[id]/job-detail-client';
@@ -43,8 +45,12 @@ export default async function CompanyJobPage({ params }: PageProps) {
   if (!job) notFound();
 
   const detail = toJobDetail(job);
-  const viewer = await getViewerJobContext();
+  const [viewer, relatedJobs] = await Promise.all([
+    getViewerJobContext(),
+    fetchRelatedJobs(job, 6),
+  ]);
   const jsonLd = buildJobJsonLd(job, detail, siteUrl);
+  const breadcrumbLd = buildJobBreadcrumbJsonLd(detail, siteUrl);
 
   return (
     <>
@@ -52,11 +58,16 @@ export default async function CompanyJobPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <JobDetailClient
         job={detail}
         userSkills={viewer.userSkills}
         profileComplete={viewer.profileComplete}
         isAuthenticated={viewer.isAuthenticated}
+        relatedJobs={relatedJobs}
       />
     </>
   );
