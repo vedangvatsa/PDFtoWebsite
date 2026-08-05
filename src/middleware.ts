@@ -53,9 +53,63 @@ const UTM_SUFFIXES: Record<string, string> = {
 
 const SUFFIX_SET = new Set(Object.keys(UTM_SUFFIXES));
 
+/**
+ * Declared crawlers we WANT to keep (AI assistants, search engines, social
+ * link-previewers, SEO tools). They identify themselves by User-Agent, respect
+ * robots.txt, and (for AI assistants) drive real referral users. This mirrors
+ * the allow-list in src/app/robots.ts — never block these.
+ */
+const ALLOWED_CRAWLER_UA = [
+  // AI model training & AI search assistants
+  /GPTBot|ChatGPT-User|OAI-SearchBot|GPTBot-Extended/i,
+  /ClaudeBot|Claude-Web|Claude-SearchBot|anthropic-ai/i,
+  /Google-Extended|Googlebot|GoogleOther|Storebot-Google/i,
+  /PerplexityBot|Perplexity-User/i,
+  /Meta-ExternalAgent|Meta-ExternalFetcher/i,
+  /Bytespider|CCBot|cohere-ai|AI2Bot|MistralBot|xAI-Grok|YouBot|PanguBot/i,
+  // Search engines
+  /Bingbot|msnbot|adidxbot|DuckDuckBot|YandexBot|YandexMobileBot|Baiduspider|Slurp|Qwantify|PetalBot|Mojeek|Seznam|NaverBot/i,
+  // Social & link preview
+  /facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterestbot|redditbot|SkypeUriPreview|Embedly|Quora-Bot|vkShare/i,
+  // Platforms / research / SEO / archive / feeds
+  /Applebot|Applebot-Extended|Amazonbot|HuggingFaceBot|AhrefsBot|SemrushBot|MJ12bot|DotBot|Screaming Frog|rogerbot|SiteAuditBot|archive\.org_bot|Wayback|ia_archiver|ScholarBot|Feedly|Feedspot|NewsBlur/i,
+];
+
+/**
+ * Anonymous scrapers / headless automation. These do NOT identify as a
+ * declared bot, ignore robots.txt, and scrape content — e.g. the headless
+ * Chrome-114 / macOS-10.15.7 crawler that hit ~10.6k one-page "visits" on
+ * 2026-08-05. Real browsers and the declared crawlers above never match, so
+ * blocking them does not touch AI-assistant crawls or genuine users.
+ */
+const SCRAPER_UA = [
+  /headlesschrome|phantomjs|puppeteer|playwright|selenium/i,
+  /htmlunit|scrapy|aiohttp|python-requests|python-urllib/i,
+  /^curl\/|^wget\/|^go-http-client|^java\/|^okhttp/i,
+  /Macintosh; Intel Mac OS X 10_15_7.*Chrome\/114\.0\.0\.0/i,
+];
+
+function isAllowedCrawler(ua: string): boolean {
+  return ALLOWED_CRAWLER_UA.some((p) => p.test(ua));
+}
+
+function isScraperAgent(ua: string): boolean {
+  return SCRAPER_UA.some((p) => p.test(ua));
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ua = request.headers.get('user-agent') || '';
+
+  // ── Anti-scraper edge block ──────────────────────────────────────────────
+  // Stop anonymous scrapers before any HTML/JS is served. Declared AI/search/
+  // social crawlers and real browsers pass straight through.
+  if (isScraperAgent(ua) && !isAllowedCrawler(ua)) {
+    return new NextResponse(null, {
+      status: 403,
+      headers: { 'Cache-Control': 'no-store' },
+    });
+  }
 
   // Detect in-app browsers on the signup page and serve an escape page
   // that attempts to open in the system browser before showing the form.
