@@ -1,5 +1,12 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { getPlatformStats } from '@/lib/get-platform-stats';
+import {
+  canonicalizeCompanyName,
+  toCompanySlug,
+  preferCompanyDisplayName,
+  isJunkCompanyName,
+} from '@/lib/company-directory';
+import { isDisposableProfileSlug } from '@/lib/parse-guard';
 
 // Free-tier: cache hard so crawlers don't re-scan profiles/jobs every request.
 // Do not use force-dynamic here — that would bypass revalidate.
@@ -24,6 +31,7 @@ export async function GET() {
     `- Tech Layoffs Report 2026: ${siteUrl}/layoffs`,
     `- Remote Talent Report 2026: ${siteUrl}/talent`,
     `- Blog: ${siteUrl}/blog`,
+    `- Sitemap: ${siteUrl}/sitemap.xml`,
     '',
     '## Nomad Directory & Tools',
     '',
@@ -54,11 +62,12 @@ export async function GET() {
       .select('username, full_name, about, skills, experience, education')
       .not('username', 'is', null)
       .order('updated_at', { ascending: false })
-      .limit(400);
+      .limit(500);
 
     if (profiles) {
       for (const p of profiles) {
         if (!p.username || p.username.length < 3) continue;
+        if (isDisposableProfileSlug(p.username)) continue;
         const hasRealName =
           p.full_name && p.full_name !== 'Your Name' && p.full_name.length > 1;
         const hasContent =
@@ -89,39 +98,45 @@ export async function GET() {
     lines.push('## Company Careers');
     lines.push('');
     lines.push(
-      '> These pages contain live job openings, hiring locations, required skills, and FAQ for specific tech companies.'
+      '> Curated company career pages with live openings. Junk ATS labels and duplicate name variants are collapsed to a single slug.'
     );
     lines.push('');
 
-    // Cap hard for Free Nano (was up to 10k rows)
+    // Sample recent jobs; collapse by slug with counts + best display name
     const { data: jobSample } = await supabase
       .from('jobs')
       .select('company')
       .order('created_at', { ascending: false })
-      .limit(2000);
+      .limit(3000);
 
-    const companyNames = new Set<string>();
-    (jobSample || []).forEach((j) => {
-      if (j.company && !j.company.includes('...')) companyNames.add(j.company);
-    });
-
-    const toSlug = (name: string) =>
-      name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/-+$/, '')
-        .replace(/^-+/, '');
-    const seenSlugs = new Set<string>();
-
-    companyNames.forEach((name) => {
-      const slug = toSlug(name);
-      if (!seenSlugs.has(slug)) {
-        seenSlugs.add(slug);
-        lines.push(
-          `- [${name}](${siteUrl}/${slug}): Open roles, remote data, and hiring FAQs for ${name}.`
-        );
+    type Agg = { name: string; count: number };
+    const bySlug = new Map<string, Agg>();
+    for (const j of jobSample || []) {
+      const raw = (j.company || '').trim();
+      if (!raw || isJunkCompanyName(raw)) continue;
+      const canonical = canonicalizeCompanyName(raw);
+      if (!canonical) continue;
+      const slug = toCompanySlug(canonical);
+      if (!slug || slug.length < 2) continue;
+      const prev = bySlug.get(slug);
+      if (!prev) {
+        bySlug.set(slug, { name: canonical, count: 1 });
+      } else {
+        prev.count += 1;
+        prev.name = preferCompanyDisplayName(prev.name, canonical);
       }
-    });
+    }
+
+    // Prefer companies with more live roles; cap list for readability
+    const ranked = [...bySlug.entries()]
+      .sort((a, b) => b[1].count - a[1].count || a[1].name.localeCompare(b[1].name))
+      .slice(0, 400);
+
+    for (const [slug, { name, count }] of ranked) {
+      lines.push(
+        `- [${name}](${siteUrl}/${slug}): ${count} recent open role${count === 1 ? '' : 's'} — careers hub on CVin.Bio.`
+      );
+    }
   } catch {
     lines.push('- Error loading data');
   }

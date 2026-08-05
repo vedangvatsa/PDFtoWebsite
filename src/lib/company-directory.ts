@@ -45,7 +45,61 @@ export const COMPANY_BLOCKLIST = new Set([
   'null',
   'undefined',
   'company',
+  'hiring',
+  'jobs',
+  'careers',
+  'recruitment',
+  'staffing',
+  'tbd',
+  'tba',
+  'self-employed',
+  'self employed',
+  'freelance',
+  'various',
+  'multiple companies',
 ]);
+
+/**
+ * True if a company label looks like ATS junk / parse garbage (not a real brand).
+ * Used by llms.txt, company hubs, and directory rebuilds.
+ */
+export function isJunkCompanyName(raw: string): boolean {
+  const name = (raw || '').trim();
+  if (!name || name.length < 2) return true;
+  if (name.includes('...')) return true;
+  const lower = name.toLowerCase();
+  if (COMPANY_BLOCKLIST.has(lower)) return true;
+  // Leading noise: "100 Salesforce", "1100 Micron…", "@GLC", "+MEDRITE"
+  if (/^[\d@+\#\*]+/.test(name) && !/^(1password|1inch|2modern|3m|6sense|7-eleven|10x|15five|21shares)/i.test(name)) {
+    // Allow known brands that start with digits; block generic "100 Foo Inc" patterns
+    if (/^\d{2,}\s/.test(name) || /^@/.test(name) || /^\+/.test(name)) return true;
+  }
+  // Pure numeric / id-like
+  if (/^[\d\s\-_.]+$/.test(name)) return true;
+  // Mostly symbols / emoji
+  const letters = name.replace(/[^a-zA-Z]/g, '');
+  if (letters.length < 2) return true;
+  // URL / email fragments used as company
+  if (/^(https?:|www\.)/i.test(name) || name.includes('://')) return true;
+  if (/@/.test(name) && !/\.ai\b/i.test(name)) return true;
+  // "Careers - Foo", "Jobs at Foo" as company field
+  if (/^(careers?|jobs?|hiring)\s*[-–—|:]/i.test(name)) return true;
+  return false;
+}
+
+/** Prefer a cleaner display name for the same slug (fewer leading digits, better casing). */
+export function preferCompanyDisplayName(a: string, b: string): string {
+  const score = (n: string) => {
+    let s = 0;
+    if (!/^\d/.test(n)) s += 5;
+    if (!/^@/.test(n)) s += 2;
+    if (n === n.replace(/\b\w/g, (c) => c.toUpperCase()) || /[A-Z]/.test(n)) s += 1;
+    if (n.length >= 3 && n.length <= 40) s += 1;
+    if (COMPANY_NAME_MAP[n.toLowerCase()]) s += 10;
+    return s - (n.match(/\d/g) || []).length * 0.1;
+  };
+  return score(a) >= score(b) ? a : b;
+}
 
 /** Normalize variant company names to canonical form */
 export const COMPANY_NAME_MAP: Record<string, string> = {
@@ -177,6 +231,7 @@ export const COMPANY_NAME_MAP: Record<string, string> = {
 export function canonicalizeCompanyName(raw: string): string | null {
   const trimmed = (raw || '').trim();
   if (!trimmed || trimmed.includes('...')) return null;
+  if (isJunkCompanyName(trimmed)) return null;
   const lower = trimmed.toLowerCase();
   if (COMPANY_BLOCKLIST.has(lower)) return null;
   return COMPANY_NAME_MAP[lower] || trimmed;

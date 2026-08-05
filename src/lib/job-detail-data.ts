@@ -87,42 +87,167 @@ export function toJobDetail(job: JobRow): JobDetail {
   };
 }
 
-/** Same-company open roles for internal linking (excludes current job). */
+const TITLE_STOP = new Set([
+  'a', 'an', 'the', 'and', 'or', 'of', 'to', 'for', 'in', 'on', 'at', 'by', 'with',
+  'senior', 'junior', 'staff', 'principal', 'lead', 'sr', 'jr', 'i', 'ii', 'iii',
+  'iv', 'remote', 'hybrid', 'full', 'time', 'part', 'contract', 'intern', 'internship',
+]);
+
+/** Extract searchable tokens from a job title for related-role matching. */
+export function titleSearchTokens(title: string, max = 4): string[] {
+  const raw = String(title || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9+.#\s/-]/g, ' ')
+    .split(/[\s/|,–—-]+/)
+    .map((t) => t.trim())
+    .filter((t) => t.length >= 2 && !TITLE_STOP.has(t) && !/^\d+$/.test(t));
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const t of raw) {
+    if (seen.has(t)) continue;
+    seen.add(t);
+    out.push(t);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+function rowToRelatedCard(row: JobRow): RelatedJobCard {
+  return {
+    id: row.id,
+    title: cleanPublishText(row.title),
+    location: cleanPublishText(normalizeLocation(row.location || '')),
+    href: jobPublicPath(row),
+  };
+}
+
+function scoreRelated(row: JobRow, job: JobRow, titleTokens: string[]): number {
+  let s = 0;
+  if (row.company && job.company && row.company.toLowerCase() === job.company.toLowerCase()) {
+    s += 50;
+  }
+  const rt = (row.title || '').toLowerCase();
+  for (const t of titleTokens) {
+    if (rt.includes(t)) s += 12;
+  }
+  // Shared tags / skills-ish labels
+  const jobTags = new Set((job.tags || []).map((t) => t.toLowerCase()));
+  for (const t of row.tags || []) {
+    if (jobTags.has(String(t).toLowerCase())) s += 8;
+  }
+  if (isJobDescriptionIndexable(row.description)) s += 5;
+  return s;
+}
+
+/**
+ * Related open roles for internal linking:
+ * 1) same company  2) similar title tokens  3) shared tags
+ */
 export async function fetchRelatedJobs(
   job: JobRow,
   limit = 6
 ): Promise<RelatedJobCard[]> {
-  const company = job.company;
-  if (!company) return [];
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const titleTokens = titleSearchTokens(job.title, 4);
+  const selectCols =
+    'id, title, company, location, external_id, description, published_at, created_at, tags';
+
   try {
-    const result = await withTimeoutFallback(
-      supabaseAdmin
-        .from('jobs')
-        .select('id, title, company, location, external_id, description, published_at, created_at')
-        .eq('company', company)
-        .neq('id', job.id)
-        .gt('created_at', thirtyDaysAgo)
-        .or(`published_at.is.null,published_at.gt.${thirtyDaysAgo}`)
-        .order('created_at', { ascending: false })
-        .limit(Math.min(40, limit * 5)),
-      DB_BUDGET.fast,
-      { data: null, error: { message: 'timeout' } } as any,
-      `related-jobs:${companyToSlug(company)}`
-    );
-    const rows = (result.data || []) as JobRow[];
+    const queries: PromiseLike<{ data: any }>[] = [];
+
+    // Same company
+    if (job.company) {
+      queries.push(
+        withTimeoutFallback(
+          supabaseAdmin
+            .from('jobs')
+            .select(selectCols)
+            .eq('company', job.company)
+            .neq('id', job.id)
+            .gt('created_at', thirtyDaysAgo)
+            .or(`published_at.is.null,published_at.gt.${thirtyDaysAgo}`)
+            .order('created_at', { ascending: false })
+            .limit(24),
+          DB_BUDGET.fast,
+          { data: null } as any,
+          `related-co:${companyToSlug(job.company)}`
+        )
+      );
+    }
+
+    // Similar titles (top 2 tokens as ILIKE or-filter). created_at window only —
+    // chaining multiple .or() breaks PostgREST filters.
+    if (titleTokens.length) {
+      const orTitle = titleTokens
+        .slice(0, 2)
+        .map((t) => `title.ilike.%${t.replace(/[%_,.()]/g, '')}%`)
+        .join(',');
+      if (orTitle) {
+        queries.push(
+          withTimeoutFallback(
+            supabaseAdmin
+              .from('jobs')
+              .select(selectCols)
+              .or(orTitle)
+              .neq('id', job.id)
+              .gt('created_at', thirtyDaysAgo)
+              .order('created_at', { ascending: false })
+              .limit(30),
+            DB_BUDGET.fast,
+            { data: null } as any,
+            `related-title:${titleTokens.slice(0, 2).join('-')}`
+          )
+        );
+      }
+    }
+
+    // Shared tag (first meaningful tag)
+    const tag = (job.tags || []).find((t) => t && String(t).length >= 2 && String(t).length <= 32);
+    if (tag) {
+      queries.push(
+        withTimeoutFallback(
+          supabaseAdmin
+            .from('jobs')
+            .select(selectCols)
+            .contains('tags', [tag])
+            .neq('id', job.id)
+            .gt('created_at', thirtyDaysAgo)
+            .order('created_at', { ascending: false })
+            .limit(20),
+          DB_BUDGET.fast,
+          { data: null } as any,
+          `related-tag:${String(tag).slice(0, 20)}`
+        )
+      );
+    }
+
+    const results = await Promise.all(queries);
+    const byId = new Map<string, JobRow>();
+    for (const r of results) {
+      for (const row of (r.data || []) as JobRow[]) {
+        if (!row?.id || row.id === job.id) continue;
+        if (!byId.has(row.id)) byId.set(row.id, row);
+      }
+    }
+
+    const ranked = [...byId.values()]
+      .map((row) => ({ row, score: scoreRelated(row, job, titleTokens) }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score);
+
     const cards: RelatedJobCard[] = [];
-    for (const row of rows) {
-      // Prefer indexable bodies; fall back so thin pages still get some links
-      if (!isJobDescriptionIndexable(row.description) && cards.length >= 2) continue;
-      const path = jobPublicPath(row);
-      cards.push({
-        id: row.id,
-        title: cleanPublishText(row.title),
-        location: cleanPublishText(normalizeLocation(row.location || '')),
-        href: path,
-      });
+    for (const { row } of ranked) {
+      if (!isJobDescriptionIndexable(row.description) && cards.length >= 3) continue;
+      cards.push(rowToRelatedCard(row));
       if (cards.length >= limit) break;
+    }
+    // Fall back: any same-company even if thin
+    if (cards.length < Math.min(3, limit)) {
+      for (const { row } of ranked) {
+        if (cards.some((c) => c.id === row.id)) continue;
+        cards.push(rowToRelatedCard(row));
+        if (cards.length >= limit) break;
+      }
     }
     return cards;
   } catch {
@@ -244,26 +369,46 @@ function isRemoteLocation(location: string | null | undefined): boolean {
 }
 
 /** Best-effort parse of free-text salary into schema.org MonetaryAmount. */
-function parseBaseSalary(salary: string | null | undefined): Record<string, unknown> | undefined {
+export function parseBaseSalary(salary: string | null | undefined): Record<string, unknown> | undefined {
   if (!salary) return undefined;
-  const s = salary.replace(/,/g, '').trim();
-  // $120000-$180000 / $120k–$180k / 120000 - 180000 USD
-  const range = s.match(
-    /\$?\s*(\d{2,3}(?:\.\d+)?)\s*k?\s*[-–—to]+\s*\$?\s*(\d{2,3}(?:\.\d+)?)\s*k?/i
-  );
-  const single = s.match(/\$?\s*(\d{2,3}(?:\.\d+)?)\s*k\b/i) || s.match(/\$\s*(\d{5,7})\b/);
-  const currency = /\b(eur|€)\b/i.test(s) ? 'EUR' : /\b(gbp|£)\b/i.test(s) ? 'GBP' : 'USD';
-  const toNum = (raw: string, hadK: boolean) => {
-    const n = parseFloat(raw);
-    if (!Number.isFinite(n)) return null;
-    if (hadK || n < 1000) return Math.round(n * 1000);
+  let s = salary.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+  // Normalize "120-180k" and "USD 120000"
+  s = s.replace(/(\d)\s*k\b/gi, '$1k');
+  const currency = /\b(eur|€)\b/i.test(s)
+    ? 'EUR'
+    : /\b(gbp|£|pound)\b/i.test(s)
+      ? 'GBP'
+      : /\b(inr|₹|rs\.?)\b/i.test(s)
+        ? 'INR'
+        : /\b(cad|c\$)\b/i.test(s)
+          ? 'CAD'
+          : /\b(aud|a\$)\b/i.test(s)
+            ? 'AUD'
+            : 'USD';
+  const unitText = /hour|\/\s*hr|hourly|per hour/i.test(s)
+    ? 'HOUR'
+    : /month|\/\s*mo|monthly/i.test(s)
+      ? 'MONTH'
+      : 'YEAR';
+
+  const toNum = (raw: string, forceK?: boolean) => {
+    const cleaned = raw.replace(/[^\d.]/g, '');
+    const n = parseFloat(cleaned);
+    if (!Number.isFinite(n) || n <= 0) return null;
+    if (forceK || /k$/i.test(raw.trim()) || (n > 0 && n < 1000 && unitText === 'YEAR')) {
+      return Math.round(n * 1000);
+    }
     return Math.round(n);
   };
+
+  // Ranges: $120k-$180k | 120000-180000 | $120,000 – $180,000 | 120k to 180k
+  const range = s.match(
+    /([€$£₹]?\s*\d+(?:\.\d+)?k?)\s*(?:[-–—]|to)\s*([€$£₹]?\s*\d+(?:\.\d+)?k?)/i
+  );
   if (range) {
-    const hadK = /k/i.test(s);
-    const min = toNum(range[1], hadK || parseFloat(range[1]) < 1000);
-    const max = toNum(range[2], hadK || parseFloat(range[2]) < 1000);
-    if (min && max) {
+    const min = toNum(range[1], /k/i.test(range[1]));
+    const max = toNum(range[2], /k/i.test(range[2]));
+    if (min && max && min < max * 5 && max > min) {
       return {
         '@type': 'MonetaryAmount',
         currency,
@@ -271,27 +416,101 @@ function parseBaseSalary(salary: string | null | undefined): Record<string, unkn
           '@type': 'QuantitativeValue',
           minValue: Math.min(min, max),
           maxValue: Math.max(min, max),
-          unitText: /hour|hr\b|\/hr/i.test(s) ? 'HOUR' : 'YEAR',
+          unitText,
         },
       };
     }
   }
+
+  // Single: $150k | USD 150000 | 150000/year
+  const single =
+    s.match(/[€$£₹]\s*(\d+(?:\.\d+)?)\s*k\b/i) ||
+    s.match(/\b(\d+(?:\.\d+)?)\s*k\b/i) ||
+    s.match(/[€$£₹]\s*(\d{4,7})\b/) ||
+    s.match(/\b(\d{5,7})\b/);
   if (single) {
-    const hadK = /k/i.test(single[0]);
-    const val = toNum(single[1], hadK);
-    if (val) {
+    const val = toNum(single[0].includes('k') || single[0].includes('K') ? `${single[1]}k` : single[1]);
+    if (val && val >= 1000) {
       return {
         '@type': 'MonetaryAmount',
         currency,
         value: {
           '@type': 'QuantitativeValue',
           value: val,
-          unitText: /hour|hr\b|\/hr/i.test(s) ? 'HOUR' : 'YEAR',
+          unitText,
         },
       };
     }
   }
   return undefined;
+}
+
+/** Parse free-text location into PostalAddress fields for JobPosting. */
+export function parseJobLocationAddress(
+  location: string | null | undefined
+): Record<string, unknown> | undefined {
+  if (!location) return undefined;
+  const loc = cleanPublishText(normalizeLocation(location) || location).trim();
+  if (!loc) return undefined;
+
+  const remote = isRemoteLocation(loc);
+  // "San Francisco, CA, United States" | "London, UK" | "Berlin, Germany"
+  const parts = loc
+    .split(',')
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  const address: Record<string, unknown> = { '@type': 'PostalAddress' };
+
+  const countryAliases: Record<string, string> = {
+    usa: 'US',
+    us: 'US',
+    'united states': 'US',
+    'united states of america': 'US',
+    uk: 'GB',
+    'united kingdom': 'GB',
+    'great britain': 'GB',
+    england: 'GB',
+    germany: 'DE',
+    deutschland: 'DE',
+    france: 'FR',
+    canada: 'CA',
+    india: 'IN',
+    australia: 'AU',
+    netherlands: 'NL',
+    singapore: 'SG',
+    ireland: 'IE',
+    spain: 'ES',
+    italy: 'IT',
+    brazil: 'BR',
+    japan: 'JP',
+    'remote': 'Worldwide',
+    worldwide: 'Worldwide',
+    global: 'Worldwide',
+    anywhere: 'Worldwide',
+  };
+
+  if (parts.length >= 3) {
+    address.addressLocality = parts[0];
+    address.addressRegion = parts[1];
+    const c = countryAliases[parts[parts.length - 1].toLowerCase()] || parts[parts.length - 1];
+    address.addressCountry = c;
+  } else if (parts.length === 2) {
+    address.addressLocality = parts[0];
+    const maybeCountry = countryAliases[parts[1].toLowerCase()];
+    if (maybeCountry) address.addressCountry = maybeCountry;
+    else if (/^[A-Z]{2}$/i.test(parts[1]) && parts[1].length === 2) {
+      address.addressRegion = parts[1].toUpperCase();
+      address.addressCountry = 'US'; // common US state abbreviation pair
+    } else {
+      address.addressRegion = parts[1];
+    }
+  } else {
+    address.addressLocality = parts[0] || loc;
+    if (remote) address.addressCountry = 'Worldwide';
+  }
+
+  return address;
 }
 
 export function buildJobJsonLd(job: JobRow, detail: JobDetail, siteUrl: string) {
@@ -355,22 +574,11 @@ export function buildJobJsonLd(job: JobRow, detail: JobDetail, siteUrl: string) 
     };
   }
 
-  if (detail.location && !remote) {
+  const address = parseJobLocationAddress(job.location || detail.location);
+  if (address) {
     jsonLd.jobLocation = {
       '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: detail.location,
-      },
-    };
-  } else if (detail.location && remote) {
-    // Hybrid remote + city string still useful as jobLocation
-    jsonLd.jobLocation = {
-      '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: detail.location,
-      },
+      address,
     };
   }
 
@@ -379,6 +587,11 @@ export function buildJobJsonLd(job: JobRow, detail: JobDetail, siteUrl: string) 
 
   return jsonLd;
 }
+
+export {
+  validateJobPostingJsonLd,
+  summarizeJobPostingValidation,
+} from '@/lib/job-posting-validate';
 
 /** BreadcrumbList for job detail pages. */
 export function buildJobBreadcrumbJsonLd(detail: JobDetail, siteUrl: string) {
