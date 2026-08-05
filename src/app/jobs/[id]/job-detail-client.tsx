@@ -392,7 +392,7 @@ export default function JobDetailClient({
               id="related-jobs-heading"
               className="text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-3 sm:mb-4"
             >
-              More roles at {job.company}
+              Related open roles
             </h2>
             <ul className="grid gap-2 sm:gap-3 sm:grid-cols-2">
               {relatedJobs.map((r) => (
