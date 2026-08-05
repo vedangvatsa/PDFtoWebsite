@@ -25,10 +25,7 @@ import { primaryCompanyLogoUrl, trustedCompanyWebsiteUrl } from '@/lib/company-l
 const supabaseForCompany = supabaseAdmin;
 
 // Company careers: directory PK + company_key equality only (no public ILIKE).
-// force-dynamic (no ISR) so notFound() returns a real 404 — with ISR, OpenNext
-// serves the not-found body as HTTP 200 (soft-404 → GSC "Excluded by noindex").
-// Data is still cached via unstable_cache (loadCompanyJobs), so DB pressure is low.
-export const dynamic = 'force-dynamic';
+export const revalidate = 1800; // 30 minutes
 export type ProfileData = ServerProfileData;
 
 /** Resolve directory row by slug (O(1) PK) — avoids dual exact COUNT on jobs. */
