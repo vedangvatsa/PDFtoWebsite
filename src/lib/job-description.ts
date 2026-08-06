@@ -702,10 +702,16 @@ function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+/** LLM-structured JD section headings — never show up in a preview excerpt. */
+const SECTION_HEADING_RE =
+  /\b(About the role|Key facts|What you'?ll do|What you will do|Requirements?|Nice to have|Skills (&|and) tools|Practical notes)\b\s*:?\s*/gi;
+
 /**
  * Plain excerpt for meta description / OG.
  * When `opts.title`/`opts.company` are provided, the leading "{Title} at
- * {Company}." intro line is dropped so the preview never repeats the title.
+ * {Company}." intro line and the "{Title}." line are dropped, and all LLM
+ * section headings are removed, so the preview is a natural body snippet that
+ * never repeats the title. Truncation cuts at a sentence/word boundary.
  */
 export function jobDescriptionExcerpt(
   raw: string | null | undefined,
@@ -727,8 +733,19 @@ export function jobDescriptionExcerpt(
     const plain = text.replace(new RegExp(`^${escapeRegExp(title)}\\.?`), '').trim();
     if (plain) text = plain;
   }
+  // Remove LLM section headings so the snippet reads as a description, not a TOC.
+  text = text.replace(SECTION_HEADING_RE, ' ').replace(/\s+/g, ' ').trim();
   if (!text) return '';
+
   if (text.length <= max) return text;
+
+  // Cut at the last sentence boundary within the limit (clean, no mid-word "...").
+  const slice = text.slice(0, max);
+  const sentenceMatch = slice.match(/.*?[.!?](?=\s|$)/g);
+  const last = sentenceMatch?.pop()?.trim();
+  if (last && last.length >= 40) return last;
+  const space = slice.lastIndexOf(' ');
+  if (space > 40) return slice.slice(0, space).trimEnd() + '...';
   return text.slice(0, max - 1).trimEnd() + '...';
 }
 
