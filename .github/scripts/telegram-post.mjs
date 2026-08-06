@@ -221,7 +221,7 @@ async function fetchJobsPage({ days, limit, label }) {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
     // Minimal columns — less IO on free tier
-    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id',
+    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id,slug',
     source: `in.(${sourceFilter})`,
     published_at: `gt.${since}`,
     order: 'published_at.desc',
@@ -357,84 +357,43 @@ function isHighProfileCompany(company) {
 }
 
 function pickJobs(jobs, limit, category) {
-  const seen = new Set();
-  const priority = [];
-  const regular = [];
-  const overflow = []; // extra jobs from same companies if we need to fill
-
   const catRegex = getCategoryRegex(category);
+  const seen = new Set();
+  const matching = [];
+  const nonMatching = [];
 
-  // Segregate jobs based on category
-  const matchingJobs = [];
-  const nonMatchingJobs = [];
-
+  // ONE job per company (popular-company rule + diversity). A company never
+  // appears twice in the same post — previously the overflow backfill re-added
+  // same-company jobs, producing posts full of one company (e.g. Clara x6).
   for (const job of jobs) {
-    // Skip bad data: truncated names, non-English titles
     if (!job.company || job.company.includes('...') || job.company.length <= 2) continue;
     if (!job.title || /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) continue;
     if (BANNED_REGEX.test(job.title)) continue;
-    // Routeable pretty slug + still live on public pages (30d expiry buffer)
-    if (!isRouteableExternalId(job.company, job.external_id)) continue;
+    if (!isRouteableExternalId(job.company, job.external_id) && !job.slug) continue;
     if (!isJobPubliclyLive(job)) continue;
 
-    if (catRegex && catRegex.test(job.title)) {
-      matchingJobs.push(job);
-    } else {
-      nonMatchingJobs.push(job);
-    }
-  }
-
-  // Pick category matching jobs first
-  for (const job of matchingJobs) {
     const key = job.company.toLowerCase().trim();
-    if (seen.has(key)) {
-      overflow.push(job); // save for backfill
-      continue;
-    }
+    if (seen.has(key)) continue;
     seen.add(key);
 
-    if (isHighProfileCompany(job.company)) {
-      priority.push(job);
+    if (catRegex && catRegex.test(job.title)) {
+      matching.push(job);
     } else {
-      regular.push(job);
+      nonMatching.push(job);
     }
   }
 
-  const picked = [...priority.slice(0, limit)];
-  if (picked.length < limit) {
-    picked.push(...regular.slice(0, limit - picked.length));
-  }
+  // Popular/well-known companies first, category-matching first, then the rest.
+  const high = (arr) => arr.filter((j) => isHighProfileCompany(j.company));
+  const low = (arr) => arr.filter((j) => !isHighProfileCompany(j.company));
 
-  // Smart fallback: If we don't have 10 matching jobs, backfill with other categories
-  if (picked.length < limit) {
-    console.log(`  Category [${category}] has only ${picked.length} jobs. Backfilling with other categories.`);
-    const backfillPriority = [];
-    const backfillRegular = [];
-
-    for (const job of nonMatchingJobs) {
-      const key = job.company.toLowerCase().trim();
-      if (seen.has(key)) {
-        overflow.push(job);
-        continue;
-      }
-      seen.add(key);
-
-      if (isHighProfileCompany(job.company)) {
-        backfillPriority.push(job);
-      } else {
-        backfillRegular.push(job);
-      }
+  const picked = [];
+  for (const bucket of [high(matching), low(matching), high(nonMatching), low(nonMatching)]) {
+    for (const job of bucket) {
+      if (picked.length >= limit) break;
+      picked.push(job);
     }
-
-    picked.push(...backfillPriority.slice(0, limit - picked.length));
-    if (picked.length < limit) {
-      picked.push(...backfillRegular.slice(0, limit - picked.length));
-    }
-  }
-
-  // If still under limit, backfill with overflow
-  if (picked.length < limit) {
-    picked.push(...shuffle(overflow).slice(0, limit - picked.length));
+    if (picked.length >= limit) break;
   }
 
   return picked.slice(0, limit);
