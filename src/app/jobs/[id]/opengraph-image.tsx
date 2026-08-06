@@ -1,11 +1,11 @@
 import { ImageResponse } from 'next/og';
-import { fetchJobById } from '@/lib/job-detail-data';
 import { cleanPublishText } from '@/lib/noslop';
 import { jobTypeLabel, isJobId, jobPublicPath, companyToSlug } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
-import { loadInterFont } from '@/lib/og-fonts';
+import { supabaseAdmin } from '@/lib/supabase-admin';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
 export const runtime = 'nodejs';
 export const revalidate = 3600;
@@ -14,6 +14,30 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 type Props = { params: Promise<{ id: string }> };
+
+type OgJob = {
+  id: string;
+  title: string;
+  company: string;
+  company_logo: string | null;
+  location: string | null;
+  job_type: string | null;
+};
+
+/** Direct bounded lookup (no unstable_cache — it hangs in this route context). */
+async function loadJobForOg(id: string): Promise<OgJob | null> {
+  const res = await withTimeoutFallback(
+    supabaseAdmin
+      .from('jobs')
+      .select('id,title,company,company_logo,location,job_type')
+      .eq('id', id)
+      .maybeSingle(),
+    DB_BUDGET.fast,
+    { data: null, error: null } as any,
+    'og-job-id'
+  );
+  return (res?.data ?? null) as OgJob | null;
+}
 
 export default async function Image({ params }: Props) {
   const { id } = await params;
@@ -31,19 +55,17 @@ export default async function Image({ params }: Props) {
   let storedLogo: string | null = null;
 
   if (isJobId(id)) {
-    const job = await fetchJobById(id);
+    const job = await loadJobForOg(id);
     if (job) {
       title = cleanPublishText(job.title);
       company = cleanPublishText(job.company);
       location = cleanPublishText(normalizeLocation(job.location || '') || 'Remote');
       typeLabel = jobTypeLabel(job.job_type);
-      path = jobPublicPath(job);
+      path = jobPublicPath(job as any);
       companySlug = companyToSlug(company);
       storedLogo = job.company_logo;
     }
   }
-
-  const fonts = await loadInterFont([400, 500, 700, 800]);
 
   const logoSrc = await resolveOgCompanyLogo({
     slug: companySlug,
@@ -63,7 +85,7 @@ export default async function Image({ params }: Props) {
           width: '100%',
           height: '100%',
           backgroundColor: '#ffffff',
-          fontFamily: 'Inter',
+          fontFamily: 'sans-serif',
           padding: 70,
           justifyContent: 'space-between',
         }}
@@ -132,7 +154,6 @@ export default async function Image({ params }: Props) {
     ),
     {
       ...size,
-      fonts,
       headers: {
         'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
       },
