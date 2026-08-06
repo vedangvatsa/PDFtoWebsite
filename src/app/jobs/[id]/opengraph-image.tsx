@@ -3,6 +3,7 @@ import { cleanPublishText } from '@/lib/noslop';
 import { jobTypeLabel, isJobId, jobPublicPath, companyToSlug } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
+import { loadInterFont } from '@/lib/og-fonts';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
@@ -72,8 +73,9 @@ export default async function Image({ params }: Props) {
     companyName: company,
     storedLogo,
   });
+  const fonts = await loadInterFont([400, 500, 700, 800]);
 
-  const displayTitle = title.length > 72 ? title.slice(0, 69).trimEnd() + '...' : title;
+  const displayTitle = title.length > 60 ? title.slice(0, 57).trimEnd() + '...' : title;
   const metaBits = [company, location, typeLabel].filter(Boolean).join('  ·  ');
 
   return new ImageResponse(
@@ -85,8 +87,8 @@ export default async function Image({ params }: Props) {
           width: '100%',
           height: '100%',
           backgroundColor: '#ffffff',
-          fontFamily: 'sans-serif',
-          padding: 70,
+          fontFamily: 'Inter',
+          padding: 56,
           justifyContent: 'space-between',
         }}
       >
@@ -101,7 +103,7 @@ export default async function Image({ params }: Props) {
           <div
             style={{
               display: 'flex',
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: 600,
               color: '#71717a',
               letterSpacing: '0.15em',
@@ -113,21 +115,21 @@ export default async function Image({ params }: Props) {
           <CompanyLogoBadge logoSrc={logoSrc} />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           <div
             style={{
               display: 'flex',
-              fontSize: 56,
+              fontSize: 76,
               fontWeight: 800,
               color: '#09090b',
-              letterSpacing: '-0.05em',
-              lineHeight: 1.12,
-              maxWidth: 1000,
+              letterSpacing: '-0.04em',
+              lineHeight: 1.08,
+              maxWidth: 1020,
             }}
           >
             {displayTitle}
           </div>
-          <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#71717a' }}>
+          <div style={{ display: 'flex', fontSize: 34, fontWeight: 500, color: '#52525b' }}>
             {metaBits}
           </div>
         </div>
@@ -139,13 +141,13 @@ export default async function Image({ params }: Props) {
             justifyContent: 'space-between',
             alignItems: 'center',
             borderTop: '1px solid #e4e4e7',
-            paddingTop: 24,
+            paddingTop: 28,
           }}
         >
-          <div style={{ display: 'flex', fontSize: 22, color: '#71717a', fontWeight: 500 }}>
+          <div style={{ display: 'flex', fontSize: 26, color: '#71717a', fontWeight: 500 }}>
             Now hiring
           </div>
-          <div style={{ display: 'flex', fontSize: 22, color: '#09090b', fontWeight: 700 }}>
+          <div style={{ display: 'flex', fontSize: 26, color: '#09090b', fontWeight: 700 }}>
             {siteDomain}
             {path}
           </div>
@@ -154,6 +156,7 @@ export default async function Image({ params }: Props) {
     ),
     {
       ...size,
+      fonts,
       headers: {
         'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
       },
