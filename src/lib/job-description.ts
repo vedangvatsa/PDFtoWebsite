@@ -697,9 +697,36 @@ export function isJobDescriptionIndexable(raw: string | null | undefined): boole
   return jobDescriptionWordCount(raw) >= JOB_INDEXABLE_MIN_WORDS;
 }
 
-/** Plain excerpt for meta description / OG. */
-export function jobDescriptionExcerpt(raw: string | null | undefined, max = 160): string {
-  const text = jobDescriptionPlainText(raw);
+/** Escape RegExp special chars. */
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Plain excerpt for meta description / OG.
+ * When `opts.title`/`opts.company` are provided, the leading "{Title} at
+ * {Company}." intro line is dropped so the preview never repeats the title.
+ */
+export function jobDescriptionExcerpt(
+  raw: string | null | undefined,
+  max = 160,
+  opts?: { title?: string | null; company?: string | null }
+): string {
+  let text = jobDescriptionPlainText(raw);
+  if (!text) return '';
+  const title = opts?.title?.trim();
+  if (title) {
+    const company = opts?.company?.trim();
+    if (company) {
+      const withCo = text.replace(
+        new RegExp(`^${escapeRegExp(title)}\\s+at\\s+${escapeRegExp(company)}\\.?`),
+        ''
+      ).trim();
+      if (withCo) text = withCo;
+    }
+    const plain = text.replace(new RegExp(`^${escapeRegExp(title)}\\.?`), '').trim();
+    if (plain) text = plain;
+  }
   if (!text) return '';
   if (text.length <= max) return text;
   return text.slice(0, max - 1).trimEnd() + '...';

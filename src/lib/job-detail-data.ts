@@ -81,7 +81,10 @@ export function toJobDetail(job: JobRow): JobDetail {
     created_at: job.created_at,
     description_html: descriptionHtml,
     has_description: descriptionHtml.length > 40,
-    excerpt: jobDescriptionExcerpt(job.description, 200),
+    excerpt: jobDescriptionExcerpt(job.description, 200, {
+      title: cleanPublishText(job.title),
+      company: cleanPublishText(job.company),
+    }),
     description_word_count: wordCount,
     is_indexable: isJobDescriptionIndexable(job.description),
     company_slug: companyToSlug(job.company),
@@ -320,7 +323,10 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
   const jobTitle = cleanPublishText(job.title);
   const company = cleanPublishText(job.company);
   const title = `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
-  const excerpt = jobDescriptionExcerpt(job.description, 140);
+  const excerpt = jobDescriptionExcerpt(job.description, 140, {
+    title: jobTitle,
+    company,
+  });
   const locationSuffix = location ? `${location}. ` : '';
   const description =
     excerpt || `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
