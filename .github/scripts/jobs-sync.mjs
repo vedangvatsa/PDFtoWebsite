@@ -5,6 +5,12 @@
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
+import {
+  persistedJobSlug,
+  storedSlugSegment,
+  isRouteableExternalId,
+  companyToSlug,
+} from './lib/job-public-url.mjs';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -201,6 +207,7 @@ async function fetchExistingKeys() {
 
   const allHashes = new Set();
   const allExternalIds = new Set();
+  const usedByCompany = new Map(); // company_slug → Set of taken slug segments
   const pageSize = 500;
   // ~30 days of recent jobs is enough for daily/bi-daily sync dedup
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -212,7 +219,7 @@ async function fetchExistingKeys() {
 
   for (let page = 0; page < maxPages; page++) {
     try {
-      const url = `${SUPABASE_URL}/rest/v1/jobs?select=dedup_hash,external_id&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&offset=${offset}&limit=${pageSize}`;
+      const url = `${SUPABASE_URL}/rest/v1/jobs?select=dedup_hash,external_id,company,slug&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&offset=${offset}&limit=${pageSize}`;
       const res = await fetch(url, {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
       });
@@ -225,6 +232,20 @@ async function fetchExistingKeys() {
       for (const r of rows) {
         if (r.dedup_hash) allHashes.add(r.dedup_hash);
         if (r.external_id) allExternalIds.add(r.external_id);
+        // Seed slug collision sets from every routeable slug (column + legacy external_id)
+        const co = companyToSlug(r.company);
+        if (!co) continue;
+        let used = usedByCompany.get(co);
+        if (!used) {
+          used = new Set();
+          usedByCompany.set(co, used);
+        }
+        const seg =
+          storedSlugSegment(r.company, r.slug) ||
+          (isRouteableExternalId(r.company, r.external_id)
+            ? String(r.external_id).slice(co.length + 1).toLowerCase()
+            : null);
+        if (seg) used.add(seg);
       }
       offset += pageSize;
       retries = 0;
@@ -241,7 +262,7 @@ async function fetchExistingKeys() {
       await sleep(3000 * retries);
     }
   }
-  return { allHashes, allExternalIds };
+  return { allHashes, allExternalIds, usedByCompany };
 }
 
 function isProbablyEnglish(title) {
@@ -314,7 +335,7 @@ async function supabaseUpsert(jobs) {
 
   // Pre-fetch existing keys to skip duplicates client-side
   console.log(`   📥 Fetching existing keys from DB...`);
-  const { allHashes, allExternalIds } = await fetchExistingKeys();
+  const { allHashes, allExternalIds, usedByCompany } = await fetchExistingKeys();
   console.log(`   📥 Found ${allExternalIds.size} existing external_ids, ${allHashes.size} hashes in DB`);
 
   // A job is new only if BOTH its external_id AND dedup_hash are absent from DB
@@ -325,6 +346,12 @@ async function supabaseUpsert(jobs) {
 
   if (newJobs.length === 0) {
     return { inserted: 0, skipped: skippedCount };
+  }
+
+  // Mint pretty slugs at INSERT time so every new job is /{company}/{slug} from birth.
+  // Seed collision sets per company; deterministic per (title, id) so re-runs agree.
+  for (const job of newJobs) {
+    job.slug = persistedJobSlug(job.company, job.title, job.id || job.external_id, usedByCompany);
   }
 
   // Free-tier safe inserts: smaller batches, low concurrency, pause between groups
@@ -378,7 +405,7 @@ async function supabaseUpsert(jobs) {
         return result.length;
       } else {
         const err = await res.text();
-        // If dedup_hash conflict, try row-by-row (slower but handles cross-source dupes)
+        // dedup_hash conflict → row-by-row (handles cross-source dupes)
         if (err.includes('dedup_hash')) {
           let count = 0;
           for (const job of batch) {
@@ -398,6 +425,30 @@ async function supabaseUpsert(jobs) {
           }
           return count;
         }
+        // slug unique violation (collision with a slug from a row outside the
+        // 30-day used-set) → remint each job with a fresh short hash and retry.
+        if (err.includes('jobs_slug_key') || err.includes('slug')) {
+          let count = 0;
+          for (const job of batch) {
+            try {
+              const retried = remintSlug(job);
+              const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id`, {
+                method: 'POST',
+                headers: {
+                  'apikey': SUPABASE_KEY,
+                  'Authorization': `Bearer ${SUPABASE_KEY}`,
+                  'Content-Type': 'application/json',
+                  'Prefer': 'resolution=ignore-duplicates,return=representation',
+                },
+                body: JSON.stringify(withCompanyKey([retried])),
+              });
+              if (r2.ok) { const r = await r2.json(); count += r.length; }
+            } catch (e2) {
+              console.error(`  ⚠ slug retry failed ${job.slug}: ${String(e2.message || e2).slice(0, 120)}`);
+            }
+          }
+          return count;
+        }
         console.error(`  ❌ Batch error: ${err.substring(0, 200)}`);
         return 0;
       }
@@ -405,6 +456,16 @@ async function supabaseUpsert(jobs) {
       console.error(`  ❌ Batch failed: ${e.message}`);
       return 0;
     }
+  }
+
+  // Stay short: head≤6 + 2-hex (matches mint prettyJobSlug collision form).
+  function remintSlug(job) {
+    const h = crypto.createHash('md5').update(job.id || job.external_id || String(Math.random())).digest('hex').slice(0, 2);
+    const co = companyToSlug(job.company);
+    const current = job.slug ? String(job.slug).slice(co.length + 1) : 'role';
+    const head = (current.split('-')[0] || 'role').slice(0, 6);
+    job.slug = `${co}_${head}-${h}`;
+    return job;
   }
 
   // Fire batches with low concurrency + cooldown for Free Nano
@@ -2874,6 +2935,23 @@ function filterAndNormalize(allJobs) {
   const BLOCKED_COMPANIES = ['impuls hrk'];
   const BLOCKED_TITLE_WORDS = ['(m/w/d)', 'm/w/d', 'w/m/d', 'entwickler', 'mitarbeiter', 'gesucht', 'du liebst', 'werde unser', 'praktikum'];
 
+  // Clearly non-English titles (German/French/Spanish/Portuguese/Dutch + accents).
+  // "aus" is intentionally excluded — it collides with AUS/Australia.
+  const NON_ENGLISH_PATTERNS = [
+    /\b(und|oder|für|mit|bei|zur|zum|ein|eine|des|dem|den|als|auf|nach|über|unter|vor|zwischen|durch|gegen|ohne|während)\b/i,
+    /\b(Stellvertretend|Abteilung|Geschäftsführ|Sachbearbeit|Fachangestellt|Mitarbeiter|Leiter|Berater|Steuer|Buchhalt|Werkstudent|Praktikant|Ausbildung|Kaufm[aä]nn|Entwickl)\w*/,
+    /\b(gmbh|gesellschaft|verwaltung|beratung|betrieb|abteilung|fachkraft)\b/i,
+    /\b(bewerbung|initiativbewerbung|vollzeit|teilzeit|distributionszentrum)\b/i,
+    /\b(responsable|ingénieur|développeur|chargé|adjoint|directeur|gestionnaire|conseiller|technicien)\b/i,
+    /\b(avec|dans|pour|chez|entre|cette|sont|nous|vous|leur|mais|donc|alors)\b/i,
+    /\b(ingeniero|desarrollador|gerente|coordinador|analista|ejecutivo|técnico|especialista|asesor)\b/i,
+    /\b(para|como|está|este|esta|pero|también|desde|donde|cuando|porque)\b/i,
+    /\b(engenheiro|desenvolvedor|analista|gerente|coordenador|especialista|técnico)\b/i,
+    /\b(medewerker|adviseur|beheerder|directeur|coördinator|verantwoordelijk)\b/i,
+    /[äöüßñçàèìòùâêîôûëïãõ]{2,}/i,
+  ];
+  const isNonEnglishTitle = (t) => NON_ENGLISH_PATTERNS.some((re) => re.test(t));
+
   const validJobs = allJobs.filter(j => {
     if (!j.title || !j.company || !j.apply_url) return false;
     if (j.company.includes('...') || j.company.length <= 2) return false;
@@ -2882,6 +2960,7 @@ function filterAndNormalize(allJobs) {
     if (BLOCKED_TITLE_WORDS.some(w => lowerTitle.includes(w))) return false;
     if (/^\d{5,}/.test(j.title.trim())) return false;
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(j.title)) return false;
+    if (isNonEnglishTitle(j.title)) return false;
     return true;
   });
   console.log(`   Valid jobs: ${validJobs.length} (filtered ${allJobs.length - validJobs.length} bad)`);
