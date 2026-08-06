@@ -862,6 +862,34 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     );
   }
 
+  // Blank profiles (registered but never completed) render a clean empty state
+  // instead of a broken page with empty sections.
+  const blankProfile =
+    !data.profile.fullName ||
+    data.profile.fullName === 'Professional Profile' ||
+    data.profile.fullName === 'Your Name' ||
+    (!data.profile.summary &&
+      data.workExperience.length === 0 &&
+      data.education.length === 0 &&
+      (!data.profile.skills || data.profile.skills.length === 0));
+
+  if (blankProfile) {
+    return (
+      <div className="min-h-screen bg-[#fafafa] flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center px-6 py-20 text-center">
+          <div>
+            <h1 className="text-lg font-semibold text-zinc-900 mb-2">Profile not available</h1>
+            <p className="text-sm text-zinc-500 max-w-md mx-auto">
+              This profile hasn&apos;t been completed yet.
+            </p>
+          </div>
+        </main>
+        <MicroFooter />
+      </div>
+    );
+  }
+
   const avatarUrl = data.profile.avatarUrl;
   const isValidAvatarForPreload = avatarUrl
     && !avatarUrl.startsWith('data:')
