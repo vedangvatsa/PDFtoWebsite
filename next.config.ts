@@ -141,6 +141,11 @@ const nextConfigFn = (phase: string): NextConfig => {
           destination: '/aiq',
           permanent: true,
         },
+        {
+          source: '/niti-aayog/internship',
+          destination: '/niti-aayog/niti-d5',
+          permanent: true,
+        },
       ];
     },
   
