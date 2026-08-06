@@ -3,7 +3,6 @@ import { cleanPublishText } from '@/lib/noslop';
 import { jobTypeLabel, isJobId, jobPublicPath, companyToSlug } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
-import { loadInterFont } from '@/lib/og-fonts';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
@@ -73,7 +72,6 @@ export default async function Image({ params }: Props) {
     companyName: company,
     storedLogo,
   });
-  const fonts = await loadInterFont([400, 500, 700, 800]);
 
   const displayTitle = title.length > 60 ? title.slice(0, 57).trimEnd() + '...' : title;
   const metaBits = [company, location, typeLabel].filter(Boolean).join('  ·  ');
@@ -87,7 +85,7 @@ export default async function Image({ params }: Props) {
           width: '100%',
           height: '100%',
           backgroundColor: '#ffffff',
-          fontFamily: 'Inter',
+          fontFamily: 'sans-serif',
           padding: 56,
           justifyContent: 'space-between',
         }}
@@ -156,7 +154,6 @@ export default async function Image({ params }: Props) {
     ),
     {
       ...size,
-      fonts,
       headers: {
         'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
       },
