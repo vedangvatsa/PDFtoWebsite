@@ -1,11 +1,11 @@
 import { ImageResponse } from 'next/og';
-import { fetchJobByCompanyAndSlug } from '@/lib/job-detail-data';
 import { cleanPublishText } from '@/lib/noslop';
-import { jobTypeLabel, isShortJobSlug } from '@/lib/job-description';
+import { isShortJobSlug, jobExternalIdFromSlugs, jobTypeLabel } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
-import { loadInterFont } from '@/lib/og-fonts';
+import { supabaseAdmin } from '@/lib/supabase-admin';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
 export const runtime = 'nodejs';
 export const revalidate = 3600;
@@ -14,6 +14,31 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 type Props = { params: Promise<{ slug: string; jobSlug: string }> };
+
+type OgJob = {
+  id: string;
+  title: string;
+  company: string;
+  company_logo: string | null;
+  location: string | null;
+  job_type: string | null;
+};
+
+/** Direct bounded lookup (no unstable_cache — it hangs in this route context). */
+async function loadJobForOg(slug: string, jobSlug: string): Promise<OgJob | null> {
+  const externalId = jobExternalIdFromSlugs(slug, jobSlug);
+  const res = await withTimeoutFallback(
+    supabaseAdmin
+      .from('jobs')
+      .select('id,title,company,company_logo,location,job_type')
+      .or(`slug.eq.${externalId},external_id.eq.${externalId}`)
+      .maybeSingle(),
+    DB_BUDGET.fast,
+    { data: null, error: null } as any,
+    'og-job'
+  );
+  return (res?.data ?? null) as OgJob | null;
+}
 
 export default async function Image({ params }: Props) {
   const { slug, jobSlug } = await params;
@@ -30,7 +55,7 @@ export default async function Image({ params }: Props) {
   let storedLogo: string | null = null;
 
   if (isShortJobSlug(jobSlug)) {
-    const job = await fetchJobByCompanyAndSlug(slug, jobSlug);
+    const job = await loadJobForOg(slug, jobSlug);
     if (job) {
       title = cleanPublishText(job.title);
       company = cleanPublishText(job.company);
@@ -41,8 +66,6 @@ export default async function Image({ params }: Props) {
   }
 
   const logoSrc = await resolveOgCompanyLogo({ slug, companyName: company, storedLogo });
-  const fonts = await loadInterFont([400, 500, 700, 800]);
-
   const displayTitle = title.length > 72 ? title.slice(0, 69).trimEnd() + '...' : title;
   const metaBits = [company, location, typeLabel].filter(Boolean).join('  ·  ');
 
@@ -55,7 +78,7 @@ export default async function Image({ params }: Props) {
           width: '100%',
           height: '100%',
           backgroundColor: '#ffffff',
-          fontFamily: 'Inter',
+          fontFamily: 'sans-serif',
           padding: 70,
           justifyContent: 'space-between',
         }}
@@ -132,7 +155,6 @@ export default async function Image({ params }: Props) {
     ),
     {
       ...size,
-      fonts,
       headers: {
         'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
       },
