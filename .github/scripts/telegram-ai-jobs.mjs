@@ -300,7 +300,7 @@ function mergeByUrl(into, rows) {
 async function fetchRecentJobs() {
   const since = new Date(Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
-    select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
+    select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
     created_at: `gt.${since}`,
     order: 'created_at.desc',
     limit: String(RECENT_LIMIT),
@@ -332,7 +332,7 @@ async function fetchByCompanyNames(names) {
       })
       .join(',');
     const url = restUrl(SUPABASE_URL, 'jobs', {
-      select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
+      select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
       or: `(${or})`,
       order: 'created_at.desc',
       limit: '30',
@@ -392,7 +392,7 @@ async function fetchJobs() {
       const or = batch.map((s) => `external_id.like.${s}_*`).join(',');
       const since = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
+        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
         or: `(${or})`,
         created_at: `gt.${since}`,
         order: 'created_at.desc',
@@ -416,7 +416,7 @@ async function fetchJobs() {
     try {
       const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id',
+        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
         created_at: `gt.${since}`,
         order: 'created_at.desc',
         limit: '400',
@@ -464,7 +464,7 @@ function pickJobs(jobs, postedUrls, limit = JOBS_PER_POST * 4) {
     // Public pages 404 after ~30d — keep a buffer
     if (!isJobPubliclyLive(job)) return false;
     // Routeable /{company}/{slug} only (no /jobs/uuid). Preflight checks live 200 later.
-    if (!isRouteableExternalId(job.company, job.external_id)) return false;
+    if (!isRouteableExternalId(job.company, job.external_id) && !job.slug) return false;
     if (!jobPublicPath(job)) return false;
     // Skip non-English titles
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) return false;
@@ -488,12 +488,13 @@ function pickJobs(jobs, postedUrls, limit = JOBS_PER_POST * 4) {
     picked.push(job);
   }
 
-  // Second pass: Fill remaining slots
+  // Second pass: Fill remaining slots (still one per company)
   for (const job of candidates) {
     if (picked.length >= limit) break;
-    if (!picked.includes(job)) {
-      picked.push(job);
-    }
+    const key = job.company.toLowerCase().trim();
+    if (companySeen.has(key)) continue;
+    companySeen.add(key);
+    picked.push(job);
   }
 
   return picked;
@@ -592,11 +593,13 @@ async function main() {
     live.push(job);
     if (live.length >= JOBS_PER_POST) break;
   }
-  // If first pass failed, try more candidates from pool
+  // If first pass failed, try more candidates from pool (still one per company)
   if (live.length < JOBS_PER_POST) {
+    const liveCompanies = new Set(live.map((j) => j.company.toLowerCase().trim()));
     const more = pickJobs(allJobs, [...postedUrls, ...live.map((j) => j.apply_url)]);
     for (const job of more) {
       if (live.some((j) => j.id === job.id)) continue;
+      if (liveCompanies.has(job.company.toLowerCase().trim())) continue;
       const url = jobPublicPath(job);
       if (!url) continue;
       const check = await assertJobUrlLive(url, { allowNetworkFail: false });
