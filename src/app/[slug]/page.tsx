@@ -15,7 +15,7 @@ import companyDescriptions from '@/lib/company-descriptions.json';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
-import { toCompanyKey, COMPANY_BLOCKLIST } from '@/lib/company-directory';
+import { toCompanyKey, COMPANY_BLOCKLIST, companyDisplayName } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { unstable_cache } from 'next/cache';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
@@ -146,7 +146,7 @@ async function buildCompanyPageMetadata(
   const { dir, jobs } = ctx;
   const { getCompanyMeta } = await import('@/lib/company-data');
   const meta = getCompanyMeta(slug);
-  const companyDisplay = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
+  const companyDisplay = companyDisplayName(dir?.name || jobs[0]?.company || slug.replace(/-/g, ' '));
   // loadCompanyJobs caps at 50; if we hit the cap prefer directory total when larger
   const jobCount =
     jobs.length >= 50 && dir?.role_count && dir.role_count > jobs.length
@@ -589,7 +589,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     }
     const { dir, jobs } = hub;
 
-    const companyName = dir?.name || jobs[0]?.company || slug.replace(/-/g, ' ');
+    const companyName = companyDisplayName(dir?.name || jobs[0]?.company || slug.replace(/-/g, ' '));
     
     const storedLogo =
       dir?.logo ||
@@ -710,29 +710,29 @@ export default async function ProfileSlugPage({ params }: PageProps) {
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm font-medium text-zinc-500">
                 <span className="flex items-center gap-1.5"><Briefcase className="w-4 h-4" /> {totalJobs} Active Roles</span>
                 <span className="flex items-center gap-1.5"><Monitor className="w-4 h-4" /> {remotePercent}% Remote</span>
-              </div>
-              {/* Social links — show for all companies */}
-              <div className="flex items-center gap-1.5 mt-3">
-                {companyWebsite && (
-                <a href={companyWebsite} target="_blank" rel="noopener noreferrer" title="Website" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
-                  <Globe className="w-3.5 h-3.5" />
-                </a>
-                )}
-                {meta?.socials?.x && (
-                  <a href={meta.socials.x} target="_blank" rel="noopener noreferrer" title="X" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
-                    <Twitter className="w-3.5 h-3.5" />
+                {/* Website + social links — same row to save space */}
+                <span className="flex items-center gap-1.5">
+                  {companyWebsite && (
+                  <a href={companyWebsite} target="_blank" rel="noopener noreferrer" title="Website" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                    <Globe className="w-3.5 h-3.5" />
                   </a>
-                )}
-                {meta?.socials?.linkedin && (
-                  <a href={meta.socials.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
-                    <Linkedin className="w-3.5 h-3.5" />
-                  </a>
-                )}
-                {meta?.socials?.github && (
-                  <a href={meta.socials.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
-                    <Github className="w-3.5 h-3.5" />
-                  </a>
-                )}
+                  )}
+                  {meta?.socials?.x && (
+                    <a href={meta.socials.x} target="_blank" rel="noopener noreferrer" title="X" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                      <Twitter className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                  {meta?.socials?.linkedin && (
+                    <a href={meta.socials.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                      <Linkedin className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                  {meta?.socials?.github && (
+                    <a href={meta.socials.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                      <Github className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </span>
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { normalizeLocation } from '@/lib/normalize-location';
+import { companyDisplayName } from '@/lib/company-directory';
 import {
   formatJobDescription,
   jobDescriptionExcerpt,
@@ -63,12 +64,11 @@ export async function fetchJobByCompanyAndSlug(
 
 export function toJobDetail(job: JobRow): JobDetail {
   const location = cleanPublishText(normalizeLocation(job.location || ''));
-  const descriptionHtml = formatJobDescription(job.description, location);
-  const wordCount = jobDescriptionWordCount(job.description);
+  const published = publishSafeDescription(job, location);
   return {
     id: job.id,
     title: cleanPublishText(job.title),
-    company: cleanPublishText(job.company),
+    company: companyDisplayName(cleanPublishText(job.company)),
     company_logo: job.company_logo,
     location,
     job_type: job.job_type,
@@ -79,18 +79,103 @@ export function toJobDetail(job: JobRow): JobDetail {
     source: job.source,
     published_at: job.published_at,
     created_at: job.created_at,
-    description_html: descriptionHtml,
-    has_description: descriptionHtml.length > 40,
-    excerpt: jobDescriptionExcerpt(job.description, 200, {
-      title: cleanPublishText(job.title),
-      company: cleanPublishText(job.company),
-    }),
-    description_word_count: wordCount,
-    is_indexable: isJobDescriptionIndexable(job.description),
+    description_html: published.html,
+    description_plain: published.plain,
+    has_description: published.html.length > 40,
+    excerpt: published.isCurated
+      ? jobDescriptionExcerpt(job.description, 200, {
+          title: cleanPublishText(job.title),
+          company: companyDisplayName(cleanPublishText(job.company)),
+        })
+      : `${cleanPublishText(job.title)} at ${cleanPublishText(job.company)}.${location ? ` ${location}.` : ''} Apply on CVin.Bio.`,
+    description_word_count: published.wordCount,
+    is_indexable: published.indexable,
     company_slug: companyToSlug(job.company),
     job_slug: jobStoredSlug(job) ?? shortJobSlug(job.company, job.external_id),
     public_path: jobPublicPath(job),
   };
+}
+
+/**
+ * The ONLY description source we publish. AI-rewritten (curated) bodies are shown
+ * in full; raw scraped ATS/aggregator bodies are NEVER rendered verbatim
+ * (plagiarism + duplicate-content risk). Un-curated jobs get a short, original
+ * summary synthesized from the job's facts and are noindexed until enriched.
+ */
+export type PublishedDescription = {
+  isCurated: boolean;
+  html: string;
+  plain: string;
+  wordCount: number;
+  indexable: boolean;
+};
+
+export function publishSafeDescription(job: JobRow, location: string): PublishedDescription {
+  const isCurated = Array.isArray(job.tags) && job.tags.includes('curated-jd');
+  if (isCurated) {
+    const html = formatJobDescription(job.description, location);
+    return {
+      isCurated,
+      html,
+      plain: jobDescriptionPlainText(job.description),
+      wordCount: jobDescriptionWordCount(job.description),
+      indexable: isJobDescriptionIndexable(job.description),
+    };
+  }
+  const html = synthesizeOriginalDescription(job, location);
+  const plain = cleanPublishText(
+    html
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+  );
+  return {
+    isCurated,
+    html,
+    plain,
+    wordCount: plain.split(/\s+/).filter(Boolean).length,
+    indexable: false,
+  };
+}
+
+function escHtml(s: string | null | undefined): string {
+  return cleanPublishText(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/** Original, template-built summary from the job's facts — never scraped text. */
+function synthesizeOriginalDescription(job: JobRow, location: string): string {
+  const type = jobTypeLabel(job.job_type) || 'Not specified';
+  const loc = location || 'Not specified';
+  const parts: string[] = [];
+  parts.push('<h3>About the role</h3>');
+  parts.push(
+    `<p><strong>${escHtml(job.title)}</strong> at ${escHtml(job.company)} is a ${escHtml(type)} role listed on CVin.Bio.` +
+      `${location ? ` The listed location is ${escHtml(location)}.` : ''}` +
+      `${job.salary ? ` Compensation is listed as ${escHtml(job.salary)}.` : ''}` +
+      `</p>`
+  );
+  parts.push('<h3>Key facts</h3>');
+  parts.push(
+    `<div class="jd-meta-facts">` +
+      `<p><strong>Location:</strong> ${escHtml(loc)}</p>` +
+      `<p><strong>Engagement:</strong> ${escHtml(type)}</p>` +
+      `${job.salary ? `<p><strong>Compensation:</strong> ${escHtml(job.salary)}</p>` : ''}` +
+      `${job.category ? `<p><strong>Category:</strong> ${escHtml(job.category)}</p>` : ''}` +
+      `</div>`
+  );
+  const tags = (job.tags || []).filter((t) => t && t !== 'curated-jd' && t !== 'remote');
+  if (tags.length) {
+    parts.push('<h3>Skills &amp; tools</h3>');
+    parts.push(`<ul>${tags.map((t) => `<li>${escHtml(String(t))}</li>`).join('')}</ul>`);
+  }
+  parts.push(
+    '<p>This is an original summary prepared by CVin.Bio. For the full official description and to apply, follow the apply link on this page.</p>'
+  );
+  return parts.join('\n');
 }
 
 const TITLE_STOP = new Set([
@@ -323,15 +408,17 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
   const jobTitle = cleanPublishText(job.title);
   const company = cleanPublishText(job.company);
   const title = `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
-  const excerpt = jobDescriptionExcerpt(job.description, 140, {
-    title: jobTitle,
-    company,
-  });
   const locationSuffix = location ? `${location}. ` : '';
-  const description =
-    excerpt || `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
+  const fallback = `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
+  // Raw scraped bodies are never used in meta (plagiarism guard) — only the
+  // published (AI-rewritten / synthesized) content.
+  const published = publishSafeDescription(job, location);
+  const excerpt = published.isCurated
+    ? jobDescriptionExcerpt(job.description, 140, { title: jobTitle, company })
+    : '';
+  const description = excerpt || published.plain || fallback;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
-  const indexable = isJobDescriptionIndexable(job.description);
+  const indexable = published.indexable;
 
   return {
     title,
@@ -590,8 +677,13 @@ export function buildJobJsonLd(job: JobRow, detail: JobDetail, siteUrl: string) 
     ? new Date(postedMs + 30 * 24 * 60 * 60 * 1000).toISOString()
     : undefined;
 
-  const plain = jobDescriptionPlainText(job.description);
-  // Google wants a real description; use full plain body when available (cap size)
+  const plain =
+    detail.description_plain ||
+    (Array.isArray(job.tags) && job.tags.includes('curated-jd')
+      ? jobDescriptionPlainText(job.description)
+      : '');
+  // Google wants a real description; use the PUBLISHED plain body (AI-rewritten
+  // or synthesized) — never the raw scraped text.
   const description =
     plain.length > 80
       ? plain.slice(0, 8000)

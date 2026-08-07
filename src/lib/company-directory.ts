@@ -25,6 +25,26 @@ export function toCompanyKey(name: string): string {
   return toCompanySlug(name || '');
 }
 
+/** Known brand casing corrections — ATS sources often lowercase these. */
+const BRAND_DISPLAY_NAMES: Record<string, string> = {
+  elevenlabs: 'ElevenLabs',
+  togetherai: 'Together AI',
+  'together ai': 'Together AI',
+  openrouter: 'OpenRouter',
+  opensea: 'OpenSea',
+  devops: 'DevOps',
+  runpod: 'RunPod',
+  supabase: 'Supabase',
+  vercel: 'Vercel',
+};
+
+/** Proper display name for a company, or the raw name when unknown. */
+export function companyDisplayName(name: string | null | undefined): string {
+  if (!name) return name || '';
+  const key = toCompanySlug(name);
+  return BRAND_DISPLAY_NAMES[key] || name;
+}
+
 /** Junk/test company names to exclude entirely */
 export const COMPANY_BLOCKLIST = new Set([
   'leverdemo 8',

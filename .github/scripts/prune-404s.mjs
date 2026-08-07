@@ -37,12 +37,26 @@ async function isAlive(url) {
   try {
     const res = await fetch(url, {
       method: 'HEAD',
+      redirect: 'follow',
       headers: { 'User-Agent': 'Mozilla/5.0 (CVin.Bio mass-checker/1.0)' },
       signal: AbortSignal.timeout(10000), // 10s timeout
     });
-    // Death criteria: 404 precisely. 
+    // Death criteria: 404 precisely.
     // We ignore 403/401/500 as they might be temporary bot blocks or transient issues.
-    return res.status !== 404;
+    if (res.status === 404) return false;
+
+    // Greenhouse removes jobs by redirecting to the board root with ?error=true.
+    // A HEAD there returns 302 → 200 on the board page, so status alone misses it.
+    if (/job-boards\.greenhouse\.io/i.test(url)) {
+      const finalUrl = res.url || url;
+      if (/error=true/.test(finalUrl)) return false;
+      // A redirect from /jobs/{id} to the bare board (no /jobs/ path) = removed job.
+      if (/^https?:\/\/job-boards\.greenhouse\.io\/[^/]+\/?$/i.test(finalUrl) && /\/jobs\/\d+/i.test(url)) {
+        return false;
+      }
+    }
+
+    return true;
   } catch (e) {
     // If it timed out or network failed, we keep it to be safe.
     return true; 
