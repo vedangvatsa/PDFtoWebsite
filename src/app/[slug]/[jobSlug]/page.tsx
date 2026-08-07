@@ -1,4 +1,4 @@
-import { notFound, permanentRedirect, redirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import {
   fetchJobByCompanyAndSlug,
@@ -68,7 +68,17 @@ async function resolveLegacySlugPath(
     if (!job.id || !job.title) continue;
     const minted = mintPrettyJobSlug(job.title, job.id).toLowerCase();
     const short = shortJobSlug(job.company, job.external_id)?.toLowerCase();
-    if (minted === want || short === want) return jobPublicPath(job);
+    if (minted === want || short === want) {
+      const resolved = jobPublicPath(job);
+      // Never redirect a URL back to itself — that is an infinite 308 loop.
+      if (
+        resolved.toLowerCase() ===
+        `/${companySlug}/${jobSlug}`.toLowerCase()
+      ) {
+        return null;
+      }
+      return resolved;
+    }
   }
   return null;
 }
@@ -97,13 +107,6 @@ export default async function CompanyJobPage({ params }: PageProps) {
   }
 
   const detail = toJobDetail(job);
-
-  // Jobs with no body content serve no page — send users straight to the real
-  // listing. Once enrichment writes a real description, this flips back to a page.
-  if (detail.description_word_count === 0) {
-    if (job.apply_url) redirect(job.apply_url);
-    notFound();
-  }
 
   const [viewer, relatedJobs] = await Promise.all([
     getViewerJobContext(),
