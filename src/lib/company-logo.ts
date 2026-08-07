@@ -206,6 +206,58 @@ export function isTrustedCompanyDomain(name: string): boolean {
   return false;
 }
 
+/**
+ * Last line of defense against fabricated domains: the resolved hostname must
+ * share a meaningful token with the company name (or be a verified meta entry).
+ * Catches map entries that point at a real-but-unrelated site (e.g. a company
+ * name resolving to an unrelated brand's domain). Meta websites are verified
+ * by hand and always trusted; map entries must pass the token check.
+ */
+// Known-good aliases where the live brand name differs from the ATS company
+// label (rebrands / short domains). Never surfaced unless the domain map or
+// meta already resolves them.
+const VERIFIED_ALIAS_HOSTS = new Set([
+  'mtch.com', 'mesh.xyz',
+  // short-buyout / initials domains that resolve to the real brand
+  'gwng.ca', 'sigcorp.com', 'divrad.com', 'fool.com', 'lg.com', 'air.org',
+  'bndlstech.com', '5ipro.com', 'gc.com', 'circlein.com', 'svb.ro',
+  'cenvironment.com', 'fbtm.com', 'hub.ca', 'jbcvi.com', 'liocegroup.com',
+  'population.io', 'compact.org', 'ohf.org.nz', 'flyapg.com', 'buzzfeed.com',
+  'eastgear-int.com', 'imembersdb.com', 'sqfi.com', 'itsasap.com', 'x-team.com',
+  'avid4.com', 'arcteryx.com', 'asg.co.za', 'fleetinc.co.uk',
+  'featherrivercamp.com', 'passports.io', 'dss.asia', 'pdx.net', 'teamweitz.com',
+  'tech.gov.sg', 'ltvco.com',
+]);
+function hostnameMatchesCompany(name: string, host: string): boolean {
+  const key = name.toLowerCase().trim();
+  const slug = key.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (getCompanyMeta(slug)?.website) return true;
+  if (VERIFIED_ALIAS_HOSTS.has(host.toLowerCase())) return true;
+
+  const hostClean = host.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const baseClean = (companyBaseName(name) || key).toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  // Exact: host base equals the cleaned name ("rev" <-> "rev.com").
+  const hostBase = hostClean.replace(/\.(com|co|io|ai|net|org|dev|app|tech|xyz|ca|jp|uk|de|fr|ru|br|in|it|ro|vn|hk|sg)$/, '');
+  if (baseClean.length >= 2 && hostBase === baseClean) return true;
+  if (baseClean.length >= 4 && (hostClean.includes(baseClean) || baseClean.includes(hostClean))) return true;
+
+  // Meaningful token present in the host.
+  const tokens = [...new Set(baseClean.split(/[^a-z0-9]+/).filter((w) => w.length > 3))];
+  if (tokens.length === 0) return true; // nothing to verify against
+  if (tokens.some((w) => hostClean.includes(w) || hostClean.includes(w.slice(0, 5)))) return true;
+
+  // Abbreviation / initials pattern (e.g. "Strata Information Group" -> "sigcorp").
+  const rawWords = key.split(/[^a-z0-9]+/).filter((w) => w.length > 2 && w !== 'the' && w !== 'and');
+  if (rawWords.length >= 2) {
+    const initials = rawWords.map((w) => w[0]).join('');
+    if (initials.length >= 2 && hostClean.startsWith(initials)) return true;
+    if (hostClean.startsWith(rawWords[0].slice(0, 4))) return true;
+  }
+
+  return false;
+}
+
 /** Official website URL for a company page, or null when we would only be guessing. */
 export function trustedCompanyWebsiteUrl(
   name: string,
@@ -214,7 +266,9 @@ export function trustedCompanyWebsiteUrl(
   const meta = getCompanyMeta(slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
   if (meta?.website) return meta.website;
   if (!isTrustedCompanyDomain(name)) return null;
-  return `https://${domainForCompany(name)}`;
+  const host = domainForCompany(name);
+  if (!hostnameMatchesCompany(name, host)) return null;
+  return `https://${host}`;
 }
 
 /** Google favicon CDN (reliable, sometimes low-res for unknown domains). */
