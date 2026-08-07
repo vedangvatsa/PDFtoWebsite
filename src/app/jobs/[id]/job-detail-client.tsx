@@ -42,6 +42,7 @@ export interface JobDetail {
   published_at: string | null;
   created_at?: string | null;
   description_html: string;
+  description_plain?: string;
   has_description: boolean;
   excerpt: string;
   description_word_count?: number;
