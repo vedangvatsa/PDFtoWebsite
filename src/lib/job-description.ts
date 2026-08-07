@@ -7,6 +7,7 @@
  */
 
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
+import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
 export const JOB_DESCRIPTION_FORMAT_VERSION = 10;
@@ -783,8 +784,7 @@ export function companyLogoFallback(company: string, logo: string | null | undef
     const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
     return `${site}/company-logos/iit-bombay.png`;
   }
-  const domainGuess = company.toLowerCase().replace(/[^a-z0-9]/g, '');
-  return `https://www.google.com/s2/favicons?domain=${domainGuess}.com&sz=128`;
+  return primaryCompanyLogoUrl(company, null, 128);
 }
 
 export function jobTypeLabel(type: string | null | undefined): string | null {

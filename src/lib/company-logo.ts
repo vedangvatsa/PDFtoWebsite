@@ -19,6 +19,7 @@ const LOGO_OVERRIDES: Record<string, string> = {
   'niti aayog': `${SITE_URL}/company-logos/niti-aayog.png`,
   mospi: `${SITE_URL}/company-logos/mospi.png`,
   'iit bombay': `${SITE_URL}/company-logos/iit-bombay.png`,
+  elevenlabs: 'https://elevenlabs.io/favicon.ico',
 };
 
 /** Hotlink-blocked or expired CDN logos — skip and use fallbacks. */
