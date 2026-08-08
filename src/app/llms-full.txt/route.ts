@@ -3,15 +3,16 @@ import { getPlatformStats } from '@/lib/get-platform-stats';
 import {
   canonicalizeCompanyName,
   toCompanySlug,
-  preferCompanyDisplayName,
   isJunkCompanyName,
 } from '@/lib/company-directory';
 import { isDisposableProfileSlug } from '@/lib/parse-guard';
 import { jobSitemapPath } from '@/lib/job-description';
 
-// Regenerate periodically so newly added profiles/jobs/companies are always
-// represented. Never serve a stale static file — this is the live index.
+// Full-context endpoint: complete live profile/company/job directory.
+// Regenerated from the database so nothing is ever stale or missing.
 export const revalidate = 21600; // 6 hours
+
+const MAX_JOBS = 20000; // keep generation inside worker limits; jobs expire after 30d anyway
 
 export async function GET() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
@@ -19,29 +20,32 @@ export async function GET() {
   const stats = await getPlatformStats();
 
   const lines: string[] = [
-    '# CVin.Bio',
+    '# CVin.Bio — Full Context for AI Systems',
     '',
-    '> CVin.Bio is a professional identity and job platform. Users upload a CV and get a structured, public profile at a permanent URL. Companies have dedicated career pages with all open roles.',
+    `> CVin.Bio converts PDF CVs into professional websites and runs a curated tech job board with **${stats.jobCountDisplay} curated jobs** across **${stats.companyCountDisplay} companies**. This file is the complete, live directory — every public profile, every hiring company, and the full curated job listing.`,
     '',
-    '## Useful Links',
+    '## About CVin.Bio',
     '',
-    `- Homepage: ${siteUrl}`,
-    `- Job Board (${stats.jobCountDisplay} live listings): ${siteUrl}/jobs`,
-    `- Companies (${stats.companyCountDisplay} hiring): ${siteUrl}/companies`,
-    `- Tech Talent Report 2026: ${siteUrl}/hiring`,
-    `- Tech Layoffs Report 2026: ${siteUrl}/layoffs`,
-    `- Remote Talent Report 2026: ${siteUrl}/talent`,
-    `- Blog: ${siteUrl}/blog`,
-    `- Sitemap: ${siteUrl}/sitemap.xml`,
-    `- Full context (complete profile/company/job directory): ${siteUrl}/llms-full.txt`,
+    'CVin.Bio converts PDF CVs into professional websites and runs a curated tech job board with AI-powered skill matching. The platform also publishes original research reports analyzing hiring trends.',
     '',
-    '## Professional Profiles',
+    '### Core Product: CV to Website',
+    'Upload a PDF CV; AI extracts structured data and generates a responsive personal website at a custom URL (e.g., cvin.bio/yourname).',
     '',
-    '> Every public profile URL below is a structured webpage with schema.org Person markup, work history, education, skills, and social links. Complete directory — regenerated live from the database.',
+    `### Core Product: Job Board`,
+    `The job board at ${siteUrl}/jobs aggregates curated tech job listings from companies. Users get personalized job recommendations based on skill matching.`,
+    '',
+    '### Research Reports',
+    `1. [Tech Talent Report 2026](${siteUrl}/tech-talent-report) — Analysis of job listings across companies.`,
+    `2. [Tech Layoffs Report 2026](${siteUrl}/layoffs) — Tech layoffs since 2020.`,
+    `3. [Remote Talent Report 2026](${siteUrl}/talent) — Remote work trends.`,
+    '',
+    `Sitemap: ${siteUrl}/sitemap.xml`,
+    '',
+    '## Complete Profile Directory',
     '',
   ];
 
-  // ── ALL valid profiles (paginated — never capped to a fixed sample) ──
+  // ── ALL valid profiles (paginated) ──
   let from = 0;
   const PAGE = 1000;
   let done = false;
@@ -66,16 +70,18 @@ export async function GET() {
 
       const name = p.full_name || 'Professional';
       const skills =
-        Array.isArray(p.skills) && p.skills.length > 0
-          ? p.skills.slice(0, 5).join(', ')
-          : null;
-      const summary = p.about
-        ? p.about.slice(0, 120).replace(/\n/g, ' ').trim()
-        : null;
+        Array.isArray(p.skills) && p.skills.length > 0 ? p.skills.slice(0, 10).join(', ') : null;
+      const summary = p.about ? p.about.replace(/\n/g, ' ').trim().slice(0, 250) : null;
+      const expCount = Array.isArray(p.experience) ? p.experience.length : 0;
+      const eduCount = Array.isArray(p.education) ? p.education.length : 0;
 
       let description = name;
       if (summary) description += ` — ${summary}`;
-      else if (skills) description += ` — Skills: ${skills}`;
+      const bits: string[] = [];
+      if (skills) bits.push(`Skills: ${skills}`);
+      if (expCount) bits.push(`${expCount} role${expCount === 1 ? '' : 's'}`);
+      if (eduCount) bits.push(`${eduCount} education entr${eduCount === 1 ? 'y' : 'ies'}`);
+      if (bits.length) description += ` (${bits.join('; ')})`;
 
       lines.push(`- [${name}](${siteUrl}/${p.username}): ${description}`);
     }
@@ -84,14 +90,11 @@ export async function GET() {
   }
 
   lines.push('');
-  lines.push('## Company Careers');
+  lines.push('## Complete Company Directory');
   lines.push('');
-  lines.push(
-    '> Complete directory of hiring companies, each with a dedicated career page. Junk ATS labels and duplicate name variants are collapsed to a single slug.'
-  );
+  lines.push('> Every hiring company with open roles, each with a dedicated career page.');
   lines.push('');
 
-  // ── ALL companies with open roles (from the companies directory) ──
   let coffset = 0;
   const CPAGE = 1000;
   let cdone = false;
@@ -110,7 +113,7 @@ export async function GET() {
       const slug = toCompanySlug(canonical || raw);
       if (!slug || slug.length < 2) continue;
       lines.push(
-        `- [${canonical || raw}](${siteUrl}/${slug}): ${c.role_count} open role${c.role_count === 1 ? '' : 's'} — careers hub on CVin.Bio.`
+        `- [${canonical || raw}](${siteUrl}/${slug}): ${c.role_count} open role${c.role_count === 1 ? '' : 's'}`
       );
     }
     coffset += CPAGE;
@@ -118,28 +121,36 @@ export async function GET() {
   }
 
   lines.push('');
-  lines.push('## Recent Open Roles');
+  lines.push('## Complete Curated Job Directory');
   lines.push('');
-  lines.push('> Most recent curated job postings (pretty URLs). The full directory is at /llms-full.txt.');
+  lines.push(
+    `> Curated job postings (${MAX_JOBS.toLocaleString()} most recent) with pretty public URLs.`
+  );
   lines.push('');
 
-  // ── Recent curated jobs (index) ──
-  try {
+  // ── Curated jobs (paginated, capped for worker limits) ──
+  let jfrom = 0;
+  let jdone = false;
+  let jcount = 0;
+  while (!jdone && jcount < MAX_JOBS) {
     const { data: jobs } = await supabaseAdmin
       .from('jobs')
       .select('id, company, external_id, slug, title, created_at, published_at')
       .contains('tags', ['curated-jd'])
       .order('created_at', { ascending: false })
-      .limit(500);
-    for (const j of jobs || []) {
+      .range(jfrom, jfrom + PAGE - 1);
+    if (!jobs || !jobs.length) break;
+    for (const j of jobs) {
       const path = jobSitemapPath(j);
       if (!path) continue;
       lines.push(
-        `- ${String(j.title || 'Role').slice(0, 80)} — ${String(j.company || '').slice(0, 40)}: ${siteUrl}${path}`
+        `- ${String(j.title || 'Role').slice(0, 90)} — ${String(j.company || '').slice(0, 50)}: ${siteUrl}${path}`
       );
+      jcount++;
+      if (jcount >= MAX_JOBS) break;
     }
-  } catch {
-    lines.push('- Error loading recent roles');
+    jfrom += PAGE;
+    if ((jobs?.length || 0) < PAGE) jdone = true;
   }
 
   lines.push('');
