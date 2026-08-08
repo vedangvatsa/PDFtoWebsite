@@ -379,7 +379,7 @@ export default function JobsPage() {
         {/* Job count */}
         {!loading && (
           <p className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
-            {total} {total === 1 ? 'job' : 'jobs'} found
+            {total >= 100000 ? '100k+' : total.toLocaleString()} {total === 1 ? 'job' : 'jobs'} found
           </p>
         )}
 
