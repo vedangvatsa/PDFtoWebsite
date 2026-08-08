@@ -1,7 +1,8 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { jobSitemapPath, isJobDescriptionIndexable } from '@/lib/job-description';
+import { jobSitemapPath } from '@/lib/job-description';
 
-export const revalidate = 21600;
+// Fresh enough to reflect new curated jobs quickly without hammering the DB.
+export const revalidate = 3600;
 
 const CHUNK = 40000;
 const PAGE = 1000;
@@ -12,6 +13,16 @@ function escapeXml(s: string): string {
 
 type Props = { params: Promise<{ chunk: string }> };
 
+/**
+ * Dynamic job sitemap chunk.
+ *
+ * Only curated-jd jobs are indexed (the enrichment pipeline rewrites them to
+ * 600+ words — the same floor the pages use to decide noindex). The chunk
+ * offset is relative to the curated set, so every chunk pages ONLY over
+ * indexable rows (fast) and the index (`/sitemap.xml`) lists exactly as many
+ * chunks as exist. No job is ever missed because a fixed chunk list or a slow
+ * full-table scan.
+ */
 export async function GET(_req: Request, ctx: Props) {
   const { chunk } = await ctx.params;
   const chunkIdx = Number(chunk);
@@ -30,7 +41,8 @@ export async function GET(_req: Request, ctx: Props) {
     while (urls.length < CHUNK && !done) {
       const { data } = await supabaseAdmin
         .from('jobs')
-        .select('id, company, external_id, slug, title, description, created_at, published_at')
+        .select('id, company, external_id, slug, title, created_at, published_at')
+        .contains('tags', ['curated-jd'])
         .not('external_id', 'is', null)
         .not('company', 'is', null)
         .gt('created_at', thirtyDaysAgo)
@@ -40,17 +52,11 @@ export async function GET(_req: Request, ctx: Props) {
 
       if (!data || !data.length) break;
       for (const j of data) {
-        // Skip thin / meta-seed bodies (noindex on page; keep crawl budget clean)
-        if (!isJobDescriptionIndexable(j.description)) continue;
-        // Pretty company/slug only — no /jobs/{uuid} (weak SEO; 301s when pretty exists)
+        // Pretty company/slug only — never /jobs/{uuid}.
         const path = jobSitemapPath(j);
         if (!path) continue;
-        const last =
-          (j.published_at || j.created_at || '').toString().slice(0, 10) || undefined;
-        urls.push({
-          loc: `${siteUrl}${path}`,
-          lastmod: last,
-        });
+        const last = (j.published_at || j.created_at || '').toString().slice(0, 10) || undefined;
+        urls.push({ loc: `${siteUrl}${path}`, lastmod: last });
       }
       from += PAGE;
       if (data.length < PAGE) done = true;

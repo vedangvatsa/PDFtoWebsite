@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-export const revalidate = 21600;
+export const revalidate = 3600;
 
 const CHUNK = 40000;
 
@@ -8,17 +8,23 @@ function escapeXml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+/**
+ * Dynamic sitemap index. Counts the CURRENT indexable (curated-jd) job set and
+ * lists exactly as many job chunks as needed, so the whole site is always
+ * covered — new jobs are picked up on the next revalidation (1h) and the chunk
+ * count never goes stale (no fixed 3-chunk list).
+ */
 export async function GET() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  // Live jobs only (pages expire after 30d — isExpiredJob). Excluding expired
-  // URLs keeps the sitemap free of mass-404 noise.
+  // Live, indexable jobs only (curated-jd = 600+ word pages; pages expire 30d).
   let total = 0;
   try {
     const { count } = await supabaseAdmin
       .from('jobs')
       .select('id', { count: 'exact', head: true })
+      .contains('tags', ['curated-jd'])
       .not('external_id', 'is', null)
       .not('company', 'is', null)
       .gt('created_at', thirtyDaysAgo)

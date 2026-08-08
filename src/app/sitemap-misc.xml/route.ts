@@ -1,7 +1,7 @@
 import { blogPosts } from '@/lib/blog-data';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-export const revalidate = 21600;
+export const revalidate = 3600;
 
 function escapeXml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -57,7 +57,7 @@ export async function GET() {
       .select('username, updated_at, full_name, about, skills, experience, education')
       .not('username', 'is', null)
       .order('updated_at', { ascending: false })
-      .limit(500);
+      .limit(5000);
 
     if (profiles) {
       profileEntries = profiles
@@ -84,36 +84,28 @@ export async function GET() {
 
   let companyEntries: Entry[] = [];
   try {
-    const { data: allJobs } = await supabaseAdmin
-      .from('jobs')
-      .select('company')
-      .order('created_at', { ascending: false })
-      .limit(2500);
+    // Use the companies directory (rebuilt from jobs) so EVERY hiring company
+    // with open roles is covered — not just a 2.5k-row job sample.
+    const { data: companies } = await supabaseAdmin
+      .from('companies')
+      .select('slug, name, role_count')
+      .gt('role_count', 0)
+      .order('role_count', { ascending: false })
+      .limit(20000);
 
-    if (allJobs) {
-      const companyCounts: Record<string, number> = {};
-      allJobs.forEach((j) => {
-        if (j.company && !j.company.includes('...')) {
-          const key = j.company.toLowerCase().trim();
-          companyCounts[key] = (companyCounts[key] || 0) + 1;
-        }
-      });
-      const toSlug = (name: string) =>
-        name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
-      const seenSlugs = new Set<string>();
-      Object.entries(companyCounts)
-        .filter(([, count]) => count >= 3)
-        .forEach(([name]) => {
-          const slug = toSlug(name);
-          if (!seenSlugs.has(slug)) {
-            seenSlugs.add(slug);
-            companyEntries.push({
-              url: `${siteUrl}/${slug}`,
-              changefreq: 'daily',
-              priority: '0.8',
-            });
-          }
+    if (companies) {
+      const BLOCKED = /leverdemo|test company|demo company|confidential|\.\.\.|gopuff|n\/a|^unknown$/i;
+      for (const c of companies) {
+        const name = String(c.name || '').trim();
+        if (!name || name.length <= 2 || BLOCKED.test(name)) continue;
+        const slug = String(c.slug || '').trim();
+        if (!slug || slug.length < 2 || slug.length > 48) continue;
+        companyEntries.push({
+          url: `${siteUrl}/${slug}`,
+          changefreq: 'daily',
+          priority: '0.8',
         });
+      }
     }
   } catch (e) {
     console.error('Sitemap misc: failed to fetch companies', e);
