@@ -48,6 +48,17 @@ export function normalizeName(raw: string): string {
   // Strip leading document labels ("Resume: John Doe" -> "John Doe")
   name = name.replace(/^(curriculum vitae|cv|resume|r[eé]sum[eé]|profile|bio)\s*[:.-]\s*/i, '').trim();
   name = name.replace(/^[•\-\*▪▸►‣○●"“”']+\s*/, '').trim();
+  // Strip trailing document/file extensions ("Vaishnavee Haridas.pdf" → "Vaishnavee Haridas").
+  // The AI frequently reads a PDF filename as the person's name.
+  name = name.replace(/\.\s*(pdf|docx?|txt|rtf|pages|png|jpe?g|webp|gif|bmp|tex|odt)\s*$/i, '').trim();
+  // Strip filename version / editor noise ("John Doe 5.2.docx" → "John Doe",
+  // "John Doe v3 final", "John Doe (1)", "John Doe 3rd draft"). Roman-numeral
+  // suffixes (II, III, IV) are not digits, so they are preserved.
+  name = name
+    .replace(/\s+(?:v|ver\.?|version\s*)?\d+(?:\.\d+)*(?:st|nd|rd|th)?\s*$/i, '')
+    .replace(/\s*\(?\b(?:final|new|copy|updated|latest|draft|backup|edited)\b\)?\s*$/i, '')
+    .replace(/\s*\(\d+\)\s*$/, '')
+    .trim();
   // Split on first comma/newline and keep only the name part
   name = name.split(/[,/|·•]/)[0].trim();
   // Strip trailing locations ("Yash Kathait New Delhi" → "Yash Kathait")
@@ -248,6 +259,8 @@ export function isDisposableProfileSlug(slug: string | null | undefined): boolea
   if (s.includes('http') || s.includes('linkedin') || s.includes('github')) return true;
   if (/^(https?|www)/.test(s) || s.includes('linkedincom') || s.includes('githubcom')) return true;
   if (SCREENSHOT_NAME_RE.test(s)) return true;
+  // Filename-derived tails ("vaishnavee-haridas-pdf") are never real slugs.
+  if (/-(?:pdf|docx?|txt|rtf|pages|png|jpe?g|webp|gif|bmp)$/i.test(s)) return true;
   if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(s)) return true;
   return false;
 }
@@ -258,7 +271,14 @@ export function nameToProfileSlug(name: string): string {
     .toLowerCase()
     .split(/\s+/)
     .map((p) => p.replace(/[^a-z0-9]/g, ''))
-    .filter((p) => p && !['https', 'http', 'www', 'com', 'linkedin', 'github', 'in', 'cv', 'resume'].includes(p));
+    .filter(
+      (p) =>
+        p &&
+        ![
+          'https', 'http', 'www', 'com', 'linkedin', 'github', 'in', 'cv', 'resume',
+          'pdf', 'docx', 'doc', 'txt', 'rtf', 'pages', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp',
+        ].includes(p)
+    );
   if (!parts.length) return 'profile';
   return parts.slice(0, 3).join('-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'profile';
 }
