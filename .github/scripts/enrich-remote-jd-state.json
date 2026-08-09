@@ -2607,6 +2607,137 @@
     "dfaee12c-c8de-4fb0-8738-815a6a609be8": {
       "status": "skip",
       "reason": "ashby_not_found"
+    },
+    "07752454-86cd-446e-ab19-89c70f5d6c76": {
+      "status": "dry_ok",
+      "path": "/easygenerator/gtm-eng",
+      "external_id": "easygenerator_gtm-eng"
+    },
+    "11bd6ac0-5e16-47b9-b3ae-fd2c19175ab4": {
+      "status": "fail",
+      "reason": "all_providers_failed: nvidia:http_429:{\"status\":429,\"title\":\"Too Many Requests\"}"
+    },
+    "58ac2ffe-9971-4537-a652-1a2719a107ac": {
+      "status": "fail",
+      "reason": "all_providers_failed: nvidia:http_429:{\"status\":429,\"title\":\"Too Many Requests\"}"
+    },
+    "03facab0-f073-4b01-a645-aa34c6396d4e": {
+      "status": "fail",
+      "reason": "all_providers_failed: nvidia:http_429:{\"status\":429,\"title\":\"Too Many Requests\"}"
+    },
+    "859348f8-12f5-4547-b148-bf720bf895c9": {
+      "status": "fail",
+      "reason": "all_providers_failed: nvidia:rewrite_slop | groq:groq_mixtral-8x7b-32768_400:{\"e"
+    },
+    "2ad490e5-1abc-46cb-8935-1bbdeb982a28": {
+      "status": "fail",
+      "reason": "all_providers_failed: nvidia:http_429:{\"status\":429,\"title\":\"Too Many Requests\"}"
+    },
+    "8fc50ebc-a8de-4f3c-83a7-8cd5f06bb455": {
+      "status": "fail",
+      "reason": "all_providers_failed: nvidia:http_429:{\"status\":429,\"title\":\"Too Many Requests\"}"
+    },
+    "189a47a3-cf98-4ea1-a81d-a5fde3df3773": {
+      "status": "dry_ok",
+      "path": "/elevenlabs/sales-c4",
+      "external_id": "elevenlabs_sales-c4"
+    },
+    "82828315-1d80-4d41-ae21-972b00f54fd2": {
+      "status": "dry_ok",
+      "path": "/onhires/recruit",
+      "external_id": "onhires_recruit"
+    },
+    "681fb5b3-cecb-44b4-8c69-05d4bd0ff702": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "58c2e5fa-4418-4249-ad31-33849a548100": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "9a69d509-94f1-407d-b829-4af4148653bb": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "7288d144-2273-4e02-95d3-e24b33ccc0af": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "b7438c43-5d5c-4bae-bf6b-8a02d0291045": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "4a256750-6a97-425d-8b3d-63be48b10697": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "24a5a473-cb3a-4e16-ae63-60bca5649b8c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "11a50dd3-5c01-427a-b2bf-a5cad58feb44": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "35bf4047-cfac-401b-88f7-d1a028c17cfe": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "26d5ed99-c1b5-4f9d-8855-57e1c0f01877": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "832a1f4d-bc25-4b2a-adde-723a0043fed5": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "0a19ee75-8b0b-4d89-b9d8-1bd60852fe7f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d"
+    },
+    "604c3bc7-cb49-4613-a4e7-0eed365026d4": {
+      "status": "dry_ok",
+      "path": "/openai/acct-mkt",
+      "external_id": "openai_acct-mkt"
+    },
+    "c2666aa2-0412-4624-8e0c-98cad05824a8": {
+      "status": "dry_ok",
+      "path": "/openai/data-55",
+      "external_id": "openai_data-55"
+    },
+    "d62f5646-b0fe-49ad-8e78-253ad9ba88c8": {
+      "status": "dry_ok",
+      "path": "/openai/mgr-48",
+      "external_id": "openai_mgr-48"
+    },
+    "b39e389b-e526-4aa2-a981-20ca42616b3b": {
+      "status": "dry_ok",
+      "path": "/openai/ai-8f",
+      "external_id": "openai_ai-8f"
+    },
+    "c16e948e-e79c-4d73-9d2e-b9ec346385a7": {
+      "status": "dry_ok",
+      "path": "/openai/assoc-ff",
+      "external_id": "openai_assoc-ff"
+    },
+    "18ef1ffd-d36a-4889-825c-ff01c9e24f29": {
+      "status": "dry_ok",
+      "path": "/openai/sw-29",
+      "external_id": "openai_sw-29"
+    },
+    "4a67b7af-7a1b-4dea-a3df-2b3252378721": {
+      "status": "dry_ok",
+      "path": "/openai/applie-a4",
+      "external_id": "openai_applie-a4"
+    },
+    "c8b794d2-1189-45d6-97a7-0cab44b002dc": {
+      "status": "dry_ok",
+      "path": "/openai/user",
+      "external_id": "openai_user"
+    },
+    "bfdf2add-c62d-42d6-9bab-8be2e81a40a6": {
+      "status": "fail",
+      "reason": "all_providers_failed: openai:openai_gpt-4o_err:rewrite_short | gemini:gemini_gem"
     }
   },
   "doneIds": [
@@ -3131,7 +3262,20 @@
     "cf626151-4961-4ecf-a3d3-97fa5b292284",
     "d82b4c6c-a882-4efe-990f-fa7b2f3ebc0c",
     "eb29c1fe-a6ee-4d65-88cc-030e3381317f",
-    "dfaee12c-c8de-4fb0-8738-815a6a609be8"
+    "dfaee12c-c8de-4fb0-8738-815a6a609be8",
+    "681fb5b3-cecb-44b4-8c69-05d4bd0ff702",
+    "58c2e5fa-4418-4249-ad31-33849a548100",
+    "9a69d509-94f1-407d-b829-4af4148653bb",
+    "7288d144-2273-4e02-95d3-e24b33ccc0af",
+    "b7438c43-5d5c-4bae-bf6b-8a02d0291045",
+    "4a256750-6a97-425d-8b3d-63be48b10697",
+    "24a5a473-cb3a-4e16-ae63-60bca5649b8c",
+    "11a50dd3-5c01-427a-b2bf-a5cad58feb44",
+    "35bf4047-cfac-401b-88f7-d1a028c17cfe",
+    "26d5ed99-c1b5-4f9d-8855-57e1c0f01877",
+    "832a1f4d-bc25-4b2a-adde-723a0043fed5",
+    "0a19ee75-8b0b-4d89-b9d8-1bd60852fe7f",
+    "bfdf2add-c62d-42d6-9bab-8be2e81a40a6"
   ],
   "skipped": {},
   "batches": [
@@ -3187,6 +3331,59 @@
         "ashby_not_found": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-05T11:48:40.991Z",
+      "attempted": 9,
+      "ok": 3,
+      "skip": 0,
+      "fail": 6,
+      "reasons": {
+        "all_providers_failed: nvidia:http_429:{\"status\":429,\"title\":\"Too Many Requests\"}": 5,
+        "all_providers_failed: nvidia:rewrite_slop | groq:groq_mixtral-8x7b-32768_400:{\"e": 1
+      },
+      "samplePaths": [
+        "/easygenerator/gtm-eng",
+        "/elevenlabs/sales-c4",
+        "/onhires/recruit"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-05T12:50:26.420Z",
+      "attempted": 12,
+      "ok": 0,
+      "skip": 12,
+      "fail": 0,
+      "reasons": {
+        "posting_older_than_30d": 12
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-05T12:54:23.422Z",
+      "attempted": 15,
+      "ok": 8,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "all_providers_failed: openai:openai_gpt-4o_err:rewrite_short | gemini:gemini_gem": 1
+      },
+      "samplePaths": [
+        "/openai/acct-mkt",
+        "/openai/data-55",
+        "/openai/mgr-48",
+        "/openai/ai-8f",
+        "/openai/assoc-ff",
+        "/openai/sw-29",
+        "/openai/applie-a4",
+        "/openai/user"
+      ]
     }
   ]
 }
