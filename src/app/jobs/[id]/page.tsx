@@ -43,6 +43,7 @@ export default async function JobDetailPage({ params }: PageProps) {
   }
 
   const detail = toJobDetail(job);
+
   const [viewer, relatedJobs] = await Promise.all([
     getViewerJobContext(),
     fetchRelatedJobs(job, 6),

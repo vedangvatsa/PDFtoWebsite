@@ -54,22 +54,47 @@ async function loadJobByExternalIdLive(
   jobSlug: string
 ): Promise<JobRow | null> {
   const externalId = jobExternalIdFromSlugs(companySlug, jobSlug);
-  // Canonical: persisted slug column. Legacy: pretty external_id {company}_{slug}.
-  const result = await withTimeoutFallback(
+  // A URL is ambiguous when one job's minted slug column equals another job's
+  // external_id (e.g. a greenhouse row minted `twilio_sw-eng` vs a native row
+  // whose external_id is literally `twilio_sw-eng`). The exact external_id
+  // match owns the URL — it is the legacy canonical and always unique. The
+  // slug-column match is a minted pretty alias and only wins when nothing
+  // claims the external_id. Never fall back to `.or().maybeSingle()`, which
+  // 406s (and then legacy-redirects into a loop) when both rows match.
+  const pickUnique = (
+    rows: Array<Record<string, unknown>> | null | undefined
+  ): JobRow | null => {
+    if (!rows || rows.length !== 1) return null;
+    const row = rows[0] as JobRow;
+    if (isExpiredJob(row.created_at, row.published_at)) return null;
+    if (companyToSlug(row.company) !== companySlug.toLowerCase()) return null;
+    return row;
+  };
+
+  const extResult = await withTimeoutFallback(
     supabaseAdmin
       .from('jobs')
       .select(SELECT_COLS)
-      .or(`slug.eq.${externalId},external_id.eq.${externalId}`)
-      .maybeSingle(),
+      .eq('external_id', externalId)
+      .limit(2),
     DB_BUDGET.fast,
-    { data: null, error: { message: 'timeout' } } as any,
+    { data: [] } as any,
     `job-ext:${externalId}`
   );
-  if (result.error || !result.data) return null;
-  const row = result.data as JobRow;
-  if (isExpiredJob(row.created_at, row.published_at)) return null;
-  if (companyToSlug(row.company) !== companySlug.toLowerCase()) return null;
-  return row;
+  const extRow = pickUnique(extResult.data);
+  if (extRow) return extRow;
+
+  const slugResult = await withTimeoutFallback(
+    supabaseAdmin
+      .from('jobs')
+      .select(SELECT_COLS)
+      .eq('slug', externalId)
+      .limit(2),
+    DB_BUDGET.fast,
+    { data: [] } as any,
+    `job-slug:${externalId}`
+  );
+  return pickUnique(slugResult.data);
 }
 
 /** Cached by id — used by /jobs/{uuid}. */
