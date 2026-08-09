@@ -6,14 +6,16 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 # 16 shards keeps every worker busy (32 left many empty/timeout shards)
-# OpenAI + Gemini currently out of quota; lean fleet for NVIDIA Nemotron (strict 429s).
+# Gemini/Anthropic out of quota; default to cheapest viable: gpt-4o-mini → NVIDIA.
 export WORKERS="${WORKERS:-2}"
-export BATCH_SIZE="${BATCH_SIZE:-400}"
+export BATCH_SIZE="${BATCH_SIZE:-200}"
 export CONCURRENCY="${CONCURRENCY:-1}"
 export RE_ENRICH=1
 export TURBO=1
 export CONTINUOUS=1
-export NVIDIA_ONLY="${NVIDIA_ONLY:-1}"
+export OPENAI_NVIDIA_ONLY="${OPENAI_NVIDIA_ONLY:-1}"
+export NVIDIA_ONLY="${NVIDIA_ONLY:-0}"
+export NEW_COMPANIES_ONLY="${NEW_COMPANIES_ONLY:-1}"
 export OPENAI_FAST_MODEL="${OPENAI_FAST_MODEL:-gpt-4o-mini}"
 LOG_DIR=".github/scripts"
 mkdir -p "$LOG_DIR"
@@ -36,7 +38,9 @@ for ((w=0; w<WORKERS; w++)); do
       echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] worker $w start" >>"$log"
       export WORKER_ID="$w" WORKERS="$WORKERS" BATCH_SIZE="$BATCH_SIZE" \
         CONCURRENCY="$CONCURRENCY" CONTINUOUS=1 BATCH_NUM=1 \
-        RE_ENRICH=1 TURBO=1 NVIDIA_ONLY="$NVIDIA_ONLY" OPENAI_FAST_MODEL="$OPENAI_FAST_MODEL"
+        RE_ENRICH=1 TURBO=1 OPENAI_NVIDIA_ONLY="$OPENAI_NVIDIA_ONLY" \
+        NVIDIA_ONLY="$NVIDIA_ONLY" NEW_COMPANIES_ONLY="$NEW_COMPANIES_ONLY" \
+        OPENAI_FAST_MODEL="$OPENAI_FAST_MODEL"
       node .github/scripts/enrich-remote-job-descriptions.mjs >>"$log" 2>&1 || true
       code=$?
       echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] worker $w exited code=$code — restart in 2s" >>"$log"

@@ -1,0 +1,66 @@
+name: Parasite SEO Poster (Web 2.0 only)
+
+# Passive syndication only: IndexNow, bookmarks, RPC pings, archives, validators, footprint.
+# Does not call or modify any social scripts (x-post, bsky-post, meta-post, buffer, telegram, etc.).
+
+on:
+  schedule:
+    - cron: '15 2,8,14,20 * * *'  # 4× daily UTC
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: 'URLs per run'
+        required: false
+        default: '30'
+      dry_run:
+        description: 'Dry run only'
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: parasite-seo-poster
+  cancel-in-progress: false
+
+jobs:
+  syndicate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Init queue (if empty)
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node .github/scripts/parasite-seo-poster.mjs --init
+
+      - name: Syndicate batch (no social APIs)
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          ARGS="--batch ${{ github.event.inputs.batch || '30' }}"
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node .github/scripts/parasite-seo-poster.mjs $ARGS
+
+      - name: Commit state
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/scripts/parasite-seo-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: parasite SEO poster progress [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi

@@ -32,6 +32,8 @@ function isDisposableProfileSlug(slug) {
   if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s)) return true;
   if (s.includes('http') || s.includes('linkedin') || s.includes('github')) return true;
   if (/img_\d+|screenshot|whatsapp.?image|fullsizerender|photo_\d+/i.test(s)) return true;
+  // Filename-derived tails ("vaishnavee-haridas-pdf") are never real slugs.
+  if (/-(?:pdf|docx?|txt|rtf|pages|png|jpe?g|webp|gif|bmp)$/i.test(s)) return true;
   if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(s)) return true;
   return false;
 }
@@ -45,7 +47,10 @@ function nameToProfileSlug(name) {
     .filter(
       (p) =>
         p &&
-        !['https', 'http', 'www', 'com', 'linkedin', 'github', 'in', 'cv', 'resume'].includes(p)
+        ![
+          'https', 'http', 'www', 'com', 'linkedin', 'github', 'in', 'cv', 'resume',
+          'pdf', 'docx', 'doc', 'txt', 'rtf', 'pages', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp',
+        ].includes(p)
     );
   if (!parts.length) return 'profile';
   return parts.slice(0, 3).join('-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'profile';
@@ -53,7 +58,7 @@ function nameToProfileSlug(name) {
 
 function looksLikeRealName(name) {
   if (!name || name === 'Your Name') return false;
-  const n = name.trim();
+  const n = name.trim().replace(/\.\s*(?:pdf|docx?|txt|rtf|pages|png|jpe?g|webp|gif|bmp)\s*$/i, '').trim();
   if (n.length < 3) return false;
   if (/img_|screenshot|whatsapp|fullsizerender|photo_/i.test(n)) return false;
   if (/^user\d+$/i.test(n)) return false;

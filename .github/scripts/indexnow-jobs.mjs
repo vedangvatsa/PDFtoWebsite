@@ -13,6 +13,7 @@
 import { createRequire } from 'module';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { jobPublicUrl } from './lib/job-public-url.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -29,18 +30,6 @@ const INDEXNOW_KEY = '6db32ca940dd46cab89375c221953bd6';
 const SITE = 'https://cvin.bio';
 const ENDPOINTS = ['https://api.indexnow.org/indexnow', 'https://www.bing.com/indexnow'];
 
-function companyToSlug(company) {
-  return String(company || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-function isShortJobSlug(s) {
-  return s && /^[a-z0-9][a-z0-9-]{0,23}$/i.test(s) && !/^(th|wa|tg|li|x|tw|ig|fb|jobs|api)$/i.test(s);
-}
-
 function wordCount(desc) {
   if (!desc) return 0;
   const t = String(desc)
@@ -50,14 +39,11 @@ function wordCount(desc) {
   return t ? t.split(/\s+/).length : 0;
 }
 
-function jobPath(company, externalId) {
-  const co = companyToSlug(company);
-  if (!co || !externalId) return null;
-  const prefix = `${co}_`;
-  if (!String(externalId).toLowerCase().startsWith(prefix)) return null;
-  const rest = String(externalId).slice(prefix.length).toLowerCase();
-  if (!isShortJobSlug(rest) || /^[0-9a-f]{8,}$/i.test(rest)) return null;
-  return `/${co}/${rest}`;
+function jobPath(company, externalId, slug) {
+  // Persisted slug column wins; legacy routeable external_id falls back.
+  const url = jobPublicUrl({ company, external_id: externalId, slug }, { prettyOnly: true, base: '' });
+  if (!url) return null;
+  return url || null;
 }
 
 async function pingIndexNow(urls) {
@@ -94,8 +80,8 @@ async function main() {
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   // Pull a wider sample; prefer curated/enriched bodies via tags when present
   const urls = [
-    `${U}/rest/v1/jobs?select=id,company,external_id,description,created_at,tags&created_at=gt.${encodeURIComponent(since)}&tags=cs.{curated-jd}&order=created_at.desc&limit=${LIMIT}`,
-    `${U}/rest/v1/jobs?select=id,company,external_id,description,created_at,tags&created_at=gt.${encodeURIComponent(since)}&order=created_at.desc&limit=${Math.min(2000, LIMIT * 3)}`,
+    `${U}/rest/v1/jobs?select=id,company,external_id,slug,description,created_at,tags&created_at=gt.${encodeURIComponent(since)}&tags=cs.{curated-jd}&order=created_at.desc&limit=${LIMIT}`,
+    `${U}/rest/v1/jobs?select=id,company,external_id,slug,description,created_at,tags&created_at=gt.${encodeURIComponent(since)}&order=created_at.desc&limit=${Math.min(2000, LIMIT * 3)}`,
   ];
   const jobs = [];
   const seen = new Set();
@@ -122,7 +108,7 @@ async function main() {
       skippedThin++;
       continue;
     }
-    const p = jobPath(j.company, j.external_id);
+    const p = jobPath(j.company, j.external_id, j.slug);
     if (!p) {
       skippedUgly++;
       continue;
