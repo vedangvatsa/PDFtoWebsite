@@ -45,6 +45,8 @@ const nextConfigFn = (phase: string): NextConfig => {
       return config;
     },
     images: {
+      // Static site images are content-stable — allow long browser/CDN caching
+      minimumCacheTTL: 604800,
       remotePatterns: [
         {
           protocol: 'https',
@@ -124,8 +126,8 @@ const nextConfigFn = (phase: string): NextConfig => {
             },
           ],
         },
-        {
-          // Cache nomad data files aggressively — they change infrequently
+{
+          // Cache nomad data — they change infrequently
           source: '/:file(nomad-data[^/]*\\.json)',
           headers: [
             { key: 'Cache-Control', value: 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800' },

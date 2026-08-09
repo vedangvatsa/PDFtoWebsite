@@ -22,7 +22,7 @@ function StepIndicator({ num, label, desc }: { num: number; label: string; desc:
     <div className="flex flex-col items-center gap-1.5 text-center">
       <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground font-bold text-xs">{num}</div>
       <span className="text-[11px] font-medium uppercase tracking-wider">{label}</span>
-      <span className="text-[10px] text-muted-foreground/60">{desc}</span>
+      <span className="text-[11px] text-muted-foreground">{desc}</span>
     </div>
   );
 }
@@ -114,6 +114,8 @@ export default function Home() {
               alt="CVin.Bio | Turn your CV into a website"
               width={300}
               height={300}
+              sizes="(max-width: 640px) 180px, 280px"
+              quality={80}
               className="mb-0 w-[180px] h-[180px] sm:w-[280px] sm:h-[280px]"
               priority
             />
