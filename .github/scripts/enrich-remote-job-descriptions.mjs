@@ -88,19 +88,6 @@ const CONTINUOUS = process.env.CONTINUOUS === '1';
 const RETRY_ONLY = process.env.RETRY_ONLY === '1';
 const LINKEDIN_ONLY = process.env.LINKEDIN_ONLY === '1';
 const RE_ENRICH = process.env.RE_ENRICH === '1';
-// NEW_COMPANIES_ONLY=1: limit RE_ENRICH candidates to the discovered-new-ats companies
-// so the slow NVIDIA pipeline serves the newly-added set first.
-const NEW_COMPANIES_ONLY = process.env.NEW_COMPANIES_ONLY === '1';
-const NEW_SLUGS = new Set();
-if (NEW_COMPANIES_ONLY) {
-  try {
-    const d = JSON.parse(readFileSync(resolve(__dirname, '../../scripts/discovered-new-ats.json'), 'utf8'));
-    for (const arr of Object.values(d)) for (const c of arr) if (c.slug) NEW_SLUGS.add(c.slug);
-    console.log(`NEW_COMPANIES_ONLY: ${NEW_SLUGS.size} slugs loaded`);
-  } catch (e) {
-    console.error(`NEW_COMPANIES_ONLY: failed to load discovered-new-ats.json: ${e.message}`);
-  }
-}
 const MIN_REWRITE_WORDS = 600;
 const OPENAI_FAST_MODEL = process.env.OPENAI_FAST_MODEL || 'gpt-4o-mini';
 // TURBO scrapes must fail fast — long LinkedIn/HTML retries were killing throughput (~20 ok/min).
@@ -533,7 +520,7 @@ async function fetchSourceText(job) {
       }
       const d = await r.json();
       const publishedAt = d.updated_at || d.created_at;
-      if (!RE_ENRICH && publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
+      if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
         return { ok: false, reason: 'posting_older_than_30d' };
       }
       const text = stripHtml(d.content || '');
@@ -558,7 +545,7 @@ async function fetchSourceText(job) {
         return { ok: false, reason: 'ashby_not_found' };
       }
       const publishedAt = j.publishedAt;
-      if (!RE_ENRICH && publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
+      if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
         return { ok: false, reason: 'posting_older_than_30d' };
       }
       const text = stripHtml(j.descriptionHtml || j.descriptionPlain || '');
@@ -589,7 +576,7 @@ async function fetchSourceText(job) {
       }
       const d = await r.json();
       const publishedAt = d.createdAt ? new Date(d.createdAt).toISOString() : null;
-      if (!RE_ENRICH && d.createdAt && d.createdAt < thirtyDaysAgoMs) {
+      if (d.createdAt && d.createdAt < thirtyDaysAgoMs) {
         return { ok: false, reason: 'posting_older_than_30d' };
       }
       const lists = (d.lists || [])
@@ -625,7 +612,7 @@ async function fetchSourceText(job) {
       }
       const d = await r.json();
       const publishedAt = d.releasedDate;
-      if (!RE_ENRICH && publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
+      if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
         return { ok: false, reason: 'posting_older_than_30d' };
       }
       const sections = d.jobAd?.sections || {};
@@ -871,10 +858,7 @@ function prettyJobSlug(title, uniqueSeed, used) {
     RESERVED_SLUGS.has(slug) ||
     !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)
   ) {
-    // Widen hash space as collisions pile up so the loop always terminates
-    // (2 hex → 4 hex → …) for hundreds of same-prefix titles at one company.
-    const width = Math.min(2 + Math.floor(n / 8), 8);
-    const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, width);
+    const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, 2);
     const head = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${head}-${h}`;
   }
@@ -902,8 +886,6 @@ function buildJobPrompt(job, sourceText, extras) {
     return `Expand this into a cvin.bio job page. Output ONLY plain text.
 
 MUST be ≥600 words. Keep every concrete fact (stack, years, location, salary, visa). Paraphrase; do not copy sentences.
-
-LOCATION RULE: Never describe the role as "remote", "fully remote", "remote-first", "work from home", or "work from anywhere" unless the Listed location or the source text explicitly says so. If the Listed location is a specific city/office, the "Key facts → Location:" line MUST match it exactly and the role must NOT be called remote. If the Listed location is Unknown/empty and the source has no location, write "Location: Not specified".
 
 Format (exact headers, blank line between sections):
 ${job.title} at ${job.company}.
@@ -978,7 +960,6 @@ Rules:
 - No HTML, no markdown bold/italic, no em dashes, no filler AI tone
 - Avoid words: leverage, delve, robust, seamless, passionate, cutting-edge, exciting opportunity
 - Keep all numbers, stack names, and hard requirements
-- Never call the role remote unless the Listed location or source explicitly says so; if the Listed location is a specific city/office, the "Key facts → Location:" line must match it and the role must not be described as remote
 - Target 600-900 words (do not stop early)
 - Output ONLY the job page text
 
@@ -989,7 +970,7 @@ SOURCE (facts only — rewrite, do not quote):
 ${sourceText.slice(0, 12000)}`;
 }
 
-function finalizeText(text, job, sourceText) {
+function finalizeText(text) {
   text = (text || '').trim();
   if (text.startsWith('```')) {
     text = text.replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/, '').trim();
@@ -997,126 +978,13 @@ function finalizeText(text, job, sourceText) {
   // Light quality gates
   const wordCount = text.split(/\s+/).filter(Boolean).length;
   if (wordCount < 600) throw new Error('rewrite_short');
-  // "leverage" is a normal word in real postings — only reject obvious AI filler.
-  if (/delve into|cutting-edge|exciting opportunity to join/i.test(text)) {
+  if (/leverage|delve into|cutting-edge|exciting opportunity to join/i.test(text)) {
     throw new Error('rewrite_slop');
   }
   if (!/About the role|What you'll do|Requirements/i.test(text)) {
     throw new Error('rewrite_structure');
   }
-  // Anti-plagiarism: reject rewrites that copy sentences verbatim from the source.
-  const copyRatio = copiedSentenceRatio(text, sourceText);
-  if (copyRatio > 0.15) throw new Error(`rewrite_copy:${Math.round(copyRatio * 100)}pct`);
-  enforceLocationConsistency(text, job, sourceText);
   return text.slice(0, 8000);
-}
-
-/**
- * Plagiarism gate: ratio of output sentences near-identical to a source sentence
- * (word-set overlap ≥ 0.8) or a long verbatim substring. Mirrors
- * enrich-new-jobs.mjs — keep in sync.
- */
-function copiedSentenceRatio(output, source) {
-  const norm = (s) =>
-    String(s || '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-  const src = norm(source);
-  if (src.length < 80) return 0;
-  const srcSentences = src.split(/\. |\n|! |\? /).filter((s) => s.split(' ').length >= 5);
-  const outSentences = norm(output)
-    .split(/\. |\n|! |\? /)
-    .filter((s) => s.split(' ').length >= 6);
-
-  let flagged = 0;
-  for (const os of outSentences) {
-    const words = new Set(os.split(' '));
-    if (words.size < 6) continue;
-    let verbatim = false;
-    for (let n = 40; n <= os.length; n += 20) {
-      for (const ss of srcSentences) {
-        if (ss.includes(os.slice(0, n)) || os.includes(ss.slice(0, n))) {
-          verbatim = true;
-          break;
-        }
-      }
-      if (verbatim) break;
-    }
-    if (verbatim) {
-      flagged++;
-      continue;
-    }
-    for (const ss of srcSentences) {
-      const sw = ss.split(' ');
-      let hits = 0;
-      for (const w of sw) if (words.has(w)) hits++;
-      if (hits / Math.max(sw.length, words.size) >= 0.8) {
-        flagged++;
-        break;
-      }
-    }
-  }
-  return outSentences.length ? flagged / outSentences.length : 0;
-}
-
-// A "remote" claim is only correct if the listed location or the original source
-// explicitly says the role is remote. Invented remote claims must never ship.
-const REMOTE_CLAIM =
-  /(100% remote|fully remote|completely remote|remote[- ]first|remote role|remote position|remote job|work from home|work from anywhere|work anywhere|anywhere in the (world|country|us|usa)|remote work|no office|fully remote)/i;
-const REMOTE_SIGNAL =
-  /\bremote\b|work from home|\bwfh\b|remote[- ]first|work from anywhere|distributed/i;
-
-function normalizeListed(loc) {
-  return String(loc || '').trim().replace(/\s+/g, ' ');
-}
-
-function isUnknownListed(loc) {
-  const l = String(loc || '').trim().toLowerCase();
-  return !l || /unknown|not (specified|provided|given)|n\/a|^\-+$|^\.$|^\?+$/.test(l);
-}
-
-function enforceLocationConsistency(text, job, sourceText) {
-  const listed = normalizeListed(job?.location);
-  const listedLc = listed.toLowerCase();
-  const sourceLc = String(sourceText || '').toLowerCase();
-  const listedRemote = REMOTE_SIGNAL.test(listedLc);
-  const sourceRemote = REMOTE_SIGNAL.test(sourceLc);
-
-  const lines = text.split('\n');
-  let locIdx = lines.findIndex((l) => /^Location:/i.test(l.trim()));
-
-  if (!isUnknownListed(listed)) {
-    // Concrete listed location → the Key facts Location: line must match it.
-    if (locIdx !== -1) {
-      const val = lines[locIdx].replace(/^Location:/i, '').trim();
-      const valRemote = REMOTE_SIGNAL.test(val.toLowerCase());
-      const grounded = sourceRemote || listedRemote;
-      if (valRemote && !grounded) {
-        throw new Error('rewrite_remote_contradiction');
-      }
-      if (valRemote && !listedRemote) {
-        // Source says remote but the listing is a concrete office: the Location:
-        // line must show the listed place so it never contradicts the page.
-        lines[locIdx] = `Location: ${listed}`;
-      }
-    } else {
-      const kf = lines.findIndex((l) => /^Key facts$/i.test(l.trim()));
-      if (kf !== -1) {
-        lines.splice(kf + 1, 0, `Location: ${listed}`);
-        locIdx = kf + 1;
-      }
-    }
-  }
-
-  // Body-wide guard: an ungrounded remote claim is a fabrication.
-  if (REMOTE_CLAIM.test(lines.join('\n'))) {
-    const grounded = sourceRemote || listedRemote;
-    if (!grounded) throw new Error('rewrite_remote_contradiction');
-  }
-
-  if (locIdx !== -1 && lines[locIdx]) text = lines.join('\n');
 }
 
 // Per-key(+model) cooldowns so one 429 does not burn the whole key ring
@@ -1194,7 +1062,7 @@ async function rewriteWithGemini(job, sourceText, extras) {
     const reason = data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'empty';
     throw new Error(`gemini_empty:${reason}`);
   }
-  return finalizeText(text, job, sourceText);
+  return finalizeText(text);
 }
 
 const cohereKeyIndex = new Map();
@@ -1226,7 +1094,7 @@ async function rewriteWithCohere(job, sourceText, extras) {
         if (r.ok) {
           const data = await r.json();
           const text = data.text || '';
-          return finalizeText(text, job, sourceText);
+          return finalizeText(text);
         }
         const err = await r.text();
         lastErr = `cohere_${model}_${r.status}:${err.slice(0, 180)}`;
@@ -1244,8 +1112,7 @@ async function rewriteWithGroq(job, sourceText, extras) {
   if (!GROQ_KEYS.length) throw new Error('Missing GROQ_API_KEY');
   const prompt = buildJobPrompt(job, sourceText, extras);
 
-  // llama-3.1-70b-versatile is decommissioned (400 model_decommissioned)
-  const models = ['llama-3.3-70b-versatile'];
+  const models = ['llama-3.3-70b-versatile', 'llama-3.1-70b-versatile', 'mixtral-8x7b-32768'];
   let lastErr = '';
 
   for (const model of models) {
@@ -1268,7 +1135,7 @@ async function rewriteWithGroq(job, sourceText, extras) {
         if (r.ok) {
           const data = await r.json();
           const text = data.choices?.[0]?.message?.content || '';
-          return finalizeText(text, job, sourceText);
+          return finalizeText(text);
         }
         const err = await r.text();
         lastErr = `groq_${model}_${r.status}:${err.slice(0, 180)}`;
@@ -1288,75 +1155,33 @@ async function rewriteWithOpenAI(job, sourceText, extras) {
   // TURBO: mini only (fast). Normal: mini then full.
   const models = TURBO ? [OPENAI_FAST_MODEL] : [OPENAI_FAST_MODEL, 'gpt-4o'];
   let lastErr = '';
-  let retried = false;
 
   for (const model of models) {
     for (const key of OPENAI_KEYS) {
       try {
-        let body;
-        try {
-          body = await jfetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${key}`,
-            },
-            body: JSON.stringify({
-              model,
-              messages: [{ role: 'user', content: prompt }],
-              temperature: TURBO ? 0.3 : 0.4,
-              max_tokens: TURBO ? 8192 : 4096,
-              top_p: 0.9,
-            }),
-          }, TURBO ? 90000 : 45000);
-        } catch (e) {
-          lastErr = `openai_${model}_err:${String(e.message||e).slice(0, 100)}`;
-          if (TURBO && /429/.test(lastErr)) throw new Error(lastErr);
-          continue;
-        }
-        if (body.ok) {
-          const data = await body.json();
+        const r = await jfetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${key}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: TURBO ? 0.3 : 0.4,
+            max_tokens: 4096,
+            top_p: 0.9,
+          }),
+        }, TURBO ? 60000 : 45000);
+        if (r.ok) {
+          const data = await r.json();
           const text = data.choices?.[0]?.message?.content || '';
-          try {
-            return finalizeText(text, job, sourceText);
-          } catch (e) {
-            const reason = String(e.message || e);
-            if (!TURBO || retried || !/^rewrite_/.test(reason)) throw e;
-            // One-shot recovery: nudge the model and charge one extra cheap call
-            // instead of cascading a <600w / malformed page to slow NVIDIA.
-            retried = true;
-            const nudge = reason === 'rewrite_short'
-              ? '\n\nIMPORTANT: The previous draft was rejected because it was too short. You MUST now write a COMPLETE job page of 800+ words. Minimum per section: About the role 4 sentences, What you\'ll do 10 bullets, Requirements 8 bullets, Nice to have 4 bullets, Skills & tools 6 bullets, Practical notes 4 bullets. Do not stop early.'
-              : reason === 'rewrite_slop'
-                ? '\n\nIMPORTANT: The previous draft was rejected for filler words. Rewrite it cleanly without words like delve, robust, seamless, passionate, cutting-edge, or "exciting opportunity". Keep every concrete fact, 600-900 words, exact headers.'
-                : /^rewrite_copy/.test(reason)
-                  ? '\n\nIMPORTANT: The previous draft was rejected for plagiarism — it copied sentences straight from the source posting. Rewrite it ENTIRELY in your own words. Change the sentence structure completely; do not reuse any source wording or phrasing. Keep every concrete fact (stack, years, location, salary, visa) but express them freshly. 600-900 words, exact headers.'
-                  : '\n\nIMPORTANT: The previous draft was rejected for structure. Rewrite the COMPLETE job page with the exact section headers (About the role, Key facts, What you\'ll do, Requirements, Nice to have, Skills & tools, Practical notes), 600-900 words.';
-            const r2 = await jfetch('https://api.openai.com/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${key}`,
-              },
-              body: JSON.stringify({
-                model,
-                messages: [{ role: 'user', content: prompt + nudge }],
-                temperature: 0.5,
-                max_tokens: 8192,
-                top_p: 0.9,
-              }),
-            }, TURBO ? 90000 : 45000);
-            if (r2.ok) {
-              const d2 = await r2.json();
-              return finalizeText(d2.choices?.[0]?.message?.content || '', job, sourceText);
-            }
-            throw e;
-          }
+          return finalizeText(text);
         }
-        const err = await body.text();
-        lastErr = `openai_${model}_${body.status}:${err.slice(0, 180)}`;
+        const err = await r.text();
+        lastErr = `openai_${model}_${r.status}:${err.slice(0, 180)}`;
         // TURBO: fail over to Gemini quickly on 429 instead of burning the whole key ring
-        if (body.status === 429) {
+        if (r.status === 429) {
           if (TURBO) throw new Error(lastErr);
           await sleep(1000);
         }
@@ -1411,7 +1236,7 @@ async function rewriteWithNvidia(job, sourceText, extras) {
           const msg = data.choices?.[0]?.message || {};
           // Prefer final content; never use reasoning_content as the JD body
           const text = (msg.content || '').trim() || (msg.reasoning_content || '').trim();
-          return finalizeText(text, job, sourceText);
+          return finalizeText(text);
         }
         const err = await r.text();
         lastErr = `http_${r.status}:${err.slice(0, 120)}`;
@@ -1458,7 +1283,7 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
       if (r.ok) {
         const data = await r.json();
         const text = (data.content || []).map((p) => p.text || '').join('');
-        return finalizeText(text, job, sourceText);
+        return finalizeText(text);
       }
       const err = await r.text();
       lastErr = `anthropic_${model}_${r.status}:${err.slice(0, 180)}`;
@@ -1471,39 +1296,19 @@ async function rewriteWithAnthropic(job, sourceText, extras) {
 }
 
 // Provider order controlled by env:
-//   OPENAI_ONLY=1           → openai (gpt-4o-mini, cheapest) only — no dead fallback waits
 //   NVIDIA_ONLY=1           → nvidia only
-//   OPENAI_NVIDIA_ONLY=1    → openai (gpt-4o-mini, cheapest) → nvidia
 //   GEMINI_NVIDIA_ONLY=1    → gemini → nvidia (no OpenAI)
 //   SKIP_OPENAI=1           → same as GEMINI_NVIDIA_ONLY when both keys exist
 //   TURBO default           → gemini → openai → nvidia
 async function rewriteJobPage(job, sourceText, extras) {
   const providers = [];
-  const openaiOnly = process.env.OPENAI_ONLY === '1' || process.env.OPENAI_ONLY === 'true';
   const nvidiaOnly = process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true';
-  const openaiNvidiaOnly =
-    process.env.OPENAI_NVIDIA_ONLY === '1' || process.env.OPENAI_NVIDIA_ONLY === 'true';
-  const nvidiaGroqOnly =
-    process.env.NVIDIA_GROQ_ONLY === '1' || process.env.NVIDIA_GROQ_ONLY === 'true';
   const geminiNvidiaOnly =
     process.env.GEMINI_NVIDIA_ONLY === '1' ||
     process.env.GEMINI_NVIDIA_ONLY === 'true' ||
     process.env.SKIP_OPENAI === '1' ||
     process.env.SKIP_OPENAI === 'true';
-  if (openaiOnly) {
-    // gpt-4o-mini only. NVIDIA's 429s just add ~20-40s of dead wait per fail.
-    if (OPENAI_KEYS.length) providers.push(['openai', rewriteWithOpenAI]);
-  } else if (openaiNvidiaOnly) {
-    // Cheapest viable path: gpt-4o-mini first (TURBO only uses mini, never gpt-4o),
-    // NVIDIA Nemotron as the quality fallback. Gemini is 429-dead, so skip it.
-    if (OPENAI_KEYS.length) providers.push(['openai', rewriteWithOpenAI]);
-    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
-  } else if (nvidiaGroqOnly) {
-    // Groq (llama-3.3) first: ~10x faster than NVIDIA Nemotron, which is slow
-    // and rate-limits hard. NVIDIA is the fallback for quality-sensitive jobs.
-    if (GROQ_KEYS.length) providers.push(['groq', rewriteWithGroq]);
-    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
-  } else if (nvidiaOnly && NVIDIA_KEYS.length) {
+  if (nvidiaOnly && NVIDIA_KEYS.length) {
     providers.push(['nvidia', rewriteWithNvidia]);
   } else if (geminiNvidiaOnly) {
     if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
@@ -1592,13 +1397,9 @@ function buildMetaSeed(job) {
 async function fetchAllJobs() {
   const out = [];
   let offset = 0;
-  let keysetCursor = null;
   const page = 1000;
   const since = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? new Date(0).toISOString() : new Date(Date.now() - 30 * 86400000).toISOString();
-  // RE_ENRICH does a full-table scan → use keyset pagination by PK (pure index
-  // walk, no per-page sort) so loads stay fast even with many concurrent workers.
-  const useKeyset = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH;
-  const orderDir = useKeyset ? 'id.asc' : 'created_at.desc';
+  const orderDir = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? 'created_at.asc' : 'created_at.desc';
 
   const hex = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
   const chunkSize = Math.max(1, Math.floor(hex.length / WORKERS));
@@ -1608,7 +1409,7 @@ async function fetchAllJobs() {
   while (true) {
     // RE_ENRICH must include curated-jd rows that are still under 600w (old short rewrites).
     // Fresh enrich still skips already-curated jobs.
-    let url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,slug,description,dedup_hash&created_at=gte.${encodeURIComponent(since)}&apply_url=not.is.null`;
+    let url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash&created_at=gte.${encodeURIComponent(since)}&apply_url=not.is.null`;
     if (!RE_ENRICH) {
       url += `&tags=not.cs.{"curated-jd"}`;
     }
@@ -1616,18 +1417,17 @@ async function fetchAllJobs() {
       url += `&id=gte.${startHex}0000000-0000-0000-0000-000000000000`;
       if (endHex) url += `&id=lt.${endHex}0000000-0000-0000-0000-000000000000`;
     }
-    if (useKeyset && keysetCursor) url += `&id=gt.${keysetCursor}`;
-    url += `&order=${orderDir}&limit=${page}${useKeyset ? '' : `&offset=${offset}`}`;
+    url += `&order=${orderDir}&limit=${page}&offset=${offset}`;
 
     let r;
     let ok = false;
-    for (let attempt = 0; attempt < 4; attempt++) {
+    for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        r = await jfetch(url, { headers }, 120000);
+        r = await jfetch(url, { headers }, 60000);
         ok = true;
         break;
       } catch (e) {
-        if (attempt < 3) { await sleep(2000 * (attempt + 1)); continue; }
+        if (attempt < 2) { await sleep(1500 * (attempt + 1)); continue; }
         console.error(`fetchAllJobs page error (${e.name || e.message}); returning ${out.length} rows`);
         return out;
       }
@@ -1637,12 +1437,7 @@ async function fetchAllJobs() {
     if (!Array.isArray(rows) || !rows.length) break;
     out.push(...rows);
     if (rows.length < page) break;
-    if (useKeyset) {
-      keysetCursor = rows[rows.length - 1].id;
-      if (!keysetCursor) break;
-    } else {
-      offset += page;
-    }
+    offset += page;
   }
   return out;
 }
@@ -1650,44 +1445,27 @@ async function fetchAllJobs() {
 async function loadUsedSlugs(companySlug) {
   const used = new Set();
   const prefix = `${companySlug}_`;
-  const like = encodeURIComponent(prefix + '*');
-  // Seed from both the persisted slug column and legacy routeable external_ids.
-  // Paginate by id: a company can hold >1000 rows, and a truncated used-set lets
-  // a minted slug claim a segment another row owns (shadowed-slug 308 loops).
-  let cursor = null;
-  for (let page = 0; page < 200; page++) {
-    let url = `${U}/rest/v1/jobs?select=id,external_id,slug&or=(slug.like.${like},external_id.like.${like})&limit=1000&order=id.asc`;
-    if (cursor) url += `&id=gt.${cursor}`;
-    let r;
-    let rows;
-    let ok = false;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        r = await jfetch(url, { headers }, 30000);
-        rows = await r.json();
-        ok = true;
-        break;
-      } catch (e) {
-        if (attempt < 2) {
-          await sleep(800 * (attempt + 1));
-          continue;
-        }
-        throw e;
+  const url = `${U}/rest/v1/jobs?select=external_id&external_id=like.${encodeURIComponent(prefix + '*')}&limit=1000`;
+  let r;
+  let rows;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      r = await jfetch(url, { headers }, 30000);
+      rows = await r.json();
+      break;
+    } catch (e) {
+      if (attempt < 2) {
+        await sleep(800 * (attempt + 1));
+        continue;
       }
+      throw e;
     }
-    if (!ok) throw new Error('loadUsedSlugs fetch failed');
-    if (!Array.isArray(rows) || !rows.length) break;
+  }
+  if (Array.isArray(rows)) {
     for (const row of rows) {
       const ext = row.external_id || '';
       if (ext.toLowerCase().startsWith(prefix)) used.add(ext.slice(prefix.length).toLowerCase());
-      const sl = row.slug || '';
-      if (String(sl).toLowerCase().startsWith(prefix)) {
-        used.add(String(sl).slice(prefix.length).toLowerCase());
-      }
     }
-    if (rows.length < 1000) break;
-    cursor = rows[rows.length - 1].id;
-    if (!cursor) break;
   }
   return used;
 }
@@ -1801,7 +1579,6 @@ async function runOneBatch(batchNum, state, done) {
     .filter((j) =>
       RE_ENRICH
         ? j.apply_url &&
-          (!NEW_COMPANIES_ONLY || NEW_SLUGS.has(String(j.company_key || '').toLowerCase())) &&
           (j.description || '').split(/\s+/).filter(Boolean).length < MIN_REWRITE_WORDS
         : RETRY_ONLY
         ? j.apply_url &&
@@ -1917,27 +1694,25 @@ async function runOneBatch(batchNum, state, done) {
       const existing = (job.description || '').trim();
       const existingWords = existing.split(/\s+/).filter(Boolean).length;
       let scraped;
-      // Fabricated meta-seed pages must never be a rewrite source — they'd just
-      // re-entrench fake content. Only the real original posting may seed a page.
-      const isFabricated = /Practical notes/i.test(existing);
       // Usable hosted body: expand without scraping (main throughput path).
-      const canUseExisting = (existingWords >= 15 || existing.length >= 80) && !isFabricated;
+      const canUseExisting = existingWords >= 15 || existing.length >= 80;
       if (RE_ENRICH) {
-        // Fetch the real original posting first. ATS JSON APIs (greenhouse/lever/
-        // ashby/smartrecruiters) are fast even in TURBO and hold the real body
-        // (DB may hold a 0-word stub while the API returns 200-500+ words).
-        // Nothing is fabricated: buildMetaSeed is never used here.
-        const atsKind = ['greenhouse', 'lever', 'ashby', 'smartrecruiters'].includes(
-          classifyApplyUrl(job.apply_url).kind
-        );
-        if (TURBO && !atsKind && canUseExisting) {
-          // Non-ATS TURBO: HTML scrape is slow (4s×40 concurrent timeouts = ~0 ok/min)
-          // — expand the real stored content instead.
+        if (TURBO && canUseExisting) {
           scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+        } else if (canUseExisting) {
+          // Non-turbo: try scrape first for quality, fall back to existing
+          scraped = await fetchSourceText(job);
+          if (!scraped.ok) {
+            scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+          }
+        } else if (TURBO) {
+          // Empty/stub in TURBO: do NOT scrape (4s×40 concurrent timeouts = ~0 ok/min).
+          // Expand from title/company/meta so the SEO floor still lands.
+          scraped = { ok: true, text: buildMetaSeed(job), extras: {}, fromMeta: true };
         } else {
           scraped = await fetchSourceText(job);
-          if (!scraped.ok && canUseExisting) {
-            scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+          if (!scraped.ok) {
+            scraped = { ok: true, text: buildMetaSeed(job), extras: {}, fromMeta: true };
           }
         }
       } else if (existing.length >= 500 && RETRY_ONLY) {
@@ -1949,9 +1724,9 @@ async function runOneBatch(batchNum, state, done) {
         }
       } else {
         scraped = await fetchSourceText(job);
-        // On scrape fail keep the real stored body if we have one; never fabricate.
-        if (!scraped.ok && TURBO && existing.length >= 500 && !isFabricated) {
-          scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
+        // Never burn a job on scrape fail if we can still write a page from meta
+        if (!scraped.ok && TURBO) {
+          scraped = { ok: true, text: existing || buildMetaSeed(job), extras: {}, fromMeta: true };
         }
       }
       if (!scraped.ok) {
@@ -2025,15 +1800,7 @@ async function runOneBatch(batchNum, state, done) {
       }
 
       const tags = Array.isArray(job.tags) ? [...job.tags] : [];
-      // Only tag remote when the listing actually indicates remote/hybrid/anywhere.
-      // On-site roles must never carry the remote tag.
-      const locText = `${job.location || ''} ${job.job_type || ''}`.toLowerCase();
-      const isRemoteish = /remote|hybrid|work from home|wfh|worldwide|anywhere|virtual|global|telecommute/.test(locText);
-      if (isRemoteish) {
-        if (!tags.includes('remote')) tags.push('remote');
-      } else {
-        tags.splice(tags.indexOf('remote'), 1);
-      }
+      if (!tags.includes('remote')) tags.push('remote');
       if (!tags.includes('curated-jd')) tags.push('curated-jd');
 
       try {
@@ -2041,8 +1808,6 @@ async function runOneBatch(batchNum, state, done) {
           const patchObj = {
             description,
             external_id,
-            // Keep the persisted slug column in sync so /[company]/[jobSlug] resolves.
-            slug: external_id,
             tags,
             company_key: job.company_key || companySlug,
           };
@@ -2060,7 +1825,6 @@ async function runOneBatch(batchNum, state, done) {
               external_id = `${companySlug}_${jobSlug}`;
               path = `/${companySlug}/${jobSlug}`;
               patchObj.external_id = external_id;
-              patchObj.slug = external_id;
               await updateJob(job.id, patchObj);
             } else {
               throw patchErr;
@@ -2128,20 +1892,14 @@ async function main() {
     process.exit(1);
   }
   const mode =
-    process.env.OPENAI_ONLY === '1' || process.env.OPENAI_ONLY === 'true'
-      ? 'openai_only'
-      : process.env.OPENAI_NVIDIA_ONLY === '1' || process.env.OPENAI_NVIDIA_ONLY === 'true'
-        ? 'openai+nvidia'
-      : process.env.NVIDIA_GROQ_ONLY === '1' || process.env.NVIDIA_GROQ_ONLY === 'true'
-        ? 'nvidia+groq'
-        : process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true'
-          ? 'nvidia_only'
-        : process.env.GEMINI_NVIDIA_ONLY === '1' ||
-            process.env.GEMINI_NVIDIA_ONLY === 'true' ||
-            process.env.SKIP_OPENAI === '1' ||
-            process.env.SKIP_OPENAI === 'true'
-          ? 'gemini+nvidia'
-          : TURBO
+    process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true'
+      ? 'nvidia_only'
+      : process.env.GEMINI_NVIDIA_ONLY === '1' ||
+          process.env.GEMINI_NVIDIA_ONLY === 'true' ||
+          process.env.SKIP_OPENAI === '1' ||
+          process.env.SKIP_OPENAI === 'true'
+        ? 'gemini+nvidia'
+        : TURBO
           ? 'turbo_all'
           : 'default';
   console.log(

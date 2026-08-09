@@ -1,7 +1,0 @@
-{
-  "subject": "You are one of cvin.bio's top 200 most viewed profiles",
-  "from_name": "CVin.Bio",
-  "from_address": "news@cvin.bio",
-  "text": "Hi {{full_name}},\n\nYour cvin.bio profile is one of the 200 most viewed profiles right now. Recruiters and visitors are finding you.\n\nYour profile link: {{link}}?utm_source=email&utm_medium=email&utm_campaign=top200\n\nShare your link on LinkedIn, Twitter, or anywhere else to get more visitors.\n\nJoin the daily job feed on Telegram: t.me/techjobsdaily\n\nTeam CVin.Bio",
-  "html": "<!DOCTYPE html><html><body style=\"font-family:Arial,sans-serif;line-height:1.5;color:#111;\"><p>Hi {{full_name}},</p><p>Your cvin.bio profile is one of the <strong>200 most viewed profiles</strong> right now. Recruiters and visitors are finding you.</p><p>Your profile link: <a href=\"{{link}}?utm_source=email&utm_medium=email&utm_campaign=top200\" style=\"color:#2563eb;text-decoration:none;font-weight:bold;\">{{link}}</a></p><p>Share your link on LinkedIn, Twitter, or anywhere else to get more visitors.</p><p>Join the daily job feed on Telegram: <a href=\"https://t.me/techjobsdaily\" style=\"color:#2563eb;text-decoration:none;font-weight:bold;\">t.me/techjobsdaily</a></p><p>Team CVin.Bio</p></body></html>"
-}

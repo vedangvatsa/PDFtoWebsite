@@ -20,10 +20,6 @@ import { createHash } from 'crypto';
 import { createRequire } from 'module';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import {
-  isRouteableExternalId,
-  storedSlugSegment as libStoredSlugSegment,
-} from './lib/job-public-url.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -186,10 +182,7 @@ function prettyJobSlug(title, uniqueSeed, used) {
     RESERVED_SLUGS.has(slug) ||
     !/^[a-z0-9][a-z0-9-]{0,23}$/.test(slug)
   ) {
-    // Widen hash space as collisions pile up so the loop always terminates
-    // (2 hex → 4 hex → …) for hundreds of same-prefix titles at one company.
-    const width = Math.min(2 + Math.floor(n / 8), 8);
-    const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, width);
+    const h = createHash('md5').update(`${uniqueSeed}:${n++}`).digest('hex').slice(0, 2);
     const head = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${head}-${h}`;
   }
@@ -241,29 +234,17 @@ async function main() {
   const t0 = Date.now();
   console.log(`mint-slugs: dry=${DRY_RUN ? 1 : 0} concurrency=${CONCURRENCY} onlyCompany=${ONLY_COMPANY || 'all'}`);
 
-  // Fetch the FULL live table (no date window) so the used-set can reserve the
-  // whole URL namespace — every routeable slug column AND external_id segment.
-  // Previously only a 30-day window of external_ids was scanned, so a freshly
-  // minted external_id could claim a segment another job's slug owned (or vice
-  // versa), producing shadowed-slug URLs that 308-looped.
-  const all = await pageAll({
-    select: 'id,title,company,external_id,slug,created_at,published_at',
-    extraFilters: `&apply_url=not.is.null&order=id.asc`,
+  const since = new Date(Date.now() - 30 * 86400000).toISOString();
+  // Always include curated + non-curated live jobs — every public URL must be short/pretty.
+  const jobs = await pageAll({
+    select: 'id,title,company,external_id',
+    extraFilters:
+      `&apply_url=not.is.null` +
+      `&created_at=gt.${encodeURIComponent(since)}&or=(published_at.is.null,published_at.gt.${encodeURIComponent(since)})` +
+      `&order=created_at.desc`,
     label: 'jobs',
   });
-  console.log(`Fetched ${all.length} live jobs (${Math.round((Date.now() - t0) / 1000)}s)`);
-
-  // Remint scope stays the recent 30-day window unless FORCE=1: created recently
-  // AND (unpublished or published recently), mirroring the old DB filter.
-  const cutoff = Date.now() - 30 * 86400000;
-  const jobs = FORCE
-    ? all
-    : all.filter((j) => {
-        const created = j.created_at ? new Date(j.created_at).getTime() : 0;
-        const published = j.published_at ? new Date(j.published_at).getTime() : 0;
-        return created > cutoff && (j.published_at == null || published > cutoff);
-      });
-  console.log(`  scope: ${jobs.length} jobs to evaluate${FORCE ? ' (FORCE)' : ''}`);
+  console.log(`Fetched ${jobs.length} live jobs (${Math.round((Date.now() - t0) / 1000)}s)`);
 
   const need = [];
   const already = [];
@@ -289,38 +270,26 @@ async function main() {
     return;
   }
 
-  // Build used-sets from the FULL table: routeable slug segments + external_id
-  // segments reserve the entire per-company URL namespace.
-  console.log('Building used-sets from full job namespace…');
+  // Build used-set from the live jobs we already fetched (no second full-table scan).
+  // Global unique conflicts still resolve via 23505 → short hash collision path.
+  console.log('Building used-sets from live job external_ids…');
   const usedByCompany = new Map();
-  let reservedCount = 0;
-  for (const row of all) {
+  let extCount = 0;
+  for (const row of jobs) {
+    if (!row.external_id) continue;
     const co = companyToSlug(row.company);
     if (!co) continue;
     if (!usedByCompany.has(co)) usedByCompany.set(co, new Set());
-    const used = usedByCompany.get(co);
-    const slugSeg = libStoredSlugSegment(row.company, row.slug);
-    if (slugSeg) {
-      used.add(slugSeg);
-      reservedCount++;
+    const prefix = `${co}_`;
+    const ext = String(row.external_id);
+    if (ext.toLowerCase().startsWith(prefix)) {
+      usedByCompany.get(co).add(ext.slice(prefix.length).toLowerCase());
+    } else {
+      usedByCompany.get(co).add(ext.toLowerCase());
     }
-    if (row.external_id) {
-      const prefix = `${co}_`;
-      const ext = String(row.external_id);
-      if (isRouteableExternalId(row.company, row.external_id)) {
-        const rest = ext.slice(prefix.length).toLowerCase();
-        used.add(rest);
-        reservedCount++;
-      } else if (ext.toLowerCase().startsWith(prefix)) {
-        used.add(ext.slice(prefix.length).toLowerCase());
-        reservedCount++;
-      } else {
-        used.add(ext.toLowerCase());
-        reservedCount++;
-      }
-    }
+    extCount++;
   }
-  console.log(`  ${reservedCount} keys reserved across ${usedByCompany.size} companies (${Math.round((Date.now() - t0) / 1000)}s)`);
+  console.log(`  ${extCount} external_ids across ${usedByCompany.size} companies (${Math.round((Date.now() - t0) / 1000)}s)`);
   console.log(`Reminting ${need.length} jobs (concurrency=${CONCURRENCY})…`);
 
   const stats = { ok: 0, fail: 0, collision: 0, reasons: {} };
@@ -342,8 +311,6 @@ async function main() {
         if (old.toLowerCase().startsWith(`${co}_`)) {
           used.delete(old.slice(co.length + 1).toLowerCase());
         }
-        const ownSlugSeg = libStoredSlugSegment(job.company, job.slug);
-        if (ownSlugSeg) used.delete(ownSlugSeg);
         let slug = prettyJobSlug(job.title, job.id, used);
         let externalId = `${co}_${slug}`;
         if (!DRY_RUN) {

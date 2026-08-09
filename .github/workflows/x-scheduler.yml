@@ -78,39 +78,6 @@ jobs:
           INCLUDE_LINKEDIN: ${{ github.event.schedule == '0 3 * * 0' || github.event.inputs.include_linkedin == 'true' }}
         run: node .github/scripts/jobs-sync.mjs
 
-      # Self-healing: guarantee every job has a persisted pretty slug so public
-      # URLs are always /{company}/{slug}. Cheap: exits immediately when nothing
-      # is missing (jobs-sync already mints slugs at insert).
-      - name: Backfill pretty job slugs
-        env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
-        run: node .github/scripts/backfill-job-slugs.mjs
-
-      # Fresh original content for NEWLY-FETCHED jobs (anti-plagiarism).
-      # Curls each source posting, asks OpenAI (Groq fallback) to write an original
-      # 600-900 word page, upserts it, then curls the cvin.bio page to verify 200.
-      # Bounded budget per run: newest MAX_JOBS first; un-enriched jobs stay
-      # noindexed (original summary) until processed.
-      - name: Enrich new jobs with fresh content
-        env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GROQ_MODEL: ${{ secrets.GROQ_MODEL }}
-          SINCE_HOURS: '72'
-          MAX_JOBS: '300'
-          CONCURRENCY: '2'
-        run: node .github/scripts/enrich-new-jobs.mjs
-
       # Prune is heavy (HTTP checks + DB). Off on schedule; only when manually requested.
       - name: Prune dead job links
         if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.run_prune == 'true' || github.event.inputs.mass_scan == 'true') }}
