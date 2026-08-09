@@ -169,12 +169,33 @@ const OPENAI_SCHEMA = {
 };
 
 const DEFAULT_OPENAI_MODEL = 'gpt-4.1';
-const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
+const DEFAULT_GEMINI_MODEL = 'gemini-3-flash-preview';
 const DEFAULT_DEEPSEEK_MODEL = 'deepseek-v4-flash';
 const DEFAULT_DEEPSEEK_REASONING_EFFORT = 'high';
 const MAX_RETRIES = 2;
 /** Prefer vision/document path when extractable text is shorter than this. */
 const MIN_TEXT_CHARS = 50;
+
+/** Models that currently accept new Gemini API keys (2.5-flash is often 404/429). */
+const GEMINI_MODEL_FALLBACKS = [
+  'gemini-3-flash-preview',
+  'gemini-3.1-flash-lite-preview',
+  'gemini-flash-latest',
+  'gemini-2.5-flash',
+  'gemini-2.0-flash',
+] as const;
+
+function getGeminiApiKeys(): string[] {
+  const keys = [
+    process.env.GEMINI_API_KEY,
+    process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3,
+    process.env.GEMINI_API_KEY_4,
+  ]
+    .map((k) => k?.trim())
+    .filter((k): k is string => Boolean(k));
+  return [...new Set(keys)];
+}
 
 interface OpenAIMessage {
   role: 'system' | 'user';
@@ -191,7 +212,7 @@ function hasOpenAI(): boolean {
 }
 
 function hasGemini(): boolean {
-  return Boolean(process.env.GEMINI_API_KEY?.trim());
+  return getGeminiApiKeys().length > 0;
 }
 
 function hasDeepSeek(): boolean {
@@ -372,8 +393,8 @@ async function callGemini(
   userText: string,
   media: ParseMedia = { kind: 'none' }
 ): Promise<any> {
-  const apiKey = process.env.GEMINI_API_KEY?.trim();
-  if (!apiKey) throw new Error('GEMINI_API_KEY is missing');
+  const apiKeys = getGeminiApiKeys();
+  if (apiKeys.length === 0) throw new Error('GEMINI_API_KEY is missing');
   const model = process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
 
   const parts: Array<Record<string, unknown>> = [
@@ -395,63 +416,60 @@ async function callGemini(
     },
   };
 
-  // Prefer stronger flash models for document/vision; fall back down the list.
-  const models = Array.from(
-    new Set([
-      model,
-      'gemini-2.5-flash',
-      'gemini-2.5-flash-lite',
-      'gemini-flash-latest',
-    ])
-  );
+  // Prefer currently-available flash models; rotate keys on quota/billing failures.
+  const models = Array.from(new Set([model, ...GEMINI_MODEL_FALLBACKS]));
 
   let lastError: Error | null = null;
-  for (const m of models) {
-    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 45000);
-      try {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody),
-            signal: controller.signal,
+  for (const apiKey of apiKeys) {
+    for (const m of models) {
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 45000);
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(requestBody),
+              signal: controller.signal,
+            }
+          );
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            const statusCode = response.status;
+            const errorMsg = errorData.error?.message || `Gemini API Error ${statusCode}`;
+            lastError = new Error(errorMsg);
+            // Hard billing / not-found → next model (or next key after models).
+            if (statusCode === 403 || statusCode === 404) break;
+            if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
+              console.warn(`Gemini ${m} returned ${statusCode}, retrying...`);
+              await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+              continue;
+            }
+            // 429 after retries → next model; other errors → next model
+            break;
           }
-        );
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          const statusCode = response.status;
-          const errorMsg = errorData.error?.message || `Gemini API Error ${statusCode}`;
-          lastError = new Error(errorMsg);
-          if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
-            console.warn(`Gemini ${m} returned ${statusCode}, retrying...`);
+          const result = await response.json();
+          const content =
+            result.candidates?.[0]?.content?.parts?.map((p: any) => p.text || '').join('') || '';
+          if (!content) {
+            lastError = new Error('Empty response from Gemini');
+            break;
+          }
+          let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
+          return JSON.parse(raw);
+        } catch (err: any) {
+          lastError = err instanceof Error ? err : new Error('Unknown Gemini error');
+          if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
+            console.warn(`Gemini ${m} failed (attempt ${attempt + 1}), retrying...`, lastError.message);
             await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
             continue;
           }
-          // try next model
           break;
+        } finally {
+          clearTimeout(timeout);
         }
-        const result = await response.json();
-        const content =
-          result.candidates?.[0]?.content?.parts?.map((p: any) => p.text || '').join('') || '';
-        if (!content) {
-          lastError = new Error('Empty response from Gemini');
-          break;
-        }
-        let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
-        return JSON.parse(raw);
-      } catch (err: any) {
-        lastError = err instanceof Error ? err : new Error('Unknown Gemini error');
-        if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
-          console.warn(`Gemini ${m} failed (attempt ${attempt + 1}), retrying...`, lastError.message);
-          await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
-          continue;
-        }
-        break;
-      } finally {
-        clearTimeout(timeout);
       }
     }
   }
