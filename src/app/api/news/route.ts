@@ -162,13 +162,13 @@ async function fetchAllNews(): Promise<NewsItem[]> {
   );
 
   const allItems: NewsItem[] = [];
-  const MAX_PER_SOURCE = 8; // Prevent any single feed from dominating
+  const MAX_PER_SOURCE = 20; // Prevent any single feed from dominating
   for (const r of results) {
     if (r.status === 'fulfilled') allItems.push(...r.value.slice(0, MAX_PER_SOURCE));
   }
 
-  // 24h freshness cutoff — only show recent news
-  const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+  // 72h freshness cutoff — widen the pool so infinite scroll has depth
+  const cutoff = Date.now() - 72 * 60 * 60 * 1000;
   const fresh = allItems.filter(item => new Date(item.publishedAt).getTime() > cutoff);
 
   // Sort by date (newest first)

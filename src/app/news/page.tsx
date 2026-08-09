@@ -65,7 +65,7 @@ export default function NewsPage() {
     if (append) setLoadingMore(true); else setLoading(true);
 
     try {
-      const params = new URLSearchParams({ page: String(pageNum), limit: '30' });
+      const params = new URLSearchParams({ page: String(pageNum), limit: '15' });
       if (source !== 'all') params.set('source', source);
       if (search) params.set('q', search);
 
