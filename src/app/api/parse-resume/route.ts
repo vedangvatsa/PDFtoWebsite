@@ -170,6 +170,8 @@ const OPENAI_SCHEMA = {
 
 const DEFAULT_OPENAI_MODEL = 'gpt-4.1';
 const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
+const DEFAULT_DEEPSEEK_MODEL = 'deepseek-v4-flash';
+const DEFAULT_DEEPSEEK_REASONING_EFFORT = 'high';
 const MAX_RETRIES = 2;
 /** Prefer vision/document path when extractable text is shorter than this. */
 const MIN_TEXT_CHARS = 50;
@@ -190,6 +192,10 @@ function hasOpenAI(): boolean {
 
 function hasGemini(): boolean {
   return Boolean(process.env.GEMINI_API_KEY?.trim());
+}
+
+function hasDeepSeek(): boolean {
+  return Boolean(process.env.DEEPSEEK_API_KEY?.trim());
 }
 
 const PARSE_USER_PROMPT =
@@ -264,6 +270,73 @@ async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
     }
   }
   throw lastError || new Error('AI parsing failed');
+}
+
+/** DeepSeek — OpenAI-compatible chat completions. Text-only (no vision); used for extracted text. */
+async function callDeepSeek(messages: OpenAIMessage[]): Promise<any> {
+  const apiKey = process.env.DEEPSEEK_API_KEY?.trim();
+  if (!apiKey) throw new Error('DEEPSEEK_API_KEY is missing');
+  const model = process.env.DEEPSEEK_MODEL?.trim() || DEFAULT_DEEPSEEK_MODEL;
+  const reasoningEffort =
+    process.env.DEEPSEEK_REASONING_EFFORT?.trim() || DEFAULT_DEEPSEEK_REASONING_EFFORT;
+
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000);
+    try {
+      const response = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          response_format: { type: 'json_object' },
+          thinking: { type: 'enabled' },
+          reasoning_effort: reasoningEffort,
+          max_tokens: 8192,
+        }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const statusCode = response.status;
+        const errorMsg = errorData.error?.message || `DeepSeek API Error ${statusCode}`;
+        if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
+          console.warn(
+            `DeepSeek API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`
+          );
+          lastError = new Error(errorMsg);
+          await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+          continue;
+        }
+        throw new Error(errorMsg);
+      }
+
+      const result = await response.json();
+      // Reasoning model returns content in reasoning_content + final content
+      const content = result.choices?.[0]?.message?.content;
+      if (!content) throw new Error('Empty response from DeepSeek');
+
+      let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(raw);
+    } catch (err: any) {
+      lastError = err instanceof Error ? err : new Error('Unknown DeepSeek error');
+      if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
+        console.warn(`DeepSeek request failed (attempt ${attempt + 1}), retrying...`, lastError.message);
+        await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+        continue;
+      }
+      throw lastError;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  throw lastError || new Error('DeepSeek parsing failed');
 }
 
 /** Build OpenAI user content that can include images and/or PDF file parts. */
@@ -386,21 +459,28 @@ async function callGemini(
 }
 
 /**
- * ALWAYS OpenAI primary (higher limits). Gemini only if OpenAI is missing or fails.
- * Applies to text, images, scanned PDFs, and HEIC — no Gemini-first special cases.
+ * Provider priority:
+ *  - DeepSeek (text-only) — primary for extracted-text resumes.
+ *  - OpenAI vision-capable models (gpt-4.1) — primary for images/scanned PDFs,
+ *    fallback for text.
+ *  - Gemini — final fallback (handles PDF/images natively, incl. HEIC).
  */
 async function callParseAI(
   messages: OpenAIMessage[],
-  opts: { media?: ParseMedia; forceProvider?: 'openai' | 'gemini' } = {}
+  opts: { media?: ParseMedia; forceProvider?: 'deepseek' | 'openai' | 'gemini' } = {}
 ): Promise<any> {
   const media = opts.media || { kind: 'none' };
   const force = opts.forceProvider;
-  const wantOpenAI = hasOpenAI() && force !== 'gemini';
-  const wantGemini = hasGemini() && force !== 'openai';
+  const isTextOnly = media.kind === 'none';
+  // OpenAI is primary for all inputs (text + vision). DeepSeek is text-only,
+  // so it is only used when the parse is text-based; Gemini is final fallback.
+  const wantOpenAI = hasOpenAI() && force !== 'gemini' && force !== 'deepseek';
+  const wantDeepSeek = hasDeepSeek() && isTextOnly && force !== 'openai' && force !== 'gemini';
+  const wantGemini = hasGemini() && force !== 'openai' && force !== 'deepseek';
 
-  if (!wantOpenAI && !wantGemini) {
+  if (!wantOpenAI && !wantDeepSeek && !wantGemini) {
     throw new Error(
-      'No AI keys configured. Set OPENAI_API_KEY (primary) and optionally GEMINI_API_KEY (fallback).'
+      'No AI keys configured. Set OPENAI_API_KEY (primary) with DEEPSEEK_API_KEY and/or GEMINI_API_KEY (fallback).'
     );
   }
 
@@ -425,20 +505,31 @@ async function callParseAI(
   };
 
   const tryGemini = async () => callGemini(userText, media);
+  const tryDeepSeek = async () => callDeepSeek(messages);
 
   const errors: string[] = [];
 
-  // 1) OpenAI always first when available
+  // 1) OpenAI primary — handles text, images, and scanned PDFs
   if (wantOpenAI) {
     try {
       return await tryOpenAI();
     } catch (err) {
       errors.push(`openai: ${err instanceof Error ? err.message : err}`);
-      console.warn('OpenAI parse failed; falling back to Gemini…', errors[errors.length - 1]);
+      console.warn('OpenAI parse failed; falling back…', errors[errors.length - 1]);
     }
   }
 
-  // 2) Gemini only as fallback (rate-limit / outage / unsupported modality)
+  // 2) DeepSeek for extracted-text resumes (skip — text-only, no vision)
+  if (wantDeepSeek) {
+    try {
+      return await tryDeepSeek();
+    } catch (err) {
+      errors.push(`deepseek: ${err instanceof Error ? err.message : err}`);
+      console.warn('DeepSeek parse failed; falling back…', errors[errors.length - 1]);
+    }
+  }
+
+  // 3) Gemini as fallback (rate-limit / outage / unsupported modality)
   if (wantGemini) {
     try {
       return await tryGemini();
