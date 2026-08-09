@@ -126,7 +126,13 @@ const nextConfigFn = (phase: string): NextConfig => {
             },
           ],
         },
-{
+        {
+          source: '/_next/image',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=604800, immutable' },
+          ],
+        },
+        {
           // Cache nomad data — they change infrequently
           source: '/:file(nomad-data[^/]*\\.json)',
           headers: [
