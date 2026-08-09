@@ -1,4 +1,3 @@
-import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { getPlatformStats } from '@/lib/get-platform-stats';
 import {
@@ -9,40 +8,17 @@ import {
 import { isDisposableProfileSlug } from '@/lib/parse-guard';
 import { jobSitemapPath } from '@/lib/job-description';
 
-/**
- * Shared generator for /llms.txt (index) and /llms-full.txt (complete dump).
- *
- * Both endpoints used to re-run sequential, unbounded Supabase pagination on
- * every request with only an (ignored) s-maxage header, so the audit crawlers
- * hit 10-21s responses and timed out. Now:
- *  - DB pages are fetched in parallel (bounded concurrency) instead of one at a
- *    time.
- *  - The assembled text is memoized through unstable_cache (6h TTL, tag "llms"),
- *    so the edge/KV cache serves it instead of re-scanning per request.
- *  - Any DB failure degrades to a valid (if short) Markdown file rather than a
- *    timeout or 500.
- */
-
 const PAGE = 1000;
 const CONCURRENCY = 8;
 const INDEX_RECENT_JOBS = 500;
-// Full dump includes every curated-jd job (AI-rewritten descriptions); no cap.
-// Non-curated rows are raw scraped listings and are intentionally excluded.
 const FULL_MAX_JOBS = Infinity;
 
 const PROFILE_SELECT = 'username, full_name, about, skills, experience, education';
 const COMPANY_SELECT = 'slug, name, role_count';
 const JOB_SELECT = 'id, company, external_id, slug, title, created_at, published_at';
 
-const CONTENT_TYPE_HEADERS = {
-  'Content-Type': 'text/plain; charset=utf-8',
-  'Cache-Control': 'public, s-maxage=21600, stale-while-revalidate=86400',
-  'x-ai-usage': 'indexing=yes, search=yes, inference=yes, citation=yes',
-} as const;
-
 type Row = Record<string, any>;
 
-/** Fetch range-paginated rows in parallel (order preserved via stable ranges). */
 async function fetchRanges(
   baseQuery: (q: any) => any,
   cap: number
@@ -107,7 +83,8 @@ function jobLine(j: Row): string | null {
   return `- ${String(j.title || 'Role').slice(0, 80)} — ${String(j.company || '').slice(0, 40)}: https://cvin.bio${path}`;
 }
 
-async function buildDirectory(scope: 'index' | 'full'): Promise<string> {
+/** Build the full Markdown for /llms.txt (scope=index) or /llms-full.txt (scope=full). */
+export async function buildDirectory(scope: 'index' | 'full'): Promise<string> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
   const stats = await getPlatformStats();
   const maxJobs = scope === 'index' ? INDEX_RECENT_JOBS : FULL_MAX_JOBS;
@@ -180,7 +157,7 @@ async function buildDirectory(scope: 'index' | 'full'): Promise<string> {
       '### Core Product: CV to Website',
       'Upload a PDF CV; AI extracts structured data and generates a responsive personal website at a custom URL (e.g., cvin.bio/yourname).',
       '',
-      `### Core Product: Job Board`,
+      '### Core Product: Job Board',
       `The job board at ${siteUrl}/jobs aggregates curated tech job listings from companies. Users get personalized job recommendations based on skill matching.`,
       '',
       '### Research Reports',
@@ -265,56 +242,4 @@ async function buildDirectory(scope: 'index' | 'full'): Promise<string> {
   );
 
   return lines.join('\n');
-}
-
-export const getLLMSIndex = unstable_cache(
-  () => buildDirectory('index'),
-  ['llms-directory-index'],
-  { revalidate: 21600, tags: ['llms'] }
-);
-
-export const getLLMSFull = unstable_cache(
-  () => buildDirectory('full'),
-  ['llms-directory-full'],
-  { revalidate: 21600, tags: ['llms'] }
-);
-
-export function llmsResponse(body: string): Response {
-  return new Response(body, { headers: CONTENT_TYPE_HEADERS });
-}
-
-const LLMS_CACHE = 'llms-directory';
-const LLMS_TTL_MS = 21600 * 1000;
-
-/**
- * Serve a built llms.* body through the Cloudflare Cache API. unstable_cache
- * is a no-op under open-next's default "dummy" incremental cache, so without
- * this every request re-ran the full DB scan (10-21s). Entries are keyed by
- * request URL, persisted at the edge, and rebuilt once older than 6h.
- */
-export async function llmsCachedResponse(
-  request: Request,
-  build: () => Promise<string>
-): Promise<Response> {
-  const cacheKey = new Request(request.url, { method: 'GET' });
-  try {
-    const cache = await caches.open(LLMS_CACHE);
-    const cached = await cache.match(cacheKey);
-    const generated = Number(cached?.headers.get('x-llms-generated') || 0);
-    if (cached && generated && Date.now() - generated < LLMS_TTL_MS) {
-      return cached;
-    }
-  } catch {
-    // Cache unavailable — fall through to a fresh build.
-  }
-
-  const response = llmsResponse(await build());
-  response.headers.set('x-llms-generated', String(Date.now()));
-  try {
-    const cache = await caches.open(LLMS_CACHE);
-    await cache.put(cacheKey, response.clone());
-  } catch {
-    // Non-fatal: the response is still served, just not persisted.
-  }
-  return response;
 }

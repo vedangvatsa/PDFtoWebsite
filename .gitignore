@@ -45,6 +45,10 @@ mcp-package/node_modules
 .mcpregistry_github_token
 .mcpregistry_registry_token
 
+# generated llms assets — pre-built at deploy time, not committed
+public/llms.txt
+public/llms-full.txt
+
 # lockfiles
 .github/scripts/.x-post.lock
 .github/scripts/ses-*.json
