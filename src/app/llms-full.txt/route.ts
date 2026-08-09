@@ -1,7 +1,6 @@
-import { getLLMSFull, llmsResponse } from '@/lib/llms-directory';
+import { NextRequest } from 'next/server';
+import { getLLMSFull, llmsCachedResponse } from '@/lib/llms-directory';
 
-export const revalidate = 21600; // 6 hours
-
-export async function GET() {
-  return llmsResponse(await getLLMSFull());
+export async function GET(request: NextRequest) {
+  return llmsCachedResponse(request, () => getLLMSFull());
 }
