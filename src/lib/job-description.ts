@@ -10,7 +10,7 @@ import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 10;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 11;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -176,10 +176,20 @@ export function plainTextToHtml(text: string): string {
     introBuf = [];
   };
 
+  const bufIsListRun = () =>
+    buf.length > 0 &&
+    buf.some((l) => l.trim()) &&
+    buf.every((l) => {
+      const t = l.trim();
+      return !t || isBulletLine(t) || isOrderedLine(t);
+    });
+
   for (const rawLine of lines) {
     const trimmed = rawLine.trim();
     if (!trimmed) {
-      if (inBody) flushBuf();
+      // ATS HTML often emits one <ul> per <li>, which becomes "- a\n\n- b".
+      // Keep list runs intact across blank lines; flush other blocks.
+      if (inBody && !bufIsListRun()) flushBuf();
       continue;
     }
     if (isMetaSectionHeading(trimmed)) {
@@ -201,12 +211,17 @@ export function plainTextToHtml(text: string): string {
     if (!inBody) {
       introBuf.push(trimmed);
     } else {
+      const lineIsList = isBulletLine(trimmed) || isOrderedLine(trimmed);
+      if (buf.length) {
+        if (bufIsListRun() && !lineIsList) flushBuf();
+        else if (!bufIsListRun() && lineIsList) flushBuf();
+      }
       buf.push(rawLine);
     }
   }
   flushBuf();
   flushIntro();
-  return out.join('\n');
+  return mergeAdjacentLists(out.join('\n'));
 }
 
 function renderIntroBlock(lines: string[]): string {
@@ -384,46 +399,82 @@ function splitLetteredSubclauses(body: string): string[] {
   return out;
 }
 
+/**
+ * Short ALL-CAPS labels ("ABOUT SUPERPOWER", "WHAT WE'RE LOOKING FOR").
+ * Longer ALL-CAPS job-title fragments stay body text via length/word caps.
+ * Single-word ALL-CAPS (USA, NYC, CEO) is left to the explicit whitelist.
+ */
+function isAllCapsSectionHeading(line: string): boolean {
+  const t = line.replace(/:$/, '').trim();
+  if (t.length < 6 || t.length > 70) return false;
+  if (/\.$/.test(t)) return false;
+  if (!/^[A-Z0-9][A-Z0-9\s/'’&,:.\-]{2,}$/.test(t)) return false;
+  const words = t.split(/\s+/).filter(Boolean);
+  if (words.length < 2 || words.length > 8) return false;
+  if (t.length > 55 && words.length >= 6) return false;
+  const letters = t.replace(/[^A-Za-z]/g, '');
+  return letters.length >= 6;
+}
+
 /** Section titles for structured plain-text job descriptions. */
 function isMetaSectionHeading(line: string): boolean {
   if (!line || line.length > 90) return false;
-  if (/^Who can apply\??$/i.test(line)) return true;
-  if (/^Key facts$/i.test(line)) return true;
-  if (/^Skills (&|and) tools$/i.test(line)) return true;
-  if (/^Program highlights$/i.test(line)) return true;
-  if (/^Current cycles$/i.test(line)) return true;
-  if (/^Official references$/i.test(line)) return true;
-  if (/^Application window$/i.test(line)) return true;
-  if (/^Desired start months/i.test(line)) return true;
-  if (/^Areas of interest$/i.test(line)) return true;
-  if (/^About the scheme$/i.test(line)) return true;
-  if (/^About the program$/i.test(line)) return true;
-  if (/^Work areas$/i.test(line)) return true;
-  if (/^Practical notes$/i.test(line)) return true;
-  if (/^Role & project$/i.test(line)) return true;
-  if (/^Technical requirements$/i.test(line)) return true;
-  if (/^Terms of engagement$/i.test(line)) return true;
-  if (/^About (the )?(role|job|company|team|us|position)$/i.test(line)) return true;
-  if (/^Requirements?$/i.test(line)) return true;
-  if (/^Qualifications?$/i.test(line)) return true;
-  if (/^What you('ll| will) do$/i.test(line)) return true;
-  if (/^What we offer$/i.test(line)) return true;
-  if (/^Benefits$/i.test(line)) return true;
-  if (/^Nice to have$/i.test(line)) return true;
-  if (/^Must have$/i.test(line)) return true;
-  if (/^Open application window$/i.test(line)) return true;
-  if (/^Placement groups$/i.test(line)) return true;
-  if (/^Selection$/i.test(line)) return true;
-  if (/^During the internship$/i.test(line)) return true;
-  if (/^How to apply/i.test(line)) return true;
-  if (/^Contact$/i.test(line)) return true;
-  if (/^Responsibilities:?$/i.test(line)) return true;
-  if (/^Skills Required:?$/i.test(line)) return true;
-  if (/^Keywords:?$/i.test(line)) return true;
+  const t = line.replace(/:$/, '').trim();
+  if (/^Who can apply\??$/i.test(t)) return true;
+  if (/^Key facts$/i.test(t)) return true;
+  if (/^Skills (&|and) tools$/i.test(t)) return true;
+  if (/^Program highlights$/i.test(t)) return true;
+  if (/^Current cycles$/i.test(t)) return true;
+  if (/^Official references$/i.test(t)) return true;
+  if (/^Application window$/i.test(t)) return true;
+  if (/^Desired start months/i.test(t)) return true;
+  if (/^Areas of interest$/i.test(t)) return true;
+  if (/^About the scheme$/i.test(t)) return true;
+  if (/^About the program$/i.test(t)) return true;
+  if (/^Work areas$/i.test(t)) return true;
+  if (/^Practical notes$/i.test(t)) return true;
+  if (/^Role & project$/i.test(t)) return true;
+  if (/^Technical requirements$/i.test(t)) return true;
+  if (/^Terms of engagement$/i.test(t)) return true;
+  if (/^About (the )?(role|job|company|team|us|position)$/i.test(t)) return true;
+  if (/^About [A-Z][\w'’&-]{1,40}$/i.test(t) && t.length <= 50) return true;
+  if (/^Why join( us)?$/i.test(t)) return true;
+  // "Why Superpower" / "WHY ACME" — not full sentences like "Why we care about…"
+  if (/^Why [A-Z][\w'’&-]{1,40}$/i.test(t) && t.length <= 45) return true;
+  if (/^What we(['’]re| are) looking for$/i.test(t)) return true;
+  if (/^What you(['’]ll| will) (do|bring|need|get)$/i.test(t)) return true;
+  if (/^What we offer$/i.test(t)) return true;
+  if (/^Requirements?$/i.test(t)) return true;
+  if (/^Qualifications?$/i.test(t)) return true;
+  if (/^Benefits$/i.test(t)) return true;
+  if (/^Nice to have$/i.test(t)) return true;
+  if (/^Must have$/i.test(t)) return true;
+  if (/^Open application window$/i.test(t)) return true;
+  if (/^Placement groups$/i.test(t)) return true;
+  if (/^Selection$/i.test(t)) return true;
+  if (/^During the internship$/i.test(t)) return true;
+  if (/^How to apply/i.test(t)) return true;
+  if (/^Contact$/i.test(t)) return true;
+  if (/^Responsibilities:?$/i.test(t)) return true;
+  if (/^Skills Required:?$/i.test(t)) return true;
+  if (/^Keywords:?$/i.test(t)) return true;
+  if (/^(Company )?Philosoph(y|ies)$/i.test(t)) return true;
+  if (/^Investors?$/i.test(t)) return true;
+  if (/^(Our )?(Culture|Values|Mission|Vision|Perks|Compensation|Team|Equal Opportunity)$/i.test(t)) {
+    return true;
+  }
+  if (isAllCapsSectionHeading(t)) return true;
   if (isNumberedStepLine(line)) return false;
   const numberedTitle = line.match(/^(\d{1,2})\.\s+(.+)$/);
   if (numberedTitle && isNumberedSectionTitle(numberedTitle[2])) return true;
   return false;
+}
+
+/** Collapse adjacent same-type lists left by ATS one-li-per-ul markup. */
+function mergeAdjacentLists(html: string): string {
+  return html
+    .replace(/<\/ul>\s*<ul>/gi, '')
+    .replace(/<\/ol>\s*<ol>/gi, '');
 }
 
 /** @deprecated Use isMetaSectionHeading — kept for internal HTML restructuring. */
@@ -581,7 +632,7 @@ function structureJobHtml(html: string): string {
       }
       if (
         t.length < 60 &&
-        /^[A-Z0-9][A-Z0-9\s/&,:.\-]{4,}$/.test(t) &&
+        /^[A-Z0-9][A-Z0-9\s/'’&,:.\-]{4,}$/.test(t) &&
         !/\.$/.test(t) &&
         !/^Role:/i.test(t)
       ) {
@@ -591,8 +642,13 @@ function structureJobHtml(html: string): string {
     }
   );
 
-  s = s.replace(/<p>([\s\S]*?)<\/p>/gi, (_full, inner: string) => {
+  // Bare paragraph titles (common in paraphrased / ATS HTML without <strong>)
+  s = s.replace(/<p>([\s\S]*?)<\/p>/gi, (full, inner: string) => {
     const text = decodeHtmlEntities(inner.replace(/<[^>]+>/g, '').trim());
+    if (!text) return full;
+    if (isMetaSectionHeading(text) || isSubSectionHeading(text)) {
+      return `<h3>${escapeHtml(text.replace(/:$/, '').trim())}</h3>`;
+    }
     if (text.length < 180 || !/\s\d{1,2}\.\s+[A-Z]/.test(text)) {
       return `<p>${inner}</p>`;
     }
@@ -600,7 +656,7 @@ function structureJobHtml(html: string): string {
     return restructured || `<p>${inner}</p>`;
   });
 
-  return s;
+  return mergeAdjacentLists(s);
 }
 
 /**
@@ -633,7 +689,7 @@ export function formatJobDescription(
     }
   }
 
-  let html = cleanPublishHtml(structured);
+  let html = mergeAdjacentLists(cleanPublishHtml(structured));
 
   // Correct the Key facts "Location:" line ONLY when it makes an ungrounded
   // "Remote" claim. The LLM rewrite may label an on-site role as remote even
@@ -657,7 +713,7 @@ export function formatJobDescription(
     );
   }
 
-  return html;
+  return mergeAdjacentLists(html);
 }
 
 /** Strip HTML → plain text for excerpts / schema. */
