@@ -282,3 +282,39 @@ export const getLLMSFull = unstable_cache(
 export function llmsResponse(body: string): Response {
   return new Response(body, { headers: CONTENT_TYPE_HEADERS });
 }
+
+const LLMS_CACHE = 'llms-directory';
+const LLMS_TTL_MS = 21600 * 1000;
+
+/**
+ * Serve a built llms.* body through the Cloudflare Cache API. unstable_cache
+ * is a no-op under open-next's default "dummy" incremental cache, so without
+ * this every request re-ran the full DB scan (10-21s). Entries are keyed by
+ * request URL, persisted at the edge, and rebuilt once older than 6h.
+ */
+export async function llmsCachedResponse(
+  request: Request,
+  build: () => Promise<string>
+): Promise<Response> {
+  const cacheKey = new Request(request.url, { method: 'GET' });
+  try {
+    const cache = await caches.open(LLMS_CACHE);
+    const cached = await cache.match(cacheKey);
+    const generated = Number(cached?.headers.get('x-llms-generated') || 0);
+    if (cached && generated && Date.now() - generated < LLMS_TTL_MS) {
+      return cached;
+    }
+  } catch {
+    // Cache unavailable — fall through to a fresh build.
+  }
+
+  const response = llmsResponse(await build());
+  response.headers.set('x-llms-generated', String(Date.now()));
+  try {
+    const cache = await caches.open(LLMS_CACHE);
+    await cache.put(cacheKey, response.clone());
+  } catch {
+    // Non-fatal: the response is still served, just not persisted.
+  }
+  return response;
+}
