@@ -25,14 +25,16 @@ const SELECT_COLS =
 
 function isExpiredJob(createdAt?: string | null, publishedAt?: string | null): boolean {
   const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
-  if (publishedAt) {
-    const pubMs = new Date(publishedAt).getTime();
-    if (pubMs > 0 && pubMs < thirtyDaysAgo) return true;
-  }
-  if (createdAt) {
-    const createdMs = new Date(createdAt).getTime();
-    if (createdMs > 0 && createdMs < thirtyDaysAgo) return true;
-  }
+  const pubMs = publishedAt ? new Date(publishedAt).getTime() : 0;
+  const createdMs = createdAt ? new Date(createdAt).getTime() : 0;
+  // Scraped jobs: created_at is the ingestion date — if the scraper found
+  // it recently the listing is still live regardless of source metadata age.
+  if (createdMs > thirtyDaysAgo) return false;
+  // Stale by both dates: neither signal is recent → job is gone.
+  if (pubMs > 0 && pubMs < thirtyDaysAgo && createdMs > 0 && createdMs < thirtyDaysAgo) return true;
+  // Single-date fallback: if only one date exists and it's old, expire.
+  if (pubMs > 0 && pubMs < thirtyDaysAgo && !createdMs) return true;
+  if (createdMs > 0 && createdMs < thirtyDaysAgo && !pubMs) return true;
   return false;
 }
 
