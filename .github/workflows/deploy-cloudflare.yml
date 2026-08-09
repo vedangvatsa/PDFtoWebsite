@@ -72,6 +72,7 @@ jobs:
             fs.writeFileSync(".env.production.local", out);
             console.log("wrote .env.production.local with", out.trim() ? out.trim().split("\n").length : 0, "vars");
           '
+          npx tsx scripts/generate-llms.ts
           npx opennextjs-cloudflare build
           npm run cf:prune-assets
         env:

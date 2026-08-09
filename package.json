@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "mcp": "npx tsx mcp-server.ts",
     "preview": "opennextjs-cloudflare build && npm run cf:prune-assets && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && npm run cf:prune-assets && opennextjs-cloudflare deploy",
+    "deploy": "npx tsx scripts/generate-llms.ts && opennextjs-cloudflare build && npm run cf:prune-assets && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && npm run cf:prune-assets && opennextjs-cloudflare upload",
     "cf:prune-assets": "node -e \"const fs=require('fs'),path=require('path');const max=24*1024*1024;function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p);else{const s=fs.statSync(p).size;if(s>max){console.log('prune',p,(s/1024/1024).toFixed(1)+'MiB');fs.unlinkSync(p);}}}};const root='.open-next/assets';if(fs.existsSync(root))walk(root);\"",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
@@ -65,6 +65,7 @@
     "postcss": "^8",
     "puppeteer": "^24.42.0",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.23.11",
     "typescript": "5.9.3",
     "wrangler": "^4.115.0"
   }
