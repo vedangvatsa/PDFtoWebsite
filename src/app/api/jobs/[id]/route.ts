@@ -2,11 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createServerClient } from '@supabase/ssr';
 import { normalizeLocation } from '@/lib/normalize-location';
-import {
-  formatJobDescription,
-  jobDescriptionExcerpt,
-  isJobId,
-} from '@/lib/job-description';
+import { isJobId } from '@/lib/job-description';
+import { publishSafeDescription } from '@/lib/job-detail-data';
 
 const SELECT_COLS =
   'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,views,clicks';
@@ -68,7 +65,10 @@ export async function GET(
     // anonymous
   }
 
-  const descriptionHtml = formatJobDescription(job.description);
+  // Publish-safe: raw scraped bodies are never exposed — only AI-rewritten or
+  // synthesized original content.
+  const published = publishSafeDescription(job as any, normalizeLocation(job.location) || '');
+  const descriptionHtml = published.html;
   const hasDescription = descriptionHtml.length > 40;
 
   const response = NextResponse.json({
@@ -87,7 +87,7 @@ export async function GET(
       published_at: job.published_at,
       description_html: descriptionHtml,
       has_description: hasDescription,
-      excerpt: jobDescriptionExcerpt(job.description, 200),
+      excerpt: published.plain.slice(0, 200),
       views: job.views ?? 0,
       clicks: job.clicks ?? 0,
     },
