@@ -66,7 +66,7 @@ export function normalizeName(raw: string): string {
   // Contact / URL as name is never valid
   if (EMAIL_RE.test(name) || URL_IN_FIELD_RE.test(name) || PHONE_RE.test(name)) return '';
   // Strip leading document labels ("Resume: John Doe" -> "John Doe")
-  name = name.replace(/^(curriculum vitae|cv|resume|r[eé]sum[eé]|profile|bio)\s*[:.-]\s*/i, '').trim();
+  name = name.replace(/^(curriculum vitae|cv|resume|r[eé]sum[eé]|profile|bio|ats)\s*[:.-]?\s*/i, '').trim();
   name = name.replace(/^[•\-\*▪▸►‣○●"“”']+\s*/, '').trim();
   // Strip trailing document/file extensions ("Vaishnavee Haridas.pdf" → "Vaishnavee Haridas").
   // The AI frequently reads a PDF filename as the person's name.
@@ -805,7 +805,7 @@ export function extractCleanSummary(raw: string): string {
   if (!isResumeDumpText(t)) return cleanDescription(t, 2000);
 
   const sectionBody = t.match(
-    /(?:EXECUTIVE\s+SUMMARY|PROFESSIONAL\s+SUMMARY|CAREER\s+SUMMARY|Executive\s+Summary|Professional\s+Summary|Career\s+Summary|Summary|SUMMARY)\s*[:\-–—.]?\s*([\s\S]+?)(?=\s+(?:EDUCATION|EXPERIENCES?|EMPLOYMENT(?:\s+HISTORY)?|SKILLS?|PROJECTS?|CERTIFICATIONS?|Education|Experiences?|Employment(?:\s+History)?|Skills?|Projects?|Certifications?|Work\s+Experience|Technical\s+Skills)\b|$)/
+    /(?:EXECUTIVE\s+SUMMARY|PROFESSIONAL\s+SUMMARY|CAREER\s+SUMMARY|Executive\s+Summary|Professional\s+Summary|Career\s+Summary|Summary|SUMMARY|TENTANG\s+SAYA|Tentang\s+Saya|About\s+Me|ABOUT\s+ME)\s*[:\-–—.]?\s*([\s\S]+?)(?=\s+(?:EDUCATION|EXPERIENCES?|EMPLOYMENT(?:\s+HISTORY)?|SKILLS?|PROJECTS?|CERTIFICATIONS?|Education|Experiences?|Employment(?:\s+History)?|Skills?|Projects?|Certifications?|Work\s+Experience|Technical\s+Skills|PENGALAMAN|PENDIDIKAN|KEAHLIAN)\b|$)/
   );
   if (sectionBody?.[1]) {
     return finalizeExtractedSummary(sectionBody[1]);
@@ -837,6 +837,21 @@ export function extractCleanSummary(raw: string): string {
 /** Trim mid-sentence salvage cutoffs ("…across contact") back to last full sentence. */
 function finalizeExtractedSummary(raw: string): string {
   let text = cleanDescription(raw, 900);
+  // Reject contact-chrome scraps that aren't real prose
+  if (text.length < 80) return '';
+  if (/^(email|phone|linkedin|github|alamat|address|no\s*:)/i.test(text)) return '';
+  if (
+    text.length < 180 &&
+    (EMAIL_RE.test(text) || URL_IN_FIELD_RE.test(text) || /linkedin\.com|github\.com/i.test(text))
+  ) {
+    return '';
+  }
+  // Indonesian / labeled "about me" bodies
+  const labeled = text.match(
+    /(?:tentang\s+saya|about\s+me|profile)\s*[:\-–—.]?\s*([\s\S]{80,})/i
+  );
+  if (labeled?.[1]) text = cleanDescription(labeled[1], 900);
+
   if (text.length > 120 && !/[.!?]"?$/.test(text)) {
     const lastStop = Math.max(
       text.lastIndexOf('. '),
@@ -847,6 +862,9 @@ function finalizeExtractedSummary(raw: string): string {
       text = text.slice(0, lastStop + 1).trim();
     }
   }
+  // Still starts mid-sentence ("and led…") — drop leading conjunction crumbs
+  text = text.replace(/^(?:and|or|with|while|including)\s+/i, '').trim();
+  if (text.length < 80) return '';
   return text;
 }
 
