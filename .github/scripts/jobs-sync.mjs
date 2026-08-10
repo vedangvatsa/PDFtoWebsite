@@ -11,6 +11,7 @@ import {
   isRouteableExternalId,
   companyToSlug,
 } from './lib/job-public-url.mjs';
+import { isLowQualityApplySource } from './lib/job-apply-source.mjs';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -319,9 +320,15 @@ async function supabaseUpsert(jobs) {
   // Also discard jobs matching the BANNED_REGEX or non-English titles
   const seen = new Map();
   let bannedCount = 0;
+  let curlEmptySourceCount = 0;
   for (const job of jobs) {
     if (job.title && (BANNED_REGEX.test(job.title) || !isProbablyEnglish(job.title))) {
       bannedCount++;
+      continue;
+    }
+    // Skip apply URLs that never yield a JD body on curl (LinkedIn, jobviewtrack, …)
+    if (isLowQualityApplySource(job.apply_url)) {
+      curlEmptySourceCount++;
       continue;
     }
     const key = job.external_id || job.dedup_hash;
@@ -331,6 +338,7 @@ async function supabaseUpsert(jobs) {
   }
   const unique = [...seen.values()];
   console.log(`   Dropped ${bannedCount} banned/irrelevant/non-English jobs.`);
+  console.log(`   Dropped ${curlEmptySourceCount} curl-empty apply sources (LinkedIn/aggregators).`);
   console.log(`   After in-memory dedup: ${unique.length} unique jobs`);
 
   // Pre-fetch existing keys to skip duplicates client-side
@@ -2858,24 +2866,18 @@ async function main() {
     fetchFindwork(),
   ]);
 
-  // Group C: LinkedIn — weekly only (very heavy). Set INCLUDE_LINKEDIN=true to force.
-  // Default off so regular Free-tier syncs (every 1–2 days) stay light.
+  // Group C: LinkedIn — DISABLED. Guest pages rarely return a usable JD body on curl;
+  // we exclude curl-empty apply hosts from ingest + listings (see job-apply-source.mjs).
   await sleep(1000);
-  const includeLinkedIn =
-    process.env.INCLUDE_LINKEDIN === 'true' ||
-    process.env.INCLUDE_LINKEDIN === '1';
-  let linkedin = [];
-  if (includeLinkedIn) {
-    console.log('  🔗 INCLUDE_LINKEDIN=true — running LinkedIn scrape (weekly path)');
-    linkedin = await fetchLinkedIn();
+  const linkedin = [];
+  if (process.env.INCLUDE_LINKEDIN === 'true' || process.env.INCLUDE_LINKEDIN === '1') {
+    console.log('  ⏭ INCLUDE_LINKEDIN ignored — LinkedIn ingest disabled (no usable curl body)');
   } else {
-    console.log('  ⏭ Skipping LinkedIn scrape (weekly only — set INCLUDE_LINKEDIN=true to run)');
+    console.log('  ⏭ Skipping LinkedIn scrape (curl-empty source — excluded by policy)');
   }
 
   const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...findwork, ...linkedin];
-  console.log(
-    `📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators${includeLinkedIn ? ' + LinkedIn' : ' (no LinkedIn)'}`
-  );
+  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators (LinkedIn excluded)`);
 
   const phase3Valid = filterAndNormalize(phase3Jobs);
   if (phase3Valid.length > 0) {

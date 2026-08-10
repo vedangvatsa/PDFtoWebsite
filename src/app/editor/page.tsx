@@ -33,6 +33,13 @@ import {
   nameToProfileSlug,
   enrichNameFromContact,
 } from '@/lib/parse-guard';
+import {
+  emptyParsedResumeShell,
+  parseNeedsReview,
+  persistParsedResume,
+  reviewToastCopy,
+  storePendingResumeFile,
+} from '@/lib/cv-upload-client';
 
 function dataURLtoFile(dataurl: string, filename: string): File | null {
     const arr = dataurl.split(',');
@@ -330,6 +337,7 @@ export default function EditorPage() {
     const [showSaveDialog, setShowSaveDialog] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
     const [showCelebration, setShowCelebration] = useState(false);
+    const [parseReviewBanner, setParseReviewBanner] = useState<string | null>(null);
     const [celebrationSlug, setCelebrationSlug] = useState('');
     const [cardDataUrl, setCardDataUrl] = useState<string | null>(null);
     const [copiedLinkedIn, setCopiedLinkedIn] = useState('');
@@ -457,6 +465,10 @@ export default function EditorPage() {
                     setEducationItems((data.education || []).map((e: any, i: number) => ({ ...e, id: `guest-edu-${i}`, userProfileId: '' })));
                     setSkillItems((data.skills || []).map(cleanSkill));
                     setCustomSections((data.customSections || []).map((cs: any, i: number) => ({ ...cs, id: cs.id || `guest-cs-${i}`, userProfileId: '' })));
+                    if (parseNeedsReview(data) || sessionStorage.getItem('parseNeedsReview') === '1') {
+                      const copy = reviewToastCopy(data);
+                      setParseReviewBanner(copy.description);
+                    }
                 } catch (e) {
                     console.error('Failed to restore guest session:', e);
                     toast({ variant: 'destructive', title: 'Restore Error', description: e instanceof Error ? e.message : 'Could not restore your previous session.' });
@@ -664,9 +676,23 @@ export default function EditorPage() {
             const formData = new FormData();
             formData.append('resume', resumeFile);
             const response = await fetch('/api/parse-resume', { method: 'POST', body: formData });
-            
-            if (!response.ok) throw new Error((await response.json()).error || 'Failed to parse resume');
-            const extractedData = await response.json();
+
+            let extractedData = emptyParsedResumeShell(resumeFile.name);
+            if (response.ok) {
+                try {
+                    extractedData = await response.json();
+                } catch {
+                    /* shell */
+                }
+            } else {
+                await storePendingResumeFile(resumeFile);
+                let errMsg = 'Auto-fill unavailable — continue editing.';
+                try {
+                    const errBody = await response.json();
+                    if (errBody?.error) errMsg = errBody.error;
+                } catch { /* keep */ }
+                extractedData._parseWarnings = [errMsg];
+            }
             console.log('CV Parsed Successfully:', extractedData);
 
             const skillsArr = (extractedData.skills || []).map(cleanSkill);
@@ -700,6 +726,14 @@ export default function EditorPage() {
             setEducationItems(eduItemsWithIds);
             setSkillItems(skillsArr);
             setCustomSections(customSectionsWithIds);
+
+            if (parseNeedsReview(extractedData)) {
+                const copy = reviewToastCopy(extractedData);
+                setParseReviewBanner(copy.description);
+            } else {
+                setParseReviewBanner(null);
+                try { sessionStorage.removeItem('parseNeedsReview'); } catch { /* ignore */ }
+            }
 
             // Configure links for the DB
             const existingLinks = user ? ((await supabase.from('profiles').select('links').eq('id', user.id).single()).data?.links || []) : [];
@@ -761,21 +795,36 @@ export default function EditorPage() {
                 const { error: upsertError } = await supabase.from('profiles').upsert(updatedProfile);
                 if (upsertError) throw upsertError;
                 
-                toast({ title: 'Success!', description: 'Your profile has been saved.' });
-                posthog.capture(EDITOR_EVENTS.CV_PARSE_SAVED, { slug: updatedProfile.username, source: 'cv_parse' });
+                const copy = reviewToastCopy(extractedData);
+                toast({ title: copy.title, description: user ? (parseNeedsReview(extractedData) ? copy.description : 'Your profile has been saved.') : copy.description });
+                posthog.capture(EDITOR_EVENTS.CV_PARSE_SAVED, {
+                  slug: updatedProfile.username,
+                  source: 'cv_parse',
+                  parse_method: extractedData._parseMethod || 'ai',
+                  needs_review: !!extractedData._parseNeedsReview,
+                });
                 await fetchProfileData();
             } else {
                 // Keep session storage AND localStorage in sync for later login transition
-                sessionStorage.setItem('parsedResume', JSON.stringify(extractedData));
-                try { localStorage.setItem('parsedResume', JSON.stringify(extractedData)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
-                posthog.capture(EDITOR_EVENTS.CV_PARSE_ANONYMOUS);
-                toast({ title: 'CV Parsed!', description: 'Sign up to put it online.' });
+                persistParsedResume(extractedData);
+                posthog.capture(EDITOR_EVENTS.CV_PARSE_ANONYMOUS, {
+                  parse_method: extractedData._parseMethod || 'ai',
+                  needs_review: !!extractedData._parseNeedsReview,
+                });
+                const copy = reviewToastCopy(extractedData);
+                toast({ title: copy.title, description: parseNeedsReview(extractedData) ? copy.description : 'Sign up to put it online.' });
             }
         } catch (error) {
             console.error('Upload Process Error:', error);
             const msg = error instanceof Error ? error.message : 'Could not update fields.';
             posthog.capture(EDITOR_EVENTS.CV_PARSE_FAILED, { error: msg });
-            toast({ variant: 'destructive', title: 'Update Failed', description: msg });
+            // Never abandon: keep whatever is in the editor and offer manual continue
+            await storePendingResumeFile(resumeFile);
+            setParseReviewBanner('Auto-fill hit an error. Your editor is open — fill details manually or re-upload shortly.');
+            toast({
+              title: 'Continue editing',
+              description: 'We could not finish auto-fill. Keep editing or try uploading again.',
+            });
         } finally {
             setIsGenerating(false);
             setFile(null); setFileName(null);
@@ -1218,6 +1267,22 @@ export default function EditorPage() {
                             try { localStorage.setItem('parsedResume', JSON.stringify(snapshot)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
                         }}>Sign up & save</Button>
                     } />
+                </div>
+            )}
+
+            {parseReviewBanner && (
+                <div className="bg-sky-50 border-b border-sky-200 px-4 py-2.5 flex items-center justify-center gap-3 text-sky-900 text-xs md:text-sm">
+                    <span className="text-center">{parseReviewBanner}</span>
+                    <button
+                        type="button"
+                        className="shrink-0 text-sky-700 underline underline-offset-2 hover:text-sky-900"
+                        onClick={() => {
+                            setParseReviewBanner(null);
+                            try { sessionStorage.removeItem('parseNeedsReview'); } catch { /* ignore */ }
+                        }}
+                    >
+                        Dismiss
+                    </button>
                 </div>
             )}
 

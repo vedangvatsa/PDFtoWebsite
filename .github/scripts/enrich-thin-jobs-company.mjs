@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 /**
  * Enrich thin (400-600 word) curated job pages with an original
- * "About the company" section sourced from Wikipedia and rewritten by an LLM.
+ * "About the company" section sourced from Wikipedia.
  *
- * Rules (noslop.md): original paraphrase only (never copy), plain short
- * sentences, no em/en dashes, no ellipsis, no AI filler, no HTML. Output runs
- * through cleanPublishText so nothing ships that fails the publish rules.
+ * DEFAULT: disabled (manual / no LLM). Set ALLOW_AI_ENRICH=1 to run LLM rewrite.
  *
  * Usage:
- *   DRY_RUN=1 node .github/scripts/enrich-thin-jobs-company.mjs   # preview
- *   BATCH_COMPANIES=20 node .github/scripts/enrich-thin-jobs-company.mjs
+ *   DRY_RUN=1 node .github/scripts/enrich-thin-jobs-company.mjs
+ *   ALLOW_AI_ENRICH=1 BATCH_COMPANIES=20 node .github/scripts/enrich-thin-jobs-company.mjs
  */
 import { createRequire } from 'module';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
@@ -20,6 +18,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 require('dotenv').config({ path: resolve(__dirname, '../../.env.local') });
 require('dotenv').config();
+
+const ALLOW_AI_ENRICH = process.env.ALLOW_AI_ENRICH === '1' || process.env.ALLOW_AI_ENRICH === 'true';
+if (!ALLOW_AI_ENRICH) {
+  console.error('MANUAL_ONLY: enrich-thin-jobs-company.mjs makes LLM calls. Refusing. Set ALLOW_AI_ENRICH=1 to override.');
+  process.exit(1);
+}
 
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';

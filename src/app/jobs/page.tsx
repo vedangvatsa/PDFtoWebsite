@@ -9,6 +9,12 @@ import MicroFooter from '@/components/micro-footer';
 import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
+import {
+  emptyParsedResumeShell,
+  persistParsedResume,
+  reviewToastCopy,
+  storePendingResumeFile,
+} from '@/lib/cv-upload-client';
 
 interface Job {
   id: string;
@@ -327,13 +333,25 @@ export default function JobsPage() {
                   try {
                     const fd = new FormData(); fd.append('resume', file);
                     const res = await fetch('/api/parse-resume', { method: 'POST', body: fd });
-                    if (!res.ok) { toast({ variant: 'destructive', title: 'Failed', description: 'Could not parse your CV.' }); return; }
-                    const parsed = await res.json();
-                    sessionStorage.setItem('parsedResume', JSON.stringify(parsed));
-                    try { localStorage.setItem('parsedResume', JSON.stringify(parsed)); } catch {}
+                    let parsed = emptyParsedResumeShell(file.name);
+                    if (res.ok) {
+                      try { parsed = await res.json(); } catch { /* shell */ }
+                    } else {
+                      await storePendingResumeFile(file);
+                    }
+                    persistParsedResume(parsed);
+                    const copy = reviewToastCopy(parsed);
+                    toast({ title: copy.title, description: copy.description });
                     router.push('/editor');
                   } catch {
-                    toast({ variant: 'destructive', title: 'Error', description: 'Network error.' });
+                    await storePendingResumeFile(file);
+                    const shell = emptyParsedResumeShell(file.name);
+                    persistParsedResume(shell);
+                    toast({
+                      title: 'Continue in the editor',
+                      description: 'Parser unreachable — fill details manually or re-upload shortly.',
+                    });
+                    router.push('/editor');
                   } finally {
                     e.target.value = '';
                     setIsUploading(false);

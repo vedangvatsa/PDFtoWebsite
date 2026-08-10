@@ -97,10 +97,11 @@ export function toJobDetail(job: JobRow): JobDetail {
 }
 
 /**
- * The ONLY description source we publish. AI-rewritten (curated) bodies are shown
- * in full; raw scraped ATS/aggregator bodies are NEVER rendered verbatim
- * (plagiarism + duplicate-content risk). Un-curated jobs get a short, original
- * summary synthesized from the job's facts and are noindexed until enriched.
+ * The ONLY description we publish on a job page is a paraphrased body
+ * (curated-jd), written from a curled ATS source and checked manually.
+ * Raw ATS text is never shown. Uncurated jobs are not listed on the board;
+ * if opened somehow, we do not invent a stub — readers use the apply link
+ * until paraphrase is published.
  */
 export type PublishedDescription = {
   isCurated: boolean;
@@ -122,60 +123,14 @@ export function publishSafeDescription(job: JobRow, location: string): Published
       indexable: isJobDescriptionIndexable(job.description),
     };
   }
-  const html = synthesizeOriginalDescription(job, location);
-  const plain = cleanPublishText(
-    html
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/&amp;/gi, '&')
-      .replace(/&lt;/gi, '<')
-      .replace(/&gt;/gi, '>')
-  );
+  // Not paraphrased yet — no invented stub (board will not list these).
   return {
-    isCurated,
-    html,
-    plain,
-    wordCount: plain.split(/\s+/).filter(Boolean).length,
+    isCurated: false,
+    html: '',
+    plain: '',
+    wordCount: 0,
     indexable: false,
   };
-}
-
-function escHtml(s: string | null | undefined): string {
-  return cleanPublishText(s || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-/** Original, template-built summary from the job's facts — never scraped text. */
-function synthesizeOriginalDescription(job: JobRow, location: string): string {
-  const type = jobTypeLabel(job.job_type) || 'Not specified';
-  const loc = location || 'Not specified';
-  const parts: string[] = [];
-  parts.push('<h3>About the role</h3>');
-  parts.push(
-    `<p><strong>${escHtml(job.title)}</strong> at ${escHtml(job.company)} is a ${escHtml(type)} role listed on CVin.Bio.` +
-      `${location ? ` The listed location is ${escHtml(location)}.` : ''}` +
-      `${job.salary ? ` Compensation is listed as ${escHtml(job.salary)}.` : ''}` +
-      `</p>`
-  );
-  parts.push('<h3>Key facts</h3>');
-  parts.push(
-    `<div class="jd-meta-facts">` +
-      `<p><strong>Location:</strong> ${escHtml(loc)}</p>` +
-      `<p><strong>Engagement:</strong> ${escHtml(type)}</p>` +
-      `${job.salary ? `<p><strong>Compensation:</strong> ${escHtml(job.salary)}</p>` : ''}` +
-      `${job.category ? `<p><strong>Category:</strong> ${escHtml(job.category)}</p>` : ''}` +
-      `</div>`
-  );
-  const tags = (job.tags || []).filter((t) => t && t !== 'curated-jd' && t !== 'remote');
-  if (tags.length) {
-    parts.push('<h3>Skills &amp; tools</h3>');
-    parts.push(`<ul>${tags.map((t) => `<li>${escHtml(String(t))}</li>`).join('')}</ul>`);
-  }
-  parts.push(
-    '<p>This is an original summary prepared by CVin.Bio. For the full official description and to apply, follow the apply link on this page.</p>'
-  );
-  return parts.join('\n');
 }
 
 const TITLE_STOP = new Set([
@@ -410,13 +365,13 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
   const title = `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
   const locationSuffix = location ? `${location}. ` : '';
   const fallback = `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
-  // Raw scraped bodies are never used in meta (plagiarism guard) — only the
-  // published (AI-rewritten / synthesized) content.
+  // Raw scraped bodies are never used in meta (plagiarism guard) — only
+  // curated rewritten bodies. Uncurated pages use a title/company fallback.
   const published = publishSafeDescription(job, location);
-  const excerpt = published.isCurated
+  const excerpt = published.isCurated && published.indexable
     ? jobDescriptionExcerpt(job.description, 140, { title: jobTitle, company })
     : '';
-  const description = excerpt || published.plain || fallback;
+  const description = excerpt || fallback;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
   const indexable = published.indexable;
 

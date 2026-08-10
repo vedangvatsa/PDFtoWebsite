@@ -26,6 +26,12 @@ import {
 import { PAGE_CONTAINER } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
+import {
+  emptyParsedResumeShell,
+  persistParsedResume,
+  reviewToastCopy,
+  storePendingResumeFile,
+} from '@/lib/cv-upload-client';
 
 export interface JobDetail {
   id: string;
@@ -133,28 +139,43 @@ export default function JobDetailClient({
       const fd = new FormData();
       fd.append('resume', file);
       const res = await fetch('/api/parse-resume', { method: 'POST', body: fd });
-      if (!res.ok) {
-        let description = 'Could not parse your CV.';
+      let parsed = emptyParsedResumeShell(file.name);
+      if (res.ok) {
         try {
-          const errData = await res.json();
-          if (errData?.error && typeof errData.error === 'string') description = errData.error;
-        } catch { /* keep default */ }
-        toast({ variant: 'destructive', title: 'Failed', description });
-        return;
+          parsed = await res.json();
+        } catch {
+          /* shell */
+        }
+      } else {
+        await storePendingResumeFile(file);
       }
-      const parsed = await res.json();
-      posthog.capture('job_detail_cv_uploaded', { job_id: job.id, source });
-      sessionStorage.setItem('parsedResume', JSON.stringify(parsed));
-      try {
-        localStorage.setItem('parsedResume', JSON.stringify(parsed));
-      } catch {}
+      posthog.capture('job_detail_cv_uploaded', {
+        job_id: job.id,
+        source,
+        parse_method: parsed._parseMethod || 'ai',
+        needs_review: !!parsed._parseNeedsReview,
+      });
+      persistParsedResume(parsed);
       try {
         sessionStorage.setItem('pendingJobApply', applyUrl);
         sessionStorage.setItem('pendingJobId', job.id);
       } catch {}
+      const copy = reviewToastCopy(parsed);
+      toast({ title: copy.title, description: copy.description });
       router.push('/editor');
     } catch {
-      toast({ variant: 'destructive', title: 'Error', description: 'Network error.' });
+      await storePendingResumeFile(file);
+      const shell = emptyParsedResumeShell(file.name);
+      persistParsedResume(shell);
+      try {
+        sessionStorage.setItem('pendingJobApply', applyUrl);
+        sessionStorage.setItem('pendingJobId', job.id);
+      } catch {}
+      toast({
+        title: 'Continue in the editor',
+        description: 'Parser unreachable — fill details manually or re-upload shortly.',
+      });
+      router.push('/editor');
     } finally {
       setIsUploading(false);
     }
@@ -346,7 +367,10 @@ export default function JobDetailClient({
               <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50 px-4 sm:px-5 py-6 sm:py-8 text-center">
                 <Briefcase className="h-8 w-8 text-zinc-300 mx-auto mb-3" />
                 <p className="text-sm text-zinc-600 font-medium">
-                  Role details will be confirmed during the application process.
+                  This role is not on the public board yet.
+                </p>
+                <p className="mt-1.5 text-xs text-zinc-500 max-w-sm mx-auto">
+                  We publish a paraphrased description from the official posting before listing. Until then, use the employer apply link.
                 </p>
                 <div className="mt-3">
                   <CompanyApplyLink />
