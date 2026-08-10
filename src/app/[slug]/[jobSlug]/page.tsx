@@ -18,6 +18,7 @@ import {
 import { toCompanyKey } from '@/lib/company-directory';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { gonePrettyJobPath } from '@/lib/seo-fallbacks';
 import JobDetailClient from '@/app/jobs/[id]/job-detail-client';
 
 // Longer ISR: job snapshots revalidate in loaders (900s); page can stay warm longer.
@@ -90,7 +91,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
   const job = await fetchJobByCompanyAndSlug(slug, jobSlug);
   if (!job) {
-    return { title: 'Job not found', robots: { index: false, follow: false } };
+    // Page will 301 to company hub / jobs — keep noindex until redirect lands.
+    return { title: 'Job not found', robots: { index: false, follow: true } };
   }
   return buildJobMetadata(job, siteUrl);
 }
@@ -103,7 +105,9 @@ export default async function CompanyJobPage({ params }: PageProps) {
   if (!job) {
     const legacyPath = await resolveLegacySlugPath(slug, jobSlug);
     if (legacyPath) permanentRedirect(legacyPath);
-    notFound();
+    // Expired / deleted / reminted jobs: soft-land on company hub (or /jobs).
+    // Hard 404s here were the bulk of GSC "Not found" (~1.8k URLs).
+    permanentRedirect(await gonePrettyJobPath(slug));
   }
 
   const detail = toJobDetail(job);

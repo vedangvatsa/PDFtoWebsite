@@ -22,6 +22,11 @@ import { unstable_cache } from 'next/cache';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
 import CompanyLogo from '@/components/company-logo';
 import { primaryCompanyLogoUrl, trustedCompanyWebsiteUrl } from '@/lib/company-logo';
+import {
+  isDisposableProfileSlug,
+  knownCompanyDescription,
+  goneDisposableProfilePath,
+} from '@/lib/seo-fallbacks';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -129,7 +134,23 @@ async function resolveCompanyPage(slug: string) {
   }
   const dir = await getCompanyDirectory(slug);
   const jobs = await loadCompanyJobs(slug, dir?.name);
-  if ((!jobs || jobs.length === 0) && !dir) return null;
+  if ((!jobs || jobs.length === 0) && !dir) {
+    // Keep hubs Google already indexed when we still know the company —
+    // otherwise /cayuse, /noodle, /monarch-money hard-404 after jobs purge.
+    const description = knownCompanyDescription(slug);
+    if (!description) return null;
+    const name = companyDisplayName(slug.replace(/-/g, ' '));
+    return {
+      dir: {
+        slug,
+        name,
+        role_count: 0,
+        logo: null,
+        locations: null as string[] | null,
+      },
+      jobs: [] as Awaited<ReturnType<typeof loadCompanyJobs>>,
+    };
+  }
   // Also block if the resolved company name is junk
   const name = (dir?.name || jobs[0]?.company || '').toLowerCase().trim();
   if (name && COMPANY_BLOCKLIST.has(name)) return null;
@@ -158,6 +179,9 @@ async function buildCompanyPageMetadata(
     ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
     : `${companyDisplay} is hiring — ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
   const description = desc.slice(0, 160);
+  // Empty hubs (description-only soft landings) stay crawlable but noindex —
+  // clears GSC 404s without padding the index with thin 0-role pages.
+  const indexable = jobCount > 0;
   return {
     title,
     description,
@@ -170,7 +194,7 @@ async function buildCompanyPageMetadata(
       siteName: 'CVin.Bio',
     },
     twitter: { card: 'summary_large_image', title, description },
-    robots: { index: true, follow: true },
+    robots: { index: indexable, follow: true },
   };
 }
 
@@ -586,6 +610,10 @@ export default async function ProfileSlugPage({ params }: PageProps) {
   if (!data) {
     const hub = companyHub ?? (await resolveCompanyPage(slug));
     if (!hub) {
+      // Reminted disposable usernames (/user87) soft-land home — no redirect table.
+      if (isDisposableProfileSlug(slug)) {
+        permanentRedirect(goneDisposableProfilePath());
+      }
       notFound();
     }
     const { dir, jobs } = hub;
@@ -803,7 +831,23 @@ export default async function ProfileSlugPage({ params }: PageProps) {
             {jobs.length === 0 && (
               <div className="col-span-full p-8 rounded-xl bg-white border border-zinc-200 text-center">
                 <p className="text-[14px] font-semibold text-zinc-700 mb-1">No open roles right now</p>
-                <p className="text-[13px] text-zinc-500">Check back soon — {companyName} careers are updated regularly.</p>
+                <p className="text-[13px] text-zinc-500 mb-4">
+                  Check back soon — {companyName} careers are updated regularly.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <Link
+                    href="/jobs"
+                    className="text-[13px] font-semibold text-zinc-900 underline underline-offset-2 hover:text-primary"
+                  >
+                    Browse all jobs
+                  </Link>
+                  <Link
+                    href="/companies"
+                    className="text-[13px] font-semibold text-zinc-500 underline underline-offset-2 hover:text-zinc-900"
+                  >
+                    All companies
+                  </Link>
+                </div>
               </div>
             )}
             {jobs.map((job: any) => (
