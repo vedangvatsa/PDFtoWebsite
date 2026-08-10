@@ -988,7 +988,7 @@ export default function EditorPage() {
             'settings', 'dashboard', 'sitemap', 'robots', 'media', 'nomad', 'jobs', 'visas', 'costs',
             'hiring', 'talent', 'discover', 'layoffs', 'news', 'resources', 'contact',
             'story', 'compare', 'companies', 'climate', 'fire', 'rankings', 'schengen',
-            'tax', 'timezone',
+            'tax', 'timezone', 'profile', 'user', 'home', 'about', 'help', 'support',
         ];
         if (RESERVED_SLUGS.includes(cleanSlug)) {
             setSlugError('This URL is reserved. Please choose a different one.');
@@ -1114,15 +1114,17 @@ export default function EditorPage() {
         }
 
         if (name === 'linkedin') {
-            // Strip to just the handle: remove URL parts, "in/", and reject generic "LinkedIn" text
-            let v = value.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/^linkedin\.com\//, '').replace(/^in\//, '').replace(/\/+$/, '');
+            // Strip to just the handle: remove URL parts, "in/", UTMs, and reject generic "LinkedIn" text
+            let v = value.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/^linkedin\.com\//, '').replace(/^in\//, '');
+            v = v.split(/[?#]/)[0].replace(/\/+$/, '');
             if (/^linkedin$/i.test(v) || /^linkedin\s+profile$/i.test(v)) v = '';
             if (v !== value) { value = v; setProfile(prev => ({ ...prev, linkedin: value })); }
         }
 
         if (name === 'github') {
-            // Strip to just the handle: remove URL parts, and reject generic "GitHub" text
-            let v = value.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/^github\.com\//, '').replace(/\/+$/, '');
+            // Strip to just the handle: remove URL parts / query, and reject generic "GitHub" text
+            let v = value.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/^github\.com\//, '');
+            v = v.split(/[?#]/)[0].replace(/\/+$/, '');
             if (/^github$/i.test(v) || /^git$/i.test(v)) v = '';
             if (v !== value) { value = v; setProfile(prev => ({ ...prev, github: value })); }
         }

@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription } from '@/lib/parse-guard';
+import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription, isResumeDumpText, sanitizeSocialHandle } from '@/lib/parse-guard';
 
 const supabase = supabaseAdmin;
 
@@ -75,15 +75,19 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
     const rawName = String(profile.full_name || '').trim();
     const recovered = enrichNameFromContact(rawName, {
       email: getLink('email'),
-      github: getLink('github'),
-      linkedin: getLink('linkedin'),
+      github: sanitizeSocialHandle(getLink('github') || '', 'github'),
+      linkedin: sanitizeSocialHandle(getLink('linkedin') || '', 'linkedin'),
     });
     const displayName =
       smartTitleCase(normalizeName(recovered) || normalizeName(rawName) || '') ||
       'Professional Profile';
 
-    // Strip glued section labels / mid-word salvage cuts from the public about text
-    const summary = cleanDescription(String(profile.about || ''), 2000);
+    // Strip glued section labels; never publish a full CV dump as the summary
+    let summary = cleanDescription(String(profile.about || ''), 2000);
+    if (isResumeDumpText(summary)) summary = '';
+
+    const github = sanitizeSocialHandle(getLink('github') || '', 'github') || undefined;
+    const linkedin = sanitizeSocialHandle(getLink('linkedin') || '', 'linkedin') || undefined;
 
     return {
         profile: {
@@ -98,11 +102,16 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
             avatarUrl: profile.profile_picture_url || '',
             avatarHint: 'person portrait',
             website: getLink('website'),
-            github: getLink('github'),
-            linkedin: getLink('linkedin'),
+            github,
+            linkedin,
             viewCount: profile.views || 0,
             skills: (profile.skills || []).map((s: any) => typeof s === 'string' ? s.trim() : String(s?.name ?? '').trim()).filter(Boolean),
-            links: profile.links || []
+            links: (profile.links || []).map((l: any) => {
+              if (!l || typeof l !== 'object') return l;
+              if (l.type === 'linkedin') return { ...l, value: sanitizeSocialHandle(l.value || '', 'linkedin') };
+              if (l.type === 'github') return { ...l, value: sanitizeSocialHandle(l.value || '', 'github') };
+              return l;
+            })
         },
         workExperience: profile.experience || [],
         education: profile.education || [],
