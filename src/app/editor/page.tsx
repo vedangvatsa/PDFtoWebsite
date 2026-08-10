@@ -697,7 +697,7 @@ export default function EditorPage() {
 
             const skillsArr = (extractedData.skills || []).map(cleanSkill);
             const parsedSlug = !isBadSlug(extractedData.personalInfo?.slug)
-              ? extractedData.personalInfo.slug
+              ? extractedData.personalInfo!.slug!
               : generateBaseSlug(extractedData.personalInfo?.fullName || 'user');
 
             // --- SHARED UI UPDATE (Instant) ---
