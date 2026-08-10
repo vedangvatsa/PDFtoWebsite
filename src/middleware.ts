@@ -101,6 +101,13 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ua = request.headers.get('user-agent') || '';
 
+  // Sitemaps must stay readable by Googlebot, GSC validators, curl health
+  // checks, and SEO tools. /sitemap-jobs/{n} has no file extension so it
+  // would otherwise hit the scraper block below.
+  if (pathname.startsWith('/sitemap')) {
+    return NextResponse.next();
+  }
+
   // ── Anti-scraper edge block ──────────────────────────────────────────────
   // Stop anonymous scrapers before any HTML/JS is served. Declared AI/search/
   // social crawlers and real browsers pass straight through.
