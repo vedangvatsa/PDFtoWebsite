@@ -275,9 +275,14 @@ export default function TemplateModern(props: ProfileData) {
   const { profile, workExperience, education, customSections: rawCustomSections } = props;
   const skills = profile.skills || [];
 
-  // Filter out custom sections that duplicate the summary field
+  // Filter out custom sections that duplicate the summary field, and
+  // editor-only salvage dumps that must never appear on the public page.
   const SUMMARY_TITLES = /^(professional\s+)?summary|^profile|^objective|^about\s*me|^career\s+(summary|objective)|^executive\s+summary|^overview|^personal\s+statement|^introduction$/i;
-  const customSections = rawCustomSections?.filter(s => !SUMMARY_TITLES.test(s.sectionTitle?.trim() || ''));
+  const EDITOR_ONLY = /^imported\s+cv\s+text$|^raw\s+cv\s+text$|^parse\s+salvage$|^unparsed\s+cv$/i;
+  const customSections = rawCustomSections?.filter(s => {
+    const title = s.sectionTitle?.trim() || '';
+    return !SUMMARY_TITLES.test(title) && !EDITOR_ONLY.test(title);
+  });
 
   const { toast } = useToast();
 
