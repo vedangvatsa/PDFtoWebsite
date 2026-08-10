@@ -12,6 +12,26 @@ export interface ParseValidation {
 const DOC_LABEL_RE =
   /^(curriculum vitae|cv|resume|r[eé]sum[eé]|profile|bio|portfolio|applicant|my profile|my resume|candidate)$/i;
 
+/** Section headings that models / regex salvage sometimes put in fullName. Never a person. */
+const SECTION_TITLE_NAME_RE =
+  /^(?:(?:(?:professional|career|executive|personal)\s+)?(?:summary|profile|objective|overview|statement|introduction|highlights)|about(?:\s+me)?|(?:work\s+)?experience|employment(?:\s+history)?|education|skills?|projects?|certifications?|contact(?:\s+information)?|references?|interests?|hobbies|languages?|awards?|achievements?|publications?)$/i;
+
+/** Salvage / staging custom sections — OK in the editor, never on the public site. */
+export const EDITOR_ONLY_SECTION_RE =
+  /^imported\s+cv\s+text$|^raw\s+cv\s+text$|^parse\s+salvage$|^unparsed\s+cv$/i;
+
+export function isEditorOnlyCustomSection(
+  section: { sectionTitle?: string | null } | null | undefined
+): boolean {
+  return EDITOR_ONLY_SECTION_RE.test(String(section?.sectionTitle || '').trim());
+}
+
+export function publicCustomSections<T extends { sectionTitle?: string | null }>(
+  sections: T[] | null | undefined
+): T[] {
+  return (Array.isArray(sections) ? sections : []).filter((s) => !isEditorOnlyCustomSection(s));
+}
+
 // Phone/desktop screenshot default names (iOS "Screenshot 2026 08 04 …", Android "IMG_2026…")
 const SCREENSHOT_NAME_RE =
   /^(screenshot|screen\s*shot|screen\s*recording|img[-_\s]?\d|image[-_\s]?\d|photo[-_\s]?\d|dsc[-_\s]?\d|dcim|whatsapp\s*image|signal[-_\s]?image|simulator\s*screen)/i;
@@ -86,6 +106,8 @@ export function normalizeName(raw: string): string {
   if (/^[A-Z](\.[A-Z])+\.?$/.test(name)) return '';
   if (name.length < 2) return '';
   if (DOC_LABEL_RE.test(name)) return '';
+  // Resume section titles are never a person's name ("Professional Summary", "Education")
+  if (SECTION_TITLE_NAME_RE.test(name)) return '';
   // Device screenshot / camera roll filenames are never a person's name
   if (SCREENSHOT_NAME_RE.test(name)) return '';
   // "Screenshot 2026 08" style: screenshot + mostly digits
@@ -131,15 +153,32 @@ export function cleanDate(raw: string): string {
   return v;
 }
 
+/** Truncate without cutting mid-word (and prefer ending on a sentence when possible). */
+export function truncateAtWordBoundary(raw: string, maxLen: number): string {
+  const text = String(raw || '').trim();
+  if (!text || text.length <= maxLen) return text;
+  const cut = text.slice(0, maxLen);
+  const sentenceEnd = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+  if (sentenceEnd > maxLen * 0.5) return cut.slice(0, sentenceEnd + 1).trim();
+  const lastSpace = cut.lastIndexOf(' ');
+  if (lastSpace > maxLen * 0.6) return cut.slice(0, lastSpace).trim();
+  return cut.trim();
+}
+
 export function cleanDescription(raw: string, maxLen: number): string {
   if (!raw) return '';
   let text = String(raw).replace(/\s+/g, ' ').trim();
   text = text.replace(/^["“”'`\s]+|["“”'`\s]+$/g, '').trim();
   text = text.replace(/^[•\-\*▪▸►‣○●]\s*/, '').trim();
+  // Strip a leading section label the model sometimes glues onto the summary body
+  text = text
+    .replace(
+      /^(?:(?:professional|career|executive|personal)\s+)?(?:summary|profile|objective|overview|statement)\s*[:\-–—.]?\s*/i,
+      ''
+    )
+    .trim();
   if (text.length > maxLen) {
-    const cut = text.slice(0, maxLen);
-    const last = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('.'));
-    text = (last > maxLen * 0.5 ? cut.slice(0, last + 1) : cut).trim();
+    text = truncateAtWordBoundary(text, maxLen);
   }
   return text;
 }
@@ -187,6 +226,34 @@ export function cleanCompany(raw: string): string {
 }
 
 /**
+ * Parse a LinkedIn/GitHub-style handle into name tokens.
+ * Keeps single-letter middle initials ("gayathri-satheesh-l-3b135624a" → Gayathri Satheesh L)
+ * and strips trailing id segments that contain digits.
+ */
+function namePartsFromHandle(raw: string): string[] {
+  let h = String(raw || '')
+    .trim()
+    .replace(/^(?:https?:\/\/)?(?:www\.)?(?:github\.com|linkedin\.com\/in)\//i, '')
+    .replace(/\/$/, '')
+    .split(/[/?#]/)[0]
+    .toLowerCase();
+  if (!h) return [];
+  // Drop trailing LinkedIn id segments that include digits ("…-3b135624a")
+  h = h.replace(/(?:-[a-z]*\d[a-z0-9]*)+$/i, '');
+  const parts = h
+    .split(/[._-]+/)
+    .map((p) => p.trim())
+    .filter(
+      (p) =>
+        p &&
+        /^[a-z]+$/i.test(p) &&
+        !/^(cv|resume|mail|email|official|in|com|www)$/i.test(p)
+    );
+  // Allow a single-letter middle/last initial, but not as the only token
+  return parts.filter((p, i) => p.length >= 2 || (p.length === 1 && i > 0 && parts.length >= 2));
+}
+
+/**
  * If fullName is a single token (or empty), try to recover last name from email/github/linkedin handle.
  * "Shivam" + shivamrajput2362@… → "Shivam Rajput"
  */
@@ -207,7 +274,7 @@ export function enrichNameFromContact(
   const first = (name || '').split(/\s+/)[0] || '';
   const compactFirst = first.toLowerCase().replace(/[^a-z]/g, '');
 
-  const handles = [opts?.email?.split('@')[0], opts?.github, opts?.linkedin]
+  const handles = [opts?.linkedin, opts?.github, opts?.email?.split('@')[0]]
     .filter(Boolean)
     .map((s) =>
       String(s)
@@ -217,17 +284,31 @@ export function enrichNameFromContact(
     );
 
   for (const h of handles) {
+    // Prefer hyphen/underscore structure so "satheesh-l" never becomes "Satheeshl"
+    if (/[._-]/.test(h)) {
+      const parts = namePartsFromHandle(h);
+      if (parts.length >= 2) {
+        const candidate = parts
+          .slice(0, 4)
+          .map((p) => (p.length === 1 ? p.toUpperCase() : p.charAt(0).toUpperCase() + p.slice(1)))
+          .join(' ');
+        const n = normalizeName(candidate);
+        if (n && n.split(/\s+/).length >= 2) return n;
+      }
+      // Separated handles must not fall through to letter-gluing
+      continue;
+    }
+
     const letters = h.toLowerCase().replace(/[^a-z]/g, '');
     if (!letters || letters.length < 5) continue;
     if (compactFirst && letters.startsWith(compactFirst) && letters.length >= compactFirst.length + 3) {
       const rest = letters.slice(compactFirst.length);
-      // single last-name token
+      // single last-name token (no glued initials / hash letters)
       if (/^[a-z]{3,16}$/.test(rest)) {
         const last = rest.charAt(0).toUpperCase() + rest.slice(1);
         return normalizeName(`${first} ${last}`) || `${first} ${last}`;
       }
     }
-    // handle is first.last or first_last
     const parts = h
       .toLowerCase()
       .replace(/[0-9]+/g, ' ')
@@ -394,6 +475,9 @@ export function validateParsedData(data: any): ParseValidation {
     critical = true;
   } else if (SCREENSHOT_NAME_RE.test(rawName) || /\bscreenshot\b/i.test(rawName)) {
     issues.push('name looks like a screenshot filename');
+    critical = true;
+  } else if (SECTION_TITLE_NAME_RE.test(rawName.trim()) || SECTION_TITLE_NAME_RE.test(name)) {
+    issues.push('name looks like a resume section title');
     critical = true;
   } else if (name.split(/\s+/).length < 2) {
     // Single-token names often drop last name — try corrective re-parse once

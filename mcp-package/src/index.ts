@@ -202,7 +202,9 @@ server.tool(
     const full = formatProfile(profile);
 
     const customSections = Array.isArray(profile.custom_sections)
-      ? profile.custom_sections
+      ? profile.custom_sections.filter(
+          (s: any) => !/^imported\s+cv\s+text$/i.test(String(s?.sectionTitle || '').trim())
+        )
       : [];
     let extra = "";
     for (const section of customSections) {

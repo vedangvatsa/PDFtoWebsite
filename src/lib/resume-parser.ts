@@ -49,7 +49,7 @@ const MONTH = '(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?
 const DATE_TOKEN = `(?:${MONTH}[,.\\/\\s]*\\d{4}|\\d{1,2}\\/\\d{2,4}|(?:19|20)\\d{2})`;
 const DATE_RE = new RegExp(DATE_TOKEN, 'i');
 // Document labels that are never a person's name ("Curriculum Vitae", "Resume", "CV").
-const RESUME_LABEL_RE = /^(curriculum\s*vitae|cv|r[eé]sum[eé]|resumes?|professional\s+profile|profile|bio(?:data)?|bio)$/i;
+const RESUME_LABEL_RE = /^(curriculum\s*vitae|cv|r[eé]sum[eé]|resumes?|professional\s+profile|professional\s+summary|career\s+summary|executive\s+summary|profile|bio(?:data)?|bio|objective|about\s*me|summary|education|experience|skills?)$/i;
 // Acronyms / initials-only strings ("H.R.M", "A.K.S") — not full names.
 const INITIALS_ONLY_RE = /^([A-Z]\.?)\s*([A-Z]\.?)(\s*([A-Z]\.?))?$/;
 // Date range: <date> – <date|present>
@@ -1127,6 +1127,7 @@ export function resumeParseContentScore(data: {
 /**
  * Best-effort non-AI salvage: structured regex parse, and when that is thin,
  * keep the raw CV text in a custom section so the user never loses content.
+ * That section is editor-only (see isEditorOnlyCustomSection) — never shown publicly.
  */
 export function salvageResumeFromText(text: string): StructuredResumeParse {
   const cleaned = reconstructMissingSpaces(String(text || '')).trim();
@@ -1143,7 +1144,22 @@ export function salvageResumeFromText(text: string): StructuredResumeParse {
     if (!alreadyHasImport) {
       const lines = cleaned.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 40);
       if (!String(data.summary || '').trim() && lines.length) {
-        data.summary = lines.slice(0, 3).join(' ').slice(0, 500);
+        const rawSummary = lines
+          .slice(0, 3)
+          .join(' ')
+          .replace(
+            /^(?:(?:professional|career|executive|personal)\s+)?(?:summary|profile|objective|overview|statement)\s*[:\-–—.]?\s*/i,
+            ''
+          )
+          .trim();
+        // Word-boundary truncate — never publish mid-word cutoffs like "License ho"
+        if (rawSummary.length <= 800) {
+          data.summary = rawSummary;
+        } else {
+          const cut = rawSummary.slice(0, 800);
+          const sp = cut.lastIndexOf(' ');
+          data.summary = (sp > 480 ? cut.slice(0, sp) : cut).trim();
+        }
       }
       data.customSections = [
         ...(data.customSections || []),

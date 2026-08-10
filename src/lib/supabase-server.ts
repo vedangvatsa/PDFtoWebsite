@@ -1,5 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription } from '@/lib/parse-guard';
 
 const supabase = supabaseAdmin;
 
@@ -56,9 +57,7 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
     );
     if (!profile) return null;
 
-    const links = profile.links || [];
-    const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || undefined;
-
+    const links = Array.isArray(profile.links) ? profile.links : [];
     // Normalize ALL CAPS or all lowercase names to Title Case
     const smartTitleCase = (name: string): string => {
         if (!name) return name;
@@ -70,15 +69,31 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
         return name;
     };
 
+    const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || undefined;
+
+    // Never ship section-title "names" or LinkedIn-glued last names to the public page
+    const rawName = String(profile.full_name || '').trim();
+    const recovered = enrichNameFromContact(rawName, {
+      email: getLink('email'),
+      github: getLink('github'),
+      linkedin: getLink('linkedin'),
+    });
+    const displayName =
+      smartTitleCase(normalizeName(recovered) || normalizeName(rawName) || '') ||
+      'Professional Profile';
+
+    // Strip glued section labels / mid-word salvage cuts from the public about text
+    const summary = cleanDescription(String(profile.about || ''), 2000);
+
     return {
         profile: {
             userId: profile.id,
-            fullName: smartTitleCase(profile.full_name || '') || 'Professional Profile',
+            fullName: displayName,
             slug: profile.username || slug,
             email: getLink('email'),
             phone: getLink('phone'),
             location: getLink('location'),
-            summary: profile.about || '',
+            summary,
             themeId: profile.theme_id || 'modern-creative',
             avatarUrl: profile.profile_picture_url || '',
             avatarHint: 'person portrait',
@@ -91,6 +106,7 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
         },
         workExperience: profile.experience || [],
         education: profile.education || [],
-        customSections: profile.custom_sections || []
+        // Editor-only salvage sections (e.g. "Imported CV text") stay out of the public site
+        customSections: publicCustomSections(profile.custom_sections || [])
     };
 }

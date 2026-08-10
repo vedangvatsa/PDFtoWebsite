@@ -221,9 +221,11 @@ server.tool(
 
     const full = formatProfile(profile);
 
-    // Add custom sections if any
+    // Add custom sections if any (skip editor-only salvage dumps)
     const customSections = Array.isArray(profile.custom_sections)
-      ? profile.custom_sections
+      ? profile.custom_sections.filter(
+          (s: any) => !/^imported\s+cv\s+text$/i.test(String(s?.sectionTitle || '').trim())
+        )
       : [];
     let extra = "";
     for (const section of customSections) {

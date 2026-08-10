@@ -32,6 +32,8 @@ import {
   isDisposableProfileSlug,
   nameToProfileSlug,
   enrichNameFromContact,
+  normalizeName,
+  cleanDescription,
 } from '@/lib/parse-guard';
 import {
   emptyParsedResumeShell,
@@ -760,14 +762,18 @@ export default function EditorPage() {
             if (user) {
                 const { data: currentProfile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
                 const authName = user.user_metadata?.full_name || user.user_metadata?.name || '';
-                const resolvedName = smartTitleCase(
-                  enrichNameFromContact(extractedData.personalInfo?.fullName || '', {
+                const enriched = enrichNameFromContact(extractedData.personalInfo?.fullName || '', {
                     email: extractedData.personalInfo?.email || user.email || '',
                     github: extractedData.personalInfo?.github,
                     linkedin: extractedData.personalInfo?.linkedin,
                     authName,
-                  })
-                ) || currentProfile?.full_name || authName || '';
+                  });
+                // Never persist section titles ("Professional Summary") or empty shells as the public name
+                const resolvedName =
+                  smartTitleCase(normalizeName(enriched) || '') ||
+                  smartTitleCase(normalizeName(currentProfile?.full_name || '') || '') ||
+                  smartTitleCase(normalizeName(authName) || '') ||
+                  '';
                 const baseSlug = generateBaseSlug(resolvedName || 'profile');
                 // Always remint disposable slugs (user96, UUID, URLs) after a successful CV parse
                 const usernameCandidate =
@@ -781,9 +787,12 @@ export default function EditorPage() {
                 );
                 const updatedProfile = {
                     id: user.id,
-                    full_name: resolvedName,
+                    full_name: resolvedName || currentProfile?.full_name || 'Your Name',
                     username,
-                    about: extractedData.summary || currentProfile?.about || '',
+                    about: cleanDescription(
+                      extractedData.summary || currentProfile?.about || '',
+                      2000
+                    ),
                     profile_picture_url: currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
                     skills: skillsArr,
                     experience: workItemsWithIds,
@@ -894,14 +903,17 @@ export default function EditorPage() {
                         const combinedLinks = Array.from(newLinksMap.entries()).map(([type, value]) => ({ type, value })).filter(l => !!l.value);
 
                         const authName = user.user_metadata?.full_name || user.user_metadata?.name || '';
-                        const resolvedName = smartTitleCase(
-                          enrichNameFromContact(extractedData.personalInfo?.fullName || '', {
+                        const enriched = enrichNameFromContact(extractedData.personalInfo?.fullName || '', {
                             email: extractedData.personalInfo?.email || user.email || '',
                             github: extractedData.personalInfo?.github,
                             linkedin: extractedData.personalInfo?.linkedin,
                             authName,
-                          })
-                        ) || currentProfile?.full_name || authName || '';
+                          });
+                        const resolvedName =
+                          smartTitleCase(normalizeName(enriched) || '') ||
+                          smartTitleCase(normalizeName(currentProfile?.full_name || '') || '') ||
+                          smartTitleCase(normalizeName(authName) || '') ||
+                          '';
                         const baseSlug = generateBaseSlug(resolvedName || 'profile');
                         // Prefer existing *good* slug; never keep user96 / URL garbage after parse.
                         const candidate =
@@ -916,9 +928,12 @@ export default function EditorPage() {
 
                         const updatedProfile = {
                             id: user.id,
-                            full_name: resolvedName,
+                            full_name: resolvedName || currentProfile?.full_name || 'Your Name',
                             username: finalSlug,
-                            about: extractedData.summary || currentProfile?.about || '',
+                            about: cleanDescription(
+                              extractedData.summary || currentProfile?.about || '',
+                              2000
+                            ),
                             profile_picture_url: extractedData.personalInfo?.avatarUrl || currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
                             theme_id: extractedData.themeId || currentProfile?.theme_id || 'modern-creative',
                             skills: skillsArr,
