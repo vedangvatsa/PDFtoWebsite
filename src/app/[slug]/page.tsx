@@ -16,6 +16,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
 import { toCompanyKey, COMPANY_BLOCKLIST, companyDisplayName } from '@/lib/company-directory';
+import { shouldListJobOnBoard } from '@/lib/job-apply-source';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { unstable_cache } from 'next/cache';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
@@ -113,9 +114,9 @@ async function loadCompanyJobs(
       }
 
       const recent = await fetchJobs(thirtyDaysAgo);
-      return recent;
+      return (recent || []).filter((j) => shouldListJobOnBoard(j));
     },
-    ['company-jobs-v3', slug, dirName || ''],
+    ['company-jobs-v4', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
 }

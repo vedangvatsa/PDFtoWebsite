@@ -1016,3 +1016,151 @@ export function parseResumeText(text: string): ParsedResume {
 
   return { personalInfo, summary, workExperience, education, skills };
 }
+
+/** API / editor shape used by `/api/parse-resume` (matches AI schema + parse-guard). */
+export type StructuredResumeParse = {
+  personalInfo: {
+    fullName: string;
+    email: string;
+    phone: string;
+    location: string;
+    website: string;
+    github: string;
+    linkedin: string;
+    additionalLinks: { label: string; url: string }[];
+  };
+  summary: string;
+  workExperience: {
+    company: string;
+    title: string;
+    location: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+  }[];
+  education: {
+    institution: string;
+    degree: string;
+    fieldOfStudy: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+  }[];
+  skills: string[];
+  customSections: {
+    sectionTitle: string;
+    items: { title: string; subtitle: string; description: string; date: string }[];
+  }[];
+};
+
+/**
+ * Non-AI resume parse for when LLM providers fail or return unusable output.
+ * Runs space reconstruction then the regex section parser; maps into the
+ * same structured shape as the AI path so repair/validate/ensureMinimal work.
+ */
+export function parseResumeWithoutAI(text: string): StructuredResumeParse {
+  const cleaned = reconstructMissingSpaces(String(text || ''));
+  const parsed = parseResumeText(cleaned);
+
+  return {
+    personalInfo: {
+      fullName: parsed.personalInfo?.fullName || '',
+      email: parsed.personalInfo?.email || '',
+      phone: parsed.personalInfo?.phone || '',
+      location: parsed.personalInfo?.location || '',
+      website: parsed.personalInfo?.website || '',
+      github: parsed.personalInfo?.github || '',
+      linkedin: parsed.personalInfo?.linkedin || '',
+      additionalLinks: [],
+    },
+    summary: parsed.summary || '',
+    workExperience: (parsed.workExperience || []).map((w) => ({
+      company: w.company || '',
+      title: w.title || '',
+      location: w.location || '',
+      startDate: w.startDate || '',
+      endDate: w.endDate || '',
+      description: w.description || '',
+    })),
+    education: (parsed.education || []).map((e) => ({
+      institution: e.institution || '',
+      degree: e.degree || '',
+      fieldOfStudy: '',
+      startDate: e.startDate || '',
+      endDate: e.endDate || '',
+      description: e.description || '',
+    })),
+    skills: (parsed.skills || [])
+      .map((s) => (typeof s === 'string' ? s : s?.name || ''))
+      .map((s) => String(s).trim())
+      .filter(Boolean),
+    customSections: [],
+  };
+}
+
+/** Rough richness score so we can prefer regex over an empty AI shell. */
+export function resumeParseContentScore(data: {
+  personalInfo?: { fullName?: string; email?: string } | null;
+  summary?: string | null;
+  workExperience?: unknown[] | null;
+  education?: unknown[] | null;
+  skills?: unknown[] | null;
+  customSections?: unknown[] | null;
+} | null | undefined): number {
+  if (!data) return 0;
+  const name = String(data.personalInfo?.fullName || '').trim();
+  const email = String(data.personalInfo?.email || '').trim();
+  const realName =
+    name &&
+    !/^(your name|unknown|curriculum vitae|cv|resume|r[eé]sum[eé])$/i.test(name);
+  return (
+    (Array.isArray(data.workExperience) ? data.workExperience.length : 0) * 10 +
+    (Array.isArray(data.education) ? data.education.length : 0) * 5 +
+    (Array.isArray(data.skills) ? data.skills.length : 0) +
+    (Array.isArray(data.customSections) ? data.customSections.length : 0) * 2 +
+    (String(data.summary || '').trim().length >= 40 ? 3 : 0) +
+    (realName ? 3 : 0) +
+    (email ? 2 : 0)
+  );
+}
+
+/**
+ * Best-effort non-AI salvage: structured regex parse, and when that is thin,
+ * keep the raw CV text in a custom section so the user never loses content.
+ */
+export function salvageResumeFromText(text: string): StructuredResumeParse {
+  const cleaned = reconstructMissingSpaces(String(text || '')).trim();
+  const data = parseResumeWithoutAI(cleaned);
+  const score = resumeParseContentScore(data);
+
+  if (cleaned.length < 80) return data;
+
+  // Thin structure → preserve full text so the editor still has something to edit
+  if (score < 15) {
+    const alreadyHasImport = (data.customSections || []).some(
+      (cs) => /imported cv text/i.test(String(cs.sectionTitle || ''))
+    );
+    if (!alreadyHasImport) {
+      const lines = cleaned.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 40);
+      if (!String(data.summary || '').trim() && lines.length) {
+        data.summary = lines.slice(0, 3).join(' ').slice(0, 500);
+      }
+      data.customSections = [
+        ...(data.customSections || []),
+        {
+          sectionTitle: 'Imported CV text',
+          items: [
+            {
+              title: 'Review and move into the right sections',
+              subtitle: '',
+              description: cleaned.slice(0, 12000),
+              date: '',
+            },
+          ],
+        },
+      ];
+    }
+  }
+
+  return data;
+}

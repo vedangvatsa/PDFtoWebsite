@@ -5,6 +5,12 @@ import Link from 'next/link';
 import { UploadCloud, Edit, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import {
+  emptyParsedResumeShell,
+  persistParsedResume,
+  reviewToastCopy,
+  storePendingResumeFile,
+} from '@/lib/cv-upload-client';
 
 export default function BlogCTA() {
   const { toast } = useToast();
@@ -34,25 +40,32 @@ export default function BlogCTA() {
         const formData = new FormData();
         formData.append('resume', file);
         const res = await fetch('/api/parse-resume', { method: 'POST', body: formData });
-        
-        if (!res.ok) {
-            let errorMsg = 'Failed to parse CV. Internal Server Error.';
-            try {
-                const errData = await res.json();
-                if (errData.error) errorMsg = errData.error;
-            } catch (e) {}
-            
-            toast({ variant: 'destructive', title: 'Upload Rejected', description: errorMsg });
-            setIsProcessingFile(false);
-            event.target.value = '';
-            return;
+
+        let parsed = emptyParsedResumeShell(file.name);
+        if (res.ok) {
+          try {
+            parsed = await res.json();
+          } catch {
+            /* keep shell */
+          }
+        } else {
+          await storePendingResumeFile(file);
+          parsed = emptyParsedResumeShell(file.name);
         }
-        
-        const parsed = await res.json();
-        sessionStorage.setItem('parsedResume', JSON.stringify(parsed));
+
+        persistParsedResume(parsed);
+        const copy = reviewToastCopy(parsed);
+        toast({ title: copy.title, description: copy.description });
         router.push('/editor');
       } catch (err) {
-         toast({ variant: 'destructive', title: 'Network Offline', description: 'Could not connect to the parsing server.' });
+         await storePendingResumeFile(file);
+         const shell = emptyParsedResumeShell(file.name);
+         persistParsedResume(shell);
+         toast({
+           title: 'Continue in the editor',
+           description: 'We could not reach the parser. Fill in details manually or try again shortly.',
+         });
+         router.push('/editor');
       } finally {
         event.target.value = '';
         setIsProcessingFile(false);

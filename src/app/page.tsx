@@ -16,6 +16,12 @@ import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/login-dialog';
 import { useUser } from '@/auth';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
+import {
+  emptyParsedResumeShell,
+  persistParsedResume,
+  reviewToastCopy,
+  storePendingResumeFile,
+} from '@/lib/cv-upload-client';
 
 function StepIndicator({ num, label, desc }: { num: number; label: string; desc: string }) {
   return (
@@ -72,29 +78,49 @@ export default function Home() {
         const formData = new FormData();
         formData.append('resume', file);
         const res = await fetch('/api/parse-resume', { method: 'POST', body: formData });
-        
-        if (!res.ok) {
-            let errorMsg = 'Failed to parse resume. Internal Server Error.';
-            try {
-                const errData = await res.json();
-                if (errData.error) errorMsg = errData.error;
-            } catch (e) {}
-            
-            toast({ variant: 'destructive', title: 'Upload Rejected', description: errorMsg });
-            setIsProcessingFile(false);
-            event.target.value = '';
-            return;
+
+        let parsed = emptyParsedResumeShell(file.name);
+        if (res.ok) {
+          try {
+            parsed = await res.json();
+          } catch {
+            /* keep shell */
+          }
+        } else {
+          // Rate limit / server error — still open editor so we never lose the user
+          await storePendingResumeFile(file);
+          let errorMsg = 'Auto-fill unavailable right now.';
+          try {
+            const errData = await res.json();
+            if (errData.error) errorMsg = errData.error;
+          } catch {
+            /* keep default */
+          }
+          parsed = emptyParsedResumeShell(file.name);
+          parsed._parseWarnings = [errorMsg];
         }
-        
-        const parsed = await res.json();
-        posthog.capture(LANDING_EVENTS.CV_UPLOAD_COMPLETED, { file_type: file.type });
-        sessionStorage.setItem('parsedResume', JSON.stringify(parsed));
-        try { localStorage.setItem('parsedResume', JSON.stringify(parsed)); localStorage.setItem('parsedResumeTimestamp', Date.now().toString()); } catch (e) { /* quota exceeded */ }
+
+        posthog.capture(LANDING_EVENTS.CV_UPLOAD_COMPLETED, {
+          file_type: file.type,
+          parse_method: parsed._parseMethod || 'ai',
+          needs_review: !!parsed._parseNeedsReview,
+        });
+        persistParsedResume(parsed);
+        const copy = reviewToastCopy(parsed);
+        toast({ title: copy.title, description: copy.description });
         router.push('/editor');
       } catch (err) {
-         // Network Disconnect 
+         // Network disconnect — still land in editor with a shell + pending file for retry
          posthog.capture(LANDING_EVENTS.CV_UPLOAD_FAILED, { error: 'network_error' });
-         toast({ variant: 'destructive', title: 'Network Offline', description: 'Could not connect to the parsing server.' });
+         await storePendingResumeFile(file);
+         const shell = emptyParsedResumeShell(file.name);
+         shell._parseWarnings = ['Network error during parse — continue in the editor.'];
+         persistParsedResume(shell);
+         toast({
+           title: 'Continue in the editor',
+           description: 'We could not reach the parser. Fill in details manually or try uploading again shortly.',
+         });
+         router.push('/editor');
       } finally {
         event.target.value = '';
         setIsProcessingFile(false);

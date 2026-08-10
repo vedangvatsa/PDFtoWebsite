@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createServerClient } from '@supabase/ssr';
 import { normalizeLocation as normalizeLocationDisplay } from '@/lib/normalize-location';
 import { jobPublicPath } from '@/lib/job-description';
+import { shouldListJobOnBoard } from '@/lib/job-apply-source';
 import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
@@ -527,6 +528,8 @@ export async function GET(request: NextRequest) {
     if (VAGUE_TITLE_PATTERNS.some(p => p.test(job.title))) return false;
     // Block known junk sources
     if (VAGUE_COMPANY_PATTERNS.some(p => p.test(job.company))) return false;
+    // Hide LinkedIn / aggregator apply URLs unless already fully enriched
+    if (!shouldListJobOnBoard(job)) return false;
     return true;
   });
 

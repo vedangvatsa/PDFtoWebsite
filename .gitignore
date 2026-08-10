@@ -75,3 +75,6 @@ cf-refresh-rotated.token
 .github/scripts/voidmail-accounts.json
 .github/scripts/*credentials*.json
 enrich-thin-jobs-company-state*.json
+.github/scripts/manual-jd-queue/
+.github/scripts/enrich-remote-jd-w*.log
+.github/scripts/logs/

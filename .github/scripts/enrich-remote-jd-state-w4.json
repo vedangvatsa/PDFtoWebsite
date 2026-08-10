@@ -40304,6 +40304,105 @@
       "status": "ok",
       "path": "/google/sw-app-dev",
       "external_id": "google_sw-app-dev"
+    },
+    "9a69d509-94f1-407d-b829-4af4148653bb": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Other company=modus apply=https://jobs.ashbyhq.com/modus/326df7f0-d0a9-4916-9465-ac85b5722466"
+    },
+    "832a1f4d-bc25-4b2a-adde-723a0043fed5": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Open Resume Submission company=astro-mechanica apply=https://jobs.ashbyhq.com/astro-mechanica/be15b9d2-2fc7-4b23-80b0-9fc8dfe6f68d"
+    },
+    "838439be-e63a-4a66-9c63-eb194339c544": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "9ffaf36e-ebce-493f-a0e7-af8300474210": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "8b8151aa-596d-4077-9b62-fd5d2c92c75e": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "97a46271-806c-4a4b-8b82-1cbe452bf03f": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "9fc62149-23df-4429-85a9-acb2e46485d9": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "82f1cb62-f595-4b4b-be6a-e3cd15439054": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "9b65415f-fbd2-4235-af87-b6c425aaa9e2": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "9fe21241-124a-43e0-bd4a-b38711c5daa8": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "942279ee-bc27-48f9-af4e-1338b95ff64e": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "9f986983-b40e-4648-bbc3-5d06cefa03e4": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "8b4c64f9-5c99-4eea-a12a-46846ba0cf19": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "9430fa18-78b9-47ad-9505-9f3c19f95918": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   "
+    },
+    "92590935-cd13-4bed-bb03-29c7739f5812": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Get In Touch company=fleetworks apply=https://jobs.ashbyhq.com/fleetworks/fcb3e08a-f547-45d1-9547-7fa7fd2e099b"
+    },
+    "93b84c10-a0de-452f-99e4-6e803b03d744": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "8e13eec6-bc2c-4227-a8c8-d0e7e20ebea0": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "9c1c5809-6842-4915-bf88-7c3273351dbf": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "83bca684-317d-4b6f-b52f-13096e9189ba": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "9bd57462-9d41-4883-bf51-2b2715137819": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "87316584-80a0-43a3-bea5-49ff78e7b224": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "9339a95c-22f8-46a0-88d6-9aa540b5e85a": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "8e034c7a-e044-4195-913b-06405260ad89": {
+      "status": "fail",
+      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+    },
+    "84abb8c0-4b0a-4cc9-a5bb-4a4c02b16b9c": {
+      "status": "skip",
+      "reason": "source_thin"
     }
   },
   "doneIds": [
@@ -49706,7 +49805,71 @@
     "4fc8fe29-6bd8-4f21-9121-2b5ae52c8509",
     "4aa6ae90-e420-4a09-80cc-f0bbc13877da",
     "4b47a51d-f172-433d-bef9-75ea259d92ef",
-    "4062dbf6-8bb5-4931-9574-a1a2367201fe"
+    "4062dbf6-8bb5-4931-9574-a1a2367201fe",
+    "2c36f827-2b1c-4ef6-84f6-a4f5ae03d2fe",
+    "1f9a9462-321f-43bc-948d-724fe9f3bee5",
+    "3548eeab-9272-4d90-9039-4633c986a7c1",
+    "52186ef8-7411-4097-b163-6039aad0dc34",
+    "392f2f47-33a1-462f-91d6-802942eec45f",
+    "34d0742a-c04c-477c-ac9b-21d3cab06f89",
+    "5e621d00-6510-4cac-b6a8-d202fbf28dd1",
+    "672065f6-77b6-4322-8c63-23ed4153dd18",
+    "7aff0a93-78ea-4948-b236-cd053b933a48",
+    "9bdaa028-c6ad-4f21-a3d9-73f354da01dd",
+    "9fd9dd7a-8752-4cde-92fc-3a488dc1e1ca",
+    "7fa9c337-f813-4f53-b78c-02b960604745",
+    "a81f1284-0cff-4c64-b29c-21d608c18423",
+    "bc40faf0-c0b2-4f0c-ab7a-ef39193241cd",
+    "a00671a2-d139-4209-9530-586d33c76e83",
+    "c4c52eb0-be14-4471-9777-bcea04dfc99a",
+    "ab6fd2c8-896c-438d-83c8-8f0004596cdb",
+    "a7cfc20c-f959-44bf-9042-2298d3e97ae7",
+    "c43e4a59-7adc-4432-bd08-3fa201578ea0",
+    "ccd77da1-17d9-4833-9b1c-d61d9b4dc124",
+    "d4ef9eda-e180-4cce-a2a1-2cb992a94e94",
+    "cc509cd7-b79d-4c36-8f48-017742caff15",
+    "d44e84ec-0e68-4899-af7e-ef66bfdaaa73",
+    "d0bb1e84-1879-4035-9978-751fc60f6c5b",
+    "dccf5f4d-128a-4476-8f28-4e4298bd34b4",
+    "f5a53261-6103-4db3-b044-f28401b1e8a6",
+    "f9dca5fb-5121-4944-bd10-cb223d9089c0",
+    "e93d74d9-9530-42b2-9ad0-e79bf9e9bb1a",
+    "e928c4e8-9f98-4e0c-affe-9484be360815",
+    "fe46c760-01d4-4aa0-a74f-24af1547c785",
+    "d84ed91d-da4d-4e45-83fe-2f9e1198fd83",
+    "3d14ed36-0939-4884-b088-4a17d75904f2",
+    "306d22eb-5cc8-4461-bb85-61bb96e90f44",
+    "497a49e5-dcd6-4eb4-947a-a339cc45ff6e",
+    "7aee9a04-1fc8-480f-b593-c02fc2654120",
+    "9772a17b-fded-4bac-87ba-f65c25fba126",
+    "f644c21e-3850-4c04-9037-01cb13ee6d1f",
+    "b806fa67-7c5a-4e32-98e1-d8e8dc93ebc2",
+    "e12d9a70-3736-48a2-91b0-0733eadc1676",
+    "dcf45795-08bf-4873-acdc-f96f2f2c793e",
+    "9a69d509-94f1-407d-b829-4af4148653bb",
+    "832a1f4d-bc25-4b2a-adde-723a0043fed5",
+    "838439be-e63a-4a66-9c63-eb194339c544",
+    "9ffaf36e-ebce-493f-a0e7-af8300474210",
+    "8b8151aa-596d-4077-9b62-fd5d2c92c75e",
+    "97a46271-806c-4a4b-8b82-1cbe452bf03f",
+    "9fc62149-23df-4429-85a9-acb2e46485d9",
+    "82f1cb62-f595-4b4b-be6a-e3cd15439054",
+    "9b65415f-fbd2-4235-af87-b6c425aaa9e2",
+    "9fe21241-124a-43e0-bd4a-b38711c5daa8",
+    "942279ee-bc27-48f9-af4e-1338b95ff64e",
+    "9f986983-b40e-4648-bbc3-5d06cefa03e4",
+    "8b4c64f9-5c99-4eea-a12a-46846ba0cf19",
+    "9430fa18-78b9-47ad-9505-9f3c19f95918",
+    "92590935-cd13-4bed-bb03-29c7739f5812",
+    "93b84c10-a0de-452f-99e4-6e803b03d744",
+    "8e13eec6-bc2c-4227-a8c8-d0e7e20ebea0",
+    "9c1c5809-6842-4915-bf88-7c3273351dbf",
+    "83bca684-317d-4b6f-b52f-13096e9189ba",
+    "9bd57462-9d41-4883-bf51-2b2715137819",
+    "87316584-80a0-43a3-bea5-49ff78e7b224",
+    "9339a95c-22f8-46a0-88d6-9aa540b5e85a",
+    "8e034c7a-e044-4195-913b-06405260ad89",
+    "84abb8c0-4b0a-4cc9-a5bb-4a4c02b16b9c"
   ],
   "skipped": {},
   "batches": [
@@ -51970,6 +52133,23 @@
         "err_TypeError": 2,
         "html_404": 1,
         "html_405": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 4,
+      "at": "2026-08-09T17:19:43.426Z",
+      "attempted": 24,
+      "ok": 0,
+      "skip": 4,
+      "fail": 20,
+      "reasons": {
+        "expand_existing": 19,
+        "posting_older_than_30d": 3,
+        "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_429:{\n  \"error\": {\n   ": 12,
+        "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena": 8,
+        "source_thin": 1
       },
       "samplePaths": []
     }
