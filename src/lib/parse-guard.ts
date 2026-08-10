@@ -79,6 +79,12 @@ export function normalizeName(raw: string): string {
     .replace(/\s*\(?\b(?:final|new|copy|updated|latest|draft|backup|edited)\b\)?\s*$/i, '')
     .replace(/\s*\(\d+\)\s*$/, '')
     .trim();
+  // Slug/filename digits glued to a name token ("Abhinav Thakur03" → "Abhinav Thakur")
+  name = name.replace(/\b([A-Za-z]{2,})(\d{2,4})\b/g, '$1').replace(/\s+/g, ' ').trim();
+  // Trailing seniority / doc noise wrongly treated as part of the name
+  name = name
+    .replace(/\s+\b(Senior|Junior|Intern|Fresher|Student|Candidate|Update|ATS|CV|Resume)\b\s*$/i, '')
+    .trim();
   // Split on first comma/newline and keep only the name part
   name = name.split(/[,/|·•]/)[0].trim();
   // Strip trailing locations ("Yash Kathait New Delhi" → "Yash Kathait")
@@ -631,6 +637,9 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
     for (const k of ['email', 'phone', 'website', 'github', 'linkedin']) {
       if (typeof data.personalInfo[k] === 'string') data.personalInfo[k] = data.personalInfo[k].trim();
     }
+    if (data.personalInfo.email) {
+      data.personalInfo.email = repairSpacedEmail(data.personalInfo.email);
+    }
     // Strip path junk from github/linkedin handles
     for (const k of ['github', 'linkedin'] as const) {
       let v = String(data.personalInfo[k] || '');
@@ -706,9 +715,9 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
     data.skills = splitSkills(data.skills);
   }
 
-  // Wall-of-text "summary" that is clearly a full resume dump → drop before synthesize
+  // Wall-of-text "summary" that is clearly a full resume dump → extract prose only
   if (isResumeDumpText(String(data.summary || ''))) {
-    data.summary = '';
+    data.summary = extractCleanSummary(data.summary);
   }
 
   // Synthesize a short summary when model omitted it but we have roles (after skill cleanup)
@@ -760,6 +769,20 @@ export function isResumeDumpText(raw: string): boolean {
   const markers = t.match(MULTI_SECTION_DUMP_RE) || [];
   const distinct = new Set(markers.map((m) => m.toLowerCase()));
   if (distinct.size >= 2) return true;
+
+  // Multiple common resume section labels in one blob (Summary + Education + Skills, etc.)
+  const sectionLabels =
+    t.match(
+      /\b((?:executive|professional|career)\s+summary|summary|education|experiences?|employment(?:\s+history)?|skills?|projects?|certifications?|work\s+experience)\b/gi
+    ) || [];
+  const distinctSections = new Set(
+    sectionLabels.map((s) => s.toLowerCase().replace(/\s+/g, ' ').trim())
+  );
+  if (distinctSections.size >= 2 && t.length > 350) return true;
+
+  // Contact embedded in the body (email + phone) on a long blob → header was dumped in
+  if (EMAIL_RE.test(t) && PHONE_RE.test(t) && t.length > 400) return true;
+
   // Collapsed one-liners: contact chrome + experience header + bullets
   const hasContactChrome =
     /\b(phone|linkedin|mail|email|portfolio|behance|github)\b/i.test(t) &&
@@ -770,6 +793,72 @@ export function isResumeDumpText(raw: string): boolean {
   if (hasContactChrome && hasExp) return true;
   if (t.length > 500 && (t.match(/•/g) || []).length >= 3 && /\b20\d{2}\b/.test(t)) return true;
   return false;
+}
+
+/**
+ * When `about` is a CV dump, pull a real prose summary (and optional headline)
+ * instead of showing the wall of text on the public page.
+ */
+export function extractCleanSummary(raw: string): string {
+  const t = String(raw || '').trim();
+  if (!t) return '';
+  if (!isResumeDumpText(t)) return cleanDescription(t, 2000);
+
+  const sectionBody = t.match(
+    /(?:EXECUTIVE\s+SUMMARY|PROFESSIONAL\s+SUMMARY|CAREER\s+SUMMARY|Executive\s+Summary|Professional\s+Summary|Career\s+Summary|Summary|SUMMARY)\s*[:\-–—.]?\s*([\s\S]+?)(?=\s+(?:EDUCATION|EXPERIENCES?|EMPLOYMENT(?:\s+HISTORY)?|SKILLS?|PROJECTS?|CERTIFICATIONS?|Education|Experiences?|Employment(?:\s+History)?|Skills?|Projects?|Certifications?|Work\s+Experience|Technical\s+Skills)\b|$)/
+  );
+  if (sectionBody?.[1]) {
+    return finalizeExtractedSummary(sectionBody[1]);
+  }
+
+  // Strip leading ALL-CAPS name + title + contact chrome, keep remaining prose
+  let rest = t
+    .replace(EMAIL_RE, ' ')
+    .replace(PHONE_RE, ' ')
+    .replace(URL_IN_FIELD_RE, ' ')
+    .replace(
+      /^(?:[A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,4})\s+/,
+      ''
+    )
+    .replace(
+      /^(?:Senior\s+)?(?:Vice\s+President|Director|Manager|Engineer|Developer|Designer|Lead|Head|Founder|Consultant)[^|]{0,80}\|?/i,
+      ''
+    )
+    .replace(/\s*[|·•]\s*/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  // Cut at first later section label if still present (case-sensitive headers only)
+  rest = rest.split(
+    /\b(?:Education|Experiences?|Employment|Skills?|Projects?|Certifications?|EDUCATION|EXPERIENCES?|SKILLS?)\b/
+  )[0];
+  return finalizeExtractedSummary(rest);
+}
+
+/** Trim mid-sentence salvage cutoffs ("…across contact") back to last full sentence. */
+function finalizeExtractedSummary(raw: string): string {
+  let text = cleanDescription(raw, 900);
+  if (text.length > 120 && !/[.!?]"?$/.test(text)) {
+    const lastStop = Math.max(
+      text.lastIndexOf('. '),
+      text.lastIndexOf('! '),
+      text.lastIndexOf('? ')
+    );
+    if (lastStop > text.length * 0.4) {
+      text = text.slice(0, lastStop + 1).trim();
+    }
+  }
+  return text;
+}
+
+/** Repair emails that OCR/PDF extraction split ("name 2203 @gmail.com"). */
+export function repairSpacedEmail(raw: string): string {
+  let s = String(raw || '').trim();
+  if (!s) return '';
+  s = s
+    .replace(/\b([a-z0-9._+-]+)\s+(\d{2,})\s*@\s*([a-z0-9.-]+\.[a-z]{2,})\b/gi, '$1$2@$3')
+    .replace(/\b([a-z0-9._+-]+)\s+@\s*([a-z0-9.-]+\.[a-z]{2,})\b/gi, '$1@$2')
+    .replace(/\s+/g, '');
+  return EMAIL_RE.test(s) ? s.match(EMAIL_RE)![0] : String(raw || '').trim();
 }
 
 /** Strip query/hash junk from LinkedIn/GitHub handles (iOS share links, UTMs). */
