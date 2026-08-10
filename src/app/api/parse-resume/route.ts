@@ -13,6 +13,10 @@ import {
   nameToProfileSlug,
   enrichNameFromContact,
 } from '@/lib/parse-guard';
+import {
+  salvageResumeFromText,
+  resumeParseContentScore,
+} from '@/lib/resume-parser';
 
 export const maxDuration = 60;
 
@@ -20,6 +24,65 @@ export const maxDuration = 60;
 // database or the user. If a token survives the parser, strip it from every
 // string in the AI output instead of persisting the artifact.
 const TOKEN_ARTIFACT_RE = /__PROT\s*\d+\s*__/g;
+/** Minimum extractable text before the regex fallback is worth running. */
+const REGEX_FALLBACK_MIN_CHARS = 80;
+
+/**
+ * Deterministic CV salvage when AI is down or returns an empty/critical shell.
+ * Always keeps raw text in the payload when present so the user never loses content.
+ */
+function tryRegexResumeFallback(
+  text: string,
+  opts?: { fileName?: string; authName?: string; reason?: string }
+): any | null {
+  const raw = String(text || '').trim();
+  if (raw.length < REGEX_FALLBACK_MIN_CHARS) return null;
+
+  try {
+    let data: any = salvageResumeFromText(raw);
+    data = repairParsedData(data, { authName: opts?.authName });
+    data = ensureMinimalProfile(data, { fileName: opts?.fileName });
+
+    const reason = opts?.reason || 'AI unavailable';
+    data._parseWarnings = [
+      ...(Array.isArray(data._parseWarnings) ? data._parseWarnings : []),
+      `Used non-AI resume parser (${reason})`,
+    ];
+    data._parseMethod = 'regex';
+    data._parseNeedsReview = true;
+    console.warn(
+      `Regex resume fallback used (${reason}); score=${resumeParseContentScore(data)}`
+    );
+    return data;
+  } catch (err) {
+    console.warn('Regex resume fallback failed:', err);
+    return null;
+  }
+}
+
+/** Empty-but-openable editor shell — user can fill manually; never hard-fail UX. */
+function emptyProfileShell(
+  fileName?: string,
+  warnings: string[] = []
+): any {
+  const shell = ensureMinimalProfile(
+    {
+      personalInfo: {},
+      summary: '',
+      workExperience: [],
+      education: [],
+      skills: [],
+      customSections: [],
+    },
+    { fileName }
+  );
+  shell._parseMethod = 'shell';
+  shell._parseNeedsReview = true;
+  shell._parseWarnings = warnings.length
+    ? warnings
+    : ['Could not auto-extract fields. Continue in the editor and fill in your details.'];
+  return shell;
+}
 
 function scrubProtectedArtifacts(value: unknown): unknown {
   if (typeof value === 'string') {
@@ -197,6 +260,14 @@ function getGeminiApiKeys(): string[] {
   return [...new Set(keys)];
 }
 
+function getDeepSeekApiKeys(): string[] {
+  const keys = [
+    process.env.DEEPSEEK_API_KEY,
+    process.env.DEEPSEEK_API_KEY_2,
+  ].map((k) => k?.trim()).filter((k): k is string => Boolean(k));
+  return [...new Set(keys)];
+}
+
 interface OpenAIMessage {
   role: 'system' | 'user';
   content: string | Array<{ type: string; text?: string; image_url?: { url: string }; file?: { filename: string; file_data: string } }>;
@@ -216,7 +287,7 @@ function hasGemini(): boolean {
 }
 
 function hasDeepSeek(): boolean {
-  return Boolean(process.env.DEEPSEEK_API_KEY?.trim());
+  return getDeepSeekApiKeys().length > 0;
 }
 
 const PARSE_USER_PROMPT =
@@ -295,66 +366,67 @@ async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
 
 /** DeepSeek — OpenAI-compatible chat completions. Text-only (no vision); used for extracted text. */
 async function callDeepSeek(messages: OpenAIMessage[]): Promise<any> {
-  const apiKey = process.env.DEEPSEEK_API_KEY?.trim();
-  if (!apiKey) throw new Error('DEEPSEEK_API_KEY is missing');
+  const apiKeys = getDeepSeekApiKeys();
+  if (apiKeys.length === 0) throw new Error('DEEPSEEK_API_KEY is missing');
   const model = process.env.DEEPSEEK_MODEL?.trim() || DEFAULT_DEEPSEEK_MODEL;
   const reasoningEffort =
     process.env.DEEPSEEK_REASONING_EFFORT?.trim() || DEFAULT_DEEPSEEK_REASONING_EFFORT;
 
   let lastError: Error | null = null;
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 60000);
-    try {
-      const response = await fetch('https://api.deepseek.com/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model,
-          messages,
-          response_format: { type: 'json_object' },
-          thinking: { type: 'enabled' },
-          reasoning_effort: reasoningEffort,
-          max_tokens: 8192,
-        }),
-        signal: controller.signal,
-      });
+  for (const apiKey of apiKeys) {
+    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 60000);
+      try {
+        const response = await fetch('https://api.deepseek.com/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages,
+            response_format: { type: 'json_object' },
+            thinking: { type: 'enabled' },
+            reasoning_effort: reasoningEffort,
+            max_tokens: 8192,
+          }),
+          signal: controller.signal,
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const statusCode = response.status;
-        const errorMsg = errorData.error?.message || `DeepSeek API Error ${statusCode}`;
-        if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
-          console.warn(
-            `DeepSeek API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`
-          );
-          lastError = new Error(errorMsg);
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          const statusCode = response.status;
+          const errorMsg = errorData.error?.message || `DeepSeek API Error ${statusCode}`;
+          if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
+            console.warn(
+              `DeepSeek API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`
+            );
+            lastError = new Error(errorMsg);
+            await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+            continue;
+          }
+          throw new Error(errorMsg);
+        }
+
+        const result = await response.json();
+        const content = result.choices?.[0]?.message?.content;
+        if (!content) throw new Error('Empty response from DeepSeek');
+
+        let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
+        return JSON.parse(raw);
+      } catch (err: any) {
+        lastError = err instanceof Error ? err : new Error('Unknown DeepSeek error');
+        if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
+          console.warn(`DeepSeek request failed (attempt ${attempt + 1}), retrying...`, lastError.message);
           await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
           continue;
         }
-        throw new Error(errorMsg);
+        break;
+      } finally {
+        clearTimeout(timeout);
       }
-
-      const result = await response.json();
-      // Reasoning model returns content in reasoning_content + final content
-      const content = result.choices?.[0]?.message?.content;
-      if (!content) throw new Error('Empty response from DeepSeek');
-
-      let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
-      return JSON.parse(raw);
-    } catch (err: any) {
-      lastError = err instanceof Error ? err : new Error('Unknown DeepSeek error');
-      if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
-        console.warn(`DeepSeek request failed (attempt ${attempt + 1}), retrying...`, lastError.message);
-        await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
-        continue;
-      }
-      throw lastError;
-    } finally {
-      clearTimeout(timeout);
     }
   }
   throw lastError || new Error('DeepSeek parsing failed');
@@ -478,9 +550,8 @@ async function callGemini(
 
 /**
  * Provider priority:
- *  - DeepSeek (text-only) — primary for extracted-text resumes.
- *  - OpenAI vision-capable models (gpt-4.1) — primary for images/scanned PDFs,
- *    fallback for text.
+ *  - OpenAI (gpt-4.1) — primary for all inputs (text + vision).
+ *  - DeepSeek — text-only fallback for extracted-text resumes (skip for image/PDF).
  *  - Gemini — final fallback (handles PDF/images natively, incl. HEIC).
  */
 async function callParseAI(
@@ -702,6 +773,8 @@ export async function POST(request: NextRequest) {
     let parseMedia: ParseMedia = { kind: 'none' };
     /** Keep original PDF bytes so a bad text parse can re-try as a scanned document. */
     let pdfBase64ForFallback: string | null = null;
+    /** Non-AI baseline built before AI so catch/timeout can reuse it. */
+    let regexBaseline: any = null;
 
     try {
       if (fileType === 'pdf') {
@@ -865,7 +938,29 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      aiStructuredData = await callParseAI(baseMessages, { media: parseMedia });
+      // Non-AI baseline first so an AI outage never leaves an empty editor.
+      regexBaseline = tryRegexResumeFallback(extractedText, {
+        fileName: file.name,
+        reason: 'pre-AI baseline',
+      });
+
+      const AI_PARSE_TIMEOUT_MS = 35_000;
+      const aiCall = callParseAI(baseMessages, { media: parseMedia });
+      try {
+        aiStructuredData = await Promise.race([
+          aiCall,
+          new Promise((_, reject) =>
+            setTimeout(
+              () => reject(new Error(`AI parse timed out after ${AI_PARSE_TIMEOUT_MS}ms`)),
+              AI_PARSE_TIMEOUT_MS
+            )
+          ),
+        ]);
+      } catch (timeoutOrAiErr) {
+        // If we timed out, swallow a late AI rejection so it isn't an unhandled rejection.
+        void aiCall.catch(() => {});
+        throw timeoutOrAiErr;
+      }
 
       // Validate RAW model output FIRST. Repair used to truncate education dumps
       // to 500 chars, which hid the dump from validators (yash2 / education-dump bug).
@@ -965,23 +1060,66 @@ export async function POST(request: NextRequest) {
         aiStructuredData._parseWarnings = validation.issues;
       }
 
+      // AI returned a critical / empty shell → prefer regex if extracted text exists
+      const aiScore = resumeParseContentScore(aiStructuredData);
+      if (validation.critical || aiScore < 5) {
+        const regexData =
+          regexBaseline ||
+          tryRegexResumeFallback(extractedText, {
+            fileName: file.name,
+            authName: authHint,
+            reason: validation.critical
+              ? `AI output still critical: ${validation.issues.slice(0, 3).join('; ')}`
+              : 'AI output too sparse',
+          });
+        if (regexData && resumeParseContentScore(regexData) > aiScore) {
+          aiStructuredData = regexData;
+        }
+      } else if (
+        regexBaseline &&
+        resumeParseContentScore(regexBaseline) > aiScore + 5
+      ) {
+        // Rare: regex clearly richer than a weak-but-non-critical AI pass
+        aiStructuredData = regexBaseline;
+      }
+      if (!aiStructuredData._parseMethod) aiStructuredData._parseMethod = 'ai';
+
     } catch (aiError) {
-      console.error('AI parsing failed; returning minimal profile shell:', aiError);
-      // Last resort UX: never block the user — open editor with a usable shell
-      aiStructuredData = ensureMinimalProfile(
-        {
-          personalInfo: {},
-          summary: '',
-          workExperience: [],
-          education: [],
-          skills: [],
-          customSections: [],
-        },
-        { fileName: file.name }
-      );
-      aiStructuredData._parseWarnings = [
-        aiError instanceof Error ? aiError.message : 'AI parsing failed',
-      ];
+      console.error('AI parsing failed; trying non-AI resume parser:', aiError);
+      let authHint = '';
+      try {
+        const supabaseUserClient = await createClient();
+        const {
+          data: { user: u },
+        } = await supabaseUserClient.auth.getUser();
+        authHint =
+          (u?.user_metadata?.full_name as string) ||
+          (u?.user_metadata?.name as string) ||
+          '';
+      } catch {
+        /* non-fatal */
+      }
+
+      const reason =
+        aiError instanceof Error ? aiError.message : 'AI parsing failed';
+      const regexData =
+        regexBaseline ||
+        tryRegexResumeFallback(extractedText, {
+          fileName: file.name,
+          authName: authHint,
+          reason,
+        });
+
+      if (regexData) {
+        aiStructuredData = regexData;
+      } else {
+        aiStructuredData = emptyProfileShell(file.name, [
+          reason,
+          extractedText?.trim()?.length
+            ? 'Non-AI parser could not structure this CV — continue in the editor.'
+            : 'No selectable text (scanned/image CV) and AI unavailable — continue in the editor and fill details manually, or re-upload when parsing is back.',
+        ]);
+      }
     }
 
     // Strip any residual reconstruction markers before returning to the client.
@@ -1075,6 +1213,7 @@ export async function POST(request: NextRequest) {
 
     console.log(JSON.stringify({
       event: 'cv_parse_success',
+      parseMethod: aiStructuredData._parseMethod || 'ai',
       fileType,
       fileSizeKB: Math.round(file.size / 1024),
       pageCount,
@@ -1096,18 +1235,7 @@ export async function POST(request: NextRequest) {
     console.error('Fatal API Error (returning empty shell for UX):', error);
     const message = error instanceof Error ? error.message : 'Unknown error';
     // Still never hard-block the user: open editor with a shell they can fill in
-    const shell = ensureMinimalProfile(
-      {
-        personalInfo: {},
-        summary: '',
-        workExperience: [],
-        education: [],
-        skills: [],
-        customSections: [],
-      },
-      {}
-    );
-    shell._parseWarnings = [message];
+    const shell = emptyProfileShell(undefined, [message]);
     return NextResponse.json(shell, { status: 200 });
   }
 }
