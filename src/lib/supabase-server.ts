@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription, isResumeDumpText, sanitizeSocialHandle } from '@/lib/parse-guard';
+import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription, isResumeDumpText, sanitizeSocialHandle, extractCleanSummary, repairSpacedEmail } from '@/lib/parse-guard';
 
 const supabase = supabaseAdmin;
 
@@ -83,18 +83,22 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
       'Professional Profile';
 
     // Strip glued section labels; never publish a full CV dump as the summary
-    let summary = cleanDescription(String(profile.about || ''), 2000);
-    if (isResumeDumpText(summary)) summary = '';
+    let summary = String(profile.about || '');
+    summary = isResumeDumpText(summary)
+      ? extractCleanSummary(summary)
+      : cleanDescription(summary, 2000);
 
     const github = sanitizeSocialHandle(getLink('github') || '', 'github') || undefined;
     const linkedin = sanitizeSocialHandle(getLink('linkedin') || '', 'linkedin') || undefined;
+    const emailRaw = getLink('email') || '';
+    const email = emailRaw ? repairSpacedEmail(emailRaw) || emailRaw : undefined;
 
     return {
         profile: {
             userId: profile.id,
             fullName: displayName,
             slug: profile.username || slug,
-            email: getLink('email'),
+            email,
             phone: getLink('phone'),
             location: getLink('location'),
             summary,
@@ -110,6 +114,7 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
               if (!l || typeof l !== 'object') return l;
               if (l.type === 'linkedin') return { ...l, value: sanitizeSocialHandle(l.value || '', 'linkedin') };
               if (l.type === 'github') return { ...l, value: sanitizeSocialHandle(l.value || '', 'github') };
+              if (l.type === 'email' && l.value) return { ...l, value: repairSpacedEmail(l.value) || l.value };
               return l;
             })
         },
