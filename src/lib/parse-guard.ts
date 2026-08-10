@@ -802,14 +802,16 @@ export function isResumeDumpText(raw: string): boolean {
 export function extractCleanSummary(raw: string): string {
   const t = String(raw || '').trim();
   if (!t) return '';
-  if (!isResumeDumpText(t)) return cleanDescription(t, 2000);
 
+  // Prefer labeled summary bodies even when the blob is not flagged as a dump
   const sectionBody = t.match(
     /(?:EXECUTIVE\s+SUMMARY|PROFESSIONAL\s+SUMMARY|CAREER\s+SUMMARY|Executive\s+Summary|Professional\s+Summary|Career\s+Summary|Summary|SUMMARY|TENTANG\s+SAYA|Tentang\s+Saya|About\s+Me|ABOUT\s+ME)\s*[:\-–—.]?\s*([\s\S]+?)(?=\s+(?:EDUCATION|EXPERIENCES?|EMPLOYMENT(?:\s+HISTORY)?|SKILLS?|PROJECTS?|CERTIFICATIONS?|Education|Experiences?|Employment(?:\s+History)?|Skills?|Projects?|Certifications?|Work\s+Experience|Technical\s+Skills|PENGALAMAN|PENDIDIKAN|KEAHLIAN)\b|$)/
   );
-  if (sectionBody?.[1]) {
+  if (sectionBody?.[1] && sectionBody[1].trim().length >= 80) {
     return finalizeExtractedSummary(sectionBody[1]);
   }
+
+  if (!isResumeDumpText(t)) return cleanDescription(t, 2000);
 
   // Strip leading ALL-CAPS name + title + contact chrome, keep remaining prose
   let rest = t
