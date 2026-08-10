@@ -3,8 +3,21 @@
  * keeps the user in-flow even when AI parsing is down.
  */
 
+export type ParsedPersonalInfo = {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  location?: string;
+  website?: string;
+  github?: string;
+  linkedin?: string;
+  slug?: string;
+  additionalLinks?: Array<{ label?: string; url?: string }>;
+  [key: string]: unknown;
+};
+
 export type ParsedResumeClient = {
-  personalInfo?: Record<string, unknown>;
+  personalInfo?: ParsedPersonalInfo;
   summary?: string;
   workExperience?: unknown[];
   education?: unknown[];
