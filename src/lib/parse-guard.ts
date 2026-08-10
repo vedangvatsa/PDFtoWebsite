@@ -635,13 +635,7 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
     for (const k of ['github', 'linkedin'] as const) {
       let v = String(data.personalInfo[k] || '');
       if (!v) continue;
-      v = v
-        .replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')
-        .replace(/^(?:github\.com|linkedin\.com)\/(?:in\/)?/i, '')
-        .replace(/\/$/, '')
-        .split(/[?#]/)[0]
-        .trim();
-      data.personalInfo[k] = v;
+      data.personalInfo[k] = sanitizeSocialHandle(v, k);
     }
     data.personalInfo.fullName = enrichNameFromContact(data.personalInfo.fullName || '', {
       email: data.personalInfo.email,
@@ -664,6 +658,15 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
   if (Array.isArray(data.workExperience)) {
     data.workExperience = data.workExperience
       .filter((w: any) => w && (w.title?.trim() || w.company?.trim()))
+      // Drop regex-parser placeholders that never got real fields
+      .filter((w: any) => {
+        const title = String(w.title || '').trim();
+        const company = String(w.company || '').trim();
+        if (/^position$/i.test(title) && /^company$/i.test(company)) return false;
+        if (/^position$/i.test(title) && !company) return false;
+        if (/^company$/i.test(company) && !title) return false;
+        return true;
+      })
       .map((w: any) => ({
         ...w,
         title: String(w.title || '').trim(),
@@ -703,6 +706,11 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
     data.skills = splitSkills(data.skills);
   }
 
+  // Wall-of-text "summary" that is clearly a full resume dump → drop before synthesize
+  if (isResumeDumpText(String(data.summary || ''))) {
+    data.summary = '';
+  }
+
   // Synthesize a short summary when model omitted it but we have roles (after skill cleanup)
   if (!String(data.summary || '').trim() && Array.isArray(data.workExperience) && data.workExperience.length) {
     const top = data.workExperience[0];
@@ -721,22 +729,68 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
   if (Array.isArray(data.customSections)) {
     data.customSections = data.customSections
       .filter((cs: any) => cs && String(cs.sectionTitle || '').trim())
-      .map((cs: any) => ({
-        ...cs,
-        sectionTitle: String(cs.sectionTitle || '').trim(),
-        items: Array.isArray(cs.items)
-          ? cs.items.map((item: any) => ({
-              ...item,
-              title: String(item.title || '').trim(),
-              subtitle: String(item.subtitle || '').trim(),
-              date: String(item.date || '').trim(),
-              description: cleanDescription(item.description, 800),
-            }))
-          : [],
-      }));
+      .map((cs: any) => {
+        const title = String(cs.sectionTitle || '').trim();
+        // Editor-only salvage dumps must keep the FULL CV text — truncating to 800
+        // destroyed recoverability (sowjanya-prabhu / AI-outage imports).
+        const descMax = isEditorOnlyCustomSection({ sectionTitle: title }) ? 12000 : 800;
+        return {
+          ...cs,
+          sectionTitle: title,
+          items: Array.isArray(cs.items)
+            ? cs.items.map((item: any) => ({
+                ...item,
+                title: String(item.title || '').trim(),
+                subtitle: String(item.subtitle || '').trim(),
+                date: String(item.date || '').trim(),
+                description: cleanDescription(item.description, descMax),
+              }))
+            : [],
+        };
+      });
   }
 
   return data;
+}
+
+/** True when a string looks like a full CV pasted into one field (not a real summary). */
+export function isResumeDumpText(raw: string): boolean {
+  const t = String(raw || '').trim();
+  if (t.length < 280) return false;
+  const markers = t.match(MULTI_SECTION_DUMP_RE) || [];
+  const distinct = new Set(markers.map((m) => m.toLowerCase()));
+  if (distinct.size >= 2) return true;
+  // Collapsed one-liners: contact chrome + experience header + bullets
+  const hasContactChrome =
+    /\b(phone|linkedin|mail|email|portfolio|behance|github)\b/i.test(t) &&
+    (t.match(/\|/g) || []).length >= 2;
+  const hasExp =
+    /\b(experiences?|employment|work\s+history)\b/i.test(t) &&
+    (t.includes('•') || /\b(20\d{2}|present)\b/i.test(t));
+  if (hasContactChrome && hasExp) return true;
+  if (t.length > 500 && (t.match(/•/g) || []).length >= 3 && /\b20\d{2}\b/.test(t)) return true;
+  return false;
+}
+
+/** Strip query/hash junk from LinkedIn/GitHub handles (iOS share links, UTMs). */
+export function sanitizeSocialHandle(
+  raw: string,
+  kind: 'linkedin' | 'github' | 'website' = 'linkedin'
+): string {
+  let v = String(raw || '').trim();
+  if (!v) return '';
+  v = v
+    .replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')
+    .replace(/\/$/, '');
+  if (kind === 'linkedin') {
+    v = v.replace(/^(?:linkedin\.com\/)?(?:in\/)?/i, '');
+  } else if (kind === 'github') {
+    v = v.replace(/^(?:github\.com\/)/i, '');
+  }
+  v = v.split(/[?#]/)[0].replace(/\/+$/, '').trim();
+  if (kind === 'linkedin' && (/^linkedin$/i.test(v) || /^linkedin\s+profile$/i.test(v))) return '';
+  if (kind === 'github' && (/^github$/i.test(v) || /^git$/i.test(v))) return '';
+  return v;
 }
 
 export { isEducationDump };

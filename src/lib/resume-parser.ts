@@ -1125,12 +1125,41 @@ export function resumeParseContentScore(data: {
 }
 
 /**
+ * Insert line breaks into space-collapsed PDF/OCR dumps so section headers and
+ * bullets become parseable (e.g. "…Behance Experiences UX/UI Designer…").
+ */
+export function reflowCollapsedResumeText(text: string): string {
+  let t = String(text || '').replace(/\r\n/g, '\n').trim();
+  if (!t) return t;
+  // Already has structure
+  if ((t.match(/\n/g) || []).length >= 5) return t;
+
+  t = t.replace(/\s*[•▪●]\s*/g, '\n• ');
+  t = t.replace(
+    /\b((?:Professional\s+)?(?:Summary|Experience|Experiences)|Work\s+Experience|Employment(?:\s+History)?|Education|Skills?|Projects?|Certifications?|Languages?|Awards?|Achievements?)\b/gi,
+    '\n$1\n'
+  );
+  // Break before "Company Name | Mon YYYY" so title stays on the previous line
+  t = t.replace(
+    /\s+([A-Z][A-Za-z0-9.&]*(?:\s+[A-Z][A-Za-z0-9.&]*){0,3})\s*\|\s*((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4})/g,
+    '\n$1 | $2'
+  );
+  return t
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .join('\n');
+}
+
+/**
  * Best-effort non-AI salvage: structured regex parse, and when that is thin,
  * keep the raw CV text in a custom section so the user never loses content.
  * That section is editor-only (see isEditorOnlyCustomSection) — never shown publicly.
  */
 export function salvageResumeFromText(text: string): StructuredResumeParse {
-  const cleaned = reconstructMissingSpaces(String(text || '')).trim();
+  const cleaned = reflowCollapsedResumeText(
+    reconstructMissingSpaces(String(text || '')).trim()
+  );
   const data = parseResumeWithoutAI(cleaned);
   const score = resumeParseContentScore(data);
 
@@ -1142,23 +1171,27 @@ export function salvageResumeFromText(text: string): StructuredResumeParse {
       (cs) => /imported cv text/i.test(String(cs.sectionTitle || ''))
     );
     if (!alreadyHasImport) {
-      const lines = cleaned.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 40);
+      const lines = cleaned
+        .split(/\n+/)
+        .map((l) => l.trim())
+        .filter((l) => l.length > 40);
       if (!String(data.summary || '').trim() && lines.length) {
-        const rawSummary = lines
-          .slice(0, 3)
-          .join(' ')
-          .replace(
+        // Prefer a short headline line — never paste the whole CV into summary
+        const headline = cleaned
+          .split(/\n+/)
+          .map((l) => l.trim())
+          .find(
+            (l) =>
+              l.length >= 8 &&
+              l.length <= 120 &&
+              !/^(phone|email|linkedin|experiences?|education|skills)/i.test(l) &&
+              !l.includes('•')
+          );
+        if (headline && !/^(sowjanya|experiences)/i.test(headline)) {
+          data.summary = headline.replace(
             /^(?:(?:professional|career|executive|personal)\s+)?(?:summary|profile|objective|overview|statement)\s*[:\-–—.]?\s*/i,
             ''
-          )
-          .trim();
-        // Word-boundary truncate — never publish mid-word cutoffs like "License ho"
-        if (rawSummary.length <= 800) {
-          data.summary = rawSummary;
-        } else {
-          const cut = rawSummary.slice(0, 800);
-          const sp = cut.lastIndexOf(' ');
-          data.summary = (sp > 480 ? cut.slice(0, sp) : cut).trim();
+          );
         }
       }
       data.customSections = [
