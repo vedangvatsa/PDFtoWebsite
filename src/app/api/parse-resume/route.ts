@@ -12,7 +12,6 @@ import {
   isDisposableProfileSlug,
   nameToProfileSlug,
   enrichNameFromContact,
-  attachImportedCvText,
 } from '@/lib/parse-guard';
 import {
   salvageResumeFromText,
@@ -1131,11 +1130,6 @@ export async function POST(request: NextRequest) {
 
     // Strip any residual reconstruction markers before returning to the client.
     aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
-
-    // Always retain the full extracted CV text (editor-only) — never truncate uploads.
-    if (extractedText?.trim()) {
-      aiStructuredData = attachImportedCvText(aiStructuredData, extractedText);
-    }
 
     // Resume processing after successful extraction
     const duration = Date.now() - startTime;
