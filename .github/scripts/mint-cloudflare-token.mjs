@@ -49,6 +49,40 @@ async function verifyToken(token) {
   }
 }
 
+async function verifyGlobalKey(apiKey, email) {
+  const account = (process.env.CLOUDFLARE_ACCOUNT_ID || "").trim();
+  if (!apiKey || !email || !account) return false;
+  try {
+    const res = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${account}/workers/scripts`,
+      { headers: { "X-Auth-Email": email, "X-Auth-Key": apiKey } }
+    );
+    const json = await res.json().catch(() => ({}));
+    return res.ok && json.success === true;
+  } catch {
+    return false;
+  }
+}
+
+// ── 0) Prefer Global API key (never expires, never rotates) ──────────────────
+const globalKey = (process.env.CLOUDFLARE_API_KEY || "").trim();
+const globalEmail = (process.env.CLOUDFLARE_EMAIL || "").trim();
+if (globalKey && globalEmail) {
+  const ok = await verifyGlobalKey(globalKey, globalEmail);
+  if (ok) {
+    mask(globalKey);
+    mask(globalEmail);
+    writeEnv("CLOUDFLARE_API_KEY", globalKey);
+    writeEnv("CLOUDFLARE_EMAIL", globalEmail);
+    writeOutput("auth_mode", "global_api_key");
+    console.log("Using Global API key (verified, no rotation)");
+    process.exit(0);
+  }
+  console.log(
+    "CLOUDFLARE_API_KEY/CLOUDFLARE_EMAIL present but invalid — trying API token"
+  );
+}
+
 // ── 1) Prefer static API token (does not expire on use) ──────────────────────
 const staticToken = (process.env.CLOUDFLARE_API_TOKEN || "").trim();
 if (staticToken) {
