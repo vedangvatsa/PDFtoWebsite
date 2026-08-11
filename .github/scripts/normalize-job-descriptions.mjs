@@ -34,6 +34,8 @@ const DISCLAIMER_PATTERNS = [
   'Apply via CVin.Bio',
   'Continue to the official posting',
   'per Google posting',
+  'not on the public board yet',
+  'paraphrased description from the official posting',
 ];
 
 const PAGE = 200;

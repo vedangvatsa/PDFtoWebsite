@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { ArrowLeft, Briefcase, MapPin, Monitor, Clock, ExternalLink, Github, Linkedin, Twitter, Globe } from 'lucide-react';
 import { blogPosts } from '@/lib/blog-data';
 import nomadCities from '@/lib/nomad-cities';
-import companyDescriptions from '@/lib/company-descriptions.json';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
@@ -27,6 +26,7 @@ import {
   knownCompanyDescription,
   goneDisposableProfilePath,
 } from '@/lib/seo-fallbacks';
+import { publishableCompanyAbout } from '@/lib/company-about';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -520,7 +520,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     };
 
     return (
-      <div className="h-screen overflow-y-auto bg-white selection:bg-primary/10 transition-colors duration-200">
+      <div className="h-screen overflow-y-auto overflow-x-hidden bg-white selection:bg-primary/10 transition-colors duration-200">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
         {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -717,7 +717,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     }));
 
     return (
-      <div className="min-h-screen bg-zinc-50 flex flex-col">
+      <div className="min-h-screen bg-zinc-50 flex flex-col overflow-x-hidden">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchema) }} />
@@ -735,7 +735,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
               alt={`${companyName} company logo — careers and remote jobs`}
             />
             <div className="min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 mb-2">{companyName} Careers</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 mb-2 break-words">{companyName} Careers</h1>
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm font-medium text-zinc-500">
                 <span className="flex items-center gap-1.5"><Briefcase className="w-4 h-4" /> {totalJobs} Active Roles</span>
                 <span className="flex items-center gap-1.5"><Monitor className="w-4 h-4" /> {remotePercent}% Remote</span>
@@ -766,11 +766,11 @@ export default async function ProfileSlugPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Company About — verified data from Wikipedia/website cache */}
+          {/* Company About — original copy only (never raw Wikipedia) */}
           {(() => {
             const topLocations = [...new Set(jobs.map((j: any) => normalizeLocation(j.location)).filter(l => l && l !== 'Remote'))].slice(0, 5);
 
-            const cachedDesc = companyDescriptions[slug as keyof typeof companyDescriptions] || '';
+            const cachedDesc = publishableCompanyAbout(slug) || '';
 
             const description = meta?.description
               || (cachedDesc ? `${cachedDesc} ${companyName} has ${totalJobs} open positions.` : '')
@@ -795,7 +795,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                       </div>
                       <div>
                         <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">HQ</p>
-                        <p className="text-[13px] font-semibold text-zinc-900 leading-tight">{meta.hq}</p>
+                        <p className="text-[13px] font-semibold text-zinc-900 leading-tight break-words">{meta.hq}</p>
                       </div>
                       <div>
                         <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Founded</p>
@@ -822,9 +822,9 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           })()}
 
           {/* Open Roles */}
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-[15px] font-semibold tracking-tight text-zinc-900">Open Roles</h2>
-            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">{totalJobs} {totalJobs === 1 ? 'job' : 'jobs'} found</span>
+          <div className="mb-6 flex items-center justify-between gap-3 min-w-0">
+            <h2 className="text-[15px] font-semibold tracking-tight text-zinc-900 shrink-0">Open Roles</h2>
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider truncate">{totalJobs} {totalJobs === 1 ? 'job' : 'jobs'} found</span>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-12">
@@ -890,8 +890,8 @@ export default async function ProfileSlugPage({ params }: PageProps) {
             <div className="divide-y divide-zinc-200 border border-zinc-200 rounded-xl overflow-hidden">
               {faqs.map((faq, i) => (
                 <details key={i} className="group bg-white" {...(i === 0 ? { open: true } : {})}>
-                  <summary className="flex items-center justify-between cursor-pointer px-5 py-4 text-[14px] font-semibold text-zinc-900 hover:bg-zinc-50 transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
-                    {faq.q}
+                  <summary className="flex items-center justify-between gap-3 cursor-pointer px-5 py-4 text-[14px] font-semibold text-zinc-900 hover:bg-zinc-50 transition-colors select-none list-none [&::-webkit-details-marker]:hidden min-w-0">
+                    <span className="min-w-0 break-words">{faq.q}</span>
                     <svg className="w-4 h-4 text-zinc-400 shrink-0 ml-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                   </summary>
                   <div className="px-5 pb-4 text-[13px] leading-relaxed text-zinc-600">{faq.a}</div>

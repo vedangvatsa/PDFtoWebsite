@@ -22,6 +22,7 @@ import {
   jobTypeLabel,
 } from '@/lib/job-description';
 import { cleanPublishText } from '@/lib/noslop';
+import { companyAboutForJob } from '@/lib/company-about';
 import type { JobDetail, RelatedJobCard } from '@/app/jobs/[id]/job-detail-client';
 import {
   getCachedJobById,
@@ -81,13 +82,16 @@ export function toJobDetail(job: JobRow): JobDetail {
     created_at: job.created_at,
     description_html: published.html,
     description_plain: published.plain,
-    has_description: published.html.length > 40,
+    has_description: true,
+    description_kind: published.isCurated ? 'job' : 'company',
     excerpt: published.isCurated
       ? jobDescriptionExcerpt(job.description, 200, {
           title: cleanPublishText(job.title),
           company: companyDisplayName(cleanPublishText(job.company)),
         })
-      : `${cleanPublishText(job.title)} at ${cleanPublishText(job.company)}.${location ? ` ${location}.` : ''} Apply on CVin.Bio.`,
+      : published.plain
+        ? published.plain.slice(0, 200)
+        : `${cleanPublishText(job.title)} at ${cleanPublishText(job.company)}.${location ? ` ${location}.` : ''}`,
     description_word_count: published.wordCount,
     is_indexable: published.indexable,
     company_slug: companyToSlug(job.company),
@@ -97,11 +101,8 @@ export function toJobDetail(job: JobRow): JobDetail {
 }
 
 /**
- * The ONLY description we publish on a job page is a paraphrased body
- * (curated-jd), written from a curled ATS source and checked manually.
- * Raw ATS text is never shown. Uncurated jobs are not listed on the board;
- * if opened somehow, we do not invent a stub — readers use the apply link
- * until paraphrase is published.
+ * Curated jobs publish the paraphrased JD. Uncurated jobs never show raw ATS
+ * text and never mention the listing queue — they show original company about.
  */
 export type PublishedDescription = {
   isCurated: boolean;
@@ -110,6 +111,24 @@ export type PublishedDescription = {
   wordCount: number;
   indexable: boolean;
 };
+
+function companyAboutFallback(job: JobRow, location: string): PublishedDescription {
+  const company = companyDisplayName(cleanPublishText(job.company));
+  const about = companyAboutForJob(company, {
+    title: cleanPublishText(job.title),
+    location,
+    slug: companyToSlug(job.company),
+  });
+  const html = formatJobDescription(about, location);
+  const plain = jobDescriptionPlainText(about);
+  return {
+    isCurated: false,
+    html,
+    plain,
+    wordCount: jobDescriptionWordCount(about),
+    indexable: false,
+  };
+}
 
 export function publishSafeDescription(job: JobRow, location: string): PublishedDescription {
   const isCurated = Array.isArray(job.tags) && job.tags.includes('curated-jd');
@@ -123,14 +142,7 @@ export function publishSafeDescription(job: JobRow, location: string): Published
       indexable: isJobDescriptionIndexable(job.description),
     };
   }
-  // Not paraphrased yet — no invented stub (board will not list these).
-  return {
-    isCurated: false,
-    html: '',
-    plain: '',
-    wordCount: 0,
-    indexable: false,
-  };
+  return companyAboutFallback(job, location);
 }
 
 const TITLE_STOP = new Set([
@@ -366,11 +378,13 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
   const locationSuffix = location ? `${location}. ` : '';
   const fallback = `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
   // Raw scraped bodies are never used in meta (plagiarism guard) — only
-  // curated rewritten bodies. Uncurated pages use a title/company fallback.
+  // curated rewritten bodies. Uncurated pages use company about when we have it.
   const published = publishSafeDescription(job, location);
   const excerpt = published.isCurated && published.indexable
     ? jobDescriptionExcerpt(job.description, 140, { title: jobTitle, company })
-    : '';
+    : published.plain && published.plain.length > 40
+      ? published.plain.slice(0, 140)
+      : '';
   const description = excerpt || fallback;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
   const indexable = published.indexable;

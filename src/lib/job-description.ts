@@ -10,7 +10,7 @@ import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 11;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 12;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -34,6 +34,8 @@ export function stripAggregatorDisclaimers(text: string): string {
     /Apply via CVin\.Bio\.?/gi,
     /Continue to the official posting[^\n.]*/gi,
     /Full description is on the company careers page\.?/gi,
+    /This role is not on the public board yet\.?/gi,
+    /We publish a paraphrased description from the official posting[\s\S]*?employer apply link\.?/gi,
   ];
   for (const re of patterns) s = s.replace(re, '');
   return s

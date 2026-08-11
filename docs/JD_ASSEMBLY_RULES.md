@@ -45,7 +45,7 @@ Full curated pages must follow the paraphrase rulebook.
 | L7 | Fail closed: if gates fail, ship short noindex page | Do not force 600w fluff |
 
 ### Index vs render
-- **Uncurated / no curl body:** no synthetic stub. Page shows apply link only (`publishSafeDescription` empty). **noindex.**
+- **Uncurated / no curl body:** original company about (or a one-line hiring note). Never process/queue copy. **noindex.**
 - **Low-quality apply hosts** (LinkedIn, jobviewtrack, etc.): hidden from board/company lists unless `curated-jd`.
 - **Passed gates:** full assembled body, tag `curated-jd`, eligible for sitemap/IndexNow only if `wordCount >= 600` and uniqueness gates pass.
 

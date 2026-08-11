@@ -13,6 +13,8 @@ const STRIP_PATTERNS = [
   /Apply via CVin\.Bio\.?/gi,
   /Continue to the official posting[^\n.]*/gi,
   /Full description is on the company careers page\.?/gi,
+  /This role is not on the public board yet\.?/gi,
+  /We publish a paraphrased description from the official posting[\s\S]*?employer apply link\.?/gi,
 ];
 
 export function stripAggregatorDisclaimers(text) {
