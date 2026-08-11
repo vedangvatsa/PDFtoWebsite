@@ -133,105 +133,6 @@ CRITICAL RULES:
 17. DATE RULE: If a role or education is ongoing, set "endDate" to "Present" and "startDate" to the actual start date. NEVER put placeholder text like "Still ongoing" in "startDate" or "endDate". If a date is unknown, leave the field as an empty string.
 DO NOT THROW ANY REAL WORK DATA AWAY!`;
 
-// Strict JSON schema for OpenAI structured outputs — guarantees schema-valid JSON.
-const OPENAI_SCHEMA = {
-  type: 'json_schema' as const,
-  json_schema: {
-    name: 'resume_parse',
-    strict: true,
-    schema: {
-      type: 'object',
-      additionalProperties: false,
-      required: ['personalInfo', 'summary', 'workExperience', 'education', 'skills', 'customSections'],
-      properties: {
-        personalInfo: {
-          type: 'object',
-          additionalProperties: false,
-          required: ['fullName', 'email', 'phone', 'location', 'website', 'github', 'linkedin', 'additionalLinks'],
-          properties: {
-            fullName: { type: 'string' },
-            email: { type: 'string' },
-            phone: { type: 'string' },
-            location: { type: 'string' },
-            website: { type: 'string' },
-            github: { type: 'string' },
-            linkedin: { type: 'string' },
-            additionalLinks: {
-              type: 'array',
-              items: {
-                type: 'object',
-                additionalProperties: false,
-                required: ['label', 'url'],
-                properties: { label: { type: 'string' }, url: { type: 'string' } },
-              },
-            },
-          },
-        },
-        summary: { type: 'string' },
-        workExperience: {
-          type: 'array',
-          items: {
-            type: 'object',
-            additionalProperties: false,
-            required: ['company', 'title', 'location', 'startDate', 'endDate', 'description'],
-            properties: {
-              company: { type: 'string' },
-              title: { type: 'string' },
-              location: { type: 'string' },
-              startDate: { type: 'string' },
-              endDate: { type: 'string' },
-              description: { type: 'string' },
-            },
-          },
-        },
-        education: {
-          type: 'array',
-          items: {
-            type: 'object',
-            additionalProperties: false,
-            required: ['institution', 'degree', 'fieldOfStudy', 'startDate', 'endDate', 'description'],
-            properties: {
-              institution: { type: 'string' },
-              degree: { type: 'string' },
-              fieldOfStudy: { type: 'string' },
-              startDate: { type: 'string' },
-              endDate: { type: 'string' },
-              description: { type: 'string' },
-            },
-          },
-        },
-        skills: { type: 'array', items: { type: 'string' } },
-        customSections: {
-          type: 'array',
-          items: {
-            type: 'object',
-            additionalProperties: false,
-            required: ['sectionTitle', 'items'],
-            properties: {
-              sectionTitle: { type: 'string' },
-              items: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  additionalProperties: false,
-                  required: ['title', 'subtitle', 'description', 'date'],
-                  properties: {
-                    title: { type: 'string' },
-                    subtitle: { type: 'string' },
-                    description: { type: 'string' },
-                    date: { type: 'string' },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-};
-
-const DEFAULT_OPENAI_MODEL = 'gpt-4.1';
 const DEFAULT_GEMINI_MODEL = 'gemini-3.6-flash';
 const DEFAULT_DEEPSEEK_MODEL = 'deepseek-v4-flash';
 const DEFAULT_DEEPSEEK_REASONING_EFFORT = 'high';
@@ -282,10 +183,6 @@ type ParseMedia =
   | { kind: 'image'; dataUri: string; mimeType: string }
   | { kind: 'pdf'; base64: string };
 
-function hasOpenAI(): boolean {
-  return Boolean(process.env.OPENAI_API_KEY?.trim());
-}
-
 function hasGemini(): boolean {
   return getGeminiApiKeys().length > 0;
 }
@@ -297,7 +194,7 @@ function hasDeepSeek(): boolean {
 const PARSE_USER_PROMPT =
   'Parse this resume into the required JSON schema. Extract the candidate name, contact info, summary, all work experience, all education, skills, and every other section as customSections. Follow all rules exactly.';
 
-/** iPhone photos (HEIC/HEIF) → JPEG so both OpenAI and Gemini vision accept them. */
+/** iPhone photos (HEIC/HEIF) → JPEG so Gemini vision accepts them. */
 async function convertHeicToJpeg(input: Buffer): Promise<Buffer> {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const convert = require('heic-convert') as (opts: {
@@ -307,67 +204,6 @@ async function convertHeicToJpeg(input: Buffer): Promise<Buffer> {
   }) => Promise<ArrayBuffer>;
   const out = await convert({ buffer: input, format: 'JPEG', quality: 0.9 });
   return Buffer.from(out);
-}
-
-async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
-  const apiKey = process.env.OPENAI_API_KEY?.trim();
-  if (!apiKey) throw new Error('OPENAI_API_KEY is missing');
-  const model = process.env.OPENAI_MODEL?.trim() || DEFAULT_OPENAI_MODEL;
-
-  let lastError: Error | null = null;
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 45000);
-    try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model,
-          temperature: 0,
-          messages,
-          response_format: OPENAI_SCHEMA,
-        }),
-        signal: controller.signal,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const statusCode = response.status;
-        const errorMsg = errorData.error?.message || `API Error ${statusCode}`;
-        // "No credits" / insufficient quota won't resolve by retrying — fail fast.
-        const isBillingError = /no credits|insufficient.?quota|billing/i.test(errorMsg);
-        if ((statusCode === 429 || statusCode >= 500) && !isBillingError && attempt < MAX_RETRIES) {
-          console.warn(`OpenAI API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`);
-          lastError = new Error(errorMsg);
-          await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
-          continue;
-        }
-        throw new Error(errorMsg);
-      }
-
-      const result = await response.json();
-      const content = result.choices?.[0]?.message?.content;
-      if (!content) throw new Error('Empty response from AI engine');
-
-      let raw = String(content).replace(/```json/g, '').replace(/```/g, '').trim();
-      return JSON.parse(raw);
-    } catch (err: any) {
-      lastError = err instanceof Error ? err : new Error('Unknown AI error');
-      if (attempt < MAX_RETRIES && (lastError.name === 'AbortError' || lastError.message.includes('fetch'))) {
-        console.warn(`OpenAI request failed (attempt ${attempt + 1}), retrying...`, lastError.message);
-        await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
-        continue;
-      }
-      throw lastError;
-    } finally {
-      clearTimeout(timeout);
-    }
-  }
-  throw lastError || new Error('AI parsing failed');
 }
 
 /** DeepSeek — OpenAI-compatible chat completions. Text-only (no vision); used for extracted text. */
@@ -436,34 +272,6 @@ async function callDeepSeek(messages: OpenAIMessage[]): Promise<any> {
     }
   }
   throw lastError || new Error('DeepSeek parsing failed');
-}
-
-/** Build OpenAI user content that can include images and/or PDF file parts. */
-function buildOpenAIUserContent(
-  text: string,
-  media: ParseMedia
-): OpenAIMessage['content'] {
-  if (media.kind === 'image') {
-    return [
-      { type: 'text', text },
-      { type: 'image_url', image_url: { url: media.dataUri } },
-    ];
-  }
-  if (media.kind === 'pdf') {
-    // OpenAI file input (models that accept PDF). If the model rejects it,
-    // callParseAI falls through to Gemini which accepts PDF natively.
-    return [
-      { type: 'text', text },
-      {
-        type: 'file',
-        file: {
-          filename: 'resume.pdf',
-          file_data: `data:application/pdf;base64,${media.base64}`,
-        },
-      },
-    ];
-  }
-  return text;
 }
 
 /** Gemini — text, images, or multi-page PDF bytes (best path for scans). */
@@ -558,26 +366,25 @@ async function callGemini(
 
 /**
  * Provider priority:
- *  - OpenAI (gpt-4.1) — primary for all inputs (text + vision).
- *  - DeepSeek — text-only fallback for extracted-text resumes (skip for image/PDF).
- *  - Gemini — final fallback (handles PDF/images natively, incl. HEIC).
+ *  - DeepSeek — text-only for extracted-text resumes (skip for image/PDF).
+ *  - Gemini — handles PDF/images natively (incl. HEIC).
+ * Both run in parallel; the first success wins.
  */
 async function callParseAI(
   messages: OpenAIMessage[],
-  opts: { media?: ParseMedia; forceProvider?: 'deepseek' | 'openai' | 'gemini' } = {}
+  opts: { media?: ParseMedia; forceProvider?: 'deepseek' | 'gemini' } = {}
 ): Promise<any> {
   const media = opts.media || { kind: 'none' };
   const force = opts.forceProvider;
   const isTextOnly = media.kind === 'none';
-  // OpenAI is primary for all inputs (text + vision). DeepSeek is text-only,
-  // so it is only used when the parse is text-based; Gemini is final fallback.
-  const wantOpenAI = hasOpenAI() && force !== 'gemini' && force !== 'deepseek';
-  const wantDeepSeek = hasDeepSeek() && isTextOnly && force !== 'openai' && force !== 'gemini';
-  const wantGemini = hasGemini() && force !== 'openai' && force !== 'deepseek';
+  // DeepSeek is text-only, so it is only used when the parse is text-based;
+  // Gemini handles text + PDF + images.
+  const wantDeepSeek = hasDeepSeek() && isTextOnly && force !== 'gemini';
+  const wantGemini = hasGemini() && force !== 'deepseek';
 
-  if (!wantOpenAI && !wantDeepSeek && !wantGemini) {
+  if (!wantDeepSeek && !wantGemini) {
     throw new Error(
-      'No AI keys configured. Set OPENAI_API_KEY (primary) with DEEPSEEK_API_KEY and/or GEMINI_API_KEY (fallback).'
+      'No AI keys configured. Set DEEPSEEK_API_KEY (text resumes) and/or GEMINI_API_KEY (PDFs/images).'
     );
   }
 
@@ -591,32 +398,12 @@ async function callParseAI(
     if (t?.text) userText = t.text;
   }
 
-  const tryOpenAI = async () => {
-    // Rebuild messages so image/PDF parts are attached for this provider
-    const rebuilt: OpenAIMessage[] = [{ role: 'system', content: systemInstruction }];
-    rebuilt.push({
-      role: 'user',
-      content: buildOpenAIUserContent(userText, media),
-    });
-    return callOpenAI(rebuilt);
-  };
-
   const tryGemini = async () => callGemini(userText, media);
   const tryDeepSeek = async () => callDeepSeek(messages);
 
   const errors: string[] = [];
 
-  // 1) OpenAI primary — usually fails fast (no credits) or wins for vision.
-  if (wantOpenAI) {
-    try {
-      return await tryOpenAI();
-    } catch (err) {
-      errors.push(`openai: ${err instanceof Error ? err.message : err}`);
-      console.warn('OpenAI parse failed; falling back…', errors[errors.length - 1]);
-    }
-  }
-
-  // 2) Race DeepSeek + Gemini in parallel — first success wins, so the
+  // Race DeepSeek + Gemini in parallel — first success wins, so the
   //    user-visible latency is the fastest provider, not their sum.
   const tasks: Array<{ name: string; run: () => Promise<any> }> = [];
   if (wantDeepSeek) tasks.push({ name: 'deepseek', run: tryDeepSeek });
