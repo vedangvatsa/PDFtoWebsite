@@ -338,7 +338,9 @@ async function callOpenAI(messages: OpenAIMessage[]): Promise<any> {
         const errorData = await response.json().catch(() => ({}));
         const statusCode = response.status;
         const errorMsg = errorData.error?.message || `API Error ${statusCode}`;
-        if ((statusCode === 429 || statusCode >= 500) && attempt < MAX_RETRIES) {
+        // "No credits" / insufficient quota won't resolve by retrying — fail fast.
+        const isBillingError = /no credits|insufficient.?quota|billing/i.test(errorMsg);
+        if ((statusCode === 429 || statusCode >= 500) && !isBillingError && attempt < MAX_RETRIES) {
           console.warn(`OpenAI API returned ${statusCode}, retrying (attempt ${attempt + 1}/${MAX_RETRIES})...`);
           lastError = new Error(errorMsg);
           await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
