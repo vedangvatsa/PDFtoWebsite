@@ -7,6 +7,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { toCompanyKey, COMPANY_BLOCKLIST, isJunkCompanyName } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import companyDescriptions from '@/lib/company-descriptions.json';
+import { publishableCompanyAbout } from '@/lib/company-about';
 
 const DESCRIPTIONS = companyDescriptions as Record<string, string>;
 
@@ -69,10 +70,7 @@ export function goneUuidJobPath(): string {
   return '/jobs';
 }
 
-/** Known description for a company slug (even with zero live roles). */
+/** Known publishable description for a company slug (never encyclopedia dumps). */
 export function knownCompanyDescription(slug: string): string | null {
-  const key = toCompanyKey(slug);
-  if (!key) return null;
-  const text = DESCRIPTIONS[key];
-  return text && text.trim().length > 40 ? text.trim() : null;
+  return publishableCompanyAbout(slug);
 }

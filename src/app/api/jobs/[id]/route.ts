@@ -69,7 +69,6 @@ export async function GET(
   // synthesized original content.
   const published = publishSafeDescription(job as any, normalizeLocation(job.location) || '');
   const descriptionHtml = published.html;
-  const hasDescription = descriptionHtml.length > 40;
 
   const response = NextResponse.json({
     job: {
@@ -86,7 +85,8 @@ export async function GET(
       source: job.source,
       published_at: job.published_at,
       description_html: descriptionHtml,
-      has_description: hasDescription,
+      has_description: true,
+      description_kind: published.isCurated ? 'job' : 'company',
       excerpt: published.plain.slice(0, 200),
       views: job.views ?? 0,
       clicks: job.clicks ?? 0,

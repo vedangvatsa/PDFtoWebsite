@@ -50,6 +50,7 @@ export interface JobDetail {
   description_html: string;
   description_plain?: string;
   has_description: boolean;
+  description_kind?: 'job' | 'company';
   excerpt: string;
   description_word_count?: number;
   is_indexable?: boolean;
@@ -339,9 +340,9 @@ export default function JobDetailClient({
                     </span>
                   )}
                   {job.salary && (
-                    <span className="inline-flex items-center gap-1 font-medium text-emerald-700">
-                      <DollarSign className="h-3.5 w-3.5 shrink-0" />
-                      {job.salary}
+                    <span className="inline-flex items-start gap-1 font-medium text-emerald-700 min-w-0">
+                      <DollarSign className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+                      <span className="break-words">{job.salary}</span>
                     </span>
                   )}
                 </div>
@@ -356,27 +357,16 @@ export default function JobDetailClient({
 
           <div className="border-t border-zinc-100 pt-5 sm:pt-6 min-w-0">
             <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-3 sm:mb-4">
-              Job description
+              {job.description_kind === 'company' ? 'About the company' : 'Job description'}
             </h2>
-            {job.has_description ? (
-              <div
-                className={JOB_DESCRIPTION_PROSE_CLASS}
-                dangerouslySetInnerHTML={{ __html: job.description_html }}
-              />
-            ) : (
-              <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50 px-4 sm:px-5 py-6 sm:py-8 text-center">
-                <Briefcase className="h-8 w-8 text-zinc-300 mx-auto mb-3" />
-                <p className="text-sm text-zinc-600 font-medium">
-                  This role is not on the public board yet.
-                </p>
-                <p className="mt-1.5 text-xs text-zinc-500 max-w-sm mx-auto">
-                  We publish a paraphrased description from the official posting before listing. Until then, use the employer apply link.
-                </p>
-                <div className="mt-3">
-                  <CompanyApplyLink />
-                </div>
-              </div>
-            )}
+            <div
+              className={JOB_DESCRIPTION_PROSE_CLASS}
+              dangerouslySetInnerHTML={{
+                __html:
+                  job.description_html ||
+                  `<p>${job.company} is hiring for ${job.title}${job.location ? ` in ${job.location}` : ''}.</p>`,
+              }}
+            />
           </div>
 
           {/* Soft company exit only — not a primary CTA */}

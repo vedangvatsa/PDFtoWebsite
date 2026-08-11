@@ -989,6 +989,22 @@ const COMPANIES: Record<string, CompanyMeta> = {
     description:
       'Indian Institute of Technology Bombay is a public research university in Mumbai, established in 1958 as the second Indian Institute of Technology. Its 545-acre Powai campus hosts 17 academic departments, three schools, and more than 35 research centres spanning engineering, science, design, and management. Named an Institution of Eminence in 2018, it consistently ranks among India’s top technical institutes and runs one of the country’s most competitive undergraduate admissions. Its Shailesh J. Mehta School of Management (SJMSOM) regularly recruits faculty across finance, marketing, operations, and other management disciplines.',
   },
+  'torc-robotics': {
+    slug: 'torc-robotics',
+    name: 'Torc Robotics',
+    website: 'https://torc.ai',
+    founded: 2005,
+    hq: 'Blacksburg, VA',
+    size: '500+',
+    stage: 'Subsidiary (Daimler Truck)',
+    funding: 'Daimler Truck majority stake (2019)',
+    industry: 'Autonomous Trucking',
+    description:
+      'Torc Robotics writes the software that lets heavy trucks drive themselves on public highways. The company began in Blacksburg, Virginia, in 2005 with students from Virginia Tech and later became part of Daimler Truck. Engineering and test work now run in the United States, Canada, and Germany, with an early commercial focus on Freightliner Cascadia trucks used in U.S. freight.',
+    socials: {
+      linkedin: 'https://linkedin.com/company/torc-robotics',
+    },
+  },
 };
 
 export function getCompanyMeta(slug: string): CompanyMeta | null {
