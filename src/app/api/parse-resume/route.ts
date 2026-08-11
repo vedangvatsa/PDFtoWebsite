@@ -604,7 +604,7 @@ async function callParseAI(
 
   const errors: string[] = [];
 
-  // 1) OpenAI primary — handles text, images, and scanned PDFs
+  // 1) OpenAI primary — usually fails fast (no credits) or wins for vision.
   if (wantOpenAI) {
     try {
       return await tryOpenAI();
@@ -614,22 +614,17 @@ async function callParseAI(
     }
   }
 
-  // 2) DeepSeek for extracted-text resumes (skip — text-only, no vision)
-  if (wantDeepSeek) {
-    try {
-      return await tryDeepSeek();
-    } catch (err) {
-      errors.push(`deepseek: ${err instanceof Error ? err.message : err}`);
-      console.warn('DeepSeek parse failed; falling back…', errors[errors.length - 1]);
-    }
-  }
+  // 2) Race DeepSeek + Gemini in parallel — first success wins, so the
+  //    user-visible latency is the fastest provider, not their sum.
+  const tasks: Array<{ name: string; run: () => Promise<any> }> = [];
+  if (wantDeepSeek) tasks.push({ name: 'deepseek', run: tryDeepSeek });
+  if (wantGemini) tasks.push({ name: 'gemini', run: tryGemini });
 
-  // 3) Gemini as fallback (rate-limit / outage / unsupported modality)
-  if (wantGemini) {
+  if (tasks.length > 0) {
     try {
-      return await tryGemini();
+      return await raceFirstSuccess(tasks);
     } catch (err) {
-      errors.push(`gemini: ${err instanceof Error ? err.message : err}`);
+      errors.push(err instanceof Error ? err.message : String(err));
     }
   }
 
@@ -638,6 +633,25 @@ async function callParseAI(
       ? `Could not read this scanned PDF (${errors.join(' | ')}). Try exporting as a text PDF or uploading a clear JPG/PNG photo.`
       : `Failed to process resume (${errors.join(' | ') || 'no provider available'}).`
   );
+}
+
+/**
+ * Runs all tasks concurrently and resolves with the FIRST successful result.
+ * If every task rejects, rejects with all collected errors joined.
+ */
+function raceFirstSuccess<T>(tasks: Array<{ name: string; run: () => Promise<T> }>): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    let pending = tasks.length;
+    const errs: string[] = [];
+    for (const t of tasks) {
+      t.run()
+        .then((v) => resolve(v))
+        .catch((err) => {
+          errs.push(`${t.name}: ${err instanceof Error ? err.message : err}`);
+          if (--pending === 0) reject(new Error(errs.join(' | ')));
+        });
+    }
+  });
 }
 
 
