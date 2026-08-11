@@ -9,7 +9,7 @@ import { PostHogProvider } from '@/components/posthog-provider';
 import { ClarityProvider } from '@/components/clarity-provider';
 import { AuthMethodTracker } from '@/components/auth-method-tracker';
 import { Inter } from 'next/font/google';
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';

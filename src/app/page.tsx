@@ -2,9 +2,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { preload } from 'react-dom';
+import dynamic from 'next/dynamic';
 import posthog from 'posthog-js';
 import { LANDING_EVENTS } from '@/lib/posthog-events';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { UploadCloud, Edit, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -13,7 +14,6 @@ import MicroFooter from '@/components/micro-footer';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { LoginDialog } from '@/components/login-dialog';
 import { useUser } from '@/auth';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 import {
@@ -23,9 +23,26 @@ import {
   storePendingResumeFile,
 } from '@/lib/cv-upload-client';
 
+const LoginDialog = dynamic(
+  () => import('@/components/login-dialog').then((m) => ({ default: m.LoginDialog })),
+  {
+    ssr: false,
+    loading: () => (
+      <button type="button" className="underline hover:text-primary">
+        Sign in
+      </button>
+    ),
+  }
+);
+
+const HERO_SRC_360 = '/images/cvinbio-360.webp';
+const HERO_SRC_560 = '/images/cvinbio-560.webp';
+const HERO_SRCSET = `${HERO_SRC_360} 360w, ${HERO_SRC_560} 560w`;
+const HERO_SIZES = '(max-width: 640px) 180px, 280px';
+
 function StepIndicator({ num, label, desc }: { num: number; label: string; desc: string }) {
   return (
-    <div className="flex flex-col items-center gap-1.5 text-center">
+    <div className="flex flex-col items-center gap-1.5 text-center min-w-0">
       <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground font-bold text-xs">{num}</div>
       <span className="text-[11px] font-medium uppercase tracking-wider">{label}</span>
       <span className="text-[11px] text-muted-foreground">{desc}</span>
@@ -129,21 +146,30 @@ export default function Home() {
   };
 
 
+  // Skip /_next/image for LCP — static WebP at display size, no optimizer hop.
+  preload(HERO_SRC_360, {
+    as: 'image',
+    imageSrcSet: HERO_SRCSET,
+    imageSizes: HERO_SIZES,
+    fetchPriority: 'high',
+  });
+
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col overflow-x-hidden">
       <Header />
       <main id="main-content" className="flex-1 flex flex-col items-center justify-center p-4">
         <div className="flex flex-col items-center space-y-4 sm:space-y-6 text-center">
           <div className="rounded-2xl p-2 sm:p-4">
-            <Image
-              src="/images/cvinbio.webp"
+            <img
+              src={HERO_SRC_560}
+              srcSet={HERO_SRCSET}
+              sizes={HERO_SIZES}
               alt="CVin.Bio | Turn your CV into a website"
               width={300}
               height={300}
-              sizes="(max-width: 640px) 180px, 280px"
-              quality={80}
+              fetchPriority="high"
+              decoding="async"
               className="mb-0 w-[180px] h-[180px] sm:w-[280px] sm:h-[280px]"
-              priority
             />
           </div>
 
@@ -165,7 +191,7 @@ export default function Home() {
                       <Link href="/editor">Go to Your Editor</Link>
                   </Button>
                   <p className="mt-2 text-sm text-muted-foreground">
-                      Welcome, {user.user_metadata?.full_name?.split(' ')[0] || user.email}!
+                      Welcome, <span className="break-all">{user.user_metadata?.full_name?.split(' ')[0] || user.email}</span>!
                   </p>
               </div>
             ) : (

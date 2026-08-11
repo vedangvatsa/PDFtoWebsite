@@ -30,14 +30,18 @@ const nextConfigFn = (phase: string): NextConfig => {
         '**/*.mp4',
       ],
     },
-    // Use slim PostHog build — strips replay, surveys, toolbar
+    // Slim PostHog (~93KB) — strips replay/surveys/toolbar; production uses webpack.
     turbopack: {
       resolveAlias: {
-        'posthog-js': 'posthog-js/dist/module.no-external.js',
+        'posthog-js': 'posthog-js/dist/module.slim.js',
       },
     },
     // Webpack production bundle optimizations
     webpack(config, { isServer }) {
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        'posthog-js': 'posthog-js/dist/module.slim.js',
+      };
       // Prevent posthog from bloating server-side lambdas
       if (isServer) {
         config.externals = [...(config.externals || []), 'posthog-js'];
@@ -130,6 +134,15 @@ const nextConfigFn = (phase: string): NextConfig => {
           source: '/_next/image',
           headers: [
             { key: 'Cache-Control', value: 'public, max-age=604800, immutable' },
+          ],
+        },
+        {
+          // Stable brand/marketing images — long browser + CDN cache
+          source: '/images/:path*',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=604800, stale-while-revalidate=86400' },
+            { key: 'CDN-Cache-Control', value: 'public, max-age=2592000' },
+            { key: 'Cloudflare-CDN-Cache-Control', value: 'public, max-age=2592000' },
           ],
         },
         {

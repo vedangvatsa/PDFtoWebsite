@@ -25,45 +25,62 @@ function isBotOrHeadless(): boolean {
   return false
 }
 
+function scheduleIdle(fn: () => void, timeoutMs: number): () => void {
+  if (typeof window === 'undefined') return () => {}
+  const ric = window.requestIdleCallback
+  if (typeof ric === 'function') {
+    const id = ric(() => fn(), { timeout: timeoutMs })
+    return () => window.cancelIdleCallback?.(id)
+  }
+  const t = window.setTimeout(fn, Math.min(timeoutMs, 1200))
+  return () => clearTimeout(t)
+}
+
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
-      api_host: '/ingest',
-      ui_host: 'https://us.posthog.com',
-      person_profiles: 'identified_only',
+    if (isBotOrHeadless()) return
 
-      // ── Pageview & navigation ──
-      capture_pageview: false,        // We handle manually for SPA accuracy
-      capture_pageleave: true,
+    // Defer init off the critical path; hard timeout so bounces still get $pageview.
+    return scheduleIdle(() => {
+      if (posthog.__loaded) return
+      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
+        api_host: '/ingest',
+        ui_host: 'https://us.posthog.com',
+        person_profiles: 'identified_only',
 
-      // ── Session replay — DISABLED for performance ──
-      disable_session_recording: true,
+        // ── Pageview & navigation ──
+        capture_pageview: false,        // We handle manually for SPA accuracy
+        capture_pageleave: true,
 
-      // ── Autocapture — MINIMAL for performance ──
-      autocapture: false,             // We track everything explicitly
+        // ── Session replay — DISABLED for performance ──
+        disable_session_recording: true,
 
-      // ── Performance — DISABLED to reduce INP ──
-      capture_performance: false,
+        // ── Autocapture — MINIMAL for performance ──
+        autocapture: false,             // We track everything explicitly
 
-      // ── Privacy ──
-      respect_dnt: false,
-      before_send: (event) => {
-        if (!event) return event;
-        // Drop scraper/headless traffic before it reaches PostHog.
-        if (isBotOrHeadless()) return null;
-        if (event.properties?.['$current_url']) {
-          event.properties['$current_url'] = event.properties['$current_url'].replace(/email=[^&]+/g, 'email=REDACTED');
-        }
-        return event;
-      },
+        // ── Performance — DISABLED to reduce INP ──
+        capture_performance: false,
 
-      // ── Loading optimization ──
-      bootstrap: {},                  // Skip initial decide request
-      advanced_disable_decide: true,  // Don't call /decide endpoint
-      advanced_disable_feature_flags: true,  // Not using feature flags
-      advanced_disable_toolbar_metrics: true,
-      disable_surveys: true,                // Not using surveys
-    })
+        // ── Privacy ──
+        respect_dnt: false,
+        before_send: (event) => {
+          if (!event) return event;
+          // Drop scraper/headless traffic before it reaches PostHog.
+          if (isBotOrHeadless()) return null;
+          if (event.properties?.['$current_url']) {
+            event.properties['$current_url'] = event.properties['$current_url'].replace(/email=[^&]+/g, 'email=REDACTED');
+          }
+          return event;
+        },
+
+        // ── Loading optimization ──
+        bootstrap: {},                  // Skip initial decide request
+        advanced_disable_decide: true,  // Don't call /decide endpoint
+        advanced_disable_feature_flags: true,  // Not using feature flags
+        advanced_disable_toolbar_metrics: true,
+        disable_surveys: true,                // Not using surveys
+      })
+    }, 2000)
   }, [])
 
   return (
@@ -83,7 +100,7 @@ function PostHogIdentify() {
   const ph = usePostHog()
 
   useEffect(() => {
-    if (user && ph) {
+    if (user && ph && posthog.__loaded) {
       ph.identify(user.id, {
         email: user.email,
         name: user.user_metadata?.full_name,
@@ -109,7 +126,10 @@ function PostHogPageview() {
   const ph = usePostHog()
 
   useEffect(() => {
-    if (pathname && ph) {
+    if (!pathname || !ph) return
+
+    const send = () => {
+      if (!posthog.__loaded) return false
       let url = window.origin + pathname
       const search = searchParams?.toString()
       if (search) url += '?' + search
@@ -138,7 +158,17 @@ function PostHogPageview() {
           ...(utmCampaign ? { initial_utm_campaign: utmCampaign } : {}),
         })
       }
+      return true
     }
+
+    if (send()) return
+
+    // Init is idle-deferred — retry briefly so first paint pageviews aren't dropped.
+    const started = Date.now()
+    const id = window.setInterval(() => {
+      if (send() || Date.now() - started > 4000) clearInterval(id)
+    }, 200)
+    return () => clearInterval(id)
   }, [pathname, searchParams, ph])
 
   return null
