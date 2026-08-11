@@ -11,7 +11,7 @@ const XML_HEADERS_BASE = {
 function sitemapResponseHeaders(ttlSeconds = 3600): HeadersInit {
   return {
     ...XML_HEADERS_BASE,
-    'Cache-Control': `public, max-age=0, s-maxage=${ttlSeconds}, stale-while-revalidate=${ttlSeconds * 24}`,
+    'Cache-Control': `public, max-age=0, s-maxage=${ttlSeconds}, stale-while-revalidate=${ttlSeconds}`,
     'CDN-Cache-Control': `public, max-age=${ttlSeconds}`,
     'Cloudflare-CDN-Cache-Control': `public, max-age=${ttlSeconds}`,
   };
