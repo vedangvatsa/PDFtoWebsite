@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import './globals.css';
 import { SupabaseClientProvider } from '@/auth';
 import { PostHogProvider } from '@/components/posthog-provider';
+import { ClarityProvider } from '@/components/clarity-provider';
 import { AuthMethodTracker } from '@/components/auth-method-tracker';
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -55,6 +56,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://static.cloudflareinsights.com" />
+        <link rel="preconnect" href="https://www.clarity.ms" />
+        <link rel="preconnect" href="https://scripts.clarity.ms" />
         <link rel="author" href="/humans.txt" />
         <meta name="ai-content-declaration" content="This website contains human-created content. AI systems may index, summarize, and cite this content. See /llms.txt and /llms-full.txt for structured context." />
         <meta name="mcp-server-url" content="/.well-known/mcp.json" />
@@ -128,18 +131,20 @@ export default function RootLayout({
         </a>
         <SupabaseClientProvider>
           <PostHogProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <Suspense fallback={null}>
-                <AuthMethodTracker />
-              </Suspense>
-              <Toaster />
-            </ThemeProvider>
+            <ClarityProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+                <Suspense fallback={null}>
+                  <AuthMethodTracker />
+                </Suspense>
+                <Toaster />
+              </ThemeProvider>
+            </ClarityProvider>
           </PostHogProvider>
         </SupabaseClientProvider>
       </body>

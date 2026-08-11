@@ -111,11 +111,11 @@ const nextConfigFn = (phase: string): NextConfig => {
               key: 'Content-Security-Policy',
               value: [
                 "default-src 'self'",
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://static.cloudflareinsights.com",
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://static.cloudflareinsights.com https://*.clarity.ms https://c.bing.com",
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
                 "font-src 'self' https://fonts.gstatic.com https://basemaps.cartocdn.com",
                 "img-src 'self' data: blob: https: http:",
-                "connect-src 'self' https://us.i.posthog.com https://*.supabase.co wss://*.supabase.co https://basemaps.cartocdn.com https://*.cartocdn.com",
+                "connect-src 'self' https://us.i.posthog.com https://*.supabase.co wss://*.supabase.co https://basemaps.cartocdn.com https://*.cartocdn.com https://*.clarity.ms https://c.bing.com",
                 "worker-src 'self' blob:",
                 "child-src blob:",
                 "frame-ancestors 'self'",
