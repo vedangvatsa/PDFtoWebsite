@@ -1,8 +1,7 @@
 'use client';
 
 import { PAGE_SUBTITLE } from '@/lib/utils';
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Search,
   X,

@@ -38,7 +38,7 @@ function resolveUrl(): string {
 
 let _client: SupabaseClient | null = null;
 
-export function getSupabaseAdmin(): SupabaseClient {
+function getSupabaseAdmin(): SupabaseClient {
   if (!_client) {
     _client = createClient(resolveUrl(), resolveKey());
   }

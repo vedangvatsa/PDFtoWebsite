@@ -8,20 +8,20 @@ import { EDITOR_EVENTS } from '@/lib/posthog-events';
 import Link from 'next/link';
 
 import { useRouter } from 'next/navigation';
-import type { UserProfile, WorkExperience, Education, CustomSection, CustomSectionItem } from '@/types';
+import type { UserProfile, WorkExperience, Education, CustomSection } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, FileUp, CheckCircle, XCircle, Share2, Copy, Link2, Download, Briefcase } from 'lucide-react';
+import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, CheckCircle, XCircle, Share2, Copy, Link2, Download } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import Header from '@/components/header';
 import { useUser } from '@/auth';
 import { createClient } from '@/utils/supabase/client';
 import { Progress } from '@/components/ui/progress';
 
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { LoginDialog } from '@/components/login-dialog';

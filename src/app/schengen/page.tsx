@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
-import { ArrowLeft, Plus, Trash2, AlertTriangle, CheckCircle2, Info, Calendar } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, AlertTriangle, Info, Calendar } from 'lucide-react';
 
 interface Trip { id: number; start: string; end: string; }
 

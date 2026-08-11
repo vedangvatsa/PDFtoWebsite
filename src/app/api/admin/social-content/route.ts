@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import fs from 'fs';
-import path from 'path';
 
 const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 const CONTENT_FILE = process['cwd']() + '/.github/scripts/x-content.json';

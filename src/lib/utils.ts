@@ -18,7 +18,7 @@ export const PAGE_SUBTITLE = 'text-lg text-zinc-600 max-w-none';
 export const PAGE_DISCLAIMER = 'mt-8 flex items-start gap-2 text-xs text-zinc-400 leading-relaxed w-full';
 
 /** Table column header. */
-export const TABLE_HEADER = 'text-[11px] font-semibold uppercase tracking-wider text-zinc-400';
+const TABLE_HEADER = 'text-[11px] font-semibold uppercase tracking-wider text-zinc-400';
 
 /** Score badge color classes (nomad score, safety score, etc.). */
 export function scoreBadgeClasses(score: number) {

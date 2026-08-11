@@ -19,7 +19,7 @@ export { isDisposableProfileSlug } from '@/lib/parse-guard';
  * True when `/{slug}` can (or should) resolve as a company careers hub —
  * directory row, any live job under company_key, or a known description.
  */
-export async function companyHubExists(slug: string): Promise<boolean> {
+async function companyHubExists(slug: string): Promise<boolean> {
   const key = toCompanyKey(slug);
   if (!key) return false;
   const blockKey = key.replace(/-/g, ' ').trim();

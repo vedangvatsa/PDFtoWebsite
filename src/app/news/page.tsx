@@ -4,7 +4,7 @@ import { PAGE_CONTAINER , PAGE_TITLE } from '@/lib/utils';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
-import { Newspaper, ExternalLink, Search, ChevronDown, Clock } from 'lucide-react';
+import { Newspaper, ExternalLink, Search, ChevronDown } from 'lucide-react';
 
 interface NewsItem {
   title: string;
@@ -124,7 +124,7 @@ export default function NewsPage() {
   };
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="h-screen overflow-y-auto overflow-x-hidden bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Hero */}
@@ -132,7 +132,7 @@ export default function NewsPage() {
           <h1 className={PAGE_TITLE}>
             Tech News
           </h1>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 overflow-hidden">
             {[
               { name: 'TechCrunch', domain: 'techcrunch.com' },
               { name: 'The Verge', domain: 'theverge.com' },
@@ -143,10 +143,10 @@ export default function NewsPage() {
               { name: 'Wired', domain: 'wired.com' },
               { name: 'MIT Tech Review', domain: 'technologyreview.com' },
               { name: 'The Information', domain: 'theinformation.com' },
-            ].map((s) => (
+            ].map((s, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img key={s.name} src={`https://www.google.com/s2/favicons?domain=${s.domain}&sz=64`} alt={`${s.name} — tech news source`} title={s.name}
-                className="h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0"
+                className={`h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0 ${i >= 6 ? 'hidden sm:block' : ''}`}
                 loading="lazy" />
             ))}
           </div>
@@ -234,7 +234,7 @@ export default function NewsPage() {
                     {item.title}
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 min-w-0">
-                    <span className="font-medium shrink-0">{item.source}</span>
+                    <span className="font-medium truncate max-w-[50%]">{item.source}</span>
                     <span className="text-zinc-300 shrink-0">·</span>
                     <span className="shrink-0">{timeAgo(item.publishedAt)}</span>
                   </div>

@@ -3,7 +3,7 @@
  * Used by admin tooling and scripts — not a Google API client.
  */
 
-export type JobPostingIssue = { level: 'error' | 'warn'; code: string; message: string };
+type JobPostingIssue = { level: 'error' | 'warn'; code: string; message: string };
 
 export function validateJobPostingJsonLd(jsonLd: Record<string, unknown>): JobPostingIssue[] {
   const issues: JobPostingIssue[] = [];
