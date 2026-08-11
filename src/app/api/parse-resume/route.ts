@@ -101,41 +101,32 @@ function scrubProtectedArtifacts(value: unknown): unknown {
   return value;
 }
 
-const systemInstruction = `You are a strict, highly accurate JSON API extracting candidate resumes.
-Return ONLY JSON matching EXACTLY the provided schema (do not use markdown blocks).
-{
-  "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "website": "", "github": "", "linkedin": "", "additionalLinks": [{ "label": "", "url": "" }] },
-  "summary": "",
-  "workExperience": [{ "company": "", "title": "", "location": "", "startDate": "", "endDate": "", "description": "" }],
-  "education": [{ "institution": "", "degree": "", "fieldOfStudy": "", "startDate": "", "endDate": "", "description": "" }],
-  "skills": [""],
-  "customSections": []
-}
+const systemInstruction = `You are a resume parser. Return ONLY JSON exactly matching this schema (no markdown):
+{"personalInfo":{"fullName":"","email":"","phone":"","location":"","website":"","github":"","linkedin":"","additionalLinks":[{"label":"","url":""}]},"summary":"","workExperience":[{"company":"","title":"","location":"","startDate":"","endDate":"","description":""}],"education":[{"institution":"","degree":"","fieldOfStudy":"","startDate":"","endDate":"","description":""}],"skills":[],"customSections":[]}
 
-CRITICAL RULES:
-1. ONLY extract information that is explicitly present in the provided resume text. DO NOT hallucinate, guess, or invent ANY details or dummy placeholders.
-2. If a section (like workExperience, education) doesn't exist, leave that array completely EMPTY ([]). Do NOT populate [] with dummy objects.
-3. EXTRACT ALL PROFESSIONAL EXPERIENCE into "workExperience"! Even if it is labeled irregularly (e.g. 'Internships', 'Freelance', 'Partnerships', 'Self-Employed', 'Leadership'), aggressively map it to "workExperience" to ensure no primary job data is lost.
-4. CUSTOM SECTIONS RULE: If the CV contains ANY supplementary sections beyond work/education/skills, you MUST map them into "customSections". This includes but is not limited to: 'Awards', 'Achievements', 'Honors', 'Certifications', 'Licenses', 'Publications', 'Patents', 'Projects', 'Volunteering', 'Community Service', 'Languages', 'Interests', 'Hobbies', 'Testimonials', 'References', 'Courses', 'Training', 'Conferences', 'Memberships', 'Professional Affiliations', 'Research', 'Presentations', 'Extracurricular Activities', 'Competitions', 'Scholarships', 'Fellowships', 'Grants'. EXCLUSION: Do NOT create a customSection for Summary, Professional Summary, Profile, Objective, About Me, Career Summary, Executive Summary, Personal Statement, or Overview — these MUST go into the top-level "summary" field ONLY, never into customSections. Schema per section: { "sectionTitle": "Exact Section Name From CV", "items": [{ "title": "", "subtitle": "", "description": "", "date": "" }] }. EVERY distinct section in the CV that is not work/education/skills/summary MUST appear as a separate customSection. Do NOT silently skip any section!
-5. OCR CLEANING RULE: If the input contains garbled characters, aggressively apply reasoning to reconstruct the intended words. Maintain detailed descriptions and retain bullet point formatting.
-5b. SPACE RECONSTRUCTION RULE: PDF extraction often loses spaces between words, producing text like "Assistedinacquisitionof10+clients". You MUST reconstruct the correct spacing in ALL output fields. Carefully split concatenated words (e.g. "Assistedinacquisition" → "Assisted in acquisition", "proactive&reactiveselling" → "proactive & reactive selling", "winningcontractworth$10Mn" → "winning contract worth $10Mn"). Apply this to EVERY field including descriptions, titles, companies, degrees, and skills. Output text must read as natural English with proper word boundaries.
-6. LOCATION PRIVACY RULE: Do NOT extract full specific street addresses. ONLY output the generalized "City, Country" (e.g., "San Francisco, USA", "London, UK") for the personal location field!
-7. LINKS RULE: Extract ALL URLs/links found anywhere in the CV. Put GitHub in "github", LinkedIn in "linkedin", and a personal website/portfolio in "website". ALL other links (ResearchGate, Google Scholar, Twitter/X, Behance, Dribbble, Medium, Stack Overflow, Kaggle, ORCID, YouTube, Facebook, Instagram, or any other URL) MUST go into "additionalLinks" with a human-readable "label" (e.g. "ResearchGate", "Google Scholar", "Twitter") and the full "url". Do NOT drop any link!
-8. COMPLETENESS RULE: Count every distinct section heading in the CV. Every one must appear in your output (as workExperience, education, skills, or customSections). If your output has fewer sections than the CV, you are WRONG.
-9. PROMOTIONS RULE: If a candidate held multiple roles or titles at the SAME company (promotions, lateral moves, role changes), you MUST create a SEPARATE workExperience entry for EACH distinct role with its own title, dates, and description. The "company" field MUST be identical across all entries for that company. Example input — "Google: Staff Engineer (2022-Present), Senior Engineer (2020-2022), Engineer (2018-2020)" becomes THREE separate workExperience entries all with company "Google". Look for patterns like multiple titles with date ranges listed under a single company heading, or titles separated by promotion indicators.
-10. WORK LOCATION RULE: For each work experience entry, extract the work location (city, country or city, state) into the "location" field. This is where the job was performed, NOT the candidate's home address. If multiple locations, combine them (e.g. "Dubai & London"). If remote, put "Remote". If hybrid, put "Hybrid, [City]". If not mentioned anywhere in that role's context, leave as empty string. Do NOT guess a location that is not stated or clearly implied. Do NOT put the location inside the description field.
-11. SKILLS SEGREGATION RULE: The "skills" field MUST be a flat array of individual, short, clean, distinct keywords or brief tech/business skill phrases (e.g., "React", "SQL", "Product Discovery"). If the resume groups skills under category lines or lists them as long comma-separated lines (e.g., "Product Management: Product Discovery, PRDs", "Languages: JavaScript, TypeScript"), you MUST segregate them. Split these categories into individual, separate strings in the "skills" array (e.g., ["Product Management", "Product Discovery", "PRDs", "JavaScript", "TypeScript"]). Do NOT include trailing commas, colons, or category prefixes within the individual skill strings, and NEVER output an entire long multi-skill line or category block as a single array element!
-12. SKILLS CAP RULE: Output AT MOST 30 skills. Only include actual technical skills, tools, methodologies, and core competencies that the candidate would list in a "Skills" section. Do NOT extract project topics, domain-specific nouns from job descriptions, or industry verticals as skills. For example, "Hyperledger Fabric" is a skill, but "rural road verification" or "birth and death registration" are project topics, NOT skills. Prioritize hard skills and widely-recognized competencies over vague or overly-specific phrases.
-13. NAME RULE: The "fullName" field MUST be the candidate's real first + last name. NEVER return document labels such as "Curriculum Vitae", "Resume", "Résumé", "CV", "Profile", "Bio", or any abbreviation/acronym (e.g. "H.R.M", "A.K.") as the name. If the header line mixes a name with contact info or a location, extract ONLY the name. Convert ALL-CAPS names to normal Title Case ("REDDY SUMANTH" → "Reddy Sumanth"). NEVER append a city, state, or country to the name (e.g. "Reddy Sumanth Chittoor" is WRONG — "Chittoor" is a location). Do NOT add periods between initials ("H.R.M" is wrong; spell out the name you can see).
-14. EDUCATION RULE: Create ONE education entry per distinct degree/institution. "institution" and "degree" MUST both be populated with real values. The "description" must be SHORT (max 3 lines) and must NOT contain the candidate's name, email, phone, GitHub/LinkedIn URLs, or the header/contact block. NEVER dump the candidate's whole resume (projects, skills, experience, certifications) into a single education entry's description — that is a critical failure.
-15. NO-DUMP RULE: Every distinct section of the CV (skills, projects, certifications, achievements, publications, experience) MUST be extracted into its proper array (skills, workExperience, or customSections). A rich CV must NEVER collapse into a single education record with everything in "description". If the CV clearly contains work experience or skills, "workExperience" and "skills" MUST NOT be empty arrays.
-16. LOCATION FORMAT RULE: Location fields must be formatted "City, Country" or "City, State" with a SINGLE space after the comma. NEVER concatenate like "Nigeria,Lagos" — that is wrong.
-17. DATE RULE: If a role or education is ongoing, set "endDate" to "Present" and "startDate" to the actual start date. NEVER put placeholder text like "Still ongoing" in "startDate" or "endDate". If a date is unknown, leave the field as an empty string.
-DO NOT THROW ANY REAL WORK DATA AWAY!`;
+RULES:
+1. Extract ONLY what's in the CV; never invent.
+2. Empty sections -> empty arrays.
+3. Map ALL experience (incl. internships/freelance/leadership) into workExperience.
+4. Map ALL other sections (awards, certs, projects, languages, volunteering, publications, etc.) into customSections as {sectionTitle, items:[{title,subtitle,description,date}]}. Summary/profile/objective go into "summary" only.
+5. Fix garbled OCR and re-add missing spaces ("Assistedinacquisition" -> "Assisted in acquisition").
+6. Location = "City, Country/State", never full street addresses.
+7. Extract ALL URLs: github/linkedin/website fields; everything else -> additionalLinks.
+8. Every distinct CV section must appear in output.
+9. Multiple roles at one company -> separate workExperience entries, same "company".
+10. workExperience location = where the job was (Remote/Hybrid/City), not home address.
+11. skills = flat array of individual short skills; split category lines ("PM: Discovery, PRDs" -> ["PM","Discovery","PRDs"]).
+12. Max 30 skills; only real skills, not project topics.
+13. fullName = real name, never "CV/Resume" labels or initials; Title Case; never append location.
+14. One education entry per degree; description max 3 lines; never dump the whole CV there.
+15. Never collapse a rich CV into one education blob; workExperience/skills must not be empty if present in CV.
+16. Locations formatted "City, Country" (single space).
+17. Ongoing roles -> endDate "Present"; unknown dates -> empty string.
+Don't throw away any real work data.`;
 
 const DEFAULT_GEMINI_MODEL = 'gemini-3.6-flash';
 const DEFAULT_DEEPSEEK_MODEL = 'deepseek-v4-flash';
-const DEFAULT_DEEPSEEK_REASONING_EFFORT = 'high';
+const DEFAULT_DEEPSEEK_REASONING_EFFORT = 'low';
 const MAX_RETRIES = 2;
 /** Prefer vision/document path when extractable text is shorter than this. */
 const MIN_TEXT_CHARS = 50;
@@ -230,9 +221,9 @@ async function callDeepSeek(messages: OpenAIMessage[]): Promise<any> {
             model,
             messages,
             response_format: { type: 'json_object' },
-            thinking: { type: 'enabled' },
+            thinking: { type: 'disabled' },
             reasoning_effort: reasoningEffort,
-            max_tokens: 8192,
+            max_tokens: 4096,
           }),
           signal: controller.signal,
         });
@@ -297,7 +288,7 @@ async function callGemini(
     contents: [{ parts }],
     generationConfig: {
       temperature: 0.1,
-      maxOutputTokens: 8192,
+      maxOutputTokens: 4096,
       responseMimeType: 'application/json',
     },
   };
