@@ -42,7 +42,7 @@ function normalizeTag(tag: string): string {
   return tag.toLowerCase().trim().replace(/\s+/g, ' ');
 }
 
-export function isMeaningfulSkillTag(
+function isMeaningfulSkillTag(
   tag: string,
   opts?: { companyName?: string }
 ): boolean {

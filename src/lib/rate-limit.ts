@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export interface RateLimitOptions {
+interface RateLimitOptions {
   windowMs: number;
   max: number;
   scope?: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TemplateModern from '@/app/[slug]/templates/modern-creative';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';

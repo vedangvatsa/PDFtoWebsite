@@ -1,6 +1,5 @@
-import React from 'react';
 import Link from 'next/link';
-import { h2, h3, callout, ul, ol, bold, link } from '@/lib/blog-styles';
+import { h2, h3, callout, ul, link } from '@/lib/blog-styles';
 
 export default function ArticleContent() {
   return (

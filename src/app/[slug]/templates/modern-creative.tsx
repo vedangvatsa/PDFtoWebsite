@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Globe, Download, ArrowUpRight, FileDown, Github, Linkedin, Twitter, Youtube, Facebook, Instagram, BookOpen, GraduationCap, Palette, Code2, Pen, MessageCircle, Send, Music, Headphones, Tv, Hash, Figma, Package, Gamepad2, Megaphone, Users, Briefcase, Rss, FileCode2, GitBranch } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, FileDown, Github, Linkedin, Twitter, Youtube, Facebook, Instagram, BookOpen, GraduationCap, Palette, Code2, Pen, MessageCircle, Send, Music, Headphones, Tv, Hash, Figma, Package, Gamepad2, Megaphone, Users, Briefcase, Rss, FileCode2, GitBranch } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import type { ServerProfileData as ProfileData } from '@/lib/supabase-server';
 import posthog from 'posthog-js';
@@ -394,7 +394,7 @@ export default function TemplateModern(props: ProfileData) {
         }
       `}</style>
 
-      <div className="resume-outer min-h-screen bg-background">
+      <div className="resume-outer min-h-screen bg-background overflow-x-hidden">
         {/* Temporarily disabled PDF button: 
         <button
           onClick={handleDownloadPDF}
@@ -437,7 +437,7 @@ export default function TemplateModern(props: ProfileData) {
                   </div>
                 </div>
               )}
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground break-words px-1">
                 {profile.fullName}
               </h1>
               {/* ── Contact & social row ── */}
@@ -445,7 +445,7 @@ export default function TemplateModern(props: ProfileData) {
                 {profile.location && (
                   <span className="inline-flex items-center gap-1.5 cursor-default">
                     <MapPin className="h-3.5 w-3.5 shrink-0 text-[#E74C3C]" />
-                    <span>{profile.location}</span>
+                    <span className="break-words max-w-[80vw]">{profile.location}</span>
                   </span>
                 )}
                 {profile.email && (
@@ -454,7 +454,7 @@ export default function TemplateModern(props: ProfileData) {
                     className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
                   >
                     <Mail className="h-3.5 w-3.5 shrink-0 text-[#EA4335]" />
-                    <span>{profile.email}</span>
+                    <span className="break-all max-w-[80vw]">{profile.email}</span>
                   </a>
                 )}
                 {profile.phone && (
@@ -549,11 +549,11 @@ export default function TemplateModern(props: ProfileData) {
                         <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-indigo-400/80" />
                         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
                           <div>
-                            <h3 className="text-sm font-semibold text-foreground">{job.title}</h3>
-                            <p className="text-sm text-muted-foreground">{job.company}</p>
+                            <h3 className="text-sm font-semibold text-foreground break-words">{job.title}</h3>
+                            <p className="text-sm text-muted-foreground break-words">{job.company}</p>
                             {job.location && (
-                              <p className="text-xs text-muted-foreground/70 flex items-center gap-1 mt-0.5">
-                                <MapPin className="h-3 w-3 shrink-0" />{job.location}
+                              <p className="text-xs text-muted-foreground/70 flex items-center gap-1 mt-0.5 min-w-0">
+                                <MapPin className="h-3 w-3 shrink-0" /><span className="break-words">{job.location}</span>
                               </p>
                             )}
                           </div>
@@ -586,8 +586,8 @@ export default function TemplateModern(props: ProfileData) {
                       <div key={edu.id} className="avoid-break">
                         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
                           <div>
-                            <h3 className="text-sm font-semibold text-foreground">{edu.institution}</h3>
-                            <p className="text-xs text-muted-foreground">{edu.degree}</p>
+                            <h3 className="text-sm font-semibold text-foreground break-words">{edu.institution}</h3>
+                            <p className="text-xs text-muted-foreground break-words">{edu.degree}</p>
                           </div>
                           <span className="text-xs font-medium text-indigo-600/80 whitespace-nowrap">
                             {edu.startDate && edu.endDate ? `${edu.startDate} — ${edu.endDate}` : edu.startDate || edu.endDate || ''}
@@ -617,7 +617,7 @@ export default function TemplateModern(props: ProfileData) {
                     {skills.map((skill, idx) => (
                       <span
                         key={idx}
-                        className="inline-block rounded-md border border-indigo-500/20 bg-indigo-50/50 text-indigo-700 text-xs px-2.5 py-1 mb-1.5 mr-1.5"
+                        className="inline-block max-w-full truncate align-bottom rounded-md border border-indigo-500/20 bg-indigo-50/50 text-indigo-700 text-xs px-2.5 py-1 mb-1.5 mr-1.5"
                       >
                         {typeof skill === 'string' ? skill : String((skill as any)?.name ?? '').trim()}
                       </span>
@@ -640,8 +640,8 @@ export default function TemplateModern(props: ProfileData) {
                       <div key={item.id} className="avoid-break">
                         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
                           <div>
-                            <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
-                            {item.subtitle && <p className="text-sm text-muted-foreground">{item.subtitle}</p>}
+                            <h3 className="text-sm font-semibold text-foreground break-words">{item.title}</h3>
+                            {item.subtitle && <p className="text-sm text-muted-foreground break-words">{item.subtitle}</p>}
                           </div>
                           {item.date && (
                             <span className="text-xs font-medium text-indigo-600/80 whitespace-nowrap">{item.date}</span>

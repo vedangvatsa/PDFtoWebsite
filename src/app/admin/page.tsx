@@ -8,7 +8,7 @@ import Header from '@/components/header';
 import CVinBioVisualCalendar from '@/components/admin/cvinbio-visual-calendar';
 import { ChartContainer, ChartConfig, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Area, AreaChart } from 'recharts';
-import { Loader2, TrendingUp, TrendingDown, Minus, Globe, Monitor, Smartphone, Tablet, Share2, Send } from 'lucide-react';
+import { Loader2, TrendingUp, TrendingDown, Minus, Globe, Monitor, Smartphone, Tablet, Share2 } from 'lucide-react';
 
 const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
@@ -216,7 +216,7 @@ export default function AdminPage() {
         {jobSeo && (
           <Section title="Job SEO / Google Jobs readiness" badge={`sample ${jobSeo.sampleSize}`}>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6 mb-6">
-              <Stat v={`${jobSeo.indexablePct}%`} label="Indexable (≥250w)" sub={`${jobSeo.indexable}/${jobSeo.sampleSize}`} />
+              <Stat v={`${jobSeo.indexablePct}%`} label="Indexable (≥600w)" sub={`${jobSeo.indexable}/${jobSeo.sampleSize}`} />
               <Stat v={`${jobSeo.prettyPct}%`} label="Pretty URLs" sub={`${jobSeo.prettyUrls}/${jobSeo.sampleSize}`} />
               <Stat v={jobSeo.schema?.ok ?? 0} label="Schema clean" sub="no errors/warns" />
               <Stat v={jobSeo.schema?.warnOnly ?? 0} label="Schema warn-only" />

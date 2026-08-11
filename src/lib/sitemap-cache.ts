@@ -8,7 +8,7 @@ const XML_HEADERS_BASE = {
   'Content-Type': 'application/xml; charset=utf-8',
 } as const;
 
-export function sitemapResponseHeaders(ttlSeconds = 3600): HeadersInit {
+function sitemapResponseHeaders(ttlSeconds = 3600): HeadersInit {
   return {
     ...XML_HEADERS_BASE,
     'Cache-Control': `public, max-age=0, s-maxage=${ttlSeconds}, stale-while-revalidate=${ttlSeconds * 24}`,

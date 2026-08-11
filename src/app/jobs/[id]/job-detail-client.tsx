@@ -23,7 +23,6 @@ import {
   timeAgo,
   JOB_DESCRIPTION_PROSE_CLASS,
 } from '@/lib/job-description';
-import { PAGE_CONTAINER } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
 import {
@@ -57,6 +56,7 @@ export interface JobDetail {
   company_slug?: string | null;
   job_slug?: string | null;
   public_path?: string | null;
+  expired?: boolean;
 }
 
 export interface RelatedJobCard {
@@ -89,11 +89,12 @@ export default function JobDetailClient({
   const router = useRouter();
   const { toast } = useToast();
 
-  const applyUrl = addJobApplyUtm(job.apply_url, 'job_detail');
+  const expired = Boolean(job.expired);
+  const applyUrl = expired ? '' : addJobApplyUtm(job.apply_url, 'job_detail');
   const typeLabel = jobTypeLabel(job.job_type);
   const needsCv = userSkills.length === 0;
   /** Logged-in users with an on-file profile should apply on the company site, not re-upload CV. */
-  const showDirectApply = isAuthenticated && !needsCv;
+  const showDirectApply = !expired && isAuthenticated && !needsCv;
 
   useEffect(() => {
     posthog.capture('job_detail_viewed', {
@@ -192,7 +193,8 @@ export default function JobDetailClient({
     e.target.value = '';
   };
 
-  const CompanyApplyLink = ({ className = '' }: { className?: string }) => (
+  const CompanyApplyLink = ({ className = '' }: { className?: string }) =>
+    expired ? null : (
     <a
       href={applyUrl}
       target="_blank"
@@ -205,7 +207,14 @@ export default function JobDetailClient({
     </a>
   );
 
-  const CompanyApplyButton = ({ className = '' }: { className?: string }) => (
+  const CompanyApplyButton = ({ className = '' }: { className?: string }) =>
+    expired ? (
+      <div
+        className={`inline-flex items-center justify-center w-full rounded-xl bg-zinc-200 text-zinc-500 font-semibold px-4 py-3.5 text-sm sm:text-[15px] cursor-not-allowed ${className}`}
+      >
+        Applications closed
+      </div>
+    ) : (
     <a
       href={applyUrl}
       target="_blank"
@@ -274,7 +283,18 @@ export default function JobDetailClient({
     </div>
   );
 
-  const PrimaryActionCard = () => (showDirectApply ? <ApplyPrimaryCard /> : <CvPrimaryCard />);
+  const ClosedCard = () => (
+    <div className="rounded-2xl border-2 border-zinc-300 bg-zinc-50 p-5 sm:p-6 text-center">
+      <Clock className="h-7 w-7 text-zinc-500 mx-auto mb-2.5" />
+      <h2 className="text-base sm:text-lg font-bold text-zinc-900 tracking-tight">This posting is closed</h2>
+      <p className="text-sm text-zinc-600 mt-1.5 mb-1 max-w-md mx-auto leading-relaxed">
+        It is older than 30 days. We no longer send applications from this page. The role may still be open on the company site. Browse other {job.company} jobs below.
+      </p>
+    </div>
+  );
+
+  const PrimaryActionCard = () =>
+    expired ? <ClosedCard /> : showDirectApply ? <ApplyPrimaryCard /> : <CvPrimaryCard />;
 
   return (
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
@@ -315,6 +335,11 @@ export default function JobDetailClient({
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 leading-snug sm:leading-tight break-words">
                 {job.title}
               </h1>
+              {expired ? (
+                <p className="mt-2 text-sm font-medium text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                  This posting is older than 30 days. Applications are closed here.
+                </p>
+              ) : null}
                 <div className="mt-2 sm:mt-3">
                   <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-1.5 gap-x-3 text-[13px] sm:text-sm text-zinc-600">
                   <span className="inline-flex items-center gap-1.5 font-semibold text-zinc-800 min-w-0">
@@ -414,8 +439,8 @@ export default function JobDetailClient({
         )}
       </main>
 
-      {/* Mobile float: Apply when profile exists, else Upload CV */}
-      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 px-3 pt-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      {/* Mobile float: Apply when profile exists, else Upload CV. Hidden when closed. */}
+      <div className={`sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 px-3 pt-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.08)] ${expired ? 'hidden' : ''}`}>
         {showDirectApply ? (
           <a
             href={applyUrl}

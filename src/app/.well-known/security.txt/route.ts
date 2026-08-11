@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 
 /**
  * /.well-known/security.txt — RFC 9116

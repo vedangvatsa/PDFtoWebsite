@@ -108,7 +108,7 @@ export function isJunkCompanyName(raw: string): boolean {
 }
 
 /** Prefer a cleaner display name for the same slug (fewer leading digits, better casing). */
-export function preferCompanyDisplayName(a: string, b: string): string {
+function preferCompanyDisplayName(a: string, b: string): string {
   const score = (n: string) => {
     let s = 0;
     if (!/^\d/.test(n)) s += 5;

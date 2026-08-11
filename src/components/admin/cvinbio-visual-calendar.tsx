@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useUser } from '@/auth';
+import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { Loader2, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Edit2, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';

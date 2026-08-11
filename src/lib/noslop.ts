@@ -34,7 +34,7 @@ export type NoslopReport = {
   ellipses: number;
 };
 
-export function auditPublishText(input: string): NoslopReport {
+function auditPublishText(input: string): NoslopReport {
   return {
     changed: false,
     emDashes: (input.match(/—/g) || []).length,

@@ -5,7 +5,7 @@ import {
 } from '@/lib/platform-job-count';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
-export interface PlatformStats {
+interface PlatformStats {
   totalJobs: number;
   totalCompanies: number;
   totalUsers: number;

@@ -70,7 +70,7 @@ export function publishableCompanyAbout(slugOrName: string): string | null {
 }
 
 /** Always-original fallback when we have no curated blurb. */
-export function originalHiringAbout(
+function originalHiringAbout(
   companyName: string,
   opts?: { title?: string; location?: string; roleCount?: number }
 ): string {

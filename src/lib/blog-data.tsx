@@ -5,7 +5,7 @@ export type Author = {
   avatarUrl: string;
 };
 
-export type BlogPost = {
+type BlogPost = {
   slug: string;
   title: string;
   excerpt: string;

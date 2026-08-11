@@ -55,10 +55,3 @@ export type CustomSection = {
   order: number;
 };
 
-// Fully structured profile data
-export type Profile = {
-  personalInfo: UserProfile;
-  workExperience: WorkExperience[];
-  education: Education[];
-  customSections: CustomSection[];
-};

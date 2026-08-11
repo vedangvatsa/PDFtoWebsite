@@ -1,6 +1,6 @@
 import nomadCitiesJson from './nomad-cities.json';
 
-export interface NomadCity {
+interface NomadCity {
   slug: string;
   name: string;
   country: string;

@@ -1,7 +1,7 @@
 // Verified company metadata for programmatic SEO pages.
 // Every field is sourced from public records. No AI-generated descriptions.
 
-export interface CompanyMeta {
+interface CompanyMeta {
   slug: string;
   name: string;
   website: string;

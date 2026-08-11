@@ -106,7 +106,7 @@ function stripUnsafe(html: string): string {
  * Allowlist-based sanitizer (no external deps).
  * Keeps structure tags; strips event handlers and style/class noise.
  */
-export function sanitizeJobHtml(raw: string): string {
+function sanitizeJobHtml(raw: string): string {
   let html = stripUnsafe(raw);
 
   // Drop all attributes except href on anchors
@@ -142,7 +142,7 @@ export function sanitizeJobHtml(raw: string): string {
 }
 
 /** Plain text → simple HTML paragraphs. */
-export function plainTextToHtml(text: string): string {
+function plainTextToHtml(text: string): string {
   const cleaned = expandStructuredPlainText(
     text
       .replace(/\r\n/g, '\n')

@@ -3,7 +3,7 @@
  * Public SSR must never hang on a slow/unhealthy primary.
  */
 
-export class DbTimeoutError extends Error {
+class DbTimeoutError extends Error {
   constructor(label: string, ms: number) {
     super(`[db-timeout] ${label} exceeded ${ms}ms`);
     this.name = 'DbTimeoutError';
