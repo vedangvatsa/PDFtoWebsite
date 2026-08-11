@@ -12,6 +12,7 @@ import {
   isDisposableProfileSlug,
   nameToProfileSlug,
   enrichNameFromContact,
+  attachImportedCvText,
 } from '@/lib/parse-guard';
 import {
   salvageResumeFromText,
@@ -232,7 +233,7 @@ const OPENAI_SCHEMA = {
 };
 
 const DEFAULT_OPENAI_MODEL = 'gpt-4.1';
-const DEFAULT_GEMINI_MODEL = 'gemini-3-flash-preview';
+const DEFAULT_GEMINI_MODEL = 'gemini-3.6-flash';
 const DEFAULT_DEEPSEEK_MODEL = 'deepseek-v4-flash';
 const DEFAULT_DEEPSEEK_REASONING_EFFORT = 'high';
 const MAX_RETRIES = 2;
@@ -241,12 +242,15 @@ const MIN_TEXT_CHARS = 50;
 
 /** Models that currently accept new Gemini API keys (2.5-flash is often 404/429). */
 const GEMINI_MODEL_FALLBACKS = [
+  'gemini-3.6-flash',
+  'gemini-3.5-flash',
   'gemini-3-flash-preview',
   'gemini-3.1-flash-lite-preview',
   'gemini-flash-latest',
-  'gemini-2.5-flash',
-  'gemini-2.0-flash',
 ] as const;
+
+/** Round-robin cursor so concurrent uploads spread across all keys. */
+let geminiKeyCursor = 0;
 
 function getGeminiApiKeys(): string[] {
   const keys = [
@@ -254,6 +258,7 @@ function getGeminiApiKeys(): string[] {
     process.env.GEMINI_API_KEY_2,
     process.env.GEMINI_API_KEY_3,
     process.env.GEMINI_API_KEY_4,
+    process.env.GEMINI_API_KEY_5,
   ]
     .map((k) => k?.trim())
     .filter((k): k is string => Boolean(k));
@@ -492,7 +497,9 @@ async function callGemini(
   const models = Array.from(new Set([model, ...GEMINI_MODEL_FALLBACKS]));
 
   let lastError: Error | null = null;
-  for (const apiKey of apiKeys) {
+  const start = geminiKeyCursor++ % apiKeys.length;
+  for (let ki = 0; ki < apiKeys.length; ki++) {
+    const apiKey = apiKeys[(start + ki) % apiKeys.length];
     for (const m of models) {
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         const controller = new AbortController();
@@ -900,7 +907,7 @@ export async function POST(request: NextRequest) {
       } else if (parseMedia.kind === 'pdf') {
         const crumbs =
           extractedText && extractedText.length > 0
-            ? `\n\nPartial text extracted from the PDF (may be incomplete — prefer the document image):\n${extractedText.slice(0, 4000)}`
+            ? `\n\nText extracted from the PDF (use with the document; do not omit any content from either):\n${extractedText}`
             : '';
         baseMessages = [
           { role: 'system', content: systemInstruction },
@@ -1124,6 +1131,11 @@ export async function POST(request: NextRequest) {
 
     // Strip any residual reconstruction markers before returning to the client.
     aiStructuredData = scrubProtectedArtifacts(aiStructuredData);
+
+    // Always retain the full extracted CV text (editor-only) — never truncate uploads.
+    if (extractedText?.trim()) {
+      aiStructuredData = attachImportedCvText(aiStructuredData, extractedText);
+    }
 
     // Resume processing after successful extraction
     const duration = Date.now() - startTime;
