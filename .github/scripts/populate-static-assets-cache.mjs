@@ -2,8 +2,8 @@
 // Populates the prerendered page cache into the Workers static-assets
 // directory so the static-assets incremental cache can serve pages
 // without running SSR in the Worker (avoids cold-start TTFB).
-const fs = require("fs");
-const path = require("path");
+import fs from "node:fs";
+import path from "node:path";
 
 const src = ".open-next/cache";
 const dest = ".open-next/assets/cdn-cgi/_next_cache";
