@@ -30,17 +30,20 @@ const nextConfigFn = (phase: string): NextConfig => {
         '**/*.mp4',
       ],
     },
-    // Slim PostHog (~93KB) — strips replay/surveys/toolbar; production uses webpack.
+    // Slim PostHog for prod webpack (~93KB). Keep turbopack on no-external
+    // (subpath imports like posthog-js/react must keep working).
     turbopack: {
       resolveAlias: {
-        'posthog-js': 'posthog-js/dist/module.slim.js',
+        'posthog-js': 'posthog-js/dist/module.no-external.js',
       },
     },
     // Webpack production bundle optimizations
     webpack(config, { isServer }) {
+      // Exact match only — do not break `posthog-js/react`
+      const path = require('path') as typeof import('path');
       config.resolve.alias = {
         ...(config.resolve.alias || {}),
-        'posthog-js': 'posthog-js/dist/module.slim.js',
+        'posthog-js$': path.join(process.cwd(), 'node_modules/posthog-js/dist/module.slim.js'),
       };
       // Prevent posthog from bloating server-side lambdas
       if (isServer) {
