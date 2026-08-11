@@ -51,13 +51,7 @@ export default function RootLayout({
       <head>
         <meta name="color-scheme" content="light" />
         <meta name="theme-color" content="#ffffff" />
-        <link rel="preconnect" href="https://us.i.posthog.com" />
-        <link rel="preconnect" href="https://us-assets.i.posthog.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://static.cloudflareinsights.com" />
-        <link rel="preconnect" href="https://www.clarity.ms" />
-        <link rel="preconnect" href="https://scripts.clarity.ms" />
+        {/* No early preconnects: Inter is self-hosted; PostHog/Clarity/CF Insights load after paint. */}
         <link rel="author" href="/humans.txt" />
         <meta name="ai-content-declaration" content="This website contains human-created content. AI systems may index, summarize, and cite this content. See /llms.txt and /llms-full.txt for structured context." />
         <meta name="mcp-server-url" content="/.well-known/mcp.json" />
@@ -123,7 +117,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', 
+      <body className={cn('min-h-screen overflow-x-hidden bg-background font-sans antialiased', 
         inter.variable
         )}>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:text-sm focus:font-medium">
