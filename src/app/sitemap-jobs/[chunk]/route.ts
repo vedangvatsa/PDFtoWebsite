@@ -1,5 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { jobSitemapPath } from '@/lib/job-description';
+import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 import {
   JOB_SITEMAP_CHUNK,
   JOB_SITEMAP_PAGE,
@@ -17,9 +18,8 @@ type Props = { params: Promise<{ chunk: string }> };
 /**
  * Dynamic job sitemap chunk.
  *
- * Only curated-jd jobs are indexed. Chunk offset is relative to the curated set
- * so every chunk pages ONLY over indexable rows. Responses are edge-cached so
- * Google does not pay a 20s+ cold build on every read.
+ * Curated paraphrases and assembled pages that pass quality gates.
+ * Chunk offset is over recent jobs; non-qualifying rows are skipped.
  */
 export async function GET(req: Request, ctx: Props) {
   const { chunk } = await ctx.params;
@@ -40,8 +40,9 @@ export async function GET(req: Request, ctx: Props) {
       while (urls.length < JOB_SITEMAP_CHUNK && !done) {
         const { data } = await supabaseAdmin
           .from('jobs')
-          .select('id, company, external_id, slug, title, created_at, published_at')
-          .contains('tags', ['curated-jd'])
+          .select(
+            'id, company, external_id, slug, title, created_at, published_at, location, job_type, salary, tags, category'
+          )
           .not('external_id', 'is', null)
           .not('company', 'is', null)
           .gt('created_at', thirtyDaysAgo)
@@ -51,6 +52,7 @@ export async function GET(req: Request, ctx: Props) {
 
         if (!data || !data.length) break;
         for (const j of data) {
+          if (!jobQualifiesForSitemap(j)) continue;
           const path = jobSitemapPath(j);
           if (!path) continue;
           const last = (j.published_at || j.created_at || '').toString().slice(0, 10) || undefined;

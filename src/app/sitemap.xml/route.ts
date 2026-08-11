@@ -8,23 +8,20 @@ function escapeXml(s: string): string {
 }
 
 /**
- * Dynamic sitemap index. Counts the CURRENT indexable (curated-jd) job set and
- * lists exactly as many job chunks as needed, so the whole site is always
- * covered — new jobs are picked up on the next revalidation and the chunk
- * count never goes stale.
+ * Dynamic sitemap index. Counts recent job rows (curated + assemble candidates)
+ * and lists enough chunks. Chunks drop rows that fail quality gates.
  */
 export async function GET(req: Request) {
   return withSitemapCache(req.url, async () => {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    // Live, indexable jobs only (curated-jd = 600+ word pages; pages expire 30d).
+    // Broader candidate set; chunks filter to curated or assembled-indexable.
     let total = 0;
     try {
       const { count } = await supabaseAdmin
         .from('jobs')
         .select('id', { count: 'exact', head: true })
-        .contains('tags', ['curated-jd'])
         .not('external_id', 'is', null)
         .not('company', 'is', null)
         .gt('created_at', thirtyDaysAgo)
