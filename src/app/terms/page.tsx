@@ -21,7 +21,7 @@ export default function TermsPage() {
       <main id="main-content" className="flex-1 mx-auto max-w-3xl px-6 py-16">
         <h1 className="text-3xl font-extrabold mb-8 tracking-tight text-foreground">Terms & Privacy</h1>
         <div className="prose prose-base space-y-8 text-muted-foreground">
-          <p className="text-sm"><strong>Last updated:</strong> March 2026</p>
+          <p className="text-sm"><strong>Last updated:</strong> August 2026</p>
 
           {/* ── Terms of Service ── */}
           <h2 className="text-2xl font-extrabold text-foreground mb-4 pt-4 border-t">Terms of Service</h2>
@@ -117,7 +117,7 @@ export default function TermsPage() {
               <li><strong>Personal Information:</strong> When you register an account, we may collect identifiable information such as your name, email address, and authentication data provided by third-party identity providers.</li>
               <li><strong>Resume and Profile Data:</strong> When you upload a resume or CV, we process the document using AI-powered parsing to extract structured data including your name, contact details, employment history, educational background, skills, and profile photos. The original uploaded file is not stored permanently; only the extracted structured data is retained in your profile. You certify that any document you upload contains your own information and that you have the right to share it.</li>
               <li><strong>Usage Data:</strong> We might collect automatic information about how you interact with our platform, including IP addresses, browser types, and page views, to help us understand use patterns and improve our service.</li>
-              <li><strong>Cookies and Tracking:</strong> We use essential cookies to maintain your session and authentication status. We also use PostHog for product analytics, which may set cookies to track anonymized usage patterns. We do not use invasive third-party advertising cookies. You can manage cookie preferences through your browser settings. By continuing to use the Service, you consent to our use of essential and analytics cookies.</li>
+              <li><strong>Cookies and Tracking:</strong> We use essential cookies to maintain your session and authentication status. We also use PostHog for product analytics and Microsoft Clarity for session replays and heatmaps; both may set first-party cookies to understand usage. We do not use invasive third-party advertising cookies. You can manage cookie preferences through your browser settings. By continuing to use the Service, you consent to our use of essential and analytics cookies.</li>
             </ul>
           </section>
 
