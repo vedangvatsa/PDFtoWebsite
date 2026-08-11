@@ -2,6 +2,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import {
   fetchJobByCompanyAndSlug,
+  fetchJobById,
   toJobDetail,
   getViewerJobContext,
   buildJobMetadata,
@@ -41,11 +42,20 @@ type PageProps = {
  * URLs were 404 once the real slug column was used. Resolve any job in the
  * company whose minted/legacy slug equals the requested one and redirect to its
  * canonical path so old links and stale caches never dead-end.
+ *
+ * Returns the resolved job when the legacy URL is ALREADY the canonical path
+ * (minted-from-title equals the requested segment, e.g. /indian-army/data where
+ * the job's stored slug is null and the pretty slug is minted on read) — the
+ * caller renders it in place instead of redirecting into a self-loop.
  */
+type LegacyResolution =
+  | { kind: 'redirect'; path: string }
+  | { kind: 'render'; job: Awaited<ReturnType<typeof fetchJobById>> };
+
 async function resolveLegacySlugPath(
   companySlug: string,
   jobSlug: string
-): Promise<string | null> {
+): Promise<LegacyResolution | null> {
   const companyKey = toCompanyKey(companySlug);
   if (!companyKey || !isShortJobSlug(jobSlug)) return null;
   const { data } = await withTimeoutFallback(
@@ -71,14 +81,14 @@ async function resolveLegacySlugPath(
     const short = shortJobSlug(job.company, job.external_id)?.toLowerCase();
     if (minted === want || short === want) {
       const resolved = jobPublicPath(job);
-      // Never redirect a URL back to itself — that is an infinite 308 loop.
+      // Same URL → render the job directly; redirecting would self-loop.
       if (
         resolved.toLowerCase() ===
         `/${companySlug}/${jobSlug}`.toLowerCase()
       ) {
-        return null;
+        return { kind: 'render', job: await fetchJobById(job.id) };
       }
-      return resolved;
+      return { kind: 'redirect', path: resolved };
     }
   }
   return null;
@@ -89,9 +99,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!isShortJobSlug(jobSlug)) {
     return { title: 'Job not found', robots: { index: false, follow: false } };
   }
-  const job = await fetchJobByCompanyAndSlug(slug, jobSlug);
+  let job = await fetchJobByCompanyAndSlug(slug, jobSlug);
   if (!job) {
-    // Page will 301 to company hub / jobs — keep noindex until redirect lands.
+    const legacy = await resolveLegacySlugPath(slug, jobSlug);
+    if (legacy?.kind === 'render') job = legacy.job;
+  }
+  if (!job) {
+    // Page will 308 to company hub / jobs — keep noindex until redirect lands.
     return { title: 'Job not found', robots: { index: false, follow: true } };
   }
   return buildJobMetadata(job, siteUrl);
@@ -103,8 +117,14 @@ export default async function CompanyJobPage({ params }: PageProps) {
 
   let job = await fetchJobByCompanyAndSlug(slug, jobSlug);
   if (!job) {
-    const legacyPath = await resolveLegacySlugPath(slug, jobSlug);
-    if (legacyPath) permanentRedirect(legacyPath);
+    const legacy = await resolveLegacySlugPath(slug, jobSlug);
+    if (legacy?.kind === 'render') {
+      job = legacy.job;
+    } else if (legacy?.kind === 'redirect') {
+      permanentRedirect(legacy.path);
+    }
+  }
+  if (!job) {
     // Expired / deleted / reminted jobs: soft-land on company hub (or /jobs).
     // Hard 404s here were the bulk of GSC "Not found" (~1.8k URLs).
     permanentRedirect(await gonePrettyJobPath(slug));
@@ -121,10 +141,12 @@ export default async function CompanyJobPage({ params }: PageProps) {
 
   return (
     <>
+      {jsonLd ? (
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      ) : null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
