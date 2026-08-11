@@ -129,17 +129,7 @@ jobs:
         # Copies .open-next/cache (prerendered HTML) into
         # .open-next/assets/cdn-cgi/_next_cache so the Worker's
         # static-assets incremental cache can serve them without SSR.
-        run: node -e '
-          const fs = require("fs");
-          const path = require("path");
-          const src = ".open-next/cache";
-          const dest = ".open-next/assets/cdn-cgi/_next_cache";
-          if (!fs.existsSync(src)) { console.log("No cache dir to populate"); process.exit(0); }
-          fs.cpSync(src, dest, { recursive: true });
-          let n = 0;
-          (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (e.name.endsWith(".cache")) n++; } })(dest);
-          console.log("Populated static assets cache with", n, "prerendered files");
-        '
+        run: node .github/scripts/populate-static-assets-cache.mjs
 
       - name: Deploy Worker
         env:
