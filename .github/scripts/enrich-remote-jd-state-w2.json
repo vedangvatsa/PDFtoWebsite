@@ -63391,8 +63391,9 @@
       "reason": "source_thin"
     },
     "83dab4cb-0b3f-41ad-9abc-fc566fa08cb9": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/thirdlove/key",
+      "external_id": "thirdlove_key"
     },
     "923f876c-b591-4586-9649-09c8ef757ee3": {
       "status": "skip",
@@ -63403,8 +63404,9 @@
       "reason": "source_thin"
     },
     "88cf7642-ddcd-4b67-a848-cf7cb2af1e3f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/smartrent/acct-mgr",
+      "external_id": "smartrent_acct-mgr"
     },
     "bf5fa66c-054a-4379-8b04-28c3ec16c38f": {
       "status": "skip",
@@ -63415,8 +63417,8 @@
       "reason": "source_thin"
     },
     "b45803b8-6b91-480e-8c39-9195af526e4b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a9c576dc-0db8-4594-8ce1-468d73d5114c": {
       "status": "fail",
@@ -63427,8 +63429,9 @@
       "reason": "rewrite_slop"
     },
     "aa2832f6-967c-41e4-aaa6-7c44e6073d6c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/grupo-quintoandar/grupo-2f",
+      "external_id": "grupo-quintoandar_grupo-2f"
     },
     "9d4ee9f2-17ea-4560-825b-239b3af04d93": {
       "status": "skip",
@@ -63447,8 +63450,8 @@
       "reason": "source_thin"
     },
     "9c7b3b9e-f1e5-4fc3-9e60-5cd8d8ba65d2": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "add8eb91-6ea9-46db-b1a4-22ced2f36279": {
       "status": "skip",
@@ -63487,8 +63490,8 @@
       "reason": "source_thin"
     },
     "8ad2a488-35ff-4700-a12e-ebecd7535ae4": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8737a30c-ffe3-4a51-ae5d-e3cb67286fd8": {
       "status": "skip",
@@ -63511,8 +63514,8 @@
       "reason": "source_thin"
     },
     "8522d973-4f97-49a3-a60a-711654ea4cf7": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "9a2dcbea-6a19-4925-a6ac-8bc689d8231d": {
       "status": "skip",
@@ -63523,8 +63526,8 @@
       "reason": "source_thin"
     },
     "ad2f1ab5-9471-428f-a4c7-64fbcad14430": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8b6588a8-7ad3-42bd-a868-ede317805de1": {
       "status": "skip",
@@ -63535,24 +63538,24 @@
       "reason": "source_thin"
     },
     "86ab6fba-eaf3-4abc-ad55-0726415b4ada": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8a344317-e9e7-4591-8d35-d8be7dd2a179": {
       "status": "skip",
       "reason": "source_thin"
     },
     "af47f015-ab1c-40a1-a706-fc638925d3b2": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8e2b1f35-0b3a-4ade-9047-c49453073d45": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "804e5cd7-26d4-4f8d-89e6-13e94d7cf4e1": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "86a2671d-0c17-4b8d-bb02-e03026a49c87": {
       "status": "skip",
@@ -63563,12 +63566,12 @@
       "reason": "source_thin"
     },
     "a529dfbd-53e9-4ee5-866a-b78e9322ee44": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "be14495d-2558-4e23-9146-37fd8d2eef62": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "aaa3df99-38ad-4daf-a562-ca44146fb043": {
       "status": "skip",
@@ -63583,8 +63586,8 @@
       "reason": "fact_sheet_parse"
     },
     "953010a6-58fa-4f77-bca6-8b714169030f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "88cc120b-a66e-4b93-ac7c-ab2f708b24d0": {
       "status": "fail",
@@ -63595,16 +63598,16 @@
       "reason": "source_thin"
     },
     "85873d3c-fd3b-46cf-bfe1-9b34ac564bc0": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a48e0ddd-b5ea-4240-8eed-914cf3425889": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8b2a1e51-3f59-4d85-b12d-20a1f1fde6d8": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8c466bc7-5e19-4a61-ac7f-4017faebc9a9": {
       "status": "skip",
@@ -63615,8 +63618,8 @@
       "reason": "rewrite_short"
     },
     "848b5577-4a85-4e58-b43b-076665ede2ad": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "bfd28b39-1aab-4aa4-a200-091b547aa297": {
       "status": "skip",
@@ -63627,8 +63630,9 @@
       "reason": "source_thin"
     },
     "85ac48f8-3db1-4257-ae7c-c03ab062535c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/cabify/growth",
+      "external_id": "cabify_growth"
     },
     "bf3d1006-f710-4707-b90c-6c7d1d18ba87": {
       "status": "skip",
@@ -63652,12 +63656,12 @@
       "reason": "source_thin"
     },
     "b278d6a2-960c-4d0d-b1a6-5a5d8207f277": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b9a29afd-7125-4b4e-94b9-a56e795bfc33": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "87f740d7-8bee-44e8-a3d0-f6e313bbe184": {
       "status": "skip",
@@ -63668,16 +63672,17 @@
       "reason": "rewrite_short"
     },
     "ba01fde5-a7ec-4245-826d-387eac881941": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "afbc16d1-199b-43ef-aab5-a7bd662cc079": {
       "status": "skip",
       "reason": "source_thin"
     },
     "bb32735a-1001-41da-88c7-5d4451135535": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/varda-space-industries/sre",
+      "external_id": "varda-space-industries_sre"
     },
     "92933306-eb4d-4b95-9760-7fd47eac98ea": {
       "status": "skip",
@@ -63856,8 +63861,8 @@
       "reason": "rewrite_short"
     },
     "98816344-10c4-46a2-a531-9954d097bfea": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b2d41924-a80e-49be-bbfe-f51b3780365a": {
       "status": "fail",
@@ -83640,6 +83645,350 @@
     "b016a8ce-55aa-4790-ace6-2bc9b6eb7e85": {
       "status": "skip",
       "reason": "source_thin"
+    },
+    "54eb7473-1a3e-455e-902a-a33bc6ae38c0": {
+      "status": "skip",
+      "reason": "ashby_short",
+      "note": "thin_source title=Growth Engineer company=mechanism-ventures apply=https://jobs.ashbyhq.com/mechanism-ventures/aea499d9-79b5-4de7-b4ed-3a973d9e79da"
+    },
+    "411f68b2-2789-48ed-809f-4196f89d721c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5abcb084-9cee-4402-adb2-f718da19a771": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "44857005-2bdc-49ec-8c29-6d41fac7ecef": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "41aeca33-aa91-4b44-9e8e-841e75972f25": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "42e014c5-329b-49eb-b052-f0c4eb53df20": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "45c41d28-97f6-4807-8966-a2933c7f02d2": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4fa3ecc8-8ac4-4a4a-b84a-0ca45784f8ea": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "466d0092-e950-4f1b-a5fa-9fccd3da37fa": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5204da6c-46f2-470c-9cb9-bf46844beb93": {
+      "status": "ok",
+      "path": "/openloophealth/enterprise",
+      "external_id": "openloophealth_enterprise"
+    },
+    "452ac17d-34d0-425c-b9c6-3d4042c0dc50": {
+      "status": "ok",
+      "path": "/openloophealth/svp-mkt",
+      "external_id": "openloophealth_svp-mkt"
+    },
+    "5dcef859-f228-434b-b16b-21f95a65fa13": {
+      "status": "ok",
+      "path": "/whoop/sw-25",
+      "external_id": "whoop_sw-25"
+    },
+    "5716ab47-01ff-4f87-a071-51d8740abba0": {
+      "status": "ok",
+      "path": "/voodoo/chief",
+      "external_id": "voodoo_chief"
+    },
+    "56629d8f-52f2-45d5-8bfb-61de7fa2db91": {
+      "status": "ok",
+      "path": "/voodoo/prod-mgr",
+      "external_id": "voodoo_prod-mgr"
+    },
+    "46a9baba-d409-4d9e-9bf7-f39e1b3e5d40": {
+      "status": "ok",
+      "path": "/pomelo-care/outbound",
+      "external_id": "pomelo-care_outbound"
+    },
+    "5ad91fda-9786-456b-bbac-60d3d80925af": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5959aa02-94c8-46d3-aa4f-25c5d3362675": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "495f0669-22cb-42e0-95a9-70dbb8268569": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5c33c513-d597-46e7-b45d-4e6e8a888521": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Junior Recruiter with German company=Tsmg apply=https://jobs.lever.co/tsmg/c48da9a1-4e03-44e8-ab46-ec18cd7344d3"
+    },
+    "5afdb1cd-b88f-4a28-b12d-8cf773b75667": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "58be1991-2049-40b3-86bd-f136cee724e5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "40443699-5e23-4d98-a1a6-d48f7cc3430b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4fb5bb19-f8a3-45c1-a818-2046ef3e578d": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "4703e62b-dfe5-4311-ba13-744c241e8d7c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Voluntary recruitment company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/53611a17-c217-458e-b2d0-43eb9c1b3eda"
+    },
+    "5764e618-0778-46c3-8abd-bba48ec5d7c0": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "5723ab94-213e-4127-a3b6-fca60eaefd56": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "484f5fcb-c6fd-4b0c-a2d3-2ac8cd890655": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "4b40b9dd-dc12-42b9-876f-4e26269d9d5f": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Manager of Food, Safety and Risk company=Insomniacookies apply=https://jobs.lever.co/insomniacookies/357917b7-1c83-4c05-929c-fc48bd3906ef"
+    },
+    "40c12381-9fb5-40b4-8779-0ab4deb81e19": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Director, Data Strategy company=Wpromote apply=https://jobs.lever.co/wpromote/aa828c7c-c613-4b5d-9f45-256ed8e86adb"
+    },
+    "53a1c3a5-ee0f-4d08-8302-be4943c43122": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Partnerships Manager company=Thepieexecsearch apply=https://jobs.lever.co/thepieexecsearch/f2a4af90-7f7e-47b4-bad1-21a7814e86dc"
+    },
+    "48402288-833e-4cbd-83a3-83a58d30e090": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4c477089-5245-4494-9048-78447bc97c10": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4ab5e4da-4c99-40ed-921e-8e0bc7719a36": {
+      "status": "ok",
+      "path": "/tsmg/tech",
+      "external_id": "tsmg_tech"
+    },
+    "4548ee62-9403-40e0-a684-253111eb87c9": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Scientist, Cardiac Preservation company=Until apply=https://jobs.lever.co/until/08c42799-d838-4955-99a9-05249c67fa5d"
+    },
+    "587b87db-ee96-491a-8ddf-f282d248a7a5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "40bbc836-3a01-4e6d-91e0-8766bee908b0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "554fcd8e-11b9-4338-b3b8-98d60d44448f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Candidature spontanée company=Safran Ai apply=https://jobs.lever.co/safran-ai/af1caa19-541b-4347-ba74-77122e761d5a"
+    },
+    "4bf6b3d2-165a-415b-998d-b720e5cd6ceb": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4bac2f38-8240-4996-8eae-44c247627a11": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4f85cec2-2013-4111-9f94-405277ec615f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "543f632b-75ab-4aae-87a9-cee7e3f68653": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5ce9a5db-a1d5-4d8e-bda1-5ca9a46d5147": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "547803c7-f342-4bc1-b8b7-4db3ff4205e2": {
+      "status": "ok",
+      "path": "/velo3d/sales",
+      "external_id": "velo3d_sales"
+    },
+    "43b5819c-a1d8-456f-8528-6b7d66f1aa0d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5f66ed9a-5ff6-44ad-b1a0-c5995c358dc6": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Talent Ops Partner company=Octoenergy apply=https://jobs.lever.co/octoenergy/48dfeaf1-1b50-416c-a6a1-171cef46f885"
+    },
+    "4e3456ce-4225-41fc-aa52-0fc3e49cfd71": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "594f5c84-1e9b-440d-92ff-fbd5c73b2c53": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5f16331f-485a-40a5-9cb5-54bb7a38cb30": {
+      "status": "skip",
+      "reason": "fact_sheet_parse"
+    },
+    "5763097b-b6a0-45fb-b1b9-b990a6c3a144": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4a5c147e-d552-4ec8-a60c-dd16ae15efd0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "51c2437f-9c77-4511-8176-c36d0b2ecfc5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "563989b0-28d3-40c9-9a8c-1597d1d5fa2d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5d11bdcc-e488-4ee4-8be3-15a38549c471": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4afc5fa1-fe89-4e04-bc39-31e7b2967d5f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Python/GenAI Tech Lead company=Provectus apply=https://jobs.lever.co/provectus/e6b3e70e-2ed5-4971-855c-147fb544bc2b"
+    },
+    "45ca0006-7464-4d01-afa7-de4daa0813c9": {
+      "status": "ok",
+      "path": "/wise-integration/mid-java",
+      "external_id": "wise-integration_mid-java"
+    },
+    "44e6d99d-6cef-4b6f-9f40-fb74d0215a4f": {
+      "status": "ok",
+      "path": "/wise-integration/mid-qa",
+      "external_id": "wise-integration_mid-qa"
+    },
+    "52cc632a-acdd-4c7b-8fb6-702cb6019dba": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4c25cd73-c8a2-4d67-9ef1-11bd5e78c683": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4dede0a9-6fcc-4b20-b5a1-e79fbf5c059d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "44e81560-313a-4950-b9fc-cf9722f62ca3": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4009fa8c-a43d-4497-8c32-323f54e00992": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4beff436-7725-4a1c-bb69-0edb844ca6b3": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4b8af538-a346-4f9d-a580-400eab4751a2": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "43370128-af45-482a-abbe-d8f5c6be2525": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "49488f77-43dc-4ee4-a03e-0cec88debe3f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5b0a3187-766a-4f6c-82b9-c39e9066dc46": {
+      "status": "ok",
+      "path": "/provectus/talent",
+      "external_id": "provectus_talent"
+    },
+    "4e81f5f0-1e00-4ba2-822f-dba487f8900c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4b8f68d1-fa5c-463f-abeb-00844feb6b86": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "410608ee-efa0-4960-b8a4-12923c2e465e": {
+      "status": "ok",
+      "path": "/veic/integrated",
+      "external_id": "veic_integrated"
+    },
+    "5da1eab4-5e30-47ac-8d5c-dff492942a91": {
+      "status": "ok",
+      "path": "/visioninvest/electrical",
+      "external_id": "visioninvest_electrical"
+    },
+    "50366ecb-2ebf-43c3-af62-777aa3025bf4": {
+      "status": "ok",
+      "path": "/visioninvest/master",
+      "external_id": "visioninvest_master"
+    },
+    "4916efff-7614-48e8-b370-efa0aaeeef31": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4ad7eec6-e5de-45cb-bd2b-c5f571d19421": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "5ffcddea-bc9b-472b-803c-7b244f9a45dd": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "53ee35fd-b39d-44df-b4d9-3195f80d5405": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "41ac145a-57f8-40e3-8273-73dd588459b9": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4272e501-8818-4cec-b543-4a4508f533c9": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4a39aa62-cd66-4b98-87be-4703b7ae1608": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "4f4fa3c5-0686-4f57-8acb-b9c7b57ff049": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "554dd550-3cc0-4df8-88f9-fa43183871ce": {
+      "status": "skip",
+      "reason": "source_thin"
     }
   },
   "doneIds": [
@@ -99952,6 +100301,15 @@
     "ashby:devsavant": "source_thin",
     "ashby:flagright.com": "source_thin",
     "ashby:duet": "source_thin",
-    "ashby:mintlify": "source_thin"
+    "ashby:mintlify": "source_thin",
+    "ashby:mechanism-ventures": "ashby_short",
+    "lever:tsmg": "posting_older_than_30d",
+    "lever:lingarogroup": "posting_older_than_30d",
+    "lever:wpromote": "posting_older_than_30d",
+    "lever:thepieexecsearch": "posting_older_than_30d",
+    "lever:until": "posting_older_than_30d",
+    "lever:safran-ai": "posting_older_than_30d",
+    "lever:octoenergy": "posting_older_than_30d",
+    "lever:provectus": "posting_older_than_30d"
   }
 }

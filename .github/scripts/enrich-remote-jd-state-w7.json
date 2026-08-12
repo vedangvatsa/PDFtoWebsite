@@ -45136,6 +45136,371 @@
       "status": "ok",
       "path": "/google/digital-biz",
       "external_id": "google_digital-biz"
+    },
+    "7aff0a93-78ea-4948-b236-cd053b933a48": {
+      "status": "skip",
+      "reason": "already_enriched"
+    },
+    "febe4449-0dae-48e7-9f43-ec63c9523d89": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Junior Recruiter with French company=Tsmg apply=https://jobs.lever.co/tsmg/e7062a3f-2991-42f4-a3d0-a0c627ffbb4d"
+    },
+    "e1ab921d-3d26-4b61-b97a-c881e7424618": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Frontend Developer - Freelancer company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/79d3e0e3-9858-4978-8e2c-449d6b43b193"
+    },
+    "ff3ef2a9-ce77-4758-a6b0-7daaf07d6500": {
+      "status": "skip",
+      "reason": "lever_short",
+      "note": "thin_source title=Resource Management Intern company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/bc172a49-565c-4a3a-83af-d2112f329322"
+    },
+    "f0dc4d9a-f2b0-4385-b533-53ec44e01575": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Azure Data Engineering Architect company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/8e0d3b9b-11ae-4e01-8c6c-5e7242bea808"
+    },
+    "e79ff361-87db-4a47-90f3-5d55fdfb85a3": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=AI/ML Engineer - Architect company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/d066788a-affb-4189-903d-34237c22e9c0"
+    },
+    "e84040ad-3078-4e87-9086-010e1bd54fad": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Sales Support Specialist company=Skillcloudhcm apply=https://jobs.lever.co/skillcloudhcm/b66d5dd8-b418-496c-bd9a-617e957e826b"
+    },
+    "fb70f4b4-9b59-4a45-99e8-d0343f18695d": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Electrical Engineer II company=Velo3d apply=https://jobs.lever.co/velo3d/c6bf76b4-76a4-4a74-b479-0eac2b27f784"
+    },
+    "fbe21334-cb4d-4445-97f4-a4c9be3378f6": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Power BI Data Analyst company=Wise Integration apply=https://jobs.lever.co/wise-integration/39a3dcdc-ce93-4459-895f-d26e9aa98817"
+    },
+    "e8485d59-f5e8-4cd0-a3f5-faece9e85b61": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Distribution Associate company=Yonexusa apply=https://jobs.lever.co/yonexusa/174a1f92-a687-462a-8ac6-9b75966e0f97"
+    },
+    "e0667de4-800e-4110-b074-097af8cae657": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Product Marketing Manager company=Watchguard apply=https://jobs.lever.co/watchguard/9b2c37ba-38fe-4dc8-8195-49ac25eff966"
+    },
+    "e73eff6c-ee37-402a-9539-c43304a19af7": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior ML Engineer (GenAI) company=Provectus apply=https://jobs.lever.co/provectus/26ec1760-acb2-47a9-bb24-5f8eba7f7474"
+    },
+    "e16f35dd-10ec-4fc3-87dc-f6babb788842": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "fc7dbd2b-36b8-407c-aeac-d04ebdc57295": {
+      "status": "ok",
+      "path": "/voodoo/growth-bc",
+      "external_id": "voodoo_growth-bc"
+    },
+    "e9de38c7-76d9-4117-aedd-8aceb607c2ad": {
+      "status": "skip",
+      "reason": "fact_sheet_parse"
+    },
+    "ede7418c-ef3b-4ca4-b4ea-42cc1521a59d": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Manutentionnaire-livreur Belron Montreal company=Gorh apply=https://jobs.lever.co/gorh/a8aaf51a-f4d9-4cb3-b136-0200d04a8fb3"
+    },
+    "e85331b8-6cca-4a57-bbbf-985e6765db06": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "e0e9a5c2-aaa3-433d-bd56-2a7b06355e00": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "f003fad5-0ff1-4516-8218-2d1928abad9c": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "f22a9e8b-f15e-4272-92b0-aff0309c5b6c": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "fa1e9092-2b74-4b8f-bc37-06470cd48700": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Magasinier company=Gorh apply=https://jobs.lever.co/gorh/2285f2eb-3566-4a3f-a540-ee027685c41e"
+    },
+    "eb67d074-f2da-4da7-9d3b-50998603d8d6": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "fea94d88-3566-420b-8fba-d4f2a9f87cfe": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Wilmington- Health Center Assistant company=Ppde apply=https://jobs.lever.co/ppde/09160582-0bc6-4472-8275-30578e7d4d30"
+    },
+    "e79a96c1-00b0-4e4d-8247-aa6b8f39bda9": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Software Engineer, Development Platform company=Paralleldomain apply=https://jobs.lever.co/paralleldomain/fa09b6ac-4fde-47f1-9bf0-242d8ec8a74a"
+    },
+    "ff814b9a-cfe7-4f63-a245-97477e080a4a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Waterproofing Project Manager company=Flynncompanies apply=https://jobs.lever.co/flynncompanies/4d85947d-2de3-47c6-b957-f1febb150a79"
+    },
+    "eccf7603-21d8-4fc3-a5a4-03d7c19f4aca": {
+      "status": "ok",
+      "path": "/telli/ai",
+      "external_id": "telli_ai"
+    },
+    "e8293e23-69cc-4eab-bd9a-fe29b02f958d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f38a5618-9cf3-4c74-b741-719ceb019f1e": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Residente de Obra – Proyectos de Vivienda company=Ltjgroup apply=https://jobs.lever.co/ltjgroup/5bc308bb-1904-4735-8138-03b65c0a06f1"
+    },
+    "eb88fd53-81e6-4253-8322-f92a67d04ae5": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Railroad Signal Maintainer company=Springrecruits apply=https://jobs.lever.co/springrecruits/cc529363-375c-4c89-b479-e961ed37811e"
+    },
+    "fc483dd0-fd75-47cc-a8ac-98b08ccf35be": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e1f40ddb-fddc-4fe4-a110-84d769772313": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f5ab077e-b5d7-4758-8610-d87bbe399ec8": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior FullStack Software Engineer (Node.js company=Dilitrust apply=https://jobs.lever.co/dilitrust/994eaa97-98b4-463b-9cee-4d41730d9a2c"
+    },
+    "eb8e1559-2040-4edd-a590-e525095e9009": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Associate AI Engineer company=Shyftlabs apply=https://jobs.lever.co/shyftlabs/1a665cf5-1f3f-4610-be00-b46ffa13a675"
+    },
+    "e4df7dfb-e0ac-48bd-bf97-a740a0ee866a": {
+      "status": "ok",
+      "path": "/whoop/sw-1e",
+      "external_id": "whoop_sw-1e"
+    },
+    "f2f74921-e20d-4373-996a-e354bcf33de1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e9dd8e04-ea10-44cd-a11e-a5201c30c541": {
+      "status": "ok",
+      "path": "/velaura/performance",
+      "external_id": "velaura_performance"
+    },
+    "f82c9ea7-0c18-4239-8941-12cc7c7e5551": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ec6918b8-31d8-4295-a987-518e4edd8143": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Maintenance Lead company=Print Recruiting apply=https://jobs.lever.co/print-recruiting/dc56c4f7-2c59-417a-a0c9-13c05eeadd74"
+    },
+    "f744bd3a-7725-49e9-8fc5-b4286e23b7cc": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e50f6cde-dfbe-4571-ae26-91a7d616e589": {
+      "status": "ok",
+      "path": "/velaura/custom-88",
+      "external_id": "velaura_custom-88"
+    },
+    "e7abaf2e-84ca-4cc1-ba6d-7149e41ee430": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Introduce Yourself - General Application company=Primeexecutiveoffice apply=https://jobs.lever.co/primeexecutiveoffice/63049720-9362-4980-b95e-b7ae8028a455"
+    },
+    "f521bd5a-9879-49bb-abd3-10c71ab364d4": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Engineering Manager, Distribution company=Milhouseinc apply=https://jobs.lever.co/milhouseinc/2d6ec83a-1c3a-4d0e-b64c-3fb747e302f8"
+    },
+    "ec1364cb-0fe6-4eb5-a5eb-3b242475ae0c": {
+      "status": "ok",
+      "path": "/cscgeneration-2/buyer",
+      "external_id": "cscgeneration-2_buyer"
+    },
+    "f5092623-e598-4c80-9629-aedaa7a3906c": {
+      "status": "ok",
+      "path": "/watchguard/sales",
+      "external_id": "watchguard_sales"
+    },
+    "ebde94fe-9f12-4477-8bd9-eae3d4956baf": {
+      "status": "ok",
+      "path": "/velaura/ai-soc",
+      "external_id": "velaura_ai-soc"
+    },
+    "e735fefc-6e7c-47d8-9049-be900fc7e173": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e434726b-fc24-429a-9850-7dd3bd6c87f0": {
+      "status": "ok",
+      "path": "/visioninvest/hr-biz",
+      "external_id": "visioninvest_hr-biz"
+    },
+    "ec9db022-c3ac-4aa2-a817-dcd168ba9008": {
+      "status": "ok",
+      "path": "/visioninvest/chief",
+      "external_id": "visioninvest_chief"
+    },
+    "e6e81751-ed72-49ec-9a35-b7c68b3dedd0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e5646534-ce66-4357-b04f-8c4ff969b0dd": {
+      "status": "ok",
+      "path": "/visioninvest/design-e2",
+      "external_id": "visioninvest_design-e2"
+    },
+    "e4396e1b-0e62-420a-8113-423978ba64e9": {
+      "status": "ok",
+      "path": "/springrecruits/mechanical",
+      "external_id": "springrecruits_mechanical"
+    },
+    "ec88118b-1b1f-45ac-9c15-a426f1d9cf36": {
+      "status": "ok",
+      "path": "/modeln/vp-prod",
+      "external_id": "modeln_vp-prod"
+    },
+    "f8ea98d3-acdd-4d85-84b5-44350192c048": {
+      "status": "ok",
+      "path": "/includedhealth/dir",
+      "external_id": "includedhealth_dir"
+    },
+    "ff3d2f6f-daa8-4379-bda4-f382ab350f41": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ef760fff-0e36-4bf8-8d9c-92cf3efc2965": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f021815f-aa0c-4346-b31e-8f55871aa848": {
+      "status": "ok",
+      "path": "/recast-software/prod-mgr",
+      "external_id": "recast-software_prod-mgr"
+    },
+    "e6b89cdb-7ff6-4ff3-a4bb-88f35600d3dc": {
+      "status": "ok",
+      "path": "/zartis/ai-sw",
+      "external_id": "zartis_ai-sw"
+    },
+    "ea982b97-3471-4143-978b-e7e9940fd388": {
+      "status": "ok",
+      "path": "/jetsetpilates/studio",
+      "external_id": "jetsetpilates_studio"
+    },
+    "e8113742-059f-4634-a6ca-a954fb888127": {
+      "status": "ok",
+      "path": "/shyftlabs/data-eng",
+      "external_id": "shyftlabs_data-eng"
+    },
+    "f01a73ab-c04e-41ae-8ce3-9fa731b6cd6f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e4615412-9b75-4092-b14c-c0d28b8207d5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e0abe450-2b10-4561-b2d3-a595a1d52676": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e83b8a7b-3473-4b77-bf7c-2af581b50a73": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f659fd0e-6537-4010-8357-28afba9b4afe": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f0d2fb45-d1a0-4ca1-a2bf-37be8cb4dbeb": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e0546148-e4ac-44e0-9ccd-d15871d07bd6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e65038b7-e73d-4467-b54d-1cb50fa8c408": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f7dc8951-c264-44aa-b67e-8efb1bec52a1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "fbe71ce4-8cc8-4d67-a7a4-be87ade55850": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f2d95d2a-b28f-432c-b393-0d779572719e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ec021331-541e-4326-8c96-bd962debbb91": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f1884e51-22e7-45fe-9ee0-901d644a6969": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ff475462-6aad-4d2d-9fef-c19abc83ac1a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "eec45355-d323-406a-a8df-b366e3e4391e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "fd492c8f-fbb6-4f40-97f1-6288d8e443b1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "fa3857ea-3b6b-4182-94c9-ec28c9af790a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e1ce7a06-841e-4c19-8e10-f82f60fd0e42": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "eb3e9693-c89c-417b-92da-5562df74774d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f9c601f0-0cda-4cfa-a78f-5b229d061af5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f3c57862-d5be-4529-bdbe-afdb3777c5b5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e8c2e44e-92bb-4676-9569-dc37eb72e22e": {
+      "status": "fail",
+      "reason": "slot_mutation"
     }
   },
   "doneIds": [
@@ -56161,5 +56526,26 @@
       },
       "samplePaths": []
     }
-  ]
+  ],
+  "deadBoards": {
+    "lever:tsmg": "posting_older_than_30d",
+    "lever:lingarogroup": "posting_older_than_30d",
+    "lever:skillcloudhcm": "posting_older_than_30d",
+    "lever:velo3d": "posting_older_than_30d",
+    "lever:wise-integration": "posting_older_than_30d",
+    "lever:yonexusa": "posting_older_than_30d",
+    "lever:watchguard": "posting_older_than_30d",
+    "lever:provectus": "posting_older_than_30d",
+    "lever:gorh": "posting_older_than_30d",
+    "lever:ppde": "posting_older_than_30d",
+    "lever:paralleldomain": "posting_older_than_30d",
+    "lever:flynncompanies": "posting_older_than_30d",
+    "lever:ltjgroup": "posting_older_than_30d",
+    "lever:springrecruits": "posting_older_than_30d",
+    "lever:dilitrust": "posting_older_than_30d",
+    "lever:shyftlabs": "posting_older_than_30d",
+    "lever:print-recruiting": "posting_older_than_30d",
+    "lever:primeexecutiveoffice": "posting_older_than_30d",
+    "lever:milhouseinc": "posting_older_than_30d"
+  }
 }

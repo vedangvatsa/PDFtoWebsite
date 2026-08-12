@@ -71864,6 +71864,446 @@
     "347e2fd7-abbe-4670-9bc9-a11695cded9d": {
       "status": "skip",
       "reason": "source_thin"
+    },
+    "1b0f7596-8eff-47c6-adac-ebb2c9844675": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "2334061e-f872-457b-95b1-46c3fc510fcb": {
+      "status": "ok",
+      "path": "/ndeavour/office",
+      "external_id": "ndeavour_office"
+    },
+    "3a29f6d7-b6a4-46c3-afcb-fa7a678c7f2c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "20e3014a-2564-435a-b449-bdc21c7a9f66": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1ff7a5cd-b6a4-462d-8e32-74eb2ce71f19": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "18b5deb7-581e-4abf-bdce-2a4ce76b8aa5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1186da95-a39f-4a5e-9362-f6526a0def57": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "32f43633-24ce-474f-ae77-b2c31cf77356": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0caacd51-fd7e-49b9-9332-daf02c01f39f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "3e740984-b05d-4e74-a435-5a1d12b6aa32": {
+      "status": "ok",
+      "path": "/sequoia/loa-prog",
+      "external_id": "sequoia_loa-prog"
+    },
+    "21a21758-199f-4e1c-95e0-efddfd2bcac1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "2ab05843-e4b1-41d8-805b-53e6c7b07350": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "38579a5e-dbe6-40a2-bcb3-0c210d4fb412": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0e97de11-623a-4de2-a8e7-f86ac0fdc3e6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0fcd6362-426a-4c8b-bee4-1f9f7f351ce1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "27374faa-7649-4cc7-9a4c-faf982d14e1a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0fc03adf-829f-4aaf-a091-cbeabc54a0ec": {
+      "status": "ok",
+      "path": "/fundamental/ml",
+      "external_id": "fundamental_ml"
+    },
+    "0551e0a0-f8a3-4ebe-acf7-e9c7bd63ec98": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "2bd024de-259e-4229-92c3-cd3bb0e32b33": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "2a4ad4e9-9b52-47ce-9ca3-74e57ce4ec4b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "01bde8a6-55b7-4257-a3be-1eb8a7357317": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "212e1d36-b51e-4393-b4ce-6cbe939cb91f": {
+      "status": "ok",
+      "path": "/redpanda-data/sol-arch",
+      "external_id": "redpanda-data_sol-arch"
+    },
+    "25391a41-c895-4761-9d95-d2c8b01cbfd5": {
+      "status": "ok",
+      "path": "/fundamental/applied",
+      "external_id": "fundamental_applied"
+    },
+    "281c1c92-0973-402f-85f8-2878de4c1728": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0b639f0e-f400-4ba2-b913-fb31e63a9bc7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1135079c-379b-4f4f-b8d4-57f805dced33": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "16474cd7-104c-4756-b564-58a3f7186211": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0f851a5c-6adf-4952-a571-b39880835427": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "040be363-4829-4ffd-85e0-72de68b67d49": {
+      "status": "ok",
+      "path": "/voodoo/art-dir",
+      "external_id": "voodoo_art-dir"
+    },
+    "0e1291ca-80c6-4c73-a8da-e135dc19ae7b": {
+      "status": "ok",
+      "path": "/voodoo/mkt",
+      "external_id": "voodoo_mkt"
+    },
+    "1be47bf6-9627-4399-857f-62524cf0608a": {
+      "status": "ok",
+      "path": "/voodoo/prod-02",
+      "external_id": "voodoo_prod-02"
+    },
+    "197685dc-5ec4-4be6-b73a-bfca204c100b": {
+      "status": "ok",
+      "path": "/snowflake/sw-45",
+      "external_id": "snowflake_sw-45"
+    },
+    "0a92d916-4308-43e1-adea-f3712d19c733": {
+      "status": "ok",
+      "path": "/material/inference",
+      "external_id": "material_inference"
+    },
+    "08893b72-682d-4a78-a4ac-de3783bb9d12": {
+      "status": "ok",
+      "path": "/openloophealth/strat-6d",
+      "external_id": "openloophealth_strat-6d"
+    },
+    "0e3048a7-704e-4540-81ac-ef2ff68867d8": {
+      "status": "ok",
+      "path": "/stack-ai/fe-eng",
+      "external_id": "stack-ai_fe-eng"
+    },
+    "135fcd50-a610-4301-ac5a-bb3212e514eb": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0eecba3f-278e-493d-b779-daaafd1a5a74": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1c878389-7135-48e8-ae91-918a6b77039e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0357c78a-c398-424f-b9ff-6d3ef097c3f8": {
+      "status": "ok",
+      "path": "/voodoo/creative",
+      "external_id": "voodoo_creative"
+    },
+    "0a2bcc3c-f308-42e4-ad67-5b7c4f7beb59": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0c7a0009-c1b0-4c0b-9923-93a47e79e000": {
+      "status": "ok",
+      "path": "/pomelo-care/doula",
+      "external_id": "pomelo-care_doula"
+    },
+    "1ab7e293-db66-4cf9-a3af-347ef9a28cbc": {
+      "status": "skip",
+      "reason": "fact_sheet_parse"
+    },
+    "16c70b45-5d2b-4bed-b3a7-3f8a3ccb3ed5": {
+      "status": "ok",
+      "path": "/amboss/campus",
+      "external_id": "amboss_campus"
+    },
+    "0660d0fc-04f9-486b-871d-66028cad02a4": {
+      "status": "ok",
+      "path": "/nooks/prod-mgr",
+      "external_id": "nooks_prod-mgr"
+    },
+    "0c2e1f68-1a77-450f-bf55-3dff6ecbba4f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "05bb4485-5644-44d1-9777-9b0ae2fa862d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1db785a1-2bf7-453c-a7be-6977870a3e6d": {
+      "status": "ok",
+      "path": "/ceartas/data",
+      "external_id": "ceartas_data"
+    },
+    "023935b0-c96c-4a73-9193-46c555faa51e": {
+      "status": "ok",
+      "path": "/overview/embedded",
+      "external_id": "overview_embedded"
+    },
+    "1b631253-22e3-4115-b123-d91244577325": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "01a8e686-0d6b-47a1-ae52-5bf1b21db5bc": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0bd9a9e6-7f3c-451a-a004-b5742e74fbcf": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "141260a0-3bea-4eb9-9f09-a0058393b512": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1751273a-2cdc-4e60-8835-cb8c7319e893": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "12045860-75c9-45f9-a45e-5166e4d02a96": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "13665558-c8ee-4289-86ee-8769c2a7a501": {
+      "status": "ok",
+      "path": "/josys/sales",
+      "external_id": "josys_sales"
+    },
+    "0083bf57-11ae-4b04-9499-a098274eaf83": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1694ac23-87d8-4e92-8759-780e35cb2148": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1848444e-ddd7-413b-8068-899af4eab40b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "15acbc2e-6676-474d-b986-ddfd1cba5784": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1a884c0a-99b4-4b2f-b372-d5c7b31ae81d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "11087682-5001-4cf5-a0f9-b58f2caefe0b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "01279b95-215d-49c9-8094-4f2343e86e83": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "140dc5d3-714b-4c0a-b6ec-94deb4c23f00": {
+      "status": "ok",
+      "path": "/playbook/social",
+      "external_id": "playbook_social"
+    },
+    "078a397b-8976-4214-a998-f5b4849510b6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1a6f6c8d-3dc1-4a09-8b18-38a3ccafac18": {
+      "status": "ok",
+      "path": "/bruno/rev-ops",
+      "external_id": "bruno_rev-ops"
+    },
+    "140b95ce-72ba-4ec4-bea1-05e515e9b7bf": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0307045d-b3db-4fb4-a7db-5321eb1cd169": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "11ce4688-80a1-4e93-8abe-b30e347a3afa": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1e8b78bb-d80c-4531-9814-8edefa565b62": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "007aa4fd-a544-4afa-a998-d700ef55d5d3": {
+      "status": "ok",
+      "path": "/flosports/programming",
+      "external_id": "flosports_programming"
+    },
+    "1ee8bc41-566b-4fb9-9570-3bf3fc061c2f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "14108340-366d-4b21-952f-68c5f8c70187": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0fde160d-46be-4866-a89b-a71bb2ef8b62": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1532673b-90bd-4e94-942b-fa088dd871b8": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0e77a386-cd32-4bbb-a5de-064eba0bff42": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "16addcc3-a5a5-42ef-ae2f-b04ac9ce1882": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0aa2c174-0a41-4dfc-ba53-45d12f11c01c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "166c9c97-f98c-4486-acda-f88019542253": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0baf351e-81e2-4a98-8436-fb34063283a7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "19d2126b-0312-4d07-b884-f375b5bb8f93": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "143d8065-6dff-403b-86ef-ecaf806f9c4c": {
+      "status": "ok",
+      "path": "/shift/hr-coord",
+      "external_id": "shift_hr-coord"
+    },
+    "1836a422-a41f-45dc-82e3-f19c4991b0d1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0e6ac308-44e6-40b0-b002-7f79d9596a46": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "02f43f1e-36c9-4b81-89ec-04f60d8b0951": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "08ddabfa-2eb2-4df1-80c8-07e834b83bde": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "16bfb826-2426-4710-b7ed-5c55e023eedf": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "18f5dd0e-67c2-4b80-b661-a46ad9933fdd": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "041d8ab2-4dc8-40ad-9508-b20ec277a215": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "084854f6-5b60-4452-8886-60ea4cb07e26": {
+      "status": "ok",
+      "path": "/eye-security/accountmanag",
+      "external_id": "eye-security_accountmanag"
+    },
+    "00de2770-41d0-46e0-9404-c2984d5e6abb": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "161bc34a-5d0b-4396-b33f-3b7b88a7a85c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "035e0c53-99c0-4816-ada5-600c11320de8": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "08d7aa28-b0fa-425d-b5b3-4b4f52e43be5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "01dbed3e-9ba0-42cf-960a-21ac5ee6faa7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0ec65e53-4c77-40ba-b6fd-989e30a543c6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "01e35463-4c16-4ff7-9962-0f90c34fa2bf": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "11fa0522-7e37-4b1b-8869-10d4906fb9f2": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "0e147cd6-5f9b-44e2-ad31-ab1e47006c99": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "004f6e0e-ac45-444d-b858-4c45bf4dab59": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1851bc08-eec9-4f1c-8c92-0d12c2d83914": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1d0abc39-64f1-4b42-9fcc-bc72e2cf7415": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "10c1334e-4014-40ab-bf19-544b59704d9b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1795dcb0-81a6-44f4-a233-606e13c92565": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "09d0d71e-3e6b-429b-923b-9fd70dfdcce4": {
+      "status": "skip",
+      "reason": "source_thin"
     }
   },
   "doneIds": [

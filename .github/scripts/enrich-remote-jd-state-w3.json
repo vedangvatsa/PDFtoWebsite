@@ -63751,20 +63751,21 @@
       "reason": "source_thin"
     },
     "ee8bf45a-231b-48b5-add0-fad451be655b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ddc2da5e-f138-4949-8d5e-1d22da2be04a": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "c014c5eb-31ed-4e97-9e45-1f199bbf0f78": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "c3d9a620-0a24-4eb6-b62c-6ddeebff5213": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/databricks/counsel",
+      "external_id": "databricks_counsel"
     },
     "f23e75fd-946b-48ca-9857-dc69b784c537": {
       "status": "fail",
@@ -63775,16 +63776,17 @@
       "reason": "fact_sheet_parse"
     },
     "c4837059-db31-4883-9326-70b3a6d92a0c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/datadog/tech-10",
+      "external_id": "datadog_tech-10"
     },
     "e8999ac8-6558-457b-81f5-d612880c44c2": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "cb74bd52-9321-4d86-b1be-4bd54050315f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f9d8b694-b0ad-4402-910b-0c05b5f034fc": {
       "status": "skip",
@@ -63792,8 +63794,8 @@
       "note": "thin_source title=Legal Operations Manager company=SeatGeek apply=https://seatgeek.com/jobs/8044128?gh_jid=8044128"
     },
     "c1b7b1d3-2094-4760-b577-632daa11be13": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "feb4d461-c939-40bb-8e7e-e4fb43dc1606": {
       "status": "fail",
@@ -63804,8 +63806,9 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "dcd7affe-d088-48da-8dd4-b35e9737157a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/external-sambanova-systems/dir-tech",
+      "external_id": "external-sambanova-systems_dir-tech"
     },
     "ded681c4-a4fe-4a1f-84bf-807acb71795c": {
       "status": "fail",
@@ -63820,8 +63823,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "df004376-6aff-4cc8-b4fe-237ff34f298b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d5e84dba-a910-4a3d-8cd6-095bae0bf8ca": {
       "status": "skip",
@@ -63888,80 +63891,84 @@
       "reason": "source_thin"
     },
     "fb5d8753-fcb0-457f-880c-2e6797109ca7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/storable/sw-eng",
+      "external_id": "storable_sw-eng"
     },
     "e6f93971-3eac-46a6-bde1-813853a3dab8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/external-sambanova-systems/prod-mgr",
+      "external_id": "external-sambanova-systems_prod-mgr"
     },
     "f0eb04df-a139-42c7-b7ed-25bcd8ab5ade": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "cde8156d-2722-4797-b1bf-8fa52ebcbf61": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "fd3a97c4-60b9-423e-b5f6-67cdb2d936f9": {
       "status": "skip",
       "reason": "source_thin"
     },
     "d2133852-cc51-42ad-8bb7-6efbbd7ebd2c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f518e8b2-b7e6-41ae-8f20-3fe4d67d617e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f7375615-20ea-4b65-8eda-1eea4faa2c83": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ced88bb3-3389-409f-ad53-e6abcc0aaf17": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "dacfcecf-66b3-40e2-8797-8905e260b1c9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "fact_sheet_parse"
     },
     "c79abf83-2343-4b86-b574-88ac5401c8d7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "cb9dfd9b-4ab0-4911-8e97-f1a800b1d610": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/mongodb/tech-9a",
+      "external_id": "mongodb_tech-9a"
     },
     "c2bf43e2-9558-4938-9c29-8c563146f4b7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d3bad16d-c357-4013-bb7d-7375682cfc1c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ca0266b5-c5fd-4c92-93d6-23944fe044e5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/mongodb/prod-50",
+      "external_id": "mongodb_prod-50"
     },
     "e18c72ea-91c7-4d6e-99a2-da25982a4989": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "d0fdcdec-087b-4846-813a-9ecb3908be90": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c6267a31-e9b2-4bd3-824d-8c668f7889a6": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c788cb4b-7ffd-4385-80eb-a829bccc2b02": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e52ef17b-a1a3-4f9c-9433-bc0d17bcbd29": {
       "status": "fail",
@@ -63985,23 +63992,23 @@
     },
     "d62d9ae5-f6aa-4d13-9c4d-53af33b40371": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_slop"
     },
     "d3a2eda1-18a0-49aa-ae3b-096ffb588de1": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "slot_mutation"
     },
     "eacb2f19-eb05-45d4-a35c-5b9130aacd0e": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_slop"
     },
     "cdeb7836-db0d-403a-b27c-6d6c72b90de9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e493a25f-d9ee-4a19-9ff5-3d5ab7ff8ee4": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e3d2e9ab-6880-4562-9317-8a3078af95f0": {
       "status": "fail",
@@ -64020,16 +64027,17 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "e0c0c29e-b47d-4edc-a026-e566caaa49a9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f41f4208-93ea-4aee-b84e-7ca24730dd98": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "f9b9cee1-d8eb-4097-a706-f45b60b32a3f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/databricks/prod-13",
+      "external_id": "databricks_prod-13"
     },
     "cd673fdf-cab1-4476-a89a-2207528c9364": {
       "status": "ok",
@@ -66738,8 +66746,8 @@
       "note": "thin_source title=Clinical Trial Manager company=Structuretx apply=https://structuretx.bamboohr.com/careers/391"
     },
     "d341e673-d9a3-4517-9753-e9d331111134": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "cc4f184f-53fc-4f62-afc6-8919f0fae542": {
       "status": "ok",
@@ -77703,6 +77711,11 @@
     "c5926553-fc43-49c8-9c81-3fb40b11892f": {
       "status": "skip",
       "reason": "source_thin"
+    },
+    "e920ce99-53fe-4492-b90b-413025661522": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Accounting Manager company=Tggaccounting apply=https://tggaccounting.bamboohr.com/careers/958"
     }
   },
   "doneIds": [
@@ -92752,6 +92765,7 @@
     "greenhouse:razorpaysoftwareprivatelimited": "gh_404",
     "greenhouse:vestmark": "gh_404",
     "greenhouse:thenewyorktimes": "gh_404",
-    "greenhouse:a3c41b8b71eff8c4": "gh_404"
+    "greenhouse:a3c41b8b71eff8c4": "gh_404",
+    "host:tggaccounting.bamboohr.com": "html_short"
   }
 }

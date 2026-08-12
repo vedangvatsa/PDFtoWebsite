@@ -81709,6 +81709,390 @@
     "4c25cd73-c8a2-4d67-9ef1-11bd5e78c683": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "2c1eb96e-69a2-4cfb-80ef-d2427e6f9f56": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=AI DevOps Engineer company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/39d64e0c-dd10-48c9-9321-b91fd111842e"
+    },
+    "20672a11-ccb4-4605-acf2-2eec0ac52698": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Affiliate Psychology Counsellor company=Lyrahealth apply=https://jobs.lever.co/lyrahealth/0bcd6b42-aa4b-4c30-ade3-62383e0652d6"
+    },
+    "3f251a46-06de-4b3c-9308-b34ba99a61e3": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Partenaire d’affaires ressources humaines company=Gorh apply=https://jobs.lever.co/gorh/28c8deba-15a8-4a2b-be5f-2d76cea001df"
+    },
+    "2fd5acbc-3530-4900-ba4b-2c632678665a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Health and Safety Manager company=Sharpsmart apply=https://jobs.lever.co/sharpsmart/3fd7b112-f224-4624-ae59-7bb9910ba560"
+    },
+    "383fc644-cb26-4945-a965-4f9aa38c2bc6": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Asistente de Gerencia company=Ltjgroup apply=https://jobs.lever.co/ltjgroup/b1746356-6636-41cd-8465-2ec66b31edfe"
+    },
+    "3ea8b9fa-07f1-4650-baa8-471af8476f02": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=100% Nuclear Medicine Radiologist| Fully Remote|No Commute company=Simonmed apply=https://jobs.lever.co/simonmed/a87b8373-03cd-4c8d-b6bb-7dc948f6c36a"
+    },
+    "2667c235-77da-4aad-bb98-969630805d57": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=SR Backend Engineer company=Sphere Laboratories apply=https://jobs.lever.co/sphere-laboratories/9cde8e0a-9f7e-4a49-b296-99efb3164d36"
+    },
+    "27956a21-2ca8-4e27-957b-80b3918024e0": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Inspector de Control de Calidad company=Ltjgroup apply=https://jobs.lever.co/ltjgroup/5f9c19ec-a850-432b-8b12-69eefc0f6b1f"
+    },
+    "23205b52-59be-4dac-ba65-b7870e250c18": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=SPÉCIALISTE LASER/VISION company=Gorh apply=https://jobs.lever.co/gorh/57398833-cc6b-4ce8-94bd-0f6a2402b438"
+    },
+    "2fe53ced-7edf-417b-abaf-1b4020c98bda": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Opérateur.trice de machinerie agricole company=Gorh apply=https://jobs.lever.co/gorh/04f23bef-d247-41f2-ac16-8c81af13f879"
+    },
+    "2acb2d7c-11d7-46c2-9550-084d0c9c4201": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Rolltender company=Print Recruiting apply=https://jobs.lever.co/print-recruiting/fd73782c-e468-492f-bd5b-a7402183b3bb"
+    },
+    "2136b037-f66e-4878-88a7-730bf229df78": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Envelope Converter Adjuster company=Print Recruiting apply=https://jobs.lever.co/print-recruiting/377ba61e-dbe0-45eb-9d96-e8d441b7c206"
+    },
+    "3382382b-5f2c-4d1c-b94a-d134dc813992": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Traveling - Commercial Roofers company=Flynncompanies apply=https://jobs.lever.co/flynncompanies/88d2d051-ac6d-4958-99c5-1ed06ea83f78"
+    },
+    "240b8ba6-4629-40e8-8a44-ae38d751fcad": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Spécialiste IA et Automatisation company=Gorh apply=https://jobs.lever.co/gorh/07f5b9c9-2dc6-428a-b468-a2d15fb6f534"
+    },
+    "272ede74-68fd-44ce-a59d-8fdb50edef4f": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Software Developer I company=Tsmg apply=https://jobs.lever.co/tsmg/07f5c7da-2cc3-440c-83a1-79264b4a8943"
+    },
+    "2369a89e-8a80-4de4-8c70-7379f9559eb5": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Project Manager company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/7f2e4cdd-b9ea-481d-b5c6-8b8657516d4f"
+    },
+    "23ad4295-1e08-4e97-863a-39712e29f0e4": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Sr. Propulsion Engineer company=Venusaero apply=https://jobs.lever.co/venusaero/28d84358-5abf-4e7f-8cb9-32219dd9a365"
+    },
+    "392a782a-19cb-476c-8ac2-267f2459bc6b": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Program Manager - Repeat & Retention company=Stable Money1 apply=https://jobs.lever.co/stable-money1/591d176f-1d05-4675-b189-db68c38a4976"
+    },
+    "2541ec46-ebb8-44db-8b53-147d0d9a3c8e": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Field Sales Representative company=Unlimit apply=https://jobs.lever.co/unlimit/1fb5bfdc-2f1d-4c08-a669-0272fc037189"
+    },
+    "27250b5f-00ff-4af8-8a53-a588b1ccfc79": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=AI Product Designer company=Pigment apply=https://jobs.lever.co/pigment/a204cd46-bdae-4a7b-8c79-814432fcaf21"
+    },
+    "26b7410e-15ff-41eb-ab3d-ac3d24b09ad9": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Logistics Operations Manager company=Octoenergy apply=https://jobs.lever.co/octoenergy/179e9ee8-65cf-4984-acca-dc810f539c5f"
+    },
+    "201a6eaf-141e-4cf3-9b45-f6f3fb1888d9": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Operational Technology Intern company=Westyost apply=https://jobs.lever.co/westyost/412d517d-9471-4d69-acb5-44cec17b5b2d"
+    },
+    "214fc3e9-e95b-4e22-8039-e51057964fb7": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=X-Ray Technologist/MRI Positioner company=Simonmed apply=https://jobs.lever.co/simonmed/be262cf8-29cf-40d9-af2e-c6fa88fa7378"
+    },
+    "341b45a8-06e9-4bc8-924f-ceee333629d5": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=X-Ray Technologist – CT Positioner company=Simonmed apply=https://jobs.lever.co/simonmed/9c40b5b4-e3e7-4b6f-9dd4-241d820ce3fc"
+    },
+    "24c41ab3-c322-4bb8-986c-d9e25f8c3b65": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Spécialiste communications numériques company=Gorh apply=https://jobs.lever.co/gorh/2fb78556-2f32-4dcb-996f-dcd9c9922d6b"
+    },
+    "3b4d2b65-a644-4d45-90de-7ae998a8fc93": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Soudeur company=Gorh apply=https://jobs.lever.co/gorh/96ed155a-6716-465c-9d92-259d8bd3133d"
+    },
+    "30bfbd8f-9b29-496c-8100-43c281efb1e2": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Accountant company=Gorh apply=https://jobs.lever.co/gorh/d5b2be57-4333-4a68-a3a5-72884f649708"
+    },
+    "23c1370e-f080-41cb-98f7-dbb85412ca82": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Business Development Associate company=Wgsn apply=https://jobs.lever.co/wgsn/00541992-33ac-4db5-a99f-dac5b32b2193"
+    },
+    "31bedcc8-8cc2-4a14-b289-8e7cf10179b7": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Manager of Real Estate company=Solidcore apply=https://jobs.lever.co/solidcore/89652665-8d6b-4266-bba0-e2e72880cae5"
+    },
+    "21c50a50-0f43-4b0a-ad62-d7703991a2f9": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Coordonnateur(trice) Marketing company=Gorh apply=https://jobs.lever.co/gorh/78a50a8b-25bf-4aa1-ba08-9b4e281d4811"
+    },
+    "2abb2e3b-31a3-4542-92ed-1d75c986202c": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Client Success Manager company=Vivo Care apply=https://jobs.lever.co/vivo-care/bcfe4028-46f5-41a0-886a-8047040cbed9"
+    },
+    "2434bde6-1539-4b2e-b0ae-9928dea86ec7": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Technical Project Manager II company=Vailsys apply=https://jobs.lever.co/vailsys/9211220d-a36e-4167-a29e-a5d0b5b352e9"
+    },
+    "37f77423-9f2d-44b2-9d7c-643a517f945e": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Dover Health Center Manager company=Ppde apply=https://jobs.lever.co/ppde/a2dbe5be-5140-4f20-b209-94e61cea5cfe"
+    },
+    "309546ec-1425-4777-a826-464f2d8a7ec2": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Python Developer – Generative AI company=Qualysoft apply=https://jobs.lever.co/qualysoft/9d3399bb-9622-441d-8a89-5e4abe789f64"
+    },
+    "38801cd4-e7d0-4c1a-9753-eba0ba18b6f9": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Operario Máquinas de Enrollado company=Ltjgroup apply=https://jobs.lever.co/ltjgroup/3fc87337-b90b-4171-a48f-0ea8d604546d"
+    },
+    "203f052d-c942-45a1-b11b-f38be3495bd3": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Health & Safety Specialist company=Flynncompanies apply=https://jobs.lever.co/flynncompanies/0e549672-04f5-42b7-ba50-8d5db0d1de1c"
+    },
+    "3c9e4b66-37b1-4481-a7f1-f00ef9e908d6": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=AI Architect / AI Solution Architect company=Qualysoft apply=https://jobs.lever.co/qualysoft/2b70a08b-babc-4bea-aa41-e89e7f0e68c1"
+    },
+    "39b9d3b8-d700-4c2f-90be-c34dc24908b2": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=SR Product Manager - Onboarding and Compliance company=Sphere Laboratories apply=https://jobs.lever.co/sphere-laboratories/3c03bb0b-4a91-4678-bec8-288d7a057e58"
+    },
+    "3a655070-e4a4-4d66-a0ed-5d0d5809361d": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Anything company=Skio apply=https://jobs.lever.co/skio/0503ade8-b96f-45b8-9cec-61d84339102c"
+    },
+    "3f0c4df0-cdb2-46aa-a579-a70f8e52884e": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Customer Account Manager company=Print Recruiting apply=https://jobs.lever.co/print-recruiting/5efbbdc2-9319-4b38-88d2-7c1855cd62e0"
+    },
+    "3fe36f1e-5cda-46e3-a458-f2fae7519b8f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Propulsion System Layout Engineer company=Ispace Inc apply=https://jobs.lever.co/ispace-inc/b1a6cf1f-1257-4a77-a5c5-167c35d7b5ea"
+    },
+    "2164181d-752a-4a99-841a-fca8b731ea7b": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Municipal Project Manager company=Msconsultants apply=https://jobs.lever.co/msconsultants/8d194c21-0113-4f33-b12c-4e281b480370"
+    },
+    "3c7e5326-af77-498a-a14b-4568ab066c3c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Regional Director of Operations company=Jetsetpilates apply=https://jobs.lever.co/jetsetpilates/d26bdf5d-f2d7-4b7d-aa53-4a68f93dc381"
+    },
+    "303d46b7-dd78-4fb2-a331-4bb079564410": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Technical Support company=Qsic apply=https://jobs.lever.co/qsic/b3ad65c5-2797-47a9-828a-ff68bb61e3cd"
+    },
+    "3e5fbe14-3a3d-4577-95a1-bc5d4f750922": {
+      "status": "skip",
+      "reason": "lever_short",
+      "note": "thin_source title=(Crypto) Backend Engineer company=Nahc apply=https://jobs.lever.co/nahc/be2b29c4-45a4-4dfe-a3b6-b3f87247c99b"
+    },
+    "2a5067e1-d2fd-4cf4-a6a8-47a56a68cd2f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Data Scientist company=Nahc apply=https://jobs.lever.co/nahc/7ed24e8f-642d-4cd3-9929-a5464f50a2fd"
+    },
+    "34d8c345-aef9-4155-b7fe-4257a415cde2": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Floor Crew company=Feldinc apply=https://jobs.lever.co/feldinc/9e5529cb-8bd6-424d-b255-201490e1cd20"
+    },
+    "2436c377-c438-4a86-9260-f49c88d976e7": {
+      "status": "skip",
+      "reason": "lever_short",
+      "note": "thin_source title=AI Program Manager company=Nahc apply=https://jobs.lever.co/nahc/fb395627-a81b-4b79-994c-09bec4ba8694"
+    },
+    "2cb3bf8e-ab76-46ba-ac27-9bb6551eff23": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Snack Bar Attendant @ Sand Valley company=Dreamgolf apply=https://jobs.lever.co/dreamgolf/4b23a26f-2628-49c7-9a6c-a9e7e4e208d7"
+    },
+    "3eb1844e-1c8a-4c7d-bbd4-245b0e44e2f1": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=PPC Manager company=Tsmg apply=https://jobs.lever.co/tsmg/c631b86e-a60f-4d87-847c-8800b15be0fe"
+    },
+    "2afcfdbf-193d-4481-9ed1-d5865b524759": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Interest @ Wild Springs Dunes company=Dreamgolf apply=https://jobs.lever.co/dreamgolf/c6dbb6c4-2c22-4572-a63f-2009fc905913"
+    },
+    "35ea73df-a186-4939-a8e9-7d6e4b81e307": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Test Engineer company=Ltaresearch apply=https://jobs.lever.co/ltaresearch/1293e668-9cf5-45c5-b948-b822df946fe6"
+    },
+    "2858b81c-0e8b-4690-84a3-01e0e08e0bf8": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Mobile Product Manager company=Piplabs apply=https://jobs.lever.co/piplabs/01bf1fe5-d815-49b7-b0e9-b46a3a652e3d"
+    },
+    "2d8ebcec-41cd-45fd-b5b5-ac2b479936a1": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Lead Finance Officer company=Ispace Inc apply=https://jobs.lever.co/ispace-inc/0cc7ab00-2474-410a-aab7-ef7ee456bba3"
+    },
+    "2e5d26d7-e785-43be-b112-0ebd3ac963e8": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Junior Project Manager company=Tsmg apply=https://jobs.lever.co/tsmg/132588a5-d5ef-431b-876c-3866fd4b83ff"
+    },
+    "340c372c-6ac7-4ece-8e6d-7fd83685359f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Research Participant – Smart Glasses Development for People with Hearing Loss company=Tsmg apply=https://jobs.lever.co/tsmg/5e810ae3-483b-4fe4-96ac-f8eb7fbab5dc"
+    },
+    "35f7db15-fae1-4dbe-a8eb-ec428347ec96": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Customer Success Manager company=Lyrebirdhealth apply=https://jobs.lever.co/lyrebirdhealth/8c54fdcc-0a6c-4217-97dc-fae51f4dc8df"
+    },
+    "2b86b7d7-f550-4dc4-a829-366afef378c6": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Backend Developer company=Shyftlabs apply=https://jobs.lever.co/shyftlabs/f7bc96bb-a568-4207-8023-9b1c87de1eee"
+    },
+    "3126398e-7d4b-494a-a0d4-6f4d0997ba89": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Sales Engineer (AI & Data Platforms) company=Shyftlabs apply=https://jobs.lever.co/shyftlabs/cce74c79-b347-4453-8665-1fd2f3230348"
+    },
+    "2341dba2-cc05-4679-868b-a7f19cd13f98": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Join our Talent Community company=Dreamgolf apply=https://jobs.lever.co/dreamgolf/5d70cff0-cf05-4adc-89f1-ca1cf24735aa"
+    },
+    "312182e4-e596-436e-a256-80070509a91b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "233df4ae-4c12-4622-a2e7-a31cf5341e3a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "21209359-bca9-40d2-a039-9e3829e604a9": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Sales Account Executive company=Chipping Concrete apply=https://jobs.lever.co/chipping-concrete/a8d889a2-0346-451c-92ef-3de4e3c0e826"
+    },
+    "33d4c85c-051a-44bd-bc57-e69961ece52c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "34db2657-233c-4a6d-b7f5-e932f950edc3": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "2c0aca21-ff2e-4162-a337-7c043ae8f57a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "38e02ad3-7835-44e3-8769-ffd935705dfe": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "34ce13ef-c192-419e-8437-45ba499674fb": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "3a940883-2f46-40ae-a374-4a55d367daa3": {
+      "status": "ok",
+      "path": "/nahc/ios",
+      "external_id": "nahc_ios"
+    },
+    "2012c1da-4eec-4a75-9e4a-1149b0c8bdf0": {
+      "status": "ok",
+      "path": "/foodsmart/mgr",
+      "external_id": "foodsmart_mgr"
+    },
+    "34a1891f-e9b9-4dc3-995d-d9b150c3ae5c": {
+      "status": "ok",
+      "path": "/ispace-inc/sys-eng",
+      "external_id": "ispace-inc_sys-eng"
+    },
+    "291bea78-af23-4f1a-8ff2-f43c6406c592": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "20f30b9e-465c-4d7b-b58a-eec92edfb389": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "23fd3751-ed5d-429b-abf6-d740cedaf2c0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "334882ad-c089-46a3-bb42-2186173dd245": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "26840876-b554-408d-aa82-c343547e1053": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "200abd49-8717-4f26-b1b6-dd84399eabb8": {
+      "status": "fail",
+      "reason": "slot_mutation"
+    },
+    "2fc51d5f-19dd-4100-924a-3ed28e081383": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "3a22e797-a144-4802-918e-e40322f9aa90": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "27f6856e-a8d7-42d9-8592-6e35204edff7": {
+      "status": "skip",
+      "reason": "source_thin"
     }
   },
   "doneIds": [
@@ -96841,6 +97225,27 @@
     "greenhouse:agoda": "gh_404",
     "greenhouse:thenewyorktimes": "gh_404",
     "greenhouse:twilio": "gh_404",
-    "greenhouse:getyourguide": "gh_404"
+    "greenhouse:getyourguide": "gh_404",
+    "lever:lingarogroup": "posting_older_than_30d",
+    "lever:lyrahealth": "posting_older_than_30d",
+    "lever:gorh": "posting_older_than_30d",
+    "lever:sharpsmart": "posting_older_than_30d",
+    "lever:ltjgroup": "posting_older_than_30d",
+    "lever:simonmed": "posting_older_than_30d",
+    "lever:sphere-laboratories": "posting_older_than_30d",
+    "lever:print-recruiting": "posting_older_than_30d",
+    "lever:flynncompanies": "posting_older_than_30d",
+    "lever:skio": "posting_older_than_30d",
+    "lever:ispace-inc": "posting_older_than_30d",
+    "lever:msconsultants": "posting_older_than_30d",
+    "lever:jetsetpilates": "posting_older_than_30d",
+    "lever:qsic": "posting_older_than_30d",
+    "lever:nahc": "posting_older_than_30d",
+    "lever:feldinc": "posting_older_than_30d",
+    "lever:dreamgolf": "posting_older_than_30d",
+    "lever:tsmg": "posting_older_than_30d",
+    "lever:ltaresearch": "posting_older_than_30d",
+    "lever:piplabs": "posting_older_than_30d",
+    "lever:lyrebirdhealth": "posting_older_than_30d"
   }
 }

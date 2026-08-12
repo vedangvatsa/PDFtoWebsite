@@ -40403,6 +40403,368 @@
     "84abb8c0-4b0a-4cc9-a5bb-4a4c02b16b9c": {
       "status": "skip",
       "reason": "source_thin"
+    },
+    "7aff0a93-78ea-4948-b236-cd053b933a48": {
+      "status": "skip",
+      "reason": "already_enriched"
+    },
+    "9e598b9c-772f-4704-9ad1-333711bcf134": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Solution Architect company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/d66ad1a2-1af3-4be5-97a1-8a3f6ab56149"
+    },
+    "96bf3cf8-1342-466e-afad-9d864531a2ab": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "9aaef4ee-b593-44bd-b36b-643207ae722f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Site Leader company=Tsmg apply=https://jobs.lever.co/tsmg/601cb2d6-ca4c-4e8e-815b-bce25284dd7c"
+    },
+    "997e819e-c203-4d17-90ac-df2fd5f81c1c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=HR Business Partner company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/11526204-f1c0-480f-836e-c33ea6f47395"
+    },
+    "947c4f29-c78a-48c8-b5cb-a12e7dbf977b": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Software Engineer company=Tsmg apply=https://jobs.lever.co/tsmg/94935e79-7b17-4d42-a4d1-719af889bae0"
+    },
+    "88b650bb-5b1d-45b3-a35c-52abef7af256": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Wyetech General Application company=Wyetechllc apply=https://jobs.lever.co/wyetechllc/16fd2ab1-ac6d-45ae-a95e-f6c79f09afa3"
+    },
+    "87be1f08-83a0-4a8d-9a63-e99ed6e01931": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Test Engineer, Automation company=Valgenesis apply=https://jobs.lever.co/valgenesis/2b4d5a9f-90b3-4fa2-9da4-3c4ab93662cd"
+    },
+    "9fc89029-130d-4b2a-857b-0c2b3a46e593": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Technical Support Specialist company=Tsmg apply=https://jobs.lever.co/tsmg/160254d8-5e01-4008-9dfa-3c4da7a733ef"
+    },
+    "8b9720b2-90d2-4ac6-abfc-0f3085c366d7": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Cloud Solution Architect company=Lingarogroup apply=https://jobs.lever.co/lingarogroup/2c8f7ee7-5449-41f1-afbd-adfff96caa35"
+    },
+    "862c1892-cc7f-4c22-a419-2a9331a1b164": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Embedded Systems Engineer company=Wise Integration apply=https://jobs.lever.co/wise-integration/be37f02b-4b32-4ce7-8614-0afac8822fd9"
+    },
+    "800a2197-d7de-432c-9d8d-98305b1e3ca1": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Product Owner company=Provectus apply=https://jobs.lever.co/provectus/5742bccd-159f-4ea1-b2c1-6d7b84b7a571"
+    },
+    "8db42509-7bd1-41fe-8b32-7f45b6e5c5d3": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Product Designer company=Thunkable apply=https://jobs.lever.co/thunkable/9bbcc4b9-ee31-4921-b844-d8f1e0bc533f"
+    },
+    "877dab21-4a23-4ac0-a3f4-511ae718ea5a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=R&D Data Science Group Leader M/F company=Verkor apply=https://jobs.lever.co/verkor/5f4f3c15-fe00-482f-aeba-0dc62c811133"
+    },
+    "833a77d3-f44e-4479-948e-c2c3a9b58c63": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Ouvrier de ferme company=Gorh apply=https://jobs.lever.co/gorh/937f60fb-7001-40ea-b2b9-980edbbf6be5"
+    },
+    "96fbce84-601d-494b-bd2a-ef529aa14da9": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Spécialiste en déploiement company=Gorh apply=https://jobs.lever.co/gorh/e28c1c33-f850-4c0b-8332-5ef0d84543eb"
+    },
+    "90c46d80-1fbf-43c6-88d3-4e8815190b74": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "8b097ce2-e6c0-40e9-be9c-911df3114d36": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Associate - Senior Engineer company=Westyost apply=https://jobs.lever.co/westyost/43862e1b-9ef8-4f66-a872-9f2dc04e6b1d"
+    },
+    "81707f16-09b1-4d77-b7f9-67dd59e24fea": {
+      "status": "skip",
+      "reason": "lever_404",
+      "note": "thin_source title=Seaford-Center Manager company=Ppde apply=https://jobs.lever.co/ppde/eed46098-da65-4b32-94bb-48e43b3f511e"
+    },
+    "867acc21-6542-4298-bbfe-5d42d56f2608": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Squad Digital Lead company=Qualysoft apply=https://jobs.lever.co/qualysoft/2cf2ea56-ca90-488f-b56e-64e1636c2bba"
+    },
+    "9b2ab1cf-7063-4a26-9a07-3380af973c71": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8f278e2b-f567-4283-8b46-1a9621e19dd9": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "99128860-a6ae-40b1-99d7-8038c1a3c06d": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=SAP CS Functional & Technical Consultant company=Qualysoft apply=https://jobs.lever.co/qualysoft/62beaca2-56e7-4551-b58e-e9b86b4941a5"
+    },
+    "872262cb-b001-4db3-a650-abab6ccfa90c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "99f043e8-177b-4977-998e-cc8f7c59ce44": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Operario Estaciones de Prensaestopa y Torque company=Ltjgroup apply=https://jobs.lever.co/ltjgroup/a5729151-e83d-46cf-b477-fb799b1b6d5d"
+    },
+    "85bd07d2-b31a-4747-abdf-bef46fe8c48c": {
+      "status": "skip",
+      "reason": "lever_short",
+      "note": "thin_source title=Salesforce Architect company=Ou Education Services apply=https://jobs.lever.co/ou-education-services/865ae3d7-f44f-4608-ab16-b7eada8947c1"
+    },
+    "8f091a46-22ed-43a9-8395-af7c92bbfa9e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "90dca96e-8d8d-4310-b72d-288e67a4b5d1": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Event Manager company=Dilitrust apply=https://jobs.lever.co/dilitrust/d1c7371f-b067-4a62-bb32-3f3938f7f2af"
+    },
+    "85f81f75-e73b-4d01-bc16-44eb907458e9": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "95cf8dfe-2b6d-4fdf-8ccf-e5f8cc463747": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8d63a95c-16fc-40a5-97c4-4dca6f73e703": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=RTI Researcher (US Timezone) company=Nahc apply=https://jobs.lever.co/nahc/5d49a9e0-524f-498d-89a2-49c243d00e85"
+    },
+    "97016d02-aa6f-4b8c-9895-d494b99f2e0c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=SVP, Sales company=Pine Services apply=https://jobs.lever.co/pine-services/f3367977-8943-41de-aaeb-c4cdb06d60c4"
+    },
+    "9c982983-1559-4171-b84a-9fd92e802c68": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "933adff9-fd4d-4e70-bf1c-20c98d3d91e7": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Business Development Manager, CLO Virtual Fashion HK Limited company=Clovirtualfashion apply=https://jobs.lever.co/clovirtualfashion/bddc7764-7367-45e9-9d17-f4c5d5949912"
+    },
+    "9c0b9c36-c9bf-4950-883f-b9f9e226772a": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "9d558e2a-6117-4bfe-835d-7bfee8037761": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9006469f-930b-4806-b735-90cecdabd776": {
+      "status": "skip",
+      "reason": "lever_404",
+      "note": "thin_source title=Creative Operations Manager company=Mars Men apply=https://jobs.lever.co/mars-men/43f629ae-889f-44f9-9dff-9521b2a2ff8a"
+    },
+    "93aa4a12-4ae9-46e0-ac93-dfadf17f64a7": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Clinical Director company=Fyzicalhq apply=https://jobs.lever.co/fyzicalhq/05225346-6aa4-4fda-96d1-582326e23d00"
+    },
+    "8635852c-f875-4dad-8931-8a3f0efd833c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Operations Crew TV company=Feldinc apply=https://jobs.lever.co/feldinc/7fc53f32-4ef3-4f86-bc2a-3798320913e4"
+    },
+    "9798479f-b596-46b0-bb81-33a24d1674e5": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "8ebfe376-ed33-4bf4-8b13-7fd7aaba5c07": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Operario Máquina Automática de Cable company=Ltjgroup apply=https://jobs.lever.co/ltjgroup/ddab386d-0c7c-4e4b-ad4f-23d27bf632cf"
+    },
+    "9d7b5ebe-df47-4cfe-978a-65254ec9d35f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Programme Manager company=Hypersonica Prod apply=https://jobs.lever.co/hypersonica-prod/b746a77a-6c24-4674-9f87-1cb8233fa9e0"
+    },
+    "9d41ed43-7b77-497a-a1e4-1fe005a89a1d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8c880a12-7f11-489b-8f19-20ff0ef8fa17": {
+      "status": "ok",
+      "path": "/moment/researcher",
+      "external_id": "moment_researcher"
+    },
+    "85c00ec1-b9eb-46b6-bd4f-ab7df9ab764f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "967edcbd-e0bd-4872-bc8e-e6f95cfc875f": {
+      "status": "ok",
+      "path": "/uipath/sw-05",
+      "external_id": "uipath_sw-05"
+    },
+    "81ff0955-1158-43bd-976b-59a64f5f6bf7": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Health Center Manager company=Ppmi apply=https://jobs.lever.co/ppmi/9b270409-0d5b-41a2-ac47-456d1bcd9ecb"
+    },
+    "80288ddf-ce9b-4568-84b5-124627a08ee4": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "97961fbe-c64a-4014-a1e5-d23d5f3fd65f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9ecdc324-3926-416d-b971-f85dac68fefb": {
+      "status": "ok",
+      "path": "/visioninvest/design",
+      "external_id": "visioninvest_design"
+    },
+    "91fec2a1-2b88-4f5a-b621-e1438d64dfe9": {
+      "status": "ok",
+      "path": "/velaura/custom",
+      "external_id": "velaura_custom"
+    },
+    "927d8c3d-04f5-4e67-9d2e-35383e5c1499": {
+      "status": "ok",
+      "path": "/sharpsmart/net",
+      "external_id": "sharpsmart_net"
+    },
+    "999c6bc0-a339-4d88-8044-a4ca8a732062": {
+      "status": "ok",
+      "path": "/dozee/supply",
+      "external_id": "dozee_supply"
+    },
+    "8f498fce-8d14-467a-9835-182594ae1ddf": {
+      "status": "ok",
+      "path": "/salonkee/representant",
+      "external_id": "salonkee_representant"
+    },
+    "9c4c0bae-c71e-4bd9-856b-3ab49c091e2f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "967824bf-c608-49a8-9418-88442aa95140": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9b5bb6b1-50af-45f1-89bc-3b2ef425621c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8b5e23e7-07f4-418a-b639-73d4be934d60": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8da40b83-0d5e-49d2-ac7b-d79b516ee1f6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "846e3ff0-93dc-4974-9800-ace5f7c9a0ff": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "82bd1e48-c7fb-4209-a824-f3e1fef7a4e3": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "823efe8b-cd9d-4b50-a9cd-6a278cd969fa": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9342b975-e179-4e0f-a292-b4d6c4373085": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "806c1a6c-392e-4d5c-81b6-05fe7ad8347b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9052e10d-265b-4469-972e-b6b3cbb521a8": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9b76dd17-8cba-4eea-bf31-6bf27b3aaf62": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "87b72c05-b058-466f-b393-3bac5246550e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9a5d4c87-b537-40f2-94cb-9b15bd97dbb1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9a57202c-e8bc-4dbf-9373-c8c78053b6b1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "87db9b86-084c-4367-9c85-9336fa7e2888": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8dda3367-ba09-438e-98d1-26619dc50fe9": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "90c2e542-255e-4381-8f00-cb9fbd6dc0d7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "93c8aca1-34a4-4292-bcb7-3c96a500540c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8a9662d2-a263-4ad6-8364-eeb71525eddb": {
+      "status": "fail",
+      "reason": "slot_mutation"
+    },
+    "84bb4bfb-ef69-4b7e-a5e8-743dfd361ed1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9b8c3566-942f-4866-95bb-e1eaf97c8c7f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "99d8f38e-5dfd-4292-be55-8c5b40ade21e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "839ae419-f9f4-46d9-a7e5-1452b17c0987": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9c3ef5dd-2e08-43f3-8c25-61de2e0252e0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "964743a9-f7cc-4baa-ae5e-5f9dce041a16": {
+      "status": "ok",
+      "path": "/velaura/sys",
+      "external_id": "velaura_sys"
+    },
+    "94d9a126-8833-4500-86f4-eaad180690d4": {
+      "status": "fail",
+      "reason": "slot_mutation"
     }
   },
   "doneIds": [
@@ -52153,5 +52515,28 @@
       },
       "samplePaths": []
     }
-  ]
+  ],
+  "deadBoards": {
+    "lever:lingarogroup": "posting_older_than_30d",
+    "lever:tsmg": "posting_older_than_30d",
+    "lever:wyetechllc": "posting_older_than_30d",
+    "lever:valgenesis": "posting_older_than_30d",
+    "lever:wise-integration": "posting_older_than_30d",
+    "lever:provectus": "posting_older_than_30d",
+    "lever:thunkable": "posting_older_than_30d",
+    "lever:verkor": "posting_older_than_30d",
+    "lever:gorh": "posting_older_than_30d",
+    "lever:westyost": "posting_older_than_30d",
+    "lever:ppde": "lever_404",
+    "lever:qualysoft": "posting_older_than_30d",
+    "lever:ltjgroup": "posting_older_than_30d",
+    "lever:dilitrust": "posting_older_than_30d",
+    "lever:nahc": "posting_older_than_30d",
+    "lever:pine-services": "posting_older_than_30d",
+    "lever:clovirtualfashion": "posting_older_than_30d",
+    "lever:mars-men": "lever_404",
+    "lever:fyzicalhq": "posting_older_than_30d",
+    "lever:feldinc": "posting_older_than_30d",
+    "lever:hypersonica-prod": "posting_older_than_30d"
+  }
 }
