@@ -62914,7 +62914,7 @@
     },
     "74d37e6f-d6ac-489e-b7f1-620d9743e45c": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "5fd0fca1-5f82-4383-8173-dce7515dfcd8": {
       "status": "ok",
@@ -62936,11 +62936,11 @@
     },
     "7a929e69-aedc-42f3-aba4-2d98d9cae5ce": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_slop"
     },
     "5b754a8b-fde0-487a-b84f-f89ec0d50b23": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6198adbf-47f4-4732-9a4f-4052e750ad93": {
       "status": "ok",
@@ -63010,8 +63010,8 @@
       "external_id": "databricks_eng-ac"
     },
     "73f4a0f3-abfe-4c20-9a82-57b7be417fa5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5113885a-7779-4d1e-bf51-425a4c58f116": {
       "status": "fail",
@@ -79676,28 +79676,31 @@
       "external_id": "snv_fin"
     },
     "474228ac-dac6-4b01-af71-4271098273df": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "64de16e6-342d-4476-9fe7-8e88d5153cb6": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/external-sambanova-systems/physical",
+      "external_id": "external-sambanova-systems_physical"
     },
     "493d2bfe-2538-4156-8cc4-51269d3b9e24": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "59d4828c-ef1a-4b12-b2ec-597c35d2316a": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/external-sambanova-systems/compiler",
+      "external_id": "external-sambanova-systems_compiler"
     },
     "48bf11d6-6509-49fb-999c-267c600c5441": {
       "status": "fail",
       "reason": "openrouter_failed"
     },
     "608e34d3-e642-4a97-8fad-c847daee0b06": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/external-sambanova-systems/tech",
+      "external_id": "external-sambanova-systems_tech"
     },
     "44be27bb-2adc-489a-bec7-e36a948ef91b": {
       "status": "ok",
@@ -79722,20 +79725,20 @@
       "reason": "openrouter_failed"
     },
     "6a1416ea-8710-4c0b-8330-1bf506ff568c": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6240b28f-d286-467a-a5fd-5b9ca95f3505": {
       "status": "fail",
       "reason": "openrouter_failed"
     },
     "669b43c9-c10f-448d-95ee-a38494b61c05": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7e76190e-eaf6-4f46-abf9-01168fe1b564": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6a659020-a959-42cf-83c4-8cd54c53dc33": {
       "status": "skip",
@@ -80017,7 +80020,7 @@
     },
     "4c623680-0815-4013-9937-05fc70886125": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_slop"
     },
     "4abb9b0f-f35c-4eae-8430-7967979a328b": {
       "status": "skip",
@@ -80065,8 +80068,9 @@
       "note": "thin_source title=Junior Freight Operation company=Work4u apply=https://work4u.bamboohr.com/careers/982"
     },
     "5eefbcbe-26d4-4893-aa5d-38b7b6d4b62c": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Research Scientist company=MongoDB apply=https://www.mongodb.com/careers/job/?gh_jid=7891161"
     },
     "502e28d0-7897-4318-9853-9d3a7e2bd475": {
       "status": "skip",
@@ -80084,8 +80088,8 @@
       "note": "thin_source title=Senior Software Engineer company=Elastic apply=https://jobs.elastic.co/jobs?gh_jid=8111966&gh_jid=8111966"
     },
     "5bf5bd81-b357-405d-a2ac-a3b470d19704": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6a369c86-1dba-4e75-8893-748c6826b3ca": {
       "status": "skip",
@@ -80098,16 +80102,16 @@
       "note": "thin_source title=Sr. Product Manager, Search Personalization company=Pinterest apply=https://www.pinterestcareers.com/jobs/?gh_jid=8015494"
     },
     "683714c4-7fef-45ee-99b0-5273fd38a6c7": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4c358e85-a392-439b-8e87-1bf625125e3e": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "77cd31bf-7e79-420a-858e-39ab65fc0c09": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6487b6e9-7c8d-423f-93c6-0b1c3acb92e4": {
       "status": "skip",
@@ -80115,24 +80119,26 @@
       "note": "thin_source title=Senior Software Engineer, Places and Search company=Lyft apply=https://app.careerpuck.com/job-board/lyft/job/8693500002?gh_jid=8693500002"
     },
     "4f3006b0-f52e-4382-b5e9-c17b0a74c6e8": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5c434884-5385-4411-9db0-d5efb4202a15": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "627fefad-68dc-4b7d-8649-cd2ca25cedbb": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/payoneer/assoc",
+      "external_id": "payoneer_assoc"
     },
     "43b8a71a-30be-4cbf-ac4b-e106f08d794f": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7f3114de-ed8f-4f9a-970c-7734b96b0806": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/payoneer/lifecycle",
+      "external_id": "payoneer_lifecycle"
     },
     "7894c455-b444-41ea-aa22-bd3c9b4e099f": {
       "status": "skip",
@@ -80140,12 +80146,13 @@
       "note": "thin_source title=Staff Technical Program Manager, Security company=Pinterest apply=https://www.pinterestcareers.com/jobs/?gh_jid=7494650"
     },
     "645c8152-bc87-46fa-a72d-11f49599d37c": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6dbcf521-e2e3-4040-85bf-09600265ff49": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/datadog/office",
+      "external_id": "datadog_office"
     },
     "7e5a0a1e-9dd5-49b7-91e8-8156d7af80cd": {
       "status": "skip",
@@ -80153,16 +80160,18 @@
       "note": "thin_source title=Senior Manager, Secured Commercial Real Estate Lending company=SoFi apply=https://sofi.com/careers/job/7800206003?gh_jid=7800206003"
     },
     "47b0b837-1efa-47ba-bf84-886c204b8e1a": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/datadog/tech-d2",
+      "external_id": "datadog_tech-d2"
     },
     "55c3c6c1-fb3e-44ab-bcd1-c8b34350d05d": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4c56155e-9318-484d-a906-80c14a6126b6": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/datadog/mgr-4e",
+      "external_id": "datadog_mgr-4e"
     },
     "78743817-ec67-4770-9c57-8985b34dbb4b": {
       "status": "skip",
@@ -80180,8 +80189,8 @@
       "note": "thin_source title=Registration/Titles Specialist company=Carvana apply=https://www.carvana.com/careers/apply?gh_jid=8054691"
     },
     "64378d17-c252-4e2d-9f6e-9090dd17ee65": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6f24901e-88ef-4eb3-8216-9644fd863a73": {
       "status": "fail",
@@ -80192,8 +80201,8 @@
       "reason": "openrouter_failed"
     },
     "5e08ff59-c3a4-47bc-a622-4bbe1eb6b09d": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "56659d0d-77bf-43f4-99a3-235da56150bd": {
       "status": "fail",
@@ -80274,8 +80283,8 @@
       "note": "thin_source title=Senior Product Security Architect company=Axonius apply=https://www.axonius.com/company/careers/open-jobs?gh_jid=7748661003"
     },
     "6d9d59c1-57f7-4bbf-adc6-44243d91f26b": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6c8c2aea-b620-4f76-8180-67c915aadbdd": {
       "status": "skip",
@@ -80288,20 +80297,21 @@
       "note": "thin_source title=Sales Executive (USA) company=Bitmovin apply=https://bitmovin.com/careers/8161751002?gh_jid=8161751002"
     },
     "7e9e1d3e-81ea-4c39-8ae9-97d9154b5ec0": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "57483b71-edb4-4141-b396-07b921ccc55a": {
       "status": "fail",
       "reason": "openrouter_failed"
     },
     "6dcbe8d0-71f3-4acb-9021-ff5b9760bab6": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/navan/assoc",
+      "external_id": "navan_assoc"
     },
     "483d5e9f-0d23-4b46-b97e-be09046a338d": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "61e11bd2-73c4-4fb2-a99d-6b20da30d566": {
       "status": "fail",
@@ -80326,24 +80336,26 @@
       "reason": "openrouter_failed"
     },
     "6a1fe380-34af-4219-9d84-953bcc7487cf": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/qualtrics/cryptography",
+      "external_id": "qualtrics_cryptography"
     },
     "7cde2439-34d1-46d9-9711-02cb85de4f99": {
       "status": "fail",
       "reason": "openrouter_failed"
     },
     "58ab69fc-ba15-49df-8622-1c06aeb8ca46": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7980ca09-cd5d-4eda-a2d4-fab0deaa98ea": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "ok",
+      "path": "/databricks/sol-e8",
+      "external_id": "databricks_sol-e8"
     },
     "6cdceaa9-c2d5-45d0-9b70-553eb89856fd": {
-      "status": "fail",
-      "reason": "openrouter_failed"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7d43a661-7bf0-4cb5-902d-73235b9f786e": {
       "status": "fail",
@@ -80370,38 +80382,34 @@
     },
     "718f04ad-9697-433d-890f-bf3dcc3c5e72": {
       "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Lakebase Sales Specialist, Director company=Databricks apply=https://databricks.com/company/careers/open-positions/job?gh_jid=8569518002"
+      "reason": "fact_sheet_parse"
     },
     "74d881e5-ab58-4146-9998-95eef68479d1": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Lakebase Associate Director company=Databricks apply=https://databricks.com/company/careers/open-positions/job?gh_jid=8569524002"
+      "status": "ok",
+      "path": "/databricks/lakeba-90",
+      "external_id": "databricks_lakeba-90"
     },
     "739b7a4b-d3c1-4c5d-94ac-ae8e3f14b37f": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Pre-sales Senior Technical Solutions Engineer company=Databricks apply=https://databricks.com/company/careers/open-positions/job?gh_jid=8614459002"
+      "status": "ok",
+      "path": "/databricks/pre-ba",
+      "external_id": "databricks_pre-ba"
     },
     "53d761b3-19d1-4f06-9d2f-c82352cdd332": {
       "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Sr. Engineering Manager, AI Runtime company=Databricks apply=https://databricks.com/company/careers/open-positions/job?gh_jid=8621706002"
+      "reason": "source_thin"
     },
     "500ad740-4995-4f6d-a0cb-0e6958201af9": {
       "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Senior Software Engineer, Risk company=Ripple  apply=https://ripple.com/careers/all-jobs/job/8051961?gh_jid=8051961"
+      "reason": "source_thin"
     },
     "56ed3200-adfb-4b0a-af59-554a0c8c4038": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Manager I, Customer Success Manager company=Samsara apply=https://www.samsara.com/company/careers/roles/8068523?gh_jid=8068523"
+      "status": "fail",
+      "reason": "slot_mutation"
     },
     "6305513c-607c-4ae7-84ce-759312beafc7": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Senior Marketing Manager company=Taboola apply=https://www.taboola.com/careers/job/8045107?gh_jid=8045107"
+      "status": "ok",
+      "path": "/taboola/mkt-mgr",
+      "external_id": "taboola_mkt-mgr"
     },
     "75c3fea4-0437-4923-bfe0-3ea5427ffc9d": {
       "status": "skip",
@@ -95441,7 +95449,49 @@
     "54d5ba1e-d976-4593-b3ac-86317325d5c4",
     "6a7c373f-6ac3-4d5c-8dc3-f5bc4fcd9949",
     "4f21f059-49fe-4443-a8b4-969d4c62ef91",
-    "4de1f9a2-37e8-4101-9926-9ac38ef0374e"
+    "4de1f9a2-37e8-4101-9926-9ac38ef0374e",
+    "43af8a37-61cf-4f10-9924-df0b0a437845",
+    "4b359ec6-d7a6-4d6e-9ca4-4af7ae427615",
+    "5e38dc37-ca34-4b82-b857-45e6ff6ed618",
+    "44ccc5c8-b334-48a1-b311-ea21aa34dcd3",
+    "71c5aa8f-64f8-45b8-8f2f-e77b7299cfd5",
+    "5698e58a-c2d8-4c1c-b6ff-27893d4ed143",
+    "44be27bb-2adc-489a-bec7-e36a948ef91b",
+    "5445aefa-2428-4389-ab36-8da289ea6084",
+    "66c67170-a7ae-428e-9b6b-272d8391b417",
+    "6e318d54-33c2-432c-8d56-bc889b48cbe4",
+    "41a53ed5-f6cc-4408-a841-a369a4df0d22",
+    "69973a08-8ba5-4257-9fd7-0c317fd70223",
+    "47c24e90-d29b-4643-826c-b430f2056404",
+    "445c5b85-9617-4b2e-b35a-91526a25b98c",
+    "4abe80b0-84d7-4ec3-84aa-85f25ea33b12",
+    "5dd87a3d-a8e7-46b9-91fd-b37b54f29f5a",
+    "4e207314-eb42-4237-8445-59fbb2cf1221",
+    "5b4453aa-4db6-4304-86c5-87477b0d5904",
+    "71a38715-9713-4464-b5cc-4b1dacb0617b",
+    "5fd0fca1-5f82-4383-8173-dce7515dfcd8",
+    "6198adbf-47f4-4732-9a4f-4052e750ad93",
+    "5b1c5087-4c14-467d-9c96-001292eb385a",
+    "76e19e79-a206-4377-9184-dce833cd33dc",
+    "5befe025-3cb0-4110-b375-acb4f3e44b39",
+    "4d9303b0-7072-4094-97c3-42a6b0c0d42e",
+    "64de16e6-342d-4476-9fe7-8e88d5153cb6",
+    "59d4828c-ef1a-4b12-b2ec-597c35d2316a",
+    "608e34d3-e642-4a97-8fad-c847daee0b06",
+    "5eefbcbe-26d4-4893-aa5d-38b7b6d4b62c",
+    "7a7d3e76-ab8a-4827-82fd-0fb02508427c",
+    "50970951-3758-46a9-907a-c8180f002534",
+    "7980ca09-cd5d-4eda-a2d4-fab0deaa98ea",
+    "6dcbe8d0-71f3-4acb-9021-ff5b9760bab6",
+    "7f3114de-ed8f-4f9a-970c-7734b96b0806",
+    "4c56155e-9318-484d-a906-80c14a6126b6",
+    "627fefad-68dc-4b7d-8649-cd2ca25cedbb",
+    "47b0b837-1efa-47ba-bf84-886c204b8e1a",
+    "6dbcf521-e2e3-4040-85bf-09600265ff49",
+    "6a1fe380-34af-4219-9d84-953bcc7487cf",
+    "74d881e5-ab58-4146-9998-95eef68479d1",
+    "739b7a4b-d3c1-4c5d-94ac-ae8e3f14b37f",
+    "6305513c-607c-4ae7-84ce-759312beafc7"
   ],
   "skipped": {},
   "batches": [
@@ -96575,6 +96625,49 @@
         "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena": 36
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 1,
+      "at": "2026-08-12T17:52:42.957Z",
+      "attempted": 225,
+      "ok": 61,
+      "skip": 149,
+      "fail": 17,
+      "reasons": {
+        "expand_existing": 29,
+        "source_thin": 135,
+        "fact_sheet_parse": 2,
+        "rewrite_short": 2,
+        "gh_404": 4,
+        "slot_mutation": 10,
+        "dead_board": 2,
+        "rewrite_slop": 5,
+        "html_500": 1,
+        "err_TimeoutError": 5
+      },
+      "samplePaths": [
+        "/affirm/ml-c0",
+        "/luno/prod-3e",
+        "/platform-science/lead-sw",
+        "/smartly/creati-84",
+        "/grupo-quintoandar/grupo-de",
+        "/binance/biz",
+        "/trueml/collec-55",
+        "/shieldai/prog-fa",
+        "/shieldai/sourcing",
+        "/couchbase-inc/legal",
+        "/coast/lifecycle",
+        "/human-interest/cust",
+        "/jetbrains/sw-ba",
+        "/outset-medical/logistics",
+        "/rvo-health/dir",
+        "/rvo-health/performance",
+        "/the-new-york-times/accountant",
+        "/the-new-york-times/managing",
+        "/the-new-york-times/sw-5b",
+        "/spacex/silico-57"
+      ]
     }
   ],
   "deadBoards": {
