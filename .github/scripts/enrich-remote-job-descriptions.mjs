@@ -1886,6 +1886,19 @@ async function mapPool(items, concurrency, fn) {
   return results;
 }
 
+
+/** Transient failures (rate limits, timeouts, network) deserve a retry; everything
+ * else — dead sources, quality rejects, collisions — is permanent. Without this,
+ * RE_ENRICH sweeps re-attempt the same hopeless jobs on every run forever. */
+function isPermanentlyFailed(state, id) {
+  const row = state && state.processed && state.processed[id];
+  if (!row) return false;
+  if (row.status !== 'fail' && row.status !== 'skip') return false;
+  const reason = String(row.reason || '');
+  if (/429|rate|timeout|timed out|fetch failed|5\d\d|aborted/i.test(reason)) return false;
+  return true;
+}
+
 async function runOneBatch(batchNum, state, done) {
   console.log(
     `enrich-remote-jd: worker ${WORKER_ID}/${WORKERS} batch ${batchNum}, size ${BATCH_SIZE}, concurrency ${CONCURRENCY}, dry=${DRY_RUN ? 1 : 0}`
@@ -1936,7 +1949,9 @@ async function runOneBatch(batchNum, state, done) {
         return false;
       }
       return RE_ENRICH
-        ? j.apply_url && descriptionWords(j.description) < MIN_REWRITE_WORDS
+        ? j.apply_url &&
+          descriptionWords(j.description) < MIN_REWRITE_WORDS &&
+          !isPermanentlyFailed(state, j.id)
         : RETRY_ONLY
           ? j.apply_url &&
             ((j.description || '').length >= 500 ||
@@ -2200,14 +2215,26 @@ async function runOneBatch(batchNum, state, done) {
             await updateJob(job.id, patchObj);
           } catch (patchErr) {
             if (String(patchErr.message || patchErr).includes('23505') || String(patchErr.message || patchErr).includes('409')) {
-              // Stay short: head≤6 + 2-hex (same as mint-slugs collision form)
-              const hash = createHash('md5').update(job.id).digest('hex').slice(0, 2);
+              // Slug collision: keep retrying with a widening hash instead of
+              // failing the job (head≤6 + 2/4/6-hex, same as mint-slugs form).
               const head = (jobSlug.split('-')[0] || 'role').slice(0, 6);
-              jobSlug = `${head}-${hash}`;
-              external_id = `${companySlug}_${jobSlug}`;
-              path = `/${companySlug}/${jobSlug}`;
-              patchObj.external_id = external_id;
-              await updateJob(job.id, patchObj);
+              let ok = false;
+              for (let width = 2; width <= 8 && !ok; width += 2) {
+                const hash = createHash('md5').update(job.id + ':' + width).digest('hex').slice(0, width);
+                jobSlug = `${head}-${hash}`;
+                external_id = `${companySlug}_${jobSlug}`;
+                path = `/${companySlug}/${jobSlug}`;
+                patchObj.external_id = external_id;
+                try {
+                  await updateJob(job.id, patchObj);
+                  ok = true;
+                } catch (retryErr) {
+                  if (!String(retryErr.message || retryErr).includes('23505') && !String(retryErr.message || retryErr).includes('409')) {
+                    throw retryErr;
+                  }
+                }
+              }
+              if (!ok) throw patchErr;
             } else {
               throw patchErr;
             }
