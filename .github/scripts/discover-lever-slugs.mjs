@@ -54,6 +54,21 @@ async function theirStackNames() {
   return { names: [...names], domains };
 }
 
+// 2b) TheirStack API (free tier page 1, real names + domains)
+const TS_API_PAIRS = [
+  ['Ci&T', 'ciandt.com'], ['Binance', 'binance.com'], ['Paytm', 'paytm.com'],
+  ['Octopus Energy', 'octopusenergy.group'], ['WinnCompanies', 'winncompanies.com'],
+  ['Shield AI', 'shield.ai'], ['Zoox', 'zoox.com'], ['Edelman', 'edelman.com'],
+  ['Nielsen', 'nielsen.com'], ['Dun & Bradstreet', 'dnb.co.in'], ['Veepee', 'veepee.com'],
+  ['Vohra Wound Physicians', 'vohrawoundcare.com'], ['Planned Parenthood', 'plannedparenthood.org'],
+  ['Daniels Health', 'info.danielshealth.com'], ['Xero', 'xero.com'], ['Mobileye', 'mobileye.com'],
+  ['CSC Generation', 'cscgeneration.com'], ['Gopuff', 'gopuff.com'],
+  ['Contact Government Services, LLC', null], ['CesiumAstro', 'cesiumastro.com'],
+  ['Ninja Van', 'ninjavan.co'], ['Aledade, Inc.', 'aledade.com'],
+  ['Extreme Networks', 'extremenetworks.com'], ['banco BV', 'bancobv.com.br'],
+  ['despegar.com', 'despegar.com'],
+];
+
 // 3) TechChecker: demo names
 const TECHCHECKER_NAMES = [
   'Shopify', 'LinkedIn', 'Remote.com', 'Klarna', 'Palantir', 'Rackspace Technology',
@@ -105,6 +120,9 @@ async function main() {
 
   const candidates = new Map(); // slug -> { source, jobs }
   for (const s of bb) candidates.set(s, { source: 'bloomberry' });
+  for (const [name, domain] of TS_API_PAIRS) {
+    if (!domains.has(name)) domains.set(name, domain);
+  }
   for (const name of [...tsNames, ...TECHCHECKER_NAMES]) {
     for (const s of slugify(name, domains.get(name))) {
       if (!candidates.has(s)) candidates.set(s, { source: name.slice(0, 30) });
