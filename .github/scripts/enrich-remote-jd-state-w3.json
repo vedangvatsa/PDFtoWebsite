@@ -76587,20 +76587,21 @@
       "reason": "source_thin"
     },
     "ee474f57-a31a-4d9a-aa7c-916efaa5af5b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d48494cf-922b-4e5f-a45f-3ac06fb86b9f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "eb8c8345-58c1-4ba9-8be8-238cb979760c": {
       "status": "skip",
       "reason": "source_thin"
     },
     "c0030cb1-5de6-4e65-91fa-9e6da02be0f5": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/barnes/litiga-96",
+      "external_id": "barnes_litiga-96"
     },
     "ff45b11e-fdc8-4377-a3dd-464034041221": {
       "status": "skip",
@@ -76619,8 +76620,9 @@
       "reason": "source_thin"
     },
     "cf431530-93fa-4f7c-9109-dfaca9497995": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/dandy/smb-acct",
+      "external_id": "dandy_smb-acct"
     },
     "c8e62cd0-227e-4264-9f2e-40de70f80c5e": {
       "status": "skip",
@@ -76631,16 +76633,18 @@
       "reason": "fact_sheet_parse"
     },
     "d16ee293-cf56-40dd-a5bc-cc9661e94c6d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "da008bb7-265e-4f20-bfbe-9d70458455ec": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/mariner-careers/salesforce",
+      "external_id": "mariner-careers_salesforce"
     },
     "d2fc6914-8ad0-48ba-b837-0e5757d57870": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/mariner-careers/slack",
+      "external_id": "mariner-careers_slack"
     },
     "ed00b6a6-be26-4597-942d-7c55ff073d95": {
       "status": "skip",
@@ -76651,28 +76655,29 @@
       "reason": "source_thin"
     },
     "fe9d69cc-e849-4ebc-aefa-f8e0cd5793d6": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d64804fa-76fd-422b-a072-d03db115fa65": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "f167dff0-cffa-41e5-b8b8-75d0d3f289d2": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/miro/commer-85",
+      "external_id": "miro_commer-85"
     },
     "e9261950-c108-4c4b-a9d1-4fe2e99c10cd": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c3b44fc8-effd-4a80-ae02-a4617f9dfbda": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c63bd4ea-5e9f-40de-b70b-ad942e729022": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d3bba7fc-1fc1-4130-87b0-ab7a50274522": {
       "status": "skip",

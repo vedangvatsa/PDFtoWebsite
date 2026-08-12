@@ -71517,6 +71517,108 @@
       "status": "ok",
       "path": "/airspace-intelligence-com/fe-cc",
       "external_id": "airspace-intelligence-com_fe-cc"
+    },
+    "335a8153-4c4b-4247-84a2-c634bcc8f173": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "39a18274-6381-40c4-a3cf-af2057b76c23": {
+      "status": "ok",
+      "path": "/afterquery/strat-f2",
+      "external_id": "afterquery_strat-f2"
+    },
+    "158b2664-1588-4c08-82dc-97e05604565e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "3043ee5b-0d88-45db-93e1-979d875eeb76": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "27b5859d-a704-4055-9942-167d31b2d3ba": {
+      "status": "ok",
+      "path": "/42dot/sw-b8",
+      "external_id": "42dot_sw-b8"
+    },
+    "1ac19f3c-9632-47cb-a405-795faf7b895a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "05209d22-22b2-43fd-95b1-e571e045beba": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "32b13254-4e87-4422-93c4-9d12dc208e21": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1b488124-e22f-40e8-812d-f58d346f972e": {
+      "status": "ok",
+      "path": "/floatme/lifecycle",
+      "external_id": "floatme_lifecycle"
+    },
+    "30c7e03d-ecb6-4116-9245-030e27c3c5b3": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "3c8f9bf0-bbf0-4f33-8dc2-17cc9ca346af": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "245e97b4-8a44-4a01-9323-31144220939e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1c6151bf-0254-4a6a-a7bc-0cb1de78e7c0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "33a97c5c-8adb-45a2-baf1-10cedd8b123f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "13cd808a-d14e-4724-b844-246b6a3bf0bc": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "2be5aada-0a3c-484c-b69c-24ea456380ac": {
+      "status": "ok",
+      "path": "/forum-ventures/ai",
+      "external_id": "forum-ventures_ai"
+    },
+    "039020d3-aa5b-4bff-9a44-4261feee6f53": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "1a851d0d-2eeb-4245-978c-89abf348801e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "238b43d1-092d-4135-919b-17e1e0df01a5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "266b043e-7aaf-47a1-b3ca-951290d4a293": {
+      "status": "ok",
+      "path": "/ekumenlabs/sw-eng",
+      "external_id": "ekumenlabs_sw-eng"
+    },
+    "1cb1ec07-4764-46a9-89ee-760951384c18": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "09e9d7ce-a168-428e-a5e2-f6e6332dc990": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "2b0b77b2-e7f8-4d2d-8d5f-fbdf93a4902d": {
+      "status": "ok",
+      "path": "/hirehangar/underwriter",
+      "external_id": "hirehangar_underwriter"
+    },
+    "3ce5a3f3-41b3-43a8-8f45-fe7f8158b756": {
+      "status": "skip",
+      "reason": "source_thin"
     }
   },
   "doneIds": [

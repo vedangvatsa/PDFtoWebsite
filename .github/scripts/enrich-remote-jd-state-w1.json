@@ -80650,48 +80650,51 @@
       "external_id": "granica_sw-8d"
     },
     "4d77d3b1-a7b1-49c3-851b-59a30fefbc68": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "40b348ce-a3b7-4ce4-81ea-636f8ceda7dd": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "440d7c02-90c2-4912-9ca2-b7e101307e7c": {
       "status": "skip",
       "reason": "source_thin"
     },
     "734a720a-19dc-40f2-9f8a-b6e41af4ec5a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4868f79c-69a2-49c6-83a5-94af26b3bc0d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4edc209d-7a0e-4116-9d69-29ea8f1eb029": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/devsavant/it",
+      "external_id": "devsavant_it"
     },
     "53fd127f-9650-4339-a2a5-1e4472fafac4": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/hivehealth/health",
+      "external_id": "hivehealth_health"
     },
     "5483b20f-5dbc-4f62-bb0f-f757d9b3d158": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/mariner-careers/client-9d",
+      "external_id": "mariner-careers_client-9d"
     },
     "64a243c4-6397-4e7c-8b92-cb8ff0e33274": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4db10758-fd46-458f-baa1-50111629dee3": {
       "status": "skip",
       "reason": "source_thin"
     },
     "70f4920a-ef85-481a-a3d8-e72d1f9f3a08": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "695004af-bba1-42a2-9071-0b9592a3d092": {
       "status": "fail",
@@ -80702,16 +80705,16 @@
       "reason": "rewrite_short"
     },
     "6b50a695-2009-4eb5-b963-585b087dd8c2": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5fd39c55-b486-4aa3-9f5c-cbed124c9d4c": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "7419c114-f706-4999-b655-d5bf7fae053f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7a7f474f-1ac9-4fcc-92a7-fd9e59b582ef": {
       "status": "skip",
@@ -80722,8 +80725,8 @@
       "reason": "source_thin"
     },
     "778f1559-29dc-4b16-a3d6-11c6397b69eb": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6c5d9aa2-d2bd-40ef-b698-880ee0d6fc30": {
       "status": "fail",

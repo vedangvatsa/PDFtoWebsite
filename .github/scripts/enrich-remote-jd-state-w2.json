@@ -82673,6 +82673,60 @@
     "9fdcde46-b9e5-4277-8951-f65ed35bbc1f": {
       "status": "skip",
       "reason": "source_thin"
+    },
+    "80e5876f-b0b4-454a-b3af-ab5a67d8f284": {
+      "status": "ok",
+      "path": "/company/equipment",
+      "external_id": "company_equipment"
+    },
+    "af5b874b-1fd8-417f-aa5a-d94a9a8c42db": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a0c8ca1a-f151-48d7-84a3-e4b716c8849c": {
+      "status": "ok",
+      "path": "/granica/resear-c4",
+      "external_id": "granica_resear-c4"
+    },
+    "88bc6169-4b27-47f9-81fd-6cef26e125a7": {
+      "status": "ok",
+      "path": "/dataguard/consult",
+      "external_id": "dataguard_consult"
+    },
+    "91134086-ac23-42a9-bda9-250b403df77d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "aa2ccbac-b278-41fe-9302-019fd508079d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "90abdb82-eb15-4904-a97a-66a248bd3c4b": {
+      "status": "ok",
+      "path": "/helm-ai/sw-f2",
+      "external_id": "helm-ai_sw-f2"
+    },
+    "b278e2df-5b00-4e61-8cde-94efc7045210": {
+      "status": "ok",
+      "path": "/cognition/applie-ad",
+      "external_id": "cognition_applie-ad"
+    },
+    "8c5846b9-acf4-4b82-9b3b-e6f19efe3744": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ba28a13c-87ac-42e0-9d40-b773040149dd": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8e155884-7414-4bfe-9dfd-0b0e1f3ee943": {
+      "status": "ok",
+      "path": "/human/ux-ui",
+      "external_id": "human_ux-ui"
+    },
+    "97cf8f87-9d80-4bc3-b16f-589aae41bf1d": {
+      "status": "skip",
+      "reason": "source_thin"
     }
   },
   "doneIds": [
