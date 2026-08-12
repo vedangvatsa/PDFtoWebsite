@@ -1043,9 +1043,19 @@ const BREEZY_SLUGS = [
 
 async function fetchBambooHR() {
   console.log('\n── BambooHR ──');
+  const EXTRA_FILE = resolve(__dirname, 'bamboohr-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const mergedSlugs = [...new Set([...BAMBOOHR_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered boards (total ${mergedSlugs.length})`);
   const allJobs = [];
 
-  const tasks = BAMBOOHR_SLUGS.map(slug => async () => {
+  const tasks = mergedSlugs.map(slug => async () => {
     try {
       const res = await fetch(`https://${slug}.bamboohr.com/careers/list`, {
         headers: { 'Accept': 'application/json' },
@@ -1098,9 +1108,19 @@ async function fetchBambooHR() {
 
 async function fetchPersonio() {
   console.log('\n── Personio ──');
+  const EXTRA_FILE = resolve(__dirname, 'personio-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const mergedSlugs = [...new Set([...PERSONIO_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered boards (total ${mergedSlugs.length})`);
   const allJobs = [];
 
-  const tasks = PERSONIO_SLUGS.map(slug => async () => {
+  const tasks = mergedSlugs.map(slug => async () => {
     try {
       const res = await fetch(`https://${slug}.jobs.personio.de/xml`, {
         signal: AbortSignal.timeout(10000)
@@ -1152,9 +1172,19 @@ async function fetchPersonio() {
 
 async function fetchBreezy() {
   console.log('\n── Breezy HR ──');
+  const EXTRA_FILE = resolve(__dirname, 'breezy-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const mergedSlugs = [...new Set([...BREEZY_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered boards (total ${mergedSlugs.length})`);
   const allJobs = [];
 
-  const tasks = BREEZY_SLUGS.map(slug => async () => {
+  const tasks = mergedSlugs.map(slug => async () => {
     try {
       const res = await fetch(`https://${slug}.breezy.hr/json`, {
         redirect: 'manual', signal: AbortSignal.timeout(10000)
@@ -1429,9 +1459,19 @@ async function fetchGreenhouse() {
 // ─── Source: Ashby (per-company) ───
 async function fetchAshby() {
   console.log('\n── Ashby ──');
+  const EXTRA_FILE = resolve(__dirname, 'ashby-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const mergedSlugs = [...new Set([...ASHBY_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered boards (total ${mergedSlugs.length})`);
   const allJobs = [];
 
-  const tasks = ASHBY_SLUGS.map(slug => async () => {
+  const tasks = mergedSlugs.map(slug => async () => {
     try {
       const res = await fetch(`https://api.ashbyhq.com/posting-api/job-board/${slug}`);
       if (!res.ok) { console.log(`  ⚠ ${slug}: ${res.status}`); return []; }
@@ -1471,9 +1511,19 @@ async function fetchAshby() {
 // ─── Source: Workable (per-company) ───
 async function fetchWorkable() {
   console.log('\n── Workable ──');
+  const EXTRA_FILE = resolve(__dirname, 'workable-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const mergedSlugs = [...new Set([...WORKABLE_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered boards (total ${mergedSlugs.length})`);
   const allJobs = [];
 
-  const tasks = WORKABLE_SLUGS.map(slug => async () => {
+  const tasks = mergedSlugs.map(slug => async () => {
     try {
       await sleep(2000); // Rate limit protection
       const res = await fetch(`https://apply.workable.com/api/v3/accounts/${slug}/jobs`, {
@@ -1576,6 +1626,16 @@ const SMARTRECRUITERS_SLUGS = [
 
 async function fetchSmartRecruiters() {
   console.log('\n── SmartRecruiters ──');
+  const EXTRA_FILE = resolve(__dirname, 'smartrecruiters-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const mergedSlugs = [...new Set([...SMARTRECRUITERS_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered boards (total ${mergedSlugs.length})`);
   const jobs = [];
 
   for (const slug of SMARTRECRUITERS_SLUGS) {
