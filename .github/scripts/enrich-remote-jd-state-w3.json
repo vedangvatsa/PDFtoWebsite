@@ -58918,16 +58918,16 @@
       "reason": "source_thin"
     },
     "e9d2ee6a-9d84-4af5-97ff-fb3973f4934e": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "fc3a9011-2466-422f-ad39-fd9047421016": {
       "status": "fail",
-      "reason": "rewrite_short"
+      "reason": "slot_mutation"
     },
     "c770191c-a34f-4425-bdab-df5802d3f526": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f77a590e-6055-423a-b594-fee9a052ba5c": {
       "status": "skip",
@@ -58955,7 +58955,7 @@
     },
     "c788d331-e47c-4e05-bbbe-d9201498c8bb": {
       "status": "fail",
-      "reason": "rewrite_short"
+      "reason": "slot_mutation"
     },
     "ece2f81b-a44c-4921-b318-5b4a8a97437f": {
       "status": "skip",
@@ -58970,8 +58970,8 @@
       "reason": "source_thin"
     },
     "f0dc1967-c989-4aae-b51c-c23dcf25fe89": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f43b8502-e5b5-4ae0-8dea-dd4cc1674031": {
       "status": "skip",
@@ -58982,16 +58982,16 @@
       "reason": "source_thin"
     },
     "f385087b-0184-4642-91cd-42a3033e745b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c60f86fa-e246-42e5-802a-43396dbf2004": {
       "status": "skip",
       "reason": "source_thin"
     },
     "c881218f-a4f9-433f-b99a-cd71bc9bd9bf": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ed8bc0ae-3e3c-4abf-8516-38c79805ba86": {
       "status": "skip",
@@ -59003,8 +59003,9 @@
       "note": "thin_source title=Get In Touch company=fleetworks apply=https://jobs.ashbyhq.com/fleetworks/fcb3e08a-f547-45d1-9547-7fa7fd2e099b"
     },
     "c3939ff4-a8e9-4a5d-a192-85454f10cae8": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/anyone-ai/quant-4f",
+      "external_id": "anyone-ai_quant-4f"
     },
     "dee8a048-3bf4-4ca0-839a-f9a236630ec8": {
       "status": "skip",
@@ -59015,8 +59016,8 @@
       "reason": "source_thin"
     },
     "ca02a9d0-db96-4a19-80b4-6130b0ac5eb0": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f2201731-103f-405f-b3f1-34c888fedd8b": {
       "status": "skip",
@@ -59027,12 +59028,13 @@
       "reason": "source_thin"
     },
     "fe0424d5-200f-4b05-ab7c-0da60ab5ee72": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/cursor/gtm-5f",
+      "external_id": "cursor_gtm-5f"
     },
     "ce2cf846-25a9-454f-ad74-60ece3a5d499": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "cd2572c7-1c1c-4d9f-88d9-9456da6a7569": {
       "status": "skip",
@@ -59047,8 +59049,8 @@
       "reason": "source_thin"
     },
     "e116e767-1ab4-46e1-a5d2-b664aa95b524": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ec7b81b0-8a6c-4d25-a58d-d40ecca46a7f": {
       "status": "skip",
@@ -59067,8 +59069,8 @@
       "reason": "rewrite_short"
     },
     "d1dac66a-ccfa-4c33-acdf-132966203854": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f195dcfc-d6fb-4ba4-99e0-9229e16ae062": {
       "status": "skip",
@@ -59083,8 +59085,8 @@
       "reason": "source_thin"
     },
     "f444970f-efa3-46bc-a6a7-6db468b2fe00": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ff73eb2a-0b15-4a65-91e0-453eb6178e40": {
       "status": "skip",
@@ -59095,8 +59097,8 @@
       "reason": "source_thin"
     },
     "e4a5f618-bd8f-4a0a-8928-e9054fa996f6": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e8648ead-4f71-407f-855d-8d7b87f0d545": {
       "status": "skip",
@@ -59111,8 +59113,8 @@
       "reason": "rewrite_short"
     },
     "c93c3470-0328-4629-9a9c-491dfe2fbe3e": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "dcffc2a9-1e26-43c9-8e51-cd09a5030968": {
       "status": "skip",
@@ -59131,8 +59133,8 @@
       "reason": "source_thin"
     },
     "d939c561-2125-4e17-aafc-d1b244198828": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f9d98366-a13b-4338-85c5-4817c8d496f1": {
       "status": "fail",
@@ -59159,8 +59161,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "f50ffbec-6dfc-4668-98d4-3f2ed1356a72": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ecd7e51c-7559-45c5-b53b-62471161dafa": {
       "status": "skip",
@@ -59216,8 +59218,8 @@
       "note": "thin_source title=Member of Technical Staff company=humans-and apply=https://jobs.ashbyhq.com/humans-and/3daf12ad-471f-43ba-b940-8552e9ad61aa"
     },
     "ef703f65-b700-4ce7-936e-2f559768d12e": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "de6121f6-f355-446e-b292-3d21f25f5d11": {
       "status": "fail",
@@ -59228,8 +59230,8 @@
       "reason": "source_thin"
     },
     "e1dd7574-fcb1-437e-bd94-7fe371affcbb": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c2516a90-658d-43c6-8f16-7fce1a76234d": {
       "status": "fail",
@@ -59244,72 +59246,74 @@
       "reason": "source_thin"
     },
     "d4f296b4-4384-4a15-b1f9-5fbdddd62796": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/lightning/lightn-94",
+      "external_id": "lightning_lightn-94"
     },
     "f03242b5-5e4b-4110-af73-caa7362c8dcf": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e92f4def-2560-4c8e-8b3e-85cbdb4247a8": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "c95fa6b7-0f54-4df2-b8ce-6f539c936977": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d02f0b04-ed3c-4cab-a1a5-556a0e72ef7a": {
       "status": "skip",
       "reason": "source_thin"
     },
     "ef57e883-a368-4982-a249-b2d110ab6339": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e33796fc-5022-4af4-8184-123df98ebb23": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f42d5923-7d10-4c33-8c35-14802cb2fca3": {
       "status": "skip",
       "reason": "source_thin"
     },
     "d8fc94e2-0a33-4acc-bfe3-21a4bf6dfe09": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/lightning/plat-eng",
+      "external_id": "lightning_plat-eng"
     },
     "f5022c0d-3318-4c90-bfa5-c187e996d61f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c0ee9228-1966-403d-b428-cc72bed7f0bd": {
       "status": "skip",
       "reason": "source_thin"
     },
     "f5448cec-a78b-490d-984b-f583221f9607": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e4cafc94-1b72-4f5f-a0ca-b704ae4e36e8": {
       "status": "fail",
-      "reason": "rewrite_short"
+      "reason": "slot_mutation"
     },
     "c2873e6c-fe9a-4ea6-8f1d-7112e558766f": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "e121fdeb-d542-46ce-b099-fae7e833ba30": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f9aac100-2453-4af8-853b-409b209f0c4c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c400cbbd-1f08-40cd-921f-101d11ecfe57": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "cc0e7c6a-6cb6-47ec-ab20-1f352b6a6b42": {
       "status": "fail",
@@ -59348,20 +59352,20 @@
       "reason": "source_thin"
     },
     "ff31bfb8-b9d8-4aa7-972e-61ebf5400528": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e79fe551-019b-4711-a320-e18e2de8db92": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e55cb4ac-4a5d-4310-a020-efe66903fc21": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "f74f6791-1611-4c90-858c-afb32fe1c999": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e182141d-8f19-4cdf-b0b0-7aa8eeb42b78": {
       "status": "skip",
@@ -59524,8 +59528,8 @@
       "reason": "rewrite_short"
     },
     "cde68b8e-8106-46b9-80aa-45c4103e0f02": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c1446635-5448-4844-ad1b-dd0d98de04f2": {
       "status": "fail",

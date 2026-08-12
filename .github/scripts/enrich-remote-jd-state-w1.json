@@ -59697,8 +59697,8 @@
       "reason": "source_thin"
     },
     "61f9d0ad-c680-4177-b1f2-36456ac0f4f1": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "433cf31f-be11-4e92-9e49-a174ef598f1b": {
       "status": "skip",
@@ -59725,8 +59725,9 @@
       "reason": "source_thin"
     },
     "4b20ffe8-9cb3-4276-97be-52b5d0e2b566": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/anyone-ai/physic-e4",
+      "external_id": "anyone-ai_physic-e4"
     },
     "71db91b3-5357-457e-b797-e233695dfaf2": {
       "status": "skip",
@@ -59741,16 +59742,17 @@
       "reason": "source_thin"
     },
     "72e75c3d-12db-489b-a1c2-db6f89368ce5": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "55af575c-328a-402c-8449-02ca999644aa": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/bullpen-talent/hr-ops",
+      "external_id": "bullpen-talent_hr-ops"
     },
     "477d12d8-fe47-4f49-ad2d-8aa2f1b0387a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "57be5221-1d2e-449a-8754-edeca259cf07": {
       "status": "skip",
@@ -59761,8 +59763,8 @@
       "reason": "source_thin"
     },
     "4ab2c627-07fa-4ae8-96c0-ae9e17dec858": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7491eaca-8c65-404f-bf76-d1cf7d7fdc09": {
       "status": "skip",
@@ -59773,8 +59775,8 @@
       "reason": "source_thin"
     },
     "704e39bd-c35a-486e-8900-4ed186e59019": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4a70317b-a966-4d0a-b652-f70bc4e45855": {
       "status": "skip",
@@ -59785,12 +59787,12 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "7b649b2e-0925-4ebc-9d78-b6200aab91c7": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6ca5d183-9241-41a8-a466-c65eba1227e0": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5bd6aa0a-d9be-41ac-85bd-6b7eaad650de": {
       "status": "skip",
@@ -59838,8 +59840,9 @@
       "reason": "source_thin"
     },
     "6fb71156-83a7-4dbf-93ef-137933832bbe": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/flowengineering/acct-49",
+      "external_id": "flowengineering_acct-49"
     },
     "760c6794-fdf8-4dcf-be0c-2a9a7b35c6e6": {
       "status": "skip",
@@ -59851,7 +59854,7 @@
     },
     "751d6e1f-aa2a-4af1-9e9d-68ac82799af2": {
       "status": "fail",
-      "reason": "rewrite_short"
+      "reason": "rewrite_slop"
     },
     "7127a986-335b-40ce-b22c-c6bcdc83973f": {
       "status": "skip",
@@ -59866,44 +59869,45 @@
       "reason": "source_thin"
     },
     "4bf8f378-0a7c-49ac-9737-ed03a9a72d05": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "64b90b5a-06b3-4600-9993-3794c583e844": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "58362961-e26a-49b7-9341-161b04902b06": {
       "status": "skip",
       "reason": "source_thin"
     },
     "63c1cad5-46ed-4fff-ab09-a1f5086954a1": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "48aac5b6-d028-4e5c-819b-86aed6527e1a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "799d9f8d-4269-4d0b-9c0c-7627810e673d": {
       "status": "skip",
       "reason": "source_thin"
     },
     "4a26ab6c-6dcf-4d21-86a6-a5a8765d0c41": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7ecdd89b-8baa-44c0-ac02-cac0e5b7b697": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6ba3f9e0-c65d-4107-9461-aca957aa9c56": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/gamma/ai",
+      "external_id": "gamma_ai"
     },
     "5f3a40ec-6f33-4b67-a877-5409398320d5": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "42d1d042-0705-42cf-b82f-7f2327d7fb07": {
       "status": "skip",
@@ -59918,8 +59922,8 @@
       "reason": "source_thin"
     },
     "6dba1f3c-ac5b-428b-8ff5-a9f39ec8262b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "67edb3f3-ec1e-434a-bdcb-3e6e7ae08d46": {
       "status": "fail",
@@ -59930,16 +59934,17 @@
       "reason": "source_thin"
     },
     "73f95a65-82de-417f-bcf4-da396c37fa72": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "40d2746f-5cc9-4ddf-89e8-4bf943048b82": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/interaction/mts-sec",
+      "external_id": "interaction_mts-sec"
     },
     "592aca9a-3ed9-4db5-a864-506263382043": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4aabc4fd-541a-4aff-bed8-598d94784c25": {
       "status": "skip",
@@ -59966,12 +59971,12 @@
       "reason": "source_thin"
     },
     "409db580-b0d9-442a-b1fe-f67297b96866": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7fc4222f-496e-4452-9037-00f137c67a0d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7b0f32d5-dc7c-4af2-bda4-2528caed0c7f": {
       "status": "fail",
@@ -59998,20 +60003,20 @@
       "reason": "source_thin"
     },
     "5b530a2c-cc13-4930-99a1-a41ca2fe9f6b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "47dcb058-1682-4818-8bd2-97ea75bd7356": {
       "status": "skip",
       "reason": "source_thin"
     },
     "4596ecd7-2464-456a-a7e7-cc05df106db5": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6133f458-6be9-4f34-9482-c83022519af3": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5edfbe5a-c784-412e-be22-70513adebc84": {
       "status": "fail",
@@ -60170,8 +60175,8 @@
       "reason": "source_thin"
     },
     "566fc153-7d1f-4d8c-8681-617504d43afe": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "52f53281-bf32-4a03-ad9d-d0c58ee836f3": {
       "status": "skip",
@@ -60338,8 +60343,9 @@
       "reason": "source_thin"
     },
     "54d4c33a-0918-443f-b2dd-ccb10149330d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/nudge/resear-0d",
+      "external_id": "nudge_resear-0d"
     },
     "4936a04e-df71-4bcb-9bb6-7ba3bd1dd338": {
       "status": "skip",
@@ -60350,32 +60356,33 @@
       "reason": "rewrite_short"
     },
     "42f67189-6484-45b1-aa4b-e4a17360adda": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/nivoda/cad",
+      "external_id": "nivoda_cad"
     },
     "516b5f4a-8544-4660-b23d-a5c3d4b349b0": {
       "status": "skip",
       "reason": "source_thin"
     },
     "50d33326-6727-4d7c-abf1-9d7ff0b29a20": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4c0ad623-06b6-42a7-96b4-68577df44d7e": {
       "status": "skip",
       "reason": "source_thin"
     },
     "759e06f2-3573-48a7-ad5f-aa049a39860d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4cd717bc-a480-42c8-80d5-6f1b9cf2465e": {
       "status": "skip",
       "reason": "source_thin"
     },
     "4032e88a-cad2-4054-8051-0cd08d0d6531": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "45381aef-7ed4-456e-821d-c938f714c394": {
       "status": "skip",
@@ -60418,8 +60425,8 @@
       "reason": "source_thin"
     },
     "56fda0fc-1ead-4671-b6c9-bd44467c436c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "728a4263-8956-4a3d-9180-341623c618c9": {
       "status": "skip",
@@ -60636,8 +60643,8 @@
       "reason": "source_thin"
     },
     "7637c4c6-a5b0-4d30-bbef-ff4a1ef79fc7": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5ed20be0-e0f5-411c-8cfb-2f4f0ec8be35": {
       "status": "fail",

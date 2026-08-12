@@ -63234,20 +63234,20 @@
       "reason": "source_thin"
     },
     "98c4fd8c-5022-45c3-8416-c1158aadd63c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "886d9e2d-b14f-4443-805e-60f4e5fe9de6": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a306d43d-1d18-4834-852f-65acd477a169": {
       "status": "skip",
       "reason": "source_thin"
     },
     "a67912ca-c618-43c8-af9e-47eec0493978": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ad9182cd-4c44-496e-b343-84029c63455d": {
       "status": "skip",
@@ -63278,8 +63278,8 @@
       "reason": "source_thin"
     },
     "b99d42f6-b60b-4c41-8978-221fdd96192d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b400c99f-ae5c-4bf3-b215-876c6f511637": {
       "status": "skip",
@@ -63294,8 +63294,8 @@
       "reason": "source_thin"
     },
     "9260dfd3-fba0-4ccb-b855-a2d1a865ea08": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "aa100a04-5a33-481e-b957-44e242744ba3": {
       "status": "skip",
@@ -63326,16 +63326,16 @@
       "reason": "rewrite_short"
     },
     "a18dde78-258d-47a4-972f-ac20d3b88645": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b9b643a0-8a6a-4a17-a1b7-7c7b07f74d0f": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "8137727f-5738-45bf-b4a9-4b5ee757f6e1": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b34e9dd1-af8a-4920-9eef-98c027155495": {
       "status": "skip",
@@ -63450,8 +63450,8 @@
       "reason": "rewrite_short"
     },
     "add8eb91-6ea9-46db-b1a4-22ced2f36279": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "aae7358e-14db-40b5-ab5a-90ce56385bf5": {
       "status": "skip",
@@ -63494,8 +63494,8 @@
       "reason": "source_thin"
     },
     "a1bb3fcd-5c2e-416c-bea3-de3d88a060a4": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "837d2f74-821f-43c1-b99f-6de4ef93917c": {
       "status": "skip",
@@ -63538,8 +63538,8 @@
       "reason": "rewrite_short"
     },
     "8a344317-e9e7-4591-8d35-d8be7dd2a179": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "af47f015-ab1c-40a1-a706-fc638925d3b2": {
       "status": "fail",
@@ -64190,8 +64190,8 @@
       "note": "thin_source title=VP / Head of Marketing company=equal-ventures apply=https://jobs.ashbyhq.com/equal-ventures/70c77153-61f5-4597-bc1f-dfa469f0fa23"
     },
     "959cd8f1-39f1-429c-89a8-feef9d040eb0": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b1391e5d-7379-41d7-8ca2-3c5947a12f18": {
       "status": "skip",
@@ -64210,16 +64210,16 @@
       "reason": "source_thin"
     },
     "9ae62bbc-636d-42c2-b3d3-a1e83da76a25": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "81d1171c-9b9a-40fc-ac05-de738bbbf765": {
       "status": "skip",
       "reason": "source_thin"
     },
     "8abbc236-227f-4e54-a596-18b65ed19a78": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a55f7e65-6184-401b-b8cc-9e9ad6982a9e": {
       "status": "fail",
@@ -64246,16 +64246,17 @@
       "reason": "source_thin"
     },
     "af234bc7-22c9-4524-b13b-9a2e3a3fc118": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/featherlessai/foundi-0a",
+      "external_id": "featherlessai_foundi-0a"
     },
     "8006f26d-d4fb-43f2-b4c3-e69089181441": {
       "status": "skip",
       "reason": "source_thin"
     },
     "bd07f8ea-e6fa-4772-b3bd-f2cc7bb00962": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "9ade4248-fc99-43ba-ba96-2531f6056ce3": {
       "status": "skip",
@@ -64266,8 +64267,8 @@
       "reason": "source_thin"
     },
     "b2c9fa38-96a8-4b8d-9c04-93d930e17228": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8bd558be-7820-4853-b526-195b50f3027f": {
       "status": "skip",
@@ -64290,16 +64291,16 @@
       "reason": "source_thin"
     },
     "a5cf0cb7-5e58-4965-91b3-60b529ea045c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a45a380a-b841-420a-9447-d2b6d48795eb": {
       "status": "skip",
       "reason": "source_thin"
     },
     "93e6583d-71e4-4d4b-bdb3-579afdde1672": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a70c9f20-1304-4569-a54b-e506acc20446": {
       "status": "skip",
@@ -64310,8 +64311,8 @@
       "reason": "source_thin"
     },
     "9db4e01f-792a-47f3-8df1-bb086f8cb1ba": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "bb7590d1-8e9e-4882-838c-2f07316296fa": {
       "status": "skip",
@@ -64322,16 +64323,17 @@
       "reason": "source_thin"
     },
     "95553dde-373b-4cd8-a7be-fa282ce9a474": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/nudge/research",
+      "external_id": "nudge_research"
     },
     "bc5a7ee5-1c91-4306-8c43-e4ecf0f77fc6": {
       "status": "skip",
       "reason": "source_thin"
     },
     "95479428-798a-4a94-bf23-33f31ad3e300": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b6f028e9-dd60-47ed-9a53-a8a6495471c0": {
       "status": "skip",
@@ -64358,8 +64360,8 @@
       "reason": "source_thin"
     },
     "94ecbc4e-787d-4c26-822e-0752fa551d5c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "bff3b613-ee0d-4c87-b9da-0edf396f750c": {
       "status": "skip",
@@ -64370,20 +64372,20 @@
       "reason": "source_thin"
     },
     "8cba32b1-b26b-447c-96fb-c19041007f9a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "be3476b6-07a3-4da4-9e5e-86e32743268e": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "99a6e0bb-816d-46d8-9bdc-ef3c4479ba94": {
       "status": "skip",
       "reason": "source_thin"
     },
     "a41c84d6-7f9d-41e1-9f21-89b4352b3d58": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a715fa60-525e-41fd-aafc-0922d569aa4b": {
       "status": "skip",
@@ -64402,32 +64404,33 @@
       "reason": "source_thin"
     },
     "aefa6751-0c40-4e7a-b402-28c43ef1f564": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a43111bb-db1c-49b8-b3d6-6fec317a948a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b3c9d3d9-66fc-4cd8-9b5e-16fd0c340602": {
       "status": "skip",
       "reason": "source_thin"
     },
     "86442850-7c7c-4265-9447-a074ceb78cad": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/nudge/member",
+      "external_id": "nudge_member"
     },
     "9bfae822-5732-47e3-a6aa-24fd40981159": {
       "status": "skip",
       "reason": "source_thin"
     },
     "b58158e6-a1d9-4039-b1ee-c611dafb96f1": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "a79c1bc1-e64f-40b9-b8b3-2cee9798947c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ae6d24ee-cc3c-4ab2-8848-277686667e9a": {
       "status": "skip",
@@ -64474,12 +64477,12 @@
       "reason": "source_thin"
     },
     "8ab4df73-a850-4133-a2b2-d03b44c465d7": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "81b6eefe-828e-4b9e-a46e-20f27dab991f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "aae833b4-9024-4092-ab25-7f0163e9f709": {
       "status": "skip",
@@ -64494,16 +64497,16 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "9bb1203c-029a-4208-8e87-c80d53a48a3d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "93d06919-e3c6-40ba-b60b-15f671a0d115": {
       "status": "skip",
       "reason": "source_thin"
     },
     "a11149cd-b01f-4cc2-b21f-f514ba125cdd": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "91be4e80-0a58-43c5-9a32-57c8f36edfa0": {
       "status": "fail",
@@ -64594,8 +64597,8 @@
       "reason": "rewrite_short"
     },
     "8efe1814-e254-4d4b-9de2-c7e17e7bd82e": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8f462119-05b2-448c-a752-ffcc94530f94": {
       "status": "fail",
@@ -64658,8 +64661,8 @@
       "reason": "source_thin"
     },
     "83ad0497-e059-4832-8ca8-314222f78fbe": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8157021a-554a-4b50-bbba-97ab343d4187": {
       "status": "fail",

@@ -53342,8 +53342,9 @@
       "reason": "source_thin"
     },
     "14ebf953-4da4-40b5-804a-cffe440e3a35": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/42dot/f-b",
+      "external_id": "42dot_f-b"
     },
     "03f7c96b-5a59-4de6-8c6f-368629f2871a": {
       "status": "skip",
@@ -53996,12 +53997,12 @@
       "reason": "rewrite_slop"
     },
     "3a5fc3c5-251b-4858-9ea8-4a141998c74a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "080c54b9-d60c-434d-8bc3-6b5e677d97e9": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1365b9b3-63c7-4d9a-82a9-c0b3f22de3d5": {
       "status": "skip",
@@ -54024,24 +54025,24 @@
       "reason": "source_thin"
     },
     "3947d0bf-6bed-499c-b2e6-f3538f9f5ec1": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "052eee26-2991-4017-9d09-cb96a3e1cd59": {
       "status": "skip",
       "reason": "source_thin"
     },
     "3224c044-0bf2-40b0-a9ee-2355a8a5fe98": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3388d64c-7b97-454b-b560-559215eddfa5": {
       "status": "skip",
       "reason": "source_thin"
     },
     "3c6dac73-7572-4da7-89bc-342bc0dd2be0": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1ecafcb7-ee73-4510-ad6d-4bfd33928f6f": {
       "status": "skip",
@@ -54069,32 +54070,32 @@
       "reason": "source_thin"
     },
     "25caf677-d5bf-4784-b045-14f06b6f5275": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "30fec1a3-0d69-4cd5-afe7-3d272a7f3223": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0f00a707-8091-4e8a-a5f2-574a6b10274c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "19e8d2ff-1ad7-4421-9dc0-8f1ba9b6da48": {
       "status": "skip",
       "reason": "source_thin"
     },
     "1d10862f-798f-469d-949e-2d30cc7290a3": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2f11789d-6970-4b6d-841d-5cf61f7ba6e0": {
       "status": "skip",
       "reason": "source_thin"
     },
     "19d77102-bd59-442d-bc4c-185b5a7357c4": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "18436b5e-1542-441a-8394-6f15f9d4c255": {
       "status": "skip",
@@ -54105,8 +54106,8 @@
       "reason": "fact_sheet_parse"
     },
     "08616103-23a8-4a76-bece-c0c0c2d8ec44": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "391e949e-c348-4890-af49-b41d2edbe4bb": {
       "status": "skip",
@@ -54117,20 +54118,21 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "190ef69c-3328-404c-9709-0430d3aa3349": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3cd04999-8e27-400f-a2db-7d77ab52c6af": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "21aa3b79-8009-4f0d-a253-ffd3f9c22813": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/dehazelabs/python",
+      "external_id": "dehazelabs_python"
     },
     "327811f0-db0a-41e0-960d-060e13c6d72d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1b747f67-673c-4a05-9b8b-62686ddc551b": {
       "status": "skip",
@@ -54149,8 +54151,8 @@
       "reason": "source_thin"
     },
     "00ccb604-8b9c-4eba-9d8f-2a81c5c1c47b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2f705a5a-0ef3-46f8-ba0e-d6179ecc0979": {
       "status": "skip",
@@ -54181,16 +54183,18 @@
       "reason": "source_thin"
     },
     "1cf336f7-0d1e-44ff-b342-030e523a516f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/julius/sw-ee",
+      "external_id": "julius_sw-ee"
     },
     "2f5be1fc-00d4-4ccb-9b4e-67d28cbf8768": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/helm-ai/ml-eng",
+      "external_id": "helm-ai_ml-eng"
     },
     "26be3ce4-32ff-443d-ba2a-3846b204223f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "20d1d417-9f3b-4f6a-bbf8-b3177d75bc9c": {
       "status": "skip",
@@ -54201,36 +54205,36 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "01a5145d-6cc2-46d6-b2e1-8105933788d7": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2c8e037d-1ed0-49ad-a068-e01c7db52517": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "08a82ea8-6256-487c-ab0d-a08c57e48955": {
       "status": "skip",
       "reason": "source_thin"
     },
     "1eeb158b-9128-4458-8caf-0713a12b9fe2": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "294c51ac-a33a-4d21-9edd-9baf00581ed2": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1d9a81d6-5525-45ea-be21-ebb7e145cd2a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "122c0bc4-660f-485f-b5ef-4fe190fb8d47": {
       "status": "skip",
       "reason": "source_thin"
     },
     "3035a25a-bb93-4fe8-8b04-9d2e6863c953": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0915abf7-2915-473e-9d69-673146a9b9f7": {
       "status": "skip",
@@ -54241,24 +54245,24 @@
       "reason": "source_thin"
     },
     "1a287cbe-bb4b-40a7-bc9d-9ccb1d5194c7": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0cc5402b-e1dd-4a68-a274-7a88f284b609": {
       "status": "skip",
       "reason": "source_thin"
     },
     "2bdbb0a0-adb0-401c-b70b-79ff1701c23c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2e049cb7-598c-46d5-96c9-0e68871dad73": {
       "status": "skip",
       "reason": "source_thin"
     },
     "2c54c341-44e8-4db9-9d8b-385a03da8c85": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2887120b-01a2-4835-8c44-e99f968810f5": {
       "status": "skip",
@@ -54269,24 +54273,24 @@
       "reason": "rewrite_short"
     },
     "0364880f-a5bb-463f-a194-8840c777e0e7": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0a3d9d5c-3ed3-4a20-8b1e-f4084a290fd2": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "321f4956-abba-4482-8ed1-5d585c1df4b5": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3ceade33-a746-4770-af48-9c60be8392ee": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "30a36f82-73b2-484a-bea1-403a4c0e51ae": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "10e9a80e-faaf-4287-acf5-e2c5b89af43a": {
       "status": "skip",
@@ -54297,12 +54301,12 @@
       "reason": "source_thin"
     },
     "08244cd9-328c-4dd0-81d1-dcb8583f4e13": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2f025665-2357-44bb-bf96-385de467a3a8": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3e7b5f8c-421b-4384-b3ac-23ee57b859ee": {
       "status": "fail",
