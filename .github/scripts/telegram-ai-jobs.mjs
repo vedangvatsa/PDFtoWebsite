@@ -300,7 +300,7 @@ function mergeByUrl(into, rows) {
 async function fetchRecentJobs() {
   const since = new Date(Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
-    select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
+    select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
     created_at: `gt.${since}`,
     order: 'created_at.desc',
     limit: String(RECENT_LIMIT),
@@ -332,7 +332,7 @@ async function fetchByCompanyNames(names) {
       })
       .join(',');
     const url = restUrl(SUPABASE_URL, 'jobs', {
-      select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
+      select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
       or: `(${or})`,
       order: 'created_at.desc',
       limit: '30',
@@ -392,7 +392,7 @@ async function fetchJobs() {
       const or = batch.map((s) => `external_id.like.${s}_*`).join(',');
       const since = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
+        select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
         or: `(${or})`,
         created_at: `gt.${since}`,
         order: 'created_at.desc',
@@ -416,7 +416,7 @@ async function fetchJobs() {
     try {
       const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,source,created_at,published_at,external_id,slug',
+        select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
         created_at: `gt.${since}`,
         order: 'created_at.desc',
         limit: '400',
@@ -459,6 +459,8 @@ function pickJobs(jobs, postedUrls, limit = JOBS_PER_POST * 4) {
   // Filter → must be AI company + relevant title + not skipped
   const candidates = shuffle(jobs).filter(job => {
     if (!job.company || !job.title || !job.apply_url) return false;
+    // Only enriched jobs get posted: a description must exist on the page.
+    if (!job.description || String(job.description).trim().length < 50) return false;
     if (postedSet.has(job.apply_url)) return false;
     if (SKIP_RE.test(job.title)) return false;
     // Public pages 404 after ~30d — keep a buffer
