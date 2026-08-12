@@ -127,7 +127,9 @@ function crawlerTag(ua: string): string | null {
   return null;
 }
 
-// In-memory per-isolate throttle: at most one insert per 30s per tag.
+// In-memory per-isolate throttle: at most one log per 30s per tag.
+// Logs land in Cloudflare Workers runtime logs (wrangler tail / dashboard)
+// — zero database writes, no bloat.
 const crawlLogThrottle = new Map<string, number>();
 
 function recordCrawlerHit(tag: string, pathname: string) {
@@ -135,20 +137,7 @@ function recordCrawlerHit(tag: string, pathname: string) {
   const last = crawlLogThrottle.get(tag) || 0;
   if (now - last < 30_000) return;
   crawlLogThrottle.set(tag, now);
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return;
-  void fetch(`${url}/rest/v1/crawler_hits`, {
-    method: 'POST',
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      Prefer: 'return=minimal',
-    },
-    body: JSON.stringify({ crawler: tag, path: pathname.slice(0, 500) }),
-  }).catch(() => {});
+  console.log(`crawler-hit crawler=${tag} path=${pathname.slice(0, 300)}`);
 }
 
 export function middleware(request: NextRequest) {
