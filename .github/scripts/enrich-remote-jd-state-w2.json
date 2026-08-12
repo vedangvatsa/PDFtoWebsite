@@ -63864,15 +63864,15 @@
     },
     "8403e676-02c0-4b3b-aff6-15764a7b1c58": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9b3da64a-f51f-40ab-911f-75a833c2370e": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "b8b28970-910e-4788-bf31-9d429076984a": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9b68f552-4498-49ac-bb62-989acf9e9597": {
       "status": "fail",
@@ -63880,11 +63880,11 @@
     },
     "abefbe17-8a3a-46e2-9df3-8d87ea4eace3": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "8278657d-ad63-443c-ab63-c16e9b013039": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "b2394f8d-de82-4727-a8cc-082b6239ceb4": {
       "status": "fail",
@@ -63896,11 +63896,11 @@
     },
     "a533c89e-6299-4ec8-8d01-2f6b2589a9a6": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "91b14c0d-cc06-4fa3-94c0-27046a8c4b18": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "81737444-8536-4038-afe5-66455c3c76af": {
       "status": "fail",
@@ -63908,43 +63908,44 @@
     },
     "9f13822e-54e8-45d3-b29a-3d363dacfeb9": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "91157b76-9641-4bae-a2fd-5b81f5004952": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "8a51838a-0ca0-4e10-a223-623840d0450c": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "875712df-e133-4880-88af-920774862d0b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_slop"
     },
     "be7486cf-6fcd-4a76-8062-0e5cc81b931e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "9da77494-6f64-42bc-97c2-0ef88cd116c0": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8a07cbcb-0477-4f1d-b26a-8b840062892e": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "bb8f8295-83f3-49dd-a2d8-60c281d7b1d0": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "97a33b4e-127a-484c-9288-a3d29b2c84bf": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8fa8f97f-f50b-4d88-8dc2-c13aa1dbd6cd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/aviation-institute-of-maintenance/campus-7d",
+      "external_id": "aviation-institute-of-maintenance_campus-7d"
     },
     "afacc6a7-4257-4fd7-bb00-7d34cb190334": {
       "status": "skip",
@@ -63952,31 +63953,32 @@
     },
     "bec84bb4-ae4a-47fe-95c7-2815e9354c7f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "b3b70523-8e18-4193-a245-84e0db81538b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9f6396aa-a8e0-40a7-ae90-96de08b4124c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "869da3bc-67d4-4a92-8aa1-cbfb298ef730": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "88c8b5c3-3cc8-494f-8dfd-7c6375feb737": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "92e21bfb-d9fd-4748-863d-b813c5905e42": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/atwell-llc/electr-5c",
+      "external_id": "atwell-llc_electr-5c"
     },
     "bf07d17f-b354-4ef3-83aa-38e795c3c091": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "812dde50-38b2-4b72-9320-841acd1d61a0": {
       "status": "skip",
@@ -63988,11 +63990,11 @@
     },
     "80459e60-1cf0-4b68-8014-94c55ffac0df": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9d3f9c3b-e258-4df2-8c7a-fde6f793a260": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "bc28ece9-592b-4256-919e-4eae45be8ec7": {
       "status": "fail",
@@ -64012,55 +64014,55 @@
     },
     "89a662eb-ed7c-4099-90a0-61de3678a451": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "b2000320-34b2-4165-bd9b-074045d1ccce": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9b26e56b-4858-4272-a784-937b0f3a72ea": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "9e8f5cfb-031d-4d16-b895-f84da0a63d7d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "97565bd0-851f-4b4f-90c8-9b707ba31da7": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9bae59b0-f69e-4933-8efb-214921c6dd1e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b5f4bf1f-446c-4449-8521-d1b024a25f07": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "92091ae8-5917-48ee-8dc7-463848cde57d": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "ab96aa38-6a7d-4ea3-899f-2875efb574fd": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "aea873fc-26e8-44c4-a968-124478e4c42d": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "998f4f9c-fbf7-4a94-8743-3ef720658058": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "83737105-f8d8-48b8-9059-762dc8cb8e83": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "bad550e2-fd78-4927-96fb-58eb3241013a": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a586f7d2-ca94-4340-911f-c61a06260636": {
       "status": "fail",
@@ -64072,55 +64074,55 @@
     },
     "9f3abd09-255e-4809-89e4-b1c009b4356c": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "91f921bc-f43b-465e-8f80-93093e2642ee": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "bb6f10c1-4af8-4990-88c1-5e4a10ec991e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "aa4dd0fc-df59-4b0e-98fc-4dc8786706e3": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "aa20700d-222c-4ee8-84d5-dcb83fc6b8d9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "be6f23c6-7f0d-4704-8102-e5ca6337ae76": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "bd63062f-d971-4a51-a9f4-340a485660ce": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "80bcf65d-b6a3-41c9-8f63-7768882d50f8": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9e08ec05-75c7-4ca3-8ff6-ac6ed04d19a9": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "89e80e4e-55fe-477b-8032-418c2a49991b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "8dcbf301-cd49-428d-a004-30c70de4061f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "b4d03c1f-699f-4a5b-a140-a01f6d2a33c0": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "b993ce0d-0ca8-4147-b34a-088f270e36a9": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a0f7079c-b13e-4365-a743-5f376d41d650": {
       "status": "fail",
@@ -64128,51 +64130,51 @@
     },
     "b0d582bf-0f27-4df7-8b70-c2bfefbdf337": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a433ae84-359a-4518-bc8b-121c1ac9a4fa": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a7a2405e-5b6e-4ec4-a503-2bfeae15b321": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "9d06ce65-71de-4b00-96b0-ebb9b656bb72": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "b5d96d17-5f18-4717-8225-ac91ce758268": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "ae1b8dc3-1e22-4254-a614-11bdf91c50da": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "8ad2d503-9fd2-49ab-9155-7346e9dfc110": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a859b030-01be-4b8c-8816-21b4dfb05ce7": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a374612a-95eb-43b1-a9ca-8565e0656389": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a43598f2-eab7-48c3-8b05-55e206f0275c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "8652a356-b631-4d6f-9c9e-eb40dd102254": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "bd86593c-a8df-43dd-b8a9-0cc6c5da132e": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "a5bcf1b7-3dad-4aa4-a499-43e2ebbb01f2": {
       "status": "fail",
@@ -64761,11 +64763,11 @@
     },
     "a28a66ca-2543-4e6e-acb1-1397928a413f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "82818bc3-5fa6-4ad0-8e83-24e0af867874": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "b2f91b28-28d1-46cc-b80e-00061040eda9": {
       "status": "fail",
@@ -64773,47 +64775,47 @@
     },
     "b7774af4-1855-4cd0-9444-efcd48ef42bb": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "9f772955-969f-4a0c-a977-9b36faebd94c": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "8887a0c4-a2b5-4440-b3c0-a48bf074a3fd": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "83a370ee-4107-44bf-a8d7-b5f0b07b6e87": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "88109ceb-10a5-446b-a976-c0f97223af5f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "bc6f5f49-bb1f-477b-bd4b-9838e60fbd11": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "83d90e25-355d-4d21-9d8a-52f31db3af07": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "91ac7706-5e7c-494a-8ce6-a8047bb817b4": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "80f31f0e-8604-4593-bc47-48b17689e271": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "a1e38216-04e0-42f6-8db0-16542ba96ebc": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "8ac14262-d729-46fe-a846-ecf80131fc30": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "8f585d94-a97c-4a2e-b957-bf61b9167675": {
       "status": "fail",
@@ -64821,27 +64823,27 @@
     },
     "a5343559-9639-46a4-ad1d-d62fea8f1aea": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "8a9886da-29b3-4635-a551-bdf8e5704276": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "817c7474-dca8-4181-a186-36849d69a234": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "89862227-f0a7-414a-95ef-c08aeb55eab8": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "a1c97d4a-0062-4c8c-ac59-606cf77a0116": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "a56aa7b3-7aa8-4212-89ef-e3434907b0b9": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "859b0db7-8de4-45f4-86f7-bd48c898ab23": {
       "status": "fail",
@@ -64849,67 +64851,67 @@
     },
     "af00673e-773f-4948-811d-d8fc2db8efa4": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "81d3799e-b212-47de-a134-de81a5bbcd85": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b852e73e-47f2-4ab8-a594-fd518b0f69fa": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "8493a7ff-082d-4670-b192-21061b201712": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "9ed4e31e-1e5c-4e43-a0fc-ded373088ff9": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "9c414f5f-f9ad-460f-b73c-9e4f360d90c5": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "8aacaab7-f0f1-42a1-8cde-5b2a53fdf754": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "90589290-2d0a-45be-bf14-1085f5062106": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "97d2b568-f38d-407b-b3bd-ecb6f3f16188": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "bfce12d9-48ec-4afd-bbc1-5f3cca0b3900": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "8f2857ad-3921-4fcd-af65-75e1f0ce0ff7": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "80f2cb2d-dc76-40c6-acff-8f70de8975f1": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "82d99f18-b083-4f28-a3f5-3d7e2130ab5a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b4b9f046-da2d-4074-b57e-5b75e54d5d16": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "b6d3e60b-4412-4f84-8303-7de1199ba88b": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "89dab08c-9f0c-45c3-8f27-32c335fafa7b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "9a4169c1-f394-49a1-a640-c508ff39c55f": {
       "status": "fail",
