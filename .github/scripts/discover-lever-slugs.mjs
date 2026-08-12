@@ -69,7 +69,12 @@ const TS_API_PAIRS = [
   ['despegar.com', 'despegar.com'],
 ];
 
-// 3) TechChecker: demo names
+// 3) TechChecker: full public list (domains from the company table)
+const TECHCHECKER_DOMAINS = [
+  'marksandspencer.com', 'nationwide.com', 'loblaw.ca', 'appen.com', 'iwgplc.com', 'baptistjax.com', 'udemy.com', 'plexusworldwide.com', 'dassault-aviation.com', 'plannedparenthood.org', 'wynnresorts.com', 'riverisland.com', 'welocalize.com', 'palantir.com', 'zoox.com', 'jobandtalent.com', 'sharkninja.com', 'kitopi.com', 'yle.fi', 'allsaints.com', 'aprio.com', 'pointclickcare.com', 'krohne.com', 'lsa.inc', 'qonto.com', 'zeta.tech', 'netlight.com', 'flashapp.com.br', 'ajax.systems', 'alephholding.com', '3pillarglobal.com', 'bpm.com', 'cirrus.com', 'malt.com', 'girlswhocode.com', 'ghjadvisors.com', 'modeln.com', 'elfbeauty.com', 'hashtagweb3.com', 'hms-networks.com', 'avalerehealth.com', 'metopera.org', 'athletetoathlete.com', 'aka-brands.com', 'pcna.com', 'jupiter.money', 'stanleyconsultants.com', 'cimgroup.com', 'grail.com', 'thereformation.com', 'sakon.com', 'shield.ai', 'safe.security', 'cfs.energy', 'cfgi.com', 'decolar.com', 'gmo.com', 'envato.com', 'bhhc.com', 'okanagan.bc.ca', 'shopback.com', 'airslate.com', 'waterworks.com', 'educative.io', 'getmidas.com', 'mbrdna.com', 'kippsocal.org', 'yummysuperapp.com', 'expeditions.com', 'hcvt.com', 'safetyculture.com', 'entrata.in', 'loblawdigital.co', 'ixom.com', 'obsglobal.com', 'vercel.com', 'applydigital.com', 'parallelwireless.com', 'vevo.com', 'mindtickle.com', 'princesspolly.com', 'jobandtalent.co', 'coda.co', 'equativ.com', 'greenlight.com', 'complex.com', 'bestegg.com', 'icc-cricket.com', 'cambiumnetworks.com', 'caseware.com', 'canvasworldwide.com', 'royalambulance.com', 'riocan.com', 'brightedge.com', 'pip.global', 'impossiblefoods.com', 'amiri.com', 'sosv.com', 'ippon.tech', 'singerlewak.com',
+];
+
+// 3b) TechChecker: demo names
 const TECHCHECKER_NAMES = [
   'Shopify', 'LinkedIn', 'Remote.com', 'Klarna', 'Palantir', 'Rackspace Technology',
   'TechStars', 'Xero', 'Getty Images', '1Password',
@@ -120,6 +125,10 @@ async function main() {
 
   const candidates = new Map(); // slug -> { source, jobs }
   for (const s of bb) candidates.set(s, { source: 'bloomberry' });
+  for (const d of TECHCHECKER_DOMAINS) {
+    const root = d.split('.')[0].toLowerCase().replace(/[^a-z0-9-]/g, '');
+    if (root && root.length > 2) candidates.set(root, { source: d });
+  }
   for (const [name, domain] of TS_API_PAIRS) {
     if (!domains.has(name)) domains.set(name, domain);
   }
