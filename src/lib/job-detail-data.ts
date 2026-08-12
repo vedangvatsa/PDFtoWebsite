@@ -772,6 +772,9 @@ export function buildJobJsonLd(
   const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
+    // Apple-documented page-level signal: content is free to read (no paywall),
+    // so Applebot may use it for Siri/Spotlight answers and suggestions.
+    isAccessibleForFree: true,
     title: detail.title,
     description,
     datePosted: typeof datePosted === 'string' ? datePosted.slice(0, 10) : datePosted,
