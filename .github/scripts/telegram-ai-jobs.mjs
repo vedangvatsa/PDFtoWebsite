@@ -128,63 +128,20 @@ const AI_TITLE_RE = /\b(ai\b|artificial intelligence|machine learning|ml\b|deep 
 
 // ─── Skip patterns (non-tech roles) ──────────────────────────────────────────
 // ─── Skip patterns — same as tech jobs channel (telegram-post.mjs) ───────────
-const BANNED_PATTERNS = [
-  '\\btherapists?\\b', '\\bpsychiatric\\b', '\\bpsychiatrist\\b', '\\bnurse\\b',
-  '\\bphysician\\b', '\\bmedical assistant\\b', '\\bphlebotomist\\b',
-  '\\bbehavior technician\\b', '\\brbt\\b', '\\bretail ambassador\\b',
-  '\\bstore (opening|associate|manager|lead|director)\\b', '\\bbarista\\b',
-  '\\bjanitor\\b', '\\bcashier\\b', '\\bbookkeeper\\b', '\\bhvac\\b',
-  '\\bplumbing\\b', '\\bplumber\\b', '\\bwarehouse\\b',
-  '\\bdelivery driver\\b', '\\btruck driver\\b', '\\bteacher\\b', '\\btutor\\b',
-  '\\bcaregiver\\b', '\\bnanny\\b', '\\bhousekeeper\\b', '\\bcleaner\\b',
-  '\\bdentist\\b', '\\bdental\\b', '\\bpharmacist\\b', '\\bpharmacy\\b',
-  '\\bparamedic\\b', '\\bsurgeon\\b', '\\bclinician\\b', '\\boptometrist\\b',
-  '\\bveterinarian\\b', '\\bveterinary\\b', '\\bmassage\\b', '\\besthetician\\b',
-  '\\bsalon\\b', '\\bspa\\b', '\\bfitness instructor\\b', '\\bpersonal trainer\\b',
-  '\\bpastor\\b', '\\bclergy\\b', '\\bmechanic\\b', '\\bforklift\\b',
-  '\\bbartender\\b', '\\bwaiter\\b', '\\bwaitress\\b', '\\bchef\\b', '\\bcook\\b',
-  '\\bdishwasher\\b', '\\bbusser\\b', '\\bhostess\\b', '\\bcounselor\\b',
-  '\\bpainter\\b', '\\bcarpenter\\b', '\\belectrician\\b', '\\bwelder\\b',
-  '\\bmason\\b', '\\bconstruction\\b', '\\bsecurity guard\\b', '\\bbouncer\\b',
-  '\\bkeyholder\\b', '\\bretail\\b', '\\bdispensary\\b',
-  '\\bpsychologist\\b', '\\bdashmart\\b',
-  '\\bshift (supervisor|leader|manager)\\b', '\\bcall center\\b',
-  '\\bsoldering\\b', '\\bmanufacturing\\b', '\\brobot operator\\b',
-  '\\bequipment operator\\b', '\\bassembl\\w*\\b', '\\bfactory\\b',
-  '\\bdispatcher\\b', '\\bdriver\\b', '\\bdelivery\\b',
-  '\\binventory\\b', '\\breceiving\\b', '\\bfulfillment\\b',
-  '\\btechnician\\b', '\\bbrand ambassador\\b', '\\bpart.time\\b',
-  '\\bseasonal\\b', '\\b1099\\b',
-  '\\bforeman\\b', '\\bforewoman\\b', '\\bjourneyman\\b',
-  '\\banimal\\b', '\\bhusbandry\\b', '\\binfusion\\b', '\\bmicrobiology\\b',
-  '\\blaboratory tech\\b', '\\blab tech\\b',
-  '\\bfield service\\b', '\\bfield tech\\b',
-  '\\bshop tech\\b', '\\bservice tech\\b',
-  '\\binstaller\\b', '\\bfabricator\\b', '\\bmaintenance\\b',
-  '\\broofing\\b', '\\bpaving\\b', '\\bexcavat\\b', '\\blandscap\\b',
-  '\\bpipefitter\\b', '\\bironworker\\b', '\\bscaffold\\b',
-  '\\bconcrete\\b', '\\bdrywall\\b', '\\binsulation\\b',
-  '\\bsales rep\\b', '\\bsales associate\\b',
-  '\\bstore manager\\b', '\\bassistant.*manager\\b',
-  '\\bRN\\b', '\\bLPN\\b', '\\bCNA\\b', '\\bEMT\\b',
-  '\\bcustodian\\b', '\\bgroundskeeper\\b',
-  '\\bproduction\\b', '\\boperator\\b', '\\bpilot\\b', '\\bsurvey\\b',
-  '\\bsupply chain\\b', '\\bgrounds\\b', '\\bline tech\\b',
-  '\\bcurb\\b', '\\bpowerline\\b', '\\bice cream\\b',
-  '\\bhelicopter\\b', '\\bautocad\\b',
-  '\\boriginations?\\b', '\\bmetal\\b', '\\bprep\\b',
-  '\\btelemedicine\\b',
-  // Extra: non-tech roles at AI companies
+// Canonical low-level/service ban (site-wide) + AI-channel-specific non-tech extras.
+import { BANNED_REGEX as BANNED_JOB_REGEX } from '../../src/lib/banned-jobs.mjs';
+const AI_CHANNEL_EXTRAS = [
   '\\bintern\\b', '\\bco-?op\\b', '\\bbounty\\b',
   '\\bcustomer support\\b', '\\bcustomer service\\b',
   '\\blegal counsel\\b', '\\bcounsel\\b', '\\battorney\\b', '\\blawyer\\b',
-  '\\bparalegal\\b', '\\boffice manager\\b', '\\breceptionist\\b',
+  '\\bparalegal\\b', '\\boffice manager\\b',
   '\\bexecutive assistant\\b', '\\badmin assistant\\b',
   '\\baccountant\\b', '\\bpayroll\\b', '\\bbenefits\\b',
   '\\bjunior recruiter\\b', '\\brecruiting coordinator\\b',
   '\\bfacilities\\b', '\\bjanitorial\\b', '\\bcatering\\b',
 ];
-const SKIP_RE = new RegExp(BANNED_PATTERNS.join('|'), 'i');
+const SKIP_RE = new RegExp(BANNED_JOB_REGEX.source + '|' + AI_CHANNEL_EXTRAS.join('|'), 'i');
+
 
 // ─── Dedup tracking ──────────────────────────────────────────────────────────
 function loadPosted() {

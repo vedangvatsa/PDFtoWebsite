@@ -31,6 +31,7 @@ import {
 } from '@/lib/job-snapshots';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { isJobExpired } from '@/lib/job-age';
+import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 
 export type JobRow = {
   id: string;
@@ -706,6 +707,22 @@ export function extractSalaryFromText(text: string | null | undefined): string |
   return null;
 }
 
+/**
+ * Convert published plain-text job copy into the HTML format Google requires
+ * for JobPosting.description (paragraph breaks via <p>; Google recognizes
+ * <p>, <ul>, <li>). Never wraps scraped HTML — input is always plain text.
+ */
+function plainToHtmlDescription(plain: string): string {
+  const text = String(plain || '').trim();
+  if (!text) return '';
+  const paragraphs = text
+    .split(/\n{2,}/)
+    .map((p) => p.replace(/\s*\n\s*/g, ' ').trim())
+    .filter(Boolean);
+  if (paragraphs.length === 0) return `<p>${text}</p>`;
+  return paragraphs.map((p) => `<p>${p.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`).join('');
+}
+
 export function buildJobJsonLd(
   job: JobRow,
   detail: JobDetail,
@@ -713,6 +730,8 @@ export function buildJobJsonLd(
 ): Record<string, unknown> | null {
   // Live Google Jobs only. Closed pages stay in regular search without JobPosting.
   if (!detail.is_indexable || detail.expired) return null;
+  // Never emit JobPosting for low-level / service / hourly titles.
+  if (isBannedJobTitle(detail.title) || isBannedJobTitle(job.title)) return null;
 
   const datePosted =
     job.published_at || job.created_at || new Date().toISOString().slice(0, 10);
@@ -725,12 +744,12 @@ export function buildJobJsonLd(
     (Array.isArray(job.tags) && job.tags.includes('curated-jd')
       ? jobDescriptionPlainText(job.description)
       : '');
-  // Google wants a real description; use the PUBLISHED plain body (AI-rewritten
-  // or synthesized) — never the raw scraped text.
-  const description =
-    plain.length > 80
-      ? plain.slice(0, 8000)
-      : detail.excerpt || `${detail.title} at ${detail.company}. ${detail.location || 'Remote'}.`;
+  // Google requires an HTML description that is a complete representation of
+  // the job (responsibilities, qualifications, etc.) — never the thin fallback
+  // string, which is a "description same as title" violation. When no real body
+  // exists, skip JobPosting entirely instead of emitting weak markup.
+  if (plain.length <= 80) return null;
+  const description = plainToHtmlDescription(plain.slice(0, 8000));
 
   const remote = isRemoteLocation(job.location) || isRemoteLocation(detail.location);
   const employmentKey = (job.job_type || '').toLowerCase().replace(/-/g, '_');

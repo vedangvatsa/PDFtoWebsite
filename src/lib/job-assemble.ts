@@ -11,6 +11,7 @@ import { publishableCompanyAbout } from '@/lib/company-about';
 import { companyDisplayName } from '@/lib/company-directory';
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
 import { isJobExpired } from '@/lib/job-age';
+import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 
 export type AssembleJobInput = {
   id?: string | null;
@@ -151,6 +152,7 @@ export function jobQualifiesForSitemap(
     created_at?: string | null;
   }
 ): boolean {
+  if (isBannedJobTitle(job.title)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
   if (!Array.isArray(job.tags) || !job.tags.includes('curated-jd')) return false;
   if (job.description == null) return true;

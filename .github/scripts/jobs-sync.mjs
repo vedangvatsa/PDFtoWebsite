@@ -16,6 +16,7 @@ import {
   companyToSlug,
 } from './lib/job-public-url.mjs';
 import { isLowQualityApplySource } from './lib/job-apply-source.mjs';
+import { BANNED_REGEX as BANNED_JOB_REGEX } from '../../src/lib/banned-jobs.mjs';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -104,57 +105,9 @@ const KEYWORD_LABELS = [
   'Frontend','Backend','Full Stack','Full Stack',
 ];
 
-// ─── Banned Jobs Filter ───
-const BANNED_PATTERNS = [
-  '\\btherapists?\\b', '\\bpsychiatric\\b', '\\bpsychiatrist\\b', '\\bnurse\\b',
-  '\\bphysician\\b', '\\bmedical assistant\\b', '\\bphlebotomist\\b',
-  '\\bbehavior technician\\b', '\\brbt\\b', '\\bretail ambassador\\b',
-  '\\bstore (opening|associate|manager|lead|director)\\b', '\\bbarista\\b',
-  '\\bjanitor\\b', '\\bcashier\\b', '\\bbookkeeper\\b', '\\bhvac\\b',
-  '\\bplumbing\\b', '\\bplumber\\b', '\\bwarehouse\\b',
-  '\\bdelivery driver\\b', '\\btruck driver\\b', '\\bteacher\\b', '\\btutor\\b',
-  '\\bcaregiver\\b', '\\bnanny\\b', '\\bhousekeeper\\b', '\\bcleaner\\b',
-  '\\bdentist\\b', '\\bdental\\b', '\\bpharmacist\\b', '\\bpharmacy\\b',
-  '\\bparamedic\\b', '\\bsurgeon\\b', '\\bclinician\\b', '\\boptometrist\\b',
-  '\\bveterinarian\\b', '\\bveterinary\\b', '\\bmassage\\b', '\\besthetician\\b',
-  '\\bsalon\\b', '\\bspa\\b', '\\bfitness instructor\\b', '\\bpersonal trainer\\b',
-  '\\bpastor\\b', '\\bclergy\\b', '\\bmechanic\\b', '\\bforklift\\b',
-  '\\bbartender\\b', '\\bwaiter\\b', '\\bwaitress\\b', '\\bchef\\b', '\\bcook\\b',
-  '\\bdishwasher\\b', '\\bbusser\\b', '\\bhostess\\b', '\\bcounselor\\b',
-  '\\bpainter\\b', '\\bcarpenter\\b', '\\belectrician\\b', '\\bwelder\\b',
-  '\\bmason\\b', '\\bconstruction\\b', '\\bsecurity guard\\b', '\\bbouncer\\b',
-  '\\bkeyholder\\b', '\\bretail\\b', '\\bdispensary\\b',
-  '\\bpsychologist\\b', '\\bdashmart\\b',
-  '\\bshift (supervisor|leader|manager)\\b', '\\bcall center\\b',
-  '\\bsoldering\\b', '\\bmanufacturing\\b', '\\brobot operator\\b',
-  '\\bequipment operator\\b', '\\bassembl\\w*\\b', '\\bfactory\\b',
-  '\\bdispatcher\\b', '\\bdriver\\b', '\\bdelivery\\b',
-  '\\binventory\\b', '\\breceiving\\b', '\\bfulfillment\\b',
-  '\\btechnician\\b', '\\bbrand ambassador\\b', '\\bpart.time\\b',
-  '\\bseasonal\\b', '\\b1099\\b',
-  // Additional patterns for junk slipping through
-  '\\bforeman\\b', '\\bforewoman\\b', '\\bjourneyman\\b',
-  '\\banimal\\b', '\\bhusbandry\\b', '\\binfusion\\b', '\\bmicrobiology\\b',
-  '\\blaboratory tech\\b', '\\blab tech\\b',
-  '\\bfield service\\b', '\\bfield tech\\b',
-  '\\bshop tech\\b', '\\bservice tech\\b',
-  '\\binstaller\\b', '\\bfabricator\\b', '\\bmaintenance\\b',
-  '\\broofing\\b', '\\bpaving\\b', '\\bexcavat\\b', '\\blandscap\\b',
-  '\\bpipefitter\\b', '\\bironworker\\b', '\\bscaffold\\b',
-  '\\bconcrete\\b', '\\bdrywall\\b', '\\binsulation\\b',
-  '\\bsales rep\\b', '\\bsales associate\\b',
-  '\\bstore manager\\b', '\\bassistant.*manager\\b',
-  '\\bRN\\b', '\\bLPN\\b', '\\bCNA\\b', '\\bEMT\\b',
-  '\\bcustodian\\b', '\\bgroundskeeper\\b',
-  // Round 3 — still slipping through
-  '\\bproduction\\b', '\\boperator\\b', '\\bpilot\\b', '\\bsurvey\\b',
-  '\\bsupply chain\\b', '\\bgrounds\\b', '\\bline tech\\b',
-  '\\bcurb\\b', '\\bpowerline\\b', '\\bice cream\\b',
-  '\\bhelicopter\\b', '\\bautocad\\b',
-  '\\boriginations?\\b', '\\bmetal\\b', '\\bprep\\b',
-  '\\btelemedicine\\b',
-];
-const BANNED_REGEX = new RegExp(BANNED_PATTERNS.join('|'), 'i');
+// ─── Banned Jobs Filter (canonical: src/lib/banned-jobs.mjs) ───
+const BANNED_REGEX = BANNED_JOB_REGEX;
+
 
 
 // ─── Greenhouse company slugs to fetch ───
@@ -1424,9 +1377,21 @@ async function fetchGreenhouse() {
   console.log('\n── Greenhouse ──');
   const allJobs = [];
 
-  const tasks = GREENHOUSE_SLUGS.map(slug => async () => {
+  // Merge extra discovered boards (see discover-lever-slugs.mjs).
+  const EXTRA_FILE = resolve(__dirname, 'greenhouse-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const greenhouseSlugs = [...new Set([...GREENHOUSE_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered boards (total ${greenhouseSlugs.length})`);
+
+  const tasks = greenhouseSlugs.map(slug => async () => {
     try {
-      const res = await fetch(`https://boards-api.greenhouse.io/v1/boards/${slug}/jobs`);
+      const res = await fetch(`https://boards-api.greenhouse.io/v1/boards/${slug}/jobs?content=true`);
       if (!res.ok) { console.log(`  ⚠ ${slug}: ${res.status}`); return []; }
       const data = await res.json();
       const companyJobs = (data.jobs || [])
@@ -1440,10 +1405,10 @@ async function fetchGreenhouse() {
           location: j.location?.name || 'Remote',
           job_type: null,
           salary: null,
-          description: null,
-          tags: extractTags(j.title),
+          description: (j.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().substring(0, 5000) || null,
+          tags: extractTags(`${j.title} ${(j.content || '').replace(/<[^>]*>/g, '')}`),
           apply_url: j.absolute_url,
-          category: null,
+          category: j.departments?.map(d => d.name).filter(Boolean).join(', ') || null,
           published_at: j.updated_at || j.first_published || null,
         }));
       if (companyJobs.length) console.log(`  ✅ ${slug}: ${companyJobs.length} jobs`);

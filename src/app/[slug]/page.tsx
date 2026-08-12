@@ -26,6 +26,7 @@ import { unstable_cache } from 'next/cache';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
 import CompanyLogo from '@/components/company-logo';
 import { primaryCompanyLogoUrl, trustedCompanyWebsiteUrl } from '@/lib/company-logo';
+import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 import {
   isDisposableProfileSlug,
   knownCompanyDescription,
@@ -467,6 +468,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       "headline": post.title,
       "description": post.excerpt,
       "datePublished": new Date(post.date).toISOString(),
+      "dateModified": new Date(post.date).toISOString(),
       "author": {
         "@type": "Person",
         "name": post.author.name,
@@ -703,50 +705,22 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       })),
     };
 
-    // JobPosting structured data for top 10 jobs (Google Jobs rich results).
-    // Every field is derived from real data only: published description,
-    // structured location parse, mapped employment type, listed salary,
-    // and the site's own 30-day listing window for validThrough.
-    const jobPostingSchema = jobs.slice(0, 10).map((job: any) => {
-      const posted = job.published_at || job.created_at || new Date().toISOString().slice(0, 10);
-      const postedMs = new Date(posted).getTime();
-      const validThrough = new Date(
-        (Number.isFinite(postedMs) ? postedMs : Date.now()) + 30 * 24 * 60 * 60 * 1000
-      ).toISOString();
-      const plain = String(job.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-      const employmentKey = String(job.job_type || '').toLowerCase().replace(/-/g, '_');
-      const employmentType =
-        EMPLOYMENT_TYPE_MAP[job.job_type || ''] ||
-        EMPLOYMENT_TYPE_MAP[employmentKey] ||
-        EMPLOYMENT_TYPE_MAP[String(job.job_type || '').toLowerCase()] ||
-        undefined;
-      const salary = parseBaseSalary(job.salary);
-      const address = parseJobLocationAddress(job.location);
-      return {
-        '@context': 'https://schema.org',
-        '@type': 'JobPosting',
-        title: job.title,
-        description: plain.length > 80 ? plain.slice(0, 8000) : `${job.title} at ${companyName}. ${job.location || 'Remote'}.`,
-        datePosted: typeof posted === 'string' ? posted.slice(0, 10) : posted,
-        validThrough,
-        hiringOrganization: {
-          '@type': 'Organization',
-          name: companyName,
-          logo,
-          ...(meta ? { 'sameAs': meta.website } : {}),
-        },
-        ...(address ? { 'jobLocation': { '@type': 'Place', 'address': address } } : {}),
-        ...(employmentType ? { 'employmentType': employmentType } : {}),
-        ...(salary ? { 'baseSalary': salary } : {}),
-        'url': job.apply_url,
-      };
-    });
+    // Breadcrumb (Google: ≥2 ListItems, mirrors a real user path).
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cvin.bio/" },
+        { "@type": "ListItem", "position": 2, "name": "Companies", "item": "https://cvin.bio/companies" },
+        { "@type": "ListItem", "position": 3, "name": companyName },
+      ],
+    };
 
     return (
       <div className="min-h-screen bg-zinc-50 flex flex-col overflow-x-hidden">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchema) }} />
         <Header />
         
         <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-4">

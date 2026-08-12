@@ -84,7 +84,7 @@ export default function RootLayout({
               '@type': 'Organization',
               name: 'CVin.Bio',
               url: siteUrl,
-              logo: `${siteUrl}/opengraph-image`,
+              logo: `${siteUrl}/images/cvinbio.webp`,
               sameAs: [
                 'https://x.com/cvinbio',
                 'https://www.linkedin.com/company/cvinbio',
