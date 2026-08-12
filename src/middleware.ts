@@ -97,56 +97,9 @@ function isScraperAgent(ua: string): boolean {
   return SCRAPER_UA.some((p) => p.test(ua));
 }
 
-// ── Crawler traffic recorder (Applebot/Googlebot/Bing/…) ─────────────────
-// Fire-and-forget, never blocks the request. Records a throttled sample of
-// known-crawler hits into Supabase so we can verify which engines actually
-// crawl us (Applebot/Spotlight, Bing, etc.) without CF plan limits.
-const CRAWLER_TAGS: Array<[RegExp, string]> = [
-  [/Applebot/i, 'applebot'],
-  [/Googlebot|Storebot|GoogleOther/i, 'googlebot'],
-  [/Bingbot|msnbot/i, 'bing'],
-  [/DuckDuckBot/i, 'duckduckgo'],
-  [/YandexBot/i, 'yandex'],
-  [/Baiduspider/i, 'baidu'],
-  [/Slurp/i, 'yahoo'],
-  [/SeznamBot/i, 'seznam'],
-  [/NaverBot/i, 'naver'],
-  [/Qwantify/i, 'qwant'],
-  [/PetalBot/i, 'petal'],
-  [/GPTBot|ChatGPT-User|OAI-SearchBot/i, 'openai'],
-  [/ClaudeBot|Claude-SearchBot/i, 'anthropic'],
-  [/PerplexityBot/i, 'perplexity'],
-  [/Meta-ExternalAgent|Meta-ExternalFetcher/i, 'meta'],
-  [/Bytespider/i, 'bytespider'],
-  [/CCBot/i, 'commoncrawl'],
-  [/cohere-ai/i, 'cohere'],
-];
-
-function crawlerTag(ua: string): string | null {
-  for (const [re, tag] of CRAWLER_TAGS) if (re.test(ua)) return tag;
-  return null;
-}
-
-// In-memory per-isolate throttle: at most one log per 30s per tag.
-// Logs land in Cloudflare Workers runtime logs (wrangler tail / dashboard)
-// — zero database writes, no bloat.
-const crawlLogThrottle = new Map<string, number>();
-
-function recordCrawlerHit(tag: string, pathname: string) {
-  const now = Date.now();
-  const last = crawlLogThrottle.get(tag) || 0;
-  if (now - last < 30_000) return;
-  crawlLogThrottle.set(tag, now);
-  console.log(`crawler-hit crawler=${tag} path=${pathname.slice(0, 300)}`);
-}
-
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ua = request.headers.get('user-agent') || '';
-
-  // Record known-crawler hits (Applebot/Googlebot/Bing/AI) for verification.
-  const tag = crawlerTag(ua);
-  if (tag) recordCrawlerHit(tag, pathname);
 
   // Sitemaps must stay readable by Googlebot, GSC validators, curl health
   // checks, and SEO tools. /sitemap-jobs/{n} has no file extension so it
