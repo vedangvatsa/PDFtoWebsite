@@ -14,6 +14,9 @@ files=(
   .github/scripts/enrich-remote-jd-state-w5.json
   .github/scripts/enrich-remote-jd-state-w6.json
   .github/scripts/enrich-remote-jd-state-w7.json
+  .github/scripts/enrich-company-about-state.json
+  .github/scripts/enrich-wikipedia-extracts.json
+  src/lib/company-descriptions.json
 )
 
 # Only stage existing files
