@@ -326,13 +326,12 @@ Unit tests should encode these five rows.
 
 ## 12. Ops
 
-**Default runtime: manual (no LLM API).**  
-1. `queue-manual-jd-priority.mjs` — rank rich ATS + rework short curated  
-2. `enrich-remote-job-descriptions.mjs` — scrape → `manual-jd-queue/` packs  
-3. Human/Cursor writes `{id}.page.txt` per this rulebook  
-4. `publish-manual-jd.mjs` — local A/O/H-ish gates → `curated-jd`  
+**Single enrich script:** `.github/scripts/enrich-remote-job-descriptions.mjs`  
+- Default: scrape → `manual-jd-queue/` (no LLM)  
+- `ALLOW_AI_ENRICH=1`: JD rewrite via OpenRouter `inclusionai/ling-2.6-flash` only  
+- `ALLOW_AI_ENRICH=1 ABOUT_ONLY=1`: unique About-the-company blurbs → `src/lib/company-descriptions.json`  
 
-`ALLOW_AI_ENRICH=1` re-enables the old two-stage LLM path (opt-in only).
+`queue-manual-jd-priority.mjs` / `publish-manual-jd.mjs` remain the manual publish path.
 
 **Decision tree**
 ```text

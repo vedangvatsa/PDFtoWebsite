@@ -7,7 +7,13 @@
  *  2. If source is usable, write a queue pack under .github/scripts/manual-jd-queue/
  *  3. Skip curated-jd DB write — a human/agent applies JD_PARAPHRASE_RULES and publishes
  *
- * AI enrich is opt-in only: ALLOW_AI_ENRICH=1 (not recommended; costs + slower).
+ * AI enrich is opt-in only: ALLOW_AI_ENRICH=1.
+ * When enabled, the ONLY LLM path is OpenRouter model inclusionai/ling-2.6-flash.
+ * Gemini / OpenAI / NVIDIA / Groq / Cohere / Anthropic are disabled.
+ *
+ * Single entry for JD rewrite + unique About-the-company blurbs:
+ *   ALLOW_AI_ENRICH=1 node .github/scripts/enrich-remote-job-descriptions.mjs
+ *   ALLOW_AI_ENRICH=1 ABOUT_ONLY=1 ENRICH_SINCE_HOURS=24 ...  (company blurbs only)
  *
  * Usage:
  *   BATCH_SIZE=50 node .github/scripts/enrich-remote-job-descriptions.mjs
@@ -19,6 +25,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } fr
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { shouldQueueForManualEnrich, isFullyEnrichedJob, descriptionWords } from './lib/job-apply-source.mjs';
+import { runCompanyAboutPass } from './lib/enrich-company-about.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -28,6 +35,14 @@ require('dotenv').config();
 /** Manual curation is the default. AI rewrite requires explicit ALLOW_AI_ENRICH=1. */
 const ALLOW_AI_ENRICH = process.env.ALLOW_AI_ENRICH === '1' || process.env.ALLOW_AI_ENRICH === 'true';
 const MANUAL_QUEUE_DIR = resolve(__dirname, 'manual-jd-queue');
+// AI path: drop every non-OpenRouter LLM key so leftover rewrite helpers cannot fire.
+if (ALLOW_AI_ENRICH) {
+  for (const name of Object.keys(process.env)) {
+    if (/^(GEMINI_|OPENAI_|NVIDIA_|GROQ_|COHERE_|ANTHROPIC_)/.test(name)) {
+      delete process.env[name];
+    }
+  }
+}
 
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
@@ -79,11 +94,20 @@ const NVIDIA_KEYS = [
 // OpenAI-compatible NIM / integrate.api.nvidia.com
 const NVIDIA_BASE = (process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1').replace(/\/$/, '');
 const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'nvidia/nemotron-3-ultra-550b-a55b';
+const OPENROUTER_KEYS = [
+  unquote(process.env.OPENROUTER_API_KEY),
+  unquote(process.env.OPENROUTER_API_KEY_2),
+  unquote(process.env.OPENROUTER_API_KEY_3),
+].filter(Boolean);
+const OPENROUTER_BASE = (process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
+// Locked — do not read OPENROUTER_MODEL; this is the only rewrite model.
+const OPENROUTER_MODEL = 'inclusionai/ling-2.6-flash';
 const ANTHROPIC_KEY = unquote(process.env.ANTHROPIC_API_KEY);
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
 const DRY_RUN = process.env.DRY_RUN === '1';
+const ABOUT_ONLY = process.env.ABOUT_ONLY === '1' || process.env.ABOUT_ONLY === 'true';
 // TURBO=1: max parallel, mini model, no sleep, keep existing pretty slugs
 const TURBO = process.env.TURBO === '1';
 // Hard cap high so one machine can saturate API keys (429s self-throttle)
@@ -1247,6 +1271,7 @@ function geminiCooldownKey(model, key) {
 }
 
 async function rewriteWithGemini(prompt, opts = {}) {
+  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
   if (!GEMINI_KEYS.length) throw new Error('Missing GEMINI_API_KEY');
   const temperature = opts.temperature ?? 0.4;
   const maxOutputTokens = opts.maxOutputTokens ?? 8192;
@@ -1323,6 +1348,7 @@ const cohereKeyIndex = new Map();
 const groqKeyIndex = new Map();
 
 async function rewriteWithCohere(prompt, opts = {}) {
+  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
   if (!COHERE_KEYS.length) throw new Error('Missing COHERE_API_KEY');
   const temperature = opts.temperature ?? 0.4;
 
@@ -1363,6 +1389,7 @@ async function rewriteWithCohere(prompt, opts = {}) {
 }
 
 async function rewriteWithGroq(prompt, opts = {}) {
+  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
   if (!GROQ_KEYS.length) throw new Error('Missing GROQ_API_KEY');
   const temperature = opts.temperature ?? 0.4;
 
@@ -1404,6 +1431,7 @@ async function rewriteWithGroq(prompt, opts = {}) {
 }
 
 async function rewriteWithOpenAI(prompt, opts = {}) {
+  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
   if (!OPENAI_KEYS.length) throw new Error('Missing OPENAI_API_KEY');
   const temperature = opts.temperature ?? (TURBO ? 0.3 : 0.4);
   // TURBO: mini only (fast). Normal: mini then full.
@@ -1452,6 +1480,7 @@ async function rewriteWithOpenAI(prompt, opts = {}) {
 /** NVIDIA NIM — OpenAI-compatible chat completions (Nemotron). */
 let nvidiaNextAllowedAt = 0;
 async function rewriteWithNvidia(prompt, opts = {}) {
+  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
   if (!NVIDIA_KEYS.length) throw new Error('Missing NVIDIA_API_KEY');
   const temperature = opts.temperature ?? (TURBO ? 0.3 : 0.4);
   // Prefer configured model (e.g. nvidia/nemotron-3-ultra-550b-a55b); optional fallbacks
@@ -1512,7 +1541,60 @@ async function rewriteWithNvidia(prompt, opts = {}) {
   throw new Error(lastErr || 'nvidia_failed');
 }
 
+/** OpenRouter only — model locked to inclusionai/ling-2.6-flash. */
+const openrouterKeyCooldown = new Map();
+async function rewriteWithOpenRouter(prompt, opts = {}) {
+  if (!OPENROUTER_KEYS.length) throw new Error('Missing OPENROUTER_API_KEY');
+  const temperature = opts.temperature ?? (TURBO ? 0.3 : 0.4);
+  const model = OPENROUTER_MODEL;
+  let lastErr = '';
+
+  for (const key of OPENROUTER_KEYS) {
+    const cdKey = `${model}::${key.slice(0, 12)}`;
+    const until = openrouterKeyCooldown.get(cdKey) || 0;
+    if (Date.now() < until) continue;
+    try {
+      const r = await jfetch(
+        `${OPENROUTER_BASE}/chat/completions`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${key}`,
+            'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://cvin.bio',
+            'X-Title': process.env.OPENROUTER_APP_NAME || 'cvin.bio job enrich',
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature,
+            max_tokens: opts.maxOutputTokens ?? 4096,
+            top_p: 0.9,
+          }),
+        },
+        TURBO ? 90000 : 60000
+      );
+      if (r.ok) {
+        const data = await r.json();
+        const text = data.choices?.[0]?.message?.content || '';
+        if (!String(text).trim()) throw new Error('openrouter_empty');
+        return stripCodeFence(text);
+      }
+      const err = await r.text();
+      lastErr = `openrouter_${model}_${r.status}:${err.slice(0, 180)}`;
+      if (r.status === 429) {
+        openrouterKeyCooldown.set(cdKey, Date.now() + 20_000);
+        continue;
+      }
+    } catch (e) {
+      lastErr = `openrouter_${model}_err:${String(e.message || e).slice(0, 100)}`;
+    }
+  }
+  throw new Error(lastErr || 'openrouter_failed');
+}
+
 async function rewriteWithAnthropic(prompt, opts = {}) {
+  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
   if (!ANTHROPIC_KEY) throw new Error('Missing ANTHROPIC_API_KEY');
   const temperature = opts.temperature ?? 0.4;
 
@@ -1549,55 +1631,17 @@ async function rewriteWithAnthropic(prompt, opts = {}) {
   throw new Error(lastErr || 'anthropic_failed');
 }
 
-// Provider order controlled by env:
-//   NVIDIA_ONLY=1           → nvidia only
-//   GEMINI_NVIDIA_ONLY=1    → gemini → nvidia (no OpenAI)
-//   SKIP_OPENAI=1           → same as GEMINI_NVIDIA_ONLY when both keys exist
-//   TURBO default           → gemini → openai → nvidia
+// AI rewrite is OpenRouter + inclusionai/ling-2.6-flash only. No other providers.
 function buildProviderList() {
-  const providers = [];
-  const nvidiaOnly = process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true';
-  const geminiNvidiaOnly =
-    process.env.GEMINI_NVIDIA_ONLY === '1' ||
-    process.env.GEMINI_NVIDIA_ONLY === 'true' ||
-    process.env.SKIP_OPENAI === '1' ||
-    process.env.SKIP_OPENAI === 'true';
-  if (nvidiaOnly && NVIDIA_KEYS.length) {
-    providers.push(['nvidia', rewriteWithNvidia]);
-  } else if (geminiNvidiaOnly) {
-    if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
-    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
-  } else if (TURBO) {
-    if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
-    if (OPENAI_KEYS.length) providers.push(['openai', rewriteWithOpenAI]);
-    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
-  } else {
-    if (OPENAI_KEYS.length) providers.push(['openai', rewriteWithOpenAI]);
-    if (GEMINI_KEYS.length) providers.push(['gemini', rewriteWithGemini]);
-    if (NVIDIA_KEYS.length) providers.push(['nvidia', rewriteWithNvidia]);
-  }
-  if (!TURBO) {
-    if (GROQ_KEYS.length) providers.push(['groq', rewriteWithGroq]);
-    if (COHERE_KEYS.length) providers.push(['cohere', rewriteWithCohere]);
-    if (ANTHROPIC_KEY) providers.push(['anthropic', rewriteWithAnthropic]);
-  }
-  return providers;
+  if (!OPENROUTER_KEYS.length) return [];
+  return [['openrouter', rewriteWithOpenRouter]];
 }
 
 async function completeWithProviders(prompt, opts = {}) {
-  const providers = buildProviderList();
-  if (!providers.length) {
-    throw new Error('No AI providers configured (OPENAI_API_KEY / NVIDIA_API_KEY / GEMINI_API_KEY)');
+  if (!OPENROUTER_KEYS.length) {
+    throw new Error('No AI providers configured (need OPENROUTER_API_KEY)');
   }
-  const errors = [];
-  for (const [name, provider] of providers) {
-    try {
-      return await provider(prompt, opts);
-    } catch (e) {
-      errors.push(`${name}:${String(e.message || e).slice(0, 100)}`);
-    }
-  }
-  throw new Error(`all_providers_failed: ${errors.join(' | ')}`.slice(0, 200));
+  return rewriteWithOpenRouter(prompt, opts);
 }
 
 /**
@@ -2296,28 +2340,36 @@ async function main() {
     console.error('Need Supabase env');
     process.exit(1);
   }
+  if (ABOUT_ONLY) {
+    if (!ALLOW_AI_ENRICH) {
+      console.error('ABOUT_ONLY needs ALLOW_AI_ENRICH=1');
+      process.exit(1);
+    }
+    if (!OPENROUTER_KEYS.length && !DRY_RUN) {
+      console.error('Need OPENROUTER_API_KEY');
+      process.exit(1);
+    }
+    console.log(`enrich mode=about-company openrouter=${OPENROUTER_MODEL}`);
+    await runCompanyAboutPass({
+      supabaseUrl: U,
+      supabaseKey: K,
+      complete: rewriteWithOpenRouter,
+      dryRun: DRY_RUN,
+      sinceHours: Number(process.env.ENRICH_SINCE_HOURS || 24),
+    });
+    return;
+  }
   if (!ALLOW_AI_ENRICH) {
     console.log(
       `MANUAL_ONLY (default): no LLM API calls. Usable scrapes → ${MANUAL_QUEUE_DIR}/. Publish via docs/JD_PARAPHRASE_RULES.md. Set ALLOW_AI_ENRICH=1 to re-enable AI rewrite.`
     );
-  } else if (!OPENAI_KEYS.length && !GEMINI_KEYS.length && !NVIDIA_KEYS.length && !ANTHROPIC_KEY && !DRY_RUN) {
-    console.error('Need GEMINI_API_KEY and/or NVIDIA_API_KEY and/or OPENAI_API_KEY (or unset ALLOW_AI_ENRICH for manual)');
+  } else if (!OPENROUTER_KEYS.length && !DRY_RUN) {
+    console.error('Need OPENROUTER_API_KEY (or unset ALLOW_AI_ENRICH for manual)');
     process.exit(1);
   }
-  const mode = !ALLOW_AI_ENRICH
-    ? 'manual_only'
-    : process.env.NVIDIA_ONLY === '1' || process.env.NVIDIA_ONLY === 'true'
-      ? 'nvidia_only'
-      : process.env.GEMINI_NVIDIA_ONLY === '1' ||
-          process.env.GEMINI_NVIDIA_ONLY === 'true' ||
-          process.env.SKIP_OPENAI === '1' ||
-          process.env.SKIP_OPENAI === 'true'
-        ? 'gemini+nvidia'
-        : TURBO
-          ? 'turbo_all'
-          : 'default';
+  const mode = !ALLOW_AI_ENRICH ? 'manual_only' : `openrouter:${OPENROUTER_MODEL}`;
   console.log(
-    `enrich mode=${mode}: ai=${ALLOW_AI_ENRICH ? 'yes' : 'no'} openai=${OPENAI_KEYS.length ? 'yes' : 'no'} nvidia=${NVIDIA_KEYS.length} gemini=${GEMINI_KEYS.length} cohere=${COHERE_KEYS.length} groq=${GROQ_KEYS.length} anthropic=${ANTHROPIC_KEY ? 'yes' : 'no'} minWords=${MIN_REWRITE_WORDS} turbo=${TURBO ? 1 : 0} concurrency=${CONCURRENCY} workers=${WORKERS}/${WORKER_ID}`
+    `enrich mode=${mode}: ai=${ALLOW_AI_ENRICH ? 'yes' : 'no'} openrouter=${OPENROUTER_KEYS.length ? OPENROUTER_MODEL : 'no'} minWords=${MIN_REWRITE_WORDS} turbo=${TURBO ? 1 : 0} concurrency=${CONCURRENCY} workers=${WORKERS}/${WORKER_ID}`
   );
 
   const state = loadState();
