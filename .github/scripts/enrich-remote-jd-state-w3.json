@@ -66991,19 +66991,16 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash_429:{\n  \"error\": {\n    \"cod"
     },
     "f2bc8c6e-cf10-4a7c-99d3-a27dc3d8c62e": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Operations Specialist company=BYD North America apply=https://job-boards.greenhouse.io/byd/jobs/5368793008"
+      "status": "fail",
+      "reason": "openrouter_failed"
     },
     "fe1e3346-c3a7-4987-bd70-627d6ac31845": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Tech Lead (Backend): Cards company=BVNK apply=https://job-boards.eu.greenhouse.io/bvnk/jobs/4874437101"
+      "status": "fail",
+      "reason": "openrouter_failed"
     },
     "e1047318-0e0c-45f0-8d76-48dbf3e2ac22": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Analyst, Financial Operations company=Care Access apply=https://job-boards.greenhouse.io/careaccess/jobs/4318543009"
+      "status": "fail",
+      "reason": "openrouter_failed"
     },
     "f339c330-9333-4e5d-8745-c99719ced20d": {
       "status": "fail",
@@ -67202,18 +67199,16 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "d5477d50-0b73-40da-9d7e-cbe4415f0baa": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Employment Specialist company=Center for Employment Opportunities apply=https://boards.greenhouse.io/centerforemploymentopportunities/jobs/8687028002?gh_jid=8687028002"
+      "status": "fail",
+      "reason": "openrouter_failed"
     },
     "c0a547be-e372-4280-b7ab-2cf36f4320a2": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "c3b71fbe-14d9-47a4-b5d0-3e26f6a2964a": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Federal Lobbyist - House company=CHAOS Industries apply=https://job-boards.greenhouse.io/chaosindustries/jobs/5116214007"
+      "status": "fail",
+      "reason": "openrouter_failed"
     },
     "df109d2d-7362-4c9d-988a-8ffaffd9e251": {
       "status": "fail",
@@ -67431,6 +67426,2570 @@
       "status": "skip",
       "reason": "html_short",
       "note": "thin_source title=(Salt Lake City Metro Area) Founding AI Sales Account Executive company=Silverlogic apply=https://silverlogic.bamboohr.com/careers/31"
+    },
+    "c68f3767-2e0a-4656-b282-82c27f102bae": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Implementation Consultant company=Clariti Cloud Inc. apply=https://job-boards.greenhouse.io/clariticloudinc/jobs/7808630003"
+    },
+    "c00e2545-4c18-4c97-a74d-d5abe01092e3": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Data Scientist company=Clarity Innovations apply=https://job-boards.greenhouse.io/clarityinnovates/jobs/5165512007"
+    },
+    "ffbc5d0c-9fdb-4c0a-aabb-af4cd4cd2b46": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Front End Software Engineer company=Clarity Innovations apply=https://job-boards.greenhouse.io/clarityinnovates/jobs/5208090007"
+    },
+    "f0489aa1-9e64-4445-a63b-94c169c2f7a1": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Director, Marketing company=Click Therapeutics apply=https://job-boards.greenhouse.io/clicktherapeutics/jobs/8660715002"
+    },
+    "cad27bdc-87d3-4d88-b372-5449cfc11fe0": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Analyst, Commercial Integration company=Clearway Energy apply=https://job-boards.greenhouse.io/clearwayjobs/jobs/5205597007"
+    },
+    "c39d01de-56d0-4bc2-8964-cb48510240cf": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Regional Director of Customer Success company=Cloudbeds apply=https://job-boards.greenhouse.io/cloudbeds/jobs/4639963005"
+    },
+    "cb7f0b4a-18aa-4e19-9cc4-3632bd4cf3db": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Level Designer company=Cloud Chamber apply=https://job-boards.greenhouse.io/cloudchamberen/jobs/7793260003"
+    },
+    "f342a545-63a4-48ec-bbb5-93e7fac85b5b": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Commissioning Manager company=Clearway Energy apply=https://job-boards.greenhouse.io/clearwayjobs/jobs/5199149007"
+    },
+    "f8f31e0b-5ed4-45af-b392-c533d85b7cde": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "e9e59389-26a4-4e7f-8ebe-8d3bf8ea0d26": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "e233c231-5e73-4a2e-a5c5-0a06d9d56bf6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "c72e2939-628b-4d4d-b7bf-566fa294b25e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "f21de2a8-178e-4ea5-bfb4-69f1f878e914": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "c08cae72-c3e7-4d80-920c-f4601cf998d6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "e43b112e-48d1-4c1c-b419-fc78bba45c53": {
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Onboarding Project Manager company=Cloudbeds apply=https://job-boards.greenhouse.io/cloudbeds/jobs/4697370005"
+    },
+    "ed2ebf7d-4f23-49b5-9ebf-846c5ccc0af6": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5714980-c6bf-4972-a710-1fa8a497cc25": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fe35fb6e-8fb6-4e63-a576-1b5339b9813c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f8d90f93-f8c4-4ed6-a96e-9253f4844016": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf67e88c-4655-4090-9e84-c0bb84c8c1ef": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cab285a5-e62f-4e52-bf71-f6bdf507d53a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ce77d2b3-3be1-4c0b-ad90-87bf0885d7c9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da93b3f8-7815-4b96-8a46-45e9f6d9227c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ea912b57-3752-41f6-b080-c7eaefd12c04": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd9c2685-4158-4112-aee4-b9e0c8f093b2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cb4a3187-cbf8-438d-adfb-e0a7fe430dd3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f5698621-af53-4c68-bcf5-c928881d885e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "cdb62fe3-46f5-49ca-8778-393503e8a470": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f47a6319-343f-4e22-8df4-729f998d608f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f80f8766-e681-403d-b91a-7fcd93e31033": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da2c5892-52f4-4538-a020-05165b71b2d6": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c6859899-7b84-4424-be42-cfdf2463f4f3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d5f38f29-1390-462c-8adb-7c7a41525c36": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f5afe1a6-253c-4d20-be39-fc4b527a3252": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c926631d-4920-4d8a-9e7b-0e72f5a1b94c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d47d7413-c888-41f5-9e45-b1a1f8a1da9f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dcb05274-b80f-4ac2-bcd1-0c87e1643664": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d9e27718-52e0-4c0e-8223-72b1aa49c719": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f93a92e3-09d4-48ea-80e0-ec8226e4096b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d2650b04-da8c-4ef1-b290-61c225707d88": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d6f95197-ab91-407d-93c9-03b2d67f4ec0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f6bc2452-3f61-48d8-a883-6c5fc55da4d6": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ece5ad69-62e9-4af5-a802-4a48dcfacaee": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e5cd393b-e1ee-4287-8c77-5ec5bb527e94": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf4e7049-75ca-4180-ae81-113aaa9343d8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "edcc513f-13d9-47a3-bffa-5437802671d7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ed5865a0-1f67-489b-af9b-a91a0c35004d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c9e59e22-24fc-48e7-b8be-31021edcf295": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fe1f73e2-10fc-4a2f-95b7-4dd70070be42": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d170d8c5-170d-4283-88e8-08095b4bdcd2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd4682e8-ceb0-43ec-8b0b-90180b770b44": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e835dd9e-89ab-410c-875c-c553e4fd2867": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e0468652-4afc-402e-a838-632f9e387859": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "efda6688-51d2-41da-a353-300cda337f6c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c52e9153-ba67-4f8e-924b-b4d2f29ec3fd": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7b2fca4-fabd-41bd-b89c-aba2fe0cf0f7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fee0d87d-861c-4724-9ba5-750354fcb13a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fe4d9381-cc6e-4422-8c23-a8d69277bd06": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fb1ec331-ab53-4579-ae1c-68bfbca02996": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ceea061f-334b-46c1-935c-0ffe25c9de73": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d9da242e-45d8-4e64-abf7-608f9a9d3a37": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f02b24e7-e881-4025-b908-dca29e27b288": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e499170d-afc1-4095-8561-ffc92c190941": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fabd777e-edf2-4bb1-ab1e-df1122eaf3ed": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d21e280d-dcb2-4181-82e5-c6bd8b7e974d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d5c7df62-fdf9-4782-b445-0b28a476c2d2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c55358fe-818e-45a2-9df5-eb84f97911a1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d43aab83-25cc-4bef-9134-e932a586f9ef": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f6061730-2194-48c7-b983-d1f747abefff": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "d4ed4df7-199c-4776-9374-40a5a9135b3b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d32fec86-6c9c-4773-95a7-5b2e87011f28": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f50b9e80-2344-477d-9daa-3ce0b95796d6": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8b0dff7-04dd-466a-ae22-ccbdc9337d07": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f3839c84-5458-482c-86cc-27561e0152ce": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f601f1f3-4659-48fd-a661-38ce883fa087": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e0483d12-4083-4128-b773-6e840d1f153e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d09ce579-a578-48b2-858d-868fa1ca0056": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d7180bd7-bd4c-481e-b9b6-044670a3d50f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa9c567e-4e33-4711-9ce9-0f96df218eec": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c3e0581b-18d7-4822-918b-0c6fe2acbe56": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dd63b6c3-de92-4ed2-8514-9c74ffdbe530": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8a8199a-021b-4302-8594-bbf3661be948": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f63eb2b4-7f08-499d-8027-7a0171b60546": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cff19eb8-04fb-4f0e-b8d8-54c3c9214a91": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cc650d19-33b4-4788-86d4-5723bf378657": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e69e2af1-5aa5-4142-b87e-7e3442e32a0c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fd816a37-f558-4d95-b796-06bdacc9ecbe": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f45bd8b4-15a8-4872-825a-9a26a7cd0020": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d7a9c212-bb18-43a0-a386-2fbebe166353": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "df377c69-7c9b-4b5b-ab5e-006a75237b50": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c9a2aa4f-649b-415e-b023-23c7b9b2f480": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cdec0918-16e1-43cd-af7b-da5bb4a43618": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e1e7b912-1305-430a-b178-0492f36cf4d9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c0658e64-da5b-438f-8f90-a5eb8fbb4fb0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8c3f84f-bbf0-4fed-81e2-7bdbb6589313": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dc191d28-1380-49ab-ac6a-6de968cbdd9a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c7e52087-8c5c-41a9-84fb-c452147d0768": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c59554ab-0fee-4dde-9538-cb227cd4b30a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e4296ad7-5ca4-4c34-9672-4ae1677ad830": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d43bea48-fcad-49e7-ada0-4636e486282a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8203190-d081-4c3b-a026-14983d0b1898": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cfe185a2-358a-4cde-9011-d9031ef00eab": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Accountant company=Convera apply=https://job-boards.eu.greenhouse.io/convera/jobs/4917644101"
+    },
+    "dd880568-5ac8-4bee-b3b9-a3e6cd985f4b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf652cb9-44ec-4f71-b27e-7b56145d68c8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c2ec75c1-375b-4c82-92d2-61b72d942f9f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d61a803d-10e3-4c42-9a2a-5ee2ae14c2cf": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fef00c5a-4148-4d69-99a3-251b4d68f2ed": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f3233147-e3af-4233-a790-98b3c469d9e0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd849d09-9bd8-4c11-851e-7c7e1a767032": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c0823da3-cb21-4974-a1a8-e53fc81ea6f1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e2b120f0-470c-4c70-be52-928ce302e2b8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dd39a26e-909c-4b51-9d26-4c734845199e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd5b6b70-3258-4087-a0a5-d7203e22bcad": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "faf9c258-346e-41f6-8b0b-70dac613f372": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fd721061-2d64-4082-9a69-e87dd9748e99": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d123b5f9-963f-45a6-bbc5-bcfc9570a0cb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ed9e8cc5-c894-4520-b27a-c7918ea6b107": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e2a777d1-c071-4169-9ace-25e7319f634d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ed52c0e6-7c10-4bde-a9e0-81f37b3292d3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d06ee839-9df9-4080-8247-5d6fcbd98103": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f97d11e7-49dd-40a1-9125-03432b8ee074": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ccfff0f0-fca8-4ace-8f96-42fb92fbd61b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f5078424-8248-4e40-8070-3baf689822b4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f5d41964-f253-4c00-88a7-74560dc34b40": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f864c8c3-1b63-490a-8c3c-a924d2e80b2d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ca858231-9a7b-480e-9124-324be3a644c3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "df732853-fe6e-4306-9e66-779db3f17223": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e14a4b39-8c09-46c1-9b68-77231a6bd6d9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c683c4bc-eb91-4bf0-86be-c6aa87891321": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eafbddea-e9c3-4353-9f8b-b2f4cb1e46a3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cb3e4215-3a36-4280-997b-40fbe91e8574": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c3b5dd03-dd5d-4d57-87b7-b09954876350": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c2a92ea4-e94c-47c8-ad64-32c90c655a83": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "df62f381-c7c7-47c0-8ef4-99e2443d6646": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f062103c-ba75-4bfd-a012-f26e45f2021b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f3b67f8b-8840-4cd9-9398-854913eaa174": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fceaa4a0-9f9a-48a9-9f2d-8256551e87b8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f39b3019-2868-48eb-a655-f4bfe269ddbe": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1c3b2bf-9eb2-45d8-8be3-34a38a1eeef2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa4ead8f-23f7-4c63-95fc-3e46c8b54210": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eca369c9-cb75-4e0c-ab39-b7db31203f05": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f9c1b9a9-b292-4ce3-9690-f971e1ff4c51": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e1a0122b-a95a-4904-a346-1a0d8f40d5fc": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f945d229-d0b6-4217-9d23-16501af42685": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fe985f8f-c45e-4bf7-bce9-9bd1f68f619b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f4812276-8f7b-428c-815e-f2f682c9d70b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ec1f48e2-572d-48ad-a607-d3046e7de005": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cbcfaf80-76de-4041-824e-453d1ae8eb34": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d4a47647-9489-40a3-b4e7-b486cfa5f456": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e1bacf99-193a-4dac-a06f-884bae71ccf0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c204851d-9801-4d23-9a29-8e4652384a82": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f58f6701-faf1-42c7-b14c-5144d9673cf2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f9ffeae4-aa77-46a5-8df2-8f2e7fbda144": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dcbc1c40-a995-44a8-bc5e-9120f519ab76": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fec91997-64c2-4639-803a-791e17e834c3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ffbc92f7-8b80-47ff-8604-70a48691a164": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d649d04c-9a05-43b1-a0f8-17dec806ba24": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ecf61bf6-690a-440c-80d0-1ee6233b2b67": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8f67b75-126e-4e22-a5a1-a1b07771416a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ebaf970f-f721-400f-8830-aa689dbdd500": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e039d995-42cf-4566-86b4-dbe241a04759": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e8a4ea93-e6e8-4494-980f-251749871d2e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c15937f2-f293-4c4f-b3e2-5595eea2fdde": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd64e62b-699b-4381-9484-875dfc97876c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ceee50c4-ce19-47b6-bdad-7edbf445e550": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Director, Account Management company=Definitive Healthcare, US apply=https://job-boards.greenhouse.io/definitivehc/jobs/5994657004"
+    },
+    "de4e09c3-bd17-402b-8ad7-d328aca0c66b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f0dc48b8-b0a6-4a5a-be71-a25af6d1c10a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d5b00b9b-46d3-41d6-9d44-09e008e28caa": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cc89b707-84d6-4090-8849-c7634ee5bc5e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d7c54fa5-7373-4ef6-809d-bb9aeeb2acfd": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f4fd6c92-a247-446d-b562-d8d00844eb10": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c590be5d-0531-41ac-931d-c934ccf8dcec": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cddf3a47-2f07-4ff2-a185-9e55bc04188a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "feb6fc96-1e5e-4890-a4db-a80773be19ad": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d28cc46c-d882-4b28-9e2f-a4348f8de0ac": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ef8af46f-0e32-4b36-9917-980e2b5f1658": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e049274e-d60c-463f-8dae-1d56a4d76ad4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fc009b1e-73ea-41e1-9ae1-2fbaf08ddf41": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d0d12942-9bf9-47db-8191-7c9517e7f26a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c62edc0c-e1cd-45fe-a350-c27b9d385491": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da0ad042-ca2f-4060-a5ae-cd6adc665c35": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d26d7b20-89d6-4397-8d70-f520924175ac": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e6c74159-e264-4980-86f9-a1bb42c8e64b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ce20eef1-d531-47b9-9f5a-48dcbd1a3741": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f568263b-f215-416f-963d-b02a74b49e63": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f3e935af-d540-4927-a0a5-95cc1b7c0089": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c79490e9-bb76-49bb-bdaf-7c53173f5999": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7acc34b-f9c6-440b-b3ca-17a17640ae84": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eac693af-e526-4003-bc24-02d244f99487": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ef811b53-c38b-4961-a694-8186ffcfab9d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cc1f535e-d8a0-4b34-b1a7-67ec7829ad89": {
+      "status": "skip",
+      "reason": "gh_short",
+      "note": "thin_source title=Mission Operations & AI Enablement Lead company=DFO Referrals apply=https://job-boards.greenhouse.io/dforeferrals/jobs/6114681004"
+    },
+    "d5793264-4a36-49d8-b993-2a7d202721fa": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cc4ea66a-29c3-4913-a898-7325e90cd77e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c78230d0-be1d-4709-b22c-1bf9154ee642": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1700544-319d-473d-850e-32a7c7a93212": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c238026a-6bcb-4d50-a68a-72f0903bfc62": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e79517cd-f898-4a5f-be6c-e7de85d4f82a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f59359e3-bf29-4077-99b7-1bd796f64216": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e33dc6ca-b9b0-4436-bff2-49834f5f0764": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cfe7a3ab-b562-49d8-87c2-b3f3fadb1d96": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c26e1506-a856-4716-95b1-0a64d6bb013a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ca07d2f5-0de2-40f9-89c4-5e323d26ad06": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e90d3871-2c2d-45c7-b754-259a0ef9cab7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e93589b6-162d-4a98-aaa2-b25ac8832767": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da671428-7161-492a-a84f-ad7e82157935": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c156fb42-74ca-4142-a0d9-444a16ed296b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "edf8f348-5e5b-45f3-a479-5413dad3ad45": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd133cd5-615f-4233-a759-b5055a7d9cbf": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fd04ae74-72c8-4932-a29d-a88e8ac76691": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e575c161-213e-4320-b543-655f453a7925": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ee7a5bf3-b699-4c8e-89d8-cd1b92a71d10": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f6f599e0-ffba-4361-806b-7e23d72bb47b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c2d338da-d426-4464-b2c5-4b0439b7d20c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7d1c0a4-9832-46e6-915b-c4cfe0e1f43d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c4299008-e11e-4adb-8650-0b4b1f7d0488": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c7ec1bda-7388-4679-b085-56d19dd4c347": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fe57b4c9-81af-4b76-a3f2-e2d4a2bf434e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ea1a0ff9-437d-4ac2-8942-cd83703e2220": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c6914c3e-064a-49b2-a33f-c732c01376c4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da5bb4e5-8253-4d85-8a4b-c74ced770497": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f56ac698-84fb-463b-9fc1-1cc89ea27342": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ca48930a-eb37-4df0-af52-1506a2ddf78f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "df0983cc-0abc-42fc-b856-75e1fb8b2881": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ca78be90-62b6-478a-b724-deacb3c48599": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd781335-5ed7-42cb-94e8-39dda88f940f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e48ef335-9875-4179-9238-b5f0b4a6dd62": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f4d2801d-d6b4-4499-9f64-e1a93008068c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c51eec6b-b3de-4658-b574-5c948bc22155": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1039d0e-a109-4375-b5a9-a4aafeb9f6e0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d7586a18-91fe-481c-bf0c-4da08e39bdef": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e5a4120a-0f32-411f-82d4-b7a00f9b157c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa951629-b11e-4d69-970d-d04f6258ab18": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f4c15b32-d982-4643-a794-d9bacd3eb0fb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cfc73719-9a2f-4b6f-9534-a0fdfe59dfc7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e9fb24d2-ca6a-4147-be2a-67839923385a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f8c0497b-0ca4-456a-8e4d-a7f34682b45a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c3f28d4f-ac00-4e9a-88b6-7dc108d9b087": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d59ae6fe-bca3-4f76-8786-e3ee619381b4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c19bd48e-a823-4479-b01b-3d5c2699cdb9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e41bae5d-c9e7-4aa4-b37d-f4753b13d49e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c554c423-31f9-4c46-8971-ab125df7fedd": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f26766e7-9f3b-4ac2-88f0-a47f35e7e2c8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f1236c62-3648-414a-ab03-7a65ae74bbae": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e6810798-d143-4f6a-9931-9d9f64f60495": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dec9f23a-a889-4178-95ec-d439beb87a9c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7ff4e6f-d888-4157-986c-35d4d8035a86": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e041ae51-5c63-45db-b4a3-e852a5f89caa": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ee886fb7-a785-4f54-b1f5-ffec024adcaf": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f2e8546e-9fd5-4be2-a042-8f6ebf733cea": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dab4d61f-8b9e-4686-885c-5159dbf11491": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f71276bf-5f16-4984-b5bc-dbd6324549a8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fb7781c0-b0d7-4d74-b96b-897cad356b84": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cab1ad1a-111e-4454-bbe7-d0bbe8caf2be": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da206fc0-6147-4c98-a8e6-5cdd6be6f5f8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f772dec0-4fad-426c-913e-42cbf18db658": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1fde613-7b3e-4131-b60e-5efd94f0b39e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa5e3fe6-4a52-4a82-b323-b29389472a17": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "db4d8166-65da-4b61-8d38-2e7b2c3b8028": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1e6e89a-04d7-4021-8318-4ea8a2c1d6a6": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f56a827e-dbc3-41ae-9b6b-d68516b41e5c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c066c5b3-82f9-4e00-9f1b-4a4e68225c08": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cbb93f88-1e43-4277-a127-9240e44e2197": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f185bdd8-d118-4d96-987c-bf300a3c8d62": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f64caab5-fb57-4db5-9e40-851c443dd3bb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f0d2c850-754e-4d3d-9cb3-2f106267f8b2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f1c074e5-90fc-49cd-b575-648bb2530841": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f5fc4252-17b9-4486-a167-2cc44f4ac6ef": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "de3ee0e1-7241-4ad4-b10e-2eccaa86e026": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d180113b-9304-4aa9-b8c0-93f1de2114a1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa41d3cf-afa3-4651-bcfa-f4943cecc3ef": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c41bc1b5-1cc9-44f3-8476-c590dda9a35e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d74ac6ad-27a6-4330-9484-9732d0173ff8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c63bd68f-a103-4fe2-9e65-8a255093a50d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c8c0deac-81e7-4940-9dbf-2b78dc5396fb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fb702ce4-f215-4b7e-b4a4-bf17084bd899": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dbb39b0c-ddec-441c-b365-3d0050fba063": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c44df9c1-3fbe-4e05-ad09-0d08fb205769": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ee1395c0-e243-4abd-b450-6fb389f776aa": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fbfbda88-6f55-42e3-97cf-049c93a95966": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e352d617-6ed0-48a3-9e84-d8f11090f782": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c4968890-bb77-404b-b971-15467e9d6ec9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d7dd4892-2856-4f4d-b408-0b2646883eb2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c844fd14-36fa-4e38-a0de-13cf3119e7ca": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c000f475-bcab-48fd-b9ec-96344213f9d2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d37495fb-d37e-4178-a1fd-9760f496eee5": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e69c046e-84a3-4389-8ac3-6018b1cc67c8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cb5e6abb-8a90-4142-9946-66e30ddbe3df": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ce134745-0665-40df-81f5-023c64abf916": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "de7ec9fa-a6eb-4cf4-9764-adb0c8d3da76": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e731cf35-18ab-4a32-9874-5a1ba8d40a92": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d3c0d0b1-4483-4010-ab0a-03e505bcb2bf": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c1f09254-f89d-4dfa-9441-7621af571a3a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ebd3a149-0048-403e-9b84-3c6b70493399": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ecd198ba-df1f-40d3-aee1-9aff9e94e719": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fb6da339-9c10-431a-936c-c18ab375b044": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d77873ec-0ee0-4601-a643-9588422f4500": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eb86e4c9-d6c9-49e8-959d-3f48171adfbe": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c004d12b-7382-42c8-9448-1910697d27a2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ef4eefba-a63c-49fe-a2e4-f939b75eff5f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cb76d0bb-a21f-473e-975a-eaa339728d30": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd09ee62-e0f4-479d-8def-b1b685abe4ba": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d6c4228d-b1c5-4cef-9a7d-f6aa06893146": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c49af385-0de4-4938-8a65-6f10b61a0dd9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5aaa015-3735-4886-86da-aa4b11a9f405": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c02742da-a90e-49c3-8855-ed8a9b1f7d31": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dca859ec-c200-4395-b3b0-0557e4570deb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d6a79302-17b1-4c80-a123-2e68cb3c2930": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c9068bc9-061c-428a-8977-a43cc6bc7a9f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5b44e97-248c-4f8a-976e-1dc874583591": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f288c923-3e5e-4207-a5a8-5cdf21ebb38f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1ed9c2b-5309-4ae0-bc07-70890f204cf1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f40865e6-7dbf-4d59-a759-a15fb296ab07": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d19a370d-8447-492d-a9eb-30811f3f0219": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d49decee-b10d-414b-9e4a-d9c9d1129cb0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f6c710cc-5ffb-4ee2-b480-6becd7844ccd": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d3b25e16-34b7-4501-bfc5-900cfba92ee0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d89f68fa-ba2a-461b-be1c-4c69e38bac13": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cb19da89-65c1-41a8-b8e2-b0a40b2ef623": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cef8109a-4c5d-4562-b600-b981ea5cea65": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c29098bd-5e7f-41e1-94ac-e51824fb8ac5": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c6c76369-96ab-4ecb-a2b5-4416efb2797d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa381233-d73e-4b31-afa6-d05da6bb3c2b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dd1f0dde-0bed-43f6-9949-49c102b59731": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c3409af0-77de-4de9-bfbd-a89dfbab289d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e888adc4-2504-4b62-82dd-95e1cbd3889a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Technology Manager, AI & Data company=Engelhart apply=https://job-boards.greenhouse.io/engelhart/jobs/8059336"
+    },
+    "e58c7dbf-14d4-413d-8f91-42d622788a0a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cc3627de-dd2d-4787-a151-0f2b1b24ce91": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "df96f2f1-b2ab-4348-8345-cdfb6bcbc86f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf340e30-ac74-4c79-8130-7514c441e319": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c6e18dca-78c6-4ed7-b6ea-45fbea047d71": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d6fed90c-66df-4e72-bf56-348b1f8e87f2": {
+      "status": "skip",
+      "reason": "gh_short",
+      "note": "thin_source title=QR Management company=Encora apply=https://job-boards.greenhouse.io/encora10/jobs/5185369007"
+    },
+    "ebb2077b-54a8-4ba4-af70-6eb9699444b4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "faab4c9c-11b2-43b7-88ed-0a18f996db40": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d2c24387-1fc6-4ac5-8cc4-c0af7895817a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c121a6e3-f5bc-4f32-a0da-eb4914a37b59": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fac21fde-a88b-4572-a532-8406858ed5ce": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dc4e1a27-72b0-4e96-81bc-2763758d7a0b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dfb1b8c0-0aba-4cb1-82d1-cabddd72661f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "de0ae5f5-4978-480c-bde6-4676c3ba7741": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e0fff8dc-29e3-492a-8deb-4cc744ee4d25": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d45ac64e-8259-4b5b-82d3-656480a836a2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d91cd53e-c5b0-43c1-aa80-95983c5b9bc9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "df84e6ea-d3ae-4731-80d3-a010faccee43": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e9a13ca8-e797-4d58-bbfb-b6c0fa0de5ba": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f1622966-e542-4d90-85b3-787fd1966173": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ca3f76bb-659d-4275-829d-f35085c6570c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf3d9972-4ad5-4592-8142-d9e14d99eb14": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c3f42fd8-a477-4670-95b0-74ffb750e324": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f5da6435-a659-4b84-980e-ffbe301d00db": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ef0cf9b3-d9ee-4757-af0e-229806798760": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f8b894aa-517b-4d50-89bb-f9a9344cd31d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f0efe934-c16c-4ebb-a556-7430d3a66a7a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e0523b8d-b2dc-4a17-a52f-7f5060a5f9ec": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f1ce6f4c-d582-49a9-96cf-631094299592": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e1117b40-939a-4ae9-9b6f-0c5cc5945135": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cbe4806d-a865-4ee3-8cec-54d564137ff8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cfb22e27-dcb6-4edf-82f2-2eaa42a8478f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d3de77cd-3826-4e8a-8093-108d08d40844": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f8ed8201-094f-4eb2-a80c-a1e67b2b49f9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ea6fa2f6-fa88-47b2-b486-e2384b9be7b9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7c88696-ebd1-465b-880d-0c50fa6482f8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d828feb7-d0ae-47ca-93eb-f487232e533d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fbd25750-f2d6-4e5c-8e24-fde45ecb232e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d44e60ff-cef9-4a46-8c22-7f818b915d98": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f6d66cc3-66de-4472-9d8e-658f72197448": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f3391034-23b6-4d81-9084-773f5afe9ddd": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d58a2603-a409-4512-b442-2f7770507c09": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cbcd2784-ba77-4a51-afc7-359af64c29c8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d95541e7-7692-471a-a8f3-f9c055a683bf": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d2adae3f-233c-48b5-873c-e8e517e0d04e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "db811dd0-8c48-403b-a76f-6cb7bf422676": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eb9d4045-eb60-4ce4-bb16-9a063545ce62": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Project Manager company=Encora apply=https://job-boards.greenhouse.io/encora10/jobs/5184128007"
+    },
+    "cbbda414-7ae4-49b1-8fba-229079d15f39": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ef3a8516-fe69-4017-af6e-1a2a98180686": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ef33d0b8-2cca-41c4-8748-f9180b9a8156": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d53d576c-d328-4b3f-be40-2781f91a969f": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=AM Service Specialist company=Divergent apply=https://job-boards.greenhouse.io/divergent/jobs/5267636008"
+    },
+    "c8ee43e4-c8d2-4782-847f-292f5bee0a49": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Client Service Operations Specialist company=eMoney Advisor apply=https://job-boards.greenhouse.io/emoneyadvisor/jobs/4330835009"
+    },
+    "c6904e99-fdf0-4167-aca2-75e441ed391c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "fa4efd6e-3a56-4f86-b887-4dad11c2e688": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "d1240e8a-0106-414f-a090-6f65c3179c02": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Director, Business Operations company=Engine apply=https://job-boards.greenhouse.io/engine/jobs/7785893003"
+    },
+    "e0762f95-7b94-4695-ba29-7150d550073a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f75aff89-b6d3-4514-86c4-7433389d035b": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Sales Engineer | NYC Tri-State company=ExtraHop apply=https://job-boards.greenhouse.io/extrahopnetworks/jobs/6117076004"
+    },
+    "d3718be1-0abc-480e-8631-9a7fcd1b72d5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "d6632b98-7224-49f4-ba7d-a717d4407616": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e26ef79a-f8ae-4791-a371-d92f7781e23d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "c33075d5-1fc1-4c82-9260-b1037dccc3ea": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "c7a2b3c9-eb90-4066-a883-0132a2853175": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e70f3be5-2faa-4656-acee-846939c80de5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f8e71be6-85ad-4bfd-a578-db61c47253a6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "d4992526-a4a6-4900-a42c-d7b803f4b219": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f63611a1-b466-42ea-8b8a-5be58663d826": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c7eb7c14-bca8-4914-98b7-d558ab450b76": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e4b1fdd0-1feb-4a5d-9751-4674a8f92e3b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f4f9a26c-b93a-41ae-b42c-5f1eefb1ec60": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "fe05f713-ad2a-4820-8d21-d845f313508b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "dae44cb7-c4c4-466a-b551-8c10f8ea09ae": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cddc610b-9067-4f7e-bc4c-221ccc24850a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d43bf89d-fe46-4e4f-bef2-b029381d23b1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f05bc283-3993-42cd-9a35-9e10808e53e8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "daf0344a-c1aa-4bd1-8b27-67cd9d8f1f6b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f0c25d2f-f1bb-4421-9d76-12cd3b721f5b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f5614a21-d9e3-419e-88de-a7d38b8ab1d1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d3561f1e-b9ff-47e0-a311-cdc3eae28e46": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e476599f-38db-4e22-a7a1-9b695231ca3c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ce126772-c66a-49c3-8140-f3218d18cf90": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "dbc58d77-7fad-4fb6-a8fd-ec9dc0b1e129": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f11b275f-7516-48a3-add8-b81c9d30c3e9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "df419290-ad79-4113-870e-e74a32fcfc77": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "deee8747-1c1b-4a2a-b6ea-e681ec0f7813": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f97d752f-9d9e-4ceb-8f78-9f030afc2042": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c740a952-6a2d-4d84-a498-f2685a1c6491": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ed6faa41-9256-4407-af49-c6aa705db338": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c6f7593b-7060-4e57-b213-909a4cd0caff": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ca403d9a-2e1f-4950-91c6-9276d01a995b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "fc117e4f-cfab-4837-8f8d-289954a3306a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ca0a1a81-6aee-4fce-af73-733210ebd157": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "daae5504-c31c-483b-ba2e-9e6c025c3216": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d1f42817-9d37-408f-ae41-14138c7a82a7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f93d3b0d-59df-44b1-bc08-84c5a1117d7d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e027c6f6-ebb0-4fbc-b8e1-ac41c6d43fca": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cffcd090-a5a4-4c5a-8a37-986eb5985444": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cf559454-4830-4ce2-af1f-ba077cdd2b10": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e0c47085-c25a-4cdd-8b9a-285344ea49ac": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "c822ebc5-879c-4f68-b460-287f5d60aad3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d3644fcc-c4fa-4e94-bf18-a6f4ea0e3c2d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ed56e45c-da49-4b33-818d-5a997972e82f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c64433a1-bf03-424b-bede-6e7549b5a451": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ce07faa4-58c4-47e4-9118-deec89dd2a5b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f18ff441-f92a-45cf-a4ea-a50add2495fe": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eaf75bb0-6758-4521-aa97-10849635a57d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f0accc21-5bd5-4578-9a7d-f26703425931": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d6da6b04-d1df-4f9a-a024-8c7d19d71864": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ea8b7838-3d2b-4700-9a34-a7a77dd7b1d3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ed2798ba-c526-4b37-8d3a-211264fa82b2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e39f5975-1609-4cd1-b591-46e922dc7b6f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e2c41fc0-a105-4bcb-988c-19a4c06577c9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f9f41828-5d0e-48bd-aa23-ac5c897f313a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f63200cf-8a20-4b26-9bbb-925688ef76d7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf23ed82-01ca-435d-9093-d93e2e863471": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f62bf58d-2b84-4cb6-bbce-9d9c98d6d5b1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da2a4e76-3a59-4cf4-a846-563cf2caff70": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da991403-f9ad-4021-9a6f-e3c2a2726d2d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c655ed6a-113d-4ea0-8707-af392d0adc7d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d3b86da2-4852-46db-9269-094083f6a261": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eb4bfd7a-9dc4-44a6-84a7-f9c75aff3786": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f25eb076-34bf-4d67-8ecf-8861df6b4322": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d40751d5-19f8-452e-8f90-8a70a74af25d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d5e1e0de-aff7-4dae-af22-ed506ba9451b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d5bfedf3-3d3d-428c-8115-e7a2b1acdceb": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e33df8d9-718d-4b1e-8f07-8ad992aa8532": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dce57d81-1f6a-42b4-aa91-1dae49715383": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c798df29-d6f8-40ac-bd31-c62cfd0df173": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fc2a12f6-9957-42b6-a67b-4e779cea31e4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d6e116e6-2f3b-455a-874d-6cc7ea12072b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "db270c04-e94c-44ed-a935-c929ac13b3a8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e3792c7b-f546-47b8-966b-535a1176e248": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c8075515-a73f-474b-a7a0-2a32b04b9af8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "da50533d-deeb-42fe-9c74-f63c4854d962": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ca145190-7b16-43fc-bfdf-d09363978dd0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8791f1e-316e-4b13-aa98-b873e7eb5541": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d229457b-39d1-41dd-bc66-192b4795de09": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c699ac6e-8fab-44e7-94f4-fc853ee8c264": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cf26b246-fbe5-43e6-ac2b-78510df6a729": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd1a18c4-74fc-463e-b69a-0f83188efb8f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ed161c33-b573-4576-b2b4-3c6f1276d693": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d92f46d4-316b-4d6a-8ef3-72992ec487a7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7e02179-b5ba-468b-ae63-ae828b9accad": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c56d2d92-e018-4ab8-937b-b422f8053263": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f09735ae-42eb-4864-a5f4-be0f94322575": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c778da7e-120f-4d3e-9df5-c1d709bbd4e9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d23a35fc-1065-4dca-871e-80d5d1a67fef": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e52effbc-4d8a-4133-8025-8de24cc81e32": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "fc888b81-1fc7-4fcb-8687-f70121ed350e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cea09aa6-6090-4847-b2ad-f979bc1390f2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ffdb8f6f-6607-425c-8876-103a8baae21c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ee24c1ef-ce61-46c6-9995-69ac898d25be": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e1e4eb64-717f-465e-8e3f-b8ba4b0d6372": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "dabb7ed6-d1d0-48df-81db-2a503f9d5234": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1fab4bd-ce74-49e5-ab33-9034b819d652": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d9fb4640-cfdb-4d6d-b733-844c2b9244eb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "caf24812-c160-46ac-bb29-698208386fb5": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ddb97fb3-482c-47de-936d-11802a826656": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f54dc2d6-aadb-4257-ace4-d38c01a14ef4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "de84644e-1ce7-402d-8a4f-04b18bc0e0fe": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d3103437-5c8b-460d-8dca-6ee02a0753b2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c325b804-d38b-49a0-a99d-64f13810f12a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5741d69-1d60-42b6-919c-a38dbfd9c0d9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e18ceff9-ac5f-4800-b47f-00e859d169cb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c7454925-74fe-452f-99d1-7e75c926a3da": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ca582b94-25b2-4a10-8540-c15880016687": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d75a63fd-c821-483b-934b-c7cc7eaac9fd": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c6498dc8-59dd-49b4-a2f9-e09e76da60ca": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e319b3df-ae8f-4a85-87c7-62693ef89427": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e3dd4bb9-cfbf-43d7-b83b-f5e7dee1c503": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "df16edb3-9a3f-4166-8ae2-47e5df5ede96": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "fdb19fa3-f1c2-4299-b881-ad6c89dcf7c2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fe79241f-2419-4ef7-a72f-40e132b357d5": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c636b515-f61e-4e8f-8003-6b2b8f4c5d7d": {
+      "status": "ok",
+      "path": "/example-corp/office",
+      "external_id": "example-corp_office"
+    },
+    "f2dfb9e8-9bc0-4f12-b2b4-82aec3b7bff5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e06e526d-7321-4674-9592-cb5d455f1942": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d7e367ff-95aa-4b4a-afbf-ee37931ce686": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf753294-0c52-4b7b-91cd-e92df3ca7e19": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e2b25a0a-b757-48f5-99ff-150ea33262c9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf5914a2-3045-424e-8688-f0a612028818": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f76a7ab0-3eae-44e2-8fc0-3850313c3c21": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c4ed56a8-eb30-42bb-9397-c35e574f1c7a": {
+      "status": "skip",
+      "reason": "fact_sheet_parse"
+    },
+    "fcde05b7-09dc-4d28-8a55-68c5aebb0e35": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f00abebc-472c-4ed2-83b9-0e8fc1dee712": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa5614da-43d1-43d0-8fdb-c2d4b7f512a5": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d09e44bc-5838-414c-9d43-b82db93d8a82": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c21ac77b-9f90-45af-9fe3-bcf871714f87": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ea391d41-fa69-448d-b903-65470d291295": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d3d0eb32-2302-43e7-8824-511f8f09c8d3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c07f1086-871c-4f9f-9217-70b3f939112f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1bb64e2-3d8b-4288-835d-72278ffaf023": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f6e53b49-11bd-4d7e-b093-863f1f488b32": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dee13979-793a-4cd5-9987-e129435a0feb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fc5e8bf9-7492-4b45-9cc7-de048ed4159f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "db16280c-dbdd-4a70-86ac-bb7c1c21cab4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8c2318d-731a-4799-adf1-926424c61436": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c1ce1e70-ca23-42f5-b8a1-cbc766230ed1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c25fc8b5-658e-40aa-b1d3-108f3a14da61": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f6ab4ca3-baf0-4301-a0ee-8bf1e9a62c0e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c0d94e34-6ccc-448f-9374-9071987beab8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cb64f87b-ff37-4cd4-b8e4-b3e4c4593f15": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c4153ad5-4992-4c4f-a4a6-14df5898fe05": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e3598f27-5960-47f2-ae24-015f83efc9ac": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f61c97e0-f539-4e5b-a5a0-8b419d5d022c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f8743e3d-8431-4486-8134-d375b5551903": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d942a14a-5c37-43e2-8b0d-82bad9c883ab": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c2898f36-88bd-49cf-8cfa-b22e425fb5f7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f9217362-d3cb-4e62-9e55-86c09d1df5e1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d6449edc-fe8d-427f-bc98-6f34641720ca": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f0c15aaa-01a4-436a-b3e3-51b965d4ff55": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd523870-06db-4b64-a23d-ce91d2681894": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f717530b-fca1-442e-b88e-5a931d3280a5": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5dc638f-23f5-4af9-ac71-35329a3135b3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d0a67148-32df-4395-a95b-66b116145cc1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e5d683f5-ba58-41f3-9f6b-6a199071b885": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d15c25cd-7e10-46f9-9339-de6232123d70": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fd4ba296-22de-42ea-b220-c77ea77769b9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ea1352f7-1d61-4748-b9c7-8d9fedb72045": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d2494ca9-0523-41c7-987d-4cb4a593b7a4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f25aae85-3532-44a8-a427-4d656ec53fd0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d9754fe7-c2ed-4c0b-901f-cb98a156306f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f0a41067-7a28-4e44-a5f6-cbc8c4624680": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ccdb8814-a523-4bfa-9bcb-c30ce7f88c88": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f2066f6e-8b2b-46f5-a4c6-aa7e05818111": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c291ad6c-7325-42df-a1be-c2f4a7ad76bd": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c315f901-6c40-4795-9387-6749618836b3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e6663ccb-0c93-4f2a-a163-ec49cd52fbf0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c64196df-55fb-45e8-8a17-bb155f3ed86e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f081372d-0880-4c84-8f98-72c809939d25": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5106818-817c-4e23-9341-6f26086a67e1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fd453a79-8ab4-45c9-aced-4e94936d435a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c0b49aff-60c0-4027-8ac5-6704a6b15f39": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dafba559-c429-4722-81ce-262be539f8c2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d0ee6af2-288b-4b61-81a5-460f5eb3f9c3": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ce0a227e-e3a3-45e0-a7d3-a2779696dcf8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f34cf009-4444-4caa-a081-5fb5a7bc1ce1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d77d5b9d-8d35-4dc6-b6bb-9735681de15e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d1c68243-86a7-4ae5-8210-9b8b44e3093f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c22aaee3-3e92-49e3-b68f-2f8f6a9483fc": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d18ea7ca-43f3-4cb5-931a-5a2ff8c25bc4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ce5b9fd4-01cc-4d5d-a75c-ba968fcdc1cb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e01493c9-ea17-42ca-8897-da808064ca59": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7a5977b-6288-44b2-9c52-559cae091bb7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f173f6c8-b28a-4d83-bf01-d00137528cfc": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f8556c00-7853-4c86-961a-8403facc13a9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5711924-2034-41c4-b9bc-7c4cd9b07997": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c7e656a8-2a8a-46ce-b94a-47dc06f5699c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f282e5bc-22da-4508-9588-61b2dc092bac": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fc2f7a68-eaae-4dc1-a01c-91d211c8dd71": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f2f737f6-6c95-4b88-abff-b0cb0b3b73fe": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e7d46abd-c56f-424c-9ad5-6336d921cdcb": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c8d32f38-5cde-4607-b871-15b7290256aa": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d3bdef3b-af68-4707-98bc-86ffc6a1951b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c105cf34-a21b-480f-a83e-15b6d3aa5b4f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d8385797-80e1-42b5-b43a-83870fe03969": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d26d1dd8-995c-4404-b1fc-fd275b583a36": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f83b6c7b-d2f1-4b83-b2b6-0b9479ab1ba7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c33854bf-1fc2-49b5-a2ac-aeaaf7433e01": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d0b6d787-5dd8-4c98-9e34-e0705fba631e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fd12034c-3302-409b-94fb-a5dc9c597852": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "db51f3f7-ea48-45f9-9b82-29655f5a3df4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f32cdada-1db2-4652-857b-647d918fb461": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d17affb3-dee9-4dcc-abcf-37bc299ae14f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c1cbbf7a-004c-4d5a-bf0c-625a75e7cdb2": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ef13f066-a868-4129-88fc-4cee1a4afdca": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "de343b82-a89f-4834-9a96-20883bf885af": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c4e82705-a7ba-4655-b734-73eb3ca5479f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e2c45002-eb51-45e3-a75c-7dd5cb20cca7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d030f655-b8b4-4ea3-9f89-3a5b92db2f43": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c2376d6f-d8e1-44d1-9e83-27c4d3d6664b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e9768c46-d616-4e7b-a10a-c6604f5ea778": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e92838c7-7f63-402e-80c7-800b223b5230": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dfb46346-649d-4ec2-a7a4-bab967c015fa": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d53a0207-60f3-4105-bccd-6c6dd5574be1": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c1b306be-1994-4d31-a224-dda3c817aa5d": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cd699454-0a3a-44fd-b623-e43b90e541e6": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d51fed1d-8ec3-4d82-82ef-76502dcaa2aa": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f9f6ba56-a377-4c43-b66d-5a3a8b35ace4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f901fbeb-62f7-441e-8193-e8662177a419": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f3884fd2-adcb-40e7-99ea-aa5e0ffca45f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fa2d7a96-c15c-4e53-8ca9-1639c594c33b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c5b6d512-0a6b-4f27-a655-5307613021f0": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eb9058d5-73ed-4e47-b900-c3602e563f04": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f4a63270-ed2c-4cd0-adcd-9f1884d8e669": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "deef663d-f676-4ea5-8a49-e3c8c77f5fc4": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e685d462-2ca8-4380-9363-9727f95f377b": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dedf7591-b77a-4285-a9cf-292741e2652c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cec93ad1-bf5a-4fcc-8b19-c58f559fa21a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e32dabed-41c7-4bb1-a791-c33bd7d50338": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d4dd5fcc-7fae-4e15-a616-4a4d613938a8": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dede0fa9-0fa1-4765-80f6-d221dc0fd1ff": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "db0c1a2b-33ce-4240-abda-9adac118d9b9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ce49b485-9882-40c1-85d2-297786a17bba": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "e73bb784-33e7-4d78-82d8-269849272025": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "fb66a910-ff21-437c-bc66-62352e0ef32f": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d2153810-1d72-43a1-87b9-98036543964e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dc0c08c1-c94d-4fb3-ae40-269dd2948081": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d27f46ed-2f60-4c29-833b-b0d92ea1e6b7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "eabaa6ae-c604-46eb-84f2-3f5a32afba1c": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "cf531e32-6b03-4a63-b7fa-53847787af1a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "edac95b6-810c-4167-8118-95c4b90ec5a7": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "d0e26497-16b8-4313-9379-3e50ff7c759a": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "dd3d2c43-e50b-48fe-8f52-a85b66ce4827": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c9cf30c6-0074-4236-b214-d30febeb3d12": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "ff37dd99-c3ed-4f36-ba36-f7223360d203": {
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Director of Technical Accounting company=Faraday Future apply=https://job-boards.greenhouse.io/faradayfuture/jobs/7790343003"
+    },
+    "daec2c0d-f156-4319-92e8-4970a9c27b81": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f73dc17b-6b78-455e-a34e-8606bc8b0484": {
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=AI IT Infrastructure Director company=Faraday Future apply=https://job-boards.greenhouse.io/faradayfuture/jobs/7503282003"
+    },
+    "f15b57c8-2bc1-4339-abaa-a512a42916f2": {
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Robotics Solutions Engineer company=Faraday Future apply=https://job-boards.greenhouse.io/faradayfuture/jobs/7819907003"
+    },
+    "c990c097-2268-466a-8f69-cf1149f023a9": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "c3bac04e-e770-4766-aef4-a427585ed05e": {
+      "status": "fail",
+      "reason": "openrouter_failed"
+    },
+    "f590be7e-e35b-4923-aa97-d8d6b4a3f5f9": {
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Product Data Analyst company=Freenow by Lyft apply=https://job-boards.greenhouse.io/freenow/jobs/7574707"
     }
   },
   "doneIds": [
