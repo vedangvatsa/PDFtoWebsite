@@ -11,6 +11,7 @@ import { JOB_INDEXABLE_MIN_WORDS, jobDescriptionWordCount } from '@/lib/job-desc
 import { jobAssembledIndexable } from '@/lib/job-assemble';
 import { isJobExpired } from '@/lib/job-age';
 import { isLowQualityApplySource } from '@/lib/job-apply-hosts.mjs';
+import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 
 export function isCuratedJd(tags: unknown): boolean {
   return Array.isArray(tags) && tags.includes('curated-jd');
@@ -43,6 +44,7 @@ export function shouldListJobOnBoard(job: {
   published_at?: string | null;
   created_at?: string | null;
 }): boolean {
+  if (isBannedJobTitle(job.title)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
   if (isCuratedJd(job.tags) && !isLowQualityApplySource(job.apply_url)) return true;
   return jobAssembledIndexable({
