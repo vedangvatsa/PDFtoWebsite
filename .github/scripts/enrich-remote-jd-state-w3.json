@@ -61407,16 +61407,18 @@
       "note": "thin_source title=Apply Support Engineer company=Markelic LLC apply=https://remoteOK.com/remote-jobs/remote-apply-support-engineer-markelic-llc-1135979"
     },
     "f918229c-93e6-476e-97eb-c80308a00a75": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/ebanx/app-sec",
+      "external_id": "ebanx_app-sec"
     },
     "c2e3ebbc-b4a0-4ba0-a2f1-c4869aac23b3": {
       "status": "skip",
       "reason": "source_thin"
     },
     "edb1cbe7-e78a-4bfe-a377-7b3e5b6f4196": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/hudl/suppor-4f",
+      "external_id": "hudl_suppor-4f"
     },
     "cc193b0c-9d80-4a2e-868a-cb03db19e071": {
       "status": "skip",
@@ -61424,31 +61426,34 @@
     },
     "e25ab3cb-5c46-4b28-bf2e-564c467cce39": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "fca28797-62ec-4f05-a7cb-db2636e72b21": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/mission-lane/data-sci",
+      "external_id": "mission-lane_data-sci"
     },
     "d2f4f841-f0e0-4a03-aa74-740838af1417": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/agoda/analys-d1",
+      "external_id": "agoda_analys-d1"
     },
     "ecbdb14f-afaa-49f8-a28b-6b214fd5a318": {
       "status": "skip",
       "reason": "source_thin"
     },
     "dd022916-6bd8-494e-86a2-027a19f5462d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/human-interest/eng-mgr",
+      "external_id": "human-interest_eng-mgr"
     },
     "cf4c8f11-d3c4-4ae7-b76b-fe5934ee723c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "fbe28d2d-fe79-4a73-8235-fade11480f5a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e72cd215-cce3-4098-b4ab-a4e70cb38a64": {
       "status": "skip",
@@ -61459,60 +61464,63 @@
       "reason": "source_thin"
     },
     "e900444f-13bc-4cc5-93c7-2b197f54790d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Customer Experience Specialist – Bilingual company=Agoda apply=https://job-boards.greenhouse.io/agoda/jobs/8101822"
     },
     "ea45f7e8-4354-4759-a381-dbed90896f47": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "eb5b1491-166f-42de-b69e-128062abaa8e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e72bc0ff-66e9-430d-86c4-5e70a2b6c13a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "fa8950ef-f90f-4a6b-b4f0-ae147096d9c6": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "fa3f5336-36e0-43c4-b820-d8f639cb7d5d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c9d7d991-d53d-4781-afc1-c4822f92a5c8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/altana/implementati",
+      "external_id": "altana_implementati"
     },
     "d2e74327-edb2-4c34-9600-84fae70d9799": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "dd99d9eb-24e3-449b-87e9-05c7788d6037": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "c7d81843-64ba-4307-98bf-3861df4d9d4c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "dda602ef-aa52-4512-8996-35727aee8b91": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e0b8df0a-cc8a-499b-a89d-ea79f93317d6": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e78f5149-ba1d-4eb0-862e-25d7d0af9c53": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "c3fa0b2d-bd1c-4a70-8011-ac56ee8dfe32": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/relay-therapeutics/med-dir",
+      "external_id": "relay-therapeutics_med-dir"
     },
     "f5d9a017-8273-4dc6-9ce1-37be5d28180e": {
       "status": "fail",
@@ -61520,63 +61528,68 @@
     },
     "e64aa008-d13b-46f3-879b-9f5de51703b1": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "e73d52da-c3fe-4849-890e-f234c7ebb5dd": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "e0b81c83-d864-4d74-b909-29e0f00d33c8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/recorded-future/mgr-web",
+      "external_id": "recorded-future_mgr-web"
     },
     "e2643a0b-7433-475e-ac81-27a8698275c9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ea0020b8-1c68-4ecc-8ceb-424b3672c49e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/roofstock/proper-ba",
+      "external_id": "roofstock_proper-ba"
     },
     "d3bb253b-5010-44cd-ad48-d83e2c715bcd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/scale-ai/growth",
+      "external_id": "scale-ai_growth"
     },
     "e4fe993f-dcc6-483b-a67c-e4810f358f7c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c385fdc4-7ce6-43d4-83d8-12b351f48e5a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/the-new-york-times/editor-88",
+      "external_id": "the-new-york-times_editor-88"
     },
     "d50d96c2-8270-4ffe-8acb-99245d579882": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "slot_mutation"
     },
     "de847666-a8eb-41c1-a6e5-74fa04fcffc0": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "slot_mutation"
     },
     "cd9a8bb4-e730-409f-8a93-2734c62de2fb": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=VP, Business Development company=Vestmark, Inc. apply=https://job-boards.greenhouse.io/vestmark/jobs/7908410"
     },
     "f99a127f-9edd-4a2f-8d59-462ebeaac7db": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c26cd87d-410c-4141-9d07-b00dabe0851f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "dead_board"
     },
     "f126d4d0-edf1-46b8-9291-c5f93ca8b06f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "dead_board"
     },
     "e92aeff0-7a9d-457f-a70a-20dd232e34d5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "dead_board"
     },
     "dc435556-cc5a-4471-8544-7ffba6e0e506": {
       "status": "fail",
@@ -61587,8 +61600,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "ceaa3a44-cbc4-471a-a70b-f71d162a4ebd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "dead_board"
     },
     "e71dcec2-ad27-443a-bfd0-4220a10b3263": {
       "status": "fail",
@@ -61615,8 +61628,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "f9d8c061-2b9b-4c45-8e08-d41fbb87bb9d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Head of Industry, Entertainment & Culture company=The New York Times apply=https://job-boards.greenhouse.io/thenewyorktimes/jobs/4671665005"
     },
     "f288f404-9486-4115-aedb-a8b3e3d864d6": {
       "status": "fail",
@@ -61631,8 +61645,9 @@
       "reason": "source_thin"
     },
     "f2c2a49a-8692-454b-83cd-e8aee8ec4bdb": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/hudl/lead-qa",
+      "external_id": "hudl_lead-qa"
     },
     "ea4072a1-ebf6-4fd8-a2f7-5bb2a3275d83": {
       "status": "skip",
@@ -61640,48 +61655,50 @@
       "note": "thin_source title=Staff Machine Learning Engineer company=Boulevard apply=https://job-boards.greenhouse.io/boulevard/jobs/4695784006"
     },
     "deac8fa4-ec4b-4f11-9b10-53071734042f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f9c07b93-f480-4f06-a5db-2068db1b5bf8": {
       "status": "skip",
       "reason": "source_thin"
     },
     "f0dc935b-cacb-45df-932d-cd4e50c4da31": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Coordinator/Senior Coordinator, Strategic Partnerships company=Agoda apply=https://job-boards.greenhouse.io/agoda/jobs/8054903"
     },
     "c9e21a52-40df-46e8-9a17-9c0b4801e773": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "f26f605f-a9a1-458a-a098-f97afd506dc0": {
       "status": "skip",
       "reason": "source_thin"
     },
     "ecae0805-e1bb-4e24-8c88-1ebd47952e26": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Bilingual English and Spanish Member Loyalty Representative company=Oportun apply=https://job-boards.greenhouse.io/oportun/jobs/4720819005"
     },
     "fe786312-c1be-4130-955e-8f4878153e33": {
       "status": "skip",
       "reason": "source_thin"
     },
     "ee738b42-f4af-4b69-a1c6-7cb46fc49260": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f272be98-b115-43cf-8b1f-68f570b8110e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f6e40357-78ac-4eb1-82b8-6354ac58fcc4": {
       "status": "skip",
       "reason": "source_thin"
     },
     "d56f3767-23da-4054-b7f8-d181e220ded1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c905329f-cee4-472d-a5ca-018ddd0c833d": {
       "status": "skip",
@@ -61692,20 +61709,22 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "d0fe6b2e-7a32-4ca7-a018-da3288ba07b9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "dcb61052-5964-482b-a92e-91cb3e17ef6b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Manager, Brand Marketing company=Razorpay Software Private Limited apply=https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4718620005"
     },
     "f040927d-e22e-44d7-810e-63fb57f52f07": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/hudl/support",
+      "external_id": "hudl_support"
     },
     "e7f7a633-3fc8-448f-9b0f-20a266171417": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d4fa7549-4a26-4d00-a354-8ca130e89955": {
       "status": "skip",
@@ -91113,7 +91132,36 @@
     "fde242cd-858b-4fdc-a616-31adfc183413",
     "f9fbaee9-0620-4d0e-a905-57470603964a",
     "fe11149a-92bb-40cc-bc7a-aed8f55cb2d0",
-    "fa7b56ef-a289-42c6-af23-80fb6386c848"
+    "fa7b56ef-a289-42c6-af23-80fb6386c848",
+    "c26a4fe1-ec29-4b0e-8c06-a1f3672b7299",
+    "d2f4a46e-2315-4f7a-9c4c-10a11acc048e",
+    "cc2d6a1c-660f-4fb9-8407-e0e96bdbfeb4",
+    "eb7da7f5-aecd-408a-9d4e-699583678b65",
+    "e072dd0e-8a7d-435a-b692-c16c627e4e0b",
+    "ded90ac5-cfaf-4bc9-9184-278034589064",
+    "c185fd38-fe3a-4ce2-9ec5-e85b36d14103",
+    "df303c31-170f-49b4-a44a-167cb929cf4b",
+    "cadb63eb-4549-4347-bfde-87b7ceea622f",
+    "e134eddc-d077-4c10-80c3-16d1c1b543fa",
+    "def10423-9bc5-4e6b-9500-5f8f6af181f3",
+    "cd2f7255-02b6-4765-a179-0b1fd09b7b66",
+    "ff2aec57-99ed-43c2-82ce-b91c877b888b",
+    "e9b85fc1-4f63-4547-867e-9939c8335b66",
+    "f1f39514-c5d9-4cb7-a219-00a3a0c55955",
+    "caf82cbd-6c01-41a8-a31f-512c0f8a4e80",
+    "e056cb1b-c35b-40db-bf90-20966546796e",
+    "f2b4fe7a-957e-41c9-9f51-199b5f5e81d0",
+    "ea4072a1-ebf6-4fd8-a2f7-5bb2a3275d83",
+    "f0dc935b-cacb-45df-932d-cd4e50c4da31",
+    "e900444f-13bc-4cc5-93c7-2b197f54790d",
+    "d2f4f841-f0e0-4a03-aa74-740838af1417",
+    "c9d7d991-d53d-4781-afc1-c4822f92a5c8",
+    "f918229c-93e6-476e-97eb-c80308a00a75",
+    "f040927d-e22e-44d7-810e-63fb57f52f07",
+    "edb1cbe7-e78a-4bfe-a377-7b3e5b6f4196",
+    "f2c2a49a-8692-454b-83cd-e8aee8ec4bdb",
+    "ecae0805-e1bb-4e24-8c88-1ebd47952e26",
+    "dd022916-6bd8-494e-86a2-027a19f5462d"
   ],
   "skipped": {},
   "batches": [
@@ -92553,6 +92601,11 @@
     "greenhouse:adswerveinc": "source_thin",
     "greenhouse:accenturefederalservices": "source_thin",
     "greenhouse:advancedtechnologyservices": "source_thin",
-    "greenhouse:boulevard": "gh_404"
+    "greenhouse:boulevard": "gh_404",
+    "greenhouse:agoda": "gh_404",
+    "greenhouse:oportun": "gh_404",
+    "greenhouse:razorpaysoftwareprivatelimited": "gh_404",
+    "greenhouse:vestmark": "gh_404",
+    "greenhouse:thenewyorktimes": "gh_404"
   }
 }

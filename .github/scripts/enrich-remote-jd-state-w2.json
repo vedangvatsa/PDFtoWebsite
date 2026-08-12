@@ -82969,6 +82969,210 @@
     "b3101de4-bb47-4f1e-8ae7-64f90aada157": {
       "status": "skip",
       "reason": "source_thin"
+    },
+    "afa62e54-027c-46ba-8758-c52336c437e7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8782358f-e3c9-4cfb-902e-88dc5db78469": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8ecbb3ad-fc82-40dd-ad08-396d4d5f64a2": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8bfd68fa-6f2f-40db-bb83-6eefd8208db1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "abafcc6e-fb8f-4976-821d-1e0755d629b0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a30caa4e-dc54-4b8f-920f-3394f1c857f0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a3d834bd-8c1d-4c76-bb2d-22fb8020d5db": {
+      "status": "ok",
+      "path": "/redpanda-data/commercial",
+      "external_id": "redpanda-data_commercial"
+    },
+    "befdd730-0c3d-4f8b-9c93-2fb4b49fbd76": {
+      "status": "ok",
+      "path": "/fundamental/mlops",
+      "external_id": "fundamental_mlops"
+    },
+    "b2a6dc42-6efe-4301-87fa-d0e9f1b47b16": {
+      "status": "ok",
+      "path": "/shift/biz-dev",
+      "external_id": "shift_biz-dev"
+    },
+    "a9b3388e-4010-4790-9891-890b245d33fa": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8e4345f0-80a2-4f06-bfe3-2d0fc6abc0a0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9a970657-6299-4d96-aaf5-2b6d8c430600": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a3da4a46-f8b6-4ea7-b4b5-79ca0ab1b76e": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8311967e-5f32-4434-9f0f-bc3533b7af16": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "bc3d0e29-f62a-47d0-94ef-a1289bcc4ff3": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b87a3864-f782-49e6-a96a-4813fade6169": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a154cb88-cc7d-4f24-8558-9574eebae1ab": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a07ebdd7-72d3-447f-b46b-d9f4e204064c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "90a0f8ea-fb0f-4967-b477-0826c3a9a349": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "88ee7df2-0e90-4f89-952e-e91223a5e89f": {
+      "status": "ok",
+      "path": "/paradigmai/sw-eng",
+      "external_id": "paradigmai_sw-eng"
+    },
+    "988d9548-2873-4dc7-a509-0f247337b56f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "80260dda-7785-4962-a729-0c5b79005e6b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9100f29f-50fc-47fe-8a08-5897947cc8c7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "89e3f303-9241-472d-ad96-d766b25613f0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9d50fe37-4424-494c-96ae-5480a515ed49": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a968f9f0-04cd-4cb2-961f-e605d07bac68": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "82254777-1cab-4ea1-a3c2-f7259326d2e7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b4d04cbb-4327-4881-a1db-dc3f569f7e53": {
+      "status": "ok",
+      "path": "/rainmaker/biz-dev",
+      "external_id": "rainmaker_biz-dev"
+    },
+    "9460978b-1cb7-4f76-8008-d93ccfb28cd8": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9544e8ce-385e-464d-b8ff-069b52b93d0d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b051bb0a-dd97-4bba-beb5-979a1d89fe1f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8cc029fc-2dd7-41af-a557-6b3aa4e80826": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9da2923f-5904-435b-98ae-ba19a8db7729": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "899d279d-a227-4a74-82d3-d71697744d0f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b696cc4f-7a9a-436c-920c-8f7305302523": {
+      "status": "ok",
+      "path": "/avantos/sw-eng",
+      "external_id": "avantos_sw-eng"
+    },
+    "9c687707-6a2d-4963-ac3f-0e73e113bed5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b72ac1d8-c352-48e1-bddc-b6c970c5edee": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "87f4e20a-3b48-4b6d-a7a7-3efd2dc34050": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b7abf24b-5128-436a-822a-f9b4806fa688": {
+      "status": "ok",
+      "path": "/switchboard/acct",
+      "external_id": "switchboard_acct"
+    },
+    "a2794321-d3cf-42d3-8f91-ab6d8ae554ea": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "85f283a3-cfab-4dd0-8cf7-cca8289a2c6f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b99bc895-6a4b-49e8-a4eb-3714da06b593": {
+      "status": "ok",
+      "path": "/caribou/rd-spec",
+      "external_id": "caribou_rd-spec"
+    },
+    "ab3df872-7111-449e-ae47-1e85cdcb278a": {
+      "status": "ok",
+      "path": "/abacum/lead",
+      "external_id": "abacum_lead"
+    },
+    "b26e6949-b3a2-4201-8bd7-d698b7ea6be7": {
+      "status": "ok",
+      "path": "/pointr/gis-cad",
+      "external_id": "pointr_gis-cad"
+    },
+    "8ac984fe-c438-4d21-831c-b9d08f5c7af1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b6b42683-9aa2-4b4b-bc29-b576f0fe568b": {
+      "status": "ok",
+      "path": "/tamarindbio/founding",
+      "external_id": "tamarindbio_founding"
+    },
+    "9deed0af-9ec8-48f6-9dae-916d1637b93b": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a11f1dda-76e9-4b42-9e43-2ddc255d59cc": {
+      "status": "ok",
+      "path": "/base-operations/data-eng",
+      "external_id": "base-operations_data-eng"
     }
   },
   "doneIds": [

@@ -61831,8 +61831,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "787dead5-6268-468f-9d0c-5f17b47d7494": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5d453ed3-b129-4a8f-b01d-c87a3c2fe8e1": {
       "status": "skip",
@@ -61896,64 +61896,71 @@
       "note": "thin_source title=Product Strategist, L/S Equities company=Point72  apply=https://boards.greenhouse.io/point72/jobs/8530259002?gh_jid=8530259002"
     },
     "482753e6-ef99-4567-a2a0-3b8a101e9a5a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5f14cf65-35d4-429a-bdc3-09d9eba333e1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5bb36266-e1f5-4c83-b463-22ba0836b40c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5c63fbae-8ab2-494f-ae5b-b1ec6e0734f3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5b13c47a-6048-4687-814c-f36fdba20470": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/the-new-york-times/accountant",
+      "external_id": "the-new-york-times_accountant"
     },
     "74942d6c-1d52-4971-8321-375e74f721e1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/rvo-health/dir",
+      "external_id": "rvo-health_dir"
     },
     "643ae0c1-c3bc-403e-909b-ae044d882a21": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5eaec1b0-6c0c-4789-838e-6f455eb938aa": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/twilio/sw-98",
+      "external_id": "twilio_sw-98"
     },
     "7954fd68-57d4-4bd8-ba92-ef232ec4438b": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "52177d97-a537-4af7-9440-759e0aa07ee5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/rvo-health/performance",
+      "external_id": "rvo-health_performance"
     },
     "58b0ff17-34e9-439b-b982-bc1aadf0f44d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "dead_board"
     },
     "7a11d7b7-f6d9-4b21-8011-2ad55e4e20b7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Video Producer, Interesting Times, Opinion company=The New York Times apply=https://job-boards.greenhouse.io/thenewyorktimes/jobs/4659974005"
     },
     "7bb90186-6415-437f-b0ba-af10711df36f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Supportability Engineer 3 company=Twilio apply=https://job-boards.greenhouse.io/twilio/jobs/7520866"
     },
     "7eeb83f8-90e3-47a1-a5be-488eb2e2d99b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "70ff2b76-3877-49e8-b27f-51aae47e2eed": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/the-new-york-times/sw-5b",
+      "external_id": "the-new-york-times_sw-5b"
     },
     "7cf65718-2a94-4084-9e86-06aa98b8ba29": {
       "status": "skip",
@@ -61961,44 +61968,48 @@
       "note": "thin_source title=Senior UI Engineer, Agentic AI company=Roku apply=https://www.weareroku.com/jobs/7992354?gh_jid=7992354"
     },
     "5de3909a-bfd3-411b-ab3a-595d176715b6": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/spacex/silico-57",
+      "external_id": "spacex_silico-57"
     },
     "6688b6e7-2419-485d-88d7-581144a33316": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "59747fa1-b5f0-4d73-8a9e-d061a779abaf": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "45ab3d40-50f6-47fd-ac53-48e6c4c58758": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7250045b-abb5-4f9a-853f-38991c1e0b1e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "75ef4829-8771-493b-a497-f21abb9a546b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6d1ca45e-8e28-4690-8a9f-8b5774509876": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4f21f059-49fe-4443-a8b4-969d4c62ef91": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/asi/consul-ca",
+      "external_id": "asi_consul-ca"
     },
     "4de1f9a2-37e8-4101-9926-9ac38ef0374e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/brillio-2/arch-net",
+      "external_id": "brillio-2_arch-net"
     },
     "6a7c373f-6ac3-4d5c-8dc3-f5bc4fcd9949": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/parallelwireless/it",
+      "external_id": "parallelwireless_it"
     },
     "40c9933a-49d1-4ce1-a364-693987a93059": {
       "status": "fail",
@@ -62041,8 +62052,9 @@
       "reason": "source_thin"
     },
     "51f10976-c3ad-4140-9052-b86be49871ee": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/outset-medical/logistics",
+      "external_id": "outset-medical_logistics"
     },
     "725f8069-700f-4f43-8a7b-4dba227d4c54": {
       "status": "fail",
@@ -62053,8 +62065,8 @@
       "reason": "source_thin"
     },
     "5bd7279e-dcb6-4e82-8286-9b6771780217": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "440ce513-1b6e-4fea-8574-419c1b9c56ad": {
       "status": "skip",
@@ -62092,8 +62104,8 @@
       "reason": "source_thin"
     },
     "7ac84c35-ff5b-4944-b3ef-86572b6e191f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4977238a-8cee-483f-b639-7c7227f8c1f7": {
       "status": "skip",
@@ -62109,19 +62121,20 @@
     },
     "691ba2fb-8597-4f04-9af1-e737910a0504": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "7145663e-79dc-437f-8cb2-59bc629dd4e9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7cc7bbc3-7b29-4609-819a-03551c2921f7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/the-new-york-times/managing",
+      "external_id": "the-new-york-times_managing"
     },
     "48e902ab-a61a-4a73-a8e0-1d2eec4e3fff": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "50a4058d-336d-4803-88a8-e49b4a938569": {
       "status": "skip",
@@ -63011,8 +63024,8 @@
       "note": "thin_source title=JOIN THE Family company=Jayco, Inc. apply=https://remoteOK.com/remote-jobs/remote-join-the-family-jayco-inc-1136282"
     },
     "641e61ba-c7a7-46fe-8635-f602103fdbb9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "48ead627-e658-4618-89bd-52627ac586bd": {
       "status": "skip",
@@ -63027,8 +63040,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "5ea0f42d-4cc9-49c8-858f-f60a7a961c1f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "dead_board"
     },
     "6bf9989f-a136-471f-9723-9a938f59f20e": {
       "status": "fail",
@@ -63036,7 +63049,7 @@
     },
     "5fc892ec-59c4-4cad-843a-bef8d4f90306": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "768a437e-8d33-4f99-8ca7-f3a39704ce36": {
       "status": "skip",
@@ -63071,8 +63084,8 @@
       "reason": "source_thin"
     },
     "4158b7f8-b4e0-4b24-a3bb-bdf178417f16": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6b2c42a8-0ca9-485c-8292-7e4483d6463f": {
       "status": "fail",
@@ -63083,8 +63096,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "5ebcff44-a1ae-4ad1-a1da-9c1acef7f15e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5e7e75af-ee37-4d41-a674-d666073e8911": {
       "status": "skip",
@@ -63099,8 +63112,9 @@
       "reason": "fact_sheet_parse"
     },
     "60d930fa-bdb7-4a07-81ab-27a6a914be6b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Senior Software Engineer company=GetYourGuide apply=https://job-boards.greenhouse.io/getyourguide/jobs/8045306"
     },
     "7698ce61-baf6-4ccf-8d92-0f745afa3767": {
       "status": "skip",
@@ -63123,20 +63137,21 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "5833fdf9-679a-44f4-b865-2d3521bbc2b2": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6baf0d2d-3c8c-4670-a5b3-46f899090375": {
       "status": "skip",
       "reason": "source_thin"
     },
     "54d5ba1e-d976-4593-b3ac-86317325d5c4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/okx/eng-sec",
+      "external_id": "okx_eng-sec"
     },
     "6d5fe2b4-18cd-4217-9ea1-228ef6be58da": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "59e44c3d-2307-4bd5-9124-fb4af23921ac": {
       "status": "fail",
@@ -63152,7 +63167,7 @@
     },
     "65aa3cfe-ee62-4168-983c-a835a9b488f6": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "5f2c44ed-23ce-4bb0-8610-8913d69436c4": {
       "status": "fail",
@@ -63255,8 +63270,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "4c4a1c0a-799c-478b-9ff3-01a61252bf59": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "65e14448-e9af-42fd-9c2e-65e7943a97ca": {
       "status": "fail",
@@ -63307,12 +63322,12 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "54d550dd-ccf6-4a1b-94ed-838f8e624ed3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5b680fff-c236-4626-bfe1-c5842fb9ebdc": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "79610ebd-26a9-4f89-a597-25d723e4a73d": {
       "status": "fail",
@@ -63320,7 +63335,7 @@
     },
     "4b67b358-3a80-4742-8214-8486cff52451": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "slot_mutation"
     },
     "610f0130-6181-46d8-8e0d-1724c003ce76": {
       "status": "fail",
@@ -79493,7 +79508,7 @@
     },
     "63e34eab-6ec7-44ee-8fa1-d2376c5e9d7b": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_slop"
     },
     "43af8a37-61cf-4f10-9924-df0b0a437845": {
       "status": "fail",
@@ -79538,7 +79553,7 @@
     },
     "4c03b47e-d1c6-4928-bb51-01e684bd81b4": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "slot_mutation"
     },
     "6ff38ce6-c953-4b4c-9495-9a8f9f5729cb": {
       "status": "fail",
@@ -95370,7 +95385,38 @@
     "fde242cd-858b-4fdc-a616-31adfc183413",
     "f9fbaee9-0620-4d0e-a905-57470603964a",
     "fe11149a-92bb-40cc-bc7a-aed8f55cb2d0",
-    "fa7b56ef-a289-42c6-af23-80fb6386c848"
+    "fa7b56ef-a289-42c6-af23-80fb6386c848",
+    "6d4efc09-b8e2-45c7-8b38-b0475215b215",
+    "7a6662ae-081a-42b9-920c-4ccbef87a3a6",
+    "496bfe02-ccf5-49a0-8d81-f0444e57f6a5",
+    "6c657c94-f799-41bc-bc43-90fec1c398bd",
+    "5d000868-01e1-41dc-946f-13deb17c4bef",
+    "548c4150-95fd-46b1-8ff4-f3e20fb2b604",
+    "660eb48d-9b4f-4071-801d-f2d8f32f7ef9",
+    "5bdd387b-bc8d-492a-9828-332e0cfc8f53",
+    "78d6cf78-18c4-40a2-935b-76fe0c06cb32",
+    "45127e3b-2836-477a-9532-8e273556f22e",
+    "609405b7-c4d0-4fb3-9955-fc127fcb36cc",
+    "72cb6d95-4f1e-4c4a-8ccc-61419fbdda0c",
+    "4ca56827-eada-4cec-bb71-a0bb1f67ab75",
+    "4c7a761a-71e8-4a6d-8697-efbe67139d0e",
+    "51f10976-c3ad-4140-9052-b86be49871ee",
+    "74942d6c-1d52-4971-8321-375e74f721e1",
+    "52177d97-a537-4af7-9440-759e0aa07ee5",
+    "5b13c47a-6048-4687-814c-f36fdba20470",
+    "7a11d7b7-f6d9-4b21-8011-2ad55e4e20b7",
+    "58b0ff17-34e9-439b-b982-bc1aadf0f44d",
+    "7cc7bbc3-7b29-4609-819a-03551c2921f7",
+    "7bb90186-6415-437f-b0ba-af10711df36f",
+    "70ff2b76-3877-49e8-b27f-51aae47e2eed",
+    "5de3909a-bfd3-411b-ab3a-595d176715b6",
+    "5eaec1b0-6c0c-4789-838e-6f455eb938aa",
+    "5ea0f42d-4cc9-49c8-858f-f60a7a961c1f",
+    "60d930fa-bdb7-4a07-81ab-27a6a914be6b",
+    "54d5ba1e-d976-4593-b3ac-86317325d5c4",
+    "6a7c373f-6ac3-4d5c-8dc3-f5bc4fcd9949",
+    "4f21f059-49fe-4443-a8b4-969d4c62ef91",
+    "4de1f9a2-37e8-4101-9926-9ac38ef0374e"
   ],
   "skipped": {},
   "batches": [
@@ -96674,6 +96720,9 @@
     "host:sofi.com": "html_403",
     "host:carvana.com": "html_403",
     "ashby:amenitiz": "source_thin",
-    "greenhouse:agoda": "gh_404"
+    "greenhouse:agoda": "gh_404",
+    "greenhouse:thenewyorktimes": "gh_404",
+    "greenhouse:twilio": "gh_404",
+    "greenhouse:getyourguide": "gh_404"
   }
 }

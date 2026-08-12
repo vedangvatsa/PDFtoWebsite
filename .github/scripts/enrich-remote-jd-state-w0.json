@@ -55668,8 +55668,8 @@
       "external_id": "pagerduty_enterp-00"
     },
     "03b6271f-2d07-4477-b08c-5e40a4f76b8f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "094e8cd6-a682-4cf3-bbbc-7823dac11c52": {
       "status": "fail",
@@ -55725,16 +55725,17 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "04d42227-7bc0-4c0e-ad2d-47c4f28a9e83": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/spacex/rfic-af",
+      "external_id": "spacex_rfic-af"
     },
     "30158820-77d8-4177-a148-dd805500683a": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "11ac9f5c-0d96-4828-818b-8121620794f8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "262acc95-fdb9-4d03-86eb-a258978d648f": {
       "status": "fail",
@@ -55749,8 +55750,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "1722d4b5-98d2-4c6a-a9f9-82fae90a02d2": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "13158bd3-7bd3-44bd-b45e-9525ae42f574": {
       "status": "skip",
@@ -57510,23 +57511,24 @@
     },
     "18040197-7147-44da-8d46-7cc4fd477c54": {
       "status": "fail",
-      "reason": "rewrite_short"
+      "reason": "slot_mutation"
     },
     "0f923afe-fcf1-4979-9b16-aa6354089b8f": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/asi/consult",
+      "external_id": "asi_consult"
     },
     "3327dc90-1ff4-4a2f-b591-108de80b7253": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "0d484ba9-17fe-46e5-974b-8d8d4ec63b7b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "29fafb6c-8c6b-4f03-b58b-2fec593d11ae": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2bad634d-bbb5-46f3-ae71-145747601a73": {
       "status": "fail",
@@ -57628,13 +57630,12 @@
       "note": "thin_source title=Relief VN or VA West LA company=Modern Animal apply=https://app.careerpuck.com/job-board/modernanimal/job/6114169004?gh_jid=6114169004"
     },
     "0749f026-5c21-4254-bf21-f2a8d6b0b462": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0933f484-f602-4aca-b451-71b73b6e4e3b": {
       "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Clinical Data Abstractor company=Carta Healthcare apply=https://www.carta.healthcare/careers/job/5052706004?gh_jid=5052706004"
+      "reason": "source_thin"
     },
     "0e3fa9d6-9505-4db6-acc9-f5ba238b8f0f": {
       "status": "skip",
@@ -57707,8 +57708,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "38c88f42-5eb8-42a6-9231-ee1e0c7c6c14": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "37f30542-6018-4284-8d47-801f7ff2ad87": {
       "status": "skip",
@@ -57864,7 +57865,7 @@
     },
     "1dcc7f96-d0d7-4540-8b70-ccaad36b2eef": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_slop"
     },
     "37af0411-86da-48d3-a2e1-e2845ca8b541": {
       "status": "fail",
@@ -57875,8 +57876,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "0122bb61-64b5-40c8-8a07-4d741758fb2e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/asana/dir-eng",
+      "external_id": "asana_dir-eng"
     },
     "307d1459-645f-48a3-87f0-da52295f4ac9": {
       "status": "fail",
@@ -58260,16 +58262,16 @@
       "reason": "slot_mutation"
     },
     "3b3f6ea6-d49e-4256-981c-158e83b42fe8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "20bb3c97-a496-4d2f-98fc-914db73df777": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "0d84c5c6-785e-4f85-a1d8-95044451ce2c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0459ef2d-82a0-48b0-880f-04dcfee662f0": {
       "status": "fail",
@@ -58280,16 +58282,16 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "0ea6af59-673c-4fa5-ad15-e1df81c6774d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1acc3e9c-e605-4b4b-a8d8-15386bff535a": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "0d6887d6-cdd9-4ab2-a84b-b720968ab827": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1d35d52f-f048-40b5-a378-c4b19639b198": {
       "status": "fail",
@@ -58304,16 +58306,16 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "0a49dcae-465e-4bc5-a8f4-d781c4605068": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "32858b51-2a5c-4a5d-bd62-10f1746fa31b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "0e81dd42-30ad-459e-bc1a-1aace8848eff": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "034a5c0a-fd0e-4a06-b8ad-c0ea1b978bc9": {
       "status": "fail",
@@ -58324,24 +58326,26 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "26030a69-e49a-4e5d-a67c-62e1a52adbdd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "19de14f8-4b89-431e-8c8d-f717b5460088": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/gofundme/policy",
+      "external_id": "gofundme_policy"
     },
     "08dc54b6-47be-4bd5-b242-c80eac82ac4f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/tanium/dir-rd",
+      "external_id": "tanium_dir-rd"
     },
     "29202c7d-d3a7-4ce1-b583-20ec9427e2fe": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2927ef37-1866-40f6-9cbc-62025edd4386": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "1b2361b3-d2d6-4d8a-8a23-6f24d8949493": {
       "status": "skip",
@@ -58520,16 +58524,17 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "0ecb1500-7da7-4000-a4fd-9ec71b2f4233": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/spacex/data-6b",
+      "external_id": "spacex_data-6b"
     },
     "36d6faba-192c-4343-b18f-89769c15138b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2ff2a4f4-41f1-4ec7-86ad-bd90270101c4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "13fbf9ed-f4ba-41b3-b602-f3320e09548a": {
       "status": "fail",
@@ -58552,24 +58557,25 @@
       "reason": "rewrite_slop"
     },
     "226b0b35-c028-49a9-bde3-0f86b59cc893": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "07008a6d-b021-4c03-8b88-4da3dac3a037": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "0b6a5ef7-d672-4561-81ed-093b29203c7d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0d3cde5e-9d8f-4ccf-b1f9-9c105c76d81b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "30ca2d5b-275e-48e0-b500-8744ded8e373": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/varda-space-industries/mission",
+      "external_id": "varda-space-industries_mission"
     },
     "24099614-deb3-40db-afc8-9f3856bc10e4": {
       "status": "ok",
@@ -58586,8 +58592,9 @@
       "note": "thin_source title=Director, AI & Data Science company=LinkedIn Job Wrapping apply=https://job-boards.greenhouse.io/artefactlinkedin/jobs/8630754002"
     },
     "36066fe9-5390-45a8-931d-ab33dc887000": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/arista-networks/emc-eng",
+      "external_id": "arista-networks_emc-eng"
     },
     "230c1f3c-e6d7-4111-8d06-b0ea3ec5788f": {
       "status": "skip",
@@ -58614,8 +58621,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "1f938b0f-cced-4539-b5ef-406d79780bd8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0351d9fd-9ab3-40e9-ac42-1a519b282219": {
       "status": "fail",
@@ -58638,8 +58645,9 @@
       "reason": "rewrite_slop"
     },
     "3957afa3-e9fa-449f-ac6b-3fef12a923a6": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/wise/israel",
+      "external_id": "wise_israel"
     },
     "00cd7ab8-4b77-451c-9dc1-6ded00b8b5ff": {
       "status": "fail",
@@ -58671,7 +58679,7 @@
     },
     "115f5d6e-df89-4dda-822e-227735b839b8": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "0771ff40-29ad-43c3-b7ad-1fc377941012": {
       "status": "fail",
@@ -58682,40 +58690,44 @@
       "reason": "source_thin"
     },
     "01c28e96-8a9f-47b9-ba99-f78d30b2307d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3c8b4373-5340-4380-b8ab-26f0014d0b00": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/swiggy/mgr-ad",
+      "external_id": "swiggy_mgr-ad"
     },
     "1efa9776-3843-4885-bdb7-92fc7d8a456c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/jysk/elado-81",
+      "external_id": "jysk_elado-81"
     },
     "20de5211-4314-498a-9f04-575ca6173756": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0dcfe965-ac3a-46ad-80e7-87a3d31abc9e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1094c144-0ce1-497c-b73a-29f2366f852f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "16c9d990-c810-4d90-a92a-21a588b434d8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/swiggy/acct-mgr",
+      "external_id": "swiggy_acct-mgr"
     },
     "0896d305-a403-4f5e-bbf3-cff299b6f91e": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "1f6b7f69-1701-46f4-80c6-af5b11577b32": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/servicenow/sec-sw",
+      "external_id": "servicenow_sec-sw"
     },
     "0b27f549-07d3-477f-b8d8-7f5f95e454b6": {
       "status": "fail",
@@ -58734,8 +58746,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "249b0e83-ee79-4744-800f-16eb477f568b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "06ec2a18-286c-45b8-b07f-1ed00c8027ec": {
       "status": "fail",
@@ -58779,15 +58791,15 @@
     },
     "2c26871f-98ce-45b3-a1f9-f84cb292cbcf": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "slot_mutation"
     },
     "3e3c7c6f-206e-44a9-b8a1-c12a1b99d40c": {
       "status": "fail",
       "reason": "slot_mutation"
     },
     "130b6b0b-1464-4d23-8e25-e710e408b4f1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0e72d83b-ef81-416c-9636-780bac5abbd2": {
       "status": "skip",
@@ -83538,7 +83550,38 @@
     "fa7b56ef-a289-42c6-af23-80fb6386c848",
     "27f9c52d-ba76-46bd-bb7a-8bf54ff633f1",
     "24099614-deb3-40db-afc8-9f3856bc10e4",
-    "25e38207-78e3-43e7-a5c7-4dca5e571316"
+    "25e38207-78e3-43e7-a5c7-4dca5e571316",
+    "1c03eac1-7620-45ae-822b-5134d801eafa",
+    "10b08054-f2b3-4a97-b696-9efc2f85a918",
+    "37107ae5-73f2-4be2-b6f3-919e6890819e",
+    "3e6c4488-1fcd-4177-a27a-f787cda5afde",
+    "337a6fc6-5e58-4325-aeb9-79067d147b16",
+    "3154eb7e-de6b-4246-9eae-0fbe42afd550",
+    "1466c0e2-a4da-45a4-92dc-d4fe76e57ce7",
+    "180b49ce-0904-48fe-a791-9d8609231e7c",
+    "2bdeded8-5d24-41fe-9b3d-9399a3851cbd",
+    "1ff30c6b-555b-48e0-a76c-3b80043bff21",
+    "37d4aecc-52ef-43da-a194-fe80084f0cf3",
+    "24a0fc25-4317-4a57-b46f-c4f5da34a454",
+    "0cc2aabc-01ce-454e-8802-7e0ba9092fab",
+    "264929f8-ff58-4df7-b6e1-1c70f1962f97",
+    "0f24ffec-9a47-41b8-b20c-6ea7d8f1ab06",
+    "37d4a31a-20ab-41a1-a79c-0ab6abf6159e",
+    "0b083290-26b4-4b16-b729-8f831e265f90",
+    "009e9ce1-e88c-4dd9-b02e-fef236eb7623",
+    "19de14f8-4b89-431e-8c8d-f717b5460088",
+    "04d42227-7bc0-4c0e-ad2d-47c4f28a9e83",
+    "08dc54b6-47be-4bd5-b242-c80eac82ac4f",
+    "30ca2d5b-275e-48e0-b500-8744ded8e373",
+    "0ecb1500-7da7-4000-a4fd-9ec71b2f4233",
+    "0f923afe-fcf1-4979-9b16-aa6354089b8f",
+    "3957afa3-e9fa-449f-ac6b-3fef12a923a6",
+    "1f6b7f69-1701-46f4-80c6-af5b11577b32",
+    "36066fe9-5390-45a8-931d-ab33dc887000",
+    "1efa9776-3843-4885-bdb7-92fc7d8a456c",
+    "3c8b4373-5340-4380-b8ab-26f0014d0b00",
+    "3737dce1-acd1-4be9-95f8-ffdc8b15323f",
+    "16c9d990-c810-4d90-a92a-21a588b434d8"
   ],
   "skipped": {},
   "batches": [
