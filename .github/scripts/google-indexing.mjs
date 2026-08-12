@@ -115,6 +115,9 @@ async function notify(token, url, type) {
   if (!res.ok) {
     // 409 = URL has been recently notified; treat as success.
     if (res.status === 409) return { ok: true, skipped: 'recently-notified' };
+    // 429 = daily quota exhausted — stop the batch immediately (remaining URLs
+    // stay unrecorded and get retried on the next run/day).
+    if (res.status === 429) return { ok: false, quota: true, url, type };
     throw new Error(`Indexing ${type} ${url} → ${res.status}: ${JSON.stringify(data).slice(0, 200)}`);
   }
   return { ok: true };
@@ -201,26 +204,32 @@ async function main() {
 
   // Google recommends at most ~1 URL per second; batch in small chunks with pauses.
   for (const { url } of publishBatch) {
-    try {
-      await notify(token, url, 'URL_UPDATED');
+    const r = await notify(token, url, 'URL_UPDATED');
+    if (r.ok) {
       state.published[url] = new Date().toISOString();
       published++;
       process.stdout.write('+');
-    } catch (e) {
+    } else if (r.quota) {
+      console.log(`\n  ⏸ quota hit at ${url} — stopping (retries next run/day)`);
+      break;
+    } else {
       errors++;
-      console.error(`\n  ✗ publish ${url}: ${e.message}`);
+      console.error(`\n  ✗ publish ${url}: ${r.error?.message || 'failed'}`);
     }
     await new Promise((r) => setTimeout(r, 1200));
   }
 
   for (const url of toRemove) {
-    try {
-      await notify(token, url, 'URL_DELETED');
+    const r = await notify(token, url, 'URL_DELETED');
+    if (r.ok) {
       removed++;
       process.stdout.write('-');
-    } catch (e) {
+    } else if (r.quota) {
+      console.log(`\n  ⏸ quota hit at remove ${url} — stopping`);
+      break;
+    } else {
       errors++;
-      console.error(`\n  ✗ remove ${url}: ${e.message}`);
+      console.error(`\n  ✗ remove ${url}: ${r.error?.message || 'failed'}`);
     }
     await new Promise((r) => setTimeout(r, 1200));
   }
