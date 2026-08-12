@@ -60019,8 +60019,8 @@
       "reason": "source_thin"
     },
     "5edfbe5a-c784-412e-be22-70513adebc84": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4272a9db-26bb-4c58-a5b5-df6d67b6bc80": {
       "status": "skip",
@@ -60031,24 +60031,25 @@
       "reason": "source_thin"
     },
     "715be20c-c45e-44f3-a455-525a3015bd9a": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7c0cb6da-db25-41bc-b84d-11953cd81cfb": {
       "status": "skip",
       "reason": "source_thin"
     },
     "72576c05-5d13-4cfe-9496-57ccc3197aae": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5c4f8af7-a91c-4684-9181-85d2fdfa7b5b": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6d4efc09-b8e2-45c7-8b38-b0475215b215": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/affirm/ml-c0",
+      "external_id": "affirm_ml-c0"
     },
     "5d8b14bf-e57e-4bb9-9dcc-92853a113184": {
       "status": "skip",
@@ -60059,12 +60060,13 @@
       "reason": "source_thin"
     },
     "4f5ae0a7-e309-4308-af79-509614420639": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "496bfe02-ccf5-49a0-8d81-f0444e57f6a5": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/platform-science/lead-sw",
+      "external_id": "platform-science_lead-sw"
     },
     "77541d40-75c6-407a-acf3-a489f1665969": {
       "status": "skip",
@@ -60079,8 +60081,9 @@
       "reason": "source_thin"
     },
     "7a6662ae-081a-42b9-920c-4ccbef87a3a6": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/luno/prod-3e",
+      "external_id": "luno_prod-3e"
     },
     "73c6f737-ecf2-438c-a638-7521ff9c2b66": {
       "status": "skip",
@@ -60091,8 +60094,8 @@
       "reason": "source_thin"
     },
     "557320ae-4fb4-47d4-9bc8-e73f254f9a28": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "78520099-8a99-44cf-8708-b3508ed3dc80": {
       "status": "skip",
@@ -60103,24 +60106,24 @@
       "reason": "source_thin"
     },
     "7fb3dfa0-7751-4ef9-8c04-aa1e7fdde503": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4c9ac808-64ed-41be-b3c1-d4d0b4957500": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5769f4db-0686-4dc7-916d-1f0e84d0b091": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5eee0ea0-26fd-4464-938f-a111d27ff619": {
       "status": "skip",
       "reason": "fact_sheet_parse"
     },
     "538d345d-af15-4395-9569-6aadc2c49f3e": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "68216d2d-ec1c-4455-a212-f774eb668625": {
       "status": "skip",
@@ -60135,40 +60138,42 @@
       "reason": "source_thin"
     },
     "63ce3cf4-0dff-4df2-935d-19f4ca55de32": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "53989126-d14a-433f-b6d5-bd8d589f408a": {
       "status": "skip",
       "reason": "source_thin"
     },
     "517be4c6-48e6-4760-a72d-e9cab6099c30": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5b1f64ff-048d-4d2f-974d-fd51cd52bc3d": {
       "status": "skip",
       "reason": "source_thin"
     },
     "70a99274-a40b-41ee-a661-4a0b4eb0b767": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5d000868-01e1-41dc-946f-13deb17c4bef": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/grupo-quintoandar/grupo-de",
+      "external_id": "grupo-quintoandar_grupo-de"
     },
     "6c657c94-f799-41bc-bc43-90fec1c398bd": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/smartly/creati-84",
+      "external_id": "smartly_creati-84"
     },
     "73d2eca1-5945-4254-a857-ff69b4a56d9b": {
       "status": "skip",
       "reason": "source_thin"
     },
     "7ef34f74-0833-4653-af21-6ebdcdd44ffd": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "615d7778-b2ee-41a6-aa56-907370ad5912": {
       "status": "skip",
@@ -60211,12 +60216,12 @@
       "reason": "source_thin"
     },
     "621ba227-11a6-49cb-88ff-b363171463d9": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "65a309a2-5ce6-41a5-8bf3-7d9dacfba353": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "53e161c4-cd99-43d3-bac7-4824bffd2dec": {
       "status": "skip",
@@ -60247,8 +60252,8 @@
       "reason": "source_thin"
     },
     "7e1514f5-255d-4ee4-a23f-30d7cfb868c4": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4c69d214-911b-433a-b9a8-3723ba57949c": {
       "status": "fail",
@@ -60263,8 +60268,8 @@
       "reason": "rewrite_short"
     },
     "7a4222b9-6f77-414b-9c37-4e7e2f12a7a9": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7cf08b89-ac18-4bde-b2dc-6430e7e02605": {
       "status": "fail",
@@ -60323,8 +60328,8 @@
       "reason": "rewrite_short"
     },
     "5a5ed76b-4102-4cf8-899b-8870325c628d": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5ed287fd-71dc-4d9f-9bec-8c544e541d2b": {
       "status": "skip",
@@ -96491,5 +96496,174 @@
       },
       "samplePaths": []
     }
-  ]
+  ],
+  "deadBoards": {
+    "host:rubrik.com": "html_403",
+    "host:weareroku.com": "html_short",
+    "host:careers.upstart.com": "html_short",
+    "host:careers.withwaymo.com": "html_short",
+    "host:cadencetranslate.bamboohr.com": "html_short",
+    "host:data4.bamboohr.com": "html_short",
+    "host:dotcms.bamboohr.com": "html_short",
+    "host:dxs.bamboohr.com": "html_short",
+    "host:eltropy.bamboohr.com": "html_short",
+    "host:energyx.bamboohr.com": "html_short",
+    "host:dywidag.bamboohr.com": "html_short",
+    "host:epsilonassociates.bamboohr.com": "html_short",
+    "host:envitia.bamboohr.com": "html_short",
+    "host:enghouse.bamboohr.com": "html_short",
+    "host:eventmobi.bamboohr.com": "html_short",
+    "host:exogroup.bamboohr.com": "html_short",
+    "host:growthleads.bamboohr.com": "html_short",
+    "host:hycu.bamboohr.com": "html_short",
+    "host:headspin.bamboohr.com": "html_short",
+    "host:inflowhi.bamboohr.com": "html_short",
+    "host:imageengine.bamboohr.com": "html_short",
+    "host:intellecteu.bamboohr.com": "html_short",
+    "host:mcss.bamboohr.com": "html_short",
+    "host:mdotm.bamboohr.com": "html_short",
+    "host:marqvision.bamboohr.com": "html_short",
+    "host:marss.bamboohr.com": "html_short",
+    "host:merge.bamboohr.com": "html_short",
+    "host:metalenz.bamboohr.com": "html_short",
+    "host:mspbots.bamboohr.com": "html_short",
+    "host:newelhealth.bamboohr.com": "html_short",
+    "host:nyobolt.bamboohr.com": "html_short",
+    "host:optionsit.bamboohr.com": "html_short",
+    "host:piletilevi.bamboohr.com": "html_short",
+    "host:principal1.bamboohr.com": "html_short",
+    "host:profitero.bamboohr.com": "html_short",
+    "host:ranovus.bamboohr.com": "html_short",
+    "host:selectorsoftware.bamboohr.com": "html_short",
+    "host:smardt.bamboohr.com": "html_short",
+    "host:smartskin.bamboohr.com": "html_short",
+    "host:smartbox.bamboohr.com": "html_short",
+    "host:silverlogic.bamboohr.com": "html_short",
+    "host:snicsolutions.bamboohr.com": "html_short",
+    "host:solace.bamboohr.com": "html_short",
+    "host:springfinancial.bamboohr.com": "html_short",
+    "host:squirro.bamboohr.com": "html_short",
+    "host:softube.bamboohr.com": "html_short",
+    "host:triggerise.bamboohr.com": "html_short",
+    "host:trodo.bamboohr.com": "html_short",
+    "host:trtglobalsolutions.bamboohr.com": "html_short",
+    "host:tractionrec.bamboohr.com": "html_short",
+    "host:versafile1.bamboohr.com": "html_short",
+    "host:vexxhost.bamboohr.com": "html_short",
+    "host:westlibertyuniversity.bamboohr.com": "html_short",
+    "host:vandenrecycling.bamboohr.com": "html_short",
+    "host:jobs.elastic.co": "html_short",
+    "host:careers.hellofresh.com": "html_403",
+    "host:careers.toasttab.com": "html_404",
+    "host:ameripharma.bamboohr.com": "html_short",
+    "host:blanclabs.bamboohr.com": "html_short",
+    "host:pencor.bamboohr.com": "html_short",
+    "host:phase3mc.bamboohr.com": "html_short",
+    "host:wildix.bamboohr.com": "html_short",
+    "host:hioscar.com": "html_short",
+    "host:skillfield.bamboohr.com": "html_short",
+    "host:app.careerpuck.com": "html_short",
+    "host:anyon.bamboohr.com": "html_short",
+    "host:avidbots.bamboohr.com": "html_short",
+    "host:berkshiregrey.bamboohr.com": "html_short",
+    "host:binsentry.bamboohr.com": "html_short",
+    "host:billigence.bamboohr.com": "html_short",
+    "host:blackstoneenergy.bamboohr.com": "html_short",
+    "host:insticator.bamboohr.com": "html_short",
+    "host:opench.bamboohr.com": "html_short",
+    "host:otcflow.bamboohr.com": "html_short",
+    "host:parser.bamboohr.com": "html_short",
+    "host:sbquantum.bamboohr.com": "html_short",
+    "host:securonix.bamboohr.com": "html_short",
+    "host:telecomp.bamboohr.com": "html_short",
+    "host:sullivanstanley.bamboohr.com": "html_short",
+    "host:theweitzcompany.bamboohr.com": "html_short",
+    "host:unacast.bamboohr.com": "html_short",
+    "host:vamonosit.bamboohr.com": "html_short",
+    "host:virtuozzo.bamboohr.com": "html_short",
+    "host:wallbox.bamboohr.com": "html_short",
+    "host:waystone.bamboohr.com": "html_short",
+    "host:yellowcard.bamboohr.com": "html_short",
+    "host:work4u.bamboohr.com": "html_short",
+    "host:solutionsmetrix.bamboohr.com": "html_short",
+    "host:remoteok.com": "source_thin",
+    "greenhouse:anthropic": "source_thin",
+    "greenhouse:aquaticcapitalmanagement": "source_thin",
+    "greenhouse:adyen": "source_thin",
+    "greenhouse:cabify": "source_thin",
+    "greenhouse:airtable": "source_thin",
+    "host:alayacare.com": "source_thin",
+    "host:careers.airbnb.com": "html_404",
+    "greenhouse:bybit": "source_thin",
+    "host:catonetworks.com": "html_short",
+    "greenhouse:chime": "gh_404",
+    "greenhouse:coherusbiosciences": "source_thin",
+    "host:careers.duolingo.com": "html_short",
+    "greenhouse:doctolib": "source_thin",
+    "greenhouse:cloudflare": "source_thin",
+    "host:ingenio.com": "html_short",
+    "greenhouse:idme": "source_thin",
+    "host:janestreet.com": "source_thin",
+    "host:redventures.com": "source_thin",
+    "greenhouse:rti": "source_thin",
+    "host:salesloft.com": "source_thin",
+    "greenhouse:sertis": "source_thin",
+    "greenhouse:point72": "gh_short",
+    "host:okta.com": "html_404",
+    "greenhouse:stone": "source_thin",
+    "greenhouse:verve": "source_thin",
+    "greenhouse:doordashusa": "source_thin",
+    "host:zoominfo.com": "html_403",
+    "greenhouse:xai": "source_thin",
+    "host:ceis.bamboohr.com": "html_short",
+    "host:cellulant.bamboohr.com": "html_short",
+    "host:characterstrong.bamboohr.com": "html_short",
+    "host:cornelisnetworks.bamboohr.com": "html_short",
+    "host:cortina.bamboohr.com": "html_short",
+    "host:cppi.bamboohr.com": "html_short",
+    "host:digitainsoftware.bamboohr.com": "html_short",
+    "host:encepta.bamboohr.com": "html_short",
+    "host:ehcc.bamboohr.com": "html_short",
+    "host:extonsfoods.bamboohr.com": "html_short",
+    "host:fesslerbowman.bamboohr.com": "html_short",
+    "host:getzhealthcare.bamboohr.com": "html_short",
+    "host:hotelbethlehem.bamboohr.com": "html_short",
+    "host:idbank.bamboohr.com": "html_short",
+    "host:hochiki.bamboohr.com": "html_short",
+    "host:konfio.bamboohr.com": "html_short",
+    "host:lanesgroup.bamboohr.com": "html_short",
+    "host:level9virtual.bamboohr.com": "html_short",
+    "host:lunaroutpost.bamboohr.com": "html_short",
+    "host:maishameds.bamboohr.com": "html_short",
+    "host:mercuryo.bamboohr.com": "html_short",
+    "host:mergon.bamboohr.com": "html_short",
+    "host:nymcard.bamboohr.com": "html_short",
+    "host:optimalworkshop.bamboohr.com": "html_short",
+    "host:psbhq.bamboohr.com": "html_short",
+    "host:rallynet.bamboohr.com": "html_short",
+    "host:redmondconstruction.bamboohr.com": "html_short",
+    "host:reliato.bamboohr.com": "html_short",
+    "host:safransed.bamboohr.com": "html_short",
+    "host:satellogic.bamboohr.com": "html_short",
+    "host:silverstar.bamboohr.com": "html_short",
+    "host:swiftnav.bamboohr.com": "html_short",
+    "host:supplywisdom.bamboohr.com": "html_short",
+    "host:taager.bamboohr.com": "html_short",
+    "host:thelabnyc.bamboohr.com": "html_short",
+    "host:toolbx.bamboohr.com": "html_short",
+    "host:toters.bamboohr.com": "html_short",
+    "host:vendasta.bamboohr.com": "html_short",
+    "host:vizxglobal.bamboohr.com": "html_short",
+    "host:videoslots.bamboohr.com": "html_short",
+    "host:welab.bamboohr.com": "html_short",
+    "greenhouse:smartsheet": "source_thin",
+    "host:innovationhighschool.bamboohr.com": "html_short",
+    "host:epicgames.com": "html_403",
+    "host:pinterestcareers.com": "html_403",
+    "host:weworkremotely.com": "source_thin",
+    "greenhouse:grafanalabs": "source_thin",
+    "host:sofi.com": "html_403",
+    "host:carvana.com": "html_403",
+    "ashby:amenitiz": "source_thin"
+  }
 }
