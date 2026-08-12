@@ -57642,12 +57642,12 @@
       "reason": "source_thin"
     },
     "2ae729fd-95f2-481f-b319-815eb6eaa515": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "19b5cb90-6e4c-4e84-aa3e-ce1c16fa0cc9": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "093096d7-13cd-47b9-87ee-7b87014815d9": {
       "status": "skip",
@@ -57668,8 +57668,8 @@
       "note": "thin_source title=State and Local Government Sales Manager company=Qualtrics apply=https://www.qualtrics.com/careers/us/en/job/8042267?gh_jid=8042267"
     },
     "3ae23c6c-85a8-4869-9410-05ec39b8126a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "089660b9-a926-43bc-9864-49effbb37cfd": {
       "status": "fail",
@@ -57680,32 +57680,33 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "0556cb1a-df8c-4b33-8988-91b954233df0": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/qualtrics/data-0c",
+      "external_id": "qualtrics_data-0c"
     },
     "08368733-0795-4798-a09f-ac9180416a25": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "24a76b60-3711-480b-aa04-d897d3014fdd": {
       "status": "skip",
       "reason": "source_thin"
     },
     "1b3173af-6f6e-48ed-a917-cc8d11904bc5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "01518e38-02c3-4751-aa33-a43b80270778": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "2ffff42b-3133-4e5e-af6f-8b6f12762636": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3d971ddf-f9de-4a95-9a53-bec1cb06ee68": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "38c88f42-5eb8-42a6-9231-ee1e0c7c6c14": {
       "status": "skip",
@@ -57716,16 +57717,16 @@
       "reason": "source_thin"
     },
     "3df437fb-fec2-4b40-9a8d-ae3c5dd14d57": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "32b930b9-6118-4185-83d4-eadd8f3dab3c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "23728241-525a-4510-9780-f0c8dbb85883": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0120719c-fbd0-46ff-a7ce-fc3e462b6b40": {
       "status": "fail",
@@ -57837,27 +57838,30 @@
     },
     "2d1b3d81-8813-4272-9863-135d4301ea3f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "slot_mutation"
     },
     "263734fc-af6e-4603-a893-c2e03b7068ab": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/datadog/enterp-53",
+      "external_id": "datadog_enterp-53"
     },
     "03afc0a0-5164-40a2-9230-a0dfe904b6a0": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/classpass/growth-bd",
+      "external_id": "classpass_growth-bd"
     },
     "35dd8e1b-de58-4ccd-933f-7c5c3df177db": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "04700fa4-cd1d-4ada-998e-70e218c66868": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3d679ec9-2b42-4c63-820d-c69b25d9fc85": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/datadog/enterp-67",
+      "external_id": "datadog_enterp-67"
     },
     "25734bd9-31bd-4b9a-ae58-d06b27d8dcdb": {
       "status": "fail",
@@ -57872,8 +57876,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "04047f10-b181-4896-a8ff-6f90e62f6681": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0122bb61-64b5-40c8-8a07-4d741758fb2e": {
       "status": "ok",
@@ -57881,16 +57885,17 @@
       "external_id": "asana_dir-eng"
     },
     "307d1459-645f-48a3-87f0-da52295f4ac9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "03d26966-aa48-4245-ba33-c74609679a1c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0994f674-614f-4e93-9586-36926e417068": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/classpass/prod",
+      "external_id": "classpass_prod"
     },
     "1cbb540c-9d4a-47a1-bed0-38a40cdf8077": {
       "status": "fail",
@@ -58107,8 +58112,9 @@
       "note": "thin_source title=Senior Full-Stack Engineer, GTM Systems company=Securonix apply=https://securonix.bamboohr.com/careers/1896"
     },
     "1fec69e0-9c06-434f-8226-c6b4b2c0249f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Software Engineer company=Yotpo apply=https://www.yotpo.com/careers/gid-6879751?gh_jid=6879751"
     },
     "34b51179-69f5-4066-b88e-c4a5d3766b7b": {
       "status": "skip",
@@ -58218,40 +58224,45 @@
       "reason": "source_thin"
     },
     "0658719b-e87b-425e-b59f-3ff74729f3e9": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1e0e586c-22f7-4f93-bece-b908d9e464ae": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/roblox/dir-4e",
+      "external_id": "roblox_dir-4e"
     },
     "1724638a-3778-4137-8125-3221d4f3a1c3": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/everstar/exhibi-dc",
+      "external_id": "everstar_exhibi-dc"
     },
     "2c370eaa-4e8b-4791-8249-78c1580b94c5": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "25ac1803-8f27-426e-afef-732f09f91dc8": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2c43391f-bb53-4760-b8f7-86285b1b8d11": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/ripple/treasury",
+      "external_id": "ripple_treasury"
     },
     "2ff904f7-afb4-4614-8f8d-8f9a1596bf3e": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "07c74e01-4dee-4035-ae97-2f19aebd4fdb": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/roblox/content",
+      "external_id": "roblox_content"
     },
     "308f592d-7383-41d8-b5f6-219a3ad5c495": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "ok",
+      "path": "/roblox/law-de",
+      "external_id": "roblox_law-de"
     },
     "0c1d77d0-69cb-48a0-9667-c40d20cd732f": {
       "status": "fail",
@@ -58974,16 +58985,17 @@
       "note": "thin_source title=Senior Director, Customer Success company=Bankrate apply=http://bankrate.com/careers/current-openings?gh_jid=7874138"
     },
     "2831d642-a64f-499c-b32b-6766ea63f462": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/datadog/eng-4c",
+      "external_id": "datadog_eng-4c"
     },
     "10b75970-48eb-43a0-bc4e-ac7149e92f53": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "21e5d868-a337-468b-9e85-ca7d5344c906": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3f4f8b79-f0c7-4b37-9385-655c0fbafc64": {
       "status": "fail",
@@ -58998,8 +59010,9 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "3064aaf9-81cf-4e8c-a995-c7b540b28455": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/cribl/partne-09",
+      "external_id": "cribl_partne-09"
     },
     "33177c86-be80-4796-a623-c82a21b92528": {
       "status": "fail",
@@ -59007,7 +59020,7 @@
     },
     "1c6c6965-7024-4a5e-8677-750e8e991b06": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_slop"
     },
     "315d1c82-974d-4138-a1d2-39bf7a48d66b": {
       "status": "fail",
@@ -59082,24 +59095,25 @@
       "reason": "source_thin"
     },
     "04f74e83-0cef-4634-b114-e9d5ec725c8a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/datadog/region-a4",
+      "external_id": "datadog_region-a4"
     },
     "20cfb727-d514-4dc3-9acf-7b1adce84802": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0d2f44d5-0204-4bdd-b5ac-86df3214979c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0e100754-6a4e-45d0-af2f-9c01143a7cf1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "243109fa-0f0b-4a8e-8600-bb5bb5e4865e": {
       "status": "fail",
-      "reason": "rewrite_slop"
+      "reason": "slot_mutation"
     },
     "25e38207-78e3-43e7-a5c7-4dca5e571316": {
       "status": "ok",
@@ -59107,12 +59121,14 @@
       "external_id": "roku_subscription"
     },
     "324b74b2-6c25-4ea3-b0b6-56010e9503e0": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/datadog/region-da",
+      "external_id": "datadog_region-da"
     },
     "2c1ea43b-4c77-4696-983b-a8fd2743ff21": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/payoneer/prod-mgr",
+      "external_id": "payoneer_prod-mgr"
     },
     "180a8fb9-0ab0-47f2-9501-188807194b38": {
       "status": "skip",
@@ -83581,7 +83597,25 @@
     "1efa9776-3843-4885-bdb7-92fc7d8a456c",
     "3c8b4373-5340-4380-b8ab-26f0014d0b00",
     "3737dce1-acd1-4be9-95f8-ffdc8b15323f",
-    "16c9d990-c810-4d90-a92a-21a588b434d8"
+    "16c9d990-c810-4d90-a92a-21a588b434d8",
+    "0122bb61-64b5-40c8-8a07-4d741758fb2e",
+    "0994f674-614f-4e93-9586-36926e417068",
+    "03afc0a0-5164-40a2-9230-a0dfe904b6a0",
+    "263734fc-af6e-4603-a893-c2e03b7068ab",
+    "0556cb1a-df8c-4b33-8988-91b954233df0",
+    "3d679ec9-2b42-4c63-820d-c69b25d9fc85",
+    "2c43391f-bb53-4760-b8f7-86285b1b8d11",
+    "07c74e01-4dee-4035-ae97-2f19aebd4fdb",
+    "1fec69e0-9c06-434f-8226-c6b4b2c0249f",
+    "176d9dd4-b3ba-49dd-85d1-6b60fde8ec49",
+    "1e0e586c-22f7-4f93-bece-b908d9e464ae",
+    "308f592d-7383-41d8-b5f6-219a3ad5c495",
+    "1724638a-3778-4137-8125-3221d4f3a1c3",
+    "3064aaf9-81cf-4e8c-a995-c7b540b28455",
+    "2c1ea43b-4c77-4696-983b-a8fd2743ff21",
+    "04f74e83-0cef-4634-b114-e9d5ec725c8a",
+    "2831d642-a64f-499c-b32b-6766ea63f462",
+    "324b74b2-6c25-4ea3-b0b6-56010e9503e0"
   ],
   "skipped": {},
   "batches": [
@@ -85016,6 +85050,49 @@
         "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   ": 25
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-12T17:47:55.092Z",
+      "attempted": 160,
+      "ok": 41,
+      "skip": 105,
+      "fail": 15,
+      "reasons": {
+        "expand_existing": 27,
+        "source_thin": 97,
+        "slot_mutation": 11,
+        "rewrite_slop": 3,
+        "gh_404": 3,
+        "dead_board": 1,
+        "posting_older_than_30d": 1,
+        "rewrite_short": 1,
+        "html_429": 1,
+        "err_TimeoutError": 2
+      },
+      "samplePaths": [
+        "/cabify/cust-ops",
+        "/stone-linkedin/sw-47",
+        "/c6-bank/arquiteto",
+        "/protolabs/global",
+        "/animocabrands/mgr-fin",
+        "/ciandt/mid-5a",
+        "/shieldai/accountant",
+        "/braze/creative",
+        "/altana/strat",
+        "/clutch-technologies-inc/vehicl-e2",
+        "/clutch-technologies-inc/parts",
+        "/hootsuite/cust-29",
+        "/pagerduty/enterp-00",
+        "/gofundme/policy",
+        "/spacex/rfic-af",
+        "/tanium/dir-rd",
+        "/varda-space-industries/mission",
+        "/spacex/data-6b",
+        "/asi/consult",
+        "/wise/israel"
+      ]
     }
   ],
   "deadBoards": {

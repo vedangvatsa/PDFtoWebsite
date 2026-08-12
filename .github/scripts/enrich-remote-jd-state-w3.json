@@ -61596,8 +61596,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "f3a367fc-c9fd-4343-863c-9b217092d049": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/zenoti/implem-82",
+      "external_id": "zenoti_implem-82"
     },
     "ceaa3a44-cbc4-471a-a70b-f71d162a4ebd": {
       "status": "skip",
@@ -61605,27 +61606,29 @@
     },
     "e71dcec2-ad27-443a-bfd0-4220a10b3263": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "slot_mutation"
     },
     "c8dc69a1-9709-446d-a25b-303d039e85eb": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/doordash-usa/sw-fd",
+      "external_id": "doordash-usa_sw-fd"
     },
     "f224405e-7cbc-43c6-8e90-585244932ba7": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "e8b146b3-475f-42ea-8cea-be2d85d406c4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "fdff99d1-d19a-4cb8-a529-02e2b80c8ba0": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/spacex/optica-9c",
+      "external_id": "spacex_optica-9c"
     },
     "e63bcbb5-977c-4508-a857-36b1a2c29109": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f9d8c061-2b9b-4c45-8e08-d41fbb87bb9d": {
       "status": "skip",
@@ -61633,12 +61636,12 @@
       "note": "thin_source title=Head of Industry, Entertainment & Culture company=The New York Times apply=https://job-boards.greenhouse.io/thenewyorktimes/jobs/4671665005"
     },
     "f288f404-9486-4115-aedb-a8b3e3d864d6": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f167c56c-1926-403a-8f5e-73964057b05d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ca877a02-5382-4dba-a358-d6b431c78f12": {
       "status": "skip",
@@ -63405,16 +63408,18 @@
       "note": "thin_source title=Staff Software Engineer, Game Development company=Scopely apply=https://job-boards.greenhouse.io/scopely/jobs/5379053008?gh_jid=5379053008"
     },
     "cd55f0e2-a13f-40b7-850b-73cf983db90a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/8th-light/lead-8d",
+      "external_id": "8th-light_lead-8d"
     },
     "f1034bc8-8aaf-4ecf-9110-bc169992402d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "dc305092-aee0-4a3c-a0f1-f97659132411": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/relativity-space/tech-89",
+      "external_id": "relativity-space_tech-89"
     },
     "eab93f53-5b94-40a7-8f2f-5b3f45a07ebd": {
       "status": "skip",
@@ -63425,48 +63430,50 @@
       "reason": "source_thin"
     },
     "cfc0a46a-9f12-4a0f-9105-87443153f1ed": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "da791b17-f840-429f-8b23-f9cb3ea10ee7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c1b53ac1-bb30-4080-910c-08e216c026e7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "fdd0f073-8304-4db8-97d7-8ee6cac3ed1d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f466a67e-c9b4-4abd-84c6-827c9dc9ecb0": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "ebe72aaa-ea89-4687-b9df-f3a91d0090f9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d4637751-ac8a-4cce-8ed7-a883f6273e25": {
       "status": "skip",
       "reason": "source_thin"
     },
     "fe67487f-d141-4277-a01b-35675391dee4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/spacex/food-57",
+      "external_id": "spacex_food-57"
     },
     "e9afc301-a307-4a56-9f5f-5b3ed1263956": {
       "status": "skip",
       "reason": "source_thin"
     },
     "db15927b-0135-4c2b-ba46-efff97b6cd6c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "ca9ba8ad-b7d0-423f-a324-8af38ae69ea8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/8th-light/lead-sw",
+      "external_id": "8th-light_lead-sw"
     },
     "d7c0f0fd-2349-4fcb-a6c6-99db96dfe6b2": {
       "status": "fail",
@@ -63481,8 +63488,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "ec42b1ec-a98c-4877-8f1a-deb3201ce0b5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "e4a312b3-9d20-4b54-85ce-93130e0abf15": {
       "status": "fail",
@@ -63490,19 +63497,20 @@
     },
     "eef01f18-314e-4a1b-a8fc-e3451eab03c9": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "ee86ef53-c31a-40e3-8ad8-9b6fecc9a294": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "f4563614-2a0a-436f-9e87-367254670f1f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "eb0dfa8a-3366-4ba8-afd6-ab26878d29e4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/varda-space-industries/auto-eng",
+      "external_id": "varda-space-industries_auto-eng"
     },
     "d0e1e4c5-3302-4dfa-a76a-4aab681c85e1": {
       "status": "skip",
@@ -63510,27 +63518,27 @@
     },
     "dbfa327f-a604-4dce-93fa-340bb247a5d2": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "c8e6262f-556f-4dc9-af48-62cd2e85fd49": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d3b03d6c-ff25-4d00-9a51-9f63ba87f770": {
       "status": "skip",
       "reason": "source_thin"
     },
     "eada9eaa-e534-4407-a057-e5020b374832": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c0af34a6-b35b-4f3f-be30-ffc2d1d1380f": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "e444ef30-1c11-48b8-b7c2-5c6fb01b8495": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "eccb824b-6bd8-4e4e-9bba-30ad7c360714": {
       "status": "skip",
@@ -63542,11 +63550,11 @@
     },
     "f83f79f7-db27-4f85-ae98-a4446c19b9cd": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "ffef369b-594a-4268-ae7e-0ab8132e0078": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "c1cf87de-8a13-4b44-9b02-63c516073df2": {
       "status": "fail",
@@ -63565,8 +63573,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "fce7e89e-0be1-4efb-97d6-d9d566c2c9af": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/aeg-worldwide/goldenvoice",
+      "external_id": "aeg-worldwide_goldenvoice"
     },
     "d5bb2f53-a903-4a52-84e4-d9df10b965ef": {
       "status": "fail",
@@ -63593,8 +63602,8 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "df7223c5-6840-4e7f-8b85-1bc0b4620f07": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f2d79143-fbc7-4b1b-b715-f64eaddc79fa": {
       "status": "fail",
@@ -63613,8 +63622,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "caf05ccb-23dc-4ef4-b0da-68a6ae78c99a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/aeg-worldwide/r",
+      "external_id": "aeg-worldwide_r"
     },
     "c413575d-47eb-46e8-8adf-0ea05e10df9e": {
       "status": "fail",
@@ -63625,8 +63635,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "f4cbda3c-62fb-4996-b957-5581c42886e4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/aeg-worldwide/infra",
+      "external_id": "aeg-worldwide_infra"
     },
     "c275de69-a9ab-45e2-906c-5abacad5e1fe": {
       "status": "fail",
@@ -63657,28 +63668,30 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "e6179856-6968-4cc3-8bf2-3e0081be355d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/aeg-worldwide/hr-coord",
+      "external_id": "aeg-worldwide_hr-coord"
     },
     "f0f524f8-b811-40a9-87e5-3e0ff4e859d1": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "ee4b1e26-6df0-4d19-be64-263503ca708a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "f0f734b8-bd63-4efb-98e4-80dc18e23266": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Senior HRIS Integration Developer company=Ivanti apply=https://job-boards.greenhouse.io/a3c41b8b71eff8c4/jobs/7781248003"
     },
     "e97a0db7-ae6e-411b-a4d0-906c1594e168": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "d03e3862-8cd9-4e28-8d36-b6e0fb483313": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "fee42b5e-1aa1-40cf-82a3-053c0e883485": {
       "status": "fail",
@@ -66721,12 +66734,14 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "cc4f184f-53fc-4f62-afc6-8919f0fae542": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/ifs/arch",
+      "external_id": "ifs_arch"
     },
     "ec18556e-a1cc-49cf-bfcc-ed7be7c2d3b7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/rodeo-fx/artiste",
+      "external_id": "rodeo-fx_artiste"
     },
     "cd2c9d7b-773d-4fda-bb46-5d22d57aa5dd": {
       "status": "fail",
@@ -77592,6 +77607,37 @@
     "f9c601f0-0cda-4cfa-a78f-5b229d061af5": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "ff483a41-aeca-430d-b007-80206d1568c1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "f0a73171-427a-412e-b996-ab09633e27b0": {
+      "status": "skip",
+      "reason": "fact_sheet_parse"
+    },
+    "f3a8941f-6789-4b59-9d59-56ebe8586653": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "e8183862-dc15-4625-9302-f784a1c65dad": {
+      "status": "ok",
+      "path": "/wise/prod-54",
+      "external_id": "wise_prod-54"
+    },
+    "c347c3b7-dd54-4b05-a363-cc39ce73b274": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "e5930678-1719-414d-87f5-f029c3cd253d": {
+      "status": "ok",
+      "path": "/cern/proj-eng",
+      "external_id": "cern_proj-eng"
+    },
+    "c99ee99a-ee73-4540-afa4-aa36db22158b": {
+      "status": "ok",
+      "path": "/wise/prod-b1",
+      "external_id": "wise_prod-b1"
     }
   },
   "doneIds": [
@@ -92606,6 +92652,7 @@
     "greenhouse:oportun": "gh_404",
     "greenhouse:razorpaysoftwareprivatelimited": "gh_404",
     "greenhouse:vestmark": "gh_404",
-    "greenhouse:thenewyorktimes": "gh_404"
+    "greenhouse:thenewyorktimes": "gh_404",
+    "greenhouse:a3c41b8b71eff8c4": "gh_404"
   }
 }

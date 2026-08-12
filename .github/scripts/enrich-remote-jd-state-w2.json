@@ -83173,6 +83173,261 @@
       "status": "ok",
       "path": "/base-operations/data-eng",
       "external_id": "base-operations_data-eng"
+    },
+    "9ee517b0-3451-46c1-93c9-32674ae9ecbf": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b46bb2bb-4499-4f3d-8bd9-2d8bba58d3fb": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b1d695a2-fb54-4f1d-b51c-03e725501e07": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a34f826f-0499-43e9-bc0a-03300bbe639c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8318d093-8a19-451a-b1d0-a7e2349bfcac": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9c0dc74b-81e7-4a82-866c-649d182311db": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9fe46020-f8fe-4060-b488-bc597245e10d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "be017fe4-e180-47ca-963c-ba713476aa1d": {
+      "status": "ok",
+      "path": "/bio/sci",
+      "external_id": "bio_sci"
+    },
+    "9e3d1eb5-3a87-4c38-b7f2-988c45a8b3c7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b9fb1607-6242-41e7-993d-75a7a66eecdc": {
+      "status": "ok",
+      "path": "/bio/core-eng",
+      "external_id": "bio_core-eng"
+    },
+    "98b55c9b-bdac-474d-8312-96303a63a548": {
+      "status": "fail",
+      "reason": "rewrite_slop"
+    },
+    "9d038400-5634-4ba0-b452-81c55dd8c05b": {
+      "status": "fail",
+      "reason": "slot_mutation"
+    },
+    "96d88f05-7f60-43c0-a912-1304eee11473": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "97aac86d-c20c-4fb8-9e68-8f1d81febf0a": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "bbf54e01-4d69-41af-bbfe-93c0e89c4b29": {
+      "status": "skip",
+      "reason": "fact_sheet_parse"
+    },
+    "9bf638dc-432d-4b46-9b07-ee012052aa9a": {
+      "status": "ok",
+      "path": "/overview/fullstk",
+      "external_id": "overview_fullstk"
+    },
+    "b990e8e4-c618-4431-86f4-b3b51eca50cf": {
+      "status": "ok",
+      "path": "/overview/ai-gtm",
+      "external_id": "overview_ai-gtm"
+    },
+    "aeeaa27d-62da-45ca-b7ed-546e54bff2a3": {
+      "status": "ok",
+      "path": "/amboss/assoc",
+      "external_id": "amboss_assoc"
+    },
+    "b95dc45b-5096-4f50-a65a-b2c3bb9f077f": {
+      "status": "ok",
+      "path": "/josys/pr-spec",
+      "external_id": "josys_pr-spec"
+    },
+    "afd173fc-c3a2-4d95-a26f-8b500a49d8ba": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "95fdfc86-ad12-444e-b2ca-6cff011d47ed": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "bd96547a-c01e-4abe-8510-e716427a5bb9": {
+      "status": "ok",
+      "path": "/fal-ai/sw-eng",
+      "external_id": "fal-ai_sw-eng"
+    },
+    "84bb4bfb-ef69-4b7e-a5e8-743dfd361ed1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a4c6d338-edb3-43da-9ec1-669072676f61": {
+      "status": "fail",
+      "reason": "slot_mutation"
+    },
+    "b1d3e893-25ef-4eb0-a3ba-63e93c9e8422": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "acc9b7df-44ce-42e6-b332-d0358e69e5e7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a39f6c67-157b-4f2d-a9f8-3efa986980d6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b3534310-9892-4b7f-8579-17f8f4019ac5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ad86752c-ac33-49a6-882e-93485b0d08e5": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b40f8136-e4d0-40ca-b8e0-29fe495b00a0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "967824bf-c608-49a8-9418-88442aa95140": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "967edcbd-e0bd-4872-bc8e-e6f95cfc875f": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "bb770044-962b-4a5c-b9b6-4707ef6e8a61": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ac26e5df-455c-400e-9837-a6efacf1cdcb": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "bdb48416-5e94-4227-a5f4-a7553b0908a6": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a80beeaf-7033-4136-9a6f-78caba96e212": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ac45fbfd-33f5-4d81-8ad5-b3d5b6925a30": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a3516dde-4b79-4677-822e-286292cfe6a0": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "831dd94f-1184-49cc-bc3c-905683fd9a48": {
+      "status": "ok",
+      "path": "/stack-ai/prod-sec",
+      "external_id": "stack-ai_prod-sec"
+    },
+    "8d7aeaa8-c660-4c73-a9b0-bb3cd7cf9102": {
+      "status": "ok",
+      "path": "/stack-ai/forward",
+      "external_id": "stack-ai_forward"
+    },
+    "9c982983-1559-4171-b84a-9fd92e802c68": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ac93598b-dc40-4f69-b1ea-a3898a370a12": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "b3127358-979c-42d4-a14d-3ae5d42f8e4d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "9d41ed43-7b77-497a-a1e4-1fe005a89a1d": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "a6694a58-a7d9-4a59-b522-adb84a1e92fd": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "88ee10de-dfa5-4b21-ad19-49d530359290": {
+      "status": "ok",
+      "path": "/kiddom/ml",
+      "external_id": "kiddom_ml"
+    },
+    "9b5bb6b1-50af-45f1-89bc-3b2ef425621c": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "823efe8b-cd9d-4b50-a9cd-6a278cd969fa": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "ac0d0ea2-911e-4ceb-ba47-b57b6f9a75f0": {
+      "status": "ok",
+      "path": "/openloophealth/cust",
+      "external_id": "openloophealth_cust"
+    },
+    "aa11d2ef-2b0b-482d-9d67-7fc0c619ed55": {
+      "status": "ok",
+      "path": "/neptune/founding",
+      "external_id": "neptune_founding"
+    },
+    "95cf8dfe-2b6d-4fdf-8ccf-e5f8cc463747": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "860ab9e4-6c65-4ef5-89e8-9d2ad40c6d6a": {
+      "status": "ok",
+      "path": "/teya/regionalni",
+      "external_id": "teya_regionalni"
+    },
+    "99c5a083-25d9-41c1-9a74-e4be9df9af83": {
+      "status": "ok",
+      "path": "/openloophealth/dir-prod",
+      "external_id": "openloophealth_dir-prod"
+    },
+    "9384113e-0955-41c7-841c-40da89ae4538": {
+      "status": "ok",
+      "path": "/openloophealth/strat",
+      "external_id": "openloophealth_strat"
+    },
+    "a59449d5-c722-4bc0-81df-3b9b165f3612": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8c880a12-7f11-489b-8f19-20ff0ef8fa17": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "8a9662d2-a263-4ad6-8364-eeb71525eddb": {
+      "status": "fail",
+      "reason": "slot_mutation"
+    },
+    "9a5d4c87-b537-40f2-94cb-9b15bd97dbb1": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "90c2e542-255e-4381-8f00-cb9fbd6dc0d7": {
+      "status": "skip",
+      "reason": "source_thin"
+    },
+    "af779613-e770-4073-9971-1c4c27d0a58d": {
+      "status": "skip",
+      "reason": "source_thin"
     }
   },
   "doneIds": [
@@ -97708,7 +97963,32 @@
     "fde242cd-858b-4fdc-a616-31adfc183413",
     "f9fbaee9-0620-4d0e-a905-57470603964a",
     "fe11149a-92bb-40cc-bc7a-aed8f55cb2d0",
-    "fa7b56ef-a289-42c6-af23-80fb6386c848"
+    "fa7b56ef-a289-42c6-af23-80fb6386c848",
+    "afe7ab47-65b0-4fd3-b0d4-33ff9db391c2",
+    "8c9ba175-de30-4bd8-ada3-8ffabb09e2a3",
+    "889e20d3-6b56-410e-9e2d-d0e287eb11e2",
+    "b2b05c01-cd95-4b5d-8900-46ed95474b1f",
+    "bbc05c49-68e6-4c76-8424-a72e46563a97",
+    "93a2a6c3-fc29-4ed3-a6b5-e3ad25045c19",
+    "b2ebebb1-de02-4761-95ab-a451dd96a367",
+    "8e6400b7-5b10-4140-a3c2-5aef917c4147",
+    "a6d1bc75-1c8d-42f9-85ee-fcfef936bbf7",
+    "b1ae1188-a0aa-44b5-88de-f9718fa7f32f",
+    "a3d834bd-8c1d-4c76-bb2d-22fb8020d5db",
+    "befdd730-0c3d-4f8b-9c93-2fb4b49fbd76",
+    "b2a6dc42-6efe-4301-87fa-d0e9f1b47b16",
+    "88ee7df2-0e90-4f89-952e-e91223a5e89f",
+    "b4d04cbb-4327-4881-a1db-dc3f569f7e53",
+    "b696cc4f-7a9a-436c-920c-8f7305302523",
+    "b7abf24b-5128-436a-822a-f9b4806fa688",
+    "b99bc895-6a4b-49e8-a4eb-3714da06b593",
+    "ab3df872-7111-449e-ae47-1e85cdcb278a",
+    "b26e6949-b3a2-4201-8bd7-d698b7ea6be7",
+    "b6b42683-9aa2-4b4b-bc29-b576f0fe568b",
+    "a11f1dda-76e9-4b42-9e43-2ddc255d59cc",
+    "be017fe4-e180-47ca-963c-ba713476aa1d",
+    "b9fb1607-6242-41e7-993d-75a7a66eecdc",
+    "9bf638dc-432d-4b46-9b07-ee012052aa9a"
   ],
   "skipped": {},
   "batches": [
