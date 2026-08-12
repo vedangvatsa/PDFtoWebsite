@@ -59722,6 +59722,326 @@
     "8d7b4b14-5300-4529-a23d-b2b91bb596c4": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "9a6167a5-0e20-40ea-8cce-78ff05a448a1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9c1907e2-f8c5-4572-8702-cd425e137cf7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "92799b9b-d896-4303-94c7-307baec46524": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "97034604-bef7-4392-a073-c402fd5528c9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8b6727ee-e3ec-437d-a2c0-9bea07c089ef": {
+      "status": "ok",
+      "path": "/proper/accoun-a7",
+      "external_id": "proper_accoun-a7"
+    },
+    "9013e40a-1d77-46f7-9801-1af13bed227e": {
+      "status": "ok",
+      "path": "/acds/general",
+      "external_id": "acds_general"
+    },
+    "9fe21a60-6f01-405c-9a90-225d7ac0d23c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9e98105d-d563-434e-9cf0-b31fba4d6c7e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "98980689-80f8-466d-b1b6-e608c0b2e203": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8efb94a5-90b7-4152-a34c-e1dcd49af223": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "99cd0f9e-54ca-4b5f-b735-258cee83ce63": {
+      "status": "ok",
+      "path": "/coins/aml-47",
+      "external_id": "coins_aml-47"
+    },
+    "82df8dcb-1990-4593-8cf8-838af7abd775": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "883912bb-a9c2-44a0-8244-77d7736960be": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "96bf4ac8-40b1-4015-b97b-07371a7853c3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8b4cf5aa-9e15-4ca1-af2c-3625e0a9f433": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9bffff75-2cc2-4589-8934-31dd67e6b68d": {
+      "status": "ok",
+      "path": "/greenlight/biz-dev",
+      "external_id": "greenlight_biz-dev"
+    },
+    "96ccb540-fbb4-467f-90b7-caca792d93ce": {
+      "status": "ok",
+      "path": "/coins/region-6a",
+      "external_id": "coins_region-6a"
+    },
+    "8a47549a-d71d-498f-ac83-9c6b6513dc93": {
+      "status": "ok",
+      "path": "/proper/general",
+      "external_id": "proper_general"
+    },
+    "9d4b82e9-7bc0-49cc-84ff-2634aada02ff": {
+      "status": "ok",
+      "path": "/coins/payment",
+      "external_id": "coins_payment"
+    },
+    "8c181703-858b-4051-a643-68602ddbce21": {
+      "status": "ok",
+      "path": "/mindtickle/field",
+      "external_id": "mindtickle_field"
+    },
+    "8eaebc37-1c35-447e-83b0-22877c0498b1": {
+      "status": "ok",
+      "path": "/erg/fire",
+      "external_id": "erg_fire"
+    },
+    "859d6496-0f21-466a-840e-3d52ca321724": {
+      "status": "ok",
+      "path": "/coins/sec-eng",
+      "external_id": "coins_sec-eng"
+    },
+    "97f87299-9653-4b31-9ee5-5dabf9f4012c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9f7b8a8e-8b82-4781-bd50-755569def95c": {
+      "status": "ok",
+      "path": "/coins/head-22",
+      "external_id": "coins_head-22"
+    },
+    "853608e3-9873-4be5-a638-c49b84e5c0a5": {
+      "status": "ok",
+      "path": "/greenlight/offensive",
+      "external_id": "greenlight_offensive"
+    },
+    "96929cbb-4c3f-43eb-bbf0-2cc5c0ae1e0c": {
+      "status": "ok",
+      "path": "/coins/deputy",
+      "external_id": "coins_deputy"
+    },
+    "86f7c49f-c1e7-4017-8202-4258043ff932": {
+      "status": "ok",
+      "path": "/civitech/rev-ops",
+      "external_id": "civitech_rev-ops"
+    },
+    "9124661a-a252-4f37-bc8e-d847bd1c3a94": {
+      "status": "ok",
+      "path": "/erg/process",
+      "external_id": "erg_process"
+    },
+    "808ce9a8-65bf-4120-94df-d9e3a599f1a6": {
+      "status": "ok",
+      "path": "/coins/chief",
+      "external_id": "coins_chief"
+    },
+    "88ce5642-8f0f-4968-be14-256764a3a471": {
+      "status": "ok",
+      "path": "/mactores/sales",
+      "external_id": "mactores_sales"
+    },
+    "9e66f6e3-85bd-4e65-9faf-8d762c2b1c46": {
+      "status": "ok",
+      "path": "/civitech/vp-fin",
+      "external_id": "civitech_vp-fin"
+    },
+    "9b1eac37-660e-4af1-b2dc-e0f1ec8eff28": {
+      "status": "ok",
+      "path": "/coins/qa-assoc",
+      "external_id": "coins_qa-assoc"
+    },
+    "8398ef12-7684-43d7-bbf4-ae2450da7914": {
+      "status": "ok",
+      "path": "/coins/th-1e",
+      "external_id": "coins_th-1e"
+    },
+    "9a6f7c9e-5ce9-4f93-8534-bd614bc1f4e3": {
+      "status": "ok",
+      "path": "/analyticpartners/dir-mkt",
+      "external_id": "analyticpartners_dir-mkt"
+    },
+    "9970f980-87d4-4318-bc02-83eae3f2aac8": {
+      "status": "ok",
+      "path": "/coins/otc-ca",
+      "external_id": "coins_otc-ca"
+    },
+    "878fc3e2-56c8-43c7-b7b6-d8cdfa876c54": {
+      "status": "ok",
+      "path": "/fatetherapeutics/clinic",
+      "external_id": "fatetherapeutics_clinic"
+    },
+    "8533cd01-bc00-4bc6-b73c-8b3b0d010cc1": {
+      "status": "ok",
+      "path": "/coins/talent",
+      "external_id": "coins_talent"
+    },
+    "8a7e8374-497b-4ee2-bbcf-5554e1b21d22": {
+      "status": "ok",
+      "path": "/jobandtalent/se-fin",
+      "external_id": "jobandtalent_se-fin"
+    },
+    "891eac4a-22c2-4d17-a6d7-fb51923adf6f": {
+      "status": "ok",
+      "path": "/educative/tech",
+      "external_id": "educative_tech"
+    },
+    "810fd21b-d5f5-4392-8835-2658240b9c4a": {
+      "status": "ok",
+      "path": "/lendbuzz/market-f3",
+      "external_id": "lendbuzz_market-f3"
+    },
+    "84909bd9-b7d2-4e20-9643-35040d7e97de": {
+      "status": "ok",
+      "path": "/influur/treasu-05",
+      "external_id": "influur_treasu-05"
+    },
+    "88f9c523-e8f8-4d27-b10c-f0462c798484": {
+      "status": "ok",
+      "path": "/assist-world/creative",
+      "external_id": "assist-world_creative"
+    },
+    "8f21c5e6-3c59-4833-abb1-75a0e0b56ef6": {
+      "status": "ok",
+      "path": "/fampay/tech",
+      "external_id": "fampay_tech"
+    },
+    "9866c255-46a5-4f98-8ae5-79ac8a34dd15": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Restb Test Req company=Clearcapital apply=https://jobs.lever.co/clearcapital/911920fb-3581-451f-9ea1-decf4124a956"
+    },
+    "8ad354ff-86ce-433e-938f-8dc83b6fca1b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9e30939e-8eaa-4c16-ade1-a007c443d0ba": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "853da7df-5689-43eb-8ac1-7631b9002b98": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "81079f64-3bd5-44d2-a814-5f003101c505": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9b996708-076c-4fc6-a845-f32d3936a75f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "949e1346-89c6-4e00-b961-875d11e9fd7b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9748b210-5ea8-4306-a174-89e7643f279b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "98b0d983-77d6-46f0-b216-c599a818dc5a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "889dca6e-0606-465f-88bf-11a9f6df0125": {
+      "status": "ok",
+      "path": "/air-tek/sw-87",
+      "external_id": "air-tek_sw-87"
+    },
+    "92ed03a2-b66a-4d46-8d8c-7d123e92d581": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "95ea4e25-088c-4d4c-8172-50be40b0e614": {
+      "status": "ok",
+      "path": "/arrivelogistics/weekend",
+      "external_id": "arrivelogistics_weekend"
+    },
+    "8bf641aa-4c82-431b-b72c-5a12568f11c1": {
+      "status": "ok",
+      "path": "/aleph/perfor-9a",
+      "external_id": "aleph_perfor-9a"
+    },
+    "85e549d2-47da-4c99-8382-9cedd3ba68a3": {
+      "status": "ok",
+      "path": "/dronedeploy/mgr-it",
+      "external_id": "dronedeploy_mgr-it"
+    },
+    "9871c719-2d02-4f92-a42b-969c9eda39d3": {
+      "status": "ok",
+      "path": "/arrivelogistics/outside",
+      "external_id": "arrivelogistics_outside"
+    },
+    "93ad7172-8294-4ba7-a13c-4ec74043da07": {
+      "status": "ok",
+      "path": "/aleph/treasu-72",
+      "external_id": "aleph_treasu-72"
+    },
+    "811a02eb-d84b-45a6-8e58-b68fa959f754": {
+      "status": "ok",
+      "path": "/dronedeploy/sol-eng",
+      "external_id": "dronedeploy_sol-eng"
+    },
+    "9b2c8514-9c21-475e-8ec3-0523db4fc541": {
+      "status": "ok",
+      "path": "/dreamgames/game-dev",
+      "external_id": "dreamgames_game-dev"
+    },
+    "876daf94-e277-497e-b4b0-bd7c4a02189e": {
+      "status": "ok",
+      "path": "/everbridge/demand",
+      "external_id": "everbridge_demand"
+    },
+    "9ddc7a90-ba73-42e7-9034-b74bc3c02f4f": {
+      "status": "ok",
+      "path": "/genesis/performance",
+      "external_id": "genesis_performance"
+    },
+    "8a6795fe-8fe9-40d7-ab2b-1d25bd9dc0bf": {
+      "status": "ok",
+      "path": "/enable/accountant",
+      "external_id": "enable_accountant"
+    },
+    "969fe215-3932-4421-b0d5-3bbe35da5ab8": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Consultant - R01565485 company=Brillio 2 apply=https://jobs.lever.co/brillio-2/8f37377f-d285-4b74-8f59-da08e99229dd"
+    },
+    "9cb7c179-cf34-41b5-a1f6-e0b2b368923a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Data Scientist - R01542454 company=Brillio 2 apply=https://jobs.lever.co/brillio-2/8463adae-9020-420e-80ef-1cf8ea03580d"
+    },
+    "8883a945-7615-4100-879b-9ed20a26f1b7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8e35c471-3408-441c-9737-55e197b94374": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "87811014-d961-43b1-a3a4-d79c579dd2ad": {
+      "status": "fail",
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -73446,7 +73766,76 @@
     "9558d402-f947-49ea-805d-f32d34815014",
     "982986ff-64a3-4aa0-bb3d-f632a652b007",
     "9cba7b44-241c-4aeb-a289-e9e17750c3ec",
-    "8d7b4b14-5300-4529-a23d-b2b91bb596c4"
+    "8d7b4b14-5300-4529-a23d-b2b91bb596c4",
+    "9a6167a5-0e20-40ea-8cce-78ff05a448a1",
+    "9c1907e2-f8c5-4572-8702-cd425e137cf7",
+    "92799b9b-d896-4303-94c7-307baec46524",
+    "97034604-bef7-4392-a073-c402fd5528c9",
+    "8b6727ee-e3ec-437d-a2c0-9bea07c089ef",
+    "9013e40a-1d77-46f7-9801-1af13bed227e",
+    "9fe21a60-6f01-405c-9a90-225d7ac0d23c",
+    "9e98105d-d563-434e-9cf0-b31fba4d6c7e",
+    "98980689-80f8-466d-b1b6-e608c0b2e203",
+    "8efb94a5-90b7-4152-a34c-e1dcd49af223",
+    "99cd0f9e-54ca-4b5f-b735-258cee83ce63",
+    "82df8dcb-1990-4593-8cf8-838af7abd775",
+    "883912bb-a9c2-44a0-8244-77d7736960be",
+    "96bf4ac8-40b1-4015-b97b-07371a7853c3",
+    "8b4cf5aa-9e15-4ca1-af2c-3625e0a9f433",
+    "9bffff75-2cc2-4589-8934-31dd67e6b68d",
+    "96ccb540-fbb4-467f-90b7-caca792d93ce",
+    "8a47549a-d71d-498f-ac83-9c6b6513dc93",
+    "9d4b82e9-7bc0-49cc-84ff-2634aada02ff",
+    "8c181703-858b-4051-a643-68602ddbce21",
+    "8eaebc37-1c35-447e-83b0-22877c0498b1",
+    "859d6496-0f21-466a-840e-3d52ca321724",
+    "97f87299-9653-4b31-9ee5-5dabf9f4012c",
+    "9f7b8a8e-8b82-4781-bd50-755569def95c",
+    "853608e3-9873-4be5-a638-c49b84e5c0a5",
+    "96929cbb-4c3f-43eb-bbf0-2cc5c0ae1e0c",
+    "86f7c49f-c1e7-4017-8202-4258043ff932",
+    "9124661a-a252-4f37-bc8e-d847bd1c3a94",
+    "808ce9a8-65bf-4120-94df-d9e3a599f1a6",
+    "88ce5642-8f0f-4968-be14-256764a3a471",
+    "9e66f6e3-85bd-4e65-9faf-8d762c2b1c46",
+    "9b1eac37-660e-4af1-b2dc-e0f1ec8eff28",
+    "8398ef12-7684-43d7-bbf4-ae2450da7914",
+    "9a6f7c9e-5ce9-4f93-8534-bd614bc1f4e3",
+    "9970f980-87d4-4318-bc02-83eae3f2aac8",
+    "878fc3e2-56c8-43c7-b7b6-d8cdfa876c54",
+    "8533cd01-bc00-4bc6-b73c-8b3b0d010cc1",
+    "8a7e8374-497b-4ee2-bbcf-5554e1b21d22",
+    "891eac4a-22c2-4d17-a6d7-fb51923adf6f",
+    "810fd21b-d5f5-4392-8835-2658240b9c4a",
+    "84909bd9-b7d2-4e20-9643-35040d7e97de",
+    "88f9c523-e8f8-4d27-b10c-f0462c798484",
+    "8f21c5e6-3c59-4833-abb1-75a0e0b56ef6",
+    "9866c255-46a5-4f98-8ae5-79ac8a34dd15",
+    "8ad354ff-86ce-433e-938f-8dc83b6fca1b",
+    "9e30939e-8eaa-4c16-ade1-a007c443d0ba",
+    "853da7df-5689-43eb-8ac1-7631b9002b98",
+    "81079f64-3bd5-44d2-a814-5f003101c505",
+    "9b996708-076c-4fc6-a845-f32d3936a75f",
+    "949e1346-89c6-4e00-b961-875d11e9fd7b",
+    "9748b210-5ea8-4306-a174-89e7643f279b",
+    "98b0d983-77d6-46f0-b216-c599a818dc5a",
+    "889dca6e-0606-465f-88bf-11a9f6df0125",
+    "92ed03a2-b66a-4d46-8d8c-7d123e92d581",
+    "95ea4e25-088c-4d4c-8172-50be40b0e614",
+    "8bf641aa-4c82-431b-b72c-5a12568f11c1",
+    "85e549d2-47da-4c99-8382-9cedd3ba68a3",
+    "9871c719-2d02-4f92-a42b-969c9eda39d3",
+    "93ad7172-8294-4ba7-a13c-4ec74043da07",
+    "811a02eb-d84b-45a6-8e58-b68fa959f754",
+    "9b2c8514-9c21-475e-8ec3-0523db4fc541",
+    "876daf94-e277-497e-b4b0-bd7c4a02189e",
+    "9ddc7a90-ba73-42e7-9034-b74bc3c02f4f",
+    "8a6795fe-8fe9-40d7-ab2b-1d25bd9dc0bf",
+    "969fe215-3932-4421-b0d5-3bbe35da5ab8",
+    "9cb7c179-cf34-41b5-a1f6-e0b2b368923a",
+    "8883a945-7615-4100-879b-9ed20a26f1b7",
+    "8e35c471-3408-441c-9737-55e197b94374",
+    "87811014-d961-43b1-a3a4-d79c579dd2ad"
   ],
   "skipped": {},
   "batches": [
@@ -75806,6 +76195,83 @@
         "/apptronik/cam",
         "/adyen/design"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 4,
+      "at": "2026-08-12T18:27:09.695Z",
+      "attempted": 43,
+      "ok": 30,
+      "skip": 0,
+      "fail": 13,
+      "reasons": {
+        "expand_existing": 43,
+        "rewrite_short": 13
+      },
+      "samplePaths": [
+        "/proper/accoun-a7",
+        "/acds/general",
+        "/coins/aml-47",
+        "/greenlight/biz-dev",
+        "/coins/region-6a",
+        "/proper/general",
+        "/coins/payment",
+        "/mindtickle/field",
+        "/erg/fire",
+        "/coins/sec-eng",
+        "/coins/head-22",
+        "/greenlight/offensive",
+        "/coins/deputy",
+        "/civitech/rev-ops",
+        "/erg/process",
+        "/coins/chief",
+        "/mactores/sales",
+        "/civitech/vp-fin",
+        "/coins/qa-assoc",
+        "/coins/th-1e"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 4,
+      "at": "2026-08-12T18:27:39.066Z",
+      "attempted": 21,
+      "ok": 11,
+      "skip": 1,
+      "fail": 9,
+      "reasons": {
+        "expand_existing": 20,
+        "posting_older_than_30d": 1,
+        "rewrite_short": 9
+      },
+      "samplePaths": [
+        "/air-tek/sw-87",
+        "/arrivelogistics/weekend",
+        "/aleph/perfor-9a",
+        "/dronedeploy/mgr-it",
+        "/arrivelogistics/outside",
+        "/aleph/treasu-72",
+        "/dronedeploy/sol-eng",
+        "/dreamgames/game-dev",
+        "/everbridge/demand",
+        "/genesis/performance",
+        "/enable/accountant"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 4,
+      "at": "2026-08-12T18:28:14.867Z",
+      "attempted": 5,
+      "ok": 0,
+      "skip": 2,
+      "fail": 3,
+      "reasons": {
+        "expand_existing": 3,
+        "posting_older_than_30d": 2,
+        "rewrite_short": 3
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
@@ -76070,6 +76536,8 @@
     "host:adistec.bamboohr.com": "html_short",
     "host:getzhealthcare.bamboohr.com": "html_short",
     "host:plugandplaytechcenter.bamboohr.com": "html_short",
-    "greenhouse:anthropic": "gh_404"
+    "greenhouse:anthropic": "gh_404",
+    "lever:clearcapital": "posting_older_than_30d",
+    "lever:brillio-2": "posting_older_than_30d"
   }
 }
