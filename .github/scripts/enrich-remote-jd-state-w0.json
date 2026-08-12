@@ -54109,8 +54109,9 @@
       "reason": "fact_sheet_parse"
     },
     "08616103-23a8-4a76-bece-c0c0c2d8ec44": {
-      "status": "skip",
-      "reason": "source_thin"
+      "status": "ok",
+      "path": "/finni-health/hybrid-58",
+      "external_id": "finni-health_hybrid-58"
     },
     "391e949e-c348-4890-af49-b41d2edbe4bb": {
       "status": "skip",
@@ -54162,8 +54163,8 @@
       "reason": "source_thin"
     },
     "11e9a802-66b8-415b-966f-87d3c20cae67": {
-      "status": "skip",
-      "reason": "source_thin"
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     },
     "1d50c62e-ca48-4f10-9d2d-deb7e81998bb": {
       "status": "skip",
@@ -54357,8 +54358,8 @@
       "reason": "source_thin"
     },
     "06f6625e-9797-46fe-8cd6-a328b8be47a4": {
-      "status": "skip",
-      "reason": "source_thin"
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     },
     "3f04f1bf-4e23-44a3-911b-f4b9a073100a": {
       "status": "skip",
@@ -54429,8 +54430,8 @@
       "reason": "source_thin"
     },
     "107f4a17-8822-4ec0-8195-12b44fbc976f": {
-      "status": "skip",
-      "reason": "source_thin"
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     },
     "22c513e8-4902-4cbf-af1d-20e2b99dd8a7": {
       "status": "skip",
@@ -54477,8 +54478,8 @@
       "reason": "source_thin"
     },
     "15b68843-81df-46b1-b337-4edf8ba34bb7": {
-      "status": "skip",
-      "reason": "source_thin"
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     },
     "055cc259-3041-4213-9895-b289099ca1c4": {
       "status": "skip",
@@ -105156,7 +105157,12 @@
     "026cf8bf-bed2-4f7c-8df5-ca5085f2e7c0",
     "0701a5c6-f6a8-4038-a4f3-9ee0a81e85c9",
     "086030f2-7413-418e-81a2-c8db92951846",
-    "1c9480e3-f72a-4053-baaa-6e75c659b915"
+    "1c9480e3-f72a-4053-baaa-6e75c659b915",
+    "107f4a17-8822-4ec0-8195-12b44fbc976f",
+    "15b68843-81df-46b1-b337-4edf8ba34bb7",
+    "06f6625e-9797-46fe-8cd6-a328b8be47a4",
+    "11e9a802-66b8-415b-966f-87d3c20cae67",
+    "08616103-23a8-4a76-bece-c0c0c2d8ec44"
   ],
   "skipped": {},
   "batches": [
@@ -106655,6 +106661,22 @@
         "/roadsurfer-com/frankf-6a",
         "/tremendous/data-b7",
         "/invoca/join-our"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-12T19:22:26.582Z",
+      "attempted": 5,
+      "ok": 1,
+      "skip": 0,
+      "fail": 4,
+      "reasons": {
+        "expand_existing": 5,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 4
+      },
+      "samplePaths": [
+        "/finni-health/hybrid-58"
       ]
     }
   ],

@@ -64883,6 +64883,84 @@
       "status": "ok",
       "path": "/bumbleinc/assoc-c3",
       "external_id": "bumbleinc_assoc-c3"
+    },
+    "f8e0f326-26ea-4172-a907-d4e171200f03": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Don't See Your Role? Apply here! company=product-now apply=https://jobs.ashbyhq.com/product-now/14ad8e7f-d994-4841-bbad-ead6787f0226"
+    },
+    "e0bc9daa-375d-4678-8738-06038724d2c5": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Member of Technical Staff company=humans-and apply=https://jobs.ashbyhq.com/humans-and/3daf12ad-471f-43ba-b940-8552e9ad61aa"
+    },
+    "f42d9fb3-9fbd-49da-8e44-953f8da0c819": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Interest - Future Roles company=chromatic apply=https://jobs.ashbyhq.com/chromatic/fa8e72fb-b0a5-4146-a608-30d808d65aed"
+    },
+    "eadad451-a738-4def-a1d5-f5e66a01a070": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Interest company=dreamthree apply=https://jobs.ashbyhq.com/dreamthree/47286667-4b5c-4636-9bfa-0475dd91d5cc"
+    },
+    "f83bcbde-ec7e-46de-ae10-abcb43b533dd": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Recruiter company=rehire apply=https://jobs.ashbyhq.com/rehire/02d7c1cd-1f1b-44e5-8b14-94061dc8aea1"
+    },
+    "f1052c07-e0d0-44b4-a8f1-29b227d07ce1": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Open Application company=conduct apply=https://jobs.ashbyhq.com/conduct/2f377087-8480-4df4-b4ee-9eae0a8a8efe"
+    },
+    "e508fe8f-fa24-408e-9729-e8b226fb8e58": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Open Application company=generalintelligencecompany apply=https://jobs.ashbyhq.com/generalintelligencecompany/9f3ce647-38ad-45c7-bb50-578f5e8cb892"
+    },
+    "f598ae3b-560b-451e-9a51-bccd75db2766": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Engineering - Paradigm Portfolio company=paradigm apply=https://jobs.ashbyhq.com/paradigm/2c506a66-05c2-4df0-a1ae-751f44b08ce0"
+    },
+    "fad19824-0c90-4f32-9920-c80afd918648": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Join our talent community! company=tin-can apply=https://jobs.ashbyhq.com/tin-can/2b2a0b2e-c1e5-4354-b869-0a009b6c3e79"
+    },
+    "e33796fc-5022-4af4-8184-123df98ebb23": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "e55cb4ac-4a5d-4310-a020-efe66903fc21": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "e121fdeb-d542-46ce-b099-fae7e833ba30": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "f5763b43-5423-4b06-b0b6-fdf2d81cb51f": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "e1dd7574-fcb1-437e-bd94-7fe371affcbb": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ef703f65-b700-4ce7-936e-2f559768d12e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "f14cc98b-62d8-4b68-9e34-a598688940ac": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "fe134346-1e8e-436d-8b4e-db8431bababf": {
+      "status": "ok",
+      "path": "/cluely/eng",
+      "external_id": "cluely_eng"
     }
   },
   "doneIds": [
@@ -79784,7 +79862,24 @@
     "f3b5aa74-a150-41ba-b4ca-dc132c797b72",
     "e48b6588-184c-4765-9bca-c11a9d868f6e",
     "f1479937-f54c-41b9-95d0-43b5d4871668",
-    "e2138fed-a7b0-44d9-8d1f-ed3c1baed7a2"
+    "e2138fed-a7b0-44d9-8d1f-ed3c1baed7a2",
+    "f8e0f326-26ea-4172-a907-d4e171200f03",
+    "e0bc9daa-375d-4678-8738-06038724d2c5",
+    "f42d9fb3-9fbd-49da-8e44-953f8da0c819",
+    "eadad451-a738-4def-a1d5-f5e66a01a070",
+    "f83bcbde-ec7e-46de-ae10-abcb43b533dd",
+    "f1052c07-e0d0-44b4-a8f1-29b227d07ce1",
+    "e508fe8f-fa24-408e-9729-e8b226fb8e58",
+    "f598ae3b-560b-451e-9a51-bccd75db2766",
+    "fad19824-0c90-4f32-9920-c80afd918648",
+    "e33796fc-5022-4af4-8184-123df98ebb23",
+    "e55cb4ac-4a5d-4310-a020-efe66903fc21",
+    "e121fdeb-d542-46ce-b099-fae7e833ba30",
+    "f5763b43-5423-4b06-b0b6-fdf2d81cb51f",
+    "e1dd7574-fcb1-437e-bd94-7fe371affcbb",
+    "ef703f65-b700-4ce7-936e-2f559768d12e",
+    "f14cc98b-62d8-4b68-9e34-a598688940ac",
+    "fe134346-1e8e-436d-8b4e-db8431bababf"
   ],
   "skipped": {},
   "batches": [
@@ -80415,6 +80510,25 @@
         "/captivateiq/cust",
         "/3pillarglobal/c-net"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 7,
+      "at": "2026-08-12T19:22:23.135Z",
+      "attempted": 8,
+      "ok": 1,
+      "skip": 9,
+      "fail": 7,
+      "reasons": {
+        "expand_existing": 8,
+        "posting_older_than_30d": 9,
+        "no_ai": 9,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 6,
+        "rewrite_short": 1
+      },
+      "samplePaths": [
+        "/cluely/eng"
+      ]
     }
   ],
   "deadBoards": {
@@ -80639,6 +80753,15 @@
     "greenhouse:point72": "gh_short",
     "greenhouse:ireland": "posting_older_than_30d",
     "ashby:cohere": "ashby_not_found",
-    "lever:brillio-2": "posting_older_than_30d"
+    "lever:brillio-2": "posting_older_than_30d",
+    "ashby:product-now": "posting_older_than_30d",
+    "ashby:humans-and": "posting_older_than_30d",
+    "ashby:chromatic": "posting_older_than_30d",
+    "ashby:dreamthree": "posting_older_than_30d",
+    "ashby:rehire": "posting_older_than_30d",
+    "ashby:conduct": "posting_older_than_30d",
+    "ashby:generalintelligencecompany": "posting_older_than_30d",
+    "ashby:paradigm": "posting_older_than_30d",
+    "ashby:tin-can": "posting_older_than_30d"
   }
 }

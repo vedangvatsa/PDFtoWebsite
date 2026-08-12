@@ -51531,6 +51531,66 @@
       "status": "ok",
       "path": "/brillio-2/hr-mgr",
       "external_id": "brillio-2_hr-mgr"
+    },
+    "bff3b613-ee0d-4c87-b9da-0edf396f750c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Tax Partner company=modus apply=https://jobs.ashbyhq.com/modus/ecf6a02e-2639-4f3e-8ac5-9035ffc8be8c"
+    },
+    "a0322d6f-a590-4f11-8f40-b2cefe23d040": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Application company=improbable apply=https://jobs.ashbyhq.com/improbable/ae853038-5760-40da-b380-c84cef0b5532"
+    },
+    "a4739c0e-0446-43f6-b8bf-9fd4998518fe": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=GTM Engineer company=sibill apply=https://jobs.ashbyhq.com/sibill/613215d0-d4a8-4c4f-9697-02971e8ef788"
+    },
+    "b63f582c-1acd-49a5-a2f3-2bd8eb1ce17f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Data Scientist -Full-Stack Engineering company=uptimeai apply=https://jobs.ashbyhq.com/uptimeai/b97e4672-7899-42bb-8b08-d00a363f2457"
+    },
+    "aae2ee61-fd6b-42fa-acca-0b77fbde4c80": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Revenue Partnerships Manager company=rwazi apply=https://jobs.ashbyhq.com/rwazi/5b1c48df-3e6c-490f-98fb-d761ab7e4106"
+    },
+    "baf04f43-bdde-4564-9b07-e7bfcbdfc18f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Software Engineer, Generalist company=cursor apply=https://jobs.ashbyhq.com/cursor/36e69353-0452-4bf6-9f35-b1e7307959a7"
+    },
+    "b827a436-150d-49da-bf40-e4c03abc271a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Video Editor company=kirin apply=https://jobs.ashbyhq.com/kirin/be434eb5-5af1-4307-9a77-c08a9a93918b"
+    },
+    "a49cb8ea-944d-4e20-a205-2efe259502c3": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a316a141-e351-48ef-bff8-0714684690d6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a32b3693-3322-4db9-8420-30be1658e012": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ae45e543-ccf8-4a1c-87a9-5d88402e9c9b": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a5cf0cb7-5e58-4965-91b3-60b529ea045c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "bc5a7ee5-1c91-4306-8c43-e4ecf0f77fc6": {
+      "status": "ok",
+      "path": "/modus/ai",
+      "external_id": "modus_ai"
     }
   },
   "doneIds": [
@@ -63433,7 +63493,20 @@
     "a7c85091-f5cb-4452-b61f-b9d4f10857e7",
     "b1b6df37-4c0f-4cba-97b9-3a84efb15af0",
     "a03ff2e5-ca32-4ded-bfb6-6da8e5bbed81",
-    "b3504031-d309-4686-8fc4-7eee18e3eb4d"
+    "b3504031-d309-4686-8fc4-7eee18e3eb4d",
+    "bff3b613-ee0d-4c87-b9da-0edf396f750c",
+    "a0322d6f-a590-4f11-8f40-b2cefe23d040",
+    "a4739c0e-0446-43f6-b8bf-9fd4998518fe",
+    "b63f582c-1acd-49a5-a2f3-2bd8eb1ce17f",
+    "aae2ee61-fd6b-42fa-acca-0b77fbde4c80",
+    "baf04f43-bdde-4564-9b07-e7bfcbdfc18f",
+    "b827a436-150d-49da-bf40-e4c03abc271a",
+    "a49cb8ea-944d-4e20-a205-2efe259502c3",
+    "a316a141-e351-48ef-bff8-0714684690d6",
+    "a32b3693-3322-4db9-8420-30be1658e012",
+    "ae45e543-ccf8-4a1c-87a9-5d88402e9c9b",
+    "a5cf0cb7-5e58-4965-91b3-60b529ea045c",
+    "bc5a7ee5-1c91-4306-8c43-e4ecf0f77fc6"
   ],
   "skipped": {},
   "batches": [
@@ -69595,6 +69668,24 @@
       "samplePaths": [
         "/brillio-2/hr-mgr"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 5,
+      "at": "2026-08-12T19:22:18.796Z",
+      "attempted": 6,
+      "ok": 1,
+      "skip": 7,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 6,
+        "posting_older_than_30d": 7,
+        "no_ai": 7,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 5
+      },
+      "samplePaths": [
+        "/modus/ai"
+      ]
     }
   ],
   "deadBoards": {
@@ -69957,6 +70048,13 @@
     "host:embed.bamboohr.com": "html_short",
     "host:bbf.bamboohr.com": "html_short",
     "lever:capital": "posting_older_than_30d",
-    "lever:brillio-2": "posting_older_than_30d"
+    "lever:brillio-2": "posting_older_than_30d",
+    "ashby:modus": "posting_older_than_30d",
+    "ashby:improbable": "posting_older_than_30d",
+    "ashby:sibill": "posting_older_than_30d",
+    "ashby:uptimeai": "posting_older_than_30d",
+    "ashby:rwazi": "posting_older_than_30d",
+    "ashby:cursor": "posting_older_than_30d",
+    "ashby:kirin": "posting_older_than_30d"
   }
 }

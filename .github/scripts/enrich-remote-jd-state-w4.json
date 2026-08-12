@@ -60042,6 +60042,81 @@
     "87811014-d961-43b1-a3a4-d79c579dd2ad": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "84488523-8409-4a43-a7f5-7fe576015eb4": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Join our Talent Pool company=symbiotic apply=https://jobs.ashbyhq.com/symbiotic/4a88e7cb-8119-4ab5-aba0-ab0bdd2e56ad"
+    },
+    "9ae62bbc-636d-42c2-b3d3-a1e83da76a25": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Application company=interplay apply=https://jobs.ashbyhq.com/interplay/01bc5ce6-678e-47ba-8b21-8fab92a6bae5"
+    },
+    "91f4b374-46c4-4706-b03f-c47f9e8b0e24": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Application – Engineering company=impulse apply=https://jobs.ashbyhq.com/impulse/0b03563e-e0b8-4774-b3da-5a072170614f"
+    },
+    "92793d06-3b84-4cb3-b052-114ff929db1a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Talent Pool company=skynrg apply=https://jobs.ashbyhq.com/skynrg/3ed6cf25-4ef7-4fa6-a487-927ee446d152"
+    },
+    "99a6e0bb-816d-46d8-9bdc-ef3c4479ba94": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Community Interest Form company=moraleshr apply=https://jobs.ashbyhq.com/moraleshr/6ca25e83-b35f-454c-aa1d-84080cc46518"
+    },
+    "9a8cdcb6-c453-4841-8bee-d50f80f95174": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Join the Talent Safari Community company=talentsafari apply=https://jobs.ashbyhq.com/talentsafari/d74cd42f-b3e1-40d8-ba1f-5725ee3660b3"
+    },
+    "86b3d5b3-acd9-413a-a73b-6aeb7e1fe91b": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Talent Pool - Software Engineer, Backend (Typescript company=1inch apply=https://jobs.lever.co/1inch/827649c3-2dab-4911-bb2f-97b84dc93126"
+    },
+    "9e53c391-7a8f-4bb4-a3e1-826544e68ab4": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Compiler Developer (LLVM, C++) company=Accesssoftek apply=https://jobs.lever.co/accesssoftek/55497b30-5fbc-4fda-81ce-91752ae1599a"
+    },
+    "8f08c8ce-b565-4c5d-a906-85022364d81c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Business Development Representative, Remote, Latin America company=Bluelightconsulting apply=https://jobs.lever.co/bluelightconsulting/01b5d4b8-6adc-4641-bae8-7202803b44c3"
+    },
+    "86d1ac96-57d8-4e9b-99a2-2846d5c104f1": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Principal Product Manager company=Activecampaign apply=https://jobs.lever.co/activecampaign/232f468d-13ee-43f0-ab5b-88cc750cf64a"
+    },
+    "8df4be75-f041-4986-854a-2f7e1b31b050": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Android Engineer company=Bumbleinc apply=https://jobs.lever.co/bumbleinc/1a30e3c8-7493-4991-8726-eedda5a9ed43"
+    },
+    "9fdf78af-fcfe-4430-b479-da346cb6eb05": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "9e0445bc-3a61-4d94-821a-7205a4e02de6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "973f08d9-cb86-42c9-ac61-fa38ccf5e5cc": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "95526dd6-83dc-4dd8-8502-2b8d936c74fe": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "93dedea4-36c1-4bd8-8dd6-4c2301723ee0": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     }
   },
   "doneIds": [
@@ -73835,7 +73910,23 @@
     "9cb7c179-cf34-41b5-a1f6-e0b2b368923a",
     "8883a945-7615-4100-879b-9ed20a26f1b7",
     "8e35c471-3408-441c-9737-55e197b94374",
-    "87811014-d961-43b1-a3a4-d79c579dd2ad"
+    "87811014-d961-43b1-a3a4-d79c579dd2ad",
+    "84488523-8409-4a43-a7f5-7fe576015eb4",
+    "9ae62bbc-636d-42c2-b3d3-a1e83da76a25",
+    "91f4b374-46c4-4706-b03f-c47f9e8b0e24",
+    "92793d06-3b84-4cb3-b052-114ff929db1a",
+    "99a6e0bb-816d-46d8-9bdc-ef3c4479ba94",
+    "9a8cdcb6-c453-4841-8bee-d50f80f95174",
+    "86b3d5b3-acd9-413a-a73b-6aeb7e1fe91b",
+    "9e53c391-7a8f-4bb4-a3e1-826544e68ab4",
+    "8f08c8ce-b565-4c5d-a906-85022364d81c",
+    "86d1ac96-57d8-4e9b-99a2-2846d5c104f1",
+    "8df4be75-f041-4986-854a-2f7e1b31b050",
+    "9fdf78af-fcfe-4430-b479-da346cb6eb05",
+    "9e0445bc-3a61-4d94-821a-7205a4e02de6",
+    "973f08d9-cb86-42c9-ac61-fa38ccf5e5cc",
+    "95526dd6-83dc-4dd8-8502-2b8d936c74fe",
+    "93dedea4-36c1-4bd8-8dd6-4c2301723ee0"
   ],
   "skipped": {},
   "batches": [
@@ -76272,6 +76363,22 @@
         "rewrite_short": 3
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 4,
+      "at": "2026-08-12T19:22:14.365Z",
+      "attempted": 5,
+      "ok": 0,
+      "skip": 11,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 5,
+        "posting_older_than_30d": 11,
+        "no_ai": 11,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 5
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
@@ -76538,6 +76645,17 @@
     "host:plugandplaytechcenter.bamboohr.com": "html_short",
     "greenhouse:anthropic": "gh_404",
     "lever:clearcapital": "posting_older_than_30d",
-    "lever:brillio-2": "posting_older_than_30d"
+    "lever:brillio-2": "posting_older_than_30d",
+    "ashby:symbiotic": "posting_older_than_30d",
+    "ashby:interplay": "posting_older_than_30d",
+    "ashby:impulse": "posting_older_than_30d",
+    "ashby:skynrg": "posting_older_than_30d",
+    "ashby:moraleshr": "posting_older_than_30d",
+    "ashby:talentsafari": "posting_older_than_30d",
+    "lever:1inch": "posting_older_than_30d",
+    "lever:accesssoftek": "posting_older_than_30d",
+    "lever:bluelightconsulting": "posting_older_than_30d",
+    "lever:activecampaign": "posting_older_than_30d",
+    "lever:bumbleinc": "posting_older_than_30d"
   }
 }

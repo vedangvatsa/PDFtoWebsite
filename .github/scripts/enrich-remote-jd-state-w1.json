@@ -101085,6 +101085,86 @@
       "status": "ok",
       "path": "/bumbleinc/ml-eng",
       "external_id": "bumbleinc_ml-eng"
+    },
+    "3953f3b1-04bb-4090-a516-120f0f08690d": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Product - Paradigm Portfolio company=paradigm apply=https://jobs.ashbyhq.com/paradigm/35d27694-9d25-4676-a797-e798c56d6787"
+    },
+    "2195d49d-1826-47b7-85c6-66cd9d7cecfa": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Audit Director company=modus apply=https://jobs.ashbyhq.com/modus/752e0c2a-a6d6-48c2-8427-37e3870c290b"
+    },
+    "3c0ae871-29f5-45f5-aa3a-9e97f6a12316": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Other company=modus apply=https://jobs.ashbyhq.com/modus/326df7f0-d0a9-4916-9465-ac85b5722466"
+    },
+    "318d3851-823e-41f7-830f-e50089ca5971": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Product Engineer (Member of Technical Staff) company=humans-and apply=https://jobs.ashbyhq.com/humans-and/c3a7fce6-0bb5-43c6-a2a7-01c63e4b1401"
+    },
+    "3f04f1bf-4e23-44a3-911b-f4b9a073100a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Business Development Executive company=rwazi apply=https://jobs.ashbyhq.com/rwazi/d40eee55-59a8-4b3e-baf6-d045dc56a969"
+    },
+    "2f705a5a-0ef3-46f8-ba0e-d6179ecc0979": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Generalist company=eventual apply=https://jobs.ashbyhq.com/eventual/807c997a-dbe3-495f-b841-ec0d73be0aea"
+    },
+    "3eabb237-1cab-45b6-8a74-d65c6a30df65": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Application company=tenderly apply=https://jobs.ashbyhq.com/tenderly/c5417329-bd95-4492-a4ea-cb20afdcd218"
+    },
+    "2e049cb7-598c-46d5-96c9-0e68871dad73": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Former Founder company=method apply=https://jobs.ashbyhq.com/method/fcaa3cbe-269e-4be2-87e9-f91662c727b6"
+    },
+    "39e367f0-4918-4afb-a630-c60df6d5507b": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Join us - Evergreen Opportunities company=unstructured apply=https://jobs.ashbyhq.com/unstructured/8f1faf0b-f644-47ec-a138-8c58874b7db2"
+    },
+    "2c215f21-6ded-4fd8-b46f-860909400834": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=MTS - Opportunistic TEST company=prometheus apply=https://jobs.ashbyhq.com/prometheus/bfeb14d4-460c-4cdb-99e2-e32277b21c05"
+    },
+    "242e311f-b57f-499d-8f23-bd03faca610a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Opportunity company=harmonic apply=https://jobs.ashbyhq.com/harmonic/42cfb051-0311-4e69-af19-dc868012e3ac"
+    },
+    "33d397f5-d97e-4cfb-b667-c033acf9e203": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Független Értékesítő company=teya apply=https://jobs.ashbyhq.com/teya/0196c9cc-e932-48a1-b343-edca65df2741"
+    },
+    "28e8458e-3192-4462-bf38-234489be8d87": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "2887120b-01a2-4835-8c44-e99f968810f5": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3c76791b-9201-4ad2-9db6-92e88b65dc0b": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "37a047a5-2b28-42d0-85f9-07f24fd9b677": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "34284a24-0056-42c8-9a57-1e6814c4d8b5": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     }
   },
   "doneIds": [
@@ -119106,7 +119186,24 @@
     "342e2abf-a05e-4d23-ab98-f48faeb93872",
     "2897eb54-da93-45c4-8988-d94bf2e91ae9",
     "2b0059ea-790b-43f5-9c1a-03d6ed4646cc",
-    "20a58255-5184-4792-bbbb-8b0b1de61bea"
+    "20a58255-5184-4792-bbbb-8b0b1de61bea",
+    "3953f3b1-04bb-4090-a516-120f0f08690d",
+    "2195d49d-1826-47b7-85c6-66cd9d7cecfa",
+    "3c0ae871-29f5-45f5-aa3a-9e97f6a12316",
+    "318d3851-823e-41f7-830f-e50089ca5971",
+    "3f04f1bf-4e23-44a3-911b-f4b9a073100a",
+    "2f705a5a-0ef3-46f8-ba0e-d6179ecc0979",
+    "3eabb237-1cab-45b6-8a74-d65c6a30df65",
+    "2e049cb7-598c-46d5-96c9-0e68871dad73",
+    "39e367f0-4918-4afb-a630-c60df6d5507b",
+    "2c215f21-6ded-4fd8-b46f-860909400834",
+    "242e311f-b57f-499d-8f23-bd03faca610a",
+    "33d397f5-d97e-4cfb-b667-c033acf9e203",
+    "28e8458e-3192-4462-bf38-234489be8d87",
+    "2887120b-01a2-4835-8c44-e99f968810f5",
+    "3c76791b-9201-4ad2-9db6-92e88b65dc0b",
+    "37a047a5-2b28-42d0-85f9-07f24fd9b677",
+    "34284a24-0056-42c8-9a57-1e6814c4d8b5"
   ],
   "skipped": {},
   "batches": [
@@ -120361,6 +120458,22 @@
         "/binance/global-4c",
         "/teamsnap/enterprise"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 1,
+      "at": "2026-08-12T19:22:14.573Z",
+      "attempted": 5,
+      "ok": 0,
+      "skip": 12,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 5,
+        "posting_older_than_30d": 12,
+        "no_ai": 12,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 5
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
@@ -120750,6 +120863,17 @@
     "lever:brillio-2": "posting_older_than_30d",
     "lever:protective": "posting_older_than_30d",
     "lever:crypto": "posting_older_than_30d",
-    "lever:apryse": "posting_older_than_30d"
+    "lever:apryse": "posting_older_than_30d",
+    "ashby:paradigm": "posting_older_than_30d",
+    "ashby:modus": "posting_older_than_30d",
+    "ashby:humans-and": "posting_older_than_30d",
+    "ashby:rwazi": "posting_older_than_30d",
+    "ashby:eventual": "posting_older_than_30d",
+    "ashby:tenderly": "posting_older_than_30d",
+    "ashby:method": "posting_older_than_30d",
+    "ashby:unstructured": "posting_older_than_30d",
+    "ashby:prometheus": "posting_older_than_30d",
+    "ashby:harmonic": "posting_older_than_30d",
+    "ashby:teya": "posting_older_than_30d"
   }
 }
