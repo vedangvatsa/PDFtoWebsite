@@ -3,6 +3,10 @@
 // Env: SUPABASE_URL, SUPABASE_KEY (service role)
 
 import crypto from 'crypto';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 import dotenv from 'dotenv';
 import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
 import {
@@ -1551,7 +1555,19 @@ async function fetchLever() {
   console.log('\n── Lever ──');
   const allJobs = [];
 
-  const tasks = LEVER_SLUGS.map(slug => async () => {
+  // Merge extra discovered slugs (see discover-lever-slugs.mjs).
+  const EXTRA_FILE = resolve(__dirname, 'lever-slugs-extra.json');
+  let extraSlugs = [];
+  try {
+    if (existsSync(EXTRA_FILE)) {
+      const parsed = JSON.parse(readFileSync(EXTRA_FILE, 'utf8'));
+      if (Array.isArray(parsed)) extraSlugs = parsed.filter((s) => typeof s === 'string');
+    }
+  } catch { /* keep empty */ }
+  const leverSlugs = [...new Set([...LEVER_SLUGS, ...extraSlugs])];
+  if (extraSlugs.length) console.log(`  Merged ${extraSlugs.length} discovered slugs (total ${leverSlugs.length})`);
+
+  const tasks = leverSlugs.map(slug => async () => {
     try {
       const res = await fetch(`https://api.lever.co/v0/postings/${slug}?mode=json`);
       if (!res.ok) { console.log(`  ⚠ ${slug}: ${res.status}`); return []; }
