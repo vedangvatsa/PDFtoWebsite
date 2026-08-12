@@ -55449,36 +55449,38 @@
       "note": "thin_source title=Senior Manager of Security Intelligence company=Job Board apply=https://boards.greenhouse.io/corelight/jobs/8003551?gh_jid=8003551"
     },
     "37d4aecc-52ef-43da-a194-fe80084f0cf3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "dead_board"
     },
     "257787e4-2813-4c2f-9ce1-bbdff36630eb": {
       "status": "skip",
       "reason": "source_thin"
     },
     "17523019-bcc0-45a4-b99c-fc92fc158a04": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "24a0fc25-4317-4a57-b46f-c4f5da34a454": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/clutch-technologies-inc/vehicl-e2",
+      "external_id": "clutch-technologies-inc_vehicl-e2"
     },
     "3ef900f9-2ee2-456b-8e05-0e80e85d2d8f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2bdeded8-5d24-41fe-9b3d-9399a3851cbd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/altana/strat",
+      "external_id": "altana_strat"
     },
     "0835b422-965a-4af8-88af-7be7fcf4b89a": {
       "status": "skip",
       "reason": "source_thin"
     },
     "2a4ae939-f795-4fed-8fdf-945faba0c3f4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3e6c4488-1fcd-4177-a27a-f787cda5afde": {
       "status": "ok",
@@ -55490,20 +55492,22 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "37d4a31a-20ab-41a1-a79c-0ab6abf6159e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Field Enablement Partner company=Everlaw apply=https://job-boards.greenhouse.io/everlaw/jobs/4688871006"
     },
     "2525bcb4-26af-45e3-8e5e-d55c1117bbe3": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "264929f8-ff58-4df7-b6e1-1c70f1962f97": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/clutch-technologies-inc/parts",
+      "external_id": "clutch-technologies-inc_parts"
     },
     "09f64fd8-77b3-4959-8d90-99c11b59570d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3fae696a-7c24-497b-8731-05d74aa2c74e": {
       "status": "fail",
@@ -55514,68 +55518,71 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "2a3321d5-a091-459d-9613-de7ee528dcf0": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "128e154e-7389-4293-bc42-3c03e4ff64a3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "16580045-02ca-4911-93bf-61705826afcd": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "180b49ce-0904-48fe-a791-9d8609231e7c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/braze/creative",
+      "external_id": "braze_creative"
     },
     "2a5d9654-faab-4c1c-a34e-664695e0aecd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "376e3fc6-f135-4a25-b4c1-49b10e35d1d1": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "33ece9c4-b969-48d7-be57-0dad1c6a9604": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3af09153-914a-454f-ac80-7d7a2f5053d7": {
       "status": "skip",
       "reason": "source_thin"
     },
     "000d00d1-9926-48c2-b75c-8c7fed281be8": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "397c01e6-8d73-4a63-aedd-376071232484": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "1ff30c6b-555b-48e0-a76c-3b80043bff21": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Director of Content and Product Operations company=Agoda apply=https://job-boards.greenhouse.io/agoda/jobs/6994499"
     },
     "28e3e37c-c103-4a4c-9ae6-e13fd2556b6b": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "1c6ceeb1-77d7-4c7b-84a9-a3a1d2239367": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0a003a10-db97-47d5-90d3-9f7233813829": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "1466c0e2-a4da-45a4-92dc-d4fe76e57ce7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/shieldai/accountant",
+      "external_id": "shieldai_accountant"
     },
     "24655401-0bd3-4823-b646-de3708f8d11e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3eed73aa-b1f0-4956-ae51-220cc682b2d0": {
       "status": "fail",
@@ -55583,7 +55590,7 @@
     },
     "154c6166-cd88-4840-8e79-9881e5eda403": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "1f8782be-ea87-4561-84dd-0bc5ab763384": {
       "status": "fail",
@@ -55599,8 +55606,9 @@
       "note": "thin_source title=Senior Software Engineer, Community company=The New York Times apply=https://job-boards.greenhouse.io/thenewyorktimes/jobs/4698863005"
     },
     "0b083290-26b4-4b16-b729-8f831e265f90": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/hootsuite/cust-29",
+      "external_id": "hootsuite_cust-29"
     },
     "33a5113c-a0b2-4a8e-8d6e-be474834494d": {
       "status": "fail",
@@ -55615,16 +55623,16 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "2c84222c-d0f0-485a-82c3-97909f2a4030": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "34d7c885-a4f0-41af-bbda-da0a34b79db8": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "2cf9ac06-3617-4e05-bb39-f87cab405f4d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1dfe080a-3b94-4947-9cf0-2a42b05d6708": {
       "status": "fail",
@@ -55635,16 +55643,16 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "0028a1d3-d811-4cb0-b1e5-cc5c7cb844e4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "22cb3418-1bb6-4ed5-8a6a-b2bc442de9d5": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "07e959c4-f418-47ce-8ba2-178114d8ac09": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "24fee28b-381b-40ca-a297-573764e923fb": {
       "status": "fail",
@@ -55652,11 +55660,12 @@
     },
     "063a3e38-ec2d-402e-a3ef-5bc3f68836b5": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "009e9ce1-e88c-4dd9-b02e-fef236eb7623": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/pagerduty/enterp-00",
+      "external_id": "pagerduty_enterp-00"
     },
     "03b6271f-2d07-4477-b08c-5e40a4f76b8f": {
       "status": "fail",
@@ -55667,12 +55676,13 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "14654b10-528e-4173-9c5a-1996939574d7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0f24ffec-9a47-41b8-b20c-6ea7d8f1ab06": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Customer Retention Manager company=Human Interest apply=https://job-boards.greenhouse.io/humaninterest/jobs/8011787"
     },
     "1d5eb2cd-671e-4c58-957d-750e27c7468f": {
       "status": "fail",
@@ -55743,20 +55753,22 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "13158bd3-7bd3-44bd-b45e-9525ae42f574": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2b5e102e-830b-47a6-bd3b-dba1647cf0eb": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0cc2aabc-01ce-454e-8802-7e0ba9092fab": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=SEO Content Manager company=Coursera apply=https://job-boards.greenhouse.io/coursera/jobs/6128010004"
     },
     "3154eb7e-de6b-4246-9eae-0fbe42afd550": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/ciandt/mid-5a",
+      "external_id": "ciandt_mid-5a"
     },
     "3d24257b-32e8-4dab-81a5-8ca344a8050c": {
       "status": "skip",
@@ -55788,8 +55800,8 @@
       "reason": "rewrite_short"
     },
     "1447fbfb-4841-4747-9b89-cd59cac54058": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "10c7cebe-8485-49a9-86cd-f3781bb044f0": {
       "status": "fail",
@@ -55928,8 +55940,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "1fbda494-9aeb-42b9-bab8-3519a0a7fe47": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2071faaa-83a1-4d3a-a7f8-db6c33955865": {
       "status": "fail",
@@ -56040,8 +56052,8 @@
       "reason": "rewrite_short"
     },
     "17a77de7-16da-4530-ab84-358ec4e3fdf1": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "258836f7-c1e8-4777-8cb7-9f919855e25f": {
       "status": "fail",
@@ -56056,8 +56068,9 @@
       "reason": "slot_mutation"
     },
     "337a6fc6-5e58-4325-aeb9-79067d147b16": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/animocabrands/mgr-fin",
+      "external_id": "animocabrands_mgr-fin"
     },
     "3bc007ba-eb4f-40c6-bd51-bb979ca9cac4": {
       "status": "fail",
@@ -57074,24 +57087,24 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "025b2242-a245-481f-b271-a00b53295107": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0d3f96ce-bac1-4d8b-98d6-6b15279fe8e2": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1e977f4d-2738-4d7a-86b1-3bafaad84472": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "0f481f1a-9fd4-4a56-a19b-caa3a5b7b14b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "175b7d51-373a-4aaa-8e7a-3a883e21ad21": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2f177240-6b44-4f6f-854c-2047f71f778a": {
       "status": "fail",
@@ -57130,24 +57143,24 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "3e17f318-da66-40d3-a112-6227a3ba9ef5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "3f5542b5-75b6-4c66-abf3-01c0b1972e82": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "074f289a-f944-451c-99e5-1ff38c5a4332": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "2909fcee-d389-4efa-b5a9-d7c9a7e412d7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "1a6c4214-7974-4694-a918-a349bf67760d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "235d92fd-28b2-4e38-8ddb-d43f90bf31b5": {
       "status": "fail",
@@ -85402,6 +85415,10 @@
     "greenhouse:scaleai": "source_thin",
     "greenhouse:xendit": "source_thin",
     "greenhouse:onetrust": "source_thin",
-    "lever:ciandt": "source_thin"
+    "lever:ciandt": "source_thin",
+    "greenhouse:agoda": "gh_404",
+    "greenhouse:coursera": "gh_404",
+    "greenhouse:humaninterest": "gh_404",
+    "greenhouse:everlaw": "posting_older_than_30d"
   }
 }

@@ -60256,16 +60256,16 @@
       "reason": "source_thin"
     },
     "4c69d214-911b-433a-b9a8-3723ba57949c": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "43ebe64d-77f7-44fc-8658-19f214a3eb14": {
       "status": "skip",
       "reason": "source_thin"
     },
     "6c9ab998-1f0e-4cfd-9860-7e83507810e4": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7a4222b9-6f77-414b-9c37-4e7e2f12a7a9": {
       "status": "skip",
@@ -60276,8 +60276,8 @@
       "reason": "rewrite_short"
     },
     "4cc3c4a1-b38d-4cc5-ba98-ebd532863f13": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "63dc3c36-9af6-4e8e-91e9-6f93dc4d7664": {
       "status": "fail",
@@ -60304,8 +60304,8 @@
       "reason": "rewrite_short"
     },
     "5e610e4e-2edf-4b3b-9d11-aa2be6615b96": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "57d69fbe-1195-46e0-88f7-c21132bc83e3": {
       "status": "fail",
@@ -60316,8 +60316,8 @@
       "reason": "rewrite_short"
     },
     "6ebbc73c-2296-48f9-b23e-5818a597bb43": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5332bc4d-5718-4d52-b358-46bdcee1130e": {
       "status": "skip",
@@ -61800,28 +61800,31 @@
       "note": "thin_source title=Staff Full-Stack Software Engineer, AI & App Experience company=Chime Financial, Inc apply=https://boards.greenhouse.io/chime/jobs/8618419002?gh_jid=8618419002"
     },
     "78535fc4-5d30-4943-8d47-2c59976f9b1b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "609405b7-c4d0-4fb3-9955-fc127fcb36cc": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/couchbase-inc/legal",
+      "external_id": "couchbase-inc_legal"
     },
     "4ca56827-eada-4cec-bb71-a0bb1f67ab75": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/human-interest/cust",
+      "external_id": "human-interest_cust"
     },
     "7e42b2f3-1204-47dd-8a9a-3d34b44a1285": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "slot_mutation"
     },
     "7b9b5d66-3018-4c72-8a6a-397b894b04e1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "660eb48d-9b4f-4071-801d-f2d8f32f7ef9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/trueml/collec-55",
+      "external_id": "trueml_collec-55"
     },
     "54dcfb61-770a-4c1a-bec8-cc82f5a56837": {
       "status": "fail",
@@ -61832,52 +61835,55 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "5d453ed3-b129-4a8f-b01d-c87a3c2fe8e1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "46cec056-4284-4458-9ed3-6c89946f87c3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "44f53597-13f5-451e-98c5-ff68cef91362": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5bdd387b-bc8d-492a-9828-332e0cfc8f53": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/shieldai/prog-fa",
+      "external_id": "shieldai_prog-fa"
     },
     "5b831edb-de0b-4602-ae98-a11d1075c54b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "43856974-6bde-46a7-aa32-08954037df1b": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5a620d83-c7c5-4a11-9c8c-9bffe5f1e0e4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "548c4150-95fd-46b1-8ff4-f3e20fb2b604": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/binance/biz",
+      "external_id": "binance_biz"
     },
     "47d8192f-1162-4610-815e-49e329fc2ecc": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "534a9881-8691-4565-be44-24bda2204c52": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "72cb6d95-4f1e-4c4a-8ccc-61419fbdda0c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/coast/lifecycle",
+      "external_id": "coast_lifecycle"
     },
     "6e1c3c0e-6978-41c4-9de0-d7ba24347c6f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6fca45f0-28eb-46b7-a6dc-6ecf6432f33d": {
       "status": "skip",
@@ -62016,23 +62022,23 @@
     },
     "4aa5d44d-ee8f-43bf-866d-327f45f1a8c5": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "543817ae-64e1-4d25-b521-2a08b1c0dc9b": {
       "status": "skip",
       "reason": "source_thin"
     },
     "714e8417-ae2e-44b9-80d5-c4fd3d4ef7e3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "50703090-76a7-4d62-bfa3-5fc9969d2eac": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5e072de8-4aec-4147-9de8-9d4d13ef7570": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "51f10976-c3ad-4140-9052-b86be49871ee": {
       "status": "fail",
@@ -62043,60 +62049,63 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "6fa74a2c-c752-4a6a-b4e4-8ee6aac271fe": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5bd7279e-dcb6-4e82-8286-9b6771780217": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "440ce513-1b6e-4fea-8574-419c1b9c56ad": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4c8fc3a0-9705-4995-b8e0-59153bb800e4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "5d1043de-1539-4593-975d-21b80978f1a5": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "750c000f-ef8c-4301-bebd-87d189a7f5dd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4c7a761a-71e8-4a6d-8697-efbe67139d0e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/jetbrains/sw-ba",
+      "external_id": "jetbrains_sw-ba"
     },
     "45127e3b-2836-477a-9532-8e273556f22e": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Account Manager – Spanish Speaking company=Agoda apply=https://job-boards.greenhouse.io/agoda/jobs/7305146"
     },
     "78d6cf78-18c4-40a2-935b-76fe0c06cb32": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/shieldai/sourcing",
+      "external_id": "shieldai_sourcing"
     },
     "499a7377-d13d-45c0-9d1d-5d6a062ea715": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7ac84c35-ff5b-4944-b3ef-86572b6e191f": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "4977238a-8cee-483f-b639-7c7227f8c1f7": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "69b68487-94fa-451b-8007-48ab15554be0": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4f32c50d-9282-4148-8e38-dae3f7eb669d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "691ba2fb-8597-4f04-9af1-e737910a0504": {
       "status": "fail",
@@ -63006,8 +63015,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "48ead627-e658-4618-89bd-52627ac586bd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "7f1e0979-dbe4-4a67-bf95-582c53f732dd": {
       "status": "fail",
@@ -63030,8 +63039,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "768a437e-8d33-4f99-8ca7-f3a39704ce36": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "524858a6-e45f-4f7e-8cc4-d77fe2738abc": {
       "status": "fail",
@@ -63054,12 +63063,12 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "59b39123-0fdc-45f1-aec5-6eaf8a328478": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4f6815d2-1e7a-4165-8f10-12c0d0d5e609": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4158b7f8-b4e0-4b24-a3bb-bdf178417f16": {
       "status": "fail",
@@ -63078,32 +63087,32 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "5e7e75af-ee37-4d41-a674-d666073e8911": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "79ae8140-08c2-4f92-b3a9-8bde1d4f9347": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "4f75a55b-7570-493e-a65f-04f63c0257f3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "fact_sheet_parse"
     },
     "60d930fa-bdb7-4a07-81ab-27a6a914be6b": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "7698ce61-baf6-4ccf-8d92-0f745afa3767": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "6f7b4f7f-5d32-4d2c-a4cf-3acec6101420": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "790461f3-2d70-471b-8d7c-4cb5300f89e2": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "4700f23e-a4eb-4183-a071-841a3d9c889c": {
       "status": "fail",
@@ -63118,8 +63127,8 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "6baf0d2d-3c8c-4670-a5b3-46f899090375": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin"
     },
     "54d5ba1e-d976-4593-b3ac-86317325d5c4": {
       "status": "fail",
@@ -96664,6 +96673,7 @@
     "greenhouse:grafanalabs": "source_thin",
     "host:sofi.com": "html_403",
     "host:carvana.com": "html_403",
-    "ashby:amenitiz": "source_thin"
+    "ashby:amenitiz": "source_thin",
+    "greenhouse:agoda": "gh_404"
   }
 }
