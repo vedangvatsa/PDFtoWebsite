@@ -147,3 +147,24 @@ jobs:
             echo "- Prefer long-lived API token (no rotation) over OAuth refresh"
             echo "- Auto-deploys on every push to \`main\`"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # Google Indexing API — notifies Googlebot of new/updated job URLs faster
+      # than sitemap recrawl (Google's recommendation for job postings).
+      # Skips when GOOGLE_INDEXING_SERVICE_ACCOUNT secret is not configured.
+      - name: Notify Google Indexing API
+        if: success()
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_INDEXING_SERVICE_ACCOUNT }}
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SITE_URL: https://cvin.bio
+        run: |
+          node .github/scripts/google-indexing.mjs
+          git add -f .github/scripts/google-indexing-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: advance Google indexing state [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
