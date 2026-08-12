@@ -383,7 +383,26 @@ function pickJobs(jobs, limit, category) {
     }
   }
 
-  // Popular/well-known companies first, category-matching first, then the rest.
+  // Category posts are STRICT: the header names the category, so only
+  // category-matching jobs may appear under it. Cross-category backfill used
+  // to pad posts to 10, which put engineering roles under the "Business,
+  // Sales & Growth" header (and burned them from the engineering slot).
+  // If the caller passes no category, fall back to a mixed post below.
+  if (catRegex) {
+    const high = (arr) => arr.filter((j) => isHighProfileCompany(j.company));
+    const low = (arr) => arr.filter((j) => !isHighProfileCompany(j.company));
+    const picked = [];
+    for (const bucket of [high(matching), low(matching)]) {
+      for (const job of bucket) {
+        if (picked.length >= limit) break;
+        picked.push(job);
+      }
+      if (picked.length >= limit) break;
+    }
+    return picked.slice(0, limit);
+  }
+
+  // No category (neutral "Featured" posts): popular/well-known companies first.
   const high = (arr) => arr.filter((j) => isHighProfileCompany(j.company));
   const low = (arr) => arr.filter((j) => !isHighProfileCompany(j.company));
 
@@ -586,7 +605,14 @@ async function main() {
 
   // 2. Shuffle for source diversity, then pick category-matching remote-preferred roles
   //    Over-pick for live URL preflight (drop 404s before posting)
+  //    Category posts are strict (header = contents). If a category slot has no
+  //    matches, fall back to a neutral "Featured" mixed post so the slot lives.
   let jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST * 4, category);
+  if (jobs.length === 0) {
+    console.log(`  No ${category} jobs matched — falling back to mixed "Featured" post.`);
+    category = null;
+    jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST * 4, null);
+  }
   if (jobs.length === 0) {
     console.log('  No jobs matched category filters.');
     return;
