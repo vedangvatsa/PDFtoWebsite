@@ -23,20 +23,8 @@ import type { JobRow } from '@/lib/job-detail-data';
 const SELECT_COLS =
   'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at,slug';
 
-function isExpiredJob(createdAt?: string | null, publishedAt?: string | null): boolean {
-  const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
-  const pubMs = publishedAt ? new Date(publishedAt).getTime() : 0;
-  const createdMs = createdAt ? new Date(createdAt).getTime() : 0;
-  // Scraped jobs: created_at is the ingestion date — if the scraper found
-  // it recently the listing is still live regardless of source metadata age.
-  if (createdMs > thirtyDaysAgo) return false;
-  // Stale by both dates: neither signal is recent → job is gone.
-  if (pubMs > 0 && pubMs < thirtyDaysAgo && createdMs > 0 && createdMs < thirtyDaysAgo) return true;
-  // Single-date fallback: if only one date exists and it's old, expire.
-  if (pubMs > 0 && pubMs < thirtyDaysAgo && !createdMs) return true;
-  if (createdMs > 0 && createdMs < thirtyDaysAgo && !pubMs) return true;
-  return false;
-}
+// Expired jobs still load. The page shows a closed notice and hides apply.
+// Missing rows (hard-deleted) still 301 to the company hub.
 
 async function loadJobByIdLive(id: string): Promise<JobRow | null> {
   const result = await withTimeoutFallback(
@@ -46,9 +34,7 @@ async function loadJobByIdLive(id: string): Promise<JobRow | null> {
     `job-by-id:${id.slice(0, 8)}`
   );
   if (result.error || !result.data) return null;
-  const row = result.data as JobRow;
-  if (isExpiredJob(row.created_at, row.published_at)) return null;
-  return row;
+  return result.data as JobRow;
 }
 
 async function loadJobByExternalIdLive(
@@ -68,7 +54,6 @@ async function loadJobByExternalIdLive(
   ): JobRow | null => {
     if (!rows || rows.length !== 1) return null;
     const row = rows[0] as JobRow;
-    if (isExpiredJob(row.created_at, row.published_at)) return null;
     if (companyToSlug(row.company) !== companySlug.toLowerCase()) return null;
     return row;
   };

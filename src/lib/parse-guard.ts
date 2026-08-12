@@ -89,6 +89,8 @@ export function normalizeName(raw: string): string {
   name = name.split(/[,/|·•]/)[0].trim();
   // Strip trailing locations ("Yash Kathait New Delhi" → "Yash Kathait")
   name = name.replace(TRAILING_LOCATION_RE, '').trim();
+  // Trailing tech/org acronyms glued after an ALL-CAPS name run ("Lokesh Trivedi Aws")
+  name = name.replace(/\s+\b(AWS|GCP|IBM|SAP|ERP|CRM|IAM|CTO|CEO|CFO|COO|CIO|CISO)\b\.?$/i, '').trim();
   // If still 4+ tokens and ends with Capitalized City-like word, drop last token once
   const tokens = name.split(/\s+/);
   if (tokens.length >= 3) {
@@ -171,7 +173,25 @@ export function truncateAtWordBoundary(raw: string, maxLen: number): string {
   return cut.trim();
 }
 
-export function cleanDescription(raw: string, maxLen: number): string {
+/**
+ * Light cleanup for uploaded CV text. Never truncates — we must keep every
+ * character the user uploaded (summary, bullets, Imported CV salvage, etc.).
+ */
+export function preserveUploadedCvText(raw: string): string {
+  if (!raw) return '';
+  return String(raw)
+    .replace(/\r\n/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
+
+/**
+ * Normalize description text. Pass `maxLen` only for non-CV surfaces (SEO meta,
+ * synthesized one-liners). Uploaded CV fields must omit maxLen so nothing is cut.
+ */
+export function cleanDescription(raw: string, maxLen?: number): string {
   if (!raw) return '';
   let text = String(raw).replace(/\s+/g, ' ').trim();
   text = text.replace(/^["“”'`\s]+|["“”'`\s]+$/g, '').trim();
@@ -183,7 +203,12 @@ export function cleanDescription(raw: string, maxLen: number): string {
       ''
     )
     .trim();
-  if (text.length > maxLen) {
+  if (
+    typeof maxLen === 'number' &&
+    Number.isFinite(maxLen) &&
+    maxLen > 0 &&
+    text.length > maxLen
+  ) {
     text = truncateAtWordBoundary(text, maxLen);
   }
   return text;
@@ -192,8 +217,9 @@ export function cleanDescription(raw: string, maxLen: number): string {
 /**
  * Format job bullets + project sub-headers so mashed project blocks become readable.
  * e.g. "...teams. Outbound-Inbound Caller • Built..." → newlines before project title.
+ * Never truncates uploaded job text unless an explicit maxLen is passed.
  */
-export function formatJobDescription(raw: string, maxLen = 2000): string {
+export function formatJobDescription(raw: string, maxLen?: number): string {
   let text = String(raw || '').replace(/\r\n/g, '\n').trim();
   if (!text) return '';
   // Normalize mid-line bullets to newline bullets
@@ -210,7 +236,14 @@ export function formatJobDescription(raw: string, maxLen = 2000): string {
     .filter((l, i, arr) => l || (i > 0 && arr[i - 1]))
     .join('\n')
     .trim();
-  if (text.length > maxLen) text = text.slice(0, maxLen).trim();
+  if (
+    typeof maxLen === 'number' &&
+    Number.isFinite(maxLen) &&
+    maxLen > 0 &&
+    text.length > maxLen
+  ) {
+    text = text.slice(0, maxLen).trim();
+  }
   return text;
 }
 
@@ -263,12 +296,21 @@ function namePartsFromHandle(raw: string): string[] {
  * If fullName is a single token (or empty), try to recover last name from email/github/linkedin handle.
  * "Shivam" + shivamrajput2362@… → "Shivam Rajput"
  */
+function nameLooksIncomplete(name: string): boolean {
+  const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+  if (parts.length < 2) return true;
+  const last = parts[parts.length - 1];
+  // "Lokesh T" is a first name + initial — still recover the last name
+  if (last.length === 1) return true;
+  return false;
+}
+
 export function enrichNameFromContact(
   fullName: string,
   opts?: { email?: string; github?: string; linkedin?: string; authName?: string }
 ): string {
   let name = normalizeName(fullName);
-  if (name && name.split(/\s+/).length >= 2) return name;
+  if (name && !nameLooksIncomplete(name)) return name;
 
   // Prefer verified auth display name when parse only got a first name / garbage
   if (opts?.authName) {
@@ -311,8 +353,14 @@ export function enrichNameFromContact(
       const rest = letters.slice(compactFirst.length);
       // single last-name token (no glued initials / hash letters)
       if (/^[a-z]{3,16}$/.test(rest)) {
-        const last = rest.charAt(0).toUpperCase() + rest.slice(1);
-        return normalizeName(`${first} ${last}`) || `${first} ${last}`;
+        const lastTok = name.split(/\s+/).pop() || '';
+        // Expand "Lokesh T" when email remainder is "trivedi"
+        if (lastTok.length === 1 && rest[0] !== lastTok.toLowerCase()) {
+          // initial doesn't match — keep looking
+        } else {
+          const last = rest.charAt(0).toUpperCase() + rest.slice(1);
+          return normalizeName(`${first} ${last}`) || `${first} ${last}`;
+        }
       }
     }
     const parts = h
@@ -661,7 +709,12 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
   }
 
   if (typeof data.summary === 'string') {
-    data.summary = cleanDescription(data.summary, 1200);
+    // Never truncate uploaded summary / about text
+    data.summary = isContactHeaderText(data.summary)
+      ? ''
+      : isResumeDumpText(data.summary)
+        ? extractCleanSummary(data.summary)
+        : cleanDescription(data.summary);
   }
 
   if (Array.isArray(data.workExperience)) {
@@ -671,9 +724,17 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
       .filter((w: any) => {
         const title = String(w.title || '').trim();
         const company = String(w.company || '').trim();
+        const desc = String(w.description || '').trim();
         if (/^position$/i.test(title) && /^company$/i.test(company)) return false;
         if (/^position$/i.test(title) && !company) return false;
         if (/^company$/i.test(company) && !title) return false;
+        // Placeholder company with no real title — leftover regex shell
+        if (/^company$/i.test(company) && /^position$/i.test(title)) return false;
+        // Company field swallowed a bullet — keep the job, fold the line back
+        if (/^[•▪●]/.test(company) || company.length > 80) {
+          w.description = [company, desc].filter(Boolean).join('\n');
+          w.company = '';
+        }
         return true;
       })
       .map((w: any) => ({
@@ -683,7 +744,7 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
         location: cleanLocation(w.location),
         startDate: cleanDate(w.startDate),
         endDate: cleanDate(w.endDate),
-        description: formatJobDescription(w.description, 2000),
+        description: formatJobDescription(w.description),
       }));
   }
 
@@ -703,7 +764,7 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
         fieldOfStudy: String(e.fieldOfStudy || '').trim(),
         startDate: cleanDate(e.startDate),
         endDate: cleanDate(e.endDate),
-        description: cleanDescription(e.description, 500)
+        description: preserveUploadedCvText(e.description)
           .replace(CONTACT_STRIP_RE, '')
           .replace(/\s{2,}/g, ' ')
           .trim(),
@@ -723,14 +784,21 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
   // Synthesize a short summary when model omitted it but we have roles (after skill cleanup)
   if (!String(data.summary || '').trim() && Array.isArray(data.workExperience) && data.workExperience.length) {
     const top = data.workExperience[0];
+    const title = String(top.title || '').trim();
+    const company = String(top.company || '').trim();
+    const realTitle = title && !/^position$/i.test(title) ? title : '';
+    const realCompany = company && !/^company$/i.test(company) ? company : '';
     const bits = [
-      top.title && top.company ? `${top.title} at ${top.company}` : top.title || top.company,
-      data.workExperience[1]?.company ? `Previously at ${data.workExperience[1].company}` : null,
+      realTitle && realCompany ? `${realTitle} at ${realCompany}` : realTitle || realCompany,
+      data.workExperience[1]?.company && !/^company$/i.test(String(data.workExperience[1].company))
+        ? `Previously at ${data.workExperience[1].company}`
+        : null,
       Array.isArray(data.skills) && data.skills.length
         ? `Skills include ${data.skills.slice(0, 6).join(', ')}`
         : null,
     ].filter(Boolean);
     if (bits.length) {
+      // Synthesized fallback only — not uploaded CV text
       data.summary = cleanDescription(bits.join('. ') + '.', 400);
     }
   }
@@ -740,9 +808,6 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
       .filter((cs: any) => cs && String(cs.sectionTitle || '').trim())
       .map((cs: any) => {
         const title = String(cs.sectionTitle || '').trim();
-        // Editor-only salvage dumps must keep the FULL CV text — truncating to 800
-        // destroyed recoverability (sowjanya-prabhu / AI-outage imports).
-        const descMax = isEditorOnlyCustomSection({ sectionTitle: title }) ? 12000 : 800;
         return {
           ...cs,
           sectionTitle: title,
@@ -752,7 +817,8 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
                 title: String(item.title || '').trim(),
                 subtitle: String(item.subtitle || '').trim(),
                 date: String(item.date || '').trim(),
-                description: cleanDescription(item.description, descMax),
+                // Keep full uploaded / salvage text — never truncate
+                description: preserveUploadedCvText(item.description),
               }))
             : [],
         };
@@ -762,26 +828,53 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
   return data;
 }
 
+/**
+ * Name + phone/email/LinkedIn chrome with no prose — often dumped into `about`.
+ * Shorter than a full resume dump (those are handled by isResumeDumpText).
+ */
+export function isContactHeaderText(raw: string): boolean {
+  const t = String(raw || '').replace(/\s+/g, ' ').trim();
+  if (!t || t.length > 320) return false;
+  const hasEmail = EMAIL_RE.test(t);
+  const hasPhone = PHONE_RE.test(t) || /\+\d{1,3}[\s.-]?\d{8,12}/.test(t);
+  const hasUrl = URL_IN_FIELD_RE.test(t);
+  const pipes = (t.match(/\|/g) || []).length;
+  const sentences = (t.match(/[.!?](?:\s|$)/g) || []).length;
+  if (sentences > 0) return false;
+  if ((hasEmail || hasPhone) && (pipes >= 1 || hasUrl)) return true;
+  if (hasEmail && hasPhone && t.length < 240) return true;
+  return false;
+}
+
 /** True when a string looks like a full CV pasted into one field (not a real summary). */
 export function isResumeDumpText(raw: string): boolean {
   const t = String(raw || '').trim();
+  if (isContactHeaderText(t)) return true;
   if (t.length < 280) return false;
   const markers = t.match(MULTI_SECTION_DUMP_RE) || [];
   const distinct = new Set(markers.map((m) => m.toLowerCase()));
   if (distinct.size >= 2) return true;
 
-  // Multiple common resume section labels in one blob (Summary + Education + Skills, etc.)
+  // Multiple resume SECTION HEADERS in one blob (Title Case / ALL CAPS only —
+  // do NOT match lowercase "experience" / "skills" inside normal prose).
   const sectionLabels =
     t.match(
-      /\b((?:executive|professional|career)\s+summary|summary|education|experiences?|employment(?:\s+history)?|skills?|projects?|certifications?|work\s+experience)\b/gi
+      /\b((?:Executive|Professional|Career)\s+Summary|Summary|Education|Experiences?|Employment(?:\s+History)?|Skills?|Projects?|Certifications?|Work\s+Experience|EXECUTIVE\s+SUMMARY|PROFESSIONAL\s+SUMMARY|EDUCATION|EXPERIENCES?|SKILLS?|PROJECTS?|CERTIFICATIONS?)\b/g
     ) || [];
   const distinctSections = new Set(
     sectionLabels.map((s) => s.toLowerCase().replace(/\s+/g, ' ').trim())
   );
   if (distinctSections.size >= 2 && t.length > 350) return true;
 
-  // Contact embedded in the body (email + phone) on a long blob → header was dumped in
-  if (EMAIL_RE.test(t) && PHONE_RE.test(t) && t.length > 400) return true;
+  // Contact embedded alongside at least one section header → dump
+  if (
+    EMAIL_RE.test(t) &&
+    PHONE_RE.test(t) &&
+    t.length > 400 &&
+    distinctSections.size >= 1
+  ) {
+    return true;
+  }
 
   // Collapsed one-liners: contact chrome + experience header + bullets
   const hasContactChrome =
@@ -802,6 +895,7 @@ export function isResumeDumpText(raw: string): boolean {
 export function extractCleanSummary(raw: string): string {
   const t = String(raw || '').trim();
   if (!t) return '';
+  if (isContactHeaderText(t)) return '';
 
   // Prefer labeled summary bodies even when the blob is not flagged as a dump
   const sectionBody = t.match(
@@ -811,7 +905,7 @@ export function extractCleanSummary(raw: string): string {
     return finalizeExtractedSummary(sectionBody[1]);
   }
 
-  if (!isResumeDumpText(t)) return cleanDescription(t, 2000);
+  if (!isResumeDumpText(t)) return cleanDescription(t);
 
   // Strip leading ALL-CAPS name + title + contact chrome, keep remaining prose
   let rest = t
@@ -836,9 +930,9 @@ export function extractCleanSummary(raw: string): string {
   return finalizeExtractedSummary(rest);
 }
 
-/** Trim mid-sentence salvage cutoffs ("…across contact") back to last full sentence. */
+/** Finalize an extracted about/summary body — never length-truncate uploaded prose. */
 function finalizeExtractedSummary(raw: string): string {
-  let text = cleanDescription(raw, 900);
+  let text = preserveUploadedCvText(raw).replace(/\s+/g, ' ').trim();
   // Reject contact-chrome scraps that aren't real prose
   if (text.length < 80) return '';
   if (/^(email|phone|linkedin|github|alamat|address|no\s*:)/i.test(text)) return '';
@@ -852,7 +946,7 @@ function finalizeExtractedSummary(raw: string): string {
   const labeled = text.match(
     /(?:tentang\s+saya|about\s+me|profile)\s*[:\-–—.]?\s*([\s\S]{80,})/i
   );
-  if (labeled?.[1]) text = cleanDescription(labeled[1], 900);
+  if (labeled?.[1]) text = preserveUploadedCvText(labeled[1]).replace(/\s+/g, ' ').trim();
 
   if (text.length > 120 && !/[.!?]"?$/.test(text)) {
     const lastStop = Math.max(
@@ -901,5 +995,3 @@ export function sanitizeSocialHandle(
   if (kind === 'github' && (/^github$/i.test(v) || /^git$/i.test(v))) return '';
   return v;
 }
-
-export { isEducationDump };

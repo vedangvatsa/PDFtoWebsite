@@ -10,7 +10,7 @@ import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 12;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 14;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -21,7 +21,7 @@ export const JOB_DESCRIPTION_PROSE_CLASS =
   '[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap';
 
 /** Strip aggregator / mirror disclaimers that must never appear on job pages. */
-export function stripAggregatorDisclaimers(text: string): string {
+function stripAggregatorDisclaimers(text: string): string {
   if (!text) return '';
   let s = text;
   const patterns: RegExp[] = [
@@ -42,16 +42,6 @@ export function stripAggregatorDisclaimers(text: string): string {
     .replace(/<p>\s*<\/p>/gi, '')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
-}
-
-/** Normalize before DB upsert — strips aggregator footers, caps length. */
-export function normalizeJobDescriptionForStorage(
-  description: string | null | undefined
-): string | null {
-  if (!description) return null;
-  const cleaned = stripAggregatorDisclaimers(description).trim();
-  if (!cleaned) return null;
-  return cleaned.length > 12000 ? cleaned.slice(0, 12000) : cleaned;
 }
 
 const ALLOWED_TAGS = new Set([
@@ -456,6 +446,7 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^Selection$/i.test(t)) return true;
   if (/^During the internship$/i.test(t)) return true;
   if (/^How to apply/i.test(t)) return true;
+  if (/^Applying with a CV link$/i.test(t)) return true;
   if (/^Contact$/i.test(t)) return true;
   if (/^Responsibilities:?$/i.test(t)) return true;
   if (/^Skills Required:?$/i.test(t)) return true;
@@ -477,11 +468,6 @@ function mergeAdjacentLists(html: string): string {
   return html
     .replace(/<\/ul>\s*<ul>/gi, '')
     .replace(/<\/ol>\s*<ol>/gi, '');
-}
-
-/** @deprecated Use isMetaSectionHeading — kept for internal HTML restructuring. */
-function isSectionHeading(line: string): boolean {
-  return isMetaSectionHeading(line);
 }
 
 /** In-section labels: "5. SOC Platform", "- 1. AI Integration: ..." title only */
@@ -746,9 +732,9 @@ export function jobDescriptionWordCount(raw: string | null | undefined): number 
 /**
  * Minimum words for a job page to be considered publishable/indexable.
  * Below this we noindex and skip sitemap so thin pages never rank.
- * Site rule: every curated/enriched job page must carry a 600+ word body
- * (mirrors MIN_REWRITE_WORDS in the enrichment pipeline). Short ATS stubs
- * fall under this floor and are held out of Google until enriched.
+ * Content is the model's honest restatement + curated blocks (About the
+ * company, About the location, and general role information). No boilerplate
+ * padding: the floor is reachable with real content.
  */
 export const JOB_INDEXABLE_MIN_WORDS = 600;
 

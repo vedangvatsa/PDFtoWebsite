@@ -11,12 +11,6 @@ import { createClient } from '@/utils/supabase/client';
 import { useRouter } from "next/navigation";
 import posthog from 'posthog-js';
 import { GLOBAL_EVENTS } from '@/lib/posthog-events';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 
 export default function Header({ children }: { children?: React.ReactNode }) {
@@ -37,36 +31,39 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         }
     }
 
+  const navBtn =
+    'h-8 px-1.5 sm:px-2.5 text-xs text-muted-foreground hover:text-foreground shrink-0';
+
 return (
-    <header className="sticky top-0 z-50 w-full" role="banner">
-      <nav className="mx-auto grid grid-cols-3 h-16 w-full max-w-screen-2xl items-center gap-4 px-4 sm:px-8" aria-label="Main navigation">
-        <div className="col-start-1">
-          <Link href="/" className="flex items-center space-x-2" aria-label="CVin.Bio home">
-            <Icons.logo className="h-6 w-6" />
-          </Link>
-        </div>
-        <div className="col-start-2 flex justify-center">
-          {children}
-        </div>
-        <div className="col-start-3 flex justify-end items-center gap-1">
+    <header className="sticky top-0 z-50 w-full overflow-x-hidden" role="banner">
+      <nav className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between gap-2 px-3 sm:px-8 min-w-0" aria-label="Main navigation">
+        <Link href="/" className="flex items-center shrink-0" aria-label="CVin.Bio home">
+          <Icons.logo className="h-6 w-6" />
+        </Link>
+        {children ? (
+          <div className="hidden sm:flex flex-1 justify-center min-w-0 overflow-hidden">
+            {children}
+          </div>
+        ) : null}
+        <div className="flex justify-end items-center gap-0 sm:gap-1 min-w-0 overflow-hidden">
           {pathname !== '/jobs' && (
-            <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+            <Button variant="ghost" size="sm" asChild className={navBtn}>
               <Link href="/jobs">Jobs</Link>
             </Button>
           )}
           {pathname !== '/news' && (
-            <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+            <Button variant="ghost" size="sm" asChild className={`${navBtn} ${user ? 'max-[360px]:hidden' : ''}`}>
               <Link href="/news">News</Link>
             </Button>
           )}
           {!isUserLoading && user && (
             <>
               {pathname !== '/editor' && (
-                <Button variant="ghost" size="sm" asChild className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+                <Button variant="ghost" size="sm" asChild className={navBtn}>
                   <Link href="/editor">Editor</Link>
                 </Button>
               )}
-              <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="sm" onClick={handleSignOut} className={navBtn}>
                 Logout
               </Button>
             </>

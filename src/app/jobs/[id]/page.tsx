@@ -57,10 +57,12 @@ export default async function JobDetailPage({ params }: PageProps) {
 
   return (
     <>
+      {jsonLd ? (
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      ) : null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}

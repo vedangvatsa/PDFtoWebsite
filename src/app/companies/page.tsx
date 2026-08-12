@@ -120,14 +120,14 @@ export default async function CompaniesPage() {
   ];
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="h-screen overflow-y-auto overflow-x-hidden bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         <div className="flex flex-col mb-10">
           <h1 className={PAGE_TITLE}>Companies</h1>
-          <div className="flex items-center gap-3 mt-3">
-            {logoStrip.map((name) => (
-              <Link key={name} href={`/${toCompanySlug(name)}`} title={name} className="shrink-0">
+          <div className="flex items-center gap-3 mt-3 overflow-hidden">
+            {logoStrip.map((name, i) => (
+              <Link key={name} href={`/${toCompanySlug(name)}`} title={name} className={`shrink-0 ${i >= 6 ? 'hidden sm:block' : ''}`}>
                 <DirectoryLogo
                   name={name}
                   size={24}
@@ -142,10 +142,10 @@ export default async function CompaniesPage() {
           </div>
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline"
+            className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline max-w-full min-w-0"
           >
-            <Briefcase className="h-4 w-4 text-primary" />
-            Browse all {PLATFORM_JOBS_DISPLAY} open roles →
+            <Briefcase className="h-4 w-4 text-primary shrink-0" />
+            <span className="truncate">Browse all {PLATFORM_JOBS_DISPLAY} open roles →</span>
           </Link>
         </div>
 

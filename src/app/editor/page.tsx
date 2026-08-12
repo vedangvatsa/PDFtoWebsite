@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { Eye, Trash2, PlusCircle, Loader2, UploadCloud, CheckCircle, XCircle, Share2, Copy, Link2, Download } from 'lucide-react';
+import { Trash2, PlusCircle, Loader2, UploadCloud, CheckCircle, XCircle, Share2, Copy, Link2, Download } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import Header from '@/components/header';
 import { useUser } from '@/auth';
@@ -34,6 +34,11 @@ import {
   enrichNameFromContact,
   normalizeName,
   cleanDescription,
+  isResumeDumpText,
+  isContactHeaderText,
+  extractCleanSummary,
+  sanitizeSocialHandle,
+  repairSpacedEmail,
 } from '@/lib/parse-guard';
 import {
   emptyParsedResumeShell,
@@ -219,9 +224,9 @@ function InsightsCard({ slug }: { slug: string }) {
     // Below 10 views: show teaser
     if (totalActivity < 10) {
         return (
-            <div className="flex items-center justify-center gap-2 py-1">
-                <span className="text-[10px] text-muted-foreground/40">▸</span>
-                <span className="text-[11px] text-muted-foreground/40">
+            <div className="flex items-center justify-center gap-2 py-1 min-w-0">
+                <span className="text-[10px] text-muted-foreground/40 shrink-0">▸</span>
+                <span className="text-[11px] text-muted-foreground/40 min-w-0 text-center">
                     Your profile has been viewed <span className="text-foreground/50 font-medium">{data.views}</span> time{data.views !== 1 ? 's' : ''} · Insights unlock after 10 views
                 </span>
             </div>
@@ -741,12 +746,12 @@ export default function EditorPage() {
             const existingLinks = user ? ((await supabase.from('profiles').select('links').eq('id', user.id).single()).data?.links || []) : [];
             const newLinksMap = new Map(existingLinks.map((l: any) => [l.type, l.value]));
             
-            if (extractedData.personalInfo?.email) newLinksMap.set('email', extractedData.personalInfo.email);
+            if (extractedData.personalInfo?.email) newLinksMap.set('email', repairSpacedEmail(extractedData.personalInfo.email) || extractedData.personalInfo.email);
             if (extractedData.personalInfo?.phone) newLinksMap.set('phone', extractedData.personalInfo.phone);
             if (extractedData.personalInfo?.location) newLinksMap.set('location', extractedData.personalInfo.location);
             if (extractedData.personalInfo?.website) newLinksMap.set('website', extractedData.personalInfo.website);
-            if (extractedData.personalInfo?.github) newLinksMap.set('github', extractedData.personalInfo.github);
-            if (extractedData.personalInfo?.linkedin) newLinksMap.set('linkedin', extractedData.personalInfo.linkedin);
+            if (extractedData.personalInfo?.github) newLinksMap.set('github', sanitizeSocialHandle(extractedData.personalInfo.github, 'github') || extractedData.personalInfo.github);
+            if (extractedData.personalInfo?.linkedin) newLinksMap.set('linkedin', sanitizeSocialHandle(extractedData.personalInfo.linkedin, 'linkedin') || extractedData.personalInfo.linkedin);
             
             // Merge additional links (ResearchGate, Google Scholar, Twitter, etc.)
             const additionalLinks = extractedData.personalInfo?.additionalLinks || [];
@@ -785,19 +790,46 @@ export default function EditorPage() {
                   isBadSlug(String(usernameCandidate)) ? baseSlug : String(usernameCandidate),
                   user.id
                 );
+                const parseMethod = String(extractedData._parseMethod || 'ai');
+                const thinParse =
+                  !!extractedData._parseNeedsReview ||
+                  parseMethod === 'regex' ||
+                  parseMethod === 'shell';
+                const nextSkills = skillsArr;
+                const nextExp = workItemsWithIds;
+                const nextEdu = eduItemsWithIds;
+                const prevExp = Array.isArray(currentProfile?.experience) ? currentProfile.experience : [];
+                const prevEdu = Array.isArray(currentProfile?.education) ? currentProfile.education : [];
+                const prevSkills = Array.isArray(currentProfile?.skills) ? currentProfile.skills : [];
+                // Thin/regex/shell parses must never wipe a previously good profile
+                const experience =
+                  thinParse && nextExp.length === 0 && prevExp.length > 0 ? prevExp : nextExp;
+                const education =
+                  thinParse && nextEdu.length === 0 && prevEdu.length > 0 ? prevEdu : nextEdu;
+                const skills =
+                  thinParse && nextSkills.length === 0 && prevSkills.length > 0 ? prevSkills : nextSkills;
+
+                const rawAbout = extractedData.summary || currentProfile?.about || '';
+                const about = isContactHeaderText(rawAbout)
+                  ? ''
+                  : isResumeDumpText(rawAbout)
+                    ? extractCleanSummary(rawAbout)
+                    : cleanDescription(rawAbout);
+
+                // Always keep Imported CV / salvage text so nothing from the upload is lost.
+                // Public pages filter these via publicCustomSections.
+                const custom_sections = customSectionsWithIds;
+
                 const updatedProfile = {
                     id: user.id,
                     full_name: resolvedName || currentProfile?.full_name || 'Your Name',
                     username,
-                    about: cleanDescription(
-                      extractedData.summary || currentProfile?.about || '',
-                      2000
-                    ),
+                    about,
                     profile_picture_url: currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
-                    skills: skillsArr,
-                    experience: workItemsWithIds,
-                    education: eduItemsWithIds,
-                    custom_sections: customSectionsWithIds,
+                    skills,
+                    experience,
+                    education,
+                    custom_sections,
                     links: combinedLinks
                 };
                 
@@ -930,16 +962,29 @@ export default function EditorPage() {
                             id: user.id,
                             full_name: resolvedName || currentProfile?.full_name || 'Your Name',
                             username: finalSlug,
-                            about: cleanDescription(
-                              extractedData.summary || currentProfile?.about || '',
-                              2000
-                            ),
+                            about: (() => {
+                              const raw = extractedData.summary || currentProfile?.about || '';
+                              return isContactHeaderText(raw)
+                                ? ''
+                                : isResumeDumpText(raw)
+                                  ? extractCleanSummary(raw)
+                                  : cleanDescription(raw);
+                            })(),
                             profile_picture_url: extractedData.personalInfo?.avatarUrl || currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
                             theme_id: extractedData.themeId || currentProfile?.theme_id || 'modern-creative',
-                            skills: skillsArr,
-                            experience: extractedData.workExperience ? workItemsWithIds : (currentProfile?.experience || []),
-                            education: extractedData.education ? eduItemsWithIds : (currentProfile?.education || []),
-                            custom_sections: extractedData.customSections ? customSectionsWithIds : (currentProfile?.custom_sections || []),
+                            skills: skillsArr.length || !extractedData.workExperience
+                              ? (skillsArr.length ? skillsArr : (currentProfile?.skills || []))
+                              : skillsArr,
+                            experience: extractedData.workExperience && workItemsWithIds.length
+                              ? workItemsWithIds
+                              : (currentProfile?.experience || []),
+                            education: extractedData.education && eduItemsWithIds.length
+                              ? eduItemsWithIds
+                              : (currentProfile?.education || []),
+                            // Keep Imported CV / salvage sections so uploaded text is never discarded
+                            custom_sections: extractedData.customSections
+                              ? customSectionsWithIds
+                              : (currentProfile?.custom_sections || []),
                             links: combinedLinks
                         };
                         await supabase.from('profiles').upsert(updatedProfile);
@@ -1263,12 +1308,12 @@ export default function EditorPage() {
     }
 
     return (
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col overflow-x-hidden">
             <Header />
             {!user && (
-                <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center justify-center gap-3 text-amber-800 text-xs md:text-sm">
+                <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-amber-800 text-xs md:text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
-                    <span><strong>Guest mode.</strong> Check your details below, then sign up to save.</span>
+                    <span className="min-w-0 text-center"><strong>Guest mode.</strong> Check your details below, then sign up to save.</span>
                     <LoginDialog trigger={
                         <Button size="sm" variant="outline" className="px-4 text-xs font-semibold border-amber-300 text-amber-800 hover:bg-amber-100 shrink-0" onClick={() => {
                             const snapshot = {
@@ -1288,8 +1333,8 @@ export default function EditorPage() {
             )}
 
             {parseReviewBanner && (
-                <div className="bg-sky-50 border-b border-sky-200 px-4 py-2.5 flex items-center justify-center gap-3 text-sky-900 text-xs md:text-sm">
-                    <span className="text-center">{parseReviewBanner}</span>
+                <div className="bg-sky-50 border-b border-sky-200 px-4 py-2.5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-sky-900 text-xs md:text-sm">
+                    <span className="text-center min-w-0 break-words">{parseReviewBanner}</span>
                     <button
                         type="button"
                         className="shrink-0 text-sky-700 underline underline-offset-2 hover:text-sky-900"
@@ -1402,12 +1447,12 @@ export default function EditorPage() {
 
 
                 <div className="container mx-auto max-w-5xl p-4 md:p-8">
-                    <div className="flex items-center justify-between mb-6">
-                        <div>
-                            <h1 className="text-2xl md:text-3xl font-bold truncate max-w-[65vw] md:max-w-none">{user ? <><span className="sm:hidden">Welcome!</span><span className="hidden sm:inline">Welcome, {profile.fullName?.split(' ')[0] || ''}!</span></> : 'Your Profile'}</h1>
+                    <div className="flex items-center justify-between gap-2 mb-6 min-w-0">
+                        <div className="min-w-0 flex-1">
+                            <h1 className="text-2xl md:text-3xl font-bold truncate">{user ? <><span className="sm:hidden">Welcome!</span><span className="hidden sm:inline">Welcome, {profile.fullName?.split(' ')[0] || ''}!</span></> : 'Your Profile'}</h1>
                             {!user && <p className="text-muted-foreground text-xs md:text-sm hidden sm:block">Sign up when you're ready to put it online.</p>}
                         </div>
-                        <div className="flex items-center gap-1.5 md:gap-2 justify-end shrink-0">
+                        <div className="flex items-center gap-1.5 md:gap-2 justify-end shrink-0 max-w-[58%] sm:max-w-none">
                            <div className="flex items-center justify-end">
                                {isSaving ? (
                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary border border-border text-muted-foreground">
@@ -1422,19 +1467,22 @@ export default function EditorPage() {
                                ) : null}
                            </div>
                            {user && (
-                                <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                                    <span className="text-xs md:text-sm">{isGenerating ? 'Processing...' : 'Update CV'}</span>
+                                <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-2 sm:px-3 min-w-0 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                    <span className="text-xs md:text-sm truncate">{isGenerating ? 'Processing...' : <><span className="sm:hidden">Update</span><span className="hidden sm:inline">Update CV</span></>}</span>
                                     <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" onChange={handleFileChange} disabled={isGenerating} />
                                 </label>
                            )}
                            {user && (
-                                <Link href="/jobs" title="Matching Jobs" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">
-                                    <span className="text-xs md:text-sm">Matching Jobs</span>
+                                <Link href="/jobs" title="Matching Jobs" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-2 sm:px-3 max-w-[38vw] sm:max-w-none min-w-0">
+                                    <span className="text-xs md:text-sm truncate">
+                                        <span className="sm:hidden">Jobs</span>
+                                        <span className="hidden sm:inline">Matching Jobs</span>
+                                    </span>
                                 </Link>
                            )}
 
                             {!user && (
-                                <Button variant="outline" onClick={() => {
+                                <Button variant="outline" className="h-9 px-2 sm:px-3 min-w-0 max-w-[42vw] sm:max-w-none" onClick={() => {
                                     const snapshot = {
                                         personalInfo: { 
                                             fullName: profile.fullName, 
@@ -1457,7 +1505,8 @@ export default function EditorPage() {
                                     sessionStorage.setItem('parsedResume', JSON.stringify(snapshot));
                                     window.open(`/preview?channel=${channelId.current}`, '_blank');
                                 }}>
-                                    See how it looks
+                                    <span className="sm:hidden">Preview</span>
+                                    <span className="hidden sm:inline">See how it looks</span>
                                 </Button>
                             )}
                         </div>
@@ -1477,14 +1526,14 @@ export default function EditorPage() {
                                                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Public Link</p>
                                             </div>
                                         </div>
-                                        <div className="flex space-x-2">
+                                        <div className="flex space-x-2 min-w-0">
                                             <Input 
                                                 id="slug" 
                                                 name="slug" 
                                                 value={profile.slug || ''} 
                                                 onChange={handleProfileChange} 
                                                 onBlur={handleProfileBlur} 
-                                                className={`h-9 font-medium ${slugError ? 'border-red-500 focus-visible:ring-red-500 text-red-600' : slugSuccess ? 'border-green-500 focus-visible:ring-green-500 text-green-700' : ''}`} 
+                                                className={`h-9 font-medium min-w-0 ${slugError ? 'border-red-500 focus-visible:ring-red-500 text-red-600' : slugSuccess ? 'border-green-500 focus-visible:ring-green-500 text-green-700' : ''}`} 
                                             />
                                             {user ? (
                                             <Popover>
@@ -1701,8 +1750,8 @@ export default function EditorPage() {
                                                 {((profile.links || []).filter((l: any) => !CORE_LINK_TYPES_SET.has(l.type))).length > 0 && (
                                                     <div className="flex flex-wrap gap-1.5">
                                                         {(profile.links || []).filter((l: any) => !CORE_LINK_TYPES_SET.has(l.type)).map((link: any, i: number) => (
-                                                            <span key={i} className="inline-flex items-center gap-1.5 text-xs bg-secondary border border-border rounded-md px-2 py-1">
-                                                                <span className="font-medium capitalize">{link.type}</span>
+                                                            <span key={i} className="inline-flex items-center gap-1.5 text-xs bg-secondary border border-border rounded-md px-2 py-1 max-w-full min-w-0">
+                                                                <span className="font-medium capitalize shrink-0">{link.type}</span>
                                                                 <span className="text-muted-foreground truncate max-w-[140px]">{link.value.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
                                                                 <button onClick={() => removeExtraLink(i)} className="ml-0.5 text-muted-foreground hover:text-destructive transition-colors leading-none" aria-label="Remove">
                                                                     <XCircle className="h-3.5 w-3.5" />
@@ -1712,13 +1761,13 @@ export default function EditorPage() {
                                                     </div>
                                                 )}
                                                 {/* Add link row */}
-                                                <div className="flex gap-1.5">
+                                                <div className="flex flex-wrap gap-1.5 min-w-0">
                                                     <Input
                                                         placeholder="Label"
                                                         value={newLinkType}
                                                         onChange={e => setNewLinkType(e.target.value)}
                                                         onKeyDown={e => e.key === 'Enter' && addExtraLink()}
-                                                        className="h-9 text-sm w-36 shrink-0"
+                                                        className="h-9 text-sm w-24 sm:w-36 shrink-0"
                                                         list="platform-suggestions"
                                                     />
                                                     <datalist id="platform-suggestions">
@@ -1760,7 +1809,7 @@ export default function EditorPage() {
                                                             }
                                                         }}
                                                         onKeyDown={e => e.key === 'Enter' && addExtraLink()}
-                                                        className="h-9 text-sm flex-1"
+                                                        className="h-9 text-sm flex-1 min-w-0"
                                                     />
                                                     <Button size="sm" onClick={addExtraLink} disabled={!newLinkValue.trim()} className="h-9 shrink-0">
                                                         <PlusCircle className="h-4 w-4" />
@@ -1782,8 +1831,8 @@ export default function EditorPage() {
                                     <div className="space-y-3">
                                     {workItems.map(item => (
                                         <div key={item.id} className="border rounded-lg p-3 transition-all hover:border-primary/40 hover:bg-secondary/10 hover:shadow-sm">
-                                            <div className="flex gap-2 items-start">
-                                                <div className="flex-1 space-y-2">
+                                            <div className="flex gap-2 items-start min-w-0">
+                                                <div className="flex-1 min-w-0 space-y-2">
                                                     <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
                                                         <Input name="title" placeholder="Title" value={item.title} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-3 h-8 text-sm" />
                                                         <Input name="company" placeholder="Company" value={item.company} onChange={(e) => handleItemChange('workExperience', item.id, e)} onBlur={(e) => handleItemBlur('workExperience', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-3 h-8 text-sm" />
@@ -1812,8 +1861,8 @@ export default function EditorPage() {
                                     <div className="space-y-3">
                                     {educationItems.map(item => (
                                         <div key={item.id} className="border rounded-lg p-3 transition-all hover:border-primary/40 hover:bg-secondary/10 hover:shadow-sm">
-                                            <div className="flex gap-2 items-start">
-                                                <div className="flex-1 space-y-2">
+                                            <div className="flex gap-2 items-start min-w-0">
+                                                <div className="flex-1 min-w-0 space-y-2">
                                                     <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
                                                         <Input name="institution" placeholder="Institution" value={item.institution} onChange={(e) => handleItemChange('education', item.id, e)} onBlur={(e) => handleItemBlur('education', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-4 h-8 text-sm" />
                                                         <Input name="degree" placeholder="Degree" value={item.degree} onChange={(e) => handleItemChange('education', item.id, e)} onBlur={(e) => handleItemBlur('education', item.id, e)} className="col-span-2 sm:col-span-1 md:col-span-4 h-8 text-sm" />

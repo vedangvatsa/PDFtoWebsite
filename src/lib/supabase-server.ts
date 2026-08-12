@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription, isResumeDumpText, sanitizeSocialHandle, extractCleanSummary, repairSpacedEmail } from '@/lib/parse-guard';
+import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription, isResumeDumpText, isContactHeaderText, sanitizeSocialHandle, extractCleanSummary, repairSpacedEmail } from '@/lib/parse-guard';
 
 const supabase = supabaseAdmin;
 
@@ -84,9 +84,11 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
 
     // Strip glued section labels; never publish a full CV dump as the summary
     let summary = String(profile.about || '');
-    summary = isResumeDumpText(summary)
-      ? extractCleanSummary(summary)
-      : cleanDescription(summary, 2000);
+    summary = isContactHeaderText(summary)
+      ? ''
+      : isResumeDumpText(summary)
+        ? extractCleanSummary(summary)
+        : cleanDescription(summary);
 
     const github = sanitizeSocialHandle(getLink('github') || '', 'github') || undefined;
     const linkedin = sanitizeSocialHandle(getLink('linkedin') || '', 'linkedin') || undefined;

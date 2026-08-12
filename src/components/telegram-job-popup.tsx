@@ -36,7 +36,7 @@ export function TelegramJobPopup() {
       }`}
     >
       <div className="mx-auto max-w-xl flex items-center gap-3 rounded-lg border bg-background px-4 py-3 shadow-sm">
-        <p className="flex-1 text-sm text-muted-foreground min-w-0">
+        <p className="flex-1 text-sm text-muted-foreground min-w-0 truncate">
           <span className="font-medium text-foreground">Tech Jobs Daily</span>
           {' '}— curated roles, straight to Telegram.
         </p>

@@ -14,6 +14,11 @@ import nomadCities from '@/lib/nomad-cities';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { CityGuidePage } from '@/components/city-guide-page';
 import { jobPublicPath } from '@/lib/job-description';
+import {
+  EMPLOYMENT_TYPE_MAP,
+  parseBaseSalary,
+  parseJobLocationAddress,
+} from '@/lib/job-detail-data';
 import { toCompanyKey, COMPANY_BLOCKLIST, companyDisplayName } from '@/lib/company-directory';
 import { shouldListJobOnBoard } from '@/lib/job-apply-source';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
@@ -56,7 +61,7 @@ async function getCompanyDirectory(slug: string) {
 }
 
 const SELECT_JOB_COLS =
-  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug';
+  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug, description';
 
 /**
  * Load recent jobs for a company page.
@@ -698,23 +703,44 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       })),
     };
 
-    // JobPosting structured data for top 10 jobs (Google Jobs rich results)
-    const jobPostingSchema = jobs.slice(0, 10).map((job: any) => ({
-      "@context": "https://schema.org",
-      "@type": "JobPosting",
-      "title": job.title,
-      "description": job.title,
-      "datePosted": job.published_at || job.created_at,
-      "hiringOrganization": {
-        "@type": "Organization",
-        "name": companyName,
-        "logo": logo,
-        ...(meta ? { "sameAs": meta.website } : {}),
-      },
-      ...(job.location ? { "jobLocation": { "@type": "Place", "address": job.location } } : {}),
-      ...(job.job_type ? { "employmentType": job.job_type.toUpperCase().replace(/[- ]/g, '_') } : {}),
-      "url": job.apply_url,
-    }));
+    // JobPosting structured data for top 10 jobs (Google Jobs rich results).
+    // Every field is derived from real data only: published description,
+    // structured location parse, mapped employment type, listed salary,
+    // and the site's own 30-day listing window for validThrough.
+    const jobPostingSchema = jobs.slice(0, 10).map((job: any) => {
+      const posted = job.published_at || job.created_at || new Date().toISOString().slice(0, 10);
+      const postedMs = new Date(posted).getTime();
+      const validThrough = new Date(
+        (Number.isFinite(postedMs) ? postedMs : Date.now()) + 30 * 24 * 60 * 60 * 1000
+      ).toISOString();
+      const plain = String(job.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      const employmentKey = String(job.job_type || '').toLowerCase().replace(/-/g, '_');
+      const employmentType =
+        EMPLOYMENT_TYPE_MAP[job.job_type || ''] ||
+        EMPLOYMENT_TYPE_MAP[employmentKey] ||
+        EMPLOYMENT_TYPE_MAP[String(job.job_type || '').toLowerCase()] ||
+        undefined;
+      const salary = parseBaseSalary(job.salary);
+      const address = parseJobLocationAddress(job.location);
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'JobPosting',
+        title: job.title,
+        description: plain.length > 80 ? plain.slice(0, 8000) : `${job.title} at ${companyName}. ${job.location || 'Remote'}.`,
+        datePosted: typeof posted === 'string' ? posted.slice(0, 10) : posted,
+        validThrough,
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: companyName,
+          logo,
+          ...(meta ? { 'sameAs': meta.website } : {}),
+        },
+        ...(address ? { 'jobLocation': { '@type': 'Place', 'address': address } } : {}),
+        ...(employmentType ? { 'employmentType': employmentType } : {}),
+        ...(salary ? { 'baseSalary': salary } : {}),
+        'url': job.apply_url,
+      };
+    });
 
     return (
       <div className="min-h-screen bg-zinc-50 flex flex-col overflow-x-hidden">
