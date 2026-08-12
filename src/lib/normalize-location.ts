@@ -150,6 +150,32 @@ const CITY_PATTERNS: [RegExp, string][] = [
   [/^ho chi minh/i, 'Vietnam'],
 ];
 
+/** ISO 3166-1 alpha-2 → English country name (display expansion). */
+const ISO_COUNTRY_NAMES: Record<string, string> = {
+  us: 'United States', uk: 'United Kingdom', gb: 'United Kingdom', de: 'Germany', fr: 'France',
+  ca: 'Canada', in: 'India', au: 'Australia', nl: 'Netherlands', sg: 'Singapore', ie: 'Ireland',
+  es: 'Spain', it: 'Italy', br: 'Brazil', jp: 'Japan', mx: 'Mexico', pl: 'Poland', se: 'Sweden',
+  ch: 'Switzerland', pt: 'Portugal', il: 'Israel', kr: 'South Korea', hk: 'Hong Kong', nz: 'New Zealand',
+  ae: 'UAE', be: 'Belgium', at: 'Austria', dk: 'Denmark', no: 'Norway', fi: 'Finland', cz: 'Czechia',
+  ro: 'Romania', hu: 'Hungary', gr: 'Greece', za: 'South Africa', my: 'Malaysia', th: 'Thailand',
+  ph: 'Philippines', id: 'Indonesia', vn: 'Vietnam', cn: 'China', tw: 'Taiwan', tr: 'Turkey',
+  ar: 'Argentina', cl: 'Chile', co: 'Colombia', pe: 'Peru', ua: 'Ukraine', eg: 'Egypt', ng: 'Nigeria',
+};
+
+/**
+ * Display-safe location: keeps the city/street tokens and expands trailing
+ * two-letter country codes ("Maassluis, nl" → "Maassluis, Netherlands").
+ * Unlike normalizeLocation this never drops the locality.
+ */
+export function expandCountryCode(raw: string): string {
+  const s = String(raw || '').trim();
+  if (!s) return s;
+  return s.replace(/\s*,\s*([a-z]{2})$/i, (_m, code: string) => {
+    const name = ISO_COUNTRY_NAMES[code.toLowerCase()];
+    return name ? `, ${name}` : `, ${code.toUpperCase()}`;
+  });
+}
+
 export function normalizeLocation(raw: string): string {
   if (!raw) return '';
   let loc = raw.trim();

@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /** Shared page container class — single source of truth for content width across the site. */
-export const PAGE_CONTAINER = 'w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1';
+export const PAGE_CONTAINER = 'w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32 flex-1 min-w-0 overflow-x-hidden';
 
 /** Page title H1 — used on all tool/content pages. */
 export const PAGE_TITLE = 'text-3xl md:text-4xl font-extrabold tracking-tighter text-zinc-900 mb-3';
@@ -16,9 +16,6 @@ export const PAGE_SUBTITLE = 'text-lg text-zinc-600 max-w-none';
 
 /** Disclaimer text block at bottom of data pages. */
 export const PAGE_DISCLAIMER = 'mt-8 flex items-start gap-2 text-xs text-zinc-400 leading-relaxed w-full';
-
-/** Table column header. */
-const TABLE_HEADER = 'text-[11px] font-semibold uppercase tracking-wider text-zinc-400';
 
 /** Score badge color classes (nomad score, safety score, etc.). */
 export function scoreBadgeClasses(score: number) {

@@ -75,17 +75,19 @@ export default function CustomSectionsEditor({ customSections, setCustomSections
             {customSections.map((section) => (
                 <Card key={section.id} className="shadow-sm border-primary/20 bg-background/50">
                     <CardContent className="pt-4 pb-3">
-                        <div className="flex items-center justify-between mb-3 border-b pb-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3 border-b pb-2 min-w-0">
                             <Input 
                                 value={section.sectionTitle} 
                                 onChange={(e) => handleTitleChange(section.id, e.target.value)} 
                                 onBlur={flushSync}
-                                className="h-8 font-semibold text-base border-none shadow-none focus-visible:ring-1 focus-visible:ring-primary w-1/2 p-1"
+                                className="h-8 font-semibold text-base border-none shadow-none focus-visible:ring-1 focus-visible:ring-primary min-w-0 flex-1 p-1"
                                 placeholder="Section Title (e.g. Publications)"
                             />
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 shrink-0">
                                 <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => handleAddItem(section.id)}>
-                                    <PlusCircle className="mr-1 h-3 w-3" /> Add Item
+                                    <PlusCircle className="mr-1 h-3 w-3" />
+                                    <span className="sm:hidden">Add</span>
+                                    <span className="hidden sm:inline">Add Item</span>
                                 </Button>
                                 <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-muted-foreground hover:bg-destructive/10 hover:text-destructive" onClick={() => handleDeleteSection(section.id)}>
                                     <Trash2 className="h-4 w-4" />
@@ -99,8 +101,8 @@ export default function CustomSectionsEditor({ customSections, setCustomSections
                             )}
                             {section.items?.map(item => (
                                 <div key={item.id} className="border rounded-lg p-3 transition-all hover:border-primary/40 hover:bg-secondary/10 hover:shadow-sm">
-                                    <div className="flex gap-2 items-start">
-                                        <div className="flex-1 space-y-2">
+                                    <div className="flex gap-2 items-start min-w-0">
+                                        <div className="flex-1 min-w-0 space-y-2">
                                             <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
                                                 <Input name="title" placeholder="Item Name (e.g. Winner, Top 10)" value={item.title} onChange={(e) => handleItemChange(section.id, item.id, 'title', e.target.value)} onBlur={flushSync} className="col-span-2 sm:col-span-1 md:col-span-4 h-8 text-sm" />
                                                 <Input name="subtitle" placeholder="Subtitle / Role / Details" value={item.subtitle || ''} onChange={(e) => handleItemChange(section.id, item.id, 'subtitle', e.target.value)} onBlur={flushSync} className="col-span-2 sm:col-span-1 md:col-span-4 h-8 text-sm" />

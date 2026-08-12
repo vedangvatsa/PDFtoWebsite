@@ -6,7 +6,7 @@ import {
   validateJobPostingJsonLd,
   summarizeJobPostingValidation,
 } from '@/lib/job-detail-data';
-import { isJobDescriptionIndexable, jobDescriptionWordCount, jobSitemapPath } from '@/lib/job-description';
+import { jobDescriptionWordCount, jobSitemapPath } from '@/lib/job-description';
 import type { JobRow } from '@/lib/job-detail-data';
 
 export const dynamic = 'force-dynamic';
@@ -52,15 +52,17 @@ export async function GET(request: NextRequest) {
   const samples: any[] = [];
 
   for (const row of (rows || []) as JobRow[]) {
-    const words = jobDescriptionWordCount(row.description);
-    const idx = isJobDescriptionIndexable(row.description);
+    const detail = toJobDetail(row);
+    const words = detail.description_word_count || jobDescriptionWordCount(row.description);
+    const idx = !!detail.is_indexable;
     if (idx) indexable++;
     const path = jobSitemapPath(row);
     if (path) pretty++;
 
-    const detail = toJobDetail(row);
-    const jsonLd = buildJobJsonLd(row, detail, siteUrl) as Record<string, unknown>;
-    const summary = summarizeJobPostingValidation(validateJobPostingJsonLd(jsonLd));
+    const jsonLd = buildJobJsonLd(row, detail, siteUrl);
+    const summary = jsonLd
+      ? summarizeJobPostingValidation(validateJobPostingJsonLd(jsonLd))
+      : { ok: false, warnCount: 0, issues: [{ level: 'error' as const, code: 'noindex', message: 'Not indexable; no JobPosting' }] };
     if (summary.ok && summary.warnCount === 0) schemaOk++;
     else if (summary.ok) schemaWarn++;
     else schemaErr++;

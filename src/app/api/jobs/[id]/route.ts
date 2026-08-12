@@ -4,9 +4,10 @@ import { createServerClient } from '@supabase/ssr';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { isJobId } from '@/lib/job-description';
 import { publishSafeDescription } from '@/lib/job-detail-data';
+import { isJobExpired } from '@/lib/job-age';
 
 const SELECT_COLS =
-  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,views,clicks';
+  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,description,views,clicks';
 
 export async function GET(
   request: NextRequest,
@@ -69,6 +70,7 @@ export async function GET(
   // synthesized original content.
   const published = publishSafeDescription(job as any, normalizeLocation(job.location) || '');
   const descriptionHtml = published.html;
+  const expired = isJobExpired(job.published_at, job.created_at);
 
   const response = NextResponse.json({
     job: {
@@ -80,13 +82,14 @@ export async function GET(
       job_type: job.job_type,
       salary: job.salary,
       tags: job.tags || [],
-      apply_url: job.apply_url,
+      apply_url: expired ? '' : job.apply_url,
+      expired,
       category: job.category,
       source: job.source,
       published_at: job.published_at,
       description_html: descriptionHtml,
       has_description: true,
-      description_kind: published.isCurated ? 'job' : 'company',
+      description_kind: published.kind === 'company' ? 'company' : 'job',
       excerpt: published.plain.slice(0, 200),
       views: job.views ?? 0,
       clicks: job.clicks ?? 0,

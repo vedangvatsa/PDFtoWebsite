@@ -61,10 +61,10 @@ const DATE_RANGE_RE = new RegExp(
 // Section headers — comprehensive pattern matching
 const SECTION_MAP: Array<[string, RegExp]> = [
   ['summary',    /^(summary|profile|objective|about\s*me?|professional\s+summary|career\s+(summary|objective)|executive\s+summary|overview|highlights|personal\s+statement|introduction)/i],
-  ['experience', /^(experience|work\s+(experience|history)|employment(\s+history)?|professional\s+experience|career\s+history|positions?\s+held|work\s+background|relevant\s+experience|jobs?|internships?|professional\s+background|working\s+experience)/i],
-  ['education',  /^(education(al)?(\s+&?\s+training)?|academic\s+(background|history|qualifications?)?|qualifications?|degrees?|schooling|universities|colleges?|academic\s+credentials?)/i],
-  ['skills',     /^(skills?(\s+&?\s+expertise)?|technical\s+skills?|core\s+competenc(ies|y)|competencies|technologies|tech\s+stack|tools?(\s+&\s+technologies)?|proficiencies|expertise|programming|languages?(\s+&\s+tools)?|software|technical\s+proficiency|areas?\s+of\s+expertise|key\s+skills?|additional\s+skills?)/i],
-  ['projects',   /^(projects?|personal\s+projects?|side\s+projects?|open[\s-]source|portfolio|notable\s+projects?|key\s+projects?|academic\s+projects?)/i],
+  ['experience', /^(experiences?|work\s+(experience|history)|employment(\s+history)?|professional\s+experience|career\s+history|positions?\s+held|work\s+background|relevant\s+experience|jobs?|internships?|professional\s+background|working\s+experience)/i],
+  ['education',  /^(education(al)?(\s+&?\s+training)?|training\s+(&|and)?\s*education|academic\s+(background|history|qualifications?)?|qualifications?|degrees?|schooling|universities|colleges?|academic\s+credentials?)/i],
+  ['skills',     /^(skills?(\s+&?\s+expertise)?|technical\s+skills?|core\s+competenc(ies|y)|competencies|technologies|tech\s+stack|tools?(\s+&\s+technologies)?|proficiencies|expertise|programming|languages?(\s+&\s+tools)?|software|technical\s+proficiency|areas?\s+of\s+expertise|key\s+skills?|additional\s+skills?|strengths?)/i],
+  ['projects',   /^(projects?|personal\s+projects?|side\s+projects?|open[\s-]source|portfolio|notable\s+projects?|key\s+projects?|academic\s+projects?|technical\s+(hands[\s-]?on\s+)?projects?|hands[\s-]?on\s+projects?)/i],
   ['certifications', /^(certifications?|certificates?|licenses?|accreditations?|credentials?|awards?(\s+&?\s+certifications?)?|achievements?|honors?(\s+&?\s+awards?)?|professional\s+development)/i],
   ['languages',  /^(languages?(\s+spoken)?|language\s+proficiency|spoken\s+languages?|language\s+skills?)/i],
   ['volunteer',  /^(volunteer(ing)?(\s+experience)?|community\s+(service|involvement)|social\s+work|extracurricular(\s+activities)?|leadership(\s+&?\s+activities)?|activities)/i],
@@ -103,6 +103,16 @@ const NO_SPLIT_CAMELCASE = new Set([
 // whitespace, and we harden the whole function with a final fail-safe pass so
 // no raw token can ever leak into the text sent downstream.
 const TOKEN_RE = /__PROT\s*(\d+)\s*__/g;
+
+/** Undo common PDF letter↔digit splits that already landed in stored CV text. */
+export function healCollapsedTechTokens(text: string): string {
+  return String(text || '')
+    .replace(/\bEC\s+2\b/gi, 'EC2')
+    .replace(/\bS\s+3\b/gi, 'S3')
+    .replace(/\bCloud\s+Watch\b/gi, 'CloudWatch')
+    .replace(/\bCloud\s+Front\b/gi, 'CloudFront')
+    .replace(/\bRoute\s+53\b/gi, 'Route 53');
+}
 
 export function reconstructMissingSpaces(text: string): string {
   // Protect known multi-word terms and tech names from being split
@@ -165,12 +175,12 @@ export function reconstructMissingSpaces(text: string): string {
   safe = safe.replace(/([a-zA-Z])\+([a-zA-Z])/g, '$1+ $2');
   safe = safe.replace(/(\d)\+([a-zA-Z])/g, '$1+ $2');
 
-  // 4. Insert space at letter→number boundary
-  //    "winningcontractworth$10Mn" → "winningcontractworth $10Mn"
+  // 4. Insert space at letter↔number boundary for year/phone-sized runs only.
+  //    Keep B2B / iOS / C4 / v2 intact; still split "Apr2024" and "Thakur2024".
   safe = safe.replace(/([a-zA-Z])(\$)/g, '$1 $2');
   safe = safe.replace(/(\$)([a-zA-Z])/g, '$1 $2');
-  safe = safe.replace(/([a-zA-Z])(\d)/g, '$1 $2');
-  safe = safe.replace(/(\d)([a-zA-Z])/g, '$1 $2');
+  safe = safe.replace(/([a-zA-Z])(\d{3,})/g, '$1 $2');
+  safe = safe.replace(/(\d{3,})([a-zA-Z])/g, '$1 $2');
 
   // 5. Insert space after comma/period/semicolon when directly followed by a letter
   safe = safe.replace(/,([a-zA-Z])/g, ', $1');
@@ -185,8 +195,14 @@ export function reconstructMissingSpaces(text: string): string {
   // 8. Insert space before opening paren after a letter
   safe = safe.replace(/([a-zA-Z])\(/g, '$1 (');
 
-  // Collapse multiple spaces
-  safe = safe.replace(/\s+/g, ' ').trim();
+  // Collapse horizontal whitespace only — NEVER eat newlines.
+  // Salvage reflow inserts \n before section headers; collapsing \s+ to a
+  // single space destroyed that structure and left every regex fallback empty.
+  safe = safe
+    .replace(/[^\S\n]+/g, ' ')
+    .replace(/ *\n */g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 
   // Restore protected tokens. The space-insertion rules above can split a
   // token ("__PROT0__" → "__PROT 0__"), so tolerate whitespace around the id.
@@ -253,8 +269,10 @@ function isGarbageLine(line: string): boolean {
   // Lines that look like PDF internal references
   if (/^\d+\s+\d+\s+R$/.test(line)) return true;
   if (/^\/[A-Z]/.test(line) && line.length < 30) return true;
-  // Encoded image data fragments
-  if (/^[A-Za-z0-9+/=]{20,}$/.test(line.replace(/\s/g, ''))) return true;
+  // Encoded image data fragments (base64) — only when the line itself has no
+  // spaces. Stripping spaces first falsely flagged normal titles like
+  // "Senior Product Manager" / "MBA Stanford University" (20+ letters).
+  if (!/\s/.test(line) && /^[A-Za-z0-9+/=]{32,}$/.test(line)) return true;
   return false;
 }
 
@@ -334,12 +352,10 @@ function stripDates(line: string): string {
   return line
     .replace(DATE_RANGE_RE, '')
     .replace(DATE_RE, '')
-    // Remove dangling separators (leftover " - ", " | " after date removal)
-    // only when they sit next to whitespace/edges, so internal hyphens like
-    // "veer-bhanushali" or "full-stack" are preserved.
-    .replace(/(^|[\s(])\s*[-–—|,·•]+(?=[\s)]|$)/g, '$1 ')
-    .replace(/^[-–—|,·•]+/, '')
-    .replace(/[-–—|,·•]+$/, '')
+    // Only trim leftover separators at the ends. Do NOT eat mid-line
+    // en/em dashes — those separate title from company / degree from school.
+    .replace(/^[-–—|,·•\s]+/, '')
+    .replace(/[-–—|,·•\s]+$/, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -349,6 +365,31 @@ function stripBullet(line: string): string {
 }
 
 // ─── Contact Info ─────────────────────────────────────────────────────────────
+
+/** Tech / org acronyms that are never a last name when glued after ALL-CAPS given names. */
+const TRAILING_NAME_ACRONYM_RE =
+  /^(AWS|GCP|IBM|SAP|ERP|CRM|IAM|CEO|CTO|CFO|COO|CIO|CISO|VP|SVP|HR|IT|AI|ML|UX|UI|SDE|SWE|QA|PM)$/i;
+
+function titleCaseNameToken(w: string): string {
+  return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+}
+
+/** "LOKESH TRIVEDI AWS Cloud…" → "Lokesh Trivedi" (stop before AWS / job words). */
+function extractLeadingAllCapsName(line: string): string {
+  const m = String(line || '').match(/^((?:[A-Z]{2,}(?:[\s.'-]+[A-Z]{2,}){0,4}))/);
+  if (!m) return '';
+  const words = m[1].trim().split(/\s+/).filter(Boolean);
+  const kept: string[] = [];
+  for (const w of words) {
+    if (TRAILING_NAME_ACRONYM_RE.test(w) && kept.length >= 1) break;
+    if (JOB_TITLE_RE.test(w) && kept.length >= 1) break;
+    kept.push(w);
+  }
+  if (kept.length < 2 || kept.length > 5) return '';
+  const name = kept.map(titleCaseNameToken).join(' ');
+  if (JOB_TITLE_RE.test(name) || DEGREE_RE.test(name) || /\d/.test(name)) return '';
+  return name;
+}
 
 function expandContactLines(lines: string[]): string[] {
   const result: string[] = [];
@@ -410,8 +451,13 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
       if (url && !EMAIL_RE.test(url[0]) && !LINKEDIN_RE.test(url[0]) && !GITHUB_RE.test(url[0])) { website = url[0]; continue; }
     }
     
-    // Phone
+    // Phone (explicit IN / E.164 first — the generic PHONE_RE misses some +91- forms)
     if (!phone) {
+      const inMobile = line.match(/\+91[\s.-]?\d{10}\b/);
+      if (inMobile) {
+        phone = inMobile[0];
+        continue;
+      }
       // Skip lines that are clearly not phone numbers
       if (lower.includes('page') || lower.includes('gpa') || lower.includes('zip') || lower.includes('postal')) continue;
       // Check for labeled phone lines first
@@ -453,6 +499,18 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
         location = line;
         continue;
       }
+      // Trailing "City, State" on a headline/contact line
+      if (!location) {
+        const tailLoc = line.match(/\b([A-Z][A-Za-z.'-]+),\s*([A-Z][A-Za-z.'-]+)(?:\s*[|·•]|$)/);
+        if (
+          tailLoc &&
+          tailLoc[0].length < 40 &&
+          !EMAIL_RE.test(tailLoc[0]) &&
+          !/^(aws|linux|cloud|and)\b/i.test(tailLoc[1])
+        ) {
+          location = `${tailLoc[1]}, ${tailLoc[2]}`;
+        }
+      }
       // Just "City, State" within a broader line
       if (!location && EMAIL_RE.test(line)) {
         const parts = line.split(/\s*[|·•]\s*/);
@@ -475,6 +533,14 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
       .replace(/^(dr\.?|mr\.?|ms\.?|mrs\.?|prof\.?|rev\.?)\s+/i, '')
       .replace(/[,|·•].*$/, '') // Remove trailing separators and content
       .trim();
+
+    // Leading ALL-CAPS person name, stopping before tech acronyms / job titles
+    // ("LOKESH TRIVEDI AWS Cloud & Linux Administrator …").
+    const leadingCaps = extractLeadingAllCapsName(clean);
+    if (leadingCaps) {
+      fullName = leadingCaps;
+      break;
+    }
     
     // Candidate 1: whole line is a clean 1-5 word proper name (no contact info)
     if (
@@ -498,30 +564,6 @@ function extractPersonalInfo(lines: string[]): ParsedResume['personalInfo'] {
         ? clean.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
         : clean;
       break;
-    }
-
-    // Candidate 2: PDF extraction sometimes merges the whole header into one
-    // giant line ("VEER NARESH BHANUSHALI Cybersecurity Specialist BCA ...").
-    // If the line STARTS with a run of ALL-CAPS words, treat that run as the
-    // name. Reject anything containing digits or job/degree keywords.
-    if (!fullName && clean.length > 60) {
-      const capsRun = clean.match(/^([A-Z]{2,}(?:[\s.'-]+[A-Z]{2,}){1,4})/);
-      if (capsRun) {
-        const candidate = capsRun[1].trim();
-        if (
-          candidate.length >= 4 &&
-          candidate.length < 60 &&
-          !/\d/.test(candidate) &&
-          !JOB_TITLE_RE.test(candidate) &&
-          !DEGREE_RE.test(candidate)
-        ) {
-          fullName = candidate
-            .split(/\s+/)
-            .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-            .join(' ');
-          break;
-        }
-      }
     }
   }
 
@@ -591,11 +633,27 @@ function groupIntoJobBlocks(lines: string[]): string[][] {
   for (const line of lines) {
     const hasDateRange = DATE_RANGE_RE.test(line);
     const hasTitle = JOB_TITLE_RE.test(line) && line.length < 120;
-    
+    const currentHasDate = current.some((l) => DATE_RANGE_RE.test(l));
+    // Title (+ optional company) awaiting its date line — common after reflow:
+    // "UX/UI Designer & Front-End Lead" then "Qscript Software | Apr 2024 – Present"
+    const awaitingDateMeta =
+      current.length > 0 &&
+      current.length <= 2 &&
+      !currentHasDate &&
+      current.every((l) => l.length < 120 && !/^[•\-*▪●]/.test(l));
+
     // Start a new block when we see a date range (primary signal) or a clear job title
     if (hasDateRange && current.length > 0) {
-      blocks.push(current);
-      current = [line];
+      if (awaitingDateMeta) {
+        current.push(line);
+      } else if (currentHasDate) {
+        blocks.push(current);
+        current = [line];
+      } else {
+        // Longer untitled preamble — treat date line as start of a job
+        blocks.push(current);
+        current = [line];
+      }
     } else if (hasTitle && !hasDateRange && current.length > 2) {
       // If we see a title-like line after description lines, start new block
       const prevLinesAreBullets = current.slice(-2).every(l => /^[•\-*]/.test(l) || l.length > 80);
@@ -650,7 +708,17 @@ function parseJobBlock(block: string[]): ParsedResume['workExperience'][0] | nul
             if (!title) title = part2;
           }
         } else if (!title) {
-          title = rest;
+          // "Title – Scope — Company" (em/en dash company separator)
+          const emParts = rest.split(/\s+[—–]\s+/).map((p) => p.trim()).filter(Boolean);
+          if (emParts.length >= 2 && JOB_TITLE_RE.test(emParts[0])) {
+            company = emParts[emParts.length - 1];
+            title = emParts.slice(0, -1).join(' – ');
+          } else {
+            title = rest;
+          }
+        } else if (!company && rest.length > 1 && !/^[•\-*▪●]/.test(rest)) {
+          // Title already on previous line; rest of date line is the company
+          company = rest;
         }
       }
       continue;
@@ -697,11 +765,11 @@ function parseJobBlock(block: string[]): ParsedResume['workExperience'][0] | nul
         }
       }
       
-      if (!title && line.length < 100 && !DATE_RE.test(line)) {
+      if (!title && line.length < 100 && !DATE_RE.test(line) && !/^[•\-*▪●]/.test(line)) {
         title = line;
         continue;
       }
-      if (!company && line.length < 100 && !DATE_RE.test(line) && !JOB_TITLE_RE.test(line)) {
+      if (!company && line.length < 100 && !DATE_RE.test(line) && !JOB_TITLE_RE.test(line) && !/^[•\-*▪●]/.test(line)) {
         company = line;
         metaLinesDone = true;
         continue;
@@ -723,7 +791,7 @@ function parseJobBlock(block: string[]): ParsedResume['workExperience'][0] | nul
 
   return {
     title: title || 'Position',
-    company: company || 'Company',
+    company: company || '',
     location: '',
     startDate,
     endDate,
@@ -778,15 +846,21 @@ function parseEducation(lines: string[]): ParsedResume['education'] {
     let startDate = '';
     let endDate: string | undefined;
 
-    for (const line of block) {
+    for (const rawLine of block) {
+      const line = stripBullet(rawLine);
       // Extract dates
       const dateRange = extractDateRange(line);
       if (dateRange && !startDate) {
         startDate = dateRange.startDate;
         endDate = dateRange.endDate;
-        const rest = stripDates(line);
+        const rest = stripDates(line).replace(/\(\s*\)/g, '').replace(/\s{2,}/g, ' ').trim();
         if (rest.length > 2) {
-          if (DEGREE_RE.test(rest) && !degree) degree = rest;
+          const emParts = rest.split(/\s+[—–-]\s+/);
+          if (emParts.length >= 2 && (DEGREE_RE.test(emParts[0]) || INSTITUTION_RE.test(emParts[1]))) {
+            if (DEGREE_RE.test(emParts[0]) && !degree) degree = emParts[0].trim();
+            const inst = emParts.slice(1).join(' — ').trim();
+            if (!institution && inst.length > 3 && !/^&/.test(inst)) institution = inst;
+          } else if (DEGREE_RE.test(rest) && !degree) degree = rest;
           else if (INSTITUTION_RE.test(rest) && !institution) institution = rest;
           else if (!institution && rest.length < 120) institution = rest;
         }
@@ -811,12 +885,45 @@ function parseEducation(lines: string[]): ParsedResume['education'] {
         continue;
       }
       
+      if (DEGREE_RE.test(line) && !degree) {
+        // "MBA Stanford University" / "B.Tech Computer Science IIT Delhi"
+        if (INSTITUTION_RE.test(line) && !institution) {
+          const degreeMatch = line.match(DEGREE_RE);
+          if (degreeMatch) {
+            const idx = line.toLowerCase().indexOf(degreeMatch[0].toLowerCase());
+            const after = line.slice(idx + degreeMatch[0].length).trim();
+            const before = line.slice(0, idx).trim();
+            degree = degreeMatch[0].replace(/\b\w/g, (c) => c.toUpperCase());
+            if (/^in\s+/i.test(after)) {
+              // "Bachelor of Science in Computer Science, MIT" — keep fuller degree string
+              degree = line;
+            } else if (INSTITUTION_RE.test(after)) {
+              degree = before ? `${before} ${degreeMatch[0]}`.trim() : degreeMatch[0];
+              institution = after;
+            } else if (INSTITUTION_RE.test(before)) {
+              institution = before;
+              degree = after ? `${degreeMatch[0]} ${after}`.trim() : degreeMatch[0];
+            } else {
+              degree = line;
+            }
+          } else {
+            degree = line;
+          }
+        } else {
+          degree = line;
+        }
+        continue;
+      }
       if (INSTITUTION_RE.test(line) && !institution) { institution = line; continue; }
-      if (DEGREE_RE.test(line) && !degree) { degree = line; continue; }
       if (!institution && line.length < 120 && !DATE_RE.test(line)) { institution = line; continue; }
       if (!degree && line.length < 120 && !DATE_RE.test(line)) { degree = line; continue; }
     }
 
+    if (/^[&\d\s./-]+$/.test(institution) || institution.length < 3) institution = '';
+    if (!institution && degree) {
+      const board = degree.match(/\(([^)]{3,40})\)/);
+      if (board) institution = board[1].trim();
+    }
     if (institution || degree) {
       entries.push({
         institution: institution || degree || 'Institution',
@@ -837,24 +944,38 @@ function parseSkills(lines: string[]): ParsedResume['skills'] {
   const skills: ParsedResume['skills'] = [];
 
   const addSkill = (s: string) => {
-    const clean = s
+    let clean = healCollapsedTechTokens(s)
       .trim()
       .replace(/^[•\-*▪▸►◆→]+\s*/, '')
-      .replace(/[()]+$/, '') // Remove trailing parens
+      .replace(/\s*\([^)]*\)\s*/g, ' ')
+      .replace(/[()]+$/g, '')
+      .replace(/\s+/g, ' ')
       .trim();
     if (clean.length < 2 || clean.length > 60) return;
     if (/^\d+$/.test(clean)) return;
     if (clean.split(/\s+/).length > 6) return;
-    // Skip obvious non-skills
-    if (/^(and|or|the|etc|years?|months?|experience|proficient|expert|beginner|intermediate|advanced)$/i.test(clean)) return;
+    // Skip obvious non-skills / leaked section words
+    if (
+      /^(and|or|the|etc|years?|months?|experience|proficient|expert|beginner|intermediate|advanced|professional|technical|hands-?on|projects?|education|training|summary|tools?)$/i.test(
+        clean
+      )
+    ) {
+      return;
+    }
+    if (/\.$/.test(clean) || /^and\s/i.test(clean)) return;
     const key = clean.toLowerCase();
     if (!seen.has(key)) { seen.add(key); skills.push({ name: clean }); }
   };
 
   for (const line of lines) {
-    // Handle "Category: Skill1, Skill2, Skill3" format
+    // Handle "Category: Skill1, Skill2 — extra prose" format
     const colonMatch = line.match(/^[^:]{1,50}:\s*(.+)$/);
-    const content = colonMatch ? colonMatch[1] : line;
+    let content = colonMatch ? colonMatch[1] : line;
+    // Tools after an em/en dash are usually duties, not skill names
+    content = content.split(/\s+[—–]\s+/)[0];
+    // Drop parenthetical level notes before splitting so "Bash (basic) (automation, cron)"
+    // does not become the token "Bash (automation"
+    content = content.replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
 
     if (/[,|;•\/]/.test(content)) {
       content.split(/[,|;•\/]+/).forEach(addSkill);
@@ -870,14 +991,21 @@ function parseSkills(lines: string[]): ParsedResume['skills'] {
 
 function extractSummary(lines: string[], workExp: ParsedResume['workExperience']): string {
   if (lines.length > 0) {
-    const summary = lines.join(' ').trim();
+    let summary = lines.join(' ').trim();
+    // Orphaned next-section word glued by a bad reflow ("…support. TECHNICAL")
+    summary = summary.replace(
+      /\s+\b(TECHNICAL|PROFESSIONAL|EDUCATION|TRAINING|SKILLS?|EXPERIENCES?|PROJECTS?|STRENGTHS|CERTIFICATIONS?)\s*$/i,
+      ''
+    ).trim();
     // If summary is too short (just a fragment), return empty
     if (summary.length < 10) return '';
     return summary;
   }
   if (workExp.length > 0) {
     const latest = workExp[0];
-    const role = [latest.title, latest.company].filter(Boolean).join(' at ');
+    const company = latest.company && !/^company$/i.test(latest.company) ? latest.company : '';
+    const title = latest.title && !/^position$/i.test(latest.title) ? latest.title : '';
+    const role = [title, company].filter(Boolean).join(' at ');
     return role ? `${role}.` : '';
   }
   return '';
@@ -1053,16 +1181,216 @@ export type StructuredResumeParse = {
   }[];
 };
 
-/**
- * Non-AI resume parse for when LLM providers fail or return unusable output.
- * Runs space reconstruction then the regex section parser; maps into the
- * same structured shape as the AI path so repair/validate/ensureMinimal work.
- */
-export function parseResumeWithoutAI(text: string): StructuredResumeParse {
-  const cleaned = reconstructMissingSpaces(String(text || ''));
-  const parsed = parseResumeText(cleaned);
+/** Rough richness score so we can prefer regex over an empty AI shell. */
+export function resumeParseContentScore(data: {
+  personalInfo?: { fullName?: string; email?: string } | null;
+  summary?: string | null;
+  workExperience?: unknown[] | null;
+  education?: unknown[] | null;
+  skills?: unknown[] | null;
+  customSections?: unknown[] | null;
+} | null | undefined): number {
+  if (!data) return 0;
+  const name = String(data.personalInfo?.fullName || '').trim();
+  const email = String(data.personalInfo?.email || '').trim();
+  const realName =
+    name &&
+    !/^(your name|unknown|curriculum vitae|cv|resume|r[eé]sum[eé])$/i.test(name);
+  // Never let editor-only salvage dumps inflate the score — otherwise a
+  // wall-of-text import beats a thin-but-real AI structure.
+  const publicCustom = (Array.isArray(data.customSections) ? data.customSections : []).filter(
+    (cs: unknown) => {
+      const title = String((cs as { sectionTitle?: string })?.sectionTitle || '');
+      return !/imported\s+cv\s+text|raw\s+cv\s+text|parse\s+salvage|unparsed\s+cv/i.test(title);
+    }
+  );
+  const summary = String(data.summary || '').trim();
+  // Dump summaries don't count as content
+  const summaryScore =
+    summary.length >= 40 &&
+    !/\b(Education|Experiences?|Skills?)\b/.test(summary) &&
+    !(summary.length > 400 && /@/.test(summary) && /\d{8,}/.test(summary))
+      ? 3
+      : 0;
+  return (
+    (Array.isArray(data.workExperience) ? data.workExperience.length : 0) * 10 +
+    (Array.isArray(data.education) ? data.education.length : 0) * 5 +
+    (Array.isArray(data.skills) ? data.skills.length : 0) +
+    publicCustom.length * 2 +
+    summaryScore +
+    (realName ? 3 : 0) +
+    (email ? 2 : 0)
+  );
+}
 
-  return {
+/**
+ * Insert line breaks into space-collapsed PDF/OCR dumps so section headers and
+ * bullets become parseable (e.g. "…Behance Experiences UX/UI Designer…").
+ */
+/** Full section labels only — never bare "Project" (that splits "Project Manager"). */
+const REFLOW_SECTION_HEADERS = [
+  'PROFESSIONAL SUMMARY',
+  'EXECUTIVE SUMMARY',
+  'CAREER SUMMARY',
+  'PROFESSIONAL EXPERIENCE',
+  'WORK EXPERIENCE',
+  'EMPLOYMENT HISTORY',
+  'TECHNICAL HANDS-ON PROJECTS',
+  'TECHNICAL HANDS ON PROJECTS',
+  'HANDS-ON PROJECTS',
+  'HANDS ON PROJECTS',
+  'KEY PROJECTS',
+  'PERSONAL PROJECTS',
+  'TECHNICAL SKILLS',
+  'CORE SKILLS',
+  'CORE COMPETENCIES',
+  'TRAINING & EDUCATION',
+  'TRAINING AND EDUCATION',
+  'EDUCATION & TRAINING',
+  'EDUCATION AND TRAINING',
+  'WORK HISTORY',
+  'CERTIFICATIONS',
+  'ACHIEVEMENTS',
+  'PUBLICATIONS',
+  'LANGUAGES',
+  'STRENGTHS',
+  'INTERESTS',
+  'AWARDS',
+  'SUMMARY',
+  'EXPERIENCE',
+  'EXPERIENCES',
+  'EDUCATION',
+  'PROJECTS',
+  'SKILLS',
+].sort((a, b) => b.length - a.length);
+
+export function reflowCollapsedResumeText(text: string): string {
+  let t = healCollapsedTechTokens(String(text || '').replace(/\r\n/g, '\n').trim());
+  if (!t) return t;
+  // Already has structure
+  if ((t.match(/\n/g) || []).length >= 5) return t;
+
+  // ALL-CAPS name at start → own line. Stop before AWS / Title Case job words.
+  t = t.replace(
+    /^((?:[A-Z]{2,}(?:\s+[A-Z]{2,}){0,3}))\s+(?=(?:AWS|GCP|IBM)\b|(?:[A-Z][a-z]|UI\/|UX\/|Senior|Junior|Lead|Head|Manager|Director|Engineer|Developer|Designer|Vice|Chief|President))/g,
+    '$1\n'
+  );
+
+  t = t.replace(/\s*[•▪●]\s*/g, '\n• ');
+  // Longest header first so "PROFESSIONAL EXPERIENCE" is not split into EXPERIENCE.
+  const headerUnion = REFLOW_SECTION_HEADERS.map((h) =>
+    h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+')
+  ).join('|');
+  t = t.replace(new RegExp(`\\b(${headerUnion})\\b`, 'gi'), (full, hit: string) => {
+    const words = hit.trim().split(/\s+/);
+    const isAllCaps = hit === hit.toUpperCase() && /[A-Z]/.test(hit);
+    const isTitleCase = words.every((w) => /^[A-Z][\w&/-]*$/.test(w));
+    // Single-word headers ("PROJECTS", "EXPERIENCE") only when ALL CAPS —
+    // otherwise "Infrastructure Projects" / "operations experience" split.
+    if (words.length === 1 && !isAllCaps) return full;
+    if (!isAllCaps && !isTitleCase) return full;
+    return `\n${hit.trim()}\n`;
+  });
+  // Numbered project headings jammed after a period ("…journalctl. Project 2:")
+  t = t.replace(/\s+(Project\s+\d+\s*:)/gi, '\n$1 ');
+  // "Job Title Company Name | Mon YYYY" → split title / company using last Capitalized tokens
+  t = t.replace(
+    /([^\n|]+?)\s*\|\s*((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4}(?:\s*[–—\-]\s*(?:Present|Current|Now|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4}))?)/gi,
+    (full, left, date) => {
+      const parts = String(left).trim().split(/\s+/).filter(Boolean);
+      if (parts.length < 3) return full;
+      const last = parts[parts.length - 1];
+      const prev = parts[parts.length - 2];
+      // Never treat role words as the company
+      if (/^(Lead|Senior|Junior|Engineer|Developer|Designer|Manager|Intern|Head|Chief|Officer|Associate|Analyst|Consultant)$/i.test(last)) {
+        return full;
+      }
+      let companyLen = 1;
+      if (
+        parts.length >= 4 &&
+        /^[A-Z]/.test(prev) &&
+        /^[A-Z]/.test(last) &&
+        !/^(Lead|Senior|Junior|Front-End|Back-End|Full-Stack|&)$/i.test(prev)
+      ) {
+        companyLen = 2;
+      }
+      const company = parts.slice(-companyLen).join(' ');
+      const title = parts.slice(0, -companyLen).join(' ');
+      if (title.length < 5) return full;
+      return `${title}\n${company} | ${date}`;
+    }
+  );
+  // Prose jammed after a date range ("…Present Led roadmap for B2B…")
+  t = t.replace(
+    /((?:Present|Current|Now|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4}|\d{4}))\s+(?=[A-Z][a-z]{2,}(?:\s|$))/g,
+    '$1\n'
+  );
+  return t
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .join('\n');
+}
+
+/**
+ * Best-effort non-AI salvage: structured regex parse, and when that is thin,
+ * keep the raw CV text in a custom section so the user never loses content.
+ * That section is editor-only (see isEditorOnlyCustomSection) — never shown publicly.
+ */
+function parseProjectItems(
+  lines: string[]
+): { title: string; subtitle: string; description: string; date: string }[] {
+  const items: { title: string; subtitle: string; description: string; date: string }[] = [];
+  let cur: { title: string; subtitle: string; description: string; date: string } | null = null;
+  const push = () => {
+    if (cur && (cur.title || cur.description)) items.push(cur);
+    cur = null;
+  };
+  for (const line of lines) {
+    const m = line.match(/^Project\s+(\d+)\s*[:\-–—.]?\s*(.*)$/i);
+    if (m) {
+      push();
+      let heading = (m[2] || `Project ${m[1]}`).trim();
+      let tools = '';
+      const toolSplit = heading.match(/^(.*?)\s+Tools?\s*:\s*(.+)$/i);
+      if (toolSplit) {
+        heading = toolSplit[1].trim();
+        tools = toolSplit[2].trim();
+      }
+      cur = {
+        title: heading || `Project ${m[1]}`,
+        subtitle: tools,
+        description: '',
+        date: '',
+      };
+      continue;
+    }
+    if (!cur) {
+      if (line.length > 8 && line.length < 160 && !/^[•\-*]/.test(line)) {
+        cur = { title: stripBullet(line), subtitle: '', description: '', date: '' };
+      }
+      continue;
+    }
+    if (/^tools?\s*:/i.test(line)) {
+      cur.subtitle = line.replace(/^tools?\s*:\s*/i, '').trim();
+      continue;
+    }
+    const bit = stripBullet(line);
+    if (bit) cur.description = [cur.description, bit].filter(Boolean).join('\n');
+  }
+  push();
+  return items;
+}
+
+export function salvageResumeFromText(text: string): StructuredResumeParse {
+  // Reconstruct spaces first (preserving newlines), then reflow collapsed
+  // one-liners into section/bullet lines, THEN parse — never reverse that order.
+  const spaced = reconstructMissingSpaces(healCollapsedTechTokens(String(text || ''))).trim();
+  const cleaned = reflowCollapsedResumeText(spaced);
+  // Call the line parser on already-reflowed text so newlines survive
+  // (avoid a second reconstructMissingSpaces pass).
+  const parsed = parseResumeText(cleaned);
+  const data: StructuredResumeParse = {
     personalInfo: {
       fullName: parsed.personalInfo?.fullName || '',
       email: parsed.personalInfo?.email || '',
@@ -1096,119 +1424,61 @@ export function parseResumeWithoutAI(text: string): StructuredResumeParse {
       .filter(Boolean),
     customSections: [],
   };
-}
 
-/** Rough richness score so we can prefer regex over an empty AI shell. */
-export function resumeParseContentScore(data: {
-  personalInfo?: { fullName?: string; email?: string } | null;
-  summary?: string | null;
-  workExperience?: unknown[] | null;
-  education?: unknown[] | null;
-  skills?: unknown[] | null;
-  customSections?: unknown[] | null;
-} | null | undefined): number {
-  if (!data) return 0;
-  const name = String(data.personalInfo?.fullName || '').trim();
-  const email = String(data.personalInfo?.email || '').trim();
-  const realName =
-    name &&
-    !/^(your name|unknown|curriculum vitae|cv|resume|r[eé]sum[eé])$/i.test(name);
-  return (
-    (Array.isArray(data.workExperience) ? data.workExperience.length : 0) * 10 +
-    (Array.isArray(data.education) ? data.education.length : 0) * 5 +
-    (Array.isArray(data.skills) ? data.skills.length : 0) +
-    (Array.isArray(data.customSections) ? data.customSections.length : 0) * 2 +
-    (String(data.summary || '').trim().length >= 40 ? 3 : 0) +
-    (realName ? 3 : 0) +
-    (email ? 2 : 0)
-  );
-}
+  const sections = splitSections(splitIntoLines(cleaned));
+  const projectItems = parseProjectItems(sections.projects || []);
+  if (projectItems.length) {
+    data.customSections.push({
+      sectionTitle: 'Projects',
+      items: projectItems,
+    });
+  }
 
-/**
- * Insert line breaks into space-collapsed PDF/OCR dumps so section headers and
- * bullets become parseable (e.g. "…Behance Experiences UX/UI Designer…").
- */
-export function reflowCollapsedResumeText(text: string): string {
-  let t = String(text || '').replace(/\r\n/g, '\n').trim();
-  if (!t) return t;
-  // Already has structure
-  if ((t.match(/\n/g) || []).length >= 5) return t;
-
-  t = t.replace(/\s*[•▪●]\s*/g, '\n• ');
-  t = t.replace(
-    /\b((?:Professional\s+)?(?:Summary|Experience|Experiences)|Work\s+Experience|Employment(?:\s+History)?|Education|Skills?|Projects?|Certifications?|Languages?|Awards?|Achievements?)\b/gi,
-    '\n$1\n'
-  );
-  // Break before "Company Name | Mon YYYY" so title stays on the previous line
-  t = t.replace(
-    /\s+([A-Z][A-Za-z0-9.&]*(?:\s+[A-Z][A-Za-z0-9.&]*){0,3})\s*\|\s*((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4})/g,
-    '\n$1 | $2'
-  );
-  return t
-    .split('\n')
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .join('\n');
-}
-
-/**
- * Best-effort non-AI salvage: structured regex parse, and when that is thin,
- * keep the raw CV text in a custom section so the user never loses content.
- * That section is editor-only (see isEditorOnlyCustomSection) — never shown publicly.
- */
-export function salvageResumeFromText(text: string): StructuredResumeParse {
-  const cleaned = reflowCollapsedResumeText(
-    reconstructMissingSpaces(String(text || '')).trim()
-  );
-  const data = parseResumeWithoutAI(cleaned);
   const score = resumeParseContentScore(data);
 
   if (cleaned.length < 80) return data;
 
-  // Thin structure → preserve full text so the editor still has something to edit
-  if (score < 15) {
-    const alreadyHasImport = (data.customSections || []).some(
-      (cs) => /imported cv text/i.test(String(cs.sectionTitle || ''))
-    );
-    if (!alreadyHasImport) {
-      const lines = cleaned
+  // Always keep the full uploaded text in an editor-only section so nothing is lost,
+  // even when structured fields look complete.
+  const alreadyHasImport = (data.customSections || []).some(
+    (cs) => /imported cv text|raw cv text|parse salvage/i.test(String(cs.sectionTitle || ''))
+  );
+  if (!alreadyHasImport) {
+    // Prefer a short headline line for summary when empty — never paste the whole CV into about
+    if (!String(data.summary || '').trim() && score < 15) {
+      const headline = cleaned
         .split(/\n+/)
         .map((l) => l.trim())
-        .filter((l) => l.length > 40);
-      if (!String(data.summary || '').trim() && lines.length) {
-        // Prefer a short headline line — never paste the whole CV into summary
-        const headline = cleaned
-          .split(/\n+/)
-          .map((l) => l.trim())
-          .find(
-            (l) =>
-              l.length >= 8 &&
-              l.length <= 120 &&
-              !/^(phone|email|linkedin|experiences?|education|skills)/i.test(l) &&
-              !l.includes('•')
-          );
-        if (headline && !/^(sowjanya|experiences)/i.test(headline)) {
-          data.summary = headline.replace(
-            /^(?:(?:professional|career|executive|personal)\s+)?(?:summary|profile|objective|overview|statement)\s*[:\-–—.]?\s*/i,
-            ''
-          );
-        }
+        .find(
+          (l) =>
+            l.length >= 8 &&
+            l.length <= 120 &&
+            !/^(phone|email|linkedin|experiences?|education|skills|summary)/i.test(l) &&
+            !l.includes('•') &&
+            !/@/.test(l) &&
+            !/\d{8,}/.test(l)
+        );
+      if (headline) {
+        data.summary = headline.replace(
+          /^(?:(?:professional|career|executive|personal)\s+)?(?:summary|profile|objective|overview|statement)\s*[:\-–—.]?\s*/i,
+          ''
+        );
       }
-      data.customSections = [
-        ...(data.customSections || []),
-        {
-          sectionTitle: 'Imported CV text',
-          items: [
-            {
-              title: 'Review and move into the right sections',
-              subtitle: '',
-              description: cleaned.slice(0, 12000),
-              date: '',
-            },
-          ],
-        },
-      ];
     }
+    data.customSections = [
+      ...(data.customSections || []),
+      {
+        sectionTitle: 'Imported CV text',
+        items: [
+          {
+            title: 'Review and move into the right sections',
+            subtitle: '',
+            description: cleaned,
+            date: '',
+          },
+        ],
+      },
+    ];
   }
 
   return data;

@@ -23,12 +23,14 @@ import {
 } from '@/lib/job-description';
 import { cleanPublishText } from '@/lib/noslop';
 import { companyAboutForJob } from '@/lib/company-about';
+import { assembleJobPage, isTrustedCuratedBody } from '@/lib/job-assemble';
 import type { JobDetail, RelatedJobCard } from '@/app/jobs/[id]/job-detail-client';
 import {
   getCachedJobById,
   getCachedJobByCompanyAndSlug,
 } from '@/lib/job-snapshots';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { isJobExpired } from '@/lib/job-age';
 
 export type JobRow = {
   id: string;
@@ -83,9 +85,9 @@ export function toJobDetail(job: JobRow): JobDetail {
     description_html: published.html,
     description_plain: published.plain,
     has_description: true,
-    description_kind: published.isCurated ? 'job' : 'company',
-    excerpt: published.isCurated
-      ? jobDescriptionExcerpt(job.description, 200, {
+    description_kind: published.kind === 'company' ? 'company' : 'job',
+    excerpt: published.indexable
+      ? jobDescriptionExcerpt(published.plain, 200, {
           title: cleanPublishText(job.title),
           company: companyDisplayName(cleanPublishText(job.company)),
         })
@@ -97,15 +99,18 @@ export function toJobDetail(job: JobRow): JobDetail {
     company_slug: companyToSlug(job.company),
     job_slug: jobStoredSlug(job) ?? shortJobSlug(job.company, job.external_id),
     public_path: jobPublicPath(job),
+    expired: isJobExpired(job.published_at, job.created_at),
   };
 }
 
 /**
- * Curated jobs publish the paraphrased JD. Uncurated jobs never show raw ATS
- * text and never mention the listing queue — they show original company about.
+ * Trusted curated paraphrases publish as-is (owned headings, no raw ATS).
+ * Otherwise a factual stub: listing metadata + owned company about.
+ * Never invent duties. Never publish raw ATS.
  */
 export type PublishedDescription = {
   isCurated: boolean;
+  kind: 'curated' | 'assembled' | 'company';
   html: string;
   plain: string;
   wordCount: number;
@@ -123,6 +128,7 @@ function companyAboutFallback(job: JobRow, location: string): PublishedDescripti
   const plain = jobDescriptionPlainText(about);
   return {
     isCurated: false,
+    kind: 'company',
     html,
     plain,
     wordCount: jobDescriptionWordCount(about),
@@ -132,16 +138,30 @@ function companyAboutFallback(job: JobRow, location: string): PublishedDescripti
 
 export function publishSafeDescription(job: JobRow, location: string): PublishedDescription {
   const isCurated = Array.isArray(job.tags) && job.tags.includes('curated-jd');
-  if (isCurated) {
+  if (isCurated && isTrustedCuratedBody(job.description)) {
     const html = formatJobDescription(job.description, location);
     return {
-      isCurated,
+      isCurated: true,
+      kind: 'curated',
       html,
       plain: jobDescriptionPlainText(job.description),
       wordCount: jobDescriptionWordCount(job.description),
-      indexable: isJobDescriptionIndexable(job.description),
+      indexable: true,
     };
   }
+
+  const assembled = assembleJobPage({ ...job, location });
+  if (assembled.ok) {
+    return {
+      isCurated: false,
+      kind: 'assembled',
+      html: assembled.html,
+      plain: assembled.plain,
+      wordCount: assembled.wordCount,
+      indexable: false,
+    };
+  }
+
   return companyAboutFallback(job, location);
 }
 
@@ -374,19 +394,25 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
   const type = jobTypeLabel(job.job_type);
   const jobTitle = cleanPublishText(job.title);
   const company = cleanPublishText(job.company);
-  const title = `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
+  const expired = isJobExpired(job.published_at, job.created_at);
+  const title = expired
+    ? `${jobTitle} at ${company} (closed)`
+    : `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
   const locationSuffix = location ? `${location}. ` : '';
-  const fallback = `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
+  const fallback = expired
+    ? `${jobTitle} at ${company}. ${locationSuffix}This posting is closed.`
+    : `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
   // Raw scraped bodies are never used in meta (plagiarism guard) — only
   // curated rewritten bodies. Uncurated pages use company about when we have it.
   const published = publishSafeDescription(job, location);
-  const excerpt = published.isCurated && published.indexable
-    ? jobDescriptionExcerpt(job.description, 140, { title: jobTitle, company })
+  const excerpt = published.indexable
+    ? jobDescriptionExcerpt(published.plain, 140, { title: jobTitle, company })
     : published.plain && published.plain.length > 40
       ? published.plain.slice(0, 140)
       : '';
   const description = excerpt || fallback;
   const canonical = `${siteUrl}${jobPublicPath(job)}`;
+  // Closed is not a noindex reason. Thin bodies stay noindex. See docs/JOB_PAGE_RULES.md.
   const indexable = published.indexable;
 
   return {
@@ -412,7 +438,7 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
   };
 }
 
-const EMPLOYMENT_TYPE_MAP: Record<string, string> = {
+export const EMPLOYMENT_TYPE_MAP: Record<string, string> = {
   full_time: 'FULL_TIME',
   'full-time': 'FULL_TIME',
   'full time': 'FULL_TIME',
@@ -517,8 +543,7 @@ const US_STATE_ABBR = new Set([
   'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC',
 ]);
 
-const COUNTRY_ALIASES: Record<string, string> = {
-  usa: 'US', us: 'US', 'u.s.': 'US', 'u.s.a.': 'US',
+const COUNTRY_ALIASES: Record<string, string> = {  usa: 'US', us: 'US', 'u.s.': 'US', 'u.s.a.': 'US',
   'united states': 'US', 'united states of america': 'US',
   uk: 'GB', 'u.k.': 'GB', 'united kingdom': 'GB', 'great britain': 'GB', england: 'GB',
   germany: 'DE', deutschland: 'DE', france: 'FR', canada: 'CA', india: 'IN',
@@ -529,10 +554,26 @@ const COUNTRY_ALIASES: Record<string, string> = {
   remote: 'Worldwide', worldwide: 'Worldwide', global: 'Worldwide', anywhere: 'Worldwide',
 };
 
+/** Known city → country ISO, from the site's own curated city dataset. */
+const CITY_COUNTRY: Record<string, string> = (() => {
+  const out: Record<string, string> = {};
+  try {
+    const cities = require('./nomad-cities.json') as Array<{ name: string; countryCode: string }>;
+    for (const c of cities) {
+      if (c.name && c.countryCode) out[c.name.toLowerCase()] = String(c.countryCode).toUpperCase();
+    }
+  } catch {
+    /* optional dataset */
+  }
+  return out;
+})();
+
 /**
  * Parse free-text location into PostalAddress for JobPosting.
  * Uses RAW ATS location (do not collapse via display normalizeLocation — that maps
  * "San Francisco" → "USA" and destroys city-level Google Jobs structure).
+ * Extracts streetAddress and postalCode when the raw text carries them, and
+ * infers country from known city names — all real data, never invented.
  */
 export function parseJobLocationAddress(
   location: string | null | undefined
@@ -554,7 +595,7 @@ export function parseJobLocationAddress(
     .replace(/\s*[-–—|,]\s*(remote|hybrid)\s*$/i, '')
     .trim() || loc;
 
-  const parts = stripped
+  let parts = stripped
     .split(',')
     .map((p) => p.trim())
     .filter(Boolean)
@@ -566,6 +607,31 @@ export function parseJobLocationAddress(
   if (!parts.length) return undefined;
 
   const address: Record<string, unknown> = { '@type': 'PostalAddress' };
+
+  // --- postalCode: real postcodes embedded in the raw location text ---
+  const POSTAL_RES = [
+    /\b[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\b/i, // UK
+    /\b\d{5}(?:-\d{4})?\b/, // US / 5-digit
+    /\b[A-Z]\d[A-Z]\s*\d[A-Z]\d\b/i, // CA
+    /\b\d{4}\s?[A-Z]{2}\b/i, // NL
+  ];
+  for (const re of POSTAL_RES) {
+    const pm = stripped.match(re);
+    if (pm) {
+      address.postalCode = pm[0].replace(/\s+/g, ' ').toUpperCase();
+      parts = parts.map((p) => p.replace(re, '').trim()).filter(Boolean);
+      break;
+    }
+  }
+
+  // --- streetAddress: a part that starts with a house number ---
+  const streetIdx = parts.findIndex((p) => /^\d{1,5}[a-zA-Z]?\s+[A-Za-z]/.test(p) && p.length >= 8 && p.length <= 80);
+  if (streetIdx >= 0) {
+    address.streetAddress = parts[streetIdx];
+    parts.splice(streetIdx, 1);
+  }
+  if (!parts.length) return address;
+
   const last = parts[parts.length - 1];
   const lastLower = last.toLowerCase();
   const lastCountry = COUNTRY_ALIASES[lastLower] || (/^[A-Z]{2}$/i.test(last) && !US_STATE_ABBR.has(last.toUpperCase()) ? last.toUpperCase() : null);
@@ -599,8 +665,10 @@ export function parseJobLocationAddress(
       address.addressCountry = 'US';
     } else {
       address.addressLocality = one;
-      // Infer country from known city names lightly
-      if (/^(london|manchester|edinburgh|birmingham)$/i.test(one)) address.addressCountry = 'GB';
+      const knownCity = CITY_COUNTRY[one.toLowerCase()];
+      if (knownCity) {
+        address.addressCountry = knownCity;
+      } else if (/^(london|manchester|edinburgh|birmingham)$/i.test(one)) address.addressCountry = 'GB';
       else if (/^(berlin|munich|münchen|hamburg)$/i.test(one)) address.addressCountry = 'DE';
       else if (/^(paris|lyon|marseille)$/i.test(one)) address.addressCountry = 'FR';
       else if (/^(toronto|vancouver|montreal|ottawa)$/i.test(one)) address.addressCountry = 'CA';
@@ -638,13 +706,19 @@ export function extractSalaryFromText(text: string | null | undefined): string |
   return null;
 }
 
-export function buildJobJsonLd(job: JobRow, detail: JobDetail, siteUrl: string) {
+export function buildJobJsonLd(
+  job: JobRow,
+  detail: JobDetail,
+  siteUrl: string
+): Record<string, unknown> | null {
+  // Live Google Jobs only. Closed pages stay in regular search without JobPosting.
+  if (!detail.is_indexable || detail.expired) return null;
+
   const datePosted =
     job.published_at || job.created_at || new Date().toISOString().slice(0, 10);
   const postedMs = new Date(datePosted).getTime();
-  const validThrough = Number.isFinite(postedMs)
-    ? new Date(postedMs + 30 * 24 * 60 * 60 * 1000).toISOString()
-    : undefined;
+  // Garbage date strings fall back to today — never omit validThrough.
+  const validThrough = new Date((Number.isFinite(postedMs) ? postedMs : Date.now()) + 30 * 24 * 60 * 60 * 1000).toISOString();
 
   const plain =
     detail.description_plain ||

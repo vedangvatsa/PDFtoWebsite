@@ -127,3 +127,11 @@ export function hasPublishSlop(input: string | null | undefined): boolean {
   if (!input) return false;
   return /[—–…]|[“”„‟‘’‚‛]/.test(input);
 }
+
+const BANNED_SLOP_LEXICON =
+  /\b(delve|tapestry|pivotal|vibrant|meticulous|testament|groundbreaking|leverage|utilize|synergy|holistic|seamless|cutting-edge|game-changer|supercharge|reimagine|revolutionize|world-class|best-in-class|state-of-the-art)\b/i;
+
+/** True if our own copy still uses banned AI lexicon (veda.ng/noslop.md). */
+export function hasBannedSlopLexicon(input: string | null | undefined): boolean {
+  return BANNED_SLOP_LEXICON.test(String(input || ''));
+}

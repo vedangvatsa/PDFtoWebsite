@@ -171,7 +171,7 @@ export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
               <h3 className="text-lg font-semibold">Check your email</h3>
               <p className="text-sm text-muted-foreground">
                 Enter the {EMAIL_OTP_LENGTH}-digit code we sent to{' '}
-                <span className="font-medium text-foreground">{email}</span>, or open the sign-in link
+                <span className="font-medium text-foreground break-all">{email}</span>, or open the sign-in link
                 in that email.
               </p>
             </div>

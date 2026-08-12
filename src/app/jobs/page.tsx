@@ -262,7 +262,7 @@ export default function JobsPage() {
   };
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+    <div className="h-screen overflow-y-auto overflow-x-hidden bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
       <Header />
       <main id="main-content" className={PAGE_CONTAINER}>
         {/* Hero */}
@@ -271,7 +271,7 @@ export default function JobsPage() {
             Job Board
           </h1>
           {/* Company logos strip */}
-          <div className="flex items-center gap-3 mt-3">
+          <div className="flex items-center gap-3 mt-3 overflow-hidden">
             {[
               { name: 'Stripe', domain: 'stripe.com' },
               { name: 'Airbnb', domain: 'airbnb.com' },
@@ -295,26 +295,38 @@ export default function JobsPage() {
           {profileComplete && userSkills.length > 0 && (
             <button
               onClick={() => setMatchOnly(m => !m)}
-              className={`inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+              title={
+                matchOnly
+                  ? userSkills.map((s) => s.trim()).filter(Boolean).join(', ')
+                  : 'Show matched only'
+              }
+              className={`inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border max-w-full min-w-0 ${
                 matchOnly
                   ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
                   : 'bg-zinc-50 border-zinc-200 text-zinc-500 hover:border-zinc-300'
               }`}
             >
-              <Target className="h-3 w-3" />
-              {matchOnly ? (() => { const clean = userSkills.map(s => s.trim()).filter(Boolean); return `Showing matched (${clean.slice(0, 4).join(', ')}${clean.length > 4 ? '…' : ''})`; })() : 'Show matched only'}
+              <Target className="h-3 w-3 shrink-0" />
+              <span className="truncate">
+                {matchOnly
+                  ? (() => {
+                      const clean = userSkills.map((s) => s.trim()).filter(Boolean);
+                      return `Showing matched (${clean.slice(0, 4).join(', ')}${clean.length > 4 ? '…' : ''})`;
+                    })()
+                  : 'Show matched only'}
+              </span>
             </button>
           )}
           {userSkills.length > 0 && !profileComplete && (
-            <Link href="/editor" className="inline-flex items-center gap-1.5 mt-3 text-xs text-zinc-400 hover:text-zinc-600 transition-colors">
-              <Target className="h-3 w-3" />
-              Complete your profile to enable skill matching →
+            <Link href="/editor" className="inline-flex items-center gap-1.5 mt-3 text-xs text-zinc-400 hover:text-zinc-600 transition-colors max-w-full min-w-0">
+              <Target className="h-3 w-3 shrink-0" />
+              <span className="truncate">Complete your profile to enable skill matching →</span>
             </Link>
           )}
           {userSkills.length === 0 && (
-            <label htmlFor="jobs-cv-upload" className={`inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline cursor-pointer ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
-              {isUploading ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : <UploadCloud className="h-4 w-4 text-primary" />}
-              {isUploading ? 'Parsing CV...' : 'Upload your CV for personalized matches →'}
+            <label htmlFor="jobs-cv-upload" className={`inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline cursor-pointer max-w-full min-w-0 ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+              {isUploading ? <Loader2 className="h-4 w-4 animate-spin text-primary shrink-0" /> : <UploadCloud className="h-4 w-4 text-primary shrink-0" />}
+              <span className="truncate">{isUploading ? 'Parsing CV...' : 'Upload your CV for personalized matches →'}</span>
               <input
                 id="jobs-cv-upload"
                 type="file"
@@ -449,23 +461,23 @@ export default function JobsPage() {
                   }}
                 />
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate min-w-0 flex-1">
                       {job.title}
                     </h3>
                     {job.match_score >= 50 && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 shrink-0 bg-emerald-50 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
-                        <Sparkles className="h-2.5 w-2.5" />Great match
+                        <Sparkles className="h-2.5 w-2.5" /><span className="max-[380px]:hidden">Great match</span>
                       </span>
                     )}
                     {job.match_score >= 25 && job.match_score < 50 && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-600 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
-                        <Target className="h-2.5 w-2.5" />Good match
+                        <Target className="h-2.5 w-2.5" /><span className="max-[380px]:hidden">Good match</span>
                       </span>
                     )}
                     {job.match_score > 0 && job.match_score < 25 && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-medium text-zinc-400 shrink-0" title={(job.match_signals || []).join(' · ')}>
-                        <Target className="h-2.5 w-2.5" />Partial
+                        <Target className="h-2.5 w-2.5" /><span className="max-[380px]:hidden">Partial</span>
                       </span>
                     )}
                   </div>
