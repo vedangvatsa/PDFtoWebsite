@@ -95350,6 +95350,1579 @@
       "status": "ok",
       "path": "/coins/risk",
       "external_id": "coins_risk"
+    },
+    "6646aeed-d94c-4c99-bd26-e393f597b60f": {
+      "status": "ok",
+      "path": "/coins/acct-mgr",
+      "external_id": "coins_acct-mgr"
+    },
+    "65cc33bf-5b3c-43ac-88d1-762a21da221a": {
+      "status": "ok",
+      "path": "/coins/accountant",
+      "external_id": "coins_accountant"
+    },
+    "68d38209-5354-43c3-bf21-fcc831ca9019": {
+      "status": "ok",
+      "path": "/clear-street/ai-model",
+      "external_id": "clear-street_ai-model"
+    },
+    "761588f3-c5c3-49e8-b9f2-f316be685a72": {
+      "status": "ok",
+      "path": "/coins/data-sec",
+      "external_id": "coins_data-sec"
+    },
+    "6e0e7e3b-4dc0-4966-b1f4-359141a67eab": {
+      "status": "ok",
+      "path": "/alpaca/graphic",
+      "external_id": "alpaca_graphic"
+    },
+    "6ce89a29-20c5-4f5e-b741-0dc45b2951bb": {
+      "status": "ok",
+      "path": "/adyen/head-7b",
+      "external_id": "adyen_head-7b"
+    },
+    "76921cb2-f00c-4949-9898-05615fa660af": {
+      "status": "ok",
+      "path": "/coins/mgr-cust",
+      "external_id": "coins_mgr-cust"
+    },
+    "79240a39-2de5-44a0-a252-e9c01b5ba504": {
+      "status": "ok",
+      "path": "/coins/regional",
+      "external_id": "coins_regional"
+    },
+    "6047c055-eaec-4af7-a580-f2d903799c4c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "79bc4d1c-b2ba-4107-802a-c179b598bc1e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "75311153-310b-4148-9375-b1cb62ecb25a": {
+      "status": "ok",
+      "path": "/coins/otc",
+      "external_id": "coins_otc"
+    },
+    "636d05c7-377f-4105-9918-b55ce4baf93b": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6bbf9ce9-baf7-4149-abe4-07e8c9eca8d3": {
+      "status": "ok",
+      "path": "/careem/integration",
+      "external_id": "careem_integration"
+    },
+    "692dd1e8-f47c-412e-b0e6-1338bb09c51f": {
+      "status": "ok",
+      "path": "/oscar-health/dir-95",
+      "external_id": "oscar-health_dir-95"
+    },
+    "6cc217eb-03b8-4e6c-842d-64a9b063413e": {
+      "status": "ok",
+      "path": "/element-biosciences/prod",
+      "external_id": "element-biosciences_prod"
+    },
+    "6a24c74b-5f89-42fe-ac77-a9f91cb4e0d8": {
+      "status": "ok",
+      "path": "/neo4j/enterp-d1",
+      "external_id": "neo4j_enterp-d1"
+    },
+    "7be073bb-2f59-4ef2-a7af-2a8eff100cc0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "65aa4582-07a8-4f67-81b5-f5235f091028": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6f65bda5-d26d-44e9-93d2-184370bca101": {
+      "status": "ok",
+      "path": "/broadsign-careers/sales-e8",
+      "external_id": "broadsign-careers_sales-e8"
+    },
+    "735fb91c-4b34-4f0b-aa90-32c59cfcced9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "68592302-5273-4ca0-adbc-1ebceacd10f3": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "65f467b6-13ef-443a-b295-d6487e587e74": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6a88ba3f-8283-458a-abe2-5d070a3502f8": {
+      "status": "ok",
+      "path": "/picklerobot/electr-cb",
+      "external_id": "picklerobot_electr-cb"
+    },
+    "66d5fb65-b2f3-4b6e-8a43-a1f148ea9bd7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6d54b6a0-afe4-42ee-b3a9-c68f011b8254": {
+      "status": "ok",
+      "path": "/oscar-health/sales",
+      "external_id": "oscar-health_sales"
+    },
+    "6e41f570-3d2f-4a4b-a54a-f4aa2e984ef4": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6a440269-9030-4523-82fd-ae9e6bddb702": {
+      "status": "ok",
+      "path": "/coins/multimedia",
+      "external_id": "coins_multimedia"
+    },
+    "78d53f9e-9849-499c-8e0f-1f4debe9da4e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6a368960-7f09-4bd0-be43-9353bed5d82b": {
+      "status": "ok",
+      "path": "/payit/payit-s",
+      "external_id": "payit_payit-s"
+    },
+    "74767c96-8148-43b7-8e1d-db41fdeba851": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7e6815a5-b75f-4212-b521-4a0f8ddafdc0": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7d4264cb-59f7-4444-9207-eda913985522": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "75b9ab27-ea2f-4520-9332-e66d90e18812": {
+      "status": "ok",
+      "path": "/clear-street/sw-f9",
+      "external_id": "clear-street_sw-f9"
+    },
+    "6712db16-aa93-40df-8fba-88bd93b2febd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6ea2f18e-99fa-4003-8aec-9f4ab75e56fb": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6a9d25ea-85cc-42b7-8849-de333fdf0a2c": {
+      "status": "ok",
+      "path": "/couchbase-inc/public",
+      "external_id": "couchbase-inc_public"
+    },
+    "7833889d-15c7-49f3-b492-4751d06b350d": {
+      "status": "ok",
+      "path": "/fis-amount/auto-eng",
+      "external_id": "fis-amount_auto-eng"
+    },
+    "621b5d21-288a-416d-8d6b-eb0d357e7dcd": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "668e905c-b837-46c6-b8b7-4ea5bbc64fd8": {
+      "status": "ok",
+      "path": "/applovin/advertising",
+      "external_id": "applovin_advertising"
+    },
+    "74516a25-5d4f-4ac3-b113-e85958636965": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "71545210-c129-4117-b884-dce37d461bd4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "697c754a-e614-4dc7-85ea-8ec79a738c59": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "601d18b8-b739-455a-b96e-950a2bff43a0": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7a31cc66-adb1-4881-b987-39afb67dd609": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "719bac10-9621-4352-9655-07eaae54bd62": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "75dc111c-14ec-40de-b93e-abc8bd73c13f": {
+      "status": "ok",
+      "path": "/cognite-ai-for-industry/data-a4",
+      "external_id": "cognite-ai-for-industry_data-a4"
+    },
+    "6da705df-1bf7-46c9-a84c-51e276eca213": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "62545c60-eaa5-40db-b8e1-94027cc21473": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6a38515c-57ed-4acf-9516-6b6ef5d34ec6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "770c9e69-6bd9-472a-9ed3-9cb271329207": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6f3ccfcc-ebf7-4217-bab0-3ecfcc039e83": {
+      "status": "ok",
+      "path": "/platform-science/sw-08",
+      "external_id": "platform-science_sw-08"
+    },
+    "673e90af-0bc9-4e79-acb3-0b7c47b86f6d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "68c0474c-ce6c-4b24-999c-2b9f7135210e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "68ee5bd8-8993-48f3-98bd-c8202561981b": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "60845107-67ec-49d5-96fc-2b034d64237e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6facaab0-d92e-4ab5-bf4e-73cb3856e869": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6c4d431d-b67a-42d2-a88d-896dba1b8ca7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7e638991-be94-4c56-a3a0-7e5c7a767fed": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6c7558fb-c6e2-45b7-bddb-30a8894660fd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "603dd26f-43b0-42b2-9cb4-83a24a43e368": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6c8e691f-55a1-44fd-a38e-e13de544c16c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "65c547d2-baab-4805-b5d5-d8b11e1f5aa1": {
+      "status": "ok",
+      "path": "/affirm/counsel",
+      "external_id": "affirm_counsel"
+    },
+    "745f90c9-f702-4f0b-88a6-5107cf95822d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "60afd589-cb44-4a7e-b4db-31708bbfde69": {
+      "status": "ok",
+      "path": "/cloudinary/tech-4c",
+      "external_id": "cloudinary_tech-4c"
+    },
+    "63bf4b70-ba28-42bc-a96f-eea5dfe2da7f": {
+      "status": "ok",
+      "path": "/checkr/cust",
+      "external_id": "checkr_cust"
+    },
+    "681dc0a5-76e2-4756-8324-91d5742d03c6": {
+      "status": "ok",
+      "path": "/coins/fe-eng",
+      "external_id": "coins_fe-eng"
+    },
+    "7b4d5b76-1411-4abc-b5c8-6ad84b3c170a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "74fb60ba-8a5f-4617-af91-ed5ea04fd4c0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7f1c2e25-e4ff-4f2a-9897-366396dd94de": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7149dd1b-f9d4-4b48-a905-5b759e043b1d": {
+      "status": "ok",
+      "path": "/able/prod",
+      "external_id": "able_prod"
+    },
+    "645ad9e4-85db-4a24-8c97-419826b9b2f7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "60cc6082-fed4-43dd-9b29-f8aee81b6a75": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7a2d8c28-0385-4c45-8620-e92d84f9f051": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7d27407c-e91e-4017-b4e3-2855c53aeb03": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7491bf51-ce60-4fc4-b7e0-b9e84fdd9655": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "682162d1-a667-4c8e-bcd0-a0ac7b80d8d1": {
+      "status": "ok",
+      "path": "/n26/be-50",
+      "external_id": "n26_be-50"
+    },
+    "6539d861-3858-460a-ab0e-03dba85ed1a7": {
+      "status": "ok",
+      "path": "/nintendo/sw-9c",
+      "external_id": "nintendo_sw-9c"
+    },
+    "7d051c47-6f3d-4f21-a467-dd5aee504163": {
+      "status": "ok",
+      "path": "/lyft/data",
+      "external_id": "lyft_data"
+    },
+    "649af295-c627-43fb-9fb9-1c396136bf9d": {
+      "status": "ok",
+      "path": "/floqast/forward",
+      "external_id": "floqast_forward"
+    },
+    "607fe0d8-8bee-4508-803c-be98333e4ce5": {
+      "status": "ok",
+      "path": "/partssource/field",
+      "external_id": "partssource_field"
+    },
+    "6ed5e32a-4727-4bb2-9a02-a3d6adfebac3": {
+      "status": "ok",
+      "path": "/owl-labs/linux",
+      "external_id": "owl-labs_linux"
+    },
+    "61446139-2fa6-4d2f-986d-222ceeeba42a": {
+      "status": "ok",
+      "path": "/datadog/prod-sol",
+      "external_id": "datadog_prod-sol"
+    },
+    "71e3f1c8-4482-4cc1-a9ba-3c16d3fe1553": {
+      "status": "ok",
+      "path": "/nuro/sw-sre",
+      "external_id": "nuro_sw-sre"
+    },
+    "6cf6dab1-acb5-460b-bb7f-99ed6cd87857": {
+      "status": "ok",
+      "path": "/datadog/prod-cf",
+      "external_id": "datadog_prod-cf"
+    },
+    "6d77d026-1098-4ba0-a75a-98c6cbcc29fa": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6ab8e79f-6213-4394-bca1-99207c623e12": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6f780cc3-34eb-4b8c-aa16-1ae98203161a": {
+      "status": "ok",
+      "path": "/n26/strat",
+      "external_id": "n26_strat"
+    },
+    "72ab769f-8ed2-4025-ae85-9cb8e92307a6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "64092ca5-97b0-491d-819c-75755eae197d": {
+      "status": "ok",
+      "path": "/ethos-life/dir-fin",
+      "external_id": "ethos-life_dir-fin"
+    },
+    "7f64825d-794a-4db1-b79e-0b11755c4e4e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6e6939be-1891-4c1c-9252-e28179916163": {
+      "status": "ok",
+      "path": "/lyft/sw-ac",
+      "external_id": "lyft_sw-ac"
+    },
+    "663d2701-a8dd-4d94-916f-74e102700296": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "729b3aa2-eeef-4c62-8bb4-7d1dc3350f69": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "720a176b-0d08-429f-9b51-0ea698e81cd9": {
+      "status": "ok",
+      "path": "/dlocal/acct-mgr",
+      "external_id": "dlocal_acct-mgr"
+    },
+    "7f4f18e3-d877-401d-988e-26526af8769c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=EA Test JC - Most Questions company=LI Test Company apply=https://job-boards.greenhouse.io/linkedin/jobs/5051579"
+    },
+    "6f462fbc-2dce-4fe1-84c9-eb7f4e6c845e": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Liffey Moher company=Liffey Moher and Blarney Inc. apply=https://job-boards.greenhouse.io/ireland/jobs/4112872003"
+    },
+    "759d34aa-9ab5-4483-98fd-2023c5fc0b2c": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Interest company=Circ apply=https://boards.greenhouse.io/circ/jobs/4059830006?gh_jid=4059830006"
+    },
+    "61f8c84a-a886-4392-8a8c-59d6cdc3cc70": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Full Stack Developer company=Laprairie apply=https://laprairie.bamboohr.com/careers/872"
+    },
+    "7a6ad236-54ce-44c4-a251-354cd8d7879d": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Unified Communications Telecom Administrator company=Vamonosit apply=https://vamonosit.bamboohr.com/careers/84"
+    },
+    "7fffe04e-f4a2-4158-8b19-630917c641ff": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=OptoMechanical Engineer company=Sbquantum apply=https://sbquantum.bamboohr.com/careers/52"
+    },
+    "7e8d3ea1-4342-4186-847c-c78006b7f7fe": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Associate Software Engineer company=Securonix apply=https://securonix.bamboohr.com/careers/1926"
+    },
+    "6b69ff80-a1c3-4e1c-b757-3df1d4ec2f38": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Senior DevSecOps Engineer company=Plextrac apply=https://plextrac.bamboohr.com/careers/159"
+    },
+    "7e609418-6761-4a8f-a778-d4a7cb41df67": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Paid Ads Specialist company=Coins apply=https://jobs.lever.co/coins/d4124a22-1e24-4bdd-9f47-88dba3683f6d"
+    },
+    "71350b88-e0e7-4aa9-843e-06344453aaed": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Marketing Manager/Director, Payments & Merchant Growth company=Coins apply=https://jobs.lever.co/coins/8d14cbd1-3d0d-497e-844a-7b654c0f1954"
+    },
+    "675e707c-b3ef-4bc2-896e-6cc1de386af4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fb9dae9-a071-4e4f-b5ea-a78babb83a74": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6e4a5f83-f984-4929-bd31-e11a2cc95ce3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "76f8b35a-2752-4b93-8ad9-572f6a2703ab": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "73e8f3c9-7192-49fc-b719-70f4589909b1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7df0519a-4705-4d6e-98d9-cc76001969ac": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "654c6f7b-bab5-433e-9208-e912fc457ea3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7af90709-2cc3-4dc0-b1d3-6829e32999cb": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "62555274-e25a-4d01-a52f-ba6487718822": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "78237fe8-78ac-490e-9b99-83e0e34b9cb0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "74e0a31a-6501-4f45-86d6-386159eed02f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "67bebc5b-2394-46aa-8f49-1b56b73dd223": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7e0306ef-24e2-4009-9be8-5cbe07bfcf15": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fc37aa9-5ae6-46a8-8675-588f31f987fd": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "73905dc8-40e3-4487-b5c7-5d253c669e8b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "73b2489b-8482-4efd-bd1b-54a2db41a740": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "660d1599-49ab-4c69-b296-f8a4a54a1981": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "60b005a7-11ab-4a56-96ea-3106404ccd01": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "76dbf7fc-f40d-4d3d-a081-48119f608e83": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7898ac0e-1a50-4f7f-9709-b1196a5b1526": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7a9a3291-5d9c-42c3-ad02-a6fdc5952947": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7e0a5581-9263-4299-9f28-9fa9cff9a27b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7ca3fdda-dd60-431e-8d2b-d5c8de6cb181": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "683aa7e4-724e-41bc-965f-f2480980d6fe": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6094aefb-ee5b-43e1-bee8-939052dee955": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "60d21519-58ce-4b54-a8dc-eaee6c4f6117": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6413f3c0-d175-4b16-8342-bfcbc8076eb4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "778ab894-ac34-42bf-b259-9fd96daca334": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "752a1ac1-bf4f-4e63-b847-142d9e5ef6c0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7abfc67f-6366-4009-a35a-9b65e7051c2d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7be21c45-5d45-435a-a4b2-2b9db8952aa6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7c33b270-50d4-4b5d-ba89-50895c1d78f0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "650fe59d-6126-45ab-a1ad-9c05e2987965": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7b3abd69-96f5-4ca0-ad66-9a55077840b9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7f08cfbd-ecd8-479a-a26b-732cc81aa50e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7ce415b1-d5c9-4677-abf5-9ee4c18aeda6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7c008243-afd5-4d73-8d9f-e87bc514cc3a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6c085949-92b8-4925-a005-e86bd123dafa": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fbf052f-4462-401f-b017-a422dfbe5af7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "646e0f19-6ae4-455c-afe1-478f7f239ebc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6763dd2b-54e9-49e9-8ea8-6c872d91e467": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "76d5efda-3c2e-4a41-b1d6-c370356a37b5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7023cbe2-53fd-4981-b32d-0fa138100894": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7117c995-1c7e-4e74-9a30-1fe38dc8062c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6997083d-a89e-4de3-8708-ca19f14dc1e6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "70bd6aea-3bfa-406a-abd3-1f10d8d0e7b6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6067004c-a8f7-44fb-a2d0-8311804b0ebc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7333617c-af92-48ec-85a0-5bb621a403d5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "65ff328c-c5b6-42c0-a700-c424b0a2870e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7d43abf5-c3e3-46be-befc-7bb68bfa0be8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "69a037bf-b2d8-4182-a18c-5ae0705a96ac": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6566e22c-82ac-4d10-9354-34525941ecac": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "65ac7bc1-e83a-47e3-afdf-e6e1c45a10ea": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6bda4b80-2aa5-4cc1-9b2a-bedb2f2cef1e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "725c98ac-ef2a-4f86-99b3-f6925dd4e5e2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6d2c264e-1d64-49bb-ba36-8d43f2ec8fc8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7bf75626-ba8d-4b1a-9273-bc39a0addfbd": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "619ae1e4-ca11-4edd-bff1-439ee644276b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "72e46d49-b248-49eb-bc94-e0f14a07e1e1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6155544c-2441-4993-ad9f-7da34acc192c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fd66d36-f176-421c-aa7a-09a9150cd3de": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "71e6f26b-f903-464f-a418-810846e9790f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7edaae3e-c278-40c8-bb59-89b1de7762b3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "70fa7952-a260-426f-a61d-de8bf22b0f44": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7e0d7263-387b-47a1-9b55-f9a57c45ef28": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "63d4b431-81de-449b-afab-4f5d0b95c01a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "72780702-a0dc-46c6-ab68-56370769ddc9": {
+      "status": "ok",
+      "path": "/mark43/ai",
+      "external_id": "mark43_ai"
+    },
+    "799479f0-c0b6-4e8c-871d-45b95a46c3d6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "74390799-844d-4121-8e2d-2d5941206fe1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6d803565-3fae-476a-8509-52c5922bc494": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "74f759c5-2f55-40b8-b763-4f4259b5d97f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "724328be-683f-42db-b9f7-b5bc370613a1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6be25b11-10f3-4263-b514-1116ed5d3a1b": {
+      "status": "ok",
+      "path": "/cato-networks/commercial",
+      "external_id": "cato-networks_commercial"
+    },
+    "63e0e6a3-796a-49d8-ad71-81feb4014d55": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "66b28d41-e7c4-498c-a1f1-a5bff96f8ceb": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "684f38e4-8f6a-495e-978d-7c69ea1014a5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6ff2a7c0-6c27-4d62-bf22-edcc12c64e85": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "633d62ef-5830-411e-95ba-efb3e30586f6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6acd5be3-cc9d-4ed7-a795-7b06e0a35859": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "696ee9a0-61d9-4e30-b695-e1c8e73391dd": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "79dec2c4-3d24-430e-98a8-9db67ab6d971": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "78812450-46c0-45c3-929f-0ca079b2c575": {
+      "status": "ok",
+      "path": "/aqr/assoc",
+      "external_id": "aqr_assoc"
+    },
+    "7e4b2358-45ec-4a15-aff6-0026b012ca8e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7b84956d-f443-4b8b-95bd-9d7936ef3731": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6d26c462-abf5-40de-af3c-73c4059ec0c4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "71450b9c-d783-46e2-9bc5-9f5127b3e27c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "72fe2650-7541-4b2f-9d41-292e15518dc5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6359be23-1397-4b20-a62a-181a0d9c4686": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "75b1659c-510c-4c07-99b3-2a4801be0ea2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7de0108d-7478-46bd-9f9b-fef9a190cb92": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7212e128-439a-47be-80f1-2d0c5758e373": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "689b9793-3352-42f9-b54f-e9fc922d5f81": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "763fbb44-6f58-4c3c-9a4f-0e19d1f12475": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7da928d5-5a0f-4bdb-87ee-a2f195d13991": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6ffcc640-7bb9-4d0c-93b2-0260bfa047f1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6f93b18c-b619-4d88-bf5b-eb62c35f8ba8": {
+      "status": "ok",
+      "path": "/airbnb/lead-28",
+      "external_id": "airbnb_lead-28"
+    },
+    "7dc2e546-e302-4d88-9bc0-325d732f280b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "756dd8c7-c404-4ce1-bccf-913e83ec318a": {
+      "status": "ok",
+      "path": "/appsflyer/partner",
+      "external_id": "appsflyer_partner"
+    },
+    "6b79909f-6503-432c-9ca1-f9257860f6e7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6ddc9cf2-111b-4d64-92a1-363ee9926859": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "702e6ea1-8e96-4e9d-951f-3e800836ef17": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6885c3ac-9407-459f-8fc9-bed7f093d85f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6b37f4c6-836c-4ea7-840f-158d494edfb6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "62598474-fb57-41f4-9bc6-bf760abf3f57": {
+      "status": "ok",
+      "path": "/cato-networks/services",
+      "external_id": "cato-networks_services"
+    },
+    "7e1386d1-2ece-4f16-bd98-6a8ca57f5c21": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fc15ba6-5e16-437f-9f42-65cb1ba4bd46": {
+      "status": "ok",
+      "path": "/cato-networks/talent",
+      "external_id": "cato-networks_talent"
+    },
+    "79649ea8-e6c9-4b34-b4bb-5cf9285e03c5": {
+      "status": "ok",
+      "path": "/coinbase/group-6d",
+      "external_id": "coinbase_group-6d"
+    },
+    "621525ba-2d71-4da4-8643-53f69e81e5a1": {
+      "status": "ok",
+      "path": "/coinbase/amlco",
+      "external_id": "coinbase_amlco"
+    },
+    "6671aa9e-812c-48e4-9dda-a705f5a491c8": {
+      "status": "ok",
+      "path": "/cato-networks/channel",
+      "external_id": "cato-networks_channel"
+    },
+    "7e875d39-9478-4d89-bec1-04bbc2e20ff3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "605abf01-3cc3-499a-b0a7-fec3e65948ee": {
+      "status": "ok",
+      "path": "/mark43/sw-eng",
+      "external_id": "mark43_sw-eng"
+    },
+    "62e2c957-66e2-4ab2-93a4-1803c572f654": {
+      "status": "ok",
+      "path": "/coreweave/storag-e0",
+      "external_id": "coreweave_storag-e0"
+    },
+    "62d7129d-1a80-446e-9866-8c748873f310": {
+      "status": "ok",
+      "path": "/coinbase/tech-5c",
+      "external_id": "coinbase_tech-5c"
+    },
+    "70eea507-6f14-49b9-9393-3f575a357397": {
+      "status": "ok",
+      "path": "/duolingo/head",
+      "external_id": "duolingo_head"
+    },
+    "64e7b14e-15db-431e-a662-d15f101b4849": {
+      "status": "ok",
+      "path": "/cato-networks/field-a4",
+      "external_id": "cato-networks_field-a4"
+    },
+    "681661c3-1196-4156-a5fe-b3c3c31e9d74": {
+      "status": "ok",
+      "path": "/infosum/java-eng",
+      "external_id": "infosum_java-eng"
+    },
+    "66d38990-54cb-4187-bee7-2096efee7bbe": {
+      "status": "ok",
+      "path": "/collibra/dir",
+      "external_id": "collibra_dir"
+    },
+    "7b72005a-e0e9-4999-bbdf-766403fe4f2e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "68fa2b25-72e6-4c86-a733-b5bf4a2bb6bc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "715bdf12-7f4b-4901-a71e-64393781c9fd": {
+      "status": "ok",
+      "path": "/elastic/sales-aa",
+      "external_id": "elastic_sales-aa"
+    },
+    "6ff6cc09-413d-437e-b800-495c85c94971": {
+      "status": "ok",
+      "path": "/elastic/fedciv-bf",
+      "external_id": "elastic_fedciv-bf"
+    },
+    "72e074c9-da92-4317-a19e-1fbce3dddb38": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6d1d0ec5-ed43-459e-8f7f-297b24aaf13f": {
+      "status": "ok",
+      "path": "/instacart/ml-f2",
+      "external_id": "instacart_ml-f2"
+    },
+    "705c6caa-4f58-4b1d-8108-8645f0932f11": {
+      "status": "ok",
+      "path": "/asana/people",
+      "external_id": "asana_people"
+    },
+    "63737ec9-b7ad-4b27-b486-9b37dfd33feb": {
+      "status": "ok",
+      "path": "/abnormal/sales-fb",
+      "external_id": "abnormal_sales-fb"
+    },
+    "6ab92e19-4a19-40da-8206-b1e0b837b70f": {
+      "status": "ok",
+      "path": "/coreweave/sw-ai",
+      "external_id": "coreweave_sw-ai"
+    },
+    "7b288a5a-59ce-4af0-a373-0b5b5d7e7188": {
+      "status": "ok",
+      "path": "/thinkahead/tech-51",
+      "external_id": "thinkahead_tech-51"
+    },
+    "6550da45-e395-488a-b128-19ab6da5fb43": {
+      "status": "ok",
+      "path": "/fivetran/sw-0c",
+      "external_id": "fivetran_sw-0c"
+    },
+    "7837c08b-1e85-4ff9-8ae7-6a83d95916e0": {
+      "status": "ok",
+      "path": "/hex-technologies/sw-ee",
+      "external_id": "hex-technologies_sw-ee"
+    },
+    "6528a33d-4717-45eb-93ab-9323f7e8ba63": {
+      "status": "ok",
+      "path": "/augury/fullstk",
+      "external_id": "augury_fullstk"
+    },
+    "7226b983-c157-41e3-b0f7-d9b969a6e465": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "649110e1-803e-4498-bbfb-3029eefeb7ea": {
+      "status": "ok",
+      "path": "/ixl-learning/assoc-0f",
+      "external_id": "ixl-learning_assoc-0f"
+    },
+    "74a99134-4f56-4d42-aaca-390fde54a8c5": {
+      "status": "ok",
+      "path": "/ixl-learning/educational",
+      "external_id": "ixl-learning_educational"
+    },
+    "70ce8a8c-ccb3-4d0b-ac64-361ea21236b8": {
+      "status": "ok",
+      "path": "/liftoff/acct-6d",
+      "external_id": "liftoff_acct-6d"
+    },
+    "78123092-feb1-4044-9b1b-faa758e6fa8a": {
+      "status": "ok",
+      "path": "/epirus/sys",
+      "external_id": "epirus_sys"
+    },
+    "789fe457-0a43-4d2d-970e-658ee12e4ba5": {
+      "status": "ok",
+      "path": "/epic-games/animation",
+      "external_id": "epic-games_animation"
+    },
+    "6ba770b8-47d6-4843-a037-b9e061eeabaa": {
+      "status": "ok",
+      "path": "/coinbase/sw-07",
+      "external_id": "coinbase_sw-07"
+    },
+    "7bdce7ed-d324-49be-87e4-e4e466934bbc": {
+      "status": "ok",
+      "path": "/alphasights/assoc-2d",
+      "external_id": "alphasights_assoc-2d"
+    },
+    "6104c2d0-0a48-4297-bddf-c0dd14e1cfe0": {
+      "status": "ok",
+      "path": "/ixl-learning/curriculum",
+      "external_id": "ixl-learning_curriculum"
+    },
+    "68aef20c-3d04-4311-838c-15b5ee855e9b": {
+      "status": "ok",
+      "path": "/alphasights/assoc-7b",
+      "external_id": "alphasights_assoc-7b"
+    },
+    "6cb6ca5c-363c-4a7f-88e7-65127867668b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "637cbe7d-a908-47bc-83ba-63bcba1184c0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7347e296-0f49-4f98-9845-ee654c3ef42f": {
+      "status": "ok",
+      "path": "/elastic/sol-arch",
+      "external_id": "elastic_sol-arch"
+    },
+    "63b66cda-bd33-4582-af6e-97da7a07e28f": {
+      "status": "ok",
+      "path": "/coinbase/acct-mgr",
+      "external_id": "coinbase_acct-mgr"
+    },
+    "758d2493-3dc7-466f-ac8c-726943bb022c": {
+      "status": "ok",
+      "path": "/aqr/portfo-83",
+      "external_id": "aqr_portfo-83"
+    },
+    "681bdc73-e0e6-4f08-a43e-bc36b53175b2": {
+      "status": "ok",
+      "path": "/ixl-learning/assoc-b1",
+      "external_id": "ixl-learning_assoc-b1"
+    },
+    "709fc6ed-d58c-427a-8832-97d169c76a45": {
+      "status": "ok",
+      "path": "/coinbase/prime",
+      "external_id": "coinbase_prime"
+    },
+    "6b19b2b3-8445-44b0-b62f-de51017b0171": {
+      "status": "ok",
+      "path": "/d2l/acct-mgr",
+      "external_id": "d2l_acct-mgr"
+    },
+    "679de810-30b0-434a-8b9b-917f8a404a33": {
+      "status": "ok",
+      "path": "/highradius/forwar-28",
+      "external_id": "highradius_forwar-28"
+    },
+    "7c11b824-9742-429a-89db-67ad1b85faac": {
+      "status": "ok",
+      "path": "/elastic/java-dev",
+      "external_id": "elastic_java-dev"
+    },
+    "7d61b6f9-9be1-48af-956b-4ccddc1150e9": {
+      "status": "ok",
+      "path": "/carta-healthcare/nsqip",
+      "external_id": "carta-healthcare_nsqip"
+    },
+    "665b3b1b-204e-4261-86ff-deb2bdb435ba": {
+      "status": "ok",
+      "path": "/electric-hydrogen/electrical",
+      "external_id": "electric-hydrogen_electrical"
+    },
+    "76c561f2-ee45-4b6e-b066-872f679d4b6a": {
+      "status": "ok",
+      "path": "/bill/corporate",
+      "external_id": "bill_corporate"
+    },
+    "77a64597-fa37-4efc-ac94-67f4d181c7fa": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "70867531-98cc-40ff-bf94-2ae9fa6dcb26": {
+      "status": "ok",
+      "path": "/appsflyer/sec-sdk",
+      "external_id": "appsflyer_sec-sdk"
+    },
+    "782a3e97-ab59-4057-ae81-220019afb20b": {
+      "status": "ok",
+      "path": "/fanduel/prod-mgr",
+      "external_id": "fanduel_prod-mgr"
+    },
+    "6b57dbe9-b796-4074-9081-327399d07faa": {
+      "status": "ok",
+      "path": "/instacart/mkt",
+      "external_id": "instacart_mkt"
+    },
+    "6e03269f-91e4-4433-9217-502a03cbda14": {
+      "status": "ok",
+      "path": "/cato-networks/enterprise",
+      "external_id": "cato-networks_enterprise"
+    },
+    "757c4ec0-a0e0-4347-b268-15d2bd90a971": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "72fcf62e-511d-40f1-88ec-291ae8e97c7a": {
+      "status": "ok",
+      "path": "/disco/sw-ef",
+      "external_id": "disco_sw-ef"
+    },
+    "7a26ab22-1107-4cb6-8e72-82fa7328f7d8": {
+      "status": "ok",
+      "path": "/fireblocks/dir-mkt",
+      "external_id": "fireblocks_dir-mkt"
+    },
+    "69a35ee6-53a5-4236-a8b9-06acb5a77377": {
+      "status": "ok",
+      "path": "/airbnb/mgr-8a",
+      "external_id": "airbnb_mgr-8a"
+    },
+    "77dc7b35-01a3-4423-acac-7798ae732f6d": {
+      "status": "ok",
+      "path": "/five9/dir-a7",
+      "external_id": "five9_dir-a7"
+    },
+    "7431d48a-47cc-4874-a950-9fcdb1a803bf": {
+      "status": "ok",
+      "path": "/druva/sales-a6",
+      "external_id": "druva_sales-a6"
+    },
+    "6b579c32-45fb-4b87-a828-c1acd49ab0aa": {
+      "status": "ok",
+      "path": "/airbnb/data-da",
+      "external_id": "airbnb_data-da"
+    },
+    "6156368d-c57d-4522-9acd-5538bcdc33cc": {
+      "status": "ok",
+      "path": "/coinbase/sw-c7",
+      "external_id": "coinbase_sw-c7"
+    },
+    "73a1bcd7-431c-4dbc-9b6b-af8ad80dcab5": {
+      "status": "ok",
+      "path": "/five9/sw-eng",
+      "external_id": "five9_sw-eng"
+    },
+    "6c20fb60-4315-48a0-95a6-486729e3ccc1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7eec0496-17dd-4136-aec9-413887ef2feb": {
+      "status": "ok",
+      "path": "/cargurus/sw-16",
+      "external_id": "cargurus_sw-16"
+    },
+    "7d8048ec-b387-4976-887d-b2bf173b56f9": {
+      "status": "ok",
+      "path": "/jfrog/genai",
+      "external_id": "jfrog_genai"
+    },
+    "7869edc7-9f8c-4600-984d-62b043929466": {
+      "status": "ok",
+      "path": "/airbnb/acct",
+      "external_id": "airbnb_acct"
+    },
+    "7a066d38-c9fc-4466-8a93-b9c7c3b2dcf2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "78353789-7057-4d97-9c20-494a3cf9d2c4": {
+      "status": "ok",
+      "path": "/asana/commercial",
+      "external_id": "asana_commercial"
+    },
+    "7d6e99ef-5a40-4a2b-a826-19660cf75d3d": {
+      "status": "ok",
+      "path": "/altruist/fullstk",
+      "external_id": "altruist_fullstk"
+    },
+    "76db67fc-ef8f-4b5b-b1ac-e6a2dd7f9d71": {
+      "status": "ok",
+      "path": "/coinbase/mgr-wfm",
+      "external_id": "coinbase_mgr-wfm"
+    },
+    "66d6d7c1-ec31-40a2-8eaf-655657c40100": {
+      "status": "ok",
+      "path": "/coinbase/sw-44",
+      "external_id": "coinbase_sw-44"
+    },
+    "738cbd44-f1d6-4a7b-81bf-b92876e39da5": {
+      "status": "ok",
+      "path": "/betterment/legal",
+      "external_id": "betterment_legal"
+    },
+    "7d4e5fc4-2348-4928-9c94-52e2427c04d9": {
+      "status": "ok",
+      "path": "/d2l/dream",
+      "external_id": "d2l_dream"
+    },
+    "79f7f584-7428-4aba-a9a9-6829639daea3": {
+      "status": "ok",
+      "path": "/cockroach-labs/hr-biz",
+      "external_id": "cockroach-labs_hr-biz"
+    },
+    "7281348d-00b3-4a36-a949-835669d02c62": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6caee65b-0859-43fa-beba-4197c5f8b1d2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6402dcb8-daf8-4460-ab3d-a8749ccfa618": {
+      "status": "ok",
+      "path": "/altruist/sw-eng",
+      "external_id": "altruist_sw-eng"
+    },
+    "6e5ac852-6404-4ca9-b61c-6acfad08e948": {
+      "status": "ok",
+      "path": "/block/applied",
+      "external_id": "block_applied"
+    },
+    "7da33a1c-6e36-4eca-9e7b-4072b7aac770": {
+      "status": "ok",
+      "path": "/buildops/prod-76",
+      "external_id": "buildops_prod-76"
+    },
+    "7880c6ea-0ba1-4cfd-99e6-8339685bef51": {
+      "status": "ok",
+      "path": "/cargurus/brand-b0",
+      "external_id": "cargurus_brand-b0"
+    },
+    "61dec1d0-a0a7-44ee-baa3-ca31a283be71": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6c1cdf20-250b-4e6d-96cc-10a08e7968a1": {
+      "status": "ok",
+      "path": "/fanduel/observ-89",
+      "external_id": "fanduel_observ-89"
+    },
+    "746c45eb-2dea-4c02-9b7b-3867717754f5": {
+      "status": "ok",
+      "path": "/bitwarden/enterp-a9",
+      "external_id": "bitwarden_enterp-a9"
+    },
+    "70795e5c-e79e-48f0-94f9-f96816bb3d75": {
+      "status": "ok",
+      "path": "/bitwarden/enterprise",
+      "external_id": "bitwarden_enterprise"
+    },
+    "7527c222-ce98-432c-932d-aceadb65a36e": {
+      "status": "ok",
+      "path": "/businessolver/vp",
+      "external_id": "businessolver_vp"
+    },
+    "674f7f8b-1355-4908-979e-8ce104c8f16b": {
+      "status": "ok",
+      "path": "/betterment/it-sys",
+      "external_id": "betterment_it-sys"
+    },
+    "7bccd334-5999-4a26-8760-3807e1b78921": {
+      "status": "ok",
+      "path": "/mindbody/devops",
+      "external_id": "mindbody_devops"
+    },
+    "6b315c2e-f058-444c-a39b-392b166a2b92": {
+      "status": "ok",
+      "path": "/block/square",
+      "external_id": "block_square"
+    },
+    "7295199d-1a8f-4689-885e-7380ca73e6be": {
+      "status": "ok",
+      "path": "/duolingo/eng-mgr",
+      "external_id": "duolingo_eng-mgr"
+    },
+    "71401fbd-f837-4828-b085-6e22e2ff7573": {
+      "status": "ok",
+      "path": "/altruist/head",
+      "external_id": "altruist_head"
+    },
+    "78b3fa52-69f6-4015-b4c9-c95a9f4b3655": {
+      "status": "ok",
+      "path": "/infosum/tech",
+      "external_id": "infosum_tech"
+    },
+    "69620a6c-96a4-406f-802f-2c1e2cc4e922": {
+      "status": "ok",
+      "path": "/aviatrix/eng-sw",
+      "external_id": "aviatrix_eng-sw"
+    },
+    "614148e0-b648-48d8-9d8a-2075237df9c1": {
+      "status": "ok",
+      "path": "/epic-games/language",
+      "external_id": "epic-games_language"
+    },
+    "7a16f3ec-10b1-403e-bb28-add2ef3f9d4e": {
+      "status": "ok",
+      "path": "/mindbody/sw-eng",
+      "external_id": "mindbody_sw-eng"
+    },
+    "6ffb078e-1a5e-4c94-afa5-0ff2c39c23ca": {
+      "status": "ok",
+      "path": "/abnormal/sw-b2",
+      "external_id": "abnormal_sw-b2"
+    },
+    "727952e2-2c51-4f73-8010-afa5ea2d455f": {
+      "status": "ok",
+      "path": "/cybereason/sme-88",
+      "external_id": "cybereason_sme-88"
+    },
+    "66256d38-bc0f-4bd7-bc5e-8bd7617e1e83": {
+      "status": "ok",
+      "path": "/bitso/payments",
+      "external_id": "bitso_payments"
+    },
+    "73d09aa8-1eb3-410e-a9bb-3cef864777d7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "61a0efeb-da90-4a1b-a857-d25dc9309a9b": {
+      "status": "ok",
+      "path": "/fivetran/sol-6f",
+      "external_id": "fivetran_sol-6f"
+    },
+    "69575756-f69f-45f4-ac27-53191f0787f9": {
+      "status": "ok",
+      "path": "/five9/commercial",
+      "external_id": "five9_commercial"
+    },
+    "606e9051-ba6e-47ee-9031-08842f294a32": {
+      "status": "ok",
+      "path": "/abnormal/enterp-dc",
+      "external_id": "abnormal_enterp-dc"
+    },
+    "750360ca-4703-494d-8db8-94b0694de143": {
+      "status": "ok",
+      "path": "/brex/prod",
+      "external_id": "brex_prod"
+    },
+    "64c7f6bc-73b9-4fcd-94ce-b55ecb28d1a2": {
+      "status": "ok",
+      "path": "/cargurus/sales-6b",
+      "external_id": "cargurus_sales-6b"
+    },
+    "7b5e00fa-07a0-4702-8782-e73f0e95a3e3": {
+      "status": "ok",
+      "path": "/fubo/sw-41",
+      "external_id": "fubo_sw-41"
+    },
+    "66759585-1cd2-42f8-9074-e84f53db284f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Data Science Lead - R01561319 company=Brillio 2 apply=https://jobs.lever.co/brillio-2/3fc25ab3-7c02-4082-9bed-35f97d4fb0a1"
+    },
+    "7a9024d0-f250-47c5-a77a-ab3b6ed4756f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Principal Data Scientist company=Brillio 2 apply=https://jobs.lever.co/brillio-2/5fdae12d-e47a-4ba9-990b-1b8a650d8c43"
+    },
+    "7a09b28b-1ec4-4ee9-9d6b-d37c36df1591": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Application company=Clearcapital apply=https://jobs.lever.co/clearcapital/d470299d-ebd4-4db5-8b85-1ffc16a7f4f0"
+    },
+    "6e1eba7f-fae3-4b8f-a77c-c50a2a7f3e34": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6de049ff-99a1-42db-82b1-2ab2aad8a4e7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6e28558c-7993-45a4-a3b5-797c7b481695": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "63b06af7-f8a0-4f18-90c6-e47d649fd7a1": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6f46997b-4278-4a8a-9f77-93f82184ee02": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "774ae700-7eb9-409d-8b6f-9df0f6fa7aeb": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7d0bf88d-2301-45f8-b154-b09ca2793e0a": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6d050f1e-bf6d-4846-a8b9-cd482262d4c2": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7e826673-159e-4944-9ceb-b857a3f6e820": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7878f1ff-d5db-4a88-b661-377b6adbbf84": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "67b3690b-f252-4e27-b791-23aabcdd739e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "76e62b76-bb2a-48b1-9210-fa6045017034": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "696e3bfd-5448-472a-a087-63f1dc8fbd38": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "69e390fd-e984-4f39-89de-378b9c803a65": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "630538f2-6578-43b6-9daf-f092e3ae88e7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "62e11c58-8fff-43f7-b105-cd630c0eb9e7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "774223a1-7dd3-4cc6-89f5-4dcbf7017a73": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6ea9b61f-4e89-43f4-90e0-f0488c17e40b": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "64c06ec6-87ed-472c-90f7-3d5ddfa872a6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "67c3e073-6d69-42ab-9750-d636249dad68": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "71b3db7e-e98e-44e2-b8c2-ae8a59b1ce9a": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "731ae379-d540-4f6a-8025-9cbed290180d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "63baab9e-8477-4874-97ce-86f70d1f4fe1": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6f6b58db-6ff0-4b38-b643-ba1f38da3238": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "676bd045-84e0-4720-88e6-0ef5e1875bca": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "7c351246-11a3-4c5e-b7e3-248d892697eb": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "79d03efa-aff5-4f47-9d11-4597816da4d9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "71f44404-187b-4f00-bcee-71c496ef081e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6d966056-498f-4714-b881-5a4c28f029d0": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "666d6f96-448d-4d2e-b305-d2100a48c0ec": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "79983aec-b23e-4e23-a1bc-5292e31819b9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "68c82281-7731-4dde-85f5-74d2a2b21c16": {
+      "status": "ok",
+      "path": "/3pillarglobal/net-core",
+      "external_id": "3pillarglobal_net-core"
+    },
+    "6a9e5d01-e1d2-4f1a-9e89-7e5939142d8f": {
+      "status": "ok",
+      "path": "/agiloft/enterprise",
+      "external_id": "agiloft_enterprise"
+    },
+    "6d1a037d-ea13-4c2d-9d0f-3314c50283a0": {
+      "status": "ok",
+      "path": "/everlywell/vp-biz",
+      "external_id": "everlywell_vp-biz"
+    },
+    "786e4ae7-566a-42e3-a4df-29937bea1aad": {
+      "status": "ok",
+      "path": "/arrivelogistics/mexico-fe",
+      "external_id": "arrivelogistics_mexico-fe"
+    },
+    "73cc271e-9370-4a97-916c-d38d17c4ce4d": {
+      "status": "ok",
+      "path": "/brillio-2/client-0b",
+      "external_id": "brillio-2_client-0b"
+    },
+    "743b9156-a5a5-471b-a828-d66d9a0a402b": {
+      "status": "ok",
+      "path": "/bumbleinc/copywriter",
+      "external_id": "bumbleinc_copywriter"
+    },
+    "7d155da7-3b64-4d7f-a03f-a7a03a666089": {
+      "status": "ok",
+      "path": "/achievers/cust-4b",
+      "external_id": "achievers_cust-4b"
     }
   },
   "doneIds": [
@@ -112857,7 +114430,361 @@
     "7d93c364-0ece-4260-92d4-4f89ae37bb78",
     "6cf55f70-1271-45a0-bd7a-6f4f242075c9",
     "617bd819-a918-4dd9-a63c-806971429bb3",
-    "7a51e6cc-60c1-4696-903f-6f8408a245b6"
+    "7a51e6cc-60c1-4696-903f-6f8408a245b6",
+    "6646aeed-d94c-4c99-bd26-e393f597b60f",
+    "65cc33bf-5b3c-43ac-88d1-762a21da221a",
+    "68d38209-5354-43c3-bf21-fcc831ca9019",
+    "761588f3-c5c3-49e8-b9f2-f316be685a72",
+    "6e0e7e3b-4dc0-4966-b1f4-359141a67eab",
+    "6ce89a29-20c5-4f5e-b741-0dc45b2951bb",
+    "76921cb2-f00c-4949-9898-05615fa660af",
+    "79240a39-2de5-44a0-a252-e9c01b5ba504",
+    "6047c055-eaec-4af7-a580-f2d903799c4c",
+    "79bc4d1c-b2ba-4107-802a-c179b598bc1e",
+    "75311153-310b-4148-9375-b1cb62ecb25a",
+    "636d05c7-377f-4105-9918-b55ce4baf93b",
+    "6bbf9ce9-baf7-4149-abe4-07e8c9eca8d3",
+    "692dd1e8-f47c-412e-b0e6-1338bb09c51f",
+    "6cc217eb-03b8-4e6c-842d-64a9b063413e",
+    "6a24c74b-5f89-42fe-ac77-a9f91cb4e0d8",
+    "7be073bb-2f59-4ef2-a7af-2a8eff100cc0",
+    "65aa4582-07a8-4f67-81b5-f5235f091028",
+    "6f65bda5-d26d-44e9-93d2-184370bca101",
+    "735fb91c-4b34-4f0b-aa90-32c59cfcced9",
+    "68592302-5273-4ca0-adbc-1ebceacd10f3",
+    "65f467b6-13ef-443a-b295-d6487e587e74",
+    "6a88ba3f-8283-458a-abe2-5d070a3502f8",
+    "66d5fb65-b2f3-4b6e-8a43-a1f148ea9bd7",
+    "6d54b6a0-afe4-42ee-b3a9-c68f011b8254",
+    "6e41f570-3d2f-4a4b-a54a-f4aa2e984ef4",
+    "6a440269-9030-4523-82fd-ae9e6bddb702",
+    "78d53f9e-9849-499c-8e0f-1f4debe9da4e",
+    "6a368960-7f09-4bd0-be43-9353bed5d82b",
+    "74767c96-8148-43b7-8e1d-db41fdeba851",
+    "7e6815a5-b75f-4212-b521-4a0f8ddafdc0",
+    "7d4264cb-59f7-4444-9207-eda913985522",
+    "75b9ab27-ea2f-4520-9332-e66d90e18812",
+    "6712db16-aa93-40df-8fba-88bd93b2febd",
+    "6ea2f18e-99fa-4003-8aec-9f4ab75e56fb",
+    "6a9d25ea-85cc-42b7-8849-de333fdf0a2c",
+    "7833889d-15c7-49f3-b492-4751d06b350d",
+    "621b5d21-288a-416d-8d6b-eb0d357e7dcd",
+    "668e905c-b837-46c6-b8b7-4ea5bbc64fd8",
+    "74516a25-5d4f-4ac3-b113-e85958636965",
+    "71545210-c129-4117-b884-dce37d461bd4",
+    "697c754a-e614-4dc7-85ea-8ec79a738c59",
+    "601d18b8-b739-455a-b96e-950a2bff43a0",
+    "7a31cc66-adb1-4881-b987-39afb67dd609",
+    "719bac10-9621-4352-9655-07eaae54bd62",
+    "75dc111c-14ec-40de-b93e-abc8bd73c13f",
+    "6da705df-1bf7-46c9-a84c-51e276eca213",
+    "62545c60-eaa5-40db-b8e1-94027cc21473",
+    "6a38515c-57ed-4acf-9516-6b6ef5d34ec6",
+    "770c9e69-6bd9-472a-9ed3-9cb271329207",
+    "6f3ccfcc-ebf7-4217-bab0-3ecfcc039e83",
+    "673e90af-0bc9-4e79-acb3-0b7c47b86f6d",
+    "68c0474c-ce6c-4b24-999c-2b9f7135210e",
+    "68ee5bd8-8993-48f3-98bd-c8202561981b",
+    "60845107-67ec-49d5-96fc-2b034d64237e",
+    "6facaab0-d92e-4ab5-bf4e-73cb3856e869",
+    "6c4d431d-b67a-42d2-a88d-896dba1b8ca7",
+    "7e638991-be94-4c56-a3a0-7e5c7a767fed",
+    "6c7558fb-c6e2-45b7-bddb-30a8894660fd",
+    "603dd26f-43b0-42b2-9cb4-83a24a43e368",
+    "6c8e691f-55a1-44fd-a38e-e13de544c16c",
+    "65c547d2-baab-4805-b5d5-d8b11e1f5aa1",
+    "745f90c9-f702-4f0b-88a6-5107cf95822d",
+    "60afd589-cb44-4a7e-b4db-31708bbfde69",
+    "63bf4b70-ba28-42bc-a96f-eea5dfe2da7f",
+    "681dc0a5-76e2-4756-8324-91d5742d03c6",
+    "7b4d5b76-1411-4abc-b5c8-6ad84b3c170a",
+    "74fb60ba-8a5f-4617-af91-ed5ea04fd4c0",
+    "7f1c2e25-e4ff-4f2a-9897-366396dd94de",
+    "7149dd1b-f9d4-4b48-a905-5b759e043b1d",
+    "645ad9e4-85db-4a24-8c97-419826b9b2f7",
+    "60cc6082-fed4-43dd-9b29-f8aee81b6a75",
+    "7a2d8c28-0385-4c45-8620-e92d84f9f051",
+    "7d27407c-e91e-4017-b4e3-2855c53aeb03",
+    "7491bf51-ce60-4fc4-b7e0-b9e84fdd9655",
+    "682162d1-a667-4c8e-bcd0-a0ac7b80d8d1",
+    "6539d861-3858-460a-ab0e-03dba85ed1a7",
+    "7d051c47-6f3d-4f21-a467-dd5aee504163",
+    "649af295-c627-43fb-9fb9-1c396136bf9d",
+    "607fe0d8-8bee-4508-803c-be98333e4ce5",
+    "6ed5e32a-4727-4bb2-9a02-a3d6adfebac3",
+    "61446139-2fa6-4d2f-986d-222ceeeba42a",
+    "71e3f1c8-4482-4cc1-a9ba-3c16d3fe1553",
+    "6cf6dab1-acb5-460b-bb7f-99ed6cd87857",
+    "6d77d026-1098-4ba0-a75a-98c6cbcc29fa",
+    "6ab8e79f-6213-4394-bca1-99207c623e12",
+    "6f780cc3-34eb-4b8c-aa16-1ae98203161a",
+    "72ab769f-8ed2-4025-ae85-9cb8e92307a6",
+    "64092ca5-97b0-491d-819c-75755eae197d",
+    "7f64825d-794a-4db1-b79e-0b11755c4e4e",
+    "6e6939be-1891-4c1c-9252-e28179916163",
+    "663d2701-a8dd-4d94-916f-74e102700296",
+    "729b3aa2-eeef-4c62-8bb4-7d1dc3350f69",
+    "720a176b-0d08-429f-9b51-0ea698e81cd9",
+    "7f4f18e3-d877-401d-988e-26526af8769c",
+    "6f462fbc-2dce-4fe1-84c9-eb7f4e6c845e",
+    "759d34aa-9ab5-4483-98fd-2023c5fc0b2c",
+    "61f8c84a-a886-4392-8a8c-59d6cdc3cc70",
+    "7a6ad236-54ce-44c4-a251-354cd8d7879d",
+    "7fffe04e-f4a2-4158-8b19-630917c641ff",
+    "7e8d3ea1-4342-4186-847c-c78006b7f7fe",
+    "6b69ff80-a1c3-4e1c-b757-3df1d4ec2f38",
+    "7e609418-6761-4a8f-a778-d4a7cb41df67",
+    "71350b88-e0e7-4aa9-843e-06344453aaed",
+    "675e707c-b3ef-4bc2-896e-6cc1de386af4",
+    "7fb9dae9-a071-4e4f-b5ea-a78babb83a74",
+    "6e4a5f83-f984-4929-bd31-e11a2cc95ce3",
+    "76f8b35a-2752-4b93-8ad9-572f6a2703ab",
+    "73e8f3c9-7192-49fc-b719-70f4589909b1",
+    "7df0519a-4705-4d6e-98d9-cc76001969ac",
+    "654c6f7b-bab5-433e-9208-e912fc457ea3",
+    "7af90709-2cc3-4dc0-b1d3-6829e32999cb",
+    "62555274-e25a-4d01-a52f-ba6487718822",
+    "78237fe8-78ac-490e-9b99-83e0e34b9cb0",
+    "74e0a31a-6501-4f45-86d6-386159eed02f",
+    "67bebc5b-2394-46aa-8f49-1b56b73dd223",
+    "7e0306ef-24e2-4009-9be8-5cbe07bfcf15",
+    "7fc37aa9-5ae6-46a8-8675-588f31f987fd",
+    "73905dc8-40e3-4487-b5c7-5d253c669e8b",
+    "73b2489b-8482-4efd-bd1b-54a2db41a740",
+    "660d1599-49ab-4c69-b296-f8a4a54a1981",
+    "60b005a7-11ab-4a56-96ea-3106404ccd01",
+    "76dbf7fc-f40d-4d3d-a081-48119f608e83",
+    "7898ac0e-1a50-4f7f-9709-b1196a5b1526",
+    "7a9a3291-5d9c-42c3-ad02-a6fdc5952947",
+    "7e0a5581-9263-4299-9f28-9fa9cff9a27b",
+    "7ca3fdda-dd60-431e-8d2b-d5c8de6cb181",
+    "683aa7e4-724e-41bc-965f-f2480980d6fe",
+    "6094aefb-ee5b-43e1-bee8-939052dee955",
+    "60d21519-58ce-4b54-a8dc-eaee6c4f6117",
+    "6413f3c0-d175-4b16-8342-bfcbc8076eb4",
+    "778ab894-ac34-42bf-b259-9fd96daca334",
+    "752a1ac1-bf4f-4e63-b847-142d9e5ef6c0",
+    "7abfc67f-6366-4009-a35a-9b65e7051c2d",
+    "7be21c45-5d45-435a-a4b2-2b9db8952aa6",
+    "7c33b270-50d4-4b5d-ba89-50895c1d78f0",
+    "650fe59d-6126-45ab-a1ad-9c05e2987965",
+    "7b3abd69-96f5-4ca0-ad66-9a55077840b9",
+    "7f08cfbd-ecd8-479a-a26b-732cc81aa50e",
+    "7ce415b1-d5c9-4677-abf5-9ee4c18aeda6",
+    "7c008243-afd5-4d73-8d9f-e87bc514cc3a",
+    "6c085949-92b8-4925-a005-e86bd123dafa",
+    "7fbf052f-4462-401f-b017-a422dfbe5af7",
+    "646e0f19-6ae4-455c-afe1-478f7f239ebc",
+    "6763dd2b-54e9-49e9-8ea8-6c872d91e467",
+    "76d5efda-3c2e-4a41-b1d6-c370356a37b5",
+    "7023cbe2-53fd-4981-b32d-0fa138100894",
+    "7117c995-1c7e-4e74-9a30-1fe38dc8062c",
+    "6997083d-a89e-4de3-8708-ca19f14dc1e6",
+    "70bd6aea-3bfa-406a-abd3-1f10d8d0e7b6",
+    "6067004c-a8f7-44fb-a2d0-8311804b0ebc",
+    "7333617c-af92-48ec-85a0-5bb621a403d5",
+    "65ff328c-c5b6-42c0-a700-c424b0a2870e",
+    "7d43abf5-c3e3-46be-befc-7bb68bfa0be8",
+    "69a037bf-b2d8-4182-a18c-5ae0705a96ac",
+    "6566e22c-82ac-4d10-9354-34525941ecac",
+    "65ac7bc1-e83a-47e3-afdf-e6e1c45a10ea",
+    "6bda4b80-2aa5-4cc1-9b2a-bedb2f2cef1e",
+    "725c98ac-ef2a-4f86-99b3-f6925dd4e5e2",
+    "6d2c264e-1d64-49bb-ba36-8d43f2ec8fc8",
+    "7bf75626-ba8d-4b1a-9273-bc39a0addfbd",
+    "619ae1e4-ca11-4edd-bff1-439ee644276b",
+    "72e46d49-b248-49eb-bc94-e0f14a07e1e1",
+    "6155544c-2441-4993-ad9f-7da34acc192c",
+    "7fd66d36-f176-421c-aa7a-09a9150cd3de",
+    "71e6f26b-f903-464f-a418-810846e9790f",
+    "7edaae3e-c278-40c8-bb59-89b1de7762b3",
+    "70fa7952-a260-426f-a61d-de8bf22b0f44",
+    "7e0d7263-387b-47a1-9b55-f9a57c45ef28",
+    "63d4b431-81de-449b-afab-4f5d0b95c01a",
+    "72780702-a0dc-46c6-ab68-56370769ddc9",
+    "799479f0-c0b6-4e8c-871d-45b95a46c3d6",
+    "74390799-844d-4121-8e2d-2d5941206fe1",
+    "6d803565-3fae-476a-8509-52c5922bc494",
+    "74f759c5-2f55-40b8-b763-4f4259b5d97f",
+    "724328be-683f-42db-b9f7-b5bc370613a1",
+    "6be25b11-10f3-4263-b514-1116ed5d3a1b",
+    "63e0e6a3-796a-49d8-ad71-81feb4014d55",
+    "66b28d41-e7c4-498c-a1f1-a5bff96f8ceb",
+    "684f38e4-8f6a-495e-978d-7c69ea1014a5",
+    "6ff2a7c0-6c27-4d62-bf22-edcc12c64e85",
+    "633d62ef-5830-411e-95ba-efb3e30586f6",
+    "6acd5be3-cc9d-4ed7-a795-7b06e0a35859",
+    "696ee9a0-61d9-4e30-b695-e1c8e73391dd",
+    "79dec2c4-3d24-430e-98a8-9db67ab6d971",
+    "78812450-46c0-45c3-929f-0ca079b2c575",
+    "7e4b2358-45ec-4a15-aff6-0026b012ca8e",
+    "7b84956d-f443-4b8b-95bd-9d7936ef3731",
+    "6d26c462-abf5-40de-af3c-73c4059ec0c4",
+    "71450b9c-d783-46e2-9bc5-9f5127b3e27c",
+    "72fe2650-7541-4b2f-9d41-292e15518dc5",
+    "6359be23-1397-4b20-a62a-181a0d9c4686",
+    "75b1659c-510c-4c07-99b3-2a4801be0ea2",
+    "7de0108d-7478-46bd-9f9b-fef9a190cb92",
+    "7212e128-439a-47be-80f1-2d0c5758e373",
+    "689b9793-3352-42f9-b54f-e9fc922d5f81",
+    "763fbb44-6f58-4c3c-9a4f-0e19d1f12475",
+    "7da928d5-5a0f-4bdb-87ee-a2f195d13991",
+    "6ffcc640-7bb9-4d0c-93b2-0260bfa047f1",
+    "6f93b18c-b619-4d88-bf5b-eb62c35f8ba8",
+    "7dc2e546-e302-4d88-9bc0-325d732f280b",
+    "756dd8c7-c404-4ce1-bccf-913e83ec318a",
+    "6b79909f-6503-432c-9ca1-f9257860f6e7",
+    "6ddc9cf2-111b-4d64-92a1-363ee9926859",
+    "702e6ea1-8e96-4e9d-951f-3e800836ef17",
+    "6885c3ac-9407-459f-8fc9-bed7f093d85f",
+    "6b37f4c6-836c-4ea7-840f-158d494edfb6",
+    "62598474-fb57-41f4-9bc6-bf760abf3f57",
+    "7e1386d1-2ece-4f16-bd98-6a8ca57f5c21",
+    "7fc15ba6-5e16-437f-9f42-65cb1ba4bd46",
+    "79649ea8-e6c9-4b34-b4bb-5cf9285e03c5",
+    "621525ba-2d71-4da4-8643-53f69e81e5a1",
+    "6671aa9e-812c-48e4-9dda-a705f5a491c8",
+    "7e875d39-9478-4d89-bec1-04bbc2e20ff3",
+    "605abf01-3cc3-499a-b0a7-fec3e65948ee",
+    "62e2c957-66e2-4ab2-93a4-1803c572f654",
+    "62d7129d-1a80-446e-9866-8c748873f310",
+    "70eea507-6f14-49b9-9393-3f575a357397",
+    "64e7b14e-15db-431e-a662-d15f101b4849",
+    "681661c3-1196-4156-a5fe-b3c3c31e9d74",
+    "66d38990-54cb-4187-bee7-2096efee7bbe",
+    "7b72005a-e0e9-4999-bbdf-766403fe4f2e",
+    "68fa2b25-72e6-4c86-a733-b5bf4a2bb6bc",
+    "715bdf12-7f4b-4901-a71e-64393781c9fd",
+    "6ff6cc09-413d-437e-b800-495c85c94971",
+    "72e074c9-da92-4317-a19e-1fbce3dddb38",
+    "6d1d0ec5-ed43-459e-8f7f-297b24aaf13f",
+    "705c6caa-4f58-4b1d-8108-8645f0932f11",
+    "63737ec9-b7ad-4b27-b486-9b37dfd33feb",
+    "6ab92e19-4a19-40da-8206-b1e0b837b70f",
+    "7b288a5a-59ce-4af0-a373-0b5b5d7e7188",
+    "6550da45-e395-488a-b128-19ab6da5fb43",
+    "7837c08b-1e85-4ff9-8ae7-6a83d95916e0",
+    "6528a33d-4717-45eb-93ab-9323f7e8ba63",
+    "7226b983-c157-41e3-b0f7-d9b969a6e465",
+    "649110e1-803e-4498-bbfb-3029eefeb7ea",
+    "74a99134-4f56-4d42-aaca-390fde54a8c5",
+    "70ce8a8c-ccb3-4d0b-ac64-361ea21236b8",
+    "78123092-feb1-4044-9b1b-faa758e6fa8a",
+    "789fe457-0a43-4d2d-970e-658ee12e4ba5",
+    "6ba770b8-47d6-4843-a037-b9e061eeabaa",
+    "7bdce7ed-d324-49be-87e4-e4e466934bbc",
+    "6104c2d0-0a48-4297-bddf-c0dd14e1cfe0",
+    "68aef20c-3d04-4311-838c-15b5ee855e9b",
+    "6cb6ca5c-363c-4a7f-88e7-65127867668b",
+    "637cbe7d-a908-47bc-83ba-63bcba1184c0",
+    "7347e296-0f49-4f98-9845-ee654c3ef42f",
+    "63b66cda-bd33-4582-af6e-97da7a07e28f",
+    "758d2493-3dc7-466f-ac8c-726943bb022c",
+    "681bdc73-e0e6-4f08-a43e-bc36b53175b2",
+    "709fc6ed-d58c-427a-8832-97d169c76a45",
+    "6b19b2b3-8445-44b0-b62f-de51017b0171",
+    "679de810-30b0-434a-8b9b-917f8a404a33",
+    "7c11b824-9742-429a-89db-67ad1b85faac",
+    "7d61b6f9-9be1-48af-956b-4ccddc1150e9",
+    "665b3b1b-204e-4261-86ff-deb2bdb435ba",
+    "76c561f2-ee45-4b6e-b066-872f679d4b6a",
+    "77a64597-fa37-4efc-ac94-67f4d181c7fa",
+    "70867531-98cc-40ff-bf94-2ae9fa6dcb26",
+    "782a3e97-ab59-4057-ae81-220019afb20b",
+    "6b57dbe9-b796-4074-9081-327399d07faa",
+    "6e03269f-91e4-4433-9217-502a03cbda14",
+    "757c4ec0-a0e0-4347-b268-15d2bd90a971",
+    "72fcf62e-511d-40f1-88ec-291ae8e97c7a",
+    "7a26ab22-1107-4cb6-8e72-82fa7328f7d8",
+    "69a35ee6-53a5-4236-a8b9-06acb5a77377",
+    "77dc7b35-01a3-4423-acac-7798ae732f6d",
+    "7431d48a-47cc-4874-a950-9fcdb1a803bf",
+    "6b579c32-45fb-4b87-a828-c1acd49ab0aa",
+    "6156368d-c57d-4522-9acd-5538bcdc33cc",
+    "73a1bcd7-431c-4dbc-9b6b-af8ad80dcab5",
+    "6c20fb60-4315-48a0-95a6-486729e3ccc1",
+    "7eec0496-17dd-4136-aec9-413887ef2feb",
+    "7d8048ec-b387-4976-887d-b2bf173b56f9",
+    "7869edc7-9f8c-4600-984d-62b043929466",
+    "7a066d38-c9fc-4466-8a93-b9c7c3b2dcf2",
+    "78353789-7057-4d97-9c20-494a3cf9d2c4",
+    "7d6e99ef-5a40-4a2b-a826-19660cf75d3d",
+    "76db67fc-ef8f-4b5b-b1ac-e6a2dd7f9d71",
+    "66d6d7c1-ec31-40a2-8eaf-655657c40100",
+    "738cbd44-f1d6-4a7b-81bf-b92876e39da5",
+    "7d4e5fc4-2348-4928-9c94-52e2427c04d9",
+    "79f7f584-7428-4aba-a9a9-6829639daea3",
+    "7281348d-00b3-4a36-a949-835669d02c62",
+    "6caee65b-0859-43fa-beba-4197c5f8b1d2",
+    "6402dcb8-daf8-4460-ab3d-a8749ccfa618",
+    "6e5ac852-6404-4ca9-b61c-6acfad08e948",
+    "7da33a1c-6e36-4eca-9e7b-4072b7aac770",
+    "7880c6ea-0ba1-4cfd-99e6-8339685bef51",
+    "61dec1d0-a0a7-44ee-baa3-ca31a283be71",
+    "6c1cdf20-250b-4e6d-96cc-10a08e7968a1",
+    "746c45eb-2dea-4c02-9b7b-3867717754f5",
+    "70795e5c-e79e-48f0-94f9-f96816bb3d75",
+    "7527c222-ce98-432c-932d-aceadb65a36e",
+    "674f7f8b-1355-4908-979e-8ce104c8f16b",
+    "7bccd334-5999-4a26-8760-3807e1b78921",
+    "6b315c2e-f058-444c-a39b-392b166a2b92",
+    "7295199d-1a8f-4689-885e-7380ca73e6be",
+    "71401fbd-f837-4828-b085-6e22e2ff7573",
+    "78b3fa52-69f6-4015-b4c9-c95a9f4b3655",
+    "69620a6c-96a4-406f-802f-2c1e2cc4e922",
+    "614148e0-b648-48d8-9d8a-2075237df9c1",
+    "7a16f3ec-10b1-403e-bb28-add2ef3f9d4e",
+    "6ffb078e-1a5e-4c94-afa5-0ff2c39c23ca",
+    "727952e2-2c51-4f73-8010-afa5ea2d455f",
+    "66256d38-bc0f-4bd7-bc5e-8bd7617e1e83",
+    "73d09aa8-1eb3-410e-a9bb-3cef864777d7",
+    "61a0efeb-da90-4a1b-a857-d25dc9309a9b",
+    "69575756-f69f-45f4-ac27-53191f0787f9",
+    "606e9051-ba6e-47ee-9031-08842f294a32",
+    "750360ca-4703-494d-8db8-94b0694de143",
+    "64c7f6bc-73b9-4fcd-94ce-b55ecb28d1a2",
+    "7b5e00fa-07a0-4702-8782-e73f0e95a3e3",
+    "66759585-1cd2-42f8-9074-e84f53db284f",
+    "7a9024d0-f250-47c5-a77a-ab3b6ed4756f",
+    "7a09b28b-1ec4-4ee9-9d6b-d37c36df1591",
+    "6e1eba7f-fae3-4b8f-a77c-c50a2a7f3e34",
+    "6de049ff-99a1-42db-82b1-2ab2aad8a4e7",
+    "6e28558c-7993-45a4-a3b5-797c7b481695",
+    "63b06af7-f8a0-4f18-90c6-e47d649fd7a1",
+    "6f46997b-4278-4a8a-9f77-93f82184ee02",
+    "774ae700-7eb9-409d-8b6f-9df0f6fa7aeb",
+    "7d0bf88d-2301-45f8-b154-b09ca2793e0a",
+    "6d050f1e-bf6d-4846-a8b9-cd482262d4c2",
+    "7e826673-159e-4944-9ceb-b857a3f6e820",
+    "7878f1ff-d5db-4a88-b661-377b6adbbf84",
+    "67b3690b-f252-4e27-b791-23aabcdd739e",
+    "76e62b76-bb2a-48b1-9210-fa6045017034",
+    "696e3bfd-5448-472a-a087-63f1dc8fbd38",
+    "69e390fd-e984-4f39-89de-378b9c803a65",
+    "630538f2-6578-43b6-9daf-f092e3ae88e7",
+    "62e11c58-8fff-43f7-b105-cd630c0eb9e7",
+    "774223a1-7dd3-4cc6-89f5-4dcbf7017a73",
+    "6ea9b61f-4e89-43f4-90e0-f0488c17e40b",
+    "64c06ec6-87ed-472c-90f7-3d5ddfa872a6",
+    "67c3e073-6d69-42ab-9750-d636249dad68",
+    "71b3db7e-e98e-44e2-b8c2-ae8a59b1ce9a",
+    "731ae379-d540-4f6a-8025-9cbed290180d",
+    "63baab9e-8477-4874-97ce-86f70d1f4fe1",
+    "6f6b58db-6ff0-4b38-b643-ba1f38da3238",
+    "676bd045-84e0-4720-88e6-0ef5e1875bca",
+    "7c351246-11a3-4c5e-b7e3-248d892697eb",
+    "79d03efa-aff5-4f47-9d11-4597816da4d9",
+    "71f44404-187b-4f00-bcee-71c496ef081e",
+    "6d966056-498f-4714-b881-5a4c28f029d0",
+    "666d6f96-448d-4d2e-b305-d2100a48c0ec",
+    "79983aec-b23e-4e23-a1bc-5292e31819b9",
+    "68c82281-7731-4dde-85f5-74d2a2b21c16",
+    "6a9e5d01-e1d2-4f1a-9e89-7e5939142d8f",
+    "6d1a037d-ea13-4c2d-9d0f-3314c50283a0",
+    "786e4ae7-566a-42e3-a4df-29937bea1aad",
+    "73cc271e-9370-4a97-916c-d38d17c4ce4d",
+    "743b9156-a5a5-471b-a828-d66d9a0a402b",
+    "7d155da7-3b64-4d7f-a03f-a7a03a666089"
   ],
   "skipped": {},
   "batches": [
@@ -114137,6 +116064,68 @@
         "/bunch/mgr-ceo",
         "/grvty/imagery"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 3,
+      "at": "2026-08-12T18:24:35.422Z",
+      "attempted": 731,
+      "ok": 312,
+      "skip": 10,
+      "fail": 409,
+      "reasons": {
+        "expand_existing": 721,
+        "rewrite_short": 371,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 38,
+        "posting_older_than_30d": 5,
+        "html_short": 5
+      },
+      "samplePaths": [
+        "/e-s-fitness/region-63",
+        "/figma/prog-mgr",
+        "/pdt-partners/research",
+        "/neuralink/net-sys",
+        "/everlane/dir-fp",
+        "/orderly/prod-ux",
+        "/home-chef/qa-09",
+        "/octus/cust-ops",
+        "/mejuri/future-bf",
+        "/mozilla/tech-79",
+        "/liffey-moher-and-blarney-inc/dir-l",
+        "/justworks/prod-4a",
+        "/wellhub/plat-18",
+        "/physicsx/sw-sec",
+        "/spaceship/prod",
+        "/netlify/your",
+        "/anthropic/anthro-8f",
+        "/figma/sw-d8",
+        "/anthropic/dir-b0",
+        "/glean/prod-mgr"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 3,
+      "at": "2026-08-12T18:25:11.444Z",
+      "attempted": 41,
+      "ok": 7,
+      "skip": 3,
+      "fail": 31,
+      "reasons": {
+        "expand_existing": 38,
+        "posting_older_than_30d": 3,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 29,
+        "rewrite_short": 2
+      },
+      "samplePaths": [
+        "/3pillarglobal/net-core",
+        "/agiloft/enterprise",
+        "/everlywell/vp-biz",
+        "/arrivelogistics/mexico-fe",
+        "/brillio-2/client-0b",
+        "/bumbleinc/copywriter",
+        "/achievers/cust-4b"
+      ]
     }
   ],
   "deadBoards": {
@@ -114524,6 +116513,17 @@
     "host:contextlabs.bamboohr.com": "html_short",
     "host:anaqua.bamboohr.com": "html_short",
     "host:bringoz.bamboohr.com": "html_short",
-    "host:atlas.bamboohr.com": "html_short"
+    "host:atlas.bamboohr.com": "html_short",
+    "greenhouse:linkedin": "posting_older_than_30d",
+    "greenhouse:ireland": "posting_older_than_30d",
+    "greenhouse:circ": "posting_older_than_30d",
+    "host:laprairie.bamboohr.com": "html_short",
+    "host:vamonosit.bamboohr.com": "html_short",
+    "host:sbquantum.bamboohr.com": "html_short",
+    "host:securonix.bamboohr.com": "html_short",
+    "host:plextrac.bamboohr.com": "html_short",
+    "lever:coins": "posting_older_than_30d",
+    "lever:brillio-2": "posting_older_than_30d",
+    "lever:clearcapital": "posting_older_than_30d"
   }
 }
