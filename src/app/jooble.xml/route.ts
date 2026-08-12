@@ -75,7 +75,7 @@ export async function GET(req: Request) {
       .map((j) => {
         const path = jobSitemapPath(j);
         if (!path) return '';
-        const url = `${siteUrl}${path}`;
+        const url = `${siteUrl}${path}?utm_source=jooble&utm_medium=job-feed&utm_campaign=cvinbio_feed`;
         const desc = String(j.description || '')
           .replace(/<[^>]+>/g, ' ')
           .replace(/\s+/g, ' ')
