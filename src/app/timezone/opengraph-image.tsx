@@ -1,8 +1,9 @@
 import { ImageResponse } from 'next/og';
+import { OgToolFrame, OG_TOOL_SIZE, OG_TOOL_CONTENT_TYPE } from '@/components/og/tool-frame';
 
 export const alt = 'Timezone Overlap Tool | Find Shared Work Hours';
-export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
+export const size = OG_TOOL_SIZE;
+export const contentType = OG_TOOL_CONTENT_TYPE;
 
 export default async function Image() {
   const zones = [
@@ -13,34 +14,12 @@ export default async function Image() {
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#fafafa',
-          fontFamily: 'sans-serif',
-          padding: '60px 80px',
-          justifyContent: 'space-between',
-        }}
+      <OgToolFrame
+        layout="spread"
+        titleSize={64}
+        title="Timezone Overlap"
+        subtitle="Find shared work hours across timezones"
       >
-        {/* Top: Label */}
-        <div style={{ display: 'flex', fontSize: 14, fontWeight: 600, color: '#a1a1aa', letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
-          CVin.Bio
-        </div>
-
-        {/* Middle: Title + Subtitle */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ display: 'flex', fontSize: 64, fontWeight: 800, color: '#09090b', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-            Timezone Overlap
-          </div>
-          <div style={{ display: 'flex', fontSize: 24, fontWeight: 500, color: '#71717a' }}>
-            Find shared work hours across timezones
-          </div>
-        </div>
-
-        {/* Timezone cards */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {zones.map((z) => (
             <div key={z.city} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', border: '1px solid #e4e4e7', borderRadius: 12, padding: '16px 24px', gap: 16 }}>
@@ -53,10 +32,7 @@ export default async function Image() {
             </div>
           ))}
         </div>
-
-        {/* Bottom bar */}
-        <div style={{ display: 'flex', width: '100%', height: 4, backgroundColor: '#09090b', borderRadius: 2 }} />
-      </div>
+      </OgToolFrame>
     ),
     { ...size }
   );

@@ -3,7 +3,7 @@
  * Public path is cache-first + hard-timeout (see job-snapshots.ts).
  */
 import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+import { createAnonFromCookieStore } from '@/utils/supabase/anon';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { companyDisplayName } from '@/lib/company-directory';
@@ -421,15 +421,7 @@ export async function getViewerJobContext(): Promise<{
     (async () => {
       try {
         const cookieStore = await cookies();
-        const anonClient = createServerClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-          {
-            cookies: {
-              getAll: () => cookieStore.getAll(),
-            },
-          }
-        );
+        const anonClient = createAnonFromCookieStore(cookieStore);
         const {
           data: { user },
         } = await anonClient.auth.getUser();

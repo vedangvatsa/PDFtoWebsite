@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { createServerClient } from '@supabase/ssr';
+import { createAnonFromRequest } from '@/utils/supabase/anon';
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 import { ADMIN_EMAILS } from '@/lib/admin';
 
@@ -24,11 +24,7 @@ export async function POST(
 
   // Skip owner and admin views
   try {
-    const anonClient = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      { cookies: { getAll: () => request.cookies.getAll().map(c => ({ name: c.name, value: c.value })) } }
-    );
+    const anonClient = createAnonFromRequest(request);
     const { data: { user: viewer } } = await anonClient.auth.getUser();
     if (viewer) {
       // Skip admin views
