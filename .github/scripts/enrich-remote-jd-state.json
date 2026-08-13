@@ -2911,6 +2911,58 @@
     "fa7b56ef-a289-42c6-af23-80fb6386c848": {
       "status": "queued",
       "reason": "manual_only"
+    },
+    "7d655e98-39fa-4e77-8735-47f04d94f2a8": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=ARENA Alignment Research Engineer Accelerator company=ARENA apply=https://www.arena.education/"
+    },
+    "5b6c1cc9-d613-4dc2-89ff-11a9f740d11e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "53107d59-6918-43da-9dec-c2459a3b6ff7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "8b16dbd6-c520-4e18-b924-10ec5671a5cd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0a22d94d-d08b-48c1-aa88-a65d30e13996": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Supervised Program for Alignment Research company=SPAR apply=https://forms.sparai.org/spar/mentee-app"
+    },
+    "d381d782-13c9-4e9b-9e9e-fcff89dbd353": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AI2050 Early Career Fellowship company=Schmidt Sciences apply=https://www.schmidtsciences.org/ai2050/"
+    },
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "4f7c4057-b1d9-4981-837a-01ff331824db": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "101ec12b-b2e2-439a-820a-02cac8612e29": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a69c8d04-6e71-4e7d-be18-dcd0886c9cf1": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=PIBBSS Fellowship company=PIBBSS apply=https://pibbss.ai/fellowship"
+    },
+    "f4bea460-2d9c-43e9-b4b7-ff19e736447c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     }
   },
   "doneIds": [
@@ -3511,7 +3563,19 @@
     "fde242cd-858b-4fdc-a616-31adfc183413",
     "f9fbaee9-0620-4d0e-a905-57470603964a",
     "fe11149a-92bb-40cc-bc7a-aed8f55cb2d0",
-    "fa7b56ef-a289-42c6-af23-80fb6386c848"
+    "fa7b56ef-a289-42c6-af23-80fb6386c848",
+    "7d655e98-39fa-4e77-8735-47f04d94f2a8",
+    "5b6c1cc9-d613-4dc2-89ff-11a9f740d11e",
+    "53107d59-6918-43da-9dec-c2459a3b6ff7",
+    "8b16dbd6-c520-4e18-b924-10ec5671a5cd",
+    "0a22d94d-d08b-48c1-aa88-a65d30e13996",
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c",
+    "d381d782-13c9-4e9b-9e9e-fcff89dbd353",
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429",
+    "4f7c4057-b1d9-4981-837a-01ff331824db",
+    "101ec12b-b2e2-439a-820a-02cac8612e29",
+    "a69c8d04-6e71-4e7d-be18-dcd0886c9cf1",
+    "f4bea460-2d9c-43e9-b4b7-ff19e736447c"
   ],
   "skipped": {},
   "batches": [
@@ -3610,6 +3674,29 @@
         "manual_queued": 40
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T09:24:02.883Z",
+      "attempted": 8,
+      "ok": 0,
+      "skip": 4,
+      "fail": 8,
+      "reasons": {
+        "expand_existing": 6,
+        "source_thin": 2,
+        "no_ai": 4,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 8,
+        "html_short": 1,
+        "err_TimeoutError": 1
+      },
+      "samplePaths": []
     }
-  ]
+  ],
+  "deadBoards": {
+    "host:arena.education": "source_thin",
+    "host:forms.sparai.org": "html_short",
+    "host:schmidtsciences.org": "source_thin"
+  }
 }
