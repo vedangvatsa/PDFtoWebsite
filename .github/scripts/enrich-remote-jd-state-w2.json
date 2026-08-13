@@ -107110,6 +107110,209 @@
       "status": "ok",
       "path": "/sendbird/sales",
       "external_id": "sendbird_sales"
+    },
+    "4f6eb0b8-3c45-418e-b3a2-c5d595cab36c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5766d182-1737-4551-a73f-b7a19bbc70af": {
+      "status": "ok",
+      "path": "/commure/fullst-0a",
+      "external_id": "commure_fullst-0a"
+    },
+    "5f51e0c4-2922-485c-93ec-0131b3822a14": {
+      "status": "ok",
+      "path": "/cursor/eng-dd",
+      "external_id": "cursor_eng-dd"
+    },
+    "5c2e1329-50d5-43f7-bdb8-4bcaed8350bc": {
+      "status": "ok",
+      "path": "/base-power/gtm",
+      "external_id": "base-power_gtm"
+    },
+    "4637b453-5d70-4076-a762-9dcbcedfcfbd": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Antifraud Moderator company=quarks-tech apply=https://jobs.ashbyhq.com/quarks-tech/dab1ea0d-f986-4651-aee6-d5dd20457922"
+    },
+    "4c1e72fa-170e-4f82-a756-b3aee0dc23b9": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Allied - Bilingual (Spanish/English) Real Estate Instructor CA company=Colibrigroup apply=https://jobs.lever.co/colibrigroup/fe975e32-ce67-453b-971c-b82b39cc0b80"
+    },
+    "5cafcc72-8430-45ae-ae89-b5cea3576665": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Spécialiste du recouvrement de créances company=Equativ apply=https://jobs.lever.co/equativ/83ddead7-0ee1-48da-96ad-33ddb011bee2"
+    },
+    "5cbab338-2136-4f80-be10-f954ea4317dc": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Director of Client Finance company=Charter Impact apply=https://jobs.lever.co/charter-impact/8de6db79-4aaa-43c2-ba26-e6fff2e624d4"
+    },
+    "5812e846-b3d3-48ed-9b6e-55648904cf23": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Product Stewardship Specialist I company=Penumbrainc apply=https://jobs.lever.co/penumbrainc/b8723d24-58c2-4d2c-9e5d-7cbfd0e04d0e"
+    },
+    "457b40a5-c6f0-41ba-aa45-9198de6c9a49": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "57f9f72a-9ff4-4ae2-88ea-a1ba79c6b2d6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4d9214a2-0ad3-46ef-816e-67f4856c4007": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "563e8953-1bb4-4677-a059-33a0020e089a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "54cc03bd-6284-4ecf-a644-810a1951e133": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4b14c143-34ab-4154-b956-fa1755301017": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "5bb48c62-5d1d-4cb7-b2d4-e0ff6a0afb7c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4b7e85b3-fceb-4f8d-ac0a-55a8cf5d7200": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "45f0220a-3351-436e-af62-8a68aa94886c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4c409d5a-57e9-4a57-ba2c-5ee3c1ec44a8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4183dbdd-cc03-4ce5-adc7-557eb7dec161": {
+      "status": "ok",
+      "path": "/vitana-pediatric/accountant",
+      "external_id": "vitana-pediatric_accountant"
+    },
+    "52f8bd31-7909-4063-bcdb-4001f5be58f6": {
+      "status": "ok",
+      "path": "/apple/early",
+      "external_id": "apple_early"
+    },
+    "497b7220-9aeb-4901-afdd-58b4dea56ec8": {
+      "status": "ok",
+      "path": "/colibrigroup/growth-fa",
+      "external_id": "colibrigroup_growth-fa"
+    },
+    "4dfbc574-a743-42e2-9dad-224217381beb": {
+      "status": "ok",
+      "path": "/redhorsecorp/test-eng",
+      "external_id": "redhorsecorp_test-eng"
+    },
+    "4d376478-b30f-4286-8098-d449eeeb35db": {
+      "status": "ok",
+      "path": "/vevo/acct-a5",
+      "external_id": "vevo_acct-a5"
+    },
+    "4031635a-0ab5-4ed7-8872-eeff3a4db805": {
+      "status": "ok",
+      "path": "/weloglobal/multimedia",
+      "external_id": "weloglobal_multimedia"
+    },
+    "56052c4b-5b84-4565-b404-749b59b610da": {
+      "status": "ok",
+      "path": "/coalfire/detect-cb",
+      "external_id": "coalfire_detect-cb"
+    },
+    "491fe7dd-1307-4b80-b886-8f127793b0bc": {
+      "status": "ok",
+      "path": "/flexboard/job",
+      "external_id": "flexboard_job"
+    },
+    "4ac18a10-3d55-43e8-8a15-3b7d2ccf8619": {
+      "status": "ok",
+      "path": "/delinea/net-dev",
+      "external_id": "delinea_net-dev"
+    },
+    "54a14173-53f5-4cec-800d-15f510844918": {
+      "status": "ok",
+      "path": "/dualentry/people-d4",
+      "external_id": "dualentry_people-d4"
+    },
+    "435e4cfe-f57c-454c-bab8-fc171bed24d8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "548b6dc5-3ae6-4d02-b374-c5f9380375e2": {
+      "status": "ok",
+      "path": "/medcarepediatric/pediat-0f",
+      "external_id": "medcarepediatric_pediat-0f"
+    },
+    "53f8d1a4-eba8-4fbc-9941-b68730a73d3c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5df26f31-c6e9-48c4-8849-6928d4dd39e5": {
+      "status": "ok",
+      "path": "/espace/test",
+      "external_id": "espace_test"
+    },
+    "5d449355-4ec2-41dd-a8e9-038278fe7781": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5555f2c5-9e0e-4c0f-a2cd-0fcdd37bc379": {
+      "status": "ok",
+      "path": "/jetsetpilates/studio-28",
+      "external_id": "jetsetpilates_studio-28"
+    },
+    "4e99f23c-3df7-40e3-8abc-c9a96a0d051b": {
+      "status": "ok",
+      "path": "/gopuff/assoc-84",
+      "external_id": "gopuff_assoc-84"
+    },
+    "412414b7-1825-40ce-9d32-a3c9f8d6729e": {
+      "status": "ok",
+      "path": "/instructure/sales-84",
+      "external_id": "instructure_sales-84"
+    },
+    "5d3c9cd7-1302-42f1-b069-384820c9b0ca": {
+      "status": "ok",
+      "path": "/convergentresearch/e11-bio",
+      "external_id": "convergentresearch_e11-bio"
+    },
+    "59b3fd4f-b31d-486b-b8f2-91349ca9437c": {
+      "status": "ok",
+      "path": "/polymarket/defi",
+      "external_id": "polymarket_defi"
+    },
+    "42984737-154a-4ee6-a893-679a1700b9c4": {
+      "status": "ok",
+      "path": "/ana-corp/service",
+      "external_id": "ana-corp_service"
+    },
+    "534618e7-8ade-474d-91b4-1bd9294018de": {
+      "status": "ok",
+      "path": "/provable/fe-eng",
+      "external_id": "provable_fe-eng"
+    },
+    "5fe2b974-4d73-4e6e-9111-fb7361135821": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "45d10608-99de-4c63-a39e-d0a0ece232ec": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "49a289e6-2a0c-4ff7-b14c-266699bb4504": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
     }
   },
   "doneIds": [
@@ -126262,7 +126465,51 @@
     "536653c7-d0a1-4969-8525-35b8f6183e5e",
     "51bdd284-5ea5-4069-8b2a-731a91364a90",
     "46ff4c3b-0df6-44a2-8a63-4f81b23f63aa",
-    "517a8d3b-d902-4f40-98fd-df2bfb0464bf"
+    "517a8d3b-d902-4f40-98fd-df2bfb0464bf",
+    "4f6eb0b8-3c45-418e-b3a2-c5d595cab36c",
+    "5766d182-1737-4551-a73f-b7a19bbc70af",
+    "5f51e0c4-2922-485c-93ec-0131b3822a14",
+    "5c2e1329-50d5-43f7-bdb8-4bcaed8350bc",
+    "4637b453-5d70-4076-a762-9dcbcedfcfbd",
+    "4c1e72fa-170e-4f82-a756-b3aee0dc23b9",
+    "5cafcc72-8430-45ae-ae89-b5cea3576665",
+    "5cbab338-2136-4f80-be10-f954ea4317dc",
+    "5812e846-b3d3-48ed-9b6e-55648904cf23",
+    "457b40a5-c6f0-41ba-aa45-9198de6c9a49",
+    "57f9f72a-9ff4-4ae2-88ea-a1ba79c6b2d6",
+    "4d9214a2-0ad3-46ef-816e-67f4856c4007",
+    "563e8953-1bb4-4677-a059-33a0020e089a",
+    "54cc03bd-6284-4ecf-a644-810a1951e133",
+    "4b14c143-34ab-4154-b956-fa1755301017",
+    "5bb48c62-5d1d-4cb7-b2d4-e0ff6a0afb7c",
+    "4b7e85b3-fceb-4f8d-ac0a-55a8cf5d7200",
+    "45f0220a-3351-436e-af62-8a68aa94886c",
+    "4c409d5a-57e9-4a57-ba2c-5ee3c1ec44a8",
+    "4183dbdd-cc03-4ce5-adc7-557eb7dec161",
+    "52f8bd31-7909-4063-bcdb-4001f5be58f6",
+    "497b7220-9aeb-4901-afdd-58b4dea56ec8",
+    "4dfbc574-a743-42e2-9dad-224217381beb",
+    "4d376478-b30f-4286-8098-d449eeeb35db",
+    "4031635a-0ab5-4ed7-8872-eeff3a4db805",
+    "56052c4b-5b84-4565-b404-749b59b610da",
+    "491fe7dd-1307-4b80-b886-8f127793b0bc",
+    "4ac18a10-3d55-43e8-8a15-3b7d2ccf8619",
+    "54a14173-53f5-4cec-800d-15f510844918",
+    "435e4cfe-f57c-454c-bab8-fc171bed24d8",
+    "548b6dc5-3ae6-4d02-b374-c5f9380375e2",
+    "53f8d1a4-eba8-4fbc-9941-b68730a73d3c",
+    "5df26f31-c6e9-48c4-8849-6928d4dd39e5",
+    "5d449355-4ec2-41dd-a8e9-038278fe7781",
+    "5555f2c5-9e0e-4c0f-a2cd-0fcdd37bc379",
+    "4e99f23c-3df7-40e3-8abc-c9a96a0d051b",
+    "412414b7-1825-40ce-9d32-a3c9f8d6729e",
+    "5d3c9cd7-1302-42f1-b069-384820c9b0ca",
+    "59b3fd4f-b31d-486b-b8f2-91349ca9437c",
+    "42984737-154a-4ee6-a893-679a1700b9c4",
+    "534618e7-8ade-474d-91b4-1bd9294018de",
+    "5fe2b974-4d73-4e6e-9111-fb7361135821",
+    "45d10608-99de-4c63-a39e-d0a0ece232ec",
+    "49a289e6-2a0c-4ff7-b14c-266699bb4504"
   ],
   "skipped": {},
   "batches": [
@@ -127584,6 +127831,63 @@
         "/postman/smb-acct",
         "/berlin-packaging-canada-corporation/fin"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-13T03:20:32.240Z",
+      "attempted": 4,
+      "ok": 3,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 4,
+        "rewrite_short": 1
+      },
+      "samplePaths": [
+        "/commure/fullst-0a",
+        "/cursor/eng-dd",
+        "/base-power/gtm"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 2,
+      "at": "2026-08-13T05:44:48.098Z",
+      "attempted": 35,
+      "ok": 19,
+      "skip": 5,
+      "fail": 16,
+      "reasons": {
+        "expand_existing": 24,
+        "posting_older_than_30d": 3,
+        "no_ai": 5,
+        "err_TimeoutError": 2,
+        "rewrite_short": 12,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 3,
+        "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo": 1
+      },
+      "samplePaths": [
+        "/vitana-pediatric/accountant",
+        "/apple/early",
+        "/colibrigroup/growth-fa",
+        "/redhorsecorp/test-eng",
+        "/vevo/acct-a5",
+        "/weloglobal/multimedia",
+        "/coalfire/detect-cb",
+        "/flexboard/job",
+        "/delinea/net-dev",
+        "/dualentry/people-d4",
+        "/medcarepediatric/pediat-0f",
+        "/espace/test",
+        "/jetsetpilates/studio-28",
+        "/gopuff/assoc-84",
+        "/instructure/sales-84",
+        "/convergentresearch/e11-bio",
+        "/polymarket/defi",
+        "/ana-corp/service",
+        "/provable/fe-eng"
+      ]
     }
   ],
   "deadBoards": {
@@ -128551,6 +128855,9 @@
     "host:adistec.bamboohr.com": "html_short",
     "host:asuresoftware.bamboohr.com": "html_short",
     "host:abiresearch.bamboohr.com": "html_short",
-    "host:addium.bamboohr.com": "html_short"
+    "host:addium.bamboohr.com": "html_short",
+    "ashby:quarks-tech": "posting_older_than_30d",
+    "lever:colibrigroup": "posting_older_than_30d",
+    "lever:equativ": "posting_older_than_30d"
   }
 }

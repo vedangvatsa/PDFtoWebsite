@@ -89532,6 +89532,144 @@
       "status": "ok",
       "path": "/hellofresh/be-fc",
       "external_id": "hellofresh_be-fc"
+    },
+    "12561bba-81e7-4719-aa55-63f3f5b59305": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "17b2115a-6f01-403b-a57f-8ab378cd533f": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "00b93e6c-a05a-4db5-860c-a039b8ce58eb": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "11bf9784-098e-482d-aade-02eaec2fe471": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:fetch failed"
+    },
+    "0ae925cd-e699-4e56-9ba8-5e07c59fb003": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "072d757f-0b99-4085-be0f-a48bc0e71fe6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0f80bc3c-6b72-4753-9c31-c42070799aad": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "1e3707f1-a995-43cf-8ff4-3369601f0ce3": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Architectural Specification Writer company=Waremalcomb apply=https://jobs.lever.co/waremalcomb/4827d366-113a-4635-ad9b-c7093e64c24b"
+    },
+    "0d1e6caa-547c-4712-8a1f-a8353f53d5d6": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Data Engineer company=Ogury apply=https://jobs.lever.co/ogury/2a6a3d11-d3ba-43fd-bea8-93824d405f02"
+    },
+    "03ef5e19-3508-4637-9274-07f2895ce483": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Studio Lead - Missouri City company=Jetsetpilates apply=https://jobs.lever.co/jetsetpilates/fb1912c3-e49e-4e8e-bbde-0f42b867f5b1"
+    },
+    "1290af36-94bd-4132-894b-5f9ba839b965": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=JETSET on the Mat Instructor company=Jetsetpilates apply=https://jobs.lever.co/jetsetpilates/fb4d196d-24ad-4455-ba62-18d0bc8f41f2"
+    },
+    "1ce8332b-4bcb-43be-94e0-cbc3b2cec656": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Community Lead - Huntington Beach company=Jetsetpilates apply=https://jobs.lever.co/jetsetpilates/12f71eec-4b8e-48a0-a600-e828d1571f98"
+    },
+    "01ebfdbd-4ffb-4358-8b72-864784e3c7ac": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Support Specialist company=Gopuff apply=https://jobs.lever.co/gopuff/026fff7a-dc3d-4654-8149-f3b2ad1a3607"
+    },
+    "1ee00cb1-a802-445f-91d8-f66afe652bfb": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Director of Capital Projects company=Nolapublicschools apply=https://jobs.lever.co/nolapublicschools/0cf5ac15-d6d2-4db3-b016-bd2e29b41657"
+    },
+    "03152f25-9629-46e7-a8d9-6b743a9b1a73": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Assistant District Sales Manger company=Allstarservicesnow apply=https://jobs.lever.co/allstarservicesnow/31b47c63-b13c-4355-9c0b-228818a0b49f"
+    },
+    "1de47f03-9219-4f11-a37a-f8f023a9fd6d": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Content Manager company=Solidcore apply=https://jobs.lever.co/solidcore/d4ec968e-07fa-4763-a364-dd15cc424571"
+    },
+    "101268d4-a664-44bb-bd7d-d37386bf922c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1bf4f8a0-f178-402e-9151-b1f6079fce6c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0d85e673-1f19-4f8d-8d1e-bbb80cf8c3d7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "11a2c863-de34-41ad-915a-db6ec4b98f9c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03c6e490-19b3-4456-934a-a67c2770976b": {
+      "status": "ok",
+      "path": "/redhorsecorp/inform-c2",
+      "external_id": "redhorsecorp_inform-c2"
+    },
+    "1f239440-129c-43b5-b842-91e7bbe8e553": {
+      "status": "ok",
+      "path": "/anchorage/member-9c",
+      "external_id": "anchorage_member-9c"
+    },
+    "067f24a1-6a23-4827-bac3-f54adefd77b2": {
+      "status": "ok",
+      "path": "/shieldai/eng-9c",
+      "external_id": "shieldai_eng-9c"
+    },
+    "0b2464a1-14a8-4b01-937f-8a273563378e": {
+      "status": "ok",
+      "path": "/nationaljournal/mkt-mgr",
+      "external_id": "nationaljournal_mkt-mgr"
+    },
+    "09a3e867-de82-4ae6-bcf9-1f8c81a0bec5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03e67773-a317-4189-a5d4-4177196e856b": {
+      "status": "ok",
+      "path": "/trustly/svp",
+      "external_id": "trustly_svp"
+    },
+    "14e219c9-3b23-4a49-a7f0-7a1ed9aa8b42": {
+      "status": "ok",
+      "path": "/ableserve/non",
+      "external_id": "ableserve_non"
+    },
+    "1ad11b4b-9e93-4509-8bdc-2d7f451e4a79": {
+      "status": "ok",
+      "path": "/cagents/data-bb",
+      "external_id": "cagents_data-bb"
+    },
+    "05d56c2a-f3f4-45c5-bd7d-bf29327e34e6": {
+      "status": "ok",
+      "path": "/getwingapp/video",
+      "external_id": "getwingapp_video"
+    },
+    "0b418aad-b1fe-4010-b580-ea8881e58177": {
+      "status": "ok",
+      "path": "/velo3d/sw-eng",
+      "external_id": "velo3d_sw-eng"
     }
   },
   "doneIds": [
@@ -105582,7 +105720,37 @@
     "1301ecfd-d957-40b7-b8e2-fb5f63cf39bc",
     "19a8da8a-63b6-4c10-b249-e6831103a036",
     "0705f715-3482-4f69-b23e-8498a5c9bf0c",
-    "0f16dfd6-4c44-4d0e-9acf-2a3aa5df7a5c"
+    "0f16dfd6-4c44-4d0e-9acf-2a3aa5df7a5c",
+    "12561bba-81e7-4719-aa55-63f3f5b59305",
+    "17b2115a-6f01-403b-a57f-8ab378cd533f",
+    "00b93e6c-a05a-4db5-860c-a039b8ce58eb",
+    "11bf9784-098e-482d-aade-02eaec2fe471",
+    "0ae925cd-e699-4e56-9ba8-5e07c59fb003",
+    "072d757f-0b99-4085-be0f-a48bc0e71fe6",
+    "0f80bc3c-6b72-4753-9c31-c42070799aad",
+    "1e3707f1-a995-43cf-8ff4-3369601f0ce3",
+    "0d1e6caa-547c-4712-8a1f-a8353f53d5d6",
+    "03ef5e19-3508-4637-9274-07f2895ce483",
+    "1290af36-94bd-4132-894b-5f9ba839b965",
+    "1ce8332b-4bcb-43be-94e0-cbc3b2cec656",
+    "01ebfdbd-4ffb-4358-8b72-864784e3c7ac",
+    "1ee00cb1-a802-445f-91d8-f66afe652bfb",
+    "03152f25-9629-46e7-a8d9-6b743a9b1a73",
+    "1de47f03-9219-4f11-a37a-f8f023a9fd6d",
+    "101268d4-a664-44bb-bd7d-d37386bf922c",
+    "1bf4f8a0-f178-402e-9151-b1f6079fce6c",
+    "0d85e673-1f19-4f8d-8d1e-bbb80cf8c3d7",
+    "11a2c863-de34-41ad-915a-db6ec4b98f9c",
+    "03c6e490-19b3-4456-934a-a67c2770976b",
+    "1f239440-129c-43b5-b842-91e7bbe8e553",
+    "067f24a1-6a23-4827-bac3-f54adefd77b2",
+    "0b2464a1-14a8-4b01-937f-8a273563378e",
+    "09a3e867-de82-4ae6-bcf9-1f8c81a0bec5",
+    "03e67773-a317-4189-a5d4-4177196e856b",
+    "14e219c9-3b23-4a49-a7f0-7a1ed9aa8b42",
+    "1ad11b4b-9e93-4509-8bdc-2d7f451e4a79",
+    "05d56c2a-f3f4-45c5-bd7d-bf29327e34e6",
+    "0b418aad-b1fe-4010-b580-ea8881e58177"
   ],
   "skipped": {},
   "batches": [
@@ -107140,6 +107308,49 @@
         "/samsung-research-america/resear-63",
         "/spacex/facili-f0",
         "/hellofresh/be-fc"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-13T03:56:39.272Z",
+      "attempted": 7,
+      "ok": 0,
+      "skip": 0,
+      "fail": 7,
+      "reasons": {
+        "expand_existing": 7,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 3,
+        "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo": 2,
+        "openrouter_inclusionai/ling-2.6-flash_err:fetch failed": 1,
+        "rewrite_short": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T04:57:56.974Z",
+      "attempted": 14,
+      "ok": 9,
+      "skip": 9,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 10,
+        "err_TimeoutError": 9,
+        "no_ai": 9,
+        "rewrite_short": 5
+      },
+      "samplePaths": [
+        "/redhorsecorp/inform-c2",
+        "/anchorage/member-9c",
+        "/shieldai/eng-9c",
+        "/nationaljournal/mkt-mgr",
+        "/trustly/svp",
+        "/ableserve/non",
+        "/cagents/data-bb",
+        "/getwingapp/video",
+        "/velo3d/sw-eng"
       ]
     }
   ],

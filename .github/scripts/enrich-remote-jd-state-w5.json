@@ -51932,6 +51932,146 @@
       "status": "ok",
       "path": "/oscar-health/assoc-db",
       "external_id": "oscar-health_assoc-db"
+    },
+    "ab3b16e6-cade-4c79-b117-5d518c96479b": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Backend Engineer company=Lendbuzz apply=https://jobs.lever.co/lendbuzz/e229a10a-a64c-4e87-a331-227c1b994053"
+    },
+    "a406fefe-fefd-44ef-8fa6-f9180d71b9cc": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Instructor - Colibri Real Estate company=Colibrigroup apply=https://jobs.lever.co/colibrigroup/8a9c577c-134e-45a2-b2e3-b4333ef8bd7e"
+    },
+    "a79b385f-eb24-4cd6-b19c-d692406dbb79": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Machine Learning Engineer company=Zoox apply=https://jobs.lever.co/zoox/55e51bf3-68ee-40d4-a1c5-5196e0e2d100"
+    },
+    "ab92a8bc-a7e4-4a4a-a90d-7b0e6435b9fc": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Sales Manager, B2C company=Colibrigroup apply=https://jobs.lever.co/colibrigroup/6f6587c8-54b3-4396-b196-555204adb3bf"
+    },
+    "ba858ffb-4897-4ea9-b29f-8e53e0c74e9a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Staff Engineering Specialist, Avionics company=Shieldai apply=https://jobs.lever.co/shieldai/a918e92a-3cc6-47df-bc74-4e2781d226d4"
+    },
+    "b0eb6255-b48a-4d2a-bf0b-83f4633e75b3": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Controller company=Premiertruck apply=https://jobs.lever.co/premiertruck/f7ab41cf-d83b-482d-a2b8-addcb38e91b8"
+    },
+    "a7396907-16bb-444e-a737-a93f68249f1a": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=New Mexico Remote Online Notary (RON) company=Filevine apply=https://jobs.lever.co/filevine/733c1746-bc46-41b3-8786-69b3f294012b"
+    },
+    "a68b4fac-aaab-489a-bec2-e70137087efb": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=VP, Business Transformation company=Colibrigroup apply=https://jobs.lever.co/colibrigroup/150c5323-cb10-4f33-8ba2-302456943cf6"
+    },
+    "b021e2c1-5774-4cf0-99cc-662c1019ee5f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a5fa031b-f6ef-4f28-95b3-7b920908befd": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a2fdeede-b532-4aba-8b1c-5149b9d3f287": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "be729b72-4b3b-4a08-9629-113fd99cd087": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a3c7fb30-8c31-4446-8afa-343d28d5f8c2": {
+      "status": "ok",
+      "path": "/circlecareservices/bcba-7e",
+      "external_id": "circlecareservices_bcba-7e"
+    },
+    "a4da6745-e7e5-45f8-a1ea-3253c4113492": {
+      "status": "ok",
+      "path": "/pattern/art-dir",
+      "external_id": "pattern_art-dir"
+    },
+    "ab494735-5ce0-467e-b23f-33ed43c364d7": {
+      "status": "ok",
+      "path": "/the-global-talent-co/mkt-ops",
+      "external_id": "the-global-talent-co_mkt-ops"
+    },
+    "a421facc-2f66-40b5-929f-ad62056810ce": {
+      "status": "ok",
+      "path": "/product-now/member",
+      "external_id": "product-now_member"
+    },
+    "b6b28c9c-bc6f-49e5-85be-1678e4363986": {
+      "status": "ok",
+      "path": "/kabam/prod-mgr",
+      "external_id": "kabam_prod-mgr"
+    },
+    "ac072610-25d0-4615-afe7-877403e1fd2c": {
+      "status": "ok",
+      "path": "/veeva/practice",
+      "external_id": "veeva_practice"
+    },
+    "aed514c6-c822-4204-b749-5d906aba4934": {
+      "status": "ok",
+      "path": "/safe/sw-d0",
+      "external_id": "safe_sw-d0"
+    },
+    "aa092c6b-3be0-47f6-a3f4-6ac827e8de47": {
+      "status": "ok",
+      "path": "/shieldai/mgr-95",
+      "external_id": "shieldai_mgr-95"
+    },
+    "bf11ac98-e0d9-4df0-b24f-111bf5b7218b": {
+      "status": "ok",
+      "path": "/hightechhigh/specia-11",
+      "external_id": "hightechhigh_specia-11"
+    },
+    "b3f518fa-6ce8-416c-82f4-1c7ed8c6a9c8": {
+      "status": "ok",
+      "path": "/smartenergy/renewable",
+      "external_id": "smartenergy_renewable"
+    },
+    "a0a42c1c-c657-4768-94d6-2733f8626a07": {
+      "status": "ok",
+      "path": "/kavak/fe-eng",
+      "external_id": "kavak_fe-eng"
+    },
+    "a013dab2-6b14-4901-af62-77d7dc67ead2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "bf2f8b8a-3bdf-4f4f-9ea8-a99e86ea0494": {
+      "status": "ok",
+      "path": "/netgear/wifi-e7",
+      "external_id": "netgear_wifi-e7"
+    },
+    "a0640b88-418d-442f-b1f2-fdb6b9df89d5": {
+      "status": "ok",
+      "path": "/highstreetit/oracle",
+      "external_id": "highstreetit_oracle"
+    },
+    "b6e0e4b3-6150-42fe-9a77-aed97feff0f5": {
+      "status": "ok",
+      "path": "/zoox/tech-35",
+      "external_id": "zoox_tech-35"
+    },
+    "b8e5fcde-3a7a-4b77-a230-aad7bb4d1366": {
+      "status": "ok",
+      "path": "/lyrahealth/biz",
+      "external_id": "lyrahealth_biz"
+    },
+    "bed6be5f-d1e6-45d9-a980-81746b261f5e": {
+      "status": "ok",
+      "path": "/cin7/head-it",
+      "external_id": "cin7_head-it"
     }
   },
   "doneIds": [
@@ -63927,7 +64067,36 @@
     "ab06f7ea-5aeb-46d8-8940-5a1b60645364",
     "b41044a7-8e2b-48c6-9d50-5c90eaeb7275",
     "a2f13c9b-7b67-4ffc-8d65-d5db4acc21b9",
-    "ac785ee6-dab0-477c-b34b-f0fc9f2cb8fc"
+    "ac785ee6-dab0-477c-b34b-f0fc9f2cb8fc",
+    "ab3b16e6-cade-4c79-b117-5d518c96479b",
+    "a406fefe-fefd-44ef-8fa6-f9180d71b9cc",
+    "a79b385f-eb24-4cd6-b19c-d692406dbb79",
+    "ab92a8bc-a7e4-4a4a-a90d-7b0e6435b9fc",
+    "ba858ffb-4897-4ea9-b29f-8e53e0c74e9a",
+    "b0eb6255-b48a-4d2a-bf0b-83f4633e75b3",
+    "a7396907-16bb-444e-a737-a93f68249f1a",
+    "a68b4fac-aaab-489a-bec2-e70137087efb",
+    "b021e2c1-5774-4cf0-99cc-662c1019ee5f",
+    "a5fa031b-f6ef-4f28-95b3-7b920908befd",
+    "a2fdeede-b532-4aba-8b1c-5149b9d3f287",
+    "be729b72-4b3b-4a08-9629-113fd99cd087",
+    "a3c7fb30-8c31-4446-8afa-343d28d5f8c2",
+    "a4da6745-e7e5-45f8-a1ea-3253c4113492",
+    "ab494735-5ce0-467e-b23f-33ed43c364d7",
+    "a421facc-2f66-40b5-929f-ad62056810ce",
+    "b6b28c9c-bc6f-49e5-85be-1678e4363986",
+    "ac072610-25d0-4615-afe7-877403e1fd2c",
+    "aed514c6-c822-4204-b749-5d906aba4934",
+    "aa092c6b-3be0-47f6-a3f4-6ac827e8de47",
+    "bf11ac98-e0d9-4df0-b24f-111bf5b7218b",
+    "b3f518fa-6ce8-416c-82f4-1c7ed8c6a9c8",
+    "a0a42c1c-c657-4768-94d6-2733f8626a07",
+    "a013dab2-6b14-4901-af62-77d7dc67ead2",
+    "bf2f8b8a-3bdf-4f4f-9ea8-a99e86ea0494",
+    "a0640b88-418d-442f-b1f2-fdb6b9df89d5",
+    "b6e0e4b3-6150-42fe-9a77-aed97feff0f5",
+    "b8e5fcde-3a7a-4b77-a230-aad7bb4d1366",
+    "bed6be5f-d1e6-45d9-a980-81746b261f5e"
   ],
   "skipped": {},
   "batches": [
@@ -70172,6 +70341,40 @@
         "/spacex/lead-ehs",
         "/oscar-health/assoc-db"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 5,
+      "at": "2026-08-13T03:57:15.410Z",
+      "attempted": 21,
+      "ok": 16,
+      "skip": 8,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 15,
+        "posting_older_than_30d": 7,
+        "no_ai": 8,
+        "source_thin": 1,
+        "rewrite_short": 5
+      },
+      "samplePaths": [
+        "/circlecareservices/bcba-7e",
+        "/pattern/art-dir",
+        "/the-global-talent-co/mkt-ops",
+        "/product-now/member",
+        "/kabam/prod-mgr",
+        "/veeva/practice",
+        "/safe/sw-d0",
+        "/shieldai/mgr-95",
+        "/hightechhigh/specia-11",
+        "/smartenergy/renewable",
+        "/kavak/fe-eng",
+        "/netgear/wifi-e7",
+        "/highstreetit/oracle",
+        "/zoox/tech-35",
+        "/lyrahealth/biz",
+        "/cin7/head-it"
+      ]
     }
   ],
   "deadBoards": {
@@ -70542,7 +70745,13 @@
     "ashby:rwazi": "posting_older_than_30d",
     "ashby:cursor": "posting_older_than_30d",
     "ashby:kirin": "posting_older_than_30d",
-    "greenhouse:stone": "source_thin",
-    "greenhouse:uberfreight": "source_thin"
+    "greenhouse:stone": "posting_older_than_30d",
+    "greenhouse:uberfreight": "source_thin",
+    "lever:lendbuzz": "posting_older_than_30d",
+    "lever:colibrigroup": "posting_older_than_30d",
+    "lever:zoox": "posting_older_than_30d",
+    "lever:shieldai": "posting_older_than_30d",
+    "lever:premiertruck": "source_thin",
+    "lever:filevine": "posting_older_than_30d"
   }
 }

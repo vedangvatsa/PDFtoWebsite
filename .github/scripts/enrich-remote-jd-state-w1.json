@@ -101509,6 +101509,207 @@
       "status": "ok",
       "path": "/prophero/strat",
       "external_id": "prophero_strat"
+    },
+    "3fa13e89-2e54-46b7-beca-429efed4f198": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Líder de Célula – AWS company=rehire apply=https://jobs.ashbyhq.com/rehire/c7336c4e-c445-4f0c-b8c6-a2e0356da3d9"
+    },
+    "350d5c4b-de15-43a0-b5bc-09307c93cd41": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Super Engineer company=endurance-energy apply=https://jobs.ashbyhq.com/endurance-energy/2af3b48c-4e20-420a-b296-b9a2bf53ef23"
+    },
+    "2eefa565-499b-489e-a430-932b485e9724": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Your Dream Job company=filmhub apply=https://jobs.ashbyhq.com/filmhub/0090f323-5226-4c0f-a0d5-c4f9fbbdbadd"
+    },
+    "2e09e456-e9f9-49ab-a937-ef2449a32fe3": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Antifraud Moderator company=quarks-tech apply=https://jobs.ashbyhq.com/quarks-tech/698539be-caba-48ee-92a3-2a7965ee027a"
+    },
+    "32229f72-0aec-4c2d-a875-bc2add0e25fa": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=A Call for Content Creators company=retell-ai apply=https://jobs.ashbyhq.com/retell-ai/e28a97ce-44a1-4f87-a8a9-3421b5452b66"
+    },
+    "290e1277-c984-49b4-82cb-9b6f7063f932": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=RevOps Specialist company=Disher apply=https://jobs.lever.co/disher/9d9797c0-a1b8-46c4-aafe-14e5d4185133"
+    },
+    "2b7456c0-a30b-49eb-836c-eddbb3ca59aa": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=SaaS Onboarding & Invoicing Representative (Remote company=Loadsmart apply=https://jobs.lever.co/loadsmart/9b54924a-1832-4ac1-b7ed-153c2964a6d4"
+    },
+    "305942a7-acba-485e-838c-bb8dc21786c6": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Sr. Clinical Research Associate company=Alimentiv 2 apply=https://jobs.lever.co/alimentiv-2/bf58c7fc-dd23-48bb-af71-632147d3d399"
+    },
+    "2c4cc0b1-1627-4477-a7d8-8011430c5f08": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Quality Assurance Technologist company=Ircagroup apply=https://jobs.lever.co/ircagroup/c5e0ef0d-d4fa-4432-8585-8b5988d0c112"
+    },
+    "2cbfd879-1e3d-42cc-b657-3c5c96f32f93": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Staff Engineer, Mechanical company=Shieldai apply=https://jobs.lever.co/shieldai/36691848-fa43-4c4b-9152-736f539f323c"
+    },
+    "24b8b86c-aa7e-48e2-b2cc-f9c6cf7eae2d": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Project Manager VCF company=Thinkahead apply=https://jobs.lever.co/thinkahead/5d468464-df9d-414f-9b7c-d9f17bacc183"
+    },
+    "2871577b-4ee4-4469-829e-03945675c070": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Technical Product Manager company=Workwave apply=https://jobs.lever.co/workwave/1eb3501d-0d30-4f46-8904-069849fc0396"
+    },
+    "3c53ae77-9e3c-4b8f-88cc-e0a8d6dac0db": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "32f92d62-7de3-46f1-a215-0479f953b6de": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3fa87266-1aaf-4a4c-845a-741b5e25d656": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "33c50b12-7c53-4920-ba91-8f8ac59ca9e5": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "25bd1a42-949b-4c55-ad1f-6652a7ed539a": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3a044fa5-f3bb-40db-b634-6bab4cc6fae4": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3f455619-c5bb-44fe-a0ca-3fce7950c409": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3a6fb3ab-f05d-42b7-9c84-68928270ed3d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "2789e673-2c45-4831-9a55-7f226079cbad": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "24f15dbf-56cd-4f0b-95b1-0ecabbfe837d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3f9841c8-4b06-46f4-947b-69e2ed2ddf07": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3fddd214-5b3a-4ec3-8548-8a8966bcb5a8": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "3f2d50ec-0be9-455e-ba99-28ffc26305c9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "251cba4b-c661-4077-9a59-d07a5839f552": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "262049c8-6b35-44a8-b4e4-9e558d8ada8d": {
+      "status": "ok",
+      "path": "/ciandt/job-91",
+      "external_id": "ciandt_job-91"
+    },
+    "2602e7f0-54e4-435f-8e57-49df9d04833b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "36f4d1de-854e-44dd-a379-25a8fd827002": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "2ffbb7fe-a056-41cb-99bf-b78fac5d2f82": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "240da2d3-4622-4d20-b9f2-507908295190": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "24643679-746b-4af0-98ba-54f184737b7d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "39ac1c02-b12d-4073-8f6e-dcfe5d0ac97e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "3836a6e2-fd2c-4a98-990f-37cf61f38b2a": {
+      "status": "ok",
+      "path": "/d-matrix/arch-72",
+      "external_id": "d-matrix_arch-72"
+    },
+    "3694db45-fb9b-4ed9-8db0-4b30b0a97be6": {
+      "status": "ok",
+      "path": "/lyrahealth/digital",
+      "external_id": "lyrahealth_digital"
+    },
+    "2537be3b-7c46-4fe5-93f2-c6db466b77fd": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "35663dee-3c32-44bb-8afd-261cdd359eda": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "2cd5876c-4cc1-4202-bd95-c54c4d50d1c2": {
+      "status": "ok",
+      "path": "/onhires/sales",
+      "external_id": "onhires_sales"
+    },
+    "29dac91f-e183-4234-9c96-7c48161f8bc6": {
+      "status": "ok",
+      "path": "/panoptyc/biz-fin",
+      "external_id": "panoptyc_biz-fin"
+    },
+    "3e9f09e0-ebd4-48bb-90b9-cec9e7a69acb": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "279622b8-2fb8-4752-92d4-227ac11f911e": {
+      "status": "ok",
+      "path": "/aero/gulfst-64",
+      "external_id": "aero_gulfst-64"
+    },
+    "23d3b120-1c61-40ae-a647-15763dcdd6cb": {
+      "status": "ok",
+      "path": "/bazaarvoice/lead-94",
+      "external_id": "bazaarvoice_lead-94"
+    },
+    "3123e080-332a-4e3a-a092-abfaf1b297db": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "343528af-6d12-4eca-a362-db6ae6aac581": {
+      "status": "ok",
+      "path": "/zoox/tech-82",
+      "external_id": "zoox_tech-82"
+    },
+    "3d50bcc1-b8ff-4aa3-8b93-0b9dacc4dd9d": {
+      "status": "ok",
+      "path": "/circadiahealth/tech",
+      "external_id": "circadiahealth_tech"
     }
   },
   "doneIds": [
@@ -119630,7 +119831,52 @@
     "39f7cfc9-e91b-4c63-b7af-bcc77cb6bf68",
     "2d87b2e7-2fd2-4ed5-95a4-0c11780eb064",
     "31d3b8b0-c130-418f-bb8f-d1df3a053d07",
-    "31087b3d-932b-46bb-b079-95fa8dacb71f"
+    "31087b3d-932b-46bb-b079-95fa8dacb71f",
+    "3fa13e89-2e54-46b7-beca-429efed4f198",
+    "350d5c4b-de15-43a0-b5bc-09307c93cd41",
+    "2eefa565-499b-489e-a430-932b485e9724",
+    "2e09e456-e9f9-49ab-a937-ef2449a32fe3",
+    "32229f72-0aec-4c2d-a875-bc2add0e25fa",
+    "290e1277-c984-49b4-82cb-9b6f7063f932",
+    "2b7456c0-a30b-49eb-836c-eddbb3ca59aa",
+    "305942a7-acba-485e-838c-bb8dc21786c6",
+    "2c4cc0b1-1627-4477-a7d8-8011430c5f08",
+    "2cbfd879-1e3d-42cc-b657-3c5c96f32f93",
+    "24b8b86c-aa7e-48e2-b2cc-f9c6cf7eae2d",
+    "2871577b-4ee4-4469-829e-03945675c070",
+    "3c53ae77-9e3c-4b8f-88cc-e0a8d6dac0db",
+    "32f92d62-7de3-46f1-a215-0479f953b6de",
+    "3fa87266-1aaf-4a4c-845a-741b5e25d656",
+    "33c50b12-7c53-4920-ba91-8f8ac59ca9e5",
+    "25bd1a42-949b-4c55-ad1f-6652a7ed539a",
+    "3a044fa5-f3bb-40db-b634-6bab4cc6fae4",
+    "3f455619-c5bb-44fe-a0ca-3fce7950c409",
+    "3a6fb3ab-f05d-42b7-9c84-68928270ed3d",
+    "2789e673-2c45-4831-9a55-7f226079cbad",
+    "24f15dbf-56cd-4f0b-95b1-0ecabbfe837d",
+    "3f9841c8-4b06-46f4-947b-69e2ed2ddf07",
+    "3fddd214-5b3a-4ec3-8548-8a8966bcb5a8",
+    "3f2d50ec-0be9-455e-ba99-28ffc26305c9",
+    "251cba4b-c661-4077-9a59-d07a5839f552",
+    "262049c8-6b35-44a8-b4e4-9e558d8ada8d",
+    "2602e7f0-54e4-435f-8e57-49df9d04833b",
+    "36f4d1de-854e-44dd-a379-25a8fd827002",
+    "2ffbb7fe-a056-41cb-99bf-b78fac5d2f82",
+    "240da2d3-4622-4d20-b9f2-507908295190",
+    "24643679-746b-4af0-98ba-54f184737b7d",
+    "39ac1c02-b12d-4073-8f6e-dcfe5d0ac97e",
+    "3836a6e2-fd2c-4a98-990f-37cf61f38b2a",
+    "3694db45-fb9b-4ed9-8db0-4b30b0a97be6",
+    "2537be3b-7c46-4fe5-93f2-c6db466b77fd",
+    "35663dee-3c32-44bb-8afd-261cdd359eda",
+    "2cd5876c-4cc1-4202-bd95-c54c4d50d1c2",
+    "29dac91f-e183-4234-9c96-7c48161f8bc6",
+    "3e9f09e0-ebd4-48bb-90b9-cec9e7a69acb",
+    "279622b8-2fb8-4752-92d4-227ac11f911e",
+    "23d3b120-1c61-40ae-a647-15763dcdd6cb",
+    "3123e080-332a-4e3a-a092-abfaf1b297db",
+    "343528af-6d12-4eca-a362-db6ae6aac581",
+    "3d50bcc1-b8ff-4aa3-8b93-0b9dacc4dd9d"
   ],
   "skipped": {},
   "batches": [
@@ -120946,6 +121192,34 @@
         "/greenhouse/fp",
         "/prophero/strat"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 1,
+      "at": "2026-08-13T03:57:19.016Z",
+      "attempted": 33,
+      "ok": 9,
+      "skip": 12,
+      "fail": 24,
+      "reasons": {
+        "expand_existing": 22,
+        "source_thin": 2,
+        "no_ai": 12,
+        "posting_older_than_30d": 10,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 15,
+        "rewrite_short": 9
+      },
+      "samplePaths": [
+        "/ciandt/job-91",
+        "/d-matrix/arch-72",
+        "/lyrahealth/digital",
+        "/onhires/sales",
+        "/panoptyc/biz-fin",
+        "/aero/gulfst-64",
+        "/bazaarvoice/lead-94",
+        "/zoox/tech-82",
+        "/circadiahealth/tech"
+      ]
     }
   ],
   "deadBoards": {
@@ -121347,6 +121621,18 @@
     "ashby:prometheus": "posting_older_than_30d",
     "ashby:harmonic": "posting_older_than_30d",
     "ashby:teya": "posting_older_than_30d",
-    "greenhouse:specialtydentalbrands": "source_thin"
+    "greenhouse:specialtydentalbrands": "source_thin",
+    "ashby:rehire": "source_thin",
+    "ashby:endurance-energy": "posting_older_than_30d",
+    "ashby:filmhub": "posting_older_than_30d",
+    "ashby:quarks-tech": "posting_older_than_30d",
+    "ashby:retell-ai": "posting_older_than_30d",
+    "lever:disher": "source_thin",
+    "lever:loadsmart": "posting_older_than_30d",
+    "lever:alimentiv-2": "posting_older_than_30d",
+    "lever:ircagroup": "posting_older_than_30d",
+    "lever:shieldai": "posting_older_than_30d",
+    "lever:thinkahead": "posting_older_than_30d",
+    "lever:workwave": "posting_older_than_30d"
   }
 }

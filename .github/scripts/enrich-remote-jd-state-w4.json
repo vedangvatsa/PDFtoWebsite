@@ -60559,6 +60559,120 @@
     "8f7daeff-384e-428a-a916-82f97f68b870": {
       "status": "fail",
       "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "937411bc-5588-40e5-b71f-0e632f7143cd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "8a09f04f-b7bc-4b1e-9c09-d935f75f310e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "885a3827-53e3-4526-85d4-3477b2a702fd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "9834714c-93ae-4f77-9906-49d63d31bb18": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "9188a683-1527-4e50-a659-da889706009b": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "9dcdad49-60f0-4d79-9873-65f217f7dc72": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "81f63b0c-3600-4275-a78e-1e162fb83df3": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "94802cce-916b-43be-a0a9-40c2757ad5f3": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "867c1c5e-6122-4576-9810-6170acfb9c42": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Key Realty Commercial Real Estate Instructor company=Colibrigroup apply=https://jobs.lever.co/colibrigroup/59e0eb1a-9d14-4e98-8665-b8c01e87094c"
+    },
+    "9dae6934-785a-4a6d-99cf-74a03e0fe28d": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Embedded Software Engineer company=Zoox apply=https://jobs.lever.co/zoox/0dd5de4b-4e98-4808-85fd-e739e7fc5bba"
+    },
+    "883e9ada-e3fa-436b-87d5-f0adcfe910d3": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Sr. Patient Coordinator company=Vitana Pediatric apply=https://jobs.lever.co/vitana-pediatric/36b8f24b-32e7-4968-a52a-6782da3d9c1f"
+    },
+    "88e518aa-ce81-43fe-9dd4-0715bf609ed5": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Staff Engineer, Software Autonomy Applications company=Shieldai apply=https://jobs.lever.co/shieldai/548aa2ee-c711-4d58-9f3d-dc19868fd391"
+    },
+    "8ed69b0d-fd33-470d-adb2-34199f28e2cb": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Sales Executive - Campo Grande company=Payjoy apply=https://jobs.lever.co/payjoy/382e68d2-e22c-4812-a7b8-bc63455c12a1"
+    },
+    "9abf9622-473b-4c02-addd-889fbfa18538": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Technical Program Manager company=Atomcomputing apply=https://jobs.lever.co/atomcomputing/5043f718-fb43-4a23-bc6f-973f18b830d5"
+    },
+    "9eef2385-e4ad-4c34-b239-4a69c2c65847": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Sr. Clinical Research Associate company=Alimentiv 2 apply=https://jobs.lever.co/alimentiv-2/14174dcb-9168-4e68-afb7-9d5c973a809a"
+    },
+    "964aad51-fbbf-4ea6-86c4-54c063f9f8ff": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "822df9db-94c4-4835-a2b3-0a8a84c0f1fe": {
+      "status": "ok",
+      "path": "/shieldai/electr-be",
+      "external_id": "shieldai_electr-be"
+    },
+    "96ef3d40-c403-493a-ba13-2db043e9c356": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9645c3d3-0621-4610-9933-547ce904e735": {
+      "status": "ok",
+      "path": "/redhorsecorp/data",
+      "external_id": "redhorsecorp_data"
+    },
+    "9b2f86e3-5e2a-47c3-9dfa-d367b69622fe": {
+      "status": "ok",
+      "path": "/redhorsecorp/database",
+      "external_id": "redhorsecorp_database"
+    },
+    "932bcde0-abc2-4b59-886d-e2ee0ac7e0df": {
+      "status": "ok",
+      "path": "/shieldai/bd-87",
+      "external_id": "shieldai_bd-87"
+    },
+    "98dd4387-8c11-4b93-afce-6cc983f6fc88": {
+      "status": "ok",
+      "path": "/mainspringenergy/sw-eng",
+      "external_id": "mainspringenergy_sw-eng"
+    },
+    "984d97b5-8d5d-41f2-a0a6-32e3d10298a3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9a02a459-df52-4ee7-8e1c-2e4447d55a7b": {
+      "status": "ok",
+      "path": "/brightedge/cust-62",
+      "external_id": "brightedge_cust-62"
+    },
+    "9a842558-c701-42be-b685-4099246165c4": {
+      "status": "ok",
+      "path": "/gauntlet/biz-0c",
+      "external_id": "gauntlet_biz-0c"
     }
   },
   "doneIds": [
@@ -74474,7 +74588,32 @@
     "89b41caa-0698-4fd7-8f64-7dedea88fcfd",
     "89a56409-0503-4103-aed7-733c463eb9fe",
     "90c5055e-472c-4e6b-a0fc-d7c8a0105c8f",
-    "8f7daeff-384e-428a-a916-82f97f68b870"
+    "8f7daeff-384e-428a-a916-82f97f68b870",
+    "937411bc-5588-40e5-b71f-0e632f7143cd",
+    "8a09f04f-b7bc-4b1e-9c09-d935f75f310e",
+    "885a3827-53e3-4526-85d4-3477b2a702fd",
+    "9834714c-93ae-4f77-9906-49d63d31bb18",
+    "9188a683-1527-4e50-a659-da889706009b",
+    "9dcdad49-60f0-4d79-9873-65f217f7dc72",
+    "81f63b0c-3600-4275-a78e-1e162fb83df3",
+    "94802cce-916b-43be-a0a9-40c2757ad5f3",
+    "867c1c5e-6122-4576-9810-6170acfb9c42",
+    "9dae6934-785a-4a6d-99cf-74a03e0fe28d",
+    "883e9ada-e3fa-436b-87d5-f0adcfe910d3",
+    "88e518aa-ce81-43fe-9dd4-0715bf609ed5",
+    "8ed69b0d-fd33-470d-adb2-34199f28e2cb",
+    "9abf9622-473b-4c02-addd-889fbfa18538",
+    "9eef2385-e4ad-4c34-b239-4a69c2c65847",
+    "964aad51-fbbf-4ea6-86c4-54c063f9f8ff",
+    "822df9db-94c4-4835-a2b3-0a8a84c0f1fe",
+    "96ef3d40-c403-493a-ba13-2db043e9c356",
+    "9645c3d3-0621-4610-9933-547ce904e735",
+    "9b2f86e3-5e2a-47c3-9dfa-d367b69622fe",
+    "932bcde0-abc2-4b59-886d-e2ee0ac7e0df",
+    "98dd4387-8c11-4b93-afce-6cc983f6fc88",
+    "984d97b5-8d5d-41f2-a0a6-32e3d10298a3",
+    "9a02a459-df52-4ee7-8e1c-2e4447d55a7b",
+    "9a842558-c701-42be-b685-4099246165c4"
   ],
   "skipped": {},
   "batches": [
@@ -76989,6 +77128,46 @@
         "/everpure/applied",
         "/zwift/design"
       ]
+    },
+    {
+      "batchNum": 4,
+      "worker": 4,
+      "at": "2026-08-13T03:51:04.591Z",
+      "attempted": 8,
+      "ok": 0,
+      "skip": 0,
+      "fail": 8,
+      "reasons": {
+        "expand_existing": 8,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 6,
+        "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 4,
+      "at": "2026-08-13T03:57:12.365Z",
+      "attempted": 10,
+      "ok": 7,
+      "skip": 7,
+      "fail": 3,
+      "reasons": {
+        "expand_existing": 3,
+        "posting_older_than_30d": 6,
+        "no_ai": 7,
+        "source_thin": 1,
+        "rewrite_short": 3
+      },
+      "samplePaths": [
+        "/shieldai/electr-be",
+        "/redhorsecorp/data",
+        "/redhorsecorp/database",
+        "/shieldai/bd-87",
+        "/mainspringenergy/sw-eng",
+        "/brightedge/cust-62",
+        "/gauntlet/biz-0c"
+      ]
     }
   ],
   "deadBoards": {
@@ -77268,6 +77447,13 @@
     "lever:activecampaign": "posting_older_than_30d",
     "lever:bumbleinc": "posting_older_than_30d",
     "greenhouse:stone": "posting_older_than_30d",
-    "greenhouse:northmarq": "source_thin"
+    "greenhouse:northmarq": "source_thin",
+    "lever:colibrigroup": "posting_older_than_30d",
+    "lever:zoox": "posting_older_than_30d",
+    "lever:vitana-pediatric": "source_thin",
+    "lever:shieldai": "posting_older_than_30d",
+    "lever:payjoy": "posting_older_than_30d",
+    "lever:atomcomputing": "posting_older_than_30d",
+    "lever:alimentiv-2": "posting_older_than_30d"
   }
 }

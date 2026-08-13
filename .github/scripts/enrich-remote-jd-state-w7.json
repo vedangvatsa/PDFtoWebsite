@@ -65221,6 +65221,139 @@
     "e498fbe7-a9c6-41df-b2eb-d78071e2659c": {
       "status": "fail",
       "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "e4b4dabf-9ab4-463d-9db4-f632707975ff": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Floor Manager company=Feldinc apply=https://jobs.lever.co/feldinc/9966db65-fc90-4dc6-a96b-8c97112a7378"
+    },
+    "f0625a2c-f605-4fc6-8531-c96c8ca81fe7": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Rockwell Institute Instructor Position company=Colibrigroup apply=https://jobs.lever.co/colibrigroup/a127d585-cc01-4cf3-ad19-bc7bef367e06"
+    },
+    "fc4d06cf-35ae-46f6-a05b-4a2d5a40c90e": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Senior Product Designer, BFF company=Bumbleinc apply=https://jobs.lever.co/bumbleinc/b0f81366-2d63-4d0a-8940-41e0b5e32eed"
+    },
+    "e1947155-5c1f-45c4-89a1-82dc0f6bffda": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=VP, Head of Regulatory company=Enveda apply=https://jobs.lever.co/enveda/6eeefb91-38e4-40df-9fa5-3d45e90dda4a"
+    },
+    "e8f5b127-a142-447c-a5b1-360cbc9422f7": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Manager, Simulation Engineering company=Shieldai apply=https://jobs.lever.co/shieldai/4b31c2db-feb0-4a4f-96e3-20af7b267e2d"
+    },
+    "f1bc4136-8ace-4ffe-afe7-6295c5517ce8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ec3a52a9-a496-4d13-b336-cbd04ed80381": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ff35abf6-c0a3-433a-a617-9cf601b7f7d0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e019817d-f692-4bae-a818-9b7ca4d766a2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "e2db0069-af48-404b-a9fb-c3e22646a545": {
+      "status": "ok",
+      "path": "/trustly/payrol-fd",
+      "external_id": "trustly_payrol-fd"
+    },
+    "fea8fe5a-352e-4ff4-923c-8abac9f4fd4c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "eb58ce1b-ff80-48fa-82a5-c67c51d132f9": {
+      "status": "ok",
+      "path": "/uniswap/sw-eng",
+      "external_id": "uniswap_sw-eng"
+    },
+    "f9e687f3-e95c-48b1-a4d4-2bead7cbfdb7": {
+      "status": "ok",
+      "path": "/loadsmart/sales",
+      "external_id": "loadsmart_sales"
+    },
+    "ea714884-2fd1-4a7d-9bcd-34894389f64a": {
+      "status": "ok",
+      "path": "/colibrigroup/growth",
+      "external_id": "colibrigroup_growth"
+    },
+    "e109c606-499c-4a9d-801f-504c9ba2059e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "fa680854-6c2a-4e6a-b0aa-57b46356b808": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "faabb735-75f4-468d-9a5c-7d8165c6690e": {
+      "status": "ok",
+      "path": "/jetsetpilates/main",
+      "external_id": "jetsetpilates_main"
+    },
+    "f33cb23e-69a6-4db6-9352-51d69e507db0": {
+      "status": "ok",
+      "path": "/jetsetpilates/jetset-7f",
+      "external_id": "jetsetpilates_jetset-7f"
+    },
+    "e6de4314-2d42-4796-a5de-584935dc14de": {
+      "status": "ok",
+      "path": "/everops/okta-iam",
+      "external_id": "everops_okta-iam"
+    },
+    "f0a444cd-36d3-477e-ae68-c5aec118062e": {
+      "status": "ok",
+      "path": "/switchboard/treasury",
+      "external_id": "switchboard_treasury"
+    },
+    "fa599bc6-2714-46db-bf87-ace56d5ea6c2": {
+      "status": "ok",
+      "path": "/shieldai/eng-e8",
+      "external_id": "shieldai_eng-e8"
+    },
+    "e4fcd414-b84d-41dc-b0ee-c6243f77e49b": {
+      "status": "ok",
+      "path": "/paraform/growth-e4",
+      "external_id": "paraform_growth-e4"
+    },
+    "f5757fe2-1184-4915-83ac-8b2634e30d1e": {
+      "status": "ok",
+      "path": "/shieldai/cust-6d",
+      "external_id": "shieldai_cust-6d"
+    },
+    "e87bd814-b2bf-44b0-b03a-a0124e229863": {
+      "status": "ok",
+      "path": "/tennr/fe-eng",
+      "external_id": "tennr_fe-eng"
+    },
+    "e1c7331f-f404-4dcd-b389-a25f11d8b156": {
+      "status": "ok",
+      "path": "/gauntlet/biz-dev",
+      "external_id": "gauntlet_biz-dev"
+    },
+    "e8498646-3124-4105-930c-af0c080d0c2f": {
+      "status": "ok",
+      "path": "/thinkingbox/design-20",
+      "external_id": "thinkingbox_design-20"
+    },
+    "ef5cd033-22f6-4902-89ba-717f2fe49f0c": {
+      "status": "ok",
+      "path": "/sait/instru-9c",
+      "external_id": "sait_instru-9c"
+    },
+    "fea82fc3-b986-4d2f-aeb7-2ddd07039e69": {
+      "status": "ok",
+      "path": "/zambezi/copywriter",
+      "external_id": "zambezi_copywriter"
     }
   },
   "doneIds": [
@@ -80201,7 +80334,35 @@
     "fce7147e-2c16-453f-a770-2b85c2c346b6",
     "e16ef706-fbd1-4fda-8617-b4f896a0f42d",
     "f58023a0-50b6-421d-9391-603b2e383348",
-    "e498fbe7-a9c6-41df-b2eb-d78071e2659c"
+    "e498fbe7-a9c6-41df-b2eb-d78071e2659c",
+    "e4b4dabf-9ab4-463d-9db4-f632707975ff",
+    "f0625a2c-f605-4fc6-8531-c96c8ca81fe7",
+    "fc4d06cf-35ae-46f6-a05b-4a2d5a40c90e",
+    "e1947155-5c1f-45c4-89a1-82dc0f6bffda",
+    "e8f5b127-a142-447c-a5b1-360cbc9422f7",
+    "f1bc4136-8ace-4ffe-afe7-6295c5517ce8",
+    "ec3a52a9-a496-4d13-b336-cbd04ed80381",
+    "ff35abf6-c0a3-433a-a617-9cf601b7f7d0",
+    "e019817d-f692-4bae-a818-9b7ca4d766a2",
+    "e2db0069-af48-404b-a9fb-c3e22646a545",
+    "fea8fe5a-352e-4ff4-923c-8abac9f4fd4c",
+    "eb58ce1b-ff80-48fa-82a5-c67c51d132f9",
+    "f9e687f3-e95c-48b1-a4d4-2bead7cbfdb7",
+    "ea714884-2fd1-4a7d-9bcd-34894389f64a",
+    "e109c606-499c-4a9d-801f-504c9ba2059e",
+    "fa680854-6c2a-4e6a-b0aa-57b46356b808",
+    "faabb735-75f4-468d-9a5c-7d8165c6690e",
+    "f33cb23e-69a6-4db6-9352-51d69e507db0",
+    "e6de4314-2d42-4796-a5de-584935dc14de",
+    "f0a444cd-36d3-477e-ae68-c5aec118062e",
+    "fa599bc6-2714-46db-bf87-ace56d5ea6c2",
+    "e4fcd414-b84d-41dc-b0ee-c6243f77e49b",
+    "f5757fe2-1184-4915-83ac-8b2634e30d1e",
+    "e87bd814-b2bf-44b0-b03a-a0124e229863",
+    "e1c7331f-f404-4dcd-b389-a25f11d8b156",
+    "e8498646-3124-4105-930c-af0c080d0c2f",
+    "ef5cd033-22f6-4902-89ba-717f2fe49f0c",
+    "fea82fc3-b986-4d2f-aeb7-2ddd07039e69"
   ],
   "skipped": {},
   "batches": [
@@ -80907,6 +81068,39 @@
       "samplePaths": [
         "/doordash-usa/data-sci"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 7,
+      "at": "2026-08-13T03:57:11.977Z",
+      "attempted": 23,
+      "ok": 16,
+      "skip": 5,
+      "fail": 7,
+      "reasons": {
+        "expand_existing": 15,
+        "posting_older_than_30d": 5,
+        "no_ai": 5,
+        "rewrite_short": 7
+      },
+      "samplePaths": [
+        "/trustly/payrol-fd",
+        "/uniswap/sw-eng",
+        "/loadsmart/sales",
+        "/colibrigroup/growth",
+        "/jetsetpilates/main",
+        "/jetsetpilates/jetset-7f",
+        "/everops/okta-iam",
+        "/switchboard/treasury",
+        "/shieldai/eng-e8",
+        "/paraform/growth-e4",
+        "/shieldai/cust-6d",
+        "/tennr/fe-eng",
+        "/gauntlet/biz-dev",
+        "/thinkingbox/design-20",
+        "/sait/instru-9c",
+        "/zambezi/copywriter"
+      ]
     }
   ],
   "deadBoards": {
@@ -81141,6 +81335,11 @@
     "ashby:generalintelligencecompany": "posting_older_than_30d",
     "ashby:paradigm": "posting_older_than_30d",
     "ashby:tin-can": "posting_older_than_30d",
-    "greenhouse:stone": "source_thin"
+    "greenhouse:stone": "source_thin",
+    "lever:feldinc": "posting_older_than_30d",
+    "lever:colibrigroup": "posting_older_than_30d",
+    "lever:bumbleinc": "posting_older_than_30d",
+    "lever:enveda": "posting_older_than_30d",
+    "lever:shieldai": "posting_older_than_30d"
   }
 }
