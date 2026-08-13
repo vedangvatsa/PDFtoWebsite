@@ -43,12 +43,14 @@ export function JobListingOgCard({
             fontWeight: 600,
             color: '#71717a',
             letterSpacing: '0.15em',
-            textTransform: 'uppercase' as const,
+            textTransform: 'uppercase',
           }}
         >
           CVin.Bio  ·  Job listing
         </div>
-        {logoSrc ? <CompanyLogoBadge logoSrc={logoSrc} /> : null}
+        {logoSrc ? <CompanyLogoBadge logoSrc={logoSrc} /> : (
+          <div style={{ display: 'flex', width: 88, height: 88 }} />
+        )}
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -71,7 +73,7 @@ export function JobListingOgCard({
             fontSize: 34,
             fontWeight: 500,
             color: '#52525b',
-            flexWrap: 'wrap' as const,
+            flexWrap: 'wrap',
           }}
         >
           {metaBits}
