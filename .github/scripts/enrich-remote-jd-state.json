@@ -3114,6 +3114,188 @@
     "ac565649-8915-4b70-aed0-e17f7744b046": {
       "status": "fail",
       "reason": "rewrite_structure"
+    },
+    "bd68aa64-1cb0-4de6-bdd9-6a64b6e5ce77": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Cohere Research Fellow company=Cohere apply=https://cohere.com/careers"
+    },
+    "bb5b4c89-29df-4ece-8e88-95645637c39a": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Day One Fellow company=Day One Project apply=https://fas.org/day-one-project/"
+    },
+    "be560f14-de90-49c3-8d51-e4f6e7f98e9e": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=New America Fellows company=New America apply=https://www.newamerica.org/fellows/"
+    },
+    "bffa7905-b68e-4bac-934e-fcf1f460b805": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c2d279f3-379d-4fde-aab0-906a8754848d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cb18b964-465c-4284-926d-c012266d7624": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "d9a693d8-75f8-4c9c-a660-81cbe847d617": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "deb130dd-3029-4610-a2f5-0040f81b8795": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "de7f237c-c603-419b-81e1-cc2ff6349312": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f31730a8-da1b-44b0-a151-41683722a168": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f47e426c-922c-416c-b56d-ce2d2c273624": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Congressional Fellowship company=IEEE-USA apply=https://ieeeusa.org/public-policy/"
+    },
+    "ff2dda59-19aa-4533-9373-8ec3e3a7ff80": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AAAS Science & Technology Policy Fellowship company=AAAS apply=https://www.aaas.org/programs/science-technology-policy-fellowships"
+    },
+    "0857193f-343f-4591-9412-97a9269f697d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f53e830d-f600-40ae-9cb6-aba36ebb4993": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "16a04eca-2ffc-4303-b342-22e9adbb4293": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "11b34d7a-a756-40ed-bfbf-66180eaa9198": {
+      "status": "ok",
+      "path": "/nbr/undergraduat",
+      "external_id": "nbr_undergraduat"
+    },
+    "1739dc33-e8f5-4777-b720-3f5b52dee431": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "20eb87c2-4138-4639-80e2-243c7e8f0be7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "201aac1f-a2cd-49f7-83ae-1f9ae99339e5": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "229dc76f-357c-4154-a171-67eb8208f3c3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "23c7f809-3b48-4ed9-aa19-e9fb49cea7e6": {
+      "status": "ok",
+      "path": "/apartresearch/community",
+      "external_id": "apartresearch_community"
+    },
+    "35b436cb-3221-4e48-b456-70c5c6b9ea1e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "3523d481-edf5-415a-af6b-e2cf40286fba": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "3a2f0180-ee71-4d97-b4ec-4ba93a0f6d6b": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Biosecurity Game Changers Fellowship company=Pandemics apply=https://pandemics.sph.brown.edu/game-changers-initiative/biosecurity-game-changers-fellowship"
+    },
+    "3e5a024d-bf67-4e54-97f7-53427721cb1a": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "3c701af8-0b22-4163-9e65-a4b927ef66c5": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Kendall Fellowship company=Ucsusa apply=https://www.ucs.org/about/people/fellows"
+    },
+    "4032c7d4-971f-4e83-af54-c0b2fd31fae9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "3ee8d7be-affe-42d6-afc4-48d19d4b5b83": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5097cc79-3933-40a7-b8f6-1c41e42464de": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4c7f3146-467e-4f4b-9344-e64cd0eafd4b": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "5b62ac8e-645b-461b-a5c3-ee1901fb90b2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "68918920-5387-48c1-b833-4c3aa7534ccf": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=IBM Research intern / fellow company=IBM Research apply=https://www.ibm.com/careers/research"
+    },
+    "50cda471-e5f6-4196-bc5a-37458e7affe7": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Editorial Fellows company=Thebulletin apply=https://thebulletin.org/next-generation-program/editorial-fellows-program/"
+    },
+    "68f356fe-36ea-4380-8255-63b152d9c6b2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6dbc048b-c535-40c8-b6b9-372ac08fe8f4": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Scale Research Fellow company=Scale AI apply=https://scale.com/careers"
+    },
+    "77b1b071-a67e-4119-afa1-c5f2aa27401e": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "6a5f727a-f641-4cce-b51d-2886785cd05c": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Paragon Fellowship company=Paragonfellowship apply=https://www.paragonfellowship.org/"
+    },
+    "7f480688-269b-4312-a008-f060a3aecbce": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Redwood Research Fellow company=Redwood Research apply=https://www.redwoodresearch.org/"
+    },
+    "862bbeae-c41e-4c16-aba2-cb0fdb7749b4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "81c40855-0e93-4320-acd0-ab78554e86db": {
+      "status": "fail",
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -3940,6 +4122,18 @@
     "host:adalovelaceinstitute.org": "source_thin",
     "host:aspentechpolicyhub.org": "source_thin",
     "host:daad.de": "html_403",
-    "host:ainowinstitute.org": "source_thin"
+    "host:ainowinstitute.org": "source_thin",
+    "host:cohere.com": "source_thin",
+    "host:fas.org": "source_thin",
+    "host:newamerica.org": "source_thin",
+    "host:ieeeusa.org": "html_403",
+    "host:aaas.org": "source_thin",
+    "host:pandemics.sph.brown.edu": "source_thin",
+    "host:ucs.org": "source_thin",
+    "host:ibm.com": "source_thin",
+    "host:thebulletin.org": "html_403",
+    "host:scale.com": "source_thin",
+    "host:paragonfellowship.org": "source_thin",
+    "host:redwoodresearch.org": "source_thin"
   }
 }

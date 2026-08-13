@@ -116545,12 +116545,222 @@
     },
     "5b62ac8e-645b-461b-a5c3-ee1901fb90b2": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee": {
       "status": "ok",
       "path": "/cfr/technologist",
       "external_id": "cfr_technologist"
+    },
+    "0391d309-99b8-4a86-af9f-e297a9a6748d": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Sequoia Open Source Fellowship company=Sequoia apply=https://www.sequoiacap.com/oss/"
+    },
+    "050087a0-f6f0-4292-b37e-a6349ee7d2e5": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Google Public Policy Fellowship company=Google apply=https://www.google.com/policyfellowship/"
+    },
+    "0d83a269-b525-42ad-9c7d-a611512520bc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "05087014-1c52-4deb-87f3-e212d837e94d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "101ec12b-b2e2-439a-820a-02cac8612e29": {
+      "status": "ok",
+      "path": "/horizon-institute-for-public-service/horizo-ce",
+      "external_id": "horizon-institute-for-public-service_horizo-ce"
+    },
+    "0ebb51e8-bbf5-4583-99ef-4f489fe52f6b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1e617af0-ef13-407b-afe4-8aafb0fbccc5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1f5783b5-8baf-4e3c-b003-6c1bcd6da49f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "2c1e1fcf-65d4-490b-a2b9-8f1c3c348c64": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "2ef50e44-5bb6-4564-9545-97832e3ddd33": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "332b1ebd-5e2d-47d0-8111-73e45d6989db": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "35fad951-80d9-4361-a28b-ab0fd857adc8": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AIML Residency Program company=Apple apply=https://machinelearning.apple.com/updates/aiml-residency-program-application-2026"
+    },
+    "3bf2d68e-bb3f-4101-b179-552123d4f4f1": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Vector Faculty Affiliate / Fellows company=Vector Institute apply=https://vectorinstitute.ai/about/careers/"
+    },
+    "3f5d4847-906f-4573-bc14-c680075d688e": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=RIKEN AIP Research Scientist / Fellow company=RIKEN AIP apply=https://aip.riken.jp/careers/"
+    },
+    "4666f39b-fc44-4060-ba89-1600a1da2742": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=ITS Global Policy Fellowship company=ITS Rio apply=https://itsrio.org/en/comunicados/call-for-applications-its-global-policy-fellowship-program-2026/"
+    },
+    "604d7a1a-6241-4e0c-a4a2-b1c9f2fea32a": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Pear Fellows company=Pear VC apply=https://pear.vc/programs/dorm/fellows/"
+    },
+    "3f9c21ca-fdd9-461b-b2ce-d33a5eb79ce8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "625c3bce-015b-4c45-a007-6bb0862ee388": {
+      "status": "ok",
+      "path": "/center-for-ai-safety/ai",
+      "external_id": "center-for-ai-safety_ai"
+    },
+    "63fcff46-c21a-468a-acb2-abada490a277": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Berkman Klein Fellowship company=Harvard BKC apply=https://cyber.harvard.edu/getinvolved"
+    },
+    "6ff18889-0ca0-4b15-8b21-7b7ca48d7710": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "76c6f446-fc82-4298-befd-518baa93e7e1": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Visiting Fellow company=Ada Lovelace Institute apply=https://www.adalovelaceinstitute.org/"
+    },
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fa1a9fb-daa6-4e9a-adf9-c7c6a53ad974": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "80f54549-88c7-42c3-9b73-845030131bc5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "920756aa-140b-4ddb-b519-5a1e6a91fb37": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Aspen Tech Policy Hub Fellowship company=Aspen Institute apply=https://www.aspentechpolicyhub.org/"
+    },
+    "9372c9f6-a307-427a-af5c-66c08724b408": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8358b94a-de8a-4515-90e5-6086d34034c5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9f2077a5-a556-4c26-916a-c24b0a9dfa90": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "9ee9fae5-14e3-4855-908f-b7716fbb32f9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a2de7a44-cfdc-4304-8868-4ef38539b284": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a6cc16ec-f485-4246-990f-a74d7c8379bc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "aa99d6f5-1ec4-4521-9867-12d13bac9990": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a73ed6bf-def0-43f0-84df-802d7791243e": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=DAAD AI Net Fellowships company=DAAD apply=https://www.daad.de/en/"
+    },
+    "b343ccad-7cf0-4bbc-b912-9bac33cd151c": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AI Now Fellowships company=AI Now Institute apply=https://ainowinstitute.org/"
+    },
+    "b412d0c1-1fd2-4816-81b8-4b4aaf982f6c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ac565649-8915-4b70-aed0-e17f7744b046": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "bd68aa64-1cb0-4de6-bdd9-6a64b6e5ce77": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Cohere Research Fellow company=Cohere apply=https://cohere.com/careers"
+    },
+    "bb5b4c89-29df-4ece-8e88-95645637c39a": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Day One Fellow company=Day One Project apply=https://fas.org/day-one-project/"
+    },
+    "be560f14-de90-49c3-8d51-e4f6e7f98e9e": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=New America Fellows company=New America apply=https://www.newamerica.org/fellows/"
+    },
+    "bffa7905-b68e-4bac-934e-fcf1f460b805": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c2d279f3-379d-4fde-aab0-906a8754848d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cb18b964-465c-4284-926d-c012266d7624": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "d9a693d8-75f8-4c9c-a660-81cbe847d617": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "deb130dd-3029-4610-a2f5-0040f81b8795": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "de7f237c-c603-419b-81e1-cc2ff6349312": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f31730a8-da1b-44b0-a151-41683722a168": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f47e426c-922c-416c-b56d-ce2d2c273624": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Congressional Fellowship company=IEEE-USA apply=https://ieeeusa.org/public-policy/"
     }
   },
   "doneIds": [
@@ -138501,7 +138711,56 @@
     "5d60e719-529a-4617-a3fe-9f81cf9cc2b1",
     "4e10411d-51f9-49d7-be62-46247f7bd7d4",
     "4032c7d4-971f-4e83-af54-c0b2fd31fae9",
-    "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee"
+    "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee",
+    "0391d309-99b8-4a86-af9f-e297a9a6748d",
+    "050087a0-f6f0-4292-b37e-a6349ee7d2e5",
+    "0d83a269-b525-42ad-9c7d-a611512520bc",
+    "05087014-1c52-4deb-87f3-e212d837e94d",
+    "101ec12b-b2e2-439a-820a-02cac8612e29",
+    "0ebb51e8-bbf5-4583-99ef-4f489fe52f6b",
+    "1e617af0-ef13-407b-afe4-8aafb0fbccc5",
+    "1f5783b5-8baf-4e3c-b003-6c1bcd6da49f",
+    "2c1e1fcf-65d4-490b-a2b9-8f1c3c348c64",
+    "2ef50e44-5bb6-4564-9545-97832e3ddd33",
+    "332b1ebd-5e2d-47d0-8111-73e45d6989db",
+    "35fad951-80d9-4361-a28b-ab0fd857adc8",
+    "3bf2d68e-bb3f-4101-b179-552123d4f4f1",
+    "3f5d4847-906f-4573-bc14-c680075d688e",
+    "4666f39b-fc44-4060-ba89-1600a1da2742",
+    "604d7a1a-6241-4e0c-a4a2-b1c9f2fea32a",
+    "3f9c21ca-fdd9-461b-b2ce-d33a5eb79ce8",
+    "625c3bce-015b-4c45-a007-6bb0862ee388",
+    "63fcff46-c21a-468a-acb2-abada490a277",
+    "6ff18889-0ca0-4b15-8b21-7b7ca48d7710",
+    "76c6f446-fc82-4298-befd-518baa93e7e1",
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29",
+    "7fa1a9fb-daa6-4e9a-adf9-c7c6a53ad974",
+    "80f54549-88c7-42c3-9b73-845030131bc5",
+    "920756aa-140b-4ddb-b519-5a1e6a91fb37",
+    "9372c9f6-a307-427a-af5c-66c08724b408",
+    "8358b94a-de8a-4515-90e5-6086d34034c5",
+    "9f2077a5-a556-4c26-916a-c24b0a9dfa90",
+    "9ee9fae5-14e3-4855-908f-b7716fbb32f9",
+    "a2de7a44-cfdc-4304-8868-4ef38539b284",
+    "a6cc16ec-f485-4246-990f-a74d7c8379bc",
+    "aa99d6f5-1ec4-4521-9867-12d13bac9990",
+    "a73ed6bf-def0-43f0-84df-802d7791243e",
+    "b343ccad-7cf0-4bbc-b912-9bac33cd151c",
+    "b412d0c1-1fd2-4816-81b8-4b4aaf982f6c",
+    "ac565649-8915-4b70-aed0-e17f7744b046",
+    "bd68aa64-1cb0-4de6-bdd9-6a64b6e5ce77",
+    "bb5b4c89-29df-4ece-8e88-95645637c39a",
+    "be560f14-de90-49c3-8d51-e4f6e7f98e9e",
+    "bffa7905-b68e-4bac-934e-fcf1f460b805",
+    "c2d279f3-379d-4fde-aab0-906a8754848d",
+    "cb18b964-465c-4284-926d-c012266d7624",
+    "d9a693d8-75f8-4c9c-a660-81cbe847d617",
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429",
+    "deb130dd-3029-4610-a2f5-0040f81b8795",
+    "de7f237c-c603-419b-81e1-cc2ff6349312",
+    "f31730a8-da1b-44b0-a151-41683722a168",
+    "f47e426c-922c-416c-b56d-ce2d2c273624",
+    "5b62ac8e-645b-461b-a5c3-ee1901fb90b2"
   ],
   "skipped": {},
   "batches": [
@@ -140023,6 +140282,34 @@
       "reasons": {
         "expand_existing": 1,
         "rewrite_structure": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 2,
+      "at": "2026-08-13T11:00:23.453Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 1,
+        "rewrite_structure": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 2,
+      "at": "2026-08-13T11:01:47.223Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 1,
+        "rewrite_short": 1
       },
       "samplePaths": []
     }
