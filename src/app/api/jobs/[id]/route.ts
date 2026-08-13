@@ -5,6 +5,7 @@ import { normalizeLocation } from '@/lib/normalize-location';
 import { isJobId } from '@/lib/job-description';
 import { publishSafeDescription } from '@/lib/job-detail-data';
 import { isJobExpired } from '@/lib/job-age';
+import { companyDisplayName } from '@/lib/company-directory';
 
 const SELECT_COLS =
   'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,description,views,clicks';
@@ -76,7 +77,7 @@ export async function GET(
     job: {
       id: job.id,
       title: job.title,
-      company: job.company,
+      company: companyDisplayName(job.company, job.apply_url),
       company_logo: job.company_logo,
       location: normalizeLocation(job.location),
       job_type: job.job_type,

@@ -6,9 +6,11 @@ import {
   formatJobDescription,
   jobDescriptionWordCount,
   JOB_INDEXABLE_MIN_WORDS,
+  cleanJobTitle,
+  looksLikeFellowship,
 } from '@/lib/job-description';
 import { publishableCompanyAbout } from '@/lib/company-about';
-import { companyDisplayName } from '@/lib/company-directory';
+import { companyDisplayName, applyCompanyDisplayCasing } from '@/lib/company-directory';
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
 import { isJobExpired } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
@@ -53,7 +55,7 @@ export function looksLikeOwnedJobCopy(text: string | null | undefined): boolean 
   for (const re of OWNED_HEADER_RES) {
     if (re.test(t)) n += 1;
   }
-  return n >= 3;
+  return n >= 2;
 }
 
 export function looksLikeRawAts(text: string | null | undefined): boolean {
@@ -88,7 +90,8 @@ export function assembleJobPage(
 ): AssembledJobPage {
   const formatHtml = opts?.formatHtml !== false;
   const title = cleanPublishText(job.title || '');
-  const company = companyDisplayName(cleanPublishText(job.company || ''));
+  const rawCompany = cleanPublishText(job.company || '');
+  const company = companyDisplayName(rawCompany, job.apply_url);
   const location = cleanPublishText(job.location || '');
   const salary = cleanPublishText(job.salary || '');
   const fail = (reason: string, extra?: Partial<AssembledJobPage>): AssembledJobPage => ({
@@ -102,33 +105,41 @@ export function assembleJobPage(
 
   if (!title || !company) return fail('sparse_facts');
 
-  const engagement = engagementLabel(job.job_type);
+  const displayTitle = cleanJobTitle(title) || title;
+  const engagement = looksLikeFellowship(job)
+    ? 'fellowship'
+    : engagementLabel(job.job_type);
   const ownedAbout = publishableCompanyAbout(job.company || company);
   const blurb = ownedAbout && jobDescriptionWordCount(ownedAbout) >= 40 ? ownedAbout : '';
   const skills = filterMeaningfulSkillTags(job.tags || [], { companyName: company }).slice(0, 8);
 
-  const facts: string[] = [];
-  if (location) facts.push(`Location: ${location}`);
-  if (engagement) facts.push(`Engagement: ${engagement}`);
-  if (salary) facts.push(`Compensation: ${salary}`);
-  if (skills.length >= 2) facts.push(`Listed skills: ${skills.join(', ')}`);
-  facts.push('Duties and requirements are only those on the official apply page.');
-
-  const sections: string[] = [`${title} at ${company}.`, '', 'Key facts', ...facts];
-  if (blurb) sections.push('', `About ${company}`, blurb);
+  const sections: string[] = [];
+  if (blurb) {
+    sections.push(`About ${company}`, blurb, '');
+  }
+  const locBit = location ? ` (${location})` : '';
   sections.push(
-    '',
-    'Practical notes',
-    'This page does not invent day-to-day work, perks, or hiring criteria.',
-    'Confirm title, team, visa, and pay on the official apply page before you submit.',
-    '',
-    'How to apply',
-    'Use the official apply link. CVin.Bio does not submit the application for you. A public CV link is optional and is not a substitute for the employer form.'
+    `${company} is hiring for ${displayTitle}${locBit}.`,
+    'The full description, including duties, requirements, and pay, is on the company apply page.'
   );
+  if (engagement) sections.push(`This listing is a ${engagement} role.`);
+  if (salary) sections.push(`Listed pay: ${salary}.`);
+  if (skills.length >= 2) sections.push(`Skills mentioned: ${skills.join(', ')}.`);
 
-  const plain = cleanPublishText(sections.join('\n'));
+  const plain = applyCompanyDisplayCasing(
+    cleanPublishText(sections.join('\n')),
+    rawCompany,
+    company
+  );
   const wordCount = jobDescriptionWordCount(plain);
-  const html = formatHtml ? formatJobDescription(plain, location) : '';
+  const html = formatHtml
+    ? formatJobDescription(plain, location, {
+        title: displayTitle,
+        company,
+        rawCompany,
+        isFellowship: looksLikeFellowship(job),
+      })
+    : '';
 
   return {
     ok: true,

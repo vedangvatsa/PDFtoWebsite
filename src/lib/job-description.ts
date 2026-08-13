@@ -8,10 +8,10 @@
 
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
-import { toCompanySlug } from '@/lib/company-directory';
+import { toCompanySlug, applyCompanyDisplayCasing } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 14;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 23;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -21,10 +21,204 @@ export const JOB_DESCRIPTION_PROSE_CLASS =
   '[&_table]:block [&_table]:w-full [&_table]:overflow-x-auto ' +
   '[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap';
 
+/** Prompt-template / instruction lines that leaked into published JDs. */
+const PLACEHOLDER_FACT_VALUE =
+  /^(?:see source|not specified|not provided|none listed|n\/a|tbd|\.\.\.)(?:\s|[.(]|$)/i;
+const INSTRUCTION_COPY =
+  /\b(?:omit(?:ted)?\s+(?:the line|the whole section|section|if source|if unknown|if empty)|only if source|only hours, travel, visa|remove this line|per source instructions|only include if|fact sheet json|output only the job page|(?:3-5 sentences|8-12 bullets|every must_have))\b/i;
+const PAGE_META_COPY =
+  /\bthis page does not\b|\bthis listing is the (?:only )?source\b|\bduties (?:remain|are only) those\b|\bdo the work posted for\b|\babout this (?:kind|type) of role\b|\bfollow scope\b|\bgeneral (?:engineering|workplace|working)[- ]practice\b|\bspecific duties remain\b|\bcvin\.bio does not submit\b|\ba public cv link is optional\b|\bomit the whole section\b|\bonly hours, travel, visa\b/i;
+const ORPHAN_FILLER = /^(please|todo|tbd|n\/a|none|source:?)\.?$/i;
+
+function plainFromHtmlish(s: string): string {
+  return s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/** Entirely a placeholder/instruction, or leftover prose after peeling one. */
+function peelJunkFactValue(val: string): string | null {
+  const original = plainFromHtmlish(val).trim();
+  if (!original) return null;
+  const v = original
+    .replace(/\(\s*omit(?:ted)?(?:\s+the line)?[^)]*\)/gi, ' ')
+    .replace(/^(?:see source|not specified|not provided|none listed|n\/a|tbd)\.?\s*/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!v) return null;
+  if (PLACEHOLDER_FACT_VALUE.test(v) && v.length < 80) return null;
+  if (INSTRUCTION_COPY.test(v) && v.length < 220 && v === original) return null;
+  return v;
+}
+
+function isJunkFactValue(val: string): boolean {
+  return peelJunkFactValue(val) === null;
+}
+
+/** Drop leaked lines; if a junk fact shares a line with real copy, keep the copy. */
+function rewriteContentLine(line: string): string | null {
+  const plain = plainFromHtmlish(line);
+  if (!plain) return line;
+  if (ORPHAN_FILLER.test(plain)) return null;
+  if (/\b(?:this page does not|do the work posted for|cvin\.bio does not submit)\b/i.test(plain)) {
+    return null;
+  }
+  if (PAGE_META_COPY.test(plain) && plain.length < 500) return null;
+  const debullet = plain.replace(/^[-•*]\s+/, '');
+  // Any "Label: See source" / "Label: (omit…)" line — including commas in the label
+  // and list bullets ("- Hours, travel, visa, or deadlines: See source").
+  const labeled = debullet.match(/^([A-Za-z][^:]{0,80}):\s*(.*)$/);
+  if (labeled) {
+    const tail = peelJunkFactValue(labeled[2]);
+    if (tail === null) return null;
+    if (tail !== plainFromHtmlish(labeled[2]).trim()) return tail;
+  }
+  if (INSTRUCTION_COPY.test(plain) && plain.length < 220) return null;
+  return line;
+}
+
+/**
+ * Drop leaked writer-template text and page-meta padding so every job page
+ * reads like a job. Pattern-class based — not a per-posting denylist.
+ */
+const KEY_FACT_LABEL =
+  '(?:Location|Engagement|Compensation|Salary|Pay|Team|Workplace|Employment(?: type)?|Job type|Department)';
+
+export function stripLeakedPromptText(text: string): string {
+  if (!text) return '';
+  let s = text;
+
+  // Adjacent HTML blocks often sit on one line. Score each block alone so a
+  // leaked fact never takes a whole posting's body with it.
+  s = s.replace(
+    /<\/(p|li|h[1-6]|div|blockquote)>\s*(?=<(?:p|li|h[1-6]|div|ul|ol|blockquote))/gi,
+    '</$1>\n'
+  );
+
+  s = s.replace(/<(p|li|h[1-6])(\s[^>]*)?>[\s\S]*?<\/\1>/gi, (block) => {
+    const next = rewriteContentLine(block);
+    if (next == null) return '';
+    if (next === block) return block;
+    return `<p>${next.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`;
+  });
+
+  s = s
+    .split('\n')
+    .flatMap((line) => {
+      if (/<[a-z]/i.test(line)) return [line];
+      return line.split(new RegExp(`(?=${KEY_FACT_LABEL}\\s*:)`, 'i'));
+    })
+    .map((line) => line.trim())
+    .map((line) => (line ? rewriteContentLine(line) : line))
+    .filter((line): line is string => line != null)
+    .join('\n');
+
+  s = s
+    .replace(/<h3>\s*About this (?:kind|type) of role\s*<\/h3>[\s\S]*?(?=<h[23]|$)/gi, '')
+    .replace(/<h3>\s*About the location\s*<\/h3>[\s\S]*?(?=<h[23]|$)/gi, '')
+    .replace(/\(\s*omit(?:ted)?(?:\s+the line)?[^)]*\)/gi, '')
+    .replace(
+      /Confirm details on the official apply page(\s+WITHOUT\s+\S+|.*?WITHOUT edit)/gi,
+      'Confirm details on the official apply page.'
+    );
+
+  s = stripScaffoldAndEmptyHeadings(s)
+    .replace(/<p>\s*<\/p>/gi, '')
+    .replace(/<li>\s*<\/li>/gi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return s;
+}
+
+/** Writer-scaffold headings and headings that have no remaining body. */
+const SCAFFOLD_HEADING =
+  /^(?:role overview|what you should have|follow scope|source|fact sheet|page meta|about this (?:kind|type) of role)$/i;
+
+function stripScaffoldAndEmptyHeadings(html: string): string {
+  if (!html) return html;
+  let s = html.replace(/<h([23])>\s*([^<]{1,90})\s*<\/h\1>/gi, (full, _n: string, title: string) =>
+    SCAFFOLD_HEADING.test(title.replace(/&nbsp;/gi, ' ').trim()) ? '' : full
+  );
+  let prev = '';
+  while (s !== prev) {
+    prev = s;
+    s = s.replace(
+      /<h([23])>\s*[^<]{1,90}\s*<\/h\1>\s*(?:<(?:p|ul|ol)>\s*<\/(?:p|ul|ol)>\s*)*(?=<h[23]>|$)/gi,
+      ''
+    );
+  }
+  return s;
+}
+
+/** Titles that are blog posts, nav labels, or markdown leftovers — not jobs. */
+export function isGarbageJobTitle(title: string | null | undefined): boolean {
+  const t = String(title || '').replace(/\s+/g, ' ').trim();
+  if (!t || t.length < 3) return true;
+  if (/^(website|home|about|blog|news|careers|jobs|fellowship|fellowships)$/i.test(t)) return true;
+  if (/\bread more\b/i.test(t)) return true;
+  if (/\bexplaining the\b/i.test(t) && t.length > 40) return true;
+  if (/\band introducing (our|the)\b/i.test(t)) return true;
+  // Truncated blog titles like "Community Dec 3"
+  if (/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2}\b/i.test(t) && t.length < 40) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Display-time title cleanup. Markdown arrows, "Read More", trailing dashes.
+ * Applied on every job card and detail page so scraped leftovers never show.
+ */
+export function cleanJobTitle(title: string | null | undefined): string {
+  let t = cleanPublishText(String(title || ''));
+  t = t
+    .replace(/^(?:[-*>]+|-->)\s*/g, '')
+    .replace(/\s*Read More\s*$/i, '')
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s:\-\|]+/, '')
+    .replace(/[\s:\-\|,]+$/, '')
+    .trim();
+  return t;
+}
+
+export function looksLikeFellowship(job: {
+  title?: string | null;
+  category?: string | null;
+  tags?: string[] | null;
+}): boolean {
+  if (String(job.category || '').toLowerCase() === 'fellowship') return true;
+  if ((job.tags || []).some((t) => /^fellowship$/i.test(String(t)))) return true;
+  if (/\bfellow(?:ship|s)?\b/i.test(String(job.title || ''))) return true;
+  return false;
+}
+
+function stripRedundantTitleOpener(
+  text: string,
+  title?: string | null,
+  company?: string | null
+): string {
+  const ttl = String(title || '').trim();
+  const co = String(company || '').trim();
+  if (!ttl || !co || !text) return text;
+  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const opener = `${esc(ttl)}\\s+at\\s+${esc(co)}\\.?`;
+  return text
+    .replace(new RegExp(`(?:<p>\\s*)?${opener}(?:\\s*</p>)?\\s*`, 'gi'), '')
+    .trim();
+}
+
+export function cleanSalaryDisplay(salary: string | null | undefined): string | null {
+  if (!salary) return null;
+  const s = cleanPublishText(String(salary))
+    .replace(/(\d),(\d{3})\.00\b/g, '$1,$2')
+    .replace(/\.00\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return s || null;
+}
+
 /** Strip aggregator / mirror disclaimers that must never appear on job pages. */
 function stripAggregatorDisclaimers(text: string): string {
   if (!text) return '';
-  let s = text;
+  let s = stripLeakedPromptText(text);
   const patterns: RegExp[] = [
     /<p>\s*<em>\s*Applications close around[\s\S]*?<\/em>\s*<\/p>/gi,
     /<em>\s*Applications close around[\s\S]*?<\/em>/gi,
@@ -37,9 +231,31 @@ function stripAggregatorDisclaimers(text: string): string {
     /Full description is on the company careers page\.?/gi,
     /This role is not on the public board yet\.?/gi,
     /We publish a paraphrased description from the official posting[\s\S]*?employer apply link\.?/gi,
+    /Duties and requirements are only those on the official apply page\.?/gi,
+    /This page does not invent day-to-day work[^.]*\.?/gi,
+    /CVin\.Bio does not submit the application for you[^.]*\.?/gi,
+    /A public CV link is optional and is not a substitute for the employer form\.?/gi,
+    /This page does not add tasks[^.]*\.?/gi,
+    /This page does not invent a (?:research agenda|roadmap)[^.]*\.?/gi,
+    /General (?:engineering|workplace|working)[- ]practice[^.]*\.?/gi,
+    /Specific duties remain only those in the source[^.]*\.?/gi,
+    /Do the work posted for[^\n<]*/gi,
+    /Follow scope\s*About the company/gi,
+    /(?:^|\n)What You Should Have\s*$/gim,
+    /<li>\s*What You Should Have\s*<\/li>/gi,
+    /<p>\s*Please\s*<\/p>/gi,
+    /(?:^|\n)Please\s*$/gim,
+    /About this kind of role[\s\S]*?(?=\n(?:About |Key facts|What you|Requirements|Nice to have|Skills|Practical notes|How to apply)|<h[23]|$)/gi,
+    /About the location\s*\n[^\n]*(?:listed workplace|listing already states)[^\n]*/gi,
+    /<h3>\s*About this kind of role\s*<\/h3>[\s\S]*?(?=<h[23]|$)/gi,
+    /<h3>\s*About the location\s*<\/h3>[\s\S]*?(?=<h[23]|$)/gi,
   ];
   for (const re of patterns) s = s.replace(re, '');
-  return s
+  s = s
+    .replace(/(\d)\.\s+(\d)/g, '$1.$2') // "1. 5 billion" → "1.5 billion"
+    .replace(/<li>\s*[-•]\s*/gi, '<li>')
+    .replace(/^[-•]\s+[-•]\s+/gm, '- ');
+  return stripLeakedPromptText(s)
     .replace(/<p>\s*<\/p>/gi, '')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
@@ -247,8 +463,13 @@ function renderMetaFactsBlock(block: string): string {
   const lines = block
     .split('\n')
     .map((l) => l.trim())
-    .filter(Boolean);
-  if (lines.length > 0 && lines.every(isLabelValueLine)) {
+    .filter(Boolean)
+    .filter((l) => {
+      const m = l.match(/^([^:\n]{2,48}):\s+(.+)$/);
+      return !(m && isJunkFactValue(m[2]));
+    });
+  if (!lines.length) return '';
+  if (lines.every(isLabelValueLine)) {
     return `<div class="jd-meta-facts">${lines.map((l) => renderLabelValueParagraph(l)).join('')}</div>`;
   }
   return renderPlainBlock(block);
@@ -424,6 +645,8 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^Areas of interest$/i.test(t)) return true;
   if (/^About the scheme$/i.test(t)) return true;
   if (/^About the program$/i.test(t)) return true;
+  if (/^Role Overview$/i.test(t)) return true;
+  if (/^What You Should Have$/i.test(t)) return true;
   if (/^Work areas$/i.test(t)) return true;
   if (/^Practical notes$/i.test(t)) return true;
   if (/^Role & project$/i.test(t)) return true;
@@ -487,6 +710,7 @@ function isLabelValueLine(line: string): boolean {
 function renderLabelValueParagraph(line: string): string {
   const m = line.trim().match(/^([^:\n]{2,48}):\s+(.+)$/);
   if (!m) return `<p>${escapeHtmlWithLinks(line.trim())}</p>`;
+  if (isJunkFactValue(m[2])) return '';
   return `<p><strong>${escapeHtml(m[1].trim())}:</strong> ${escapeHtmlWithLinks(m[2].trim())}</p>`;
 }
 
@@ -659,11 +883,21 @@ function structureJobHtml(html: string): string {
  */
 export function formatJobDescription(
   raw: string | null | undefined,
-  authoritativeLocation?: string | null
+  authoritativeLocation?: string | null,
+  opts?: {
+    title?: string | null;
+    company?: string | null;
+    rawCompany?: string | null;
+    isFellowship?: boolean;
+  }
 ): string {
   if (!raw || !raw.trim()) return '';
 
-  const cleaned = stripAggregatorDisclaimers(raw);
+  const cleaned = stripRedundantTitleOpener(
+    stripAggregatorDisclaimers(raw),
+    opts?.title,
+    opts?.company
+  );
   const looksHtml = /<[a-z][\s\S]*>/i.test(cleaned);
 
   let structured: string;
@@ -680,27 +914,54 @@ export function formatJobDescription(
 
   let html = mergeAdjacentLists(cleanPublishHtml(structured));
 
-  // Correct the Key facts "Location:" line ONLY when it makes an ungrounded
-  // "Remote" claim. The LLM rewrite may label an on-site role as remote even
-  // though the authoritative DB location is a specific office. Accurate,
-  // more-specific stored values (e.g. "Mumbai, India") are left untouched so we
-  // never downgrade real location data.
   const loc = String(authoritativeLocation || '').trim();
   if (loc) {
-    const REMOTE_CLAIM_RE =
-      /remote|work from home|\bwfh\b|work from anywhere|anywhere in the|distributed|worldwide|telecommute/i;
     html = html.replace(
       /(<p><strong>Location:<\/strong>\s*)([^<]*)(<\/p>)/i,
-      (full, open: string, val: string, close: string) => {
-        const valText = val.trim();
-        const falseRemote =
-          valText &&
-          REMOTE_CLAIM_RE.test(valText) &&
-          !REMOTE_CLAIM_RE.test(loc);
-        return falseRemote ? `${open}${escapeHtml(loc)}${close}` : full;
-      }
+      (_full, open: string, _val: string, close: string) =>
+        `${open}${escapeHtml(loc)}${close}`
     );
   }
+
+  html = html.replace(
+    /<p>\s*<strong>([A-Za-z][^:]{0,80}):<\/strong>\s*([^<]*)<\/p>/gi,
+    (full, _label: string, val: string) => (isJunkFactValue(val) ? '' : full)
+  );
+
+  html = html.replace(
+    /(<p><strong>Engagement:<\/strong>\s*)([^<]+)(<\/p>)/gi,
+    (_full, open: string, val: string, close: string) => {
+      let v = val.trim().replace(/_/g, ' ');
+      if (opts?.isFellowship) v = v.replace(/^internship\b/i, 'fellowship');
+      v = v.replace(/\bfull\s*time\b/i, 'Full-time');
+      v = v.replace(/\bpart\s*time\b/i, 'Part-time');
+      v = v.replace(/\bcontract\s+to\s+hire\b/i, 'Contract to hire');
+      if (isJunkFactValue(v)) return '';
+      return `${open}${escapeHtml(v)}${close}`;
+    }
+  );
+
+  if (opts?.isFellowship) {
+    html = html.replace(
+      /(<p><strong>Engagement:<\/strong>\s*)internship((?:\s*\/\s*residency)?\s*<\/p>)/gi,
+      '$1fellowship$2'
+    );
+  }
+
+  // Padding "What you'll do" block appended after a real JD.
+  html = html.replace(
+    /<h3>\s*What you'?ll do\s*<\/h3>\s*(?:<ul>\s*)?(?:<li>\s*(?:Do the work posted for|Follow scope)[\s\S]*?<\/li>\s*)+(?:<\/ul>\s*)?/gi,
+    ''
+  );
+
+  html = stripLeakedPromptText(html);
+  html = html.replace(
+    /<h3>\s*Nice to have\s*<\/h3>\s*(?:<(?:p|ul|ol)>[\s]*<\/(?:p|ul|ol)>\s*)*(?=<h[23]>|$)/gi,
+    ''
+  );
+  html = stripScaffoldAndEmptyHeadings(html);
+  html = html.replace(/<div class="jd-meta-facts">\s*<\/div>/gi, '');
+  html = applyCompanyDisplayCasing(html, opts?.rawCompany, opts?.company);
 
   return mergeAdjacentLists(html);
 }
@@ -810,7 +1071,11 @@ export function companyLogoFallback(company: string, logo: string | null | undef
   return primaryCompanyLogoUrl(company, logo, 128);
 }
 
-export function jobTypeLabel(type: string | null | undefined): string | null {
+export function jobTypeLabel(
+  type: string | null | undefined,
+  extra?: { title?: string | null; category?: string | null; tags?: string[] | null }
+): string | null {
+  if (extra && looksLikeFellowship(extra)) return 'Fellowship';
   if (!type) return null;
   const labels: Record<string, string> = {
     full_time: 'Full Time',
@@ -819,7 +1084,14 @@ export function jobTypeLabel(type: string | null | undefined): string | null {
     internship: 'Internship',
     freelance: 'Freelance',
   };
-  return labels[type] || type;
+  if (labels[type]) return labels[type];
+  if (/^[a-z0-9]+(?:_[a-z0-9]+)+$/.test(type)) {
+    return type
+      .split('_')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+  }
+  return type;
 }
 
 export function timeAgo(dateStr: string | null | undefined): string {
@@ -943,7 +1215,13 @@ export function mintPrettyJobSlug(
 
   const taken = used ? used.has.bind(used) : () => false;
   let slug = base;
-  if (taken(slug) || RESERVED_JOB_SEGMENTS.has(slug)) {
+  // Read-path mint (no `used` set) always mixes in a short id hash so two
+  // "Product *" roles at the same company never share /company/prod.
+  if (!used) {
+    const h = md5Hex(uniqueSeed).slice(0, 2);
+    const head = (base.split('-')[0] || 'role').slice(0, 6);
+    slug = `${head}-${h}`;
+  } else if (taken(slug) || RESERVED_JOB_SEGMENTS.has(slug)) {
     const h = md5Hex(uniqueSeed).slice(0, 2);
     const first = (base.split('-')[0] || 'role').slice(0, 6);
     slug = `${first}-${h}`;
