@@ -9,6 +9,7 @@ import MicroFooter from '@/components/micro-footer';
 import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
+import { timeAgo } from '@/lib/job-description';
 import {
   emptyParsedResumeShell,
   persistParsedResume,
@@ -62,16 +63,6 @@ const LOCATIONS = [
   { value: 'onsite', label: 'On-site' },
 ];
 
-function timeAgo(dateStr: string | null): string {
-  if (!dateStr) return '';
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  if (days === 0) return 'Today';
-  if (days === 1) return '1d ago';
-  if (days < 7) return `${days}d ago`;
-  if (days < 30) return `${Math.floor(days / 7)}w ago`;
-  return `${Math.floor(days / 30)}mo ago`;
-}
 
 function organizeJobs(existingJobs: Job[], newJobs: Job[]): Job[] {
   // Preserve the API's score-based order while preventing adjacent same-company cards

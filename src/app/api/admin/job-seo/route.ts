@@ -8,10 +8,9 @@ import {
 } from '@/lib/job-detail-data';
 import { jobDescriptionWordCount, jobSitemapPath } from '@/lib/job-description';
 import type { JobRow } from '@/lib/job-detail-data';
+import { ADMIN_EMAILS } from '@/lib/admin';
 
 export const dynamic = 'force-dynamic';
-
-const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 async function assertAdmin(request: NextRequest) {

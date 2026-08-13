@@ -140,6 +140,7 @@ export function assembleJobPage(
   };
 }
 
+/** Factual stubs are never indexable. Board listing uses curated-jd instead. */
 export function jobAssembledIndexable(_job: AssembleJobInput): boolean {
   return false;
 }

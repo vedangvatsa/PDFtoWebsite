@@ -8,6 +8,7 @@
 
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
+import { toCompanySlug } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
 export const JOB_DESCRIPTION_FORMAT_VERSION = 14;
@@ -806,29 +807,7 @@ export function addJobApplyUtm(url: string, medium = 'job_detail'): string {
 }
 
 export function companyLogoFallback(company: string, logo: string | null | undefined): string {
-  if (logo) return logo;
-  const key = company.toLowerCase().trim();
-  if (key === 'indian army') {
-    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
-    return `${site}/company-logos/indian-army.png`;
-  }
-  if (key === 'google') {
-    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
-    return `${site}/company-logos/google.png`;
-  }
-  if (key === 'mospi') {
-    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
-    return `${site}/company-logos/mospi.png`;
-  }
-  if (key === 'niti aayog') {
-    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
-    return `${site}/company-logos/niti-aayog.png`;
-  }
-  if (key === 'iit bombay' || key === 'iit bombay (sjmsom)') {
-    const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
-    return `${site}/company-logos/iit-bombay.png`;
-  }
-  return primaryCompanyLogoUrl(company, null, 128);
+  return primaryCompanyLogoUrl(company, logo, 128);
 }
 
 export function jobTypeLabel(type: string | null | undefined): string | null {
@@ -861,17 +840,7 @@ export function isJobId(id: string): boolean {
 
 /** Company display name → URL segment (`Google` → `google`). */
 export function companyToSlug(company: string): string {
-  return (company || '')
-    .replace(/&amp;/gi, '&')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#0*39;|&apos;/gi, "'")
-    .replace(/&nbsp;/gi, ' ')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+  return toCompanySlug(company || '');
 }
 
 /** Valid short job slug segment (not a UTM suffix / reserved path). */

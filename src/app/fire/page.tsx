@@ -41,8 +41,8 @@ export default function FirePage() {
     return mapped;
   }, [cities, savings, sortKey, sortAsc]);
 
-  const longest = rows[0];
-  const shortest = rows[rows.length - 1];
+  const longest = useMemo(() => rows.reduce<typeof rows[0] | undefined>((best, row) => (!best || row.months > best.months ? row : best), undefined), [rows]);
+  const shortest = useMemo(() => rows.reduce<typeof rows[0] | undefined>((worst, row) => (!worst || row.months < worst.months ? row : worst), undefined), [rows]);
   const avgMonths = rows.length > 0 ? Math.round(rows.reduce((s, r) => s + r.months, 0) / rows.length) : 0;
   const fiveYrPlus = rows.filter(r => r.months >= 60).length;
 

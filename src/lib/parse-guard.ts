@@ -219,7 +219,7 @@ export function cleanDescription(raw: string, maxLen?: number): string {
  * e.g. "...teams. Outbound-Inbound Caller • Built..." → newlines before project title.
  * Never truncates uploaded job text unless an explicit maxLen is passed.
  */
-export function formatJobDescription(raw: string, maxLen?: number): string {
+export function formatWorkExperienceDescription(raw: string, maxLen?: number): string {
   let text = String(raw || '').replace(/\r\n/g, '\n').trim();
   if (!text) return '';
   // Normalize mid-line bullets to newline bullets
@@ -574,7 +574,7 @@ export function validateParsedData(data: any): ParseValidation {
       (d.match(/[•▪]/g) || []).length >= 4
     ) {
       issues.push('work experience may mash multiple projects into one description');
-      // soft: formatJobDescription repairs layout; don't force re-parse forever
+      // soft: formatWorkExperienceDescription repairs layout; don't force re-parse forever
     }
   }
 
@@ -744,7 +744,7 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
         location: cleanLocation(w.location),
         startDate: cleanDate(w.startDate),
         endDate: cleanDate(w.endDate),
-        description: formatJobDescription(w.description),
+        description: formatWorkExperienceDescription(w.description),
       }));
   }
 

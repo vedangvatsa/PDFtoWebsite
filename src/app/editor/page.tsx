@@ -47,6 +47,7 @@ import {
   reviewToastCopy,
   storePendingResumeFile,
 } from '@/lib/cv-upload-client';
+import { LINKEDIN_CAPTIONS, X_COPIES, WHATSAPP_COPIES, pick } from '@/lib/share-copy';
 
 function dataURLtoFile(dataurl: string, filename: string): File | null {
     const arr = dataurl.split(',');
@@ -113,7 +114,7 @@ const ResumeUploadPrompt = ({ onFileChange, isGenerating }: { onFileChange: (e: 
     </label>
 );
 
-const ProfileCompleteness = ({ profile, work, education, skills, onNavigate, onCompleteChange }: { profile: Partial<UserProfile>, work: WorkExperience[], education: Education[], skills: string[], onNavigate: (tab: string) => void, onCompleteChange?: (complete: boolean) => void }) => {
+const ProfileCompleteness = ({ profile, work, education, skills, onCompleteChange }: { profile: Partial<UserProfile>, work: WorkExperience[], education: Education[], skills: string[], onCompleteChange?: (complete: boolean) => void }) => {
     const completeness = useMemo(() => {
         const checks = [
             { name: "Add a Profile Photo", complete: !!profile.avatarUrl, targetId: 'avatar-upload' },
@@ -168,13 +169,20 @@ const ProfileCompleteness = ({ profile, work, education, skills, onNavigate, onC
     );
 };
 
-const VIEW_MILESTONES = [10, 50, 100, 500, 1000, 5000];
-
 /** Strip leading bullet chars (•, -, *, etc.) from skill names */
 const cleanSkill = (s: any): string => {
     const raw = typeof s === 'string' ? s : s?.name || '';
     return raw.replace(/^[•\-\*▪▸►‣○●]\s*/, '').trim();
 };
+
+function isThinParse(extractedData: { _parseNeedsReview?: boolean; _parseMethod?: string }): boolean {
+    const parseMethod = String(extractedData._parseMethod || 'ai');
+    return !!extractedData._parseNeedsReview || parseMethod === 'regex' || parseMethod === 'shell';
+}
+
+function mergeParsedProfileArrays<T>(thinParse: boolean, next: T[], prev: T[]): T[] {
+    return thinParse && next.length === 0 && prev.length > 0 ? prev : next;
+}
 
 type InsightsData = {
     views: number; uniques: number; sparkline: number[];
@@ -261,63 +269,6 @@ function InsightsCard({ slug }: { slug: string }) {
     );
 }
 
-// ── Rotating share copy pools (randomly picked per user) ──────────────────────
-const LINKEDIN_CAPTIONS = [
-  (s: string) => `Stopped sending PDFs.\n\nHere's my profile instead → https://cvin.bio/${s}`,
-  (s: string) => `Killed my resume.pdf. Here's the link.\nhttps://cvin.bio/${s}`,
-  (s: string) => `My resume has a URL now.\nhttps://cvin.bio/${s}`,
-  (s: string) => `No more "see attached".\nhttps://cvin.bio/${s}`,
-  (s: string) => `Recruiters spend 6 seconds on a PDF. Give them something worth clicking.\nhttps://cvin.bio/${s}`,
-  (s: string) => `Updated my resume. Didn't attach it.\nhttps://cvin.bio/${s}`,
-  (s: string) => `Resume? I've got a link.\nhttps://cvin.bio/${s}`,
-  (s: string) => `Just retired resume_final_v3.pdf\nhttps://cvin.bio/${s}`,
-  (s: string) => `The attachment era is over.\nhttps://cvin.bio/${s}`,
-  (s: string) => `Sharing a link, not a file.\nhttps://cvin.bio/${s}`,
-  (s: string) => `My CV is now a website. Wild.\nhttps://cvin.bio/${s}`,
-  (s: string) => `No download required.\nhttps://cvin.bio/${s}`,
-  (s: string) => `Open to opportunities. Here's my profile → https://cvin.bio/${s}`,
-  (s: string) => `Sent my last PDF resume today. Everything else is a link.\nhttps://cvin.bio/${s}`,
-  (s: string) => `If you're still emailing PDFs, there's a better way.\nhttps://cvin.bio/${s}`,
-];
-
-const X_COPIES = [
-  (s: string) => `stopped attaching resumes\n\ndropped a link instead\nhttps://cvin.bio/${s}`,
-  (s: string) => `my resume is a url now\nhttps://cvin.bio/${s}`,
-  (s: string) => `pdf resume? nah\n\nhttps://cvin.bio/${s}`,
-  (s: string) => `killed my resume.pdf\n\nhttps://cvin.bio/${s} feel free to stalk`,
-  (s: string) => `no more "see attached"\n\nhttps://cvin.bio/${s}`,
-  (s: string) => `my cv is a link now\nhttps://cvin.bio/${s}`,
-  (s: string) => `resume evolution: doc → pdf → link\n\nhttps://cvin.bio/${s}`,
-  (s: string) => `finally retired resume.pdf\nhttps://cvin.bio/${s}`,
-  (s: string) => `open to work. also open to sharing better than a pdf → https://cvin.bio/${s}`,
-  (s: string) => `sharing my profile not a 2mb pdf\nhttps://cvin.bio/${s}`,
-  (s: string) => `recruiters: here's the link https://cvin.bio/${s}`,
-  (s: string) => `turns out a resume can just be a url\nhttps://cvin.bio/${s}`,
-  (s: string) => `your resume can have dark mode\nhttps://cvin.bio/${s}`,
-  (s: string) => `dropped the pdf habit\nhttps://cvin.bio/${s}`,
-  (s: string) => `no version numbers. no attachments. just a link.\nhttps://cvin.bio/${s}`,
-];
-
-const WHATSAPP_COPIES = [
-  (s: string) => `pdf resume? nah\nhere's mine: https://cvin.bio/${s}`,
-  (s: string) => `my resume has a url lol\nhttps://cvin.bio/${s}`,
-  (s: string) => `bro just share the link\nhttps://cvin.bio/${s}`,
-  (s: string) => `no more resume.pdf\nhttps://cvin.bio/${s}`,
-  (s: string) => `check my profile: https://cvin.bio/${s}`,
-  (s: string) => `my cv is now a website lmao\nhttps://cvin.bio/${s}`,
-  (s: string) => `dropped the pdf habit → https://cvin.bio/${s}`,
-  (s: string) => `sharing my profile, not a pdf\nhttps://cvin.bio/${s}`,
-  (s: string) => `https://cvin.bio/${s} – feel free to share with whoever`,
-  (s: string) => `stopped sending pdfs. here's my profile: https://cvin.bio/${s}`,
-  (s: string) => `my resume has dark mode now\nhttps://cvin.bio/${s}`,
-  (s: string) => `no download needed\nhttps://cvin.bio/${s}`,
-  (s: string) => `here's the link instead of a file\nhttps://cvin.bio/${s}`,
-  (s: string) => `retired the pdf. got a url.\nhttps://cvin.bio/${s}`,
-  (s: string) => `sharing cvin.bio/${s} – way better than a pdf`,
-];
-
-function pick<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)]; }
-
 export default function EditorPage() {
     const { user, isUserLoading } = useUser();
     const supabase = createClient();
@@ -337,11 +288,8 @@ export default function EditorPage() {
     const [isSaving, setIsSaving] = useState(false);
     const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
-    const [file, setFile] = useState<File | null>(null);
-    const [fileName, setFileName] = useState<string | null>(null);
 
     const [activeThemeId, setActiveThemeId] = useState<string | undefined>('modern-creative');
-    const [showSaveDialog, setShowSaveDialog] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
     const [showCelebration, setShowCelebration] = useState(false);
     const [parseReviewBanner, setParseReviewBanner] = useState<string | null>(null);
@@ -353,8 +301,6 @@ export default function EditorPage() {
     const [newLinkType, setNewLinkType] = useState('');
     const [newLinkValue, setNewLinkValue] = useState('');
 
-    // Profile completeness gate — mirrors ProfileCompleteness widget checks
-    // Profile completeness gate — use same ref as ProfileCompleteness widget
     const [isComplete, setIsComplete] = useState(false);
 
 
@@ -700,12 +646,12 @@ export default function EditorPage() {
                 } catch { /* keep */ }
                 extractedData._parseWarnings = [errMsg];
             }
-            console.log('CV Parsed Successfully:', extractedData);
 
             const skillsArr = (extractedData.skills || []).map(cleanSkill);
             const parsedSlug = !isBadSlug(extractedData.personalInfo?.slug)
               ? extractedData.personalInfo!.slug!
               : generateBaseSlug(extractedData.personalInfo?.fullName || 'user');
+            const thinParse = isThinParse(extractedData);
 
             // --- SHARED UI UPDATE (Instant) ---
             setProfile(prev => ({
@@ -718,7 +664,7 @@ export default function EditorPage() {
                 summary: extractedData.summary || prev.summary || '',
                 // Keep a good existing slug; replace URL/LinkedIn garbage with a name-based one
                 slug: (!isBadSlug(prev.slug) && prev.slug) ? prev.slug : parsedSlug,
-                skills: skillsArr,
+                skills: mergeParsedProfileArrays(thinParse, skillsArr, Array.isArray(prev.skills) ? prev.skills : []),
             }));
             
             const workItemsWithIds = (extractedData.workExperience || []).map((w: any, i: number) => ({ ...w, id: w.id || `work-${Date.now()}-${i}`, userProfileId: user?.id || '' }));
@@ -729,9 +675,9 @@ export default function EditorPage() {
                 return { ...cs, id: csId, items, userProfileId: user?.id || '' };
             });
 
-            setWorkItems(workItemsWithIds);
-            setEducationItems(eduItemsWithIds);
-            setSkillItems(skillsArr);
+            setWorkItems(prev => mergeParsedProfileArrays(thinParse, workItemsWithIds, prev));
+            setEducationItems(prev => mergeParsedProfileArrays(thinParse, eduItemsWithIds, prev));
+            setSkillItems(prev => mergeParsedProfileArrays(thinParse, skillsArr, prev));
             setCustomSections(customSectionsWithIds);
 
             if (parseNeedsReview(extractedData)) {
@@ -790,24 +736,15 @@ export default function EditorPage() {
                   isBadSlug(String(usernameCandidate)) ? baseSlug : String(usernameCandidate),
                   user.id
                 );
-                const parseMethod = String(extractedData._parseMethod || 'ai');
-                const thinParse =
-                  !!extractedData._parseNeedsReview ||
-                  parseMethod === 'regex' ||
-                  parseMethod === 'shell';
                 const nextSkills = skillsArr;
                 const nextExp = workItemsWithIds;
                 const nextEdu = eduItemsWithIds;
                 const prevExp = Array.isArray(currentProfile?.experience) ? currentProfile.experience : [];
                 const prevEdu = Array.isArray(currentProfile?.education) ? currentProfile.education : [];
                 const prevSkills = Array.isArray(currentProfile?.skills) ? currentProfile.skills : [];
-                // Thin/regex/shell parses must never wipe a previously good profile
-                const experience =
-                  thinParse && nextExp.length === 0 && prevExp.length > 0 ? prevExp : nextExp;
-                const education =
-                  thinParse && nextEdu.length === 0 && prevEdu.length > 0 ? prevEdu : nextEdu;
-                const skills =
-                  thinParse && nextSkills.length === 0 && prevSkills.length > 0 ? prevSkills : nextSkills;
+                const experience = mergeParsedProfileArrays(thinParse, nextExp, prevExp);
+                const education = mergeParsedProfileArrays(thinParse, nextEdu, prevEdu);
+                const skills = mergeParsedProfileArrays(thinParse, nextSkills, prevSkills);
 
                 const rawAbout = extractedData.summary || currentProfile?.about || '';
                 const about = isContactHeaderText(rawAbout)
@@ -868,9 +805,8 @@ export default function EditorPage() {
             });
         } finally {
             setIsGenerating(false);
-            setFile(null); setFileName(null);
         }
-    }, [user, supabase, fetchProfileData, toast, setFile, setFileName]);
+    }, [user, supabase, fetchProfileData, toast]);
 
     useEffect(() => {
         if (user && !processedPendingResume.current) {
@@ -913,6 +849,11 @@ export default function EditorPage() {
                             const items = (cs.items || []).map((item: any, j: number) => ({ ...item, id: item.id || `csitem-${Date.now()}-${i}-${j}` }));
                             return { ...cs, id: csId, items, userProfileId: user?.id || '' };
                         });
+                        const thinParse = isThinParse(extractedData);
+                        const prevExp = Array.isArray(currentProfile?.experience) ? currentProfile.experience : [];
+                        const prevEdu = Array.isArray(currentProfile?.education) ? currentProfile.education : [];
+                        const prevSkills = Array.isArray(currentProfile?.skills) ? currentProfile.skills : [];
+                        const prevCustom = Array.isArray(currentProfile?.custom_sections) ? currentProfile.custom_sections : [];
 
                         const existingLinks = currentProfile?.links || [];
                         const newLinksMap = new Map(existingLinks.map((l: any) => [l.type, l.value]));
@@ -972,19 +913,10 @@ export default function EditorPage() {
                             })(),
                             profile_picture_url: extractedData.personalInfo?.avatarUrl || currentProfile?.profile_picture_url || user.user_metadata?.avatar_url || '',
                             theme_id: extractedData.themeId || currentProfile?.theme_id || 'modern-creative',
-                            skills: skillsArr.length || !extractedData.workExperience
-                              ? (skillsArr.length ? skillsArr : (currentProfile?.skills || []))
-                              : skillsArr,
-                            experience: extractedData.workExperience && workItemsWithIds.length
-                              ? workItemsWithIds
-                              : (currentProfile?.experience || []),
-                            education: extractedData.education && eduItemsWithIds.length
-                              ? eduItemsWithIds
-                              : (currentProfile?.education || []),
-                            // Keep Imported CV / salvage sections so uploaded text is never discarded
-                            custom_sections: extractedData.customSections
-                              ? customSectionsWithIds
-                              : (currentProfile?.custom_sections || []),
+                            skills: mergeParsedProfileArrays(thinParse, skillsArr, prevSkills),
+                            experience: mergeParsedProfileArrays(thinParse, workItemsWithIds, prevExp),
+                            education: mergeParsedProfileArrays(thinParse, eduItemsWithIds, prevEdu),
+                            custom_sections: mergeParsedProfileArrays(thinParse, customSectionsWithIds, prevCustom),
                             links: combinedLinks
                         };
                         await supabase.from('profiles').upsert(updatedProfile);
@@ -1047,7 +979,7 @@ export default function EditorPage() {
 
         const timer = setTimeout(async () => {
             // Check if slug is taken by another user
-            const { data } = await supabase.from('profiles').select('id').eq('username', profile.slug).maybeSingle();
+            const { data } = await supabase.from('profiles').select('id').eq('username', cleanSlug).maybeSingle();
             if (data && data.id !== user.id) {
                 setSlugError('This URL is already taken.');
                 setSlugSuccess(false);
@@ -1249,10 +1181,7 @@ export default function EditorPage() {
             
             if ((!allowedTypes.includes(f.type) && !f.name.match(/\.(pdf|doc|docx|rtf|txt|md|markdown|csv|jpg|jpeg|png|webp|gif|bmp|tif|tiff|heic|heif)$/i)) || f.size > 10 * 1024 * 1024) {
                 toast({ variant: 'destructive', title: 'Invalid File', description: 'Please select a PDF, Word, text, or image file under 10MB.' });
-                setFile(null); setFileName(null);
             } else {
-                setFile(f); setFileName(f.name);
-                // Auto-trigger generation immediately
                 handleResumeUpload(f);
             }
         }
@@ -1688,7 +1617,7 @@ export default function EditorPage() {
                                         ) : null}
                                     </CardContent>
                                 </Card>
-                                <ProfileCompleteness profile={profile} work={workItems} education={educationItems} skills={skillItems} onNavigate={() => {}} onCompleteChange={setIsComplete} />
+                                <ProfileCompleteness profile={profile} work={workItems} education={educationItems} skills={skillItems} onCompleteChange={setIsComplete} />
                             </div>
                             {user && <InsightsCard slug={profile.slug || ''} />}
                         </div>

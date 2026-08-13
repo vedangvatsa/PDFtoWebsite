@@ -2,10 +2,9 @@ import { NextResponse, NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import path from 'path';
 import fs from 'fs';
+import { ADMIN_EMAILS } from '@/lib/admin';
 
 export const dynamic = 'force-dynamic';
-
-const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
 // ── Cache helpers ──────────────────────────────────────────────────────────
 // Prefer /tmp on serverless/edge-like runtimes; fall back to repo scripts dir locally.

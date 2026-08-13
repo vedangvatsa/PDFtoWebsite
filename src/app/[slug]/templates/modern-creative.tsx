@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Globe, FileDown, Github, Linkedin, Twitter, Youtube, Facebook, Instagram, BookOpen, GraduationCap, Palette, Code2, Pen, MessageCircle, Send, Music, Headphones, Tv, Hash, Figma, Package, Gamepad2, Megaphone, Users, Briefcase, Rss, FileCode2, GitBranch } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
+import { Mail, Phone, MapPin, Globe, Github, Linkedin, Twitter, Youtube, Facebook, Instagram, BookOpen, GraduationCap, Palette, Code2, Pen, MessageCircle, Send, Music, Headphones, Tv, Hash, Figma, Package, Gamepad2, Megaphone, Users, Briefcase, Rss, FileCode2, GitBranch } from 'lucide-react';
 import type { ServerProfileData as ProfileData } from '@/lib/supabase-server';
 import posthog from 'posthog-js';
 import { PROFILE_EVENTS } from '@/lib/posthog-events';
@@ -284,58 +283,6 @@ export default function TemplateModern(props: ProfileData) {
     return !SUMMARY_TITLES.test(title) && !EDITOR_ONLY.test(title);
   });
 
-  const { toast } = useToast();
-
-  const handleDownloadPDF = useCallback(async () => {
-    // Dynamically import to avoid SSR errors
-    // @ts-ignore
-    const html2pdf = (await import('html2pdf.js')).default;
-    
-    const element = document.querySelector('.resume-page');
-    if (!element) return;
-
-    toast({
-      title: "Generating PDF",
-      description: "Your professional resume is being prepared for download.",
-    });
-
-    const opt = {
-      margin: [12, 12, 12, 12], // Reduced global margins slightly for a denser fit
-      filename: `${profile.fullName.replace(/\s+/g, '')}-CVinBio.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      pagebreak: { mode: 'css', avoid: '.avoid-break' },
-      html2canvas: { 
-        scale: 2, 
-        useCORS: true,
-        letterRendering: true,
-        windowWidth: 800 // Stable width for consistent rendering
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    const root = window.document.documentElement;
-    const isDark = root.classList.contains('dark');
-    if (isDark) root.classList.remove('dark');
-
-    // Increased delay to allow full CSS repaint of text colors for PDF capture
-    await new Promise(r => setTimeout(r, 300));
-
-    try {
-      // Wait for the PDF to be fully generated and saved
-      await (html2pdf() as any).set(opt).from(element as HTMLElement).save();
-    } catch (pdfError) {
-      console.error('PDF generation failed:', pdfError);
-      toast({
-        variant: "destructive",
-        title: "PDF generation failed",
-        description: "Could not generate PDF. Try using your browser's Print → Save as PDF instead.",
-      });
-    } finally {
-      if (isDark) root.classList.add('dark');
-    }
-  }, [profile.fullName, toast]);
-
-
   return (
     <>
       {/* Print CSS — clean resume, no browser chrome */}
@@ -395,17 +342,6 @@ export default function TemplateModern(props: ProfileData) {
       `}</style>
 
       <div className="resume-outer min-h-screen bg-background overflow-x-hidden">
-        {/* Temporarily disabled PDF button: 
-        <button
-          onClick={handleDownloadPDF}
-          className="no-print fixed bottom-6 right-6 z-[60] rounded-full bg-zinc-900 text-white p-4 shadow-xl hover:bg-zinc-800 transition-all hover:scale-105 active:scale-95 group flex items-center gap-2"
-          title="Save as PDF"
-        >
-          <FileDown className="h-5 w-5" />
-          <span className="text-xs font-semibold pr-1">Save PDF</span>
-        </button> 
-        */}
-
         <div className="mx-auto max-w-5xl px-4 sm:px-6 py-6 sm:py-8">
           <div className="resume-page space-y-5 pb-8">
 
