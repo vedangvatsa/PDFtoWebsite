@@ -50,6 +50,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check OG Satori styles
+        run: npm run check:og
+
       - name: Build OpenNext Worker
         run: |
           node -e '
