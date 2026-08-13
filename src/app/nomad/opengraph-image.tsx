@@ -1,8 +1,9 @@
 import { ImageResponse } from 'next/og';
+import { OgToolFrame, OG_TOOL_SIZE, OG_TOOL_CONTENT_TYPE } from '@/components/og/tool-frame';
 
 export const alt = 'Digital Nomad Directory | 100 Cities in 57 Countries';
-export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
+export const size = OG_TOOL_SIZE;
+export const contentType = OG_TOOL_CONTENT_TYPE;
 
 export default async function Image() {
   const cities = [
@@ -16,28 +17,11 @@ export default async function Image() {
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#fafafa',
-          fontFamily: 'sans-serif',
-          padding: '60px 80px',
-          justifyContent: 'space-between',
-        }}
-      >
-        {/* Top: Label */}
-        <div style={{ display: 'flex', fontSize: 14, fontWeight: 600, color: '#a1a1aa', letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
-          CVin.Bio
-        </div>
-
-        {/* Middle: Title + Stats */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-            Digital Nomad Directory
-          </div>
+      <OgToolFrame
+        layout="spread"
+        titleSize={72}
+        title="Digital Nomad Directory"
+        subtitle={
           <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#71717a', gap: 24 }}>
             <span>100 cities</span>
             <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
@@ -45,9 +29,8 @@ export default async function Image() {
             <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>Quality scored</span>
           </div>
-        </div>
-
-        {/* Bottom: City card grid — 2 rows × 3 cols */}
+        }
+      >
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
             {cities.slice(0, 3).map((c) => (
@@ -72,10 +55,7 @@ export default async function Image() {
             ))}
           </div>
         </div>
-
-        {/* Bottom bar */}
-        <div style={{ display: 'flex', width: '100%', height: 4, backgroundColor: '#09090b', borderRadius: 2 }} />
-      </div>
+      </OgToolFrame>
     ),
     { ...size }
   );

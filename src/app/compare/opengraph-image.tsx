@@ -1,8 +1,9 @@
 import { ImageResponse } from 'next/og';
+import { OgToolFrame, OG_TOOL_SIZE, OG_TOOL_CONTENT_TYPE } from '@/components/og/tool-frame';
 
 export const alt = 'Compare Cities for Digital Nomads';
-export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
+export const size = OG_TOOL_SIZE;
+export const contentType = OG_TOOL_CONTENT_TYPE;
 
 export default async function Image() {
   const left = { name: 'Bangkok', flag: '🇹🇭', cost: '$1,100/mo' };
@@ -10,28 +11,11 @@ export default async function Image() {
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#fafafa',
-          fontFamily: 'sans-serif',
-          padding: '60px 80px',
-          justifyContent: 'space-between',
-        }}
-      >
-        {/* Top: Label */}
-        <div style={{ display: 'flex', fontSize: 14, fontWeight: 600, color: '#a1a1aa', letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
-          CVin.Bio
-        </div>
-
-        {/* Middle: Title + Subtitle */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ display: 'flex', fontSize: 72, fontWeight: 800, color: '#09090b', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-            Compare Cities
-          </div>
+      <OgToolFrame
+        layout="spread"
+        titleSize={72}
+        title="Compare Cities"
+        subtitle={
           <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#71717a', gap: 24 }}>
             <span>Cost</span>
             <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
@@ -41,11 +25,9 @@ export default async function Image() {
             <span style={{ display: 'flex', color: '#d4d4d8' }}>·</span>
             <span>Side by side</span>
           </div>
-        </div>
-
-        {/* Comparison cards */}
+        }
+      >
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 24 }}>
-          {/* Left city card */}
           <div
             style={{
               display: 'flex',
@@ -63,8 +45,6 @@ export default async function Image() {
             <div style={{ display: 'flex', fontSize: 28, fontWeight: 700, color: '#09090b' }}>{left.name}</div>
             <div style={{ display: 'flex', fontSize: 22, fontWeight: 600, color: '#71717a' }}>{left.cost}</div>
           </div>
-
-          {/* VS badge */}
           <div
             style={{
               display: 'flex',
@@ -82,8 +62,6 @@ export default async function Image() {
           >
             VS
           </div>
-
-          {/* Right city card */}
           <div
             style={{
               display: 'flex',
@@ -102,10 +80,7 @@ export default async function Image() {
             <div style={{ display: 'flex', fontSize: 22, fontWeight: 600, color: '#71717a' }}>{right.cost}</div>
           </div>
         </div>
-
-        {/* Bottom bar */}
-        <div style={{ display: 'flex', width: '100%', height: 4, backgroundColor: '#09090b', borderRadius: 2 }} />
-      </div>
+      </OgToolFrame>
     ),
     { ...size }
   );

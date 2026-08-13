@@ -3,7 +3,7 @@ import { cleanPublishText } from '@/lib/noslop';
 import { isShortJobSlug, jobExternalIdFromSlugs, jobTypeLabel } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
-import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
+import { JobListingOgCard } from '@/components/og/job-listing-card';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 
@@ -66,93 +66,18 @@ export default async function Image({ params }: Props) {
   }
 
   const logoSrc = await resolveOgCompanyLogo({ slug, companyName: company, storedLogo });
-
   const displayTitle = title.length > 60 ? title.slice(0, 57).trimEnd() + '...' : title;
   const metaBits = [company, location, typeLabel].filter(Boolean).join('  ·  ');
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#ffffff',
-          fontFamily: 'sans-serif',
-          padding: 56,
-          justifyContent: 'space-between',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              fontSize: 16,
-              fontWeight: 600,
-              color: '#71717a',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase' as const,
-            }}
-          >
-            CVin.Bio  ·  Job listing
-          </div>
-          {logoSrc ? <CompanyLogoBadge logoSrc={logoSrc} /> : null}
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          <div
-            style={{
-              display: 'flex',
-              fontSize: 76,
-              fontWeight: 800,
-              color: '#09090b',
-              letterSpacing: '-0.04em',
-              lineHeight: 1.08,
-              maxWidth: 1020,
-            }}
-          >
-            {displayTitle}
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              fontSize: 34,
-              fontWeight: 500,
-              color: '#52525b',
-              flexWrap: 'wrap' as const,
-            }}
-          >
-            {metaBits}
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderTop: '1px solid #e4e4e7',
-            paddingTop: 28,
-          }}
-        >
-          <div style={{ display: 'flex', fontSize: 26, color: '#71717a', fontWeight: 500 }}>
-            Now hiring
-          </div>
-          <div style={{ display: 'flex', fontSize: 26, color: '#09090b', fontWeight: 700 }}>
-            {siteDomain}
-            {path}
-          </div>
-        </div>
-      </div>
+      <JobListingOgCard
+        displayTitle={displayTitle}
+        metaBits={metaBits}
+        path={path}
+        siteDomain={siteDomain}
+        logoSrc={logoSrc}
+      />
     ),
     {
       ...size,
