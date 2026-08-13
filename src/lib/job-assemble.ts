@@ -129,7 +129,8 @@ export function assembleJobPage(
   const plain = applyCompanyDisplayCasing(
     cleanPublishText(sections.join('\n')),
     rawCompany,
-    company
+    company,
+    job.apply_url
   );
   const wordCount = jobDescriptionWordCount(plain);
   const html = formatHtml
@@ -137,6 +138,7 @@ export function assembleJobPage(
         title: displayTitle,
         company,
         rawCompany,
+        applyUrl: job.apply_url,
         isFellowship: looksLikeFellowship(job),
       })
     : '';

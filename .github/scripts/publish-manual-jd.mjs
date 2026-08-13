@@ -17,6 +17,10 @@ import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
 import { checkManualPage } from './lib/jd-manual-gates.mjs';
 import { isFullyEnrichedJob } from './lib/job-apply-source.mjs';
+import {
+  normalizeJobDescriptionForStorage,
+  descriptionHasWriterLeak,
+} from './lib/normalize-job-description.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -80,8 +84,12 @@ async function main() {
     console.error(`Missing page file: ${pagePath}`);
     process.exit(1);
   }
-  const page = readFileSync(pagePath, 'utf8').trim();
+  const page = normalizeJobDescriptionForStorage(readFileSync(pagePath, 'utf8')) || '';
   const source = existsSync(sourcePath) ? readFileSync(sourcePath, 'utf8') : '';
+  if (descriptionHasWriterLeak(page)) {
+    console.error('Writer-template leak still present after strip (See source / omit-instructions).');
+    process.exit(2);
+  }
   const gate = checkManualPage(page, source);
   console.log(JSON.stringify({ id, gate }, null, 2));
   if (!gate.ok && !FORCE) {

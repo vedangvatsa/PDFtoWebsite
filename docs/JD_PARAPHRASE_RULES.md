@@ -139,7 +139,7 @@ Practical notes
 | Section | Rules |
 |---------|--------|
 | About | 3–5 sentences. Mix ≤12-word and ≥18-word. Scope from duties only. Editorial synthesis OK; no invented facts. |
-| Key facts | `Location:` / `Engagement:` / `Compensation:` / `Team:` — omit unknown lines. **Include exact salary when in sheet.** |
+| Key facts | `Location:` / `Engagement:` / `Compensation:` / `Team:` — omit unknown lines entirely. Never write "See source", "not specified", "n/a", ellipsis, or parenthetical omit-instructions as a value. **Include exact salary when in sheet.** |
 | What you'll do | 8–12 bullets when sheet supports; else fewer (may block index). **Reorder/merge by workflow** — do not mirror ATS sequence 1:1. |
 | Requirements | Hard stays hard. **Do not drop** judgment, risk assessments, balance/priority clauses, or other must_have items. |
 | Nice to have | Only if sheet has optionals (preferred degrees, env prefs, etc.) |

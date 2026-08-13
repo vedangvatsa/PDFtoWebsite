@@ -23,6 +23,7 @@ import { createClient } from '@supabase/supabase-js';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
+import { isRegistryCompanyLabel } from '../../src/lib/company-host.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -84,7 +85,7 @@ const NAME_MAP = {
   'amplitude ': 'Amplitude',
   'kraken.com': 'Kraken', kraken: 'Kraken',
   'chime financial, inc': 'Chime', 'gusto, inc.': 'Gusto',
-  openai: 'OpenAI', airwallex: 'Airwallex', snowflake: 'Snowflake',
+  openai: 'OpenAI', iisc: 'IISc', airwallex: 'Airwallex', snowflake: 'Snowflake',
   deel: 'Deel', notion: 'Notion', vanta: 'Vanta', ramp: 'Ramp',
   cohere: 'Cohere', langchain: 'LangChain', plaid: 'Plaid',
   perplexity: 'Perplexity', replit: 'Replit', clickup: 'ClickUp',
@@ -135,6 +136,7 @@ function canonicalize(raw) {
   if (!trimmed || trimmed.includes('...')) return null;
   const lower = trimmed.toLowerCase();
   if (BLOCKLIST.has(lower)) return null;
+  if (isRegistryCompanyLabel(trimmed)) return null;
   return NAME_MAP[lower] || trimmed;
 }
 
@@ -198,6 +200,7 @@ WHERE j.created_at > now() - interval '${DAYS} days'
   AND j.company IS NOT NULL
   AND btrim(j.company) <> ''
   AND j.company NOT LIKE '%...%'
+  AND j.tags @> ARRAY['curated-jd']::text[]
 GROUP BY j.company;
 `;
   const rows = await mgmtQuery(sql);
@@ -223,7 +226,8 @@ async function fetchStatsViaScan() {
   while (page < SCAN_MAX_PAGES) {
     let q = sb
       .from('jobs')
-      .select('id, company, company_logo, location, published_at, created_at')
+      .select('id, company, company_logo, location, published_at, created_at, tags')
+      .contains('tags', ['curated-jd'])
       .gt('created_at', since)
       .order('created_at', { ascending: true })
       .order('id', { ascending: true })

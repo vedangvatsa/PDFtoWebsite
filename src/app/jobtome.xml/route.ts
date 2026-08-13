@@ -31,6 +31,7 @@ export async function GET(req: Request) {
           )
           .not('external_id', 'is', null)
           .not('company', 'is', null)
+          .contains('tags', ['curated-jd'])
           .gt('published_at', thirtyDaysAgo)
           .order('published_at', { ascending: false })
           .range(from, from + PAGE - 1);

@@ -37,7 +37,23 @@ function looksLikeWikipediaLede(text: string): boolean {
     return true;
   }
   if (/\bdeveloped by the (?:American|British|Canadian|French|German)\b/i.test(t)) return true;
+  if (/\bwe work remotely\b/i.test(t) && /\b(advanced job search|find your next remote career)\b/i.test(t)) {
+    return true;
+  }
+  if (/\badvanced job search for we work remotely\b/i.test(t)) return true;
+  if (
+    /\bwe work remotely\b/i.test(t) &&
+    /\b(programming|marketing|customer service)\b/i.test(t) &&
+    /\b(search|refine|explore|filter)\b/i.test(t)
+  ) {
+    return true;
+  }
   return false;
+}
+
+/** True when cached JSON / wiki residue must not be shown as company about. */
+export function isUnpublishableCompanyBlurb(text: string): boolean {
+  return looksLikeEncyclopediaDump(text) || looksLikeWikipediaLede(text);
 }
 
 function lookupCachedBlurb(slugOrName: string): string | null {
@@ -47,10 +63,25 @@ function lookupCachedBlurb(slugOrName: string): string | null {
   for (const candidate of [raw, key, compact]) {
     if (!candidate) continue;
     const text = String(DESCRIPTIONS[candidate] || '').trim();
-    if (looksLikeEncyclopediaDump(text) || looksLikeWikipediaLede(text)) continue;
+    if (isUnpublishableCompanyBlurb(text)) continue;
     return text;
   }
   return null;
+}
+
+/**
+ * True when we still know this company well enough to keep `/{slug}` as a hub
+ * even if Wikipedia-shaped cache copy is not publishable.
+ */
+export function companyHasCachedProfile(slugOrName: string): boolean {
+  const key = toCompanyKey(slugOrName);
+  const compact = key.replace(/-/g, '');
+  const raw = String(slugOrName || '').trim().toLowerCase();
+  if ((key && getCompanyMeta(key)) || (compact && getCompanyMeta(compact))) return true;
+  for (const candidate of [raw, key, compact]) {
+    if (candidate && DESCRIPTIONS[candidate]) return true;
+  }
+  return false;
 }
 
 /**

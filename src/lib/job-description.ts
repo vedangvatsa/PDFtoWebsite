@@ -153,6 +153,7 @@ export function isGarbageJobTitle(title: string | null | undefined): boolean {
   const t = String(title || '').replace(/\s+/g, ' ').trim();
   if (!t || t.length < 3) return true;
   if (/^(website|home|about|blog|news|careers|jobs|fellowship|fellowships)$/i.test(t)) return true;
+  if (/^community\s+/i.test(t) && t.length < 28) return true;
   if (/\bread more\b/i.test(t)) return true;
   if (/\bexplaining the\b/i.test(t) && t.length > 40) return true;
   if (/\band introducing (our|the)\b/i.test(t)) return true;
@@ -888,6 +889,7 @@ export function formatJobDescription(
     title?: string | null;
     company?: string | null;
     rawCompany?: string | null;
+    applyUrl?: string | null;
     isFellowship?: boolean;
   }
 ): string {
@@ -961,7 +963,7 @@ export function formatJobDescription(
   );
   html = stripScaffoldAndEmptyHeadings(html);
   html = html.replace(/<div class="jd-meta-facts">\s*<\/div>/gi, '');
-  html = applyCompanyDisplayCasing(html, opts?.rawCompany, opts?.company);
+  html = applyCompanyDisplayCasing(html, opts?.rawCompany, opts?.company, opts?.applyUrl);
 
   return mergeAdjacentLists(html);
 }
@@ -992,11 +994,9 @@ export function jobDescriptionWordCount(raw: string | null | undefined): number 
 }
 
 /**
- * Minimum words for a job page to be considered publishable/indexable.
- * Below this we noindex and skip sitemap so thin pages never rank.
- * Content is the model's honest restatement + curated blocks (About the
- * company, About the location, and general role information). No boilerplate
- * padding: the floor is reachable with real content.
+ * Minimum words for a full curated publish (manual/LLM gates).
+ * Google Jobs / sitemap / index uses GOOGLE_JOBS_MIN_WORDS (420) so a
+ * complete owned paraphrase is not held back waiting for padded filler.
  */
 export const JOB_INDEXABLE_MIN_WORDS = 600;
 

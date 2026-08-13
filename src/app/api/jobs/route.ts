@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { normalizeLocation as normalizeLocationDisplay } from '@/lib/normalize-location';
-import { jobPublicPath } from '@/lib/job-description';
-import { shouldListJobOnBoard } from '@/lib/job-apply-source';
+import { displayJobLocation } from '@/lib/normalize-location';
+import { jobPublicPath, cleanJobTitle, isGarbageJobTitle, cleanSalaryDisplay, looksLikeFellowship } from '@/lib/job-description';
+import { companyDisplayNameFromJob, isJunkCompanyName } from '@/lib/company-directory';
+import { shouldListJobOnBoard, withCuratedJdTag } from '@/lib/job-apply-source';
 import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { isJunkCompanyName } from '@/lib/company-directory';
 import { createAnonFromRequest } from '@/utils/supabase/anon';
 import {
   normalizeCompany,
@@ -61,10 +61,14 @@ export async function GET(request: NextRequest) {
 
   // Build query — select only needed columns (skip description to reduce payload)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,external_id,slug';
+  const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
+  const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
+  const boardSince = q ? ninetyDaysAgo : sixtyDaysAgo;
+  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug';
 
   // Base filters shared by all queries
   function applyBaseFilters(q: any) {
+    q = withCuratedJdTag(q);
     if (type && type !== 'all') q = q.eq('job_type', type);
     return q;
   }
@@ -87,19 +91,21 @@ export async function GET(request: NextRequest) {
     .range(0, limit * 2 - 1);
   priorityQuery = applyBaseFilters(priorityQuery);
 
-  // Unfiltered board: skip DB count (static total). Filtered search: estimated only.
+  // Unfiltered board: skip DB count (static total). Keyword search skips count
+  // too — estimated count + ilike is what timed out and returned 0 engineers.
   const matchOnlyEarly = searchParams.get('match') === 'true';
   const needsDbCount = Boolean(
-    (type && type !== 'all') || loc || q || matchOnlyEarly
+    (type && type !== 'all') || loc || matchOnlyEarly
   );
 
   // --- Query 2: All jobs (backfill pool) ---
-  let query = supabase
-    .from('jobs')
-    .select(selectCols, needsDbCount ? { count: 'estimated' } : undefined)
-    .gt('created_at', thirtyDaysAgo)
-    .order('published_at', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false });
+  let query = withCuratedJdTag(
+    supabase
+      .from('jobs')
+      .select(selectCols, needsDbCount ? { count: 'estimated' } : undefined)
+      .gt('created_at', boardSince)
+      .order('published_at', { ascending: false, nullsFirst: false })
+  );
 
   // Filter by job type
   if (type && type !== 'all') {
@@ -116,6 +122,15 @@ export async function GET(request: NextRequest) {
   // Search by keyword in title or company
   if (q) {
     query = query.or(`title.ilike.%${q}%,company.ilike.%${q}%`);
+  }
+
+  // Unfiltered board and ordinary keyword search are flooded by remote
+  // fellowships stored as internship. Keep them when the visitor asks.
+  const qWantsIntern = /\b(intern|interns|internship|fellow|fellows|fellowship|residenc)/i.test(q);
+  const hideInternships = (!type || type === 'all') && (!q || !qWantsIntern);
+  if (hideInternships) {
+    priorityQuery = priorityQuery.neq('job_type', 'internship').not('title', 'ilike', '%fellow%');
+    query = query.neq('job_type', 'internship').not('title', 'ilike', '%fellow%');
   }
 
   // If user has complete profile AND match=true, filter to jobs that match their skills and location
@@ -146,6 +161,13 @@ export async function GET(request: NextRequest) {
   query = query.range(offset, offset + fetchLimit - 1);
 
   // Run both queries in parallel with hard timeout — never hang the board.
+  const timeoutResult = {
+    data: [] as any[],
+    error: { message: 'timeout', code: 'TIMEOUT' },
+    count: null,
+    status: 200,
+    statusText: 'OK',
+  } as any;
   const emptyResult = {
     data: [] as any[],
     error: null,
@@ -154,18 +176,19 @@ export async function GET(request: NextRequest) {
     statusText: 'OK',
   } as any;
   const [priorityResult, mainResult] = await Promise.all([
-    loc === 'onsite'
+    loc === 'onsite' || q
       ? Promise.resolve(emptyResult)
       : withTimeoutFallback(
           priorityQuery as any,
           DB_BUDGET.list,
-          emptyResult,
+          timeoutResult,
           'api-jobs-priority'
         ),
-    withTimeoutFallback(query as any, DB_BUDGET.list, emptyResult, 'api-jobs-main'),
+    withTimeoutFallback(query as any, DB_BUDGET.list, timeoutResult, 'api-jobs-main'),
   ]);
 
   const { data: mainJobs, error, count } = mainResult as any;
+  const mainTimedOut = error?.code === 'TIMEOUT';
   const priorityJobs = (priorityResult as any).data || [];
 
   // Merge: priority jobs first (deduped), then backfill from main
@@ -178,7 +201,7 @@ export async function GET(request: NextRequest) {
     if (!mergedIds.has(job.id)) { mergedIds.add(job.id); rawJobs.push(job); }
   }
 
-  if (error) {
+  if (error && error.code !== 'TIMEOUT') {
     console.error('Jobs query error:', {
       message: error.message,
       code: error.code,
@@ -257,8 +280,8 @@ export async function GET(request: NextRequest) {
       if (dashMatch) {
         t = dashMatch[1];
       }
-      // 13. Clean up any leading/trailing junk
-      job.title = t.replace(/^[\s:\-\|]+/, '').replace(/[\s:\-\|,]+$/, '').trim();
+      // 13. Clean up any leading/trailing junk / markdown leftovers
+      job.title = cleanJobTitle(t);
     }
   }
 
@@ -279,6 +302,10 @@ export async function GET(request: NextRequest) {
     /\bwe\s+are\s+hiring\b/i,
     /\bwe\'?re\s+hiring\b/i,
     /\bapply\s+now\b/i,
+    /\bread more\b/i,
+    /\bexplaining the\b/i,
+    /\band introducing (our|the)\b/i,
+    /^(website|home|about|blog|news|careers)$/i,
   ];
   const VAGUE_COMPANY_PATTERNS = [
     /\bjobradars?\b/i,
@@ -286,12 +313,17 @@ export async function GET(request: NextRequest) {
   ];
 
   const englishFiltered = (rawJobs || []).filter(job => {
-    if (isNonEnglishTitle(job.title)) return false;
+    const title = cleanJobTitle(job.title);
+    if (isNonEnglishTitle(title)) return false;
     // Block junk company names & Gopuff (to avoid expensive wildcard database queries)
     const companyLower = (job.company || '').toLowerCase().trim();
     if (isJunkCompanyName(job.company || '') || companyLower.includes('gopuff')) return false;
     // Block vague/generic titles
-    if (VAGUE_TITLE_PATTERNS.some(p => p.test(job.title))) return false;
+    if (VAGUE_TITLE_PATTERNS.some(p => p.test(title))) return false;
+    if (isGarbageJobTitle(title)) return false;
+    if (hideInternships && looksLikeFellowship({ title, category: job.category, tags: job.tags })) {
+      return false;
+    }
     // Block known junk sources
     if (VAGUE_COMPANY_PATTERNS.some(p => p.test(job.company))) return false;
     // Hide LinkedIn / aggregator apply URLs unless already fully enriched
@@ -302,7 +334,7 @@ export async function GET(request: NextRequest) {
   // Deduplicate by normalized company+title (cross-source dupes)
   const seen = new Set<string>();
   const englishJobs = englishFiltered.filter(job => {
-    const key = `${normalizeCompany(job.company)}::${(job.title || '').toLowerCase().trim()}`;
+    const key = `${normalizeCompany(job.company)}::${cleanJobTitle(job.title).toLowerCase()}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -393,12 +425,12 @@ export async function GET(request: NextRequest) {
   // Map to response format (scores already computed)
   const jobsWithMatches = jobs.map(job => ({
     id: job.id,
-    title: job.title,
-    company: job.company,
+    title: cleanJobTitle(job.title),
+    company: companyDisplayNameFromJob(job),
     company_logo: job.company_logo,
-    location: normalizeLocationDisplay(job.location),
+    location: displayJobLocation(job.location, job.job_type),
     job_type: job.job_type,
-    salary: job.salary,
+    salary: cleanSalaryDisplay(job.salary),
     tags: job.tags || [],
     apply_url: job.apply_url,
     category: job.category,
@@ -419,6 +451,23 @@ export async function GET(request: NextRequest) {
     const dateB = b.published_at ? new Date(b.published_at).getTime() : 0;
     return dateB - dateA;
   });
+
+  const degraded = jobsWithMatches.length === 0 && Boolean(mainTimedOut);
+
+  if (degraded) {
+    const response = NextResponse.json({
+      jobs: [],
+      total: 0,
+      page,
+      limit,
+      hasMore: false,
+      degraded: true,
+      userSkills: (userProfile?.skills || []).map((s) => s.trim()).filter(Boolean),
+      profileComplete,
+    });
+    response.headers.set('Cache-Control', 'no-store');
+    return response;
+  }
 
   const total = needsDbCount
     ? (count || jobsWithMatches.length)

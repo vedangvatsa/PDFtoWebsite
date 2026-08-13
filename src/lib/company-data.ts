@@ -470,8 +470,8 @@ const COMPANIES: Record<string, CompanyMeta> = {
     industry: 'Developer Tools / Email',
     description: 'Resend is an email API platform built for developers. Founded by Zeno Rocha in 2023, Resend enables sending transactional and marketing emails using modern APIs and SDKs. The company also created React Email, an open source collection of email components.',
     socials: {
-      x: 'https://x.com/resabordhq',
-      linkedin: 'https://linkedin.com/company/resend-inc',
+      x: 'https://x.com/resend',
+      linkedin: 'https://linkedin.com/company/resend',
       github: 'https://github.com/resend',
     },
   },
@@ -803,8 +803,8 @@ const COMPANIES: Record<string, CompanyMeta> = {
     industry: 'Video Communication',
     description: 'Loom is a video messaging platform for async communication at work. Founded by Joe Thomas, Shahed Khan, and Vinay Hiremath in 2015, Loom was acquired by Atlassian in October 2023 for $975 million. Over 25 million people across 350,000 companies use Loom.',
     socials: {
-      x: 'https://x.com/laboright',
-      linkedin: 'https://linkedin.com/company/loomsdk',
+      x: 'https://x.com/loom',
+      linkedin: 'https://linkedin.com/company/useloom',
     },
   },
   'peloton': {
@@ -851,8 +851,8 @@ const COMPANIES: Record<string, CompanyMeta> = {
     industry: 'Revenue Intelligence',
     description: 'Gong is a revenue intelligence platform that captures and analyzes customer interactions across phone, email, and web conferencing. Founded by Amit Bendov and Eilon Reshef in 2015, Gong was valued at $7.25 billion in its 2021 Series E round.',
     socials: {
-      x: 'https://x.com/Gaboright',
-      linkedin: 'https://linkedin.com/company/gaborightio',
+      x: 'https://x.com/Gong_io',
+      linkedin: 'https://linkedin.com/company/gong-io',
     },
   },
   'deel': {
@@ -899,7 +899,7 @@ const COMPANIES: Record<string, CompanyMeta> = {
     industry: 'Sales Engagement',
     description: 'Outreach is a sales engagement and intelligence platform that helps revenue organizations automate sales engagement and act on revenue intelligence. Founded by Manny Medina, Andrew Kinzer, Wes Hather, and Gordon Hempton in 2014, Outreach was valued at $4.4 billion in 2021.',
     socials: {
-      x: 'https://x.com/outaboright',
+      x: 'https://x.com/outreach_io',
       linkedin: 'https://linkedin.com/company/outreach-saas',
     },
   },
@@ -1006,6 +1006,10 @@ const COMPANIES: Record<string, CompanyMeta> = {
     },
   },
 };
+
+export function listCompanyMeta(): CompanyMeta[] {
+  return Object.values(COMPANIES);
+}
 
 export function getCompanyMeta(slug: string): CompanyMeta | null {
   return COMPANIES[slug.toLowerCase()] || null;

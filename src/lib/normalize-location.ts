@@ -275,3 +275,57 @@ export function normalizeLocation(raw: string): string {
 
   return loc;
 }
+
+const REMOTE_POSTING_RE =
+  /\bremote\b|work from home|\bwfh\b|distributed|anywhere|fully remote|remote-first|remote first|worldwide|global\b/i;
+
+function jobTypeMeansRemoteOnly(jobType?: string | null): boolean {
+  const t = String(jobType || '');
+  if (!/\bremote\b/i.test(t)) return false;
+  return !/\b(hybrid|onsite|on-site|in-office)\b/i.test(t);
+}
+
+function countryLabelFromToken(token: string): string | null {
+  const rest = token.trim();
+  if (!rest) return null;
+  const lower = rest.toLowerCase();
+  if (rest.length === 2 && (US_STATES[lower] || lower === 'in' || lower === 'ca')) return null;
+  if (COUNTRY_CODES[lower]) {
+    const name = COUNTRY_CODES[lower];
+    return name === 'United States' ? 'USA' : name;
+  }
+  for (const name of new Set(Object.values(COUNTRY_CODES))) {
+    if (name.toLowerCase() === lower) return name === 'United States' ? 'USA' : name;
+  }
+  if (/^u\.?s\.?a?\.?$|^united states( of america)?$/i.test(rest)) return 'USA';
+  if (/^(uk|u\.k\.|united kingdom|great britain)$/i.test(rest)) return 'United Kingdom';
+  return null;
+}
+
+function explicitRemoteCountryLabel(raw: string): string | null {
+  const rest = String(raw)
+    .replace(/\s*\((?:remote|hybrid|wfh|work from home)\)\s*/gi, ' ')
+    .replace(/^(?:remote|work from home|wfh|telecommute|worldwide|global|anywhere)\b/i, '')
+    .replace(/\b(?:remote|work from home|wfh|telecommute|worldwide|global|anywhere)\s*$/i, '')
+    .replace(/^[\s\-–—:,/]+/, '')
+    .replace(/[\s\-–—:,/]+$/, '')
+    .replace(/^[(\s]+/, '')
+    .replace(/[)\s]+$/, '')
+    .trim();
+  if (!rest || /[,;/|]/.test(rest)) return null;
+  return countryLabelFromToken(rest);
+}
+
+/** Location shown on job pages. Remote stays Remote; never an HQ city. */
+export function displayJobLocation(raw: string, jobType?: string | null): string {
+  const loc = String(raw || '').trim();
+  if (!loc || /^unknown$/i.test(loc)) return '';
+  const hybrid = /\bhybrid\b/i.test(loc) || /\bhybrid\b/i.test(String(jobType || ''));
+  if ((REMOTE_POSTING_RE.test(loc) || jobTypeMeansRemoteOnly(jobType)) && !hybrid) {
+    const country =
+      explicitRemoteCountryLabel(loc) ||
+      (!REMOTE_POSTING_RE.test(loc) ? countryLabelFromToken(loc) : null);
+    return country ? `Remote (${country})` : 'Remote';
+  }
+  return normalizeLocation(loc);
+}

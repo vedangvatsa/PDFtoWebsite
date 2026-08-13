@@ -2,6 +2,8 @@
  * Local A/O/H-ish gates for manual JD pages (no LLM).
  * Shared by publish-manual-jd.mjs and optional checkers.
  */
+import { descriptionHasWriterLeak } from './normalize-job-description.mjs';
+
 export const MIN_WORDS = 600;
 export const MAX_WORDS = 900;
 
@@ -94,6 +96,9 @@ export function checkManualPage(pageText, sourceText = '') {
   }
   if (/listed on CVin\.Bio|Infer reasonable responsib|invent duties|make up (duties|requirements)/i.test(text)) {
     fails.push('invent_smell');
+  }
+  if (descriptionHasWriterLeak(text)) {
+    fails.push('writer_leak');
   }
 
   if (sourceText && wordCount(sourceText) >= 80) {

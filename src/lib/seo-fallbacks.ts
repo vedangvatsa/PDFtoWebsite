@@ -6,10 +6,7 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { toCompanyKey, COMPANY_BLOCKLIST, isJunkCompanyName } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import companyDescriptions from '@/lib/company-descriptions.json';
-import { publishableCompanyAbout } from '@/lib/company-about';
-
-const DESCRIPTIONS = companyDescriptions as Record<string, string>;
+import { companyHasCachedProfile, publishableCompanyAbout } from '@/lib/company-about';
 
 /** Disposable profile remints leave /user87 etc. permanently dead without redirects. */
 /** Prefer the shared parse-guard definition so bare `profile` is treated as disposable. */
@@ -26,7 +23,7 @@ async function companyHubExists(slug: string): Promise<boolean> {
   if (COMPANY_BLOCKLIST.has(blockKey) || COMPANY_BLOCKLIST.has(key)) return false;
   if (isJunkCompanyName(key.replace(/-/g, ' '))) return false;
 
-  if (DESCRIPTIONS[key]) return true;
+  if (companyHasCachedProfile(key)) return true;
 
   const dir = await withTimeoutFallback(
     supabaseAdmin
