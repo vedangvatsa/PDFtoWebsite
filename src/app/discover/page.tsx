@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
+import { BigNum, Callout } from '@/components/report/charts';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -143,25 +144,6 @@ function TechStackDiagram() {
   );
 }
 
-/* ─── BIG NUMBER ─── */
-function BigNum({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="text-center">
-      <div className="text-4xl sm:text-5xl font-serif font-bold text-zinc-900 tracking-tight leading-none">{value}</div>
-      <div className="text-[11px] text-zinc-500 mt-2 leading-relaxed">{label}</div>
-    </div>
-  );
-}
-
-/* ─── CALLOUT ─── */
-function Callout({ children }: { children: React.ReactNode }) {
-  return (
-    <blockquote className="border-l-2 border-zinc-900 pl-6 py-2 my-10">
-      <p className="text-lg sm:text-xl font-serif text-zinc-800 leading-relaxed italic">{children}</p>
-    </blockquote>
-  );
-}
-
 export default function AIDiscoveryPage() {
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-zinc-200 transition-colors duration-200 flex flex-col">
@@ -196,7 +178,7 @@ export default function AIDiscoveryPage() {
             { value: '0', label: 'Authentication\nbarriers for agents' },
           ].map((d, i) => (
             <div key={i} className="bg-[#fafafa] p-8 sm:p-10">
-              <BigNum {...d} />
+              <BigNum size="sm" {...d} />
             </div>
           ))}
         </div>

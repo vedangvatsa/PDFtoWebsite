@@ -4,6 +4,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import Link from 'next/link';
 import { getPlatformStats } from '@/lib/get-platform-stats';
+import { Cite, HBar, BigNum, Callout, Sources } from '@/components/report/charts';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,66 +29,6 @@ export const metadata: Metadata = {
     creator: '@cvinbio',
   },
 };
-
-/* ─── INLINE CITE ─── */
-function Cite({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-zinc-900 hover:text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500 transition-colors">
-      {children}
-    </a>
-  );
-}
-
-/* ─── BIG NUMBER ─── */
-function BigNum({ value, label, href, sub }: { value: string; label: string; href?: string; sub?: string }) {
-  const inner = (
-    <div className="text-center">
-      <div className="text-5xl sm:text-6xl font-serif font-bold text-zinc-900 tracking-tight leading-none">{value}</div>
-      <div className="text-[13px] text-zinc-500 mt-3 leading-relaxed break-words">{label}</div>
-      {sub && <div className="text-[11px] text-zinc-400 mt-1">{sub}</div>}
-    </div>
-  );
-  if (href) return <a href={href} target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">{inner}</a>;
-  return inner;
-}
-
-/* ─── CALLOUT ─── */
-function Callout({ children }: { children: React.ReactNode }) {
-  return (
-    <blockquote className="border-l-2 border-zinc-900 pl-6 py-2 my-10">
-      <p className="text-lg sm:text-xl font-serif text-zinc-800 leading-relaxed italic">{children}</p>
-    </blockquote>
-  );
-}
-
-/* ─── SOURCES ─── */
-function Sources({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mt-6 pt-4 border-t border-zinc-100">
-      <p className="text-[11px] text-zinc-400 leading-relaxed">{children}</p>
-    </div>
-  );
-}
-
-/* ─── HORIZONTAL BAR ─── */
-function HBar({ data, unit = '' }: { data: { label: string; value: number; color: string }[]; unit?: string }) {
-  const max = Math.max(...data.map(d => d.value));
-  return (
-    <div className="space-y-3">
-      {data.map((d, i) => (
-        <div key={i}>
-          <div className="flex justify-between mb-1.5">
-            <span className="text-sm text-zinc-700 font-medium">{d.label}</span>
-            <span className="text-sm font-bold text-zinc-900">{d.value.toLocaleString()}{unit}</span>
-          </div>
-          <div className="h-2.5 bg-zinc-100 rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all duration-700" style={{ width: `${(d.value / max) * 100}%`, backgroundColor: d.color }} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 /* ─── BESPOKE SVG: MARKET GROWTH ─── */
 function MarketGrowthChart() {
@@ -254,7 +195,7 @@ export default async function StoryPage() {
               Talent infrastructure<br />for the agentic era
             </h1>
             <p className="text-[17px] text-zinc-500 leading-[1.8]">
-              CVin.Bio turns any CV into a live website. Every profile is structured so that both humans and AI systems can read it. Candidates get a free professional URL and {`skill-matched jobs from ${stats.companyCountDisplay} companies`}. Employers get a searchable talent database filtered by structured skill data, not keywords. <Cite href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner projects</Cite> 40% of enterprise apps will embed AI agents by EOY 2026. The hiring infrastructure needs to be ready for that.
+              CVin.Bio turns any CV into a live website. Every profile is structured so that both humans and AI systems can read it. Candidates get a free professional URL and {`skill-matched jobs from ${stats.companyCountDisplay} companies`}. Employers get a searchable talent database filtered by structured skill data, not keywords. <Cite accent="zinc" href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner projects</Cite> 40% of enterprise apps will embed AI agents by EOY 2026. The hiring infrastructure needs to be ready for that.
             </p>
           </div>
           <div className="hidden lg:block">
@@ -286,10 +227,10 @@ export default async function StoryPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div>
               <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                U.S. job postings for AI engineers grew by <Cite href="https://www.kore1.com/">143% year over year in 2025</Cite>. The AI agent development segment is projected to grow at a <Cite href="https://www.azumo.com/">52.4% CAGR through 2030</Cite>. By December 2025, <Cite href="https://www.high5test.com/">4.2% of all U.S. job postings</Cite> required AI skills as a core requirement.
+                U.S. job postings for AI engineers grew by <Cite accent="zinc" href="https://www.kore1.com/">143% year over year in 2025</Cite>. The AI agent development segment is projected to grow at a <Cite accent="zinc" href="https://www.azumo.com/">52.4% CAGR through 2030</Cite>. By December 2025, <Cite accent="zinc" href="https://www.high5test.com/">4.2% of all U.S. job postings</Cite> required AI skills as a core requirement.
               </p>
               <p className="text-[15px] text-zinc-500 leading-[1.85]">
-                Entry-level engineering roles contract while companies redirect budgets toward agent orchestration, RAG pipelines, and autonomous workflows. These specialists command <Cite href="https://www.roberthalf.com/us/en/insights/salary-guide">20-56% salary premiums</Cite>. No recruitment platform exists for this intersection.
+                Entry-level engineering roles contract while companies redirect budgets toward agent orchestration, RAG pipelines, and autonomous workflows. These specialists command <Cite accent="zinc" href="https://www.roberthalf.com/us/en/insights/salary-guide">20-56% salary premiums</Cite>. No recruitment platform exists for this intersection.
               </p>
             </div>
             <div>
@@ -322,7 +263,7 @@ export default async function StoryPage() {
           <Callout>Companies are not hiring fewer engineers. They are hiring different engineers. The infrastructure to find and evaluate them does not exist.</Callout>
 
           <Sources>
-            <Cite href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner</Cite> · <Cite href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">McKinsey State of AI</Cite> · <Cite href="https://www.researchnester.com/reports/autonomous-ai-agents-market/6660">Research Nester</Cite> · <Cite href="https://www.roberthalf.com/us/en/insights/salary-guide">Robert Half</Cite> · <Cite href="https://cvin.bio/jobs">CVin.Bio internal data</Cite>
+            <Cite accent="zinc" href="https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025">Gartner</Cite> · <Cite accent="zinc" href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">McKinsey State of AI</Cite> · <Cite accent="zinc" href="https://www.researchnester.com/reports/autonomous-ai-agents-market/6660">Research Nester</Cite> · <Cite accent="zinc" href="https://www.roberthalf.com/us/en/insights/salary-guide">Robert Half</Cite> · <Cite accent="zinc" href="https://cvin.bio/jobs">CVin.Bio internal data</Cite>
           </Sources>
         </section>
 
@@ -333,7 +274,7 @@ export default async function StoryPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div>
               <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                Average U.S. cost per hire is <Cite href="https://www.shrm.org/topics-tools/news/talent-acquisition">$4,800</Cite>. For specialized roles, recruiters charge <Cite href="https://www.techneeds.com/">15-30% of first-year salary</Cite>, pushing a single senior hire to $40-60K in fees. Specialized tech roles take <Cite href="https://www.roberthalf.com/us/en/insights/salary-guide">89+ days to fill</Cite>.
+                Average U.S. cost per hire is <Cite accent="zinc" href="https://www.shrm.org/topics-tools/news/talent-acquisition">$4,800</Cite>. For specialized roles, recruiters charge <Cite accent="zinc" href="https://www.techneeds.com/">15-30% of first-year salary</Cite>, pushing a single senior hire to $40-60K in fees. Specialized tech roles take <Cite accent="zinc" href="https://www.roberthalf.com/us/en/insights/salary-guide">89+ days to fill</Cite>.
               </p>
               <p className="text-[15px] text-zinc-500 leading-[1.85]">
                 The core issue is signal. A search for &quot;engineer&quot; on LinkedIn returns interns and principal architects alike. Existing platforms match on keywords, not capability depth. The problem is worst in AI and emerging tech, but it applies to every specialized role.
@@ -350,7 +291,7 @@ export default async function StoryPage() {
           <Callout>For a single $200K engineering hire, the recruiter fee alone can exceed $50,000. And it still takes three months.</Callout>
 
           <Sources>
-            <Cite href="https://www.shrm.org/topics-tools/news/talent-acquisition">SHRM</Cite> · <Cite href="https://www.techneeds.com/">TechNeeds</Cite> · <Cite href="https://www.roberthalf.com/us/en/insights/salary-guide">Robert Half 2026</Cite> · <Cite href="https://www.levels.fyi/2025/">Levels.fyi</Cite>
+            <Cite accent="zinc" href="https://www.shrm.org/topics-tools/news/talent-acquisition">SHRM</Cite> · <Cite accent="zinc" href="https://www.techneeds.com/">TechNeeds</Cite> · <Cite accent="zinc" href="https://www.roberthalf.com/us/en/insights/salary-guide">Robert Half 2026</Cite> · <Cite accent="zinc" href="https://www.levels.fyi/2025/">Levels.fyi</Cite>
           </Sources>
         </section>
 
@@ -361,7 +302,7 @@ export default async function StoryPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16">
             <div className="lg:col-span-3">
               <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                Global recruitment exceeds <Cite href="https://www.staffingindustry.com/">$640 billion</Cite>. LinkedIn generates <Cite href="https://www.businessofapps.com/data/linkedin-statistics/">$17.1B annually</Cite>. ZipRecruiter brings in <Cite href="https://investors.ziprecruiter.com">$449M</Cite>. The AI recruitment segment alone is valued at <Cite href="https://www.einpresswire.com/">$700M+</Cite>, growing 7% yearly.
+                Global recruitment exceeds <Cite accent="zinc" href="https://www.staffingindustry.com/">$640 billion</Cite>. LinkedIn generates <Cite accent="zinc" href="https://www.businessofapps.com/data/linkedin-statistics/">$17.1B annually</Cite>. ZipRecruiter brings in <Cite accent="zinc" href="https://investors.ziprecruiter.com">$449M</Cite>. The AI recruitment segment alone is valued at <Cite accent="zinc" href="https://www.einpresswire.com/">$700M+</Cite>, growing 7% yearly.
               </p>
               <p className="text-[15px] text-zinc-500 leading-[1.85]">
                 All incumbents are horizontal. Meanwhile, a new wave of AI sourcing startups (Juicebox AI at $850M valuation, Eightfold AI at $2.1B, SeekOut with $189M raised, Moonhub, hireEZ) have collectively raised over $900M, validating that investors see the gap. But every one of those tools automates what recruiters do. None build the structured talent layer that AI agents can query directly.
@@ -375,7 +316,7 @@ export default async function StoryPage() {
             </div>
           </div>
           <Sources>
-            <Cite href="https://www.staffingindustry.com/">Staffing Industry Analysts</Cite> · <Cite href="https://www.businessofapps.com/data/linkedin-statistics/">Business of Apps</Cite> · <Cite href="https://investors.ziprecruiter.com">ZipRecruiter Investor Relations</Cite> · <Cite href="https://www.einpresswire.com/">EIN Presswire</Cite>
+            <Cite accent="zinc" href="https://www.staffingindustry.com/">Staffing Industry Analysts</Cite> · <Cite accent="zinc" href="https://www.businessofapps.com/data/linkedin-statistics/">Business of Apps</Cite> · <Cite accent="zinc" href="https://investors.ziprecruiter.com">ZipRecruiter Investor Relations</Cite> · <Cite accent="zinc" href="https://www.einpresswire.com/">EIN Presswire</Cite>
           </Sources>
         </section>
 
@@ -506,7 +447,7 @@ export default async function StoryPage() {
           <Callout>AI sourcing tools let recruiters search candidates through proprietary dashboards. We make candidates directly queryable by AI agents via open structured protocols.</Callout>
 
           <Sources>
-            <Cite href="https://juicebox.ai">Juicebox AI</Cite> · <Cite href="https://eightfold.ai">Eightfold AI</Cite> · <Cite href="https://seekout.com">SeekOut</Cite> · <Cite href="https://moonhub.ai">Moonhub</Cite> · <Cite href="https://hireez.com">hireEZ</Cite> · <Cite href="https://www.gem.com">Gem</Cite> · <Cite href="https://www.businessofapps.com/data/linkedin-statistics/">Business of Apps</Cite> · <Cite href="https://tracxn.com">Tracxn</Cite>
+            <Cite accent="zinc" href="https://juicebox.ai">Juicebox AI</Cite> · <Cite accent="zinc" href="https://eightfold.ai">Eightfold AI</Cite> · <Cite accent="zinc" href="https://seekout.com">SeekOut</Cite> · <Cite accent="zinc" href="https://moonhub.ai">Moonhub</Cite> · <Cite accent="zinc" href="https://hireez.com">hireEZ</Cite> · <Cite accent="zinc" href="https://www.gem.com">Gem</Cite> · <Cite accent="zinc" href="https://www.businessofapps.com/data/linkedin-statistics/">Business of Apps</Cite> · <Cite accent="zinc" href="https://tracxn.com">Tracxn</Cite>
           </Sources>
         </section>
 
@@ -607,7 +548,7 @@ export default async function StoryPage() {
               {`Job board aggregates listings from OpenAI, Anthropic, Stripe, Airbnb, Coinbase, Cloudflare, Databricks, Snowflake, and ${stats.totalCompanies - 8}+ others.`} Profile engine parses CVs into structured, schema-annotated pages. MCP server is operational.
             </p>
             <p className="text-[15px] text-zinc-500 leading-[1.85]">
-              Three published research reports (<Cite href="https://cvin.bio/hiring">Tech Talent 2026</Cite>, <Cite href="https://cvin.bio/layoffs">Layoffs 2026</Cite>, <Cite href="https://cvin.bio/talent">Remote Talent 2026</Cite>) gated behind email capture. Active distribution on LinkedIn and X.
+              Three published research reports (<Cite accent="zinc" href="https://cvin.bio/hiring">Tech Talent 2026</Cite>, <Cite accent="zinc" href="https://cvin.bio/layoffs">Layoffs 2026</Cite>, <Cite accent="zinc" href="https://cvin.bio/talent">Remote Talent 2026</Cite>) gated behind email capture. Active distribution on LinkedIn and X.
             </p>
           </div>
         </section>
@@ -682,7 +623,7 @@ export default async function StoryPage() {
             {/* Right: Highlights */}
             <div className="lg:col-span-3">
               <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                Previously built <Cite href="https://hashtagweb3.com">HashtagWeb3.com</Cite>: 120K+ community, 55M post views, supported by Microsoft for Startups. Former consultant at KPMG. Fellow of the Royal Society of Arts. 25 research publications in IEEE, SSRN, and others.
+                Previously built <Cite accent="zinc" href="https://hashtagweb3.com">HashtagWeb3.com</Cite>: 120K+ community, 55M post views, supported by Microsoft for Startups. Former consultant at KPMG. Fellow of the Royal Society of Arts. 25 research publications in IEEE, SSRN, and others.
               </p>
               <div className="grid grid-cols-3 gap-px bg-zinc-200 rounded-xl overflow-hidden mb-6">
                 {[
@@ -699,7 +640,7 @@ export default async function StoryPage() {
               <div className="space-y-2 mb-6">
                 <p className="text-[13px] text-zinc-500 leading-[1.7] flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-zinc-400 mt-[7px] shrink-0" />
-                  <span><Cite href="https://veda.ng/media">Speaker</Cite> at Code Arica Conference, IIT Delhi &amp; Kanpur, TUM Munich, ETH Enugu, Premier AI and Web3 Gala, The Responsible AI Forum, ISB Hyderabad</span>
+                  <span><Cite accent="zinc" href="https://veda.ng/media">Speaker</Cite> at Code Arica Conference, IIT Delhi &amp; Kanpur, TUM Munich, ETH Enugu, Premier AI and Web3 Gala, The Responsible AI Forum, ISB Hyderabad</span>
                 </p>
                 <p className="text-[13px] text-zinc-500 leading-[1.7] flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-zinc-400 mt-[7px] shrink-0" />
@@ -707,11 +648,11 @@ export default async function StoryPage() {
                 </p>
                 <p className="text-[13px] text-zinc-500 leading-[1.7] flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-zinc-400 mt-[7px] shrink-0" />
-                  <span><Cite href="https://x.com/LokSabhaSectt/status/1996239975906676795">Invited to the Parliament of India</Cite> to discuss Virtual Digital Assets</span>
+                  <span><Cite accent="zinc" href="https://x.com/LokSabhaSectt/status/1996239975906676795">Invited to the Parliament of India</Cite> to discuss Virtual Digital Assets</span>
                 </p>
                 <p className="text-[13px] text-zinc-500 leading-[1.7] flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-zinc-400 mt-[7px] shrink-0" />
-                  <span>Recommendation by <Cite href="https://www.youtube.com/watch?v=94aOD3yc2LM">Jack Allison</Cite> (Screenwriter, Oscars 2017). Medal by former Director of Indian PM&apos;s office</span>
+                  <span>Recommendation by <Cite accent="zinc" href="https://www.youtube.com/watch?v=94aOD3yc2LM">Jack Allison</Cite> (Screenwriter, Oscars 2017). Medal by former Director of Indian PM&apos;s office</span>
                 </p>
               </div>
             </div>

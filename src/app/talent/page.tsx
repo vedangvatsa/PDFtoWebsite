@@ -1,163 +1,16 @@
 'use client';
 import { PAGE_CONTAINER } from '@/lib/utils';
 
-import { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import ReportCTA from '@/components/report-cta';
 import { useReportStats } from '@/hooks/use-report-stats';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
+import { Cite, DonutChart, HBar, BigNum, Callout, Sources } from '@/components/report/charts';
+import { ReportEmailCapture, useReportUnlock } from '@/components/report/email-gate';
 
 const STORAGE_KEY = 'remote-talent-report-unlocked';
-
-/* ─── INLINE CITE ─── */
-function Cite({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-zinc-900 hover:text-indigo-600 underline underline-offset-2 decoration-zinc-300 hover:decoration-indigo-400 transition-colors">
-      {children}
-    </a>
-  );
-}
-
-/* ─── EMAIL CAPTURE ─── */
-function EmailCapture({ position }: { position: string }) {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email || !email.includes('@')) return;
-    setStatus('loading');
-    try {
-      const res = await fetch('/api/report-download', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, report: 'remote-talent' }),
-      });
-      if (res.ok) setStatus('success');
-      else setStatus('error');
-    } catch {
-      setStatus('error');
-    }
-  }
-
-  if (status === 'success') {
-    return (
-      <div className="flex items-center gap-3 py-4 px-6 bg-emerald-50 border border-emerald-200 rounded-xl" id={`report-form-${position}`}>
-        <svg className="w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-        <p className="text-sm text-emerald-800 font-medium">Done. Check your inbox.</p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md" id={`report-form-${position}`}>
-      <input
-        type="email" required placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)}
-        className="flex-1 px-4 py-3 text-sm bg-white border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400/40 focus:border-zinc-400 transition-all placeholder:text-zinc-400"
-      />
-      <button
-        type="submit" disabled={status === 'loading'}
-        className="px-6 py-3 text-sm font-semibold text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
-      >
-        {status === 'loading' ? 'Sending...' : 'Get the report'}
-      </button>
-      {status === 'error' && <p className="text-xs text-red-500 mt-1">Something went wrong. Try again.</p>}
-    </form>
-  );
-}
-
-/* ─── DONUT CHART ─── */
-function DonutChart({ segments, size = 200 }: { segments: { label: string; value: number; color: string }[]; size?: number }) {
-  const total = segments.reduce((a, b) => a + b.value, 0);
-  const r = 75;
-  const cx = 100;
-  const cy = 100;
-  const circ = 2 * Math.PI * r;
-  let offset = -circ / 4;
-
-  return (
-    <div className="flex flex-col items-center">
-      <svg width={size} height={size} viewBox="0 0 200 200">
-        {segments.map((seg, i) => {
-          const dash = (seg.value / total) * circ;
-          const el = (
-            <circle
-              key={i} cx={cx} cy={cy} r={r} fill="none"
-              stroke={seg.color} strokeWidth="24"
-              strokeDasharray={`${dash} ${circ - dash}`}
-              strokeDashoffset={-offset}
-              className="transition-all duration-700"
-            />
-          );
-          offset += dash;
-          return el;
-        })}
-        <circle cx={cx} cy={cy} r="58" className="fill-[#fafafa]" />
-      </svg>
-      <div className="flex flex-wrap justify-center gap-x-5 gap-y-1.5 mt-5">
-        {segments.map((seg, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: seg.color }} />
-            <span className="text-[13px] text-zinc-500">{seg.label} <span className="font-semibold text-zinc-700">{seg.value}%</span></span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─── HORIZONTAL BAR ─── */
-function HBar({ data, unit = '%' }: { data: { label: string; value: number; color: string }[]; unit?: string }) {
-  const max = Math.max(...data.map(d => d.value));
-  return (
-    <div className="space-y-4">
-      {data.map((d, i) => (
-        <div key={i}>
-          <div className="flex justify-between mb-1.5">
-            <span className="text-sm text-zinc-700 font-medium">{d.label}</span>
-            <span className="text-sm font-bold text-zinc-900">{d.value}{unit}</span>
-          </div>
-          <div className="h-2.5 bg-zinc-100 rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all duration-700" style={{ width: `${(d.value / max) * 100}%`, backgroundColor: d.color }} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ─── BIG NUMBER ─── */
-function BigNum({ value, label, href, sub }: { value: string; label: string; href?: string; sub?: string }) {
-  const inner = (
-    <div className="text-center">
-      <div className="text-5xl sm:text-6xl font-serif font-bold text-zinc-900 tracking-tight leading-none">{value}</div>
-      <div className="text-sm text-zinc-500 mt-3 leading-relaxed">{label}</div>
-      {sub && <div className="text-[11px] text-zinc-400 mt-1">{sub}</div>}
-    </div>
-  );
-  if (href) return <a href={href} target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">{inner}</a>;
-  return inner;
-}
-
-/* ─── CALLOUT ─── */
-function Callout({ children }: { children: React.ReactNode }) {
-  return (
-    <blockquote className="border-l-2 border-zinc-900 pl-6 py-2 my-10">
-      <p className="text-lg sm:text-xl font-serif text-zinc-800 leading-relaxed italic">{children}</p>
-    </blockquote>
-  );
-}
-
-/* ─── SOURCES ─── */
-function Sources({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mt-6 pt-4 border-t border-zinc-100">
-      <p className="text-[11px] text-zinc-400 leading-relaxed">{children}</p>
-    </div>
-  );
-}
 
 /* ─── BESPOKE SVG ILLUSTRATIONS ─── */
 
@@ -287,8 +140,7 @@ function OfficeVsRemoteIllustration() {
 
 /* ─── MAIN PAGE ─── */
 export default function RemoteTalentReport() {
-  const [unlocked, setUnlocked] = useState(false);
-  const [checkingAccess, setCheckingAccess] = useState(true);
+  const { unlocked, checkingAccess } = useReportUnlock(STORAGE_KEY);
   const { stats } = useReportStats();
   const jobCount = stats?.totalJobsDisplay || PLATFORM_JOBS_DISPLAY;
   const companyCount = stats ? `${stats.totalCompanies}+` : '900+';
@@ -297,21 +149,6 @@ export default function RemoteTalentReport() {
   const topLoc2 = stats?.topLocations?.[3]; // Singapore
   const topLoc3 = stats?.topLocations?.[4]; // London
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('access')) {
-      try { localStorage.setItem(STORAGE_KEY, 'true'); } catch {}
-      setUnlocked(true);
-      setCheckingAccess(false);
-      return;
-    }
-    try {
-      if (localStorage.getItem(STORAGE_KEY) === 'true') {
-        setUnlocked(true);
-      }
-    } catch {}
-    setCheckingAccess(false);
-  }, []);
 
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-zinc-200 transition-colors duration-200 flex flex-col">
@@ -328,7 +165,7 @@ export default function RemoteTalentReport() {
             <p className="text-[17px] text-zinc-500 leading-[1.8] mb-10">
               <Cite href="https://wfhresearch.com/">34 million Americans</Cite> now work remotely. Companies are not returning to how things were. This report examines what the data actually says about remote work, hiring, compensation, and retention heading into the second half of the decade.
             </p>
-            <EmailCapture position="hero" />
+            <ReportEmailCapture report="remote-talent" position="hero" />
           </div>
           <div className="hidden lg:block">
             <HeroIllustration />
@@ -410,7 +247,7 @@ export default function RemoteTalentReport() {
                 <div className="bg-white border border-zinc-200 rounded-2xl p-8 text-center shadow-lg">
                   <h3 className="text-xl font-serif font-bold text-zinc-900 mb-3">Read the full report</h3>
                   <p className="text-sm text-zinc-500 mb-6 leading-relaxed">Enter your email to access the complete report with compensation data, RTO analysis, and predictions.</p>
-                  <EmailCapture position="gate" />
+                  <ReportEmailCapture report="remote-talent" position="gate" />
                 </div>
               </div>
             </div>
@@ -641,7 +478,7 @@ export default function RemoteTalentReport() {
             We will send you the complete report with additional data tables, company-level breakdowns, and quarterly update alerts.
           </p>
           <div className="flex justify-center">
-            <EmailCapture position="bottom" />
+            <ReportEmailCapture report="remote-talent" position="bottom" />
           </div>
         </section>
 

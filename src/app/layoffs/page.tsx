@@ -1,146 +1,16 @@
 'use client';
 import { PAGE_CONTAINER } from '@/lib/utils';
 
-import { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import ReportCTA from '@/components/report-cta';
 import { useReportStats } from '@/hooks/use-report-stats';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
+import { Cite, HBar, BigNum, Callout, Sources } from '@/components/report/charts';
+import { ReportEmailGate, useReportUnlock } from '@/components/report/email-gate';
 
 const STORAGE_KEY = 'layoffs-report-unlocked';
-
-/* ─── INLINE CITE ─── */
-function Cite({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-zinc-900 hover:text-red-600 underline underline-offset-2 decoration-zinc-300 hover:decoration-red-400 transition-colors">
-      {children}
-    </a>
-  );
-}
-
-/* ─── EMAIL GATE OVERLAY ─── */
-function EmailGate() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email || !email.includes('@')) return;
-    setStatus('loading');
-    try {
-      const res = await fetch('/api/report-download', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, report: 'layoffs' }),
-      });
-      if (res.ok) {
-        setStatus('sent');
-      } else {
-        setStatus('error');
-      }
-    } catch {
-      setStatus('error');
-    }
-  }
-
-  if (status === 'sent') {
-    return (
-      <div className="text-center max-w-md mx-auto" id="layoff-gate">
-        <div className="inline-flex items-center justify-center w-14 h-14 bg-zinc-100 rounded-full mb-5">
-          <svg className="w-7 h-7 text-zinc-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
-        </div>
-        <h3 className="text-2xl font-serif font-bold text-zinc-900 mb-3">Check your inbox</h3>
-        <p className="text-sm text-zinc-500 leading-relaxed mb-2">
-          We&apos;ve sent a confirmation email to <span className="font-medium text-zinc-700">{email}</span>.
-        </p>
-        <p className="text-sm text-zinc-500 leading-relaxed">
-          Click the link in the email to access the full report.
-        </p>
-        <p className="text-[11px] text-zinc-400 mt-5">Didn&apos;t receive it? Check your spam folder.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="text-center" id="layoff-gate">
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-zinc-100 rounded-full mb-5">
-        <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-        <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Full report</span>
-      </div>
-      <h3 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 mb-3">Enter your email to read the full report</h3>
-      <p className="text-sm text-zinc-500 mb-6 max-w-sm mx-auto leading-relaxed">
-        We&apos;ll send you a confirmation link to access all sections, exhibits, and data breakdowns.
-      </p>
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-        <input
-          type="email" required placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)}
-          className="flex-1 px-4 py-3.5 text-sm bg-white border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400/40 focus:border-zinc-400 transition-all placeholder:text-zinc-400"
-        />
-        <button
-          type="submit" disabled={status === 'loading'}
-          className="px-7 py-3.5 text-sm font-semibold text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
-        >
-          {status === 'loading' ? 'Sending...' : 'Send confirmation →'}
-        </button>
-      </form>
-      {status === 'error' && <p className="text-xs text-red-500 mt-2">Something went wrong. Please try again.</p>}
-      <p className="text-[11px] text-zinc-400 mt-4">By continuing, you agree to our <a href="/terms" className="underline hover:text-zinc-600 transition-colors">terms</a>.</p>
-    </div>
-  );
-}
-
-/* ─── HORIZONTAL BAR ─── */
-function HBar({ data, unit = '' }: { data: { label: string; value: number; color: string }[]; unit?: string }) {
-  const max = Math.max(...data.map(d => d.value));
-  return (
-    <div className="space-y-3">
-      {data.map((d, i) => (
-        <div key={i}>
-          <div className="flex justify-between mb-1.5">
-            <span className="text-sm text-zinc-700 font-medium">{d.label}</span>
-            <span className="text-sm font-bold text-zinc-900">{d.value.toLocaleString()}{unit}</span>
-          </div>
-          <div className="h-2.5 bg-zinc-100 rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all duration-700" style={{ width: `${(d.value / max) * 100}%`, backgroundColor: d.color }} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ─── BIG NUMBER ─── */
-function BigNum({ value, label, href, sub }: { value: string; label: string; href?: string; sub?: string }) {
-  const inner = (
-    <div className="text-center">
-      <div className="text-5xl sm:text-6xl font-serif font-bold text-zinc-900 tracking-tight leading-none">{value}</div>
-      <div className="text-sm text-zinc-500 mt-3 leading-relaxed">{label}</div>
-      {sub && <div className="text-[11px] text-zinc-400 mt-1">{sub}</div>}
-    </div>
-  );
-  if (href) return <a href={href} target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">{inner}</a>;
-  return inner;
-}
-
-/* ─── CALLOUT ─── */
-function Callout({ children }: { children: React.ReactNode }) {
-  return (
-    <blockquote className="border-l-2 border-zinc-900 pl-6 py-2 my-10">
-      <p className="text-lg sm:text-xl font-serif text-zinc-800 leading-relaxed italic">{children}</p>
-    </blockquote>
-  );
-}
-
-/* ─── SOURCES ─── */
-function Sources({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mt-6 pt-4 border-t border-zinc-100">
-      <p className="text-[11px] text-zinc-400 leading-relaxed">{children}</p>
-    </div>
-  );
-}
 
 /* ─── BESPOKE SVG: YEAR OVER YEAR BAR CHART ─── */
 function YearlyBarChart() {
@@ -297,29 +167,11 @@ function LayoffTimeline() {
 
 /* ─── MAIN PAGE ─── */
 export default function LayoffsReport() {
-  const [unlocked, setUnlocked] = useState(false);
-  const [checkingAccess, setCheckingAccess] = useState(true);
+  const { unlocked, checkingAccess } = useReportUnlock(STORAGE_KEY);
   const { stats } = useReportStats();
   const jobCount = stats?.totalJobsDisplay || PLATFORM_JOBS_DISPLAY;
   const companyCount = stats ? `${stats.totalCompanies}+` : '900+';
 
-  useEffect(() => {
-    // Check URL params for access token (from email link)
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('access')) {
-      try { localStorage.setItem(STORAGE_KEY, 'true'); } catch {}
-      setUnlocked(true);
-      setCheckingAccess(false);
-      return;
-    }
-    // Check localStorage
-    try {
-      if (localStorage.getItem(STORAGE_KEY) === 'true') {
-        setUnlocked(true);
-      }
-    } catch {}
-    setCheckingAccess(false);
-  }, []);
 
   return (
     <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-zinc-200 transition-colors duration-200 flex flex-col">
@@ -334,7 +186,7 @@ export default function LayoffsReport() {
               The Tech Layoffs<br />Report 2026
             </h1>
             <p className="text-[17px] text-zinc-500 leading-[1.8]">
-              Since March 2020, more than <Cite href="https://layoffs.fyi">750,000 tech workers</Cite> have been laid off from over 2,500 companies. This report assembles data from six primary sources to examine who is cutting, why, what happens to displaced workers, and what this means for the labor market heading into the second half of the decade.
+              Since March 2020, more than <Cite accent="red" href="https://layoffs.fyi">750,000 tech workers</Cite> have been laid off from over 2,500 companies. This report assembles data from six primary sources to examine who is cutting, why, what happens to displaced workers, and what this means for the labor market heading into the second half of the decade.
             </p>
           </div>
           <div className="hidden lg:block">
@@ -364,7 +216,7 @@ export default function LayoffsReport() {
             <div className="lg:col-span-3">
               <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 mb-5">The numbers are staggering, and they keep climbing</h2>
               <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                According to <Cite href="https://layoffs.fyi">Layoffs.fyi</Cite>, 264,320 tech workers were laid off in 2023 alone, the single worst year on record. 2024 brought another 152,922 cuts across 551 companies. 2025 added 124,201 more from 271 companies. And 2026, five months in, has already recorded <Cite href="https://layoffs.fyi">113,000 displaced workers</Cite> across 200+ companies.
+                According to <Cite accent="red" href="https://layoffs.fyi">Layoffs.fyi</Cite>, 264,320 tech workers were laid off in 2023 alone, the single worst year on record. 2024 brought another 152,922 cuts across 551 companies. 2025 added 124,201 more from 271 companies. And 2026, five months in, has already recorded <Cite accent="red" href="https://layoffs.fyi">113,000 displaced workers</Cite> across 200+ companies.
               </p>
 
             </div>
@@ -383,7 +235,7 @@ export default function LayoffsReport() {
             <YearlyBarChart />
           </div>
           <Sources>
-            <Cite href="https://layoffs.fyi">Layoffs.fyi</Cite> · <Cite href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase Tech Layoffs Tracker</Cite>
+            <Cite accent="red" href="https://layoffs.fyi">Layoffs.fyi</Cite> · <Cite accent="red" href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase Tech Layoffs Tracker</Cite>
           </Sources>
         </section>
 
@@ -393,7 +245,7 @@ export default function LayoffsReport() {
             <div>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 mb-5">Layoffs are not just happening in tech anymore</h2>
               <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                <Cite href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite> reported 1,206,374 announced job cuts across the U.S. in 2025, a 58% increase over 2024. Government restructuring accounted for the largest single category at 307,600, driven by federal efficiency initiatives. Technology followed at 141,200.
+                <Cite accent="red" href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite> reported 1,206,374 announced job cuts across the U.S. in 2025, a 58% increase over 2024. Government restructuring accounted for the largest single category at 307,600, driven by federal efficiency initiatives. Technology followed at 141,200.
               </p>
 
             </div>
@@ -403,7 +255,7 @@ export default function LayoffsReport() {
             </div>
           </div>
           <Sources>
-            <Cite href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite> · <Cite href="https://www.bls.gov/news.release/jolts.nr0.htm">Bureau of Labor Statistics JOLTS</Cite>
+            <Cite accent="red" href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite> · <Cite accent="red" href="https://www.bls.gov/news.release/jolts.nr0.htm">Bureau of Labor Statistics JOLTS</Cite>
           </Sources>
         </section>
 
@@ -430,7 +282,7 @@ export default function LayoffsReport() {
             {/* Gate overlay */}
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-transparent via-[#fafafa]/90 to-[#fafafa]">
               <div className="w-full max-w-lg px-6">
-                <EmailGate />
+                <ReportEmailGate report="layoffs" />
               </div>
             </div>
           </div>
@@ -447,7 +299,7 @@ export default function LayoffsReport() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
                 <div>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                    The companies laying off the most workers are not struggling startups running out of runway. They are the largest, most profitable companies in the world. <Cite href="https://news.crunchbase.com/startups/tech-layoffs/">Amazon cut 16,000 corporate roles</Cite> in January 2026 alone, on top of the 27,000 total it has cut since 2024. Meta reduced its Reality Labs division and eliminated 11,000 positions across the company in 2024 and 2025. Microsoft executed rolling cuts across multiple divisions. Intel laid off over 15,000 employees as it restructured its foundry business.
+                    The companies laying off the most workers are not struggling startups running out of runway. They are the largest, most profitable companies in the world. <Cite accent="red" href="https://news.crunchbase.com/startups/tech-layoffs/">Amazon cut 16,000 corporate roles</Cite> in January 2026 alone, on top of the 27,000 total it has cut since 2024. Meta reduced its Reality Labs division and eliminated 11,000 positions across the company in 2024 and 2025. Microsoft executed rolling cuts across multiple divisions. Intel laid off over 15,000 employees as it restructured its foundry business.
                   </p>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
                     These appear to be strategic repositioning moves rather than survival cuts. The emerging pattern across major tech companies involves reducing headcount in established product lines where growth has plateaued and redirecting capital toward AI research and infrastructure.
@@ -479,7 +331,7 @@ export default function LayoffsReport() {
               <Callout>Many of the companies conducting the largest layoffs are profitable. In several cases, stock prices rose after the announcements.</Callout>
 
               <Sources>
-                <Cite href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase News</Cite> · <Cite href="https://layoffs.fyi">Layoffs.fyi</Cite>
+                <Cite accent="red" href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase News</Cite> · <Cite accent="red" href="https://layoffs.fyi">Layoffs.fyi</Cite>
               </Sources>
             </section>
 
@@ -489,7 +341,7 @@ export default function LayoffsReport() {
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-zinc-900 mb-5">AI is accelerating workforce restructuring faster than anyone predicted</h2>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                    An estimated <Cite href="https://www.challengergray.com/blog/">70,000 layoffs in 2025</Cite> may be directly attributable to AI adoption and automation. Earnings calls increasingly reference AI-driven efficiencies as a factor in workforce decisions, reflecting a shift from euphemistic language toward more direct acknowledgment of AI&apos;s role in reshaping team structures.
+                    An estimated <Cite accent="red" href="https://www.challengergray.com/blog/">70,000 layoffs in 2025</Cite> may be directly attributable to AI adoption and automation. Earnings calls increasingly reference AI-driven efficiencies as a factor in workforce decisions, reflecting a shift from euphemistic language toward more direct acknowledgment of AI&apos;s role in reshaping team structures.
                   </p>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
                     Customer support teams appear to have seen the deepest cuts, with automated response systems reportedly handling 60 to 80 percent of initial customer inquiries at some major tech companies. QA engineering and content moderation teams have also been significantly affected. Data entry and processing roles appear to have been substantially automated at companies with the resources to invest in large language model integration.
@@ -528,7 +380,7 @@ export default function LayoffsReport() {
                 </div>
               </div>
               <Sources>
-                <Cite href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite> · <Cite href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase</Cite> · Industry salary surveys
+                <Cite accent="red" href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite> · <Cite accent="red" href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase</Cite> · Industry salary surveys
               </Sources>
             </section>
 
@@ -538,7 +390,7 @@ export default function LayoffsReport() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
                 <div>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                    The average job search after a tech layoff now takes <Cite href="https://www.bls.gov/news.release/empsit.nr0.htm">5 to 6 months</Cite>. That is roughly double what it was in 2021, when demand for tech talent far outpaced supply. The tech unemployment rate hovers between 3 and 4 percent, still below the national average of 4.2 percent but trending upward since mid-2023.
+                    The average job search after a tech layoff now takes <Cite accent="red" href="https://www.bls.gov/news.release/empsit.nr0.htm">5 to 6 months</Cite>. That is roughly double what it was in 2021, when demand for tech talent far outpaced supply. The tech unemployment rate hovers between 3 and 4 percent, still below the national average of 4.2 percent but trending upward since mid-2023.
                   </p>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
                     The experience can vary dramatically by seniority level. Senior engineers and technical leaders with 10 or more years of experience may find new positions within 3 to 4 months, though often at 10 to 15 percent lower compensation. Mid-level professionals with 5 to 10 years of experience may face the longest searches, averaging 6 to 8 months.
@@ -585,7 +437,7 @@ export default function LayoffsReport() {
                 ))}
               </div>
               <Sources>
-                <Cite href="https://www.bls.gov/news.release/empsit.nr0.htm">Bureau of Labor Statistics</Cite> · <Cite href="https://www.challengergray.com/blog/">Challenger</Cite> · Industry surveys, 2024-2025
+                <Cite accent="red" href="https://www.bls.gov/news.release/empsit.nr0.htm">Bureau of Labor Statistics</Cite> · <Cite accent="red" href="https://www.challengergray.com/blog/">Challenger</Cite> · Industry surveys, 2024-2025
               </Sources>
             </section>
 
@@ -595,7 +447,7 @@ export default function LayoffsReport() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
                 <div>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
-                    CVin.Bio tracks <Cite href="https://cvin.bio/jobs">{jobCount} live job listings</Cite> from {companyCount} companies in real time. Because we recently scaled our ingestion engine to capture {jobCount} live jobs across hundreds of new ATS platforms, our data provides an incredibly sharp lens on where companies are actually deploying capital right now.
+                    CVin.Bio tracks <Cite accent="red" href="https://cvin.bio/jobs">{jobCount} live job listings</Cite> from {companyCount} companies in real time. Because we recently scaled our ingestion engine to capture {jobCount} live jobs across hundreds of new ATS platforms, our data provides an incredibly sharp lens on where companies are actually deploying capital right now.
                   </p>
                   <p className="text-[15px] text-zinc-500 leading-[1.85] mb-5">
                     The narrative that "tech is dead" is false. Tech is simply reallocating. Despite the massive layoff waves across the industry, companies are aggressively hiring for specific skill clusters.
@@ -622,7 +474,7 @@ export default function LayoffsReport() {
                 </div>
               </div>
               <Sources>
-                Source: <Cite href="https://cvin.bio/jobs">CVin.Bio Job Board</Cite>, deep research analysis, May 2026
+                Source: <Cite accent="red" href="https://cvin.bio/jobs">CVin.Bio Job Board</Cite>, deep research analysis, May 2026
               </Sources>
             </section>
 
@@ -634,7 +486,7 @@ export default function LayoffsReport() {
                   CVin.Bio is a professional presence platform that helps individuals build dynamic online profiles that replace static resumes. In a market where hiring managers see hundreds of applications per role, a visible online presence can be the difference between getting noticed and getting filtered out.
                 </p>
                 <p className="text-sm text-zinc-500 leading-[1.85]">
-                  We also maintain a job board aggregating <Cite href="https://cvin.bio/jobs">{jobCount} live listings</Cite> from {companyCount} companies across the tech industry. Our research division produces data-driven reports on labor market trends, hiring patterns, and workforce dynamics to help job seekers and employers make more informed decisions.
+                  We also maintain a job board aggregating <Cite accent="red" href="https://cvin.bio/jobs">{jobCount} live listings</Cite> from {companyCount} companies across the tech industry. Our research division produces data-driven reports on labor market trends, hiring patterns, and workforce dynamics to help job seekers and employers make more informed decisions.
                 </p>
               </div>
             </section>
@@ -645,15 +497,15 @@ export default function LayoffsReport() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                   <p className="text-sm text-zinc-500 leading-[1.85] mb-4">
-                    This report draws on six categories of evidence. First, the <Cite href="https://layoffs.fyi">Layoffs.fyi tracker</Cite>, maintained since March 2020 by Roger Lee, which catalogs tech layoffs from public disclosures, WARN Act filings, and direct company announcements. The tracker has been cited by The New York Times, The Wall Street Journal, Bloomberg, and The Washington Post.
+                    This report draws on six categories of evidence. First, the <Cite accent="red" href="https://layoffs.fyi">Layoffs.fyi tracker</Cite>, maintained since March 2020 by Roger Lee, which catalogs tech layoffs from public disclosures, WARN Act filings, and direct company announcements. The tracker has been cited by The New York Times, The Wall Street Journal, Bloomberg, and The Washington Post.
                   </p>
                   <p className="text-sm text-zinc-500 leading-[1.85]">
-                    Second, <Cite href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite>, the longest-running outplacement and job cut tracking firm in the United States. Third, the <Cite href="https://www.bls.gov/news.release/jolts.nr0.htm">Bureau of Labor Statistics JOLTS</Cite> survey, which provides monthly data on layoffs, discharges, and job openings.
+                    Second, <Cite accent="red" href="https://www.challengergray.com/blog/">Challenger, Gray and Christmas</Cite>, the longest-running outplacement and job cut tracking firm in the United States. Third, the <Cite accent="red" href="https://www.bls.gov/news.release/jolts.nr0.htm">Bureau of Labor Statistics JOLTS</Cite> survey, which provides monthly data on layoffs, discharges, and job openings.
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-zinc-500 leading-[1.85] mb-4">
-                    Fourth, the <Cite href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase Tech Layoffs Tracker</Cite>, which cross-references company funding data with workforce reductions. Fifth, company investor communications and SEC filings, including quarterly earnings transcripts and annual reports.
+                    Fourth, the <Cite accent="red" href="https://news.crunchbase.com/startups/tech-layoffs/">Crunchbase Tech Layoffs Tracker</Cite>, which cross-references company funding data with workforce reductions. Fifth, company investor communications and SEC filings, including quarterly earnings transcripts and annual reports.
                   </p>
                   <p className="text-sm text-zinc-500 leading-[1.85]">
                     Sixth, proprietary data from the CVin.Bio job aggregation engine, which tracks listings from {companyCount} companies and cross-references hiring activity against known layoff events. All figures cited in this report are sourced from one or more of these datasets.

@@ -1,12 +1,8 @@
 'use client';
-import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import Header from '@/components/header';
-import MicroFooter from '@/components/micro-footer';
-import { TelegramJobPopup } from '@/components/telegram-job-popup';
-import { ArrowLeft, Clock, Plus, X, Globe } from 'lucide-react';
+import { NomadPageShell } from '@/components/nomad/nomad-page-shell';
+import { Clock, Plus, X, Globe } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
 /*  City timezone data                                                 */
@@ -139,27 +135,10 @@ export default function TimezonePage() {
   const availableCities = TZ_CITIES.filter(c => !selected.includes(c.name));
 
   return (
-    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
-      <Header />
-      <main id="main-content" className={PAGE_CONTAINER}>
-        {/* Back link */}
-        <Link
-          href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Directory
-        </Link>
-
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className={PAGE_TITLE}>
-            Timezone Overlap Tool
-          </h1>
-          <p className={PAGE_SUBTITLE}>
-            Pick 2–4 cities and see their work hours (9 AM – 6 PM) across a 24-hour UTC bar. Find the best meeting times for distributed teams.
-          </p>
-        </div>
+    <NomadPageShell
+      title="Timezone Overlap Tool"
+      subtitle="Pick 2–4 cities and see their work hours (9 AM – 6 PM) across a 24-hour UTC bar. Find the best meeting times for distributed teams."
+    >
 
         {/* City Picker */}
         <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 mb-6">
@@ -357,9 +336,6 @@ export default function TimezonePage() {
             </p>
           </div>
         )}
-      </main>
-      <MicroFooter />
-      <TelegramJobPopup />
-    </div>
+    </NomadPageShell>
   );
 }
