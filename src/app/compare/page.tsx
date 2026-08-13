@@ -1,15 +1,12 @@
 'use client';
-import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import Header from '@/components/header';
-import MicroFooter from '@/components/micro-footer';
-import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import BlogCTA from '@/components/blog-cta';
+import { NomadPageShell } from '@/components/nomad/nomad-page-shell';
+import { useNomadCities } from '@/hooks/use-nomad-cities';
 import {
-  ArrowLeft,
   DollarSign,
   Home,
   Utensils,
@@ -303,22 +300,10 @@ function ComparePageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [cities, setCities] = useState<CityData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { cities, loading } = useNomadCities<CityData>();
   const [cityA, setCityA] = useState<CityData | null>(null);
   const [cityB, setCityB] = useState<CityData | null>(null);
   const [userTzOffset, setUserTzOffset] = useState<number | null>(null);
-
-  // Fetch data
-  useEffect(() => {
-    fetch('/nomad-cities.json')
-      .then((r) => r.json())
-      .then((data: CityData[]) => {
-        setCities(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
 
   // Detect user timezone
   useEffect(() => {
@@ -521,46 +506,13 @@ function ComparePageContent() {
 
   /* ---------- render ---------- */
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
-      <Header />
-      <main
-        id="main-content"
-        className={PAGE_CONTAINER}
-      >
-        {/* Back link */}
-        <Link
-          href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Directory
-        </Link>
-
-        {/* Page header */}
-        <div className="mb-10">
-          <h1 className={PAGE_TITLE}>
-            Compare Cities
-          </h1>
-          <p className={PAGE_SUBTITLE}>
-            Side-by-side comparison of cost of living, weather, coworking
-            spaces, and nomad scores.
-          </p>
-        </div>
-
-        {/* Loading state */}
-        {loading && (
-          <div className="flex items-center justify-center py-32">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
-              <span className="text-sm text-zinc-500">
-                Loading cities…
-              </span>
-            </div>
-          </div>
-        )}
-
-        {!loading && (
-          <>
+    <NomadPageShell
+      title="Compare Cities"
+      subtitle="Side-by-side comparison of cost of living, weather, coworking spaces, and nomad scores."
+      loading={loading}
+      footer={<BlogCTA />}
+      outerClassName="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col"
+    >
             {/* City pickers */}
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <CityPicker
@@ -913,13 +865,7 @@ function ComparePageContent() {
                 </div>
               </>
             )}
-          </>
-        )}
-        <BlogCTA />
-      </main>
-      <MicroFooter />
-      <TelegramJobPopup />
-    </div>
+    </NomadPageShell>
   );
 }
 

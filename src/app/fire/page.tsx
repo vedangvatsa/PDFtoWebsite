@@ -1,12 +1,10 @@
 'use client';
-import { PAGE_CONTAINER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Header from '@/components/header';
-import MicroFooter from '@/components/micro-footer';
-import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import BlogCTA from '@/components/blog-cta';
-import { ArrowLeft, Flame, Loader2 } from 'lucide-react';
+import { NomadPageShell } from '@/components/nomad/nomad-page-shell';
+import { useNomadCities } from '@/hooks/use-nomad-cities';
+import { Flame } from 'lucide-react';
 
 interface City { slug: string; name: string; country: string; emoji: string; cost: { monthly_total: number }; nomad_score: number; }
 
@@ -19,13 +17,10 @@ function runwayTier(months: number) {
 
 type SortKey = 'name' | 'cost' | 'months';
 export default function FirePage() {
-  const [cities, setCities] = useState<City[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { cities, loading } = useNomadCities<City>();
   const [savings, setSavings] = useState(50000);
   const [sortKey, setSortKey] = useState<SortKey>('months');
   const [sortAsc, setSortAsc] = useState(false);
-
-  useEffect(() => { fetch('/nomad-cities.json').then(r => r.json()).then(d => { setCities(d); setLoading(false); }); }, []);
 
   const rows = useMemo(() => {
     const mapped = cities.filter(c => c.cost?.monthly_total > 0).map(c => {
@@ -50,18 +45,12 @@ export default function FirePage() {
   const sortIcon = (key: SortKey) => sortKey === key ? (sortAsc ? '↑' : '↓') : '';
 
   return (
-    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
-      <Header />
-      <main id="main-content" className={PAGE_CONTAINER}>
-        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8">
-          <ArrowLeft className="w-4 h-4" /> Back to Directory
-        </Link>
-        <div className="mb-10">
-          <h1 className={PAGE_TITLE}>FIRE Calculator</h1>
-          <p className={PAGE_SUBTITLE}>Enter your total savings to see how many months of runway you have in each city.</p>
-        </div>
-
-        {loading ? <div className="flex justify-center py-32"><Loader2 className="h-8 w-8 animate-spin text-zinc-400" /></div> : (<>
+    <NomadPageShell
+      title="FIRE Calculator"
+      subtitle="Enter your total savings to see how many months of runway you have in each city."
+      loading={loading}
+      footer={<BlogCTA />}
+    >
           <div className="mb-8">
             <label className="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Total Savings (USD)</label>
             <div className="flex items-center gap-2 max-w-xs">
@@ -119,11 +108,6 @@ export default function FirePage() {
               </tbody>
             </table>
           </div>
-        </>)}
-        <BlogCTA />
-      </main>
-      <MicroFooter />
-      <TelegramJobPopup />
-    </div>
+    </NomadPageShell>
   );
 }

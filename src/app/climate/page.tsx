@@ -1,14 +1,12 @@
 'use client';
-import { PAGE_CONTAINER, PAGE_DISCLAIMER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Header from '@/components/header';
-import MicroFooter from '@/components/micro-footer';
-import { TelegramJobPopup } from '@/components/telegram-job-popup';
+import { NomadPageShell, NomadSortHeader } from '@/components/nomad/nomad-page-shell';
+import { useNomadCities } from '@/hooks/use-nomad-cities';
+import { PAGE_DISCLAIMER } from '@/lib/utils';
 import {
-  ArrowLeft, ArrowUpDown, ArrowUp, ArrowDown,
-  Loader2, Thermometer, Droplets, CloudRain, Sun, Info,
+  Thermometer, Droplets, CloudRain, Sun, Info,
 } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
@@ -62,8 +60,8 @@ function humidityLabel(h: number): string {
 }
 
 export default function ClimatePage() {
-  const [cities, setCities] = useState<City[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { cities: rawCities, loading } = useNomadCities<City>();
+  const cities = useMemo(() => rawCities.filter(c => c.weather?.monthly?.length === 12), [rawCities]);
 
   const [monthIdx, setMonthIdx] = useState(currentMonthIndex());
   const [tempMin, setTempMin] = useState(20);
@@ -73,16 +71,6 @@ export default function ClimatePage() {
 
   const [sortKey, setSortKey] = useState<SortKey>('temp');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
-
-  useEffect(() => {
-    fetch('/nomad-cities.json')
-      .then(r => r.json())
-      .then((data: City[]) => {
-        setCities(data.filter(c => c.weather?.monthly?.length === 12));
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
 
   const getMonthData = (city: City) => city.weather.monthly[monthIdx];
 
@@ -128,17 +116,7 @@ export default function ClimatePage() {
   };
 
   const SortHeader = ({ label, field, className = '' }: { label: string; field: SortKey; className?: string }) => (
-    <button
-      onClick={() => toggleSort(field)}
-      className={`group inline-flex items-center gap-1 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-zinc-700 transition-colors ${className}`}
-    >
-      {label}
-      {sortKey === field ? (
-        sortDir === 'asc' ? <ArrowUp className="h-3 w-3 text-zinc-900" /> : <ArrowDown className="h-3 w-3 text-zinc-900" />
-      ) : (
-        <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity" />
-      )}
-    </button>
+    <NomadSortHeader label={label} field={field} sortKey={sortKey} sortDir={sortDir} onToggle={toggleSort} className={className} />
   );
 
   const RadioGroup = <T extends string>({
@@ -168,29 +146,20 @@ export default function ClimatePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
-      <Header />
-      <main id="main-content" className={PAGE_CONTAINER}>
-        <Link href="/nomad" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8">
-          <ArrowLeft className="w-4 h-4" />
-          Back to Directory
-        </Link>
-
-        <div className="mb-10">
-          <h1 className={PAGE_TITLE}>
-            Climate Finder
-          </h1>
-          <p className={PAGE_SUBTITLE}>
-            Filter {loading ? '…' : cities.length} digital nomad cities by temperature, humidity, and rainfall for any month of the year.
+    <NomadPageShell
+      title="Climate Finder"
+      subtitle={`Filter ${loading ? '…' : cities.length} digital nomad cities by temperature, humidity, and rainfall for any month of the year.`}
+      loading={loading}
+      footer={
+        <div className={PAGE_DISCLAIMER}>
+          <Info className="w-4 h-4 shrink-0 mt-0.5" />
+          <p>
+            Climate data aggregated from historical weather stations and satellite data.
+            Monthly averages may vary year to year. Last updated June 2026.
           </p>
         </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center py-32">
-            <Loader2 className="h-8 w-8 animate-spin text-zinc-400" />
-          </div>
-        ) : (
-          <>
+      }
+    >
             {/* Filters */}
             <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -353,20 +322,6 @@ export default function ClimatePage() {
                 </table>
               </div>
             </div>
-
-            {/* Source */}
-            <div className={PAGE_DISCLAIMER}>
-              <Info className="w-4 h-4 shrink-0 mt-0.5" />
-              <p>
-                Climate data aggregated from historical weather stations and satellite data.
-                Monthly averages may vary year to year. Last updated June 2026.
-              </p>
-            </div>
-          </>
-        )}
-      </main>
-      <MicroFooter />
-      <TelegramJobPopup />
-    </div>
+    </NomadPageShell>
   );
 }

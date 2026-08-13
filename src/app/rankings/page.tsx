@@ -1,19 +1,21 @@
 'use client';
 
-import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Header from '@/components/header';
-import MicroFooter from '@/components/micro-footer';
-import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import BlogCTA from '@/components/blog-cta';
+import { NomadPageShell } from '@/components/nomad/nomad-page-shell';
+import { useNomadCities } from '@/hooks/use-nomad-cities';
 import {
-  ArrowLeft, ArrowDown, ArrowUp, Clock, Activity,
+  ArrowDown, ArrowUp, Clock, Activity,
   Shield, AlertTriangle, BarChart3,
   Footprints, Train, Bike,
   Info, Wifi,
 } from 'lucide-react';
-import { PAGE_CONTAINER, PAGE_DISCLAIMER, PAGE_SUBTITLE, PAGE_TITLE } from '@/lib/utils';
+import { PAGE_DISCLAIMER } from '@/lib/utils';
+import {
+  SAFETY, DEFAULT_SAFETY, WALKABILITY, DEFAULT_WALK, type WalkData,
+} from '@/lib/nomad-rankings-data';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -35,13 +37,6 @@ interface City {
   };
 }
 
-interface WalkData {
-  walk: number;
-  transit: number;
-  bike: number;
-  carFree: 'Yes' | 'Mostly' | 'Difficult' | 'No';
-}
-
 type TabKey = 'internet' | 'safety' | 'walkability';
 
 const TABS: { key: TabKey; label: string }[] = [
@@ -49,123 +44,6 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: 'safety', label: 'Safety' },
   { key: 'walkability', label: 'Walkability' },
 ];
-
-/* ------------------------------------------------------------------ */
-/*  Safety scores                                                      */
-/* ------------------------------------------------------------------ */
-
-const SAFETY: Record<string, number> = {
-  'tokyo': 9.2, 'singapore': 9.1, 'taipei': 9.0, 'seoul': 8.5, 'reykjavik': 9.0,
-  'copenhagen': 8.8, 'vienna': 8.7, 'zurich': 8.8, 'stockholm': 8.5, 'helsinki': 8.7,
-  'prague': 8.3, 'tallinn': 8.2, 'ljubljana': 8.4, 'budapest': 7.8,
-  'lisbon': 7.5, 'porto': 7.8, 'barcelona': 6.8, 'berlin': 7.2, 'amsterdam': 7.3,
-  'dublin': 7.5, 'split': 8.0, 'dubrovnik': 8.2, 'tbilisi': 7.5, 'bansko': 8.0,
-  'bucharest': 7.0, 'belgrade': 7.2, 'chiang-mai': 8.0, 'bangkok': 7.0,
-  'bali': 7.2,
-  'kuala-lumpur': 6.8, 'ho-chi-minh-city': 6.5, 'da-nang': 7.5, 'hanoi': 6.8,
-  'manila': 5.5, 'buenos-aires': 5.8, 'medellin': 5.5, 'bogota': 4.8,
-  'mexico-city': 5.0, 'playa-del-carmen': 5.5, 'lima': 5.0, 'santiago': 6.0,
-  'cartagena': 5.5, 'dubai': 8.5, 'istanbul': 6.5, 'antalya': 7.5,
-  'cape-town': 4.5, 'nairobi': 4.0, 'accra': 5.5, 'marrakech': 5.8,
-  'cairo': 5.0, 'bangalore': 5.5, 'mumbai': 5.0, 'delhi': 4.5, 'goa': 6.5,
-  'antigua': 6.5, 'las-palmas': 8.0, 'tenerife': 8.0, 'malaga': 7.5,
-  'valencia': 7.3, 'palma-de-mallorca': 7.8, 'koh-phangan': 7.0,
-  'koh-samui': 7.2, 'phuket': 6.8, 'chiang-rai': 8.2, 'pai': 8.0,
-  'florence': 7.5, 'rome': 6.5, 'milan': 7.0, 'athens': 6.8,
-  'new-york': 6.0, 'san-francisco': 5.5, 'austin': 7.0, 'denver': 7.0,
-  'miami': 6.0, 'montreal': 7.5, 'vancouver': 7.3, 'toronto': 7.0,
-  'london': 6.5, 'paris': 6.0, 'johor-bahru': 6.5, 'johor': 6.5, 'penang': 7.0,
-  'cebu': 5.8, 'siargao': 7.0, 'jakarta': 5.5, 'yogyakarta': 7.0,
-  'siem-reap': 6.5, 'phnom-penh': 5.5, 'vientiane': 7.0, 'luang-prabang': 7.5,
-  'kathmandu': 5.5, 'pokhara': 7.0, 'colombo': 6.0, 'batumi': 7.0,
-  'yerevan': 7.5, 'tashkent': 6.5, 'almaty': 6.5,
-  'sofia': 7.0, 'dahab': 7.0,
-  'santa-marta': 5.0, 'kilifi': 5.0, 'florianopolis': 6.0,
-  'rio-de-janeiro': 4.5, 'roatan': 5.5, 'guadalajara': 5.0,
-  'montevideo': 6.5, 'kas': 7.5, 'madeira-funchal': 8.5, 'ericeira': 7.8,
-  'krakow': 8.0, 'cusco': 5.5,
-  'sao-paulo': 4.5, 'palermo': 6.5, 'thessaloniki': 7.0,
-  'vilnius': 8.0, 'shanghai': 7.5, 'riga': 7.5, 'valparaiso': 5.0,
-  'hoi-an': 7.5, 'tulum': 5.5, 'oaxaca': 5.5, 'zanzibar': 5.5, 'lagos': 4.0,
-  'warsaw': 7.5, 'komoro': 6.0,
-  'madrid': 7.0, 'melbourne': 8.0, 'tel-aviv': 6.5,
-  'tirana': 6.8, 'osaka': 9.0, 'merida': 6.0,
-};
-
-const DEFAULT_SAFETY = 6.0;
-
-/* ------------------------------------------------------------------ */
-/*  Walkability data                                                   */
-/* ------------------------------------------------------------------ */
-
-const WALKABILITY: Record<string, WalkData> = {
-  // Highly walkable (8-10)
-  'tokyo': { walk: 9.2, transit: 9.5, bike: 8.5, carFree: 'Yes' },
-  'barcelona': { walk: 9.0, transit: 8.5, bike: 7.5, carFree: 'Yes' },
-  'lisbon': { walk: 8.5, transit: 7.8, bike: 6.0, carFree: 'Yes' },
-  'prague': { walk: 8.8, transit: 8.5, bike: 7.0, carFree: 'Yes' },
-  'budapest': { walk: 8.5, transit: 8.2, bike: 7.2, carFree: 'Yes' },
-  'vienna': { walk: 9.0, transit: 9.2, bike: 8.8, carFree: 'Yes' },
-  'paris': { walk: 9.0, transit: 9.0, bike: 8.0, carFree: 'Yes' },
-  'berlin': { walk: 8.5, transit: 8.8, bike: 9.0, carFree: 'Yes' },
-  'amsterdam': { walk: 8.8, transit: 8.0, bike: 9.5, carFree: 'Yes' },
-  'copenhagen': { walk: 8.5, transit: 8.0, bike: 9.5, carFree: 'Yes' },
-  'stockholm': { walk: 8.2, transit: 8.5, bike: 7.5, carFree: 'Yes' },
-  'singapore': { walk: 8.5, transit: 9.0, bike: 6.0, carFree: 'Yes' },
-  'taipei': { walk: 8.0, transit: 8.8, bike: 7.0, carFree: 'Yes' },
-  'london': { walk: 8.8, transit: 9.5, bike: 7.5, carFree: 'Yes' },
-  'rome': { walk: 8.5, transit: 7.0, bike: 5.5, carFree: 'Yes' },
-  'florence': { walk: 9.0, transit: 6.5, bike: 7.0, carFree: 'Yes' },
-  // Walkable (6-8)
-  'seoul': { walk: 7.8, transit: 9.0, bike: 7.0, carFree: 'Mostly' },
-  'bangkok': { walk: 6.5, transit: 7.5, bike: 4.0, carFree: 'Mostly' },
-  'buenos-aires': { walk: 7.5, transit: 7.8, bike: 6.5, carFree: 'Mostly' },
-  'istanbul': { walk: 7.0, transit: 7.5, bike: 4.0, carFree: 'Mostly' },
-  'porto': { walk: 7.8, transit: 7.0, bike: 5.5, carFree: 'Mostly' },
-  'split': { walk: 7.5, transit: 5.5, bike: 5.0, carFree: 'Mostly' },
-  'dubrovnik': { walk: 8.0, transit: 5.0, bike: 4.0, carFree: 'Mostly' },
-  'tbilisi': { walk: 6.8, transit: 6.5, bike: 4.5, carFree: 'Mostly' },
-  'chiang-mai': { walk: 6.0, transit: 5.0, bike: 6.5, carFree: 'Mostly' },
-  'ho-chi-minh-city': { walk: 6.0, transit: 5.5, bike: 7.0, carFree: 'Mostly' },
-  'marrakech': { walk: 7.0, transit: 4.0, bike: 4.0, carFree: 'Mostly' },
-  'tallinn': { walk: 7.5, transit: 7.0, bike: 6.0, carFree: 'Mostly' },
-  'athens': { walk: 7.2, transit: 7.0, bike: 5.0, carFree: 'Mostly' },
-  'milan': { walk: 7.8, transit: 8.0, bike: 7.5, carFree: 'Mostly' },
-  'valencia': { walk: 7.5, transit: 7.0, bike: 8.0, carFree: 'Mostly' },
-  'malaga': { walk: 7.5, transit: 6.5, bike: 6.0, carFree: 'Mostly' },
-  'hanoi': { walk: 6.5, transit: 5.0, bike: 7.0, carFree: 'Mostly' },
-  'da-nang': { walk: 6.0, transit: 4.5, bike: 7.0, carFree: 'Mostly' },
-  'Ljubljana': { walk: 8.0, transit: 6.0, bike: 8.0, carFree: 'Mostly' },
-  // Moderate (4-6)
-  'bali': { walk: 4.0, transit: 2.5, bike: 5.0, carFree: 'Difficult' },
-  'kuala-lumpur': { walk: 5.5, transit: 7.0, bike: 3.5, carFree: 'Difficult' },
-  'dubai': { walk: 4.0, transit: 6.5, bike: 3.0, carFree: 'Difficult' },
-  'manila': { walk: 5.0, transit: 5.5, bike: 3.0, carFree: 'Difficult' },
-  'mexico-city': { walk: 6.0, transit: 7.0, bike: 5.0, carFree: 'Difficult' },
-  'lima': { walk: 5.0, transit: 5.5, bike: 3.5, carFree: 'Difficult' },
-  'bogota': { walk: 5.5, transit: 6.5, bike: 6.0, carFree: 'Difficult' },
-  'santiago': { walk: 6.0, transit: 7.5, bike: 5.0, carFree: 'Difficult' },
-  'cape-town': { walk: 4.5, transit: 4.0, bike: 4.0, carFree: 'Difficult' },
-  'mumbai': { walk: 5.5, transit: 6.5, bike: 3.0, carFree: 'Difficult' },
-  'delhi': { walk: 5.0, transit: 6.0, bike: 3.0, carFree: 'Difficult' },
-  'jakarta': { walk: 4.0, transit: 5.0, bike: 3.0, carFree: 'Difficult' },
-  // Car-dependent (2-4)
-  'phuket': { walk: 3.0, transit: 2.5, bike: 3.0, carFree: 'No' },
-  'koh-phangan': { walk: 3.5, transit: 2.0, bike: 3.5, carFree: 'No' },
-  'playa-del-carmen': { walk: 5.0, transit: 3.0, bike: 4.5, carFree: 'Difficult' },
-  'tulum': { walk: 4.0, transit: 2.0, bike: 5.0, carFree: 'No' },
-  'madrid': { walk: 8.0, transit: 9.0, bike: 7.0, carFree: 'Yes' },
-  'melbourne': { walk: 7.5, transit: 8.0, bike: 7.5, carFree: 'Mostly' },
-  'tel-aviv': { walk: 8.0, transit: 7.0, bike: 8.0, carFree: 'Yes' },
-  'batumi': { walk: 6.5, transit: 4.5, bike: 5.0, carFree: 'Mostly' },
-  'tirana': { walk: 6.0, transit: 4.0, bike: 4.5, carFree: 'Difficult' },
-  'osaka': { walk: 8.5, transit: 9.5, bike: 8.0, carFree: 'Yes' },
-  'toronto': { walk: 7.5, transit: 8.5, bike: 7.0, carFree: 'Mostly' },
-  'merida': { walk: 6.0, transit: 4.0, bike: 5.5, carFree: 'Difficult' },
-  'dublin': { walk: 8.0, transit: 7.5, bike: 7.0, carFree: 'Mostly' },
-};
-
-const DEFAULT_WALK: WalkData = { walk: 5.5, transit: 5.0, bike: 4.5, carFree: 'Difficult' };
 
 /* ------------------------------------------------------------------ */
 /*  Helper functions                                                   */
@@ -731,19 +609,7 @@ function RankingsContent() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab') as TabKey | null;
   const activeTab: TabKey = tabParam && TABS.some(t => t.key === tabParam) ? tabParam : 'internet';
-
-  const [cities, setCities] = useState<City[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/nomad-cities.json')
-      .then(res => res.json())
-      .then((data: City[]) => {
-        setCities(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+  const { cities, loading } = useNomadCities<City>();
 
   const setTab = useCallback((key: TabKey) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -752,27 +618,11 @@ function RankingsContent() {
   }, [router, searchParams]);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
-      <Header />
-      <main id="main-content" className={PAGE_CONTAINER}>
-        {/* Back link */}
-        <Link
-          href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Directory
-        </Link>
-
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className={PAGE_TITLE}>
-            City Rankings
-          </h1>
-          <p className={PAGE_SUBTITLE}>
-            Compare digital nomad cities by internet speed, safety, and walkability.
-          </p>
-        </div>
+    <NomadPageShell
+      title="City Rankings"
+      subtitle="Compare digital nomad cities by internet speed, safety, and walkability."
+      footer={<BlogCTA />}
+    >
 
         {/* Tab Bar */}
         <div className="bg-zinc-100 rounded-lg p-1 inline-flex gap-1 mb-10">
@@ -801,11 +651,7 @@ function RankingsContent() {
             {activeTab === 'walkability' && <WalkabilityTab cities={cities} />}
           </>
         )}
-        <BlogCTA />
-      </main>
-      <MicroFooter />
-      <TelegramJobPopup />
-    </div>
+    </NomadPageShell>
   );
 }
 

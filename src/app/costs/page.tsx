@@ -1,18 +1,12 @@
 'use client';
-import { PAGE_CONTAINER, scoreBadgeClasses , PAGE_TITLE } from '@/lib/utils';
+import { scoreBadgeClasses } from '@/lib/utils';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import Header from '@/components/header';
-import MicroFooter from '@/components/micro-footer';
-import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import BlogCTA from '@/components/blog-cta';
+import { NomadPageShell, NomadSortHeader } from '@/components/nomad/nomad-page-shell';
+import { useNomadCities } from '@/hooks/use-nomad-cities';
 import {
-  ArrowLeft,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  Loader2,
   DollarSign,
   TrendingUp,
   TrendingDown,
@@ -110,8 +104,7 @@ function getSortValue(city: City, key: SortKey): number {
 /* ------------------------------------------------------------------ */
 
 export default function CostOfLivingPage() {
-  const [cities, setCities] = useState<City[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { cities, loading } = useNomadCities<City>();
 
   // Filters
   const [budget, setBudget] = useState<number | null>(null); // null = no filter
@@ -121,17 +114,6 @@ export default function CostOfLivingPage() {
   // Sort
   const [sortKey, setSortKey] = useState<SortKey>('monthly_total');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
-
-  /* ---- Fetch ---- */
-  useEffect(() => {
-    fetch('/nomad-cities.json')
-      .then((r) => r.json())
-      .then((data: City[]) => {
-        setCities(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
 
   /* ---- Derived data ---- */
   const filtered = useMemo(() => {
@@ -199,21 +181,7 @@ export default function CostOfLivingPage() {
     sortField: SortKey;
     className?: string;
   }) => (
-    <button
-      onClick={() => toggleSort(sortField)}
-      className={`group inline-flex items-center gap-1 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-zinc-700 transition-colors ${className}`}
-    >
-      {label}
-      {sortKey === sortField ? (
-        sortDir === 'asc' ? (
-          <ArrowUp className="h-3 w-3 text-zinc-900" />
-        ) : (
-          <ArrowDown className="h-3 w-3 text-zinc-900" />
-        )
-      ) : (
-        <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity" />
-      )}
-    </button>
+    <NomadSortHeader label={label} field={sortField} sortKey={sortKey} sortDir={sortDir} onToggle={toggleSort} className={className} />
   );
 
   /* ---- Budget slider thumb position ---- */
@@ -227,39 +195,18 @@ export default function CostOfLivingPage() {
   /* ---------------------------------------------------------------- */
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
-      <Header />
-      <main
-        id="main-content"
-        className={PAGE_CONTAINER}
-      >
-        {/* Back link */}
-        <Link
-          href="/nomad"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Directory
-        </Link>
-
-        {/* ---- Heading ---- */}
-        <div className="flex flex-col mb-10">
-          <h1 className={PAGE_TITLE}>
-            Cost of Living
-          </h1>
-          <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
-            Compare monthly costs across 100 digital nomad cities. Filter by
-            budget, and sort by rent, food, or coworking to find your next base.
-          </p>
-        </div>
-
-        {loading ? (
-          /* ---- Loading spinner ---- */
-          <div className="flex items-center justify-center py-32">
-            <Loader2 className="h-8 w-8 animate-spin text-zinc-400" />
-          </div>
-        ) : (
-          <>
+    <NomadPageShell
+      title="Cost of Living"
+      subtitle={
+        <p className="text-xl text-zinc-600 transition-colors max-w-3xl">
+          Compare monthly costs across 100 digital nomad cities. Filter by
+          budget, and sort by rent, food, or coworking to find your next base.
+        </p>
+      }
+      loading={loading}
+      footer={<BlogCTA />}
+      outerClassName="h-screen overflow-y-auto bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col"
+    >
             {/* ---- Budget Slider ---- */}
             <div className="bg-white border border-zinc-200 rounded-xl p-6 mb-6">
               <div className="flex items-center gap-3 mb-4">
@@ -657,13 +604,7 @@ export default function CostOfLivingPage() {
                 </div>
               )}
             </div>
-          </>
-        )}
-        <BlogCTA />
-      </main>
-      <MicroFooter />
-      <TelegramJobPopup />
-    </div>
+    </NomadPageShell>
   );
 }
 
