@@ -99513,7 +99513,7 @@
     },
     "06bba11c-5331-43fa-9dd1-b3ec90da5cb1": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1468a900-3ead-4807-acbb-c10616b06185": {
       "status": "fail",
@@ -99558,7 +99558,7 @@
     },
     "0a28b32d-f2e1-495e-a89e-82b6226c488f": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "085cfd4c-83ec-47dc-8488-e2c4577dbc0a": {
       "status": "fail",
@@ -99570,11 +99570,11 @@
     },
     "032d0d42-c490-4db8-a8e2-5e9e491e0eec": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1fb69340-59f2-48a4-8b30-c78fcfcb5cd0": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1d9a6599-7f8b-4177-8e59-f1910969ab50": {
       "status": "fail",
@@ -99610,7 +99610,7 @@
     },
     "10e92dae-9e6d-47bd-b714-51a8cf8a385e": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "190a9e2d-7458-48b2-9e86-e4bb767b69ee": {
       "status": "fail",
@@ -99621,8 +99621,9 @@
       "reason": "rewrite_structure"
     },
     "0c0dc096-36f7-4d0a-9a03-5f5e96aac6f8": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "ok",
+      "path": "/primer-io/sw-28",
+      "external_id": "primer-io_sw-28"
     },
     "09062e83-5856-4e78-85da-22b493b244c0": {
       "status": "fail",
@@ -99634,7 +99635,7 @@
     },
     "0d601521-7755-44fd-9902-31e8d05a0cc2": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0face2a2-159b-43c5-aa2f-67d085a3217a": {
       "status": "fail",
@@ -99686,7 +99687,7 @@
     },
     "18235f5d-faff-44f1-a971-9d619518995f": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1a9aa034-c8be-4d10-b6e9-6ae8d52debac": {
       "status": "fail",
@@ -99694,7 +99695,7 @@
     },
     "0b122958-627b-43ad-83cb-816fd1fc3a54": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0f4179e2-7c67-400a-9d2f-64b10592aac9": {
       "status": "fail",
@@ -99702,7 +99703,7 @@
     },
     "12a2de48-c56e-4b03-a655-1dd3099f957e": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0fd2a4f8-df22-425a-8a63-df0128a1c93c": {
       "status": "fail",
@@ -99714,23 +99715,23 @@
     },
     "18d6f1a9-3d5d-408f-9918-ff9ed0c861e1": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1ce525d2-6a71-4bec-9158-c7b019c854ac": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0c172200-28e3-4206-8380-f831a4355d51": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1b1be9ee-e252-4e73-a402-5bb56f6d5300": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1a7c87ac-c0d6-4f50-b6e4-9b61b825bc94": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1d81a165-a166-43dc-b7a8-033c28d50a28": {
       "status": "fail",
@@ -99746,7 +99747,7 @@
     },
     "1b9db8b2-f549-4ac7-8d76-ac771fdb9c8f": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "09068df6-c665-46cc-b2a0-3224b0cf0f84": {
       "status": "fail",
@@ -99754,7 +99755,7 @@
     },
     "16cd3644-067a-4b72-8217-694b054fc113": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0197a60e-a4cc-4f65-9009-3df50797bb3a": {
       "status": "fail",
@@ -99774,7 +99775,7 @@
     },
     "06eb64e5-42ac-4e67-be2f-6460f24f21dc": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "141a65ed-24d9-45a1-86ab-c4d0f3a662ea": {
       "status": "fail",
@@ -99798,7 +99799,7 @@
     },
     "0f1c430a-455a-412b-928c-aff3569bc3eb": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1914e401-2e9b-47a0-b7a0-20d6a375c54a": {
       "status": "fail",
@@ -99823,7 +99824,7 @@
     },
     "021f69d9-dc16-4a41-982b-6ebb8b11cfea": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1b019a9c-c036-4679-8b64-5b1110b26170": {
       "status": "fail",
@@ -99859,7 +99860,7 @@
     },
     "1d18d345-dcf5-47c4-94db-c39fa12b89a5": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "07c59786-b612-4ca9-aead-d11d2fb59002": {
       "status": "fail",
@@ -99871,7 +99872,7 @@
     },
     "0f232db8-160f-483a-a971-4a12549e9895": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "15984746-24d8-491b-ad99-ff74f8efb4d2": {
       "status": "fail",
@@ -99887,7 +99888,7 @@
     },
     "04524998-2695-41ae-9c12-5ae35bff0f22": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1cb7ce59-fe63-4f9e-aca6-e39a4da45cb8": {
       "status": "ok",
@@ -99904,11 +99905,11 @@
     },
     "0d17bac8-212a-41fd-8ca4-b7b84179aafc": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "06a04996-9b13-469b-84ca-7235dba66b34": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0d7a1f15-258f-4333-a91f-1d98c8d2ad9b": {
       "status": "fail",
@@ -99924,15 +99925,15 @@
     },
     "157c713d-99b3-467e-8823-d2b575e35d82": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "15afd5d1-3e02-4651-b1f4-55cad7094e3e": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "12fb1ac1-6f83-4587-bcd0-a6ddce72c8f7": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0e860c94-0a4b-4388-9be1-2234f9e180f4": {
       "status": "fail",
@@ -99948,7 +99949,7 @@
     },
     "1c5e4f9c-c2c3-494a-8ba0-e1c0727502bd": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0b5b9cde-8fc0-4ae1-867a-901aa15149de": {
       "status": "fail",
@@ -99956,11 +99957,11 @@
     },
     "075bae12-77e5-4af0-a269-855bb894ccb1": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1b25c8b9-d819-49fe-8134-017ffa17dc63": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "06106a23-647c-4c7f-8fe2-4902906ba447": {
       "status": "fail",
@@ -99984,7 +99985,7 @@
     },
     "1e791f84-5d5c-4ddf-902b-309b72e6ad85": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "08aa0c5c-91fe-4879-b4cc-36ee6987fa56": {
       "status": "fail",
@@ -100000,15 +100001,16 @@
     },
     "1582a9e0-c5ab-4922-b907-f36008d0d046": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "19d6910e-0f85-4de0-be31-77f089e9a86a": {
       "status": "fail",
       "reason": "rewrite_structure"
     },
     "05740147-09cb-4519-aa93-adc74ac842a1": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "ok",
+      "path": "/9fin/commercial",
+      "external_id": "9fin_commercial"
     },
     "1a3ba3a8-1f74-48b0-a0db-9f999d02b642": {
       "status": "ok",
@@ -100021,7 +100023,7 @@
     },
     "03c86c65-acf2-4de8-be97-1f991499b9e4": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "14e6b5ba-5c36-478f-8a23-4baaa645df10": {
       "status": "fail",
@@ -100040,8 +100042,9 @@
       "reason": "rewrite_structure"
     },
     "18ef1ffd-d36a-4889-825c-ff01c9e24f29": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "ok",
+      "path": "/openai/sw-29",
+      "external_id": "openai_sw-29"
     },
     "0a384117-ea89-47ce-8d70-6ae00ba6357e": {
       "status": "fail",
@@ -100065,7 +100068,7 @@
     },
     "0d3eee69-3cbb-4e4e-b141-73de5470b3af": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "02f68896-2c7b-4c12-94da-d62a4d3fa83d": {
       "status": "fail",
@@ -100081,11 +100084,11 @@
     },
     "178d477a-64c5-4f6b-992f-7a41a510fc31": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "09e73c92-bf90-4ace-8a00-2afc0dcec989": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "04cea47b-c190-4a30-94b5-dd86c1499f3e": {
       "status": "fail",
@@ -100093,7 +100096,7 @@
     },
     "12fe43de-b43e-4fe7-954d-f2aeacaf0b9d": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "111099fa-e1ef-4d81-97f8-14e4033103a9": {
       "status": "ok",
@@ -100102,7 +100105,7 @@
     },
     "0008c482-e4aa-4172-bfd8-f1beb6704090": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "03ead6fe-85f6-4f76-8d8c-cfbaf55ee83b": {
       "status": "fail",
@@ -100115,7 +100118,7 @@
     },
     "02e5fe1e-1fcd-4f8d-b701-4b5e525d9b52": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0c0f5405-609a-4fa8-8949-cb493f3e6352": {
       "status": "fail",
@@ -100123,7 +100126,7 @@
     },
     "1faeb772-96d5-47b9-8d01-7819d8b7fe87": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0d2b271e-fe2c-472c-9970-907b975a3781": {
       "status": "ok",
@@ -100136,11 +100139,11 @@
     },
     "08883b27-f582-4540-b3bc-3eb9cd982460": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1d00da57-5208-4343-90b0-8592ac566aaa": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "09de31f6-3e31-4178-b085-fb7e53cb743b": {
       "status": "fail",
@@ -100148,7 +100151,7 @@
     },
     "03691b3f-a8e9-49d8-81a0-9697aa846995": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1e48bc8c-9d13-4ad1-b18e-fd0276d093d4": {
       "status": "ok",
@@ -100166,7 +100169,7 @@
     },
     "0677d5b8-2a0a-4320-a5a5-1349bb9a6680": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0e62c10b-4c51-480b-8121-b01c8eb8f9ce": {
       "status": "fail",
@@ -100183,7 +100186,7 @@
     },
     "08e3c910-a902-42a1-ae88-299575d312f4": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "14e5c94a-1eb2-421f-88d0-656df2a205b3": {
       "status": "ok",
@@ -100204,8 +100207,9 @@
       "reason": "rewrite_structure"
     },
     "0434e621-3826-47c0-883f-faa476b0a649": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Parent and Community Organizer company=Masterycharter apply=https://jobs.lever.co/masterycharter/7d1d7051-70a6-4e1f-a0a6-0c295b333df3"
     },
     "1e06d384-85a6-462f-a5e4-66060b0133ef": {
       "status": "fail",
@@ -100213,7 +100217,7 @@
     },
     "1e3751ab-db7f-492b-8d6b-88ab78ba0530": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "19e6373c-2716-436c-a230-1c7b314b794c": {
       "status": "ok",
@@ -100221,8 +100225,102 @@
       "external_id": "alan_fullst-1a"
     },
     "0ce32bf2-dbdf-48d8-b59e-90afeda9ad65": {
+      "status": "ok",
+      "path": "/lendable/real",
+      "external_id": "lendable_real"
+    },
+    "1f299d08-5609-4a3f-b6f7-eece2820581b": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Chargé(e) Onboarding company=deliveroo apply=https://jobs.ashbyhq.com/deliveroo/d684e19a-6ef9-4fb9-a05e-9736c4027faf"
+    },
+    "19473e62-7c92-4a44-8427-b477ab643d7c": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Business Development Manager company=deliveroo apply=https://jobs.ashbyhq.com/deliveroo/1e3e5acf-7a96-4ede-849d-9cecc5798f40"
+    },
+    "0148d0b3-b4d6-4a7f-8a0f-311b81ae8126": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0dd27b67-eb1f-4b86-b775-8d16b2607403": {
       "status": "fail",
       "reason": "rewrite_structure"
+    },
+    "0a500f68-c8b1-447b-a217-a75abaf54695": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03d59460-d28e-454b-a71c-cf1092d120ad": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0f187e3a-9fe6-4d44-a62f-c006b3415ec0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0403e4f6-89c1-4520-9cdf-8b6e6875e3c8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "13ca980e-0912-4c86-9d37-1ce77dac497e": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "15d5e295-7eae-4b0b-bbe2-7d2ea6f16d81": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "02419dd6-59b2-4068-979a-68237f04721d": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0a7f1a14-729e-4f78-9c90-6db5ef74bf20": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "03fe5d8b-ecae-4c6a-a389-8ac4406f6acc": {
+      "status": "ok",
+      "path": "/january/prod-mgr",
+      "external_id": "january_prod-mgr"
+    },
+    "1f28304c-4049-48ae-98f7-ecd35e357d4e": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1d35d150-9ffd-4f0a-b2ae-3ab49d3f6420": {
+      "status": "ok",
+      "path": "/illumio/cust",
+      "external_id": "illumio_cust"
+    },
+    "024e4219-0967-4fe0-8b42-226de3af6c79": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "18cc2f2d-871c-40d4-bc74-0ea2cb414e7c": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1e839da7-4798-4e34-bdcd-3d3d6c96feab": {
+      "status": "ok",
+      "path": "/lpadesignstudios/arch-63",
+      "external_id": "lpadesignstudios_arch-63"
+    },
+    "06cbb33a-7fc7-47c3-b35b-7b1c46d6b88c": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "15444154-dd19-4a6c-a3a0-f272eb1e9914": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1b72b1b2-006a-40b6-ab3e-7b4990141d81": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0b956afa-25d2-4d7d-a316-2dfd3757e6f0": {
+      "status": "fail",
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -119227,7 +119325,68 @@
     "130384ab-03cb-4697-9d11-30cb910fb756",
     "14e5c94a-1eb2-421f-88d0-656df2a205b3",
     "07132d2c-95ef-484d-9fbc-f4bfa717e1d4",
-    "19e6373c-2716-436c-a230-1c7b314b794c"
+    "19e6373c-2716-436c-a230-1c7b314b794c",
+    "1f299d08-5609-4a3f-b6f7-eece2820581b",
+    "19473e62-7c92-4a44-8427-b477ab643d7c",
+    "0434e621-3826-47c0-883f-faa476b0a649",
+    "032d0d42-c490-4db8-a8e2-5e9e491e0eec",
+    "08883b27-f582-4540-b3bc-3eb9cd982460",
+    "0d3eee69-3cbb-4e4e-b141-73de5470b3af",
+    "1faeb772-96d5-47b9-8d01-7819d8b7fe87",
+    "04524998-2695-41ae-9c12-5ae35bff0f22",
+    "1e791f84-5d5c-4ddf-902b-309b72e6ad85",
+    "1a7c87ac-c0d6-4f50-b6e4-9b61b825bc94",
+    "0148d0b3-b4d6-4a7f-8a0f-311b81ae8126",
+    "0d601521-7755-44fd-9902-31e8d05a0cc2",
+    "1b1be9ee-e252-4e73-a402-5bb56f6d5300",
+    "0d17bac8-212a-41fd-8ca4-b7b84179aafc",
+    "0f232db8-160f-483a-a971-4a12549e9895",
+    "0008c482-e4aa-4172-bfd8-f1beb6704090",
+    "0a500f68-c8b1-447b-a217-a75abaf54695",
+    "03c86c65-acf2-4de8-be97-1f991499b9e4",
+    "021f69d9-dc16-4a41-982b-6ebb8b11cfea",
+    "12a2de48-c56e-4b03-a655-1dd3099f957e",
+    "0f1c430a-455a-412b-928c-aff3569bc3eb",
+    "0a28b32d-f2e1-495e-a89e-82b6226c488f",
+    "1c5e4f9c-c2c3-494a-8ba0-e1c0727502bd",
+    "0c0dc096-36f7-4d0a-9a03-5f5e96aac6f8",
+    "1e3751ab-db7f-492b-8d6b-88ab78ba0530",
+    "0677d5b8-2a0a-4320-a5a5-1349bb9a6680",
+    "1ce525d2-6a71-4bec-9158-c7b019c854ac",
+    "12fe43de-b43e-4fe7-954d-f2aeacaf0b9d",
+    "0f187e3a-9fe6-4d44-a62f-c006b3415ec0",
+    "1d00da57-5208-4343-90b0-8592ac566aaa",
+    "0403e4f6-89c1-4520-9cdf-8b6e6875e3c8",
+    "18d6f1a9-3d5d-408f-9918-ff9ed0c861e1",
+    "15afd5d1-3e02-4651-b1f4-55cad7094e3e",
+    "12fb1ac1-6f83-4587-bcd0-a6ddce72c8f7",
+    "09e73c92-bf90-4ace-8a00-2afc0dcec989",
+    "18235f5d-faff-44f1-a971-9d619518995f",
+    "1b9db8b2-f549-4ac7-8d76-ac771fdb9c8f",
+    "178d477a-64c5-4f6b-992f-7a41a510fc31",
+    "0c172200-28e3-4206-8380-f831a4355d51",
+    "1b25c8b9-d819-49fe-8134-017ffa17dc63",
+    "157c713d-99b3-467e-8823-d2b575e35d82",
+    "05740147-09cb-4519-aa93-adc74ac842a1",
+    "10e92dae-9e6d-47bd-b714-51a8cf8a385e",
+    "03fe5d8b-ecae-4c6a-a389-8ac4406f6acc",
+    "1d35d150-9ffd-4f0a-b2ae-3ab49d3f6420",
+    "16cd3644-067a-4b72-8217-694b054fc113",
+    "1e839da7-4798-4e34-bdcd-3d3d6c96feab",
+    "06bba11c-5331-43fa-9dd1-b3ec90da5cb1",
+    "03691b3f-a8e9-49d8-81a0-9697aa846995",
+    "0b122958-627b-43ad-83cb-816fd1fc3a54",
+    "06a04996-9b13-469b-84ca-7235dba66b34",
+    "1582a9e0-c5ab-4922-b907-f36008d0d046",
+    "02e5fe1e-1fcd-4f8d-b701-4b5e525d9b52",
+    "06eb64e5-42ac-4e67-be2f-6460f24f21dc",
+    "1fb69340-59f2-48a4-8b30-c78fcfcb5cd0",
+    "075bae12-77e5-4af0-a269-855bb894ccb1",
+    "08e3c910-a902-42a1-ae88-299575d312f4",
+    "1d18d345-dcf5-47c4-94db-c39fa12b89a5",
+    "0b956afa-25d2-4d7d-a316-2dfd3757e6f0",
+    "18ef1ffd-d36a-4889-825c-ff01c9e24f29",
+    "0ce32bf2-dbdf-48d8-b59e-90afeda9ad65"
   ],
   "skipped": {},
   "batches": [
@@ -121113,6 +121272,32 @@
         "/ramp/cust-c6",
         "/alan/fullst-1a"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-13T12:02:49.561Z",
+      "attempted": 133,
+      "ok": 7,
+      "skip": 3,
+      "fail": 126,
+      "reasons": {
+        "expand_existing": 133,
+        "source_thin": 2,
+        "no_ai": 3,
+        "err_TimeoutError": 1,
+        "rewrite_short": 51,
+        "rewrite_structure": 75
+      },
+      "samplePaths": [
+        "/primer-io/sw-28",
+        "/9fin/commercial",
+        "/january/prod-mgr",
+        "/illumio/cust",
+        "/lpadesignstudios/arch-63",
+        "/openai/sw-29",
+        "/lendable/real"
+      ]
     }
   ],
   "deadBoards": {
@@ -122293,6 +122478,7 @@
     "greenhouse:contentful": "posting_older_than_30d",
     "greenhouse:hightouch": "posting_older_than_30d",
     "ashby:trawa": "source_thin",
-    "lever:sophos": "lever_404"
+    "lever:sophos": "lever_404",
+    "ashby:deliveroo": "source_thin"
   }
 }
