@@ -182,7 +182,8 @@ export default function AIInterviewPage() {
         <div className="mb-8 flex flex-col gap-3">
           <h1 className={PAGE_TITLE}>AI Interview Question Bank</h1>
           <p className={PAGE_SUBTITLE}>
-            Interview questions by AI role, with short answers and scoring notes.
+            Pick a role. Answer out loud before you open the notes. Follow-ups
+            and scoring are what the next interviewer uses.
           </p>
         </div>
 
@@ -336,7 +337,8 @@ export default function AIInterviewPage() {
                   {practiceQuestion.question}
                 </h3>
                 <p className="text-[11px] text-zinc-400">
-                  {practiceQuestion.difficulty} · {practiceQuestion.expectedTime}
+                  {practiceQuestion.difficulty} · {practiceQuestion.category} ·{' '}
+                  {practiceQuestion.expectedTime}
                 </p>
 
                 {!showAnswer ? (
@@ -361,6 +363,18 @@ export default function AIInterviewPage() {
                         </li>
                       ))}
                     </ul>
+                    {practiceQuestion.followUps?.length > 0 && (
+                      <div>
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                          They will ask next
+                        </p>
+                        <ul className="space-y-1 text-xs text-zinc-600">
+                          {practiceQuestion.followUps.map((item, i) => (
+                            <li key={i}>• {item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <Button
                       type="button"
                       variant="outline"
@@ -474,9 +488,14 @@ export default function AIInterviewPage() {
                             onClick={() => toggleAccordion(q.id)}
                             className="w-full p-4 sm:p-5 flex items-start justify-between gap-3 text-left"
                           >
-                            <h3 className="text-sm font-bold text-zinc-900 tracking-tight leading-snug">
-                              {q.question}
-                            </h3>
+                            <div className="min-w-0">
+                              <h3 className="text-sm font-bold text-zinc-900 tracking-tight leading-snug">
+                                {q.question}
+                              </h3>
+                              <p className="text-[11px] text-zinc-400 mt-1.5">
+                                {q.category} · {q.expectedTime}
+                              </p>
+                            </div>
                             <span className="shrink-0 w-7 h-7 border border-zinc-200 rounded flex items-center justify-center text-zinc-500">
                               {isExpanded ? (
                                 <ChevronUp className="w-4 h-4" />
@@ -526,7 +545,7 @@ export default function AIInterviewPage() {
                                   {q.whyThisMatters?.length > 0 && (
                                     <div>
                                       <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
-                                        Why interviewers ask this
+                                        Why they ask
                                       </p>
                                       <ul className="space-y-1">
                                         {q.whyThisMatters.map((item, i) => (
@@ -547,6 +566,60 @@ export default function AIInterviewPage() {
                                       </ul>
                                     </div>
                                   )}
+                                </div>
+                              )}
+
+                              {q.followUps?.length > 0 && (
+                                <div>
+                                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                                    Follow-ups they will ask
+                                  </p>
+                                  <ul className="space-y-1 text-xs sm:text-sm text-zinc-600">
+                                    {q.followUps.map((item, i) => (
+                                      <li key={i}>• {item}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+
+                              {q.redFlags?.length > 0 && (
+                                <div>
+                                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                                    Red flags
+                                  </p>
+                                  <ul className="space-y-1 text-xs sm:text-sm text-zinc-600">
+                                    {q.redFlags.map((item, i) => (
+                                      <li key={i}>• {item}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+
+                              {q.scoringRubric && (
+                                <div>
+                                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                                    Scoring
+                                  </p>
+                                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-zinc-600">
+                                    <div className="border border-zinc-200 rounded-md p-2.5">
+                                      <p className="font-semibold text-zinc-900 mb-1">
+                                        1
+                                      </p>
+                                      <p>{q.scoringRubric[1]}</p>
+                                    </div>
+                                    <div className="border border-zinc-200 rounded-md p-2.5">
+                                      <p className="font-semibold text-zinc-900 mb-1">
+                                        3
+                                      </p>
+                                      <p>{q.scoringRubric[3]}</p>
+                                    </div>
+                                    <div className="border border-zinc-200 rounded-md p-2.5">
+                                      <p className="font-semibold text-zinc-900 mb-1">
+                                        5
+                                      </p>
+                                      <p>{q.scoringRubric[5]}</p>
+                                    </div>
+                                  </div>
                                 </div>
                               )}
 
@@ -595,7 +668,7 @@ export default function AIInterviewPage() {
 
         <div className="mt-16 pt-6 border-t border-zinc-200">
           <p className="text-[10px] text-zinc-400 leading-relaxed">
-            Starter bank for GenAI interviews. Last updated July 2026.
+            Practice bank for AI hiring loops. Last updated August 2026.
           </p>
         </div>
       </main>
