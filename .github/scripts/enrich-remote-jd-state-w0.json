@@ -100394,7 +100394,7 @@
     },
     "0970fd8f-7899-4f3b-98d0-f9ef8e206f53": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -119486,7 +119486,8 @@
     "19a85fa0-eabc-436f-a65d-6586dde3ae24",
     "1bed5984-e283-47b9-ab1d-753c37856499",
     "190a9e2d-7458-48b2-9e86-e4bb767b69ee",
-    "15aa6db6-7d97-408f-a3bf-43c6ecf8686f"
+    "15aa6db6-7d97-408f-a3bf-43c6ecf8686f",
+    "0970fd8f-7899-4f3b-98d0-f9ef8e206f53"
   ],
   "skipped": {},
   "batches": [
@@ -121432,6 +121433,21 @@
       "samplePaths": [
         "/elevenlabs/forwar-ea"
       ]
+    },
+    {
+      "batchNum": 5,
+      "worker": 0,
+      "at": "2026-08-13T12:14:27.571Z",
+      "attempted": 2,
+      "ok": 0,
+      "skip": 0,
+      "fail": 2,
+      "reasons": {
+        "expand_existing": 1,
+        "rewrite_short": 1,
+        "rewrite_structure": 1
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
