@@ -57757,7 +57757,7 @@
     },
     "01518e38-02c3-4751-aa33-a43b80270778": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "2ffff42b-3133-4e5e-af6f-8b6f12762636": {
       "status": "skip",
@@ -57789,7 +57789,7 @@
     },
     "0120719c-fbd0-46ff-a7ce-fc3e462b6b40": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_structure"
     },
     "14722890-0308-4834-a002-383624cccd0d": {
       "status": "fail",
@@ -58704,7 +58704,7 @@
     },
     "043ac0da-f2dd-4f17-8cbb-b1c07c5a984f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "0580ebef-ca57-4f2c-b935-6bd80f4a2f6e": {
       "status": "skip",
@@ -58721,7 +58721,7 @@
     },
     "00cd7ab8-4b77-451c-9dc1-6ded00b8b5ff": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "3b670c86-ac47-49cd-9e44-42d7611ac093": {
       "status": "fail",
@@ -58837,7 +58837,7 @@
     },
     "02b20074-f3c8-4ef8-8b7f-af379781fc40": {
       "status": "fail",
-      "reason": "rewrite_short"
+      "reason": "rewrite_structure"
     },
     "0d4a0729-c210-4c90-9b32-49a658591366": {
       "status": "fail",
@@ -59061,8 +59061,9 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "031bc057-ace8-47ff-a305-3f1e80735fc9": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/apptegy/fullstk",
+      "external_id": "apptegy_fullstk"
     },
     "0f67afb9-21e6-4fbb-9951-1cb0021416ea": {
       "status": "fail",
@@ -59325,7 +59326,7 @@
     },
     "0415b8fe-3d93-4e7d-9d9f-4d3686163c74": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "3c978c72-b49b-431a-b17e-0f2d0f48f8db": {
       "status": "fail",
@@ -61668,7 +61669,7 @@
     },
     "033b1904-1596-4e9c-af2f-82355360f3ff": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "09fa3e05-b787-4472-8535-c973c67a2f70": {
       "status": "ok",
@@ -62353,7 +62354,7 @@
     },
     "021e5904-5499-47e7-bc72-75229db48e39": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0901ddb2-44e9-42c7-8188-3b16a94e55d1": {
       "status": "fail",
@@ -62532,7 +62533,7 @@
     },
     "02a2eb91-8a7c-4ade-ab70-e47ea7ee2cee": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "233d6ac7-be8c-482e-96a2-7c275b6dba01": {
       "status": "fail",
@@ -62605,7 +62606,7 @@
     },
     "01d9d007-8609-43f7-b320-e430473bffe3": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "2295929f-cbfd-4d20-bbb5-9de0d3490ab1": {
       "status": "fail",
@@ -63148,7 +63149,7 @@
     },
     "032c227d-4da2-4723-b1ec-158918a023fb": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_structure"
     },
     "3a2260f9-4898-4729-83bf-705d304948fc": {
       "status": "fail",
@@ -65651,7 +65652,7 @@
     },
     "00e89518-085f-49fb-ad5e-507e0a5ed79f": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "136f3bbc-cc12-4765-9235-f973e703589c": {
       "status": "fail",
@@ -66182,7 +66183,7 @@
     },
     "0031f190-1c5d-404d-88ed-93a40ecc3624": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "1ca21159-60f6-43be-a1a4-6e45c4d2a2c5": {
       "status": "skip",
@@ -66523,7 +66524,7 @@
     },
     "03b06024-f70b-49da-b43a-f0a9f2359c40": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "287cc8f3-d498-415b-86c8-f333f89a8a6d": {
       "status": "fail",
@@ -66845,9 +66846,8 @@
       "note": "thin_source title=Data Science internship company=Shift Technology apply=https://job-boards.greenhouse.io/shifttechnology/jobs/7687752003"
     },
     "00023c90-c693-4b71-8842-99d798bff9b1": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Senior Technical Recruiter company=ShopMy apply=https://job-boards.greenhouse.io/shopmy/jobs/5201994008"
+      "status": "fail",
+      "reason": "rewrite_short"
     },
     "3d4dd892-9215-49cb-8429-7c2df8b2cc2c": {
       "status": "skip",
@@ -67128,7 +67128,7 @@
     },
     "038bde50-95a1-4ad2-b2c7-15504f2aebcd": {
       "status": "fail",
-      "reason": "rewrite_short"
+      "reason": "rewrite_structure"
     },
     "1b822307-ee82-46cc-93ac-e968c0514fa6": {
       "status": "skip",
@@ -68745,7 +68745,7 @@
     },
     "0105bd25-1291-4a3a-8565-fd2b90380009": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "315cecd1-ec54-4dfa-87f8-d41a137c005f": {
       "status": "fail",
@@ -68787,7 +68787,7 @@
     },
     "00c110a3-75c5-4f33-9dd1-27a786abbd23": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "14abe360-1e56-48dd-8b93-c9cd069421df": {
       "status": "fail",
@@ -68982,7 +68982,7 @@
     },
     "00731d08-ee85-452c-ad3d-7ce1e1db16a3": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "25f07dd4-b2d9-42c9-8c52-bad4a6eb8734": {
       "status": "fail",
@@ -69011,9 +69011,8 @@
       "note": "thin_source title=Director Body Service Line Management company=Sono Bello apply=https://job-boards.greenhouse.io/sonobello/jobs/5364844008"
     },
     "00ee8eb7-4c65-4b97-b3a7-7c15fa09d046": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Senior Software Engineer, Windows/Desktop Applications company=Speechify apply=https://job-boards.greenhouse.io/speechify/jobs/5974924004"
+      "status": "fail",
+      "reason": "rewrite_short"
     },
     "00ac5ffc-9031-491a-9f24-690e29db8b47": {
       "status": "skip",
@@ -69437,7 +69436,7 @@
     },
     "0221581c-e188-4e2c-82f6-243380c2a432": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "234b9de0-cfda-44c9-90f3-c36be74bd48d": {
       "status": "fail",
@@ -70667,7 +70666,7 @@
     },
     "023355bb-70d6-4e7f-b495-0fe11a32b6f9": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_short"
     },
     "1bd64014-4faf-45e9-bed0-eca8e743f2b0": {
       "status": "fail",
@@ -71369,9 +71368,8 @@
       "note": "thin_source title=Software Engineer – Full Stack company=Empower Pharmacy apply=https://careers.empowerpharmacy.com/jobs/?gh_jid=4327492009"
     },
     "030c7504-80f9-4878-acca-97f2956d0696": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Compliance Specialist company=Empower Pharmacy apply=https://careers.empowerpharmacy.com/jobs/?gh_jid=4338141009"
+      "status": "fail",
+      "reason": "rewrite_short"
     },
     "27bb4d3e-a4e3-429e-92c6-0d8f66194e3f": {
       "status": "skip",
@@ -71399,9 +71397,8 @@
       "note": "thin_source title=Principal, Marketing Data Science company=Empower Pharmacy apply=https://careers.empowerpharmacy.com/jobs/?gh_jid=4303867009"
     },
     "02bf458e-d88e-4b12-b51a-659fcb535e0a": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Project Implementation Specialist company=Empower Pharmacy apply=https://careers.empowerpharmacy.com/jobs/?gh_jid=4329103009"
+      "status": "fail",
+      "reason": "rewrite_structure"
     },
     "2ab0374e-4ef6-44be-895a-2aea00e6c461": {
       "status": "skip",
@@ -71664,9 +71661,8 @@
       "note": "thin_source title=Sr. Marketing Activation Specialist company=Esri apply=https://www.esri.com/careers/5198032007?gh_jid=5198032007"
     },
     "001945e1-8553-4e48-ac26-5a5c2d17e044": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Software Development Engineer company=Esri apply=https://www.esri.com/careers/5174132007?gh_jid=5174132007"
+      "status": "fail",
+      "reason": "rewrite_short"
     },
     "0705c30d-2404-45b0-a85c-87edecdf5870": {
       "status": "skip",
@@ -71749,7 +71745,7 @@
     },
     "0361aa84-8c14-4281-a955-1ab689403277": {
       "status": "fail",
-      "reason": "openrouter_failed"
+      "reason": "rewrite_structure"
     },
     "250a77cc-4ca4-43bc-87d7-37fcca5421d0": {
       "status": "fail",
@@ -71821,9 +71817,8 @@
       "note": "thin_source title=Principal C++ Software Engineer company=Esri apply=https://www.esri.com/careers/5076668007?gh_jid=5076668007"
     },
     "0178c2d3-5924-4d56-aefa-dd9adf04cbe7": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Sr. Application Security Engineer company=Esri apply=https://www.esri.com/careers/5136168007?gh_jid=5136168007"
+      "status": "fail",
+      "reason": "rewrite_structure"
     },
     "1d4309e2-3149-4257-b538-79648b74c8be": {
       "status": "skip",
@@ -71866,9 +71861,8 @@
       "note": "thin_source title=System Engineer – Enterprise Data Engineer company=Esri apply=https://www.esri.com/careers/5171928007?gh_jid=5171928007"
     },
     "036f793d-1a70-41eb-a64b-1ba7f9135736": {
-      "status": "skip",
-      "reason": "err_TimeoutError",
-      "note": "thin_source title=Technical Consultant company=Esri apply=https://www.esri.com/careers/5119380007?gh_jid=5119380007"
+      "status": "fail",
+      "reason": "rewrite_structure"
     },
     "21f0fe96-1f1f-4c17-bf38-377ab1af1cee": {
       "status": "skip",
@@ -100395,6 +100389,47 @@
     "0970fd8f-7899-4f3b-98d0-f9ef8e206f53": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "029a9718-bac8-48a1-a851-928b77010f9a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0002fcb3-3f1a-4355-a53b-309aebda6c8d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "01c10934-fac3-4715-8c9d-7b267ec898e7": {
+      "status": "ok",
+      "path": "/weka/sales",
+      "external_id": "weka_sales"
+    },
+    "02852f74-405c-456f-8aac-ffea41a82b29": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "01caf8b9-4367-4296-bbc4-ba0fe98dc579": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "02706d08-6190-4fad-b1da-36e408e51e45": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "000d43ab-544e-466b-aaec-2c37218b83e9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0142a782-a407-41c4-961e-eeda6b5ec32c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "041311f8-9750-405b-95f1-7e33b59961cc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "02587ced-fce2-44b9-863c-2760e60957d8": {
+      "status": "fail",
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -119488,7 +119523,37 @@
     "190a9e2d-7458-48b2-9e86-e4bb767b69ee",
     "15aa6db6-7d97-408f-a3bf-43c6ecf8686f",
     "0970fd8f-7899-4f3b-98d0-f9ef8e206f53",
-    "03c750dd-cb13-475e-b516-c3b5354f54f0"
+    "03c750dd-cb13-475e-b516-c3b5354f54f0",
+    "00731d08-ee85-452c-ad3d-7ce1e1db16a3",
+    "023355bb-70d6-4e7f-b495-0fe11a32b6f9",
+    "01d9d007-8609-43f7-b320-e430473bffe3",
+    "01518e38-02c3-4751-aa33-a43b80270778",
+    "00cd7ab8-4b77-451c-9dc1-6ded00b8b5ff",
+    "02781306-0e04-406a-9dd2-a90c30b700ae",
+    "0221581c-e188-4e2c-82f6-243380c2a432",
+    "001945e1-8553-4e48-ac26-5a5c2d17e044",
+    "02a2eb91-8a7c-4ade-ab70-e47ea7ee2cee",
+    "033b1904-1596-4e9c-af2f-82355360f3ff",
+    "029a9718-bac8-48a1-a851-928b77010f9a",
+    "00ee8eb7-4c65-4b97-b3a7-7c15fa09d046",
+    "0002fcb3-3f1a-4355-a53b-309aebda6c8d",
+    "0105bd25-1291-4a3a-8565-fd2b90380009",
+    "03b06024-f70b-49da-b43a-f0a9f2359c40",
+    "00c110a3-75c5-4f33-9dd1-27a786abbd23",
+    "00e89518-085f-49fb-ad5e-507e0a5ed79f",
+    "0172092e-914f-4b58-b478-4f09646a9827",
+    "0415b8fe-3d93-4e7d-9d9f-4d3686163c74",
+    "01c10934-fac3-4715-8c9d-7b267ec898e7",
+    "043ac0da-f2dd-4f17-8cbb-b1c07c5a984f",
+    "0154452b-050f-4db0-9cf3-31b9178a2ca9",
+    "0031f190-1c5d-404d-88ed-93a40ecc3624",
+    "030c7504-80f9-4878-acca-97f2956d0696",
+    "031bc057-ace8-47ff-a305-3f1e80735fc9",
+    "00023c90-c693-4b71-8842-99d798bff9b1",
+    "021e5904-5499-47e7-bc72-75229db48e39",
+    "0142a782-a407-41c4-961e-eeda6b5ec32c",
+    "041311f8-9750-405b-95f1-7e33b59961cc",
+    "02587ced-fce2-44b9-863c-2760e60957d8"
   ],
   "skipped": {},
   "batches": [
@@ -121519,6 +121584,24 @@
         "rewrite_short": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T14:47:10.128Z",
+      "attempted": 42,
+      "ok": 2,
+      "skip": 0,
+      "fail": 40,
+      "reasons": {
+        "expand_existing": 42,
+        "rewrite_short": 28,
+        "rewrite_structure": 12
+      },
+      "samplePaths": [
+        "/weka/sales",
+        "/apptegy/fullstk"
+      ]
     }
   ],
   "deadBoards": {
