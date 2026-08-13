@@ -98932,6 +98932,38 @@
     "0e6eca62-e783-4549-940a-f86d3373128e": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "1fe19ee7-8f23-475d-8688-7919d94632f5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0857193f-343f-4591-9412-97a9269f697d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1739dc33-e8f5-4777-b720-3f5b52dee431": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "08581428-6a98-448a-9e10-7f1c29d4b28e": {
+      "status": "ok",
+      "path": "/brookeowensfellowship/brooke",
+      "external_id": "brookeowensfellowship_brooke"
+    },
+    "11b34d7a-a756-40ed-bfbf-66180eaa9198": {
+      "status": "ok",
+      "path": "/nbr/undergraduat",
+      "external_id": "nbr_undergraduat"
+    },
+    "0e239af2-9c27-43a5-9998-cf53d3dd4249": {
+      "status": "ok",
+      "path": "/mostpolicyinitiative/most",
+      "external_id": "mostpolicyinitiative_most"
+    },
+    "0ebb51e8-bbf5-4583-99ef-4f489fe52f6b": {
+      "status": "ok",
+      "path": "/blakemorefoundation/blakemore",
+      "external_id": "blakemorefoundation_blakemore"
     }
   },
   "doneIds": [
@@ -117738,7 +117770,14 @@
     "0edb40cd-58df-4571-a5a8-032fe41cb3c3",
     "16a04eca-2ffc-4303-b342-22e9adbb4293",
     "1e617af0-ef13-407b-afe4-8aafb0fbccc5",
-    "0e6eca62-e783-4549-940a-f86d3373128e"
+    "0e6eca62-e783-4549-940a-f86d3373128e",
+    "1fe19ee7-8f23-475d-8688-7919d94632f5",
+    "0857193f-343f-4591-9412-97a9269f697d",
+    "1739dc33-e8f5-4777-b720-3f5b52dee431",
+    "08581428-6a98-448a-9e10-7f1c29d4b28e",
+    "11b34d7a-a756-40ed-bfbf-66180eaa9198",
+    "0e239af2-9c27-43a5-9998-cf53d3dd4249",
+    "0ebb51e8-bbf5-4583-99ef-4f489fe52f6b"
   ],
   "skipped": {},
   "batches": [
@@ -119554,6 +119593,25 @@
         "rewrite_short": 4
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T10:31:45.108Z",
+      "attempted": 7,
+      "ok": 4,
+      "skip": 0,
+      "fail": 3,
+      "reasons": {
+        "expand_existing": 7,
+        "rewrite_short": 3
+      },
+      "samplePaths": [
+        "/brookeowensfellowship/brooke",
+        "/nbr/undergraduat",
+        "/mostpolicyinitiative/most",
+        "/blakemorefoundation/blakemore"
+      ]
     }
   ],
   "deadBoards": {

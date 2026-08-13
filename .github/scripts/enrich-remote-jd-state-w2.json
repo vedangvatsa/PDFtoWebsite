@@ -116556,6 +116556,37 @@
       "status": "ok",
       "path": "/coding-it-forward/civic",
       "external_id": "coding-it-forward_civic"
+    },
+    "5b62ac8e-645b-461b-a5c3-ee1901fb90b2": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "4032c7d4-971f-4e83-af54-c0b2fd31fae9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "4e10411d-51f9-49d7-be62-46247f7bd7d4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5bafa1be-0068-478b-9416-1b8aca128365": {
+      "status": "ok",
+      "path": "/councilonstrategicrisks/fellowship",
+      "external_id": "councilonstrategicrisks_fellowship"
+    },
+    "5097cc79-3933-40a7-b8f6-1c41e42464de": {
+      "status": "ok",
+      "path": "/ssrc/just",
+      "external_id": "ssrc_just"
+    },
+    "47a058b0-6ac1-4799-ae45-ea48e50a5c16": {
+      "status": "ok",
+      "path": "/uidaho/idaho",
+      "external_id": "uidaho_idaho"
     }
   },
   "doneIds": [
@@ -138508,7 +138539,14 @@
     "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c",
     "d0859950-ebce-4ab4-bc63-b9d7b3697429",
     "5d60e719-529a-4617-a3fe-9f81cf9cc2b1",
-    "4c7f3146-467e-4f4b-9344-e64cd0eafd4b"
+    "4c7f3146-467e-4f4b-9344-e64cd0eafd4b",
+    "5b62ac8e-645b-461b-a5c3-ee1901fb90b2",
+    "4032c7d4-971f-4e83-af54-c0b2fd31fae9",
+    "4e10411d-51f9-49d7-be62-46247f7bd7d4",
+    "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee",
+    "5bafa1be-0068-478b-9416-1b8aca128365",
+    "5097cc79-3933-40a7-b8f6-1c41e42464de",
+    "47a058b0-6ac1-4799-ae45-ea48e50a5c16"
   ],
   "skipped": {},
   "batches": [
@@ -139981,6 +140019,25 @@
       },
       "samplePaths": [
         "/coding-it-forward/civic"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 2,
+      "at": "2026-08-13T10:31:25.918Z",
+      "attempted": 7,
+      "ok": 3,
+      "skip": 0,
+      "fail": 4,
+      "reasons": {
+        "expand_existing": 7,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 2,
+        "rewrite_short": 2
+      },
+      "samplePaths": [
+        "/councilonstrategicrisks/fellowship",
+        "/ssrc/just",
+        "/uidaho/idaho"
       ]
     }
   ],

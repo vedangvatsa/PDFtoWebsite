@@ -81999,6 +81999,19 @@
       "status": "ok",
       "path": "/emergingtechpolicy/congressiona",
       "external_id": "emergingtechpolicy_congressiona"
+    },
+    "d2354da6-249d-4a62-bf9d-3affe0b02fa0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c6562067-2074-4b7d-9a08-730033953411": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "df3f1022-d9cd-4d16-bf08-703a3a4bc33b": {
+      "status": "ok",
+      "path": "/pnnl/nnsa",
+      "external_id": "pnnl_nnsa"
     }
   },
   "doneIds": [
@@ -100783,7 +100796,10 @@
     "c07db014-5352-4684-8ace-1ad5db19a53f",
     "d9d6d091-d89d-489a-8963-b9a1d6756b66",
     "dbacddff-1e8a-4310-be9a-7d63bccd12d3",
-    "c61cdbe2-24cf-4e79-b790-43ee70bc6e51"
+    "c61cdbe2-24cf-4e79-b790-43ee70bc6e51",
+    "d2354da6-249d-4a62-bf9d-3affe0b02fa0",
+    "c6562067-2074-4b7d-9a08-730033953411",
+    "df3f1022-d9cd-4d16-bf08-703a3a4bc33b"
   ],
   "skipped": {},
   "batches": [
@@ -101797,6 +101813,22 @@
         "/emergingtechpolicy/policy",
         "/horizonpublicservice/become",
         "/emergingtechpolicy/congressiona"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-13T10:31:44.240Z",
+      "attempted": 3,
+      "ok": 1,
+      "skip": 0,
+      "fail": 2,
+      "reasons": {
+        "expand_existing": 3,
+        "rewrite_short": 2
+      },
+      "samplePaths": [
+        "/pnnl/nnsa"
       ]
     }
   ],
