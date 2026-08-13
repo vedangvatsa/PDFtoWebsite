@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AI Job Search',
+  title: 'AI Interview Question Bank',
   description:
-    'Search thousands of AI, machine learning, and data science job openings from top companies on CVin.Bio.',
+    'Interview questions for agent, RAG, fine-tuning, MLOps, safety, research, and ML roles. Short answers, follow-ups, and scoring notes.',
   alternates: { canonical: '/aiq' },
 };
 
