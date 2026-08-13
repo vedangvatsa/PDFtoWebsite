@@ -109,7 +109,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // Page will 308 to company hub / jobs — keep noindex until redirect lands.
     return { title: 'Job not found', robots: { index: false, follow: true } };
   }
-  return buildJobMetadata(job, siteUrl);
+  return await buildJobMetadata(job, siteUrl);
 }
 
 export default async function CompanyJobPage({ params }: PageProps) {
@@ -130,7 +130,7 @@ export default async function CompanyJobPage({ params }: PageProps) {
     permanentRedirect(await gonePrettyJobPath(slug));
   }
 
-  const detail = toJobDetail(job);
+  const detail = await toJobDetail(job);
 
   const [viewer, relatedJobs] = await Promise.all([
     getViewerJobContext(),

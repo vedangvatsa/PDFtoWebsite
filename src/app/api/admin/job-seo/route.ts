@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
   const samples: any[] = [];
 
   for (const row of (rows || []) as JobRow[]) {
-    const detail = toJobDetail(row);
+    const detail = await toJobDetail(row);
     const words = detail.description_word_count || jobDescriptionWordCount(row.description);
     const idx = !!detail.is_indexable;
     if (idx) indexable++;

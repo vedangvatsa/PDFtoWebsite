@@ -4,9 +4,15 @@
  */
 import { getCompanyMeta } from '@/lib/company-data';
 import { toCompanyKey, companyDisplayName } from '@/lib/company-directory';
-import companyDescriptions from '@/lib/company-descriptions.json';
-
-const DESCRIPTIONS = companyDescriptions as Record<string, string>;
+// Lazy-loaded to avoid bundling 2.4MB JSON into every server function
+let _descriptions: Record<string, string> | null = null;
+async function getDescriptions(): Promise<Record<string, string>> {
+  if (!_descriptions) {
+    const mod = await import('@/lib/company-descriptions.json');
+    _descriptions = mod.default as Record<string, string>;
+  }
+  return _descriptions;
+}
 
 /** Encyclopedia / wiki residue that must never reach a public page. */
 const ENCYCLOPEDIA_DUMP_RE =
@@ -56,13 +62,14 @@ export function isUnpublishableCompanyBlurb(text: string): boolean {
   return looksLikeEncyclopediaDump(text) || looksLikeWikipediaLede(text);
 }
 
-function lookupCachedBlurb(slugOrName: string): string | null {
+async function lookupCachedBlurb(slugOrName: string): Promise<string | null> {
   const key = toCompanyKey(slugOrName);
   const compact = key.replace(/-/g, '');
   const raw = String(slugOrName || '').trim().toLowerCase();
+  const descriptions = await getDescriptions();
   for (const candidate of [raw, key, compact]) {
     if (!candidate) continue;
-    const text = String(DESCRIPTIONS[candidate] || '').trim();
+    const text = String(descriptions[candidate] || '').trim();
     if (isUnpublishableCompanyBlurb(text)) continue;
     return text;
   }
@@ -73,13 +80,14 @@ function lookupCachedBlurb(slugOrName: string): string | null {
  * True when we still know this company well enough to keep `/{slug}` as a hub
  * even if Wikipedia-shaped cache copy is not publishable.
  */
-export function companyHasCachedProfile(slugOrName: string): boolean {
+export async function companyHasCachedProfile(slugOrName: string): Promise<boolean> {
   const key = toCompanyKey(slugOrName);
   const compact = key.replace(/-/g, '');
   const raw = String(slugOrName || '').trim().toLowerCase();
   if ((key && getCompanyMeta(key)) || (compact && getCompanyMeta(compact))) return true;
+  const descriptions = await getDescriptions();
   for (const candidate of [raw, key, compact]) {
-    if (candidate && DESCRIPTIONS[candidate]) return true;
+    if (candidate && descriptions[candidate]) return true;
   }
   return false;
 }
@@ -88,14 +96,14 @@ export function companyHasCachedProfile(slugOrName: string): boolean {
  * Original, publishable company about. Prefers curated company-data copy.
  * Cached JSON is used only when it does not look like Wikipedia or a scraped JD.
  */
-export function publishableCompanyAbout(slugOrName: string): string | null {
+export async function publishableCompanyAbout(slugOrName: string): Promise<string | null> {
   const key = toCompanyKey(slugOrName);
   const compact = key.replace(/-/g, '');
   const meta = (key && getCompanyMeta(key)) || (compact && getCompanyMeta(compact)) || null;
   const fromMeta = String(meta?.description || '').trim();
   if (fromMeta.length > 40 && !looksLikeEncyclopediaDump(fromMeta)) return fromMeta;
 
-  const cached = lookupCachedBlurb(slugOrName);
+  const cached = await lookupCachedBlurb(slugOrName);
   if (cached) return cached;
   return null;
 }
@@ -126,12 +134,12 @@ function originalHiringAbout(
 }
 
 /** Body text for a job page that has no curated JD. */
-export function companyAboutForJob(
+export async function companyAboutForJob(
   companyName: string,
   opts?: { title?: string; location?: string; slug?: string }
-): string {
+): Promise<string> {
   return (
-    publishableCompanyAbout(opts?.slug || companyName) ||
+    (await publishableCompanyAbout(opts?.slug || companyName)) ||
     originalHiringAbout(companyName, { title: opts?.title, location: opts?.location })
   );
 }

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!job || !isPublicJobPage(job)) {
     return { title: 'Job not found', robots: { index: false, follow: true } };
   }
-  return buildJobMetadata(job, siteUrl);
+  return await buildJobMetadata(job, siteUrl);
 }
 
 export default async function JobDetailPage({ params }: PageProps) {
@@ -47,7 +47,7 @@ export default async function JobDetailPage({ params }: PageProps) {
     permanentRedirect(pretty);
   }
 
-  const detail = toJobDetail(job);
+  const detail = await toJobDetail(job);
 
   const [viewer, relatedJobs] = await Promise.all([
     getViewerJobContext(),

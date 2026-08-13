@@ -144,16 +144,16 @@ describe('company hub query contracts', () => {
 });
 
 describe('company about never publishes aggregator/wiki dumps', () => {
-  it('rejects We Work Remotely job-board paste', () => {
+  it('rejects We Work Remotely job-board paste', async () => {
     const dump =
       'Advanced job search for We Work Remotely, allowing you to search and refine jobs across programming, marketing, customer service, etc. Find your next remote career.';
     assert.equal(isUnpublishableCompanyBlurb(dump), true);
-    assert.equal(publishableCompanyAbout('__missing_wwr_slug__'), null);
+    assert.equal(await publishableCompanyAbout('__missing_wwr_slug__'), null);
   });
 
-  it('keeps Databricks as a known hub even when the cache lede is wiki', () => {
-    assert.equal(companyHasCachedProfile('databricks'), true);
-    const about = publishableCompanyAbout('databricks');
+  it('keeps Databricks as a known hub even when the cache lede is wiki', async () => {
+    assert.equal(await companyHasCachedProfile('databricks'), true);
+    const about = await publishableCompanyAbout('databricks');
     if (about) {
       assert.equal(isUnpublishableCompanyBlurb(about), false);
     }

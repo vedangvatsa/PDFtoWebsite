@@ -553,6 +553,8 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       ],
     };
 
+    const cachedDesc = (await publishableCompanyAbout(slug)) || '';
+
     return (
       <div className="min-h-screen bg-zinc-50 flex flex-col overflow-x-hidden">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -606,8 +608,6 @@ export default async function ProfileSlugPage({ params }: PageProps) {
           {/* Company About — original copy only (never raw Wikipedia) */}
           {(() => {
             const topLocations = [...new Set(jobs.map((j: any) => normalizeLocation(j.location)).filter(l => l && l !== 'Remote'))].slice(0, 5);
-
-            const cachedDesc = publishableCompanyAbout(slug) || '';
 
             const description = meta?.description
               || (cachedDesc ? `${cachedDesc} ${companyName} has ${totalJobs} open positions.` : '')

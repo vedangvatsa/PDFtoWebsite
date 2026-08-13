@@ -128,6 +128,9 @@ export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
         return;
       }
       window.location.assign(data.url);
+      // Reset loading state if navigation is blocked (e.g., popup blocker)
+      // or if the user navigates back via browser history.
+      window.addEventListener('pageshow', () => setIsGoogleLoading(false), { once: true });
     } catch (err) {
       console.error('Client-side Google Auth error:', err);
       posthog.capture(AUTH_EVENTS.GOOGLE_FAILED, {
@@ -140,7 +143,6 @@ export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
       });
       setIsGoogleLoading(false);
     }
-    setTimeout(() => setIsGoogleLoading(false), 10000);
   };
 
   const handleOpenChange = (isOpen: boolean) => {
