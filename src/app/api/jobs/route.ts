@@ -124,13 +124,15 @@ export async function GET(request: NextRequest) {
     query = query.or(`title.ilike.%${q}%,company.ilike.%${q}%`);
   }
 
-  // Unfiltered board and ordinary keyword search are flooded by remote
-  // fellowships stored as internship. Keep them when the visitor asks.
-  const qWantsIntern = /\b(intern|interns|internship|fellow|fellows|fellowship|residenc)/i.test(q);
+  // Unfiltered board: internships stay off unless asked. Fellowships are jobs —
+  // many are stored as internship, so keep any row whose title/category is a fellowship.
+  const qWantsIntern = /\b(intern|interns|internship)\b/i.test(q);
   const hideInternships = (!type || type === 'all') && (!q || !qWantsIntern);
   if (hideInternships) {
-    priorityQuery = priorityQuery.neq('job_type', 'internship').not('title', 'ilike', '%fellow%');
-    query = query.neq('job_type', 'internship').not('title', 'ilike', '%fellow%');
+    const notInternOrIsFellow =
+      'job_type.neq.internship,title.ilike.%fellow%,category.eq.fellowship';
+    priorityQuery = priorityQuery.or(notInternOrIsFellow);
+    query = query.or(notInternOrIsFellow);
   }
 
   // If user has complete profile AND match=true, filter to jobs that match their skills and location
@@ -321,9 +323,10 @@ export async function GET(request: NextRequest) {
     // Block vague/generic titles
     if (VAGUE_TITLE_PATTERNS.some(p => p.test(title))) return false;
     if (isGarbageJobTitle(title)) return false;
-    if (hideInternships && looksLikeFellowship({ title, category: job.category, tags: job.tags })) {
-      return false;
-    }
+    const isBareInternship =
+      String(job.job_type || '').toLowerCase() === 'internship' &&
+      !looksLikeFellowship({ title, category: job.category, tags: job.tags });
+    if (hideInternships && isBareInternship) return false;
     // Block known junk sources
     if (VAGUE_COMPANY_PATTERNS.some(p => p.test(job.company))) return false;
     // Hide LinkedIn / aggregator apply URLs unless already fully enriched
