@@ -2952,11 +2952,124 @@
       "path": "/google/higher",
       "external_id": "google_higher"
     },
-    "101ec12b-b2e2-439a-820a-02cac8612e29": {
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c": {
+      "status": "ok",
+      "path": "/spar/supervised",
+      "external_id": "spar_supervised"
+    },
+    "0391d309-99b8-4a86-af9f-e297a9a6748d": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Sequoia Open Source Fellowship company=Sequoia apply=https://www.sequoiacap.com/oss/"
+    },
+    "050087a0-f6f0-4292-b37e-a6349ee7d2e5": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Google Public Policy Fellowship company=Google apply=https://www.google.com/policyfellowship/"
+    },
+    "0d83a269-b525-42ad-9c7d-a611512520bc": {
       "status": "fail",
       "reason": "rewrite_short"
     },
+    "05087014-1c52-4deb-87f3-e212d837e94d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "101ec12b-b2e2-439a-820a-02cac8612e29": {
+      "status": "ok",
+      "path": "/horizon-institute-for-public-service/horizo-ce",
+      "external_id": "horizon-institute-for-public-service_horizo-ce"
+    },
+    "0ebb51e8-bbf5-4583-99ef-4f489fe52f6b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1e617af0-ef13-407b-afe4-8aafb0fbccc5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1f5783b5-8baf-4e3c-b003-6c1bcd6da49f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "2c1e1fcf-65d4-490b-a2b9-8f1c3c348c64": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "2ef50e44-5bb6-4564-9545-97832e3ddd33": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "332b1ebd-5e2d-47d0-8111-73e45d6989db": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "35fad951-80d9-4361-a28b-ab0fd857adc8": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AIML Residency Program company=Apple apply=https://machinelearning.apple.com/updates/aiml-residency-program-application-2026"
+    },
+    "3bf2d68e-bb3f-4101-b179-552123d4f4f1": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Vector Faculty Affiliate / Fellows company=Vector Institute apply=https://vectorinstitute.ai/about/careers/"
+    },
+    "3f5d4847-906f-4573-bc14-c680075d688e": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=RIKEN AIP Research Scientist / Fellow company=RIKEN AIP apply=https://aip.riken.jp/careers/"
+    },
+    "4666f39b-fc44-4060-ba89-1600a1da2742": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=ITS Global Policy Fellowship company=ITS Rio apply=https://itsrio.org/en/comunicados/call-for-applications-its-global-policy-fellowship-program-2026/"
+    },
+    "604d7a1a-6241-4e0c-a4a2-b1c9f2fea32a": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Pear Fellows company=Pear VC apply=https://pear.vc/programs/dorm/fellows/"
+    },
+    "3f9c21ca-fdd9-461b-b2ce-d33a5eb79ce8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "625c3bce-015b-4c45-a007-6bb0862ee388": {
+      "status": "ok",
+      "path": "/center-for-ai-safety/ai",
+      "external_id": "center-for-ai-safety_ai"
+    },
+    "63fcff46-c21a-468a-acb2-abada490a277": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Berkman Klein Fellowship company=Harvard BKC apply=https://cyber.harvard.edu/getinvolved"
+    },
+    "6ff18889-0ca0-4b15-8b21-7b7ca48d7710": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "76c6f446-fc82-4298-befd-518baa93e7e1": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Visiting Fellow company=Ada Lovelace Institute apply=https://www.adalovelaceinstitute.org/"
+    },
     "6412fe79-6c09-475c-8a6a-aa7267c9cc29": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fa1a9fb-daa6-4e9a-adf9-c7c6a53ad974": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "80f54549-88c7-42c3-9b73-845030131bc5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "920756aa-140b-4ddb-b519-5a1e6a91fb37": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Aspen Tech Policy Hub Fellowship company=Aspen Institute apply=https://www.aspentechpolicyhub.org/"
+    },
+    "9372c9f6-a307-427a-af5c-66c08724b408": {
       "status": "fail",
       "reason": "rewrite_short"
     },
@@ -2964,15 +3077,43 @@
       "status": "fail",
       "reason": "rewrite_short"
     },
-    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c": {
-      "status": "ok",
-      "path": "/spar/supervised",
-      "external_id": "spar_supervised"
+    "9f2077a5-a556-4c26-916a-c24b0a9dfa90": {
+      "status": "fail",
+      "reason": "rewrite_structure"
     },
-    "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
-      "status": "ok",
-      "path": "/era-cambridge/era",
-      "external_id": "era-cambridge_era"
+    "9ee9fae5-14e3-4855-908f-b7716fbb32f9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a2de7a44-cfdc-4304-8868-4ef38539b284": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a6cc16ec-f485-4246-990f-a74d7c8379bc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "aa99d6f5-1ec4-4521-9867-12d13bac9990": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a73ed6bf-def0-43f0-84df-802d7791243e": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=DAAD AI Net Fellowships company=DAAD apply=https://www.daad.de/en/"
+    },
+    "b343ccad-7cf0-4bbc-b912-9bac33cd151c": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AI Now Fellowships company=AI Now Institute apply=https://ainowinstitute.org/"
+    },
+    "b412d0c1-1fd2-4816-81b8-4b4aaf982f6c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ac565649-8915-4b70-aed0-e17f7744b046": {
+      "status": "fail",
+      "reason": "rewrite_structure"
     }
   },
   "doneIds": [
@@ -3583,11 +3724,7 @@
     "4f7c4057-b1d9-4981-837a-01ff331824db",
     "a69c8d04-6e71-4e7d-be18-dcd0886c9cf1",
     "f4bea460-2d9c-43e9-b4b7-ff19e736447c",
-    "101ec12b-b2e2-439a-820a-02cac8612e29",
-    "6412fe79-6c09-475c-8a6a-aa7267c9cc29",
-    "8358b94a-de8a-4515-90e5-6086d34034c5",
-    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c",
-    "d0859950-ebce-4ab4-bc63-b9d7b3697429"
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c"
   ],
   "skipped": {},
   "batches": [
@@ -3791,6 +3928,18 @@
   "deadBoards": {
     "host:arena.education": "source_thin",
     "host:forms.sparai.org": "html_short",
-    "host:schmidtsciences.org": "source_thin"
+    "host:schmidtsciences.org": "source_thin",
+    "host:sequoiacap.com": "source_thin",
+    "host:google.com": "source_thin",
+    "host:machinelearning.apple.com": "source_thin",
+    "host:vectorinstitute.ai": "source_thin",
+    "host:aip.riken.jp": "source_thin",
+    "host:itsrio.org": "source_thin",
+    "host:pear.vc": "source_thin",
+    "host:cyber.harvard.edu": "source_thin",
+    "host:adalovelaceinstitute.org": "source_thin",
+    "host:aspentechpolicyhub.org": "source_thin",
+    "host:daad.de": "html_403",
+    "host:ainowinstitute.org": "source_thin"
   }
 }
