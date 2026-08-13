@@ -25,7 +25,7 @@ export function toCompanyKey(name: string): string {
   return toCompanySlug(name || '');
 }
 
-/** Known brand casing corrections — ATS sources often lowercase these. */
+/** Known brand casing — only where Title Case of the label is wrong. */
 const BRAND_DISPLAY_NAMES: Record<string, string> = {
   elevenlabs: 'ElevenLabs',
   togetherai: 'Together AI',
@@ -36,13 +36,215 @@ const BRAND_DISPLAY_NAMES: Record<string, string> = {
   runpod: 'RunPod',
   supabase: 'Supabase',
   vercel: 'Vercel',
+  github: 'GitHub',
+  gitlab: 'GitLab',
+  linkedin: 'LinkedIn',
+  youtube: 'YouTube',
+  paypal: 'PayPal',
+  mckinsey: 'McKinsey',
+  jpmorgan: 'JPMorgan',
+  'jp morgan': 'JPMorgan',
 };
 
-/** Proper display name for a company, or the raw name when unknown. */
-export function companyDisplayName(name: string | null | undefined): string {
+/** Host → public brand, only when the registrable label is not the brand. */
+const HOST_BRANDS: Record<string, string> = {
+  'governance.ai': 'GovAI',
+  'x.ai': 'xAI',
+};
+
+/** Common org / place tokens used to split mashed domain labels (apartresearch). */
+const MASHED_TOKENS = [
+  'research', 'network', 'policy', 'institute', 'initiative', 'fellowship',
+  'center', 'centre', 'safety', 'health', 'watch', 'bulletin',
+  'education', 'congress', 'studio', 'labs', 'group', 'systems', 'solutions',
+  'global', 'foundation', 'university', 'college', 'technologies', 'technology',
+  'digital', 'media', 'capital', 'ventures', 'partners', 'consulting',
+  'analytics', 'security', 'software', 'robotics', 'robotic',
+  'texas', 'california', 'colorado', 'florida', 'georgia', 'washington',
+  'york', 'jersey', 'india', 'canada', 'europe',
+];
+
+/** After the first suffix peel, only keep stacking these org words. */
+const STACKABLE_MASHED = new Set([
+  'research', 'network', 'policy', 'institute', 'initiative', 'fellowship',
+  'safety', 'education', 'foundation', 'university', 'college',
+]);
+
+function titleCaseWord(s: string): string {
+  if (!s) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
+/** apartresearch → Apart Research; csepf → Csepf; wvu → WVU */
+export function splitMashedLabel(raw: string): string {
+  const s = String(raw || '').replace(/[-_]+/g, ' ').trim();
+  if (!s) return s;
+  if (/\s/.test(s)) return s.split(/\s+/).map(titleCaseWord).join(' ');
+  if (/\./.test(s)) {
+    return s.replace(/(^|[.\s-])([a-z])/g, (_, a: string, b: string) => a + b.toUpperCase());
+  }
+  if (/^[a-z]{2,4}$/i.test(s)) return s.toUpperCase();
+  const lower = s.toLowerCase();
+  const tokens = [...MASHED_TOKENS].sort((a, b) => b.length - a.length);
+  const parts: string[] = [];
+  let rest = lower;
+  let peeled = true;
+  let peels = 0;
+  while (peeled && rest.length > 2) {
+    peeled = false;
+    for (const t of tokens) {
+      if (rest.endsWith(t) && rest.length > t.length + 1) {
+        if (peels > 0 && !STACKABLE_MASHED.has(t)) continue;
+        parts.unshift(t);
+        rest = rest.slice(0, -t.length);
+        peeled = true;
+        peels += 1;
+        break;
+      }
+    }
+  }
+  if (rest) parts.unshift(rest);
+  return parts.map(titleCaseWord).join(' ');
+}
+
+function mappedBrand(label: string): string | undefined {
+  const lower = String(label || '').trim().toLowerCase();
+  if (!lower) return undefined;
+  const slug = toCompanySlug(label);
+  const compact = slug.replace(/-/g, '');
+  return (
+    COMPANY_NAME_MAP[lower] ||
+    COMPANY_NAME_MAP[slug] ||
+    COMPANY_NAME_MAP[compact] ||
+    BRAND_DISPLAY_NAMES[slug] ||
+    BRAND_DISPLAY_NAMES[compact] ||
+    BRAND_DISPLAY_NAMES[lower]
+  );
+}
+
+function brandedLabel(label: string): string {
+  return mappedBrand(label) || splitMashedLabel(label);
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function hostnameOf(url: string | null | undefined): string | null {
+  if (!url) return null;
+  try {
+    return new URL(url).hostname.replace(/^www\./i, '').toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Display name for a company on job pages.
+ * applyUrl is used when the stored name is a subdomain or mashed domain label —
+ * so every host of that shape is fixed, not a per-company list.
+ */
+export function companyDisplayName(
+  name: string | null | undefined,
+  applyUrl?: string | null
+): string {
   if (!name) return name || '';
-  const key = toCompanySlug(name);
-  return BRAND_DISPLAY_NAMES[key] || name;
+  const trimmed = String(name).trim();
+  const host = hostnameOf(applyUrl);
+  if (host && HOST_BRANDS[host]) return HOST_BRANDS[host];
+
+  if (host) {
+    const labels = host.split('.').filter(Boolean);
+    const sld = labels.length >= 2 ? labels[labels.length - 2] : labels[0];
+    const tld = labels[labels.length - 1] || '';
+    const stored = toCompanySlug(trimmed);
+    if (HOST_BRANDS[`${sld}.${tld}`]) return HOST_BRANDS[`${sld}.${tld}`];
+    // Stored name is a host label (subdomain), not the registrable brand.
+    if (stored !== sld && labels.includes(stored) && sld.length >= 2) {
+      return brandedLabel(sld);
+    }
+  }
+
+  const mapped = mappedBrand(trimmed);
+  if (mapped) return mapped;
+
+  // Smashed domain labels, including Title Case ("Apartresearch", "talosnetwork")
+  if (!/\s/.test(trimmed) && /^[A-Za-z0-9._-]+$/.test(trimmed)) {
+    const split = splitMashedLabel(trimmed);
+    if (/\s/.test(split)) return split;
+    if (/^[a-z0-9._-]+$/.test(trimmed)) return split;
+  }
+
+  // "acme corp" / "STRIPE" — uniform case with spaces
+  const hasLower = /[a-z]/.test(trimmed);
+  const hasUpper = /[A-Z]/.test(trimmed);
+  if (
+    !(hasLower && hasUpper) &&
+    /[a-zA-Z]/.test(trimmed) &&
+    /^[a-zA-Z0-9][a-zA-Z0-9 .'_-]*$/.test(trimmed)
+  ) {
+    return splitMashedLabel(trimmed);
+  }
+
+  return trimmed.replace(/\s+(?:usa|u\.s\.a?\.?|uk)$/i, '').trim() || trimmed;
+}
+
+/**
+ * Rewrite stored/lowercase company mentions in page copy to the public brand.
+ * Skips HTML attributes and hostnames (openai.com).
+ */
+export function applyCompanyDisplayCasing(
+  text: string,
+  rawName: string | null | undefined,
+  displayName: string | null | undefined
+): string {
+  const raw = String(rawName || '').trim();
+  const display = String(displayName || '').trim();
+  if (!text || !display) return text;
+
+  const variants = new Set<string>();
+  const add = (s: string) => {
+    const v = String(s || '').trim();
+    if (v.length >= 2 && v !== display) variants.add(v);
+  };
+
+  if (raw && raw !== display) {
+    add(raw);
+    add(toCompanySlug(raw));
+    add(toCompanySlug(raw).replace(/-/g, ' '));
+    if (raw === raw.toLowerCase() || /^[A-Z0-9._-]+$/.test(raw)) {
+      add(splitMashedLabel(raw));
+    }
+  }
+
+  // OpenAI/GitHub-style brands: Title Case of the slug is wrong, so rewrite it.
+  const slug = toCompanySlug(display);
+  const titleOfSlug = splitMashedLabel(slug);
+  if (display !== titleOfSlug && slug.length >= 3) {
+    add(slug);
+    add(slug.replace(/-/g, ' '));
+    add(titleOfSlug);
+  }
+
+  const list = [...variants].sort((a, b) => b.length - a.length);
+  if (!list.length) return text;
+
+  const applyToText = (chunk: string) => {
+    let out = chunk;
+    for (const v of list) {
+      const re = new RegExp(
+        `(?<![\\w/@])${escapeRegExp(v)}(?![\\w]|\\.(?:com|io|ai|org|net|co|dev|app|so|gg)\\b)`,
+        'g'
+      );
+      out = out.replace(re, display);
+    }
+    return out;
+  };
+
+  if (!/<[a-z]/i.test(text)) return applyToText(text);
+  return text.replace(/(<[^>]+>)|([^<]+)/gi, (_full, tag?: string, txt?: string) =>
+    tag ? tag : applyToText(txt || '')
+  );
 }
 
 /** Junk/test company names to exclude entirely */
@@ -254,5 +456,5 @@ export function canonicalizeCompanyName(raw: string): string | null {
   if (isJunkCompanyName(trimmed)) return null;
   const lower = trimmed.toLowerCase();
   if (COMPANY_BLOCKLIST.has(lower)) return null;
-  return COMPANY_NAME_MAP[lower] || trimmed;
+  return companyDisplayName(trimmed);
 }

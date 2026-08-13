@@ -7,7 +7,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import type { Metadata } from 'next';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
-import { toCompanySlug } from '@/lib/company-directory';
+import { toCompanySlug, companyDisplayName } from '@/lib/company-directory';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { unstable_cache } from 'next/cache';
@@ -64,12 +64,12 @@ const loadCompaniesDirectory = unstable_cache(
 
     return (result.data || []).map((c: any) => ({
       slug: c.slug || toCompanySlug(c.name),
-      name: c.name,
+      name: companyDisplayName(c.name),
       role_count: c.role_count ?? 0,
       logo: c.logo ?? null,
     }));
   },
-  ['companies-directory-v2'],
+  ['companies-directory-v3'],
   { revalidate: 3600, tags: ['companies-directory'] }
 );
 

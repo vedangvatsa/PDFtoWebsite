@@ -4,6 +4,7 @@ import { blogMetadata } from '@/lib/blog-metadata';
 import { getCompanyDirectoryForOg, resolveOgCompanyLogo } from '@/lib/og-company-logo';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
 import nomadCities from '@/lib/nomad-cities';
+import { companyDisplayName } from '@/lib/company-directory';
 
 export const runtime = 'nodejs';
 
@@ -135,7 +136,9 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
   if (!data || isEmptyProfile) {
     const companyDir = await getCompanyDirectoryForOg(slug);
     if (companyDir) {
-      const companyDisplay = companyDir.name || slug.replace(/-/g, ' ');
+      const companyDisplay = companyDisplayName(
+        companyDir.name || slug.replace(/-/g, ' ')
+      );
       const jobCount = companyDir.role_count || 0;
       const logoSrc = await resolveOgCompanyLogo({
         slug,

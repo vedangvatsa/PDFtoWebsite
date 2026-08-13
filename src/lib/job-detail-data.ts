@@ -20,10 +20,19 @@ import {
   jobStoredSlug,
   jobPublicPath,
   jobTypeLabel,
+  cleanJobTitle,
+  cleanSalaryDisplay,
+  looksLikeFellowship,
+  isGarbageJobTitle,
+  JOB_INDEXABLE_MIN_WORDS,
 } from '@/lib/job-description';
 import { cleanPublishText } from '@/lib/noslop';
 import { companyAboutForJob } from '@/lib/company-about';
-import { assembleJobPage, isTrustedCuratedBody } from '@/lib/job-assemble';
+import {
+  assembleJobPage,
+  looksLikeOwnedJobCopy,
+  looksLikeRawAts,
+} from '@/lib/job-assemble';
 import type { JobDetail, RelatedJobCard } from '@/app/jobs/[id]/job-detail-client';
 import {
   getCachedJobById,
@@ -32,6 +41,12 @@ import {
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { isJobExpired } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
+import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
+import {
+  isTrustedCompanyDomain,
+  primaryCompanyLogoUrl,
+  trustedCompanyWebsiteUrl,
+} from '@/lib/company-logo';
 
 export type JobRow = {
   id: string;
@@ -69,14 +84,19 @@ export async function fetchJobByCompanyAndSlug(
 export function toJobDetail(job: JobRow): JobDetail {
   const location = cleanPublishText(normalizeLocation(job.location || ''));
   const published = publishSafeDescription(job, location);
+  const title = cleanJobTitle(job.title);
+  const company = companyDisplayName(cleanPublishText(job.company), job.apply_url);
+  const salary =
+    cleanSalaryDisplay(job.salary) ||
+    cleanSalaryDisplay(extractSalaryFromText(job.description || published.plain));
   return {
     id: job.id,
-    title: cleanPublishText(job.title),
-    company: companyDisplayName(cleanPublishText(job.company)),
+    title,
+    company,
     company_logo: job.company_logo,
     location,
     job_type: job.job_type,
-    salary: job.salary ? cleanPublishText(job.salary) : job.salary,
+    salary,
     tags: job.tags || [],
     apply_url: job.apply_url,
     category: job.category,
@@ -89,12 +109,12 @@ export function toJobDetail(job: JobRow): JobDetail {
     description_kind: published.kind === 'company' ? 'company' : 'job',
     excerpt: published.indexable
       ? jobDescriptionExcerpt(published.plain, 200, {
-          title: cleanPublishText(job.title),
-          company: companyDisplayName(cleanPublishText(job.company)),
+          title,
+          company,
         })
       : published.plain
         ? published.plain.slice(0, 200)
-        : `${cleanPublishText(job.title)} at ${cleanPublishText(job.company)}.${location ? ` ${location}.` : ''}`,
+        : `${title} at ${company}.${location ? ` ${location}.` : ''}`,
     description_word_count: published.wordCount,
     is_indexable: published.indexable,
     company_slug: companyToSlug(job.company),
@@ -119,13 +139,20 @@ export type PublishedDescription = {
 };
 
 function companyAboutFallback(job: JobRow, location: string): PublishedDescription {
-  const company = companyDisplayName(cleanPublishText(job.company));
+  const rawCompany = cleanPublishText(job.company);
+  const company = companyDisplayName(rawCompany, job.apply_url);
+  const title = cleanJobTitle(job.title);
   const about = companyAboutForJob(company, {
-    title: cleanPublishText(job.title),
+    title,
     location,
     slug: companyToSlug(job.company),
   });
-  const html = formatJobDescription(about, location);
+  const html = formatJobDescription(about, location, {
+    title,
+    company,
+    rawCompany,
+    isFellowship: looksLikeFellowship(job),
+  });
   const plain = jobDescriptionPlainText(about);
   return {
     isCurated: false,
@@ -138,17 +165,39 @@ function companyAboutFallback(job: JobRow, location: string): PublishedDescripti
 }
 
 export function publishSafeDescription(job: JobRow, location: string): PublishedDescription {
+  const title = cleanJobTitle(job.title);
+  const rawCompany = cleanPublishText(job.company);
+  const company = companyDisplayName(rawCompany, job.apply_url);
+  const isFellowship = looksLikeFellowship(job);
   const isCurated = Array.isArray(job.tags) && job.tags.includes('curated-jd');
-  if (isCurated && isTrustedCuratedBody(job.description)) {
-    const html = formatJobDescription(job.description, location);
-    return {
-      isCurated: true,
-      kind: 'curated',
-      html,
-      plain: jobDescriptionPlainText(job.description),
-      wordCount: jobDescriptionWordCount(job.description),
-      indexable: true,
-    };
+  const raw = job.description;
+
+  // Any owned rewrite (not raw ATS) publishes after the shared sanitizer.
+  // Indexability uses the cleaned body so padding/leaks cannot inflate SEO.
+  if (
+    raw &&
+    looksLikeOwnedJobCopy(raw) &&
+    !looksLikeRawAts(raw) &&
+    !/\[placeholder\]|lorem ipsum/i.test(raw)
+  ) {
+    const html = formatJobDescription(raw, location, {
+      title,
+      company,
+      rawCompany,
+      isFellowship,
+    });
+    const plain = jobDescriptionPlainText(html);
+    const wordCount = jobDescriptionWordCount(plain);
+    if (wordCount >= 40) {
+      return {
+        isCurated,
+        kind: 'curated',
+        html,
+        plain,
+        wordCount,
+        indexable: isCurated && wordCount >= JOB_INDEXABLE_MIN_WORDS,
+      };
+    }
   }
 
   const assembled = assembleJobPage({ ...job, location });
@@ -170,6 +219,7 @@ const TITLE_STOP = new Set([
   'a', 'an', 'the', 'and', 'or', 'of', 'to', 'for', 'in', 'on', 'at', 'by', 'with',
   'senior', 'junior', 'staff', 'principal', 'lead', 'sr', 'jr', 'i', 'ii', 'iii',
   'iv', 'remote', 'hybrid', 'full', 'time', 'part', 'contract', 'intern', 'internship',
+  'fellow', 'fellowship', 'fellows',
 ]);
 
 /** Extract searchable tokens from a job title for related-role matching. */
@@ -194,7 +244,7 @@ export function titleSearchTokens(title: string, max = 4): string[] {
 function rowToRelatedCard(row: JobRow): RelatedJobCard {
   return {
     id: row.id,
-    title: cleanPublishText(row.title),
+    title: cleanJobTitle(row.title),
     location: cleanPublishText(normalizeLocation(row.location || '')),
     href: jobPublicPath(row),
   };
@@ -202,21 +252,36 @@ function rowToRelatedCard(row: JobRow): RelatedJobCard {
 
 function scoreRelated(row: JobRow, job: JobRow, titleTokens: string[]): number {
   let s = 0;
-  if (row.company && job.company && row.company.toLowerCase() === job.company.toLowerCase()) {
-    s += 50;
-  }
+  const sameCompany =
+    !!row.company &&
+    !!job.company &&
+    row.company.toLowerCase() === job.company.toLowerCase();
+  if (sameCompany) s += 50;
   const rt = (row.title || '').toLowerCase();
+  let titleHits = 0;
   for (const t of titleTokens) {
-    if (rt.includes(t)) s += 12;
+    if (rt.includes(t)) {
+      s += 12;
+      titleHits += 1;
+    }
   }
-  // Shared tags / skills-ish labels
-  const jobTags = new Set((job.tags || []).map((t) => t.toLowerCase()));
-  for (const t of row.tags || []) {
+  const jobTags = new Set(
+    filterMeaningfulSkillTags(job.tags || [], { companyName: job.company }).map((t) =>
+      t.toLowerCase()
+    )
+  );
+  for (const t of filterMeaningfulSkillTags(row.tags || [], { companyName: row.company })) {
     if (jobTags.has(String(t).toLowerCase())) s += 8;
   }
   if (isJobDescriptionIndexable(row.description)) s += 5;
+  // Other-company "related" needs a real title overlap — shared "AI"/"fellowship"
+  // tags otherwise dump Google fellowships onto a Constellation page.
+  if (!sameCompany && titleHits === 0) return 0;
   return s;
 }
+
+const RELATED_NON_ENGLISH =
+  /\b(und|oder|für|mit|bei|gmbh|ingénieur|développeur|responsable|ingeniero|desarrollador|medewerker)\b|[äöüßñç]{2,}/i;
 
 /**
  * Related open roles for internal linking:
@@ -280,8 +345,10 @@ export async function fetchRelatedJobs(
       }
     }
 
-    // Shared tag (first meaningful tag)
-    const tag = (job.tags || []).find((t) => t && String(t).length >= 2 && String(t).length <= 32);
+    // Shared tag (first meaningful skill — skip "fellowship"/"AI" noise)
+    const tag = filterMeaningfulSkillTags(job.tags || [], { companyName: job.company }).find(
+      (t) => t && String(t).length >= 2 && String(t).length <= 32
+    );
     if (tag) {
       queries.push(
         withTimeoutFallback(
@@ -310,6 +377,11 @@ export async function fetchRelatedJobs(
     }
 
     const ranked = [...byId.values()]
+      .filter((row) => {
+        if (isGarbageJobTitle(row.title) || isBannedJobTitle(row.title)) return false;
+        if (RELATED_NON_ENGLISH.test(row.title || '')) return false;
+        return true;
+      })
       .map((row) => ({ row, score: scoreRelated(row, job, titleTokens) }))
       .filter((x) => x.score > 0)
       .sort((a, b) => b.score - a.score);
@@ -392,9 +464,9 @@ export async function getViewerJobContext(): Promise<{
 
 export function buildJobMetadata(job: JobRow, siteUrl: string) {
   const location = cleanPublishText(normalizeLocation(job.location || ''));
-  const type = jobTypeLabel(job.job_type);
-  const jobTitle = cleanPublishText(job.title);
-  const company = cleanPublishText(job.company);
+  const type = jobTypeLabel(job.job_type, job);
+  const jobTitle = cleanJobTitle(job.title);
+  const company = companyDisplayName(cleanPublishText(job.company), job.apply_url);
   const expired = isJobExpired(job.published_at, job.created_at);
   const title = expired
     ? `${jobTitle} at ${company} (closed)`
@@ -452,6 +524,22 @@ export const EMPLOYMENT_TYPE_MAP: Record<string, string> = {
   intern: 'INTERN',
   freelance: 'OTHER',
   temporary: 'TEMPORARY',
+  fellowship: 'OTHER',
+  volunteer: 'VOLUNTEER',
+};
+
+/** Google applicantLocationRequirements examples use names like "USA", not "US". */
+const GOOGLE_COUNTRY_NAME: Record<string, string> = {
+  US: 'USA', GB: 'United Kingdom', DE: 'Germany', FR: 'France', CA: 'Canada',
+  IN: 'India', AU: 'Australia', NL: 'Netherlands', SG: 'Singapore', IE: 'Ireland',
+  ES: 'Spain', IT: 'Italy', BR: 'Brazil', JP: 'Japan', MX: 'Mexico', PL: 'Poland',
+  SE: 'Sweden', CH: 'Switzerland', PT: 'Portugal', IL: 'Israel', KR: 'South Korea',
+  HK: 'Hong Kong', NZ: 'New Zealand', AE: 'United Arab Emirates', AT: 'Austria',
+  BE: 'Belgium', DK: 'Denmark', FI: 'Finland', NO: 'Norway', CZ: 'Czech Republic',
+  RO: 'Romania', HU: 'Hungary', PH: 'Philippines', MY: 'Malaysia', ID: 'Indonesia',
+  VN: 'Vietnam', TH: 'Thailand', TW: 'Taiwan', AR: 'Argentina', CO: 'Colombia',
+  CL: 'Chile', ZA: 'South Africa', PK: 'Pakistan', NG: 'Nigeria', KE: 'Kenya',
+  BD: 'Bangladesh', UA: 'Ukraine', TR: 'Turkey',
 };
 
 function isRemoteLocation(location: string | null | undefined): boolean {
@@ -459,6 +547,64 @@ function isRemoteLocation(location: string | null | undefined): boolean {
   return /\bremote\b|work from home|\bwfh\b|distributed|anywhere|fully remote|remote-first|remote first/i.test(
     location
   );
+}
+
+function isHybridLocation(location: string | null | undefined): boolean {
+  return /\bhybrid\b/i.test(String(location || ''));
+}
+
+/** ISO 3166-1 alpha-2, or null. Never "Worldwide" — Google rejects that as a Country. */
+function isoCountryCode(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const raw = String(value).trim();
+  if (!raw) return null;
+  if (/^(worldwide|global|anywhere|earth|remote)$/i.test(raw)) return null;
+  const aliased = COUNTRY_ALIASES[raw.toLowerCase()];
+  if (aliased) return aliased;
+  const up = raw.toUpperCase();
+  if (up === 'UK') return 'GB';
+  if (/^[A-Z]{2}$/.test(up) && !US_STATE_ABBR.has(up)) return up;
+  return null;
+}
+
+function countryRequirementName(iso: string): string {
+  return GOOGLE_COUNTRY_NAME[iso] || iso;
+}
+
+function inferCountryFromLocation(location: string | null | undefined): string | null {
+  const s = String(location || '');
+  if (!s) return null;
+  const tagged = s.match(
+    /\b(?:remote|hybrid)\s*[-–—,:(]?\s*(USA|US|UK|GB|CA|IN|DE|AU|NL|SG|IE|FR|ES|IT|BR|JP|MX)\b/i
+  );
+  if (tagged?.[1]) return isoCountryCode(tagged[1]);
+  const trailing = s.match(/[,(\s](USA|UK|US|GB|CA|IN|DE|AU|NL|SG|IE|FR)\s*\)?\s*$/i);
+  if (trailing?.[1]) return isoCountryCode(trailing[1]);
+  for (const [alias, iso] of Object.entries(COUNTRY_ALIASES)) {
+    // Skip 2-letter codes ("in", "us") — they match English words.
+    if (alias.length < 3) continue;
+    const re = new RegExp(`(?:^|[^a-z])${alias.replace(/\./g, '\\.')}(?:[^a-z]|$)`, 'i');
+    if (re.test(s)) return iso;
+  }
+  return null;
+}
+
+function inferEmploymentType(job: JobRow): string | undefined {
+  const key = (job.job_type || '').toLowerCase().replace(/-/g, '_');
+  const mapped =
+    EMPLOYMENT_TYPE_MAP[job.job_type || ''] ||
+    EMPLOYMENT_TYPE_MAP[key] ||
+    EMPLOYMENT_TYPE_MAP[(job.job_type || '').toLowerCase()];
+  if (mapped) return mapped;
+  if (looksLikeFellowship(job)) return 'OTHER';
+  const blob = `${job.job_type || ''} ${job.title || ''} ${(job.tags || []).join(' ')} ${job.category || ''}`.toLowerCase();
+  if (/\bintern(ship)?s?\b/.test(blob)) return 'INTERN';
+  if (/\bpart[\s_-]*time\b/.test(blob)) return 'PART_TIME';
+  if (/\bcontract(or|ing)?\b/.test(blob)) return 'CONTRACTOR';
+  if (/\bfreelance\b/.test(blob)) return 'OTHER';
+  if (/\btemp(orary)?\b/.test(blob)) return 'TEMPORARY';
+  if (/\bfull[\s_-]*time\b/.test(blob)) return 'FULL_TIME';
+  return undefined;
 }
 
 /** Best-effort parse of free-text salary into schema.org MonetaryAmount. */
@@ -544,15 +690,22 @@ const US_STATE_ABBR = new Set([
   'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC',
 ]);
 
-const COUNTRY_ALIASES: Record<string, string> = {  usa: 'US', us: 'US', 'u.s.': 'US', 'u.s.a.': 'US',
+const COUNTRY_ALIASES: Record<string, string> = {
+  usa: 'US', us: 'US', 'u.s.': 'US', 'u.s.a.': 'US',
   'united states': 'US', 'united states of america': 'US',
   uk: 'GB', 'u.k.': 'GB', 'united kingdom': 'GB', 'great britain': 'GB', england: 'GB',
+  scotland: 'GB', wales: 'GB',
   germany: 'DE', deutschland: 'DE', france: 'FR', canada: 'CA', india: 'IN',
-  australia: 'AU', netherlands: 'NL', singapore: 'SG', ireland: 'IE', spain: 'ES',
+  australia: 'AU', netherlands: 'NL', 'the netherlands': 'NL', singapore: 'SG', ireland: 'IE', spain: 'ES',
   italy: 'IT', brazil: 'BR', japan: 'JP', mexico: 'MX', poland: 'PL', sweden: 'SE',
   switzerland: 'CH', portugal: 'PT', israel: 'IL', 'south korea': 'KR', korea: 'KR',
   'hong kong': 'HK', 'new zealand': 'NZ', uae: 'AE', 'united arab emirates': 'AE',
-  remote: 'Worldwide', worldwide: 'Worldwide', global: 'Worldwide', anywhere: 'Worldwide',
+  austria: 'AT', belgium: 'BE', denmark: 'DK', finland: 'FI', norway: 'NO',
+  'czech republic': 'CZ', czechia: 'CZ', romania: 'RO', hungary: 'HU',
+  philippines: 'PH', malaysia: 'MY', indonesia: 'ID', vietnam: 'VN', thailand: 'TH',
+  taiwan: 'TW', argentina: 'AR', colombia: 'CO', chile: 'CL',
+  'south africa': 'ZA', pakistan: 'PK', nigeria: 'NG', kenya: 'KE',
+  bangladesh: 'BD', ukraine: 'UA', turkey: 'TR',
 };
 
 /** Known city → country ISO, from the site's own curated city dataset. */
@@ -584,12 +737,12 @@ export function parseJobLocationAddress(
   const loc = cleanPublishText(
     String(location)
       .replace(/\s+/g, ' ')
-      .replace(/\b(remote|hybrid|onsite|on-site)\b/gi, (m) => m) // keep for remote detect
+      .replace(/\s*\((?:hybrid|remote|onsite|on-site|in-office|office)[^)]*\)/gi, ' ')
+      .replace(/\b(remote|hybrid|onsite|on-site)\b/gi, (m) => m)
       .trim()
   );
   if (!loc) return undefined;
 
-  const remote = isRemoteLocation(loc);
   // Strip leading "Remote - " / "Remote," wrappers for address parts
   const stripped = loc
     .replace(/^(remote|hybrid)\s*[-–—:,|]\s*/i, '')
@@ -598,13 +751,10 @@ export function parseJobLocationAddress(
 
   let parts = stripped
     .split(',')
-    .map((p) => p.trim())
+    .map((p) => p.replace(/\s*\((?:hybrid|remote|onsite|on-site)[^)]*\)/gi, '').trim())
     .filter(Boolean)
     .filter((p) => !/^(remote|hybrid|onsite|on-site)$/i.test(p));
 
-  if (!parts.length && remote) {
-    return { '@type': 'PostalAddress', addressCountry: 'Worldwide' };
-  }
   if (!parts.length) return undefined;
 
   const address: Record<string, unknown> = { '@type': 'PostalAddress' };
@@ -646,16 +796,23 @@ export function parseJobLocationAddress(
     } else {
       address.addressRegion = mid;
     }
-    address.addressCountry = lastCountry || last;
+    address.addressCountry = lastCountry || isoCountryCode(last);
   } else if (parts.length === 2) {
     address.addressLocality = parts[0];
+    const regionRaw = parts[1].replace(/\s*\([^)]*\)/g, '').trim();
+    const regionState = regionRaw.toUpperCase();
     if (lastCountry) {
       address.addressCountry = lastCountry;
-    } else if (US_STATE_ABBR.has(parts[1].toUpperCase())) {
-      address.addressRegion = parts[1].toUpperCase();
+      if (!US_STATE_ABBR.has(regionState) && !isoCountryCode(regionRaw)) {
+        address.addressRegion = regionRaw;
+      } else if (US_STATE_ABBR.has(regionState)) {
+        address.addressRegion = regionState;
+      }
+    } else if (US_STATE_ABBR.has(regionState)) {
+      address.addressRegion = regionState;
       address.addressCountry = 'US';
     } else {
-      address.addressRegion = parts[1];
+      address.addressRegion = regionRaw;
     }
   } else {
     const one = parts[0];
@@ -684,8 +841,24 @@ export function parseJobLocationAddress(
         address.addressCountry = 'US';
       }
     }
-    if (remote && !address.addressCountry) address.addressCountry = 'Worldwide';
+    const inferred = !address.addressCountry ? inferCountryFromLocation(stripped) : null;
+    if (inferred) address.addressCountry = inferred;
   }
+
+  if (!address.addressCountry) {
+    const fromLoc = inferCountryFromLocation(stripped) || inferCountryFromLocation(loc);
+    if (fromLoc) address.addressCountry = fromLoc;
+  }
+  if (!address.addressCountry && address.addressLocality) {
+    const city = String(address.addressLocality).toLowerCase();
+    if (CITY_COUNTRY[city]) address.addressCountry = CITY_COUNTRY[city];
+  }
+  if (!address.addressCountry && US_STATE_ABBR.has(String(address.addressRegion || '').toUpperCase())) {
+    address.addressCountry = 'US';
+  }
+  const countryIso = isoCountryCode(address.addressCountry as string);
+  if (countryIso) address.addressCountry = countryIso;
+  else delete address.addressCountry;
 
   return address;
 }
@@ -695,9 +868,10 @@ export function extractSalaryFromText(text: string | null | undefined): string |
   if (!text) return null;
   const plain = jobDescriptionPlainText(text).slice(0, 4000);
   const patterns = [
-    /(?:salary|compensation|pay|base)\s*(?:range)?\s*[:\-]?\s*(\$?\s*\d[\d,]*(?:\.\d+)?\s*k?\s*[-–—to]+\s*\$?\s*\d[\d,]*(?:\.\d+)?\s*k?)/i,
+    /(?:salary|compensation|pay|base)\s*(?:range)?\s*[:\-]?\s*(\$?\s*\d[\d,]*(?:\.\d+)?\s*k?\s*(?:USD|EUR|GBP|CAD|AUD)?\s*[-–—to]+\s*\$?\s*\d[\d,]*(?:\.\d+)?\s*k?\s*(?:USD|EUR|GBP|CAD|AUD)?)/i,
     /(\$\s*\d{2,3}\s*k\s*[-–—to]+\s*\$?\s*\d{2,3}\s*k)/i,
     /(\$\s*\d{5,7}\s*[-–—to]+\s*\$?\s*\d{5,7})/i,
+    /(\d{2,3},\d{3}(?:\.\d+)?\s*(?:USD|EUR|GBP|CAD|AUD)\s*(?:[-–—]|to)\s*\d{2,3},\d{3}(?:\.\d+)?\s*(?:USD|EUR|GBP|CAD|AUD)?)/i,
     /(?:salary|compensation|pay)\s*[:\-]?\s*(\$\s*\d[\d,]*(?:\.\d+)?\s*k?)/i,
   ];
   for (const re of patterns) {
@@ -712,15 +886,77 @@ export function extractSalaryFromText(text: string | null | undefined): string |
  * for JobPosting.description (paragraph breaks via <p>; Google recognizes
  * <p>, <ul>, <li>). Never wraps scraped HTML — input is always plain text.
  */
+function escapeHtmlText(s: string): string {
+  return s.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function bulletText(line: string): string | null {
+  const m = line.match(/^\s*(?:[-*•]|\d+[.)])\s+(.+)$/);
+  return m ? m[1].trim() : null;
+}
+
+function blockToHtml(block: string): string {
+  const lines = block.split(/\n/).map((l) => l.trim()).filter(Boolean);
+  if (lines.length === 0) return '';
+  const out: string[] = [];
+  let pending: string[] = [];
+  const flushP = () => {
+    if (!pending.length) return;
+    out.push(`<p>${escapeHtmlText(pending.join(' '))}</p>`);
+    pending = [];
+  };
+  let lis: string[] = [];
+  const flushUl = () => {
+    if (!lis.length) return;
+    out.push(`<ul>${lis.map((b) => `<li>${escapeHtmlText(b)}</li>`).join('')}</ul>`);
+    lis = [];
+  };
+  for (const line of lines) {
+    const b = bulletText(line);
+    if (b) {
+      flushP();
+      lis.push(b);
+    } else {
+      flushUl();
+      pending.push(line);
+    }
+  }
+  flushUl();
+  flushP();
+  return out.join('');
+}
+
 function plainToHtmlDescription(plain: string): string {
   const text = String(plain || '').trim();
   if (!text) return '';
-  const paragraphs = text
-    .split(/\n{2,}/)
-    .map((p) => p.replace(/\s*\n\s*/g, ' ').trim())
-    .filter(Boolean);
-  if (paragraphs.length === 0) return `<p>${text}</p>`;
-  return paragraphs.map((p) => `<p>${p.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`).join('');
+  const blocks = text.split(/\n{2,}/).map((b) => b.trim()).filter(Boolean);
+  if (blocks.length === 0) return `<p>${escapeHtmlText(text)}</p>`;
+  return blocks.map(blockToHtml).join('');
+}
+
+function schemaDescriptionSource(job: JobRow, detail: JobDetail): string {
+  const raw = job.description || '';
+  if (raw && looksLikeOwnedJobCopy(raw) && !looksLikeRawAts(raw)) {
+    return String(raw)
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n\n')
+      .replace(/<\/li>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/[ \t]+\n/g, '\n')
+      .trim();
+  }
+  return (
+    detail.description_plain ||
+    (Array.isArray(job.tags) && job.tags.includes('curated-jd')
+      ? jobDescriptionPlainText(job.description)
+      : '')
+  );
 }
 
 export function buildJobJsonLd(
@@ -739,11 +975,7 @@ export function buildJobJsonLd(
   // Garbage date strings fall back to today — never omit validThrough.
   const validThrough = new Date((Number.isFinite(postedMs) ? postedMs : Date.now()) + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  const plain =
-    detail.description_plain ||
-    (Array.isArray(job.tags) && job.tags.includes('curated-jd')
-      ? jobDescriptionPlainText(job.description)
-      : '');
+  const plain = schemaDescriptionSource(job, detail);
   // Google requires an HTML description that is a complete representation of
   // the job (responsibilities, qualifications, etc.) — never the thin fallback
   // string, which is a "description same as title" violation. When no real body
@@ -751,22 +983,27 @@ export function buildJobJsonLd(
   if (plain.length <= 80) return null;
   const description = plainToHtmlDescription(plain.slice(0, 8000));
 
-  const remote = isRemoteLocation(job.location) || isRemoteLocation(detail.location);
-  const employmentKey = (job.job_type || '').toLowerCase().replace(/-/g, '_');
-  const employmentType =
-    EMPLOYMENT_TYPE_MAP[job.job_type || ''] ||
-    EMPLOYMENT_TYPE_MAP[employmentKey] ||
-    EMPLOYMENT_TYPE_MAP[(job.job_type || '').toLowerCase()] ||
-    undefined;
+  const rawLoc = job.location || detail.location || '';
+  const hybrid = isHybridLocation(rawLoc) || isHybridLocation(detail.location);
+  const remote =
+    !hybrid && (isRemoteLocation(job.location) || isRemoteLocation(detail.location));
+  const employmentType = inferEmploymentType(job);
 
   const org: Record<string, unknown> = {
     '@type': 'Organization',
     name: detail.company,
   };
-  if (job.company_logo) org.logo = job.company_logo;
-  if (detail.company_slug) {
-    org.sameAs = `${siteUrl}/${detail.company_slug}`;
-    org.url = `${siteUrl}/${detail.company_slug}`;
+  const officialSite = trustedCompanyWebsiteUrl(detail.company, detail.company_slug || undefined);
+  if (officialSite) {
+    org.sameAs = officialSite;
+    org.url = officialSite;
+  }
+  const storedLogo = job.company_logo || '';
+  const storedLogoOk =
+    /^https?:\/\//i.test(storedLogo) && !/licdn\.com|linkedin\.com/i.test(storedLogo);
+  if (storedLogoOk) org.logo = storedLogo;
+  else if (isTrustedCompanyDomain(detail.company)) {
+    org.logo = primaryCompanyLogoUrl(detail.company, null, 128);
   }
 
   const jsonLd: Record<string, unknown> = {
@@ -782,7 +1019,7 @@ export function buildJobJsonLd(
     hiringOrganization: org,
     identifier: {
       '@type': 'PropertyValue',
-      name: 'CVin.Bio',
+      name: detail.company,
       value: job.id,
     },
     url: `${siteUrl}${detail.public_path}`,
@@ -792,39 +1029,61 @@ export function buildJobJsonLd(
   if (employmentType) jsonLd.employmentType = employmentType;
 
   // Prefer RAW job.location for schema (display may collapse cities → "USA")
-  const address = parseJobLocationAddress(job.location);
+  const address = parseJobLocationAddress(job.location) || parseJobLocationAddress(detail.location);
+  const countryIso =
+    isoCountryCode(address?.addressCountry as string) || inferCountryFromLocation(rawLoc);
+  if (address && countryIso) address.addressCountry = countryIso;
+  else if (address && !isoCountryCode(address.addressCountry as string)) {
+    delete address.addressCountry;
+  }
+
   if (remote) {
     jsonLd.jobLocationType = 'TELECOMMUTE';
-    const ac = address?.addressCountry ? String(address.addressCountry) : 'Worldwide';
-    jsonLd.applicantLocationRequirements = {
-      '@type': 'Country',
-      name: ac || 'Worldwide',
-    };
+    if (countryIso) {
+      jsonLd.applicantLocationRequirements = {
+        '@type': 'Country',
+        name: countryRequirementName(countryIso),
+      };
+    }
   }
 
   if (address) {
     const hasCity = Boolean(address.addressLocality);
     const hasRegion = Boolean(address.addressRegion);
-    const country = address.addressCountry ? String(address.addressCountry) : '';
-    const hasSpecificCountry = Boolean(country && country !== 'Worldwide');
-    // Emit Place when we have structured locality/region/country (not only TELECOMMUTE worldwide)
-    if (hasCity || hasRegion || hasSpecificCountry) {
-      jsonLd.jobLocation = {
-        '@type': 'Place',
-        address,
-      };
+    const hasCountry = Boolean(isoCountryCode(address.addressCountry as string));
+    if (hasCountry && (hasCity || hasRegion || remote || !hybrid)) {
+      jsonLd.jobLocation = { '@type': 'Place', address };
+    } else if (!remote && (hasCity || hasRegion) && countryIso) {
+      address.addressCountry = countryIso;
+      jsonLd.jobLocation = { '@type': 'Place', address };
     }
   }
 
-  const salaryRaw = job.salary || extractSalaryFromText(job.description);
+  if (!jsonLd.jobLocation && !remote && countryIso) {
+    const locality = cleanPublishText(rawLoc).replace(/\b(hybrid|onsite|on-site)\b/gi, '').replace(/\s+/g, ' ').trim();
+    jsonLd.jobLocation = {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        ...(locality ? { addressLocality: locality.slice(0, 80) } : {}),
+        addressCountry: countryIso,
+      },
+    };
+  }
+
+  if (!jsonLd.jobLocation && !(jsonLd.jobLocationType === 'TELECOMMUTE' && jsonLd.applicantLocationRequirements)) {
+    // Google requires jobLocation, or TELECOMMUTE plus a real applicant country.
+    return null;
+  }
+
+  const salaryRaw = job.salary || extractSalaryFromText(job.description) || extractSalaryFromText(plain);
   const salary = parseBaseSalary(salaryRaw);
   if (salary) jsonLd.baseSalary = salary;
 
-  // Occupational category from tags when present
-  const occ = (job.tags || []).find(
-    (t) => t && !/remote|curated|full.?time|part.?time/i.test(String(t)) && String(t).length < 40
-  );
-  if (occ) jsonLd.occupationalCategory = String(occ);
+  const occ = String(job.category || '').trim();
+  if (occ && occ.length >= 3 && occ.length < 60 && !/^https?:/i.test(occ)) {
+    jsonLd.occupationalCategory = occ;
+  }
 
   return jsonLd;
 }
