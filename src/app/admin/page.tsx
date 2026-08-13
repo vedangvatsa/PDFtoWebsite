@@ -9,8 +9,7 @@ import CVinBioVisualCalendar from '@/components/admin/cvinbio-visual-calendar';
 import { ChartContainer, ChartConfig, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Area, AreaChart } from 'recharts';
 import { Loader2, TrendingUp, TrendingDown, Minus, Globe, Monitor, Smartphone, Tablet, Share2 } from 'lucide-react';
-
-const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
+import { ADMIN_EMAILS } from '@/lib/admin';
 
 type Analytics = {
   kpis: {

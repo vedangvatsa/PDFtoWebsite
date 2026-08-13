@@ -6,30 +6,13 @@ import { jobPublicPath } from '@/lib/job-description';
 import { shouldListJobOnBoard } from '@/lib/job-apply-source';
 import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { COMPANY_NAME_MAP, isJunkCompanyName, toCompanyKey } from '@/lib/company-directory';
 
 const supabase = supabaseAdmin;
 
-// ── Company name normalization (merge cross-source variants) ──
-const COMPANY_NAME_MAP: Record<string, string> = {
-  'doordash usa': 'doordash', 'shopback 2': 'shopback', 'brillio 2': 'brillio',
-  'lyrahealth': 'lyra health', 'ciandt': 'ci&t', 'ci&t': 'ci&t',
-  'hadrian-automation': 'hadrian', 'relativity space': 'relativity',
-  'unity technologies': 'unity', 'scale ai': 'scale ai',
-  'base-power': 'base power', 'heidihealth.com.au': 'heidi health',
-  'roadsurfer.com': 'roadsurfer', 'the-exploration-company': 'the exploration company',
-  'finni-health': 'finni health', 'apex-technology-inc': 'apex technology',
-  'northwoodspace': 'northwood space', 'horizon3ai': 'horizon3.ai',
-  'govtech singapore': 'govtech', 'kraken.com': 'kraken',
-  'chime financial, inc': 'chime', 'gusto, inc.': 'gusto',
-};
-const COMPANY_BLOCKLIST = new Set([
-  'leverdemo 8', 'getwingapp', 'leverdemo', 'test company', 'demo company',
-  'smart working solutions', 'confidential', '10xteam', 'careers - think digitally',
-  'careers.azx.io', 'brook hiddink - highticket.io',
-]);
 function normalizeCompany(name: string): string {
   const key = (name || '').toLowerCase().trim();
-  return COMPANY_NAME_MAP[key] || key;
+  return toCompanyKey(COMPANY_NAME_MAP[key] || name || '');
 }
 
 // ── Non-English title detection ──
@@ -523,7 +506,7 @@ export async function GET(request: NextRequest) {
     if (isNonEnglishTitle(job.title)) return false;
     // Block junk company names & Gopuff (to avoid expensive wildcard database queries)
     const companyLower = (job.company || '').toLowerCase().trim();
-    if (COMPANY_BLOCKLIST.has(companyLower) || companyLower.includes('gopuff')) return false;
+    if (isJunkCompanyName(job.company || '') || companyLower.includes('gopuff')) return false;
     // Block vague/generic titles
     if (VAGUE_TITLE_PATTERNS.some(p => p.test(job.title))) return false;
     // Block known junk sources

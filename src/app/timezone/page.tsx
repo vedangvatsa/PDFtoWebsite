@@ -14,49 +14,77 @@ import { ArrowLeft, Clock, Plus, X, Globe } from 'lucide-react';
 
 interface TZCity {
   name: string;
-  offset: number; // UTC offset in hours
+  tz: string;
   emoji: string;
 }
 
 const TZ_CITIES: TZCity[] = [
-  { name: 'New York', offset: -5, emoji: '🇺🇸' },
-  { name: 'Los Angeles', offset: -8, emoji: '🇺🇸' },
-  { name: 'Toronto', offset: -5, emoji: '🇨🇦' },
-  { name: 'Vancouver', offset: -8, emoji: '🇨🇦' },
-  { name: 'Mexico City', offset: -6, emoji: '🇲🇽' },
-  { name: 'Bogota', offset: -5, emoji: '🇨🇴' },
-  { name: 'Lima', offset: -5, emoji: '🇵🇪' },
-  { name: 'Medellin', offset: -5, emoji: '🇨🇴' },
-  { name: 'São Paulo', offset: -3, emoji: '🇧🇷' },
-  { name: 'Buenos Aires', offset: -3, emoji: '🇦🇷' },
-  { name: 'London', offset: 0, emoji: '🇬🇧' },
-  { name: 'Lisbon', offset: 0, emoji: '🇵🇹' },
-  { name: 'Paris', offset: 1, emoji: '🇫🇷' },
-  { name: 'Berlin', offset: 1, emoji: '🇩🇪' },
-  { name: 'Barcelona', offset: 1, emoji: '🇪🇸' },
-  { name: 'Amsterdam', offset: 1, emoji: '🇳🇱' },
-  { name: 'Prague', offset: 1, emoji: '🇨🇿' },
-  { name: 'Budapest', offset: 1, emoji: '🇭🇺' },
-  { name: 'Cairo', offset: 2, emoji: '🇪🇬' },
-  { name: 'Cape Town', offset: 2, emoji: '🇿🇦' },
-  { name: 'Istanbul', offset: 3, emoji: '🇹🇷' },
-  { name: 'Nairobi', offset: 3, emoji: '🇰🇪' },
-  { name: 'Dubai', offset: 4, emoji: '🇦🇪' },
-  { name: 'Tbilisi', offset: 4, emoji: '🇬🇪' },
-  { name: 'Mumbai', offset: 5.5, emoji: '🇮🇳' },
-  { name: 'Bangkok', offset: 7, emoji: '🇹🇭' },
-  { name: 'Chiang Mai', offset: 7, emoji: '🇹🇭' },
-  { name: 'Ho Chi Minh', offset: 7, emoji: '🇻🇳' },
-  { name: 'Singapore', offset: 8, emoji: '🇸🇬' },
-  { name: 'Kuala Lumpur', offset: 8, emoji: '🇲🇾' },
-  { name: 'Taipei', offset: 8, emoji: '🇹🇼' },
-  { name: 'Manila', offset: 8, emoji: '🇵🇭' },
-  { name: 'Bali', offset: 8, emoji: '🇮🇩' },
-  { name: 'Seoul', offset: 9, emoji: '🇰🇷' },
-  { name: 'Tokyo', offset: 9, emoji: '🇯🇵' },
-  { name: 'Sydney', offset: 10, emoji: '🇦🇺' },
-  { name: 'Auckland', offset: 12, emoji: '🇳🇿' },
+  { name: 'New York', tz: 'America/New_York', emoji: '🇺🇸' },
+  { name: 'Los Angeles', tz: 'America/Los_Angeles', emoji: '🇺🇸' },
+  { name: 'Toronto', tz: 'America/Toronto', emoji: '🇨🇦' },
+  { name: 'Vancouver', tz: 'America/Vancouver', emoji: '🇨🇦' },
+  { name: 'Mexico City', tz: 'America/Mexico_City', emoji: '🇲🇽' },
+  { name: 'Bogota', tz: 'America/Bogota', emoji: '🇨🇴' },
+  { name: 'Lima', tz: 'America/Lima', emoji: '🇵🇪' },
+  { name: 'Medellin', tz: 'America/Bogota', emoji: '🇨🇴' },
+  { name: 'São Paulo', tz: 'America/Sao_Paulo', emoji: '🇧🇷' },
+  { name: 'Buenos Aires', tz: 'America/Argentina/Buenos_Aires', emoji: '🇦🇷' },
+  { name: 'London', tz: 'Europe/London', emoji: '🇬🇧' },
+  { name: 'Lisbon', tz: 'Europe/Lisbon', emoji: '🇵🇹' },
+  { name: 'Paris', tz: 'Europe/Paris', emoji: '🇫🇷' },
+  { name: 'Berlin', tz: 'Europe/Berlin', emoji: '🇩🇪' },
+  { name: 'Barcelona', tz: 'Europe/Madrid', emoji: '🇪🇸' },
+  { name: 'Amsterdam', tz: 'Europe/Amsterdam', emoji: '🇳🇱' },
+  { name: 'Prague', tz: 'Europe/Prague', emoji: '🇨🇿' },
+  { name: 'Budapest', tz: 'Europe/Budapest', emoji: '🇭🇺' },
+  { name: 'Cairo', tz: 'Africa/Cairo', emoji: '🇪🇬' },
+  { name: 'Cape Town', tz: 'Africa/Johannesburg', emoji: '🇿🇦' },
+  { name: 'Istanbul', tz: 'Europe/Istanbul', emoji: '🇹🇷' },
+  { name: 'Nairobi', tz: 'Africa/Nairobi', emoji: '🇰🇪' },
+  { name: 'Dubai', tz: 'Asia/Dubai', emoji: '🇦🇪' },
+  { name: 'Tbilisi', tz: 'Asia/Tbilisi', emoji: '🇬🇪' },
+  { name: 'Mumbai', tz: 'Asia/Kolkata', emoji: '🇮🇳' },
+  { name: 'Bangkok', tz: 'Asia/Bangkok', emoji: '🇹🇭' },
+  { name: 'Chiang Mai', tz: 'Asia/Bangkok', emoji: '🇹🇭' },
+  { name: 'Ho Chi Minh', tz: 'Asia/Ho_Chi_Minh', emoji: '🇻🇳' },
+  { name: 'Singapore', tz: 'Asia/Singapore', emoji: '🇸🇬' },
+  { name: 'Kuala Lumpur', tz: 'Asia/Kuala_Lumpur', emoji: '🇲🇾' },
+  { name: 'Taipei', tz: 'Asia/Taipei', emoji: '🇹🇼' },
+  { name: 'Manila', tz: 'Asia/Manila', emoji: '🇵🇭' },
+  { name: 'Bali', tz: 'Asia/Makassar', emoji: '🇮🇩' },
+  { name: 'Seoul', tz: 'Asia/Seoul', emoji: '🇰🇷' },
+  { name: 'Tokyo', tz: 'Asia/Tokyo', emoji: '🇯🇵' },
+  { name: 'Sydney', tz: 'Australia/Sydney', emoji: '🇦🇺' },
+  { name: 'Auckland', tz: 'Pacific/Auckland', emoji: '🇳🇿' },
 ];
+
+/** Current UTC offset in hours, including DST. */
+function utcOffsetHours(timeZone: string, date = new Date()): number {
+  const dtf = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    hourCycle: 'h23',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  const parts = Object.fromEntries(dtf.formatToParts(date).filter(p => p.type !== 'literal').map(p => [p.type, p.value]));
+  const asUTC = Date.UTC(
+    Number(parts.year),
+    Number(parts.month) - 1,
+    Number(parts.day),
+    Number(parts.hour),
+    Number(parts.minute),
+    Number(parts.second),
+  );
+  return Math.round(((asUTC - date.getTime()) / 3600000) * 4) / 4;
+}
+
+function formatUtcOffset(offset: number): string {
+  return `UTC${offset >= 0 ? '+' : ''}${offset}`;
+}
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
@@ -93,7 +121,11 @@ export default function TimezonePage() {
   };
 
   const selectedCities = useMemo(
-    () => selected.map(name => TZ_CITIES.find(c => c.name === name)!).filter(Boolean),
+    () =>
+      selected
+        .map(name => TZ_CITIES.find(c => c.name === name))
+        .filter((c): c is TZCity => !!c)
+        .map(c => ({ ...c, offset: utcOffsetHours(c.tz) })),
     [selected],
   );
 
@@ -154,7 +186,7 @@ export default function TimezonePage() {
                 }`}
               >
                 {city.emoji} {city.name}
-                <span className="text-xs opacity-60">UTC{city.offset >= 0 ? '+' : ''}{city.offset}</span>
+                <span className="text-xs opacity-60">{formatUtcOffset(city.offset)}</span>
                 <button
                   onClick={() => removeCity(city.name)}
                   className="ml-1 hover:opacity-70 transition-opacity"
@@ -178,7 +210,7 @@ export default function TimezonePage() {
                 <option value="" disabled>Add a city…</option>
                 {availableCities.map(c => (
                   <option key={c.name} value={c.name}>
-                    {c.emoji} {c.name} (UTC{c.offset >= 0 ? '+' : ''}{c.offset})
+                    {c.emoji} {c.name} ({formatUtcOffset(utcOffsetHours(c.tz))})
                   </option>
                 ))}
               </select>
@@ -243,7 +275,7 @@ export default function TimezonePage() {
                         {city.emoji} {city.name}
                       </div>
                       <div className="text-[10px] text-zinc-400">
-                        UTC{city.offset >= 0 ? '+' : ''}{city.offset}
+                        {formatUtcOffset(city.offset)}
                       </div>
                     </div>
 

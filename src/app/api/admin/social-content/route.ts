@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import fs from 'fs';
-
-const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
+import { ADMIN_EMAILS } from '@/lib/admin';
 const CONTENT_FILE = process['cwd']() + '/.github/scripts/x-content.json';
 const BUFFER_CONTENT_FILE = process['cwd']() + '/.github/scripts/buffer-content.json';
 

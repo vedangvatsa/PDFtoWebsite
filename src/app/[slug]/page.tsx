@@ -13,7 +13,7 @@ import { blogPosts } from '@/lib/blog-data';
 import nomadCities from '@/lib/nomad-cities';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { CityGuidePage } from '@/components/city-guide-page';
-import { jobPublicPath } from '@/lib/job-description';
+import { jobPublicPath, timeAgo } from '@/lib/job-description';
 import {
   EMPLOYMENT_TYPE_MAP,
   parseBaseSalary,
@@ -380,18 +380,6 @@ function buildPersonSchema(data: ServerProfileData) {
       ),
     } : {}),
   };
-}
-
-function timeAgo(dateStr: string | null): string {
-  if (!dateStr) return '';
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  if (days === 0) return 'Today';
-  if (days === 1) return 'Yesterday';
-  if (days < 30) return `${days}d ago`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return `${months}mo ago`;
-  return `${Math.floor(months / 12)}y ago`;
 }
 
 export default async function ProfileSlugPage({ params }: PageProps) {

@@ -6,12 +6,9 @@ import {
   JOB_SITEMAP_PAGE,
   withSitemapCache,
 } from '@/lib/sitemap-cache';
+import { escapeXml } from '@/lib/xml';
 
 export const revalidate = 3600;
-
-function escapeXml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
 type Props = { params: Promise<{ chunk: string }> };
 

@@ -1,11 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { unstable_cache, revalidateTag } from 'next/cache';
+import { ADMIN_EMAILS } from '@/lib/admin';
 
 export const dynamic = 'force-dynamic';
-
-// Only these emails can access the admin dashboard
-const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
 // In-memory cache to avoid slow database and PostHog (18 queries) fetches
 let cachedAnalyticsData: any = null;

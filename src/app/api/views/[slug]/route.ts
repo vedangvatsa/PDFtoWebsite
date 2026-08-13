@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createServerClient } from '@supabase/ssr';
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
+import { ADMIN_EMAILS } from '@/lib/admin';
 
 const supabase = supabaseAdmin;
-
-const ADMIN_EMAILS = ['vatsvedang@gmail.com'];
 
 export async function POST(
   request: NextRequest,

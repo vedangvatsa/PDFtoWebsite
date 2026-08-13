@@ -1,12 +1,9 @@
 import { blogPosts } from '@/lib/blog-data';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withSitemapCache } from '@/lib/sitemap-cache';
+import { escapeXml } from '@/lib/xml';
 
 export const revalidate = 3600;
-
-function escapeXml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
 type Entry = { url: string; lastmod?: string; changefreq?: string; priority?: string };
 

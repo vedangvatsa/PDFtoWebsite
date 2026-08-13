@@ -1,11 +1,8 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { JOB_SITEMAP_CHUNK, withSitemapCache } from '@/lib/sitemap-cache';
+import { escapeXml } from '@/lib/xml';
 
 export const revalidate = 3600;
-
-function escapeXml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
 /**
  * Dynamic sitemap index. Counts recent job rows (curated + assemble candidates)

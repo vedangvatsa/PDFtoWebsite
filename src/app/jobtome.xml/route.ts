@@ -2,12 +2,9 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { jobSitemapPath } from '@/lib/job-description';
 import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 import { withSitemapCache } from '@/lib/sitemap-cache';
+import { escapeXml } from '@/lib/xml';
 
 export const revalidate = 3600;
-
-function escapeXml(s: unknown): string {
-  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
 
 /**
  * Jobtome XML feed — full-snapshot semantics.
