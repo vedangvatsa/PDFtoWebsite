@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { COMPANY_BLOCKLIST, companyDisplayName, companyDisplayNameFromJob } from '@/lib/company-directory';
-import { shouldListJobOnCompanyHub, withCuratedJdTag } from '@/lib/job-apply-source';
+import { shouldListJobOnCompanyHub } from '@/lib/job-apply-source';
 import { JOB_MAX_AGE_DAYS } from '@/lib/job-age';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { knownCompanyDescription } from '@/lib/seo-fallbacks';
@@ -69,7 +69,7 @@ const SELECT_JOB_COLS =
 /**
  * Load recent jobs for a company page.
  * Contract: equality only (company_key OR exact company name). Never ILIKE.
- * SQL and in-memory gates are curated-jd — enrich-queue rows are not hub cards.
+ * Hub listing is live inventory — do not wrap SQL in withCuratedJdTag.
  * Hard timeout + empty fail-open so the page still renders directory meta.
  */
 export async function loadCompanyJobs(
@@ -95,12 +95,10 @@ export async function loadCompanyJobs(
 
         if (keys.length) {
           const q = applyWindow(
-            withCuratedJdTag(
-              supabaseForCompany
-                .from('jobs')
-                .select(SELECT_JOB_COLS)
-                .in('company_key', keys)
-            )
+            supabaseForCompany
+              .from('jobs')
+              .select(SELECT_JOB_COLS)
+              .in('company_key', keys)
           );
           const byKey = await withTimeoutFallback(
             q
@@ -118,12 +116,10 @@ export async function loadCompanyJobs(
 
         if (names.length) {
           const q = applyWindow(
-            withCuratedJdTag(
-              supabaseForCompany
-                .from('jobs')
-                .select(SELECT_JOB_COLS)
-                .in('company', names)
-            )
+            supabaseForCompany
+              .from('jobs')
+              .select(SELECT_JOB_COLS)
+              .in('company', names)
           );
           const byName = await withTimeoutFallback(
             q
@@ -215,7 +211,6 @@ export async function buildCompanyPageMetadata(
     jobs[0],
     dir?.name || slug.replace(/-/g, ' ')
   );
-  // loadCompanyJobs caps at 50; if we hit the cap prefer directory total when larger
   const jobCount =
     jobs.length >= 50 && dir?.role_count && dir.role_count > jobs.length
       ? dir.role_count
@@ -225,8 +220,6 @@ export async function buildCompanyPageMetadata(
     ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
     : `${companyDisplay} is hiring — ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
   const description = desc.slice(0, 160);
-  // Empty hubs (description-only soft landings) stay crawlable but noindex —
-  // clears GSC 404s without padding the index with thin 0-role pages.
   const indexable = jobCount > 0;
   return {
     title,
