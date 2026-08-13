@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { satoriBox, satoriStyle } from '@/lib/satori-style';
 
 export const OG_TOOL_SIZE = { width: 1200, height: 630 };
 export const OG_TOOL_CONTENT_TYPE = 'image/png';
@@ -14,8 +15,7 @@ type OgToolFrameProps = {
 
 /**
  * Shared Satori chrome for nomad/tool Open Graph images.
- * Every box must keep display:'flex'. Never pass undefined style values —
- * @vercel/og calls .trim() on them during prerender.
+ * Styles go through satoriStyle so undefined keys cannot reach @vercel/og.
  */
 export function OgToolFrame({
   title,
@@ -25,7 +25,7 @@ export function OgToolFrame({
   titleSize = 56,
 }: OgToolFrameProps) {
   const spread = layout === 'spread';
-  const rootStyle: CSSProperties = {
+  const rootStyle = satoriStyle({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -34,61 +34,61 @@ export function OgToolFrame({
     fontFamily: 'sans-serif',
     padding: spread ? '60px 80px' : '48px 64px',
     position: 'relative',
-  };
-  if (spread) rootStyle.justifyContent = 'space-between';
+    ...(spread ? { justifyContent: 'space-between' as const } : {}),
+  });
 
-  const headingStyle: CSSProperties = {
+  const headingStyle = satoriStyle({
     display: 'flex',
     flexDirection: 'column',
     gap: 8,
-  };
-  if (!spread) headingStyle.marginTop = 24;
+    ...(spread ? {} : { marginTop: 24 }),
+  });
 
-  const subtitleStyle: CSSProperties = {
+  const subtitleStyle = satoriStyle({
     display: 'flex',
     fontSize: 24,
     fontWeight: 500,
     color: '#71717a',
-  };
-  if (!spread) subtitleStyle.marginTop = 4;
+    ...(spread ? {} : { marginTop: 4 }),
+  });
 
   return (
     <div style={rootStyle}>
       <div
-        style={{
-          display: 'flex',
+        style={satoriBox({
           fontSize: 14,
           fontWeight: 600,
           color: '#a1a1aa',
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
-        }}
+        })}
       >
         CVin.Bio
       </div>
       <div style={headingStyle}>
         <div
-          style={{
-            display: 'flex',
+          style={satoriBox({
             fontSize: titleSize,
             fontWeight: 800,
             color: '#09090b',
             letterSpacing: '-0.03em',
             lineHeight: 1.1,
-          }}
+          })}
         >
           {title}
         </div>
-        {subtitle ? <div style={subtitleStyle}>{subtitle}</div> : (
-          <div style={{ display: 'flex', height: 0 }} />
+        {subtitle ? (
+          <div style={subtitleStyle}>{subtitle}</div>
+        ) : (
+          <div style={satoriBox({ height: 0 })} />
         )}
       </div>
       {children}
       {spread ? (
-        <div style={{ display: 'flex', width: '100%', height: 4, backgroundColor: '#09090b', borderRadius: 2 }} />
+        <div style={satoriBox({ width: '100%', height: 4, backgroundColor: '#09090b', borderRadius: 2 })} />
       ) : (
         <div
-          style={{
+          style={satoriStyle({
             display: 'flex',
             position: 'absolute',
             bottom: 0,
@@ -96,7 +96,7 @@ export function OgToolFrame({
             right: 0,
             height: 4,
             backgroundColor: '#09090b',
-          }}
+          })}
         />
       )}
     </div>
