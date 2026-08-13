@@ -116493,6 +116493,69 @@
       "status": "ok",
       "path": "/aqr/fin-tax",
       "external_id": "aqr_fin-tax"
+    },
+    "7d655e98-39fa-4e77-8735-47f04d94f2a8": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=ARENA Alignment Research Engineer Accelerator company=ARENA apply=https://www.arena.education/"
+    },
+    "5b6c1cc9-d613-4dc2-89ff-11a9f740d11e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "8b16dbd6-c520-4e18-b924-10ec5671a5cd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0a22d94d-d08b-48c1-aa88-a65d30e13996": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "d381d782-13c9-4e9b-9e9e-fcff89dbd353": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AI2050 Early Career Fellowship company=Schmidt Sciences apply=https://www.schmidtsciences.org/ai2050/"
+    },
+    "a69c8d04-6e71-4e7d-be18-dcd0886c9cf1": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=PIBBSS Fellowship company=PIBBSS apply=https://pibbss.ai/fellowship"
+    },
+    "f4bea460-2d9c-43e9-b4b7-ff19e736447c": {
+      "status": "ok",
+      "path": "/google/higher",
+      "external_id": "google_higher"
+    },
+    "101ec12b-b2e2-439a-820a-02cac8612e29": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8358b94a-de8a-4515-90e5-6086d34034c5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c": {
+      "status": "ok",
+      "path": "/spar/supervised",
+      "external_id": "spar_supervised"
+    },
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
+      "status": "ok",
+      "path": "/era-cambridge/era",
+      "external_id": "era-cambridge_era"
+    },
+    "5d60e719-529a-4617-a3fe-9f81cf9cc2b1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4c7f3146-467e-4f4b-9344-e64cd0eafd4b": {
+      "status": "ok",
+      "path": "/coding-it-forward/civic",
+      "external_id": "coding-it-forward_civic"
     }
   },
   "doneIds": [
@@ -138431,7 +138494,21 @@
     "5367b740-b7ab-460c-8ece-d0c20ccf0346",
     "407c442b-b5d0-471b-b3fe-077324f59dfe",
     "497176dc-d108-4c27-ad69-c03130174e6e",
-    "4d9a04b4-6254-47ee-ac0f-f6e36e55d12e"
+    "4d9a04b4-6254-47ee-ac0f-f6e36e55d12e",
+    "7d655e98-39fa-4e77-8735-47f04d94f2a8",
+    "5b6c1cc9-d613-4dc2-89ff-11a9f740d11e",
+    "8b16dbd6-c520-4e18-b924-10ec5671a5cd",
+    "0a22d94d-d08b-48c1-aa88-a65d30e13996",
+    "d381d782-13c9-4e9b-9e9e-fcff89dbd353",
+    "a69c8d04-6e71-4e7d-be18-dcd0886c9cf1",
+    "f4bea460-2d9c-43e9-b4b7-ff19e736447c",
+    "101ec12b-b2e2-439a-820a-02cac8612e29",
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29",
+    "8358b94a-de8a-4515-90e5-6086d34034c5",
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c",
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429",
+    "5d60e719-529a-4617-a3fe-9f81cf9cc2b1",
+    "4c7f3146-467e-4f4b-9344-e64cd0eafd4b"
   ],
   "skipped": {},
   "batches": [
@@ -139888,6 +139965,22 @@
         "/nooks/sales-20",
         "/webai/embedded",
         "/headway/ops"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 2,
+      "at": "2026-08-13T10:30:17.211Z",
+      "attempted": 2,
+      "ok": 1,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 2,
+        "rewrite_short": 1
+      },
+      "samplePaths": [
+        "/coding-it-forward/civic"
       ]
     }
   ],

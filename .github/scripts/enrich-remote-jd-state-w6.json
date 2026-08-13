@@ -81892,6 +81892,113 @@
       "status": "ok",
       "path": "/1password/sales",
       "external_id": "1password_sales"
+    },
+    "7d655e98-39fa-4e77-8735-47f04d94f2a8": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=ARENA Alignment Research Engineer Accelerator company=ARENA apply=https://www.arena.education/"
+    },
+    "5b6c1cc9-d613-4dc2-89ff-11a9f740d11e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "53107d59-6918-43da-9dec-c2459a3b6ff7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "8b16dbd6-c520-4e18-b924-10ec5671a5cd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0a22d94d-d08b-48c1-aa88-a65d30e13996": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "d381d782-13c9-4e9b-9e9e-fcff89dbd353": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AI2050 Early Career Fellowship company=Schmidt Sciences apply=https://www.schmidtsciences.org/ai2050/"
+    },
+    "4f7c4057-b1d9-4981-837a-01ff331824db": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a69c8d04-6e71-4e7d-be18-dcd0886c9cf1": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=PIBBSS Fellowship company=PIBBSS apply=https://pibbss.ai/fellowship"
+    },
+    "f4bea460-2d9c-43e9-b4b7-ff19e736447c": {
+      "status": "ok",
+      "path": "/google/higher",
+      "external_id": "google_higher"
+    },
+    "101ec12b-b2e2-439a-820a-02cac8612e29": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8358b94a-de8a-4515-90e5-6086d34034c5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c": {
+      "status": "ok",
+      "path": "/spar/supervised",
+      "external_id": "spar_supervised"
+    },
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
+      "status": "ok",
+      "path": "/era-cambridge/era",
+      "external_id": "era-cambridge_era"
+    },
+    "de7f237c-c603-419b-81e1-cc2ff6349312": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c2d279f3-379d-4fde-aab0-906a8754848d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "deb130dd-3029-4610-a2f5-0040f81b8795": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cb18b964-465c-4284-926d-c012266d7624": {
+      "status": "ok",
+      "path": "/data-society/data",
+      "external_id": "data-society_data"
+    },
+    "d9ab4895-756b-4b19-9354-8284ed7aa5e8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c2e0fceb-dc92-4cf2-bba3-76e557a4cca8": {
+      "status": "ok",
+      "path": "/pi/siegel",
+      "external_id": "pi_siegel"
+    },
+    "c07db014-5352-4684-8ace-1ad5db19a53f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d9d6d091-d89d-489a-8963-b9a1d6756b66": {
+      "status": "ok",
+      "path": "/emergingtechpolicy/policy",
+      "external_id": "emergingtechpolicy_policy"
+    },
+    "dbacddff-1e8a-4310-be9a-7d63bccd12d3": {
+      "status": "ok",
+      "path": "/horizonpublicservice/become",
+      "external_id": "horizonpublicservice_become"
+    },
+    "c61cdbe2-24cf-4e79-b790-43ee70bc6e51": {
+      "status": "ok",
+      "path": "/emergingtechpolicy/congressiona",
+      "external_id": "emergingtechpolicy_congressiona"
     }
   },
   "doneIds": [
@@ -100652,7 +100759,31 @@
     "c4983b64-d2fc-4240-bb74-dc03951dc455",
     "d61aa4e7-9db8-41f9-b008-2a607a801a59",
     "cb322f57-0bb6-44f2-91f6-892b12ffe860",
-    "cc360a76-7635-405a-9b46-7a7c7b314772"
+    "cc360a76-7635-405a-9b46-7a7c7b314772",
+    "7d655e98-39fa-4e77-8735-47f04d94f2a8",
+    "5b6c1cc9-d613-4dc2-89ff-11a9f740d11e",
+    "53107d59-6918-43da-9dec-c2459a3b6ff7",
+    "8b16dbd6-c520-4e18-b924-10ec5671a5cd",
+    "0a22d94d-d08b-48c1-aa88-a65d30e13996",
+    "d381d782-13c9-4e9b-9e9e-fcff89dbd353",
+    "4f7c4057-b1d9-4981-837a-01ff331824db",
+    "a69c8d04-6e71-4e7d-be18-dcd0886c9cf1",
+    "f4bea460-2d9c-43e9-b4b7-ff19e736447c",
+    "101ec12b-b2e2-439a-820a-02cac8612e29",
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29",
+    "8358b94a-de8a-4515-90e5-6086d34034c5",
+    "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c",
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429",
+    "de7f237c-c603-419b-81e1-cc2ff6349312",
+    "c2d279f3-379d-4fde-aab0-906a8754848d",
+    "deb130dd-3029-4610-a2f5-0040f81b8795",
+    "cb18b964-465c-4284-926d-c012266d7624",
+    "d9ab4895-756b-4b19-9354-8284ed7aa5e8",
+    "c2e0fceb-dc92-4cf2-bba3-76e557a4cca8",
+    "c07db014-5352-4684-8ace-1ad5db19a53f",
+    "d9d6d091-d89d-489a-8963-b9a1d6756b66",
+    "dbacddff-1e8a-4310-be9a-7d63bccd12d3",
+    "c61cdbe2-24cf-4e79-b790-43ee70bc6e51"
   ],
   "skipped": {},
   "batches": [
@@ -101632,6 +101763,40 @@
         "/crusoe/mgr",
         "/whoop/ml",
         "/whoop/ml-sci"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 6,
+      "at": "2026-08-13T10:29:11.455Z",
+      "attempted": 2,
+      "ok": 0,
+      "skip": 0,
+      "fail": 2,
+      "reasons": {
+        "expand_existing": 2,
+        "rewrite_short": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 6,
+      "at": "2026-08-13T10:30:41.207Z",
+      "attempted": 8,
+      "ok": 5,
+      "skip": 0,
+      "fail": 3,
+      "reasons": {
+        "expand_existing": 8,
+        "rewrite_short": 3
+      },
+      "samplePaths": [
+        "/data-society/data",
+        "/pi/siegel",
+        "/emergingtechpolicy/policy",
+        "/horizonpublicservice/become",
+        "/emergingtechpolicy/congressiona"
       ]
     }
   ],
