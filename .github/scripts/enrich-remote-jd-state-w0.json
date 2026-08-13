@@ -99313,7 +99313,7 @@
     },
     "16715acc-9100-4db0-9e66-1fb66ba3dab8": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1cec3377-8499-4131-9444-f2f97530c394": {
       "status": "fail",
@@ -99613,8 +99613,9 @@
       "reason": "rewrite_short"
     },
     "190a9e2d-7458-48b2-9e86-e4bb767b69ee": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "ok",
+      "path": "/elevenlabs/forwar-ea",
+      "external_id": "elevenlabs_forwar-ea"
     },
     "0e3e654b-5d44-45a4-876d-3636081755c6": {
       "status": "fail",
@@ -99655,7 +99656,7 @@
     },
     "15aa6db6-7d97-408f-a3bf-43c6ecf8686f": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "19a67310-d222-4885-b75a-cc5d52676f10": {
       "status": "fail",
@@ -99671,7 +99672,7 @@
     },
     "09976426-44a4-47b6-be3d-fece72a102bd": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "16847e33-daba-44df-8dbe-cf490e026fe5": {
       "status": "fail",
@@ -99683,7 +99684,7 @@
     },
     "0f0bf167-94ca-4c59-b9e4-8f31aba779a9": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "18235f5d-faff-44f1-a971-9d619518995f": {
       "status": "fail",
@@ -99691,7 +99692,7 @@
     },
     "1a9aa034-c8be-4d10-b6e9-6ae8d52debac": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0b122958-627b-43ad-83cb-816fd1fc3a54": {
       "status": "fail",
@@ -99803,7 +99804,7 @@
     },
     "1914e401-2e9b-47a0-b7a0-20d6a375c54a": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "120ebb16-7846-41d4-9cf4-e3ead0c738db": {
       "status": "fail",
@@ -99811,7 +99812,7 @@
     },
     "13b0d381-58d9-44fd-8d14-b5b7447fc4f1": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "128db623-833e-4922-8303-104f95006344": {
       "status": "fail",
@@ -99876,7 +99877,7 @@
     },
     "15984746-24d8-491b-ad99-ff74f8efb4d2": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "175db81f-197c-4d83-9c38-2c7ebdb30d01": {
       "status": "fail",
@@ -99989,7 +99990,7 @@
     },
     "08aa0c5c-91fe-4879-b4cc-36ee6987fa56": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "16853bb3-bc07-4900-a907-597291c7c86d": {
       "status": "fail",
@@ -100039,7 +100040,7 @@
     },
     "17097bc5-ad73-486b-a472-eae2d8dd484e": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "18ef1ffd-d36a-4889-825c-ff01c9e24f29": {
       "status": "ok",
@@ -100052,7 +100053,7 @@
     },
     "1bed5984-e283-47b9-ab1d-753c37856499": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "1c55ec7a-f190-4060-b84a-7f0bf4ff11dd": {
       "status": "fail",
@@ -100060,7 +100061,7 @@
     },
     "19a85fa0-eabc-436f-a65d-6586dde3ae24": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "03353249-b526-4daf-8ade-539534fe32bb": {
       "status": "fail",
@@ -100076,7 +100077,7 @@
     },
     "09017069-cad7-4e8f-ba12-157cfb2361ca": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "10c8cb4d-3f75-4579-bbc2-75b31979a763": {
       "status": "fail",
@@ -100245,7 +100246,7 @@
     },
     "0dd27b67-eb1f-4b86-b775-8d16b2607403": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0a500f68-c8b1-447b-a217-a75abaf54695": {
       "status": "fail",
@@ -100273,7 +100274,7 @@
     },
     "02419dd6-59b2-4068-979a-68237f04721d": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0a7f1a14-729e-4f78-9c90-6db5ef74bf20": {
       "status": "fail",
@@ -100321,6 +100322,79 @@
     "0b956afa-25d2-4d7d-a316-2dfd3757e6f0": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "09568e78-de3d-4a25-96dc-c380a0093b89": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "11638ac1-b4e9-4514-846b-57fee8e6d50a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "108560a8-1b66-4610-beb3-d550106bec7c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "063f6b36-2f63-48a4-9336-6707e0c685ab": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0afa3ea7-1e82-4d7c-b2d9-5697936a9154": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "05a45489-58ea-4c78-a09c-84d3b37b2846": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1c47420d-b599-4acf-bdcf-e5092e1dbcf2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0b26101d-115e-4d2e-856d-037bfa205090": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "18d62398-b6a3-46d1-baa5-802a00bc5700": {
+      "status": "ok",
+      "path": "/systra/transit",
+      "external_id": "systra_transit"
+    },
+    "06db483f-670f-47e7-b3e8-8703328928bd": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0385eb67-f3e7-4310-9805-5846932b31fc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0d979099-2f42-43b4-9780-7e520ac97477": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "032c1c4e-b779-4d2e-9bec-dc0a6825f0a9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "039deae6-779b-426c-9ec3-b073152a66a4": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "070ec911-723f-45ac-b359-834e888a7666": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "19cfee32-7ebf-43fa-994c-c6913f1ce2e3": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "03c750dd-cb13-475e-b516-c3b5354f54f0": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0970fd8f-7899-4f3b-98d0-f9ef8e206f53": {
+      "status": "fail",
+      "reason": "rewrite_structure"
     }
   },
   "doneIds": [
@@ -119386,7 +119460,33 @@
     "1d18d345-dcf5-47c4-94db-c39fa12b89a5",
     "0b956afa-25d2-4d7d-a316-2dfd3757e6f0",
     "18ef1ffd-d36a-4889-825c-ff01c9e24f29",
-    "0ce32bf2-dbdf-48d8-b59e-90afeda9ad65"
+    "0ce32bf2-dbdf-48d8-b59e-90afeda9ad65",
+    "09568e78-de3d-4a25-96dc-c380a0093b89",
+    "11638ac1-b4e9-4514-846b-57fee8e6d50a",
+    "13b0d381-58d9-44fd-8d14-b5b7447fc4f1",
+    "08aa0c5c-91fe-4879-b4cc-36ee6987fa56",
+    "02419dd6-59b2-4068-979a-68237f04721d",
+    "16715acc-9100-4db0-9e66-1fb66ba3dab8",
+    "09976426-44a4-47b6-be3d-fece72a102bd",
+    "108560a8-1b66-4610-beb3-d550106bec7c",
+    "063f6b36-2f63-48a4-9336-6707e0c685ab",
+    "0afa3ea7-1e82-4d7c-b2d9-5697936a9154",
+    "05a45489-58ea-4c78-a09c-84d3b37b2846",
+    "1c47420d-b599-4acf-bdcf-e5092e1dbcf2",
+    "0dd27b67-eb1f-4b86-b775-8d16b2607403",
+    "17097bc5-ad73-486b-a472-eae2d8dd484e",
+    "1a9aa034-c8be-4d10-b6e9-6ae8d52debac",
+    "09017069-cad7-4e8f-ba12-157cfb2361ca",
+    "18d62398-b6a3-46d1-baa5-802a00bc5700",
+    "0385eb67-f3e7-4310-9805-5846932b31fc",
+    "0f0bf167-94ca-4c59-b9e4-8f31aba779a9",
+    "0d979099-2f42-43b4-9780-7e520ac97477",
+    "1914e401-2e9b-47a0-b7a0-20d6a375c54a",
+    "15984746-24d8-491b-ad99-ff74f8efb4d2",
+    "19a85fa0-eabc-436f-a65d-6586dde3ae24",
+    "1bed5984-e283-47b9-ab1d-753c37856499",
+    "190a9e2d-7458-48b2-9e86-e4bb767b69ee",
+    "15aa6db6-7d97-408f-a3bf-43c6ecf8686f"
   ],
   "skipped": {},
   "batches": [
@@ -121297,6 +121397,40 @@
         "/lpadesignstudios/arch-63",
         "/openai/sw-29",
         "/lendable/real"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 0,
+      "at": "2026-08-13T12:08:18.833Z",
+      "attempted": 66,
+      "ok": 1,
+      "skip": 0,
+      "fail": 65,
+      "reasons": {
+        "expand_existing": 66,
+        "rewrite_short": 19,
+        "rewrite_structure": 46
+      },
+      "samplePaths": [
+        "/systra/transit"
+      ]
+    },
+    {
+      "batchNum": 4,
+      "worker": 0,
+      "at": "2026-08-13T12:10:56.521Z",
+      "attempted": 17,
+      "ok": 1,
+      "skip": 0,
+      "fail": 16,
+      "reasons": {
+        "expand_existing": 16,
+        "rewrite_short": 5,
+        "rewrite_structure": 11
+      },
+      "samplePaths": [
+        "/elevenlabs/forwar-ea"
       ]
     }
   ],
