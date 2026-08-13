@@ -108087,6 +108087,76 @@
       "status": "ok",
       "path": "/bridgebio-pharma/assoc",
       "external_id": "bridgebio-pharma_assoc"
+    },
+    "480b7fda-aeef-4491-bc50-0aac06a465b5": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Eladó - Nagykanizsa company=JYSK apply=https://jobs.smartrecruiters.com/jysk/744000142146312"
+    },
+    "4faded99-5a83-4022-916d-69a646f675ca": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Business Analyst / Project Manager – CRM(+) 12 months company=WildBrain apply=https://jobs.smartrecruiters.com/wildbrain/3743990013938201"
+    },
+    "45ab3d40-50f6-47fd-ac53-48e6c4c58758": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Business Analyst (F/H) company=ASI apply=https://jobs.smartrecruiters.com/asifr/744000138660962"
+    },
+    "5d453ed3-b129-4a8f-b01d-c87a3c2fe8e1": {
+      "status": "skip",
+      "reason": "lever_404",
+      "note": "thin_source title=Participation Accountant company=Protective apply=https://jobs.lever.co/protective/5c4dfc7f-2a47-4361-9243-142817db9880"
+    },
+    "44f53597-13f5-451e-98c5-ff68cef91362": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5ebcff44-a1ae-4ad1-a1da-9c1acef7f15e": {
+      "status": "ok",
+      "path": "/form-health/consult",
+      "external_id": "form-health_consult"
+    },
+    "5833fdf9-679a-44f4-b865-2d3521bbc2b2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5ea0f42d-4cc9-49c8-858f-f60a7a961c1f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4158b7f8-b4e0-4b24-a3bb-bdf178417f16": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "59e44c3d-2307-4bd5-9124-fb4af23921ac": {
+      "status": "ok",
+      "path": "/anthropic/sw-99",
+      "external_id": "anthropic_sw-99"
+    },
+    "5fc892ec-59c4-4cad-843a-bef8d4f90306": {
+      "status": "ok",
+      "path": "/greenhouse/gtm-eng",
+      "external_id": "greenhouse_gtm-eng"
+    },
+    "54f5d957-62b1-42b0-a6c7-da276d11696d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "57595444-805b-4509-b518-46e0d8bf4fcd": {
+      "status": "ok",
+      "path": "/snv/call",
+      "external_id": "snv_call"
+    },
+    "4e7228a2-f970-4278-96dc-09515509687f": {
+      "status": "ok",
+      "path": "/snv/call-f6",
+      "external_id": "snv_call-f6"
+    },
+    "4aeec956-14a4-43f7-8246-41132d54e32e": {
+      "status": "ok",
+      "path": "/arc-boat-company/sales",
+      "external_id": "arc-boat-company_sales"
     }
   },
   "doneIds": [
@@ -128046,7 +128116,22 @@
     "44d2014d-3430-4670-a2cd-dadcd708d8e0",
     "404fe62f-c005-4121-b331-430344c9921c",
     "5b7598b0-5ea2-4320-a461-a4d6a9bc4f78",
-    "56284929-9f16-4c33-a741-79f9127468c6"
+    "56284929-9f16-4c33-a741-79f9127468c6",
+    "480b7fda-aeef-4491-bc50-0aac06a465b5",
+    "4faded99-5a83-4022-916d-69a646f675ca",
+    "45ab3d40-50f6-47fd-ac53-48e6c4c58758",
+    "5d453ed3-b129-4a8f-b01d-c87a3c2fe8e1",
+    "44f53597-13f5-451e-98c5-ff68cef91362",
+    "5ebcff44-a1ae-4ad1-a1da-9c1acef7f15e",
+    "5833fdf9-679a-44f4-b865-2d3521bbc2b2",
+    "5ea0f42d-4cc9-49c8-858f-f60a7a961c1f",
+    "4158b7f8-b4e0-4b24-a3bb-bdf178417f16",
+    "59e44c3d-2307-4bd5-9124-fb4af23921ac",
+    "5fc892ec-59c4-4cad-843a-bef8d4f90306",
+    "54f5d957-62b1-42b0-a6c7-da276d11696d",
+    "57595444-805b-4509-b518-46e0d8bf4fcd",
+    "4e7228a2-f970-4278-96dc-09515509687f",
+    "4aeec956-14a4-43f7-8246-41132d54e32e"
   ],
   "skipped": {},
   "batches": [
@@ -129425,6 +129510,31 @@
         "/ana-corp/service",
         "/provable/fe-eng"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 2,
+      "at": "2026-08-13T08:03:49.841Z",
+      "attempted": 11,
+      "ok": 6,
+      "skip": 4,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 1,
+        "source_thin": 2,
+        "no_ai": 4,
+        "posting_older_than_30d": 1,
+        "lever_404": 1,
+        "rewrite_short": 5
+      },
+      "samplePaths": [
+        "/form-health/consult",
+        "/anthropic/sw-99",
+        "/greenhouse/gtm-eng",
+        "/snv/call",
+        "/snv/call-f6",
+        "/arc-boat-company/sales"
+      ]
     }
   ],
   "deadBoards": {
@@ -130445,6 +130555,10 @@
     "smartrecruiters:vaticlabs": "posting_older_than_30d",
     "greenhouse:aloyoga": "gh_404",
     "greenhouse:artefact": "posting_older_than_30d",
-    "smartrecruiters:xiaomi": "posting_older_than_30d"
+    "smartrecruiters:xiaomi": "posting_older_than_30d",
+    "smartrecruiters:jysk": "source_thin",
+    "smartrecruiters:wildbrain": "posting_older_than_30d",
+    "smartrecruiters:asifr": "source_thin",
+    "lever:protective": "lever_404"
   }
 }

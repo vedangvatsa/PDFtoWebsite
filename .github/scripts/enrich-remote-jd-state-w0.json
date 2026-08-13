@@ -62144,7 +62144,7 @@
     },
     "0623ba06-c943-45a5-a307-8ea4ba45e880": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "37330d36-344e-4cee-92fc-4db7ae4c3822": {
       "status": "fail",
@@ -62156,7 +62156,7 @@
     },
     "06dd5bd4-7cdc-4d8b-a9d7-9199e4a3d77f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "3e612214-f8bb-4a17-aeb8-30c81b8d973a": {
       "status": "fail",
@@ -62171,8 +62171,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "080da6a3-da2f-47bc-8ea0-3fa4745d60b4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/hp-hood/controls",
+      "external_id": "hp-hood_controls"
     },
     "31df7da1-44cf-49c8-afaa-ccba07cfca16": {
       "status": "fail",
@@ -62208,7 +62209,7 @@
     },
     "0e59bdcf-f1e5-472c-9929-e5b43b1d736f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "36c2fe1e-33c6-4e1e-b8dc-3a47a0207fc3": {
       "status": "fail",
@@ -62274,12 +62275,14 @@
       "external_id": "heven-aerotech_dir"
     },
     "15ac411c-43bf-48b8-8dcb-589b888f4a1f": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/human-agency/venture",
+      "external_id": "human-agency_venture"
     },
     "1a228768-5cfd-4c8c-a53e-00731df6b52d": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=PL Copywriter de CRM company=ília apply=https://job-boards.greenhouse.io/ilia/jobs/6138351004"
     },
     "235a42e6-a17d-4e71-bb42-7f541df9e811": {
       "status": "fail",
@@ -62287,19 +62290,21 @@
     },
     "1e98bbfa-3b24-4561-814b-2a5d52485602": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0bb9e075-3c70-4cc5-a0fc-ae238a66cc55": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/horace-mann-agent-opportunities/insura-ad",
+      "external_id": "horace-mann-agent-opportunities_insura-ad"
     },
     "07c73551-534b-4285-adf0-01dbc439eb15": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/horace-mann-agent-opportunities/insurance",
+      "external_id": "horace-mann-agent-opportunities_insurance"
     },
     "0bfe59cb-515a-49c2-b378-403f92bb8692": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     },
     "2e1ce484-1e50-42f3-8d37-827847cc4123": {
       "status": "fail",
@@ -62310,8 +62315,9 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "1fc4d798-2792-462f-a82a-48d215d987dc": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/human-agency/ventur-02",
+      "external_id": "human-agency_ventur-02"
     },
     "2f8614e7-67f3-4cd3-85f3-7ee344272b37": {
       "status": "fail",
@@ -62323,7 +62329,7 @@
     },
     "1be3994a-4ae6-4b01-af4e-869503b6c951": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "22477b38-d95a-4fe8-81dc-33957adccbdd": {
       "status": "fail",
@@ -62343,7 +62349,7 @@
     },
     "187b9c0a-313d-4262-9434-8a75919c3483": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "021e5904-5499-47e7-bc72-75229db48e39": {
       "status": "fail",
@@ -62355,7 +62361,7 @@
     },
     "0ba1475f-81a3-484e-96d6-036acbe2a4a4": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     },
     "0f3337f2-566c-4df3-acb2-9c5d5e632bc0": {
       "status": "skip",
@@ -62375,8 +62381,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "0e3088c4-0583-41b9-b43b-46212898dba3": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/impinj/mgr",
+      "external_id": "impinj_mgr"
     },
     "237da6e3-053b-483a-9725-d37ff1a5a642": {
       "status": "fail",
@@ -62439,12 +62446,13 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "1ca08e4d-a763-481a-bc08-3b68e25cc794": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/impact-com/data-sci",
+      "external_id": "impact-com_data-sci"
     },
     "0f98d377-9c66-498e-a2aa-356350f5cc13": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "271f24d7-7993-402e-be9f-12afb48b7ef7": {
       "status": "fail",
@@ -62457,23 +62465,25 @@
     },
     "15f7e27d-ac91-48c3-ac5e-3e2d13e29613": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0e727574-0f4e-4cc7-b0c4-8d4760847131": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/human-agency/prod-24",
+      "external_id": "human-agency_prod-24"
     },
     "0a384b23-912b-4565-8681-f3ac1b81536f": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "3125a71a-c1f4-4ac6-8db6-b8b7a92fbc0a": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "07c306e1-69e9-40cc-8697-8d9d9fbebc18": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/impact-com/biz-dev",
+      "external_id": "impact-com_biz-dev"
     },
     "21c5bda8-bd67-48fe-95f4-fad2ae1af8d4": {
       "status": "fail",
@@ -62485,7 +62495,7 @@
     },
     "12cf75b8-b91d-42d3-9401-82900ffa2bf0": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "38de0780-1a10-4987-b4df-e554ef9f831c": {
       "status": "fail",
@@ -62512,8 +62522,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "051236a6-98a3-4331-9212-c51f5188ea63": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/impact-com/assoc-qa",
+      "external_id": "impact-com_assoc-qa"
     },
     "3dddc203-87ee-4c85-afe2-deb4b8e8109c": {
       "status": "fail",
@@ -62528,12 +62539,13 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "1a626ff6-bdeb-4e5d-90d6-5a4dbc21c830": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/ians/office",
+      "external_id": "ians_office"
     },
     "03cf2dbc-d0c9-4ec0-a011-9a39fb75e409": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "26e544c0-c0cf-46c3-8f6f-0fc0feda5243": {
       "status": "fail",
@@ -62553,7 +62565,7 @@
     },
     "0bf21af2-f884-4086-b48d-ca8df724c83a": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     },
     "22871210-7828-4886-8568-cd18a2de9da3": {
       "status": "fail",
@@ -62616,12 +62628,14 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "04f3f038-386e-403f-818a-4531c338d3dd": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/iconiq/assoc-7d",
+      "external_id": "iconiq_assoc-7d"
     },
     "090420a1-97e7-44c8-9e9e-af2c1f96f927": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/iconiq/analys-7e",
+      "external_id": "iconiq_analys-7e"
     },
     "345fe015-803e-4bf2-8474-67399f21f579": {
       "status": "skip",
@@ -62637,11 +62651,12 @@
     },
     "0e1c5b58-7d81-454f-a387-b9bb71decaef": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "1a969d4a-d961-4a34-9f42-bad823eed8ca": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=IMC Tech Race - Singapore company=IMC apply=https://job-boards.eu.greenhouse.io/imc/jobs/4942171101"
     },
     "2bcd7dd8-644b-4f63-9167-5b09fbd7ffd4": {
       "status": "fail",
@@ -62653,11 +62668,12 @@
     },
     "1d700b3b-ca35-4487-a7b8-b5ce05af38e0": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0946608d-7e82-4e10-b166-08c12737db52": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/imc/graduate",
+      "external_id": "imc_graduate"
     },
     "3f787e06-4771-405a-9b39-411562ee4033": {
       "status": "fail",
@@ -62685,27 +62701,28 @@
     },
     "14eb9f39-4cf1-4a46-9100-903705304dbc": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0a12e4a2-91ff-4965-9d66-833396db4b9b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "1062c1c2-0763-4fa2-8cbd-a03d851f0b8c": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/indie-campers-linkedin/asset",
+      "external_id": "indie-campers-linkedin_asset"
     },
     "1430880d-b0cf-46a6-bdc2-ebcf18d15c49": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "19e6ca02-2597-445c-ab12-306d2f6d787b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0c481c11-8310-422c-b6c6-2af4c379dee2": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "35373dd4-d66a-4216-85d5-3f25a17fd740": {
       "status": "fail",
@@ -62765,7 +62782,7 @@
     },
     "1d97eca8-ae92-4bcd-99d5-1ce6768ece29": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "39675f41-56fa-42b7-9b4a-0c0765796473": {
       "status": "fail",
@@ -62777,7 +62794,7 @@
     },
     "1e16e457-b19c-4e74-8d65-119ca0b6c460": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "1355b80a-eb72-4df2-bb2c-ac76cd9481cd": {
       "status": "fail",
@@ -62789,19 +62806,20 @@
     },
     "16b5f3f3-eeaa-494d-b36b-6f1412c54e9b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0fc1cbdd-d9e5-477e-83ad-5e5e5ce6ca9a": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "1ee93686-9821-4926-a960-ec93671d9289": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "147d12f3-a482-4aa2-86f0-3dcd203dccd1": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/isar-aerospace-se/propulsion",
+      "external_id": "isar-aerospace-se_propulsion"
     },
     "25b98f39-4528-46a7-a4ee-1164cbcba65d": {
       "status": "fail",
@@ -62809,7 +62827,7 @@
     },
     "0c7d22eb-6afd-4a1f-b48f-d87ac6c3ac17": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "064af36d-7cdb-4bdd-83dd-6b8fff659caf": {
       "status": "fail",
@@ -62817,7 +62835,7 @@
     },
     "018847d5-8628-45e6-9739-4d651bab3f39": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "3b74faf4-f84a-400b-9da5-a284ba970025": {
       "status": "fail",
@@ -62841,7 +62859,7 @@
     },
     "126b39b2-8ec4-4a3c-8164-6dc19e2ff356": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "32f45edf-8a09-4fd6-8a14-b51e25248f55": {
       "status": "fail",
@@ -62849,7 +62867,7 @@
     },
     "0842e685-f4f7-41c9-9e97-b6a4a8bb42ce": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "2eb22c2e-eacd-4e2d-80f5-33f17babd55f": {
       "status": "fail",
@@ -62884,8 +62902,9 @@
       "reason": "rewrite_short"
     },
     "0bff3bf2-b68e-4784-a574-92b6e3358327": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/impact-com/employee",
+      "external_id": "impact-com_employee"
     },
     "0ba435d4-a83a-4037-8ffd-d1edb34c3721": {
       "status": "ok",
@@ -62927,8 +62946,9 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "1979650b-0e5e-4e24-af89-5252d81e19d4": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "skip",
+      "reason": "gh_404",
+      "note": "thin_source title=Area Sales Manager company=IVX Health apply=https://job-boards.greenhouse.io/ivxhealth/jobs/4308073009"
     },
     "363f0b66-0a22-45d4-8d3f-baa9696332e3": {
       "status": "fail",
@@ -62940,7 +62960,7 @@
     },
     "0d599f6c-6996-4a41-8113-57dd5589c705": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "331c1a4e-18f4-4472-b1f3-ef04fa85d92d": {
       "status": "fail",
@@ -62948,11 +62968,11 @@
     },
     "0e04154b-77f4-4f14-be47-43e8a6de38f1": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "1be5cb38-4ba4-4ddd-86c9-0baef6b89689": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "3dacebe4-fe7f-46f1-8dcc-7d8aec31c8c8": {
       "status": "fail",
@@ -62972,7 +62992,7 @@
     },
     "13bcb33e-67c1-4994-827a-ca5e1c6c32af": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "285803a7-3f6d-406a-a9a8-382d4ffd42f8": {
       "status": "fail",
@@ -62980,7 +63000,7 @@
     },
     "18ef37f5-23cb-401b-9135-474468533c25": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "386355d2-b749-444b-8d84-59be0692dde1": {
       "status": "fail",
@@ -62992,7 +63012,7 @@
     },
     "16b4036c-7b33-45ab-82bd-b041a9af106a": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "325329e8-2320-4b4b-96ba-7f0765eb2663": {
       "status": "fail",
@@ -63000,15 +63020,15 @@
     },
     "1d142ca8-88ef-4f6a-8145-99cb50fcd870": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0b503c0e-2452-4cf4-a705-847495777c11": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "10b2c999-3cb7-4de5-aa0d-d323c6723477": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "25418ca1-dc4e-4f69-88b4-d39cae38ae22": {
       "status": "fail",
@@ -63016,7 +63036,7 @@
     },
     "01796fe7-c524-4240-9263-686ab548b50a": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "2242df95-93ce-42e4-bd42-ca878c56a224": {
       "status": "fail",
@@ -63024,7 +63044,7 @@
     },
     "0dbbf992-2596-49aa-8c0a-c2d960e85c15": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "21dadf3b-c814-4b7b-961c-ac4a07d53be1": {
       "status": "fail",
@@ -63036,11 +63056,11 @@
     },
     "1bf1a0a4-556e-44c5-954c-19b5241023cd": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0f1d771e-a911-413e-bb37-aa2dcbbece63": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "21acbcb3-8b2e-44cf-82e2-b34f0e77632c": {
       "status": "fail",
@@ -63072,7 +63092,7 @@
     },
     "1a146797-f6ea-4a06-87df-a87d268dd0f6": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "2374420a-5996-4a3f-babf-dab8212a9f93": {
       "status": "fail",
@@ -63088,7 +63108,7 @@
     },
     "04161cec-56f6-46c8-9962-339ef5ac6ad8": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "3b95b29d-7cd2-46c8-98a9-f7a338188fe7": {
       "status": "fail",
@@ -63100,11 +63120,11 @@
     },
     "122fc456-f543-4e50-abd6-33e674859219": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "174394f2-53d9-4f22-b497-a114c46ec67c": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "25fa5857-f004-40f7-86b6-deefba7956a0": {
       "status": "fail",
@@ -63112,7 +63132,7 @@
     },
     "045d6acf-b741-4e0c-aab5-236208396391": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "3f3073f5-e145-45d2-ab3b-6ad435a57961": {
       "status": "fail",
@@ -63139,16 +63159,18 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "16d95e53-3801-4b71-a60c-0cc077fafeab": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Regional Sales Director company=Kestra Medical Technologies Inc. apply=https://job-boards.greenhouse.io/kestramedicaltechnologiesinc/jobs/4314567009"
     },
     "2e4af33f-c148-497c-b7ef-a35784d7d516": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "0fba6a79-de18-401e-8605-bb38a16a25df": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/k-health/dir",
+      "external_id": "k-health_dir"
     },
     "29742ef6-dd43-410a-a648-824620523f97": {
       "status": "fail",
@@ -63160,7 +63182,7 @@
     },
     "0e59ed28-ce80-433e-a23b-f3bd7f35a035": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "225604bd-6a42-4bba-bea5-e1d65ee0b0ab": {
       "status": "fail",
@@ -63180,7 +63202,7 @@
     },
     "151cc003-a1fe-4864-bca8-bbd737db6d00": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "31371296-3969-47a8-9512-ff656af97a54": {
       "status": "fail",
@@ -63188,7 +63210,7 @@
     },
     "1235c19b-02b3-45ed-9ce8-0787fa6a2f72": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "2cacbf8c-85ba-4ec4-968c-6bba13abdd49": {
       "status": "fail",
@@ -63211,12 +63233,14 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "113e7b42-cd1f-4ce4-85b7-ef91ee19c356": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/keeper-security/prod-mkt",
+      "external_id": "keeper-security_prod-mkt"
     },
     "0d81ad4b-3f54-4308-9ab6-821c1a0bcaaa": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "status": "ok",
+      "path": "/kestra-medical-technologies-inc/patien-de",
+      "external_id": "kestra-medical-technologies-inc_patien-de"
     },
     "04afdab2-aa46-47e0-84e0-93492593537f": {
       "status": "fail",
@@ -63239,12 +63263,14 @@
       "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
     },
     "19c46197-ea95-4e9d-a87f-dc9ea19a1d83": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/michels-corporation/health",
+      "external_id": "michels-corporation_health"
     },
     "188b988c-257d-4986-b6cd-c0cfa18aab97": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/michels-corporation/talent",
+      "external_id": "michels-corporation_talent"
     },
     "3216ada2-471c-448d-9361-80df6350ffa7": {
       "status": "fail",
@@ -63264,19 +63290,20 @@
     },
     "0ece5c72-5546-4f04-8bea-0bf9ff025890": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "323faf4f-fdda-43c6-b8f0-0caf6b676aaa": {
       "status": "fail",
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "1a2f3397-32a2-4805-8ba5-c1acd6843e01": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/michels-corporation/proj-mgr",
+      "external_id": "michels-corporation_proj-mgr"
     },
     "148c49af-67bf-410d-9d6c-dcf9e77aee80": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "2c52fd59-85c3-4c0f-a4b0-a5346c2efd04": {
       "status": "fail",
@@ -63284,7 +63311,7 @@
     },
     "047be22e-4358-4375-a08b-0b24048728e3": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "3216f756-af11-4bc1-b07c-abeb2d48bed8": {
       "status": "fail",
@@ -63300,7 +63327,7 @@
     },
     "1c84c5a5-f855-46f7-b83b-c0ac0fe776a9": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "3efcbaa2-42aa-4706-9092-36328e9bd338": {
       "status": "fail",
@@ -63328,15 +63355,15 @@
     },
     "0fdb0097-637e-424d-a421-e4b959b6e5d1": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "18a93377-4b21-4f0d-9dc0-9ac24f06cd02": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "12412509-d314-4f53-a4a7-eb541192068b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0ae08973-ad49-4646-a0c4-426ed1cef88f": {
       "status": "skip",
@@ -63495,7 +63522,7 @@
     },
     "1631546e-c512-42bc-9dd5-3f491d226171": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "216ea37a-fa39-4912-90d7-0c4e03de32ec": {
       "status": "fail",
@@ -63507,7 +63534,7 @@
     },
     "040fbfb9-29fb-426f-a4fd-4f9c5d7291ae": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "28c72134-3086-4e92-8239-f1bad25aa556": {
       "status": "fail",
@@ -63526,12 +63553,13 @@
       "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
     },
     "1748f44f-9b29-470e-a490-7cf4efd20d4a": {
-      "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "status": "ok",
+      "path": "/michels-corporation/scheduler",
+      "external_id": "michels-corporation_scheduler"
     },
     "07a2a9eb-ba19-40d7-8e36-6f62d75b3b2b": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_gemini-2.5-flash-lite_404:{\n  \"error\": {\n   "
+      "reason": "rewrite_short"
     },
     "3caa1e0f-dc97-4e62-af5e-ab7bd39c1954": {
       "status": "fail",
@@ -63551,7 +63579,7 @@
     },
     "0e4a1542-fae3-478c-a0de-d04b7dc7a0b6": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "1e2f9842-1f1e-48d8-909a-85f7471bc4ca": {
       "status": "fail",
@@ -63559,15 +63587,16 @@
     },
     "172cd60a-2a07-4ec5-9ce4-59d9808c57da": {
       "status": "fail",
-      "reason": "all_providers_failed: gemini:gemini_failed | openai:openai_gpt-4o-mini_err:opena"
+      "reason": "rewrite_short"
     },
     "0d7e27cb-4b0d-4d95-8914-781cc05b2478": {
       "status": "fail",
       "reason": "rewrite_short"
     },
     "1a09cf75-ee36-4892-a6a9-8a82a5012117": {
-      "status": "fail",
-      "reason": "rewrite_short"
+      "status": "ok",
+      "path": "/michels-corporation/tax",
+      "external_id": "michels-corporation_tax"
     },
     "3b2bd617-d208-4a61-a10c-dc8b6686c21f": {
       "status": "fail",
@@ -107048,7 +107077,102 @@
     "064f7f11-5798-460b-aa6b-ea91c625a3d7",
     "16bbdf99-adb8-4fac-b5b4-23a33ff9708f",
     "102300c3-c36f-4e1f-9dc0-0bcdd7fbc559",
-    "159aee38-8412-46cd-98a9-2e24ab8bde50"
+    "159aee38-8412-46cd-98a9-2e24ab8bde50",
+    "1979650b-0e5e-4e24-af89-5252d81e19d4",
+    "16d95e53-3801-4b71-a60c-0cc077fafeab",
+    "1a969d4a-d961-4a34-9f42-bad823eed8ca",
+    "12412509-d314-4f53-a4a7-eb541192068b",
+    "10b2c999-3cb7-4de5-aa0d-d323c6723477",
+    "18ef37f5-23cb-401b-9135-474468533c25",
+    "047be22e-4358-4375-a08b-0b24048728e3",
+    "018847d5-8628-45e6-9739-4d651bab3f39",
+    "0e04154b-77f4-4f14-be47-43e8a6de38f1",
+    "045d6acf-b741-4e0c-aab5-236208396391",
+    "19e6ca02-2597-445c-ab12-306d2f6d787b",
+    "0842e685-f4f7-41c9-9e97-b6a4a8bb42ce",
+    "0c7d22eb-6afd-4a1f-b48f-d87ac6c3ac17",
+    "1631546e-c512-42bc-9dd5-3f491d226171",
+    "1d142ca8-88ef-4f6a-8145-99cb50fcd870",
+    "0ece5c72-5546-4f04-8bea-0bf9ff025890",
+    "0dbbf992-2596-49aa-8c0a-c2d960e85c15",
+    "1e98bbfa-3b24-4561-814b-2a5d52485602",
+    "15f7e27d-ac91-48c3-ac5e-3e2d13e29613",
+    "1a146797-f6ea-4a06-87df-a87d268dd0f6",
+    "01796fe7-c524-4240-9263-686ab548b50a",
+    "0a12e4a2-91ff-4965-9d66-833396db4b9b",
+    "0f1d771e-a911-413e-bb37-aa2dcbbece63",
+    "0e1c5b58-7d81-454f-a387-b9bb71decaef",
+    "18a93377-4b21-4f0d-9dc0-9ac24f06cd02",
+    "0fdb0097-637e-424d-a421-e4b959b6e5d1",
+    "15d335bf-e435-4d4a-8bc2-f84ba36a3097",
+    "1e16e457-b19c-4e74-8d65-119ca0b6c460",
+    "174394f2-53d9-4f22-b497-a114c46ec67c",
+    "1e2f9842-1f1e-48d8-909a-85f7471bc4ca",
+    "1ee93686-9821-4926-a960-ec93671d9289",
+    "0f98d377-9c66-498e-a2aa-356350f5cc13",
+    "0e4a1542-fae3-478c-a0de-d04b7dc7a0b6",
+    "0a384b23-912b-4565-8681-f3ac1b81536f",
+    "172cd60a-2a07-4ec5-9ce4-59d9808c57da",
+    "0c481c11-8310-422c-b6c6-2af4c379dee2",
+    "14eb9f39-4cf1-4a46-9100-903705304dbc",
+    "0946608d-7e82-4e10-b166-08c12737db52",
+    "1430880d-b0cf-46a6-bdc2-ebcf18d15c49",
+    "1d700b3b-ca35-4487-a7b8-b5ce05af38e0",
+    "151cc003-a1fe-4864-bca8-bbd737db6d00",
+    "16b4036c-7b33-45ab-82bd-b041a9af106a",
+    "13bcb33e-67c1-4994-827a-ca5e1c6c32af",
+    "1c84c5a5-f855-46f7-b83b-c0ac0fe776a9",
+    "12cf75b8-b91d-42d3-9401-82900ffa2bf0",
+    "1748f44f-9b29-470e-a490-7cf4efd20d4a",
+    "1a09cf75-ee36-4892-a6a9-8a82a5012117",
+    "07c73551-534b-4285-adf0-01dbc439eb15",
+    "07a2a9eb-ba19-40d7-8e36-6f62d75b3b2b",
+    "0bb9e075-3c70-4cc5-a0fc-ae238a66cc55",
+    "1062c1c2-0763-4fa2-8cbd-a03d851f0b8c",
+    "0fc1cbdd-d9e5-477e-83ad-5e5e5ce6ca9a",
+    "1bf1a0a4-556e-44c5-954c-19b5241023cd",
+    "04f3f038-386e-403f-818a-4531c338d3dd",
+    "051236a6-98a3-4331-9212-c51f5188ea63",
+    "188b988c-257d-4986-b6cd-c0cfa18aab97",
+    "1d97eca8-ae92-4bcd-99d5-1ce6768ece29",
+    "16b5f3f3-eeaa-494d-b36b-6f1412c54e9b",
+    "04161cec-56f6-46c8-9962-339ef5ac6ad8",
+    "0d599f6c-6996-4a41-8113-57dd5589c705",
+    "0e59ed28-ce80-433e-a23b-f3bd7f35a035",
+    "122fc456-f543-4e50-abd6-33e674859219",
+    "1a2f3397-32a2-4805-8ba5-c1acd6843e01",
+    "0d7e27cb-4b0d-4d95-8914-781cc05b2478",
+    "0b503c0e-2452-4cf4-a705-847495777c11",
+    "0fba6a79-de18-401e-8605-bb38a16a25df",
+    "090420a1-97e7-44c8-9e9e-af2c1f96f927",
+    "0d81ad4b-3f54-4308-9ab6-821c1a0bcaaa",
+    "148c49af-67bf-410d-9d6c-dcf9e77aee80",
+    "1235c19b-02b3-45ed-9ce8-0787fa6a2f72",
+    "0e3088c4-0583-41b9-b43b-46212898dba3",
+    "126b39b2-8ec4-4a3c-8164-6dc19e2ff356",
+    "0bff3bf2-b68e-4784-a574-92b6e3358327",
+    "1be5cb38-4ba4-4ddd-86c9-0baef6b89689",
+    "19c46197-ea95-4e9d-a87f-dc9ea19a1d83",
+    "147d12f3-a482-4aa2-86f0-3dcd203dccd1",
+    "040fbfb9-29fb-426f-a4fd-4f9c5d7291ae",
+    "113e7b42-cd1f-4ce4-85b7-ef91ee19c356",
+    "07c306e1-69e9-40cc-8697-8d9d9fbebc18",
+    "1ca08e4d-a763-481a-bc08-3b68e25cc794",
+    "1a228768-5cfd-4c8c-a53e-00731df6b52d",
+    "0bf21af2-f884-4086-b48d-ca8df724c83a",
+    "0bfe59cb-515a-49c2-b378-403f92bb8692",
+    "0ba1475f-81a3-484e-96d6-036acbe2a4a4",
+    "1be3994a-4ae6-4b01-af4e-869503b6c951",
+    "03cf2dbc-d0c9-4ec0-a011-9a39fb75e409",
+    "187b9c0a-313d-4262-9434-8a75919c3483",
+    "0e59bdcf-f1e5-472c-9929-e5b43b1d736f",
+    "15ac411c-43bf-48b8-8dcb-589b888f4a1f",
+    "1a626ff6-bdeb-4e5d-90d6-5a4dbc21c830",
+    "0e727574-0f4e-4cc7-b0c4-8d4760847131",
+    "1fc4d798-2792-462f-a82a-48d215d987dc",
+    "06dd5bd4-7cdc-4d8b-a9d7-9199e4a3d77f",
+    "080da6a3-da2f-47bc-8ea0-3fa4745d60b4",
+    "0623ba06-c943-45a5-a307-8ea4ba45e880"
   ],
   "skipped": {},
   "batches": [
@@ -108674,6 +108798,93 @@
         "/netbrain/ai-eng",
         "/rackner/ai-ml"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 0,
+      "at": "2026-08-13T08:02:57.457Z",
+      "attempted": 77,
+      "ok": 20,
+      "skip": 3,
+      "fail": 57,
+      "reasons": {
+        "gh_404": 1,
+        "no_ai": 3,
+        "posting_older_than_30d": 1,
+        "source_thin": 1,
+        "rewrite_short": 57
+      },
+      "samplePaths": [
+        "/imc/graduate",
+        "/michels-corporation/scheduler",
+        "/michels-corporation/tax",
+        "/horace-mann-agent-opportunities/insurance",
+        "/horace-mann-agent-opportunities/insura-ad",
+        "/indie-campers-linkedin/asset",
+        "/iconiq/assoc-7d",
+        "/impact-com/assoc-qa",
+        "/michels-corporation/talent",
+        "/michels-corporation/proj-mgr",
+        "/k-health/dir",
+        "/iconiq/analys-7e",
+        "/kestra-medical-technologies-inc/patien-de",
+        "/impinj/mgr",
+        "/impact-com/employee",
+        "/michels-corporation/health",
+        "/isar-aerospace-se/propulsion",
+        "/keeper-security/prod-mkt",
+        "/impact-com/biz-dev",
+        "/impact-com/data-sci"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 0,
+      "at": "2026-08-13T08:04:03.993Z",
+      "attempted": 11,
+      "ok": 4,
+      "skip": 1,
+      "fail": 7,
+      "reasons": {
+        "source_thin": 1,
+        "no_ai": 1,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 3,
+        "rewrite_short": 4
+      },
+      "samplePaths": [
+        "/human-agency/venture",
+        "/ians/office",
+        "/human-agency/prod-24",
+        "/human-agency/ventur-02"
+      ]
+    },
+    {
+      "batchNum": 4,
+      "worker": 0,
+      "at": "2026-08-13T08:05:13.758Z",
+      "attempted": 2,
+      "ok": 1,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "rewrite_short": 1
+      },
+      "samplePaths": [
+        "/hp-hood/controls"
+      ]
+    },
+    {
+      "batchNum": 5,
+      "worker": 0,
+      "at": "2026-08-13T08:06:11.963Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "rewrite_short": 1
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
@@ -109819,6 +110030,10 @@
     "greenhouse:qgenda": "gh_404",
     "greenhouse:sohohousecaterer": "gh_404",
     "greenhouse:xpengmotors": "posting_older_than_30d",
-    "greenhouse:narvar": "gh_404"
+    "greenhouse:narvar": "gh_404",
+    "greenhouse:ivxhealth": "gh_404",
+    "greenhouse:kestramedicaltechnologiesinc": "posting_older_than_30d",
+    "greenhouse:imc": "source_thin",
+    "greenhouse:ilia": "source_thin"
   }
 }
