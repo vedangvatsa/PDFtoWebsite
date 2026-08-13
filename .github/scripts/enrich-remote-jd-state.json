@@ -3296,6 +3296,57 @@
     "81c40855-0e93-4320-acd0-ab78554e86db": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "9d0feda4-78e8-45df-a3ef-1b22a40a3eb5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9fa3601f-26d3-4dd4-a679-31e550a4af87": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Governor’s Science and Technology Policy Fellowship company=Pennwatch apply=https://pennwatch.org/pa-welcomes-first-governors-science-and-technology-fellows-for-stem-projects-and-career-exploration-at-commonwealth-agencies/"
+    },
+    "9afe8ad2-abfc-4688-8382-0836b445700f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a373825f-5972-43db-b96c-b553078c6c71": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a63327b4-1db1-4042-92e7-1e0753a39125": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Databricks Mosaic Research Fellow company=Databricks apply=https://www.databricks.com/company/careers"
+    },
+    "a07059c5-0918-473c-968b-368112c5da85": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "b1ed7c60-d50d-4850-9aa7-3ac57faf1b9f": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=CNAS Fellow company=CNAS apply=https://www.cnas.org/careers"
+    },
+    "bae223a7-aaa1-4357-8832-70fbebddcb0c": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "be9ebc6c-ad80-4d2a-8acd-7d6e2fc8f931": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "c2e0fceb-dc92-4cf2-bba3-76e557a4cca8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c6562067-2074-4b7d-9a08-730033953411": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d2354da6-249d-4a62-bf9d-3affe0b02fa0": {
+      "status": "fail",
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -4134,6 +4185,9 @@
     "host:thebulletin.org": "html_403",
     "host:scale.com": "source_thin",
     "host:paragonfellowship.org": "source_thin",
-    "host:redwoodresearch.org": "source_thin"
+    "host:redwoodresearch.org": "source_thin",
+    "host:pennwatch.org": "source_thin",
+    "host:databricks.com": "source_thin",
+    "host:cnas.org": "source_thin"
   }
 }
