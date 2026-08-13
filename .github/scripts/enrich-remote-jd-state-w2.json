@@ -117062,7 +117062,7 @@
     },
     "5e41b034-d0a9-4bc7-a027-9f4c84732d25": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "54e4f966-28a0-42c7-85a5-87c0dd9a30e6": {
       "status": "fail",
@@ -117082,7 +117082,7 @@
     },
     "5af80315-8bdf-4225-867b-faf122143eba": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "5a9d4adb-5a11-485f-a14f-be0caa83b0e2": {
       "status": "fail",
@@ -117561,7 +117561,7 @@
     },
     "5f9efc9f-7c29-49c3-93c9-29916be3a2a4": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "5d1a18ae-c584-49fa-aeed-00962c0ae572": {
       "status": "fail",
@@ -117716,8 +117716,9 @@
       "reason": "rewrite_structure"
     },
     "5e55ef8d-de41-4ddc-a5a1-7324e4ffa57b": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "ok",
+      "path": "/lendable/talent",
+      "external_id": "lendable_talent"
     },
     "5dc810f7-9f97-444a-b7c7-aeb866824fd5": {
       "status": "fail",
@@ -117805,6 +117806,11 @@
     "5b1bbbc1-6b24-4956-b099-f3b9ead3cb20": {
       "status": "fail",
       "reason": "rewrite_structure"
+    },
+    "46129a3e-df5e-49fe-a64f-e16c84114be3": {
+      "status": "skip",
+      "reason": "ashby_not_found",
+      "note": "thin_source title=Data Verification Specialist company=shiftkey apply=https://jobs.ashbyhq.com/shiftkey/4792fd2e-dbfd-441d-9081-921c09ecee91"
     }
   },
   "doneIds": [
@@ -140012,7 +140018,12 @@
     "54d666fe-8121-40e1-8b9e-9925240be7ae",
     "5018ec3b-5a4b-49ec-bac3-677cdf0e5014",
     "55a07f91-5e2e-40de-b224-6d2a2535b854",
-    "4b6905f9-34a4-4fce-8382-37c86dd1aa8f"
+    "4b6905f9-34a4-4fce-8382-37c86dd1aa8f",
+    "46129a3e-df5e-49fe-a64f-e16c84114be3",
+    "5e55ef8d-de41-4ddc-a5a1-7324e4ffa57b",
+    "5f9efc9f-7c29-49c3-93c9-29916be3a2a4",
+    "5e41b034-d0a9-4bc7-a027-9f4c84732d25",
+    "5af80315-8bdf-4225-867b-faf122143eba"
   ],
   "skipped": {},
   "batches": [
@@ -141597,6 +141608,25 @@
         "/kraken123/prod-mgr",
         "/vetcove/prod"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 2,
+      "at": "2026-08-13T12:25:57.323Z",
+      "attempted": 21,
+      "ok": 1,
+      "skip": 1,
+      "fail": 20,
+      "reasons": {
+        "expand_existing": 21,
+        "ashby_not_found": 1,
+        "no_ai": 1,
+        "rewrite_short": 3,
+        "rewrite_structure": 17
+      },
+      "samplePaths": [
+        "/lendable/talent"
+      ]
     }
   ],
   "deadBoards": {
@@ -142640,6 +142670,7 @@
     "greenhouse:creativex": "posting_older_than_30d",
     "greenhouse:earnin": "posting_older_than_30d",
     "lever:qonto": "posting_older_than_30d",
-    "lever:ippon": "posting_older_than_30d"
+    "lever:ippon": "posting_older_than_30d",
+    "ashby:shiftkey": "ashby_not_found"
   }
 }
