@@ -1,0 +1,341 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import { NomadPageShell } from '@/components/nomad/nomad-page-shell';
+import { Clock, Plus, X, Globe } from 'lucide-react';
+
+/* ------------------------------------------------------------------ */
+/*  City timezone data                                                 */
+/* ------------------------------------------------------------------ */
+
+interface TZCity {
+  name: string;
+  tz: string;
+  emoji: string;
+}
+
+const TZ_CITIES: TZCity[] = [
+  { name: 'New York', tz: 'America/New_York', emoji: '🇺🇸' },
+  { name: 'Los Angeles', tz: 'America/Los_Angeles', emoji: '🇺🇸' },
+  { name: 'Toronto', tz: 'America/Toronto', emoji: '🇨🇦' },
+  { name: 'Vancouver', tz: 'America/Vancouver', emoji: '🇨🇦' },
+  { name: 'Mexico City', tz: 'America/Mexico_City', emoji: '🇲🇽' },
+  { name: 'Bogota', tz: 'America/Bogota', emoji: '🇨🇴' },
+  { name: 'Lima', tz: 'America/Lima', emoji: '🇵🇪' },
+  { name: 'Medellin', tz: 'America/Bogota', emoji: '🇨🇴' },
+  { name: 'São Paulo', tz: 'America/Sao_Paulo', emoji: '🇧🇷' },
+  { name: 'Buenos Aires', tz: 'America/Argentina/Buenos_Aires', emoji: '🇦🇷' },
+  { name: 'London', tz: 'Europe/London', emoji: '🇬🇧' },
+  { name: 'Lisbon', tz: 'Europe/Lisbon', emoji: '🇵🇹' },
+  { name: 'Paris', tz: 'Europe/Paris', emoji: '🇫🇷' },
+  { name: 'Berlin', tz: 'Europe/Berlin', emoji: '🇩🇪' },
+  { name: 'Barcelona', tz: 'Europe/Madrid', emoji: '🇪🇸' },
+  { name: 'Amsterdam', tz: 'Europe/Amsterdam', emoji: '🇳🇱' },
+  { name: 'Prague', tz: 'Europe/Prague', emoji: '🇨🇿' },
+  { name: 'Budapest', tz: 'Europe/Budapest', emoji: '🇭🇺' },
+  { name: 'Cairo', tz: 'Africa/Cairo', emoji: '🇪🇬' },
+  { name: 'Cape Town', tz: 'Africa/Johannesburg', emoji: '🇿🇦' },
+  { name: 'Istanbul', tz: 'Europe/Istanbul', emoji: '🇹🇷' },
+  { name: 'Nairobi', tz: 'Africa/Nairobi', emoji: '🇰🇪' },
+  { name: 'Dubai', tz: 'Asia/Dubai', emoji: '🇦🇪' },
+  { name: 'Tbilisi', tz: 'Asia/Tbilisi', emoji: '🇬🇪' },
+  { name: 'Mumbai', tz: 'Asia/Kolkata', emoji: '🇮🇳' },
+  { name: 'Bangkok', tz: 'Asia/Bangkok', emoji: '🇹🇭' },
+  { name: 'Chiang Mai', tz: 'Asia/Bangkok', emoji: '🇹🇭' },
+  { name: 'Ho Chi Minh', tz: 'Asia/Ho_Chi_Minh', emoji: '🇻🇳' },
+  { name: 'Singapore', tz: 'Asia/Singapore', emoji: '🇸🇬' },
+  { name: 'Kuala Lumpur', tz: 'Asia/Kuala_Lumpur', emoji: '🇲🇾' },
+  { name: 'Taipei', tz: 'Asia/Taipei', emoji: '🇹🇼' },
+  { name: 'Manila', tz: 'Asia/Manila', emoji: '🇵🇭' },
+  { name: 'Bali', tz: 'Asia/Makassar', emoji: '🇮🇩' },
+  { name: 'Seoul', tz: 'Asia/Seoul', emoji: '🇰🇷' },
+  { name: 'Tokyo', tz: 'Asia/Tokyo', emoji: '🇯🇵' },
+  { name: 'Sydney', tz: 'Australia/Sydney', emoji: '🇦🇺' },
+  { name: 'Auckland', tz: 'Pacific/Auckland', emoji: '🇳🇿' },
+];
+
+/** Current UTC offset in hours, including DST. */
+function utcOffsetHours(timeZone: string, date = new Date()): number {
+  const dtf = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    hourCycle: 'h23',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  const parts = Object.fromEntries(dtf.formatToParts(date).filter(p => p.type !== 'literal').map(p => [p.type, p.value]));
+  const asUTC = Date.UTC(
+    Number(parts.year),
+    Number(parts.month) - 1,
+    Number(parts.day),
+    Number(parts.hour),
+    Number(parts.minute),
+    Number(parts.second),
+  );
+  return Math.round(((asUTC - date.getTime()) / 3600000) * 4) / 4;
+}
+
+function formatUtcOffset(offset: number): string {
+  return `UTC${offset >= 0 ? '+' : ''}${offset}`;
+}
+
+const HOURS = Array.from({ length: 24 }, (_, i) => i);
+
+const COLORS = [
+  { bar: 'bg-emerald-500/70', text: 'text-emerald-700' },
+  { bar: 'bg-blue-500/70', text: 'text-blue-700' },
+  { bar: 'bg-violet-500/70', text: 'text-violet-700' },
+  { bar: 'bg-amber-500/70', text: 'text-amber-700' },
+];
+
+function formatHour(h: number): string {
+  const norm = ((h % 24) + 24) % 24;
+  if (norm === 0) return '12am';
+  if (norm === 12) return '12pm';
+  return norm < 12 ? `${norm}am` : `${norm - 12}pm`;
+}
+
+function isWorkHour(utcHour: number, offset: number): boolean {
+  const local = ((utcHour + offset) % 24 + 24) % 24;
+  return local >= 9 && local < 18;
+}
+
+export default function TimezoneClient() {
+  const [selected, setSelected] = useState<string[]>(['New York', 'London', 'Chiang Mai']);
+
+  const addCity = (name: string) => {
+    if (selected.length < 4 && !selected.includes(name)) {
+      setSelected([...selected, name]);
+    }
+  };
+
+  const removeCity = (name: string) => {
+    setSelected(selected.filter(n => n !== name));
+  };
+
+  const selectedCities = useMemo(
+    () =>
+      selected
+        .map(name => TZ_CITIES.find(c => c.name === name))
+        .filter((c): c is TZCity => !!c)
+        .map(c => ({ ...c, offset: utcOffsetHours(c.tz) })),
+    [selected],
+  );
+
+  const overlapHours = useMemo(() => {
+    if (selectedCities.length < 2) return 0;
+    return HOURS.filter(h =>
+      selectedCities.every(city => isWorkHour(h, city.offset)),
+    ).length;
+  }, [selectedCities]);
+
+  const availableCities = TZ_CITIES.filter(c => !selected.includes(c.name));
+
+  return (
+    <NomadPageShell
+      title="Timezone Overlap Tool"
+      subtitle="Pick 2–4 cities and see their work hours (9 AM – 6 PM) across a 24-hour UTC bar. Find the best meeting times for distributed teams."
+    >
+
+        {/* City Picker */}
+        <div className="bg-white border border-zinc-200 rounded-xl p-4 md:p-6 mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Globe className="w-4 h-4 text-zinc-400" />
+            <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+              Selected Cities ({selected.length}/4)
+            </span>
+          </div>
+
+          {/* Selected chips */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {selectedCities.map((city, i) => (
+              <span
+                key={city.name}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                  i === 0
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                    : i === 1
+                    ? 'bg-blue-50 border-blue-200 text-blue-700'
+                    : i === 2
+                    ? 'bg-violet-50 border-violet-200 text-violet-700'
+                    : 'bg-amber-50 border-amber-200 text-amber-700'
+                }`}
+              >
+                {city.emoji} {city.name}
+                <span className="text-xs opacity-60">{formatUtcOffset(city.offset)}</span>
+                <button
+                  onClick={() => removeCity(city.name)}
+                  className="ml-1 hover:opacity-70 transition-opacity"
+                  aria-label={`Remove ${city.name}`}
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </span>
+            ))}
+          </div>
+
+          {/* Add city dropdown */}
+          {selected.length < 4 && (
+            <div className="flex items-center gap-2">
+              <Plus className="w-4 h-4 text-zinc-400" />
+              <select
+                onChange={(e) => { addCity(e.target.value); e.target.value = ''; }}
+                defaultValue=""
+                className="text-sm bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300"
+              >
+                <option value="" disabled>Add a city…</option>
+                {availableCities.map(c => (
+                  <option key={c.name} value={c.name}>
+                    {c.emoji} {c.name} ({formatUtcOffset(utcOffsetHours(c.tz))})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Overlap Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
+              <Clock className="w-4 h-4" />
+              <span className="text-xs font-medium uppercase tracking-wider">Work Hour Overlap</span>
+            </div>
+            <div className={`text-2xl font-bold ${overlapHours > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+              {overlapHours} <span className="text-sm font-normal text-zinc-400">hours</span>
+            </div>
+          </div>
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
+              <Globe className="w-4 h-4" />
+              <span className="text-xs font-medium uppercase tracking-wider">Cities Compared</span>
+            </div>
+            <div className="text-2xl font-bold text-zinc-900">
+              {selectedCities.length}
+            </div>
+          </div>
+          <div className="bg-white border border-zinc-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 text-zinc-500 mb-1">
+              <Clock className="w-4 h-4" />
+              <span className="text-xs font-medium uppercase tracking-wider">Max Spread</span>
+            </div>
+            <div className="text-2xl font-bold text-zinc-900">
+              {selectedCities.length >= 2
+                ? `${Math.abs(Math.max(...selectedCities.map(c => c.offset)) - Math.min(...selectedCities.map(c => c.offset)))}h`
+                : '—'}
+            </div>
+          </div>
+        </div>
+
+        {/* 24-Hour Timeline */}
+        {selectedCities.length >= 2 && (
+          <div className="w-full max-w-full min-w-0 bg-white border border-zinc-200 rounded-xl p-4 md:p-6 overflow-x-auto">
+            <div className="min-w-[700px]">
+              {/* UTC Hour Labels */}
+              <div className="flex items-center mb-1 pl-32 md:pl-40">
+                {HOURS.map(h => (
+                  <div key={h} className="flex-1 text-center text-[10px] text-zinc-400 font-mono">
+                    {h.toString().padStart(2, '0')}
+                  </div>
+                ))}
+              </div>
+
+              {/* City Bars */}
+              {selectedCities.map((city, ci) => {
+                const color = COLORS[ci];
+                return (
+                  <div key={city.name} className="flex items-center mb-2">
+                    {/* City Label */}
+                    <div className="w-32 md:w-40 shrink-0 pr-3 text-right">
+                      <div className={`text-sm font-semibold truncate ${color.text}`}>
+                        {city.emoji} {city.name}
+                      </div>
+                      <div className="text-[10px] text-zinc-400">
+                        {formatUtcOffset(city.offset)}
+                      </div>
+                    </div>
+
+                    {/* Hour blocks */}
+                    <div className="flex flex-1 rounded-lg overflow-hidden border border-zinc-200">
+                      {HOURS.map(h => {
+                        const localHour = ((h + city.offset) % 24 + 24) % 24;
+                        const isWork = localHour >= 9 && localHour < 18;
+                        const allWork = selectedCities.every(c => isWorkHour(h, c.offset));
+
+                        return (
+                          <div
+                            key={h}
+                            className={`flex-1 h-8 flex items-center justify-center text-[9px] font-mono transition-colors ${
+                              isWork
+                                ? allWork
+                                  ? `${color.bar} ring-1 ring-inset ring-emerald-400/30`
+                                  : color.bar
+                                : 'bg-zinc-100'
+                            }`}
+                            title={`UTC ${h}:00 → ${city.name} ${formatHour(localHour)}${isWork ? ' (work)' : ''}${allWork ? ' (overlap)' : ''}`}
+                          >
+                            <span className={isWork ? 'text-white/80' : 'text-zinc-400/50'}>
+                              {Math.floor(localHour)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Overlap row */}
+              <div className="flex items-center mt-1">
+                <div className="w-32 md:w-40 shrink-0 pr-3 text-right">
+                  <div className="text-xs font-semibold text-zinc-500">
+                    Overlap
+                  </div>
+                </div>
+                <div className="flex flex-1 rounded-lg overflow-hidden border border-zinc-200">
+                  {HOURS.map(h => {
+                    const allWork = selectedCities.every(c => isWorkHour(h, c.offset));
+                    return (
+                      <div
+                        key={h}
+                        className={`flex-1 h-6 transition-colors ${
+                          allWork
+                            ? 'bg-emerald-500'
+                            : 'bg-zinc-100'
+                        }`}
+                        title={allWork ? `UTC ${h}:00 - All cities working` : `UTC ${h}:00`}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Legend */}
+              <div className="flex items-center gap-4 mt-4 pl-32 md:pl-40 text-xs text-zinc-500">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 rounded bg-emerald-500" />
+                  Overlap (all working)
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 rounded bg-zinc-300" />
+                  Off-hours
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedCities.length < 2 && (
+          <div className="bg-white border border-zinc-200 rounded-xl p-12 text-center">
+            <Clock className="w-10 h-10 text-zinc-300 mx-auto mb-3" />
+            <p className="text-zinc-500">
+              Select at least 2 cities to see timezone overlap.
+            </p>
+          </div>
+        )}
+    </NomadPageShell>
+  );
+}
