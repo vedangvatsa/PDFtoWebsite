@@ -96964,6 +96964,80 @@
     "6dba1f3c-ac5b-428b-8ff5-a9f39ec8262b": {
       "status": "fail",
       "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "6eebbe0c-07f5-4441-8ff8-ad613f9d2303": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7d55ab5f-a581-4862-b8ae-65d094f8c8f1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "67d65565-f271-4739-a2dd-efff33e82820": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "60672110-7698-4ba4-aacf-e35887b54eff": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "720701a7-75c3-459c-bc15-9440c365b45d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "608cef50-c6dd-4f37-9dc6-3b8dbb3f5ea0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6c6d13b3-c04b-4dea-b578-21f5c36b9394": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "61f33402-f76f-4dca-bc51-0fcce7b9644a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7b8c5a55-ee47-4605-8d73-c8c1afa0fcf3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "66b228e9-dc57-4ea6-a72d-3050c724fc26": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "67d1937e-68a3-4fc4-9ac9-e33b921f32ce": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "785601d1-38f0-4f76-b447-2eaa4cebf007": {
+      "status": "ok",
+      "path": "/critical-mass/prog-dir",
+      "external_id": "critical-mass_prog-dir"
+    },
+    "64621e39-e367-4988-95ea-3d7483505262": {
+      "status": "ok",
+      "path": "/5wpr/acct",
+      "external_id": "5wpr_acct"
+    },
+    "67911692-6056-4e91-91c9-09eca554daba": {
+      "status": "ok",
+      "path": "/flow-traders/sw-fa",
+      "external_id": "flow-traders_sw-fa"
+    },
+    "70615c5c-6a38-4062-a931-259b87512fed": {
+      "status": "ok",
+      "path": "/collective-health/compensation",
+      "external_id": "collective-health_compensation"
+    },
+    "75dfe824-7989-459d-be1e-1eb897a99028": {
+      "status": "ok",
+      "path": "/chime-financial-inc/sw-76",
+      "external_id": "chime-financial-inc_sw-76"
+    },
+    "77bd774e-7c18-4398-b993-8881d224fa4a": {
+      "status": "ok",
+      "path": "/airbnb/fe-eng",
+      "external_id": "airbnb_fe-eng"
     }
   },
   "doneIds": [
@@ -114834,7 +114908,24 @@
     "6c0dd862-753e-4274-8cb7-9d68de0b109e",
     "7e5fb710-4e85-4205-b552-86e380d9030b",
     "71297aec-bcb6-4253-b65b-e22926ff82ac",
-    "6dba1f3c-ac5b-428b-8ff5-a9f39ec8262b"
+    "6dba1f3c-ac5b-428b-8ff5-a9f39ec8262b",
+    "6eebbe0c-07f5-4441-8ff8-ad613f9d2303",
+    "7d55ab5f-a581-4862-b8ae-65d094f8c8f1",
+    "67d65565-f271-4739-a2dd-efff33e82820",
+    "60672110-7698-4ba4-aacf-e35887b54eff",
+    "720701a7-75c3-459c-bc15-9440c365b45d",
+    "608cef50-c6dd-4f37-9dc6-3b8dbb3f5ea0",
+    "6c6d13b3-c04b-4dea-b578-21f5c36b9394",
+    "61f33402-f76f-4dca-bc51-0fcce7b9644a",
+    "7b8c5a55-ee47-4605-8d73-c8c1afa0fcf3",
+    "66b228e9-dc57-4ea6-a72d-3050c724fc26",
+    "67d1937e-68a3-4fc4-9ac9-e33b921f32ce",
+    "785601d1-38f0-4f76-b447-2eaa4cebf007",
+    "64621e39-e367-4988-95ea-3d7483505262",
+    "67911692-6056-4e91-91c9-09eca554daba",
+    "70615c5c-6a38-4062-a931-259b87512fed",
+    "75dfe824-7989-459d-be1e-1eb897a99028",
+    "77bd774e-7c18-4398-b993-8881d224fa4a"
   ],
   "skipped": {},
   "batches": [
@@ -116192,6 +116283,27 @@
         "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 4
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 3,
+      "at": "2026-08-13T02:03:46.522Z",
+      "attempted": 17,
+      "ok": 6,
+      "skip": 0,
+      "fail": 11,
+      "reasons": {
+        "expand_existing": 17,
+        "rewrite_short": 11
+      },
+      "samplePaths": [
+        "/critical-mass/prog-dir",
+        "/5wpr/acct",
+        "/flow-traders/sw-fa",
+        "/collective-health/compensation",
+        "/chime-financial-inc/sw-76",
+        "/airbnb/fe-eng"
+      ]
     }
   ],
   "deadBoards": {

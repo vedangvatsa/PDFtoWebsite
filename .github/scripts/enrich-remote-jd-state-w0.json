@@ -89194,6 +89194,344 @@
       "status": "ok",
       "path": "/invoca/join-our",
       "external_id": "invoca_join-our"
+    },
+    "072818a3-9556-4209-b566-d080a2526069": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1d9a09b5-a5c9-44bc-ae66-c6ddf9615878": {
+      "status": "ok",
+      "path": "/federato/forwar-1d",
+      "external_id": "federato_forwar-1d"
+    },
+    "04662b6e-0e90-4a71-807d-f0e57c62949f": {
+      "status": "ok",
+      "path": "/toptal/expert",
+      "external_id": "toptal_expert"
+    },
+    "086a1df8-4333-4f2d-9259-1f39c4059812": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "12cf0bea-f824-403d-8845-9fd258bdf015": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "149175b7-75cc-42c2-a146-0f975eca23f0": {
+      "status": "ok",
+      "path": "/clear-street/assoc",
+      "external_id": "clear-street_assoc"
+    },
+    "065f0f20-b3aa-41db-9b55-c370da3823a9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "18faa71f-cd3e-4899-9568-92d2656e22d2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1a68b36c-0305-4490-8de8-7a484630da5f": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Employment Application company=Northmarq apply=https://job-boards.greenhouse.io/northmarq/jobs/4686480008"
+    },
+    "12f9951e-eb1b-40f8-bc91-27342c5c2c43": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=General Application company=blacksmith apply=https://jobs.ashbyhq.com/blacksmith/ffa65fb4-3dd7-46c5-8400-58a9f1395ce1"
+    },
+    "0dd610ae-cdbd-4ef3-839b-4b7f9f383d9d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "0f76dbdc-2da0-4555-9a9d-28319a91c2f7": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "02f31711-2174-4b65-bb91-3d76573f6e89": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "18f6173f-685f-48e6-b7d8-682afab4a05a": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "074c1dde-4091-41b9-ad45-6c2bc106224a": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0dda6d51-6b80-41d6-8dcf-4c0a7af0586a": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0c327daa-4081-4fa8-a5d7-ec24325cd786": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "12384ae6-e42c-41a6-920d-2bee109fcbb9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0757b9b5-f69c-4937-977d-b4905c38acc5": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "10a1c7c0-fd02-41d6-9e68-cc05f0e35c64": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0499ea43-ab64-4671-af31-2dfef052d7fc": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0414410c-169e-4bb2-b421-71c7ba16219e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1284a02f-73f7-413b-96e1-e10f70fab21d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "19d2e229-6394-4850-b80e-50556f18fc8b": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0eaa1f96-9273-4e9e-8434-c0c67edc99cb": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1acb36e0-c0f9-428a-ba65-a1a9585f8b39": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "10da357f-d805-4f61-9df3-45b391eb59f5": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "09a375f4-5c6d-4f97-8057-31fb23f52213": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0e467d44-7523-48e9-806f-8e1f9675c23c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1e85ded4-36bb-4e05-b6ca-ba506c6e3187": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1b51f1a3-9855-4bf1-87c2-89f9f7932140": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1d852db9-0878-4027-aa11-cf2a228f2011": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "04745a19-2de9-4fe9-b0c2-26b83b704c25": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0f1c7b85-3d31-41c6-8074-9d33325eff95": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "063dc12f-768b-44de-a08e-59542c354b41": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0473a45a-858a-4f5d-a7a3-59b910958b8f": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0f881c83-14fe-4237-a888-498c880da748": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1bb9774f-f9c7-4326-b2ff-d44e37c3b713": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0d023a63-736c-4dc9-a420-520cf88a6f03": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0b025670-f87d-40b7-8afe-f04bb79c0e79": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "189651f5-c200-4f47-a409-78133bdbbe68": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "15913f88-b13d-4b34-a485-30380950a667": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "029ce9f8-4e0c-4a79-befa-f87579f55f75": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "05c00dda-8a4f-4858-934d-2ce16428a07f": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0f33ee40-cef6-4d56-b521-7a227571cef6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "161cb261-8601-4022-8734-149434d5ba27": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "02ccbf19-2991-4982-8173-664525469b98": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "195b4acd-0133-4a9f-a344-7298f68c6288": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1617b31e-7375-4dc3-8bb0-80a13f267101": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "06c9d4b8-9411-4502-8171-431973053cf4": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "187b3207-61a5-4d9c-bd4b-57d69ab076c8": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1c055c2c-409d-4539-af95-747f39f2a9fd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0c88c528-c08f-468f-b01d-2a9981848502": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "10f9a55e-9edf-4a63-87df-45a6ad23c4e4": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1a194472-5552-4241-9df2-5ff05b77d011": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0c8f7971-1018-42be-83ef-dd47c1759edd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1561d0ba-bf78-4403-a06c-d125ae29dc13": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "101a3533-cb0e-4b72-a821-94ea0b186698": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "09fe7be0-4133-45b1-a385-c254d2a693b9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "11b14543-ea5d-47e2-b703-afc3900824cc": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "066ad379-3679-4f3f-9b91-efa816e62889": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0a59dc2a-b709-4864-a113-682fd74311c9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0ba04609-35f4-45e8-8bb3-cf0e26d6adfa": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "090e106f-6664-44d1-a1a8-a9f0166a694c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "169dce4e-7ad7-450a-98c4-59b7912db490": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "16ff9a5d-bc0b-4b9e-94af-e4087b591434": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "072fc183-e39f-4a49-9a51-d80662456ddb": {
+      "status": "ok",
+      "path": "/brilliant-earth/assoc",
+      "external_id": "brilliant-earth_assoc"
+    },
+    "1e4f49d7-a62f-4f3f-9f0d-e4c672ba4e52": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1beff9ac-f0dc-4f25-a85c-4280fb50ad8f": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "061d2362-bdc2-4eae-aad3-623b7051aec7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1ab35efd-24e2-41b3-828e-84134eaea8d0": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1363d4aa-83d3-4dd3-b0a4-92ec045d8b69": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "0944af0c-eab9-4b99-a9b4-7bdd18ff320e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "1d5c1339-f92d-4348-bd7e-7575a11ec072": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "12f656ea-e4e3-4c5f-bd90-5246988c5687": {
+      "status": "ok",
+      "path": "/spacex/cnc-9b",
+      "external_id": "spacex_cnc-9b"
+    },
+    "04f148b0-1118-4126-97f7-dd8d620ea18d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "02149806-1d03-4fcd-8f17-d20fc75b98cf": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1b08fe63-0756-4b8c-bd21-29386fed2705": {
+      "status": "ok",
+      "path": "/samsung-research-america/resear-63",
+      "external_id": "samsung-research-america_resear-63"
+    },
+    "1301ecfd-d957-40b7-b8e2-fb5f63cf39bc": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "19a8da8a-63b6-4c10-b249-e6831103a036": {
+      "status": "ok",
+      "path": "/spacex/facili-f0",
+      "external_id": "spacex_facili-f0"
+    },
+    "0705f715-3482-4f69-b23e-8498a5c9bf0c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0f16dfd6-4c44-4d0e-9acf-2a3aa5df7a5c": {
+      "status": "ok",
+      "path": "/hellofresh/be-fc",
+      "external_id": "hellofresh_be-fc"
     }
   },
   "doneIds": [
@@ -105162,7 +105500,89 @@
     "15b68843-81df-46b1-b337-4edf8ba34bb7",
     "06f6625e-9797-46fe-8cd6-a328b8be47a4",
     "11e9a802-66b8-415b-966f-87d3c20cae67",
-    "08616103-23a8-4a76-bece-c0c0c2d8ec44"
+    "08616103-23a8-4a76-bece-c0c0c2d8ec44",
+    "072818a3-9556-4209-b566-d080a2526069",
+    "1d9a09b5-a5c9-44bc-ae66-c6ddf9615878",
+    "04662b6e-0e90-4a71-807d-f0e57c62949f",
+    "086a1df8-4333-4f2d-9259-1f39c4059812",
+    "12cf0bea-f824-403d-8845-9fd258bdf015",
+    "149175b7-75cc-42c2-a146-0f975eca23f0",
+    "065f0f20-b3aa-41db-9b55-c370da3823a9",
+    "18faa71f-cd3e-4899-9568-92d2656e22d2",
+    "1a68b36c-0305-4490-8de8-7a484630da5f",
+    "12f9951e-eb1b-40f8-bc91-27342c5c2c43",
+    "0dd610ae-cdbd-4ef3-839b-4b7f9f383d9d",
+    "0f76dbdc-2da0-4555-9a9d-28319a91c2f7",
+    "02f31711-2174-4b65-bb91-3d76573f6e89",
+    "18f6173f-685f-48e6-b7d8-682afab4a05a",
+    "074c1dde-4091-41b9-ad45-6c2bc106224a",
+    "0dda6d51-6b80-41d6-8dcf-4c0a7af0586a",
+    "0c327daa-4081-4fa8-a5d7-ec24325cd786",
+    "12384ae6-e42c-41a6-920d-2bee109fcbb9",
+    "0757b9b5-f69c-4937-977d-b4905c38acc5",
+    "10a1c7c0-fd02-41d6-9e68-cc05f0e35c64",
+    "0499ea43-ab64-4671-af31-2dfef052d7fc",
+    "0414410c-169e-4bb2-b421-71c7ba16219e",
+    "1284a02f-73f7-413b-96e1-e10f70fab21d",
+    "19d2e229-6394-4850-b80e-50556f18fc8b",
+    "0eaa1f96-9273-4e9e-8434-c0c67edc99cb",
+    "1acb36e0-c0f9-428a-ba65-a1a9585f8b39",
+    "10da357f-d805-4f61-9df3-45b391eb59f5",
+    "09a375f4-5c6d-4f97-8057-31fb23f52213",
+    "0e467d44-7523-48e9-806f-8e1f9675c23c",
+    "1e85ded4-36bb-4e05-b6ca-ba506c6e3187",
+    "1b51f1a3-9855-4bf1-87c2-89f9f7932140",
+    "1d852db9-0878-4027-aa11-cf2a228f2011",
+    "04745a19-2de9-4fe9-b0c2-26b83b704c25",
+    "0f1c7b85-3d31-41c6-8074-9d33325eff95",
+    "063dc12f-768b-44de-a08e-59542c354b41",
+    "0473a45a-858a-4f5d-a7a3-59b910958b8f",
+    "0f881c83-14fe-4237-a888-498c880da748",
+    "1bb9774f-f9c7-4326-b2ff-d44e37c3b713",
+    "0d023a63-736c-4dc9-a420-520cf88a6f03",
+    "0b025670-f87d-40b7-8afe-f04bb79c0e79",
+    "189651f5-c200-4f47-a409-78133bdbbe68",
+    "15913f88-b13d-4b34-a485-30380950a667",
+    "029ce9f8-4e0c-4a79-befa-f87579f55f75",
+    "05c00dda-8a4f-4858-934d-2ce16428a07f",
+    "0f33ee40-cef6-4d56-b521-7a227571cef6",
+    "161cb261-8601-4022-8734-149434d5ba27",
+    "02ccbf19-2991-4982-8173-664525469b98",
+    "195b4acd-0133-4a9f-a344-7298f68c6288",
+    "1617b31e-7375-4dc3-8bb0-80a13f267101",
+    "06c9d4b8-9411-4502-8171-431973053cf4",
+    "187b3207-61a5-4d9c-bd4b-57d69ab076c8",
+    "1c055c2c-409d-4539-af95-747f39f2a9fd",
+    "0c88c528-c08f-468f-b01d-2a9981848502",
+    "10f9a55e-9edf-4a63-87df-45a6ad23c4e4",
+    "1a194472-5552-4241-9df2-5ff05b77d011",
+    "0c8f7971-1018-42be-83ef-dd47c1759edd",
+    "1561d0ba-bf78-4403-a06c-d125ae29dc13",
+    "101a3533-cb0e-4b72-a821-94ea0b186698",
+    "09fe7be0-4133-45b1-a385-c254d2a693b9",
+    "11b14543-ea5d-47e2-b703-afc3900824cc",
+    "066ad379-3679-4f3f-9b91-efa816e62889",
+    "0a59dc2a-b709-4864-a113-682fd74311c9",
+    "0ba04609-35f4-45e8-8bb3-cf0e26d6adfa",
+    "090e106f-6664-44d1-a1a8-a9f0166a694c",
+    "169dce4e-7ad7-450a-98c4-59b7912db490",
+    "16ff9a5d-bc0b-4b9e-94af-e4087b591434",
+    "072fc183-e39f-4a49-9a51-d80662456ddb",
+    "1e4f49d7-a62f-4f3f-9f0d-e4c672ba4e52",
+    "1beff9ac-f0dc-4f25-a85c-4280fb50ad8f",
+    "061d2362-bdc2-4eae-aad3-623b7051aec7",
+    "1ab35efd-24e2-41b3-828e-84134eaea8d0",
+    "1363d4aa-83d3-4dd3-b0a4-92ec045d8b69",
+    "0944af0c-eab9-4b99-a9b4-7bdd18ff320e",
+    "1d5c1339-f92d-4348-bd7e-7575a11ec072",
+    "12f656ea-e4e3-4c5f-bd90-5246988c5687",
+    "04f148b0-1118-4126-97f7-dd8d620ea18d",
+    "02149806-1d03-4fcd-8f17-d20fc75b98cf",
+    "1b08fe63-0756-4b8c-bd21-29386fed2705",
+    "1301ecfd-d957-40b7-b8e2-fb5f63cf39bc",
+    "19a8da8a-63b6-4c10-b249-e6831103a036",
+    "0705f715-3482-4f69-b23e-8498a5c9bf0c",
+    "0f16dfd6-4c44-4d0e-9acf-2a3aa5df7a5c"
   ],
   "skipped": {},
   "batches": [
@@ -106678,6 +107098,49 @@
       "samplePaths": [
         "/finni-health/hybrid-58"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T02:03:51.352Z",
+      "attempted": 8,
+      "ok": 3,
+      "skip": 0,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 8,
+        "rewrite_short": 5
+      },
+      "samplePaths": [
+        "/federato/forwar-1d",
+        "/toptal/expert",
+        "/clear-street/assoc"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T03:20:07.831Z",
+      "attempted": 72,
+      "ok": 5,
+      "skip": 2,
+      "fail": 67,
+      "reasons": {
+        "expand_existing": 70,
+        "source_thin": 1,
+        "no_ai": 2,
+        "posting_older_than_30d": 1,
+        "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo": 4,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 58,
+        "rewrite_short": 5
+      },
+      "samplePaths": [
+        "/brilliant-earth/assoc",
+        "/spacex/cnc-9b",
+        "/samsung-research-america/resear-63",
+        "/spacex/facili-f0",
+        "/hellofresh/be-fc"
+      ]
     }
   ],
   "deadBoards": {
@@ -107812,6 +108275,8 @@
     "host:thekentuckycastle.bamboohr.com": "html_short",
     "host:lifestraw.bamboohr.com": "html_short",
     "host:tmgworld.bamboohr.com": "html_short",
-    "host:vandenrecycling.bamboohr.com": "html_short"
+    "host:vandenrecycling.bamboohr.com": "html_short",
+    "greenhouse:northmarq": "source_thin",
+    "ashby:blacksmith": "posting_older_than_30d"
   }
 }

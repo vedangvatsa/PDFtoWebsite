@@ -51591,6 +51591,347 @@
       "status": "ok",
       "path": "/modus/ai",
       "external_id": "modus_ai"
+    },
+    "b9585926-1cf2-4b0a-b1eb-ad975c3c0a92": {
+      "status": "ok",
+      "path": "/buildkite/prod",
+      "external_id": "buildkite_prod"
+    },
+    "a53b7d72-6d8b-4fc5-af29-0fee3f33c2c9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "aa74d25b-075d-4fff-b96f-23aebc529c77": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "b1524f56-27c8-48ed-84ea-7fa427826fa6": {
+      "status": "ok",
+      "path": "/bandwidth/tech",
+      "external_id": "bandwidth_tech"
+    },
+    "b91da504-9adf-4f7f-8d4e-74dd4819dc90": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a13845e7-3ae9-47a5-bc2e-50cae2d7b0b5": {
+      "status": "ok",
+      "path": "/enova-international/accountant",
+      "external_id": "enova-international_accountant"
+    },
+    "b658cfff-320a-4d0b-ab97-166f5a1315cf": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "b04516b8-966b-4b5d-9c0b-11d9cf109bdb": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "b7aae962-e5d1-4424-bab5-319e407bf7c7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a02de249-7b4c-48f9-a373-b2d87e7638c5": {
+      "status": "ok",
+      "path": "/asset-living/region-47",
+      "external_id": "asset-living_region-47"
+    },
+    "a3f0349b-d571-4716-98f8-7b24979794ce": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a882901b-7b9c-44bf-be67-77cd19a7bc01": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a8e2020b-c306-43a7-89cf-4fe10fafbb58": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "b5ac8dfc-4e4f-4bd4-a419-719b43f9b5ae": {
+      "status": "ok",
+      "path": "/formlabs/ops-37",
+      "external_id": "formlabs_ops-37"
+    },
+    "a8af5296-a594-4649-8782-4ebbcf53bfb5": {
+      "status": "ok",
+      "path": "/cloudflare/sys-ae",
+      "external_id": "cloudflare_sys-ae"
+    },
+    "a74440ab-06dc-4ffc-88af-07c0a16fb029": {
+      "status": "ok",
+      "path": "/galaxy/vp-1d",
+      "external_id": "galaxy_vp-1d"
+    },
+    "b1422ba9-d608-4a27-89fd-a150a64ea98d": {
+      "status": "ok",
+      "path": "/fanduel/mkt-ops",
+      "external_id": "fanduel_mkt-ops"
+    },
+    "ac6b13bc-3a04-4331-9747-70eb83060e29": {
+      "status": "ok",
+      "path": "/greenhouse/prod-mgr",
+      "external_id": "greenhouse_prod-mgr"
+    },
+    "aa0086b0-85f3-4cba-be04-20cffe08307f": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Agente Stone - Executivo company=Stone - Linkedin apply=https://job-boards.greenhouse.io/stone/jobs/7778903003"
+    },
+    "ba5503bb-e73b-48ff-9bcb-a3fa7b96e214": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Agente Stone - Executivo company=Stone - Linkedin apply=https://job-boards.greenhouse.io/stone/jobs/7797756003"
+    },
+    "af69a673-e035-4b19-a030-b399f5f16835": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Executivo(a) Comercial Externo | Anápolis/GO company=Stone - Linkedin apply=https://job-boards.greenhouse.io/stone/jobs/7778935003"
+    },
+    "b3150345-50eb-4ec6-9876-fadd20b6ed82": {
+      "status": "skip",
+      "reason": "posting_older_than_30d",
+      "note": "thin_source title=Executivo(a) Comercial Externo | Palmas/TO company=Stone - Linkedin apply=https://job-boards.greenhouse.io/stone/jobs/7776206003"
+    },
+    "bd689bf7-b215-42c0-9496-2976f3597001": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Agente Stone - Executivo company=Stone - Linkedin apply=https://job-boards.greenhouse.io/stone/jobs/7835723003"
+    },
+    "bde1edc4-e0b0-4092-94c9-83abbdf50190": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Customer Support Specialist I company=Uber Freight apply=https://job-boards.greenhouse.io/uberfreight/jobs/5381899008"
+    },
+    "b051be47-543a-43cc-a5a9-85a5b1453f09": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b6ec92e3-5a62-4632-8c16-20e0660bc4c5": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b99588b5-4231-4f65-bf93-3454fd9c5f02": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b6c9ab5c-9fea-4baa-b074-7f2c83f19e1e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a69111dc-5aed-469e-816c-1a304dd7b1c6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "b33be61d-4661-4046-a31a-61fb87146d1c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "a9189521-0442-4993-8dcf-31a6d901be37": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "a0fc42af-8158-49e5-872b-5247cc0e9bec": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "ad14c8a5-4456-49bb-81f9-f69b29dec870": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "a1ac735e-0d8a-4301-829e-c7bf2b291858": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "ab3eb248-b5a2-4c74-8d73-fbb9319084e1": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "baf33a58-6d08-49b2-b250-016ca39f7a81": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "a3d089e5-cc2a-490b-aaf8-c5c62200c362": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "a431f281-8991-4aa3-9fd2-ac990c0b26e5": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo"
+    },
+    "b91d8a34-d4bd-4d24-9b47-afdb12129850": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a08eccf6-f14b-414a-ab95-021eec4003b8": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b07dbb76-c60d-4386-8a68-b31db1d01804": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a6f4dcba-121d-4b42-a9cc-2a8b18026942": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ad2be742-3c06-4d7e-a2fc-0940dfa716e2": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "bdd7d04e-9149-4b95-a36f-3938a41a73bb": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b1ac3a5b-8ced-48c1-bfca-384453942af2": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "acf91ea5-2f1a-4b21-addd-97e690b5c6d2": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a1b89339-8d58-4b6a-9088-732315a66382": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b2958a93-2e84-4c7d-8d33-7fea7c1cef0c": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "afe8f27a-0dcd-4898-bd92-452781e93d00": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a6749bd8-3727-4f5a-9f96-7271e2e4d5b3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a3455384-e5f5-43fd-a85a-e0a63af3a257": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ac44ec3e-575b-4888-9b98-433f6f43cc79": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b74c232a-5fa0-4360-aebf-b75b7a718d9e": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a93bef72-4df1-43d7-b5a2-f0afc3a4a3e6": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b42cfe28-53f5-4ad3-926d-8b761defd5a1": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ab9b6f71-d719-4e5f-9637-60c4c08da6e2": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ad7422e2-746e-4eb3-aecf-163f2fc8393d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a2af391c-2ec4-4e09-811c-4b9947038791": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "baa568ee-479a-4b59-a1d5-8f2757dd644f": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b871a474-c7cd-435c-864c-ee79dfa55390": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ad36a08a-2c00-4c5b-8024-91376035edc9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a59c3edd-0b1a-4d29-badf-c467f303a4cf": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a2a69149-cc7d-458f-92a9-3937faca92a9": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "aca9ee78-58ac-45a2-a4e3-f58359775a52": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ae4136ba-efe2-4147-8112-22af9c894638": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a56343b2-194b-469e-8a92-4bd58ddd20cd": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b8c94b4e-5d02-4a9c-9217-1e4b3e7ea602": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "aba4d7e2-9842-4345-8305-346e0f5d9af3": {
+      "status": "ok",
+      "path": "/dh-pace/buyer",
+      "external_id": "dh-pace_buyer"
+    },
+    "a357c502-0c94-49a2-91e4-8a86ef24ef32": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a5fa8197-b350-4d5f-9226-25a4f80b7755": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "afbd9105-a00b-4fab-813e-bf2daa6de3a0": {
+      "status": "ok",
+      "path": "/kelso-industries/corpor-f2",
+      "external_id": "kelso-industries_corpor-f2"
+    },
+    "ab39ece1-a992-46cf-9a6e-f4635e83fb05": {
+      "status": "ok",
+      "path": "/may-mobility/tech-0b",
+      "external_id": "may-mobility_tech-0b"
+    },
+    "b3324036-c2ee-468d-90bf-0c81eb3ef3e8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a08e2f8d-2a2a-4989-90eb-a8da413b9c26": {
+      "status": "ok",
+      "path": "/launchdarkly/be-20",
+      "external_id": "launchdarkly_be-20"
+    },
+    "acba05f6-206d-45f5-b5a6-9dbc8a460521": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "aab84a18-dfd5-4a4b-9b04-09fb72a94e51": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "ab06f7ea-5aeb-46d8-8940-5a1b60645364": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "b41044a7-8e2b-48c6-9d50-5c90eaeb7275": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+    },
+    "a2f13c9b-7b67-4ffc-8d65-d5db4acc21b9": {
+      "status": "ok",
+      "path": "/spacex/lead-ehs",
+      "external_id": "spacex_lead-ehs"
+    },
+    "ac785ee6-dab0-477c-b34b-f0fc9f2cb8fc": {
+      "status": "ok",
+      "path": "/oscar-health/assoc-db",
+      "external_id": "oscar-health_assoc-db"
     }
   },
   "doneIds": [
@@ -63506,7 +63847,87 @@
     "a32b3693-3322-4db9-8420-30be1658e012",
     "ae45e543-ccf8-4a1c-87a9-5d88402e9c9b",
     "a5cf0cb7-5e58-4965-91b3-60b529ea045c",
-    "bc5a7ee5-1c91-4306-8c43-e4ecf0f77fc6"
+    "bc5a7ee5-1c91-4306-8c43-e4ecf0f77fc6",
+    "b9585926-1cf2-4b0a-b1eb-ad975c3c0a92",
+    "a53b7d72-6d8b-4fc5-af29-0fee3f33c2c9",
+    "aa74d25b-075d-4fff-b96f-23aebc529c77",
+    "b1524f56-27c8-48ed-84ea-7fa427826fa6",
+    "b91da504-9adf-4f7f-8d4e-74dd4819dc90",
+    "a13845e7-3ae9-47a5-bc2e-50cae2d7b0b5",
+    "b658cfff-320a-4d0b-ab97-166f5a1315cf",
+    "b04516b8-966b-4b5d-9c0b-11d9cf109bdb",
+    "b7aae962-e5d1-4424-bab5-319e407bf7c7",
+    "a02de249-7b4c-48f9-a373-b2d87e7638c5",
+    "a3f0349b-d571-4716-98f8-7b24979794ce",
+    "a882901b-7b9c-44bf-be67-77cd19a7bc01",
+    "a8e2020b-c306-43a7-89cf-4fe10fafbb58",
+    "b5ac8dfc-4e4f-4bd4-a419-719b43f9b5ae",
+    "a8af5296-a594-4649-8782-4ebbcf53bfb5",
+    "a74440ab-06dc-4ffc-88af-07c0a16fb029",
+    "b1422ba9-d608-4a27-89fd-a150a64ea98d",
+    "ac6b13bc-3a04-4331-9747-70eb83060e29",
+    "aa0086b0-85f3-4cba-be04-20cffe08307f",
+    "ba5503bb-e73b-48ff-9bcb-a3fa7b96e214",
+    "af69a673-e035-4b19-a030-b399f5f16835",
+    "b3150345-50eb-4ec6-9876-fadd20b6ed82",
+    "bd689bf7-b215-42c0-9496-2976f3597001",
+    "bde1edc4-e0b0-4092-94c9-83abbdf50190",
+    "b051be47-543a-43cc-a5a9-85a5b1453f09",
+    "b6ec92e3-5a62-4632-8c16-20e0660bc4c5",
+    "b99588b5-4231-4f65-bf93-3454fd9c5f02",
+    "b6c9ab5c-9fea-4baa-b074-7f2c83f19e1e",
+    "a69111dc-5aed-469e-816c-1a304dd7b1c6",
+    "b33be61d-4661-4046-a31a-61fb87146d1c",
+    "a9189521-0442-4993-8dcf-31a6d901be37",
+    "a0fc42af-8158-49e5-872b-5247cc0e9bec",
+    "ad14c8a5-4456-49bb-81f9-f69b29dec870",
+    "a1ac735e-0d8a-4301-829e-c7bf2b291858",
+    "ab3eb248-b5a2-4c74-8d73-fbb9319084e1",
+    "baf33a58-6d08-49b2-b250-016ca39f7a81",
+    "a3d089e5-cc2a-490b-aaf8-c5c62200c362",
+    "a431f281-8991-4aa3-9fd2-ac990c0b26e5",
+    "b91d8a34-d4bd-4d24-9b47-afdb12129850",
+    "a08eccf6-f14b-414a-ab95-021eec4003b8",
+    "b07dbb76-c60d-4386-8a68-b31db1d01804",
+    "a6f4dcba-121d-4b42-a9cc-2a8b18026942",
+    "ad2be742-3c06-4d7e-a2fc-0940dfa716e2",
+    "bdd7d04e-9149-4b95-a36f-3938a41a73bb",
+    "b1ac3a5b-8ced-48c1-bfca-384453942af2",
+    "acf91ea5-2f1a-4b21-addd-97e690b5c6d2",
+    "a1b89339-8d58-4b6a-9088-732315a66382",
+    "b2958a93-2e84-4c7d-8d33-7fea7c1cef0c",
+    "afe8f27a-0dcd-4898-bd92-452781e93d00",
+    "a6749bd8-3727-4f5a-9f96-7271e2e4d5b3",
+    "a3455384-e5f5-43fd-a85a-e0a63af3a257",
+    "ac44ec3e-575b-4888-9b98-433f6f43cc79",
+    "b74c232a-5fa0-4360-aebf-b75b7a718d9e",
+    "a93bef72-4df1-43d7-b5a2-f0afc3a4a3e6",
+    "b42cfe28-53f5-4ad3-926d-8b761defd5a1",
+    "ab9b6f71-d719-4e5f-9637-60c4c08da6e2",
+    "ad7422e2-746e-4eb3-aecf-163f2fc8393d",
+    "a2af391c-2ec4-4e09-811c-4b9947038791",
+    "baa568ee-479a-4b59-a1d5-8f2757dd644f",
+    "b871a474-c7cd-435c-864c-ee79dfa55390",
+    "ad36a08a-2c00-4c5b-8024-91376035edc9",
+    "a59c3edd-0b1a-4d29-badf-c467f303a4cf",
+    "a2a69149-cc7d-458f-92a9-3937faca92a9",
+    "aca9ee78-58ac-45a2-a4e3-f58359775a52",
+    "ae4136ba-efe2-4147-8112-22af9c894638",
+    "a56343b2-194b-469e-8a92-4bd58ddd20cd",
+    "b8c94b4e-5d02-4a9c-9217-1e4b3e7ea602",
+    "aba4d7e2-9842-4345-8305-346e0f5d9af3",
+    "a357c502-0c94-49a2-91e4-8a86ef24ef32",
+    "a5fa8197-b350-4d5f-9226-25a4f80b7755",
+    "afbd9105-a00b-4fab-813e-bf2daa6de3a0",
+    "ab39ece1-a992-46cf-9a6e-f4635e83fb05",
+    "b3324036-c2ee-468d-90bf-0c81eb3ef3e8",
+    "a08e2f8d-2a2a-4989-90eb-a8da413b9c26",
+    "acba05f6-206d-45f5-b5a6-9dbc8a460521",
+    "aab84a18-dfd5-4a4b-9b04-09fb72a94e51",
+    "ab06f7ea-5aeb-46d8-8940-5a1b60645364",
+    "b41044a7-8e2b-48c6-9d50-5c90eaeb7275",
+    "a2f13c9b-7b67-4ffc-8d65-d5db4acc21b9",
+    "ac785ee6-dab0-477c-b34b-f0fc9f2cb8fc"
   ],
   "skipped": {},
   "batches": [
@@ -69686,6 +70107,71 @@
       "samplePaths": [
         "/modus/ai"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 5,
+      "at": "2026-08-13T02:03:51.932Z",
+      "attempted": 10,
+      "ok": 4,
+      "skip": 0,
+      "fail": 6,
+      "reasons": {
+        "expand_existing": 10,
+        "rewrite_short": 6
+      },
+      "samplePaths": [
+        "/buildkite/prod",
+        "/bandwidth/tech",
+        "/enova-international/accountant",
+        "/asset-living/region-47"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 5,
+      "at": "2026-08-13T02:55:56.124Z",
+      "attempted": 8,
+      "ok": 5,
+      "skip": 0,
+      "fail": 3,
+      "reasons": {
+        "expand_existing": 8,
+        "rewrite_short": 3
+      },
+      "samplePaths": [
+        "/formlabs/ops-37",
+        "/cloudflare/sys-ae",
+        "/galaxy/vp-1d",
+        "/fanduel/mkt-ops",
+        "/greenhouse/prod-mgr"
+      ]
+    },
+    {
+      "batchNum": 3,
+      "worker": 5,
+      "at": "2026-08-13T03:20:05.458Z",
+      "attempted": 56,
+      "ok": 6,
+      "skip": 6,
+      "fail": 50,
+      "reasons": {
+        "expand_existing": 54,
+        "posting_older_than_30d": 4,
+        "no_ai": 6,
+        "source_thin": 2,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 35,
+        "openrouter_inclusionai/ling-2.6-flash_err:The operation was aborted due to timeo": 10,
+        "rewrite_short": 5
+      },
+      "samplePaths": [
+        "/dh-pace/buyer",
+        "/kelso-industries/corpor-f2",
+        "/may-mobility/tech-0b",
+        "/launchdarkly/be-20",
+        "/spacex/lead-ehs",
+        "/oscar-health/assoc-db"
+      ]
     }
   ],
   "deadBoards": {
@@ -70055,6 +70541,8 @@
     "ashby:uptimeai": "posting_older_than_30d",
     "ashby:rwazi": "posting_older_than_30d",
     "ashby:cursor": "posting_older_than_30d",
-    "ashby:kirin": "posting_older_than_30d"
+    "ashby:kirin": "posting_older_than_30d",
+    "greenhouse:stone": "source_thin",
+    "greenhouse:uberfreight": "source_thin"
   }
 }
