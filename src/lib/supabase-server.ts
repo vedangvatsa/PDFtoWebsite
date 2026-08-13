@@ -138,6 +138,11 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
     const emailRaw = getLink('email') || '';
     const email = emailRaw ? repairSpacedEmail(emailRaw) || emailRaw : undefined;
 
+    const rawLoc = getLink('location');
+    const location = rawLoc
+      ? rawLoc.replace(/^(?:university|college|institute|school|faculty)\s+of\s+[^,]+,\s*/i, '').trim()
+      : undefined;
+
     return {
         profile: {
             userId: profile.id,
@@ -145,7 +150,7 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
             slug: profile.username || slug,
             email,
             phone: getLink('phone'),
-            location: getLink('location'),
+            location,
             summary,
             themeId: profile.theme_id || 'modern-creative',
             avatarUrl: profile.profile_picture_url || '',
@@ -160,6 +165,7 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
               if (l.type === 'linkedin') return { ...l, value: sanitizeSocialHandle(l.value || '', 'linkedin') };
               if (l.type === 'github') return { ...l, value: sanitizeSocialHandle(l.value || '', 'github') };
               if (l.type === 'email' && l.value) return { ...l, value: repairSpacedEmail(l.value) || l.value };
+              if (l.type === 'location' && l.value) return { ...l, value: l.value.replace(/^(?:university|college|institute|school|faculty)\s+of\s+[^,]+,\s*/i, '').trim() };
               return l;
             })
         },

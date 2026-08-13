@@ -26,10 +26,99 @@ export function isEditorOnlyCustomSection(
   return EDITOR_ONLY_SECTION_RE.test(String(section?.sectionTitle || '').trim());
 }
 
-export function publicCustomSections<T extends { sectionTitle?: string | null }>(
+function splitMashedProjects(itemTitle: string, itemSubtitle: string, itemDesc: string, originalItem: any): any[] {
+  if (!itemDesc || itemDesc.length < 120) {
+    return [{ ...originalItem, description: itemDesc }];
+  }
+
+  const lines = itemDesc.split(/\r?\n/);
+  const blocks: Array<{ title: string; subtitle: string; lines: string[] }> = [];
+
+  let currentTitle = itemTitle || '';
+  let currentSubtitle = itemSubtitle || '';
+  let currentLines: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const isSubTitle =
+      i > 0 &&
+      line.length >= 6 &&
+      line.length <= 85 &&
+      !line.endsWith('.') &&
+      !line.endsWith(':') &&
+      !/^[•\-\*▪▸►‣○●]/.test(line) &&
+      !/^(developed|built|designed|created|implemented|worked|supported|analyzed|applied|maintained)\b/i.test(line) &&
+      (line.includes(' - ') || line.includes(' : ') || /^[A-Z][A-Za-z0-9\s()&/-]+$/.test(line)) &&
+      (lines[i + 1] ? lines[i + 1].trim().length > 0 : true);
+
+    if (isSubTitle) {
+      if (currentLines.length > 0 || currentTitle) {
+        blocks.push({
+          title: currentTitle,
+          subtitle: currentSubtitle,
+          lines: currentLines,
+        });
+      }
+      currentTitle = line;
+      currentSubtitle = '';
+      currentLines = [];
+    } else {
+      currentLines.push(line);
+    }
+  }
+
+  if (currentLines.length > 0 || currentTitle) {
+    blocks.push({
+      title: currentTitle,
+      subtitle: currentSubtitle,
+      lines: currentLines,
+    });
+  }
+
+  if (blocks.length <= 1) {
+    return [{ ...originalItem, description: itemDesc }];
+  }
+
+  return blocks.map((b, idx) => ({
+    ...originalItem,
+    id: `${originalItem.id || 'item'}-${idx}`,
+    title: b.title || originalItem.title,
+    subtitle: b.subtitle || '',
+    description: b.lines.join('\n').trim(),
+  }));
+}
+
+export function publicCustomSections<T extends { sectionTitle?: string | null; items?: any[] }>(
   sections: T[] | null | undefined
 ): T[] {
-  return (Array.isArray(sections) ? sections : []).filter((s) => !isEditorOnlyCustomSection(s));
+  return (Array.isArray(sections) ? sections : [])
+    .filter((s) => !isEditorOnlyCustomSection(s))
+    .map((s) => {
+      if (!Array.isArray(s.items)) return s;
+      const items = s.items.flatMap((item: any) => {
+        const title = String(item?.title || '').trim();
+        const subtitle = String(item?.subtitle || '').trim();
+        const desc = String(item?.description || '').trim();
+
+        if (/review and move into the right sections/i.test(title) || /review and move/i.test(subtitle)) {
+          return [];
+        }
+        if (/imported cv text|raw cv text|unparsed cv|parse salvage/i.test(title)) {
+          return [];
+        }
+        if (desc.length > 300 && (desc.includes('PERSONAL STATEMENT') || desc.includes('WORK EXPERIENCE') || desc.includes('EDUCATION'))) {
+          return [];
+        }
+
+        const cleanDesc = desc.replace(/JavaScriptScript/gi, 'JavaScript/TypeScript');
+        return splitMashedProjects(title, subtitle, cleanDesc, item);
+      });
+
+      return { ...s, items };
+    })
+    .filter((s) => !Array.isArray(s.items) || s.items.length > 0);
 }
 
 // Phone/desktop screenshot default names (iOS "Screenshot 2026 08 04 …", Android "IMG_2026…")
@@ -306,7 +395,7 @@ export function cleanCompany(raw: string): string {
 
 /** Strong role tokens — not lone "data"/"product"/"senior", which match company names. */
 const STRONG_JOB_TITLE_RE =
-  /\b(engineer|developer|manager|director|analyst|designer|consultant|architect|specialist|scientist|researcher|programmer|coordinator|officer|founder|intern)\b/i;
+  /\b(engineer|developer|manager|director|analyst|designer|consultant|architect|specialist|scientist|researcher|programmer|coordinator|officer|founder|intern|assistant|trader|ambassador|associate|replenishment|lead|executive|clerk|representative|administrator)\b/i;
 
 export function looksLikeJobTitle(raw: string): boolean {
   const t = String(raw || '').trim();
@@ -347,7 +436,7 @@ function stripTrailingRoleFromName(name: string): string {
 
 function splitTitleCompanyDash(title: string): { title: string; company: string } | null {
   const spaced = String(title || '')
-    .split(/\s*[—–]\s*/)
+    .split(/\s*[-–—:|]\s*/)
     .map((s) => s.trim())
     .filter(Boolean);
   if (spaced.length < 2) return null;
@@ -383,10 +472,11 @@ export function repairWorkExperienceRow<
     company = '';
   }
 
-  if (title && !company) {
-    const split = splitTitleCompanyDash(title);
-    if (split) {
-      title = split.title;
+  // Handle embedded title–company separators ("Morrisons – Retail Assistant", "Waitrose – Night Replenishment")
+  const split = splitTitleCompanyDash(title);
+  if (split) {
+    title = split.title;
+    if (!company || company.length < 3 || /supermarket|retail|store|company/i.test(company)) {
       company = split.company.replace(TRAILING_LOCATION_RE, '').trim();
     }
   }
@@ -404,22 +494,116 @@ export function repairTitleCompanySwap<T extends { title?: string; company?: str
   return repairWorkExperienceRow(w);
 }
 
+function isOrphanFragmentRow(w: { title?: string; company?: string; startDate?: string; endDate?: string }): boolean {
+  if (w.startDate || w.endDate) return false;
+  const title = String(w.title || '').trim().toLowerCase();
+  const company = String(w.company || '').trim().toLowerCase();
+  if (looksLikeJobTitle(title)) return false;
+
+  if (
+    /^(product quality|stock availability|order fulfilment|key achievements|responsibilities|duties|deliver exceptional|work collaboratively|handle checkout|support stock)\b/i.test(title) ||
+    /^(stock availability|order fulfilment|product quality|etc)\b/i.test(company) ||
+    (company.includes('/') && company.includes('and') && !looksLikeJobTitle(title))
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export function publicWorkExperience<
-  T extends { title?: string | null; company?: string | null; description?: string | null },
+  T extends { title?: string | null; company?: string | null; description?: string | null; startDate?: string | null; endDate?: string | null },
 >(rows: T[] | null | undefined): T[] {
-  return (Array.isArray(rows) ? rows : [])
-    .map((w) => repairWorkExperienceRow(w as T & { title?: string; company?: string; description?: string }))
-    .filter((w) => String(w?.title || '').trim() || String(w?.company || '').trim());
+  const list = (Array.isArray(rows) ? rows : []).map((w) =>
+    repairWorkExperienceRow(w as T & { title?: string; company?: string; description?: string })
+  );
+
+  const out: T[] = [];
+  for (const w of list) {
+    if (isOrphanFragmentRow(w as any)) {
+      if (out.length > 0) {
+        const last = out[out.length - 1];
+        const fragText = [w.title, w.company, w.description].filter(Boolean).join('\n');
+        last.description = [last.description, fragText].filter(Boolean).join('\n\n');
+      }
+      continue;
+    }
+    if (String(w?.title || '').trim() || String(w?.company || '').trim()) {
+      out.push(w);
+    }
+  }
+  return out;
+}
+
+function repairEducationList<
+  T extends { institution?: string | null; degree?: string | null; startDate?: string | null; endDate?: string | null; description?: string | null },
+>(rows: T[]): T[] {
+  const result: T[] = [];
+  const isSchoolName = (s: string) =>
+    /university|college|institute|school|academy|polytechnic|faculty/i.test(s);
+  const isGradeOrShort = (s: string) =>
+    /^(merit|pass|distinction|first class|hono?urs|cgpa|gpa|grade|score|mark)\b|^\d+(\.\d+)?(\/\d+)?$/i.test(
+      s.trim()
+    ) || /^cgpa:\s*\d/i.test(s.trim());
+  const isDegreeTitle = (s: string) =>
+    /\b(msc|bsc|btech|mtech|ba|ma|phd|diploma|bachelor|master|degree|associate)\b/i.test(s);
+
+  for (let i = 0; i < rows.length; i++) {
+    let curr = { ...rows[i] };
+    let inst = String(curr.institution || '').trim();
+    let deg = String(curr.degree || '').trim();
+
+    if (inst.toLowerCase() === deg.toLowerCase() && isSchoolName(inst)) {
+      deg = '';
+    }
+
+    if (i + 1 < rows.length) {
+      const next = rows[i + 1];
+      const nextInst = String(next.institution || '').trim();
+      const nextDeg = String(next.degree || '').trim();
+
+      if (
+        isSchoolName(inst) &&
+        !deg &&
+        isDegreeTitle(nextDeg) &&
+        (isGradeOrShort(nextInst) || isSchoolName(nextInst) || nextInst.toLowerCase() === inst.toLowerCase())
+      ) {
+        curr.degree = nextDeg;
+        if (!curr.startDate && next.startDate) curr.startDate = next.startDate;
+        if (!curr.endDate && next.endDate) curr.endDate = next.endDate;
+        if (next.description) {
+          curr.description = [curr.description, next.description].filter(Boolean).join('\n');
+        }
+        i++; // skip next row
+        result.push(curr);
+        continue;
+      }
+    }
+
+    if (isGradeOrShort(inst) && isSchoolName(deg)) {
+      const tmp = inst;
+      inst = deg;
+      deg = tmp;
+    }
+    curr.institution = inst;
+    curr.degree = deg;
+    result.push(curr);
+  }
+
+  return result.filter(
+    (e) => String(e.institution || '').trim().length > 1 || String(e.degree || '').trim().length > 1
+  );
 }
 
 export function publicEducation<
-  T extends { institution?: string | null; degree?: string | null },
+  T extends { institution?: string | null; degree?: string | null; startDate?: string | null; endDate?: string | null; description?: string | null },
 >(rows: T[] | null | undefined): T[] {
-  return (Array.isArray(rows) ? rows : []).filter(
+  const list = (Array.isArray(rows) ? rows : []).filter(
     (e) =>
       String(e?.institution || '').trim().length > 1 ||
       String(e?.degree || '').trim().length > 1
   );
+
+  return repairEducationList(list as any);
 }
 
 /**
@@ -577,10 +761,29 @@ export function nameToProfileSlug(name: string): string {
 }
 
 export function splitSkills(skills: unknown[] | null | undefined): string[] {
+  let rawList: string[] = [];
+  for (const s of skills || []) {
+    let val = typeof s === 'string' ? s : String((s as any)?.name ?? '');
+    if (!val) continue;
+    const parts = val.split(/[,;|]+/).map((p) => p.trim()).filter(Boolean);
+    rawList.push(...parts);
+  }
+
+  // Recombine split multi-word skills like "Federated" + "Learning"
+  const recombined: string[] = [];
+  for (let i = 0; i < rawList.length; i++) {
+    const curr = rawList[i];
+    const next = rawList[i + 1] || '';
+    if (/^(federated|machine|deep|computer|natural|transfer)$/i.test(curr) && /^(learning|vision|processing)$/i.test(next)) {
+      recombined.push(`${curr} ${next}`);
+      i++; // skip next
+    } else {
+      recombined.push(curr);
+    }
+  }
+
   const out: string[] = [];
   const seen = new Set<string>();
-  // base form without *version* suffixes only: "python 3.11+" → "python"
-  // Do NOT strip language names like C++ / C#
   const baseOf = (val: string) =>
     val
       .toLowerCase()
@@ -588,19 +791,18 @@ export function splitSkills(skills: unknown[] | null | undefined): string[] {
       .replace(/\s+/g, ' ')
       .trim();
 
-  const push = (val: string) => {
-    val = val.trim().replace(/\s+/g, ' ');
+  const push = (rawVal: string) => {
+    let val = rawVal
+      .replace(/\s*[-–—]\s*(Alison\.com|Naan Muthalvan|FaBC|Coursera|Udemy|EdX)\b/gi, '')
+      .trim()
+      .replace(/\s+/g, ' ');
     if (!val || val.length > 60) return;
-    // Drop pure version noise
     if (/^\d+(\.\d+)*\+?$/.test(val)) return;
     const key = val.toLowerCase();
     if (seen.has(key)) return;
-    // Prefer "Python" over "Python 3.11+" if both appear — keep shorter base first
     const base = baseOf(val);
     if (base && base !== key) {
-      // if we already have bare base, skip versioned; if we only have versioned, upgrade later
       if (seen.has(base)) return;
-      // if a longer version of same base exists, replace it
       const longerIdx = out.findIndex((s) => baseOf(s) === base && s.toLowerCase() !== base);
       if (longerIdx >= 0 && val.length < out[longerIdx].length) {
         seen.delete(out[longerIdx].toLowerCase());
@@ -614,15 +816,11 @@ export function splitSkills(skills: unknown[] | null | undefined): string[] {
     out.push(val);
   };
 
-  for (const s of skills || []) {
-    let val = typeof s === 'string' ? s : String((s as any)?.name ?? '');
-    if (!val) continue;
-    const parts = val.split(/[,;|]+/).map((p) => p.trim()).filter(Boolean);
-    for (const p of parts) push(p);
+  for (const s of recombined) {
+    push(s);
     if (out.length >= 30) break;
   }
-  // Second pass: drop versioned skills when bare base also present
-  const bases = new Set(out.map(baseOf));
+
   return out
     .filter((s) => {
       const b = baseOf(s);
