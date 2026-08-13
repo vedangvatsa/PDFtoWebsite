@@ -108157,6 +108157,42 @@
       "status": "ok",
       "path": "/arc-boat-company/sales",
       "external_id": "arc-boat-company_sales"
+    },
+    "47d8192f-1162-4610-815e-49e329fc2ecc": {
+      "status": "ok",
+      "reason": "backfill_curl"
+    },
+    "45127e3b-2836-477a-9532-8e273556f22e": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "5d1043de-1539-4593-975d-21b80978f1a5": {
+      "status": "ok",
+      "reason": "backfill_curl"
+    },
+    "4c5ca0f4-8487-46df-98e7-43eeb4f8a3d4": {
+      "status": "skip",
+      "reason": "gh_404"
+    },
+    "5620d35c-74dc-46f0-ba3d-3018546f07cb": {
+      "status": "skip",
+      "reason": "gh_short"
+    },
+    "54dcfb61-770a-4c1a-bec8-cc82f5a56837": {
+      "status": "ok",
+      "reason": "backfill_curl"
+    },
+    "5bb36266-e1f5-4c83-b463-22ba0836b40c": {
+      "status": "ok",
+      "reason": "backfill_curl"
+    },
+    "4c8fc3a0-9705-4995-b8e0-59153bb800e4": {
+      "status": "ok",
+      "reason": "backfill_curl"
+    },
+    "5bd7279e-dcb6-4e82-8286-9b6771780217": {
+      "status": "ok",
+      "reason": "backfill_curl"
     }
   },
   "doneIds": [
@@ -128131,7 +128167,16 @@
     "54f5d957-62b1-42b0-a6c7-da276d11696d",
     "57595444-805b-4509-b518-46e0d8bf4fcd",
     "4e7228a2-f970-4278-96dc-09515509687f",
-    "4aeec956-14a4-43f7-8246-41132d54e32e"
+    "4aeec956-14a4-43f7-8246-41132d54e32e",
+    "47d8192f-1162-4610-815e-49e329fc2ecc",
+    "45127e3b-2836-477a-9532-8e273556f22e",
+    "5d1043de-1539-4593-975d-21b80978f1a5",
+    "4c5ca0f4-8487-46df-98e7-43eeb4f8a3d4",
+    "5620d35c-74dc-46f0-ba3d-3018546f07cb",
+    "54dcfb61-770a-4c1a-bec8-cc82f5a56837",
+    "5bb36266-e1f5-4c83-b463-22ba0836b40c",
+    "4c8fc3a0-9705-4995-b8e0-59153bb800e4",
+    "5bd7279e-dcb6-4e82-8286-9b6771780217"
   ],
   "skipped": {},
   "batches": [
@@ -129535,6 +129580,21 @@
         "/snv/call-f6",
         "/arc-boat-company/sales"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 2,
+      "at": "2026-08-13T08:09:09.235Z",
+      "attempted": 6,
+      "ok": 6,
+      "skip": 3,
+      "fail": 0,
+      "reasons": {
+        "backfill_curl": 6,
+        "gh_404": 2,
+        "gh_short": 1
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
@@ -130559,6 +130619,9 @@
     "smartrecruiters:jysk": "source_thin",
     "smartrecruiters:wildbrain": "posting_older_than_30d",
     "smartrecruiters:asifr": "source_thin",
-    "lever:protective": "lever_404"
+    "lever:protective": "lever_404",
+    "greenhouse:agoda": "gh_404",
+    "greenhouse:chime": "gh_404",
+    "greenhouse:point72": "gh_short"
   }
 }
