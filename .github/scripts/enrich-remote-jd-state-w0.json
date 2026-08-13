@@ -55598,7 +55598,7 @@
     },
     "1f8782be-ea87-4561-84dd-0bc5ab763384": {
       "status": "fail",
-      "reason": "rewrite_slop"
+      "reason": "rewrite_short"
     },
     "07fea9cb-04ef-4195-8c67-6b77ec733945": {
       "status": "skip",
@@ -98921,6 +98921,1308 @@
     "16a04eca-2ffc-4303-b342-22e9adbb4293": {
       "status": "fail",
       "reason": "rewrite_short"
+    },
+    "0391d309-99b8-4a86-af9f-e297a9a6748d": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Sequoia Open Source Fellowship company=Sequoia apply=https://www.sequoiacap.com/oss/"
+    },
+    "050087a0-f6f0-4292-b37e-a6349ee7d2e5": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Google Public Policy Fellowship company=Google apply=https://www.google.com/policyfellowship/"
+    },
+    "101ec12b-b2e2-439a-820a-02cac8612e29": {
+      "status": "ok",
+      "path": "/horizon-institute-for-public-service/horizo-ce",
+      "external_id": "horizon-institute-for-public-service_horizo-ce"
+    },
+    "0ebb51e8-bbf5-4583-99ef-4f489fe52f6b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "2c1e1fcf-65d4-490b-a2b9-8f1c3c348c64": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "2ef50e44-5bb6-4564-9545-97832e3ddd33": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "332b1ebd-5e2d-47d0-8111-73e45d6989db": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "35fad951-80d9-4361-a28b-ab0fd857adc8": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AIML Residency Program company=Apple apply=https://machinelearning.apple.com/updates/aiml-residency-program-application-2026"
+    },
+    "3bf2d68e-bb3f-4101-b179-552123d4f4f1": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Vector Faculty Affiliate / Fellows company=Vector Institute apply=https://vectorinstitute.ai/about/careers/"
+    },
+    "3f5d4847-906f-4573-bc14-c680075d688e": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=RIKEN AIP Research Scientist / Fellow company=RIKEN AIP apply=https://aip.riken.jp/careers/"
+    },
+    "4666f39b-fc44-4060-ba89-1600a1da2742": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=ITS Global Policy Fellowship company=ITS Rio apply=https://itsrio.org/en/comunicados/call-for-applications-its-global-policy-fellowship-program-2026/"
+    },
+    "604d7a1a-6241-4e0c-a4a2-b1c9f2fea32a": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Pear Fellows company=Pear VC apply=https://pear.vc/programs/dorm/fellows/"
+    },
+    "3f9c21ca-fdd9-461b-b2ce-d33a5eb79ce8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "625c3bce-015b-4c45-a007-6bb0862ee388": {
+      "status": "ok",
+      "path": "/center-for-ai-safety/ai",
+      "external_id": "center-for-ai-safety_ai"
+    },
+    "63fcff46-c21a-468a-acb2-abada490a277": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Berkman Klein Fellowship company=Harvard BKC apply=https://cyber.harvard.edu/getinvolved"
+    },
+    "6ff18889-0ca0-4b15-8b21-7b7ca48d7710": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "76c6f446-fc82-4298-befd-518baa93e7e1": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Visiting Fellow company=Ada Lovelace Institute apply=https://www.adalovelaceinstitute.org/"
+    },
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "7fa1a9fb-daa6-4e9a-adf9-c7c6a53ad974": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "80f54549-88c7-42c3-9b73-845030131bc5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "920756aa-140b-4ddb-b519-5a1e6a91fb37": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Aspen Tech Policy Hub Fellowship company=Aspen Institute apply=https://www.aspentechpolicyhub.org/"
+    },
+    "9372c9f6-a307-427a-af5c-66c08724b408": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "8358b94a-de8a-4515-90e5-6086d34034c5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9f2077a5-a556-4c26-916a-c24b0a9dfa90": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "9ee9fae5-14e3-4855-908f-b7716fbb32f9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a2de7a44-cfdc-4304-8868-4ef38539b284": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a6cc16ec-f485-4246-990f-a74d7c8379bc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "aa99d6f5-1ec4-4521-9867-12d13bac9990": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a73ed6bf-def0-43f0-84df-802d7791243e": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=DAAD AI Net Fellowships company=DAAD apply=https://www.daad.de/en/"
+    },
+    "b343ccad-7cf0-4bbc-b912-9bac33cd151c": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AI Now Fellowships company=AI Now Institute apply=https://ainowinstitute.org/"
+    },
+    "b412d0c1-1fd2-4816-81b8-4b4aaf982f6c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ac565649-8915-4b70-aed0-e17f7744b046": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "bd68aa64-1cb0-4de6-bdd9-6a64b6e5ce77": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Cohere Research Fellow company=Cohere apply=https://cohere.com/careers"
+    },
+    "bb5b4c89-29df-4ece-8e88-95645637c39a": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Day One Fellow company=Day One Project apply=https://fas.org/day-one-project/"
+    },
+    "be560f14-de90-49c3-8d51-e4f6e7f98e9e": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=New America Fellows company=New America apply=https://www.newamerica.org/fellows/"
+    },
+    "bffa7905-b68e-4bac-934e-fcf1f460b805": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c2d279f3-379d-4fde-aab0-906a8754848d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "cb18b964-465c-4284-926d-c012266d7624": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "d9a693d8-75f8-4c9c-a660-81cbe847d617": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "deb130dd-3029-4610-a2f5-0040f81b8795": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "de7f237c-c603-419b-81e1-cc2ff6349312": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f31730a8-da1b-44b0-a151-41683722a168": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "f47e426c-922c-416c-b56d-ce2d2c273624": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Congressional Fellowship company=IEEE-USA apply=https://ieeeusa.org/public-policy/"
+    },
+    "ff2dda59-19aa-4533-9373-8ec3e3a7ff80": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=AAAS Science & Technology Policy Fellowship company=AAAS apply=https://www.aaas.org/programs/science-technology-policy-fellowships"
+    },
+    "f53e830d-f600-40ae-9cb6-aba36ebb4993": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "11b34d7a-a756-40ed-bfbf-66180eaa9198": {
+      "status": "ok",
+      "path": "/nbr/undergraduat",
+      "external_id": "nbr_undergraduat"
+    },
+    "20eb87c2-4138-4639-80e2-243c7e8f0be7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "201aac1f-a2cd-49f7-83ae-1f9ae99339e5": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "229dc76f-357c-4154-a171-67eb8208f3c3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "23c7f809-3b48-4ed9-aa19-e9fb49cea7e6": {
+      "status": "ok",
+      "path": "/apartresearch/community",
+      "external_id": "apartresearch_community"
+    },
+    "35b436cb-3221-4e48-b456-70c5c6b9ea1e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "3523d481-edf5-415a-af6b-e2cf40286fba": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "3a2f0180-ee71-4d97-b4ec-4ba93a0f6d6b": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Biosecurity Game Changers Fellowship company=Pandemics apply=https://pandemics.sph.brown.edu/game-changers-initiative/biosecurity-game-changers-fellowship"
+    },
+    "3e5a024d-bf67-4e54-97f7-53427721cb1a": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "3c701af8-0b22-4163-9e65-a4b927ef66c5": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Kendall Fellowship company=Ucsusa apply=https://www.ucs.org/about/people/fellows"
+    },
+    "4032c7d4-971f-4e83-af54-c0b2fd31fae9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "3ee8d7be-affe-42d6-afc4-48d19d4b5b83": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "5097cc79-3933-40a7-b8f6-1c41e42464de": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "4c7f3146-467e-4f4b-9344-e64cd0eafd4b": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "5b62ac8e-645b-461b-a5c3-ee1901fb90b2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "68918920-5387-48c1-b833-4c3aa7534ccf": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=IBM Research intern / fellow company=IBM Research apply=https://www.ibm.com/careers/research"
+    },
+    "50cda471-e5f6-4196-bc5a-37458e7affe7": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Editorial Fellows company=Thebulletin apply=https://thebulletin.org/next-generation-program/editorial-fellows-program/"
+    },
+    "68f356fe-36ea-4380-8255-63b152d9c6b2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "6dbc048b-c535-40c8-b6b9-372ac08fe8f4": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Scale Research Fellow company=Scale AI apply=https://scale.com/careers"
+    },
+    "77b1b071-a67e-4119-afa1-c5f2aa27401e": {
+      "status": "skip",
+      "reason": "dead_board"
+    },
+    "6a5f727a-f641-4cce-b51d-2886785cd05c": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Paragon Fellowship company=Paragonfellowship apply=https://www.paragonfellowship.org/"
+    },
+    "7f480688-269b-4312-a008-f060a3aecbce": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Redwood Research Fellow company=Redwood Research apply=https://www.redwoodresearch.org/"
+    },
+    "862bbeae-c41e-4c16-aba2-cb0fdb7749b4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "81c40855-0e93-4320-acd0-ab78554e86db": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9d0feda4-78e8-45df-a3ef-1b22a40a3eb5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "9fa3601f-26d3-4dd4-a679-31e550a4af87": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Governor’s Science and Technology Policy Fellowship company=Pennwatch apply=https://pennwatch.org/pa-welcomes-first-governors-science-and-technology-fellows-for-stem-projects-and-career-exploration-at-commonwealth-agencies/"
+    },
+    "9afe8ad2-abfc-4688-8382-0836b445700f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "a373825f-5972-43db-b96c-b553078c6c71": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "a63327b4-1db1-4042-92e7-1e0753a39125": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Databricks Mosaic Research Fellow company=Databricks apply=https://www.databricks.com/company/careers"
+    },
+    "a07059c5-0918-473c-968b-368112c5da85": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "b1ed7c60-d50d-4850-9aa7-3ac57faf1b9f": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=CNAS Fellow company=CNAS apply=https://www.cnas.org/careers"
+    },
+    "bae223a7-aaa1-4357-8832-70fbebddcb0c": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "be9ebc6c-ad80-4d2a-8acd-7d6e2fc8f931": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "c2e0fceb-dc92-4cf2-bba3-76e557a4cca8": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "c6562067-2074-4b7d-9a08-730033953411": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "d2354da6-249d-4a62-bf9d-3affe0b02fa0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "08ce646e-20d4-4d19-865b-d20bbb7818b3": {
+      "status": "skip",
+      "reason": "source_thin",
+      "note": "thin_source title=Revenue Operations Associate company=trawa apply=https://jobs.ashbyhq.com/trawa/d70f2d3b-98bf-4222-a65f-8114ff8d6d82"
+    },
+    "06110a16-88c1-4c6b-ae2a-72c14d0404e7": {
+      "status": "skip",
+      "reason": "lever_404",
+      "note": "thin_source title=Inside Sales - Channel Account Manager company=Sophos apply=https://jobs.lever.co/sophos/7287c8fa-5726-4043-ace2-684524f8e4ec"
+    },
+    "15f35dab-1b47-48c4-8eef-d263cb3673a4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "13e88d29-a38a-4a4a-8962-b658ea50781f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "12d79866-95ad-440a-b68f-ec209087fa97": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0cac5fe6-5e79-42a0-9360-ca338b2d5fac": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "16715acc-9100-4db0-9e66-1fb66ba3dab8": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1cec3377-8499-4131-9444-f2f97530c394": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0b3474c4-7860-4e8a-8502-4023982890b9": {
+      "status": "ok",
+      "path": "/smartsheet/enterp-81",
+      "external_id": "smartsheet_enterp-81"
+    },
+    "1c3f10d4-33b0-4d47-9e69-a37afc8f4645": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1a82d574-4f92-47f4-9ba1-24e72096cebc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0fa9f648-254d-48cb-acae-5afa66051fad": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1556e2d4-1eaa-442d-856f-5513e1ff3e2a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "08d3a2ee-1760-4678-8402-d7c853be8c64": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0c94b1b0-051b-4b8a-b8cf-bc3a6a7c38dc": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0b5de452-4cc9-4f16-b290-750a43da367e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0e5054d5-9415-44fa-96eb-b2f3bc56c1f0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1a6761ce-8209-4cfb-82b5-e7e5e2eaf2c7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0aaf2431-7878-4f7e-81b9-da584071e6ee": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0afc3bf0-24cc-4699-a8a4-30e24c7e37ee": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "149d5fd2-98bc-4b66-919d-80f6980935f7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0ab6d6b8-91e8-45b1-956f-32592ef587e1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "06e945ac-5797-47c1-b8b6-4d99dd49e984": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03509f5e-1d0e-4a2e-b406-92e996d5679f": {
+      "status": "ok",
+      "path": "/ciandt/job-84",
+      "external_id": "ciandt_job-84"
+    },
+    "04ec1568-df28-43fe-a4e5-706f9eeedae5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "10c89401-b615-4674-9022-43e4012e5851": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "110a4299-5af0-4b55-b841-de51f2d8539f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "14e25cb2-41ef-4550-aca0-1e23907dbf95": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1562bad3-c50f-404e-b18f-a972536c14ef": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0680201d-2b12-45ed-b972-3d0a7719f7c7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "027bba07-d8d2-406e-b3b7-a8ebf76c9ef6": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0a61dec2-4361-4c5b-be3b-0144b8d8c430": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "15b756d4-2cf1-4aa4-90b4-579d72a86aca": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0b40f415-4b8e-430c-b9ec-dc08df69c824": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "169230e4-1e8f-48b8-aab8-621ff857917b": {
+      "status": "ok",
+      "path": "/airwallex/mgr-7b",
+      "external_id": "airwallex_mgr-7b"
+    },
+    "19d1c82f-c0a8-4bc9-b950-692c980c8157": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "19bda080-6ee7-4388-a786-bb9e78ebe51e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "094bcb24-b8cd-4082-9350-3a7ae5275b0c": {
+      "status": "ok",
+      "path": "/revenuecat/be-eng",
+      "external_id": "revenuecat_be-eng"
+    },
+    "04d9e6a4-2267-4561-8865-52dc4f00dd83": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0b941e7d-707a-42db-b192-e55c65ef9ede": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0d4b36f3-6660-4929-a043-cc4c158a8388": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "09d0be51-198a-4658-ace6-6eff1c6cadff": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1ab63f33-8239-4880-8841-282dee532981": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "145e17ee-02fb-4598-9268-2f1d25e0e2b2": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0acd4e90-68bf-45b5-a068-2b220b66c7b7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0a01be81-811d-4162-8d9c-062a9215ed23": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1504bd2c-3536-4def-b464-88e91522b131": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0784a9be-4043-4b54-a178-c88681b3e397": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03c7f82d-6e02-4c1d-bf23-b2a155a86f5b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1e8876aa-f0cd-4fb4-97aa-90445b1d7b72": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "148abf6c-5994-4152-87af-4465cdc44d09": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "12429163-ab11-44b1-8790-fbbcb1c1660e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0e802913-38ff-41a8-bce3-5316513f6491": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1871ac9a-8669-4ad9-8965-712d2c85ea67": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1cbd627e-6ab2-48b6-bc51-0a75040b6bc9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "06bba11c-5331-43fa-9dd1-b3ec90da5cb1": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1468a900-3ead-4807-acbb-c10616b06185": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1b728100-8643-4815-97e4-0eb41429f799": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "15532d64-d84f-410c-8180-21210aebfc05": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1e782fde-b6cd-4d27-b2eb-192b4ea20c87": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1a8a8df8-2cdc-4271-a16c-40059573dc58": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1283c95c-d748-428d-bede-e3496c160174": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0e97210f-5f3c-4768-8074-1551e8e2e667": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1c5e416d-a3a0-4d16-a5ad-2a646b3af1a6": {
+      "status": "ok",
+      "path": "/coreoftheheart/content",
+      "external_id": "coreoftheheart_content"
+    },
+    "1d272eaf-c090-4e2a-87f5-d5646424c0b1": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0a5637f5-13a3-4da7-be5f-bf9d8f570ec5": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0a28b32d-f2e1-495e-a89e-82b6226c488f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "085cfd4c-83ec-47dc-8488-e2c4577dbc0a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0f48283e-30b1-4127-904d-2973abf66365": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "032d0d42-c490-4db8-a8e2-5e9e491e0eec": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1fb69340-59f2-48a4-8b30-c78fcfcb5cd0": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1d9a6599-7f8b-4177-8e59-f1910969ab50": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1a21593c-edbe-400b-aba3-5fbcd26576d7": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0bc75ae8-c9c6-4f41-beba-1e26566ddd37": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03183c64-6483-458c-8cd7-f9d54be04c54": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "18b93369-74f0-4447-a607-9eca2340939b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0e7723b0-28fc-411b-b02c-4ca2c615afb4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "07006339-dc21-4ced-8e86-0e437805fe4a": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0c468237-275c-4559-89b3-8de8aa95b165": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "10e92dae-9e6d-47bd-b714-51a8cf8a385e": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "190a9e2d-7458-48b2-9e86-e4bb767b69ee": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0e3e654b-5d44-45a4-876d-3636081755c6": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0c0dc096-36f7-4d0a-9a03-5f5e96aac6f8": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "09062e83-5856-4e78-85da-22b493b244c0": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "19f36d43-7e45-4891-be3c-f9f2de4764c5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0d601521-7755-44fd-9902-31e8d05a0cc2": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0face2a2-159b-43c5-aa2f-67d085a3217a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "027ffe76-d9d6-4003-a182-fb6dfa2af197": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "09f7f045-4867-489c-bbc3-5b78729822fe": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "13c616dd-682d-4d96-9894-91e9e701f104": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "15aa6db6-7d97-408f-a3bf-43c6ecf8686f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "19a67310-d222-4885-b75a-cc5d52676f10": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1e1ab26d-8893-426d-b208-2e6b83ba0c16": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "020b4213-f4e8-4e1f-aa6f-0a61ba646539": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "09976426-44a4-47b6-be3d-fece72a102bd": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "16847e33-daba-44df-8dbe-cf490e026fe5": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1706b2bf-26a7-40d6-94c1-3fd696476994": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0f0bf167-94ca-4c59-b9e4-8f31aba779a9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "18235f5d-faff-44f1-a971-9d619518995f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1a9aa034-c8be-4d10-b6e9-6ae8d52debac": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0b122958-627b-43ad-83cb-816fd1fc3a54": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0f4179e2-7c67-400a-9d2f-64b10592aac9": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "12a2de48-c56e-4b03-a655-1dd3099f957e": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0fd2a4f8-df22-425a-8a63-df0128a1c93c": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "067b0746-5f23-489e-85a4-2d5fa205778a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "18d6f1a9-3d5d-408f-9918-ff9ed0c861e1": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1ce525d2-6a71-4bec-9158-c7b019c854ac": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0c172200-28e3-4206-8380-f831a4355d51": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1b1be9ee-e252-4e73-a402-5bb56f6d5300": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1a7c87ac-c0d6-4f50-b6e4-9b61b825bc94": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1d81a165-a166-43dc-b7a8-033c28d50a28": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "11708407-08b1-481c-baa8-288f81f3f800": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "02e66bf7-0962-4b75-b257-0bfc0bbd7715": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1b9db8b2-f549-4ac7-8d76-ac771fdb9c8f": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "09068df6-c665-46cc-b2a0-3224b0cf0f84": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "16cd3644-067a-4b72-8217-694b054fc113": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0197a60e-a4cc-4f65-9009-3df50797bb3a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "06c630f5-e20a-47f7-8c14-b4700cdec0bb": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "14cef6fe-e921-4310-98ef-ad4a0e391a6d": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "05a26791-f0bd-4f48-80c9-3031d1950e69": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "06eb64e5-42ac-4e67-be2f-6460f24f21dc": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "141a65ed-24d9-45a1-86ab-c4d0f3a662ea": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1da89a6d-dbee-4e27-827c-e890d634cc7a": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03547c99-37e3-4579-a17f-06699d8dedfa": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "07d8c363-e31d-4d26-b9a0-599cb735d164": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "09442e3f-4277-4c6d-98be-439e5cbe794e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0f1c430a-455a-412b-928c-aff3569bc3eb": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1914e401-2e9b-47a0-b7a0-20d6a375c54a": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "120ebb16-7846-41d4-9cf4-e3ead0c738db": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "13b0d381-58d9-44fd-8d14-b5b7447fc4f1": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "128db623-833e-4922-8303-104f95006344": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0a2ca3f2-4238-4acd-9fd8-c66181412157": {
+      "status": "ok",
+      "path": "/scarlet/acct",
+      "external_id": "scarlet_acct"
+    },
+    "021f69d9-dc16-4a41-982b-6ebb8b11cfea": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1b019a9c-c036-4679-8b64-5b1110b26170": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "16f5cc34-5745-49c0-83d7-1b39de78dfbe": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0d0659a9-80e3-4064-a0a7-e14f56a6abb7": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0c9a59fb-ec23-40f4-85fc-3055c68a30ca": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0cece835-090e-4ab9-b508-464a32df0382": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "036ee164-6575-4c4d-90e1-299d6f5db695": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1e22fa7b-b3aa-4e4c-ad32-5f33f979dc54": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "11bc8737-5c82-429e-b755-1f7953211461": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1d18d345-dcf5-47c4-94db-c39fa12b89a5": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "07c59786-b612-4ca9-aead-d11d2fb59002": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1223cd21-3ec1-4cf6-b326-935a4866dd31": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "0f232db8-160f-483a-a971-4a12549e9895": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "15984746-24d8-491b-ad99-ff74f8efb4d2": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "175db81f-197c-4d83-9c38-2c7ebdb30d01": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "1ad95a72-877c-4826-8cea-91ae762025e6": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "04524998-2695-41ae-9c12-5ae35bff0f22": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1cb7ce59-fe63-4f9e-aca6-e39a4da45cb8": {
+      "status": "ok",
+      "path": "/ruby-labs/tech",
+      "external_id": "ruby-labs_tech"
+    },
+    "02d87f04-4612-48a6-9162-ce0fecfff75b": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0a06b630-3413-4653-910c-8fb066b5f2b4": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0d17bac8-212a-41fd-8ca4-b7b84179aafc": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "06a04996-9b13-469b-84ca-7235dba66b34": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0d7a1f15-258f-4333-a91f-1d98c8d2ad9b": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0bdf5ef8-2955-4250-ba79-3ee0f4268a41": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "01d595ce-1b1c-4c2a-86a4-349973d01a5b": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "157c713d-99b3-467e-8823-d2b575e35d82": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "15afd5d1-3e02-4651-b1f4-55cad7094e3e": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "12fb1ac1-6f83-4587-bcd0-a6ddce72c8f7": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0e860c94-0a4b-4388-9be1-2234f9e180f4": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "09f6e13c-1660-4ba3-a00e-1ec886310af0": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1ffb7de8-2771-484d-bd1c-7ef24bd89603": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1c5e4f9c-c2c3-494a-8ba0-e1c0727502bd": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0b5b9cde-8fc0-4ae1-867a-901aa15149de": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "075bae12-77e5-4af0-a269-855bb894ccb1": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1b25c8b9-d819-49fe-8134-017ffa17dc63": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "06106a23-647c-4c7f-8fe2-4902906ba447": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0860ec66-d9be-4fcf-8b7a-a719229fcdb9": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1fe420e0-e097-4a38-84b0-4a74500edd5a": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "07220a36-7d47-46d5-a524-45d750213938": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1d14e087-71a5-4ec1-9daa-7ffb9bbabdab": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1e791f84-5d5c-4ddf-902b-309b72e6ad85": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "08aa0c5c-91fe-4879-b4cc-36ee6987fa56": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "16853bb3-bc07-4900-a907-597291c7c86d": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "02e8570d-8a77-452a-abdc-ca2873acd8b8": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1582a9e0-c5ab-4922-b907-f36008d0d046": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "19d6910e-0f85-4de0-be31-77f089e9a86a": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "05740147-09cb-4519-aa93-adc74ac842a1": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1a3ba3a8-1f74-48b0-a0db-9f999d02b642": {
+      "status": "ok",
+      "path": "/siteminder/biz-dev",
+      "external_id": "siteminder_biz-dev"
+    },
+    "1b03f634-1913-44a0-9ca2-a8931cec234f": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "03c86c65-acf2-4de8-be97-1f991499b9e4": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "14e6b5ba-5c36-478f-8a23-4baaa645df10": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "04ebdb22-28dd-4717-a091-0e353ce86269": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "17ed96c9-0618-4f8d-8726-f48ed10abb17": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "17097bc5-ad73-486b-a472-eae2d8dd484e": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "18ef1ffd-d36a-4889-825c-ff01c9e24f29": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0a384117-ea89-47ce-8d70-6ae00ba6357e": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1bed5984-e283-47b9-ab1d-753c37856499": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1c55ec7a-f190-4060-b84a-7f0bf4ff11dd": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "19a85fa0-eabc-436f-a65d-6586dde3ae24": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "03353249-b526-4daf-8ade-539534fe32bb": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0d3eee69-3cbb-4e4e-b141-73de5470b3af": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "02f68896-2c7b-4c12-94da-d62a4d3fa83d": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "09017069-cad7-4e8f-ba12-157cfb2361ca": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "10c8cb4d-3f75-4579-bbc2-75b31979a763": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "178d477a-64c5-4f6b-992f-7a41a510fc31": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "09e73c92-bf90-4ace-8a00-2afc0dcec989": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "04cea47b-c190-4a30-94b5-dd86c1499f3e": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "12fe43de-b43e-4fe7-954d-f2aeacaf0b9d": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "111099fa-e1ef-4d81-97f8-14e4033103a9": {
+      "status": "ok",
+      "path": "/stacker/lead",
+      "external_id": "stacker_lead"
+    },
+    "0008c482-e4aa-4172-bfd8-f1beb6704090": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "03ead6fe-85f6-4f76-8d8c-cfbaf55ee83b": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "097141b9-ddf2-44d5-8b1f-2194a88da260": {
+      "status": "ok",
+      "path": "/spearbio/clinic",
+      "external_id": "spearbio_clinic"
+    },
+    "02e5fe1e-1fcd-4f8d-b701-4b5e525d9b52": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0c0f5405-609a-4fa8-8949-cb493f3e6352": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1faeb772-96d5-47b9-8d01-7819d8b7fe87": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0d2b271e-fe2c-472c-9970-907b975a3781": {
+      "status": "ok",
+      "path": "/talkiatry/head-qa",
+      "external_id": "talkiatry_head-qa"
+    },
+    "1d3ef545-7a6f-47cc-8600-e30aa80539bb": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "08883b27-f582-4540-b3bc-3eb9cd982460": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1d00da57-5208-4343-90b0-8592ac566aaa": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "09de31f6-3e31-4178-b085-fb7e53cb743b": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "03691b3f-a8e9-49d8-81a0-9697aa846995": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1e48bc8c-9d13-4ad1-b18e-fd0276d093d4": {
+      "status": "ok",
+      "path": "/crusoe/infra-fd",
+      "external_id": "crusoe_infra-fd"
+    },
+    "0b0fafca-37b6-4858-805e-1f7c37539faf": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0355c28f-3384-43a3-939c-a6756e2e6e68": {
+      "status": "ok",
+      "path": "/omaze/prod-33",
+      "external_id": "omaze_prod-33"
+    },
+    "0677d5b8-2a0a-4320-a5a5-1349bb9a6680": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0e62c10b-4c51-480b-8121-b01c8eb8f9ce": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "130384ab-03cb-4697-9d11-30cb910fb756": {
+      "status": "ok",
+      "path": "/uipath/dev",
+      "external_id": "uipath_dev"
+    },
+    "11dc9468-989f-48b1-abd3-a7a849cfaf33": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "08e3c910-a902-42a1-ae88-299575d312f4": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "14e5c94a-1eb2-421f-88d0-656df2a205b3": {
+      "status": "ok",
+      "path": "/cohere/global",
+      "external_id": "cohere_global"
+    },
+    "07132d2c-95ef-484d-9fbc-f4bfa717e1d4": {
+      "status": "ok",
+      "path": "/ramp/cust-c6",
+      "external_id": "ramp_cust-c6"
+    },
+    "058a57c1-5bc2-4bde-96f7-b0839474b1f1": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0b533c57-504a-4fa5-a257-d80cccbce367": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "0434e621-3826-47c0-883f-faa476b0a649": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1e06d384-85a6-462f-a5e4-66060b0133ef": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "1e3751ab-db7f-492b-8d6b-88ab78ba0530": {
+      "status": "fail",
+      "reason": "rewrite_structure"
+    },
+    "19e6373c-2716-436c-a230-1c7b314b794c": {
+      "status": "ok",
+      "path": "/alan/fullst-1a",
+      "external_id": "alan_fullst-1a"
+    },
+    "0ce32bf2-dbdf-48d8-b59e-90afeda9ad65": {
+      "status": "fail",
+      "reason": "rewrite_structure"
     }
   },
   "doneIds": [
@@ -117724,7 +119026,208 @@
     "1f5783b5-8baf-4e3c-b003-6c1bcd6da49f",
     "0d83a269-b525-42ad-9c7d-a611512520bc",
     "1739dc33-e8f5-4777-b720-3f5b52dee431",
-    "16a04eca-2ffc-4303-b342-22e9adbb4293"
+    "16a04eca-2ffc-4303-b342-22e9adbb4293",
+    "0391d309-99b8-4a86-af9f-e297a9a6748d",
+    "050087a0-f6f0-4292-b37e-a6349ee7d2e5",
+    "05087014-1c52-4deb-87f3-e212d837e94d",
+    "101ec12b-b2e2-439a-820a-02cac8612e29",
+    "0ebb51e8-bbf5-4583-99ef-4f489fe52f6b",
+    "2c1e1fcf-65d4-490b-a2b9-8f1c3c348c64",
+    "2ef50e44-5bb6-4564-9545-97832e3ddd33",
+    "332b1ebd-5e2d-47d0-8111-73e45d6989db",
+    "35fad951-80d9-4361-a28b-ab0fd857adc8",
+    "3bf2d68e-bb3f-4101-b179-552123d4f4f1",
+    "3f5d4847-906f-4573-bc14-c680075d688e",
+    "4666f39b-fc44-4060-ba89-1600a1da2742",
+    "604d7a1a-6241-4e0c-a4a2-b1c9f2fea32a",
+    "3f9c21ca-fdd9-461b-b2ce-d33a5eb79ce8",
+    "625c3bce-015b-4c45-a007-6bb0862ee388",
+    "63fcff46-c21a-468a-acb2-abada490a277",
+    "6ff18889-0ca0-4b15-8b21-7b7ca48d7710",
+    "76c6f446-fc82-4298-befd-518baa93e7e1",
+    "6412fe79-6c09-475c-8a6a-aa7267c9cc29",
+    "7fa1a9fb-daa6-4e9a-adf9-c7c6a53ad974",
+    "80f54549-88c7-42c3-9b73-845030131bc5",
+    "920756aa-140b-4ddb-b519-5a1e6a91fb37",
+    "9372c9f6-a307-427a-af5c-66c08724b408",
+    "8358b94a-de8a-4515-90e5-6086d34034c5",
+    "9f2077a5-a556-4c26-916a-c24b0a9dfa90",
+    "9ee9fae5-14e3-4855-908f-b7716fbb32f9",
+    "a2de7a44-cfdc-4304-8868-4ef38539b284",
+    "a6cc16ec-f485-4246-990f-a74d7c8379bc",
+    "aa99d6f5-1ec4-4521-9867-12d13bac9990",
+    "a73ed6bf-def0-43f0-84df-802d7791243e",
+    "b343ccad-7cf0-4bbc-b912-9bac33cd151c",
+    "b412d0c1-1fd2-4816-81b8-4b4aaf982f6c",
+    "ac565649-8915-4b70-aed0-e17f7744b046",
+    "bd68aa64-1cb0-4de6-bdd9-6a64b6e5ce77",
+    "bb5b4c89-29df-4ece-8e88-95645637c39a",
+    "be560f14-de90-49c3-8d51-e4f6e7f98e9e",
+    "bffa7905-b68e-4bac-934e-fcf1f460b805",
+    "c2d279f3-379d-4fde-aab0-906a8754848d",
+    "cb18b964-465c-4284-926d-c012266d7624",
+    "d9a693d8-75f8-4c9c-a660-81cbe847d617",
+    "d0859950-ebce-4ab4-bc63-b9d7b3697429",
+    "deb130dd-3029-4610-a2f5-0040f81b8795",
+    "de7f237c-c603-419b-81e1-cc2ff6349312",
+    "f31730a8-da1b-44b0-a151-41683722a168",
+    "f47e426c-922c-416c-b56d-ce2d2c273624",
+    "ff2dda59-19aa-4533-9373-8ec3e3a7ff80",
+    "f53e830d-f600-40ae-9cb6-aba36ebb4993",
+    "11b34d7a-a756-40ed-bfbf-66180eaa9198",
+    "20eb87c2-4138-4639-80e2-243c7e8f0be7",
+    "201aac1f-a2cd-49f7-83ae-1f9ae99339e5",
+    "229dc76f-357c-4154-a171-67eb8208f3c3",
+    "23c7f809-3b48-4ed9-aa19-e9fb49cea7e6",
+    "35b436cb-3221-4e48-b456-70c5c6b9ea1e",
+    "3523d481-edf5-415a-af6b-e2cf40286fba",
+    "3a2f0180-ee71-4d97-b4ec-4ba93a0f6d6b",
+    "3e5a024d-bf67-4e54-97f7-53427721cb1a",
+    "3c701af8-0b22-4163-9e65-a4b927ef66c5",
+    "4032c7d4-971f-4e83-af54-c0b2fd31fae9",
+    "3ee8d7be-affe-42d6-afc4-48d19d4b5b83",
+    "457d3fdb-6046-4f2a-9cb4-0cee5b1f75ee",
+    "5097cc79-3933-40a7-b8f6-1c41e42464de",
+    "4c7f3146-467e-4f4b-9344-e64cd0eafd4b",
+    "5b62ac8e-645b-461b-a5c3-ee1901fb90b2",
+    "68918920-5387-48c1-b833-4c3aa7534ccf",
+    "50cda471-e5f6-4196-bc5a-37458e7affe7",
+    "68f356fe-36ea-4380-8255-63b152d9c6b2",
+    "6dbc048b-c535-40c8-b6b9-372ac08fe8f4",
+    "77b1b071-a67e-4119-afa1-c5f2aa27401e",
+    "6a5f727a-f641-4cce-b51d-2886785cd05c",
+    "7f480688-269b-4312-a008-f060a3aecbce",
+    "862bbeae-c41e-4c16-aba2-cb0fdb7749b4",
+    "81c40855-0e93-4320-acd0-ab78554e86db",
+    "9d0feda4-78e8-45df-a3ef-1b22a40a3eb5",
+    "9fa3601f-26d3-4dd4-a679-31e550a4af87",
+    "9afe8ad2-abfc-4688-8382-0836b445700f",
+    "a373825f-5972-43db-b96c-b553078c6c71",
+    "a63327b4-1db1-4042-92e7-1e0753a39125",
+    "a07059c5-0918-473c-968b-368112c5da85",
+    "b1ed7c60-d50d-4850-9aa7-3ac57faf1b9f",
+    "bae223a7-aaa1-4357-8832-70fbebddcb0c",
+    "be9ebc6c-ad80-4d2a-8acd-7d6e2fc8f931",
+    "c2e0fceb-dc92-4cf2-bba3-76e557a4cca8",
+    "c6562067-2074-4b7d-9a08-730033953411",
+    "d2354da6-249d-4a62-bf9d-3affe0b02fa0",
+    "08ce646e-20d4-4d19-865b-d20bbb7818b3",
+    "06110a16-88c1-4c6b-ae2a-72c14d0404e7",
+    "15f35dab-1b47-48c4-8eef-d263cb3673a4",
+    "13e88d29-a38a-4a4a-8962-b658ea50781f",
+    "0cac5fe6-5e79-42a0-9360-ca338b2d5fac",
+    "1cec3377-8499-4131-9444-f2f97530c394",
+    "0b3474c4-7860-4e8a-8502-4023982890b9",
+    "1c3f10d4-33b0-4d47-9e69-a37afc8f4645",
+    "1a82d574-4f92-47f4-9ba1-24e72096cebc",
+    "0fa9f648-254d-48cb-acae-5afa66051fad",
+    "1556e2d4-1eaa-442d-856f-5513e1ff3e2a",
+    "08d3a2ee-1760-4678-8402-d7c853be8c64",
+    "0c94b1b0-051b-4b8a-b8cf-bc3a6a7c38dc",
+    "0b5de452-4cc9-4f16-b290-750a43da367e",
+    "0e5054d5-9415-44fa-96eb-b2f3bc56c1f0",
+    "1a6761ce-8209-4cfb-82b5-e7e5e2eaf2c7",
+    "0aaf2431-7878-4f7e-81b9-da584071e6ee",
+    "0afc3bf0-24cc-4699-a8a4-30e24c7e37ee",
+    "149d5fd2-98bc-4b66-919d-80f6980935f7",
+    "0ab6d6b8-91e8-45b1-956f-32592ef587e1",
+    "06e945ac-5797-47c1-b8b6-4d99dd49e984",
+    "03509f5e-1d0e-4a2e-b406-92e996d5679f",
+    "04ec1568-df28-43fe-a4e5-706f9eeedae5",
+    "10c89401-b615-4674-9022-43e4012e5851",
+    "110a4299-5af0-4b55-b841-de51f2d8539f",
+    "14e25cb2-41ef-4550-aca0-1e23907dbf95",
+    "1562bad3-c50f-404e-b18f-a972536c14ef",
+    "0680201d-2b12-45ed-b972-3d0a7719f7c7",
+    "027bba07-d8d2-406e-b3b7-a8ebf76c9ef6",
+    "0a61dec2-4361-4c5b-be3b-0144b8d8c430",
+    "15b756d4-2cf1-4aa4-90b4-579d72a86aca",
+    "0b40f415-4b8e-430c-b9ec-dc08df69c824",
+    "169230e4-1e8f-48b8-aab8-621ff857917b",
+    "19d1c82f-c0a8-4bc9-b950-692c980c8157",
+    "19bda080-6ee7-4388-a786-bb9e78ebe51e",
+    "094bcb24-b8cd-4082-9350-3a7ae5275b0c",
+    "0b941e7d-707a-42db-b192-e55c65ef9ede",
+    "0d4b36f3-6660-4929-a043-cc4c158a8388",
+    "09d0be51-198a-4658-ace6-6eff1c6cadff",
+    "1ab63f33-8239-4880-8841-282dee532981",
+    "145e17ee-02fb-4598-9268-2f1d25e0e2b2",
+    "0acd4e90-68bf-45b5-a068-2b220b66c7b7",
+    "0a01be81-811d-4162-8d9c-062a9215ed23",
+    "1504bd2c-3536-4def-b464-88e91522b131",
+    "0784a9be-4043-4b54-a178-c88681b3e397",
+    "03c7f82d-6e02-4c1d-bf23-b2a155a86f5b",
+    "1e8876aa-f0cd-4fb4-97aa-90445b1d7b72",
+    "148abf6c-5994-4152-87af-4465cdc44d09",
+    "12429163-ab11-44b1-8790-fbbcb1c1660e",
+    "0e802913-38ff-41a8-bce3-5316513f6491",
+    "1871ac9a-8669-4ad9-8965-712d2c85ea67",
+    "1468a900-3ead-4807-acbb-c10616b06185",
+    "1b728100-8643-4815-97e4-0eb41429f799",
+    "15532d64-d84f-410c-8180-21210aebfc05",
+    "1e782fde-b6cd-4d27-b2eb-192b4ea20c87",
+    "1a8a8df8-2cdc-4271-a16c-40059573dc58",
+    "1283c95c-d748-428d-bede-e3496c160174",
+    "1f8782be-ea87-4561-84dd-0bc5ab763384",
+    "0e97210f-5f3c-4768-8074-1551e8e2e667",
+    "1c5e416d-a3a0-4d16-a5ad-2a646b3af1a6",
+    "085cfd4c-83ec-47dc-8488-e2c4577dbc0a",
+    "0f48283e-30b1-4127-904d-2973abf66365",
+    "1d9a6599-7f8b-4177-8e59-f1910969ab50",
+    "1a21593c-edbe-400b-aba3-5fbcd26576d7",
+    "0bc75ae8-c9c6-4f41-beba-1e26566ddd37",
+    "03183c64-6483-458c-8cd7-f9d54be04c54",
+    "18b93369-74f0-4447-a607-9eca2340939b",
+    "0e7723b0-28fc-411b-b02c-4ca2c615afb4",
+    "0c468237-275c-4559-89b3-8de8aa95b165",
+    "09062e83-5856-4e78-85da-22b493b244c0",
+    "19f36d43-7e45-4891-be3c-f9f2de4764c5",
+    "0face2a2-159b-43c5-aa2f-67d085a3217a",
+    "027ffe76-d9d6-4003-a182-fb6dfa2af197",
+    "09f7f045-4867-489c-bbc3-5b78729822fe",
+    "19a67310-d222-4885-b75a-cc5d52676f10",
+    "1e1ab26d-8893-426d-b208-2e6b83ba0c16",
+    "16847e33-daba-44df-8dbe-cf490e026fe5",
+    "1706b2bf-26a7-40d6-94c1-3fd696476994",
+    "0f4179e2-7c67-400a-9d2f-64b10592aac9",
+    "0fd2a4f8-df22-425a-8a63-df0128a1c93c",
+    "067b0746-5f23-489e-85a4-2d5fa205778a",
+    "1d81a165-a166-43dc-b7a8-033c28d50a28",
+    "02e66bf7-0962-4b75-b257-0bfc0bbd7715",
+    "09068df6-c665-46cc-b2a0-3224b0cf0f84",
+    "0197a60e-a4cc-4f65-9009-3df50797bb3a",
+    "06c630f5-e20a-47f7-8c14-b4700cdec0bb",
+    "14cef6fe-e921-4310-98ef-ad4a0e391a6d",
+    "05a26791-f0bd-4f48-80c9-3031d1950e69",
+    "141a65ed-24d9-45a1-86ab-c4d0f3a662ea",
+    "1da89a6d-dbee-4e27-827c-e890d634cc7a",
+    "09442e3f-4277-4c6d-98be-439e5cbe794e",
+    "128db623-833e-4922-8303-104f95006344",
+    "0a2ca3f2-4238-4acd-9fd8-c66181412157",
+    "1b019a9c-c036-4679-8b64-5b1110b26170",
+    "16f5cc34-5745-49c0-83d7-1b39de78dfbe",
+    "0c9a59fb-ec23-40f4-85fc-3055c68a30ca",
+    "0cece835-090e-4ab9-b508-464a32df0382",
+    "036ee164-6575-4c4d-90e1-299d6f5db695",
+    "11bc8737-5c82-429e-b755-1f7953211461",
+    "1223cd21-3ec1-4cf6-b326-935a4866dd31",
+    "175db81f-197c-4d83-9c38-2c7ebdb30d01",
+    "1cb7ce59-fe63-4f9e-aca6-e39a4da45cb8",
+    "0bdf5ef8-2955-4250-ba79-3ee0f4268a41",
+    "01d595ce-1b1c-4c2a-86a4-349973d01a5b",
+    "0e860c94-0a4b-4388-9be1-2234f9e180f4",
+    "1a3ba3a8-1f74-48b0-a0db-9f999d02b642",
+    "1b03f634-1913-44a0-9ca2-a8931cec234f",
+    "04cea47b-c190-4a30-94b5-dd86c1499f3e",
+    "111099fa-e1ef-4d81-97f8-14e4033103a9",
+    "097141b9-ddf2-44d5-8b1f-2194a88da260",
+    "0d2b271e-fe2c-472c-9970-907b975a3781",
+    "1e48bc8c-9d13-4ad1-b18e-fd0276d093d4",
+    "0355c28f-3384-43a3-939c-a6756e2e6e68",
+    "130384ab-03cb-4697-9d11-30cb910fb756",
+    "14e5c94a-1eb2-421f-88d0-656df2a205b3",
+    "07132d2c-95ef-484d-9fbc-f4bfa717e1d4",
+    "19e6373c-2716-436c-a230-1c7b314b794c"
   ],
   "skipped": {},
   "batches": [
@@ -119574,6 +121077,42 @@
         "rewrite_structure": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T11:57:47.731Z",
+      "attempted": 229,
+      "ok": 17,
+      "skip": 2,
+      "fail": 212,
+      "reasons": {
+        "expand_existing": 226,
+        "source_thin": 1,
+        "no_ai": 2,
+        "lever_404": 1,
+        "rewrite_short": 98,
+        "rewrite_structure": 114
+      },
+      "samplePaths": [
+        "/smartsheet/enterp-81",
+        "/ciandt/job-84",
+        "/airwallex/mgr-7b",
+        "/revenuecat/be-eng",
+        "/coreoftheheart/content",
+        "/scarlet/acct",
+        "/ruby-labs/tech",
+        "/siteminder/biz-dev",
+        "/stacker/lead",
+        "/spearbio/clinic",
+        "/talkiatry/head-qa",
+        "/crusoe/infra-fd",
+        "/omaze/prod-33",
+        "/uipath/dev",
+        "/cohere/global",
+        "/ramp/cust-c6",
+        "/alan/fullst-1a"
+      ]
     }
   ],
   "deadBoards": {
@@ -120752,6 +122291,8 @@
     "ashby:wealthsimple": "posting_older_than_30d",
     "ashby:satispay": "posting_older_than_30d",
     "greenhouse:contentful": "posting_older_than_30d",
-    "greenhouse:hightouch": "posting_older_than_30d"
+    "greenhouse:hightouch": "posting_older_than_30d",
+    "ashby:trawa": "source_thin",
+    "lever:sophos": "lever_404"
   }
 }
