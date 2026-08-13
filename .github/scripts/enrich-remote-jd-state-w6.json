@@ -82443,8 +82443,9 @@
       "external_id": "sierra_sales"
     },
     "d9ff7cc2-630a-4d61-be0c-695fd743fa4a": {
-      "status": "fail",
-      "reason": "rewrite_structure"
+      "status": "ok",
+      "path": "/truelogic/fullst-c5",
+      "external_id": "truelogic_fullst-c5"
     },
     "dad285e3-ae45-4d54-81b9-5065a8059c79": {
       "status": "fail",
@@ -82476,7 +82477,7 @@
     },
     "cfdb0ffd-0ef1-4667-adeb-1701619f8107": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "dcc04a4e-ea29-45ca-ac72-d76fa9dee3e6": {
       "status": "fail",
@@ -82619,7 +82620,7 @@
     },
     "dca2045e-1298-4edd-b6e2-e640251a8943": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "dc6cafa0-7cb5-44c4-9820-b41956039847": {
       "status": "fail",
@@ -83014,7 +83015,7 @@
     },
     "c2666aa2-0412-4624-8e0c-98cad05824a8": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "d8e66c4b-c2de-453c-9759-43c13830be49": {
       "status": "fail",
@@ -83058,7 +83059,7 @@
     },
     "d89f3052-fe6e-4106-ad32-9f869b0ba0f7": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "de8b58f3-9c1f-4ae3-bf76-42604d28f1b7": {
       "status": "fail",
@@ -83140,7 +83141,7 @@
     },
     "d17c4774-2e4b-4e0e-b2c9-44d16bd4d711": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "df8b8e0b-e485-4bd0-bb7d-b2a1ca9be2f7": {
       "status": "fail",
@@ -83176,7 +83177,7 @@
     },
     "db65761f-4966-461c-b401-f523250b02a8": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -102193,7 +102194,14 @@
     "d24b7aff-bda8-466d-b789-7bb4a3148a16",
     "d7109435-ef03-40d1-8d8f-843eb00aba65",
     "cd5d66be-63df-498d-bc31-144b0dccf8e0",
-    "d6cc9843-66f1-4dbc-b8f7-086456671d25"
+    "d6cc9843-66f1-4dbc-b8f7-086456671d25",
+    "c2666aa2-0412-4624-8e0c-98cad05824a8",
+    "d89f3052-fe6e-4106-ad32-9f869b0ba0f7",
+    "dca2045e-1298-4edd-b6e2-e640251a8943",
+    "d17c4774-2e4b-4e0e-b2c9-44d16bd4d711",
+    "cfdb0ffd-0ef1-4667-adeb-1701619f8107",
+    "db65761f-4966-461c-b401-f523250b02a8",
+    "d9ff7cc2-630a-4d61-be0c-695fd743fa4a"
   ],
   "skipped": {},
   "batches": [
@@ -103318,6 +103326,38 @@
         "/lpadesignstudios/digital",
         "/sierra/sales",
         "/relay/sw-eng"
+      ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-13T14:05:55.787Z",
+      "attempted": 12,
+      "ok": 0,
+      "skip": 0,
+      "fail": 12,
+      "reasons": {
+        "expand_existing": 12,
+        "rewrite_short": 3,
+        "rewrite_structure": 9
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 6,
+      "at": "2026-08-13T14:07:54.857Z",
+      "attempted": 9,
+      "ok": 1,
+      "skip": 0,
+      "fail": 8,
+      "reasons": {
+        "expand_existing": 9,
+        "rewrite_short": 3,
+        "rewrite_structure": 5
+      },
+      "samplePaths": [
+        "/truelogic/fullst-c5"
       ]
     }
   ],
