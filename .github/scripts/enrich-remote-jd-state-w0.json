@@ -100390,7 +100390,7 @@
     },
     "03c750dd-cb13-475e-b516-c3b5354f54f0": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "0970fd8f-7899-4f3b-98d0-f9ef8e206f53": {
       "status": "fail",
@@ -119487,7 +119487,8 @@
     "1bed5984-e283-47b9-ab1d-753c37856499",
     "190a9e2d-7458-48b2-9e86-e4bb767b69ee",
     "15aa6db6-7d97-408f-a3bf-43c6ecf8686f",
-    "0970fd8f-7899-4f3b-98d0-f9ef8e206f53"
+    "0970fd8f-7899-4f3b-98d0-f9ef8e206f53",
+    "03c750dd-cb13-475e-b516-c3b5354f54f0"
   ],
   "skipped": {},
   "batches": [
@@ -121502,6 +121503,20 @@
       "reasons": {
         "expand_existing": 1,
         "rewrite_structure": 1
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T12:30:41.555Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 1,
+        "rewrite_short": 1
       },
       "samplePaths": []
     }
