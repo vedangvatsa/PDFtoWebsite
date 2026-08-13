@@ -176,7 +176,7 @@ export async function resolveCompanyPage(slug: string): Promise<CompanyPageConte
     nameBlocked: Boolean(resolvedName && COMPANY_BLOCKLIST.has(resolvedName)),
     hasDirectory: Boolean(dir),
     liveJobCount: jobs.length,
-    hasCachedProfile: companyHasCachedProfile(slug) || Boolean(knownCompanyDescription(slug)),
+    hasCachedProfile: await companyHasCachedProfile(slug) || Boolean(await knownCompanyDescription(slug)),
   });
   if (!keep) return null;
 

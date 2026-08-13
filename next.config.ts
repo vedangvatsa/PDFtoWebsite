@@ -170,6 +170,57 @@ const nextConfigFn = (phase: string): NextConfig => {
           destination: '/niti-aayog/niti-d5',
           permanent: true,
         },
+        // Consolidated from deleted redirect-only page directories
+        {
+          source: '/visa-checker',
+          destination: '/visas?tab=checker',
+          permanent: true,
+        },
+        {
+          source: '/cost-of-living',
+          destination: '/costs',
+          permanent: true,
+        },
+        {
+          source: '/insurance',
+          destination: '/resources#insurance',
+          permanent: true,
+        },
+        {
+          source: '/ai-discovery',
+          destination: '/discover',
+          permanent: true,
+        },
+        {
+          source: '/layoffs-report',
+          destination: '/layoffs',
+          permanent: true,
+        },
+        {
+          source: '/passport',
+          destination: '/visas?tab=checker',
+          permanent: true,
+        },
+        {
+          source: '/remote-talent-report',
+          destination: '/talent',
+          permanent: true,
+        },
+        {
+          source: '/tech-talent-report',
+          destination: '/hiring',
+          permanent: true,
+        },
+        {
+          source: '/internet-speeds',
+          destination: '/rankings?tab=internet',
+          permanent: true,
+        },
+        {
+          source: '/privacy',
+          destination: '/terms#privacy',
+          permanent: true,
+        },
       ];
     },
   

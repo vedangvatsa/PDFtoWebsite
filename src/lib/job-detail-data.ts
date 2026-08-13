@@ -81,9 +81,9 @@ export async function fetchJobByCompanyAndSlug(
   return getCachedJobByCompanyAndSlug(companySlug, jobSlug);
 }
 
-export function toJobDetail(job: JobRow): JobDetail {
+export async function toJobDetail(job: JobRow): Promise<JobDetail> {
   const location = cleanPublishText(normalizeLocation(job.location || ''));
-  const published = publishSafeDescription(job, location);
+  const published = await publishSafeDescription(job, location);
   const title = cleanJobTitle(job.title);
   const company = companyDisplayName(cleanPublishText(job.company), job.apply_url);
   const salary =
@@ -138,11 +138,11 @@ export type PublishedDescription = {
   indexable: boolean;
 };
 
-function companyAboutFallback(job: JobRow, location: string): PublishedDescription {
+async function companyAboutFallback(job: JobRow, location: string): Promise<PublishedDescription> {
   const rawCompany = cleanPublishText(job.company);
   const company = companyDisplayName(rawCompany, job.apply_url);
   const title = cleanJobTitle(job.title);
-  const about = companyAboutForJob(company, {
+  const about = await companyAboutForJob(company, {
     title,
     location,
     slug: companyToSlug(job.company),
@@ -165,7 +165,7 @@ function companyAboutFallback(job: JobRow, location: string): PublishedDescripti
   };
 }
 
-export function publishSafeDescription(job: JobRow, location: string): PublishedDescription {
+export async function publishSafeDescription(job: JobRow, location: string): Promise<PublishedDescription> {
   const title = cleanJobTitle(job.title);
   const rawCompany = cleanPublishText(job.company);
   const company = companyDisplayName(rawCompany, job.apply_url);
@@ -202,7 +202,7 @@ export function publishSafeDescription(job: JobRow, location: string): Published
     }
   }
 
-  const assembled = assembleJobPage({ ...job, location });
+  const assembled = await assembleJobPage({ ...job, location });
   if (assembled.ok) {
     return {
       isCurated: false,
@@ -214,7 +214,7 @@ export function publishSafeDescription(job: JobRow, location: string): Published
     };
   }
 
-  return companyAboutFallback(job, location);
+  return await companyAboutFallback(job, location);
 }
 
 const TITLE_STOP = new Set([
@@ -449,7 +449,7 @@ export async function getViewerJobContext(): Promise<{
   );
 }
 
-export function buildJobMetadata(job: JobRow, siteUrl: string) {
+export async function buildJobMetadata(job: JobRow, siteUrl: string) {
   const location = cleanPublishText(normalizeLocation(job.location || ''));
   const type = jobTypeLabel(job.job_type, job);
   const jobTitle = cleanJobTitle(job.title);
@@ -464,7 +464,7 @@ export function buildJobMetadata(job: JobRow, siteUrl: string) {
     : `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
   // Raw scraped bodies are never used in meta (plagiarism guard) — only
   // curated rewritten bodies. Uncurated pages use company about when we have it.
-  const published = publishSafeDescription(job, location);
+  const published = await publishSafeDescription(job, location);
   const excerpt = published.indexable
     ? jobDescriptionExcerpt(published.plain, 140, { title: jobTitle, company })
     : published.plain && published.plain.length > 40

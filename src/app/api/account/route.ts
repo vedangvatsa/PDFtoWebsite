@@ -12,7 +12,19 @@ export async function DELETE() {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    // 2. Delete profile row using the user's active session (relies on RLS allowing delete self)
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({ error: 'Server misconfiguration: Service role key is required for account deletion.' }, { status: 500 });
+    }
+
+    // 2. Delete auth user (requires service role)
+    const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id);
+
+    if (authDeleteError) {
+      console.error('Auth user deletion failed:', authDeleteError);
+      return NextResponse.json({ error: 'Failed to delete authentication user.' }, { status: 500 });
+    }
+
+    // 3. Delete profile row using the user's active session (relies on RLS allowing delete self)
     const { error: profileDeleteError } = await supabaseUser
       .from('profiles')
       .delete()
@@ -21,22 +33,6 @@ export async function DELETE() {
     if (profileDeleteError) {
       console.error('Profile deletion failed:', profileDeleteError);
       return NextResponse.json({ error: profileDeleteError.message }, { status: 500 });
-    }
-
-    // 3. Delete auth user (requires service role)
-    // If the service role key is not configured (e.g., in some deployment environments),
-    // we skip deleting the Auth user, meaning they can still log in but will have a fresh empty profile.
-    const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id);
-
-    if (authDeleteError) {
-      console.error('Auth user deletion failed:', authDeleteError);
-      // Profile is already deleted — surface the partial failure instead of
-      // silently reporting a clean success.
-      return NextResponse.json({
-        success: true,
-        partial: true,
-        warning: 'Profile deleted, but the account could not be fully removed. Contact support if you need help.',
-      }, { status: 200 });
     }
 
     return NextResponse.json({ success: true, partial: false }, { status: 200 });

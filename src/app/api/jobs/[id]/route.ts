@@ -64,7 +64,7 @@ export async function GET(
 
   // Publish-safe: raw scraped bodies are never exposed — only AI-rewritten or
   // synthesized original content.
-  const published = publishSafeDescription(job as any, normalizeLocation(job.location) || '');
+  const published = await publishSafeDescription(job as any, normalizeLocation(job.location) || '');
   const descriptionHtml = published.html;
   const expired = isJobExpired(job.published_at, job.created_at);
 

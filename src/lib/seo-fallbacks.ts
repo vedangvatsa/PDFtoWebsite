@@ -23,7 +23,7 @@ async function companyHubExists(slug: string): Promise<boolean> {
   if (COMPANY_BLOCKLIST.has(blockKey) || COMPANY_BLOCKLIST.has(key)) return false;
   if (isJunkCompanyName(key.replace(/-/g, ' '))) return false;
 
-  if (companyHasCachedProfile(key)) return true;
+  if (await companyHasCachedProfile(key)) return true;
 
   const dir = await withTimeoutFallback(
     supabaseAdmin
@@ -68,6 +68,6 @@ export function goneUuidJobPath(): string {
 }
 
 /** Known publishable description for a company slug (never encyclopedia dumps). */
-export function knownCompanyDescription(slug: string): string | null {
+export async function knownCompanyDescription(slug: string): Promise<string | null> {
   return publishableCompanyAbout(slug);
 }

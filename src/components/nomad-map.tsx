@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { getCitySlug, CITY_IMAGES, CITY_IMAGE_FALLBACK } from '@/lib/utils';
 
 import {
-  Map,
+  Map as NomadMapView,
   MapClusterLayer,
   MapPopup,
   MapControls,
@@ -219,7 +219,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
   }, [filteredCities.length, selectedCity]);
 
   const cities = useMemo(() => {
-    const citySet = new globalThis.Map<string, { country: string; count: number; lat: number; lon: number }>();
+    const citySet = new Map<string, { country: string; count: number; lat: number; lon: number }>();
     for (const poi of data) {
       const existing = citySet.get(poi.city);
       if (existing) {
@@ -437,7 +437,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
 
       {/* Map */}
       <div id="nomad-map-container" className="w-full h-[350px] sm:h-[450px] md:h-[600px] rounded-lg overflow-hidden border border-zinc-200 shadow-sm">
-        <Map
+        <NomadMapView
           ref={mapRef}
           center={mapCenter}
           zoom={mapZoom}
@@ -555,7 +555,7 @@ export function NomadMap({ data, cityFilter }: { data: POI[]; cityFilter?: strin
           )}
 
           <MapControls showZoom showLocate />
-        </Map>
+        </NomadMapView>
       </div>
 
       {/* Conditional: Top Destinations Grid or Listings Table */}

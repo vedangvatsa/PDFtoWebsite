@@ -630,8 +630,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Fatal API Error (returning empty shell for UX):', error);
     const message = error instanceof Error ? error.message : 'Unknown error';
-    // Still never hard-block the user: open editor with a shell they can fill in
+    // Return shell for graceful frontend handling, but use 422 so
+    // monitoring tools can detect parse failures.
     const shell = emptyProfileShell(undefined, [message]);
-    return NextResponse.json(shell, { status: 200 });
+    return NextResponse.json(shell, { status: 422 });
   }
 }

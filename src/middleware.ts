@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// ============================================================================
+// 1. CONSTANTS & CONFIGURATION
+// ============================================================================
+
 /**
  * In-app browser user-agent patterns. When detected on the signup page,
  * we inject a meta refresh / JS redirect page that tries to escape to
@@ -23,35 +27,6 @@ const IN_APP_BROWSER_UA = [
   /Slack/i,
   /Teams/i,
 ];
-
-function isInAppBrowser(ua: string): boolean {
-  return IN_APP_BROWSER_UA.some((p) => p.test(ua));
-}
-
-/**
- * UTM suffixes — append /th, /wa, /li etc. to ANY page URL
- * to automatically add UTM tracking parameters.
- *
- * Examples:
- *   /jobs/th    → /jobs?utm_source=threads&utm_medium=social&utm_campaign=social-share
- *   /nomad/wa   → /nomad?utm_source=whatsapp&utm_medium=social&utm_campaign=social-share
- *   /salary/x   → /salary?utm_source=twitter&utm_medium=social&utm_campaign=social-share
- */
-const UTM_SUFFIXES: Record<string, string> = {
-  th:   'threads',
-  wa:   'whatsapp',
-  tg:   'telegram',
-  li:   'linkedin',
-  x:    'twitter',
-  tw:   'twitter',
-  ig:   'instagram',
-  fb:   'facebook',
-  bsky: 'bluesky',
-  yt:   'youtube',
-  rd:   'reddit',
-};
-
-const SUFFIX_SET = new Set(Object.keys(UTM_SUFFIXES));
 
 /**
  * Declared crawlers we WANT to keep (AI assistants, search engines, social
@@ -77,10 +52,7 @@ const ALLOWED_CRAWLER_UA = [
 
 /**
  * Anonymous scrapers / headless automation. These do NOT identify as a
- * declared bot, ignore robots.txt, and scrape content — e.g. the headless
- * Chrome-114 / macOS-10.15.7 crawler that hit ~10.6k one-page "visits" on
- * 2026-08-05. Real browsers and the declared crawlers above never match, so
- * blocking them does not touch AI-assistant crawls or genuine users.
+ * declared bot, ignore robots.txt, and scrape content.
  */
 const SCRAPER_UA = [
   /headlesschrome|phantomjs|puppeteer|playwright|selenium/i,
@@ -89,43 +61,41 @@ const SCRAPER_UA = [
   /Macintosh; Intel Mac OS X 10_15_7.*Chrome\/114\.0\.0\.0/i,
 ];
 
-function isAllowedCrawler(ua: string): boolean {
-  return ALLOWED_CRAWLER_UA.some((p) => p.test(ua));
-}
+/**
+ * UTM suffixes — append /th, /wa, /li etc. to ANY page URL
+ * to automatically add UTM tracking parameters.
+ */
+const UTM_SUFFIXES: Record<string, string> = {
+  th:   'threads',
+  wa:   'whatsapp',
+  tg:   'telegram',
+  li:   'linkedin',
+  x:    'twitter',
+  tw:   'twitter',
+  ig:   'instagram',
+  fb:   'facebook',
+  bsky: 'bluesky',
+  yt:   'youtube',
+  rd:   'reddit',
+};
 
-function isScraperAgent(ua: string): boolean {
-  return SCRAPER_UA.some((p) => p.test(ua));
-}
+const SUFFIX_SET = new Set(Object.keys(UTM_SUFFIXES));
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const ua = request.headers.get('user-agent') || '';
 
-  // Sitemaps must stay readable by Googlebot, GSC validators, curl health
-  // checks, and SEO tools. /sitemap-jobs/{n} has no file extension so it
-  // would otherwise hit the scraper block below.
-  if (pathname.startsWith('/sitemap')) {
-    return NextResponse.next();
-  }
+// ============================================================================
+// 2. HELPER FUNCTIONS
+// ============================================================================
 
-  // ── Anti-scraper edge block ──────────────────────────────────────────────
-  // Stop anonymous scrapers before any HTML/JS is served. Declared AI/search/
-  // social crawlers and real browsers pass straight through.
-  if (isScraperAgent(ua) && !isAllowedCrawler(ua)) {
-    return new NextResponse(null, {
-      status: 403,
-      headers: { 'Cache-Control': 'no-store' },
-    });
-  }
+const isInAppBrowser = (ua: string): boolean => IN_APP_BROWSER_UA.some((p) => p.test(ua));
+const isAllowedCrawler = (ua: string): boolean => ALLOWED_CRAWLER_UA.some((p) => p.test(ua));
+const isScraperAgent = (ua: string): boolean => SCRAPER_UA.some((p) => p.test(ua));
 
-  // Detect in-app browsers on the signup page and serve an escape page
-  // that attempts to open in the system browser before showing the form.
-  if (pathname === '/signup' && isInAppBrowser(ua)) {
-    const fullUrl = request.nextUrl.toString();
-    const isIOS = /iPad|iPhone|iPod/.test(ua);
-    const isAndroid = /Android/i.test(ua);
 
-    const escapeHtml = `<!DOCTYPE html>
+// ============================================================================
+// 3. TEMPLATES
+// ============================================================================
+
+const getEscapeHtmlTemplate = (fullUrl: string, isIOS: boolean, isAndroid: boolean): string => `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -157,22 +127,55 @@ export function middleware(request: NextRequest) {
   (function() {
     var url = ${JSON.stringify(fullUrl)};
     ${isIOS ? `
-    try { window.location.href = url.replace(/^https?:\/\//, 'x-safari-https://'); return; } catch(e) {}
-    try { window.location.href = url.replace(/^https?:\/\//, 'googlechrome://'); return; } catch(e) {}` : ''}
+    try { window.location.href = url.replace(/^https?:\\/\\//, 'x-safari-https://'); return; } catch(e) {}
+    try { window.location.href = url.replace(/^https?:\\/\\//, 'googlechrome://'); return; } catch(e) {}` : ''}
     ${isAndroid ? `
-    try { window.location.href = url.replace(/^https?:\/\//, 'intent://') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;'; return; } catch(e) {}` : ''}
+    try { window.location.href = url.replace(/^https?:\\/\\//, 'intent://') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;'; return; } catch(e) {}` : ''}
     try { window.open(url, '_blank', 'noopener,noreferrer'); } catch(e) {}
   })();
 </script>
 </body>
 </html>`;
-    return new NextResponse(escapeHtml, {
+
+
+// ============================================================================
+// 4. MAIN MIDDLEWARE
+// ============================================================================
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const ua = request.headers.get('user-agent') || '';
+
+  // Sitemaps must stay readable by Googlebot, GSC validators, curl health
+  // checks, and SEO tools.
+  if (pathname.startsWith('/sitemap')) {
+    return NextResponse.next();
+  }
+
+  // ── Anti-scraper edge block ──────────────────────────────────────────────
+  // Stop anonymous scrapers before any HTML/JS is served. Declared AI/search/
+  // social crawlers and real browsers pass straight through.
+  if (isScraperAgent(ua) && !isAllowedCrawler(ua)) {
+    return new NextResponse(null, {
+      status: 403,
+      headers: { 'Cache-Control': 'no-store' },
+    });
+  }
+
+  // ── In-App Browser Escape ────────────────────────────────────────────────
+  // Detect in-app browsers on the signup page and serve an escape page
+  if (pathname === '/signup' && isInAppBrowser(ua)) {
+    const fullUrl = request.nextUrl.toString();
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isAndroid = /Android/i.test(ua);
+
+    return new NextResponse(getEscapeHtmlTemplate(fullUrl, isIOS, isAndroid), {
       status: 200,
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
     });
   }
 
-  // Extract the last segment of the path
+  // ── UTM Tracking Links ───────────────────────────────────────────────────
   const segments = pathname.split('/').filter(Boolean);
   const lastSegment = segments[segments.length - 1];
 

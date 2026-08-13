@@ -1,0 +1,43 @@
+"use client";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  const unavailable =
+    error?.name === 'ProfileUnavailableError' ||
+    /taking too long to load/i.test(error?.message || '');
+    
+  return (
+    <div className="flex min-h-[50vh] flex-col items-center justify-center p-6 text-center">
+      <p className="text-sm font-medium text-muted-foreground mb-2">
+        {unavailable ? 'Temporarily unavailable' : 'Something went wrong'}
+      </p>
+      <h1 className="text-2xl font-bold tracking-tight mb-2">
+        {unavailable ? 'This profile is taking too long to load' : 'Unexpected error loading profile'}
+      </h1>
+      <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+        {unavailable
+          ? 'Please try again in a moment. This is not a missing profile.'
+          : error?.message || 'We ran into an issue loading this profile. Please try again.'}
+      </p>
+      <div className="flex gap-3">
+        <button
+          onClick={reset}
+          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          Try Again
+        </button>
+        <a
+          href="/"
+          className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
+        >
+          Go Home
+        </a>
+      </div>
+    </div>
+  );
+}

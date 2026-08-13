@@ -84,10 +84,10 @@ function engagementLabel(jobType: string | null | undefined): string | null {
   return t.slice(0, 40);
 }
 
-export function assembleJobPage(
+export async function assembleJobPage(
   job: AssembleJobInput,
   opts?: { formatHtml?: boolean }
-): AssembledJobPage {
+): Promise<AssembledJobPage> {
   const formatHtml = opts?.formatHtml !== false;
   const title = cleanPublishText(job.title || '');
   const rawCompany = cleanPublishText(job.company || '');
@@ -109,7 +109,7 @@ export function assembleJobPage(
   const engagement = looksLikeFellowship(job)
     ? 'fellowship'
     : engagementLabel(job.job_type);
-  const ownedAbout = publishableCompanyAbout(job.company || company);
+  const ownedAbout = await publishableCompanyAbout(job.company || company);
   const blurb = ownedAbout && jobDescriptionWordCount(ownedAbout) >= 40 ? ownedAbout : '';
   const skills = filterMeaningfulSkillTags(job.tags || [], { companyName: company }).slice(0, 8);
 
