@@ -1,6 +1,27 @@
+import { cache } from 'react';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { publicCustomSections, enrichNameFromContact, normalizeName, cleanDescription, isResumeDumpText, isContactHeaderText, sanitizeSocialHandle, extractCleanSummary, repairSpacedEmail } from '@/lib/parse-guard';
+import {
+  withRetryOnTimeout,
+  DB_BUDGET,
+  ProfileUnavailableError,
+  isProfileUnavailable,
+} from '@/lib/db-timeout';
+import {
+  publicCustomSections,
+  publicWorkExperience,
+  publicEducation,
+  enrichNameFromContact,
+  normalizeName,
+  cleanDescription,
+  isResumeDumpText,
+  isContactHeaderText,
+  sanitizeSocialHandle,
+  extractCleanSummary,
+  repairSpacedEmail,
+  splitSkills,
+} from '@/lib/parse-guard';
+
+export { ProfileUnavailableError, isProfileUnavailable };
 
 const supabase = supabaseAdmin;
 
@@ -48,17 +69,41 @@ export interface ServerProfileData {
   }>;
 }
 
-export async function getProfileBySlug(slug: string): Promise<ServerProfileData | null> {
-    const { data: profile } = await withTimeoutFallback(
-      supabase.from('profiles').select('*').eq('username', slug).maybeSingle(),
-      DB_BUDGET.fast,
-      { data: null, error: null } as any,
-      `profile-slug:${slug}`
+export type PublicProfileLookup =
+  | { status: 'ok'; data: ServerProfileData }
+  | { status: 'missing' }
+  | { status: 'unavailable' };
+
+const PROFILE_SELECT =
+  'id, username, full_name, about, skills, experience, education, custom_sections, links, profile_picture_url, views, theme_id';
+
+async function fetchProfileRow(slug: string) {
+  const query = () =>
+    supabase.from('profiles').select(PROFILE_SELECT).eq('username', slug).maybeSingle();
+  let result: { data: any; error: any };
+  try {
+    result = await withRetryOnTimeout(query, DB_BUDGET.profile, `profile-slug:${slug}`);
+  } catch (err) {
+    // Timeout / network / PostgREST outage ≠ missing row. A null here used to
+    // 404 live profiles (chris-mowforth and others, Aug 2026).
+    console.warn(
+      `[db-fail] profile-slug:${slug}:`,
+      err instanceof Error ? err.message : err
     );
+    throw new ProfileUnavailableError(slug);
+  }
+  if (result?.error && result.error.code !== 'PGRST116') {
+    console.warn(`[db-fail] profile-slug:${slug}:`, result.error.message || result.error);
+    throw new ProfileUnavailableError(slug);
+  }
+  return result;
+}
+
+async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData | null> {
+    const { data: profile } = await fetchProfileRow(slug);
     if (!profile) return null;
 
     const links = Array.isArray(profile.links) ? profile.links : [];
-    // Normalize ALL CAPS or all lowercase names to Title Case
     const smartTitleCase = (name: string): string => {
         if (!name) return name;
         const isAllCaps = name === name.toUpperCase() && /[A-Z]/.test(name);
@@ -71,7 +116,6 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
 
     const getLink = (t: string) => links.find((l: any) => l.type === t)?.value || undefined;
 
-    // Never ship section-title "names" or LinkedIn-glued last names to the public page
     const rawName = String(profile.full_name || '').trim();
     const recovered = enrichNameFromContact(rawName, {
       email: getLink('email'),
@@ -82,7 +126,6 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
       smartTitleCase(normalizeName(recovered) || normalizeName(rawName) || '') ||
       'Professional Profile';
 
-    // Strip glued section labels; never publish a full CV dump as the summary
     let summary = String(profile.about || '');
     summary = isContactHeaderText(summary)
       ? ''
@@ -111,7 +154,7 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
             github,
             linkedin,
             viewCount: profile.views || 0,
-            skills: (profile.skills || []).map((s: any) => typeof s === 'string' ? s.trim() : String(s?.name ?? '').trim()).filter(Boolean),
+            skills: splitSkills(profile.skills || []),
             links: (profile.links || []).map((l: any) => {
               if (!l || typeof l !== 'object') return l;
               if (l.type === 'linkedin') return { ...l, value: sanitizeSocialHandle(l.value || '', 'linkedin') };
@@ -120,9 +163,22 @@ export async function getProfileBySlug(slug: string): Promise<ServerProfileData 
               return l;
             })
         },
-        workExperience: profile.experience || [],
-        education: profile.education || [],
-        // Editor-only salvage sections (e.g. "Imported CV text") stay out of the public site
+        workExperience: publicWorkExperience(profile.experience || []),
+        education: publicEducation(profile.education || []),
         customSections: publicCustomSections(profile.custom_sections || [])
     };
+}
+
+/** Request-scoped: generateMetadata + page share one lookup. */
+export const getProfileBySlug = cache(getProfileBySlugUncached);
+
+/** Distinguish miss (404) from outage (503). Never collapse the two. */
+export async function lookupPublicProfile(slug: string): Promise<PublicProfileLookup> {
+  try {
+    const data = await getProfileBySlug(slug);
+    return data ? { status: 'ok', data } : { status: 'missing' };
+  } catch (err) {
+    if (isProfileUnavailable(err)) return { status: 'unavailable' };
+    throw err;
+  }
 }

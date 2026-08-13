@@ -55,7 +55,7 @@ const PLACEHOLDER_DATE_RE =
 
 // Trailing location tokens wrongly glued to names ("Yash Kathait New Delhi")
 const TRAILING_LOCATION_RE =
-  /\s+(?:New\s+Delhi|Delhi|Noida|Gurgaon|Gurugram|Mumbai|Bombay|Bengaluru|Bangalore|Hyderabad|Chennai|Pune|Kolkata|Calcutta|Ahmedabad|Jaipur|Chandigarh|Lucknow|Indore|Bhopal|Patna|Remote|India|USA|UK|UAE|Canada|Australia|Singapore|London|San\s+Francisco|New\s+York|NYC|California|Texas|Ontario|Toronto|Dubai)$/i;
+  /\s+(?:New\s+Delhi|Delhi|Noida|Gurgaon|Gurugram|Mumbai|Bombay|Bengaluru|Bangalore|Hyderabad|Chennai|Pune|Kolkata|Calcutta|Ahmedabad|Jaipur|Chandigarh|Lucknow|Indore|Bhopal|Patna|Vadodara|Surat|Nagpur|Kochi|Coimbatore|Mysore|Mysuru|Visakhapatnam|Remote|India|USA|UK|UAE|Canada|Australia|Singapore|London|San\s+Francisco|New\s+York|NYC|California|Texas|Ontario|Toronto|Dubai)$/i;
 
 const MULTI_LOCATION_TAIL_RE =
   /\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:,\s*(?:India|USA|UK|UAE|Canada|Australia|Singapore))?$/;
@@ -65,8 +65,14 @@ export function normalizeName(raw: string): string {
   if (!name) return '';
   // Contact / URL as name is never valid
   if (EMAIL_RE.test(name) || URL_IN_FIELD_RE.test(name) || PHONE_RE.test(name)) return '';
-  // Strip leading document labels ("Resume: John Doe" -> "John Doe")
-  name = name.replace(/^(curriculum vitae|cv|resume|r[eé]sum[eé]|profile|bio|ats)\s*[:.-]?\s*/i, '').trim();
+  // Strip leading document labels ("Resume: John Doe" -> "John Doe").
+  // Lookahead stops "bio"/"cv" eating "Biology" / "Cvetkova".
+  name = name
+    .replace(
+      /^(?:curriculum\s+vitae|cv|resume|r[eé]sum[eé]|profile|bio|ats)(?=\s|[:.\-]|$)\s*[:.-]?\s*/i,
+      ''
+    )
+    .trim();
   name = name.replace(/^[•\-\*▪▸►‣○●"“”']+\s*/, '').trim();
   // Strip trailing document/file extensions ("Vaishnavee Haridas.pdf" → "Vaishnavee Haridas").
   // The AI frequently reads a PDF filename as the person's name.
@@ -83,8 +89,25 @@ export function normalizeName(raw: string): string {
   name = name.replace(/\b([A-Za-z]{2,})(\d{2,4})\b/g, '$1').replace(/\s+/g, ' ').trim();
   // Trailing seniority / doc noise wrongly treated as part of the name
   name = name
-    .replace(/\s+\b(Senior|Junior|Intern|Fresher|Student|Candidate|Update|ATS|CV|Resume)\b\s*$/i, '')
+    .replace(/\s+\b(Senior|Junior|Intern|Fresher|Student|Candidate|Update|ATS|CV|Resume|Portfolio|Professional)\b\s*$/i, '')
     .trim();
+  name = name
+    .replace(
+      /\s+\b(?:(?:cybersecurity|software|product|project|data|marketing)\s+)*(?:analyst|engineer|developer|designer|consultant|manager|architect|specialist|scientist|coordinator|intern)\b\s*$/i,
+      ''
+    )
+    .trim();
+  name = name
+    .replace(
+      /\s+\b(?:IB|IIM[A-C]?|PGP|PGDM|MBA|B\.?Tech|M\.?Tech)\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?(?:\s*20\d{2})?\s*$/i,
+      ''
+    )
+    .trim();
+  if (name.split(/\s+/).length >= 3) {
+    name = name
+      .replace(/\s+\b(Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s*$/i, '')
+      .trim();
+  }
   // Split on first comma/newline and keep only the name part
   name = name.split(/[,/|·•]/)[0].trim();
   // Strip trailing locations ("Yash Kathait New Delhi" → "Yash Kathait")
@@ -128,7 +151,24 @@ export function normalizeName(raw: string): string {
   if (name.split(/\s+/).length > 5) {
     name = name.split(/\s+/).slice(0, 3).join(' ');
   }
+  name = collapseDuplicatedName(name);
+  name = stripTrailingRoleFromName(name);
   return name.replace(/\s{2,}/g, ' ').trim();
+}
+
+/** "Muhammad Ibrahim Khanmuhammad Ibrahim Khan" → "Muhammad Ibrahim Khan" */
+function collapseDuplicatedName(name: string): string {
+  const compact = name.replace(/\s+/g, '').toLowerCase();
+  if (compact.length < 8 || compact.length % 2 !== 0) return name;
+  const half = compact.slice(0, compact.length / 2);
+  if (half !== compact.slice(compact.length / 2)) return name;
+  let count = 0;
+  let i = 0;
+  while (i < name.length && count < half.length) {
+    if (/\S/.test(name[i])) count++;
+    i++;
+  }
+  return name.slice(0, i).trim() || name;
 }
 
 export function cleanLocation(raw: string): string {
@@ -262,6 +302,124 @@ export function cleanCompany(raw: string): string {
     }
   }
   return c;
+}
+
+/** Strong role tokens — not lone "data"/"product"/"senior", which match company names. */
+const STRONG_JOB_TITLE_RE =
+  /\b(engineer|developer|manager|director|analyst|designer|consultant|architect|specialist|scientist|researcher|programmer|coordinator|officer|founder|intern)\b/i;
+
+export function looksLikeJobTitle(raw: string): boolean {
+  const t = String(raw || '').trim();
+  if (!t || t.length > 80) return false;
+  return STRONG_JOB_TITLE_RE.test(t);
+}
+
+const SECTION_HEADER_FIELD_RE =
+  /^(personal\s+information|contact(?:\s+information)?|education|experience|skills?|profile|summary|references?|curriculum vitae|resume|objective)$/i;
+const DURATION_ONLY_RE = /^\d+\+?\s*(months?|years?|yrs?|mos?)\.?$/i;
+const SENTENCE_COMPANY_RE =
+  /^(worked|built|developed|responsible|managed|led|created|designed|implemented|helped|assisted)\b/i;
+const PLACEHOLDER_TITLE_RE = /^(position|freshers?|n\/?a|na|title)$/i;
+
+/** Peel job-title tokens off the right of a name, leaving at least two name tokens. */
+function stripTrailingRoleFromName(name: string): string {
+  const tokens = name.split(/\s+/).filter(Boolean);
+  while (tokens.length > 2) {
+    const lastTwo = tokens.slice(-2).join(' ');
+    const lastThree = tokens.slice(-3).join(' ');
+    const last = tokens[tokens.length - 1];
+    if (tokens.length > 3 && looksLikeJobTitle(lastThree)) {
+      tokens.splice(-3);
+      continue;
+    }
+    if (looksLikeJobTitle(lastTwo)) {
+      tokens.splice(-2);
+      continue;
+    }
+    if (looksLikeJobTitle(last)) {
+      tokens.pop();
+      continue;
+    }
+    break;
+  }
+  return tokens.join(' ');
+}
+
+function splitTitleCompanyDash(title: string): { title: string; company: string } | null {
+  const spaced = String(title || '')
+    .split(/\s*[—–]\s*/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (spaced.length < 2) return null;
+  const left = spaced[0];
+  const right = spaced
+    .slice(1)
+    .join(' – ')
+    .replace(/\s*\((?:ai\s+)?tech company\)/i, '')
+    .trim();
+  if (looksLikeJobTitle(left) && !looksLikeJobTitle(right)) return { title: left, company: right };
+  if (looksLikeJobTitle(right) && !looksLikeJobTitle(left)) return { title: right, company: left };
+  return null;
+}
+
+export function repairWorkExperienceRow<
+  T extends { title?: string; company?: string; description?: string },
+>(w: T): T {
+  let title = String(w.title || '').trim();
+  let company = cleanCompany(String(w.company || '').trim())
+    .replace(/\(\s*\)/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  let description = String(w.description || '').trim();
+
+  if (DURATION_ONLY_RE.test(company)) company = '';
+  if (SECTION_HEADER_FIELD_RE.test(company)) company = '';
+  if (SECTION_HEADER_FIELD_RE.test(title) || PLACEHOLDER_TITLE_RE.test(title)) title = '';
+  if (
+    SENTENCE_COMPANY_RE.test(company) ||
+    (company.length > 55 && /\s/.test(company) && looksLikeJobTitle(title))
+  ) {
+    description = [company, description].filter(Boolean).join('\n');
+    company = '';
+  }
+
+  if (title && !company) {
+    const split = splitTitleCompanyDash(title);
+    if (split) {
+      title = split.title;
+      company = split.company.replace(TRAILING_LOCATION_RE, '').trim();
+    }
+  }
+
+  if (company && title && looksLikeJobTitle(company) && !looksLikeJobTitle(title)) {
+    const tmp = title;
+    title = company;
+    company = tmp;
+  }
+
+  return { ...w, title, company, description };
+}
+
+export function repairTitleCompanySwap<T extends { title?: string; company?: string }>(w: T): T {
+  return repairWorkExperienceRow(w);
+}
+
+export function publicWorkExperience<
+  T extends { title?: string | null; company?: string | null; description?: string | null },
+>(rows: T[] | null | undefined): T[] {
+  return (Array.isArray(rows) ? rows : [])
+    .map((w) => repairWorkExperienceRow(w as T & { title?: string; company?: string; description?: string }))
+    .filter((w) => String(w?.title || '').trim() || String(w?.company || '').trim());
+}
+
+export function publicEducation<
+  T extends { institution?: string | null; degree?: string | null },
+>(rows: T[] | null | undefined): T[] {
+  return (Array.isArray(rows) ? rows : []).filter(
+    (e) =>
+      String(e?.institution || '').trim().length > 1 ||
+      String(e?.degree || '').trim().length > 1
+  );
 }
 
 /**
@@ -737,15 +895,22 @@ export function repairParsedData(data: any, hints?: { authName?: string }): any 
         }
         return true;
       })
-      .map((w: any) => ({
-        ...w,
-        title: String(w.title || '').trim(),
-        company: cleanCompany(String(w.company || '').trim()),
-        location: cleanLocation(w.location),
-        startDate: cleanDate(w.startDate),
-        endDate: cleanDate(w.endDate),
-        description: formatWorkExperienceDescription(w.description),
-      }));
+      .map((w: any) => {
+        const repaired = repairWorkExperienceRow({
+          ...w,
+          title: String(w.title || '').trim(),
+          company: String(w.company || '').trim(),
+          description: String(w.description || ''),
+        });
+        return {
+          ...repaired,
+          location: cleanLocation(w.location),
+          startDate: cleanDate(w.startDate),
+          endDate: cleanDate(w.endDate),
+          description: formatWorkExperienceDescription(repaired.description),
+        };
+      })
+      .filter((w: any) => String(w.title || '').trim() || String(w.company || '').trim());
   }
 
   if (Array.isArray(data.education)) {

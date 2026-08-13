@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProfileBySlug } from '@/lib/supabase-server';
+import { lookupPublicProfile } from '@/lib/supabase-server';
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 export const maxDuration = 60;
@@ -30,12 +30,18 @@ export async function POST(req: NextRequest) {
   const cleanCompany = (company || '').slice(0, 200);
 
   // Fetch profile
-  const result = await getProfileBySlug(username);
-  if (!result) {
+  const lookup = await lookupPublicProfile(username);
+  if (lookup.status === 'unavailable') {
+    return NextResponse.json(
+      { error: 'Profile temporarily unavailable' },
+      { status: 503, headers: { 'Retry-After': '10', 'Cache-Control': 'no-store' } }
+    );
+  }
+  if (lookup.status === 'missing') {
     return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
   }
 
-  const { profile, workExperience } = result;
+  const { profile, workExperience } = lookup.data;
 
   // Build context from profile
   const experienceSummary = workExperience.slice(0, 3).map(job =>

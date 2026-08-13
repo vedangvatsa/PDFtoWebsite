@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { getProfileBySlug } from '@/lib/supabase-server';
+import { lookupPublicProfile } from '@/lib/supabase-server';
 import { blogMetadata } from '@/lib/blog-metadata';
 import { getCompanyDirectoryForOg, resolveOgCompanyLogo } from '@/lib/og-company-logo';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
@@ -115,7 +115,8 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
     );
   }
 
-  const data = await getProfileBySlug(slug);
+  const lookup = await lookupPublicProfile(slug);
+  const data = lookup.status === 'ok' ? lookup.data : null;
 
   const isEmptyProfile =
     data &&
@@ -133,7 +134,8 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
       );
     })();
 
-  if (!data || isEmptyProfile) {
+  // A timed-out lookup is not a missing/empty profile — don't steal OG for a company page.
+  if (lookup.status !== 'unavailable' && (!data || isEmptyProfile)) {
     const companyDir = await getCompanyDirectoryForOg(slug);
     if (companyDir) {
       const companyDisplay = companyDisplayName(
@@ -247,7 +249,16 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
           <div style={{ display: 'flex', fontSize: 90, fontWeight: 800, letterSpacing: '-0.05em', marginBottom: 20 }}>CVin.Bio</div>
           <div style={{ display: 'flex', fontSize: 44, color: '#71717a' }}>Turn Your CV into a Website</div>
         </div>
-      ), { ...size }
+      ),
+      {
+        ...size,
+        headers: {
+          'Cache-Control':
+            lookup.status === 'unavailable'
+              ? 'no-store'
+              : 'public, max-age=3600, stale-while-revalidate=86400',
+        },
+      }
     );
   }
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProfileBySlug } from '@/lib/supabase-server';
+import { lookupPublicProfile } from '@/lib/supabase-server';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -18,7 +18,14 @@ function isSafeFetchUrl(raw: string): string | null {
 export async function GET(req: NextRequest, props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
 
-  const data = await getProfileBySlug(slug);
+  const lookup = await lookupPublicProfile(slug);
+  if (lookup.status === 'unavailable') {
+    return new NextResponse('Temporarily unavailable', {
+      status: 503,
+      headers: { 'Retry-After': '10', 'Cache-Control': 'no-store' },
+    });
+  }
+  const data = lookup.status === 'ok' ? lookup.data : null;
   if (!data || !data.profile.avatarUrl) {
     return new NextResponse('Not found', { status: 404 });
   }
