@@ -19,8 +19,6 @@ import { useToast } from "@/hooks/use-toast";
 import Header from '@/components/header';
 import { useUser } from '@/auth';
 import { createClient } from '@/utils/supabase/client';
-import { Progress } from '@/components/ui/progress';
-
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -28,9 +26,10 @@ import { LoginDialog } from '@/components/login-dialog';
 import TemplateModern from '@/app/[slug]/templates/modern-creative';
 import CustomSectionsEditor from './custom-sections-editor';
 import { AvatarCropper } from '@/components/avatar-cropper';
+import { ResumeUploadPrompt } from '@/components/editor/resume-upload-prompt';
+import { ProfileCompleteness } from '@/components/editor/profile-completeness';
+import { InsightsCard } from '@/components/editor/insights-card';
 import {
-  isDisposableProfileSlug,
-  nameToProfileSlug,
   enrichNameFromContact,
   normalizeName,
   cleanDescription,
@@ -49,225 +48,16 @@ import {
 } from '@/lib/cv-upload-client';
 import { LINKEDIN_CAPTIONS, X_COPIES, WHATSAPP_COPIES, pick } from '@/lib/share-copy';
 
-function dataURLtoFile(dataurl: string, filename: string): File | null {
-    const arr = dataurl.split(',');
-    if (arr.length < 2) { return null; }
-    const mimeMatch = arr[0].match(/:(.*?);/);
-    if (!mimeMatch) { return null; }
-    const mime = mimeMatch[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, {type:mime});
-}
-
-/** Pretty profile slug from a person's name (not from URLs / user96 defaults). */
-function generateBaseSlug(name: string) {
-  const base = nameToProfileSlug(name || '');
-  return base && base !== 'profile' ? base : 'profile';
-}
-
-/** Reject UUID defaults, user96, LinkedIn/URLs, and other unusable public slugs. */
-function isBadSlug(slug: string | null | undefined): boolean {
-  return isDisposableProfileSlug(slug);
-}
-
-async function mintUniqueSlug(
-  supabase: ReturnType<typeof createClient>,
-  baseSlug: string,
-  userId: string
-): Promise<string> {
-  let newSlug = baseSlug || 'user';
-  let attempt = 0;
-  while (attempt < 100) {
-    const { data: existing } = await supabase.from('profiles').select('id').eq('username', newSlug).maybeSingle();
-    if (!existing || existing.id === userId) return newSlug;
-    attempt++;
-    newSlug = `${baseSlug}${attempt}`;
-  }
-  return `${baseSlug}-${Date.now().toString(36).slice(-4)}`;
-}
-
-// Convert ALL CAPS names to Title Case (leaves mixed-case names untouched)
-function smartTitleCase(name: string): string {
-  if (!name) return name;
-  // Only convert if the name is ALL CAPS (or all lowercase)
-  const isAllCaps = name === name.toUpperCase() && /[A-Z]/.test(name);
-  const isAllLower = name === name.toLowerCase();
-  if (isAllCaps || isAllLower) {
-    return name.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-  }
-  return name;
-}
-
-const ResumeUploadPrompt = ({ onFileChange, isGenerating }: { onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void, isGenerating: boolean }) => (
-    <label htmlFor="resume-upload" className={`flex w-full items-center justify-center rounded-lg border border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 py-4 px-6 text-center transition-colors mb-4 ${isGenerating ? 'pointer-events-none opacity-60' : 'cursor-pointer'}`}>
-        {isGenerating ? (
-            <><Loader2 className="mr-2 h-4 w-4 animate-spin text-primary" /><span className="text-sm font-medium text-primary">Generating your profile...</span></>
-        ) : (
-            <><UploadCloud className="mr-2 h-4 w-4 text-primary" /><span className="text-sm font-medium text-primary">Upload your CV to automatically fill details</span></>
-        )}
-        <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" onChange={onFileChange} disabled={isGenerating} />
-    </label>
-);
-
-const ProfileCompleteness = ({ profile, work, education, skills, onCompleteChange }: { profile: Partial<UserProfile>, work: WorkExperience[], education: Education[], skills: string[], onCompleteChange?: (complete: boolean) => void }) => {
-    const completeness = useMemo(() => {
-        const checks = [
-            { name: "Add a Profile Photo", complete: !!profile.avatarUrl, targetId: 'avatar-upload' },
-            { name: "Write a Summary", complete: !!profile.summary, targetId: 'summary' },
-            { name: "Add your Location", complete: !!profile.location, targetId: 'location' },
-            { name: "Add Work Experience", complete: work.some(w => (w.title && w.title.trim() !== '') || (w.company && w.company.trim() !== '') || (w.description && w.description.trim() !== '')), targetId: 'work-experience-section' },
-            { name: "Add your Education", complete: education.some(e => (e.institution && e.institution.trim() !== '') || (e.degree && e.degree.trim() !== '')), targetId: 'education-section' },
-            { name: "Add at least one Skill", complete: skills.some(s => { const val = typeof s === 'string' ? s : (s as any)?.name || ''; return typeof val === 'string' && val.trim().length > 0; }), targetId: 'skills-section' }
-        ];
-        const completeCount = checks.filter(c => c.complete).length;
-        const totalCount = checks.length;
-        const score = Math.round((completeCount / totalCount) * 100);
-
-        return { score, checks, isComplete: completeCount === totalCount };
-    }, [profile, work, education, skills]);
-
-    const { score, checks, isComplete } = completeness;
-
-    useEffect(() => { onCompleteChange?.(isComplete); }, [isComplete, onCompleteChange]);
-
-    return (
-        <Card className="h-full shadow-sm flex flex-col justify-center">
-            <CardContent className="pt-4 pb-3">
-                <div className="flex justify-between items-center mb-3">
-                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Profile Score</p>
-                    <div className="flex items-center gap-2">
-                        <Progress value={score} className="h-1.5 w-16 sm:w-24 bg-secondary" />
-                        <span className="text-xs font-bold text-foreground">{score}%</span>
-                    </div>
-                </div>
-                
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-                    {checks.map(c => (
-                        <div 
-                            key={c.name} 
-                            onClick={() => {
-                                const el = document.getElementById(c.targetId);
-                                if (el) {
-                                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                    el.focus({ preventScroll: true });
-                                }
-                            }}
-                            className={`cursor-pointer flex items-center gap-2 p-2 rounded-md border text-[10px] transition-all ${c.complete ? 'bg-secondary/40 border-transparent text-muted-foreground/60 line-through grayscale' : 'bg-background shadow-none border-border/60 hover:border-primary/40 font-medium text-foreground hover:shadow-sm'}`}
-                        >
-                            {c.complete ? <CheckCircle className="h-3 w-3 text-green-500 shrink-0" /> : <div className="h-2.5 w-2.5 rounded-full border border-gray-400 shrink-0" />}
-                            <span className="truncate" title={c.name}>{c.name}</span>
-                        </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
-    );
-};
-
-/** Strip leading bullet chars (•, -, *, etc.) from skill names */
-const cleanSkill = (s: any): string => {
-    const raw = typeof s === 'string' ? s : s?.name || '';
-    return raw.replace(/^[•\-\*▪▸►‣○●]\s*/, '').trim();
-};
-
-function isThinParse(extractedData: { _parseNeedsReview?: boolean; _parseMethod?: string }): boolean {
-    const parseMethod = String(extractedData._parseMethod || 'ai');
-    return !!extractedData._parseNeedsReview || parseMethod === 'regex' || parseMethod === 'shell';
-}
-
-function mergeParsedProfileArrays<T>(thinParse: boolean, next: T[], prev: T[]): T[] {
-    return thinParse && next.length === 0 && prev.length > 0 ? prev : next;
-}
-
-type InsightsData = {
-    views: number; uniques: number; sparkline: number[];
-    sources: { name: string; count: number }[];
-    countries: { name: string; count: number }[];
-    avgTime: number; shares: number; available: boolean;
-};
-
-function Sparkline({ data }: { data: number[] }) {
-    // Only show if there's actual variation
-    const hasVariation = new Set(data).size > 1;
-    if (!hasVariation) return null;
-    const w = 48, h = 14;
-    const max = Math.max(...data, 1);
-    const pts = data.map((v, i) => ({
-        x: (i / Math.max(data.length - 1, 1)) * w,
-        y: h - 1 - ((v / max) * (h - 2)),
-    }));
-    const line = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-    return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="w-12 h-3.5 shrink-0 opacity-60" preserveAspectRatio="none">
-            <path d={line} fill="none" stroke="rgb(99,102,241)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    );
-}
-
-function InsightsCard({ slug }: { slug: string }) {
-    const [data, setData] = useState<InsightsData | null>(null);
-    const [expanded, setExpanded] = useState(false);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (!slug) { setLoading(false); return; }
-        fetch('/api/analytics/my-profile', { credentials: 'include' })
-            .then(r => r.ok ? r.json() : null)
-            .then(d => { if (d) setData(d); })
-            .catch(() => {})
-            .finally(() => setLoading(false));
-    }, [slug]);
-
-    if (loading || !data || !data.available) return null;
-
-    const totalActivity = (data.views || 0) + (data.shares || 0);
-
-    if (totalActivity < 1) return null;
-
-    // Below 10 views: show teaser
-    if (totalActivity < 10) {
-        return (
-            <div className="flex items-center justify-center gap-2 py-1 min-w-0">
-                <span className="text-[10px] text-muted-foreground/40 shrink-0">▸</span>
-                <span className="text-[11px] text-muted-foreground/40 min-w-0 text-center">
-                    Your profile has been viewed <span className="text-foreground/50 font-medium">{data.views}</span> time{data.views !== 1 ? 's' : ''} · Insights unlock after 10 views
-                </span>
-            </div>
-        );
-    }
-
-    return (
-        <button onClick={() => setExpanded(!expanded)} className="w-full text-left focus:outline-none group">
-            <div className="flex items-center gap-2 py-1">
-                <span className="text-[10px] text-muted-foreground/40 group-hover:text-muted-foreground/70 transition-colors">
-                    {expanded ? '▾' : '▸'}
-                </span>
-                <span className="text-[11px] text-muted-foreground/50">
-                    <span className="font-medium text-foreground/70">{data.views}</span> views
-                    {data.uniques > 0 && <> · <span className="font-medium text-foreground/70">{data.uniques}</span> unique</>}
-                    {data.shares > 0 && <> · <span className="font-medium text-foreground/70">{data.shares}</span> shares</>}
-                </span>
-                <Sparkline data={data.sparkline} />
-            </div>
-            {expanded && (
-                <div className="pb-1 pl-4 flex flex-wrap gap-x-3 gap-y-0.5 animate-in fade-in duration-150">
-                    {data.sources.map((s, i) => (
-                        <span key={`s${i}`} className="text-[10px] text-muted-foreground/50">{s.name} {s.count}</span>
-                    ))}
-                    {data.countries.map((c, i) => (
-                        <span key={`c${i}`} className="text-[10px] text-muted-foreground/50">{c.name} {c.count}</span>
-                    ))}
-                    {data.avgTime > 0 && <span className="text-[10px] text-muted-foreground/50">avg {data.avgTime}s</span>}
-                </div>
-            )}
-        </button>
-    );
-}
+import {
+  dataURLtoFile,
+  generateBaseSlug,
+  isBadSlug,
+  mintUniqueSlug,
+  smartTitleCase,
+  cleanSkill,
+  isThinParse,
+  mergeParsedProfileArrays,
+} from '@/lib/editor-profile';
 
 export default function EditorPage() {
     const { user, isUserLoading } = useUser();
