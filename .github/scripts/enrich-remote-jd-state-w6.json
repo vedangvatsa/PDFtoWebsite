@@ -83055,7 +83055,7 @@
     },
     "c31bfdab-6d4a-46a4-a4d9-c527f3695d69": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "d89f3052-fe6e-4106-ad32-9f869b0ba0f7": {
       "status": "fail",
@@ -83153,7 +83153,7 @@
     },
     "d3bf3ac6-9c89-4eca-bfac-94fea22c2e17": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "de8763cf-ffc8-458d-8d56-e4485c41f09c": {
       "status": "fail",
@@ -102202,7 +102202,9 @@
     "cfdb0ffd-0ef1-4667-adeb-1701619f8107",
     "db65761f-4966-461c-b401-f523250b02a8",
     "d9ff7cc2-630a-4d61-be0c-695fd743fa4a",
-    "d098fbb6-70c6-40b0-a0fa-2d7b7527971d"
+    "d098fbb6-70c6-40b0-a0fa-2d7b7527971d",
+    "d3bf3ac6-9c89-4eca-bfac-94fea22c2e17",
+    "c31bfdab-6d4a-46a4-a4d9-c527f3695d69"
   ],
   "skipped": {},
   "batches": [
@@ -103373,6 +103375,36 @@
         "expand_existing": 5,
         "rewrite_short": 1,
         "rewrite_structure": 4
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 6,
+      "at": "2026-08-13T14:27:04.639Z",
+      "attempted": 4,
+      "ok": 0,
+      "skip": 0,
+      "fail": 4,
+      "reasons": {
+        "expand_existing": 4,
+        "rewrite_short": 1,
+        "rewrite_structure": 3
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 6,
+      "at": "2026-08-13T14:29:00.520Z",
+      "attempted": 3,
+      "ok": 0,
+      "skip": 0,
+      "fail": 3,
+      "reasons": {
+        "expand_existing": 3,
+        "rewrite_short": 1,
+        "rewrite_structure": 2
       },
       "samplePaths": []
     }
