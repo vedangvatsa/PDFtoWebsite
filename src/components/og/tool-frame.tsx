@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 export const OG_TOOL_SIZE = { width: 1200, height: 630 };
 export const OG_TOOL_CONTENT_TYPE = 'image/png';
@@ -14,7 +14,8 @@ type OgToolFrameProps = {
 
 /**
  * Shared Satori chrome for nomad/tool Open Graph images.
- * Every box must keep display:'flex' (Satori requirement).
+ * Every box must keep display:'flex'. Never pass undefined style values —
+ * @vercel/og calls .trim() on them during prerender.
  */
 export function OgToolFrame({
   title,
@@ -24,20 +25,35 @@ export function OgToolFrame({
   titleSize = 56,
 }: OgToolFrameProps) {
   const spread = layout === 'spread';
+  const rootStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fafafa',
+    fontFamily: 'sans-serif',
+    padding: spread ? '60px 80px' : '48px 64px',
+    position: 'relative',
+  };
+  if (spread) rootStyle.justifyContent = 'space-between';
+
+  const headingStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  };
+  if (!spread) headingStyle.marginTop = 24;
+
+  const subtitleStyle: CSSProperties = {
+    display: 'flex',
+    fontSize: 24,
+    fontWeight: 500,
+    color: '#71717a',
+  };
+  if (!spread) subtitleStyle.marginTop = 4;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#fafafa',
-        fontFamily: 'sans-serif',
-        padding: spread ? '60px 80px' : '48px 64px',
-        position: 'relative',
-        justifyContent: spread ? 'space-between' : undefined,
-      }}
-    >
+    <div style={rootStyle}>
       <div
         style={{
           display: 'flex',
@@ -45,19 +61,12 @@ export function OgToolFrame({
           fontWeight: 600,
           color: '#a1a1aa',
           letterSpacing: '0.1em',
-          textTransform: 'uppercase' as const,
+          textTransform: 'uppercase',
         }}
       >
         CVin.Bio
       </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-          marginTop: spread ? 0 : 24,
-        }}
-      >
+      <div style={headingStyle}>
         <div
           style={{
             display: 'flex',
@@ -70,19 +79,9 @@ export function OgToolFrame({
         >
           {title}
         </div>
-        {subtitle ? (
-          <div
-            style={{
-              display: 'flex',
-              fontSize: 24,
-              fontWeight: 500,
-              color: '#71717a',
-              marginTop: spread ? 0 : 4,
-            }}
-          >
-            {subtitle}
-          </div>
-        ) : null}
+        {subtitle ? <div style={subtitleStyle}>{subtitle}</div> : (
+          <div style={{ display: 'flex', height: 0 }} />
+        )}
       </div>
       {children}
       {spread ? (
