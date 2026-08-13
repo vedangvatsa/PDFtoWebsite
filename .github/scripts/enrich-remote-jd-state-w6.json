@@ -60784,6 +60784,750 @@
     "c6b22e26-a902-4f20-adae-b5847efbb995": {
       "status": "fail",
       "reason": "openrouter_failed"
+    },
+    "d75d6e18-87c9-4407-a879-a1e7261ddea5": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Staff Marketing Data Scientist company=SoFi apply=https://sofi.com/careers/job/7602838003?gh_jid=7602838003"
+    },
+    "c8b253da-6499-42fa-9c34-ebab5f1bb893": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Join Our Talent Community! company=PurposeMed apply=https://www.purposemed.com/careers/open?gh_jid=4722481005"
+    },
+    "c89234f0-72a4-4a41-8b0c-cf7d4cd171d0": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c7e97424-4c02-4057-9546-1657fff5976b": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dff229d3-3458-4970-8ab7-33034ce9e940": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c5409ace-b26c-4dfc-ac73-49298c31ccd0": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "ce9ea3a1-7fa8-4252-a45a-611eeb62152c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d38fa004-e0e7-4de3-8fe4-1f5dc491ae63": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d0e417f7-b672-4200-b1c9-767cd6a2c0a6": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c025ce48-3afa-4894-bc7c-bb5a9613412c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d125c2f7-1fd9-400d-be26-3ec14c1ed72d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c215a981-ed67-4779-beb9-7b62f46d9495": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Head of Privacy company=Nothing apply=https://careers.nothing.tech/?gh_jid=4720465101"
+    },
+    "c2dd2ab5-1c22-4d2c-9914-a0786f544986": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d82bb566-2b25-4a97-8a54-3bb73b364446": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cbb37c75-5dde-4054-8d68-193766855e7e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cf814c1a-8615-42b7-9c97-e24a7eca864f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c146d905-555b-4fc0-abad-0cbcebf83e8d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c87d899e-2a6a-4323-8ac1-637893e7e09a": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c3c65864-3458-4273-9737-e26279ec7364": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cf142d7f-44b2-48a4-b264-43d104bb5308": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d96fa7a5-0d0a-48ff-962b-b845029a456d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c5d15a37-5fe0-4a2f-b8cb-d36f036bfa0d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cae7a553-2cbf-40a7-ab9b-89aeae040911": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c150f222-7e34-4e50-8884-804989414b47": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d5b5e142-ab58-486f-a2c6-deebfeb1223c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c0f6e249-9e5c-4907-a167-393982b5c207": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "ce5e26f8-2336-4c2a-ada9-0f6b5221b6eb": {
+      "status": "skip",
+      "reason": "html_429",
+      "note": "thin_source title=Senior Accountant company=Helsing apply=https://helsing.ai/jobs/4927641101?gh_jid=4927641101"
+    },
+    "ceef62af-f89f-4e50-b9e2-53ea2ef64aa9": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d538fdac-27fe-42a6-9973-7ef5d51f9a74": {
+      "status": "skip",
+      "reason": "html_500",
+      "note": "thin_source title=Marketing & Sales Enablement Specialist company=Highspring apply=https://www.highspring.com/about/careers/job-details?gh_jid=8010444"
+    },
+    "d080476d-4ca2-47d5-8b74-74797d1b6535": {
+      "status": "skip",
+      "reason": "html_429",
+      "note": "thin_source title=Robotics Software Engineer company=Helsing apply=https://helsing.ai/jobs/4943195101?gh_jid=4943195101"
+    },
+    "d1ebbe54-8f2b-49b9-88ac-5e931184d77f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c5a13860-041f-4edb-9254-c0ef8bda7588": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Open application company=Goodman apply=https://ce.goodman.com/about-goodman/careers/job-vacancies?gh_jid=4127436002"
+    },
+    "dfdbf6d7-8e42-4ffe-8159-fec21705b6c2": {
+      "status": "skip",
+      "reason": "html_429",
+      "note": "thin_source title=Senior Security Engineer company=Helsing apply=https://helsing.ai/jobs/4813919101?gh_jid=4813919101"
+    },
+    "cd5ffbee-738d-4e37-8042-2b2c9086c96a": {
+      "status": "skip",
+      "reason": "html_429",
+      "note": "thin_source title=Avionic Hardware Engineer company=Helsing apply=https://helsing.ai/jobs/4878635101?gh_jid=4878635101"
+    },
+    "cdff702b-2db3-4d13-8888-d0b10ff8a7e8": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "db353121-66df-4829-9cd2-2f81c16c9bb9": {
+      "status": "skip",
+      "reason": "html_429",
+      "note": "thin_source title=Radio Frequency Engineer company=Helsing apply=https://helsing.ai/jobs/4948416101?gh_jid=4948416101"
+    },
+    "d1ae05f7-572a-4002-96f9-06c991f9a9f8": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Data Centre Scheduler company=Goodman apply=https://ce.goodman.com/about-goodman/careers/job-vacancies?gh_jid=8623743002"
+    },
+    "ddf9a3b1-e655-4ddd-8665-6931f4703d19": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Data Centre Controls Engineer company=Goodman apply=https://ce.goodman.com/about-goodman/careers/job-vacancies?gh_jid=8218819002"
+    },
+    "dbf1c86f-1065-48b4-b7a3-a6658ceb2ef1": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Data Centre Electrical Package Manager company=Goodman apply=https://ce.goodman.com/about-goodman/careers/job-vacancies?gh_jid=7581860002"
+    },
+    "d7c65e3a-3d03-490b-a0f7-b8c0558a7130": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=Data Centre Mechanical Package Manager company=Goodman apply=https://ce.goodman.com/about-goodman/careers/job-vacancies?gh_jid=8531093002"
+    },
+    "c918185d-a405-4e53-b5b3-20fd0c8b9cb6": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cbffea63-ddf2-4172-a8fb-e178f836cf2c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c68a9f2b-69dd-449d-8235-2c5eab284a56": {
+      "status": "skip",
+      "reason": "html_403",
+      "note": "thin_source title=SMB Sales Manager company=Goodshuffle Pro apply=https://pro.goodshuffle.com/careers/?gh_jid=4699438006"
+    },
+    "deef5eb1-55a1-4240-a5ea-14466ee9724d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d0a3f684-d29a-49f7-9754-8cc5f7555633": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d9a43c81-6a22-45f5-92ef-3313bcf0ca10": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d97144a4-ff61-4c80-988a-06e3e1f0e569": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c52d63a7-b365-4c8e-aa4c-4d883041af4d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c32d3789-ed31-4714-941a-dbf1ba863d4d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "db64bcc5-5440-4519-b27e-6341ca8663ee": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c669e1c0-be9f-411e-b7b8-ba9b84cdf9c7": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dbcbef85-134b-4964-a2e5-97ba746aeb4f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cbfee9fc-4b43-43d9-8a76-607fa7ca8e2d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "de499757-c703-4d90-af6a-7cb4d058d29d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "ca42ba11-dc5e-42db-a839-02c5e49dc258": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d88cb6a8-38ee-4bc3-bb3b-c47aca132783": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dabc14af-4813-475c-8b5a-12d84a0451df": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d75076d2-b910-4aeb-9795-48adac8ecbc5": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c346277e-84bb-4c47-a48f-646c6f41dfbb": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d96c620a-c996-4ea9-b50c-0203c43801c5": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d9675f36-b9c9-4ab2-88d3-87b2ae86686f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "df9bf306-3421-4f6f-a48b-030c52f0e18f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dfb79649-8629-4dde-aeed-6862976d77a6": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c392614f-62d8-4c22-9b83-b19290e80606": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c3c3b0f8-3ce4-4f8a-8219-a538a7b00773": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d257fe31-62fa-4408-918e-8503dcb50c6e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c1ec0041-0f40-47a1-be9c-68275cd0d427": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c7c1ad80-d628-482b-9613-a2d4f976dc5f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cd3d4587-57b2-4cfc-a211-24eee423fcda": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "df6c1c03-12cb-416d-a4f5-2a8318aa92b5": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cf7e3bfa-02a4-4cf3-9294-f2e53606ddcb": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c59e54bd-0229-462e-8c4f-d6500e1b3c2f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dfce65dc-a233-4abc-8745-24eea883efda": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d7272fba-0cae-4eb6-b2c6-784e63b5e577": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "de684f47-6fe0-40dd-bf04-17792ae3bcd2": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d1027255-41bf-4746-a06b-a27d6de08200": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c17220a2-5b6b-4d78-bf94-f77513a19119": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d844353e-cdee-4935-aafa-047a859c6e67": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "db6a0134-ab61-44fb-adb0-049c181a72d8": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c059ad25-5d07-4e4d-9c2c-ae4f09d3c064": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d202c8cf-793b-4409-8c4c-a517d1cf0f18": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d033ce91-91c3-4cd0-9c2f-a79437dd1e73": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c4a1bf39-8d5c-4d41-a455-716859f263f8": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dabbe65f-e31f-424b-a959-f928bb2ebc75": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d82c1ee3-2c07-428a-a958-8e72f2b383a8": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d5c8efc3-d2cc-462c-9374-2f4eab65182d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cc55ac57-b3ab-4417-95e9-fd0bba96c20e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d4e5bb18-3dc0-4667-a34f-e64957cba2d4": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dbb1ab62-5625-4676-8597-aaf0ea8b4ae2": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d9ce3fb1-f8ad-4fce-82cc-9dbe832e4eaf": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cf93b309-1cbd-434a-a5df-f2c596fced6f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d2a4dd03-a780-47f3-833d-1a9169bb572a": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c98682c3-c40c-4ad7-bc50-3687d1c4f8c3": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c0a06d86-5665-42a6-ad3c-bd7699c4fe2d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cb9c6894-7e1b-432f-99aa-a536a06cd6a8": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cd49a8db-da7a-4534-a7fb-eb3d45eb4972": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d7cba30b-f950-4f18-bce3-3084246831a6": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "df944752-a78f-4bda-81d5-dbb07a343044": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dafab8b6-83eb-4203-9927-6258593d6d0e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dc38dd01-bf51-430a-9bb5-9ca0b74c4fd7": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d5178366-cdfc-48bb-b19e-a510e047475e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cbaee015-aa77-4190-b00d-4fa259fbb0f3": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c321a183-32ee-451a-854b-680111eab658": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dcb89905-512c-478f-aaa5-791b0ce5ee42": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cfefca09-ad91-4e5d-8d6d-5f63ff9547d3": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c417c4aa-b820-42c0-98d5-5d84cb8059ca": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "ddfff38b-a5de-40ee-8a97-7de665f7c7fd": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d781a305-f6fd-4b59-be17-7394000e6409": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dde0f142-44c2-4128-8603-02e8bb059ade": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c568e6d2-926f-471f-a268-46d752f2f1e1": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d928da3a-aa24-416a-b5ab-41ae4f182a2e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c9796b78-5c65-43a4-b061-6d714d8aff63": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=AVP, Capital Management Strategic Projects company=Fortitude Re apply=https://app.careerpuck.com/job-board/fortitudegroupholdingsllc/job/5193426007?gh_jid=5193426007"
+    },
+    "c9f49f6e-512f-4e6c-8ec6-29db0bac4ee1": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Vice President, Capital Forecasting Finance Manager company=Fortitude Re apply=https://app.careerpuck.com/job-board/fortitudegroupholdingsllc/job/5170292007?gh_jid=5170292007"
+    },
+    "c311dc52-a2f9-43cd-8493-501a33a014f7": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=AVP, Market Risk & ALM and Hedging company=Fortitude Re apply=https://app.careerpuck.com/job-board/fortitudegroupholdingsllc/job/5133184007?gh_jid=5133184007"
+    },
+    "cd02974d-7fc1-4052-882d-917fd9522faa": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "db7d0425-2439-4fa6-8d4e-748805a44672": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d367c4a7-7ae8-4fcd-9d71-5af89198a28c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d06676a8-c14e-4682-8d31-3884bd713cdf": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dc83983f-254d-41b1-b99c-966cede2c278": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cf860ee2-7fa2-4e64-83d9-6e9567fec967": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d379bd15-9ad1-4caa-9586-afc9af22ea76": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d567458a-360b-42d2-a3be-b71c1158023c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cb2da677-5d77-4ac1-b2ae-9dd360b937c9": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d9268960-6793-4d7e-9994-fda41df0695a": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c5e55cc8-808e-4e71-b3bb-f4236ef37c0f": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c9c30f6d-bf09-4f58-9807-e97adb56f87a": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d237708d-f8c9-4f88-ac0c-6ac1e034719a": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "da2d2b65-b5e9-4885-82f3-f4efb9b6676c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cfa94e25-0d1e-47d5-935c-96a1eb78f6be": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cac58807-2203-4513-878c-1dd8ac188e82": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c296a366-1d40-4fb4-9bb1-697e87ac93b4": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c88023d1-19b3-46fc-92b4-7e42cbe286b7": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d40cfd86-f39d-4e85-b656-f5fec567d584": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d3407fe0-c8b8-4866-98c9-c26179bc44eb": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d2bbec5e-895e-4909-9ae2-b0532f33e434": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=AVP, Data Solutions Engineering company=Fortitude Re apply=https://app.careerpuck.com/job-board/fortitudegroupholdingsllc/job/5133186007?gh_jid=5133186007"
+    },
+    "dfe39450-5b4b-4fdb-896b-7339506afa44": {
+      "status": "skip",
+      "reason": "html_short",
+      "note": "thin_source title=Senior Associate, Economic Capital Modeling company=Fortitude Re apply=https://app.careerpuck.com/job-board/fortitudegroupholdingsllc/job/5174914007?gh_jid=5174914007"
+    },
+    "d6632c01-21c9-4dc6-baa5-920938ad2e9d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c4a83319-95f2-4a66-8dfa-c3476e1e79f6": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d819bc05-14cb-4637-8a81-5467515d4540": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c669d77b-2055-4b83-b3e9-feeb58437c07": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d4ffce93-5583-4ab7-8427-1d8f668f023e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cb4fe598-92cc-4ceb-bfeb-4ff776cf2d0e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d2ba8294-ab31-4a8c-9bb2-90a2491e875e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "da2fad05-bafb-447f-b642-a3b4fc7a1efb": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cc6e0d6d-bed1-4970-985b-4beac8846d06": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c73b8193-0d60-4d35-8716-d2daf8c58c34": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Sr. Consulting Engineer/Sr. Consulting Architect company=Simpson Gumpertz & Heger apply=https://www.sgh.com/careers/job-openings/view-job/8479506002?gh_jid=8479506002"
+    },
+    "de9debcf-2ba7-49f2-9253-730b7e51b242": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Professional Engineer, Civil Engineering company=Simpson Gumpertz & Heger apply=https://www.sgh.com/careers/job-openings/view-job/8639050002?gh_jid=8639050002"
+    },
+    "c7d20132-1c77-4f28-b040-9c69df38ea3d": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Sr. Enterprise Sales Executive company=QuinStreet apply=https://www.quinstreet.com/careers/?gh_jid=7201326"
+    },
+    "cce47110-8afb-41c5-b3e7-aa8d9b0fd28c": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Sales Director company=ProCogia apply=https://procogia.com/about-us/careers/?gh_jid=5364621008"
+    },
+    "c18f80d3-0e95-4fe3-867c-6efc0949f89f": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Analyst Partnership Strategy company=MSG Entertainment Holdings, LLC apply=https://msgentertainment.com/job/5198068007?gh_jid=5198068007"
+    },
+    "c6abf482-85a2-4f07-88a1-bdfaf8bbb73f": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Captain company=MSG Entertainment Holdings, LLC apply=https://msgentertainment.com/job/5149830007?gh_jid=5149830007"
+    },
+    "d7719731-8fd9-4c11-bbff-a897dfa38ff3": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Accountant company=MSG Entertainment Holdings, LLC apply=https://msgentertainment.com/job/5152462007?gh_jid=5152462007"
+    },
+    "c86dbb0a-9538-4dc1-b2a1-944ca611967e": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Risk & Fund Reporting Manager company=Moonfare apply=https://www.moonfare.com/open-position/?gh_jid=7732176003"
+    },
+    "c7655944-8802-448b-aa8e-69edc6baa2ff": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Investor Relations Associate company=Moonfare apply=https://www.moonfare.com/open-position/?gh_jid=7824247003"
+    },
+    "cea66866-b13c-48ae-9cc7-c3a6cdce4b7e": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cc398911-09de-46ea-bfec-c29a7cdb78a6": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d7877aa4-47f0-4d8c-9dcb-6964c3422d88": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d7dc5986-43e0-450e-a5c0-e1498697303d": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dbc14fe3-b9c6-4b03-9c32-23bf175eab78": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "db0e5820-1d55-4ec4-a756-ffa5a49c6acf": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Senior Producer company=First Global Management Services, Inc. apply=https://firstagency.com/position/?job=5167140007&gh_jid=5167140007"
+    },
+    "c8b9ff69-54a5-4bb0-9bba-cfb900e71296": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d2c96cb9-6eae-4fd1-9b98-c6458138963a": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d05d689d-8cc5-4c22-87eb-f6e246f56fb4": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d7c191c3-1ba2-4997-b61b-bac834a7fa3c": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c7251da2-4981-4c1e-9f65-b1a5d5ed26b0": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cb934cf0-a908-42ca-9901-9408aa8872dc": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "dcd1e22c-607f-41b6-aeab-39ed3a4c1427": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c4bf55e0-1881-43bb-8cea-bd633777a4c2": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "cc0b64f1-bb76-4080-b13f-f5bac91c50f4": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "ccf28124-1b5e-4d62-81d2-f53df6f08ee0": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "d35dce82-a8ea-4972-840a-5d7e0ccdabce": {
+      "status": "queued",
+      "reason": "manual_only"
+    },
+    "c1bf0d08-dc2e-45ea-9190-02e38ab8d0ff": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=PT Safety Support Associate company=PATH (People Assisting the Homeless) apply=https://epath.org/careers/job/6011968004?gh_jid=6011968004"
+    },
+    "c1ec87b0-9b30-4e5c-9e14-54ee773d27b1": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Case Manager - Hotel Silverlake company=PATH (People Assisting the Homeless) apply=https://epath.org/careers/job/5777613004?gh_jid=5777613004"
+    },
+    "c70afc45-6c30-41ab-8a57-ac37462da542": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Employment Specialist company=PATH (People Assisting the Homeless) apply=https://epath.org/careers/job/5997254004?gh_jid=5997254004"
+    },
+    "cd4d03d6-d8db-47f9-a611-5f6370deb1e4": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Case Manager - Winnetka Village company=PATH (People Assisting the Homeless) apply=https://epath.org/careers/job/5848569004?gh_jid=5848569004"
+    },
+    "d8c07117-6035-45d5-9f1a-f881bbb632fb": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Residential Coordinator company=PATH (People Assisting the Homeless) apply=https://epath.org/careers/job/6101088004?gh_jid=6101088004"
+    },
+    "df5a9b47-9759-4639-b52c-a15e30649d57": {
+      "status": "skip",
+      "reason": "err_TimeoutError",
+      "note": "thin_source title=Case Manager - SSVF Outreach company=PATH (People Assisting the Homeless) apply=https://epath.org/careers/job/5973956004?gh_jid=5973956004"
     }
   },
   "doneIds": [
@@ -75032,7 +75776,184 @@
     "c54c868a-28cb-43e6-ba7d-c460d435edb0",
     "c5fe6027-42bb-4598-ad73-2167c968b58f",
     "d666d697-7d38-4ff2-ac8e-ed85f4dd659e",
-    "c6b22e26-a902-4f20-adae-b5847efbb995"
+    "c6b22e26-a902-4f20-adae-b5847efbb995",
+    "d75d6e18-87c9-4407-a879-a1e7261ddea5",
+    "c8b253da-6499-42fa-9c34-ebab5f1bb893",
+    "c89234f0-72a4-4a41-8b0c-cf7d4cd171d0",
+    "c7e97424-4c02-4057-9546-1657fff5976b",
+    "dff229d3-3458-4970-8ab7-33034ce9e940",
+    "c5409ace-b26c-4dfc-ac73-49298c31ccd0",
+    "ce9ea3a1-7fa8-4252-a45a-611eeb62152c",
+    "d38fa004-e0e7-4de3-8fe4-1f5dc491ae63",
+    "d0e417f7-b672-4200-b1c9-767cd6a2c0a6",
+    "c025ce48-3afa-4894-bc7c-bb5a9613412c",
+    "d125c2f7-1fd9-400d-be26-3ec14c1ed72d",
+    "c215a981-ed67-4779-beb9-7b62f46d9495",
+    "c2dd2ab5-1c22-4d2c-9914-a0786f544986",
+    "d82bb566-2b25-4a97-8a54-3bb73b364446",
+    "cbb37c75-5dde-4054-8d68-193766855e7e",
+    "cf814c1a-8615-42b7-9c97-e24a7eca864f",
+    "c146d905-555b-4fc0-abad-0cbcebf83e8d",
+    "c87d899e-2a6a-4323-8ac1-637893e7e09a",
+    "c3c65864-3458-4273-9737-e26279ec7364",
+    "cf142d7f-44b2-48a4-b264-43d104bb5308",
+    "d96fa7a5-0d0a-48ff-962b-b845029a456d",
+    "c5d15a37-5fe0-4a2f-b8cb-d36f036bfa0d",
+    "cae7a553-2cbf-40a7-ab9b-89aeae040911",
+    "c150f222-7e34-4e50-8884-804989414b47",
+    "d5b5e142-ab58-486f-a2c6-deebfeb1223c",
+    "c0f6e249-9e5c-4907-a167-393982b5c207",
+    "ce5e26f8-2336-4c2a-ada9-0f6b5221b6eb",
+    "ceef62af-f89f-4e50-b9e2-53ea2ef64aa9",
+    "d538fdac-27fe-42a6-9973-7ef5d51f9a74",
+    "d080476d-4ca2-47d5-8b74-74797d1b6535",
+    "d1ebbe54-8f2b-49b9-88ac-5e931184d77f",
+    "c5a13860-041f-4edb-9254-c0ef8bda7588",
+    "dfdbf6d7-8e42-4ffe-8159-fec21705b6c2",
+    "cd5ffbee-738d-4e37-8042-2b2c9086c96a",
+    "cdff702b-2db3-4d13-8888-d0b10ff8a7e8",
+    "db353121-66df-4829-9cd2-2f81c16c9bb9",
+    "d1ae05f7-572a-4002-96f9-06c991f9a9f8",
+    "ddf9a3b1-e655-4ddd-8665-6931f4703d19",
+    "dbf1c86f-1065-48b4-b7a3-a6658ceb2ef1",
+    "d7c65e3a-3d03-490b-a0f7-b8c0558a7130",
+    "c918185d-a405-4e53-b5b3-20fd0c8b9cb6",
+    "cbffea63-ddf2-4172-a8fb-e178f836cf2c",
+    "c68a9f2b-69dd-449d-8235-2c5eab284a56",
+    "deef5eb1-55a1-4240-a5ea-14466ee9724d",
+    "d0a3f684-d29a-49f7-9754-8cc5f7555633",
+    "d9a43c81-6a22-45f5-92ef-3313bcf0ca10",
+    "d97144a4-ff61-4c80-988a-06e3e1f0e569",
+    "c52d63a7-b365-4c8e-aa4c-4d883041af4d",
+    "c32d3789-ed31-4714-941a-dbf1ba863d4d",
+    "db64bcc5-5440-4519-b27e-6341ca8663ee",
+    "c669e1c0-be9f-411e-b7b8-ba9b84cdf9c7",
+    "dbcbef85-134b-4964-a2e5-97ba746aeb4f",
+    "cbfee9fc-4b43-43d9-8a76-607fa7ca8e2d",
+    "de499757-c703-4d90-af6a-7cb4d058d29d",
+    "ca42ba11-dc5e-42db-a839-02c5e49dc258",
+    "d88cb6a8-38ee-4bc3-bb3b-c47aca132783",
+    "dabc14af-4813-475c-8b5a-12d84a0451df",
+    "d75076d2-b910-4aeb-9795-48adac8ecbc5",
+    "c346277e-84bb-4c47-a48f-646c6f41dfbb",
+    "d96c620a-c996-4ea9-b50c-0203c43801c5",
+    "d9675f36-b9c9-4ab2-88d3-87b2ae86686f",
+    "df9bf306-3421-4f6f-a48b-030c52f0e18f",
+    "dfb79649-8629-4dde-aeed-6862976d77a6",
+    "c392614f-62d8-4c22-9b83-b19290e80606",
+    "c3c3b0f8-3ce4-4f8a-8219-a538a7b00773",
+    "d257fe31-62fa-4408-918e-8503dcb50c6e",
+    "c1ec0041-0f40-47a1-be9c-68275cd0d427",
+    "c7c1ad80-d628-482b-9613-a2d4f976dc5f",
+    "cd3d4587-57b2-4cfc-a211-24eee423fcda",
+    "df6c1c03-12cb-416d-a4f5-2a8318aa92b5",
+    "cf7e3bfa-02a4-4cf3-9294-f2e53606ddcb",
+    "c59e54bd-0229-462e-8c4f-d6500e1b3c2f",
+    "dfce65dc-a233-4abc-8745-24eea883efda",
+    "d7272fba-0cae-4eb6-b2c6-784e63b5e577",
+    "de684f47-6fe0-40dd-bf04-17792ae3bcd2",
+    "d1027255-41bf-4746-a06b-a27d6de08200",
+    "c17220a2-5b6b-4d78-bf94-f77513a19119",
+    "d844353e-cdee-4935-aafa-047a859c6e67",
+    "db6a0134-ab61-44fb-adb0-049c181a72d8",
+    "c059ad25-5d07-4e4d-9c2c-ae4f09d3c064",
+    "d202c8cf-793b-4409-8c4c-a517d1cf0f18",
+    "d033ce91-91c3-4cd0-9c2f-a79437dd1e73",
+    "c4a1bf39-8d5c-4d41-a455-716859f263f8",
+    "dabbe65f-e31f-424b-a959-f928bb2ebc75",
+    "d82c1ee3-2c07-428a-a958-8e72f2b383a8",
+    "d5c8efc3-d2cc-462c-9374-2f4eab65182d",
+    "cc55ac57-b3ab-4417-95e9-fd0bba96c20e",
+    "d4e5bb18-3dc0-4667-a34f-e64957cba2d4",
+    "dbb1ab62-5625-4676-8597-aaf0ea8b4ae2",
+    "d9ce3fb1-f8ad-4fce-82cc-9dbe832e4eaf",
+    "cf93b309-1cbd-434a-a5df-f2c596fced6f",
+    "d2a4dd03-a780-47f3-833d-1a9169bb572a",
+    "c98682c3-c40c-4ad7-bc50-3687d1c4f8c3",
+    "c0a06d86-5665-42a6-ad3c-bd7699c4fe2d",
+    "cb9c6894-7e1b-432f-99aa-a536a06cd6a8",
+    "cd49a8db-da7a-4534-a7fb-eb3d45eb4972",
+    "d7cba30b-f950-4f18-bce3-3084246831a6",
+    "df944752-a78f-4bda-81d5-dbb07a343044",
+    "dafab8b6-83eb-4203-9927-6258593d6d0e",
+    "dc38dd01-bf51-430a-9bb5-9ca0b74c4fd7",
+    "d5178366-cdfc-48bb-b19e-a510e047475e",
+    "cbaee015-aa77-4190-b00d-4fa259fbb0f3",
+    "c321a183-32ee-451a-854b-680111eab658",
+    "dcb89905-512c-478f-aaa5-791b0ce5ee42",
+    "cfefca09-ad91-4e5d-8d6d-5f63ff9547d3",
+    "c417c4aa-b820-42c0-98d5-5d84cb8059ca",
+    "ddfff38b-a5de-40ee-8a97-7de665f7c7fd",
+    "d781a305-f6fd-4b59-be17-7394000e6409",
+    "dde0f142-44c2-4128-8603-02e8bb059ade",
+    "c568e6d2-926f-471f-a268-46d752f2f1e1",
+    "d928da3a-aa24-416a-b5ab-41ae4f182a2e",
+    "c9796b78-5c65-43a4-b061-6d714d8aff63",
+    "c9f49f6e-512f-4e6c-8ec6-29db0bac4ee1",
+    "c311dc52-a2f9-43cd-8493-501a33a014f7",
+    "cd02974d-7fc1-4052-882d-917fd9522faa",
+    "db7d0425-2439-4fa6-8d4e-748805a44672",
+    "d367c4a7-7ae8-4fcd-9d71-5af89198a28c",
+    "d06676a8-c14e-4682-8d31-3884bd713cdf",
+    "dc83983f-254d-41b1-b99c-966cede2c278",
+    "cf860ee2-7fa2-4e64-83d9-6e9567fec967",
+    "d379bd15-9ad1-4caa-9586-afc9af22ea76",
+    "d567458a-360b-42d2-a3be-b71c1158023c",
+    "cb2da677-5d77-4ac1-b2ae-9dd360b937c9",
+    "d9268960-6793-4d7e-9994-fda41df0695a",
+    "c5e55cc8-808e-4e71-b3bb-f4236ef37c0f",
+    "c9c30f6d-bf09-4f58-9807-e97adb56f87a",
+    "d237708d-f8c9-4f88-ac0c-6ac1e034719a",
+    "da2d2b65-b5e9-4885-82f3-f4efb9b6676c",
+    "cfa94e25-0d1e-47d5-935c-96a1eb78f6be",
+    "cac58807-2203-4513-878c-1dd8ac188e82",
+    "c296a366-1d40-4fb4-9bb1-697e87ac93b4",
+    "c88023d1-19b3-46fc-92b4-7e42cbe286b7",
+    "d40cfd86-f39d-4e85-b656-f5fec567d584",
+    "d3407fe0-c8b8-4866-98c9-c26179bc44eb",
+    "d2bbec5e-895e-4909-9ae2-b0532f33e434",
+    "dfe39450-5b4b-4fdb-896b-7339506afa44",
+    "d6632c01-21c9-4dc6-baa5-920938ad2e9d",
+    "c4a83319-95f2-4a66-8dfa-c3476e1e79f6",
+    "d819bc05-14cb-4637-8a81-5467515d4540",
+    "c669d77b-2055-4b83-b3e9-feeb58437c07",
+    "d4ffce93-5583-4ab7-8427-1d8f668f023e",
+    "cb4fe598-92cc-4ceb-bfeb-4ff776cf2d0e",
+    "d2ba8294-ab31-4a8c-9bb2-90a2491e875e",
+    "da2fad05-bafb-447f-b642-a3b4fc7a1efb",
+    "cc6e0d6d-bed1-4970-985b-4beac8846d06",
+    "c73b8193-0d60-4d35-8716-d2daf8c58c34",
+    "de9debcf-2ba7-49f2-9253-730b7e51b242",
+    "c7d20132-1c77-4f28-b040-9c69df38ea3d",
+    "cce47110-8afb-41c5-b3e7-aa8d9b0fd28c",
+    "c18f80d3-0e95-4fe3-867c-6efc0949f89f",
+    "c6abf482-85a2-4f07-88a1-bdfaf8bbb73f",
+    "d7719731-8fd9-4c11-bbff-a897dfa38ff3",
+    "c86dbb0a-9538-4dc1-b2a1-944ca611967e",
+    "c7655944-8802-448b-aa8e-69edc6baa2ff",
+    "cea66866-b13c-48ae-9cc7-c3a6cdce4b7e",
+    "cc398911-09de-46ea-bfec-c29a7cdb78a6",
+    "d7877aa4-47f0-4d8c-9dcb-6964c3422d88",
+    "d7dc5986-43e0-450e-a5c0-e1498697303d",
+    "dbc14fe3-b9c6-4b03-9c32-23bf175eab78",
+    "db0e5820-1d55-4ec4-a756-ffa5a49c6acf",
+    "c8b9ff69-54a5-4bb0-9bba-cfb900e71296",
+    "d2c96cb9-6eae-4fd1-9b98-c6458138963a",
+    "d05d689d-8cc5-4c22-87eb-f6e246f56fb4",
+    "d7c191c3-1ba2-4997-b61b-bac834a7fa3c",
+    "c7251da2-4981-4c1e-9f65-b1a5d5ed26b0",
+    "cb934cf0-a908-42ca-9901-9408aa8872dc",
+    "dcd1e22c-607f-41b6-aeab-39ed3a4c1427",
+    "c4bf55e0-1881-43bb-8cea-bd633777a4c2",
+    "cc0b64f1-bb76-4080-b13f-f5bac91c50f4",
+    "ccf28124-1b5e-4d62-81d2-f53df6f08ee0",
+    "d35dce82-a8ea-4972-840a-5d7e0ccdabce",
+    "c1bf0d08-dc2e-45ea-9190-02e38ab8d0ff",
+    "c1ec87b0-9b30-4e5c-9e14-54ee773d27b1",
+    "c70afc45-6c30-41ab-8a57-ac37462da542",
+    "cd4d03d6-d8db-47f9-a611-5f6370deb1e4",
+    "d8c07117-6035-45d5-9f1a-f881bbb632fb",
+    "df5a9b47-9759-4639-b52c-a15e30649d57"
   ],
   "skipped": {},
   "batches": [
@@ -75566,6 +76487,24 @@
         "html_blocked": 1,
         "html_429": 1,
         "html_403": 3
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 6,
+      "at": "2026-08-13T15:23:46.696Z",
+      "attempted": 177,
+      "ok": 0,
+      "skip": 177,
+      "fail": 0,
+      "reasons": {
+        "html_403": 7,
+        "html_short": 7,
+        "manual_queued": 141,
+        "html_429": 5,
+        "html_500": 1,
+        "err_TimeoutError": 16
       },
       "samplePaths": []
     }
