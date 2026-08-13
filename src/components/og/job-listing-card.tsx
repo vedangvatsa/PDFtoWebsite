@@ -48,9 +48,7 @@ export function JobListingOgCard({
         >
           CVin.Bio  ·  Job listing
         </div>
-        {logoSrc ? <CompanyLogoBadge logoSrc={logoSrc} /> : (
-          <div style={{ display: 'flex', width: 88, height: 88 }} />
-        )}
+        <CompanyLogoBadge logoSrc={logoSrc} />
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
