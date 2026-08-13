@@ -16,7 +16,8 @@ import { ArrowLeft, Briefcase, Monitor, ExternalLink, Github, Linkedin, Twitter,
 import { blogPosts } from '@/lib/blog-data';
 import nomadCities from '@/lib/nomad-cities';
 import { CityGuidePage } from '@/components/city-guide-page';
-import { jobPublicPath, timeAgo } from '@/lib/job-description';
+import { timeAgo } from '@/lib/job-description';
+import { companyHubJobLink } from '@/lib/company-hub-query';
 import {
   EMPLOYMENT_TYPE_MAP,
   parseBaseSalary,
@@ -26,7 +27,7 @@ import { companyDisplayName } from '@/lib/company-directory';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
 import CompanyLogo from '@/components/company-logo';
 import { primaryCompanyLogoUrl, trustedCompanyWebsiteUrl } from '@/lib/company-logo';
-import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
+import { getCompanyLinks } from '@/lib/company-links';
 import {
   isDisposableProfileSlug,
   goneDisposableProfilePath,
@@ -478,15 +479,17 @@ export default async function ProfileSlugPage({ params }: PageProps) {
 
     const { getCompanyMeta } = await import('@/lib/company-data');
     const meta = getCompanyMeta(slug);
-    const companyWebsite = trustedCompanyWebsiteUrl(companyName, slug);
+    const links = getCompanyLinks(slug);
+    const companyWebsite =
+      links.website || trustedCompanyWebsiteUrl(companyName, slug);
 
     const orgSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": companyName,
       "logo": logo,
+      ...(companyWebsite ? { "url": companyWebsite } : {}),
       ...(meta ? {
-        "url": meta.website,
         "foundingDate": String(meta.founded),
         "description": meta.description,
       } : {}),
@@ -580,18 +583,18 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                     <Globe className="w-3.5 h-3.5" />
                   </a>
                   )}
-                  {meta?.socials?.x && (
-                    <a href={meta.socials.x} target="_blank" rel="noopener noreferrer" title="X" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                  {links.x && (
+                    <a href={links.x} target="_blank" rel="noopener noreferrer" title="X" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
                       <Twitter className="w-3.5 h-3.5" />
                     </a>
                   )}
-                  {meta?.socials?.linkedin && (
-                    <a href={meta.socials.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                  {links.linkedin && (
+                    <a href={links.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
                       <Linkedin className="w-3.5 h-3.5" />
                     </a>
                   )}
-                  {meta?.socials?.github && (
-                    <a href={meta.socials.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
+                  {links.github && (
+                    <a href={links.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="w-7 h-7 flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-900 transition-colors">
                       <Github className="w-3.5 h-3.5" />
                     </a>
                   )}
@@ -684,12 +687,12 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                 </div>
               </div>
             )}
-            {jobs.map((job: any) => (
-              <Link
-                key={job.id}
-                href={jobPublicPath(job)}
-                className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
-              >
+            {jobs.map((job: any) => {
+              const link = companyHubJobLink(job);
+              const cardClass =
+                'group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all';
+              const body = (
+                <>
                 <CompanyLogo
                   name={companyName}
                   logo={job.company_logo || storedLogo}
@@ -714,8 +717,27 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                   </div>
                 </div>
                 <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 transition-colors shrink-0" />
-              </Link>
-            ))}
+                </>
+              );
+              if (link.external) {
+                return (
+                  <a
+                    key={job.id}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cardClass}
+                  >
+                    {body}
+                  </a>
+                );
+              }
+              return (
+                <Link key={job.id} href={link.href} className={cardClass}>
+                  {body}
+                </Link>
+              );
+            })}
           </div>
 
           {/* FAQ Section - SEO content at the bottom */}
