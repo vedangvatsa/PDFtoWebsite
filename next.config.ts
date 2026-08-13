@@ -15,13 +15,7 @@ const nextConfigFn = (phase: string): NextConfig => {
     // the entire project root — pulling in 465MB of CSVs, videos, and databases.
     outputFileTracingExcludes: {
       '*': [
-        'node_modules/lucide-react/**',
-        'node_modules/posthog-js/**',
-        'node_modules/@next/swc-*/**',
-        'node_modules/next/dist/compiled/@ampproject/**',
-        'node_modules/next/dist/compiled/terser/**',
-        'node_modules/next/dist/compiled/webpack/**',
-        'node_modules/next/dist/server/lib/squoosh/**',
+        '.github/**',
         'scripts/**',
         'scratch/**',
         'public/images/social/**',
