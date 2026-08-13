@@ -82506,7 +82506,7 @@
     },
     "d098fbb6-70c6-40b0-a0fa-2d7b7527971d": {
       "status": "fail",
-      "reason": "rewrite_structure"
+      "reason": "rewrite_short"
     },
     "c275de69-a9ab-45e2-906c-5abacad5e1fe": {
       "status": "ok",
@@ -102201,7 +102201,8 @@
     "d17c4774-2e4b-4e0e-b2c9-44d16bd4d711",
     "cfdb0ffd-0ef1-4667-adeb-1701619f8107",
     "db65761f-4966-461c-b401-f523250b02a8",
-    "d9ff7cc2-630a-4d61-be0c-695fd743fa4a"
+    "d9ff7cc2-630a-4d61-be0c-695fd743fa4a",
+    "d098fbb6-70c6-40b0-a0fa-2d7b7527971d"
   ],
   "skipped": {},
   "batches": [
@@ -103359,6 +103360,21 @@
       "samplePaths": [
         "/truelogic/fullst-c5"
       ]
+    },
+    {
+      "batchNum": 2,
+      "worker": 6,
+      "at": "2026-08-13T14:09:51.130Z",
+      "attempted": 5,
+      "ok": 0,
+      "skip": 0,
+      "fail": 5,
+      "reasons": {
+        "expand_existing": 5,
+        "rewrite_short": 1,
+        "rewrite_structure": 4
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
