@@ -5,7 +5,7 @@ import { escapeXml } from '@/lib/xml';
 export const revalidate = 3600;
 
 /**
- * Dynamic sitemap index. Counts recent job rows (curated + assemble candidates)
+ * Dynamic sitemap index. Counts recent curated job rows
  * and lists enough chunks. Chunks drop rows that fail quality gates.
  */
 export async function GET(req: Request) {
@@ -21,6 +21,7 @@ export async function GET(req: Request) {
         .select('id', { count: 'exact', head: true })
         .not('external_id', 'is', null)
         .not('company', 'is', null)
+        .contains('tags', ['curated-jd'])
         .gt('created_at', thirtyDaysAgo)
         .or(`published_at.is.null,published_at.gt.${thirtyDaysAgo}`);
       total = count || 0;

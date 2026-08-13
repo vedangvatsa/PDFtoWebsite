@@ -26,6 +26,11 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { shouldQueueForManualEnrich, isFullyEnrichedJob, descriptionWords } from './lib/job-apply-source.mjs';
 import { runCompanyAboutPass } from './lib/enrich-company-about.mjs';
+import {
+  normalizeJobDescriptionForStorage,
+  stripLeakedWriterInstructions,
+  descriptionHasWriterLeak,
+} from './lib/normalize-job-description.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -111,7 +116,7 @@ const ABOUT_ONLY = process.env.ABOUT_ONLY === '1' || process.env.ABOUT_ONLY === 
 // TURBO=1: max parallel, mini model, no sleep, keep existing pretty slugs
 const TURBO = process.env.TURBO === '1';
 // Hard cap high so one machine can saturate API keys (429s self-throttle)
-const CONCURRENCY = Math.max(1, Math.min(TURBO ? 256 : 16, Number(process.env.CONCURRENCY || 4)));
+const CONCURRENCY = Math.max(1, Math.min(TURBO ? 2048 : 1024, Number(process.env.CONCURRENCY || 4)));
 const WORKERS = Math.max(1, Number(process.env.WORKERS || 1));
 const WORKER_ID = Math.max(0, Number(process.env.WORKER_ID || 0)) % WORKERS;
 const CONTINUOUS = process.env.CONTINUOUS === '1';
@@ -125,8 +130,8 @@ const GATE = {
   maxLcsWords: 10, // fail if shared contiguous words >= 11 (after slot mask)
   max5gramJaccard: 0.12,
   maxRepair: 1,
-  // After repair, originality-only fails are warnings (structure prompts are the main lever)
-  originalitySoft: true,
+  // Never publish a page that still matches the ATS after repair.
+  originalitySoft: false,
 };
 const OPENAI_FAST_MODEL = process.env.OPENAI_FAST_MODEL || 'gpt-4o-mini';
 // TURBO scrapes must fail fast — long LinkedIn/HTML retries were killing throughput (~20 ok/min).
@@ -157,6 +162,79 @@ function shardOf(id) {
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/* ── permanent unenrichable detection + live DB purge ─────────────────── *
+ * Jobs that can never become a curated-jd page (dead board, thin source,
+ * expired posting, or a rewrite that failed quality gates) are deleted from
+ * the jobs table as soon as the enrich step confirms it, so later runs and
+ * the daily index never re-scrape them. Enriched (curated-jd) rows and any
+ * apply_url that was posted to Telegram are NEVER deleted, matching
+ * cleanup-old-jobs.mjs / purge-unenrichable-jobs.mjs protections. */
+const PERMANENT_UNENRICHABLE_REASONS = new Set([
+  // dead boards
+  'ashby_not_found', 'gh_404', 'lever_404', 'sr_404', 'linkedin_404',
+  'html_404', 'html_410', 'html_blocked', 'html_403', 'dead_board',
+  // thin source
+  'source_thin', 'html_short', 'gh_short', 'lever_short', 'ashby_short', 'fact_sheet_parse',
+  // expired
+  'posting_older_than_30d',
+  // unroutable
+  'no_company', 'unsupported',
+  // rewrite / quality rejects
+  'rewrite_slop', 'rewrite_short', 'rewrite_structure', 'rewrite_long', 'invented_facts',
+]);
+
+let telegramProtectedUrlsCache = null;
+function telegramProtectedUrls() {
+  if (telegramProtectedUrlsCache) return telegramProtectedUrlsCache;
+  const set = new Set();
+  const p = resolve(__dirname, '.telegram-ai-jobs-posted.json');
+  if (existsSync(p)) {
+    try {
+      const raw = JSON.parse(readFileSync(p, 'utf8'));
+      for (const u of Array.isArray(raw) ? raw : []) {
+        set.add(normUrlForProtection(u));
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  telegramProtectedUrlsCache = set;
+  return set;
+}
+function normUrlForProtection(u) {
+  return String(u || '')
+    .toLowerCase()
+    .split('?')[0]
+    .split('#')[0]
+    .replace(/^https?:\/\//, '')
+    .replace(/^www\./, '');
+}
+
+function isPermanentUnenrichableReason(reason) {
+  const r = String(reason || '');
+  if (/429|rate|timeout|timed out|aborted|fetch failed|openrouter|gemini|all_providers_failed|5\d\d/i.test(r)) return false;
+  return PERMANENT_UNENRICHABLE_REASONS.has(r) || PERMANENT_UNENRICHABLE_REASONS.has(r.split(/[:]/)[0]);
+}
+
+/** Delete a single unenrichable job row (fire-and-forget), never curated/telegram. */
+async function purgeJobRow(job) {
+  if (DRY_RUN) return false;
+  if (!job || !job.id || !U || !K) return false;
+  const tags = Array.isArray(job.tags) ? job.tags : [];
+  if (tags.includes('curated-jd')) return false;
+  if (telegramProtectedUrls().has(normUrlForProtection(job.apply_url))) return false;
+  try {
+    await fetch(`${U}/rest/v1/jobs?id=eq.${job.id}`, {
+      method: 'DELETE',
+      headers,
+      signal: AbortSignal.timeout(30000),
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 function decodeHtmlEntities(s) {
   return String(s || '')
@@ -1006,7 +1084,7 @@ function maskSlotSpans(text, sheet) {
       out = out.replace(re, ' SLOT ');
     }
   }
-  for (const v of [...(sheet?.skills || []), ...(sheet?.comp_notes || [])]) {
+  for (const v of [...(sheet?.skills || []), ...(sheet?.systems || []), ...(sheet?.comp_notes || [])]) {
     const s = String(v || '').trim();
     if (s.length >= 3) {
       const re = new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
@@ -1062,8 +1140,8 @@ Rules:
 - Digits/units exact. Preserve must vs nice.
 - Put immutable strings (years like 5+, salary bands, product names) in slots[].value.
 - skills = methods/tools (FRACAS, Go, HubSpot). systems = products (V-BAT, Hivemind).
-- Include EVERY hard requirement and EVERY listed duty theme. Do not drop "technical judgment", risk assessments, balance/priority clauses, preferred degrees, or salary if present.
-- If unsure, omit and list under omissions. NEVER invent.
+- Include EVERY hard requirement and EVERY listed duty theme.
+- Unknown meta fields are "" (empty). Never invent a value.
 
 META
 ${buildMetaBits(job, extras)}
@@ -1072,81 +1150,259 @@ SOURCE:
 ${String(sourceText || '').slice(0, 14000)}`;
 }
 
-function buildWritePrompt(job, sheet) {
-  const sheetJson = JSON.stringify(sheet, null, 0).slice(0, 12000);
-  return `Write a cvin.bio job page from the Fact Sheet only.
-You do NOT have the original posting text. Invent nothing. Do not change slot values.
+const ENGAGEMENT_LABELS = {
+  full_time: 'Full-time',
+  'full-time': 'Full-time',
+  fulltime: 'Full-time',
+  part_time: 'Part-time',
+  'part-time': 'Part-time',
+  parttime: 'Part-time',
+  contract: 'Contract',
+  internship: 'Internship',
+  temporary: 'Temporary',
+  temp: 'Temporary',
+  volunteer: 'Volunteer',
+  freelance: 'Freelance',
+};
 
-CRITICAL originality:
-- Do NOT mirror typical ATS bullet order one-for-one.
-- Re-group duties by workflow (e.g. evidence → root cause → close loop → improve systems → partners → communicate).
-- Merge related duties into fewer, denser bullets when the sheet supports it.
-- Change sentence structure, not only synonyms.
-- Cover EVERY duties, must_have, nice_to_have, skills, systems, constraints, and comp_notes item.
-- Prefer "risk assessments" over casual "risk calls" when the sheet says risk assessments.
-- Do not invent sequencing that the sheet does not support (e.g. do not invent "first A then B" partner order).
+function humanizeEngagement(raw) {
+  const t = String(raw || '')
+    .trim()
+    .replace(/[.:]+$/, '')
+    .trim();
+  if (!t || /^unknown$/i.test(t)) return '';
+  const key = t.toLowerCase().replace(/[ -]+/g, '_');
+  if (ENGAGEMENT_LABELS[key]) return ENGAGEMENT_LABELS[key];
+  if (ENGAGEMENT_LABELS[t.toLowerCase()]) return ENGAGEMENT_LABELS[t.toLowerCase()];
+  if (/full\s*time/i.test(t)) return t.replace(/full\s*time/gi, 'Full-time');
+  if (/part\s*time/i.test(t)) return t.replace(/part\s*time/gi, 'Part-time');
+  return t;
+}
 
-FORMAT (exact headers, blank line between sections, plain text only):
+function isUsableFactValue(v) {
+  const t = String(v || '').trim();
+  if (!t) return false;
+  if (/^(unknown|\.\.\.|see source|not specified|not provided|none listed|n\/a|tbd)$/i.test(t)) {
+    return false;
+  }
+  return true;
+}
 
-${job.title} at ${job.company}.
+/** Key facts are assembled in code from the sheet — the model must not invent them. */
+function buildKeyFactsLines(job, sheet) {
+  const meta = sheet?.meta || {};
+  const location = String(meta.location || job?.location || '').trim();
+  const engagement = humanizeEngagement(meta.engagement || job?.job_type || '');
+  const team = String(meta.team || '').trim();
+  const pay =
+    String(meta.salary_raw || '').trim() ||
+    String((sheet?.comp_notes || [])[0] || '').trim() ||
+    String(job?.salary || '').trim();
+  const lines = [];
+  if (isUsableFactValue(location)) lines.push(`Location: ${location}`);
+  if (isUsableFactValue(engagement)) lines.push(`Engagement: ${engagement}`);
+  if (isUsableFactValue(team)) lines.push(`Team: ${team}`);
+  if (isUsableFactValue(pay)) lines.push(`Compensation: ${pay}`);
+  return lines;
+}
+
+const PAGE_SECTION_HEADERS = [
+  'About the role',
+  "What you'll do",
+  'Requirements',
+  'Nice to have',
+  'Engineering methods',
+  'Relevant systems',
+  'Skills & tools',
+  'Practical notes',
+  'Good to know',
+  'About the company',
+  'About the location',
+];
+
+function isPageSectionHeader(line) {
+  const t = String(line || '').trim();
+  return PAGE_SECTION_HEADERS.some((h) => h.toLowerCase() === t.toLowerCase());
+}
+
+function noteLines(arr, max = 24) {
+  const out = [];
+  const seen = new Set();
+  for (const raw of arr || []) {
+    const s = String(raw || '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (s.length < 2 || !isUsableFactValue(s)) continue;
+    const k = s.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(`- ${s}`);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+function uniqueTokens(arr, max = 24) {
+  const out = [];
+  const seen = new Set();
+  for (const raw of arr || []) {
+    const s = String(raw || '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (s.length < 2 || !isUsableFactValue(s)) continue;
+    const k = s.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(s);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+function isAnyPageHeader(line) {
+  const t = String(line || '').trim();
+  if (/^Key facts\s*$/i.test(t)) return true;
+  return isPageSectionHeader(line);
+}
+
+function extractSectionBody(text, header) {
+  const parts = String(text || '').split('\n');
+  const want = header.trim().toLowerCase();
+  let i = parts.findIndex((l) => l.trim().toLowerCase() === want);
+  if (i < 0) return '';
+  i += 1;
+  const body = [];
+  while (i < parts.length && !isAnyPageHeader(parts[i])) {
+    body.push(parts[i]);
+    i += 1;
+  }
+  return body.join('\n').trim();
+}
+
+function buildPracticalNotesBody(sheet) {
+  const bits = uniqueTokens(
+    [...(sheet?.constraints || []), ...(sheet?.comp_notes || []).slice(1)],
+    12
+  ).filter((s) => !/confirm details on the official apply page/i.test(s));
+  const sentences = bits.map((s) => (/[.!?]$/.test(s) ? s : `${s}.`));
+  sentences.push('Confirm details on the official apply page.');
+  return sentences.join(' ');
+}
+
+/**
+ * Cheap-model safety: the writer only authors About / duties / requirements.
+ * Title line, Key facts, tool lists, and Practical notes are assembled in code.
+ */
+function assembleJobPage(draft, job, sheet) {
+  const about = extractSectionBody(draft, 'About the role');
+  const duties = extractSectionBody(draft, "What you'll do");
+  const req = extractSectionBody(draft, 'Requirements');
+  const nice = extractSectionBody(draft, 'Nice to have');
+  const keyFacts = buildKeyFactsLines(job, sheet);
+  const skills = uniqueTokens(sheet?.skills);
+  const systems = uniqueTokens(sheet?.systems);
+  const chunks = [`${job.title} at ${job.company}.`, '', 'About the role', about || ''];
+  if (keyFacts.length) chunks.push('', 'Key facts', ...keyFacts);
+  chunks.push('', "What you'll do", duties || '');
+  chunks.push('', 'Requirements', req || '');
+  if ((sheet?.nice_to_have || []).length && nice) {
+    chunks.push('', 'Nice to have', nice);
+  }
+  if (skills.length && systems.length) {
+    chunks.push('', 'Engineering methods', skills.join(', '), '', 'Relevant systems', systems.join(', '));
+  } else if (systems.length) {
+    chunks.push('', 'Relevant systems', systems.join(', '));
+  } else if (skills.length) {
+    chunks.push('', 'Skills & tools', skills.join(', '));
+  }
+  chunks.push('', 'Practical notes', buildPracticalNotesBody(sheet));
+  return chunks.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function breakSourceOrder(arr) {
+  const a = [...(arr || [])];
+  if (a.length < 3) return a;
+  const mid = Math.ceil(a.length / 2);
+  const out = [];
+  for (let i = 0; i < mid; i++) {
+    out.push(a[i]);
+    if (mid + i < a.length) out.push(a[mid + i]);
+  }
+  return out;
+}
+
+function buildNotesForWriter(job, sheet) {
+  const duties = noteLines(breakSourceOrder(sheet.duties));
+  const must = noteLines(breakSourceOrder(sheet.must_have));
+  const nice = noteLines(breakSourceOrder(sheet.nice_to_have));
+  let page = `${job.title} at ${job.company}.
 
 About the role
-(3-5 sentences. Mix short and longer. Concrete verbs. No brochure fluff.)
-
-Key facts
-Location: ...
-Engagement: ...
-Team: ... (omit if unknown)
-Compensation: ... (include exact salary_raw / comp_notes when present; omit line if none)
 
 What you'll do
-- (8-12 bullets preferred; fewer only if sheet is thin — but then stay under padding)
+${duties.join('\n')}
 
 Requirements
-- (EVERY must_have; hard stays hard)
-
+${must.join('\n')}
+`;
+  if (nice.length) {
+    page += `
 Nice to have
-- (only if nice_to_have non-empty; include preferred degrees / env prefs from sheet)
+${nice.join('\n')}
+`;
+  }
+  return page.trim();
+}
 
-Engineering methods
-(methods/tools from skills — omit section if empty)
+function buildWritePrompt(job, sheet) {
+  const notes = buildNotesForWriter(job, sheet);
 
-Relevant systems
-(products/platforms from systems — omit section if empty)
+  return `Write original sentences from the notes. Do not copy a note's word order. Do not add facts.
 
-OR if systems empty and skills non-empty, use a single section:
-Skills & tools
-...
+For every note write 2 sentences: the work, then its stated purpose only if the note already has one.
+Start each sentence with a different subject than the note (the object, the tool, the result, or the team).
+Keep names and numbers exactly.
 
-Practical notes
-(constraints + comp nuances; end with: Confirm details on the official apply page.)
+Example:
+Note: "define API contracts with product managers"
+Wrong: "Define API contracts with product managers."
+Right: "Product and engineering settle the API surface together, and the contract grows as features land."
 
-Style:
-- No HTML, no markdown bold/italic, no em dashes or en dashes
-- Avoid: leverage, delve, robust, seamless, passionate, cutting-edge, exciting opportunity, furthermore, moreover, landscape, tapestry
-- Avoid marketing "pain", "chase", "surprise lands", "IC seat"
-- Aim ${MIN_REWRITE_WORDS}-${MAX_REWRITE_WORDS} words ONLY if the Fact Sheet supports it; never pad with invented culture/perks
-- Output ONLY the job page text
+About the role: 4 sentences that scope the work from the duty notes. No marketing.
+What you'll do / Requirements / Nice to have: one bullet per note, two sentences each.
+Keep those headings. Do not write Key facts. Do not write Practical notes.
 
-FACT SHEET JSON:
-${sheetJson}`;
+${notes}
+
+Cover every note. No HTML. No em dashes. Output only the page.`;
 }
 
 function buildRepairPrompt(job, sheet, draft, failReasons) {
-  return `Revise the draft using the Fact Sheet only. Fix these fail_reasons: ${failReasons.join(', ')}
+  const notes = buildNotesForWriter(job, sheet);
+  const reasons = failReasons.join(', ');
+  let extra = 'Keep every note. Do not add facts. Do not write Key facts or Practical notes.';
+  if (/copy_span|ngram_overlap/.test(reasons)) {
+    extra +=
+      ' Copied wording: rewrite those bullets with a new grammatical subject. Keep names and numbers.';
+  }
+  if (/rewrite_short/.test(reasons)) {
+    extra +=
+      ' Too short: give every duty and requirement note 2 sentences from that note. Do not invent perks, culture, or extra duties.';
+  }
+  if (/rewrite_long/.test(reasons)) {
+    extra += ' Too long: cut repeated sentences. Do not drop a note.';
+  }
+  return `Fix: ${reasons}
 
-Rules:
-- Invent nothing. Keep every Fact Sheet item. Do not change slot values.
-- Reorder/merge duties so the page is not a 1:1 ATS sequence.
-- No em/en dashes. No AI slop words.
-- Keep section headers. Aim ${MIN_REWRITE_WORDS}-${MAX_REWRITE_WORDS} words if sheet supports.
-- Output full page plain text only.
+${extra}
 
-FACT SHEET JSON:
-${JSON.stringify(sheet, null, 0).slice(0, 10000)}
+NOTES:
+${notes}
 
 DRAFT:
-${String(draft || '').slice(0, 8000)}`;
+${String(draft || '').slice(0, 8000)}
+
+Output only the corrected page.`;
 }
 
 function stripCodeFence(text) {
@@ -1173,6 +1429,17 @@ function parseFactSheet(raw) {
   for (const k of ['duties', 'must_have', 'nice_to_have', 'skills', 'systems', 'constraints', 'comp_notes', 'omissions', 'slots']) {
     if (!Array.isArray(sheet[k])) sheet[k] = [];
   }
+  for (const k of Object.keys(sheet.meta)) {
+    const v = String(sheet.meta[k] ?? '').trim();
+    sheet.meta[k] = isUsableFactValue(v) ? v : '';
+  }
+  sheet.duties = sheet.duties.map((x) => String(x || '').trim()).filter((x) => isUsableFactValue(x));
+  sheet.must_have = sheet.must_have.map((x) => String(x || '').trim()).filter((x) => isUsableFactValue(x));
+  sheet.nice_to_have = sheet.nice_to_have.map((x) => String(x || '').trim()).filter((x) => isUsableFactValue(x));
+  sheet.skills = sheet.skills.map((x) => String(x || '').trim()).filter((x) => isUsableFactValue(x));
+  sheet.systems = sheet.systems.map((x) => String(x || '').trim()).filter((x) => isUsableFactValue(x));
+  sheet.constraints = sheet.constraints.map((x) => String(x || '').trim()).filter((x) => isUsableFactValue(x));
+  sheet.comp_notes = sheet.comp_notes.map((x) => String(x || '').trim()).filter((x) => isUsableFactValue(x));
   return sheet;
 }
 
@@ -1208,11 +1475,22 @@ function originalityFailReasons(draft, sourceText, sheet) {
   const maskedSrc = maskSlotSpans(sourceText, sheet);
   const dTok = normalizeTokens(maskedDraft);
   const sTok = normalizeTokens(maskedSrc);
-  if (!sTok.length) return reasons;
-  const lcs = contiguousLcsWords(dTok, sTok);
-  if (lcs > GATE.maxLcsWords) reasons.push('copy_span');
-  const j5 = jaccard(ngrams(dTok, 5), ngrams(sTok, 5));
-  if (j5 > GATE.max5gramJaccard) reasons.push('ngram_overlap');
+  if (sTok.length) {
+    const lcs = contiguousLcsWords(dTok, sTok);
+    if (lcs > GATE.maxLcsWords) reasons.push('copy_span');
+    const j5 = jaccard(ngrams(dTok, 5), ngrams(sTok, 5));
+    if (j5 > GATE.max5gramJaccard) reasons.push('ngram_overlap');
+  }
+  // Cheap models paste extract notes; those notes often still match the ATS.
+  const draftNorm = dTok.join(' ');
+  for (const note of [...(sheet?.duties || []), ...(sheet?.must_have || [])]) {
+    const nt = normalizeTokens(note);
+    if (nt.length < 8) continue;
+    if (draftNorm.includes(nt.join(' '))) {
+      reasons.push('copy_span');
+      break;
+    }
+  }
   return reasons;
 }
 
@@ -1226,6 +1504,8 @@ function humanityFailReasons(text) {
   ) {
     reasons.push('slop');
   }
+  // Do not treat real parentheticals like "Team: (Growth)" as leaks.
+  if (descriptionHasWriterLeak(text)) reasons.push('rewrite_leak');
   return reasons;
 }
 
@@ -1237,8 +1517,21 @@ function structureFailReasons(text) {
   return reasons;
 }
 
-function finalizeText(text, { sourceText = '', sheet = null } = {}) {
+function finalizeText(text, { sourceText = '', sheet = null, job = null } = {}) {
   text = stripCodeFence(text);
+
+  if (job && sheet) {
+    text = assembleJobPage(text, job, sheet);
+  } else {
+    text = text.replace(/^Engagement:\s*(.+)$/gim, (m, v) => {
+      const label = humanizeEngagement(v);
+      return label ? `Engagement: ${label}` : m;
+    });
+  }
+
+  text = stripLeakedWriterInstructions(text);
+  if (descriptionHasWriterLeak(text)) throw new Error('rewrite_leak');
+
   const wordCount = text.split(/\s+/).filter(Boolean).length;
   if (wordCount < MIN_REWRITE_WORDS) throw new Error('rewrite_short');
   if (wordCount > MAX_REWRITE_WORDS + 80) throw new Error('rewrite_long');
@@ -1256,6 +1549,7 @@ function finalizeText(text, { sourceText = '', sheet = null } = {}) {
     const critical = missingSlots.filter((v) => /(\d|\$|\+|years?)/i.test(v));
     if (critical.length) throw new Error('slot_mutation');
   }
+  if (fails.includes('rewrite_leak')) throw new Error('rewrite_leak');
   if (fails.includes('slop')) throw new Error('rewrite_slop');
   if (fails.includes('structure')) throw new Error('rewrite_structure');
   if (fails.includes('copy_span')) throw new Error('copy_span');
@@ -1543,37 +1837,46 @@ async function rewriteWithNvidia(prompt, opts = {}) {
 
 /** OpenRouter only — model locked to inclusionai/ling-2.6-flash. */
 const openrouterKeyCooldown = new Map();
+async function openrouterCall(key, model, prompt, temperature, maxTokens) {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${key}`,
+    'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://cvin.bio',
+    'X-Title': process.env.OPENROUTER_APP_NAME || 'cvin.bio job enrich',
+  };
+  const body = JSON.stringify({
+    model,
+    messages: [{ role: 'user', content: prompt }],
+    temperature,
+    max_tokens: maxTokens,
+    top_p: 0.9,
+  });
+  return jfetch(`${OPENROUTER_BASE}/chat/completions`, { method: 'POST', headers, body }, TURBO ? 90000 : 60000);
+}
+
 async function rewriteWithOpenRouter(prompt, opts = {}) {
   if (!OPENROUTER_KEYS.length) throw new Error('Missing OPENROUTER_API_KEY');
   const temperature = opts.temperature ?? (TURBO ? 0.3 : 0.4);
   const model = OPENROUTER_MODEL;
+  const maxTokens = opts.maxOutputTokens ?? 4096;
+  const maxRetries = Math.max(2, Number(process.env.OR_RETRIES || 8));
   let lastErr = '';
 
-  for (const key of OPENROUTER_KEYS) {
+  // Each request retries in place with per-key backoff so the provider's
+  // throttling paces throughput without hard-failing the batch. When the key
+  // is cooled, WAIT for release instead of skipping — otherwise the shared
+  // cooldown map makes every concurrent call fail with empty lastErr.
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const key = OPENROUTER_KEYS[0];
     const cdKey = `${model}::${key.slice(0, 12)}`;
     const until = openrouterKeyCooldown.get(cdKey) || 0;
-    if (Date.now() < until) continue;
+    const wait = until - Date.now();
+    if (wait > 0) {
+      await sleep(Math.min(wait, 15000));
+      continue;
+    }
     try {
-      const r = await jfetch(
-        `${OPENROUTER_BASE}/chat/completions`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${key}`,
-            'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://cvin.bio',
-            'X-Title': process.env.OPENROUTER_APP_NAME || 'cvin.bio job enrich',
-          },
-          body: JSON.stringify({
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature,
-            max_tokens: opts.maxOutputTokens ?? 4096,
-            top_p: 0.9,
-          }),
-        },
-        TURBO ? 90000 : 60000
-      );
+      const r = await openrouterCall(key, model, prompt, temperature, maxTokens);
       if (r.ok) {
         const data = await r.json();
         const text = data.choices?.[0]?.message?.content || '';
@@ -1583,11 +1886,24 @@ async function rewriteWithOpenRouter(prompt, opts = {}) {
       const err = await r.text();
       lastErr = `openrouter_${model}_${r.status}:${err.slice(0, 180)}`;
       if (r.status === 429) {
-        openrouterKeyCooldown.set(cdKey, Date.now() + 20_000);
+        const backoff = Math.max(2000, 3000 + attempt * 2000);
+        openrouterKeyCooldown.set(cdKey, Date.now() + backoff);
+        await sleep(Math.min(backoff, 12000));
         continue;
       }
+      if (r.status >= 500) {
+        await sleep(TURBO ? 400 : 800);
+        continue;
+      }
+      throw new Error(lastErr);
     } catch (e) {
-      lastErr = `openrouter_${model}_err:${String(e.message || e).slice(0, 100)}`;
+      const msg = String(e.message || e);
+      if (/429|503|rate|timeout|ETIMEDOUT|ENOTFOUND|socket|ECONNRESET/i.test(msg) && attempt < maxRetries - 1) {
+        lastErr = msg.slice(0, 140);
+        await sleep(Math.min(1500 + attempt * 1500, 8000));
+        continue;
+      }
+      throw new Error(msg.startsWith('openrouter_') ? msg.slice(0, 140) : `openrouter_${model}_err:${msg.slice(0, 100)}`);
     }
   }
   throw new Error(lastErr || 'openrouter_failed');
@@ -1666,21 +1982,21 @@ async function rewriteJobPage(job, sourceText, extras) {
   }
 
   let draft = await completeWithProviders(buildWritePrompt(job, sheet), {
-    temperature: TURBO ? 0.35 : 0.45,
+    temperature: TURBO ? 0.2 : 0.25,
     maxOutputTokens: 8192,
   });
 
-  const ctx = { sourceText, sheet };
+  const ctx = { sourceText, sheet, job };
   try {
     return finalizeText(draft, ctx);
   } catch (e) {
     const reason = String(e.message || e);
-    const repairable = /copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|slot_mutation/.test(
+    const repairable = /copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak|slot_mutation/.test(
       reason
     );
     if (!repairable || GATE.maxRepair < 1) throw e;
     draft = await completeWithProviders(buildRepairPrompt(job, sheet, draft, [reason]), {
-      temperature: 0.3,
+      temperature: 0.2,
       maxOutputTokens: 8192,
     });
     try {
@@ -1689,7 +2005,7 @@ async function rewriteJobPage(job, sourceText, extras) {
       const r2 = String(e2.message || e2);
       // Soft originality: after one repair, allow page if only O-gates fail
       if (GATE.originalitySoft && /copy_span|ngram_overlap/.test(r2)) {
-        const soft = finalizeText(draft, { sourceText: '', sheet }); // H + structure + length only
+        const soft = finalizeText(draft, { sourceText: '', sheet, job }); // H + structure + length only
         return soft;
       }
       throw e2;
@@ -1767,7 +2083,9 @@ function describeThinSource(job) {
 async function fetchAllJobs() {
   const out = [];
   let offset = 0;
-  const page = 1000;
+  // limit=1000 + description often exceeds Supabase statement timeout → page in smaller
+  // chunks so the fetch never 500s mid-run.
+  const page = Math.max(50, Math.min(500, Number(process.env.FETCH_PAGE || 500)));
   const since = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? new Date(0).toISOString() : new Date(Date.now() - 30 * 86400000).toISOString();
   const orderDir = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? 'created_at.asc' : 'created_at.desc';
 
@@ -2115,6 +2433,7 @@ async function runOneBatch(batchNum, state, done) {
         stats.skip++;
         stats.reasons.no_company = (stats.reasons.no_company || 0) + 1;
         state.processed[job.id] = { status: 'skip', reason: 'no_company' };
+        if (await purgeJobRow(job)) console.log(`[purge] no_company ${job.id}`);
         return;
       }
 
@@ -2152,6 +2471,10 @@ async function runOneBatch(batchNum, state, done) {
         const reason = scraped.reason || 'source_thin';
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'skip', reason, note: describeThinSource(job) };
+        // Permanent unenrichable → delete the row so future runs never burn budget re-scraping it.
+        if (isPermanentUnenrichableReason(reason)) {
+          if (await purgeJobRow(job)) console.log(`[purge] ${reason} ${job.id}`);
+        }
         // RE_ENRICH: don't permanently burn — allow retry next batch with different path
         if (!RE_ENRICH) done.add(job.id);
         return;
@@ -2189,12 +2512,20 @@ async function runOneBatch(batchNum, state, done) {
           stats.skip++;
           stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
           state.processed[job.id] = { status: 'skip', reason };
+          if (isPermanentUnenrichableReason(reason)) {
+            if (await purgeJobRow(job)) console.log(`[purge] ${reason} ${job.id}`);
+          }
           if (!RE_ENRICH) done.add(job.id);
           return;
         }
         stats.fail++;
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
+        // Quality-gate rejects (rewrite_slop/short/structure/long, invented facts)
+        // can never become an indexable page → delete now.
+        if (isPermanentUnenrichableReason(reason)) {
+          if (await purgeJobRow(job)) console.log(`[purge] ${reason} ${job.id}`);
+        }
         if (/429|rate|all_providers_failed/i.test(reason)) consecutiveProviderFails++;
         else consecutiveProviderFails = 0;
         // Don't permanently burn RE_ENRICH fails — allow retry next batch
@@ -2246,8 +2577,12 @@ async function runOneBatch(batchNum, state, done) {
 
       try {
         if (!DRY_RUN) {
+          const storedDescription = normalizeJobDescriptionForStorage(description);
+          if (!storedDescription || descriptionHasWriterLeak(storedDescription)) {
+            throw new Error('rewrite_leak');
+          }
           const patchObj = {
-            description,
+            description: storedDescription,
             external_id,
             tags,
             company_key: job.company_key || companySlug,

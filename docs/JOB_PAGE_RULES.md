@@ -6,12 +6,24 @@ Canonical for public job URLs. Also: `noslop.md` · `docs/JD_PARAPHRASE_RULES.md
 
 | Age | Ingest | Row | URL | Apply | Google Search | Google Jobs | Board / sitemap |
 |-----|--------|-----|-----|-------|---------------|-------------|-----------------|
-| Under 30 days | Accept if posting date is fresh | Keep | 200 | On | Index only if curated ≥600w + gates | JobPosting only if indexable | Yes if curated + not expired |
+| Under 30 days | Accept if posting date is fresh | Keep (enrich queue until curated) | 200 only if curated-jd; else 301 to hub/`/jobs` | On | Index only if curated ≥600w + gates | JobPosting only if indexable | Yes if curated + not expired |
 | 30 days or older | Drop. Do not insert. | Keep. Do not hard-delete. | 200 + closed notice | Off | Same as above. Closed is not a reason to noindex. | No JobPosting | No |
 
 Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not a hard 404.
 
-`published_at` or `created_at` past 30 days counts as closed. Runtime: `isJobExpired`.
+`published_at` **or** `created_at` — listing follows the **newest** stamp. A 2-day publish with an old `created_at` is still live. Runtime: `src/lib/job-age.mjs` (re-exported by `job-age.ts`). Do not copy a local expiry helper.
+
+## Company hubs (`/{slug}`)
+
+- List **live** jobs (not expired, not banned). `curated-jd` is a board / sitemap / job-URL gate, not a hub-card gate.
+- Curated cards link to `/{company}/{jobSlug}`. Uncurated cards link to `apply_url` so they do not 301-loop back to the hub.
+- Date filter is `published_at OR created_at` (`companyJobsDateOrFilter`). Never AND `created_at`.
+- Join is equality only: `company_key` IN (slug key, directory-name key), then exact `company` name variants (`OpenAI` / `openai`). Never ILIKE.
+- Company names never come from a public-suffix label. `iisc.ac.in` is **IISc**, not **AC**; `bbc.co.uk` is **BBC**, not **CO**. Shared helper: `src/lib/company-host.mjs` (`registrableHostLabel`, `companyNameFromApply`). Ingest (`jobs-sync` `filterAndNormalize`) and display (`companyDisplayName` / `companyDisplayNameFromJob`) both call it. Do not take `hostname.split('.')[-2]` as the brand. Tests: `src/lib/company-host.test.mjs` · `src/lib/company-directory.test.ts`.
+- Keep the hub if a directory row, live jobs, or a known profile cache/meta entry exists — even when about copy is unpublished Wikipedia.
+- Do not wrap hub SQL in `withCuratedJdTag`. That emptied OpenAI/Stripe hubs while nested job URLs still existed.
+
+Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/public-job-gate.contract.test.ts` · `src/lib/company-assets.test.ts` · `src/lib/job-apply-source.test.mjs`
 
 ## Content
 
@@ -20,7 +32,7 @@ Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not 
 - Reach 600 words by expanding real ATS claims into full sentences, then owned company / apply notes. Never invent duties, perks, years, or pay.
 - Originality fail-closed: 7-word copy, 5-gram overlap, patchwrite, synonym-spin.
 - noslop. Owned headings. No `[placeholder]`. No raw ATS / EEO paste.
-- Thin or failing drafts: do not save as `curated-jd`.
+- Thin or failing drafts: do not save as `curated-jd`. Uncurated rows are an enrich queue only — they must not render as public job pages, list on `/jobs`, or be posted to Telegram. Company hubs may show them as apply-out cards.
 
 ## SEO
 

@@ -9,7 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit && npx tsx scripts/check-og-satori.ts",
     "check:og": "npx tsx scripts/check-og-satori.ts",
-    "test": "tsx --test src/lib/parse-guard.test.ts src/lib/db-timeout.test.ts src/lib/resume-parser.test.ts src/lib/profile-lookup.contract.test.ts",
+    "test": "tsx --test src/lib/parse-guard.test.ts src/lib/db-timeout.test.ts src/lib/resume-parser.test.ts src/lib/profile-lookup.contract.test.ts src/lib/company-host.test.mjs && tsx src/lib/company-directory.test.ts",
     "mcp": "npx tsx mcp-server.ts",
     "preview": "opennextjs-cloudflare build && npm run cf:prune-assets && opennextjs-cloudflare preview",
     "deploy": "npx tsx scripts/generate-llms.ts && opennextjs-cloudflare build && npm run cf:prune-assets && opennextjs-cloudflare deploy",

@@ -3,6 +3,7 @@ import { cleanPublishText } from '@/lib/noslop';
 import { isShortJobSlug, jobExternalIdFromSlugs, jobTypeLabel } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
+import { isPublicJobPage } from '@/lib/job-apply-source';
 import { JobListingOgCard } from '@/components/og/job-listing-card';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
@@ -22,6 +23,8 @@ type OgJob = {
   company_logo: string | null;
   location: string | null;
   job_type: string | null;
+  tags?: string[] | null;
+  apply_url?: string | null;
 };
 
 /** Direct bounded lookup (no unstable_cache — it hangs in this route context). */
@@ -30,7 +33,7 @@ async function loadJobForOg(slug: string, jobSlug: string): Promise<OgJob | null
   const res = await withTimeoutFallback(
     supabaseAdmin
       .from('jobs')
-      .select('id,title,company,company_logo,location,job_type')
+      .select('id,title,company,company_logo,location,job_type,tags,apply_url')
       .or(`slug.eq.${externalId},external_id.eq.${externalId}`)
       .maybeSingle(),
     DB_BUDGET.fast,
@@ -56,7 +59,7 @@ export default async function Image({ params }: Props) {
 
   if (isShortJobSlug(jobSlug)) {
     const job = await loadJobForOg(slug, jobSlug);
-    if (job) {
+    if (job && isPublicJobPage(job)) {
       title = cleanPublishText(job.title);
       company = cleanPublishText(job.company);
       location = cleanPublishText(normalizeLocation(job.location || '') || 'Remote');

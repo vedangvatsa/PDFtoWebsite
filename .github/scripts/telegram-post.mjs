@@ -16,9 +16,11 @@ import {
   jobPublicUrl,
   assertJobUrlLive,
 } from './lib/job-public-url.mjs';
+import { companyNameFromApply } from '../../src/lib/company-host.mjs';
 
 // ─── Banned Jobs Filter (canonical: src/lib/banned-jobs.mjs) ───
 import { BANNED_REGEX as BANNED_JOB_REGEX } from '../../src/lib/banned-jobs.mjs';
+import { isCuratedJd } from './lib/job-apply-source.mjs';
 
 const BOT_TOKEN  = process.env.TELEGRAM_BOT_TOKEN;
 const CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID;
@@ -113,7 +115,7 @@ function titleCase(str) {
     .join(' ');
 }
 
-function cleanCompany(name) {
+function cleanCompany(name, applyUrl) {
   if (!name) return '';
   let clean = decodeHTML(name);
   // Strip legal suffixes (require space/comma before suffix to avoid matching word endings like 'Wise')
@@ -123,6 +125,7 @@ function cleanCompany(name) {
     .replace(/\s*\(.*?\)/g, '')
     .replace(/\s+\d+$/, '') // Strip trailing numbers like "Shopback 2"
     .trim();
+  clean = companyNameFromApply(clean, applyUrl) || clean;
   // Fix capitalization: check brand map first, then title-case
   const key = clean.toLowerCase();
   if (BRAND_CASE[key]) {
@@ -172,8 +175,9 @@ async function fetchJobsPage({ days, limit, label }) {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
     // Minimal columns — less IO on free tier
-    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id,slug',
+    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id,slug,tags',
     source: `in.(${sourceFilter})`,
+    tags: 'cs.{"curated-jd"}',
     published_at: `gt.${since}`,
     order: 'published_at.desc',
     limit: String(limit),
@@ -186,7 +190,7 @@ async function fetchJobsPage({ days, limit, label }) {
     label,
   });
   if (!Array.isArray(jobs)) throw new Error('Unexpected jobs response');
-  return jobs.filter(j => !j.telegram_posted_at);
+  return jobs.filter(j => !j.telegram_posted_at && isCuratedJd(j.tags));
 }
 
 async function fetchUnpostedJobs() {
@@ -415,7 +419,7 @@ function formatJobsMessage(jobs, category) {
 
   for (const job of jobs) {
     const title = truncate(cleanTitle(job.title), 60);
-    const company = escapeHTML(cleanCompany(job.company));
+    const company = escapeHTML(cleanCompany(job.company, job.apply_url));
     const url = escapeHTML(jobPublicPath(job));
 
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);

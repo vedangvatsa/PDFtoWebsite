@@ -11,6 +11,7 @@ import {
 } from '@/lib/job-detail-data';
 import { jobPublicPath, isJobId } from '@/lib/job-description';
 import { goneUuidJobPath } from '@/lib/seo-fallbacks';
+import { isPublicJobPage } from '@/lib/job-apply-source';
 import JobDetailClient from './job-detail-client';
 
 export const revalidate = 1800;
@@ -24,7 +25,7 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const job = await fetchJobById(id);
-  if (!job) {
+  if (!job || !isPublicJobPage(job)) {
     return { title: 'Job not found', robots: { index: false, follow: true } };
   }
   return buildJobMetadata(job, siteUrl);
@@ -35,8 +36,8 @@ export default async function JobDetailPage({ params }: PageProps) {
   if (!isJobId(id)) notFound();
 
   const job = await fetchJobById(id);
-  if (!job) {
-    // Expired UUID URLs Google still crawls → jobs board (not hard 404).
+  if (!job || !isPublicJobPage(job)) {
+    // Missing, expired UUID, or enrich-queue stub → jobs board (not a public page).
     permanentRedirect(goneUuidJobPath());
   }
 

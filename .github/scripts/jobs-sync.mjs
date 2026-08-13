@@ -17,6 +17,7 @@ import {
 } from './lib/job-public-url.mjs';
 import { isLowQualityApplySource } from './lib/job-apply-source.mjs';
 import { BANNED_REGEX as BANNED_JOB_REGEX } from '../../src/lib/banned-jobs.mjs';
+import { applyCanonicalCompany, isRegistryCompanyLabel } from '../../src/lib/company-host.mjs';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -344,6 +345,9 @@ async function supabaseUpsert(jobs) {
       ...j,
       company_key: j.company_key || toCompanyKey(j.company),
       description: normalizeJobDescriptionForStorage(j.description),
+      tags: Array.isArray(j.tags)
+        ? j.tags.filter((t) => String(t).toLowerCase() !== 'curated-jd')
+        : j.tags,
     }));
   }
 
@@ -2997,7 +3001,9 @@ function filterAndNormalize(allJobs) {
 
   const validJobs = allJobs.filter(j => {
     if (!j.title || !j.company || !j.apply_url) return false;
+    applyCanonicalCompany(j);
     if (j.company.includes('...') || j.company.length <= 2) return false;
+    if (isRegistryCompanyLabel(j.company)) return false;
     if (BLOCKED_COMPANIES.includes(j.company.toLowerCase().trim())) return false;
     const lowerTitle = j.title.toLowerCase();
     if (BLOCKED_TITLE_WORDS.some(w => lowerTitle.includes(w))) return false;

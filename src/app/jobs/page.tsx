@@ -9,7 +9,7 @@ import MicroFooter from '@/components/micro-footer';
 import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
-import { timeAgo } from '@/lib/job-description';
+import { timeAgo, jobTypeLabel } from '@/lib/job-description';
 import {
   emptyParsedResumeShell,
   persistParsedResume,
@@ -46,6 +46,7 @@ interface JobsResponse {
   hasMore: boolean;
   userSkills: string[];
   profileComplete: boolean;
+  degraded?: boolean;
 }
 
 const JOB_TYPES = [
@@ -96,18 +97,12 @@ function organizeJobs(existingJobs: Job[], newJobs: Job[]): Job[] {
   return result;
 }
 
-function JobTypeBadge({ type }: { type: string | null }) {
-  if (!type) return null;
-  const labels: Record<string, string> = {
-    full_time: 'Full Time',
-    part_time: 'Part Time',
-    contract: 'Contract',
-    internship: 'Internship',
-    freelance: 'Freelance',
-  };
+function JobTypeBadge({ type, title }: { type: string | null; title?: string | null }) {
+  const label = jobTypeLabel(type, { title });
+  if (!label) return null;
   return (
     <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 transition-colors">
-      {labels[type] || type}
+      {label}
     </span>
   );
 }
@@ -128,6 +123,7 @@ export default function JobsPage() {
   const [userSkills, setUserSkills] = useState<string[]>([]);
   const [matchOnly, setMatchOnly] = useState(false);
   const [profileComplete, setProfileComplete] = useState(false);
+  const [degraded, setDegraded] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -153,6 +149,7 @@ export default function JobsPage() {
       }
       setTotal(data.total || 0);
       setHasMore(data.hasMore ?? false);
+      setDegraded(Boolean(data.degraded) && (data.jobs || []).length === 0);
       setUserSkills(data.userSkills || []);
       setProfileComplete(data.profileComplete ?? false);
     } catch (e) {
@@ -400,7 +397,9 @@ export default function JobsPage() {
         {/* Job count */}
         {!loading && (
           <p className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
-            {total >= 100000 ? '100k+' : total.toLocaleString()} {total === 1 ? 'job' : 'jobs'} found
+            {degraded
+              ? 'Openings did not load'
+              : `${total >= 100000 ? '100k+' : total.toLocaleString()} ${total === 1 ? 'job' : 'jobs'} found`}
           </p>
         )}
 
@@ -416,8 +415,12 @@ export default function JobsPage() {
         {!loading && jobs.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <Briefcase className="h-12 w-12 text-zinc-300 mb-4" />
-            <p className="text-lg font-semibold text-zinc-700">No jobs found</p>
-            <p className="text-sm text-zinc-500 mt-2">Try adjusting your search or filters.</p>
+            <p className="text-lg font-semibold text-zinc-700">
+              {degraded ? 'Openings did not load' : 'No jobs found'}
+            </p>
+            <p className="text-sm text-zinc-500 mt-2">
+              {degraded ? 'Refresh the page to try again.' : 'Try adjusting your search or filters.'}
+            </p>
           </div>
         )}
 
@@ -474,6 +477,7 @@ export default function JobsPage() {
                   </div>
                   <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 min-w-0">
                     <span className="font-medium truncate shrink-0 max-w-[40%]">{job.company}</span>
+                    <JobTypeBadge type={job.job_type} title={job.title} />
                     {job.location && (
                       <>
                         <span className="text-zinc-300 shrink-0">·</span>

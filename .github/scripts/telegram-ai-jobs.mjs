@@ -15,6 +15,7 @@ dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 import { supabaseFetch, restUrl } from './supabase-fetch.mjs';
+import { isCuratedJd } from './lib/job-apply-source.mjs';
 import {
   companyToSlug,
   jobPublicUrl,
@@ -22,6 +23,7 @@ import {
   isJobPubliclyLive,
   assertJobUrlLive,
 } from './lib/job-public-url.mjs';
+import { companyNameFromApply } from '../../src/lib/company-host.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -214,12 +216,13 @@ const BRAND_CASE = {
   'contextual ai': 'Contextual AI',
 };
 
-function cleanCompany(name) {
+function cleanCompany(name, applyUrl) {
   if (!name) return '';
   let clean = decodeHTML(name)
     .replace(/[,\s]+(?:Inc\.?|LLC|Ltd\.?|Corp\.?|GmbH|Pty\.?|Co\.?|PLC|AG|SE)\.?\s*$/i, '')
     .replace(/\s*\(.*?\)/g, '')
     .trim();
+  clean = companyNameFromApply(clean, applyUrl) || clean;
   const key = clean.toLowerCase();
   if (BRAND_CASE[key]) clean = BRAND_CASE[key];
   // Break domain-like names
@@ -250,6 +253,7 @@ function cleanLocation(loc) {
 
 function mergeByUrl(into, rows) {
   for (const j of rows || []) {
+    if (!isCuratedJd(j?.tags)) continue;
     if (j?.apply_url && !into.has(j.apply_url)) into.set(j.apply_url, j);
   }
 }
@@ -257,8 +261,9 @@ function mergeByUrl(into, rows) {
 async function fetchRecentJobs() {
   const since = new Date(Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
-    select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
+    select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug,tags',
     created_at: `gt.${since}`,
+    tags: 'cs.{"curated-jd"}',
     order: 'created_at.desc',
     limit: String(RECENT_LIMIT),
   });
@@ -289,8 +294,9 @@ async function fetchByCompanyNames(names) {
       })
       .join(',');
     const url = restUrl(SUPABASE_URL, 'jobs', {
-      select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
+      select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug,tags',
       or: `(${or})`,
+      tags: 'cs.{"curated-jd"}',
       order: 'created_at.desc',
       limit: '30',
     });
@@ -349,9 +355,10 @@ async function fetchJobs() {
       const or = batch.map((s) => `external_id.like.${s}_*`).join(',');
       const since = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
+        select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug,tags',
         or: `(${or})`,
         created_at: `gt.${since}`,
+        tags: 'cs.{"curated-jd"}',
         order: 'created_at.desc',
         limit: '80',
       });
@@ -373,8 +380,9 @@ async function fetchJobs() {
     try {
       const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
       const url = restUrl(SUPABASE_URL, 'jobs', {
-        select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug',
+        select: 'id,title,company,location,apply_url,description,source,created_at,published_at,external_id,slug,tags',
         created_at: `gt.${since}`,
+        tags: 'cs.{"curated-jd"}',
         order: 'created_at.desc',
         limit: '400',
       });
@@ -481,7 +489,7 @@ function formatMessage(jobs) {
 
   for (const job of jobs) {
     const title = truncate(cleanTitle(job.title), 60);
-    const company = escapeHTML(cleanCompany(job.company));
+    const company = escapeHTML(cleanCompany(job.company, job.apply_url));
     const url = escapeHTML(jobPublicPath(job));
 
     lines.push(`• ${company} is hiring <a href="${url}">${escapeHTML(title)}</a>`);
@@ -581,7 +589,7 @@ async function main() {
 
   // 5. Preview
   for (const job of jobs) {
-    console.log(`  • ${cleanCompany(job.company)} — ${job.title} → ${jobPublicPath(job)}`);
+    console.log(`  • ${cleanCompany(job.company, job.apply_url)} — ${job.title} → ${jobPublicPath(job)}`);
   }
 
   // 6. Format and send

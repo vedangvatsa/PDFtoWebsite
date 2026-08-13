@@ -1,10 +1,18 @@
 import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { toCompanyKey, COMPANY_BLOCKLIST, companyDisplayName } from '@/lib/company-directory';
-import { shouldListJobOnBoard } from '@/lib/job-apply-source';
+import { COMPANY_BLOCKLIST, companyDisplayName, companyDisplayNameFromJob } from '@/lib/company-directory';
+import { shouldListJobOnCompanyHub, withCuratedJdTag } from '@/lib/job-apply-source';
+import { JOB_MAX_AGE_DAYS } from '@/lib/job-age';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { knownCompanyDescription } from '@/lib/seo-fallbacks';
+import { companyHasCachedProfile } from '@/lib/company-about';
+import {
+  companyJobsDateOrFilter,
+  companyKeyEqualityValues,
+  companyNameEqualityValues,
+  shouldKeepCompanyHub,
+} from '@/lib/company-hub-query';
 
 const supabaseForCompany = supabaseAdmin;
 
@@ -32,7 +40,7 @@ export type CompanyPageJob = {
   salary: string | null;
   external_id: string | null;
   slug: string | null;
-  description: string | null;
+  description?: string | null;
 };
 
 export type CompanyPageContext = {
@@ -56,11 +64,12 @@ export async function getCompanyDirectory(slug: string) {
 }
 
 const SELECT_JOB_COLS =
-  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug, description';
+  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug';
 
 /**
  * Load recent jobs for a company page.
  * Contract: equality only (company_key OR exact company name). Never ILIKE.
+ * SQL and in-memory gates are curated-jd — enrich-queue rows are not hub cards.
  * Hard timeout + empty fail-open so the page still renders directory meta.
  */
 export async function loadCompanyJobs(
@@ -69,59 +78,85 @@ export async function loadCompanyJobs(
 ): Promise<CompanyPageJob[]> {
   return unstable_cache(
     async () => {
-      const thirtyDaysAgo = new Date(
-        Date.now() - 30 * 24 * 60 * 60 * 1000
+      const since = new Date(
+        Date.now() - JOB_MAX_AGE_DAYS * 24 * 60 * 60 * 1000
       ).toISOString();
-      const companyKey = toCompanyKey(dirName || slug);
+      const keys = companyKeyEqualityValues(slug, dirName);
+      const names = companyNameEqualityValues(slug, dirName);
 
-      async function fetchJobs(since: string | null): Promise<CompanyPageJob[]> {
-        if (companyKey) {
-          let q = supabaseForCompany
-            .from('jobs')
-            .select(SELECT_JOB_COLS)
-            .eq('company_key', companyKey);
-          if (since) {
-            q = q.gt('created_at', since);
-            q = q.or(`published_at.is.null,published_at.gt.${since}`);
-          }
+      async function fetchJobs(
+        windowStart: string | null
+      ): Promise<{ rows: CompanyPageJob[]; timedOut: boolean }> {
+        let timedOut = false;
+        const applyWindow = (q: any) => {
+          if (!windowStart) return q;
+          return q.or(companyJobsDateOrFilter(windowStart));
+        };
+
+        if (keys.length) {
+          const q = applyWindow(
+            withCuratedJdTag(
+              supabaseForCompany
+                .from('jobs')
+                .select(SELECT_JOB_COLS)
+                .in('company_key', keys)
+            )
+          );
           const byKey = await withTimeoutFallback(
             q
               .order('published_at', { ascending: false, nullsFirst: false })
               .limit(50),
             DB_BUDGET.list,
             { data: null, error: { message: 'timeout' } } as any,
-            `company-jobs-key:${companyKey}:${since || 'all'}`
+            `company-jobs-key:${keys.join(',')}:${windowStart || 'all'}`
           );
-          if (byKey.data && byKey.data.length > 0) return byKey.data;
+          if (byKey.data && byKey.data.length > 0) {
+            return { rows: byKey.data as CompanyPageJob[], timedOut: false };
+          }
+          if (byKey.error?.message === 'timeout') timedOut = true;
         }
 
-        if (dirName) {
-          let q = supabaseForCompany
-            .from('jobs')
-            .select(SELECT_JOB_COLS)
-            .eq('company', dirName);
-          if (since) {
-            q = q.gt('created_at', since);
-            q = q.or(`published_at.is.null,published_at.gt.${since}`);
-          }
+        if (names.length) {
+          const q = applyWindow(
+            withCuratedJdTag(
+              supabaseForCompany
+                .from('jobs')
+                .select(SELECT_JOB_COLS)
+                .in('company', names)
+            )
+          );
           const byName = await withTimeoutFallback(
             q
               .order('published_at', { ascending: false, nullsFirst: false })
               .limit(50),
             DB_BUDGET.list,
             { data: null, error: { message: 'timeout' } } as any,
-            `company-jobs-name:${dirName}:${since || 'all'}`
+            `company-jobs-name:${names.join(',')}:${windowStart || 'all'}`
           );
-          if (byName.data && byName.data.length > 0) return byName.data;
+          if (byName.data && byName.data.length > 0) {
+            return { rows: byName.data as CompanyPageJob[], timedOut: false };
+          }
+          if (byName.error?.message === 'timeout') timedOut = true;
         }
 
-        return [];
+        return { rows: [], timedOut };
       }
 
-      const recent = await fetchJobs(thirtyDaysAgo);
-      return (recent || []).filter((j) => shouldListJobOnBoard(j));
+      const recent = await fetchJobs(since);
+      if (recent.timedOut && (!recent.rows || recent.rows.length === 0)) {
+        throw new Error('COMPANY_JOBS_TIMEOUT');
+      }
+      let rows = recent.rows || [];
+      if (!rows.length) {
+        const all = await fetchJobs(null);
+        if (all.timedOut && (!all.rows || all.rows.length === 0)) {
+          throw new Error('COMPANY_JOBS_TIMEOUT');
+        }
+        rows = all.rows || [];
+      }
+      return rows.filter((j) => shouldListJobOnCompanyHub(j));
     },
-    ['company-jobs-v4', slug, dirName || ''],
+    ['company-jobs-v14', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
 }
@@ -133,28 +168,36 @@ export async function resolveCompanyPage(slug: string): Promise<CompanyPageConte
     return null;
   }
   const dir = await getCompanyDirectory(slug);
-  const jobs = await loadCompanyJobs(slug, dir?.name);
-  if ((!jobs || jobs.length === 0) && !dir) {
-    // Keep hubs Google already indexed when we still know the company —
-    // otherwise /cayuse, /noodle, /monarch-money hard-404 after jobs purge.
-    const description = knownCompanyDescription(slug);
-    if (!description) return null;
-    const name = companyDisplayName(slug.replace(/-/g, ' '));
-    return {
-      dir: {
-        slug,
-        name,
-        role_count: 0,
-        logo: null,
-        locations: null,
-      },
-      jobs: [],
-    };
+  let jobs: CompanyPageJob[] = [];
+  try {
+    jobs = await loadCompanyJobs(slug, dir?.name);
+  } catch (err) {
+    if (!String((err as Error)?.message || err).includes('COMPANY_JOBS_TIMEOUT')) throw err;
+    jobs = [];
   }
-  // Also block if the resolved company name is junk
-  const name = (dir?.name || jobs[0]?.company || '').toLowerCase().trim();
-  if (name && COMPANY_BLOCKLIST.has(name)) return null;
-  return { dir, jobs };
+  const resolvedName = (dir?.name || jobs[0]?.company || '').toLowerCase().trim();
+  const keep = shouldKeepCompanyHub({
+    nameBlocked: Boolean(resolvedName && COMPANY_BLOCKLIST.has(resolvedName)),
+    hasDirectory: Boolean(dir),
+    liveJobCount: jobs.length,
+    hasCachedProfile: companyHasCachedProfile(slug) || Boolean(knownCompanyDescription(slug)),
+  });
+  if (!keep) return null;
+
+  if ((jobs && jobs.length > 0) || dir) {
+    return { dir, jobs: jobs || [] };
+  }
+  const name = companyDisplayName(slug.replace(/-/g, ' '));
+  return {
+    dir: {
+      slug,
+      name,
+      role_count: 0,
+      logo: null,
+      locations: null,
+    },
+    jobs: [],
+  };
 }
 
 /** Shared company careers metadata — mirrors page render (dir OR jobs). */
@@ -168,7 +211,10 @@ export async function buildCompanyPageMetadata(
   const { dir, jobs } = ctx;
   const { getCompanyMeta } = await import('@/lib/company-data');
   const meta = getCompanyMeta(slug);
-  const companyDisplay = companyDisplayName(dir?.name || jobs[0]?.company || slug.replace(/-/g, ' '));
+  const companyDisplay = companyDisplayNameFromJob(
+    jobs[0],
+    dir?.name || slug.replace(/-/g, ' ')
+  );
   // loadCompanyJobs caps at 50; if we hit the cap prefer directory total when larger
   const jobCount =
     jobs.length >= 50 && dir?.role_count && dir.role_count > jobs.length

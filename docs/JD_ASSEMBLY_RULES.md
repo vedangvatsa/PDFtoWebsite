@@ -50,10 +50,7 @@ Full curated pages must follow the paraphrase rulebook.
 - **Passed gates:** full assembled body, tag `curated-jd`, eligible for sitemap/IndexNow only if `wordCount >= 600` and uniqueness gates pass.
 
 ### Note on DB auto-tag
-`jobs_auto_curated_tag` currently may add `curated-jd` around ~200 words.  
-**Assembler rule:** only write a long `description` when the page is meant to be curated **and** all gates in §7 pass.  
-Do not upsert a long body that failed uniqueness. Prefer leaving description null/short until pass.  
-Follow-up: align DB trigger with 600-word + quality flag when implementing.
+`jobs_auto_curated_tag` is a no-op (`20260814_no_auto_curated_tag.sql`). Ingest must never mint `curated-jd`; only paraphrase/publish scripts set that tag.
 
 ---
 

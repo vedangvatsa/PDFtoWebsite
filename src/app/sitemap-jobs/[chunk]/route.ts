@@ -42,6 +42,7 @@ export async function GET(req: Request, ctx: Props) {
           )
           .not('external_id', 'is', null)
           .not('company', 'is', null)
+          .contains('tags', ['curated-jd'])
           .gt('created_at', thirtyDaysAgo)
           .or(`published_at.is.null,published_at.gt.${thirtyDaysAgo}`)
           .order('created_at', { ascending: false })

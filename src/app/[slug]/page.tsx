@@ -1,10 +1,6 @@
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
-import {
-  lookupPublicProfile,
-  ProfileUnavailableError,
-  type ServerProfileData,
-} from '@/lib/supabase-server';
+import { getProfileBySlug, type ServerProfileData } from '@/lib/supabase-server';
 import ProfilePageClient from './profile-page-client';
 import Header from '@/components/header';
 import { normalizeLocation } from '@/lib/normalize-location';
@@ -22,7 +18,7 @@ import {
   parseBaseSalary,
   parseJobLocationAddress,
 } from '@/lib/job-detail-data';
-import { companyDisplayNameFromJob } from '@/lib/company-directory';
+import { companyDisplayName } from '@/lib/company-directory';
 import { topSkillTagsFromJobs } from '@/lib/job-skill-tags';
 import CompanyLogo from '@/components/company-logo';
 import { primaryCompanyLogoUrl, trustedCompanyWebsiteUrl } from '@/lib/company-logo';
@@ -96,12 +92,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const lookup = await lookupPublicProfile(slug);
-  if (lookup.status === 'unavailable') {
-    // Do not emit "Not Found" / noindex a live profile during a DB blip.
-    return { title: 'CVin.Bio', robots: { index: false, follow: false } };
-  }
-  const data = lookup.status === 'ok' ? lookup.data : null;
+  const data = await getProfileBySlug(slug);
   if (!data) {
     const companyMeta = await buildCompanyPageMetadata(slug, canonicalUrl);
     if (companyMeta) return companyMeta;
@@ -428,11 +419,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     );
   }
 
-  const lookup = await lookupPublicProfile(slug);
-  if (lookup.status === 'unavailable') {
-    throw new ProfileUnavailableError(slug);
-  }
-  let data = lookup.status === 'ok' ? lookup.data : null;
+  let data = await getProfileBySlug(slug);
 
   // If profile exists but is empty/default, check if this slug matches a company.
   // Company careers pages take priority over abandoned user profiles.
@@ -459,10 +446,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     }
     const { dir, jobs } = hub;
 
-    const companyName = companyDisplayNameFromJob(
-      jobs[0],
-      dir?.name || slug.replace(/-/g, ' ')
-    );
+    const companyName = companyDisplayName(dir?.name || jobs[0]?.company || slug.replace(/-/g, ' '));
     
     const storedLogo =
       dir?.logo ||

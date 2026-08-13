@@ -5,6 +5,7 @@
 
 import { getCompanyMeta } from '@/lib/company-data';
 import companyDomains from '@/lib/company-domains.json';
+import companyLinksOverlay from '@/lib/company-links.json';
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
 
@@ -259,13 +260,45 @@ function hostnameMatchesCompany(name: string, host: string): boolean {
   return false;
 }
 
+function overlayWebsiteFor(slug?: string, name?: string): string | null {
+  const overlay = companyLinksOverlay as Record<string, { website?: string }>;
+  const keys = [slug, name]
+    .filter(Boolean)
+    .map((s) =>
+      String(s)
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+    );
+  for (const key of keys) {
+    const compact = key.replace(/-/g, '');
+    const website = overlay[key]?.website || overlay[compact]?.website;
+    if (website) return website;
+  }
+  return null;
+}
+
+function domainFromSlug(slug?: string): string | null {
+  if (!slug) return null;
+  const s = slug.toLowerCase().trim();
+  for (const candidate of [s, s.replace(/-/g, ' '), s.replace(/-/g, '')]) {
+    if (DOMAIN_OVERRIDES[candidate]) return DOMAIN_OVERRIDES[candidate];
+  }
+  return null;
+}
+
 /** Official website URL for a company page, or null when we would only be guessing. */
 export function trustedCompanyWebsiteUrl(
   name: string,
   slug?: string
 ): string | null {
+  const overlayWebsite = overlayWebsiteFor(slug, name);
+  if (overlayWebsite) return overlayWebsite;
   const meta = getCompanyMeta(slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
   if (meta?.website) return meta.website;
+  const slugHost = domainFromSlug(slug);
+  if (slugHost) return `https://${slugHost}`;
   if (!isTrustedCompanyDomain(name)) return null;
   const host = domainForCompany(name);
   if (!hostnameMatchesCompany(name, host)) return null;

@@ -23,7 +23,6 @@ import {
   cleanJobTitle,
   cleanSalaryDisplay,
   looksLikeFellowship,
-  isGarbageJobTitle,
   JOB_INDEXABLE_MIN_WORDS,
 } from '@/lib/job-description';
 import { cleanPublishText } from '@/lib/noslop';
@@ -42,6 +41,7 @@ import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { isJobExpired } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
+import { shouldListJobOnBoard } from '@/lib/job-apply-source';
 import {
   isTrustedCompanyDomain,
   primaryCompanyLogoUrl,
@@ -151,6 +151,7 @@ function companyAboutFallback(job: JobRow, location: string): PublishedDescripti
     title,
     company,
     rawCompany,
+    applyUrl: job.apply_url,
     isFellowship: looksLikeFellowship(job),
   });
   const plain = jobDescriptionPlainText(about);
@@ -184,6 +185,7 @@ export function publishSafeDescription(job: JobRow, location: string): Published
       title,
       company,
       rawCompany,
+      applyUrl: job.apply_url,
       isFellowship,
     });
     const plain = jobDescriptionPlainText(html);
@@ -294,7 +296,7 @@ export async function fetchRelatedJobs(
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const titleTokens = titleSearchTokens(job.title, 4);
   const selectCols =
-    'id, title, company, location, external_id, slug, description, published_at, created_at, tags';
+    'id, title, company, location, external_id, slug, description, published_at, created_at, tags, apply_url';
 
   try {
     const queries: PromiseLike<{ data: any }>[] = [];
@@ -306,6 +308,7 @@ export async function fetchRelatedJobs(
           supabaseAdmin
             .from('jobs')
             .select(selectCols)
+            .contains('tags', ['curated-jd'])
             .eq('company', job.company)
             .neq('id', job.id)
             .gt('created_at', thirtyDaysAgo)
@@ -329,10 +332,11 @@ export async function fetchRelatedJobs(
       if (orTitle) {
         queries.push(
           withTimeoutFallback(
-            supabaseAdmin
-              .from('jobs')
-              .select(selectCols)
-              .or(orTitle)
+              supabaseAdmin
+                .from('jobs')
+                .select(selectCols)
+                .contains('tags', ['curated-jd'])
+                .or(orTitle)
               .neq('id', job.id)
               .gt('created_at', thirtyDaysAgo)
               .order('created_at', { ascending: false })
@@ -355,7 +359,7 @@ export async function fetchRelatedJobs(
           supabaseAdmin
             .from('jobs')
             .select(selectCols)
-            .contains('tags', [tag])
+            .contains('tags', ['curated-jd', tag])
             .neq('id', job.id)
             .gt('created_at', thirtyDaysAgo)
             .order('created_at', { ascending: false })
@@ -378,7 +382,7 @@ export async function fetchRelatedJobs(
 
     const ranked = [...byId.values()]
       .filter((row) => {
-        if (isGarbageJobTitle(row.title) || isBannedJobTitle(row.title)) return false;
+        if (!shouldListJobOnBoard(row)) return false;
         if (RELATED_NON_ENGLISH.test(row.title || '')) return false;
         return true;
       })
@@ -388,17 +392,8 @@ export async function fetchRelatedJobs(
 
     const cards: RelatedJobCard[] = [];
     for (const { row } of ranked) {
-      if (!isJobDescriptionIndexable(row.description) && cards.length >= 3) continue;
       cards.push(rowToRelatedCard(row));
       if (cards.length >= limit) break;
-    }
-    // Fall back: any same-company even if thin
-    if (cards.length < Math.min(3, limit)) {
-      for (const { row } of ranked) {
-        if (cards.some((c) => c.id === row.id)) continue;
-        cards.push(rowToRelatedCard(row));
-        if (cards.length >= limit) break;
-      }
     }
     return cards;
   } catch {

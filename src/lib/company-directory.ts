@@ -1,6 +1,22 @@
 /**
  * Shared company directory normalization for /companies rebuild + page fallbacks.
+ * Host → brand lives in company-host.mjs (ingest + display). Do not take labels[-2]
+ * as the company — that turns iisc.ac.in into "AC".
  */
+
+import {
+  companyNameFromApply,
+  hostnameOf,
+  isRegistryCompanyLabel,
+  registrableHostLabel,
+} from './company-host.mjs';
+
+export {
+  applyCanonicalCompany,
+  companyNameFromApply,
+  isRegistryCompanyLabel,
+  registrableHostLabel,
+} from './company-host.mjs';
 
 export function toCompanySlug(name: string): string {
   return name
@@ -44,12 +60,7 @@ const BRAND_DISPLAY_NAMES: Record<string, string> = {
   mckinsey: 'McKinsey',
   jpmorgan: 'JPMorgan',
   'jp morgan': 'JPMorgan',
-};
-
-/** Host → public brand, only when the registrable label is not the brand. */
-const HOST_BRANDS: Record<string, string> = {
-  'governance.ai': 'GovAI',
-  'x.ai': 'xAI',
+  iisc: 'IISc',
 };
 
 /** Common org / place tokens used to split mashed domain labels (apartresearch). */
@@ -83,7 +94,10 @@ export function splitMashedLabel(raw: string): string {
   if (/\./.test(s)) {
     return s.replace(/(^|[.\s-])([a-z])/g, (_, a: string, b: string) => a + b.toUpperCase());
   }
-  if (/^[a-z]{2,4}$/i.test(s)) return s.toUpperCase();
+  if (/^[a-z]{2,4}$/i.test(s)) {
+    if (isRegistryCompanyLabel(s)) return s;
+    return s.toUpperCase();
+  }
   const lower = s.toLowerCase();
   const tokens = [...MASHED_TOKENS].sort((a, b) => b.length - a.length);
   const parts: string[] = [];
@@ -123,6 +137,7 @@ function mappedBrand(label: string): string | undefined {
 }
 
 function brandedLabel(label: string): string {
+  if (isRegistryCompanyLabel(label)) return mappedBrand(label) || String(label || '').trim();
   return mappedBrand(label) || splitMashedLabel(label);
 }
 
@@ -130,49 +145,35 @@ function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function hostnameOf(url: string | null | undefined): string | null {
-  if (!url) return null;
-  try {
-    return new URL(url).hostname.replace(/^www\./i, '').toLowerCase();
-  } catch {
-    return null;
-  }
+function neverRegistryBrand(name: string, applyUrl?: string | null): string {
+  if (!isRegistryCompanyLabel(name)) return name;
+  const recovered = companyNameFromApply(name, applyUrl);
+  if (recovered && !isRegistryCompanyLabel(recovered)) return brandedLabel(recovered);
+  return mappedBrand(name) || name;
 }
 
 /**
  * Display name for a company on job pages.
- * applyUrl is used when the stored name is a subdomain or mashed domain label —
- * so every host of that shape is fixed, not a per-company list.
+ * applyUrl repairs subdomain / public-suffix mistakes (iisc.ac.in → IISc, not AC).
  */
 export function companyDisplayName(
   name: string | null | undefined,
   applyUrl?: string | null
 ): string {
   if (!name) return name || '';
-  const trimmed = String(name).trim();
-  const host = hostnameOf(applyUrl);
-  if (host && HOST_BRANDS[host]) return HOST_BRANDS[host];
-
-  if (host) {
-    const labels = host.split('.').filter(Boolean);
-    const sld = labels.length >= 2 ? labels[labels.length - 2] : labels[0];
-    const tld = labels[labels.length - 1] || '';
-    const stored = toCompanySlug(trimmed);
-    if (HOST_BRANDS[`${sld}.${tld}`]) return HOST_BRANDS[`${sld}.${tld}`];
-    // Stored name is a host label (subdomain), not the registrable brand.
-    if (stored !== sld && labels.includes(stored) && sld.length >= 2) {
-      return brandedLabel(sld);
-    }
-  }
+  const trimmed = neverRegistryBrand(
+    companyNameFromApply(String(name).trim(), applyUrl) || String(name).trim(),
+    applyUrl
+  );
 
   const mapped = mappedBrand(trimmed);
-  if (mapped) return mapped;
+  if (mapped) return neverRegistryBrand(mapped, applyUrl);
 
   // Smashed domain labels, including Title Case ("Apartresearch", "talosnetwork")
   if (!/\s/.test(trimmed) && /^[A-Za-z0-9._-]+$/.test(trimmed)) {
     const split = splitMashedLabel(trimmed);
-    if (/\s/.test(split)) return split;
-    if (/^[a-z0-9._-]+$/.test(trimmed)) return split;
+    if (/\s/.test(split)) return neverRegistryBrand(split, applyUrl);
+    if (/^[a-z0-9._-]+$/.test(trimmed)) return neverRegistryBrand(split, applyUrl);
   }
 
   // "acme corp" / "STRIPE" — uniform case with spaces
@@ -183,20 +184,32 @@ export function companyDisplayName(
     /[a-zA-Z]/.test(trimmed) &&
     /^[a-zA-Z0-9][a-zA-Z0-9 .'_-]*$/.test(trimmed)
   ) {
-    return splitMashedLabel(trimmed);
+    return neverRegistryBrand(splitMashedLabel(trimmed), applyUrl);
   }
 
-  return trimmed.replace(/\s+(?:usa|u\.s\.a?\.?|uk)$/i, '').trim() || trimmed;
+  return neverRegistryBrand(
+    trimmed.replace(/\s+(?:usa|u\.s\.a?\.?|uk)$/i, '').trim() || trimmed,
+    applyUrl
+  );
+}
+
+/** Prefer this on job rows so apply_url is never dropped. */
+export function companyDisplayNameFromJob(
+  job: { company?: string | null; apply_url?: string | null } | null | undefined,
+  fallback = ''
+): string {
+  return companyDisplayName(job?.company || fallback, job?.apply_url);
 }
 
 /**
  * Rewrite stored/lowercase company mentions in page copy to the public brand.
- * Skips HTML attributes and hostnames (openai.com).
+ * Skips HTML attributes and hostnames (openai.com, iisc.ac.in).
  */
 export function applyCompanyDisplayCasing(
   text: string,
   rawName: string | null | undefined,
-  displayName: string | null | undefined
+  displayName: string | null | undefined,
+  applyUrl?: string | null
 ): string {
   const raw = String(rawName || '').trim();
   const display = String(displayName || '').trim();
@@ -226,14 +239,36 @@ export function applyCompanyDisplayCasing(
     add(titleOfSlug);
   }
 
+  // Copy written under the old SLD bug ("AC" from iisc.ac.in) → real brand.
+  const host = hostnameOf(applyUrl);
+  if (host) {
+    const labels = host.split('.').filter(Boolean);
+    const naive = labels.length >= 2 ? labels[labels.length - 2] : '';
+    const brand = registrableHostLabel(host);
+    if (
+      naive &&
+      isRegistryCompanyLabel(naive) &&
+      brand &&
+      !isRegistryCompanyLabel(brand) &&
+      display.toLowerCase() !== naive
+    ) {
+      add(naive);
+      add(naive.toUpperCase());
+      add(splitMashedLabel(naive));
+    }
+  }
+
   const list = [...variants].sort((a, b) => b.length - a.length);
   if (!list.length) return text;
 
   const applyToText = (chunk: string) => {
     let out = chunk;
     for (const v of list) {
+      const shortHostSafe = v.length <= 4;
       const re = new RegExp(
-        `(?<![\\w/@])${escapeRegExp(v)}(?![\\w]|\\.(?:com|io|ai|org|net|co|dev|app|so|gg)\\b)`,
+        shortHostSafe
+          ? `(?<![\\w/@.])${escapeRegExp(v)}(?![\\w]|\\.[a-z]{2,})`
+          : `(?<![\\w/@])${escapeRegExp(v)}(?![\\w]|\\.(?:com|io|ai|org|net|co|dev|app|so|gg)\\b)`,
         'g'
       );
       out = out.replace(re, display);
@@ -257,6 +292,7 @@ export const COMPANY_BLOCKLIST = new Set([
   'smart working solutions',
   'confidential',
   '10xteam',
+  'kraken123',
   'careers - think digitally',
   'careers.azx.io',
   'brook hiddink - highticket.io',
@@ -306,6 +342,7 @@ export function isJunkCompanyName(raw: string): boolean {
   if (/@/.test(name) && !/\.ai\b/i.test(name)) return true;
   // "Careers - Foo", "Jobs at Foo" as company field
   if (/^(careers?|jobs?|hiring)\s*[-–—|:]/i.test(name)) return true;
+  if (isRegistryCompanyLabel(name)) return true;
   return false;
 }
 
@@ -361,6 +398,17 @@ export const COMPANY_NAME_MAP: Record<string, string> = {
   'chime financial, inc': 'Chime',
   'gusto, inc.': 'Gusto',
   openai: 'OpenAI',
+  iisc: 'IISc',
+  'indian institute of science': 'IISc',
+  anthropic: 'Anthropic',
+  alignment: 'Anthropic',
+  governance: 'GovAI',
+  govai: 'GovAI',
+  'governance ai': 'GovAI',
+  'apart research': 'Apart Research',
+  apartresearch: 'Apart Research',
+  'talos network': 'Talos Network',
+  talosnetwork: 'Talos Network',
   airwallex: 'Airwallex',
   snowflake: 'Snowflake',
   deel: 'Deel',

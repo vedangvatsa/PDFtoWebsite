@@ -27,6 +27,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import { isJobExpired } from '../../src/lib/job-age.mjs';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
@@ -130,15 +131,6 @@ function isIndexable(job) {
   return true;
 }
 
-/** Same expiry rule as the site (src/lib/job-age.ts): ~30 day listing window. */
-function isJobExpired(publishedAt, createdAt) {
-  const base = publishedAt || createdAt;
-  if (!base) return false;
-  const ms = new Date(base).getTime();
-  if (!Number.isFinite(ms)) return false;
-  return Date.now() - ms > 30 * 24 * 60 * 60 * 1000;
-}
-
 function canonicalUrl(job) {
   if (!job.external_id) return null;
   const company = (job.company || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
@@ -154,6 +146,7 @@ async function main() {
   const { data: jobs, error } = await supabase
     .from('jobs')
     .select('id,title,company,external_id,tags,published_at,created_at')
+    .contains('tags', ['curated-jd'])
     .gte('created_at', since)
     .order('published_at', { ascending: false, nullsFirst: false })
     .limit(50000);
