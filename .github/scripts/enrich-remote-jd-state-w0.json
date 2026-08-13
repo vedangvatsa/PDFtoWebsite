@@ -121462,6 +121462,20 @@
         "rewrite_structure": 1
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T12:21:13.400Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 1,
+        "rewrite_structure": 1
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
