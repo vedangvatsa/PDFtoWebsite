@@ -2954,23 +2954,25 @@
     },
     "101ec12b-b2e2-439a-820a-02cac8612e29": {
       "status": "fail",
-      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+      "reason": "rewrite_short"
     },
     "6412fe79-6c09-475c-8a6a-aa7267c9cc29": {
       "status": "fail",
-      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+      "reason": "rewrite_short"
     },
     "8358b94a-de8a-4515-90e5-6086d34034c5": {
       "status": "fail",
-      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+      "reason": "rewrite_short"
     },
     "8cf59f27-7067-4b4e-a2f5-cdde7a27ac9c": {
-      "status": "fail",
-      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+      "status": "ok",
+      "path": "/spar/supervised",
+      "external_id": "spar_supervised"
     },
     "d0859950-ebce-4ab4-bc63-b9d7b3697429": {
-      "status": "fail",
-      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
+      "status": "ok",
+      "path": "/era-cambridge/era",
+      "external_id": "era-cambridge_era"
     }
   },
   "doneIds": [
@@ -3736,6 +3738,54 @@
         "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 5
       },
       "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T10:23:26.545Z",
+      "attempted": 5,
+      "ok": 1,
+      "skip": 0,
+      "fail": 4,
+      "reasons": {
+        "expand_existing": 5,
+        "rewrite_short": 3,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 1
+      },
+      "samplePaths": [
+        "/era-cambridge/era"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T10:24:22.238Z",
+      "attempted": 4,
+      "ok": 0,
+      "skip": 0,
+      "fail": 4,
+      "reasons": {
+        "expand_existing": 4,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 2,
+        "rewrite_short": 2
+      },
+      "samplePaths": []
+    },
+    {
+      "batchNum": 1,
+      "worker": 0,
+      "at": "2026-08-13T10:25:31.090Z",
+      "attempted": 4,
+      "ok": 1,
+      "skip": 0,
+      "fail": 3,
+      "reasons": {
+        "expand_existing": 4,
+        "rewrite_short": 3
+      },
+      "samplePaths": [
+        "/spar/supervised"
+      ]
     }
   ],
   "deadBoards": {
