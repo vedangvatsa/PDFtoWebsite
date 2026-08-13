@@ -1,0 +1,493 @@
+'use client';
+
+import { PAGE_CONTAINER, PAGE_TITLE } from '@/lib/utils';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Header from '@/components/header';
+import MicroFooter from '@/components/micro-footer';
+import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import posthog from 'posthog-js';
+import { timeAgo, jobTypeLabel } from '@/lib/job-description';
+import {
+  emptyParsedResumeShell,
+  persistParsedResume,
+  reviewToastCopy,
+  storePendingResumeFile,
+} from '@/lib/cv-upload-client';
+
+interface Job {
+  id: string;
+  title: string;
+  company: string;
+  company_logo: string | null;
+  location: string;
+  job_type: string | null;
+  salary: string | null;
+  tags: string[];
+  apply_url: string;
+  category: string | null;
+  source: string;
+  published_at: string | null;
+  external_id?: string | null;
+  path?: string;
+  matched_skills: string[];
+  match_count: number;
+  match_score: number;
+  match_signals: string[];
+}
+
+interface JobsResponse {
+  jobs: Job[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+  userSkills: string[];
+  profileComplete: boolean;
+  degraded?: boolean;
+}
+
+const LOCATIONS = [
+  { value: 'all', label: 'All Locations' },
+  { value: 'remote', label: 'Remote Only' },
+  { value: 'onsite', label: 'On-site' },
+];
+
+function organizeJobs(existingJobs: Job[], newJobs: Job[]): Job[] {
+  const result = [...existingJobs];
+  const deferred: Job[] = [];
+
+  for (const job of newJobs) {
+    const i = result.length;
+    const horizontalNeighbor = (i % 2 !== 0) ? result[i - 1]?.company : null;
+    const verticalNeighbor = (i >= 2) ? result[i - 2]?.company : null;
+
+    if (job.company !== horizontalNeighbor && job.company !== verticalNeighbor) {
+      result.push(job);
+    } else {
+      deferred.push(job);
+    }
+  }
+
+  for (const job of deferred) {
+    const i = result.length;
+    const horizontalNeighbor = (i % 2 !== 0) ? result[i - 1]?.company : null;
+    const verticalNeighbor = (i >= 2) ? result[i - 2]?.company : null;
+
+    if (job.company !== horizontalNeighbor && job.company !== verticalNeighbor) {
+      result.push(job);
+    }
+  }
+
+  return result;
+}
+
+function JobTypeBadge({ type, title }: { type: string | null; title?: string | null }) {
+  const label = jobTypeLabel(type, { title });
+  if (!label) return null;
+  return (
+    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 transition-colors">
+      {label}
+    </span>
+  );
+}
+
+export default function JobsClient() {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [type] = useState('all');
+  const [loc, setLoc] = useState('all');
+  const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [userSkills, setUserSkills] = useState<string[]>([]);
+  const [matchOnly, setMatchOnly] = useState(false);
+  const [profileComplete, setProfileComplete] = useState(false);
+  const [degraded, setDegraded] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const fetchJobs = useCallback(async (pageNum: number, append = false) => {
+    if (append) setLoadingMore(true); else setLoading(true);
+
+    try {
+      const params = new URLSearchParams({ page: String(pageNum), limit: '50' });
+      if (type !== 'all') params.set('type', type);
+      if (loc !== 'all') params.set('loc', loc);
+      if (search) params.set('q', search);
+      if (matchOnly) params.set('match', 'true');
+
+      const res = await fetch(`/api/jobs?${params}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: JobsResponse = await res.json();
+
+      if (append) {
+        setJobs(prev => organizeJobs(prev, data.jobs || []));
+      } else {
+        setJobs(organizeJobs([], data.jobs || []));
+      }
+      setTotal(data.total || 0);
+      setHasMore(data.hasMore ?? false);
+      setDegraded(Boolean(data.degraded) && (data.jobs || []).length === 0);
+      setUserSkills(data.userSkills || []);
+      setProfileComplete(data.profileComplete ?? false);
+    } catch (e) {
+      console.error('Failed to fetch jobs:', e);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  }, [type, loc, search, matchOnly]);
+
+  useEffect(() => {
+    setPage(1);
+    fetchJobs(1);
+  }, [fetchJobs]);
+
+  const loadMore = () => {
+    if (loadingMore || !hasMore) return;
+    const next = page + 1;
+    setPage(next);
+    fetchJobs(next, true);
+  };
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loading && !loadingMore) {
+          loadMore();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  });
+
+  const viewedIds = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const flush = () => {
+      if (viewedIds.current.size === 0) return;
+      const ids = Array.from(viewedIds.current);
+      viewedIds.current.clear();
+      fetch('/api/jobs/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids, action: 'view' }),
+      }).catch(() => {});
+    };
+    const timer = setInterval(flush, 3000);
+    return () => { flush(); clearInterval(timer); };
+  }, []);
+
+  useEffect(() => {
+    const cards = document.querySelectorAll('[data-job-id]');
+    if (cards.length === 0) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = (e.target as HTMLElement).dataset.jobId;
+          if (id) viewedIds.current.add(id);
+        }
+      });
+    }, { threshold: 0.5 });
+    cards.forEach(c => obs.observe(c));
+    return () => obs.disconnect();
+  }, [jobs]);
+
+  const trackClick = (jobId: string, job: Job) => {
+    posthog.capture('job_clicked', {
+      job_id: job.id,
+      title: job.title,
+      company: job.company,
+      source: job.source,
+      match_count: job.match_count,
+      destination: 'job_detail',
+    });
+    fetch('/api/jobs/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids: [jobId], action: 'click' }),
+    }).catch(() => {});
+  };
+
+  const handleJobClick = (_e: React.MouseEvent<HTMLAnchorElement>, job: Job) => {
+    trackClick(job.id, job);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearch(searchInput);
+  };
+
+  return (
+    <div className="h-screen overflow-y-auto overflow-x-hidden bg-[#fafafa] selection:bg-primary/10 transition-colors duration-200 flex flex-col">
+      <Header />
+      <main id="main-content" className={PAGE_CONTAINER}>
+        {/* Hero */}
+        <div className="flex flex-col mb-10">
+          <h1 className={PAGE_TITLE}>
+            Job Board
+          </h1>
+          {/* Company logos strip */}
+          <div className="flex items-center gap-3 mt-3 overflow-hidden">
+            {[
+              { name: 'Stripe', domain: 'stripe.com' },
+              { name: 'Airbnb', domain: 'airbnb.com' },
+              { name: 'Cloudflare', domain: 'cloudflare.com' },
+              { name: 'Discord', domain: 'discord.com' },
+              { name: 'Reddit', domain: 'reddit.com' },
+              { name: 'Coinbase', domain: 'coinbase.com' },
+              { name: 'Figma', domain: 'figma.com' },
+              { name: 'GitLab', domain: 'gitlab.com' },
+              { name: 'Lyft', domain: 'lyft.com' },
+              { name: 'Pinterest', domain: 'pinterest.com' },
+              { name: 'Spotify', domain: 'spotify.com' },
+            ].map((c, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={c.name} src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`} alt={`${c.name} logo — hiring remote jobs`} title={c.name}
+                className={`h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0 ${i >= 6 ? 'hidden sm:block' : ''}`}
+                loading="lazy" />
+            ))}
+            <span className="text-xs text-zinc-400 shrink-0">+150 more</span>
+          </div>
+          {profileComplete && userSkills.length > 0 && (
+            <button
+              onClick={() => setMatchOnly(m => !m)}
+              title={
+                matchOnly
+                  ? userSkills.map((s) => s.trim()).filter(Boolean).join(', ')
+                  : 'Show matched only'
+              }
+              className={`inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border max-w-full min-w-0 ${
+                matchOnly
+                  ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                  : 'bg-zinc-50 border-zinc-200 text-zinc-500 hover:border-zinc-300'
+              }`}
+            >
+              <Target className="h-3 w-3 shrink-0" />
+              <span className="truncate">
+                {matchOnly
+                  ? (() => {
+                      const clean = userSkills.map((s) => s.trim()).filter(Boolean);
+                      return `Showing matched (${clean.slice(0, 4).join(', ')}${clean.length > 4 ? '…' : ''})`;
+                    })()
+                  : 'Show matched only'}
+              </span>
+            </button>
+          )}
+          {userSkills.length > 0 && !profileComplete && (
+            <Link href="/editor" className="inline-flex items-center gap-1.5 mt-3 text-xs text-zinc-400 hover:text-zinc-600 transition-colors max-w-full min-w-0">
+              <Target className="h-3 w-3 shrink-0" />
+              <span className="truncate">Complete your profile to enable skill matching →</span>
+            </Link>
+          )}
+          {userSkills.length === 0 && (
+            <label htmlFor="jobs-cv-upload" className={`inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline cursor-pointer max-w-full min-w-0 ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+              {isUploading ? <Loader2 className="h-4 w-4 animate-spin text-primary shrink-0" /> : <UploadCloud className="h-4 w-4 text-primary shrink-0" />}
+              <span className="truncate">{isUploading ? 'Parsing CV...' : 'Upload your CV for personalized matches →'}</span>
+              <input
+                id="jobs-cv-upload"
+                type="file"
+                className="hidden"
+                accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
+                disabled={isUploading}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  if (file.size > 10 * 1024 * 1024) {
+                    toast({ variant: 'destructive', title: 'Too Large', description: 'Max 10MB.' });
+                    e.target.value = ''; return;
+                  }
+                  setIsUploading(true);
+                  toast({ title: 'Parsing CV...', description: 'Extracting your details.' });
+                  try {
+                    const fd = new FormData(); fd.append('resume', file);
+                    const res = await fetch('/api/parse-resume', { method: 'POST', body: fd });
+                    let parsed = emptyParsedResumeShell(file.name);
+                    if (res.ok) {
+                      try { parsed = await res.json(); } catch { /* shell */ }
+                    } else {
+                      await storePendingResumeFile(file);
+                    }
+                    persistParsedResume(parsed);
+                    const copy = reviewToastCopy(parsed);
+                    toast({ title: copy.title, description: copy.description });
+                    router.push('/editor');
+                  } catch {
+                    await storePendingResumeFile(file);
+                    const shell = emptyParsedResumeShell(file.name);
+                    persistParsedResume(shell);
+                    toast({
+                      title: 'Continue in the editor',
+                      description: 'Parser unreachable — fill details manually or re-upload shortly.',
+                    });
+                    router.push('/editor');
+                  } finally {
+                    e.target.value = '';
+                    setIsUploading(false);
+                  }
+                }}
+              />
+            </label>
+          )}
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-8">
+          <form onSubmit={handleSearch} className="flex-1 relative" role="search">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" aria-hidden="true" />
+            <label htmlFor="job-search-input" className="sr-only">Search jobs by title or company</label>
+            <input
+              id="job-search-input"
+              type="text"
+              placeholder="Search by title or company..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              aria-label="Search jobs by title or company"
+              className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+            />
+          </form>
+          <div className="relative shrink-0">
+            <label htmlFor="job-location-filter" className="sr-only">Filter by location</label>
+            <select
+              id="job-location-filter"
+              value={loc}
+              onChange={(e) => setLoc(e.target.value)}
+              aria-label="Filter jobs by location"
+              className="h-10 pl-3 pr-8 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer appearance-none"
+            >
+              {LOCATIONS.map(l => (
+                <option key={l.value} value={l.value}>{l.label}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-400 pointer-events-none" aria-hidden="true" />
+          </div>
+        </div>
+
+        {/* Job count */}
+        {!loading && (
+          <p className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
+            {degraded
+              ? 'Openings did not load'
+              : `${total >= 100000 ? '100k+' : total.toLocaleString()} ${total === 1 ? 'job' : 'jobs'} found`}
+          </p>
+        )}
+
+        {/* Loading */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="h-8 w-8 border-2 border-zinc-300 border-t-primary rounded-full animate-spin" />
+            <p className="mt-4 text-sm text-zinc-500">Loading jobs...</p>
+          </div>
+        )}
+
+        {/* Empty state */}
+        {!loading && jobs.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <Briefcase className="h-12 w-12 text-zinc-300 mb-4" />
+            <p className="text-lg font-semibold text-zinc-700">
+              {degraded ? 'Openings did not load' : 'No jobs found'}
+            </p>
+            <p className="text-sm text-zinc-500 mt-2">
+              {degraded ? 'Refresh the page to try again.' : 'Try adjusting your search or filters.'}
+            </p>
+          </div>
+        )}
+
+        {/* Job Cards */}
+        {!loading && jobs.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {jobs.map((job) => (
+              <Link
+                key={job.id}
+                href={job.path || `/jobs/${job.id}`}
+                data-job-id={job.id}
+                className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
+                onClick={(e) => handleJobClick(e, job)}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={job.company_logo || `https://www.google.com/s2/favicons?domain=${job.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.com&sz=128`}
+                  alt={`${job.company} logo — ${job.title} job listing`}
+                  className="h-5 w-5 rounded shrink-0 object-cover"
+                  loading="lazy"
+                  onLoad={(e) => {
+                    const el = e.target as HTMLImageElement;
+                    if (!job.company_logo && el.naturalWidth <= 16) {
+                      el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`;
+                    }
+                  }}
+                  onError={(e) => {
+                    const el = e.target as HTMLImageElement;
+                    el.onerror = null;
+                    el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`;
+                  }}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <h3 className="text-[13px] font-semibold text-zinc-900 group-hover:text-primary transition-colors truncate min-w-0 flex-1">
+                      {job.title}
+                    </h3>
+                    {job.match_score >= 50 && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 shrink-0 bg-emerald-50 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
+                        <Sparkles className="h-2.5 w-2.5" /><span className="max-[380px]:hidden">Great match</span>
+                      </span>
+                    )}
+                    {job.match_score >= 25 && job.match_score < 50 && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-600 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded-full" title={(job.match_signals || []).join(' · ')}>
+                        <Target className="h-2.5 w-2.5" /><span className="max-[380px]:hidden">Good match</span>
+                      </span>
+                    )}
+                    {job.match_score > 0 && job.match_score < 25 && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-zinc-400 shrink-0" title={(job.match_signals || []).join(' · ')}>
+                        <Target className="h-2.5 w-2.5" /><span className="max-[380px]:hidden">Partial</span>
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 min-w-0">
+                    <span className="font-medium truncate shrink-0 max-w-[40%]">{job.company}</span>
+                    <JobTypeBadge type={job.job_type} title={job.title} />
+                    {job.location && (
+                      <>
+                        <span className="text-zinc-300 shrink-0">·</span>
+                        <span className="truncate">{job.location}</span>
+                      </>
+                    )}
+                    {job.published_at && (
+                      <>
+                        <span className="text-zinc-300">·</span>
+                        <span className="shrink-0">{timeAgo(job.published_at)}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <ChevronRight className="h-3.5 w-3.5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" />
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Infinite scroll sentinel */}
+        {hasMore && !loading && (
+          <div ref={sentinelRef} className="flex justify-center py-6">
+            {loadingMore && (
+              <div className="h-5 w-5 border-2 border-zinc-300 border-t-primary rounded-full animate-spin" />
+            )}
+          </div>
+        )}
+
+      </main>
+      <MicroFooter />
+    </div>
+  );
+}
