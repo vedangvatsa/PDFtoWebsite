@@ -53,6 +53,9 @@ jobs:
       - name: Check OG Satori styles
         run: npm run check:og
 
+      - name: Regression tests
+        run: npm test
+
       - name: Build OpenNext Worker
         run: |
           node -e '

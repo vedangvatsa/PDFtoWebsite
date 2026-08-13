@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProfileBySlug } from '@/lib/supabase-server';
+import { lookupPublicProfile } from '@/lib/supabase-server';
 
 export async function GET(
   _req: NextRequest,
@@ -7,13 +7,18 @@ export async function GET(
 ) {
   const { username } = await params;
 
-  const result = await getProfileBySlug(username);
-
-  if (!result) {
+  const lookup = await lookupPublicProfile(username);
+  if (lookup.status === 'unavailable') {
+    return NextResponse.json(
+      { error: 'Profile temporarily unavailable' },
+      { status: 503, headers: { 'Retry-After': '10', 'Cache-Control': 'no-store' } }
+    );
+  }
+  if (lookup.status === 'missing') {
     return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
   }
 
-  const { profile, workExperience } = result;
+  const { profile, workExperience } = lookup.data;
 
   // Flatten into the shape the extension expects
   const response = {

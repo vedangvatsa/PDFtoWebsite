@@ -7,12 +7,21 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const unavailable =
+    error?.name === 'ProfileUnavailableError' ||
+    /taking too long to load/i.test(error?.message || '');
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
-      <p className="text-sm font-medium text-muted-foreground mb-2">Something went wrong</p>
-      <h1 className="text-2xl font-bold tracking-tight mb-1">Unexpected error</h1>
+      <p className="text-sm font-medium text-muted-foreground mb-2">
+        {unavailable ? 'Temporarily unavailable' : 'Something went wrong'}
+      </p>
+      <h1 className="text-2xl font-bold tracking-tight mb-1">
+        {unavailable ? 'This profile is taking too long to load' : 'Unexpected error'}
+      </h1>
       <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-        {error?.message || 'We ran into an issue. Please try again or go back to the homepage.'}
+        {unavailable
+          ? 'Please try again in a moment. This is not a missing profile.'
+          : error?.message || 'We ran into an issue. Please try again or go back to the homepage.'}
       </p>
       <div className="flex gap-3">
         <button

@@ -691,7 +691,7 @@ function parseJobBlock(block: string[]): ParsedResume['workExperience'][0] | nul
       const rest = stripDates(line);
       if (rest.length > 2) {
         // Parse "Title at Company", "Title @ Company", "Company – Title"
-        const atMatch = rest.match(/^(.+?)\s+(?:at|@|,)\s+(.+)$/i);
+        const atMatch = rest.match(/^(.+?)\s+(?:at|@)\s+(.+)$/i);
         const sepMatch = rest.match(/^(.+?)\s*[|·•]\s*(.+)$/);
         if (atMatch) {
           if (!title) title = atMatch[1].trim();
@@ -774,10 +774,16 @@ function parseJobBlock(block: string[]): ParsedResume['workExperience'][0] | nul
         metaLinesDone = true;
         continue;
       }
-      // If we already have title but line has a job title keyword, it might be a better title
+      // If we already have title but the next line is a stronger job title
+      // and the current title does not look like one, swap (company was first).
       if (title && !company && JOB_TITLE_RE.test(line) && line.length < 100) {
-        company = title;
-        title = line;
+        if (!JOB_TITLE_RE.test(title)) {
+          company = title;
+          title = line;
+          metaLinesDone = true;
+          continue;
+        }
+        company = line;
         metaLinesDone = true;
         continue;
       }
