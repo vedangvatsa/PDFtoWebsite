@@ -65354,6 +65354,10 @@
       "status": "ok",
       "path": "/zambezi/copywriter",
       "external_id": "zambezi_copywriter"
+    },
+    "e02ec323-0e7e-46c2-8b1f-1ba67f10473d": {
+      "status": "fail",
+      "reason": "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned"
     }
   },
   "doneIds": [
@@ -80362,7 +80366,8 @@
     "e1c7331f-f404-4dcd-b389-a25f11d8b156",
     "e8498646-3124-4105-930c-af0c080d0c2f",
     "ef5cd033-22f6-4902-89ba-717f2fe49f0c",
-    "fea82fc3-b986-4d2f-aeb7-2ddd07039e69"
+    "fea82fc3-b986-4d2f-aeb7-2ddd07039e69",
+    "e02ec323-0e7e-46c2-8b1f-1ba67f10473d"
   ],
   "skipped": {},
   "batches": [
@@ -81101,6 +81106,20 @@
         "/sait/instru-9c",
         "/zambezi/copywriter"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 7,
+      "at": "2026-08-13T05:46:39.882Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 1,
+        "openrouter_inclusionai/ling-2.6-flash_429:{\"error\":{\"message\":\"Provider returned": 1
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {

@@ -60673,6 +60673,20 @@
       "status": "ok",
       "path": "/gauntlet/biz-0c",
       "external_id": "gauntlet_biz-0c"
+    },
+    "9ade4248-fc99-43ba-ba96-2531f6056ce3": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "806a56fd-c223-47aa-a23b-fc6c5d2d1c0d": {
+      "status": "ok",
+      "path": "/blockstream/don-t",
+      "external_id": "blockstream_don-t"
+    },
+    "93e6583d-71e4-4d4b-bdb3-579afdde1672": {
+      "status": "ok",
+      "path": "/decagon/strat-40",
+      "external_id": "decagon_strat-40"
     }
   },
   "doneIds": [
@@ -74613,7 +74627,10 @@
     "98dd4387-8c11-4b93-afce-6cc983f6fc88",
     "984d97b5-8d5d-41f2-a0a6-32e3d10298a3",
     "9a02a459-df52-4ee7-8e1c-2e4447d55a7b",
-    "9a842558-c701-42be-b685-4099246165c4"
+    "9a842558-c701-42be-b685-4099246165c4",
+    "9ade4248-fc99-43ba-ba96-2531f6056ce3",
+    "806a56fd-c223-47aa-a23b-fc6c5d2d1c0d",
+    "93e6583d-71e4-4d4b-bdb3-579afdde1672"
   ],
   "skipped": {},
   "batches": [
@@ -77167,6 +77184,23 @@
         "/mainspringenergy/sw-eng",
         "/brightedge/cust-62",
         "/gauntlet/biz-0c"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 4,
+      "at": "2026-08-13T05:47:00.314Z",
+      "attempted": 3,
+      "ok": 2,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 3,
+        "rewrite_short": 1
+      },
+      "samplePaths": [
+        "/blockstream/don-t",
+        "/decagon/strat-40"
       ]
     }
   ],

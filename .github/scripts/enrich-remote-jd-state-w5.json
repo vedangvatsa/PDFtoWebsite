@@ -52072,6 +52072,25 @@
       "status": "ok",
       "path": "/cin7/head-it",
       "external_id": "cin7_head-it"
+    },
+    "a95f1f1b-b9d5-4243-ab18-580b9ae69ea3": {
+      "status": "ok",
+      "path": "/greenlight/web",
+      "external_id": "greenlight_web"
+    },
+    "a0503fb2-1355-4268-bfe4-2210eabb5ea1": {
+      "status": "fail",
+      "reason": "rewrite_short"
+    },
+    "ab9402eb-3464-4496-816e-c985cb8b5b74": {
+      "status": "ok",
+      "path": "/acds/cust",
+      "external_id": "acds_cust"
+    },
+    "a846d121-517a-4415-b0c0-d196e4647eb1": {
+      "status": "ok",
+      "path": "/whiterose-janitorial-services/jobs-72",
+      "external_id": "whiterose-janitorial-services_jobs-72"
     }
   },
   "doneIds": [
@@ -64096,7 +64115,11 @@
     "a0640b88-418d-442f-b1f2-fdb6b9df89d5",
     "b6e0e4b3-6150-42fe-9a77-aed97feff0f5",
     "b8e5fcde-3a7a-4b77-a230-aad7bb4d1366",
-    "bed6be5f-d1e6-45d9-a980-81746b261f5e"
+    "bed6be5f-d1e6-45d9-a980-81746b261f5e",
+    "a95f1f1b-b9d5-4243-ab18-580b9ae69ea3",
+    "a0503fb2-1355-4268-bfe4-2210eabb5ea1",
+    "ab9402eb-3464-4496-816e-c985cb8b5b74",
+    "a846d121-517a-4415-b0c0-d196e4647eb1"
   ],
   "skipped": {},
   "batches": [
@@ -70374,6 +70397,24 @@
         "/zoox/tech-35",
         "/lyrahealth/biz",
         "/cin7/head-it"
+      ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 5,
+      "at": "2026-08-13T05:47:01.098Z",
+      "attempted": 4,
+      "ok": 3,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 4,
+        "rewrite_short": 1
+      },
+      "samplePaths": [
+        "/greenlight/web",
+        "/acds/cust",
+        "/whiterose-janitorial-services/jobs-72"
       ]
     }
   ],

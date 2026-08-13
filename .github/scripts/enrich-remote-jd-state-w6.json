@@ -67065,6 +67065,10 @@
       "status": "ok",
       "path": "/achievers/tech",
       "external_id": "achievers_tech"
+    },
+    "d0e1e4c5-3302-4dfa-a76a-4aab681c85e1": {
+      "status": "fail",
+      "reason": "rewrite_short"
     }
   },
   "doneIds": [
@@ -82420,7 +82424,8 @@
     "d6e4d37e-f20a-4681-a13c-c1e1d15aff08",
     "c774a6ab-9129-43a5-9d3a-6d10a4cf4310",
     "c4a6c96f-8b66-4d9e-84dc-2dbc6d099dce",
-    "dee256f8-861a-483b-b33a-3ed671149862"
+    "dee256f8-861a-483b-b33a-3ed671149862",
+    "d0e1e4c5-3302-4dfa-a76a-4aab681c85e1"
   ],
   "skipped": {},
   "batches": [
@@ -83101,6 +83106,20 @@
         "/jamcity/people",
         "/achievers/tech"
       ]
+    },
+    {
+      "batchNum": 1,
+      "worker": 6,
+      "at": "2026-08-13T05:46:56.751Z",
+      "attempted": 1,
+      "ok": 0,
+      "skip": 0,
+      "fail": 1,
+      "reasons": {
+        "expand_existing": 1,
+        "rewrite_short": 1
+      },
+      "samplePaths": []
     }
   ],
   "deadBoards": {
