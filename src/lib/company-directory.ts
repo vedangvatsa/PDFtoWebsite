@@ -61,6 +61,7 @@ const BRAND_DISPLAY_NAMES: Record<string, string> = {
   jpmorgan: 'JPMorgan',
   'jp morgan': 'JPMorgan',
   iisc: 'IISc',
+  era: 'ERA',
 };
 
 /** Common org / place tokens used to split mashed domain labels (apartresearch). */
@@ -400,6 +401,10 @@ export const COMPANY_NAME_MAP: Record<string, string> = {
   openai: 'OpenAI',
   iisc: 'IISc',
   'indian institute of science': 'IISc',
+  era: 'ERA',
+  'era fellowship': 'ERA',
+  erafellowship: 'ERA',
+  'era:ai': 'ERA',
   anthropic: 'Anthropic',
   alignment: 'Anthropic',
   governance: 'GovAI',

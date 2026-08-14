@@ -41,4 +41,15 @@ describe('companyNameFromApply', () => {
     assert.equal(isRegistryCompanyLabel('IISc'), false);
     assert.equal(isRegistryCompanyLabel('iisc'), false);
   });
+
+  it('maps erafellowship.org to ERA', () => {
+    assert.equal(
+      companyNameFromApply('erafellowship', 'https://erafellowship.org/fellowship'),
+      'ERA'
+    );
+    assert.equal(
+      companyNameFromApply('ERA', 'https://airtable.com/appaZQNjlqYOCy4lV/pag0VHHxQWTBRmHHS/form'),
+      'ERA'
+    );
+  });
 });

@@ -76,4 +76,8 @@ for (const [name, url] of neverRegistry) {
   assert(!isRegistryCompanyLabel(d), `display ${name} + ${url} must not be registry, got ${d}`);
 }
 
+assert(companyDisplayName('ERA') === 'ERA', 'ERA stays ERA');
+assert(companyDisplayName('era fellowship') === 'ERA', 'era fellowship → ERA');
+assert(companyDisplayName('erafellowship', 'https://erafellowship.org/fellowship') === 'ERA', 'host maps to ERA');
+
 console.log('ok');
