@@ -976,6 +976,19 @@ const COMPANIES: Record<string, CompanyMeta> = {
     description:
       'NITI Aayog (National Institution for Transforming India) is the Government of India’s premier policy think tank. Its internship scheme places students across policy domains listed on the official Work for India portal.',
   },
+  era: {
+    slug: 'era',
+    name: 'ERA',
+    website: 'https://erafellowship.org/',
+    founded: 2021,
+    hq: 'Cambridge, UK',
+    size: '200+ alumni from 30+ countries',
+    stage: 'Research organisation',
+    funding: 'Independent',
+    industry: 'AI Safety & Governance',
+    description:
+      'ERA is a talent and research organisation founded in 2021 by Nandini Shiralkar while she was studying Engineering at the University of Cambridge. It trains researchers, funds projects, and helps start institutions in frontier AI safety, AI governance, technical AI governance, AI security, and AI x biosecurity. The Cambridge ERA:AI Fellowship has run since 2021 and has supported more than 200 researchers from over 30 countries. In 2024 the organisation narrowed its programmes toward AI safety and governance. Alumni now work at RAND, the UK AI Security Institute, and related labs and agencies.',
+  },
   'iit-bombay': {
     slug: 'iit-bombay',
     name: 'IIT Bombay',

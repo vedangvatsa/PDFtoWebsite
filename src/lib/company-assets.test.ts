@@ -74,10 +74,11 @@ describe('company socials and overlay', () => {
   });
 
   it('keeps high-profile overlay websites', () => {
-    for (const slug of ['openai', 'databricks', 'anduril', 'spacex', 'teleskope']) {
+    for (const slug of ['openai', 'databricks', 'anduril', 'spacex', 'teleskope', 'era']) {
       const links = getCompanyLinks(slug);
       assert.ok(links.website, `${slug} needs a website`);
     }
+    assert.equal(getCompanyLinks('era').website, 'https://erafellowship.org');
   });
 });
 
