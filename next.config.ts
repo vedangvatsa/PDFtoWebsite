@@ -215,6 +215,22 @@ const nextConfigFn = (phase: string): NextConfig => {
           destination: '/terms#privacy',
           permanent: true,
         },
+        // AI directory URL aliases & shortcuts
+        {
+          source: '/full-llms',
+          destination: '/llms-full.txt',
+          permanent: true,
+        },
+        {
+          source: '/full-llms.txt',
+          destination: '/llms-full.txt',
+          permanent: true,
+        },
+        {
+          source: '/llms',
+          destination: '/llms.txt',
+          permanent: true,
+        },
       ];
     },
   
