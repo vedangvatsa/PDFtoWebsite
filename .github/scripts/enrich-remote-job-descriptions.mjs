@@ -25,6 +25,8 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } fr
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { shouldQueueForManualEnrich, isFullyEnrichedJob, descriptionWords } from './lib/job-apply-source.mjs';
+import { isBannedJobTitle } from '../../src/lib/banned-jobs.mjs';
+import { fellowshipPublishBlockReason } from '../../src/lib/fellowship-publish-gate.mjs';
 import { runCompanyAboutPass } from './lib/enrich-company-about.mjs';
 import {
   normalizeJobDescriptionForStorage,
@@ -262,7 +264,7 @@ function isRemote(j) {
 /** UTM suffixes + app routes — never emit these as standalone job slug segments. */
 const RESERVED_SLUGS = new Set([
   'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
-  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+  'api', 'editor', 'login', 'signup', 'jobs', 'fellowships', 'blog', 'admin',
 ]);
 
 /**
@@ -367,7 +369,7 @@ function classifyApplyUrl(url) {
 
   // Skip known-bad / thin aggregators
   if (
-    /jooble\.org|jobviewtrack\.com|adzuna\.|indeed\.|glassdoor\.|ziprecruiter\./i.test(
+    /jooble\.org|jobviewtrack\.com|adzuna\.|indeed\.|glassdoor\.|ziprecruiter\.|theguardian\.|reed\.co\.uk|totaljobs\.|cv-library\./i.test(
       host
     )
   ) {
@@ -2097,7 +2099,7 @@ async function fetchAllJobs() {
   while (true) {
     // RE_ENRICH must include curated-jd rows that are still under 600w (old short rewrites).
     // Fresh enrich still skips already-curated jobs.
-    let url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash&created_at=gte.${encodeURIComponent(since)}&apply_url=not.is.null`;
+    let url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash,source&created_at=gte.${encodeURIComponent(since)}&apply_url=not.is.null`;
     if (!RE_ENRICH) {
       url += `&tags=not.cs.{"curated-jd"}`;
     }
@@ -2287,7 +2289,7 @@ async function runOneBatch(batchNum, state, done) {
       const ids = [...prioritySet];
       for (let i = 0; i < ids.length; i += 50) {
         const chunk = ids.slice(i, i + 50);
-        const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash&id=in.(${chunk.join(',')})`;
+        const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash,source&id=in.(${chunk.join(',')})`;
         const r = await jfetch(url, { headers }, 60000);
         const rows = await r.json();
         if (Array.isArray(rows)) all.push(...rows);
@@ -2305,6 +2307,7 @@ async function runOneBatch(batchNum, state, done) {
     .filter((j) => (prioritySet ? prioritySet.has(j.id) : true))
     .filter((j) => {
       if (prioritySet) return Boolean(j.apply_url);
+      if (isBannedJobTitle(j.title)) return false;
       // Never touch fully enriched (≥600 + curated-jd). Only under-600 for queue/rewrite.
       if (isFullyEnrichedJob(j)) return false;
       if (!shouldQueueForManualEnrich(j, { reworkShortCurated: process.env.REWORK_SHORT_CURATED === '1' })) {
@@ -2320,12 +2323,12 @@ async function runOneBatch(batchNum, state, done) {
               (state.processed[j.id] &&
                 state.processed[j.id].status !== 'ok' &&
                 !PERMANENT_REASONS.has(String(state.processed[j.id].reason || '').trim())))
-          : j.apply_url && !done.has(j.id);
+          : j.apply_url &&
+            (!done.has(j.id) || descriptionWords(j.description) < MIN_REWRITE_WORDS);
     })
     .filter((j) => {
       if (prioritySet) return true;
-      const tags = j.tags || [];
-      if (!RE_ENRICH && tags.includes('curated-jd')) return false;
+      if (isFullyEnrichedJob(j)) return false;
       const kind = classifyApplyUrl(j.apply_url).kind;
       if (kind === 'none') return false;
       if (kind === 'skip' && (j.description || '').length < 500) return false;
@@ -2414,7 +2417,8 @@ async function runOneBatch(batchNum, state, done) {
       if (
         !RE_ENRICH &&
         done.has(job.id) &&
-        state.processed[job.id]?.status === 'ok'
+        state.processed[job.id]?.status === 'ok' &&
+        isFullyEnrichedJob(job)
       ) {
         return;
       }
@@ -2571,9 +2575,14 @@ async function runOneBatch(batchNum, state, done) {
         return;
       }
 
-      const tags = Array.isArray(job.tags) ? [...job.tags] : [];
-      if (!tags.includes('remote')) tags.push('remote');
-      if (!tags.includes('curated-jd')) tags.push('curated-jd');
+      const fellowshipBlock = fellowshipPublishBlockReason(job);
+      if (fellowshipBlock) {
+        stats.fail++;
+        stats.reasons[fellowshipBlock] = (stats.reasons[fellowshipBlock] || 0) + 1;
+        state.processed[job.id] = { status: 'fail', reason: fellowshipBlock };
+        if (!RE_ENRICH) done.add(job.id);
+        return;
+      }
 
       try {
         if (!DRY_RUN) {
@@ -2581,6 +2590,12 @@ async function runOneBatch(batchNum, state, done) {
           if (!storedDescription || descriptionHasWriterLeak(storedDescription)) {
             throw new Error('rewrite_leak');
           }
+          if (descriptionWords(storedDescription) < MIN_REWRITE_WORDS) {
+            throw new Error('rewrite_short');
+          }
+          const tags = Array.isArray(job.tags) ? [...job.tags] : [];
+          if (!tags.includes('remote')) tags.push('remote');
+          if (!tags.includes('curated-jd')) tags.push('curated-jd');
           const patchObj = {
             description: storedDescription,
             external_id,

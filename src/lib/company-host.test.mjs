@@ -42,6 +42,11 @@ describe('companyNameFromApply', () => {
     assert.equal(isRegistryCompanyLabel('iisc'), false);
   });
 
+  it('maps nasa.gov to NASA', () => {
+    assert.equal(companyNameFromApply('Nasa', 'https://www.nasa.gov/learning-resources/internship-programs/nasa-fellowships/'), 'NASA');
+    assert.equal(companyNameFromApply('nasa', 'https://www.nasa.gov/careers'), 'NASA');
+  });
+
   it('maps erafellowship.org to ERA', () => {
     assert.equal(
       companyNameFromApply('erafellowship', 'https://erafellowship.org/fellowship'),

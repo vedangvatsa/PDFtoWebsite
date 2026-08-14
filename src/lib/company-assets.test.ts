@@ -74,11 +74,17 @@ describe('company socials and overlay', () => {
   });
 
   it('keeps high-profile overlay websites', () => {
-    for (const slug of ['openai', 'databricks', 'anduril', 'spacex', 'teleskope', 'era']) {
+    for (const slug of ['openai', 'databricks', 'anduril', 'spacex', 'teleskope', 'era', 'nasa', 'iisc']) {
       const links = getCompanyLinks(slug);
       assert.ok(links.website, `${slug} needs a website`);
     }
     assert.equal(getCompanyLinks('era').website, 'https://erafellowship.org');
+    assert.equal(getCompanyLinks('nasa').website, 'https://www.nasa.gov');
+    assert.ok(getCompanyLinks('nasa').linkedin?.includes('linkedin.com/company/nasa'));
+    assert.ok(getCompanyLinks('nasa').github?.includes('github.com/nasa'));
+    assert.equal(getCompanyLinks('iisc').website, 'https://www.iisc.ac.in');
+    assert.ok(getCompanyLinks('iisc').linkedin?.includes('indian-institute-of-science'));
+    assert.equal(getCompanyLinks('iisc').x, 'https://x.com/iiscbangalore');
   });
 });
 

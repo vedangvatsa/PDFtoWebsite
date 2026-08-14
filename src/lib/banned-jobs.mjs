@@ -60,7 +60,7 @@ export const BANNED_PATTERNS = [
   '\\bproduce\\b', '\\bdeli\\b', '\\bmeat\\b', '\\bfishmonger\\b', '\\bbakery associate\\b',
   '\\bmanual labor\\b', '\\bgeneral labor\\b', '\\blaborer\\b', '\\bconstruction (worker|laborer|crew)\\b',
   '\\bconstruction\\b', '\\bpainter\\b', '\\bcarpenter(?:s)?\\b', '\\belectrician\\b',
-  '\\bwelder\\b', '\\bmason\\b', '\\broofing\\b', '\\bpaving\\b', '\\bexcavat\\b',
+  '\\bwelder\\b', '\\bmason\\b', '\\broofing\\b', '\\broofer(?:s)?\\b', '\\bpaving\\b', '\\bexcavat\\b',
   '\\bpipefitter\\b', '\\bironworker\\b', '\\bscaffold\\b', '\\bconcrete\\b',
   '\\bdrywall\\b', '\\binsulation\\b', '\\bplumbing\\b', '\\bplumber(?:s)?\\b', '\\bhvac\\b',
   '\\bmechanic(?:s)?\\b', '\\bauto technician\\b', '\\btechnician(?:s)?\\b', '\\bfield service\\b',
@@ -104,6 +104,13 @@ export const BANNED_PATTERNS = [
   '\\bwarehouse worker\\b', '\\bwarehouse supervisor\\b',
   '\\bagent, critical incident response\\b', '\\broute to market\\b',
   '\\bsales associate\\b', '\\bretail associate\\b', '\\bcashier(?:s)?\\b',
+  // Listing / placeholder titles (RemoteOK nav scrapes, not roles)
+  '^jobs?$', '^vacancies$', '^openings$', '^positions$', '^careers$',
+  '^opportunities$', '^job title$', '^hiring process$', '^now hiring$',
+  '^test job\\b', '\\bpermanent jobs\\b', '\\bwanted jobs\\b', '\\bcasual jobs\\b',
+  '^remote jobs$', '^current jobs$', '^open (vacancies|positions|roles|jobs)$',
+  '^multiple positions$', '^current(?:ly)? jobs? openings?$',
+  '^vacancies [a-z]+$',
 ];
 
 export const BANNED_REGEX = new RegExp(BANNED_PATTERNS.join('|'), 'i');

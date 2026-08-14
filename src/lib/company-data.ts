@@ -976,6 +976,41 @@ const COMPANIES: Record<string, CompanyMeta> = {
     description:
       'NITI Aayog (National Institution for Transforming India) is the Government of India’s premier policy think tank. Its internship scheme places students across policy domains listed on the official Work for India portal.',
   },
+  iisc: {
+    slug: 'iisc',
+    name: 'IISc',
+    website: 'https://www.iisc.ac.in',
+    founded: 1909,
+    hq: 'Bengaluru, Karnataka, India',
+    size: '42+ departments · ~4,000 students',
+    stage: 'Institution of Eminence',
+    funding: 'Government of India',
+    industry: 'Science & Engineering Research',
+    description:
+      'IISc was established in 1909 by Jamsetji Nusserwanji Tata, the Mysore royal family, and the Government of India. The institute runs advanced scientific and technological research and teaching from a 440-acre campus in Bengaluru. More than 42 departments and centres sit under six divisions, with about 4,000 students on postgraduate, PhD, and a four-year undergraduate research programme. The Government of India named it an Institution of Eminence in 2018. Work spans basic science and applications meant to serve industry and society, including climate, healthcare, water, and energy.',
+    socials: {
+      x: 'https://x.com/iiscbangalore',
+      linkedin: 'https://www.linkedin.com/school/indian-institute-of-science',
+    },
+  },
+  nasa: {
+    slug: 'nasa',
+    name: 'NASA',
+    website: 'https://www.nasa.gov',
+    founded: 1958,
+    hq: 'Washington, D.C.',
+    size: '18,000+',
+    stage: 'U.S. federal agency',
+    funding: 'U.S. Congress',
+    industry: 'Space & Aeronautics',
+    description:
+      'NASA explores air and space from Headquarters in Washington, D.C., and from 20 centers and facilities across the United States. Congress created the agency in 1958. Work covers Earth science, the Sun and solar system, aeronautics, the International Space Station, and the Artemis campaign toward a sustained presence on the Moon. NASA Fellowships sit under the Minority University Research Education Project and award graduate research grants to Minority Serving Institutions, in partnership with the National GEM Consortium.',
+    socials: {
+      x: 'https://x.com/NASA',
+      linkedin: 'https://www.linkedin.com/company/nasa',
+      github: 'https://github.com/nasa',
+    },
+  },
   era: {
     slug: 'era',
     name: 'ERA',

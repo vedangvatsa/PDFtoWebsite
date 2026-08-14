@@ -105,6 +105,32 @@ describe('board vs company hub listing', () => {
     assert.equal(link.external, false);
     assert.equal(link.href.startsWith('http'), false);
   });
+
+  it('hub cards send thin curated bodies off-site', () => {
+    const link = companyHubJobLink({
+      id: 'abc',
+      company: 'OpenAI',
+      title: 'Software Engineer',
+      tags: ['curated-jd'],
+      apply_url: 'https://boards.greenhouse.io/openai/jobs/1',
+      description: Array.from({ length: 200 }, () => 'word').join(' '),
+    });
+    assert.equal(link.external, true);
+    assert.equal(link.href, 'https://boards.greenhouse.io/openai/jobs/1');
+  });
+
+  it('hub cards keep 600-word curated bodies on-site', () => {
+    const link = companyHubJobLink({
+      id: 'abc',
+      company: 'OpenAI',
+      title: 'Software Engineer',
+      tags: ['curated-jd'],
+      apply_url: 'https://boards.greenhouse.io/openai/jobs/1',
+      description: Array.from({ length: 600 }, () => 'word').join(' '),
+    });
+    assert.equal(link.external, false);
+    assert.equal(link.href.startsWith('http'), false);
+  });
 });
 
 describe('company hub query contracts', () => {

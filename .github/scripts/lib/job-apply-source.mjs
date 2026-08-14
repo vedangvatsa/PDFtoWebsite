@@ -2,6 +2,7 @@
 import { isJobExpired } from '../../../src/lib/job-age.mjs';
 import { isLowQualityApplySource } from '../../../src/lib/job-apply-hosts.mjs';
 import { isBannedJobTitle } from '../../../src/lib/banned-jobs.mjs';
+import { fellowshipPublishBlockReason } from '../../../src/lib/fellowship-publish-gate.mjs';
 
 export { isLowQualityApplySource };
 export const MIN_WORDS = 600;
@@ -20,20 +21,32 @@ export function descriptionWords(description) {
   return text.split(/\s+/).filter(Boolean).length;
 }
 
+export function curatedJdMeetsWordFloor(description) {
+  if (description == null) return true;
+  return descriptionWords(description) >= MIN_WORDS;
+}
+
 export function isFullyEnrichedJob(job) {
-  return isCuratedJd(job.tags);
+  return isCuratedJd(job.tags) && descriptionWords(job.description) >= MIN_WORDS;
 }
 
 /** Public URL may render (closed curated OK). Uncurated stubs are not pages. */
 export function isPublicJobPage(job) {
   if (isBannedJobTitle(job?.title)) return false;
   if (!isCuratedJd(job?.tags)) return false;
+  if (!curatedJdMeetsWordFloor(job?.description)) return false;
   if (isLowQualityApplySource(job?.apply_url)) return false;
+  const fellowish =
+    /\bfellow/i.test(String(job?.title || '')) ||
+    String(job?.category || '').toLowerCase() === 'fellowship' ||
+    String(job?.source || '') === 'fellowship-discover' ||
+    (Array.isArray(job?.tags) && job.tags.some((t) => /^fellowship$/i.test(String(t))));
+  if (fellowish && fellowshipPublishBlockReason(job)) return false;
   return true;
 }
 
 export function shouldQueueForManualEnrich(job, _opts = {}) {
-  if (isCuratedJd(job.tags)) return false;
+  if (isFullyEnrichedJob(job)) return false;
   if (isLowQualityApplySource(job.apply_url)) return false;
   return descriptionWords(job.description) < MIN_WORDS;
 }

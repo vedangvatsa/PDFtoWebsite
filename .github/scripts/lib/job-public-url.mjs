@@ -7,7 +7,7 @@ import { createHash } from 'crypto';
 
 export const RESERVED_JOB_SEGMENTS = new Set([
   'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
-  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+  'api', 'editor', 'login', 'signup', 'jobs', 'fellowships', 'blog', 'admin',
 ]);
 
 export function decodeHtmlEntities(s) {

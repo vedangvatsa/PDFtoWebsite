@@ -53,12 +53,14 @@ export const HOST_BRANDS = {
   'x.ai': 'xAI',
   'iisc.ac.in': 'IISc',
   'erafellowship.org': 'ERA',
+  'nasa.gov': 'NASA',
 };
 
 /** Mixed-case / known labels that Title Case / ALL CAPS would get wrong. */
 export const SHORT_BRANDS = {
   iisc: 'IISc',
   era: 'ERA',
+  nasa: 'NASA',
 };
 
 export function hostnameOf(url) {

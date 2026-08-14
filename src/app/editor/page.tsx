@@ -752,7 +752,7 @@ export default function EditorPage() {
         
         const RESERVED_SLUGS = [
             'admin', 'blog', 'editor', 'signup', 'login', 'preview', 'privacy', 'terms', 'auth', 'api',
-            'settings', 'dashboard', 'sitemap', 'robots', 'media', 'nomad', 'jobs', 'visas', 'costs',
+            'settings', 'dashboard', 'sitemap', 'robots', 'media', 'nomad', 'jobs', 'fellowships', 'visas', 'costs',
             'hiring', 'talent', 'discover', 'layoffs', 'news', 'resources', 'contact',
             'story', 'compare', 'companies', 'climate', 'fire', 'rankings', 'schengen',
             'tax', 'timezone', 'profile', 'user', 'home', 'about', 'help', 'support',

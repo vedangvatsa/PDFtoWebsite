@@ -62,6 +62,7 @@ const BRAND_DISPLAY_NAMES: Record<string, string> = {
   'jp morgan': 'JPMorgan',
   iisc: 'IISc',
   era: 'ERA',
+  nasa: 'NASA',
 };
 
 /** Common org / place tokens used to split mashed domain labels (apartresearch). */
@@ -309,6 +310,11 @@ export const COMPANY_BLOCKLIST = new Set([
   'careers',
   'recruitment',
   'staffing',
+  'efinancialcareers',
+  'we work remotely',
+  'weworkremotely',
+  'remoteok',
+  'remote ok',
   'tbd',
   'tba',
   'self-employed',
@@ -343,6 +349,9 @@ export function isJunkCompanyName(raw: string): boolean {
   if (/@/.test(name) && !/\.ai\b/i.test(name)) return true;
   // "Careers - Foo", "Jobs at Foo" as company field
   if (/^(careers?|jobs?|hiring)\s*[-–—|:]/i.test(name)) return true;
+  // Off-board industries that leak in via RemoteOK listing pages
+  if (/\b(janitorial|apples?\s+and\s+pears?|pome\s+fruit)\b/i.test(lower)) return true;
+  if (/\b(efinancialcareers|we work remotely|remoteok|totaljobs|guardian jobs)\b/i.test(lower)) return true;
   if (isRegistryCompanyLabel(name)) return true;
   return false;
 }
@@ -405,6 +414,8 @@ export const COMPANY_NAME_MAP: Record<string, string> = {
   'era fellowship': 'ERA',
   erafellowship: 'ERA',
   'era:ai': 'ERA',
+  nasa: 'NASA',
+  'national aeronautics and space administration': 'NASA',
   anthropic: 'Anthropic',
   alignment: 'Anthropic',
   governance: 'GovAI',

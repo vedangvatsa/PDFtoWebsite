@@ -62,7 +62,7 @@ function companyToSlug(company) {
 /** UTM suffixes + app routes — never emit these as standalone job slug segments. */
 const RESERVED_SLUGS = new Set([
   'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
-  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+  'api', 'editor', 'login', 'signup', 'jobs', 'fellowships', 'blog', 'admin',
 ]);
 
 /**

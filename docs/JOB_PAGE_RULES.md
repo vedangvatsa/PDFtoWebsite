@@ -6,8 +6,8 @@ Canonical for public job URLs. Also: `noslop.md` · `docs/JD_PARAPHRASE_RULES.md
 
 | Age | Ingest | Row | URL | Apply | Google Search | Google Jobs | Board / sitemap |
 |-----|--------|-----|-----|-------|---------------|-------------|-----------------|
-| Under 30 days | Accept if posting date is fresh | Keep (enrich queue until curated) | 200 only if curated-jd; else 301 to hub/`/jobs` | On | Index only if curated ≥600w + gates | JobPosting only if indexable | Yes if curated + not expired |
-| 30 days or older | Drop. Do not insert. | Keep. Do not hard-delete. | 200 + closed notice | Off | Same as above. Closed is not a reason to noindex. | No JobPosting | No |
+    | Under 30 days | Accept if posting date is fresh | Keep (enrich queue until curated) | 200 only if curated-jd **and ≥600 words**; else 301 to hub/`/jobs` | On | Index only if curated ≥600w + gates | JobPosting only if indexable | Yes if curated + not expired |
+    | 30 days or older | Drop. Do not insert. | Keep. Do not hard-delete. | 200 + closed notice only if curated-jd **and ≥600 words**; else 301 | Off | Same as above. Closed is not a reason to noindex. | No JobPosting | No |
 
 Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not a hard 404.
 

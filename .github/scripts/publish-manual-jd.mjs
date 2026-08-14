@@ -17,6 +17,7 @@ import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
 import { checkManualPage } from './lib/jd-manual-gates.mjs';
 import { isFullyEnrichedJob } from './lib/job-apply-source.mjs';
+import { fellowshipPublishBlockReason } from '../../src/lib/fellowship-publish-gate.mjs';
 import {
   normalizeJobDescriptionForStorage,
   descriptionHasWriterLeak,
@@ -54,7 +55,7 @@ function prettyJobSlug(title, uniqueSeed, used) {
     .replace(/^-+|-+$/g, '')
     .slice(0, 40);
   let slug = base.slice(0, 24) || 'role';
-  const RESERVED = new Set(['jobs', 'blog', 'editor', 'api', 'admin']);
+  const RESERVED = new Set(['jobs', 'fellowships', 'blog', 'editor', 'api', 'admin']);
   if (used.has(slug) || RESERVED.has(slug)) {
     const h = createHash('md5').update(String(uniqueSeed)).digest('hex').slice(0, 2);
     slug = `${(base.split('-')[0] || 'role').slice(0, 6)}-${h}`;
@@ -97,7 +98,7 @@ async function main() {
     process.exit(2);
   }
 
-  const r = await fetch(`${U}/rest/v1/jobs?id=eq.${id}&select=id,title,company,company_key,tags,external_id,apply_url,description`, {
+  const r = await fetch(`${U}/rest/v1/jobs?id=eq.${id}&select=id,title,company,company_key,tags,external_id,apply_url,description,source`, {
     headers: { apikey: K, Authorization: `Bearer ${K}` },
   });
   const rows = await r.json();
@@ -106,6 +107,11 @@ async function main() {
     process.exit(1);
   }
   const job = rows[0];
+  const fellowshipBlock = fellowshipPublishBlockReason(job);
+  if (fellowshipBlock && !FORCE) {
+    console.error(`Fellowship listing is not a current posting (${fellowshipBlock}).`);
+    process.exit(2);
+  }
   if (isFullyEnrichedJob(job) && !FORCE) {
     console.error('Job already has curated-jd (enriched). Refusing to overwrite. FORCE=1 to override.');
     process.exit(3);
