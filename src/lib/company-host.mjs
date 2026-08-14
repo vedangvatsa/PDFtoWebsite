@@ -84,6 +84,23 @@ export function isRegistryCompanyLabel(name) {
   return Boolean(compact) && REGISTRY_LABELS.has(compact);
 }
 
+/**
+ * Placeholder employer names from aggregators (JSearch `employer_name: Other`,
+ * RiseIn `/other/…` path buckets). Never a public brand. Do not treat apply-URL
+ * path segments as the company — that is how `/other/` became "Other".
+ */
+export const GENERIC_COMPANY_LABELS = new Set([
+  'other', 'unknown', 'company', 'companies', 'job', 'jobs', 'career', 'careers',
+  'hiring', 'various', 'none', 'null', 'undefined', 'na', 'tba', 'tbd',
+  'confidential', 'selfemployed', 'freelance', 'recruitment', 'staffing',
+  'multiplecompanies', 'notapplicable',
+]);
+
+export function isGenericCompanyLabel(name) {
+  const compact = compactCompanyLabel(name);
+  return Boolean(compact) && GENERIC_COMPANY_LABELS.has(compact);
+}
+
 /** Brand label of a host: iisc.ac.in → iisc, jobs.stripe.com → stripe. */
 export function registrableHostLabel(host) {
   const labels = String(host || '')
@@ -103,6 +120,22 @@ export function registrableHostLabel(host) {
     return labels[labels.length - 3];
   }
   return second;
+}
+
+/** ATS products — never the employer brand (asgi.bamboohr.com is not BambooHR). */
+export const ATS_VENDOR_LABELS = new Set([
+  'bamboohr', 'greenhouse', 'lever', 'ashbyhq', 'ashby', 'smartrecruiters',
+  'workday', 'myworkdayjobs', 'icims', 'jobvite', 'recruitee', 'breezy',
+  'workable', 'personio', 'greenhouseio',
+]);
+
+const ATS_TENANT_SKIP = new Set([
+  'www', 'jobs', 'job', 'boards', 'board', 'app', 'careers', 'apply', 'cdn',
+]);
+
+export function isAtsVendorHost(host) {
+  const brand = registrableHostLabel(host);
+  return Boolean(brand) && ATS_VENDOR_LABELS.has(brand);
 }
 
 function labelToDisplay(label) {
@@ -128,6 +161,26 @@ export function companyNameFromApply(name, applyUrl) {
 
   const labels = host.split('.').filter(Boolean);
   const brandLabel = registrableHostLabel(host);
+  if (isAtsVendorHost(host)) {
+    if (
+      trimmed &&
+      !isGenericCompanyLabel(trimmed) &&
+      !isRegistryCompanyLabel(trimmed) &&
+      compactCompanyLabel(trimmed) !== brandLabel
+    ) {
+      return trimmed;
+    }
+    const tenant = labels.find(
+      (l) =>
+        l &&
+        !ATS_TENANT_SKIP.has(l) &&
+        !ATS_VENDOR_LABELS.has(l) &&
+        !REGISTRY_LABELS.has(l) &&
+        !isGenericCompanyLabel(l)
+    );
+    if (tenant) return labelToDisplay(tenant);
+    return trimmed;
+  }
   const tld = labels[labels.length - 1] || '';
   const stored = compactCompanyLabel(trimmed);
   if (brandLabel && HOST_BRANDS[`${brandLabel}.${tld}`]) {

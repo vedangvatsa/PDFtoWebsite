@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
+import CompanyLogo from '@/components/company-logo';
 import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
@@ -114,9 +115,9 @@ const FELLOWSHIP_LOGOS = [
   { name: 'ERA', domain: 'erafellowship.org' },
   { name: 'Anthropic', domain: 'anthropic.com' },
   { name: 'Apple', domain: 'apple.com' },
-  { name: 'Google', domain: 'google.com' },
-  { name: 'Horizon', domain: 'horizonpublicservice.org' },
+  { name: 'MATS', domain: 'matsprogram.org' },
   { name: 'GovAI', domain: 'governance.ai' },
+  { name: 'Horizon', domain: 'horizonpublicservice.org' },
 ];
 
 export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellowships' }) {
@@ -268,10 +269,13 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
           {/* Company logos strip */}
           <div className="flex items-center gap-3 mt-3 overflow-hidden">
             {(isFellowships ? FELLOWSHIP_LOGOS : JOBS_LOGOS).map((c, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={c.name} src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`} alt={`${c.name} logo — ${isFellowships ? 'open fellowships' : 'hiring remote jobs'}`} title={c.name}
+              <CompanyLogo
+                key={c.name}
+                name={c.name}
+                size={24}
                 className={`h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0 ${i >= 6 ? 'hidden sm:block' : ''}`}
-                loading="lazy" />
+                alt={`${c.name} logo — ${isFellowships ? 'open fellowships' : 'hiring remote jobs'}`}
+              />
             ))}
             <span className="text-xs text-zinc-400 shrink-0">{isFellowships ? 'Open programs' : '+150 more'}</span>
           </div>
@@ -436,23 +440,13 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
                 className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
                 onClick={(e) => handleJobClick(e, job)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={job.company_logo || `https://www.google.com/s2/favicons?domain=${job.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.com&sz=128`}
+                <CompanyLogo
+                  name={job.company}
+                  logo={job.company_logo}
+                  applyUrl={job.apply_url}
+                  size={20}
+                  className="h-5 w-5 rounded shrink-0 object-contain bg-white"
                   alt={`${job.company} logo — ${job.title} job listing`}
-                  className="h-5 w-5 rounded shrink-0 object-cover"
-                  loading="lazy"
-                  onLoad={(e) => {
-                    const el = e.target as HTMLImageElement;
-                    if (!job.company_logo && el.naturalWidth <= 16) {
-                      el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`;
-                    }
-                  }}
-                  onError={(e) => {
-                    const el = e.target as HTMLImageElement;
-                    el.onerror = null;
-                    el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`;
-                  }}
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 min-w-0">

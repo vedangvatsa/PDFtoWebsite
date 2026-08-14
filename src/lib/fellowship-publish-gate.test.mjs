@@ -96,6 +96,20 @@ describe('fellowshipPublishBlockReason', () => {
     );
   });
 
+  it('blocks landing-page titles that are not a posting', () => {
+    assert.equal(
+      fellowshipPublishBlockReason(
+        {
+          title: 'Become a Fellow',
+          apply_url: 'https://horizonpublicservice.org/programs/become-a-fellow/',
+          source: 'fellowship-discover',
+        },
+        now
+      ),
+      'not_a_posting'
+    );
+  });
+
   it('allows NASA and IISc institute pages the hub already curates', () => {
     assert.equal(
       fellowshipPublishBlockReason(

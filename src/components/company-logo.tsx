@@ -6,6 +6,7 @@ import { companyLogoCandidates } from '@/lib/company-logo';
 interface CompanyLogoProps {
   name: string;
   logo?: string | null;
+  applyUrl?: string | null;
   size?: number;
   className?: string;
   alt?: string;
@@ -19,13 +20,14 @@ interface CompanyLogoProps {
 export default function CompanyLogo({
   name,
   logo,
+  applyUrl,
   size = 20,
   className = 'h-5 w-5 rounded shrink-0 object-cover bg-white',
   alt,
 }: CompanyLogoProps) {
   const candidates = useMemo(
-    () => companyLogoCandidates(name, logo, Math.max(size * 2, 64)),
-    [name, logo, size]
+    () => companyLogoCandidates(name, logo, Math.max(size * 2, 64), applyUrl),
+    [name, logo, size, applyUrl]
   );
   const [index, setIndex] = useState(0);
   const src = candidates[Math.min(index, candidates.length - 1)];
@@ -47,7 +49,7 @@ export default function CompanyLogo({
           el.naturalWidth > 0 &&
           el.naturalWidth <= 16 &&
           index < candidates.length - 1 &&
-          /google\.com\/s2\/favicons/i.test(src);
+          /google\.com\/s2\/favicons|gstatic\.com\/favicon/i.test(src);
         if (isGenericGlobe) {
           setIndex((i) => Math.min(i + 1, candidates.length - 1));
         }

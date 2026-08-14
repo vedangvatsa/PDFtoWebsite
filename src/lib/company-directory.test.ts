@@ -5,6 +5,7 @@ import {
   applyCompanyDisplayCasing,
   isJunkCompanyName,
 } from './company-directory';
+import { domainForCompany, companyLogoCandidates } from './company-logo';
 import { isRegistryCompanyLabel } from './company-host.mjs';
 
 function assert(cond: unknown, msg: string) {
@@ -27,7 +28,8 @@ const iiscApply = 'https://www.iisc.ac.in/careers/post-doctoral-fellowship/';
 assert(companyDisplayName('iisc', iiscApply) === 'IISc', `iisc + apply → IISc, got ${companyDisplayName('iisc', iiscApply)}`);
 assert(companyDisplayName('AC', iiscApply) === 'IISc', 'stored AC (public suffix) → IISc');
 assert(companyDisplayName('iisc') === 'IISc', 'iisc without URL still maps');
-assert(companyDisplayName('jobs', 'https://jobs.ashbyhq.com/x') === 'Ashbyhq', 'subdomain jobs → registrable');
+assert(companyDisplayName('jobs', 'https://jobs.ashbyhq.com/x') !== 'Ashbyhq', 'ATS vendor is not the employer');
+assert(companyDisplayName('Jstreet', 'https://jstreet.bamboohr.com/careers/240') === 'J Street', 'BambooHR tenant stays J Street');
 assert(companyDisplayName('platform', 'https://platform.stripe.com/jobs') === 'Stripe', 'platform.stripe.com → Stripe');
 assert(companyDisplayName('govai', 'https://governance.ai/jobs') === 'GovAI', 'HOST_BRANDS governance.ai');
 assert(companyDisplayName('careers', 'https://careers.google.com/jobs') === 'Google', 'careers.google.com → Google');
@@ -86,6 +88,19 @@ assert(companyDisplayName('erafellowship', 'https://erafellowship.org/fellowship
 assert(isJunkCompanyName('eFinancialCareers'), 'job-board companies are junk');
 assert(isJunkCompanyName('We Work Remotely'), 'WWR as company is junk');
 assert(isJunkCompanyName('Whiterose Janitorial Services'), 'janitorial company is junk');
+assert(isJunkCompanyName('Other'), 'generic Other is junk');
+assert(isJunkCompanyName('risein'), 'RiseIn aggregator as company is junk');
 assert(!isJunkCompanyName('Stripe'), 'Stripe is not junk');
+
+assert(domainForCompany('NASA') === 'nasa.gov', 'NASA domain');
+assert(domainForCompany('IISc') === 'iisc.ac.in', 'IISc domain');
+assert(domainForCompany('GovAI') === 'governance.ai', 'GovAI domain');
+assert(domainForCompany('SPAR') === 'sparai.org', 'SPAR is not spar.com');
+assert(domainForCompany('MATS') === 'matsprogram.org', 'MATS program domain');
+assert(domainForCompany('The New York Times') === 'nytimes.com', 'NYT domain');
+
+assert(companyLogoCandidates('NASA').includes('/company-logos/nasa.png'), 'NASA uses local meatball');
+assert(companyLogoCandidates('GovAI').includes('/company-logos/govai.png'), 'GovAI uses local mark');
+assert(companyLogoCandidates('SPAR').includes('/company-logos/spar.png'), 'SPAR uses local mark not spar.com');
 
 console.log('ok');

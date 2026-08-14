@@ -14,6 +14,7 @@ import { isJobExpired } from '@/lib/job-age';
 import { isLowQualityApplySource } from '@/lib/job-apply-hosts.mjs';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 import { fellowshipPublishBlockReason } from '@/lib/fellowship-publish-gate.mjs';
+import { isGenericCompanyLabel } from '@/lib/company-host.mjs';
 
 export const CURATED_JD_TAG = 'curated-jd';
 
@@ -44,6 +45,7 @@ export function isFullyEnrichedJob(job: {
 
 export type PublicJobGate = {
   title?: string | null;
+  company?: string | null;
   tags?: unknown;
   apply_url?: string | null;
   published_at?: string | null;
@@ -61,6 +63,7 @@ export type PublicJobGate = {
 export function isPublicJobPage(job: PublicJobGate): boolean {
   if (isBannedJobTitle(job.title)) return false;
   if (isGarbageJobTitle(job.title)) return false;
+  if (isGenericCompanyLabel(job.company)) return false;
   if (!isCuratedJd(job.tags)) return false;
   if (!curatedJdMeetsWordFloor(job.description)) return false;
   if (isLowQualityApplySource(job.apply_url)) return false;

@@ -76,6 +76,7 @@ export function fellowshipPublishBlockReason(job, now = new Date()) {
 
   if (ALLOW_COMPANY_KEYS.has(compactKey(job))) return null;
   if (/paused/i.test(title)) return 'paused_program';
+  if (/^become a fellow$/i.test(title.trim())) return 'not_a_posting';
   if (pastOnly) return 'closed_cycle';
   if (NEWS_RE.test(url) || /explaining the|read more$/i.test(title)) return 'not_a_posting';
 

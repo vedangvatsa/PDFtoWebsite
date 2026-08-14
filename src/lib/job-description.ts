@@ -11,7 +11,7 @@ import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { toCompanySlug, applyCompanyDisplayCasing } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 25;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 26;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -27,7 +27,7 @@ const PLACEHOLDER_FACT_VALUE =
 const INSTRUCTION_COPY =
   /\b(?:omit(?:ted)?\s+(?:the line|the whole section|section|if source|if unknown|if empty)|only if source|only hours, travel, visa|remove this line|per source instructions|only include if|fact sheet json|output only the job page|(?:3-5 sentences|8-12 bullets|every must_have))\b/i;
 const PAGE_META_COPY =
-  /\bthis page does not\b|\bthis listing is the (?:only )?source\b|\bduties (?:remain|are only) those\b|\bdo the work posted for\b|\babout this (?:kind|type) of role\b|\bfollow scope\b|\bgeneral (?:engineering|workplace|working)[- ]practice\b|\bspecific duties remain\b|\bcvin\.bio does not submit\b|\ba public cv link is optional\b|\bomit the whole section\b|\bonly hours, travel, visa\b/i;
+  /\bthis page does not\b|\bthis listing is the (?:only )?source\b|\bduties (?:remain|are only) those\b|\bdo the work posted for\b|\babout this (?:kind|type) of role\b|\bfollow scope\b|\bgeneral (?:engineering|workplace|working)[- ]practice\b|\bspecific duties remain\b|\bcvin\.bio does not submit\b|\ba public cv link is optional\b|\bomit the whole section\b|\bonly hours, travel, visa\b|\bnot specified in the source\b|\bthe role is (?:full_time|part_time|contract|internship)\b/i;
 const ORPHAN_FILLER = /^(please|todo|tbd|n\/a|none|source:?)\.?$/i;
 
 function plainFromHtmlish(s: string): string {
@@ -202,9 +202,28 @@ export function looksLikeFellowship(job: {
   category?: string | null;
   tags?: string[] | null;
 }): boolean {
+  if (isFalseFellowshipProgramTitle(job.title)) return false;
   if (String(job.category || '').toLowerCase() === 'fellowship') return true;
   if ((job.tags || []).some((t) => /^fellowship$/i.test(String(t)))) return true;
   if (/\bfellow(?:ship|s)?\b/i.test(String(job.title || ''))) return true;
+  return false;
+}
+
+/** Job titles that mention fellow/residency but are not an open fellowship program. */
+export function isFalseFellowshipProgramTitle(title: string | null | undefined): boolean {
+  const t = String(title || '').replace(/\s+/g, ' ').trim();
+  if (!t) return false;
+  if (/^become a fellow$/i.test(t)) return true;
+  if (/\bfellowship[- ]trained\b/i.test(t)) return true;
+  if (/\bfellowship service representative\b/i.test(t)) return true;
+  if (/\bfellow experience specialist\b/i.test(t)) return true;
+  if (/\bfellows project program coordinator\b/i.test(t)) return true;
+  if (/\bprogram manager\b/i.test(t) && /\bfellowship program\b/i.test(t)) return true;
+  if (/\b(?:engineering )?technical fellow\b/i.test(t)) return true;
+  if (/\bresidency(?:-|\s+)trained\b/i.test(t)) return true;
+  if (/\bresidency manager\b/i.test(t)) return true;
+  if (/\bboard-certified\b/i.test(t)) return true;
+  if (/\bin[- ]residence\b/i.test(t) && !/\bfellowship\b/i.test(t)) return true;
   return false;
 }
 
@@ -1085,8 +1104,12 @@ export function addJobApplyUtm(url: string, medium = 'job_detail'): string {
   }
 }
 
-export function companyLogoFallback(company: string, logo: string | null | undefined): string {
-  return primaryCompanyLogoUrl(company, logo, 128);
+export function companyLogoFallback(
+  company: string,
+  logo: string | null | undefined,
+  applyUrl?: string | null
+): string {
+  return primaryCompanyLogoUrl(company, logo, 128, applyUrl);
 }
 
 export function jobTypeLabel(

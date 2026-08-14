@@ -52,4 +52,10 @@ const htmlClean = stripLeakedWriterInstructions(html);
 assert(!/See source/i.test(htmlClean), 'html See source gone');
 assert(/Berlin/.test(htmlClean), 'html kept location');
 
+const residue = 'Preferred items are not specified in the source.\nThe role is full_time.';
+assert(descriptionHasWriterLeak(residue), 'detects not-specified / raw job_type leaks');
+const residueClean = stripLeakedWriterInstructions(residue);
+assert(!/not specified in the source/i.test(residueClean), `source residue gone: ${residueClean}`);
+assert(!/full_time/.test(residueClean), `raw job_type gone: ${residueClean}`);
+
 console.log('ok');

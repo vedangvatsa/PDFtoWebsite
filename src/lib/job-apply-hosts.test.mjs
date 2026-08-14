@@ -29,6 +29,15 @@ describe('unofficial apply boards are low quality', () => {
     );
   });
 
+  it('rejects RiseIn aggregator apply URLs', () => {
+    assert.equal(
+      isLowQualityApplySource(
+        'https://www.risein.com/other/staff-software-engineer-ai-reliability-engineering-london'
+      ),
+      true
+    );
+  });
+
   it('rejects We Work Remotely and RemoteOK apply URLs', () => {
     assert.equal(
       isLowQualityApplySource(

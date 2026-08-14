@@ -6,24 +6,43 @@
 import { getCompanyMeta } from '@/lib/company-data';
 import companyDomains from '@/lib/company-domains.json';
 import companyLinksOverlay from '@/lib/company-links.json';
+import { hostnameOf, isAtsVendorHost, registrableHostLabel } from '@/lib/company-host.mjs';
+import { isLowQualityApplySource } from '@/lib/job-apply-hosts.mjs';
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
-
-/**
- * Hard-coded logos for orgs without a public web favicon.
- * Indian Army emblem mirrored at /company-logos/indian-army.png (from IAIP posting asset).
- * MoSPI: national emblem from internship.mospi.gov.in favicon (mirrored at /company-logos/mospi.png).
- */
 const LOGO_OVERRIDES: Record<string, string> = {
-  google: `${SITE_URL}/company-logos/google.png`,
-  'indian army': `${SITE_URL}/company-logos/indian-army.png`,
-  'niti aayog': `${SITE_URL}/company-logos/niti-aayog.png`,
-  mospi: `${SITE_URL}/company-logos/mospi.png`,
-  'iit bombay': `${SITE_URL}/company-logos/iit-bombay.png`,
-  'iit bombay (sjmsom)': `${SITE_URL}/company-logos/iit-bombay.png`,
-  nasa: `${SITE_URL}/company-logos/nasa.png`,
-  iisc: `${SITE_URL}/company-logos/iisc.png`,
-  'indian institute of science': `${SITE_URL}/company-logos/iisc.png`,
+  google: '/company-logos/google.png',
+  'indian army': '/company-logos/indian-army.png',
+  'niti aayog': '/company-logos/niti-aayog.png',
+  mospi: '/company-logos/mospi.png',
+  'iit bombay': '/company-logos/iit-bombay.png',
+  'iit bombay (sjmsom)': '/company-logos/iit-bombay.png',
+  nasa: '/company-logos/nasa.png',
+  iisc: '/company-logos/iisc.png',
+  'indian institute of science': '/company-logos/iisc.png',
+  govai: '/company-logos/govai.png',
+  governance: '/company-logos/govai.png',
+  'governance ai': '/company-logos/govai.png',
+  anthropic: '/company-logos/anthropic.png',
+  apple: '/company-logos/apple.png',
+  era: '/company-logos/era.png',
+  'era fellowship': '/company-logos/era.png',
+  mats: '/company-logos/mats.png',
+  spar: '/company-logos/spar.png',
+  'horizon institute for public service': '/company-logos/horizon.png',
+  horizonpublicservice: '/company-logos/horizon.png',
+  'aspen tech policy hub': '/company-logos/aspen-tech-policy-hub.png',
+  aspentechpolicyhub: '/company-logos/aspen-tech-policy-hub.png',
+  'its rio': '/company-logos/its-rio.png',
+  'the new york times': '/company-logos/the-new-york-times.png',
+  'the good food institute': '/company-logos/the-good-food-institute.png',
+  cern: '/company-logos/cern.png',
+  'j street': '/company-logos/j-street.png',
+  jstreet: '/company-logos/j-street.png',
+  'scale ai': '/company-logos/scale-ai.png',
+  anduril: '/company-logos/anduril.png',
+  'anduril industries': '/company-logos/anduril.png',
+  doordash: '/company-logos/doordash.png',
+  'doordash usa': '/company-logos/doordash.png',
   elevenlabs: 'https://elevenlabs.io/favicon.ico',
 };
 
@@ -91,6 +110,24 @@ const DOMAIN_OVERRIDES: Record<string, string> = {
   nasa: 'nasa.gov',
   iisc: 'iisc.ac.in',
   'indian institute of science': 'iisc.ac.in',
+  govai: 'governance.ai',
+  governance: 'governance.ai',
+  'governance ai': 'governance.ai',
+  mats: 'matsprogram.org',
+  spar: 'sparai.org',
+  'horizon institute for public service': 'horizonpublicservice.org',
+  horizonpublicservice: 'horizonpublicservice.org',
+  'aspen tech policy hub': 'aspentechpolicyhub.org',
+  aspentechpolicyhub: 'aspentechpolicyhub.org',
+  'its rio': 'itsrio.org',
+  'the new york times': 'nytimes.com',
+  'new york times': 'nytimes.com',
+  'the good food institute': 'gfi.org',
+  cern: 'home.cern',
+  handshake: 'joinhandshake.com',
+  'j street': 'jstreet.org',
+  jstreet: 'jstreet.org',
+  'alliance defending freedom': 'adflegal.org',
   cursor: 'cursor.com',
   applied: 'applied.co',
   sierra: 'sierra.ai',
@@ -161,10 +198,22 @@ export function companyBaseName(name: string): string {
     .replace(/\s+/g, '');
 }
 
+const LOGO_FORM_HOSTS = new Set(['airtable', 'typeform', 'google', 'gle', 'notion']);
+
+function logoHostFromApply(applyUrl?: string | null): string | null {
+  if (!applyUrl) return null;
+  if (isLowQualityApplySource(applyUrl)) return null;
+  const host = hostnameFromUrl(applyUrl) || hostnameOf(applyUrl);
+  if (!host || isAtsVendorHost(host)) return null;
+  const brand = registrableHostLabel(host);
+  if (!brand || LOGO_FORM_HOSTS.has(brand)) return null;
+  return host;
+}
+
 /**
  * Best-effort public website host for a company name.
  */
-export function domainForCompany(name: string): string {
+export function domainForCompany(name: string, applyUrl?: string | null): string {
   const key = name.toLowerCase().trim();
   if (DOMAIN_OVERRIDES[key]) return DOMAIN_OVERRIDES[key];
 
@@ -188,6 +237,9 @@ export function domainForCompany(name: string): string {
   if (/\.[a-z]{2,}$/i.test(key) && !/\s/.test(key)) {
     return key.replace(/^https?:\/\//, '').replace(/^www\./, '');
   }
+
+  const fromApply = logoHostFromApply(applyUrl);
+  if (fromApply) return fromApply;
 
   // Default: cleaned name + .com
   const guess = (base || compact || 'example').slice(0, 63);
@@ -314,8 +366,13 @@ export function trustedCompanyWebsiteUrl(
   return `https://${host}`;
 }
 
-/** Google favicon CDN (reliable, sometimes low-res for unknown domains). */
+/** Google Search favicon CDN — returns a real mark at 32/64/128, not the 16px globe. */
 export function googleFaviconUrl(domain: string, size = 64): string {
+  const s = size >= 128 ? 128 : size >= 64 ? 64 : 32;
+  return `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${encodeURIComponent(`https://${domain}`)}&size=${s}`;
+}
+
+export function googleS2FaviconUrl(domain: string, size = 64): string {
   return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=${size}`;
 }
 
@@ -334,6 +391,25 @@ export function initialsLogoUrl(name: string, size = 64): string {
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=18181b&color=fff&size=${size}&bold=true&format=png`;
 }
 
+function companyLogoSlug(name: string): string {
+  return String(name || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function localLogoPaths(name: string): string[] {
+  const slug = companyLogoSlug(name);
+  const compact = slug.replace(/-/g, '');
+  const out: string[] = [];
+  if (slug) out.push(`/company-logos/${slug}.png`);
+  if (compact && compact !== slug) out.push(`/company-logos/${compact}.png`);
+  const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
+  if (override) out.push(override);
+  return out;
+}
+
 /**
  * Ordered logo candidates for a company.
  * Client walks the list on error / tiny default favicon.
@@ -341,15 +417,15 @@ export function initialsLogoUrl(name: string, size = 64): string {
 export function companyLogoCandidates(
   name: string,
   storedLogo?: string | null,
-  size = 64
+  size = 64,
+  applyUrl?: string | null
 ): string[] {
-  const domain = domainForCompany(name);
+  const domain = domainForCompany(name, applyUrl);
   const out: string[] = [];
-  if (isReliableStoredLogo(storedLogo)) {
+  if (isReliableStoredLogo(storedLogo) && !/google\.com\/s2\/favicons|gstatic\.com\/favicon/i.test(storedLogo!)) {
     out.push(storedLogo!);
   }
-  const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
-  if (override) out.push(override);
+  out.push(...localLogoPaths(name));
   // Fallback: original IAIP-hosted Indian Army emblem if CDN mirror 404s pre-deploy
   if (name.toLowerCase().trim() === 'indian army') {
     out.push(
@@ -363,10 +439,9 @@ export function companyLogoCandidates(
     out.push('https://www.niti.gov.in/favicon.ico');
   }
   out.push(googleFaviconUrl(domain, size));
+  out.push(googleS2FaviconUrl(domain, size));
   out.push(ddgIconUrl(domain));
-  out.push(clearbitLogoUrl(domain));
   out.push(initialsLogoUrl(name, size));
-  // de-dupe
   return [...new Set(out)];
 }
 
@@ -377,10 +452,9 @@ export function companyLogoCandidates(
 export function primaryCompanyLogoUrl(
   name: string,
   storedLogo?: string | null,
-  size = 64
+  size = 64,
+  applyUrl?: string | null
 ): string {
-  if (isReliableStoredLogo(storedLogo)) return storedLogo!;
-  const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
-  if (override) return override;
-  return googleFaviconUrl(domainForCompany(name), size);
+  const first = companyLogoCandidates(name, storedLogo, size, applyUrl)[0];
+  return first || googleFaviconUrl(domainForCompany(name, applyUrl), size);
 }

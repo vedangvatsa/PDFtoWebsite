@@ -218,8 +218,8 @@ export function normalizeLocation(raw: string): string {
 
   const lower = loc.toLowerCase().trim();
 
-  // Exact match
-  if (EXACT_MAP[lower]) return EXACT_MAP[lower];
+  // Exact match (including empty overrides like "Unknown" → hide)
+  if (Object.prototype.hasOwnProperty.call(EXACT_MAP, lower)) return EXACT_MAP[lower];
 
   // City pattern matching
   for (const [pattern, city] of CITY_PATTERNS) {

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   applyCanonicalCompany,
   companyNameFromApply,
+  isGenericCompanyLabel,
   isRegistryCompanyLabel,
   registrableHostLabel,
 } from './company-host.mjs';
@@ -55,6 +56,26 @@ describe('companyNameFromApply', () => {
     assert.equal(
       companyNameFromApply('ERA', 'https://airtable.com/appaZQNjlqYOCy4lV/pag0VHHxQWTBRmHHS/form'),
       'ERA'
+    );
+  });
+
+  it('does not treat aggregator path buckets as the employer', () => {
+    const risein =
+      'https://www.risein.com/other/staff-software-engineer-ai-reliability-engineering-london';
+    assert.equal(companyNameFromApply('Other', risein), 'Other');
+    assert.equal(isGenericCompanyLabel('Other'), true);
+    assert.equal(isGenericCompanyLabel('Unknown'), true);
+    assert.equal(isGenericCompanyLabel('Stripe'), false);
+  });
+
+  it('does not replace the employer with an ATS vendor', () => {
+    assert.equal(
+      companyNameFromApply('Jstreet', 'https://jstreet.bamboohr.com/careers/240'),
+      'Jstreet'
+    );
+    assert.notEqual(
+      companyNameFromApply('jobs', 'https://jobs.ashbyhq.com/acme/jobs/1'),
+      'Ashbyhq'
     );
   });
 });

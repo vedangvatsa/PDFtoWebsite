@@ -111,4 +111,16 @@ describe('public job gate', () => {
     };
     assert.equal(isPublicJobPage(job), false);
   });
+
+  it('rejects generic employer labels even when curated', () => {
+    const job = {
+      title: 'Staff Software Engineer, AI Reliability Engineering',
+      company: 'Other',
+      tags: ['curated-jd'],
+      apply_url: 'https://boards.greenhouse.io/acme/jobs/1',
+      published_at: new Date().toISOString(),
+      description: Array.from({ length: 600 }, () => 'word').join(' '),
+    };
+    assert.equal(isPublicJobPage(job), false);
+  });
 });

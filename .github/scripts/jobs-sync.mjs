@@ -17,7 +17,7 @@ import {
 } from './lib/job-public-url.mjs';
 import { isLowQualityApplySource } from './lib/job-apply-source.mjs';
 import { BANNED_REGEX as BANNED_JOB_REGEX } from '../../src/lib/banned-jobs.mjs';
-import { applyCanonicalCompany, isRegistryCompanyLabel } from '../../src/lib/company-host.mjs';
+import { applyCanonicalCompany, isGenericCompanyLabel, isRegistryCompanyLabel } from '../../src/lib/company-host.mjs';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -3004,6 +3004,7 @@ function filterAndNormalize(allJobs) {
     applyCanonicalCompany(j);
     if (j.company.includes('...') || j.company.length <= 2) return false;
     if (isRegistryCompanyLabel(j.company)) return false;
+    if (isGenericCompanyLabel(j.company)) return false;
     if (BLOCKED_COMPANIES.includes(j.company.toLowerCase().trim())) return false;
     const lowerTitle = j.title.toLowerCase();
     if (BLOCKED_TITLE_WORDS.some(w => lowerTitle.includes(w))) return false;

@@ -83,7 +83,7 @@ export default function JobDetailClient({
   const [userSkills] = useState(initialSkills);
   const [isUploading, setIsUploading] = useState(false);
   const [logoSrc, setLogoSrc] = useState(
-    companyLogoFallback(job.company, job.company_logo)
+    companyLogoFallback(job.company, job.company_logo, job.apply_url)
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();

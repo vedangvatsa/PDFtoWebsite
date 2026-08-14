@@ -7,6 +7,7 @@
 import {
   companyNameFromApply,
   hostnameOf,
+  isGenericCompanyLabel,
   isRegistryCompanyLabel,
   registrableHostLabel,
 } from './company-host.mjs';
@@ -14,6 +15,7 @@ import {
 export {
   applyCanonicalCompany,
   companyNameFromApply,
+  isGenericCompanyLabel,
   isRegistryCompanyLabel,
   registrableHostLabel,
 } from './company-host.mjs';
@@ -299,6 +301,7 @@ export const COMPANY_BLOCKLIST = new Set([
   'careers.azx.io',
   'brook hiddink - highticket.io',
   'unknown',
+  'other',
   'n/a',
   'na',
   'none',
@@ -308,6 +311,7 @@ export const COMPANY_BLOCKLIST = new Set([
   'hiring',
   'jobs',
   'careers',
+  'risein',
   'recruitment',
   'staffing',
   'efinancialcareers',
@@ -334,6 +338,7 @@ export function isJunkCompanyName(raw: string): boolean {
   if (name.includes('...')) return true;
   const lower = name.toLowerCase();
   if (COMPANY_BLOCKLIST.has(lower)) return true;
+  if (isGenericCompanyLabel(name)) return true;
   // Leading noise: "100 Salesforce", "1100 Micron…", "@GLC", "+MEDRITE"
   if (/^[\d@+\#\*]+/.test(name) && !/^(1password|1inch|2modern|3m|6sense|7-eleven|10x|15five|21shares)/i.test(name)) {
     // Allow known brands that start with digits; block generic "100 Foo Inc" patterns
@@ -421,6 +426,12 @@ export const COMPANY_NAME_MAP: Record<string, string> = {
   governance: 'GovAI',
   govai: 'GovAI',
   'governance ai': 'GovAI',
+  jstreet: 'J Street',
+  'j street': 'J Street',
+  aspentechpolicyhub: 'Aspen Tech Policy Hub',
+  'aspen tech policy hub': 'Aspen Tech Policy Hub',
+  horizonpublicservice: 'Horizon Institute for Public Service',
+  'horizon institute for public service': 'Horizon Institute for Public Service',
   'apart research': 'Apart Research',
   apartresearch: 'Apart Research',
   'talos network': 'Talos Network',
