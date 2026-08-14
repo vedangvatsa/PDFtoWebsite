@@ -11,7 +11,7 @@ import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { toCompanySlug, applyCompanyDisplayCasing } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 23;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 24;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -246,7 +246,7 @@ function stripAggregatorDisclaimers(text: string): string {
     /<li>\s*What You Should Have\s*<\/li>/gi,
     /<p>\s*Please\s*<\/p>/gi,
     /(?:^|\n)Please\s*$/gim,
-    /About this kind of role[\s\S]*?(?=\n(?:About |Key facts|What you|Requirements|Nice to have|Skills|Practical notes|How to apply)|<h[23]|$)/gi,
+    /About this kind of role[\s\S]*?(?=\n(?:About |Key facts|What you|Requirements|Nice to have|Skills|Practical notes|Good to know|How to apply)|<h[23]|$)/gi,
     /About the location\s*\n[^\n]*(?:listed workplace|listing already states)[^\n]*/gi,
     /<h3>\s*About this kind of role\s*<\/h3>[\s\S]*?(?=<h[23]|$)/gi,
     /<h3>\s*About the location\s*<\/h3>[\s\S]*?(?=<h[23]|$)/gi,
@@ -650,6 +650,7 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^What You Should Have$/i.test(t)) return true;
   if (/^Work areas$/i.test(t)) return true;
   if (/^Practical notes$/i.test(t)) return true;
+  if (/^Good to know$/i.test(t)) return true;
   if (/^Role & project$/i.test(t)) return true;
   if (/^Technical requirements$/i.test(t)) return true;
   if (/^Terms of engagement$/i.test(t)) return true;
@@ -1011,7 +1012,7 @@ function escapeRegExp(s: string): string {
 
 /** LLM-structured JD section headings — never show up in a preview excerpt. */
 const SECTION_HEADING_RE =
-  /\b(About the role|Key facts|What you'?ll do|What you will do|Requirements?|Nice to have|Skills (&|and) tools|Practical notes)\b\s*:?\s*/gi;
+  /\b(About the role|Key facts|What you'?ll do|What you will do|Requirements?|Nice to have|Skills (&|and) tools|Practical notes|Good to know)\b\s*:?\s*/gi;
 
 /**
  * Plain excerpt for meta description / OG.
