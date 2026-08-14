@@ -120,6 +120,29 @@ describe('public lists constrain curated-jd before limit()', () => {
     const file = src('src/app/api/jobs/route.ts');
     assert.match(file, /withCuratedJdTag/);
     assert.match(file, /shouldListJobOnBoard/);
+    assert.match(file, /kind === 'fellowship'/);
+  });
+
+  it('public job URLs require a 600-word curated body', () => {
+    const ts = src('src/lib/job-apply-source.ts');
+    const mjs = src('.github/scripts/lib/job-apply-source.mjs');
+    assert.match(ts, /curatedJdMeetsWordFloor/);
+    assert.match(mjs, /curatedJdMeetsWordFloor/);
+    assert.match(ts, /JOB_INDEXABLE_MIN_WORDS/);
+    assert.match(mjs, /MIN_WORDS/);
+    const sitemap = src('src/app/sitemap-jobs/[chunk]/route.ts');
+    assert.match(sitemap, /description/);
+    const detail = src('src/lib/job-detail-data.ts');
+    assert.match(detail, /wordCount >= JOB_INDEXABLE_MIN_WORDS/);
+    assert.doesNotMatch(detail, /wordCount >= 40/);
+  });
+
+  it('fellowships board reuses curated jobs API, not hub SQL', () => {
+    const page = src('src/app/fellowships/page.tsx');
+    assert.match(page, /mode="fellowships"/);
+    assert.doesNotMatch(page, /withCuratedJdTag\(/);
+    const client = src('src/components/jobs-client.tsx');
+    assert.match(client, /kind', 'fellowship'/);
   });
 
   it('related jobs SQL requires curated-jd', () => {
@@ -201,14 +224,14 @@ describe('Telegram / IndexNow do not advertise uncurated URLs', () => {
           `${rel} jobs fetch missing SQL curated-jd filter`
         );
       }
-      assert.match(file, /isCuratedJd/);
+      assert.match(file, /shouldListJobOnBoard|isCuratedJd/);
     });
   }
 
   it('google-indexing SQL + in-memory require curated-jd', () => {
     const file = src('.github/scripts/google-indexing.mjs');
     assert.match(file, /contains\('tags', \['curated-jd'\]\)/);
-    assert.match(file, /tags\.includes\('curated-jd'\)/);
+    assert.match(file, /isPublicJobPage/);
   });
 });
 

@@ -28,6 +28,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { isJobExpired } from '../../src/lib/job-age.mjs';
+import { isPublicJobPage } from './lib/job-apply-source.mjs';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
@@ -125,8 +126,7 @@ async function notify(token, url, type) {
 }
 
 function isIndexable(job) {
-  const tags = Array.isArray(job.tags) ? job.tags : [];
-  if (!tags.includes('curated-jd')) return false;
+  if (!isPublicJobPage(job)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
   return true;
 }
@@ -145,7 +145,7 @@ async function main() {
   const since = new Date(Date.now() - LOOKBACK_HOURS * 3600 * 1000).toISOString();
   const { data: jobs, error } = await supabase
     .from('jobs')
-    .select('id,title,company,external_id,tags,published_at,created_at')
+    .select('id,title,company,external_id,tags,published_at,created_at,description,apply_url')
     .contains('tags', ['curated-jd'])
     .gte('created_at', since)
     .order('published_at', { ascending: false, nullsFirst: false })

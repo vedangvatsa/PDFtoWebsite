@@ -135,6 +135,7 @@ export async function GET() {
         parameters: {
           q: 'Search query (title or company name)',
           type: 'Job type filter: full_time, contract, part_time, internship, freelance',
+          kind: 'Set to fellowship to list only open fellowships (same as /fellowships)',
           location: 'Location filter: remote, onsite',
           page: 'Page number (default: 1)',
           limit: 'Results per page (default: 20, max: 100)',

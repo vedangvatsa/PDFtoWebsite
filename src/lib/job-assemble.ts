@@ -37,8 +37,25 @@ export type AssembledJobPage = {
   failReason: string | null;
 };
 
-const RAW_ATS_RE =
-  /equal opportunity employer|all qualified applicants|requisition id|job requisition|click here to apply|we are an equal|receive consideration without regard|eeo is the law|disability accommodation|unsolicited resumes|applicants must be authorized to work|greenhouse\.io|boards\.greenhouse|lever\.co\/|jobs\.ashbyhq|you must be legally authorized|reasonable accommodation|protected veteran/i;
+const RAW_ATS_PATTERNS = [
+  /equal opportunity employer/i,
+  /all qualified applicants/i,
+  /requisition id/i,
+  /job requisition/i,
+  /click here to apply/i,
+  /we are an equal/i,
+  /receive consideration without regard/i,
+  /eeo is the law/i,
+  /disability accommodation/i,
+  /unsolicited resumes/i,
+  /applicants must be authorized to work/i,
+  /greenhouse\.io/i,
+  /boards\.greenhouse/i,
+  /lever\.co\//i,
+  /jobs\.ashbyhq/i,
+  /you must be legally authorized/i,
+  /protected veteran/i,
+];
 
 const OWNED_HEADER_RES = [
   /about the role/i,
@@ -58,8 +75,15 @@ export function looksLikeOwnedJobCopy(text: string | null | undefined): boolean 
   return n >= 2;
 }
 
+/** True for ATS/EEO dumps. A single leftover phrase (e.g. reasonable accommodations) is not enough. */
 export function looksLikeRawAts(text: string | null | undefined): boolean {
-  return RAW_ATS_RE.test(String(text || ''));
+  const t = String(text || '');
+  let n = 0;
+  for (const re of RAW_ATS_PATTERNS) {
+    if (re.test(t)) n += 1;
+    if (n >= 2) return true;
+  }
+  return false;
 }
 
 /** Trusted long paraphrase / owned body we should not replace. */

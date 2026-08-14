@@ -38,7 +38,7 @@ export async function GET(req: Request, ctx: Props) {
         const { data } = await supabaseAdmin
           .from('jobs')
           .select(
-            'id, company, external_id, slug, title, created_at, published_at, location, job_type, salary, tags, category'
+            'id, company, external_id, slug, title, created_at, published_at, location, job_type, salary, tags, category, description'
           )
           .not('external_id', 'is', null)
           .not('company', 'is', null)

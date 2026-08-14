@@ -71,6 +71,7 @@ export function companyHubJobLink(job: {
   created_at?: string | null;
   external_id?: string | null;
   slug?: string | null;
+  description?: string | null;
 }): { href: string; external: boolean } {
   if (isPublicJobPage(job)) {
     return { href: jobPublicPath(job), external: false };

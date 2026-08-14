@@ -51,6 +51,11 @@ return (
               <Link href="/jobs">Jobs</Link>
             </Button>
           )}
+          {pathname !== '/fellowships' && (
+            <Button variant="ghost" size="sm" asChild className={`${navBtn} ${user ? 'max-[400px]:hidden' : ''}`}>
+              <Link href="/fellowships">Fellowships</Link>
+            </Button>
+          )}
           {pathname !== '/news' && (
             <Button variant="ghost" size="sm" asChild className={`${navBtn} ${user ? 'max-[360px]:hidden' : ''}`}>
               <Link href="/news">News</Link>

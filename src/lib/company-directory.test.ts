@@ -76,8 +76,16 @@ for (const [name, url] of neverRegistry) {
   assert(!isRegistryCompanyLabel(d), `display ${name} + ${url} must not be registry, got ${d}`);
 }
 
+assert(companyDisplayName('Nasa') === 'NASA', 'Nasa → NASA');
+assert(companyDisplayName('nasa', 'https://www.nasa.gov/careers') === 'NASA', 'nasa + nasa.gov → NASA');
+
 assert(companyDisplayName('ERA') === 'ERA', 'ERA stays ERA');
 assert(companyDisplayName('era fellowship') === 'ERA', 'era fellowship → ERA');
 assert(companyDisplayName('erafellowship', 'https://erafellowship.org/fellowship') === 'ERA', 'host maps to ERA');
+
+assert(isJunkCompanyName('eFinancialCareers'), 'job-board companies are junk');
+assert(isJunkCompanyName('We Work Remotely'), 'WWR as company is junk');
+assert(isJunkCompanyName('Whiterose Janitorial Services'), 'janitorial company is junk');
+assert(!isJunkCompanyName('Stripe'), 'Stripe is not junk');
 
 console.log('ok');

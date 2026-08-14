@@ -30,7 +30,6 @@ import { companyAboutForJob } from '@/lib/company-about';
 import {
   assembleJobPage,
   looksLikeOwnedJobCopy,
-  looksLikeRawAts,
 } from '@/lib/job-assemble';
 import type { JobDetail, RelatedJobCard } from '@/app/jobs/[id]/job-detail-client';
 import {
@@ -173,14 +172,10 @@ export async function publishSafeDescription(job: JobRow, location: string): Pro
   const isCurated = Array.isArray(job.tags) && job.tags.includes('curated-jd');
   const raw = job.description;
 
-  // Any owned rewrite (not raw ATS) publishes after the shared sanitizer.
-  // Indexability uses the cleaned body so padding/leaks cannot inflate SEO.
-  if (
-    raw &&
-    looksLikeOwnedJobCopy(raw) &&
-    !looksLikeRawAts(raw) &&
-    !/\[placeholder\]|lorem ipsum/i.test(raw)
-  ) {
+  // Public pages only render a stored body that still has ≥600 words after
+  // sanitizer. Do not swap a long paraphrase for a short assembled stub, and
+  // do not show a thin curated body as if it were a full JD.
+  if (raw && !/\[placeholder\]|lorem ipsum/i.test(raw)) {
     const html = formatJobDescription(raw, location, {
       title,
       company,
@@ -190,14 +185,14 @@ export async function publishSafeDescription(job: JobRow, location: string): Pro
     });
     const plain = jobDescriptionPlainText(html);
     const wordCount = jobDescriptionWordCount(plain);
-    if (wordCount >= 40) {
+    if (wordCount >= JOB_INDEXABLE_MIN_WORDS) {
       return {
         isCurated,
         kind: 'curated',
         html,
         plain,
         wordCount,
-        indexable: isCurated && wordCount >= JOB_INDEXABLE_MIN_WORDS,
+        indexable: isCurated,
       };
     }
   }
@@ -923,7 +918,7 @@ function plainToHtmlDescription(plain: string): string {
 
 function schemaDescriptionSource(job: JobRow, detail: JobDetail): string {
   const raw = job.description || '';
-  if (raw && looksLikeOwnedJobCopy(raw) && !looksLikeRawAts(raw)) {
+  if (raw && looksLikeOwnedJobCopy(raw) && !/\[placeholder\]|lorem ipsum/i.test(raw)) {
     return String(raw)
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '')

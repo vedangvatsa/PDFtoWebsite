@@ -21,6 +21,9 @@ const LOGO_OVERRIDES: Record<string, string> = {
   mospi: `${SITE_URL}/company-logos/mospi.png`,
   'iit bombay': `${SITE_URL}/company-logos/iit-bombay.png`,
   'iit bombay (sjmsom)': `${SITE_URL}/company-logos/iit-bombay.png`,
+  nasa: `${SITE_URL}/company-logos/nasa.png`,
+  iisc: `${SITE_URL}/company-logos/iisc.png`,
+  'indian institute of science': `${SITE_URL}/company-logos/iisc.png`,
   elevenlabs: 'https://elevenlabs.io/favicon.ico',
 };
 
@@ -85,6 +88,9 @@ const DOMAIN_OVERRIDES: Record<string, string> = {
   era: 'erafellowship.org',
   'era fellowship': 'erafellowship.org',
   erafellowship: 'erafellowship.org',
+  nasa: 'nasa.gov',
+  iisc: 'iisc.ac.in',
+  'indian institute of science': 'iisc.ac.in',
   cursor: 'cursor.com',
   applied: 'applied.co',
   sierra: 'sierra.ai',

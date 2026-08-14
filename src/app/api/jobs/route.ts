@@ -25,6 +25,8 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') || '20')));
   const type = searchParams.get('type'); // full_time, contract, etc.
   const loc = searchParams.get('loc');   // remote, hybrid, onsite
+  const kind = searchParams.get('kind'); // fellowship → /fellowships board
+  const fellowshipsOnly = kind === 'fellowship';
   const q = sanitizeFilterTerm(searchParams.get('q')?.toLowerCase().trim() || '');
   const offset = (page - 1) * limit;
 
@@ -59,12 +61,12 @@ export async function GET(request: NextRequest) {
     // Not authenticated — show all jobs unfiltered
   }
 
-  // Build query — select only needed columns (skip description to reduce payload)
+  // Description is selected for the 600-word board gate, then dropped from the JSON.
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
   const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
   const boardSince = q ? ninetyDaysAgo : sixtyDaysAgo;
-  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug';
+  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug,description';
 
   // Base filters shared by all queries
   function applyBaseFilters(q: any) {
@@ -95,7 +97,7 @@ export async function GET(request: NextRequest) {
   // too — estimated count + ilike is what timed out and returned 0 engineers.
   const matchOnlyEarly = searchParams.get('match') === 'true';
   const needsDbCount = Boolean(
-    (type && type !== 'all') || loc || matchOnlyEarly
+    fellowshipsOnly || (type && type !== 'all') || loc || matchOnlyEarly
   );
 
   // --- Query 2: All jobs (backfill pool) ---
@@ -127,12 +129,20 @@ export async function GET(request: NextRequest) {
   // Unfiltered board: internships stay off unless asked. Fellowships are jobs —
   // many are stored as internship, so keep any row whose title/category is a fellowship.
   const qWantsIntern = /\b(intern|interns|internship)\b/i.test(q);
-  const hideInternships = (!type || type === 'all') && (!q || !qWantsIntern);
+  const hideInternships =
+    !fellowshipsOnly && (!type || type === 'all') && (!q || !qWantsIntern);
   if (hideInternships) {
     const notInternOrIsFellow =
       'job_type.neq.internship,title.ilike.%fellow%,category.eq.fellowship';
     priorityQuery = priorityQuery.or(notInternOrIsFellow);
     query = query.or(notInternOrIsFellow);
+  }
+
+  const fellowshipOr =
+    'title.ilike.%fellow%,category.ilike.fellowship,tags.cs.{fellowship}';
+  if (fellowshipsOnly) {
+    priorityQuery = priorityQuery.or(fellowshipOr);
+    query = query.or(fellowshipOr);
   }
 
   // If user has complete profile AND match=true, filter to jobs that match their skills and location
@@ -178,7 +188,7 @@ export async function GET(request: NextRequest) {
     statusText: 'OK',
   } as any;
   const [priorityResult, mainResult] = await Promise.all([
-    loc === 'onsite' || q
+    loc === 'onsite' || q || fellowshipsOnly
       ? Promise.resolve(emptyResult)
       : withTimeoutFallback(
           priorityQuery as any,
@@ -323,9 +333,10 @@ export async function GET(request: NextRequest) {
     // Block vague/generic titles
     if (VAGUE_TITLE_PATTERNS.some(p => p.test(title))) return false;
     if (isGarbageJobTitle(title)) return false;
+    const isFellowship = looksLikeFellowship({ title, category: job.category, tags: job.tags });
+    if (fellowshipsOnly && !isFellowship) return false;
     const isBareInternship =
-      String(job.job_type || '').toLowerCase() === 'internship' &&
-      !looksLikeFellowship({ title, category: job.category, tags: job.tags });
+      String(job.job_type || '').toLowerCase() === 'internship' && !isFellowship;
     if (hideInternships && isBareInternship) return false;
     // Block known junk sources
     if (VAGUE_COMPANY_PATTERNS.some(p => p.test(job.company))) return false;

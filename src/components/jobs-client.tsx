@@ -94,7 +94,33 @@ function JobTypeBadge({ type, title }: { type: string | null; title?: string | n
   );
 }
 
-export default function JobsClient() {
+const JOBS_LOGOS = [
+  { name: 'Stripe', domain: 'stripe.com' },
+  { name: 'Airbnb', domain: 'airbnb.com' },
+  { name: 'Cloudflare', domain: 'cloudflare.com' },
+  { name: 'Discord', domain: 'discord.com' },
+  { name: 'Reddit', domain: 'reddit.com' },
+  { name: 'Coinbase', domain: 'coinbase.com' },
+  { name: 'Figma', domain: 'figma.com' },
+  { name: 'GitLab', domain: 'gitlab.com' },
+  { name: 'Lyft', domain: 'lyft.com' },
+  { name: 'Pinterest', domain: 'pinterest.com' },
+  { name: 'Spotify', domain: 'spotify.com' },
+];
+
+const FELLOWSHIP_LOGOS = [
+  { name: 'NASA', domain: 'nasa.gov' },
+  { name: 'IISc', domain: 'iisc.ac.in' },
+  { name: 'ERA', domain: 'erafellowship.org' },
+  { name: 'Anthropic', domain: 'anthropic.com' },
+  { name: 'Apple', domain: 'apple.com' },
+  { name: 'Google', domain: 'google.com' },
+  { name: 'Horizon', domain: 'horizonpublicservice.org' },
+  { name: 'GovAI', domain: 'governance.ai' },
+];
+
+export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellowships' }) {
+  const isFellowships = mode === 'fellowships';
   const [jobs, setJobs] = useState<Job[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -122,6 +148,7 @@ export default function JobsClient() {
       if (loc !== 'all') params.set('loc', loc);
       if (search) params.set('q', search);
       if (matchOnly) params.set('match', 'true');
+      if (isFellowships) params.set('kind', 'fellowship');
 
       const res = await fetch(`/api/jobs?${params}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -143,7 +170,7 @@ export default function JobsClient() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [type, loc, search, matchOnly]);
+  }, [type, loc, search, matchOnly, isFellowships]);
 
   useEffect(() => {
     setPage(1);
@@ -236,29 +263,17 @@ export default function JobsClient() {
         {/* Hero */}
         <div className="flex flex-col mb-10">
           <h1 className={PAGE_TITLE}>
-            Job Board
+            {isFellowships ? 'Fellowships' : 'Job Board'}
           </h1>
           {/* Company logos strip */}
           <div className="flex items-center gap-3 mt-3 overflow-hidden">
-            {[
-              { name: 'Stripe', domain: 'stripe.com' },
-              { name: 'Airbnb', domain: 'airbnb.com' },
-              { name: 'Cloudflare', domain: 'cloudflare.com' },
-              { name: 'Discord', domain: 'discord.com' },
-              { name: 'Reddit', domain: 'reddit.com' },
-              { name: 'Coinbase', domain: 'coinbase.com' },
-              { name: 'Figma', domain: 'figma.com' },
-              { name: 'GitLab', domain: 'gitlab.com' },
-              { name: 'Lyft', domain: 'lyft.com' },
-              { name: 'Pinterest', domain: 'pinterest.com' },
-              { name: 'Spotify', domain: 'spotify.com' },
-            ].map((c, i) => (
+            {(isFellowships ? FELLOWSHIP_LOGOS : JOBS_LOGOS).map((c, i) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={c.name} src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`} alt={`${c.name} logo — hiring remote jobs`} title={c.name}
+              <img key={c.name} src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`} alt={`${c.name} logo — ${isFellowships ? 'open fellowships' : 'hiring remote jobs'}`} title={c.name}
                 className={`h-5 w-5 sm:h-6 sm:w-6 rounded-md opacity-80 hover:opacity-100 transition-all shrink-0 ${i >= 6 ? 'hidden sm:block' : ''}`}
                 loading="lazy" />
             ))}
-            <span className="text-xs text-zinc-400 shrink-0">+150 more</span>
+            <span className="text-xs text-zinc-400 shrink-0">{isFellowships ? 'Open programs' : '+150 more'}</span>
           </div>
           {profileComplete && userSkills.length > 0 && (
             <button
@@ -346,14 +361,16 @@ export default function JobsClient() {
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
           <form onSubmit={handleSearch} className="flex-1 relative" role="search">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" aria-hidden="true" />
-            <label htmlFor="job-search-input" className="sr-only">Search jobs by title or company</label>
+            <label htmlFor="job-search-input" className="sr-only">
+              {isFellowships ? 'Search fellowships by title or company' : 'Search jobs by title or company'}
+            </label>
             <input
               id="job-search-input"
               type="text"
-              placeholder="Search by title or company..."
+              placeholder={isFellowships ? 'Search fellowships by title or company...' : 'Search by title or company...'}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              aria-label="Search jobs by title or company"
+              aria-label={isFellowships ? 'Search fellowships by title or company' : 'Search jobs by title or company'}
               className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </form>
@@ -363,7 +380,7 @@ export default function JobsClient() {
               id="job-location-filter"
               value={loc}
               onChange={(e) => setLoc(e.target.value)}
-              aria-label="Filter jobs by location"
+              aria-label={isFellowships ? 'Filter fellowships by location' : 'Filter jobs by location'}
               className="h-10 pl-3 pr-8 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer appearance-none"
             >
               {LOCATIONS.map(l => (
@@ -379,7 +396,11 @@ export default function JobsClient() {
           <p className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
             {degraded
               ? 'Openings did not load'
-              : `${total >= 100000 ? '100k+' : total.toLocaleString()} ${total === 1 ? 'job' : 'jobs'} found`}
+              : `${total.toLocaleString()} ${
+                  isFellowships
+                    ? total === 1 ? 'fellowship' : 'fellowships'
+                    : total === 1 ? 'job' : 'jobs'
+                } found`}
           </p>
         )}
 
@@ -387,7 +408,7 @@ export default function JobsClient() {
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="h-8 w-8 border-2 border-zinc-300 border-t-primary rounded-full animate-spin" />
-            <p className="mt-4 text-sm text-zinc-500">Loading jobs...</p>
+            <p className="mt-4 text-sm text-zinc-500">{isFellowships ? 'Loading fellowships...' : 'Loading jobs...'}</p>
           </div>
         )}
 
@@ -396,7 +417,7 @@ export default function JobsClient() {
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <Briefcase className="h-12 w-12 text-zinc-300 mb-4" />
             <p className="text-lg font-semibold text-zinc-700">
-              {degraded ? 'Openings did not load' : 'No jobs found'}
+              {degraded ? 'Openings did not load' : isFellowships ? 'No fellowships found' : 'No jobs found'}
             </p>
             <p className="text-sm text-zinc-500 mt-2">
               {degraded ? 'Refresh the page to try again.' : 'Try adjusting your search or filters.'}

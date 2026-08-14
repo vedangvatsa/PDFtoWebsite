@@ -91,7 +91,7 @@ export default function JobDetailClient({
 
   const expired = Boolean(job.expired);
   const applyUrl = expired ? '' : addJobApplyUtm(job.apply_url, 'job_detail');
-  const typeLabel = jobTypeLabel(job.job_type);
+  const typeLabel = jobTypeLabel(job.job_type, job);
   const needsCv = userSkills.length === 0;
   /** Logged-in users with an on-file profile should apply on the company site, not re-upload CV. */
   const showDirectApply = !expired && isAuthenticated && !needsCv;

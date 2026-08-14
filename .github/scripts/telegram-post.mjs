@@ -20,7 +20,7 @@ import { companyNameFromApply } from '../../src/lib/company-host.mjs';
 
 // ─── Banned Jobs Filter (canonical: src/lib/banned-jobs.mjs) ───
 import { BANNED_REGEX as BANNED_JOB_REGEX } from '../../src/lib/banned-jobs.mjs';
-import { isCuratedJd } from './lib/job-apply-source.mjs';
+import { shouldListJobOnBoard } from './lib/job-apply-source.mjs';
 
 const BOT_TOKEN  = process.env.TELEGRAM_BOT_TOKEN;
 const CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID;
@@ -175,7 +175,7 @@ async function fetchJobsPage({ days, limit, label }) {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
     // Minimal columns — less IO on free tier
-    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id,slug,tags',
+    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id,slug,tags,description',
     source: `in.(${sourceFilter})`,
     tags: 'cs.{"curated-jd"}',
     published_at: `gt.${since}`,
@@ -190,7 +190,7 @@ async function fetchJobsPage({ days, limit, label }) {
     label,
   });
   if (!Array.isArray(jobs)) throw new Error('Unexpected jobs response');
-  return jobs.filter(j => !j.telegram_posted_at && isCuratedJd(j.tags));
+  return jobs.filter(j => !j.telegram_posted_at && shouldListJobOnBoard(j));
 }
 
 async function fetchUnpostedJobs() {

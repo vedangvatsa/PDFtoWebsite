@@ -63,7 +63,7 @@ export default async function Image({ params }: Props) {
       title = cleanPublishText(job.title);
       company = cleanPublishText(job.company);
       location = cleanPublishText(normalizeLocation(job.location || '') || 'Remote');
-      typeLabel = jobTypeLabel(job.job_type);
+      typeLabel = jobTypeLabel(job.job_type, job);
       path = jobPublicPath(job as any);
       companySlug = companyToSlug(company);
       storedLogo = job.company_logo;

@@ -15,7 +15,7 @@ dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 import { supabaseFetch, restUrl } from './supabase-fetch.mjs';
-import { isCuratedJd } from './lib/job-apply-source.mjs';
+import { isCuratedJd, shouldListJobOnBoard } from './lib/job-apply-source.mjs';
 import {
   companyToSlug,
   jobPublicUrl,
@@ -424,8 +424,7 @@ function pickJobs(jobs, postedUrls, limit = JOBS_PER_POST * 4) {
   // Filter → must be AI company + relevant title + not skipped
   const candidates = shuffle(jobs).filter(job => {
     if (!job.company || !job.title || !job.apply_url) return false;
-    // Only enriched jobs get posted: a description must exist on the page.
-    if (!job.description || String(job.description).trim().length < 50) return false;
+    if (!shouldListJobOnBoard(job)) return false;
     if (postedSet.has(job.apply_url)) return false;
     if (SKIP_RE.test(job.title)) return false;
     // Public pages 404 after ~30d — keep a buffer

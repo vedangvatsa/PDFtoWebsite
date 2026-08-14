@@ -11,7 +11,7 @@ import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { toCompanySlug, applyCompanyDisplayCasing } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 24;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 25;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -153,6 +153,22 @@ export function isGarbageJobTitle(title: string | null | undefined): boolean {
   const t = String(title || '').replace(/\s+/g, ' ').trim();
   if (!t || t.length < 3) return true;
   if (/^(website|home|about|blog|news|careers|jobs|fellowship|fellowships)$/i.test(t)) return true;
+  // RemoteOK / board-index scrapes: "Permanent Jobs", "Wanted Jobs", "Open Vacancies"
+  if (
+    /^(?:(?:wanted|permanent|casual|seasonal|current|open|available|remote)\s+)?(?:jobs?|vacancies|openings|positions|careers|roles)$/i.test(
+      t
+    )
+  ) {
+    return true;
+  }
+  if (/^(?:now\s+)?hiring(?:\s+process)?$/i.test(t)) return true;
+  if (/^job title$/i.test(t)) return true;
+  if (/^test job(?:\s+\d+)?$/i.test(t)) return true;
+  if (/^(?:multiple|various|open|current)\s+(?:positions?|roles?|vacancies|openings|jobs)$/i.test(t)) {
+    return true;
+  }
+  if (/^(?:current(?:ly)?\s+)?jobs?\s+openings?$/i.test(t)) return true;
+  if (/^vacancies(?:\s+[a-z]+)?$/i.test(t) && t.length < 36) return true;
   if (/^community\s+/i.test(t) && t.length < 28) return true;
   if (/\bread more\b/i.test(t)) return true;
   if (/\bexplaining the\b/i.test(t) && t.length > 40) return true;
@@ -176,6 +192,7 @@ export function cleanJobTitle(title: string | null | undefined): string {
     .replace(/\s+/g, ' ')
     .replace(/^[\s:\-\|]+/, '')
     .replace(/[\s:\-\|,]+$/, '')
+    .replace(/\s+jobs?$/i, '')
     .trim();
   return t;
 }
@@ -1119,7 +1136,7 @@ export function companyToSlug(company: string): string {
 /** Valid short job slug segment (not a UTM suffix / reserved path). */
 export const RESERVED_JOB_SEGMENTS = new Set([
   'th', 'wa', 'tg', 'li', 'x', 'tw', 'ig', 'fb', 'bsky', 'yt', 'rd',
-  'api', 'editor', 'login', 'signup', 'jobs', 'blog', 'admin',
+  'api', 'editor', 'login', 'signup', 'jobs', 'fellowships', 'blog', 'admin',
 ]);
 
 /** Noise words never used as slug tokens (matches .github/scripts/mint-slugs.mjs). */

@@ -27,6 +27,7 @@ export async function GET(req: Request) {
       { url: `${siteUrl}/terms`, changefreq: 'yearly', priority: '0.2' },
       { url: `${siteUrl}/contact`, changefreq: 'yearly', priority: '0.4' },
       { url: `${siteUrl}/jobs`, changefreq: 'daily', priority: '0.9' },
+      { url: `${siteUrl}/fellowships`, changefreq: 'daily', priority: '0.8' },
       { url: `${siteUrl}/rss.xml`, changefreq: 'hourly', priority: '0.5' },
       { url: `${siteUrl}/talent`, changefreq: 'monthly', priority: '0.8' },
       { url: `${siteUrl}/layoffs`, changefreq: 'monthly', priority: '0.8' },
