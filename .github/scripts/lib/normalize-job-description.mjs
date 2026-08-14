@@ -23,7 +23,7 @@ const PLACEHOLDER_FACT_VALUE =
 const INSTRUCTION_COPY =
   /\b(?:omit(?:ted)?\s+(?:the line|the whole section|section|if source|if unknown|if empty)|only if source|only hours, travel, visa|remove this line|per source instructions|only include if|fact sheet json|output only the job page|(?:3-5 sentences|8-12 bullets|every must_have))\b/i;
 const PAGE_META_COPY =
-  /\bthis page does not\b|\bthis listing is the (?:only )?source\b|\bduties (?:remain|are only) those\b|\bdo the work posted for\b|\babout this (?:kind|type) of role\b|\bfollow scope\b|\bgeneral (?:engineering|workplace|working)[- ]practice\b|\bspecific duties remain\b|\bcvin\.bio does not submit\b|\ba public cv link is optional\b|\bomit the whole section\b|\bonly hours, travel, visa\b/i;
+  /\bthis page does not\b|\bthis listing is the (?:only )?source\b|\bduties (?:remain|are only) those\b|\bdo the work posted for\b|\babout this (?:kind|type) of role\b|\bfollow scope\b|\bgeneral (?:engineering|workplace|working)[- ]practice\b|\bspecific duties remain\b|\bcvin\.bio does not submit\b|\ba public cv link is optional\b|\bomit the whole section\b|\bonly hours, travel, visa\b|\bnot specified in the source\b|\bthe role is (?:full_time|part_time|contract|internship)\b/i;
 const ORPHAN_FILLER = /^(please|todo|tbd|n\/a|none|source:?)\.?$/i;
 const KEY_FACT_LABEL =
   '(?:Location|Engagement|Compensation|Salary|Pay|Team|Workplace|Employment(?: type)?|Job type|Department|Hours, travel, visa, or deadlines)';
@@ -147,6 +147,8 @@ export function descriptionHasWriterLeak(text) {
     return true;
   }
   if (/^[-•*]?\s*see source\b/im.test(s)) return true;
+  if (/\bnot specified in the source\b/i.test(s)) return true;
+  if (/\bthe role is (?:full_time|part_time|contract|internship)\b/i.test(s)) return true;
   return false;
 }
 

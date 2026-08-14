@@ -20,6 +20,7 @@ Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not 
 - Date filter is `published_at OR created_at` (`companyJobsDateOrFilter`). Never AND `created_at`.
 - Join is equality only: `company_key` IN (slug key, directory-name key), then exact `company` name variants (`OpenAI` / `openai`). Never ILIKE.
 - Company names never come from a public-suffix label. `iisc.ac.in` is **IISc**, not **AC**; `bbc.co.uk` is **BBC**, not **CO**. Shared helper: `src/lib/company-host.mjs` (`registrableHostLabel`, `companyNameFromApply`). Ingest (`jobs-sync` `filterAndNormalize`) and display (`companyDisplayName` / `companyDisplayNameFromJob`) both call it. Do not take `hostname.split('.')[-2]` as the brand. Tests: `src/lib/company-host.test.mjs` · `src/lib/company-directory.test.ts`.
+- Generic employer labels (`Other`, `Unknown`, `Company`) are not brands. Do not take apply-path segments (`risein.com/other/…`) as the company. Aggregator apply hosts (RiseIn, Guardian, We Work Remotely, …) are not public job pages.
 - Keep the hub if a directory row, live jobs, or a known profile cache/meta entry exists — even when about copy is unpublished Wikipedia.
 - Do not wrap hub SQL in `withCuratedJdTag`. That emptied OpenAI/Stripe hubs while nested job URLs still existed.
 

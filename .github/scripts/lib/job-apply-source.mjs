@@ -3,6 +3,7 @@ import { isJobExpired } from '../../../src/lib/job-age.mjs';
 import { isLowQualityApplySource } from '../../../src/lib/job-apply-hosts.mjs';
 import { isBannedJobTitle } from '../../../src/lib/banned-jobs.mjs';
 import { fellowshipPublishBlockReason } from '../../../src/lib/fellowship-publish-gate.mjs';
+import { isGenericCompanyLabel } from '../../../src/lib/company-host.mjs';
 
 export { isLowQualityApplySource };
 export const MIN_WORDS = 600;
@@ -33,6 +34,7 @@ export function isFullyEnrichedJob(job) {
 /** Public URL may render (closed curated OK). Uncurated stubs are not pages. */
 export function isPublicJobPage(job) {
   if (isBannedJobTitle(job?.title)) return false;
+  if (isGenericCompanyLabel(job?.company)) return false;
   if (!isCuratedJd(job?.tags)) return false;
   if (!curatedJdMeetsWordFloor(job?.description)) return false;
   if (isLowQualityApplySource(job?.apply_url)) return false;
