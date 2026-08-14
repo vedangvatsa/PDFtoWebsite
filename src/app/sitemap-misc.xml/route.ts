@@ -24,7 +24,6 @@ export async function GET(req: Request) {
       { url: `${siteUrl}/blog`, changefreq: 'weekly', priority: '0.9' },
       { url: `${siteUrl}/login`, changefreq: 'monthly', priority: '0.6' },
       { url: `${siteUrl}/signup`, changefreq: 'monthly', priority: '0.6' },
-      { url: `${siteUrl}/privacy`, changefreq: 'yearly', priority: '0.2' },
       { url: `${siteUrl}/terms`, changefreq: 'yearly', priority: '0.2' },
       { url: `${siteUrl}/contact`, changefreq: 'yearly', priority: '0.4' },
       { url: `${siteUrl}/jobs`, changefreq: 'daily', priority: '0.9' },
@@ -38,15 +37,10 @@ export async function GET(req: Request) {
       { url: `${siteUrl}/costs`, changefreq: 'weekly', priority: '0.8' },
       { url: `${siteUrl}/compare`, changefreq: 'weekly', priority: '0.8' },
       { url: `${siteUrl}/visas`, changefreq: 'weekly', priority: '0.8' },
-      { url: `${siteUrl}/visa-checker`, changefreq: 'weekly', priority: '0.8' },
-      { url: `${siteUrl}/cost-of-living`, changefreq: 'weekly', priority: '0.8' },
       { url: `${siteUrl}/timezone`, changefreq: 'weekly', priority: '0.8' },
       { url: `${siteUrl}/tax`, changefreq: 'weekly', priority: '0.8' },
-      { url: `${siteUrl}/passport`, changefreq: 'weekly', priority: '0.8' },
       { url: `${siteUrl}/rankings`, changefreq: 'weekly', priority: '0.8' },
       { url: `${siteUrl}/resources`, changefreq: 'monthly', priority: '0.6' },
-      { url: `${siteUrl}/tech-talent-report`, changefreq: 'monthly', priority: '0.7' },
-      { url: `${siteUrl}/admin`, changefreq: 'yearly', priority: '0.1' },
       { url: `${siteUrl}/fire`, changefreq: 'monthly', priority: '0.8' },
     ];
 
