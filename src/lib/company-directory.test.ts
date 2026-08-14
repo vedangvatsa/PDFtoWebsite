@@ -30,6 +30,7 @@ assert(companyDisplayName('AC', iiscApply) === 'IISc', 'stored AC (public suffix
 assert(companyDisplayName('iisc') === 'IISc', 'iisc without URL still maps');
 assert(companyDisplayName('jobs', 'https://jobs.ashbyhq.com/x') !== 'Ashbyhq', 'ATS vendor is not the employer');
 assert(companyDisplayName('Jstreet', 'https://jstreet.bamboohr.com/careers/240') === 'J Street', 'BambooHR tenant stays J Street');
+assert(companyDisplayName('Bamboohr', 'https://jstreet.bamboohr.com/careers/240') === 'J Street', 'stored ATS vendor recovers tenant');
 assert(companyDisplayName('platform', 'https://platform.stripe.com/jobs') === 'Stripe', 'platform.stripe.com → Stripe');
 assert(companyDisplayName('govai', 'https://governance.ai/jobs') === 'GovAI', 'HOST_BRANDS governance.ai');
 assert(companyDisplayName('careers', 'https://careers.google.com/jobs') === 'Google', 'careers.google.com → Google');
@@ -102,5 +103,11 @@ assert(domainForCompany('The New York Times') === 'nytimes.com', 'NYT domain');
 assert(companyLogoCandidates('NASA').includes('/company-logos/nasa.png'), 'NASA uses local meatball');
 assert(companyLogoCandidates('GovAI').includes('/company-logos/govai.png'), 'GovAI uses local mark');
 assert(companyLogoCandidates('SPAR').includes('/company-logos/spar.png'), 'SPAR uses local mark not spar.com');
+assert(companyLogoCandidates('SPAR')[0] === '/company-logos/spar.png', 'SPAR prefers local file');
+assert(
+  !companyLogoCandidates('Unknown Startup XYZ').some((u) => u.startsWith('/company-logos/')),
+  'do not 404-guess missing local logos'
+);
+assert(companyLogoCandidates('J Street')[0] === '/company-logos/j-street.png', 'J Street uses local mark');
 
 console.log('ok');

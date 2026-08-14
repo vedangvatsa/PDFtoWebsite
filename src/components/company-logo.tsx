@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { companyLogoCandidates } from '@/lib/company-logo';
 
 interface CompanyLogoProps {
@@ -14,8 +14,8 @@ interface CompanyLogoProps {
 
 /**
  * Company mark with automatic fallbacks:
- * stored ATS logo → Google favicon → DuckDuckGo icon → Clearbit → initials.
- * Also advances when Google returns its generic 16×16 globe.
+ * local mirrored mark → Google favicon → DuckDuckGo icon → initials.
+ * Advances on error or when a CDN returns a 16×16 globe.
  */
 export default function CompanyLogo({
   name,
@@ -30,11 +30,15 @@ export default function CompanyLogo({
     [name, logo, size, applyUrl]
   );
   const [index, setIndex] = useState(0);
+  useEffect(() => {
+    setIndex(0);
+  }, [candidates]);
   const src = candidates[Math.min(index, candidates.length - 1)];
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      key={src}
       src={src}
       alt={alt || `${name} logo`}
       width={size}
@@ -44,12 +48,11 @@ export default function CompanyLogo({
       decoding="async"
       onLoad={(e) => {
         const el = e.currentTarget;
-        // Google's default globe for unknown domains is 16×16 even when sz=64
+        // Google/DDG default globe is 16×16 even when sz=64
         const isGenericGlobe =
           el.naturalWidth > 0 &&
           el.naturalWidth <= 16 &&
-          index < candidates.length - 1 &&
-          /google\.com\/s2\/favicons|gstatic\.com\/favicon/i.test(src);
+          index < candidates.length - 1;
         if (isGenericGlobe) {
           setIndex((i) => Math.min(i + 1, candidates.length - 1));
         }
