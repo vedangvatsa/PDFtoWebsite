@@ -43,6 +43,7 @@ const LOGO_OVERRIDES: Record<string, string> = {
   'anduril industries': '/company-logos/anduril.png',
   doordash: '/company-logos/doordash.png',
   'doordash usa': '/company-logos/doordash.png',
+  palantir: '/company-logos/palantir.png',
   elevenlabs: 'https://elevenlabs.io/favicon.ico',
 };
 
@@ -399,14 +400,69 @@ function companyLogoSlug(name: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
+/** Filenames that exist in public/company-logos. Never guess missing paths — 404s skip the real mark. */
+const LOCAL_LOGO_FILES = new Set([
+  'alliance-defending-freedom.png',
+  'anduril-industries.png',
+  'anduril.png',
+  'anthropic.png',
+  'apple.png',
+  'aspen-tech-policy-hub.png',
+  'aspentechpolicyhub.png',
+  'ataraxis-ai.png',
+  'cern.png',
+  'clearway-energy.png',
+  'climate-corps.png',
+  'curri.png',
+  'doordash.png',
+  'era.png',
+  'formlabs.png',
+  'google.png',
+  'govai.png',
+  'governance.png',
+  'handshake.png',
+  'horizon-institute-for-public-service.png',
+  'horizon.png',
+  'horizonpublicservice.png',
+  'iisc.png',
+  'iit-bombay.png',
+  'indian-army.png',
+  'its-rio.png',
+  'j-street.png',
+  'jstreet.png',
+  'known.png',
+  'lifestance.png',
+  'lila-sciences.png',
+  'masterycharter.png',
+  'mats.png',
+  'mospi.png',
+  'motional.png',
+  'nasa.png',
+  'niti-aayog.png',
+  'palantir.png',
+  'point72.png',
+  'rainmaker.png',
+  'scale-ai.png',
+  'simula-research-laboratory.png',
+  'simulamet.png',
+  'spar.png',
+  'tenstorrent.png',
+  'the-good-food-institute.png',
+  'the-new-york-times.png',
+  'viking-global-investors.png',
+]);
+
 function localLogoPaths(name: string): string[] {
   const slug = companyLogoSlug(name);
   const compact = slug.replace(/-/g, '');
   const out: string[] = [];
-  if (slug) out.push(`/company-logos/${slug}.png`);
-  if (compact && compact !== slug) out.push(`/company-logos/${compact}.png`);
   const override = LOGO_OVERRIDES[name.toLowerCase().trim()];
   if (override) out.push(override);
+  for (const file of [`${slug}.png`, compact && compact !== slug ? `${compact}.png` : '']) {
+    if (!file || !LOCAL_LOGO_FILES.has(file)) continue;
+    const path = `/company-logos/${file}`;
+    if (!out.includes(path)) out.push(path);
+  }
   return out;
 }
 
