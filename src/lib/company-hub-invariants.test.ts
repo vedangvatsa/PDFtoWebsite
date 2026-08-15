@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isJobExpired } from './job-age.mjs';
+import { isJobExpired, jobPostingValidThrough } from './job-age.mjs';
 import {
   isPublicJobPage,
   shouldListJobOnBoard,
@@ -23,6 +23,7 @@ import {
 } from './company-about';
 import { getCompanyLinks } from './company-links';
 import { trustedCompanyWebsiteUrl } from './company-logo';
+import { jobPublicPath } from '../../.github/scripts/lib/job-public-url.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const day = 24 * 60 * 60 * 1000;
@@ -39,6 +40,21 @@ function hubFnBody(file: string) {
   assert.ok(m, 'shouldListJobOnCompanyHub must exist');
   return m[0];
 }
+
+describe('indexing canonical URLs', () => {
+  it('uses persisted pretty slugs, not the first 8 chars of external_id', () => {
+    assert.equal(
+      jobPublicPath({
+        id: '5e92e3b0-8116-4e07-8f55-6585c749f781',
+        company: 'Drata',
+        slug: 'drata_enterp-31',
+        title: 'Enterprise Account Executive',
+        external_id: 'ashby_drata_20db37fa-f83e-4328-bb56-052415c00fd8',
+      }),
+      '/drata/enterp-31'
+    );
+  });
+});
 
 describe('job age uses newest stamp', () => {
   it('keeps a fresh publish even when created_at is old', () => {
@@ -57,6 +73,21 @@ describe('job age uses newest stamp', () => {
 
   it('does not expire missing timestamps', () => {
     assert.equal(isJobExpired(null, null, now), false);
+  });
+
+  it('validThrough follows the newest stamp, not source published_at', () => {
+    const through = jobPostingValidThrough(
+      '2026-07-10T00:00:00.000Z',
+      '2026-08-05T00:00:00.000Z',
+      now
+    );
+    assert.equal(through.slice(0, 10), '2026-09-04');
+    const oldOnly = jobPostingValidThrough(
+      '2026-07-10T00:00:00.000Z',
+      '2026-07-10T00:00:00.000Z',
+      now
+    );
+    assert.equal(oldOnly.slice(0, 10), '2026-08-09');
   });
 });
 
@@ -218,9 +249,33 @@ describe('source locks — do not reintroduce empty hubs', () => {
     assert.ok(src.includes('shouldKeepCompanyHub'));
   });
 
+  it('sitemap date window is newest-stamp OR, not AND created_at', () => {
+    for (const rel of ['src/app/sitemap.xml/route.ts', 'src/app/sitemap-jobs/[chunk]/route.ts']) {
+      const src = readRel(rel);
+      assert.ok(src.includes('companyJobsDateOrFilter'), rel);
+      assert.doesNotMatch(src, /\.gt\('created_at'/);
+    }
+  });
+
+  it('does not drop JobPosting for worldwide remote TELECOMMUTE', () => {
+    const src = readRel('src/lib/job-detail-data.ts');
+    assert.match(src, /jobLocationType !== 'TELECOMMUTE'/);
+    assert.doesNotMatch(
+      src,
+      /TELECOMMUTE' && jsonLd\.applicantLocationRequirements/
+    );
+  });
+
   it('job-age.ts re-exports the shared mjs implementation', () => {
     const src = readRel('src/lib/job-age.ts');
     assert.ok(src.includes("from './job-age.mjs'"));
+    assert.ok(src.includes('jobPostingValidThrough'));
+    const jsonLd = readRel('src/lib/job-detail-data.ts');
+    assert.ok(jsonLd.includes('jobPostingValidThrough'));
+    assert.doesNotMatch(
+      jsonLd,
+      /validThrough = new Date\(\(Number\.isFinite\(postedMs\)/
+    );
   });
 
   it('hub cards send uncurated jobs off-site in source', () => {

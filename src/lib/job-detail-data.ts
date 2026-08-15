@@ -37,7 +37,7 @@ import {
   getCachedJobByCompanyAndSlug,
 } from '@/lib/job-snapshots';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { isJobExpired } from '@/lib/job-age';
+import { isJobExpired, jobPostingValidThrough } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
 import { shouldListJobOnBoard } from '@/lib/job-apply-source';
@@ -586,7 +586,7 @@ function inferEmploymentType(job: JobRow): string | undefined {
   if (/\bfreelance\b/.test(blob)) return 'OTHER';
   if (/\btemp(orary)?\b/.test(blob)) return 'TEMPORARY';
   if (/\bfull[\s_-]*time\b/.test(blob)) return 'FULL_TIME';
-  return undefined;
+  return 'FULL_TIME';
 }
 
 /** Best-effort parse of free-text salary into schema.org MonetaryAmount. */
@@ -953,9 +953,7 @@ export function buildJobJsonLd(
 
   const datePosted =
     job.published_at || job.created_at || new Date().toISOString().slice(0, 10);
-  const postedMs = new Date(datePosted).getTime();
-  // Garbage date strings fall back to today — never omit validThrough.
-  const validThrough = new Date((Number.isFinite(postedMs) ? postedMs : Date.now()) + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const validThrough = jobPostingValidThrough(job.published_at, job.created_at);
 
   const plain = schemaDescriptionSource(job, detail);
   // Google requires an HTML description that is a complete representation of
@@ -1053,8 +1051,11 @@ export function buildJobJsonLd(
     };
   }
 
-  if (!jsonLd.jobLocation && !(jsonLd.jobLocationType === 'TELECOMMUTE' && jsonLd.applicantLocationRequirements)) {
-    // Google requires jobLocation, or TELECOMMUTE plus a real applicant country.
+  // Onsite/hybrid still need a Place. Worldwide remote must keep JobPosting —
+  // dropping markup here zeroed Google Jobs for "Remote" listings. Do not
+  // invent a country (Google rejects "Worldwide"); TELECOMMUTE without a
+  // country is a warning, not a reason to omit the posting.
+  if (!jsonLd.jobLocation && jsonLd.jobLocationType !== 'TELECOMMUTE') {
     return null;
   }
 

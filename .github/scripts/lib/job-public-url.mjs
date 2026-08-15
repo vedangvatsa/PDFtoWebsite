@@ -216,6 +216,23 @@ export function shortJobSlug(company, externalId) {
 }
 
 /**
+ * Canonical public path — SAME as src/lib/job-description.ts jobPublicPath.
+ * Indexing API / Telegram / sitemap pings must use this, never the first
+ * 8 chars of external_id (those URLs 404 or 301 and Google Jobs drops them).
+ */
+export function jobPublicPath(job) {
+  const co = companyToSlug(job.company);
+  if (!co) return job?.id ? `/jobs/${job.id}` : null;
+  const slugSeg = storedSlugSegment(job.company, job.slug);
+  if (slugSeg) return `/${co}/${slugSeg}`;
+  if (isRouteableExternalId(job.company, job.external_id)) {
+    const rest = String(job.external_id).slice(co.length + 1).toLowerCase();
+    return `/${co}/${rest}`;
+  }
+  return `/${co}/${mintPrettyJobSlug(job.title || '', job.id)}`;
+}
+
+/**
  * Absolute public URL for Telegram / social.
  * Prefer persisted `slug` column, then /{company}/{slug} from a routeable
  * external_id. `prettyOnly: true` → null if not routeable (never emit
@@ -229,6 +246,9 @@ export function jobPublicUrl(job, { prettyOnly = false, base = 'https://cvin.bio
     if (isRouteableExternalId(job.company, job.external_id)) {
       const rest = String(job.external_id).slice(co.length + 1).toLowerCase();
       return `${base}/${co}/${rest}`;
+    }
+    if (!prettyOnly) {
+      return `${base}${jobPublicPath(job)}`;
     }
   }
   if (prettyOnly) return null;
