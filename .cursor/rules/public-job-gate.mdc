@@ -26,7 +26,7 @@ Required:
 
 ## Company hubs (`/{slug}`)
 
-Hubs list **live inventory** (not expired, not banned). `curated-jd` is not a hub-card gate.
+Hubs list **live inventory** (not expired, not banned). `curated-jd` is not a hub-card gate. Page the full live set on every `/{slug}` hub and count the cards — never overlay `companies.role_count`.
 
 - Do **not** wrap hub SQL in `withCuratedJdTag`.
 - `shouldListJobOnCompanyHub` must stay independent (banned + expired only). Never `return shouldListJobOnBoard(job)`.

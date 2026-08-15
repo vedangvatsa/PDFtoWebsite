@@ -296,10 +296,17 @@ describe('source locks — do not reintroduce empty hubs', () => {
   it('hub lists every live job, not a 50-row sample with a fake total', () => {
     const loader = readRel('src/lib/company-page.ts');
     assert.match(loader, /HUB_JOB_PAGE/);
+    assert.match(loader, /HUB_JOB_MAX/);
     assert.match(loader, /\.range\(/);
     assert.doesNotMatch(loader, /\.limit\(50\)/);
+    assert.match(loader, /const jobCount = jobs\.length/);
     const page = readRel('src/app/[slug]/page.tsx');
-    assert.doesNotMatch(page, /jobs\.length >= 50 && dir\?\.role_count/);
+    assert.match(page, /const totalJobs = jobs\.length/);
+    assert.doesNotMatch(page, /dir\?\.role_count/);
+    assert.match(page, /resolveCompanyPage/);
+    const og = readRel('src/app/[slug]/opengraph-image.tsx');
+    assert.match(og, /loadCompanyJobs/);
+    assert.doesNotMatch(og, /jobCount = companyDir\.role_count/);
   });
 
   it('agent rule does not require hub to alias the board', () => {

@@ -86,39 +86,88 @@ export async function loadCompanyJobs(
       const keys = companyKeyEqualityValues(slug, dirName);
       const names = companyNameEqualityValues(slug, dirName);
 
+      async function fetchRange(
+        applyFilters: (q: any) => any,
+        label: string,
+        from: number,
+        withCount: boolean
+      ) {
+        const run = () =>
+          applyFilters(
+            supabaseForCompany
+              .from('jobs')
+              .select(SLIM_JOB_COLS, withCount ? { count: 'exact' } : undefined)
+          )
+            .order('published_at', { ascending: false, nullsFirst: false })
+            .range(from, from + HUB_JOB_PAGE - 1);
+
+        let page = await withTimeoutFallback(
+          run(),
+          DB_BUDGET.list,
+          { data: null, count: null, error: { message: 'timeout' } } as any,
+          `${label}:${from}`
+        );
+        for (let attempt = 0; attempt < 2 && page.error?.message === 'timeout'; attempt++) {
+          page = await withTimeoutFallback(
+            run(),
+            DB_BUDGET.stats,
+            { data: null, count: null, error: { message: 'timeout' } } as any,
+            `${label}:${from}:retry${attempt}`
+          );
+        }
+        return page;
+      }
+
       async function fetchPaged(
         applyFilters: (q: any) => any,
         label: string
       ): Promise<{ rows: CompanyPageJob[]; timedOut: boolean }> {
-        const rows: CompanyPageJob[] = [];
-        for (let from = 0; from < HUB_JOB_MAX; from += HUB_JOB_PAGE) {
-          const q = applyFilters(supabaseForCompany.from('jobs').select(SLIM_JOB_COLS));
-          let page = await withTimeoutFallback(
-            q
-              .order('published_at', { ascending: false, nullsFirst: false })
-              .range(from, from + HUB_JOB_PAGE - 1),
-            DB_BUDGET.list,
-            { data: null, error: { message: 'timeout' } } as any,
-            `${label}:${from}`
-          );
-          if (page.error?.message === 'timeout') {
-            page = await withTimeoutFallback(
-              applyFilters(supabaseForCompany.from('jobs').select(SLIM_JOB_COLS))
-                .order('published_at', { ascending: false, nullsFirst: false })
-                .range(from, from + HUB_JOB_PAGE - 1),
-              DB_BUDGET.stats,
-              { data: null, error: { message: 'timeout' } } as any,
-              `${label}:${from}:retry`
-            );
-          }
-          if (page.error?.message === 'timeout') {
-            return { rows, timedOut: rows.length === 0 };
-          }
-          const chunk = (page.data || []) as CompanyPageJob[];
-          rows.push(...chunk);
-          if (chunk.length < HUB_JOB_PAGE) break;
+        const first = await fetchRange(applyFilters, label, 0, true);
+        if (first.error?.message === 'timeout' && !(first.data && first.data.length)) {
+          return { rows: [], timedOut: true };
         }
-        return { rows, timedOut: false };
+        const rows: CompanyPageJob[] = [...((first.data || []) as CompanyPageJob[])];
+        const reported = Number(first.count);
+        const hasCount = Number.isFinite(reported) && reported > 0;
+        const total = hasCount ? Math.min(reported, HUB_JOB_MAX) : HUB_JOB_MAX;
+        if (rows.length >= total || rows.length < HUB_JOB_PAGE) {
+          return { rows, timedOut: false };
+        }
+
+        if (!hasCount) {
+          for (let from = HUB_JOB_PAGE; from < HUB_JOB_MAX; from += HUB_JOB_PAGE) {
+            const page = await fetchRange(applyFilters, label, from, false);
+            if (page.error?.message === 'timeout' && !(page.data && page.data.length)) {
+              return { rows, timedOut: rows.length === 0 };
+            }
+            const chunk = (page.data || []) as CompanyPageJob[];
+            rows.push(...chunk);
+            if (chunk.length < HUB_JOB_PAGE) break;
+          }
+          return { rows, timedOut: false };
+        }
+
+        const starts: number[] = [];
+        for (let from = HUB_JOB_PAGE; from < total; from += HUB_JOB_PAGE) {
+          starts.push(from);
+        }
+        for (let i = 0; i < starts.length; i += 4) {
+          const batch = await Promise.all(
+            starts.slice(i, i + 4).map((from) => fetchRange(applyFilters, label, from, false))
+          );
+          for (const page of batch) {
+            rows.push(...((page.data || []) as CompanyPageJob[]));
+          }
+        }
+        const seen = new Set<string>();
+        return {
+          rows: rows.filter((j) => {
+            if (!j.id || seen.has(j.id)) return false;
+            seen.add(j.id);
+            return true;
+          }),
+          timedOut: false,
+        };
       }
 
       async function fetchJobs(
@@ -183,7 +232,7 @@ export async function loadCompanyJobs(
       const live = rows.filter((j) => shouldListJobOnCompanyHub(j));
       return hydrateDescriptions(live);
     },
-    ['company-jobs-v15', slug, dirName || ''],
+    ['company-jobs-v16', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
 }
