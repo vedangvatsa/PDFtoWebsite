@@ -11,7 +11,7 @@ import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { toCompanySlug, applyCompanyDisplayCasing } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 26;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 29;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -23,7 +23,7 @@ export const JOB_DESCRIPTION_PROSE_CLASS =
 
 /** Prompt-template / instruction lines that leaked into published JDs. */
 const PLACEHOLDER_FACT_VALUE =
-  /^(?:see source|not specified|not provided|none listed|n\/a|tbd|\.\.\.)(?:\s|[.(]|$)/i;
+  /^(?:see source|not specified|not provided|none listed|none stated|not stated|n\/a|tbd|\.\.\.)(?:\s|[.(]|$)/i;
 const INSTRUCTION_COPY =
   /\b(?:omit(?:ted)?\s+(?:the line|the whole section|section|if source|if unknown|if empty)|only if source|only hours, travel, visa|remove this line|per source instructions|only include if|fact sheet json|output only the job page|(?:3-5 sentences|8-12 bullets|every must_have))\b/i;
 const PAGE_META_COPY =
@@ -40,7 +40,7 @@ function peelJunkFactValue(val: string): string | null {
   if (!original) return null;
   const v = original
     .replace(/\(\s*omit(?:ted)?(?:\s+the line)?[^)]*\)/gi, ' ')
-    .replace(/^(?:see source|not specified|not provided|none listed|n\/a|tbd)\.?\s*/i, '')
+    .replace(/^(?:see source|not specified|not provided|none listed|none stated|not stated|n\/a|tbd)\.?\s*/i, '')
     .replace(/\s+/g, ' ')
     .trim();
   if (!v) return null;
@@ -410,6 +410,8 @@ function plainTextToHtml(text: string): string {
     if (!buf.length) return;
     if (isMetaFactsSection(currentSection)) {
       out.push(renderMetaFactsBlock(buf.join('\n')));
+    } else if (isCriteriaListSection(currentSection) && buf.some((l) => isOrderedLine(l.trim()))) {
+      out.push(renderNumberedCriteriaBlock(buf.join('\n')));
     } else {
       out.push(renderPlainBlock(buf.join('\n')));
     }
@@ -430,15 +432,23 @@ function plainTextToHtml(text: string): string {
       return !t || isBulletLine(t) || isOrderedLine(t);
     });
 
+  const bufIsNumberedCriteriaRun = () =>
+    buf.length > 0 &&
+    isCriteriaListSection(currentSection) &&
+    buf.some((l) => isOrderedLine(l.trim()));
+
   for (const rawLine of lines) {
     const trimmed = rawLine.trim();
     if (!trimmed) {
       // ATS HTML often emits one <ul> per <li>, which becomes "- a\n\n- b".
       // Keep list runs intact across blank lines; flush other blocks.
-      if (inBody && !bufIsListRun()) flushBuf();
+      // Under Requirements/Qualifications, keep numbered criteria runs together.
+      if (inBody && !bufIsListRun() && !bufIsNumberedCriteriaRun()) flushBuf();
       continue;
     }
-    if (isMetaSectionHeading(trimmed)) {
+    const inCriteria = isCriteriaListSection(currentSection);
+    const numberedCriteria = inCriteria && isNumberedCriteriaLine(trimmed);
+    if (!numberedCriteria && isMetaSectionHeading(trimmed)) {
       flushBuf();
       flushIntro();
       inBody = true;
@@ -447,7 +457,7 @@ function plainTextToHtml(text: string): string {
       out.push(`<h3>${escapeHtml(title)}</h3>`);
       continue;
     }
-    if (isSubSectionHeading(trimmed)) {
+    if (!numberedCriteria && isSubSectionHeading(trimmed)) {
       flushBuf();
       flushIntro();
       inBody = true;
@@ -459,7 +469,23 @@ function plainTextToHtml(text: string): string {
     } else {
       const lineIsList = isBulletLine(trimmed) || isOrderedLine(trimmed);
       if (buf.length) {
-        if (bufIsListRun() && !lineIsList) flushBuf();
+        if (
+          inCriteria &&
+          isOrderedLine(trimmed) &&
+          buf.some((l) => isBulletLine(l.trim())) &&
+          !buf.some((l) => isOrderedLine(l.trim()))
+        ) {
+          flushBuf();
+        } else if (
+          inCriteria &&
+          isBulletLine(trimmed) &&
+          bufIsNumberedCriteriaRun()
+        ) {
+          const last = [...buf].reverse().find((l) => l.trim())?.trim() || '';
+          if (isOrderedLine(last) && numberedLineHasInlineBody(last)) {
+            flushBuf();
+          }
+        } else if (bufIsListRun() && !lineIsList) flushBuf();
         else if (!bufIsListRun() && lineIsList) flushBuf();
       }
       buf.push(rawLine);
@@ -496,6 +522,86 @@ function isMetaFactsSection(section: string): boolean {
   return section === 'key facts' || section === 'application window';
 }
 
+/** Sections where "1. …" lines are eligibility criteria, not document headings. */
+function isCriteriaListSection(section: string): boolean {
+  return (
+    section === 'requirements' ||
+    section === 'requirement' ||
+    section === 'qualifications' ||
+    section === 'qualification' ||
+    section === 'must have' ||
+    section === 'eligibility' ||
+    section === 'who can apply'
+  );
+}
+
+function isNumberedCriteriaLine(line: string): boolean {
+  const t = line.trim();
+  if (!/^\d{1,2}\.\s+/.test(t)) return false;
+  // Inline "1. Title: body" rows are list criteria (Aspen-style).
+  if (/^\d{1,2}\.\s+[^:]+:\s+\S/.test(t)) return true;
+  // ITS-style area titles ("1. Rights and Technology, covering…") are h4 sub-headings.
+  if (/,\s*(?:covering|including|addressing|such as)\b/i.test(t)) return false;
+  return true;
+}
+
+/** Numbered criterion line that already carries its body (not a short title awaiting sub-bullets). */
+function numberedLineHasInlineBody(line: string): boolean {
+  const body = line.replace(/^\d{1,2}\.\s+/, '').trim();
+  if (/:\s/.test(body)) return true;
+  if (body.length > 90) return true;
+  if (/[.!?]\s*$/.test(body) && body.length > 50) return true;
+  if (/,\s*(?:covering|including|addressing)\b/i.test(body)) return true;
+  return false;
+}
+
+/** "1. Title: body" or "1. Title\n- body" → single numbered list item line. */
+function mergeNumberedWithFollowingBullets(lines: string[]): string[] {
+  const out: string[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    const t = raw.trim();
+    if (!t) {
+      out.push('');
+      continue;
+    }
+    if (isOrderedLine(t)) {
+      const bullets: string[] = [];
+      let j = i + 1;
+      while (j < lines.length) {
+        const next = lines[j].trim();
+        if (!next) {
+          j++;
+          continue;
+        }
+        if (isBulletLine(next)) {
+          bullets.push(next.replace(/^[-•*]\s+/, ''));
+          j++;
+          continue;
+        }
+        break;
+      }
+      if (bullets.length === 1) {
+        const num = t.match(/^(\d{1,2})\./)?.[1] || '1';
+        const title = t.replace(/^\d{1,2}\.\s+/, '');
+        if (!/:\s/.test(title)) {
+          out.push(`${num}. ${title}: ${bullets[0]}`);
+          i = j - 1;
+          continue;
+        }
+      }
+      if (bullets.length > 1) {
+        out.push(raw);
+        for (let k = i + 1; k < j; k++) out.push(lines[k]);
+        i = j - 1;
+        continue;
+      }
+    }
+    out.push(raw);
+  }
+  return out;
+}
+
 function renderMetaFactsBlock(block: string): string {
   const lines = block
     .split('\n')
@@ -529,11 +635,9 @@ function expandStructuredPlainText(text: string): string {
       continue;
     }
 
-    const numberedColon = line.match(
-      /^(?:-\s*)?(\d{1,2})\.\s+([A-Za-z0-9 /&'’()-]{2,70}?):\s+(.+)$/
-    );
-    if (numberedColon && numberedColon[3].length > 5) {
-      expanded.push(`${numberedColon[1]}. ${numberedColon[2]}`);
+    const numberedColon = line.match(/^(?:-\s*)?(\d{1,2})\.\s+(.+?):\s+(.+)$/);
+    if (numberedColon && numberedColon[3].trim().length > 5) {
+      expanded.push(`${numberedColon[1]}. ${numberedColon[2].trim()}`);
       expanded.push(`- ${numberedColon[3].trim()}`);
       continue;
     }
@@ -541,7 +645,12 @@ function expandStructuredPlainText(text: string): string {
     const numbered = line.match(
       /^(?:-\s*)?(\d{1,2})\.\s+([A-Z][A-Za-z0-9 /&'’()-]{2,60}?)\s+(.+)$/
     );
-    if (numbered && numbered[3].length > 15 && isNumberedSectionTitle(numbered[2])) {
+    if (
+      numbered &&
+      numbered[3].length > 15 &&
+      isNumberedSectionTitle(numbered[2]) &&
+      !/,\s*(?:covering|including|addressing)\b/i.test(line)
+    ) {
       expanded.push(`${numbered[1]}. ${numbered[2]}`);
       expanded.push(...splitLetteredSubclauses(numbered[3]));
       continue;
@@ -575,7 +684,7 @@ function expandStructuredPlainText(text: string): string {
     expanded.push(raw);
   }
 
-  return expanded.join('\n');
+  return mergeNumberedWithFollowingBullets(expanded).join('\n');
 }
 
 /** ALL-CAPS portal titles (e.g. "AI ENABLED APPLICATION FOR ARCH LAYOUT VETTING") are not section headings. */
@@ -711,6 +820,14 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^Applying with a CV link$/i.test(t)) return true;
   if (/^Contact$/i.test(t)) return true;
   if (/^Responsibilities:?$/i.test(t)) return true;
+  if (/^Key responsibilities$/i.test(t)) return true;
+  if (/^Core principles$/i.test(t)) return true;
+  if (/^Compensation and benefits$/i.test(t)) return true;
+  if (/^Total rewards$/i.test(t)) return true;
+  if (/^Application details$/i.test(t)) return true;
+  if (/^Application process$/i.test(t)) return true;
+  if (/^Essential functions$/i.test(t)) return true;
+  if (/^Job summary$/i.test(t)) return true;
   if (/^Skills Required:?$/i.test(t)) return true;
   if (/^Keywords:?$/i.test(t)) return true;
   if (/^(Company )?Philosoph(y|ies)$/i.test(t)) return true;
@@ -720,8 +837,6 @@ function isMetaSectionHeading(line: string): boolean {
   }
   if (isAllCapsSectionHeading(t)) return true;
   if (isNumberedStepLine(line)) return false;
-  const numberedTitle = line.match(/^(\d{1,2})\.\s+(.+)$/);
-  if (numberedTitle && isNumberedSectionTitle(numberedTitle[2])) return true;
   return false;
 }
 
@@ -768,6 +883,69 @@ function renderListItems(lines: string[], ordered = false): string {
     })
     .join('');
   return `<${tag}>${items}</${tag}>`;
+}
+
+/** Requirements/Qualifications blocks with numbered criteria and optional sub-bullets. */
+function renderNumberedCriteriaBlock(block: string): string {
+  const lines = block
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (!lines.length) return '';
+
+  const prefix: string[] = [];
+  let i = 0;
+  while (i < lines.length && !isOrderedLine(lines[i]) && !isBulletLine(lines[i])) {
+    prefix.push(renderLabelValueParagraph(lines[i]));
+    i++;
+  }
+  if (i >= lines.length) {
+    return prefix.join('\n') || renderPlainBlock(block);
+  }
+
+  const olItems: string[] = [];
+  while (i < lines.length) {
+    const t = lines[i];
+    if (isOrderedLine(t)) {
+      const title = t.replace(/^\d{1,2}\.\s+/, '');
+      const bullets: string[] = [];
+      i++;
+      while (i < lines.length && isBulletLine(lines[i])) {
+        bullets.push(lines[i].replace(/^[-•*]\s+/, ''));
+        i++;
+      }
+      const colon = title.match(/^(.+?):\s+(.+)$/);
+      if (colon) {
+        olItems.push(
+          `<li><strong>${escapeHtml(colon[1].trim())}:</strong> ${escapeHtmlWithLinks(colon[2].trim())}</li>`
+        );
+      } else if (bullets.length === 1) {
+        olItems.push(
+          `<li><strong>${escapeHtml(title)}:</strong> ${escapeHtmlWithLinks(bullets[0])}</li>`
+        );
+      } else if (bullets.length > 1) {
+        const sub = bullets.map((b) => `<li>${escapeHtmlWithLinks(b)}</li>`).join('');
+        olItems.push(`<li><strong>${escapeHtml(title)}</strong><ul>${sub}</ul></li>`);
+      } else {
+        olItems.push(`<li>${escapeHtmlWithLinks(title)}</li>`);
+      }
+      continue;
+    }
+    if (isBulletLine(t)) {
+      const bullets: string[] = [];
+      while (i < lines.length && isBulletLine(lines[i])) {
+        bullets.push(lines[i]);
+        i++;
+      }
+      prefix.push(renderListItems(bullets));
+      continue;
+    }
+    prefix.push(renderLabelValueParagraph(t));
+    i++;
+  }
+
+  const ol = olItems.length ? `<ol>${olItems.join('')}</ol>` : '';
+  return [prefix.join('\n'), ol].filter(Boolean).join('\n');
 }
 
 function renderPlainBlock(block: string): string {
@@ -870,6 +1048,13 @@ function shouldUsePlainPipeline(html: string, plain?: string): boolean {
   return false;
 }
 
+function sectionHeadingTag(text: string): 'h3' | 'h4' | null {
+  const t = text.replace(/:$/, '').trim();
+  if (isSubSectionHeading(t)) return 'h4';
+  if (isMetaSectionHeading(t)) return 'h3';
+  return null;
+}
+
 /** Light restructuring for HTML that already has some markup. */
 function structureJobHtml(html: string): string {
   let s = sanitizeJobHtml(html);
@@ -878,8 +1063,13 @@ function structureJobHtml(html: string): string {
     /<p>\s*<(?:strong|b)>([^<]{2,90})<\/(?:strong|b)>\s*<\/p>/gi,
     (_full, title: string) => {
       const t = decodeHtmlEntities(title.trim());
-      if (isMetaSectionHeading(t) || isSubSectionHeading(t)) {
-        return `<h3>${escapeHtml(t)}</h3>`;
+      if (/^\d{1,2}\.\s+/.test(t)) {
+        return `<p><strong>${escapeHtml(t)}</strong></p>`;
+      }
+      const tag = sectionHeadingTag(t);
+      if (tag) {
+        const label = tag === 'h4' ? t.replace(/^-\s*/, '').trim() : t;
+        return `<${tag}>${escapeHtml(label)}</${tag}>`;
       }
       if (
         t.length < 60 &&
@@ -897,8 +1087,13 @@ function structureJobHtml(html: string): string {
   s = s.replace(/<p>([\s\S]*?)<\/p>/gi, (full, inner: string) => {
     const text = decodeHtmlEntities(inner.replace(/<[^>]+>/g, '').trim());
     if (!text) return full;
-    if (isMetaSectionHeading(text) || isSubSectionHeading(text)) {
-      return `<h3>${escapeHtml(text.replace(/:$/, '').trim())}</h3>`;
+    if (/^\d{1,2}\.\s+/.test(text)) {
+      return `<p>${inner}</p>`;
+    }
+    const tag = sectionHeadingTag(text);
+    if (tag) {
+      const label = tag === 'h4' ? text.replace(/^-\s*/, '').trim() : text.replace(/:$/, '').trim();
+      return `<${tag}>${escapeHtml(label)}</${tag}>`;
     }
     if (text.length < 180 || !/\s\d{1,2}\.\s+[A-Z]/.test(text)) {
       return `<p>${inner}</p>`;
@@ -1036,6 +1231,9 @@ export function jobDescriptionWordCount(raw: string | null | undefined): number 
  * complete owned paraphrase is not held back waiting for padded filler.
  */
 export const JOB_INDEXABLE_MIN_WORDS = 600;
+
+/** Formatted curated body still renders when sanitizer trims below the index floor. */
+export const JOB_CURATED_DISPLAY_FLOOR = 400;
 
 export function isJobDescriptionIndexable(raw: string | null | undefined): boolean {
   return jobDescriptionWordCount(raw) >= JOB_INDEXABLE_MIN_WORDS;
@@ -1401,6 +1599,20 @@ export function jobStoredSlug(job: {
     }
   }
   return shortJobSlug(job.company, job.external_id);
+}
+
+/**
+ * Truncated pretty URLs like /openai/prod should still reach /openai/prod-mgr.
+ * Require a `-` after the hint so `prod` does not steal `production`.
+ */
+export function jobSlugSegmentMatchesHint(
+  segment: string | null | undefined,
+  hint: string
+): boolean {
+  const s = String(segment || '').toLowerCase();
+  const h = String(hint || '').toLowerCase();
+  if (!s || !h) return false;
+  return s === h || s.startsWith(`${h}-`);
 }
 
 /**
