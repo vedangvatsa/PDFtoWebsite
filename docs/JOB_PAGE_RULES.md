@@ -24,7 +24,7 @@ Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not 
 - Keep the hub if a directory row, live jobs, or a known profile cache/meta entry exists — even when about copy is unpublished Wikipedia.
 - Do not wrap hub SQL in `withCuratedJdTag`. That emptied OpenAI/Stripe hubs while nested job URLs still existed.
 
-Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/public-job-gate.contract.test.ts` · `src/lib/company-assets.test.ts` · `src/lib/job-apply-source.test.mjs`
+Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/public-job-gate.contract.test.ts` · `src/lib/google-jobs-invariants.test.ts` · `src/lib/company-assets.test.ts` · `src/lib/job-apply-source.test.mjs`
 
 ## Content
 
@@ -38,5 +38,8 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
 ## SEO
 
 - Regular Google: index when the body is a trusted curated paraphrase (≥600w, headings, gates). Closed pages stay indexable if they already qualify. Title may say `(closed)`.
-- Google Jobs: emit `JobPosting` only for live, indexable, not-expired pages.
+- Google Jobs: emit `JobPosting` for every live, indexable, not-expired public job page. Worldwide `"Remote"` keeps `TELECOMMUTE` — do not drop the posting for lack of a country, and do not invent `USA` / `Worldwide`. `validThrough` follows the newest listing stamp (`jobPostingValidThrough`). Schema `url` is `jobPublicPath`.
+- Indexing API pings `jobPublicPath` only. Workflows must pass `NEXT_PUBLIC_SUPABASE_URL`. After markup changes, bump `SCHEMA_EPOCH` in `.github/scripts/google-indexing.mjs`.
+- Sitemap job queries use `companyJobsDateOrFilter` (newest of published_at / created_at). Never AND `created_at`.
 - Sitemap and `/jobs` lists: live inventory only.
+- Locks: `src/lib/google-jobs-invariants.test.ts` · `.github/scripts/google-jobs-canary.mjs` (post-deploy Googlebot fetch).

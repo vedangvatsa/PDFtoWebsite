@@ -154,12 +154,22 @@ jobs:
             echo "- Auto-deploys on every push to \`main\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
+      # Fail the workflow if live job pages are 200 without JobPosting JSON-LD.
+      # Retries while Cloudflare cache catches up after deploy.
+      - name: Google Jobs live canary
+        if: success()
+        env:
+          CANARY_ATTEMPTS: 8
+          CANARY_DELAY_MS: 20000
+        run: node .github/scripts/google-jobs-canary.mjs
+
       # Google Indexing API — notifies Googlebot of new/updated job URLs faster
       # than sitemap recrawl (Google's recommendation for job postings).
       # Skips when GOOGLE_INDEXING_SERVICE_ACCOUNT secret is not configured.
+      # Do not continue-on-error: a missing Supabase URL silently emptied state
+      # and Google never got URL_UPDATED for real job paths.
       - name: Notify Google Indexing API
         if: success()
-        continue-on-error: true
         env:
           GOOGLE_INDEXING_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_INDEXING_SERVICE_ACCOUNT }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
