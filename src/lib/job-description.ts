@@ -11,7 +11,7 @@ import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { toCompanySlug, applyCompanyDisplayCasing } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 29;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 30;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -536,13 +536,7 @@ function isCriteriaListSection(section: string): boolean {
 }
 
 function isNumberedCriteriaLine(line: string): boolean {
-  const t = line.trim();
-  if (!/^\d{1,2}\.\s+/.test(t)) return false;
-  // Inline "1. Title: body" rows are list criteria (Aspen-style).
-  if (/^\d{1,2}\.\s+[^:]+:\s+\S/.test(t)) return true;
-  // ITS-style area titles ("1. Rights and Technology, covering…") are h4 sub-headings.
-  if (/,\s*(?:covering|including|addressing|such as)\b/i.test(t)) return false;
-  return true;
+  return /^\d{1,2}\.\s+/.test(line.trim());
 }
 
 /** Numbered criterion line that already carries its body (not a short title awaiting sub-bullets). */

@@ -1,6 +1,43 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { formatJobDescription } from '@/lib/job-description';
+import { formatJobDescription, JOB_DESCRIPTION_FORMAT_VERSION } from '@/lib/job-description';
+import { normalizeLocation } from '@/lib/normalize-location';
+
+const ASPEN_REQUIREMENTS = `Requirements
+
+1. Professional experience in science, technology, engineering, or mathematics (STEM): Applicants should have significant professional experience in a STEM field. Acceptable backgrounds include, but are not limited to, working as an engineer or computer scientist at a public interest organization.
+
+2. Potential to apply technical expertise to policy and social change
+- Applicants must demonstrate passion for solving societal challenges related to science and technology.
+
+3. Limited prior policy experience
+- Applicants should not have significantly explored policy engagement previously.
+
+4. Basic eligibility requirements
+- Be at least 21 years of age by the start of the program.
+- Be fluent in English.`;
+
+const ITS_REQUIREMENTS = `Requirements
+
+The official call for applications specifies the following eligibility and participation requirements:
+
+- Applicants must identify as researchers, students, or professionals with a clear interest in technology and public policy.
+- Applicants must select and focus their research or engagement within one of the three main program areas:
+
+1. Rights and Technology, covering topics such as content moderation, personal data protection, artificial intelligence, privacy, intellectual property, digital identity, and connectivity.
+
+2. GovTech, including new development models, distributed technologies, economic and social processes, and Digital Public Infrastructures (DPIs).
+
+3. Democracy and Technology, addressing themes such as disinformation, civic engagement, AI and climate, online participation, future of work, and technodiversity.
+
+- Applicants must demonstrate engagement with relevant topics, such as those listed above, in their academic or professional background.
+- Proficiency in English is a mandatory requirement to ensure full participation in program activities and the production of analytical outputs.`;
+
+function requirementsSection(html: string): string {
+  const after = html.split('<h3>Requirements</h3>')[1] || '';
+  const next = after.search(/<h3>/);
+  return next === -1 ? after : after.slice(0, next);
+}
 
 describe('formatJobDescription section headings', () => {
   it('renders common PayJoy-style section titles as bold h3, not plain paragraphs', () => {
@@ -36,35 +73,53 @@ Apply on the portal.`;
     assert.match(html, /<h3>Key Responsibilities<\/h3>/);
     assert.match(html, /<h3>Compensation and Benefits<\/h3>/);
   });
+});
 
-  it('keeps numbered Requirements criteria in an ordered list with bold labels', () => {
-    const raw = `Requirements
-1. Professional experience in science, technology, engineering, or mathematics (STEM): Applicants should have STEM experience.
-2. Potential to apply technical expertise to policy and social change
-- Applicants must demonstrate passion.
-3. Limited prior policy experience
-- Applicants should not have explored policy.`;
-
-    const html = formatJobDescription(raw);
-    assert.match(html, /<h3>Requirements<\/h3>/);
-    assert.match(html, /<ol>/);
-    assert.match(html, /<strong>Professional experience in science, technology, engineering, or mathematics \(STEM\):<\/strong>/);
-    assert.match(html, /<strong>Potential to apply technical expertise to policy and social change:<\/strong>/);
-    assert.doesNotMatch(html, /<h3>2\. Potential/i);
-    assert.doesNotMatch(html, /<h4>2\. Potential/i);
+describe('formatJobDescription numbered requirements', () => {
+  it('bumps format version for cache invalidation', () => {
+    assert.equal(JOB_DESCRIPTION_FORMAT_VERSION, 30);
   });
 
-  it('renders ITS-style numbered program areas as h4 sub-headings', () => {
-    const raw = `Requirements
-Intro line.
+  it('renders Aspen STEM criteria as a single ordered list without h3/h4 headings', () => {
+    const html = formatJobDescription(ASPEN_REQUIREMENTS);
+    const section = requirementsSection(html);
 
-1. Rights and Technology, covering topics such as privacy.
-2. GovTech, including distributed technologies.
-3. Democracy and Technology, addressing disinformation.`;
+    assert.match(section, /<ol>/);
+    assert.equal((section.match(/<h3>/g) || []).length, 0);
+    assert.equal((section.match(/<h4>/g) || []).length, 0);
+    assert.match(
+      section,
+      /<strong>Professional experience in science, technology, engineering, or mathematics \(STEM\):<\/strong>/
+    );
+    assert.doesNotMatch(section, /<h4>[^<]*STEM[^<]*<\/h4>/);
+    assert.match(section, /<strong>Basic eligibility requirements<\/strong><ul>/);
+  });
 
-    const html = formatJobDescription(raw);
-    assert.match(html, /<h4>1\. Rights and Technology, covering topics such as privacy\.<\/h4>/);
-    assert.match(html, /<h4>2\. GovTech, including distributed technologies\.<\/h4>/);
-    assert.doesNotMatch(html, /<p>1\. Rights and Technology/i);
+  it('renders ITS Rio program areas as ordered list items, not headings', () => {
+    const html = formatJobDescription(ITS_REQUIREMENTS);
+    const section = requirementsSection(html);
+
+    assert.match(section, /<ol>/);
+    assert.equal((section.match(/<h4>/g) || []).length, 0);
+    assert.match(section, /<li>Rights and Technology, covering topics such as/);
+    assert.match(section, /<li>GovTech, including new development models/);
+    assert.match(section, /<li>Democracy and Technology, addressing themes such as/);
+    assert.match(section, /Proficiency in English is a mandatory requirement/);
+  });
+
+  it('keeps non-requirements numbered sub-sections as h4', () => {
+    const html = formatJobDescription(`What you'll do
+
+5. SOC Platform
+- Monitor alerts.`);
+
+    assert.match(html, /<h4>5\. SOC Platform/);
+    assert.doesNotMatch(html, /<ol>/);
+  });
+});
+
+describe('normalizeLocation remote slash cleanup', () => {
+  it('strips trailing slash noise from remote locations', () => {
+    assert.equal(normalizeLocation('Remote (Rio /)'), 'Remote (Rio)');
   });
 });
