@@ -36,7 +36,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
   process.exit(1);
 }
 
-const JOBS_PER_POST = 10;
+const JOBS_PER_POST = 5;
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN || '';
 const LINKEDIN_PERSON_URN = process.env.LINKEDIN_PERSON_URN || '';
@@ -322,6 +322,7 @@ function pickJobs(jobs, limit, category) {
   // same-company jobs, producing posts full of one company (e.g. Clara x6).
   for (const job of jobs) {
     if (!job.company || job.company.includes('...') || job.company.length <= 2) continue;
+    if (/\b(highstreet|impuls hrk|staffing|recruiting)\b/i.test(job.company)) continue;
     if (!job.title || /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(job.title)) continue;
     if (BANNED_JOB_REGEX.test(job.title)) continue;
     if (!isRouteableExternalId(job.company, job.external_id) && !job.slug) continue;
@@ -564,12 +565,7 @@ async function main() {
   //    matches, fall back to a neutral "Featured" mixed post so the slot lives.
   let jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST * 4, category);
   if (jobs.length === 0) {
-    console.log(`  No ${category} jobs matched — falling back to mixed "Featured" post.`);
-    category = null;
-    jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST * 4, null);
-  }
-  if (jobs.length === 0) {
-    console.log('  No jobs matched category filters.');
+    console.log(`  No jobs matched category filter (${category}).`);
     return;
   }
 
@@ -589,9 +585,27 @@ async function main() {
     liveJobs.push(job);
     if (liveJobs.length >= JOBS_PER_POST) break;
   }
-  jobs = liveJobs;
-  if (jobs.length === 0) {
-    console.log('  No live job URLs after preflight.');
+
+  // If first pass preflight returned fewer than JOBS_PER_POST live jobs, probe remaining category candidates
+  if (liveJobs.length < JOBS_PER_POST) {
+    const liveCompanies = new Set(liveJobs.map(j => j.company.toLowerCase().trim()));
+    const extraCandidates = pickJobs(shuffle(allJobs), allJobs.length, category);
+    for (const job of extraCandidates) {
+      if (liveJobs.length >= JOBS_PER_POST) break;
+      if (liveJobs.some(j => j.id === job.id)) continue;
+      if (liveCompanies.has(job.company.toLowerCase().trim())) continue;
+      const url = jobPublicPath(job);
+      if (!url) continue;
+      const check = await assertJobUrlLive(url, { allowNetworkFail: false });
+      if (!check.ok) continue;
+      liveJobs.push(job);
+      liveCompanies.add(job.company.toLowerCase().trim());
+    }
+  }
+
+  jobs = liveJobs.slice(0, JOBS_PER_POST);
+  if (jobs.length < JOBS_PER_POST) {
+    console.log(`  ⚠️ Only ${jobs.length} live job URLs after preflight (required ${JOBS_PER_POST}). Skipping post.`);
     return;
   }
 
