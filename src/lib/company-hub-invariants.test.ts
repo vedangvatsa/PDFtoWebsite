@@ -293,6 +293,15 @@ describe('source locks — do not reintroduce empty hubs', () => {
     assert.match(page, /companyHubJobLink/);
   });
 
+  it('hub lists every live job, not a 50-row sample with a fake total', () => {
+    const loader = readRel('src/lib/company-page.ts');
+    assert.match(loader, /HUB_JOB_PAGE/);
+    assert.match(loader, /\.range\(/);
+    assert.doesNotMatch(loader, /\.limit\(50\)/);
+    const page = readRel('src/app/[slug]/page.tsx');
+    assert.doesNotMatch(page, /jobs\.length >= 50 && dir\?\.role_count/);
+  });
+
   it('agent rule does not require hub to alias the board', () => {
     const rule = readRel('.cursor/rules/public-job-gate.mdc');
     assert.doesNotMatch(rule, /must\*\* `return shouldListJobOnBoard/);
