@@ -129,7 +129,11 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     assert.doesNotMatch(file, /slice\(0,\s*8\)/);
     assert.match(file, /NEXT_PUBLIC_SUPABASE_URL \|\| process\.env\.SUPABASE_URL/);
     assert.match(file, /SCHEMA_EPOCH/);
-    assert.match(file, /published_at\.gt\.\$\{since\},created_at\.gt\.\$\{since\}/);
+    assert.match(file, /gte\('created_at', since\)/);
+    assert.match(file, /gte\('published_at', since\)/);
+    assert.doesNotMatch(file, /published_at\.gt\.\$\{since\},created_at\.gt\.\$\{since\}/);
+    assert.match(file, /MAX_SCAN/);
+    assert.doesNotMatch(file, /50_000/);
   });
 
   it('deploy and scheduler pass NEXT_PUBLIC_SUPABASE_URL into the indexing step', () => {
