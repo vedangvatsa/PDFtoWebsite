@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildJobJsonLd } from './job-detail-data';
+import { buildJobJsonLd, buildJobFaqJsonLd } from './job-detail-data';
 import type { JobRow } from './job-detail-data';
 import type { JobDetail } from '@/app/jobs/[id]/job-detail-client';
 import { jobPublicPath } from '../../.github/scripts/lib/job-public-url.mjs';
@@ -100,6 +100,14 @@ describe('JobPosting JSON-LD', () => {
     assert.equal(String(ld.validThrough).slice(0, 10), '2026-09-04');
   });
 
+  it('emits FAQPage from live job fields', () => {
+    const faq = buildJobFaqJsonLd(row(), detail());
+    assert.equal(faq['@type'], 'FAQPage');
+    const names = (faq.mainEntity as { name: string }[]).map((q) => q.name);
+    assert.ok(names.some((n) => /remote/i.test(n)));
+    assert.ok(names.some((n) => /apply/i.test(n)));
+  });
+
   it('omits JobPosting when the page is expired or not indexable', () => {
     assert.equal(buildJobJsonLd(row(), detail({ expired: true }), site), null);
     assert.equal(buildJobJsonLd(row(), detail({ is_indexable: false }), site), null);
@@ -147,5 +155,34 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     const deployAt = file.indexOf('npx wrangler deploy');
     const canaryAt = file.indexOf('google-jobs-canary.mjs');
     assert.ok(deployAt >= 0 && canaryAt > deployAt, 'canary must run after deploy');
+  });
+
+  it('canary reads sitemap job URLs instead of /api/jobs', () => {
+    const file = fs.readFileSync(
+      path.join(root, '.github/scripts/google-jobs-canary.mjs'),
+      'utf8'
+    );
+    assert.match(file, /sitemap-jobs\/0/);
+    assert.doesNotMatch(file, /\$\{SITE\}\/api\/jobs/);
+  });
+
+  it('WebSite SearchAction points at /jobs?q= not /{query} hubs', () => {
+    const file = fs.readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8');
+    assert.match(file, /\/jobs\?q=\{search_term_string\}/);
+    assert.doesNotMatch(file, /urlTemplate: `\$\{siteUrl\}\/\{search_term_string\}`/);
+  });
+
+  it('homepage and /jobs ship FAQPage JSON-LD', () => {
+    const home = fs.readFileSync(path.join(root, 'src/app/page.tsx'), 'utf8');
+    const jobs = fs.readFileSync(path.join(root, 'src/app/jobs/page.tsx'), 'utf8');
+    assert.match(home, /FAQPage/);
+    assert.match(jobs, /FAQPage/);
+  });
+
+  it('robots.txt explicitly allows AI citation crawlers', () => {
+    const file = fs.readFileSync(path.join(root, 'src/app/robots.ts'), 'utf8');
+    assert.match(file, /Google-Extended/);
+    assert.match(file, /OAI-SearchBot/);
+    assert.match(file, /PerplexityBot/);
   });
 });

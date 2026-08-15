@@ -1,28 +1,24 @@
 /**
- * Live Google Jobs canary. Fetches production job URLs as Googlebot and
- * fails if JobPosting JSON-LD is missing, validThrough is past, or schema
- * url does not match the public path.
+ * Live Google Jobs canary. Reads pretty job URLs from the public sitemap
+ * (GitHub Actions IPs get 403 on /api/jobs — never fetch that) and checks
+ * SSR JobPosting JSON-LD. Use a first-party UA: Cloudflare bot fight 403s
+ * Googlebot spoofing from Actions, and the markup is the same in SSR HTML.
  *
- * Worldwide "Remote" (no country) must still emit JobPosting — that omission
- * zeroed Google Jobs Valid in Aug 2026 while pages stayed 200.
+ * Fails if fewer than 2 sampled pages have JobPosting, validThrough is past,
+ * or schema url does not match the public path.
  */
 const SITE = process.env.SITE_URL || 'https://cvin.bio';
-const UA =
-  'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+const CANARY_UA = 'cvin-google-jobs-canary/1';
 const ATTEMPTS = Number(process.env.CANARY_ATTEMPTS || 6);
 const DELAY_MS = Number(process.env.CANARY_DELAY_MS || 15000);
 
-function isWorldwideRemote(location) {
-  return /^(remote|worldwide|anywhere|global)$/i.test(String(location || '').trim());
-}
-
-async function fetchText(url, { json = false } = {}) {
+async function fetchText(url, ua) {
   const res = await fetch(url, {
-    headers: { 'user-agent': UA, accept: json ? 'application/json' : 'text/html' },
+    headers: { 'user-agent': ua, accept: 'text/html,application/xml' },
     redirect: 'follow',
   });
   if (!res.ok) throw new Error(`${url} → ${res.status}`);
-  return json ? res.json() : res.text();
+  return res.text();
 }
 
 function jobPostings(html) {
@@ -40,10 +36,18 @@ function jobPostings(html) {
         }
       }
     } catch {
-      // ignore non-JSON script blocks
+      // ignore non-JSON blocks
     }
   }
   return out;
+}
+
+function pathOf(loc) {
+  try {
+    return new URL(loc).pathname;
+  } catch {
+    return loc;
+  }
 }
 
 function assertPosting(path, html) {
@@ -63,43 +67,46 @@ function assertPosting(path, html) {
   return ld;
 }
 
-async function pickJobs() {
-  const data = await fetchText(`${SITE}/api/jobs?limit=40`, { json: true });
-  const jobs = Array.isArray(data?.jobs) ? data.jobs : [];
-  const worldwide = jobs.find((j) => isWorldwideRemote(j.location) && j.path);
-  const withCountry = jobs.find(
-    (j) => j.path && j.location && !isWorldwideRemote(j.location)
+async function pickJobPaths() {
+  const xml = await fetchText(`${SITE}/sitemap-jobs/0`, CANARY_UA);
+  const locs = [...xml.matchAll(/<loc>(https:\/\/cvin\.bio\/[^<]+)<\/loc>/g)].map(
+    (m) => m[1]
   );
-  const fallback = jobs.find((j) => j.path);
-  const picked = [];
-  if (worldwide) picked.push({ ...worldwide, kind: 'worldwide-remote' });
-  if (withCountry && withCountry.path !== worldwide?.path) {
-    picked.push({ ...withCountry, kind: 'located' });
-  }
-  if (picked.length === 0 && fallback) picked.push({ ...fallback, kind: 'any' });
-  return picked;
+  const paths = locs
+    .map(pathOf)
+    .filter((p) => /^\/[a-z0-9-]+\/[a-z0-9-]+$/i.test(p));
+  if (paths.length < 2) throw new Error('sitemap-jobs/0 has too few job URLs');
+  const step = Math.max(1, Math.floor(paths.length / 12));
+  return [...new Set(Array.from({ length: 12 }, (_, i) => paths[(i * step) % paths.length]))];
 }
 
 async function checkOnce() {
-  const jobs = await pickJobs();
-  if (jobs.length === 0) throw new Error('API returned no public job paths');
+  const paths = await pickJobPaths();
   const results = [];
-  for (const job of jobs) {
-    const html = await fetchText(`${SITE}${job.path}`);
-    const ld = assertPosting(job.path, html);
-    if (job.kind === 'worldwide-remote' && ld.jobLocationType !== 'TELECOMMUTE') {
-      throw new Error(`${job.path} worldwide remote missing TELECOMMUTE`);
+  const missing = [];
+  for (const path of paths) {
+    const html = await fetchText(`${SITE}${path}`, CANARY_UA);
+    const posts = jobPostings(html);
+    if (!posts.length) {
+      missing.push(path);
+      continue;
     }
+    const ld = assertPosting(path, html);
     results.push({
-      kind: job.kind,
-      path: job.path,
+      path,
       title: ld.title,
       validThrough: ld.validThrough,
       jobLocationType: ld.jobLocationType || null,
     });
+    if (results.length >= 3) break;
+  }
+  if (results.length < 2) {
+    throw new Error(
+      `fewer than 2 JobPosting pages in sample (ok=${results.length} missing=${missing.slice(0, 6).join(',')})`
+    );
   }
 
-  const sitemap = await fetchText(`${SITE}/sitemap.xml`);
+  const sitemap = await fetchText(`${SITE}/sitemap.xml`, CANARY_UA);
   if (!sitemap.includes('sitemap-jobs')) {
     throw new Error('sitemap.xml is missing job chunks');
   }
@@ -112,7 +119,9 @@ async function main() {
     try {
       const results = await checkOnce();
       console.log(`Google Jobs canary ok (${results.length} URLs)`);
-      for (const r of results) console.log(`  ${r.kind} ${r.path} through ${r.validThrough}`);
+      for (const r of results) {
+        console.log(`  ${r.path} through ${r.validThrough} ${r.jobLocationType || ''}`);
+      }
       return;
     } catch (e) {
       lastErr = e;

@@ -141,6 +141,15 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
   const router = useRouter();
   const { toast } = useToast();
 
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q && q.trim()) {
+      const t = q.trim().slice(0, 80);
+      setSearchInput(t);
+      setSearch(t);
+    }
+  }, []);
+
   const fetchJobs = useCallback(async (pageNum: number, append = false) => {
     if (append) setLoadingMore(true); else setLoading(true);
 

@@ -22,11 +22,8 @@ export async function GET(req: Request) {
     const staticEntries: Entry[] = [
       { url: siteUrl, changefreq: 'weekly', priority: '1.0' },
       { url: `${siteUrl}/blog`, changefreq: 'weekly', priority: '0.9' },
-      { url: `${siteUrl}/login`, changefreq: 'monthly', priority: '0.6' },
-      { url: `${siteUrl}/signup`, changefreq: 'monthly', priority: '0.6' },
-      { url: `${siteUrl}/terms`, changefreq: 'yearly', priority: '0.2' },
-      { url: `${siteUrl}/contact`, changefreq: 'yearly', priority: '0.4' },
       { url: `${siteUrl}/jobs`, changefreq: 'daily', priority: '0.9' },
+      { url: `${siteUrl}/contact`, changefreq: 'yearly', priority: '0.4' },
       { url: `${siteUrl}/fellowships`, changefreq: 'daily', priority: '0.8' },
       { url: `${siteUrl}/rss.xml`, changefreq: 'hourly', priority: '0.5' },
       { url: `${siteUrl}/talent`, changefreq: 'monthly', priority: '0.8' },

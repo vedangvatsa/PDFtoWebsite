@@ -17,24 +17,27 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'CVin.Bio — Convert Your CV to a Website',
+    default: 'CVin.Bio — Tech jobs and a website from your CV',
     template: '%s | CVin.Bio',
   },
-  description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from hundreds of top companies.',
-  keywords: ['ai cv builder', 'cv to website', 'cv link', 'digital cv', 'online portfolio', 'professional bio', 'CVin.Bio'],
+  description:
+    'Curated tech jobs at companies like OpenAI, Stripe, and Anthropic. Upload your CV for a public profile and matched roles. Free, updated daily.',
+  keywords: ['tech jobs', 'remote jobs', 'ai jobs', 'cv to website', 'online cv', 'CVin.Bio'],
   authors: [{ name: 'CVin.Bio' }],
   creator: 'CVin.Bio',
   openGraph: {
     type: 'website',
     url: siteUrl,
     siteName: 'CVin.Bio',
-    title: 'Build a personal website from your CV.',
-    description: 'Upload your PDF CV and let our AI generate a custom, mobile-ready personal website and portfolio link in seconds. Stop sending PDFs and start sharing your professional URL.',
+    title: 'Build a personal website from your CV. Browse curated tech jobs.',
+    description:
+      'Upload your CV for a public profile, then match to curated roles at OpenAI, Stripe, Anthropic, and hundreds of other companies.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Your CV, converted into a website using AI.',
-    description: 'Upload your PDF CV and let our AI generate a custom, mobile-ready personal website and portfolio link in seconds. Stop sending PDFs and start sharing your professional URL.',
+    description:
+      'Upload your CV for a public cvin.bio profile and matched tech jobs. Free to start.',
   },
   robots: { index: true, follow: true, 'max-image-preview': 'large' as const, 'max-video-preview': -1 },
   alternates: { canonical: siteUrl },
@@ -67,10 +70,11 @@ export default function RootLayout({
               '@type': 'WebSite',
               name: 'CVin.Bio',
               url: siteUrl,
-              description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from hundreds of top companies.',
+              description:
+                'CVin.Bio is a curated tech job board and CV-to-website product. Browse live roles and publish a public profile from your resume.',
               potentialAction: {
                 '@type': 'SearchAction',
-                target: { '@type': 'EntryPoint', urlTemplate: `${siteUrl}/{search_term_string}` },
+                target: { '@type': 'EntryPoint', urlTemplate: `${siteUrl}/jobs?q={search_term_string}` },
                 'query-input': 'required name=search_term_string',
               },
             }),
@@ -107,7 +111,8 @@ export default function RootLayout({
               applicationCategory: 'BusinessApplication',
               operatingSystem: 'All',
               url: siteUrl,
-              description: 'Upload your PDF CV and get a professional website in seconds. AI-powered profiles with skill matching from hundreds of top companies.',
+              description:
+                'CVin.Bio is a curated tech job board and CV-to-website product. Browse live roles and publish a public profile from your resume.',
               offers: {
                 '@type': 'Offer',
                 price: '0',

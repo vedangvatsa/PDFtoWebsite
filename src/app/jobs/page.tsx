@@ -29,5 +29,35 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function JobsPage() {
-  return <JobsClient />;
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Where can I browse tech jobs on CVin.Bio?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `CVin.Bio lists ${PLATFORM_JOBS_DISPLAY} curated roles at https://cvin.bio/jobs, including remote jobs at companies such as OpenAI, Stripe, and Anthropic. Filter by title, company, or location. Updated daily.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How do I search CVin.Bio jobs?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Use https://cvin.bio/jobs?q= followed by a role or company name, for example https://cvin.bio/jobs?q=software%20engineer.',
+        },
+      },
+    ],
+  };
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+      />
+      <JobsClient />
+    </>
+  );
 }
