@@ -134,6 +134,9 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     assert.doesNotMatch(file, /published_at\.gt\.\$\{since\},created_at\.gt\.\$\{since\}/);
     assert.match(file, /MAX_SCAN/);
     assert.doesNotMatch(file, /50_000/);
+    assert.match(file, /ownership/);
+    assert.match(file, /pingIndexNow/);
+    assert.match(file, /\/jobs\/\$\{job\.id\}/);
   });
 
   it('deploy and scheduler pass NEXT_PUBLIC_SUPABASE_URL into the indexing step', () => {
