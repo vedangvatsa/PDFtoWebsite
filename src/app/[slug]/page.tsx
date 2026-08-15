@@ -467,11 +467,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       jobs.find((j: any) => j.company_logo)?.company_logo;
     const logo = primaryCompanyLogoUrl(companyName, storedLogo, 128);
     
-    // jobs[] is 30-day window, capped at 50. Prefer directory total only when sample is full.
-    const totalJobs =
-      (jobs.length >= 50 && dir?.role_count && dir.role_count > jobs.length
-        ? dir.role_count
-        : jobs.length) || 0;
+    const totalJobs = jobs.length;
     const remoteJobs = jobs.filter(j => j.location?.toLowerCase().includes('remote')).length;
     const remotePercent = jobs.length > 0 ? Math.round((remoteJobs / jobs.length) * 100) : 0;
     

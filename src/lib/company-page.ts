@@ -63,14 +63,16 @@ export async function getCompanyDirectory(slug: string) {
   return result.data as CompanyDirectoryRow | null;
 }
 
-const SELECT_JOB_COLS =
-  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug, description';
+const SLIM_JOB_COLS =
+  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug';
+const HUB_JOB_PAGE = 100;
+const HUB_JOB_MAX = 2000;
 
 /**
- * Load recent jobs for a company page.
+ * Load live jobs for a company page (the full list, not a 50-row sample).
  * Contract: equality only (company_key OR exact company name). Never ILIKE.
  * Hub listing is live inventory — do not wrap SQL in withCuratedJdTag.
- * Hard timeout + empty fail-open so the page still renders directory meta.
+ * Slim columns + paging so OpenAI-scale hubs do not hit statement timeout.
  */
 export async function loadCompanyJobs(
   slug: string,
@@ -84,58 +86,86 @@ export async function loadCompanyJobs(
       const keys = companyKeyEqualityValues(slug, dirName);
       const names = companyNameEqualityValues(slug, dirName);
 
+      async function fetchPaged(
+        applyFilters: (q: any) => any,
+        label: string
+      ): Promise<{ rows: CompanyPageJob[]; timedOut: boolean }> {
+        const rows: CompanyPageJob[] = [];
+        for (let from = 0; from < HUB_JOB_MAX; from += HUB_JOB_PAGE) {
+          const q = applyFilters(supabaseForCompany.from('jobs').select(SLIM_JOB_COLS));
+          let page = await withTimeoutFallback(
+            q
+              .order('published_at', { ascending: false, nullsFirst: false })
+              .range(from, from + HUB_JOB_PAGE - 1),
+            DB_BUDGET.list,
+            { data: null, error: { message: 'timeout' } } as any,
+            `${label}:${from}`
+          );
+          if (page.error?.message === 'timeout') {
+            page = await withTimeoutFallback(
+              applyFilters(supabaseForCompany.from('jobs').select(SLIM_JOB_COLS))
+                .order('published_at', { ascending: false, nullsFirst: false })
+                .range(from, from + HUB_JOB_PAGE - 1),
+              DB_BUDGET.stats,
+              { data: null, error: { message: 'timeout' } } as any,
+              `${label}:${from}:retry`
+            );
+          }
+          if (page.error?.message === 'timeout') {
+            return { rows, timedOut: rows.length === 0 };
+          }
+          const chunk = (page.data || []) as CompanyPageJob[];
+          rows.push(...chunk);
+          if (chunk.length < HUB_JOB_PAGE) break;
+        }
+        return { rows, timedOut: false };
+      }
+
       async function fetchJobs(
         windowStart: string | null
       ): Promise<{ rows: CompanyPageJob[]; timedOut: boolean }> {
-        let timedOut = false;
         const applyWindow = (q: any) => {
           if (!windowStart) return q;
           return q.or(companyJobsDateOrFilter(windowStart));
         };
 
         if (keys.length) {
-          const q = applyWindow(
-            supabaseForCompany
-              .from('jobs')
-              .select(SELECT_JOB_COLS)
-              .in('company_key', keys)
-          );
-          const byKey = await withTimeoutFallback(
-            q
-              .order('published_at', { ascending: false, nullsFirst: false })
-              .limit(50),
-            DB_BUDGET.list,
-            { data: null, error: { message: 'timeout' } } as any,
+          const byKey = await fetchPaged(
+            (q) => applyWindow(q.in('company_key', keys)),
             `company-jobs-key:${keys.join(',')}:${windowStart || 'all'}`
           );
-          if (byKey.data && byKey.data.length > 0) {
-            return { rows: byKey.data as CompanyPageJob[], timedOut: false };
-          }
-          if (byKey.error?.message === 'timeout') timedOut = true;
+          if (byKey.rows.length > 0) return byKey;
+          if (byKey.timedOut) return byKey;
         }
 
         if (names.length) {
-          const q = applyWindow(
-            supabaseForCompany
-              .from('jobs')
-              .select(SELECT_JOB_COLS)
-              .in('company', names)
-          );
-          const byName = await withTimeoutFallback(
-            q
-              .order('published_at', { ascending: false, nullsFirst: false })
-              .limit(50),
-            DB_BUDGET.list,
-            { data: null, error: { message: 'timeout' } } as any,
+          const byName = await fetchPaged(
+            (q) => applyWindow(q.in('company', names)),
             `company-jobs-name:${names.join(',')}:${windowStart || 'all'}`
           );
-          if (byName.data && byName.data.length > 0) {
-            return { rows: byName.data as CompanyPageJob[], timedOut: false };
-          }
-          if (byName.error?.message === 'timeout') timedOut = true;
+          if (byName.rows.length > 0 || byName.timedOut) return byName;
         }
 
-        return { rows: [], timedOut };
+        return { rows: [], timedOut: false };
+      }
+
+      async function hydrateDescriptions(rows: CompanyPageJob[]): Promise<CompanyPageJob[]> {
+        const need = rows.filter((j) => Array.isArray(j.tags) && j.tags.includes('curated-jd') && j.id);
+        if (!need.length) return rows;
+        const byId = new Map<string, string | null>();
+        for (let i = 0; i < need.length; i += 40) {
+          const ids = need.slice(i, i + 40).map((j) => j.id);
+          const page = await withTimeoutFallback(
+            supabaseForCompany.from('jobs').select('id,description').in('id', ids),
+            DB_BUDGET.list,
+            { data: [] } as any,
+            `company-jobs-desc:${slug}:${i}`
+          );
+          for (const row of page.data || []) {
+            byId.set(row.id, row.description ?? null);
+          }
+        }
+        return rows.map((j) => (byId.has(j.id) ? { ...j, description: byId.get(j.id) } : j));
       }
 
       const recent = await fetchJobs(since);
@@ -150,9 +180,10 @@ export async function loadCompanyJobs(
         }
         rows = all.rows || [];
       }
-      return rows.filter((j) => shouldListJobOnCompanyHub(j));
+      const live = rows.filter((j) => shouldListJobOnCompanyHub(j));
+      return hydrateDescriptions(live);
     },
-    ['company-jobs-v14', slug, dirName || ''],
+    ['company-jobs-v15', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
 }
@@ -211,10 +242,7 @@ export async function buildCompanyPageMetadata(
     jobs[0],
     dir?.name || slug.replace(/-/g, ' ')
   );
-  const jobCount =
-    jobs.length >= 50 && dir?.role_count && dir.role_count > jobs.length
-      ? dir.role_count
-      : jobs.length;
+  const jobCount = jobs.length;
   const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
   const desc = meta
     ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
