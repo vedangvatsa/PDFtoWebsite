@@ -21,7 +21,7 @@ export function ProfileCompleteness({
 }) {
   const completeness = useMemo(() => {
     const checks = [
-      { name: 'Add a Profile Photo', complete: !!profile.avatarUrl, targetId: 'avatar-upload' },
+      { name: 'Add a Profile Photo', complete: !!profile.avatarUrl, targetId: 'avatar-upload-label' },
       { name: 'Write a Summary', complete: !!profile.summary, targetId: 'summary' },
       { name: 'Add your Location', complete: !!profile.location, targetId: 'location' },
       { name: 'Add Work Experience', complete: work.some((w) => (w.title && w.title.trim() !== '') || (w.company && w.company.trim() !== '') || (w.description && w.description.trim() !== '')), targetId: 'work-experience-section' },
@@ -52,20 +52,21 @@ export function ProfileCompleteness({
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
           {checks.map((c) => (
-            <div
+            <button
+              type="button"
               key={c.name}
               onClick={() => {
                 const el = document.getElementById(c.targetId);
                 if (el) {
                   el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  el.focus({ preventScroll: true });
+                  if ('focus' in el) (el as HTMLElement).focus({ preventScroll: true });
                 }
               }}
-              className={`cursor-pointer flex items-center gap-2 p-2 rounded-md border text-[10px] transition-all ${c.complete ? 'bg-secondary/40 border-transparent text-muted-foreground/60 line-through grayscale' : 'bg-background shadow-none border-border/60 hover:border-primary/40 font-medium text-foreground hover:shadow-sm'}`}
+              className={`cursor-pointer flex items-center gap-2 p-2 rounded-md border text-[10px] text-left transition-all ${c.complete ? 'bg-secondary/40 border-transparent text-muted-foreground/60 line-through grayscale' : 'bg-background shadow-none border-border/60 hover:border-primary/40 font-medium text-foreground hover:shadow-sm'}`}
             >
               {c.complete ? <CheckCircle className="h-3 w-3 text-green-500 shrink-0" /> : <div className="h-2.5 w-2.5 rounded-full border border-gray-400 shrink-0" />}
               <span className="truncate" title={c.name}>{c.name}</span>
-            </div>
+            </button>
           ))}
         </div>
       </CardContent>

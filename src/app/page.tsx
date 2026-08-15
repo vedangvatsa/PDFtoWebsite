@@ -11,7 +11,6 @@ import { UploadCloud, Edit, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
-import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/auth';
@@ -22,6 +21,7 @@ import {
   reviewToastCopy,
   storePendingResumeFile,
 } from '@/lib/cv-upload-client';
+import CvFileOverlay from '@/components/cv-file-overlay';
 
 const LoginDialog = dynamic(
   () => import('@/components/login-dialog').then((m) => ({ default: m.LoginDialog })),
@@ -197,7 +197,7 @@ export default function Home() {
             ) : (
               <>
                 <div className="w-full space-y-3">
-                  <label htmlFor="resume-upload" className={`flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait' : ''}`}>
+                  <label htmlFor="resume-upload" className={`relative flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:bg-accent ${isProcessingFile ? 'cursor-wait pointer-events-none' : ''}`}>
                       {isProcessingFile ? (
                           <>
                               <Loader2 className="mr-3 h-6 w-6 animate-spin text-muted-foreground" />
@@ -211,7 +211,7 @@ export default function Home() {
                               </span>
                          </>
                       )}
-                      <Input id="resume-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" onChange={handleFileChange} disabled={isProcessingFile} />
+                      <CvFileOverlay id="resume-upload" onChange={handleFileChange} disabled={isProcessingFile} />
                   </label>
 
                   <div className="flex items-center gap-3">
