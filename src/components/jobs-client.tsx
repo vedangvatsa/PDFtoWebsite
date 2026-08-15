@@ -516,17 +516,6 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
         )}
 
       </main>
-      {!isFellowships && (
-        <section className="max-w-3xl mx-auto w-full px-4 pb-10 text-sm text-zinc-500">
-          <h2 className="text-sm font-semibold text-zinc-900 mb-2">About this job board</h2>
-          <p>
-            CVin.Bio lists {PLATFORM_JOBS_DISPLAY} curated tech jobs. Search by role or company with{' '}
-            <a className="underline" href="/jobs?q=software%20engineer">/jobs?q=</a>
-            , or open a company hub such as{' '}
-            <a className="underline" href="/flexboard">Flexboard careers</a>.
-          </p>
-        </section>
-      )}
       <MicroFooter />
     </div>
   );
