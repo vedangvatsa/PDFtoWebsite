@@ -24,7 +24,12 @@ import { createHash } from 'crypto';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { shouldQueueForManualEnrich, isFullyEnrichedJob, descriptionWords } from './lib/job-apply-source.mjs';
+import {
+  shouldQueueForManualEnrich,
+  isFullyEnrichedJob,
+  descriptionWords,
+  ENRICH_MIN_WORDS,
+} from './lib/job-apply-source.mjs';
 import { isBannedJobTitle } from '../../src/lib/banned-jobs.mjs';
 import { fellowshipPublishBlockReason } from '../../src/lib/fellowship-publish-gate.mjs';
 import { runCompanyAboutPass } from './lib/enrich-company-about.mjs';
@@ -125,7 +130,7 @@ const CONTINUOUS = process.env.CONTINUOUS === '1';
 const RETRY_ONLY = process.env.RETRY_ONLY === '1';
 const LINKEDIN_ONLY = process.env.LINKEDIN_ONLY === '1';
 const RE_ENRICH = process.env.RE_ENRICH === '1';
-const MIN_REWRITE_WORDS = 600;
+const MIN_REWRITE_WORDS = ENRICH_MIN_WORDS;
 const MAX_REWRITE_WORDS = 900;
 /** Originality / adequacy knobs (docs/JD_PARAPHRASE_RULES.md). */
 const GATE = {
