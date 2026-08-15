@@ -80,7 +80,11 @@ export default function BlogCTA() {
           Turn Your CV into a Website
         </h3>
         <p className="text-sm text-zinc-500">
-          Drop your CV below or build it from scratch.
+          Drop your CV below, or{' '}
+          <Link href="/jobs" className="underline hover:text-zinc-800">
+            browse curated tech jobs
+          </Link>
+          .
         </p>
       </div>
 

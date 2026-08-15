@@ -186,6 +186,29 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     assert.match(jobs, /FAQPage/);
   });
 
+  it('contact and hiring ship FAQPage JSON-LD', () => {
+    const contact = fs.readFileSync(path.join(root, 'src/app/contact/layout.tsx'), 'utf8');
+    const hiring = fs.readFileSync(path.join(root, 'src/app/hiring/page.tsx'), 'utf8');
+    assert.match(contact, /FAQPage/);
+    assert.match(hiring, /FAQPage/);
+  });
+
+  it('company hubs include a CVin.Bio URL FAQ', () => {
+    const page = fs.readFileSync(path.join(root, 'src/app/[slug]/page.tsx'), 'utf8');
+    assert.match(page, /Where can I find \$\{companyName\} jobs on CVin\.Bio\?/);
+    assert.match(page, /https:\/\/cvin\.bio\/\$\{slug\}/);
+  });
+
+  it('IndexNow pings citation pages not only job URLs', () => {
+    const file = fs.readFileSync(
+      path.join(root, '.github/scripts/google-indexing.mjs'),
+      'utf8'
+    );
+    assert.match(file, /\$\{SITE_URL\}\/flexboard/);
+    assert.match(file, /\$\{SITE_URL\}\/contact/);
+    assert.match(file, /\$\{SITE_URL\}\/ai/);
+  });
+
   it('robots.txt explicitly allows AI citation crawlers', () => {
     const file = fs.readFileSync(path.join(root, 'src/app/robots.ts'), 'utf8');
     assert.match(file, /Google-Extended/);

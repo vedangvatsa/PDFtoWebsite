@@ -511,6 +511,10 @@ export default async function ProfileSlugPage({ params }: PageProps) {
 
     const faqs = [
       {
+        q: `Where can I find ${companyName} jobs on CVin.Bio?`,
+        a: `Live ${companyName} openings are listed at https://cvin.bio/${slug}. Search all tech jobs at https://cvin.bio/jobs?q=${encodeURIComponent(companyName)}.`,
+      },
+      {
         q: `How many open positions does ${companyName} have right now?`,
         a: `${companyName} currently has ${totalJobs} open positions listed on CVin.Bio. ${last30d} of these were posted in the last 30 days. ${remotePercent}% of all roles are listed as remote-friendly.`,
       },

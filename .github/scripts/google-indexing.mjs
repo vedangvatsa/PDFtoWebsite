@@ -340,8 +340,17 @@ async function main() {
 
   console.log(`\nIndexing done: +${published} published, -${removed} removed, ${errors} errors`);
   try {
-    const ping = await pingIndexNow(publishBatch.map((x) => x.url));
-    console.log(`IndexNow: submitted ${ping.submitted || 0} pretty job URLs`);
+    const citePages = [
+      `${SITE_URL}/`,
+      `${SITE_URL}/jobs`,
+      `${SITE_URL}/contact`,
+      `${SITE_URL}/ai`,
+      `${SITE_URL}/flexboard`,
+      `${SITE_URL}/hiring`,
+      `${SITE_URL}/discover`,
+    ];
+    const ping = await pingIndexNow([...citePages, ...publishBatch.map((x) => x.url)]);
+    console.log(`IndexNow: submitted ${ping.submitted || 0} URLs (citation pages + jobs)`);
   } catch (e) {
     console.warn(`IndexNow skipped: ${e.message}`);
   }

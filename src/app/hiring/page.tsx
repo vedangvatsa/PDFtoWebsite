@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getPlatformStats } from '@/lib/get-platform-stats';
 import HiringClient from '@/components/hiring-client';
+import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -28,5 +29,35 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function TechTalentReportPage() {
-  return <HiringClient />;
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What is the CVin.Bio Tech Talent Report 2026?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `The Tech Talent Report at https://cvin.bio/hiring analyzes ${PLATFORM_JOBS_DISPLAY} curated job listings on CVin.Bio — skills, roles, and hiring trends across companies such as OpenAI, Stripe, and Anthropic.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Where can I browse the jobs behind this report?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Open https://cvin.bio/jobs for the live board, or search https://cvin.bio/jobs?q= by role or company.',
+        },
+      },
+    ],
+  };
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+      />
+      <HiringClient />
+    </>
+  );
 }
