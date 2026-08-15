@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <style>
+  .num { font: 600 30px/1 Inter, sans-serif; fill: #8A8A8A; letter-spacing: 0.08em; }
+  .h1 { font: 800 96px/1.02 Inter, sans-serif; fill: #111111; letter-spacing: -0.055em; }
+  .h1s { font: 800 76px/1.05 Inter, sans-serif; fill: #111111; letter-spacing: -0.05em; }
+  .lede { font: 400 44px/1.32 Inter, sans-serif; fill: #1A1A1A; }
+  .can { font: 500 40px/1 Inter, sans-serif; fill: #111111; }
+  .item { font: 400 42px/1 Inter, sans-serif; fill: #111111; }
+  .cta { font: 500 34px/1 Inter, sans-serif; fill: #4A4A4A; }
+  .cta-b { font: 700 34px/1 Inter, sans-serif; fill: #111111; }
+  .box { font: 700 28px/1.25 Inter, sans-serif; fill: #111111; }
+  .step { font: 600 20px/1 Inter, sans-serif; fill: #8A8A8A; letter-spacing: 0.1em; }
+</style>
+  </defs>
+  <rect width="1080" height="1080" fill="#F5F5F3"/>
+  <text class="num" x="64" y="78">01  /  12</text>
+  
+      <text class="h1" x="64" y="230">
+        <tspan x="64">Your traits</tspan>
+        <tspan x="64" dy="100">aren’t random.</tspan>
+      </text>
+      <line x1="64" y1="370" x2="560" y2="370" stroke="#C8C8C8" stroke-width="2"/>
+      <text class="lede" x="64" y="460">
+        <tspan x="64">They’re clues.</tspan>
+        <tspan x="64" dy="64">Use them.</tspan>
+        <tspan x="64" dy="64">Build the life you want.</tspan>
+      </text>
+      <g transform="translate(790, 160) scale(1.35)">
+  <g stroke="#111111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <line x1="36" y1="88" x2="92" y2="42"/>
+    <line x1="92" y1="42" x2="158" y2="70"/>
+    <line x1="158" y1="70" x2="198" y2="28"/>
+    <line x1="92" y1="42" x2="78" y2="148"/>
+    <line x1="78" y1="148" x2="148" y2="168"/>
+    <line x1="158" y1="70" x2="148" y2="168"/>
+    <line x1="148" y1="168" x2="210" y2="132"/>
+    <circle cx="36" cy="88" r="4.5" fill="#111111" stroke="none"/>
+    <circle cx="92" cy="42" r="4.5" fill="#111111" stroke="none"/>
+    <circle cx="158" cy="70" r="4.5" fill="#111111" stroke="none"/>
+    <circle cx="198" cy="28" r="4.5" fill="#111111" stroke="none"/>
+    <circle cx="78" cy="148" r="4.5" fill="#111111" stroke="none"/>
+    <circle cx="148" cy="168" r="4.5" fill="#111111" stroke="none"/>
+    <circle cx="210" cy="132" r="4.5" fill="#111111" stroke="none"/>
+  </g></g>
+    
+  <line x1="64" y1="968" x2="1016" y2="968" stroke="#D4D4D4" stroke-width="1.5"/>
+  <text class="cta" x="540" y="1028" text-anchor="middle">Convert your CV to website at <tspan class="cta-b">cvin.bio</tspan></text>
+</svg>

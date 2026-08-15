@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <style>
+  .num { font: 600 30px/1 Inter, sans-serif; fill: #8A8A8A; letter-spacing: 0.08em; }
+  .h1 { font: 800 96px/1.02 Inter, sans-serif; fill: #111111; letter-spacing: -0.055em; }
+  .h1s { font: 800 76px/1.05 Inter, sans-serif; fill: #111111; letter-spacing: -0.05em; }
+  .lede { font: 400 44px/1.32 Inter, sans-serif; fill: #1A1A1A; }
+  .can { font: 500 40px/1 Inter, sans-serif; fill: #111111; }
+  .item { font: 400 42px/1 Inter, sans-serif; fill: #111111; }
+  .cta { font: 500 34px/1 Inter, sans-serif; fill: #4A4A4A; }
+  .cta-b { font: 700 34px/1 Inter, sans-serif; fill: #111111; }
+  .box { font: 700 28px/1.25 Inter, sans-serif; fill: #111111; }
+  .step { font: 600 20px/1 Inter, sans-serif; fill: #8A8A8A; letter-spacing: 0.1em; }
+</style>
+  </defs>
+  <rect width="1080" height="1080" fill="#F5F5F3"/>
+  <text class="num" x="64" y="78">11  /  12</text>
+  
+      <text class="h1" x="64" y="230">Put it together</text>
+      <g transform="translate(52, 430)">
+        
+    <g transform="translate(0,0)">
+      <text class="step" x="140" y="-26" text-anchor="middle">01</text>
+      <rect x="0" y="0" width="280" height="168" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="2.2"/>
+      <text class="box" x="140" y="70" text-anchor="middle">
+        <tspan x="140">Know your</tspan>
+        <tspan x="140" dy="34">traits</tspan>
+      </text>
+    </g>
+        
+  <g transform="translate(292, 62)">
+    <path d="M0 10 h28 M18 0 l14 10 -14 10" fill="none" stroke="#111111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+        
+    <g transform="translate(344,0)">
+      <text class="step" x="140" y="-26" text-anchor="middle">02</text>
+      <rect x="0" y="0" width="280" height="168" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="2.2"/>
+      <text class="box" x="140" y="70" text-anchor="middle">
+        <tspan x="140">Use them</tspan>
+        <tspan x="140" dy="34">intentionally</tspan>
+      </text>
+    </g>
+        
+  <g transform="translate(636, 62)">
+    <path d="M0 10 h28 M18 0 l14 10 -14 10" fill="none" stroke="#111111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+        
+    <g transform="translate(688,0)">
+      <text class="step" x="140" y="-26" text-anchor="middle">03</text>
+      <rect x="0" y="0" width="280" height="168" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="2.2"/>
+      <text class="box" x="140" y="70" text-anchor="middle">
+        <tspan x="140">Build the life</tspan>
+        <tspan x="140" dy="34">you want</tspan>
+      </text>
+    </g>
+      </g>
+    
+  <line x1="64" y1="968" x2="1016" y2="968" stroke="#D4D4D4" stroke-width="1.5"/>
+  <text class="cta" x="540" y="1028" text-anchor="middle">Convert your CV to website at <tspan class="cta-b">cvin.bio</tspan></text>
+</svg>
