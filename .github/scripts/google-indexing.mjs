@@ -12,8 +12,8 @@
  *   SITE_URL (optional, default https://cvin.bio)
  *
  * Behavior:
- *   - Picks live public jobs (curated-jd, 600-word floor, not expired) in the
- *     30-day listing window — not only rows created in the last 7 days.
+ *   - Picks newest live public jobs (curated-jd, 600-word floor, not expired)
+ *     with indexed created_at / published_at filters — never a 50k OR scan.
  *   - Publishes jobPublicPath URLs (/{company}/{slug}), never the first 8
  *     chars of external_id (those 404/301 and Google Jobs drops them).
  *   - Re-notifies URLs last pinged before SCHEMA_EPOCH so Google recrawls
@@ -41,7 +41,12 @@ const SITE_URL = (process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'h
 const DAILY_QUOTA = 200; // Indexing API free-tier limit (URLs per day)
 // Bump this when JobPosting markup changes so live URLs get URL_UPDATED again.
 const SCHEMA_EPOCH = '2026-08-15T00:00:00.000Z';
-const PAGE_SIZE = 1000;
+// 1000-row pages that include `description` + an OR date filter hit
+// PostgREST statement timeout (~2.5m). Slim columns, small pages, cap the scan.
+const PAGE_SIZE = 100;
+const MAX_SCAN = 800;
+const SLIM_COLS =
+  'id,title,company,external_id,slug,tags,published_at,created_at,apply_url,category,source';
 
 const SA_JSON = process.env.GOOGLE_INDEXING_SERVICE_ACCOUNT;
 if (!SA_JSON) {
@@ -151,17 +156,14 @@ function needsPublish(url, state) {
   return new Date(last).getTime() < Date.parse(SCHEMA_EPOCH);
 }
 
-async function fetchCandidateJobs() {
-  const since = new Date(Date.now() - JOB_MAX_AGE_DAYS * 24 * 60 * 60 * 1000).toISOString();
+async function fetchSlimPages(since) {
   const all = [];
-  for (let from = 0; from < 50_000; from += PAGE_SIZE) {
+  for (let from = 0; from < MAX_SCAN; from += PAGE_SIZE) {
     const { data, error } = await supabase
       .from('jobs')
-      .select(
-        'id,title,company,external_id,slug,tags,published_at,created_at,description,apply_url,category,source'
-      )
+      .select(SLIM_COLS)
       .contains('tags', ['curated-jd'])
-      .or(`published_at.gt.${since},created_at.gt.${since}`)
+      .gte('created_at', since)
       .order('created_at', { ascending: false })
       .range(from, from + PAGE_SIZE - 1);
     if (error) throw new Error(`Supabase error: ${error.message}`);
@@ -169,7 +171,37 @@ async function fetchCandidateJobs() {
     all.push(...data);
     if (data.length < PAGE_SIZE) break;
   }
+  // Indexed complement: live by published_at but ingested earlier.
+  const { data: extra, error: extraErr } = await supabase
+    .from('jobs')
+    .select(SLIM_COLS)
+    .contains('tags', ['curated-jd'])
+    .gte('published_at', since)
+    .lt('created_at', since)
+    .order('published_at', { ascending: false })
+    .limit(200);
+  if (extraErr) throw new Error(`Supabase error: ${extraErr.message}`);
+  const seen = new Set(all.map((j) => j.id));
+  for (const row of extra || []) {
+    if (!seen.has(row.id)) all.push(row);
+  }
   return all;
+}
+
+async function hydrateDescriptions(rows) {
+  const out = new Map();
+  for (let i = 0; i < rows.length; i += 50) {
+    const ids = rows.slice(i, i + 50).map((j) => j.id);
+    const { data, error } = await supabase.from('jobs').select('id,description').in('id', ids);
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+    for (const row of data || []) out.set(row.id, row.description);
+  }
+  return rows.map((j) => ({ ...j, description: out.get(j.id) ?? j.description }));
+}
+
+async function fetchCandidateJobs() {
+  const since = new Date(Date.now() - JOB_MAX_AGE_DAYS * 24 * 60 * 60 * 1000).toISOString();
+  return hydrateDescriptions(await fetchSlimPages(since));
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
@@ -194,9 +226,15 @@ async function main() {
     }
   }
 
+  // Scan is capped — only URL_DELETED jobs we actually fetched and found dead.
+  const fetchedUrls = new Set();
+  for (const job of jobs) {
+    const url = canonicalUrl(job);
+    if (url) fetchedUrls.add(url);
+  }
   const toRemove = [];
   for (const url of Object.keys(state.published || {})) {
-    if (!liveUrls.has(url)) {
+    if (fetchedUrls.has(url) && !liveUrls.has(url)) {
       toRemove.push(url);
       delete state.published[url];
     }
