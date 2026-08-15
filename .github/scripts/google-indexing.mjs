@@ -33,6 +33,7 @@ import { isJobExpired, JOB_MAX_AGE_DAYS } from '../../src/lib/job-age.mjs';
 import { isPublicJobPage } from './lib/job-apply-source.mjs';
 import { jobPublicPath } from './lib/job-public-url.mjs';
 import { pingIndexNow } from './lib/indexnow.mjs';
+import { ensureGscOwnership } from './ensure-gsc-ownership.mjs';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
@@ -222,6 +223,12 @@ async function fetchCandidateJobs() {
 
 // ── Main ─────────────────────────────────────────────────────────────────
 async function main() {
+  try {
+    await ensureGscOwnership();
+  } catch (err) {
+    console.error('GSC ownership ensure failed:', err.message);
+  }
+
   const jobs = await fetchCandidateJobs();
   if (!jobs.length) {
     console.log(`No jobs in the last ${JOB_MAX_AGE_DAYS}d listing window.`);
