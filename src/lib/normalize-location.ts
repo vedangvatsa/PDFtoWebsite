@@ -194,7 +194,12 @@ export function normalizeLocation(raw: string): string {
   const remoteMatch = loc.match(/^(?:Remote|Work from Home|WFH|Telecommute)/i);
   if (remoteMatch) {
     // "Remote - US" → "Remote (US)"
-    const rest = loc.slice(remoteMatch[0].length).replace(/^[\s\-–:,]+/, '').replace(/^\(|\)$/g, '').trim();
+    const rest = loc
+      .slice(remoteMatch[0].length)
+      .replace(/^[\s\-–:,]+/, '')
+      .replace(/^\(|\)$/g, '')
+      .replace(/\s*\/+\s*$/g, '')
+      .trim();
     if (!rest) return 'Remote';
     // Normalize the country/region after "Remote"
     const country = COUNTRY_CODES[rest.toLowerCase()] || rest;
