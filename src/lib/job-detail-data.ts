@@ -452,7 +452,7 @@ export async function buildJobMetadata(job: JobRow, siteUrl: string) {
   const expired = isJobExpired(job.published_at, job.created_at);
   const title = expired
     ? `${jobTitle} at ${company} (closed)`
-    : `${jobTitle} at ${company}${type ? ` (${type})` : ''}`;
+    : `${jobTitle} at ${company}${location ? ` — ${location}` : type ? ` (${type})` : ''}`;
   const locationSuffix = location ? `${location}. ` : '';
   const fallback = expired
     ? `${jobTitle} at ${company}. ${locationSuffix}This posting is closed.`
@@ -1069,6 +1069,45 @@ export function buildJobJsonLd(
   }
 
   return jsonLd;
+}
+
+/** FAQPage from live job fields only — no invented duties or pay. */
+export function buildJobFaqJsonLd(job: JobRow, detail: JobDetail) {
+  const loc = (job.location || detail.location || '').trim();
+  const posted = (job.published_at || job.created_at || '').toString().slice(0, 10);
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: `What is the ${detail.title} role at ${detail.company}?`,
+      a: `${detail.title} at ${detail.company}${loc ? ` (${loc})` : ''}. Full description and apply link are on CVin.Bio.`,
+    },
+  ];
+  if (loc) {
+    faqs.push({
+      q: `Is the ${detail.title} job at ${detail.company} remote?`,
+      a: /\bremote\b|work from home|\bwfh\b/i.test(loc)
+        ? `Yes. This ${detail.title} listing is ${loc}.`
+        : `This listing is based in ${loc}.`,
+    });
+  }
+  faqs.push({
+    q: `How do I apply for ${detail.title} at ${detail.company}?`,
+    a: `Open https://cvin.bio${detail.public_path || jobPublicPath(job)} and use the apply button to go to the employer's application.`,
+  });
+  if (posted) {
+    faqs.push({
+      q: `When was the ${detail.title} job at ${detail.company} posted?`,
+      a: `CVin.Bio lists this opening as posted ${posted}.`,
+    });
+  }
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
 }
 
 export {

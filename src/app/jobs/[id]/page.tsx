@@ -7,6 +7,7 @@ import {
   buildJobMetadata,
   buildJobJsonLd,
   buildJobBreadcrumbJsonLd,
+  buildJobFaqJsonLd,
   fetchRelatedJobs,
 } from '@/lib/job-detail-data';
 import { jobPublicPath, isJobId } from '@/lib/job-description';
@@ -55,6 +56,7 @@ export default async function JobDetailPage({ params }: PageProps) {
   ]);
   const jsonLd = buildJobJsonLd(job, detail, siteUrl);
   const breadcrumbLd = buildJobBreadcrumbJsonLd(detail, siteUrl);
+  const faqLd = buildJobFaqJsonLd(job, detail);
 
   return (
     <>
@@ -67,6 +69,10 @@ export default async function JobDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
       <JobDetailClient
         job={detail}

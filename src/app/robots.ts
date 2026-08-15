@@ -9,9 +9,15 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: ['/editor', '/api/', '/admin'],
       },
-      // All crawlers (search engines, AI bots, social previews) are
-      // allowed by the wildcard rule above. No need to list them
-      // individually — robots.txt defaults to "allow" for unlisted paths.
+      { userAgent: 'Google-Extended', allow: '/' },
+      { userAgent: 'OAI-SearchBot', allow: '/' },
+      { userAgent: 'GPTBot', allow: '/' },
+      { userAgent: 'ChatGPT-User', allow: '/' },
+      { userAgent: 'ClaudeBot', allow: '/' },
+      { userAgent: 'Claude-SearchBot', allow: '/' },
+      { userAgent: 'PerplexityBot', allow: '/' },
+      { userAgent: 'Perplexity-User', allow: '/' },
+      { userAgent: 'Applebot-Extended', allow: '/' },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,
