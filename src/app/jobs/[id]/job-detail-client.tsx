@@ -16,9 +16,9 @@ import {
 } from 'lucide-react';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
+import CompanyLogo from '@/components/company-logo';
 import {
   addJobApplyUtm,
-  companyLogoFallback,
   jobTypeLabel,
   timeAgo,
   JOB_DESCRIPTION_PROSE_CLASS,
@@ -84,9 +84,6 @@ export default function JobDetailClient({
 }: Props) {
   const [userSkills] = useState(initialSkills);
   const [isUploading, setIsUploading] = useState(false);
-  const [logoSrc, setLogoSrc] = useState(
-    companyLogoFallback(job.company, job.company_logo, job.apply_url)
-  );
   const router = useRouter();
   const { toast } = useToast();
 
@@ -321,24 +318,12 @@ export default function JobDetailClient({
 
         <article className="bg-white border border-zinc-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm min-w-0 overflow-hidden">
           <div className="flex items-start gap-3 sm:gap-4 mb-5 sm:mb-6">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={logoSrc}
-              alt={`${job.company} logo`}
+            <CompanyLogo
+              name={job.company}
+              logo={job.company_logo}
+              applyUrl={job.apply_url}
+              size={48}
               className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl object-cover border border-zinc-100 shrink-0"
-              onLoad={(e) => {
-                const el = e.target as HTMLImageElement;
-                if (!job.company_logo && el.naturalWidth <= 16) {
-                  setLogoSrc(
-                    `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`
-                  );
-                }
-              }}
-              onError={() => {
-                setLogoSrc(
-                  `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company)}&background=random&color=fff&size=128&bold=true`
-                );
-              }}
             />
             <div className="min-w-0 flex-1">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 leading-snug sm:leading-tight break-words">

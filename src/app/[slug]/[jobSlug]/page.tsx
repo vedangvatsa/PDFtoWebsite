@@ -16,6 +16,8 @@ import {
   mintPrettyJobSlug,
   shortJobSlug,
   jobPublicPath,
+  jobStoredSlug,
+  jobSlugSegmentMatchesHint,
 } from '@/lib/job-description';
 import { toCompanyKey } from '@/lib/company-directory';
 import { supabaseAdmin } from '@/lib/supabase-admin';
@@ -60,40 +62,83 @@ async function resolveLegacySlugPath(
 ): Promise<LegacyResolution | null> {
   const companyKey = toCompanyKey(companySlug);
   if (!companyKey || !isShortJobSlug(jobSlug)) return null;
+  const want = jobSlug.toLowerCase();
+  const slugPrefix = `${companyKey}_${want}`;
+
+  const prefixHit = await withTimeoutFallback(
+    supabaseAdmin
+      .from('jobs')
+      .select(
+        'id,title,company,external_id,slug,published_at,created_at,tags,description,apply_url,category,source'
+      )
+      .eq('company_key', companyKey)
+      .like('slug', `${slugPrefix}%`)
+      .order('created_at', { ascending: false })
+      .limit(40),
+    DB_BUDGET.fast,
+    { data: [] } as any,
+    `legacy-slug-prefix:${slugPrefix}`
+  );
+
   const { data } = await withTimeoutFallback(
     supabaseAdmin
       .from('jobs')
-      .select('id,title,company,external_id,slug')
+      .select(
+        'id,title,company,external_id,slug,published_at,created_at,tags,description,apply_url,category,source'
+      )
       .eq('company_key', companyKey)
       .limit(100),
     DB_BUDGET.fast,
     { data: [] } as any,
     `legacy-slug:${companyKey}`
   );
-  const want = jobSlug.toLowerCase();
-  for (const job of (data || []) as Array<{
+
+  type Cand = {
     id: string;
     title: string;
     company: string;
     external_id: string | null;
     slug: string | null;
-  }>) {
-    if (!job.id || !job.title) continue;
-    const minted = mintPrettyJobSlug(job.title, job.id).toLowerCase();
+    published_at?: string | null;
+    created_at?: string | null;
+    tags?: unknown;
+    description?: string | null;
+    apply_url?: string | null;
+    category?: string | null;
+    source?: string | null;
+  };
+
+  const seen = new Set<string>();
+  const matches: Cand[] = [];
+  const consider = (job: Cand) => {
+    if (!job?.id || seen.has(job.id)) return;
+    const rest = jobStoredSlug(job);
+    const minted = mintPrettyJobSlug(job.title || '', job.id).toLowerCase();
+    const mintedWrite = mintPrettyJobSlug(job.title || '', job.id, new Set()).toLowerCase();
     const short = shortJobSlug(job.company, job.external_id)?.toLowerCase();
-    if (minted === want || short === want) {
-      const resolved = jobPublicPath(job);
-      // Same URL → render the job directly; redirecting would self-loop.
-      if (
-        resolved.toLowerCase() ===
-        `/${companySlug}/${jobSlug}`.toLowerCase()
-      ) {
-        return { kind: 'render', job: await fetchJobById(job.id) };
-      }
-      return { kind: 'redirect', path: resolved };
+    if (
+      jobSlugSegmentMatchesHint(rest, want) ||
+      minted === want ||
+      mintedWrite === want ||
+      short === want
+    ) {
+      seen.add(job.id);
+      matches.push(job);
     }
+  };
+  for (const job of (prefixHit.data || []) as Cand[]) consider(job);
+  for (const job of (data || []) as Cand[]) consider(job);
+
+  const publicMatches = matches.filter((j) => isPublicJobPage(j));
+  if (!publicMatches.length) return null;
+
+  const exact = publicMatches.find((j) => (jobStoredSlug(j) || '').toLowerCase() === want);
+  const winner = exact || publicMatches[0];
+  const resolved = jobPublicPath(winner);
+  if (resolved.toLowerCase() === `/${companySlug}/${jobSlug}`.toLowerCase()) {
+    return { kind: 'render', job: await fetchJobById(winner.id) };
   }
-  return null;
+  return { kind: 'redirect', path: resolved };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
