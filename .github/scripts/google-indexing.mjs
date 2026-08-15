@@ -32,6 +32,7 @@ import dotenv from 'dotenv';
 import { isJobExpired, JOB_MAX_AGE_DAYS } from '../../src/lib/job-age.mjs';
 import { isPublicJobPage } from './lib/job-apply-source.mjs';
 import { jobPublicPath } from './lib/job-public-url.mjs';
+import { pingIndexNow } from './lib/indexnow.mjs';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
@@ -133,9 +134,24 @@ async function notify(token, url, type) {
     // 429 = daily quota exhausted — stop the batch immediately (remaining URLs
     // stay unrecorded and get retried on the next run/day).
     if (res.status === 429) return { ok: false, quota: true, url, type };
+    if (res.status === 403) return { ok: false, ownership: true, url, type };
     throw new Error(`Indexing ${type} ${url} → ${res.status}: ${JSON.stringify(data).slice(0, 200)}`);
   }
   return { ok: true };
+}
+
+function isFellowish(job) {
+  return (
+    /\bfellow/i.test(String(job?.title || '')) ||
+    String(job?.category || '').toLowerCase() === 'fellowship' ||
+    String(job?.source || '') === 'fellowship-discover'
+  );
+}
+
+function logOwnershipHelp(url) {
+  console.error(
+    `\nIndexing API 403 URL ownership (${url}). Add this service account as Owner in Search Console on the Domain property cvin.bio — or the URL-prefix property https://cvin.bio/ (not only /jobs/): ${sa.client_email}`
+  );
 }
 
 function isIndexable(job) {
@@ -245,6 +261,8 @@ async function main() {
   // so older backlog URLs get covered on later days as quota frees up.
   const budget = DAILY_QUOTA - toRemove.length;
   toPublish.sort((a, b) => {
+    const fellow = (j) => (isFellowish(j) ? 1 : 0);
+    if (fellow(a.job) !== fellow(b.job)) return fellow(a.job) - fellow(b.job);
     const newest = (j) =>
       Math.max(
         0,
@@ -261,10 +279,31 @@ async function main() {
   let published = 0;
   let removed = 0;
   let errors = 0;
+  let useUuidFallback = false;
 
   // Google recommends at most ~1 URL per second; batch in small chunks with pauses.
-  for (const { url } of publishBatch) {
-    const r = await notify(token, url, 'URL_UPDATED');
+  for (const { url, job } of publishBatch) {
+    const target = useUuidFallback && job?.id ? `${SITE_URL}/jobs/${job.id}` : url;
+    let r = await notify(token, target, 'URL_UPDATED');
+    if (r.ownership && !useUuidFallback && job?.id) {
+      const uuidUrl = `${SITE_URL}/jobs/${job.id}`;
+      const r2 = await notify(token, uuidUrl, 'URL_UPDATED');
+      if (r2.ok) {
+        console.log(
+          '\n  Indexing API accepted /jobs/{id} but not pretty URLs. GSC is likely a /jobs prefix — add the service account as Owner on sc-domain:cvin.bio.'
+        );
+        useUuidFallback = true;
+        r = r2;
+      } else if (r2.ownership) {
+        logOwnershipHelp(url);
+        break;
+      } else {
+        r = r2;
+      }
+    } else if (r.ownership) {
+      logOwnershipHelp(url);
+      break;
+    }
     if (r.ok) {
       state.published[url] = new Date().toISOString();
       published++;
@@ -272,7 +311,7 @@ async function main() {
     } else if (r.quota) {
       console.log(`\n  ⏸ quota hit at ${url} — stopping (retries next run/day)`);
       break;
-    } else {
+    } else if (!r.ownership) {
       errors++;
       console.error(`\n  ✗ publish ${url}: ${r.error?.message || 'failed'}`);
     }
@@ -300,6 +339,12 @@ async function main() {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 
   console.log(`\nIndexing done: +${published} published, -${removed} removed, ${errors} errors`);
+  try {
+    const ping = await pingIndexNow(publishBatch.map((x) => x.url));
+    console.log(`IndexNow: submitted ${ping.submitted || 0} pretty job URLs`);
+  } catch (e) {
+    console.warn(`IndexNow skipped: ${e.message}`);
+  }
   if (published > 0 || removed > 0) {
     // Persist state for the workflow commit step.
     console.log('STATE_CHANGED');
