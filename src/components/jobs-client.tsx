@@ -1,6 +1,7 @@
 'use client';
 
 import { PAGE_CONTAINER, PAGE_TITLE } from '@/lib/utils';
+import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -274,8 +275,13 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
         {/* Hero */}
         <div className="flex flex-col mb-10">
           <h1 className={PAGE_TITLE}>
-            {isFellowships ? 'Fellowships' : 'Job Board'}
+            {isFellowships ? 'Fellowships' : 'Curated tech jobs'}
           </h1>
+          {!isFellowships && (
+            <p className="mt-2 text-sm text-zinc-500">
+              {PLATFORM_JOBS_DISPLAY} live roles at companies like OpenAI, Stripe, and Anthropic. Updated daily.
+            </p>
+          )}
           {/* Company logos strip */}
           <div className="flex items-center gap-3 mt-3 overflow-hidden">
             {(isFellowships ? FELLOWSHIP_LOGOS : JOBS_LOGOS).map((c, i) => (
@@ -510,6 +516,17 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
         )}
 
       </main>
+      {!isFellowships && (
+        <section className="max-w-3xl mx-auto w-full px-4 pb-10 text-sm text-zinc-500">
+          <h2 className="text-sm font-semibold text-zinc-900 mb-2">About this job board</h2>
+          <p>
+            CVin.Bio lists {PLATFORM_JOBS_DISPLAY} curated tech jobs. Search by role or company with{' '}
+            <a className="underline" href="/jobs?q=software%20engineer">/jobs?q=</a>
+            , or open a company hub such as{' '}
+            <a className="underline" href="/flexboard">Flexboard careers</a>.
+          </p>
+        </section>
+      )}
       <MicroFooter />
     </div>
   );

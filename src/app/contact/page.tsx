@@ -165,6 +165,18 @@ export default function ContactPage() {
             </form>
           )}
 
+          <section className="mt-10 space-y-3 text-left text-sm text-muted-foreground">
+            <h2 className="text-sm font-semibold text-foreground">About CVin.Bio</h2>
+            <p>
+              CVin.Bio is a curated tech job board and a CV-to-website product. Browse live roles at{' '}
+              <a className="underline" href="/jobs">cvin.bio/jobs</a>
+              {' '}or upload a resume on the homepage to publish a public profile.
+            </p>
+            <p>
+              This page is for partnerships, support, feedback, and feature requests.
+            </p>
+          </section>
+
         </div>
       </main>
       <MicroFooter />
