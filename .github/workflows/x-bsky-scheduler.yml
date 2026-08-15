@@ -181,6 +181,10 @@ jobs:
             done
           fi
 
+      - name: Google Jobs live canary
+        if: success()
+        run: node .github/scripts/google-jobs-canary.mjs
+
       - name: Notify Google Indexing API (scheduled)
         continue-on-error: true
         env:
