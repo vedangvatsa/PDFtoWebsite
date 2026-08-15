@@ -38,7 +38,7 @@ const ALLOWED_CRAWLER_UA = [
   // AI model training & AI search assistants
   /GPTBot|ChatGPT-User|OAI-SearchBot|GPTBot-Extended/i,
   /ClaudeBot|Claude-Web|Claude-SearchBot|anthropic-ai/i,
-  /Google-Extended|Googlebot|GoogleOther|Storebot-Google/i,
+  /Google-Extended|Googlebot|GoogleOther|Storebot-Google|Google-InspectionTool|AdsBot-Google|APIs-Google|FeedFetcher-Google/i,
   /PerplexityBot|Perplexity-User/i,
   /Meta-ExternalAgent|Meta-ExternalFetcher/i,
   /Bytespider|CCBot|cohere-ai|AI2Bot|MistralBot|xAI-Grok|YouBot|PanguBot/i,

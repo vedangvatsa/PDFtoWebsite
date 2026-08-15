@@ -8,15 +8,17 @@
  *   GOOGLE_INDEXING_SERVICE_ACCOUNT  — full JSON of a GCP service account with
  *                                      the Indexing API enabled (project) and
  *                                      Owner access to the GSC property
- *   SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY — candidate job rows
+ *   NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY
  *   SITE_URL (optional, default https://cvin.bio)
  *
  * Behavior:
- *   - Picks jobs published in the last 24h that are indexable (curated-jd,
- *     not expired, not banned) and not already notified (state file).
- *   - Publishes their canonical pretty URLs to the Indexing API (batches).
- *   - Also sends remove notifications for URLs whose jobs went expired
- *     (validThrough in the past / markup removed).
+ *   - Picks live public jobs (curated-jd, 600-word floor, not expired) in the
+ *     30-day listing window — not only rows created in the last 7 days.
+ *   - Publishes jobPublicPath URLs (/{company}/{slug}), never the first 8
+ *     chars of external_id (those 404/301 and Google Jobs drops them).
+ *   - Re-notifies URLs last pinged before SCHEMA_EPOCH so Google recrawls
+ *     after JobPosting schema fixes (validThrough, worldwide remote).
+ *   - Also sends remove notifications for URLs whose jobs went expired.
  *
  * Usage: node .github/scripts/google-indexing.mjs
  * State: .github/scripts/google-indexing-state.json (committed)
@@ -27,16 +29,19 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { isJobExpired } from '../../src/lib/job-age.mjs';
+import { isJobExpired, JOB_MAX_AGE_DAYS } from '../../src/lib/job-age.mjs';
 import { isPublicJobPage } from './lib/job-apply-source.mjs';
+import { jobPublicPath } from './lib/job-public-url.mjs';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STATE_FILE = path.join(__dirname, 'google-indexing-state.json');
-const SITE_URL = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio';
-const LOOKBACK_HOURS = 24 * 7; // jobs sync cadence is <daily; 7d covers gaps
+const SITE_URL = (process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
 const DAILY_QUOTA = 200; // Indexing API free-tier limit (URLs per day)
+// Bump this when JobPosting markup changes so live URLs get URL_UPDATED again.
+const SCHEMA_EPOCH = '2026-08-15T00:00:00.000Z';
+const PAGE_SIZE = 1000;
 
 const SA_JSON = process.env.GOOGLE_INDEXING_SERVICE_ACCOUNT;
 if (!SA_JSON) {
@@ -50,10 +55,13 @@ const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const INDEXING_API = 'https://indexing.googleapis.com/v3/urlNotifications:publish';
 
 // ── Supabase ─────────────────────────────────────────────────────────────
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing NEXT_PUBLIC_SUPABASE_URL (or SUPABASE_URL) / SUPABASE_SERVICE_ROLE_KEY');
+  process.exit(1);
+}
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // ── State ────────────────────────────────────────────────────────────────
 function loadState() {
@@ -132,47 +140,65 @@ function isIndexable(job) {
 }
 
 function canonicalUrl(job) {
-  if (!job.external_id) return null;
-  const company = (job.company || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-  if (!company) return null;
-  const id = (job.external_id || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+/, '').slice(0, 8) || '';
-  if (!id) return null;
-  return `${SITE_URL}/${company}/${id}`;
+  const jobPath = jobPublicPath(job);
+  if (!jobPath) return null;
+  return `${SITE_URL}${jobPath}`;
+}
+
+function needsPublish(url, state) {
+  const last = state.published[url];
+  if (!last) return true;
+  return new Date(last).getTime() < Date.parse(SCHEMA_EPOCH);
+}
+
+async function fetchCandidateJobs() {
+  const since = new Date(Date.now() - JOB_MAX_AGE_DAYS * 24 * 60 * 60 * 1000).toISOString();
+  const all = [];
+  for (let from = 0; from < 50_000; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('jobs')
+      .select(
+        'id,title,company,external_id,slug,tags,published_at,created_at,description,apply_url,category,source'
+      )
+      .contains('tags', ['curated-jd'])
+      .or(`published_at.gt.${since},created_at.gt.${since}`)
+      .order('created_at', { ascending: false })
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+    if (!data?.length) break;
+    all.push(...data);
+    if (data.length < PAGE_SIZE) break;
+  }
+  return all;
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
 async function main() {
-  const since = new Date(Date.now() - LOOKBACK_HOURS * 3600 * 1000).toISOString();
-  const { data: jobs, error } = await supabase
-    .from('jobs')
-    .select('id,title,company,external_id,tags,published_at,created_at,description,apply_url')
-    .contains('tags', ['curated-jd'])
-    .gte('created_at', since)
-    .order('published_at', { ascending: false, nullsFirst: false })
-    .limit(50000);
-
-  if (error) throw new Error(`Supabase error: ${error.message}`);
-  if (!jobs || jobs.length === 0) {
-    console.log(`No jobs created in the last ${LOOKBACK_HOURS}h.`);
+  const jobs = await fetchCandidateJobs();
+  if (!jobs.length) {
+    console.log(`No jobs in the last ${JOB_MAX_AGE_DAYS}d listing window.`);
     return;
   }
 
   const state = loadState();
   const token = await getAccessToken();
 
+  const liveUrls = new Set();
   const toPublish = [];
-  const toRemove = [];
   for (const job of jobs) {
     const url = canonicalUrl(job);
     if (!url) continue;
     if (isIndexable(job)) {
-      if (!state.published[url]) toPublish.push({ url, job });
-    } else {
-      // Was previously notified but now closed → tell Google to drop it.
-      if (state.published[url]) {
-        toRemove.push(url);
-        delete state.published[url];
-      }
+      liveUrls.add(url);
+      if (needsPublish(url, state)) toPublish.push({ url, job });
+    }
+  }
+
+  const toRemove = [];
+  for (const url of Object.keys(state.published || {})) {
+    if (!liveUrls.has(url)) {
+      toRemove.push(url);
+      delete state.published[url];
     }
   }
 
@@ -181,14 +207,17 @@ async function main() {
   // so older backlog URLs get covered on later days as quota frees up.
   const budget = DAILY_QUOTA - toRemove.length;
   toPublish.sort((a, b) => {
-    const pa = new Date(a.job.published_at || a.job.created_at || 0).getTime();
-    const pb = new Date(b.job.published_at || b.job.created_at || 0).getTime();
-    return pb - pa;
+    const newest = (j) =>
+      Math.max(
+        0,
+        ...[j.published_at, j.created_at].map((ts) => (ts ? new Date(ts).getTime() : 0))
+      );
+    return newest(b.job) - newest(a.job);
   });
   const publishBatch = toPublish.slice(0, Math.max(0, budget));
 
   console.log(
-    `${jobs.length} new/changed rows; ${toPublish.length} to publish (${publishBatch.length} within quota), ${toRemove.length} to remove`
+    `${jobs.length} live-window rows; ${liveUrls.size} public URLs; ${toPublish.length} to publish (${publishBatch.length} within quota), ${toRemove.length} to remove`
   );
 
   let published = 0;

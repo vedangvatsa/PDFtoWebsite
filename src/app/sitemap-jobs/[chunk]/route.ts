@@ -1,4 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { companyJobsDateOrFilter } from '@/lib/company-hub-query';
 import { jobSitemapPath } from '@/lib/job-description';
 import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 import {
@@ -43,8 +44,7 @@ export async function GET(req: Request, ctx: Props) {
           .not('external_id', 'is', null)
           .not('company', 'is', null)
           .contains('tags', ['curated-jd'])
-          .gt('created_at', thirtyDaysAgo)
-          .or(`published_at.is.null,published_at.gt.${thirtyDaysAgo}`)
+          .or(companyJobsDateOrFilter(thirtyDaysAgo))
           .order('created_at', { ascending: false })
           .range(from, from + JOB_SITEMAP_PAGE - 1);
 
@@ -53,7 +53,12 @@ export async function GET(req: Request, ctx: Props) {
           if (!jobQualifiesForSitemap(j)) continue;
           const path = jobSitemapPath(j);
           if (!path) continue;
-          const last = (j.published_at || j.created_at || '').toString().slice(0, 10) || undefined;
+          const lastMs = [j.published_at, j.created_at]
+            .map((ts) => (ts ? new Date(String(ts)).getTime() : NaN))
+            .filter((ms) => Number.isFinite(ms));
+          const last = lastMs.length
+            ? new Date(Math.max(...lastMs)).toISOString().slice(0, 10)
+            : undefined;
           urls.push({ loc: `${siteUrl}${path}`, lastmod: last });
           if (urls.length >= JOB_SITEMAP_CHUNK) break;
         }

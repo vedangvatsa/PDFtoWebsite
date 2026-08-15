@@ -232,6 +232,9 @@ describe('Telegram / IndexNow do not advertise uncurated URLs', () => {
     const file = src('.github/scripts/google-indexing.mjs');
     assert.match(file, /contains\('tags', \['curated-jd'\]\)/);
     assert.match(file, /isPublicJobPage/);
+    assert.match(file, /jobPublicPath/);
+    assert.doesNotMatch(file, /slice\(0,\s*8\)/);
+    assert.match(file, /NEXT_PUBLIC_SUPABASE_URL \|\| process\.env\.SUPABASE_URL/);
   });
 });
 

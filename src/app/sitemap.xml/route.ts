@@ -1,4 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { companyJobsDateOrFilter } from '@/lib/company-hub-query';
 import { JOB_SITEMAP_CHUNK, withSitemapCache } from '@/lib/sitemap-cache';
 import { escapeXml } from '@/lib/xml';
 
@@ -22,8 +23,7 @@ export async function GET(req: Request) {
         .not('external_id', 'is', null)
         .not('company', 'is', null)
         .contains('tags', ['curated-jd'])
-        .gt('created_at', thirtyDaysAgo)
-        .or(`published_at.is.null,published_at.gt.${thirtyDaysAgo}`);
+        .or(companyJobsDateOrFilter(thirtyDaysAgo));
       total = count || 0;
     } catch (e) {
       console.error('Sitemap index: failed to count jobs', e);
