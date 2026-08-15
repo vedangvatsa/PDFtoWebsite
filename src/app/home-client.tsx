@@ -242,37 +242,6 @@ export default function HomeClient() {
 
         </div>
       </main>
-      <section className="mx-auto w-full max-w-2xl px-4 pb-12 text-left">
-        <h2 className="text-lg font-semibold mb-3">About CVin.Bio</h2>
-        <dl className="space-y-3 text-sm text-muted-foreground">
-          <div>
-            <dt className="font-medium text-foreground">What is CVin.Bio?</dt>
-            <dd>
-              CVin.Bio is a curated tech job board and a CV-to-website product. You can browse live
-              roles or upload a resume to publish a public profile at a cvin.bio URL.
-            </dd>
-          </div>
-          <div>
-            <dt className="font-medium text-foreground">Where can I find tech jobs on CVin.Bio?</dt>
-            <dd>
-              Open the job board at <a className="underline" href="/jobs">cvin.bio/jobs</a>. Listings
-              include remote and on-site roles at companies such as OpenAI, Stripe, and Anthropic,
-              updated daily.
-            </dd>
-          </div>
-          <div>
-            <dt className="font-medium text-foreground">How do I turn my CV into a website?</dt>
-            <dd>
-              Upload a PDF or Word resume on this page. CVin.Bio extracts your experience and
-              publishes a shareable profile. Matching jobs use the skills on that profile.
-            </dd>
-          </div>
-          <div>
-            <dt className="font-medium text-foreground">Is CVin.Bio free?</dt>
-            <dd>Yes. Publishing a profile and browsing the job board is free.</dd>
-          </div>
-        </dl>
-      </section>
       <MicroFooter />
     </div>
   );
