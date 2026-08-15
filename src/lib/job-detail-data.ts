@@ -24,6 +24,7 @@ import {
   cleanSalaryDisplay,
   looksLikeFellowship,
   JOB_INDEXABLE_MIN_WORDS,
+  JOB_CURATED_DISPLAY_FLOOR,
 } from '@/lib/job-description';
 import { cleanPublishText } from '@/lib/noslop';
 import { companyAboutForJob } from '@/lib/company-about';
@@ -176,6 +177,7 @@ export async function publishSafeDescription(job: JobRow, location: string): Pro
   // sanitizer. Do not swap a long paraphrase for a short assembled stub, and
   // do not show a thin curated body as if it were a full JD.
   if (raw && !/\[placeholder\]|lorem ipsum/i.test(raw)) {
+    const rawWordCount = jobDescriptionWordCount(raw);
     const html = formatJobDescription(raw, location, {
       title,
       company,
@@ -193,6 +195,18 @@ export async function publishSafeDescription(job: JobRow, location: string): Pro
         plain,
         wordCount,
         indexable: isCurated,
+      };
+    }
+    // Curated rows passed the ingest gate on raw body size; sanitizer trimming
+    // must not downgrade a real paraphrase to the company-about stub.
+    if (isCurated && rawWordCount >= JOB_INDEXABLE_MIN_WORDS && wordCount >= JOB_CURATED_DISPLAY_FLOOR) {
+      return {
+        isCurated,
+        kind: 'curated',
+        html,
+        plain,
+        wordCount,
+        indexable: wordCount >= JOB_INDEXABLE_MIN_WORDS,
       };
     }
   }

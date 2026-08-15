@@ -19,7 +19,7 @@ const STRIP_PATTERNS = [
 ];
 
 const PLACEHOLDER_FACT_VALUE =
-  /^(?:see source|not specified|not provided|none listed|n\/a|tbd|\.\.\.)(?:\s|[.(]|$)/i;
+  /^(?:see source|not specified|not provided|none listed|none stated|not stated|n\/a|tbd|\.\.\.)(?:\s|[.(]|$)/i;
 const INSTRUCTION_COPY =
   /\b(?:omit(?:ted)?\s+(?:the line|the whole section|section|if source|if unknown|if empty)|only if source|only hours, travel, visa|remove this line|per source instructions|only include if|fact sheet json|output only the job page|(?:3-5 sentences|8-12 bullets|every must_have))\b/i;
 const PAGE_META_COPY =
@@ -46,7 +46,7 @@ function peelJunkFactValue(val) {
   if (!original) return null;
   const v = original
     .replace(/\(\s*omit(?:ted)?(?:\s+the line)?[^)]*\)/gi, ' ')
-    .replace(/^(?:see source|not specified|not provided|none listed|n\/a|tbd)\.?\s*/i, '')
+    .replace(/^(?:see source|not specified|not provided|none listed|none stated|not stated|n\/a|tbd)\.?\s*/i, '')
     .replace(/\s+/g, ' ')
     .trim();
   if (!v) return null;

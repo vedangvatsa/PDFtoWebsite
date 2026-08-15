@@ -43,6 +43,7 @@ const LOGO_OVERRIDES: Record<string, string> = {
   'anduril industries': '/company-logos/anduril.png',
   doordash: '/company-logos/doordash.png',
   'doordash usa': '/company-logos/doordash.png',
+  payjoy: 'https://www.payjoy.com/favicon.ico',
   palantir: '/company-logos/palantir.png',
   elevenlabs: 'https://elevenlabs.io/favicon.ico',
 };
@@ -142,6 +143,7 @@ const DOMAIN_OVERRIDES: Record<string, string> = {
   'shield ai': 'shield.ai',
   doordash: 'doordash.com',
   'doordash usa': 'doordash.com',
+  payjoy: 'payjoy.com',
   langchain: 'langchain.com',
   nvidia: 'nvidia.com',
   hellofresh: 'hellofresh.com',
