@@ -44,6 +44,9 @@ cvin.bio`;
 const IG_MAX = 10;
 const THREADS_MAX = 20;
 
+const REPO = process.env.GITHUB_REPOSITORY || 'vedangvatsa/PDFtoWebsite';
+const BRANCH = process.env.GITHUB_REF_NAME || process.env.GITHUB_HEAD_REF || 'main';
+
 function slidePaths(limit) {
   const files = [];
   for (let i = 1; i <= limit; i++) {
@@ -54,31 +57,13 @@ function slidePaths(limit) {
   return files;
 }
 
-async function uploadPagePhotoUrl(imagePath) {
-  const fileData = fs.readFileSync(imagePath);
-  const formData = new FormData();
-  formData.append('published', 'false');
-  formData.append('source', new Blob([fileData], { type: 'image/png' }), path.basename(imagePath));
-  formData.append('access_token', META_PAGE_TOKEN);
-
-  const res = await fetch(`${GRAPH_URL}/${META_PAGE_ID}/photos`, { method: 'POST', body: formData });
-  const data = await res.json();
-  if (!data.id) throw new Error(`Facebook photo upload failed: ${JSON.stringify(data)}`);
-
-  const imgRes = await fetch(`${GRAPH_URL}/${data.id}?fields=images&access_token=${META_PAGE_TOKEN}`);
-  const imgData = await imgRes.json();
-  const url = imgData.images?.[0]?.source;
-  if (!url) throw new Error(`No CDN URL for photo ${data.id}`);
-  return url;
+function publicSlideUrl(basename) {
+  return `https://raw.githubusercontent.com/${REPO}/${BRANCH}/.github/images/carousel-traits/${basename}`;
 }
 
 async function resolvePublicUrls(paths) {
-  const urls = [];
-  for (const p of paths) {
-    console.log(`  ↑ uploading ${path.basename(p)} for public URL…`);
-    urls.push(await uploadPagePhotoUrl(p));
-  }
-  return urls;
+  // Meta fetches image_url server-side; raw GitHub URLs work after push to main.
+  return paths.map((p) => publicSlideUrl(path.basename(p)));
 }
 
 async function createIgCarouselItem(imageUrl) {
@@ -186,26 +171,43 @@ async function main() {
 
   let igOk = !hasIg;
   let thOk = !hasThreads;
+  let hadError = false;
 
   if (hasIg) {
-    console.log('\n📸 Instagram carousel…');
-    const paths = slidePaths(igCount);
-    const urls = await resolvePublicUrls(paths);
-    const id = await publishInstagramCarousel(urls, IG_CAPTION);
-    console.log(`✅ Instagram published: ${id} (${igCount} slides)`);
-    igOk = true;
+    try {
+      console.log('\n📸 Instagram carousel…');
+      const paths = slidePaths(igCount);
+      const urls = await resolvePublicUrls(paths);
+      console.log(`  URLs: ${urls[0]} … (${urls.length} slides)`);
+      const id = await publishInstagramCarousel(urls, IG_CAPTION);
+      console.log(`✅ Instagram published: ${id} (${igCount} slides)`);
+      igOk = true;
+    } catch (err) {
+      hadError = true;
+      console.error(`❌ Instagram failed: ${err.message || err}`);
+      if (String(err.message || err).includes('OAuth') || String(err.message || err).includes('access token')) {
+        console.error('   Refresh META_PAGE_TOKEN in GitHub repo secrets (Facebook Page long-lived token).');
+      }
+    }
   }
 
   if (hasThreads) {
-    console.log('\n🧵 Threads carousel…');
-    const paths = slidePaths(thCount);
-    const urls = await resolvePublicUrls(paths);
-    const id = await publishThreadsCarousel(urls, THREADS_TEXT);
-    console.log(`✅ Threads published: ${id} (${thCount} slides)`);
-    thOk = true;
+    try {
+      console.log('\n🧵 Threads carousel…');
+      const paths = slidePaths(thCount);
+      const urls = await resolvePublicUrls(paths);
+      console.log(`  URLs: ${urls[0]} … (${urls.length} slides)`);
+      const id = await publishThreadsCarousel(urls, THREADS_TEXT);
+      console.log(`✅ Threads published: ${id} (${thCount} slides)`);
+      thOk = true;
+    } catch (err) {
+      hadError = true;
+      console.error(`❌ Threads failed: ${err.message || err}`);
+    }
   }
 
-  if (!igOk || !thOk) process.exit(1);
+  if (!igOk && !thOk) process.exit(1);
+  if (hadError) console.log('\n⚠️ One or more platforms failed — see logs above.');
 }
 
 main().catch((err) => {
