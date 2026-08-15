@@ -183,7 +183,7 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     const home = fs.readFileSync(path.join(root, 'src/app/page.tsx'), 'utf8');
     const jobs = fs.readFileSync(path.join(root, 'src/app/jobs/page.tsx'), 'utf8');
     assert.match(home, /FAQPage/);
-    assert.match(jobs, /FAQPage/);
+    assert.doesNotMatch(jobs, /FAQPage/);
   });
 
   it('contact and hiring ship FAQPage JSON-LD', () => {
