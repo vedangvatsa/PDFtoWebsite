@@ -7,6 +7,10 @@ import {
 } from './company-directory';
 import { domainForCompany, companyLogoCandidates } from './company-logo';
 import { isRegistryCompanyLabel } from './company-host.mjs';
+import { companyHubKeyForProfileSlug } from './editor-profile';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 function assert(cond: unknown, msg: string) {
   if (!cond) {
@@ -109,5 +113,16 @@ assert(
   'do not 404-guess missing local logos'
 );
 assert(companyLogoCandidates('J Street')[0] === '/company-logos/j-street.png', 'J Street uses local mark');
+
+assert(companyHubKeyForProfileSlug('NASA') === 'nasa', 'profile slug maps to company_key');
+assert(companyHubKeyForProfileSlug('sam-smith') === 'sam-smith', 'hyphens stay in the equality key');
+
+const editorSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../app/editor/page.tsx'), 'utf8');
+assert(!/\.ilike\(\s*['"]company['"]/.test(editorSrc), 'editor must not ILIKE company names for slug claims');
+assert(/eq\(\s*['"]company_key['"]/.test(editorSrc), 'editor slug check uses company_key equality');
+
+const jobDetail = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../app/jobs/[id]/job-detail-client.tsx'), 'utf8');
+assert(/CvFileOverlay/.test(jobDetail), 'job pages use overlay file input, not display:none');
+assert(/All fellowships|All jobs/.test(jobDetail), 'job pages link back to the board, not only the hub');
 
 console.log('ok');

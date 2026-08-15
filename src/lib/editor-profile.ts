@@ -1,4 +1,5 @@
 import { nameToProfileSlug, isDisposableProfileSlug } from '@/lib/parse-guard';
+import { toCompanyKey } from '@/lib/company-directory';
 import { createClient } from '@/utils/supabase/client';
 
 export function dataURLtoFile(dataurl: string, filename: string): File | null {
@@ -25,6 +26,12 @@ export function generateBaseSlug(name: string) {
 /** Reject UUID defaults, user96, LinkedIn/URLs, and other unusable public slugs. */
 export function isBadSlug(slug: string | null | undefined): boolean {
   return isDisposableProfileSlug(slug);
+}
+
+/** Equality key for company-hub collision — never ILIKE a person's name against jobs.company. */
+export function companyHubKeyForProfileSlug(slug: string | null | undefined): string | null {
+  const key = toCompanyKey(String(slug || '').trim());
+  return key || null;
 }
 
 export async function mintUniqueSlug(

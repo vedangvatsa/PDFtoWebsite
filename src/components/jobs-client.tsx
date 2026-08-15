@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import CompanyLogo from '@/components/company-logo';
+import CvFileOverlay from '@/components/cv-file-overlay';
 import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
@@ -311,15 +312,13 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
             </Link>
           )}
           {userSkills.length === 0 && (
-            <label htmlFor="jobs-cv-upload" className={`inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline cursor-pointer max-w-full min-w-0 ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <label htmlFor="jobs-cv-upload" className={`relative inline-flex items-center gap-2 mt-3 text-sm font-medium text-primary hover:underline cursor-pointer max-w-full min-w-0 overflow-hidden ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
               {isUploading ? <Loader2 className="h-4 w-4 animate-spin text-primary shrink-0" /> : <UploadCloud className="h-4 w-4 text-primary shrink-0" />}
-              <span className="truncate">{isUploading ? 'Parsing CV...' : 'Upload your CV for personalized matches →'}</span>
-              <input
+              <span className="truncate pointer-events-none">{isUploading ? 'Parsing CV...' : 'Upload your CV for personalized matches →'}</span>
+              <CvFileOverlay
                 id="jobs-cv-upload"
-                type="file"
-                className="hidden"
-                accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
                 disabled={isUploading}
+                aria-label="Upload your CV for personalized matches"
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
@@ -364,7 +363,7 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
           <form onSubmit={handleSearch} className="flex-1 relative" role="search">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" aria-hidden="true" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 pointer-events-none" aria-hidden="true" />
             <label htmlFor="job-search-input" className="sr-only">
               {isFellowships ? 'Search fellowships by title or company' : 'Search jobs by title or company'}
             </label>

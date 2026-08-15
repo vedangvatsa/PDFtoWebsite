@@ -21,7 +21,6 @@ import { useUser } from '@/auth';
 import { createClient } from '@/utils/supabase/client';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { LoginDialog } from '@/components/login-dialog';
 import TemplateModern from '@/app/[slug]/templates/modern-creative';
 import CustomSectionsEditor from './custom-sections-editor';
@@ -29,6 +28,7 @@ import { AvatarCropper } from '@/components/avatar-cropper';
 import { ResumeUploadPrompt } from '@/components/editor/resume-upload-prompt';
 import { ProfileCompleteness } from '@/components/editor/profile-completeness';
 import { InsightsCard } from '@/components/editor/insights-card';
+import CvFileOverlay from '@/components/cv-file-overlay';
 import {
   enrichNameFromContact,
   normalizeName,
@@ -52,6 +52,7 @@ import {
   dataURLtoFile,
   generateBaseSlug,
   isBadSlug,
+  companyHubKeyForProfileSlug,
   mintUniqueSlug,
   smartTitleCase,
   cleanSkill,
@@ -777,15 +778,19 @@ export default function EditorPage() {
                 return;
             }
 
-            // Check if slug matches an active company careers page
-            const decodedSearch = cleanSlug.replace(/-/g, '%').toLowerCase();
-            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-            const { data: companyJobs } = await supabase.from('jobs').select('id').ilike('company', `${decodedSearch}%`).gt('created_at', thirtyDaysAgo).limit(1);
-            if (companyJobs && companyJobs.length > 0) {
-                setSlugError('This URL is used by a company page. Please choose a different one.');
-                setSlugSuccess(false);
-                setIsCheckingSlug(false);
-                return;
+            // Company hubs win `/{slug}`. Equality only — ILIKE "sam%" blocked Samsung, Max, etc.
+            const hubKey = companyHubKeyForProfileSlug(cleanSlug);
+            if (hubKey) {
+                const [{ data: dir }, { data: hubJobs }] = await Promise.all([
+                    supabase.from('companies').select('slug').eq('slug', hubKey).maybeSingle(),
+                    supabase.from('jobs').select('id').eq('company_key', hubKey).limit(1),
+                ]);
+                if (dir?.slug || (hubJobs && hubJobs.length > 0)) {
+                    setSlugError('This URL is used by a company page. Please choose a different one.');
+                    setSlugSuccess(false);
+                    setIsCheckingSlug(false);
+                    return;
+                }
             }
 
             setSlugError(null);
@@ -929,7 +934,7 @@ export default function EditorPage() {
             if (user) {
                 await autoSave('profile', user.id, { slug: value });
                 posthog.capture(EDITOR_EVENTS.SLUG_CHANGED, { new_slug: value });
-                toast({ title: 'URL Updated!', description: isComplete ? 'Your new link is ready.' : 'Complete your profile to 100% to go live.' });
+                toast({ title: 'URL Updated!', description: 'Your public link is live. You can visit it anytime.' });
             }
         } else {
             if (user) {
@@ -1186,9 +1191,9 @@ export default function EditorPage() {
                                ) : null}
                            </div>
                            {user && (
-                                <label title="Upload New CV (Overwrites Profile)" className={`cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-2 sm:px-3 min-w-0 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                                    <span className="text-xs md:text-sm truncate">{isGenerating ? 'Processing...' : <><span className="sm:hidden">Update</span><span className="hidden sm:inline">Update CV</span></>}</span>
-                                    <Input type="file" className="hidden" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf" onChange={handleFileChange} disabled={isGenerating} />
+                                <label title="Upload New CV (Overwrites Profile)" className={`relative cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-2 sm:px-3 min-w-0 overflow-hidden ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                    <span className="text-xs md:text-sm truncate pointer-events-none">{isGenerating ? 'Processing...' : <><span className="sm:hidden">Update</span><span className="hidden sm:inline">Update CV</span></>}</span>
+                                    <CvFileOverlay onChange={handleFileChange} disabled={isGenerating} aria-label="Upload new CV" />
                                 </label>
                            )}
                            {user && (
@@ -1262,7 +1267,7 @@ export default function EditorPage() {
                                                         size="icon" 
                                                         className="h-9 w-9 shrink-0 bg-primary/10 text-primary hover:bg-primary/20" 
                                                         title="Share Profile"
-                                                        disabled={!!slugError || isCheckingSlug || !isComplete}
+                                                        disabled={!!slugError || isCheckingSlug}
                                                     >
                                                         <Share2 className="h-4 w-4" />
                                                     </Button>
@@ -1362,21 +1367,10 @@ export default function EditorPage() {
                                                     </Button>
                                                 } />
                                             )}
-                                            {!user ? null : slugError || isCheckingSlug ? (
-                                                <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm" disabled>Visit</Button>
-                                            ) : !isComplete ? (
-                                                <TooltipProvider delayDuration={0}>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <span tabIndex={0}>
-                                                                <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm pointer-events-none" disabled>Visit</Button>
-                                                            </span>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent side="bottom" className="max-w-[220px] text-center">
-                                                            <p className="text-xs">Complete your profile to 100% before visiting it publicly.</p>
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
+                                            {!user ? null : slugError || isCheckingSlug || !profile.slug ? (
+                                                <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm" disabled>
+                                                    {isCheckingSlug ? 'Checking' : 'Visit'}
+                                                </Button>
                                             ) : (
                                                 <Button asChild variant="default" size="sm" className="h-9 shrink-0 shadow-sm">
                                                     <a href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio'}/${profile.slug}`} target="_blank" rel="noopener noreferrer">Visit</a>
@@ -1401,7 +1395,7 @@ export default function EditorPage() {
                                                     </a>
                                                 </p>
                                                 {!isComplete && (
-                                                    <p className="text-[10px] text-muted-foreground">Complete your profile to improve your score</p>
+                                                    <p className="text-[10px] text-muted-foreground">Add a photo and summary — your link already works</p>
                                                 )}
                                             </div>
                                         ) : null}
@@ -1417,22 +1411,22 @@ export default function EditorPage() {
                                 <CardContent className="pt-4 pb-3">
                                     <div className="flex flex-col md:flex-row gap-6 md:items-center">
                                         <div className="flex flex-col items-center gap-2 md:w-32 shrink-0">
-                                            <label htmlFor="avatar-upload" className="relative group cursor-pointer flex-shrink-0">
-                                                <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex items-center justify-center">
+                                            <label id="avatar-upload-label" htmlFor="avatar-upload" className="relative group cursor-pointer flex-shrink-0 overflow-hidden rounded-full">
+                                                <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex items-center justify-center pointer-events-none">
                                                     {profile.avatarUrl ? (
                                                         <img src={profile.avatarUrl} alt={`${profile.fullName || 'User'} profile photo`} className="h-full w-full object-cover" />
                                                     ) : (
                                                         <UploadCloud className="h-6 w-6 text-gray-400" />
                                                     )}
                                                 </div>
-                                                <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                                                     <UploadCloud className="h-5 w-5 text-white" />
                                                 </div>
                                                 <input
                                                     id="avatar-upload"
                                                     type="file"
                                                     accept="image/*"
-                                                    className="hidden"
+                                                    className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                                                     onChange={(e) => {
                                                         const f = e.target.files?.[0];
                                                         if (!f) return;

@@ -31,11 +31,11 @@ export function TelegramJobPopup() {
     <div
       role="dialog"
       aria-label="Join Tech Jobs Daily on Telegram"
-      className={`fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 transition-all duration-300 ease-out ${
+      className={`pointer-events-none fixed inset-x-0 bottom-20 z-50 flex justify-center px-4 sm:bottom-4 transition-all duration-300 ease-out ${
         animateOut ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100 animate-in slide-in-from-bottom-4'
       }`}
     >
-      <div className="mx-auto max-w-xl flex items-center gap-3 rounded-lg border bg-background px-4 py-3 shadow-sm">
+      <div className="pointer-events-auto flex w-full max-w-xl items-center gap-3 rounded-lg border bg-background px-4 py-3 shadow-sm">
         <p className="flex-1 text-sm text-muted-foreground min-w-0 truncate">
           <span className="font-medium text-foreground">Tech Jobs Daily</span>
           {' '}— curated roles, straight to Telegram.

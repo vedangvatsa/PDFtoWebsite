@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -22,6 +22,7 @@ import {
   jobTypeLabel,
   timeAgo,
   JOB_DESCRIPTION_PROSE_CLASS,
+  looksLikeFellowship,
 } from '@/lib/job-description';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
@@ -31,6 +32,7 @@ import {
   reviewToastCopy,
   storePendingResumeFile,
 } from '@/lib/cv-upload-client';
+import CvFileOverlay from '@/components/cv-file-overlay';
 
 export interface JobDetail {
   id: string;
@@ -85,7 +87,6 @@ export default function JobDetailClient({
   const [logoSrc, setLogoSrc] = useState(
     companyLogoFallback(job.company, job.company_logo, job.apply_url)
   );
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -95,6 +96,8 @@ export default function JobDetailClient({
   const needsCv = userSkills.length === 0;
   /** Logged-in users with an on-file profile should apply on the company site, not re-upload CV. */
   const showDirectApply = !expired && isAuthenticated && !needsCv;
+  const boardHref = looksLikeFellowship(job) ? '/fellowships' : '/jobs';
+  const boardLabel = boardHref === '/fellowships' ? 'All fellowships' : 'All jobs';
 
   useEffect(() => {
     posthog.capture('job_detail_viewed', {
@@ -258,7 +261,7 @@ export default function JobDetailClient({
       </p>
       <label
         htmlFor="jd-cv-primary"
-        className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-4 py-3.5 text-sm sm:text-[15px] cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
+        className={`relative flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-4 py-3.5 text-sm sm:text-[15px] cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation overflow-hidden ${
           isUploading ? 'opacity-50 pointer-events-none' : ''
         }`}
       >
@@ -267,12 +270,9 @@ export default function JobDetailClient({
         ) : (
           <UploadCloud className="h-4 w-4 shrink-0" />
         )}
-        <span className="truncate">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
-        <input
+        <span className="truncate pointer-events-none">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
+        <CvFileOverlay
           id="jd-cv-primary"
-          type="file"
-          className="hidden"
-          accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
           disabled={isUploading}
           onChange={(e) => onFileChange(e, 'primary')}
         />
@@ -300,15 +300,24 @@ export default function JobDetailClient({
     <div className="min-h-screen bg-[#fafafa] selection:bg-primary/10 flex flex-col overflow-x-hidden">
       <Header />
       <main id="main-content" className="w-full max-w-5xl mx-auto px-6 pt-4 sm:pt-6 md:pt-8 pb-32 flex-1 min-w-0">
-        <Link
-          href={job.company_slug ? `/${job.company_slug}` : '/jobs'}
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors mb-4 sm:mb-6 min-h-[44px] sm:min-h-0"
-        >
-          <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
-          <span className="truncate max-w-[70vw] sm:max-w-none">
-            {job.company_slug ? `${job.company} careers` : 'All jobs'}
-          </span>
-        </Link>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-4 sm:mb-6">
+          <Link
+            href={boardHref}
+            className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors min-h-[44px] sm:min-h-0"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
+            {boardLabel}
+          </Link>
+          {job.company_slug ? (
+            <Link
+              href={`/${job.company_slug}`}
+              className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors min-h-[44px] sm:min-h-0"
+            >
+              <Building2 className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate max-w-[60vw] sm:max-w-none">{job.company} careers</span>
+            </Link>
+          ) : null}
+        </div>
 
         <article className="bg-white border border-zinc-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm min-w-0 overflow-hidden">
           <div className="flex items-start gap-3 sm:gap-4 mb-5 sm:mb-6">
@@ -455,7 +464,7 @@ export default function JobDetailClient({
         ) : (
           <label
             htmlFor="jd-cv-mobile-float"
-            className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-3 py-2.5 text-sm cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
+            className={`relative flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-3 py-2.5 text-sm cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation overflow-hidden ${
               isUploading ? 'opacity-50 pointer-events-none' : ''
             }`}
           >
@@ -464,12 +473,9 @@ export default function JobDetailClient({
             ) : (
               <UploadCloud className="h-4 w-4 shrink-0" />
             )}
-            <span className="truncate">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
-            <input
+            <span className="truncate pointer-events-none">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
+            <CvFileOverlay
               id="jd-cv-mobile-float"
-              type="file"
-              className="hidden"
-              accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
               disabled={isUploading}
               onChange={(e) => onFileChange(e, 'mobile_float')}
             />
