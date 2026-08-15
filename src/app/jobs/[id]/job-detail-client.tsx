@@ -453,11 +453,11 @@ export default function JobDetailClient({
             <ExternalLink className="h-4 w-4 shrink-0 opacity-90" />
           </a>
         ) : (
-          <button
-            type="button"
-            disabled={isUploading}
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-3 py-2.5 text-sm hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation disabled:opacity-50"
+          <label
+            htmlFor="jd-cv-mobile-float"
+            className={`flex items-center justify-center gap-2 w-full rounded-xl bg-black text-white font-semibold px-3 py-2.5 text-sm cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md touch-manipulation ${
+              isUploading ? 'opacity-50 pointer-events-none' : ''
+            }`}
           >
             {isUploading ? (
               <Loader2 className="h-4 w-4 animate-spin shrink-0" />
@@ -465,16 +465,16 @@ export default function JobDetailClient({
               <UploadCloud className="h-4 w-4 shrink-0" />
             )}
             <span className="truncate">{isUploading ? 'Uploading...' : 'Upload CV'}</span>
-          </button>
+            <input
+              id="jd-cv-mobile-float"
+              type="file"
+              className="hidden"
+              accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
+              disabled={isUploading}
+              onChange={(e) => onFileChange(e, 'mobile_float')}
+            />
+          </label>
         )}
-        <input
-          ref={fileInputRef}
-          type="file"
-          className="hidden"
-          accept=".pdf,.doc,.docx,.rtf,.txt,.md,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,image/*,application/pdf"
-          disabled={isUploading}
-          onChange={(e) => onFileChange(e, 'mobile_float')}
-        />
       </div>
 
       <div className="sm:pb-0 pb-20">
