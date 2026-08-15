@@ -2,6 +2,7 @@ import { ImageResponse } from 'next/og';
 import { lookupPublicProfile } from '@/lib/supabase-server';
 import { blogMetadata } from '@/lib/blog-metadata';
 import { getCompanyDirectoryForOg, resolveOgCompanyLogo } from '@/lib/og-company-logo';
+import { loadCompanyJobs } from '@/lib/company-page';
 import { CompanyLogoBadge } from '@/components/og/company-logo-badge';
 import nomadCities from '@/lib/nomad-cities';
 import { companyDisplayName } from '@/lib/company-directory';
@@ -141,7 +142,8 @@ export default async function Image(props: { params: Promise<{ slug: string }> }
       const companyDisplay = companyDisplayName(
         companyDir.name || slug.replace(/-/g, ' ')
       );
-      const jobCount = companyDir.role_count || 0;
+      const listed = await loadCompanyJobs(slug, companyDir.name);
+      const jobCount = listed.length;
       const logoSrc = await resolveOgCompanyLogo({
         slug,
         companyName: companyDisplay,

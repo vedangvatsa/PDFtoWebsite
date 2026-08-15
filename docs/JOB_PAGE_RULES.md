@@ -16,6 +16,7 @@ Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not 
 ## Company hubs (`/{slug}`)
 
 - List **live** jobs (not expired, not banned). `curated-jd` is a board / sitemap / job-URL gate, not a hub-card gate.
+- Every `/{slug}` hub pages the full live set (not a 50-row sample). The header count is `jobs.length` — never overlay `companies.role_count`.
 - Curated cards link to `/{company}/{jobSlug}`. Uncurated cards link to `apply_url` so they do not 301-loop back to the hub.
 - Date filter is `published_at OR created_at` (`companyJobsDateOrFilter`). Never AND `created_at`.
 - Join is equality only: `company_key` IN (slug key, directory-name key), then exact `company` name variants (`OpenAI` / `openai`). Never ILIKE.
