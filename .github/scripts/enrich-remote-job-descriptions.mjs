@@ -1575,9 +1575,8 @@ async function rewriteWithGemini(prompt, opts = {}) {
   // Prefer models confirmed working on free/paid keys (avoid 2.0-flash free limit:0).
   const models = [
     process.env.GEMINI_MODEL,
-    'gemini-flash-latest',
-    'gemini-2.5-flash',
-    'gemini-2.5-flash-lite',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
   ].filter(Boolean);
   let lastErr = '';
   let data = null;
