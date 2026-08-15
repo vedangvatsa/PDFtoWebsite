@@ -22,6 +22,21 @@ import { applyCanonicalCompany, isGenericCompanyLabel, isRegistryCompanyLabel } 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
+function stripHtml(html) {
+  return String(html || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** Ashby board API uses descriptionPlain / descriptionHtml — not legacy `description`. */
+function ashbyBoardDescription(j) {
+  const plain = String(j.descriptionPlain || j.description || '').trim();
+  if (plain.length >= 80) return plain.substring(0, 5000);
+  const fromHtml = stripHtml(j.descriptionHtml || '');
+  return fromHtml ? fromHtml.substring(0, 5000) : '';
+}
+
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!SUPABASE_URL || !SUPABASE_KEY) {
@@ -1491,8 +1506,8 @@ async function fetchAshby() {
           location: j.location || j.locationName || 'Remote',
           job_type: j.employmentType ? normalizeJobType(j.employmentType) : null,
           salary: null,
-          description: (j.descriptionPlain || j.description || '').substring(0, 5000),
-          tags: extractTags(`${j.title} ${j.descriptionPlain || j.description || ''}`),
+          description: ashbyBoardDescription(j),
+          tags: extractTags(`${j.title} ${ashbyBoardDescription(j)}`),
           apply_url: j.jobUrl || `https://jobs.ashbyhq.com/${slug}/${j.id}`,
           category: j.department || j.team || null,
           published_at: j.publishedAt || null,

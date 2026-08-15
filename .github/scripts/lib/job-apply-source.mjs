@@ -6,7 +6,14 @@ import { fellowshipPublishBlockReason } from '../../../src/lib/fellowship-publis
 import { isGenericCompanyLabel } from '../../../src/lib/company-host.mjs';
 
 export { isLowQualityApplySource };
+/** Public job URL / board / sitemap floor. */
 export const MIN_WORDS = 600;
+/**
+ * Enrich must store above MIN_WORDS — formatJobDescription often trims 5–30 words
+ * (noslop, junk facts, heading reflow). Ashby copywriter was 603 stored → 598
+ * displayed and fell back to the company stub before the display-floor guard.
+ */
+export const ENRICH_MIN_WORDS = 625;
 export const CURATED_JD_TAG = 'curated-jd';
 
 export function isCuratedJd(tags) {
