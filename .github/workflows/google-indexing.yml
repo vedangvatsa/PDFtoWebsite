@@ -1,0 +1,59 @@
+name: Google Indexing API
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: google-indexing
+  cancel-in-progress: false
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify GSC ownership for the Indexing API service account
+        env:
+          GOOGLE_INDEXING_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_INDEXING_SERVICE_ACCOUNT }}
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node .github/scripts/ensure-gsc-ownership.mjs
+
+      - name: Notify Google Indexing API
+        env:
+          GOOGLE_INDEXING_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_INDEXING_SERVICE_ACCOUNT }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SITE_URL: https://cvin.bio
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node .github/scripts/google-indexing.mjs
+          git add -f .github/scripts/google-indexing-state.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: advance Google indexing state [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi

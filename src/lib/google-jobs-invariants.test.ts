@@ -137,18 +137,36 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     assert.match(file, /ownership/);
     assert.match(file, /pingIndexNow/);
     assert.match(file, /\/jobs\/\$\{job\.id\}/);
+    assert.match(file, /ensureGscOwnership/);
+  });
+
+  it('Indexing API run verifies the service account on cvin.bio via DNS TXT', () => {
+    const file = fs.readFileSync(
+      path.join(root, '.github/scripts/ensure-gsc-ownership.mjs'),
+      'utf8'
+    );
+    assert.match(file, /siteVerification/);
+    assert.match(file, /DNS_TXT/);
+    assert.match(file, /INET_DOMAIN/);
+    assert.match(file, /cvin\.bio/);
+    assert.match(file, /CLOUDFLARE_API_KEY/);
   });
 
   it('deploy and scheduler pass NEXT_PUBLIC_SUPABASE_URL into the indexing step', () => {
     for (const rel of [
       '.github/workflows/deploy-cloudflare.yml',
       '.github/workflows/x-bsky-scheduler.yml',
+      '.github/workflows/google-indexing.yml',
     ]) {
       const file = fs.readFileSync(path.join(root, rel), 'utf8');
       assert.match(file, /Notify Google Indexing API/, rel);
       assert.ok(
         file.includes('NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}'),
         `${rel} indexing step missing NEXT_PUBLIC_SUPABASE_URL`
+      );
+      assert.ok(
+        file.includes('CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}'),
+        `${rel} indexing step missing Cloudflare DNS credentials for GSC ownership`
       );
     }
   });
