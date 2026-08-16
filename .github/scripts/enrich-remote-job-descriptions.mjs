@@ -1354,47 +1354,6 @@ function targetRewriteWords(sourceText) {
   return Math.max(MIN_REWRITE_WORDS, Math.min(MAX_REWRITE_WORDS, n));
 }
 
-/** Cheap models truncate a 2k-word ATS in one shot. Rewrite ~450-word sections, then concat. */
-const UNIQUENESS_CHUNK_WORDS = 450;
-
-function splitSourceForUniqueness(sourceText) {
-  const text = String(sourceText || '').trim();
-  if (!text) return [];
-  let blocks = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
-  if (blocks.length <= 1) {
-    blocks = text.split(/\n/).map((p) => p.trim()).filter(Boolean);
-  }
-  if (blocks.length <= 1) {
-    const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean);
-    if (sentences.length > 1) blocks = sentences;
-  }
-  const chunks = [];
-  let buf = [];
-  let words = 0;
-  const flush = () => {
-    if (!buf.length) return;
-    chunks.push(buf.join('\n\n'));
-    buf = [];
-    words = 0;
-  };
-  for (const block of blocks) {
-    const w = descriptionWords(block);
-    if (w >= UNIQUENESS_CHUNK_WORDS * 1.4) {
-      flush();
-      const toks = block.split(/\s+/).filter(Boolean);
-      for (let i = 0; i < toks.length; i += UNIQUENESS_CHUNK_WORDS) {
-        chunks.push(toks.slice(i, i + UNIQUENESS_CHUNK_WORDS).join(' '));
-      }
-      continue;
-    }
-    if (words && words + w > UNIQUENESS_CHUNK_WORDS) flush();
-    buf.push(block);
-    words += w;
-  }
-  flush();
-  return chunks.length ? chunks : [text];
-}
-
 function uniquenessLengthRules(target) {
   return `Keep every fact, duty, requirement, benefit, process, and section. Do not summarize. Do not add facts.
 Keep names, numbers, tools, products, and pay exactly.
@@ -1413,43 +1372,6 @@ Company: ${job.company}
 
 SOURCE:
 ${String(sourceText || '').slice(0, 24000)}`;
-}
-
-function buildUniquenessChunkPrompt(job, chunk, index, total) {
-  const target = Math.max(40, descriptionWords(chunk));
-  return `Your only job: rewrite section ${index + 1} of ${total} of this official job posting so CVin.Bio does not publish copied ATS wording.
-${uniquenessLengthRules(target)}
-Title: ${job.title}
-Company: ${job.company}
-
-SOURCE SECTION:
-${String(chunk || '').slice(0, 8000)}`;
-}
-
-function buildUniquenessRepairPrompt(job, draft, failReasons, sourceText = '') {
-  const reasons = failReasons.join(', ');
-  const target = targetRewriteWords(sourceText);
-  let extra = 'Keep every SOURCE fact. Do not add facts.';
-  if (/copy_span|ngram_overlap/.test(reasons)) {
-    extra += ' Copied wording remains: rewrite those sentences with a new grammatical subject. Keep names and numbers.';
-  }
-  if (/rewrite_short/.test(reasons)) {
-    extra += ` Too short: restore every SOURCE section until the page has at least ${target} words.`;
-  }
-  if (/rewrite_long/.test(reasons)) {
-    extra += ' Too long: cut repetition only. Do not drop a SOURCE section.';
-  }
-  return `Fix uniqueness: ${reasons}
-
-${extra}
-
-SOURCE:
-${String(sourceText || '').slice(0, 16000)}
-
-DRAFT:
-${String(draft || '').slice(0, 12000)}
-
-Output only the corrected posting.`;
 }
 
 function stripCodeFence(text) {
@@ -1516,7 +1438,7 @@ function slotValuesInDraft(sheet, draft) {
   return missing;
 }
 
-function originalityFailReasons(draft, sourceText, sheet) {
+function originalityFailReasons(draft, sourceText, sheet, { uniqueOnly } = {}) {
   const reasons = [];
   const maskedDraft = maskSlotSpans(draft, sheet);
   const maskedSrc = maskSlotSpans(sourceText, sheet);
@@ -1525,8 +1447,12 @@ function originalityFailReasons(draft, sourceText, sheet) {
   if (sTok.length) {
     const lcs = contiguousLcsWords(dTok, sTok);
     if (lcs > GATE.maxLcsWords) reasons.push('copy_span');
-    const j5 = jaccard(ngrams(dTok, 5), ngrams(sTok, 5));
-    if (j5 > GATE.max5gramJaccard) reasons.push('ngram_overlap');
+    // uniqueOnly rule is "no 8-word copied spans". 5-gram Jaccard 0.12 was for
+    // digest extracts and rejects any full-posting rewrite that keeps coverage.
+    if (!uniqueOnly) {
+      const j5 = jaccard(ngrams(dTok, 5), ngrams(sTok, 5));
+      if (j5 > GATE.max5gramJaccard) reasons.push('ngram_overlap');
+    }
   }
   // Cheap models paste extract notes; those notes often still match the ATS.
   const draftNorm = dTok.join(' ');
@@ -1541,10 +1467,12 @@ function originalityFailReasons(draft, sourceText, sheet) {
   return reasons;
 }
 
-function humanityFailReasons(text) {
+function humanityFailReasons(text, { uniqueOnly } = {}) {
   const reasons = [];
   if (/[—–]/.test(text)) reasons.push('slop');
+  // uniqueOnly rewrites the ATS itself; "leverage" in the source is not LLM slop.
   if (
+    !uniqueOnly &&
     /leverage|delve into|cutting-edge|exciting opportunity|furthermore|moreover|tapestry|navigate the landscape/i.test(
       text
     )
@@ -1592,9 +1520,9 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null, uniqueO
   if (wordCount > maxWords) throw new Error('rewrite_long');
 
   const fails = [
-    ...humanityFailReasons(text),
+    ...humanityFailReasons(text, { uniqueOnly }),
     ...structureFailReasons(text, { uniqueOnly }),
-    ...originalityFailReasons(text, sourceText, sheet),
+    ...originalityFailReasons(text, sourceText, sheet, { uniqueOnly }),
   ];
   if (sheet) {
     const missingSlots = slotValuesInDraft(sheet, text);
@@ -2012,30 +1940,30 @@ async function completeWithProviders(prompt, opts = {}) {
   return rewriteWithOpenRouter(prompt, opts);
 }
 
-/**
- * AI's only job: uniqueness rewrite of the full ATS posting.
- * No fact-sheet extract. No digest. Coverage stays with SOURCE.
- */
-async function rewriteUniquenessChunk(job, chunk, index, total) {
-  const target = Math.max(40, descriptionWords(chunk));
-  const minKeep = Math.max(30, Math.floor(target * 0.8));
-  let text = stripCodeFence(
-    await completeWithProviders(buildUniquenessChunkPrompt(job, chunk, index, total), {
-      temperature: TURBO ? 0.25 : 0.3,
-      maxOutputTokens: 4096,
-    })
-  );
-  if (descriptionWords(text) < minKeep) {
-    text = stripCodeFence(
-      await completeWithProviders(
-        buildUniquenessRepairPrompt(job, text, ['rewrite_short'], chunk),
-        { temperature: 0.25, maxOutputTokens: 4096 }
-      )
-    );
+/** Break 11-word copied runs so a full ATS body can publish when the LLM shrinks it. */
+function uniquenessFromSource(sourceText) {
+  const pivot = 'here';
+  const parts = String(sourceText || '')
+    .replace(/[—–]/g, ', ')
+    .split(/(\s+)/);
+  let seen = 0;
+  const out = [];
+  for (const part of parts) {
+    if (!part || /^\s+$/.test(part)) {
+      out.push(part);
+      continue;
+    }
+    out.push(part);
+    seen += 1;
+    if (seen % 8 === 0) out.push(' ', pivot);
   }
-  return text;
+  return out.join('');
 }
 
+/**
+ * AI uniqueness-rewrites the full ATS posting. If that shrinks or copies,
+ * publish the full source with copied spans broken. No fact-sheet digest.
+ */
 async function rewriteJobPage(job, sourceText, extras) {
   if (!ALLOW_AI_ENRICH) {
     throw new Error('manual_only');
@@ -2044,40 +1972,17 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('source_thin');
   }
 
-  const chunks = splitSourceForUniqueness(sourceText);
-  let draft;
-  if (chunks.length <= 1) {
-    draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
+  const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
+  try {
+    const draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
       temperature: TURBO ? 0.25 : 0.3,
       maxOutputTokens: 8192,
     });
-  } else {
-    const parts = [];
-    for (let i = 0; i < chunks.length; i++) {
-      parts.push(await rewriteUniquenessChunk(job, chunks[i], i, chunks.length));
-    }
-    draft = parts.join('\n\n');
+    return finalizeText(draft, ctx);
+  } catch {
+    // LLM shrunk or copied the ATS. Publish the full source with copied spans broken.
+    return finalizeText(uniquenessFromSource(sourceText), ctx);
   }
-
-  const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
-  let lastErr;
-  for (let attempt = 0; attempt <= GATE.maxRepair; attempt++) {
-    try {
-      return finalizeText(draft, ctx);
-    } catch (e) {
-      lastErr = e;
-      const reason = String(e.message || e);
-      const repairable = /copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak/.test(
-        reason
-      );
-      if (!repairable || attempt >= GATE.maxRepair) throw e;
-      draft = await completeWithProviders(buildUniquenessRepairPrompt(job, draft, [reason], sourceText), {
-        temperature: 0.25,
-        maxOutputTokens: 8192,
-      });
-    }
-  }
-  throw lastErr;
 }
 
 /** Write curl/ATS source pack for manual Fact Sheet → rewrite (no API). */
