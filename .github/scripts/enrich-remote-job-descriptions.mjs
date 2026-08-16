@@ -137,7 +137,7 @@ const LINKEDIN_ONLY = process.env.LINKEDIN_ONLY === '1';
 const RE_ENRICH = process.env.RE_ENRICH === '1';
 const MIN_REWRITE_WORDS = ENRICH_MIN_WORDS;
 /** Long ATS postings must keep coverage; 900 was truncating rich sources. */
-const MAX_REWRITE_WORDS = 1400;
+const MAX_REWRITE_WORDS = 4000;
 /** Originality / adequacy knobs (docs/JD_PARAPHRASE_RULES.md). */
 const GATE = {
   maxLcsWords: 10, // fail if shared contiguous words >= 11 (after slot mask)
@@ -1354,66 +1354,46 @@ function targetRewriteWords(sourceText) {
   return Math.max(MIN_REWRITE_WORDS, Math.min(MAX_REWRITE_WORDS, n));
 }
 
-function buildWritePrompt(job, sheet, sourceText = '') {
-  const notes = buildNotesForWriter(job, sheet);
+function buildUniquenessPrompt(job, sourceText) {
   const target = targetRewriteWords(sourceText);
+  return `Your only job: rewrite this official job posting so CVin.Bio does not publish copied ATS wording.
+Keep every fact, duty, requirement, benefit, process, and section. Do not summarize. Do not add facts.
+Keep names, numbers, tools, products, and pay exactly.
+Change sentence subjects and word order. No 8-word spans copied from SOURCE.
+Length: at least ${target} words (match the source; do not shrink it).
+No HTML. No em dashes. Output only the rewritten posting.
 
-  return `Paraphrase the FULL posting. Notes are a coverage checklist — do not drop a source section because the notes omitted it.
-Do not copy source or note word order. Do not add facts that are not in SOURCE or notes.
-
-The page MUST be at least ${target} words (cap ${MAX_REWRITE_WORDS}). Short pages fail.
-For every note write 3 sentences: the work, how it shows up in this role, then any purpose the note already states.
-Start each sentence with a different subject than the note (the object, the tool, the result, or the team).
-Keep names and numbers exactly.
-
-Example:
-Note: "define API contracts with product managers"
-Wrong: "Define API contracts with product managers."
-Right: "Product and engineering settle the API surface together. The contract grows as features land. Reviewers check each change against that surface before it ships."
-
-About the role: 6 sentences that scope the work from the duty notes. No marketing.
-What you'll do / Requirements / Nice to have: one bullet per note, three sentences each.
-Keep those headings. Do not write Key facts. Do not write Practical notes.
-
-NOTES:
-${notes}
+Title: ${job.title}
+Company: ${job.company}
 
 SOURCE:
-${String(sourceText || '').slice(0, 12000)}
-
-Cover every note and every SOURCE section. No HTML. No em dashes. Output only the page.`;
+${String(sourceText || '').slice(0, 24000)}`;
 }
 
-function buildRepairPrompt(job, sheet, draft, failReasons, sourceText = '') {
-  const notes = buildNotesForWriter(job, sheet);
+function buildUniquenessRepairPrompt(job, draft, failReasons, sourceText = '') {
   const reasons = failReasons.join(', ');
   const target = targetRewriteWords(sourceText);
-  let extra = 'Keep every note and every SOURCE section. Do not add facts. Do not write Key facts or Practical notes.';
+  let extra = 'Keep every SOURCE fact. Do not add facts.';
   if (/copy_span|ngram_overlap/.test(reasons)) {
-    extra +=
-      ' Copied wording: rewrite those bullets with a new grammatical subject. Keep names and numbers.';
+    extra += ' Copied wording remains: rewrite those sentences with a new grammatical subject. Keep names and numbers.';
   }
   if (/rewrite_short/.test(reasons)) {
-    extra +=
-      ` Too short: the page must reach ${target} words. Cover every SOURCE bullet, not a 600-word digest. Give every duty and requirement note 3 sentences. Do not invent perks, culture, or extra duties.`;
+    extra += ` Too short: restore every SOURCE section until the page has at least ${target} words.`;
   }
   if (/rewrite_long/.test(reasons)) {
-    extra += ' Too long: cut repeated sentences. Do not drop a note.';
+    extra += ' Too long: cut repetition only. Do not drop a SOURCE section.';
   }
-  return `Fix: ${reasons}
+  return `Fix uniqueness: ${reasons}
 
 ${extra}
 
-NOTES:
-${notes}
-
 SOURCE:
-${String(sourceText || '').slice(0, 8000)}
+${String(sourceText || '').slice(0, 16000)}
 
 DRAFT:
-${String(draft || '').slice(0, 8000)}
+${String(draft || '').slice(0, 12000)}
 
-Output only the corrected page.`;
+Output only the corrected posting.`;
 }
 
 function stripCodeFence(text) {
@@ -1520,7 +1500,8 @@ function humanityFailReasons(text) {
   return reasons;
 }
 
-function structureFailReasons(text) {
+function structureFailReasons(text, { uniqueOnly } = {}) {
+  if (uniqueOnly) return [];
   const reasons = [];
   if (!/About the role/i.test(text) || !/What you'll do/i.test(text) || !/Requirements/i.test(text)) {
     reasons.push('structure');
@@ -1528,10 +1509,10 @@ function structureFailReasons(text) {
   return reasons;
 }
 
-function finalizeText(text, { sourceText = '', sheet = null, job = null } = {}) {
+function finalizeText(text, { sourceText = '', sheet = null, job = null, uniqueOnly = false } = {}) {
   text = stripCodeFence(text);
 
-  if (job && sheet) {
+  if (!uniqueOnly && job && sheet) {
     text = assembleJobPage(text, job, sheet);
   } else {
     text = text.replace(/^Engagement:\s*(.+)$/gim, (m, v) => {
@@ -1547,16 +1528,17 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null } = {}) 
   const minWords = sourceText
     ? Math.max(MIN_REWRITE_WORDS, Math.min(MAX_REWRITE_WORDS, Math.floor(descriptionWords(sourceText) * 0.7)))
     : MIN_REWRITE_WORDS;
+  const maxWords = uniqueOnly
+    ? Math.max(MAX_REWRITE_WORDS, Math.ceil(descriptionWords(sourceText) * 1.2) + 80)
+    : MAX_REWRITE_WORDS;
   const wordCount = text.split(/\s+/).filter(Boolean).length;
   if (wordCount < minWords) throw new Error('rewrite_short');
-  if (wordCount > MAX_REWRITE_WORDS + 80) throw new Error('rewrite_long');
-  // Soft trim only trailing Practical notes fluff if slightly over — else fail for repair
-  if (wordCount > MAX_REWRITE_WORDS) throw new Error('rewrite_long');
+  if (wordCount > maxWords) throw new Error('rewrite_long');
 
   const fails = [
     ...humanityFailReasons(text),
-    ...structureFailReasons(text),
-    ...(sheet ? originalityFailReasons(text, sourceText, sheet) : []),
+    ...structureFailReasons(text, { uniqueOnly }),
+    ...originalityFailReasons(text, sourceText, sheet),
   ];
   if (sheet) {
     const missingSlots = slotValuesInDraft(sheet, text);
@@ -1569,7 +1551,7 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null } = {}) 
   if (fails.includes('structure')) throw new Error('rewrite_structure');
   if (fails.includes('copy_span')) throw new Error('copy_span');
   if (fails.includes('ngram_overlap')) throw new Error('ngram_overlap');
-  return text.slice(0, 12000);
+  return text.slice(0, 50000);
 }
 
 
@@ -1975,8 +1957,8 @@ async function completeWithProviders(prompt, opts = {}) {
 }
 
 /**
- * Fact Sheet → sealed write → A/O/H gates (+ one repair).
- * Default: no LLM — throws manual_only so callers queue a pack instead.
+ * AI's only job: uniqueness rewrite of the full ATS posting.
+ * No fact-sheet extract. No digest. Coverage stays with SOURCE.
  */
 async function rewriteJobPage(job, sourceText, extras) {
   if (!ALLOW_AI_ENRICH) {
@@ -1986,61 +1968,25 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('source_thin');
   }
 
-  const extractRaw = await completeWithProviders(buildExtractPrompt(job, sourceText, extras), {
-    temperature: 0.1,
-    maxOutputTokens: 8192,
-  });
-  let sheet;
-  try {
-    sheet = parseFactSheet(extractRaw);
-  } catch {
-    sheet = {
-      meta: {},
-      duties: [],
-      must_have: [],
-      nice_to_have: [],
-      skills: [],
-      systems: [],
-      constraints: [],
-      comp_notes: [],
-      omissions: [],
-      slots: [],
-    };
-  }
-  const sourceRich = descriptionWords(sourceText) >= 400;
-  if (!factSheetIsIndexable(sheet) && !sourceRich) {
-    throw new Error('source_thin');
-  }
-
-  let draft = await completeWithProviders(buildWritePrompt(job, sheet, sourceText), {
-    temperature: TURBO ? 0.2 : 0.25,
+  let draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
+    temperature: TURBO ? 0.25 : 0.3,
     maxOutputTokens: 8192,
   });
 
-  const ctx = { sourceText, sheet, job };
+  const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
   try {
     return finalizeText(draft, ctx);
   } catch (e) {
     const reason = String(e.message || e);
-    const repairable = /copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak|slot_mutation/.test(
+    const repairable = /copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak/.test(
       reason
     );
     if (!repairable || GATE.maxRepair < 1) throw e;
-    draft = await completeWithProviders(buildRepairPrompt(job, sheet, draft, [reason], sourceText), {
-      temperature: 0.2,
+    draft = await completeWithProviders(buildUniquenessRepairPrompt(job, draft, [reason], sourceText), {
+      temperature: 0.25,
       maxOutputTokens: 8192,
     });
-    try {
-      return finalizeText(draft, ctx);
-    } catch (e2) {
-      const r2 = String(e2.message || e2);
-      // Soft originality: after one repair, allow page if only O-gates fail
-      if (GATE.originalitySoft && /copy_span|ngram_overlap/.test(r2)) {
-        const soft = finalizeText(draft, { sourceText: '', sheet, job }); // H + structure + length only
-        return soft;
-      }
-      throw e2;
-    }
+    return finalizeText(draft, ctx);
   }
 }
 
@@ -2526,30 +2472,21 @@ async function runOneBatch(batchNum, state, done) {
       }
 
       let description;
-      const sourcePublishable = rewriteMeetsPublishFloor(scraped.text, job);
       try {
-        if (sourcePublishable) {
-          // Full ATS HTML already meets the public floor — do not compress via fact sheet.
-          description = scraped.text;
-          stats.reasons.source_html = (stats.reasons.source_html || 0) + 1;
-        } else if (!ALLOW_AI_ENRICH) {
+        if (!ALLOW_AI_ENRICH) {
           enqueueManualPack(job, scraped);
           stats.skip++;
           stats.reasons.manual_queued = (stats.reasons.manual_queued || 0) + 1;
           state.processed[job.id] = { status: 'queued', reason: 'manual_only' };
           if (!RE_ENRICH) done.add(job.id);
           return;
-        } else {
-          description = await rewriteJobPage(job, scraped.text, scraped.extras);
-          consecutiveProviderFails = 0;
-          if (!TURBO) await sleep(80);
         }
+        description = await rewriteJobPage(job, scraped.text, scraped.extras);
+        consecutiveProviderFails = 0;
+        if (!TURBO) await sleep(80);
       } catch (e) {
         const reason = String(e.message || e).slice(0, 80);
-        if (rewriteMeetsPublishFloor(scraped.text, job)) {
-          description = scraped.text;
-          stats.reasons.source_html_fallback = (stats.reasons.source_html_fallback || 0) + 1;
-        } else if (/manual_only/.test(reason)) {
+        if (/manual_only/.test(reason)) {
           enqueueManualPack(job, scraped);
           stats.skip++;
           stats.reasons.manual_queued = (stats.reasons.manual_queued || 0) + 1;
