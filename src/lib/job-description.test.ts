@@ -40,6 +40,8 @@ describe('formatJobDescription meta facts', () => {
       'utf8'
     );
     assert.match(enrich, /buildUniquenessPrompt/);
+    assert.match(enrich, /Priority wave/);
+    assert.match(enrich, /fetchJobsByIds/);
     assert.match(enrich, /MAX_REWRITE_WORDS = 4000/);
     assert.match(enrich, /rewriteMeetsPublishFloor/);
     assert.match(enrich, /rewrite_formats_short/);

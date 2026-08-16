@@ -2234,8 +2234,22 @@ function isPermanentlyFailed(state, id) {
   if (!row) return false;
   if (row.status !== 'fail' && row.status !== 'skip') return false;
   const reason = String(row.reason || '');
-  if (/429|rate|timeout|timed out|fetch failed|5\d\d|aborted/i.test(reason)) return false;
+  if (/429|rate|timeout|timed out|fetch failed|5\d\d|aborted|rewrite_short|rewrite_long|rewrite_slop|rewrite_structure|copy_span|ngram_overlap|slot_mutation|openrouter/i.test(reason)) return false;
   return true;
+}
+
+async function fetchJobsByIds(ids) {
+  const out = [];
+  const chunkSize = 80;
+  const chunks = [];
+  for (let i = 0; i < ids.length; i += chunkSize) chunks.push(ids.slice(i, i + chunkSize));
+  await mapPool(chunks, 8, async (chunk) => {
+    const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash,source&id=in.(${chunk.join(',')})`;
+    const r = await jfetch(url, { headers }, 120000);
+    const rows = await r.json();
+    if (Array.isArray(rows)) out.push(...rows);
+  });
+  return out;
 }
 
 async function runOneBatch(batchNum, state, done) {
@@ -2259,22 +2273,19 @@ async function runOneBatch(batchNum, state, done) {
   let all;
   try {
     if (prioritySet && prioritySet.size) {
-      // Direct id fetch (ignore 30d window) so rework/manual VIP packs always load
-      all = [];
-      const ids = [...prioritySet];
-      for (let i = 0; i < ids.length; i += 50) {
-        const chunk = ids.slice(i, i + 50);
-        const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash,source&id=in.(${chunk.join(',')})`;
-        const r = await jfetch(url, { headers }, 60000);
-        const rows = await r.json();
-        if (Array.isArray(rows)) all.push(...rows);
-      }
+      const pending = [...prioritySet].filter((id) => {
+        if (state.processed[id]?.status === 'ok') return false;
+        return !isPermanentlyFailed(state, id);
+      });
+      const wave = pending.slice(0, Math.max(BATCH_SIZE * 3, CONCURRENCY * 4, 200));
+      console.log(`Priority wave: ${wave.length} of ${pending.length} pending (${prioritySet.size} listed)`);
+      all = await fetchJobsByIds(wave);
     } else {
       all = await fetchAllJobs();
     }
   } catch (e) {
     console.error(`fetchAllJobs failed: ${String(e.message || e).slice(0, 120)}`);
-    return { attempted: 0, ok: 0, skip: 0, fail: 1, reasons: {} };
+    return { attempted: 0, ok: 0, skip: 0, fail: 1, reasons: { load_failed: 1 }, loadFailed: true };
   }
   console.log(`Total jobs loaded: ${all.length}`);
 
@@ -2729,6 +2740,11 @@ async function main() {
   do {
     const result = await runOneBatch(batchNum, state, done);
     totalOk += result.ok;
+    if (result.loadFailed) {
+      console.log(`load failed — retry in 5s (totalOk=${totalOk})`);
+      await sleep(5000);
+      continue;
+    }
     if (result.complete || (result.ok === 0 && result.attempted === 0)) {
       console.log(`ENRICH_COMPLETE worker=${WORKER_ID} totalOk=${totalOk}`);
       // TURBO supervisors restart us immediately; short sleep avoids tight spin
