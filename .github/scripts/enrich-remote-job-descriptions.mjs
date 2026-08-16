@@ -8,7 +8,7 @@
  *  3. Skip curated-jd DB write — a human/agent applies JD_PARAPHRASE_RULES and publishes
  *
  * AI enrich is opt-in only: ALLOW_AI_ENRICH=1.
- * When enabled, the LLM path is OpenRouter (default qwen/qwen3.7-flash).
+ * When enabled, the LLM path is OpenRouter (default inclusionai/ling-2.6-flash).
  * Override with OPENROUTER_MODEL. Gemini / OpenAI / NVIDIA / Groq / Cohere / Anthropic are disabled.
  *
  * Single entry for JD rewrite + unique About-the-company blurbs:
@@ -120,7 +120,7 @@ const OPENROUTER_KEYS = [
   unquote(process.env.OPENROUTER_API_KEY_3),
 ].filter(Boolean);
 const OPENROUTER_BASE = (process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
-const OPENROUTER_MODEL = unquote(process.env.OPENROUTER_MODEL) || 'qwen/qwen3.7-flash';
+const OPENROUTER_MODEL = unquote(process.env.OPENROUTER_MODEL) || 'inclusionai/ling-2.6-flash';
 const ANTHROPIC_KEY = unquote(process.env.ANTHROPIC_API_KEY);
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
@@ -1381,63 +1381,63 @@ SOURCE:
 ${String(sourceText || '').slice(0, 24000)}`;
 }
 
-const UNIQUENESS_CHUNK_WORDS = 450;
+const SENTENCE_BATCH = 5;
 
-function splitSourceForUniqueness(sourceText) {
-  const text = String(sourceText || '').trim();
-  if (!text) return [];
-  let blocks = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
-  if (blocks.length <= 1) {
-    blocks = text.split(/\n/).map((p) => p.trim()).filter(Boolean);
-  }
-  if (blocks.length <= 1) {
-    const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean);
-    if (sentences.length > 1) blocks = sentences;
-  }
-  const chunks = [];
-  let buf = [];
-  let words = 0;
-  const flush = () => {
-    if (!buf.length) return;
-    chunks.push(buf.join('\n\n'));
-    buf = [];
-    words = 0;
-  };
-  for (const block of blocks) {
-    const w = descriptionWords(block);
-    if (w >= UNIQUENESS_CHUNK_WORDS * 1.4) {
-      flush();
-      const toks = block.split(/\s+/).filter(Boolean);
-      for (let i = 0; i < toks.length; i += UNIQUENESS_CHUNK_WORDS) {
-        chunks.push(toks.slice(i, i + UNIQUENESS_CHUNK_WORDS).join(' '));
-      }
+function splitSentencesForUniqueness(text) {
+  const units = [];
+  for (const line of String(text || '').split('\n')) {
+    const t = line.trim();
+    if (!t) {
+      units.push({ kind: 'blank', text: '' });
       continue;
     }
-    if (words && words + w > UNIQUENESS_CHUNK_WORDS) flush();
-    buf.push(block);
-    words += w;
+    if (descriptionWords(t) < 8) {
+      units.push({ kind: 'keep', text: t });
+      continue;
+    }
+    const parts = t.split(/(?<=[.!?])\s+/).filter(Boolean);
+    for (const p of parts) {
+      units.push(descriptionWords(p) < 8 ? { kind: 'keep', text: p } : { kind: 'rewrite', text: p });
+    }
   }
-  flush();
-  return chunks.length ? chunks : [text];
+  return units.length ? units : [{ kind: 'rewrite', text: String(text || '').trim() }];
 }
 
-function buildUniquenessChunkPrompt(job, chunk, index, total) {
-  const target = Math.max(40, descriptionWords(chunk));
-  return `Your only job: rewrite section ${index + 1} of ${total} of this official job posting so CVin.Bio does not publish copied ATS wording.
-${uniquenessLengthRules(target)}
-Title: ${job.title}
-Company: ${job.company}
+function buildSentenceBatchPrompt(job, sentences) {
+  const lines = sentences.map((s, i) => `${i + 1}. ${s}`).join('\n');
+  return `Rewrite each numbered sentence so CVin.Bio does not publish copied ATS wording.
+Return the SAME number of numbered lines (${sentences.length}).
+Keep names, tools, numbers, and pay spelled exactly.
+Do not copy 8 words in a row from that sentence (names/tools/numbers may stay).
+Start the sentence with a different subject than the input (The role / This position / You / Candidates).
+No HTML. No em dashes. Output only numbered lines.
 
-SOURCE SECTION:
-${String(chunk || '').slice(0, 8000)}`;
+Role: ${job.title} at ${job.company}
+
+${lines}`;
+}
+
+function parseNumberedLines(raw, n) {
+  const text = stripCodeFence(raw);
+  const numbered = [];
+  const re = /^\s*\d+[.)]\s*(.+)$/gm;
+  let m;
+  while ((m = re.exec(text))) numbered.push(m[1].trim());
+  if (numbered.length === n) return numbered;
+  const plain = text
+    .split('\n')
+    .map((l) => l.replace(/^\s*\d+[.)]\s*/, '').trim())
+    .filter(Boolean);
+  if (plain.length === n) return plain;
+  return null;
 }
 
 function buildUniquenessRepairPrompt(job, draft, failReasons, sourceText = '') {
   const reasons = failReasons.join(', ');
   const target = targetRewriteWords(sourceText);
-  let extra = 'Keep every SOURCE fact. Do not add facts. Do not copy 8-word spans.';
+  let extra = 'Keep every SOURCE fact. Do not add facts. Do not copy 8-word spans of prose.';
   if (/copy_span|ngram_overlap/.test(reasons)) {
-    extra += ' Copied wording remains: rewrite those sentences with a new grammatical subject. Keep names and numbers.';
+    extra += ' Copied prose remains: rewrite those sentences with a new grammatical subject. Keep names and numbers.';
   }
   if (/rewrite_short/.test(reasons)) {
     extra += ` Too short: restore every SOURCE section until the page has at least ${target} words.`;
@@ -1456,6 +1456,26 @@ DRAFT:
 ${String(draft || '').slice(0, 12000)}
 
 Output only the corrected posting.`;
+}
+
+const FACT_TOKENS = new Set(
+  'aws gcp azure sql api sdk ios android http json xml css html python java kotlin scala rust golang react angular vue node docker kubernetes postgres mysql redis kafka spark python3 typescript javascript graphql terraform'.split(
+    ' '
+  )
+);
+
+function isFactToken(tok, extra) {
+  if (!tok) return true;
+  if (extra.has(tok)) return true;
+  if (/\d/.test(tok)) return true;
+  if (FACT_TOKENS.has(tok)) return true;
+  return false;
+}
+
+/** Prose-only tokens so required tool/name lists do not trip the 8-word copy gate. */
+function proseTokens(text, job) {
+  const extra = new Set(normalizeTokens(`${job?.title || ''} ${job?.company || ''}`));
+  return normalizeTokens(text).filter((t) => !isFactToken(t, extra));
 }
 
 function stripCodeFence(text) {
@@ -1522,12 +1542,12 @@ function slotValuesInDraft(sheet, draft) {
   return missing;
 }
 
-function originalityFailReasons(draft, sourceText, sheet, { uniqueOnly } = {}) {
+function originalityFailReasons(draft, sourceText, sheet, { uniqueOnly, job } = {}) {
   const reasons = [];
   const maskedDraft = maskSlotSpans(draft, sheet);
   const maskedSrc = maskSlotSpans(sourceText, sheet);
-  const dTok = normalizeTokens(maskedDraft);
-  const sTok = normalizeTokens(maskedSrc);
+  const dTok = uniqueOnly ? proseTokens(maskedDraft, job) : normalizeTokens(maskedDraft);
+  const sTok = uniqueOnly ? proseTokens(maskedSrc, job) : normalizeTokens(maskedSrc);
   if (sTok.length) {
     const lcs = contiguousLcsWords(dTok, sTok);
     if (lcs > GATE.maxLcsWords) reasons.push('copy_span');
@@ -1606,7 +1626,7 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null, uniqueO
   const fails = [
     ...humanityFailReasons(text, { uniqueOnly }),
     ...structureFailReasons(text, { uniqueOnly }),
-    ...originalityFailReasons(text, sourceText, sheet, { uniqueOnly }),
+    ...originalityFailReasons(text, sourceText, sheet, { uniqueOnly, job }),
   ];
   if (sheet) {
     const missingSlots = slotValuesInDraft(sheet, text);
@@ -1899,7 +1919,7 @@ async function rewriteWithNvidia(prompt, opts = {}) {
   throw new Error(lastErr || 'nvidia_failed');
 }
 
-/** OpenRouter only. Default qwen/qwen3.7-flash; override OPENROUTER_MODEL. */
+/** OpenRouter only. Default inclusionai/ling-2.6-flash; override OPENROUTER_MODEL. */
 const openrouterKeyCooldown = new Map();
 async function openrouterCall(key, model, prompt, temperature, maxTokens) {
   const headers = {
@@ -2013,7 +2033,7 @@ async function rewriteWithAnthropic(prompt, opts = {}) {
   throw new Error(lastErr || 'anthropic_failed');
 }
 
-// AI rewrite is OpenRouter only. Default qwen/qwen3.7-flash.
+// AI rewrite is OpenRouter only. Default inclusionai/ling-2.6-flash.
 function buildProviderList() {
   if (!OPENROUTER_KEYS.length) return [];
   return [['openrouter', rewriteWithOpenRouter]];
@@ -2034,28 +2054,26 @@ function looksLikeMechanicalUniqueness(text) {
   return here >= 15 && here / words >= 0.08;
 }
 
-async function rewriteUniquenessChunk(job, chunk, index, total) {
-  const target = Math.max(40, descriptionWords(chunk));
-  const minKeep = Math.max(30, Math.floor(target * 0.8));
-  let text = stripCodeFence(
-    await completeWithProviders(buildUniquenessChunkPrompt(job, chunk, index, total), {
-      temperature: TURBO ? 0.25 : 0.3,
-      maxOutputTokens: 4096,
-    })
-  );
-  if (descriptionWords(text) < minKeep) {
-    text = stripCodeFence(
-      await completeWithProviders(buildUniquenessRepairPrompt(job, text, ['rewrite_short'], chunk), {
-        temperature: 0.25,
-        maxOutputTokens: 4096,
-      })
-    );
+async function rewriteSentenceBatch(job, sentences) {
+  const raw = await completeWithProviders(buildSentenceBatchPrompt(job, sentences), {
+    temperature: 0.55,
+    maxOutputTokens: 1536,
+  });
+  let lines = parseNumberedLines(raw, sentences.length);
+  if (!lines) {
+    const retry = await completeWithProviders(buildSentenceBatchPrompt(job, sentences), {
+      temperature: 0.4,
+      maxOutputTokens: 1536,
+    });
+    lines = parseNumberedLines(retry, sentences.length);
   }
-  return text;
+  if (!lines) throw new Error('rewrite_structure');
+  return lines;
 }
 
 /**
- * LLM uniqueness-rewrite of the full ATS posting. Never publish copied source.
+ * LLM uniqueness-rewrite of the full ATS posting, sentence batches for Ling.
+ * Never publish copied source. Short headers / tool lists stay as-is.
  */
 async function rewriteJobPage(job, sourceText, extras) {
   if (!ALLOW_AI_ENRICH) {
@@ -2068,26 +2086,42 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('source_thin');
   }
 
-  const chunks = splitSourceForUniqueness(sourceText);
-  let draft;
-  if (chunks.length <= 1) {
-    draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
-      temperature: TURBO ? 0.25 : 0.3,
-      maxOutputTokens: 8192,
-    });
-  } else {
-    const parts = [];
-    for (let i = 0; i < chunks.length; i++) {
-      parts.push(await rewriteUniquenessChunk(job, chunks[i], i, chunks.length));
+  const units = splitSentencesForUniqueness(sourceText);
+  const out = new Array(units.length);
+  let batch = [];
+  let batchIdx = [];
+  const flush = async () => {
+    if (!batch.length) return;
+    const lines = await rewriteSentenceBatch(job, batch);
+    for (let i = 0; i < lines.length; i++) out[batchIdx[i]] = lines[i];
+    batch = [];
+    batchIdx = [];
+  };
+  for (let i = 0; i < units.length; i++) {
+    const u = units[i];
+    if (u.kind !== 'rewrite') {
+      await flush();
+      out[i] = u.text;
+      continue;
     }
-    draft = parts.join('\n\n');
+    batch.push(u.text);
+    batchIdx.push(i);
+    if (batch.length >= SENTENCE_BATCH) await flush();
   }
+  await flush();
+
+  const draft = out
+    .map((t, i) => (units[i].kind === 'blank' ? '' : t))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 
   const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
   let lastErr;
+  let text = draft;
   for (let attempt = 0; attempt <= GATE.maxRepair; attempt++) {
     try {
-      return finalizeText(draft, ctx);
+      return finalizeText(text, ctx);
     } catch (e) {
       lastErr = e;
       const reason = String(e.message || e);
@@ -2095,8 +2129,8 @@ async function rewriteJobPage(job, sourceText, extras) {
         reason
       );
       if (!repairable || attempt >= GATE.maxRepair) throw e;
-      draft = await completeWithProviders(buildUniquenessRepairPrompt(job, draft, [reason], sourceText), {
-        temperature: 0.25,
+      text = await completeWithProviders(buildUniquenessRepairPrompt(job, text, [reason], sourceText), {
+        temperature: 0.45,
         maxOutputTokens: 8192,
       });
     }
