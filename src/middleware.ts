@@ -48,6 +48,8 @@ const ALLOWED_CRAWLER_UA = [
   /facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterestbot|redditbot|SkypeUriPreview|Embedly|Quora-Bot|vkShare/i,
   // Platforms / research / SEO / archive / feeds
   /Applebot|Applebot-Extended|Amazonbot|HuggingFaceBot|AhrefsBot|SemrushBot|MJ12bot|DotBot|Screaming Frog|rogerbot|SiteAuditBot|archive\.org_bot|Wayback|ia_archiver|ScholarBot|Feedly|Feedspot|NewsBlur/i,
+  // First-party CI link checks (GitHub Actions; see google-jobs-canary.mjs, telegram-post.mjs)
+  /cvin-google-jobs-canary|cvin-telegram-link-check/i,
 ];
 
 /**

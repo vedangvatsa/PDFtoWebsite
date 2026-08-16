@@ -165,21 +165,32 @@ function truncate(text, max = 60) {
 // Tradeoff: less backlog catch-up / thinner category pool vs fewer 522/503s.
 // Only curated sources — BambooHR excluded (unfiltered junk).
 const TELEGRAM_ALLOWED_SOURCES = ['greenhouse', 'ashby', 'lever', 'workable', 'remoteok'];
-const FETCH_DAYS = 1;        // ultra-light: last 24h only
-const FETCH_LIMIT = 40;      // ultra-light: small payload
-const FALLBACK_DAYS = 2;     // only if first pass is too thin
-const FALLBACK_LIMIT = 60;
+const FETCH_DAYS = 14;       // newest-stamp window (published_at OR created_at)
+const FETCH_LIMIT = 200;
+const FALLBACK_DAYS = 28;    // only if first pass is too thin
+const FALLBACK_LIMIT = 400;
+
+/** PostgREST OR filter — same rule as companyJobsDateOrFilter / sitemap. */
+function jobsDateOrFilter(sinceIso) {
+  return `published_at.gt.${sinceIso},created_at.gt.${sinceIso}`;
+}
+
+/** Cloudflare bot-fight 403s GitHub Actions IPs (see google-jobs-canary.mjs). */
+function isUrlLiveForPost(check) {
+  if (check.ok) return true;
+  return check.reason === 'http_403';
+}
 
 async function fetchJobsPage({ days, limit, label }) {
   const sourceFilter = TELEGRAM_ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
   const url = restUrl(SUPABASE_URL, 'jobs', {
     // Minimal columns — less IO on free tier
-    select: 'id,title,company,location,apply_url,published_at,telegram_posted_at,external_id,slug,tags,description',
+    select: 'id,title,company,location,apply_url,published_at,created_at,telegram_posted_at,external_id,slug,tags,description,category',
     source: `in.(${sourceFilter})`,
     tags: 'cs.{"curated-jd"}',
-    published_at: `gt.${since}`,
-    order: 'published_at.desc',
+    or: `(${jobsDateOrFilter(since)})`,
+    order: 'created_at.desc',
     limit: String(limit),
   });
 
@@ -276,18 +287,111 @@ const PRIORITY_COMPANIES = new Set([
   'plaid','ramp','deel','n26','trade republic','lemonade',
 ]);
 
-// ─── Categories Filter Regexes ───────────────────────────────────────────
-const TECH_RE = /\b(engineer|developer|programmer|architect|frontend|backend|fullstack|devops|sre|security|cyber|infrastructure|qa|test|compiler|systems|firmware|hardware|machine learning|ml|ai|artificial intelligence|deep learning|data scientist|data science|data eng|data tech|database|db\b|it\b|information technology|tech\b|technology|support engineer|system admin|network|cloud)\b/i;
+// ─── Category slots (developer / product / business) ─────────────────────
+// Title regex alone missed common titles (TPM, SWE, Technical Lead, etc.) and
+// ignored the DB category column. Align with src/lib/job-match.ts guessCategory.
 
-const PRODUCT_RE = /\b(product manager|pm\b|project manager|scrum|product owner|agile|delivery manager|designer|design\b|ux\b|ui\b|creative|art\b|illustrator|graphic|user research|data analyst|analytics|analyst|business analyst|bi analyst|intelligence analyst|strategist|strategy)\b/i;
+/** @returns {'developer'|'product'|'business'|null} */
+function telegramSlotForJob(job) {
+  const t = String(job?.title || '').toLowerCase();
+  const c = String(job?.category || '').toLowerCase();
+  const tags = Array.isArray(job?.tags) ? job.tags.join(' ').toLowerCase() : '';
+  const hay = `${t} ${tags}`;
 
-const BUSINESS_RE = /\b(sales|business development|bd\b|account manager|account executive|ae\b|marketing|growth|seo|copywriter|content|brand|social media|pmm|advertising|pr\b|public relations|customer success|support specialist|operations|ops|finance|accounting|accountant|audit|payroll|billing|tax|treasury|controller|recruiter|hr|talent|people|culture|legal|compliance|counsel|lawyer|attorney|office|admin|exec|chief|ceo|cfo|coo|cro|president|director|manager|buyer|procurement|supply chain|logistics)\b/i;
+  // DB category from ingest (most reliable when present)
+  if (c) {
+    if (/engineer|engineering|developer|software|infrastructure|security|devops|sre|technology|it\b|technical/.test(c)) {
+      return 'developer';
+    }
+    if (/product|design|ux|ui|data|analytics|research|content|creative/.test(c)) {
+      return 'product';
+    }
+    if (/sales|marketing|business|finance|hr|people|operations|legal|growth|customer|recruit|account|commercial|gtm/.test(c)) {
+      return 'business';
+    }
+  }
 
-function getCategoryRegex(category) {
-  if (category === 'developer') return TECH_RE;
-  if (category === 'product') return PRODUCT_RE;
-  if (category === 'business') return BUSINESS_RE;
+  // Product, design & data (non-engineering) — header: "Product, Design & Data Jobs"
+  if (/product(?!ion)|product manag|product own|product design|product ops|product lead|product analyst|product specialist|product strateg|group product|principal product|\bpm\b(?!\w)|tpm\b|technical program|program manag|project manag|scrum|agile|kanban|product owner|delivery manag|release manag/.test(hay)) {
+    return 'product';
+  }
+  if (/\b(ux|ui)\b|user experience|user interface|\bdesigner\b|design lead|design ops|design system|graphic design|visual design|motion design|interaction design|content design|service design|creative director|creative lead|illustrator|art director|brand design|producer|prototyp|figma/.test(hay)) {
+    return 'product';
+  }
+  if (/data scien|data analy|business analy|\banalytics\b|insights?\b|reporting analyst|bi analyst|research analyst|intelligence analyst|data strateg|quantitative analyst|tableau|looker|metrics analyst|product analyt|decision scient/.test(hay)) {
+    return 'product';
+  }
+  if (/\bresearch(er)?\b|user research|ux research|design research|market research|qualitative research/.test(hay) &&
+      !/research engineer|research scient|machine learning|ml eng|software|developer/.test(t)) {
+    return 'product';
+  }
+
+  // Engineering & IT — check before loose business/product keywords
+  if (/engineer|developer|programmer|\barchitect\b|devops|\bsre\b|software|\bswe\b|\bsde\b|full.?stack|frontend|backend|fullstack|platform eng|infrastructure|security eng|cyber|infosec|ml eng|machine learning eng|ai eng|data eng|\bdba\b|qa eng|test eng|systems eng|cloud eng|network eng|mobile dev|ios dev|android dev|embedded|firmware|hardware|compiler|technical staff|member of technical|site reliability|implementation eng|solutions eng|support eng|system admin|production eng/.test(t)) {
+    return 'developer';
+  }
+  if (/\b(ml|ai)\b|machine learning|artificial intelligence|deep learning|\bnlp\b|computer vision/.test(t) &&
+      !/product|marketing|sales|recruit|\bhr\b|legal|finance|operations|\bmanager\b/.test(t)) {
+    return 'developer';
+  }
+  if (/\btechnical\b|\btechnology\b|information technology|\bit support\b/.test(t) &&
+      !/product|marketing|sales|account|business|customer|growth|design|analyst|program|project/.test(t)) {
+    return 'developer';
+  }
+
+  // Business, sales & growth — header: "Business, Sales & Growth Jobs"
+  if (/sales|account exec|account manager|business dev|\bbdm\b|commercial|revenue|\bgtm\b|go.?to.?market|partnership|channel sales|inside sales|field sales|enterprise sales|solutions consult|pre.?sales|post.?sales/.test(hay)) {
+    return 'business';
+  }
+  if (/marketing|growth|demand gen|performance market|digital market|field market|lifecycle|retention|\bseo\b|\bsem\b|copywriter|content (strat|market|writer)|social media|\bpmm\b|advertising|brand manag|\bbrand\b|communications|\bcomms\b|public relations|\bpr\b|media relations|community manag|event marketing/.test(hay)) {
+    return 'business';
+  }
+  if (/customer success|customer support|client success|client partner|customer experience|customer oper|support specialist|success manag|implementation manag|onboarding|enablement/.test(hay)) {
+    return 'business';
+  }
+  if (/recruit|talent|\bhr\b|people ops|human resources|people partner|culture|learning & development|l&d\b|compensation|benefits/.test(hay)) {
+    return 'business';
+  }
+  if (/finance|accountant|accounting|controller|treasury|fp&a|billing|payroll|audit|tax\b|investor relations/.test(hay)) {
+    return 'business';
+  }
+  if (/legal|counsel|compliance|regulatory|privacy counsel|contracts/.test(hay)) {
+    return 'business';
+  }
+  if (/operations|business oper|rev ops|sales ops|marketing ops|\bops\b|supply chain|logistics|procurement|fulfillment|warehouse|facilities|office manag|executive assist|administrative|coordinator|representative|category manag|merchandis|buyer\b|vendor manag/.test(hay)) {
+    return 'business';
+  }
+  if (/business strateg|management consult|strategy consult|corporate strateg|advisory|consultant|analyst,?\s+(finance|strategy|operations|commercial)/.test(hay) &&
+      !/data scien|data analy|product analyt|business analyt|research analyst/.test(hay)) {
+    return 'business';
+  }
+
+  // Leadership titles — route by function words in the same title
+  if (/\bmanager\b|\bdirector\b|\bvp\b|\bhead of\b|\bchief\b|\blead\b/.test(t)) {
+    if (/engineer|software|technical|dev|platform|infrastructure|security|sre|devops|it\b|technology|data eng|ml eng/.test(t)) return 'developer';
+    if (/product|design|program|project|delivery|scrum|analytics|data|research|ux|ui|creative/.test(t)) return 'product';
+    return 'business';
+  }
+
+  // Tag-only hints when title is vague (common on aggregator-ingested rows)
+  if (/product|design|ux|ui|analytics|scrum|agile|data science/.test(tags) && !/engineer|developer|software|sales|marketing/.test(t)) {
+    return 'product';
+  }
+  if (/sales|marketing|growth|customer success|operations|finance|recruiting|business development|account|commercial/.test(tags)) {
+    return 'business';
+  }
+
   return null;
+}
+
+function countSlots(jobs) {
+  const counts = { developer: 0, product: 0, business: 0, unclassified: 0 };
+  for (const job of jobs) {
+    const slot = telegramSlotForJob(job);
+    if (slot) counts[slot]++;
+    else counts.unclassified++;
+  }
+  return counts;
 }
 
 function getAutomaticCategory() {
@@ -312,7 +416,6 @@ function isHighProfileCompany(company) {
 }
 
 function pickJobs(jobs, limit, category) {
-  const catRegex = getCategoryRegex(category);
   const seen = new Set();
   const matching = [];
   const nonMatching = [];
@@ -332,7 +435,8 @@ function pickJobs(jobs, limit, category) {
     if (seen.has(key)) continue;
     seen.add(key);
 
-    if (catRegex && catRegex.test(job.title)) {
+    const slot = telegramSlotForJob(job);
+    if (category && slot === category) {
       matching.push(job);
     } else {
       nonMatching.push(job);
@@ -344,7 +448,7 @@ function pickJobs(jobs, limit, category) {
   // to pad posts to 10, which put engineering roles under the "Business,
   // Sales & Growth" header (and burned them from the engineering slot).
   // If the caller passes no category, fall back to a mixed post below.
-  if (catRegex) {
+  if (category) {
     const high = (arr) => arr.filter((j) => isHighProfileCompany(j.company));
     const low = (arr) => arr.filter((j) => !isHighProfileCompany(j.company));
     const picked = [];
@@ -565,7 +669,14 @@ async function main() {
   //    matches, fall back to a neutral "Featured" mixed post so the slot lives.
   let jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST * 4, category);
   if (jobs.length === 0) {
-    console.log(`  No jobs matched category filter (${category}).`);
+    const pool = countSlots(allJobs);
+    console.log(`  No ${category} jobs in pool — slot counts: ${JSON.stringify(pool)}`);
+    console.log(`  Falling back to mixed "Featured" post.`);
+    category = null;
+    jobs = pickJobs(shuffle(allJobs), JOBS_PER_POST * 4, null);
+  }
+  if (jobs.length === 0) {
+    console.log('  No jobs matched category filters.');
     return;
   }
 
@@ -577,11 +688,15 @@ async function main() {
       continue;
     }
     const check = await assertJobUrlLive(url, { allowNetworkFail: false });
-    if (!check.ok) {
+    if (!isUrlLiveForPost(check)) {
       console.log(`  ⛔ skip ${check.reason}: ${url}`);
       continue;
     }
-    console.log(`  ✓ live ${check.status}: ${url}`);
+    if (check.reason === 'http_403') {
+      console.log(`  ✓ assume live (CI 403): ${url}`);
+    } else {
+      console.log(`  ✓ live ${check.status}: ${url}`);
+    }
     liveJobs.push(job);
     if (liveJobs.length >= JOBS_PER_POST) break;
   }
@@ -597,7 +712,7 @@ async function main() {
       const url = jobPublicPath(job);
       if (!url) continue;
       const check = await assertJobUrlLive(url, { allowNetworkFail: false });
-      if (!check.ok) continue;
+      if (!isUrlLiveForPost(check)) continue;
       liveJobs.push(job);
       liveCompanies.add(job.company.toLowerCase().trim());
     }
