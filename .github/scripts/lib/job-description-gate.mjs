@@ -1,11 +1,14 @@
 /**
  * Shared publish-floor checks: raw storage vs formatted display word counts.
+ * Requires tsx (imports TypeScript job-description). Plain-node scripts must
+ * not import this module — use job-apply-source.mjs instead.
  */
 import {
   formatJobDescription,
   jobDescriptionPlainText,
   jobDescriptionWordCount,
 } from '../../../src/lib/job-description.ts';
+import { isLowQualityApplySource } from '../../../src/lib/job-apply-hosts.mjs';
 import { descriptionWords, ENRICH_MIN_WORDS, MIN_WORDS, isCuratedJd } from './job-apply-source.mjs';
 
 export { ENRICH_MIN_WORDS, MIN_WORDS };
@@ -49,4 +52,10 @@ export function rewriteMeetsPublishFloor(storedDescription, job) {
   return (
     formattedDescriptionWords({ ...job, description: storedDescription }) >= MIN_WORDS
   );
+}
+
+export function shouldQueueForManualEnrich(job, _opts = {}) {
+  if (isFullyEnrichedJob(job)) return false;
+  if (isLowQualityApplySource(job.apply_url)) return false;
+  return descriptionWords(job.description) < ENRICH_MIN_WORDS;
 }

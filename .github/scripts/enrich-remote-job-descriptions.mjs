@@ -25,7 +25,6 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } fr
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
-  shouldQueueForManualEnrich,
   descriptionWords,
   ENRICH_MIN_WORDS,
   isCuratedJd,
@@ -33,6 +32,7 @@ import {
 import {
   isFullyEnrichedJob,
   rewriteMeetsPublishFloor,
+  shouldQueueForManualEnrich,
 } from './lib/job-description-gate.mjs';
 import { isBannedJobTitle } from '../../src/lib/banned-jobs.mjs';
 import { fellowshipPublishBlockReason } from '../../src/lib/fellowship-publish-gate.mjs';
@@ -140,18 +140,19 @@ const MAX_REWRITE_WORDS = 900;
 const GATE = {
   maxLcsWords: 10, // fail if shared contiguous words >= 11 (after slot mask)
   max5gramJaccard: 0.12,
-  maxRepair: 1,
+  maxRepair: 2,
   // Never publish a page that still matches the ATS after repair.
   originalitySoft: false,
 };
 const OPENAI_FAST_MODEL = process.env.OPENAI_FAST_MODEL || 'gpt-4o-mini';
 // TURBO scrapes must fail fast — long LinkedIn/HTML retries were killing throughput (~20 ok/min).
-const SCRAPE_MS = TURBO ? 4000 : 15000;
-const HTML_MS = TURBO ? 4000 : 20000;
+// RE_ENRICH must wait for rich ATS bodies; TURBO's 4s scrape was falling back to
+// the existing ~600-word paraphrase, which then failed rewrite_short.
+const SCRAPE_MS = TURBO && !RE_ENRICH ? 4000 : 15000;
+const HTML_MS = TURBO && !RE_ENRICH ? 4000 : 20000;
 const PERMANENT_REASONS = new Set([
   'posting_older_than_30d',
   'html_blocked',
-  'rewrite_slop',
   'no_company',
   'unsupported',
   'source_thin',
@@ -191,8 +192,8 @@ const PERMANENT_UNENRICHABLE_REASONS = new Set([
   'posting_older_than_30d',
   // unroutable
   'no_company', 'unsupported',
-  // rewrite / quality rejects
-  'rewrite_slop', 'rewrite_short', 'rewrite_structure', 'rewrite_long', 'invented_facts',
+  // Model quality rejects are retryable — do not delete live curated pages.
+  'invented_facts',
 ]);
 
 let telegramProtectedUrlsCache = null;

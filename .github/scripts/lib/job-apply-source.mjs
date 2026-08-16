@@ -1,23 +1,16 @@
-/** Mirror of src/lib/job-apply-source.ts for Node enrich/sync scripts. */
+/**
+ * Mirror of src/lib/job-apply-source.ts for plain-Node scripts (sync, feeds, indexing).
+ * Do NOT import job-description-gate here — that pulls src/lib/job-description.ts
+ * (TypeScript + @/ aliases) and breaks `node .github/scripts/*.mjs`.
+ * Enrich / format-floor helpers live in job-description-gate.mjs (run via tsx).
+ */
 import { isJobExpired } from '../../../src/lib/job-age.mjs';
 import { isLowQualityApplySource } from '../../../src/lib/job-apply-hosts.mjs';
 import { isBannedJobTitle } from '../../../src/lib/banned-jobs.mjs';
 import { fellowshipPublishBlockReason } from '../../../src/lib/fellowship-publish-gate.mjs';
 import { isGenericCompanyLabel } from '../../../src/lib/company-host.mjs';
-import {
-  isFullyEnrichedJob,
-  rewriteMeetsPublishFloor,
-  needsCuratedReenrich,
-  formattedDescriptionWords,
-} from './job-description-gate.mjs';
 
 export { isLowQualityApplySource };
-export {
-  isFullyEnrichedJob,
-  rewriteMeetsPublishFloor,
-  needsCuratedReenrich,
-  formattedDescriptionWords,
-};
 /** Public job URL / board / sitemap floor. */
 export const MIN_WORDS = 600;
 /**
@@ -60,12 +53,6 @@ export function isPublicJobPage(job) {
     (Array.isArray(job?.tags) && job.tags.some((t) => /^fellowship$/i.test(String(t))));
   if (fellowish && fellowshipPublishBlockReason(job)) return false;
   return true;
-}
-
-export function shouldQueueForManualEnrich(job, _opts = {}) {
-  if (isFullyEnrichedJob(job)) return false;
-  if (isLowQualityApplySource(job.apply_url)) return false;
-  return descriptionWords(job.description) < ENRICH_MIN_WORDS;
 }
 
 export function shouldListJobOnBoard(job) {

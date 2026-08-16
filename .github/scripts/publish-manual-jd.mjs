@@ -16,7 +16,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
 import { checkManualPage } from './lib/jd-manual-gates.mjs';
-import { isFullyEnrichedJob } from './lib/job-apply-source.mjs';
+import { isFullyEnrichedJob } from './lib/job-description-gate.mjs';
 import { fellowshipPublishBlockReason } from '../../src/lib/fellowship-publish-gate.mjs';
 import {
   normalizeJobDescriptionForStorage,
