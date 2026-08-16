@@ -9,7 +9,7 @@
  *     rows are not pages — hub cards link out to apply_url.
  *  4. Never publish raw ATS or process/queue copy
  */
-import { JOB_INDEXABLE_MIN_WORDS, jobDescriptionWordCount, isGarbageJobTitle } from '@/lib/job-description';
+import { JOB_INDEXABLE_MIN_WORDS, jobDescriptionWordCount, isGarbageJobTitle, formatJobDescription, jobDescriptionPlainText } from '@/lib/job-description';
 import { isJobExpired } from '@/lib/job-age';
 import { isLowQualityApplySource } from '@/lib/job-apply-hosts.mjs';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
@@ -39,9 +39,25 @@ export function curatedJdMeetsWordFloor(description: string | null | undefined):
 export function isFullyEnrichedJob(job: {
   tags?: unknown;
   description?: string | null;
+  title?: string | null;
+  company?: string | null;
+  location?: string | null;
+  apply_url?: string | null;
 }): boolean {
-  return isCuratedJd(job.tags) && jobDescriptionWordCount(job.description) >= JOB_INDEXABLE_MIN_WORDS;
+  if (!isCuratedJd(job.tags)) return false;
+  const raw = jobDescriptionWordCount(job.description);
+  if (raw < ENRICH_STORE_MIN_WORDS) return false;
+  const html = formatJobDescription(job.description, job.location || null, {
+    title: job.title,
+    company: job.company,
+    applyUrl: job.apply_url,
+  });
+  const formatted = jobDescriptionWordCount(jobDescriptionPlainText(html));
+  return formatted >= JOB_INDEXABLE_MIN_WORDS;
 }
+
+/** Enrich must store above index floor — formatter often trims 5–30 words. */
+export const ENRICH_STORE_MIN_WORDS = 625;
 
 export type PublicJobGate = {
   title?: string | null;
@@ -104,5 +120,5 @@ export function shouldQueueForManualEnrich(
 ): boolean {
   if (isFullyEnrichedJob(job)) return false;
   if (isLowQualityApplySource(job.apply_url)) return false;
-  return jobDescriptionWordCount(job.description) < JOB_INDEXABLE_MIN_WORDS;
+  return jobDescriptionWordCount(job.description) < ENRICH_STORE_MIN_WORDS;
 }
