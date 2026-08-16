@@ -38,4 +38,4 @@ jobs:
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id="${{ secrets.TELEGRAM_CHANNEL_ID }}" \
-            -d text="⚠️ cleanup-old-jobs failed — the companies directory may be stale. Check: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            -d text="⚠️ cleanup-old-jobs failed — the companies directory may be stale."

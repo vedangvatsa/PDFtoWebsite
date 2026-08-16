@@ -14,11 +14,13 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
-  shouldQueueForManualEnrich,
-  isFullyEnrichedJob,
   descriptionWords,
   isLowQualityApplySource,
 } from './lib/job-apply-source.mjs';
+import {
+  shouldQueueForManualEnrich,
+  isFullyEnrichedJob,
+} from './lib/job-description-gate.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);

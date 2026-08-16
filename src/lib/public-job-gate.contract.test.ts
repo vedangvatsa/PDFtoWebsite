@@ -137,6 +137,20 @@ describe('public lists constrain curated-jd before limit()', () => {
     assert.doesNotMatch(detail, /wordCount >= 40/);
   });
 
+  it('plain-node job-apply-source.mjs never imports the TS format gate', () => {
+    // jobs-sync / google-indexing / telegram run under `node`, not tsx.
+    // Importing job-description-gate pulls job-description.ts + @/ aliases and crashes CI.
+    const mjs = src('.github/scripts/lib/job-apply-source.mjs');
+    assert.doesNotMatch(mjs, /from\s+['"]\.\/job-description-gate\.mjs['"]/);
+    assert.doesNotMatch(mjs, /from\s+['"][^'"]*job-description\.ts['"]/);
+    const workflows = [
+      src('.github/workflows/x-scheduler.yml'),
+      src('.github/workflows/cleanup-old-jobs.yml'),
+    ].join('\n');
+    assert.doesNotMatch(workflows, /github\.com\/\$\{\{\s*github\.repository/);
+    assert.doesNotMatch(workflows, /actions\/runs\/\$\{\{\s*github\.run_id/);
+  });
+
   it('fellowships board reuses curated jobs API, not hub SQL', () => {
     const page = src('src/app/fellowships/page.tsx');
     assert.match(page, /mode="fellowships"/);
