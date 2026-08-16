@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildJobJsonLd, buildJobFaqJsonLd } from './job-detail-data';
+import { buildJobJsonLd, buildJobFaqJsonLd, titleSearchTokens, scoreRelatedJob } from './job-detail-data';
 import type { JobRow } from './job-detail-data';
 import type { JobDetail } from '@/app/jobs/[id]/job-detail-client';
 import { jobPublicPath } from '../../.github/scripts/lib/job-public-url.mjs';
@@ -247,5 +247,32 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     assert.match(file, /Google-Extended/);
     assert.match(file, /OAI-SearchBot/);
     assert.match(file, /PerplexityBot/);
+  });
+});
+
+describe('related jobs do not ride generic title tokens', () => {
+  it('does not treat AI or winter as related-search tokens', () => {
+    const tokens = titleSearchTokens('ERA:AI Fellowship Winter 2027');
+    assert.equal(tokens.includes('ai'), false);
+    assert.equal(tokens.includes('winter'), false);
+    assert.equal(tokens.includes('fellowship'), false);
+  });
+
+  it('does not rank a Winter Park GM under an ERA fellowship', () => {
+    const era = row({
+      title: 'ERA:AI Fellowship Winter 2027',
+      company: 'ERA',
+      category: 'fellowship',
+      tags: ['curated-jd', 'fellowship', 'AI'],
+    });
+    const gm = row({
+      id: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+      title: 'General Manager - Winter Park',
+      company: 'Intrawest',
+      category: 'Operations',
+      tags: ['curated-jd'],
+    });
+    const tokens = titleSearchTokens(era.title);
+    assert.equal(scoreRelatedJob(gm, era, tokens), 0);
   });
 });

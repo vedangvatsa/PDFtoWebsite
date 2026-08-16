@@ -235,6 +235,9 @@ const TITLE_STOP = new Set([
   'senior', 'junior', 'staff', 'principal', 'lead', 'sr', 'jr', 'i', 'ii', 'iii',
   'iv', 'remote', 'hybrid', 'full', 'time', 'part', 'contract', 'intern', 'internship',
   'fellow', 'fellowship', 'fellows',
+  'ai', 'ml', 'new', 'open', 'role', 'roles', 'job', 'jobs',
+  'winter', 'summer', 'spring', 'fall', 'autumn',
+  'usa', 'uk', 'us', 'eu',
 ]);
 
 /** Extract searchable tokens from a job title for related-role matching. */
@@ -244,7 +247,7 @@ export function titleSearchTokens(title: string, max = 4): string[] {
     .replace(/[^a-z0-9+.#\s/-]/g, ' ')
     .split(/[\s/|,–—-]+/)
     .map((t) => t.trim())
-    .filter((t) => t.length >= 2 && !TITLE_STOP.has(t) && !/^\d+$/.test(t));
+    .filter((t) => t.length >= 3 && !TITLE_STOP.has(t) && !/^\d+$/.test(t));
   const out: string[] = [];
   const seen = new Set<string>();
   for (const t of raw) {
@@ -265,7 +268,8 @@ function rowToRelatedCard(row: JobRow): RelatedJobCard {
   };
 }
 
-function scoreRelated(row: JobRow, job: JobRow, titleTokens: string[]): number {
+/** Exported for tests — keep Google landings off unrelated “related” cards. */
+export function scoreRelatedJob(row: JobRow, job: JobRow, titleTokens: string[]): number {
   let s = 0;
   const sameCompany =
     !!row.company &&
@@ -274,10 +278,12 @@ function scoreRelated(row: JobRow, job: JobRow, titleTokens: string[]): number {
   if (sameCompany) s += 50;
   const rt = (row.title || '').toLowerCase();
   let titleHits = 0;
+  let strongHits = 0;
   for (const t of titleTokens) {
     if (rt.includes(t)) {
       s += 12;
       titleHits += 1;
+      if (t.length >= 4) strongHits += 1;
     }
   }
   const jobTags = new Set(
@@ -291,6 +297,8 @@ function scoreRelated(row: JobRow, job: JobRow, titleTokens: string[]): number {
   if (isJobDescriptionIndexable(row.description)) s += 5;
   // Other-company "related" needs a real title overlap — shared "AI"/"fellowship"
   // tags otherwise dump Google fellowships onto a Constellation page.
+  if (!sameCompany && looksLikeFellowship(job) !== looksLikeFellowship(row)) return 0;
+  if (!sameCompany && strongHits === 0) return 0;
   if (!sameCompany && titleHits === 0) return 0;
   return s;
 }
@@ -337,9 +345,9 @@ export async function fetchRelatedJobs(
 
     // Similar titles (top 2 tokens as ILIKE or-filter). created_at window only —
     // chaining multiple .or() breaks PostgREST filters.
-    if (titleTokens.length) {
-      const orTitle = titleTokens
-        .slice(0, 2)
+    const queryTokens = titleTokens.filter((t) => t.length >= 4).slice(0, 2);
+    if (queryTokens.length) {
+      const orTitle = queryTokens
         .map((t) => `title.ilike.%${t.replace(/[%_,.()]/g, '')}%`)
         .join(',');
       if (orTitle) {
@@ -364,7 +372,7 @@ export async function fetchRelatedJobs(
 
     // Shared tag (first meaningful skill — skip "fellowship"/"AI" noise)
     const tag = filterMeaningfulSkillTags(job.tags || [], { companyName: job.company }).find(
-      (t) => t && String(t).length >= 2 && String(t).length <= 32
+      (t) => t && String(t).length >= 3 && String(t).length <= 32 && !/^(ai|ml)$/i.test(String(t))
     );
     if (tag) {
       queries.push(
@@ -399,7 +407,7 @@ export async function fetchRelatedJobs(
         if (RELATED_NON_ENGLISH.test(row.title || '')) return false;
         return true;
       })
-      .map((row) => ({ row, score: scoreRelated(row, job, titleTokens) }))
+      .map((row) => ({ row, score: scoreRelatedJob(row, job, titleTokens) }))
       .filter((x) => x.score > 0)
       .sort((a, b) => b.score - a.score);
 

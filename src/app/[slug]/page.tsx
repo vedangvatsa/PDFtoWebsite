@@ -719,7 +719,9 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                     <span className="truncate">{timeAgo(job.published_at || job.created_at)}</span>
                   </div>
                 </div>
-                <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 transition-colors shrink-0" />
+                {link.external ? (
+                  <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 transition-colors shrink-0" />
+                ) : null}
                 </>
               );
               if (link.external) {
