@@ -1945,11 +1945,12 @@ function uniquenessFromSource(sourceText) {
   const pivot = 'here';
   const parts = String(sourceText || '')
     .replace(/[—–]/g, ', ')
-    .split(/(\s+)/);
+    .split(/([^a-zA-Z0-9+]+)/);
   let seen = 0;
   const out = [];
   for (const part of parts) {
-    if (!part || /^\s+$/.test(part)) {
+    if (!part) continue;
+    if (!/[a-zA-Z0-9+]/.test(part)) {
       out.push(part);
       continue;
     }
@@ -1969,6 +1970,9 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('manual_only');
   }
   if (!usableSourceText(sourceText)) {
+    throw new Error('source_thin');
+  }
+  if (descriptionWords(sourceText) < MIN_REWRITE_WORDS) {
     throw new Error('source_thin');
   }
 
