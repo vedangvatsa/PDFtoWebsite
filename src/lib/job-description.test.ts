@@ -41,6 +41,8 @@ describe('formatJobDescription meta facts', () => {
     );
     assert.match(enrich, /rewriteMeetsPublishFloor/);
     assert.match(enrich, /rewrite_formats_short/);
+    assert.match(enrich, /at least \$\{MIN_REWRITE_WORDS\} words/);
+    assert.doesNotMatch(enrich, /filter\(\(t\) => t !== 'curated-jd'\)/);
   });
 
   it('keeps curated bodies when sanitizer trims slightly below 600 words', async (t) => {
