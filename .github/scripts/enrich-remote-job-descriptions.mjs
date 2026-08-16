@@ -42,6 +42,7 @@ import {
   stripLeakedWriterInstructions,
   descriptionHasWriterLeak,
 } from './lib/normalize-job-description.mjs';
+import { htmlToIngestText as stripHtml, ingestSourceDescription } from './lib/ingest-job-description.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -316,29 +317,6 @@ function isRouteableExternalId(company, externalId) {
   if (!/^[a-z0-9][a-z0-9-]{0,23}$/.test(rest)) return false;
   if (/^[0-9a-f]{8,}$/.test(rest)) return false;
   return true;
-}
-
-function stripHtml(html) {
-  return String(html || '')
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n\n')
-    .replace(/<\/h[1-6]>/gi, '\n\n')
-    .replace(/<\/li>/gi, '\n')
-    .replace(/<li[^>]*>/gi, '- ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&#0*39;|&apos;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n[ \t]+/g, '\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
 }
 
 function classifyApplyUrl(url) {
@@ -661,7 +639,7 @@ async function fetchSourceText(job) {
       if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
         return { ok: false, reason: 'posting_older_than_30d' };
       }
-      const text = stripHtml(d.content || '');
+      const text = ingestSourceDescription({ html: d.content });
       if (text.length < 280) return { ok: false, reason: 'gh_short' };
       return {
         ok: true,
@@ -686,7 +664,10 @@ async function fetchSourceText(job) {
       if (publishedAt && new Date(publishedAt).getTime() < thirtyDaysAgoMs) {
         return { ok: false, reason: 'posting_older_than_30d' };
       }
-      const text = stripHtml(j.descriptionHtml || j.descriptionPlain || '');
+      const text = ingestSourceDescription({
+        html: j.descriptionHtml,
+        plain: j.descriptionPlain,
+      });
       if (text.length < 280) return { ok: false, reason: 'ashby_short' };
       return {
         ok: true,
@@ -2009,8 +1990,25 @@ async function rewriteJobPage(job, sourceText, extras) {
     temperature: 0.1,
     maxOutputTokens: 8192,
   });
-  const sheet = parseFactSheet(extractRaw);
-  if (!factSheetIsIndexable(sheet)) {
+  let sheet;
+  try {
+    sheet = parseFactSheet(extractRaw);
+  } catch {
+    sheet = {
+      meta: {},
+      duties: [],
+      must_have: [],
+      nice_to_have: [],
+      skills: [],
+      systems: [],
+      constraints: [],
+      comp_notes: [],
+      omissions: [],
+      slots: [],
+    };
+  }
+  const sourceRich = descriptionWords(sourceText) >= 400;
+  if (!factSheetIsIndexable(sheet) && !sourceRich) {
     throw new Error('source_thin');
   }
 

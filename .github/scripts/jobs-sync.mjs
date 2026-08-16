@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import dotenv from 'dotenv';
 import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
+import { ingestSourceDescription } from './lib/ingest-job-description.mjs';
 import {
   persistedJobSlug,
   storedSlugSegment,
@@ -22,19 +23,12 @@ import { applyCanonicalCompany, isGenericCompanyLabel, isRegistryCompanyLabel } 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
-function stripHtml(html) {
-  return String(html || '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/** Ashby board API uses descriptionPlain / descriptionHtml — not legacy `description`. */
+/** Full Ashby HTML (lists kept). Never a 5k / fact-sheet digest. */
 function ashbyBoardDescription(j) {
-  const plain = String(j.descriptionPlain || j.description || '').trim();
-  if (plain.length >= 80) return plain.substring(0, 5000);
-  const fromHtml = stripHtml(j.descriptionHtml || '');
-  return fromHtml ? fromHtml.substring(0, 5000) : '';
+  return ingestSourceDescription({
+    html: j.descriptionHtml,
+    plain: j.descriptionPlain || j.description,
+  });
 }
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -488,7 +482,7 @@ async function fetchRemoteOK() {
       location: j.location || 'Remote',
       job_type: normalizeJobType(j.type) || 'full_time',
       salary: j.salary_min && j.salary_max ? `$${j.salary_min}-$${j.salary_max}` : (j.salary || null),
-      description: (j.description || '').substring(0, 5000),
+      description: ingestSourceDescription({ html: j.description, plain: j.description }),
       tags: j.tags?.length ? j.tags.map(t => t.charAt(0).toUpperCase() + t.slice(1)) : extractTags(`${j.position || ''} ${j.description || ''}`),
       apply_url: j.apply_url || j.url || `https://remoteok.com/remote-jobs/${j.slug || j.id}`,
       category: j.tags?.[0] || null,
@@ -1258,7 +1252,7 @@ async function fetchRemotive() {
         location: j.candidate_required_location || 'Remote',
         job_type: normalizeJobType(j.job_type),
         salary: j.salary || null,
-        description: j.description?.substring(0, 5000) || null,
+        description: ingestSourceDescription({ html: j.description, plain: j.description }) || null,
         tags: Array.isArray(tags) ? tags : extractTags(`${j.title} ${j.description || ''}`),
         apply_url: j.url,
         category: j.category || null,
@@ -1293,7 +1287,7 @@ async function fetchArbeitnow() {
         location: j.remote ? 'Remote' : (j.location || 'Unknown'),
         job_type: (j.job_types || []).join(', ') || 'full_time',
         salary: null,
-        description: j.description.substring(0, 5000),
+        description: ingestSourceDescription({ html: j.description, plain: j.description }),
         tags: j.tags && j.tags.length ? j.tags : extractTags(`${j.title} ${j.description || ''}`),
         apply_url: j.url,
         category: null,
@@ -1344,7 +1338,7 @@ async function fetchWeWorkRemotely() {
         location: getTag('category') || 'Remote',
         job_type: 'full_time',
         salary: null,
-        description: getTag('description').substring(0, 5000),
+        description: ingestSourceDescription({ html: getTag('description'), plain: getTag('description') }),
         tags: extractTags(`${title} ${getTag('description')}`),
         apply_url: getTag('link'),
         category: null,
@@ -1375,7 +1369,7 @@ async function fetchHimalayas() {
       location: j.location || 'Remote',
       job_type: normalizeJobType(j.type || j.jobType),
       salary: j.salary || null,
-      description: (j.description || j.excerpt || '').substring(0, 5000),
+      description: ingestSourceDescription({ html: j.description || j.excerpt, plain: j.description || j.excerpt }),
       tags: j.tags?.length ? j.tags : extractTags(`${j.title} ${j.description || ''}`),
       apply_url: j.applicationUrl || j.url || `https://himalayas.app/jobs/${j.id}`,
       category: j.categories?.[0] || j.category || null,
@@ -1407,7 +1401,7 @@ async function fetchJobicy() {
       salary: j.annualSalaryMin && j.annualSalaryMax
         ? `$${j.annualSalaryMin}-$${j.annualSalaryMax}`
         : null,
-      description: (j.jobDescription || '').substring(0, 5000),
+      description: ingestSourceDescription({ html: j.jobDescription, plain: j.jobDescription }),
       tags: j.jobIndustry ? [j.jobIndustry] : extractTags(`${j.jobTitle} ${j.jobDescription || ''}`),
       apply_url: j.url,
       category: j.jobIndustry?.[0] || null,
@@ -1454,7 +1448,7 @@ async function fetchGreenhouse() {
           location: j.location?.name || 'Remote',
           job_type: null,
           salary: null,
-          description: (j.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().substring(0, 5000) || null,
+          description: ingestSourceDescription({ html: j.content }) || null,
           tags: extractTags(`${j.title} ${(j.content || '').replace(/<[^>]*>/g, '')}`),
           apply_url: j.absolute_url,
           category: j.departments?.map(d => d.name).filter(Boolean).join(', ') || null,
@@ -1617,7 +1611,7 @@ async function fetchLever() {
           location: j.categories?.location || 'Remote',
           job_type: j.categories?.commitment || null,
           salary: null,
-          description: (j.descriptionPlain || '').substring(0, 5000),
+          description: ingestSourceDescription({ html: j.descriptionHtml, plain: j.descriptionPlain }),
           tags: extractTags(`${j.text || ''} ${j.descriptionPlain || ''}`),
           apply_url: j.hostedUrl || j.applyUrl || `https://jobs.lever.co/${slug}/${j.id}`,
           category: j.categories?.department || j.categories?.team || null,
@@ -2018,7 +2012,7 @@ async function fetchJooble() {
         location: j.location || query.location || 'Remote',
         job_type: normalizeJobType(j.type) || null,
         salary: j.salary || null,
-        description: (j.snippet || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+        description: ingestSourceDescription({ html: j.snippet, plain: j.snippet }),
         tags: extractTags(`${j.title || ''} ${(j.snippet || '').replace(/<[^>]*>/g, '')}`),
         apply_url: j.link || '',
         category: null,
@@ -2113,7 +2107,7 @@ async function fetchAdzuna() {
             location: j.location?.display_name || country.toUpperCase(),
             job_type: j.contract_type ? normalizeJobType(j.contract_type) : null,
             salary: salaryStr,
-            description: (j.description || '').substring(0, 5000),
+            description: ingestSourceDescription({ html: j.description, plain: j.description }),
             tags: extractTags(`${j.title || ''} ${j.description || ''}`),
             apply_url: j.redirect_url || '',
             category: j.category?.label || null,
@@ -2217,7 +2211,7 @@ async function fetchCareerjet() {
             location: j.locations || locale.split('_')[1],
             job_type: null,
             salary: j.salary || (j.salary_min && j.salary_max ? `${j.salary_currency_code || '$'}${j.salary_min}-${j.salary_max}` : null),
-            description: (j.description || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+            description: ingestSourceDescription({ html: j.description, plain: j.description }),
             tags: extractTags(`${j.title || ''} ${(j.description || '').replace(/<[^>]*>/g, '')}`),
             apply_url: j.url || '',
             category: null,
@@ -2315,7 +2309,7 @@ async function fetchReed() {
           salary: j.minimumSalary && j.maximumSalary
             ? `£${Math.round(j.minimumSalary).toLocaleString()}-£${Math.round(j.maximumSalary).toLocaleString()}`
             : (j.salaryDescription || null),
-          description: (j.jobDescription || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+          description: ingestSourceDescription({ html: j.jobDescription, plain: j.jobDescription }),
           tags: extractTags(`${j.jobTitle || ''} ${(j.jobDescription || '').replace(/<[^>]*>/g, '')}`),
           apply_url: j.jobUrl || `https://www.reed.co.uk/jobs/${j.jobId}`,
           category: j.category || null,
@@ -2408,7 +2402,7 @@ async function fetchFindwork() {
           salary: j.salary_min && j.salary_max
             ? `$${j.salary_min.toLocaleString()}-$${j.salary_max.toLocaleString()}`
             : null,
-          description: (j.text || j.description || '').replace(/<[^>]*>/g, '').substring(0, 5000),
+          description: ingestSourceDescription({ html: j.text || j.description, plain: j.text || j.description }),
           tags: j.keywords?.length ? j.keywords : extractTags(`${j.role || ''} ${j.text || j.description || ''}`),
           apply_url: j.url || '',
           category: null,
@@ -2525,7 +2519,7 @@ async function fetchJSearch() {
         salary: j.job_min_salary && j.job_max_salary
           ? `$${Math.round(j.job_min_salary).toLocaleString()}-$${Math.round(j.job_max_salary).toLocaleString()}`
           : null,
-        description: (j.job_description || '').substring(0, 5000),
+        description: ingestSourceDescription({ html: j.job_description, plain: j.job_description }),
         tags: j.job_required_skills?.length
           ? j.job_required_skills
           : extractTags(`${j.job_title || ''} ${j.job_description || ''}`),
