@@ -1914,7 +1914,8 @@ async function openrouterCall(key, model, prompt, temperature, maxTokens) {
     temperature,
     max_tokens: maxTokens,
     top_p: 0.9,
-    reasoning: { exclude: true },
+    // Qwen3.7 Flash thinks by default; thinking ate max_tokens and left content empty.
+    reasoning: { enabled: false, effort: 'none' },
   });
   return jfetch(`${OPENROUTER_BASE}/chat/completions`, { method: 'POST', headers, body }, TURBO ? 90000 : 60000);
 }
