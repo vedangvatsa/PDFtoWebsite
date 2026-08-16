@@ -1364,14 +1364,15 @@ function targetRewriteWords(sourceText) {
 function uniquenessLengthRules(target) {
   return `Keep every fact, duty, requirement, benefit, process, and section. Do not summarize. Do not add facts.
 Keep names, numbers, tools, products, and pay exactly.
-Change sentence subjects and word order. No 8-word spans copied from SOURCE.
+Rewrite prose: new sentence subjects (The role / This position / You / Candidates). Do not copy 8 prose words in a row.
+Tool lists, product names, and numbers may stay verbatim.
 Length: at least ${target} words (match the source; do not shrink it).
-No HTML. No em dashes. Output only the rewritten text.`;
+No HTML. No em dashes. Output only the rewritten posting.`;
 }
 
 function buildUniquenessPrompt(job, sourceText) {
   const target = targetRewriteWords(sourceText);
-  return `Your only job: rewrite this official job posting so CVin.Bio does not publish copied ATS wording.
+  return `Rewrite this job posting for CVin.Bio. One page, same coverage, different prose.
 ${uniquenessLengthRules(target)}
 
 Title: ${job.title}
@@ -1379,57 +1380,6 @@ Company: ${job.company}
 
 SOURCE:
 ${String(sourceText || '').slice(0, 24000)}`;
-}
-
-const SENTENCE_BATCH = 5;
-
-function splitSentencesForUniqueness(text) {
-  const units = [];
-  for (const line of String(text || '').split('\n')) {
-    const t = line.trim();
-    if (!t) {
-      units.push({ kind: 'blank', text: '' });
-      continue;
-    }
-    if (descriptionWords(t) < 8) {
-      units.push({ kind: 'keep', text: t });
-      continue;
-    }
-    const parts = t.split(/(?<=[.!?])\s+/).filter(Boolean);
-    for (const p of parts) {
-      units.push(descriptionWords(p) < 8 ? { kind: 'keep', text: p } : { kind: 'rewrite', text: p });
-    }
-  }
-  return units.length ? units : [{ kind: 'rewrite', text: String(text || '').trim() }];
-}
-
-function buildSentenceBatchPrompt(job, sentences) {
-  const lines = sentences.map((s, i) => `${i + 1}. ${s}`).join('\n');
-  return `Rewrite each numbered sentence so CVin.Bio does not publish copied ATS wording.
-Return the SAME number of numbered lines (${sentences.length}).
-Keep names, tools, numbers, and pay spelled exactly.
-Do not copy 8 words in a row from that sentence (names/tools/numbers may stay).
-Start the sentence with a different subject than the input (The role / This position / You / Candidates).
-No HTML. No em dashes. Output only numbered lines.
-
-Role: ${job.title} at ${job.company}
-
-${lines}`;
-}
-
-function parseNumberedLines(raw, n) {
-  const text = stripCodeFence(raw);
-  const numbered = [];
-  const re = /^\s*\d+[.)]\s*(.+)$/gm;
-  let m;
-  while ((m = re.exec(text))) numbered.push(m[1].trim());
-  if (numbered.length === n) return numbered;
-  const plain = text
-    .split('\n')
-    .map((l) => l.replace(/^\s*\d+[.)]\s*/, '').trim())
-    .filter(Boolean);
-  if (plain.length === n) return plain;
-  return null;
 }
 
 function buildUniquenessRepairPrompt(job, draft, failReasons, sourceText = '') {
@@ -2054,26 +2004,8 @@ function looksLikeMechanicalUniqueness(text) {
   return here >= 15 && here / words >= 0.08;
 }
 
-async function rewriteSentenceBatch(job, sentences) {
-  const raw = await completeWithProviders(buildSentenceBatchPrompt(job, sentences), {
-    temperature: 0.55,
-    maxOutputTokens: 1536,
-  });
-  let lines = parseNumberedLines(raw, sentences.length);
-  if (!lines) {
-    const retry = await completeWithProviders(buildSentenceBatchPrompt(job, sentences), {
-      temperature: 0.4,
-      maxOutputTokens: 1536,
-    });
-    lines = parseNumberedLines(retry, sentences.length);
-  }
-  if (!lines) throw new Error('rewrite_structure');
-  return lines;
-}
-
 /**
- * LLM uniqueness-rewrite of the full ATS posting, sentence batches for Ling.
- * Never publish copied source. Short headers / tool lists stay as-is.
+ * One Ling call per job. Sentence batches were too slow for the 25k backlog.
  */
 async function rewriteJobPage(job, sourceText, extras) {
   if (!ALLOW_AI_ENRICH) {
@@ -2086,56 +2018,24 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('source_thin');
   }
 
-  const units = splitSentencesForUniqueness(sourceText);
-  const out = new Array(units.length);
-  let batch = [];
-  let batchIdx = [];
-  const flush = async () => {
-    if (!batch.length) return;
-    const lines = await rewriteSentenceBatch(job, batch);
-    for (let i = 0; i < lines.length; i++) out[batchIdx[i]] = lines[i];
-    batch = [];
-    batchIdx = [];
-  };
-  for (let i = 0; i < units.length; i++) {
-    const u = units[i];
-    if (u.kind !== 'rewrite') {
-      await flush();
-      out[i] = u.text;
-      continue;
-    }
-    batch.push(u.text);
-    batchIdx.push(i);
-    if (batch.length >= SENTENCE_BATCH) await flush();
-  }
-  await flush();
-
-  const draft = out
-    .map((t, i) => (units[i].kind === 'blank' ? '' : t))
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-
+  let draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
+    temperature: 0.5,
+    maxOutputTokens: 8192,
+  });
   const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
-  let lastErr;
-  let text = draft;
-  for (let attempt = 0; attempt <= GATE.maxRepair; attempt++) {
-    try {
-      return finalizeText(text, ctx);
-    } catch (e) {
-      lastErr = e;
-      const reason = String(e.message || e);
-      const repairable = /copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak/.test(
-        reason
-      );
-      if (!repairable || attempt >= GATE.maxRepair) throw e;
-      text = await completeWithProviders(buildUniquenessRepairPrompt(job, text, [reason], sourceText), {
-        temperature: 0.45,
-        maxOutputTokens: 8192,
-      });
+  try {
+    return finalizeText(draft, ctx);
+  } catch (e) {
+    const reason = String(e.message || e);
+    if (!/copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak/.test(reason)) {
+      throw e;
     }
+    draft = await completeWithProviders(buildUniquenessRepairPrompt(job, draft, [reason], sourceText), {
+      temperature: 0.45,
+      maxOutputTokens: 8192,
+    });
+    return finalizeText(draft, ctx);
   }
-  throw lastErr;
 }
 
 /** Write curl/ATS source pack for manual Fact Sheet → rewrite (no API). */
