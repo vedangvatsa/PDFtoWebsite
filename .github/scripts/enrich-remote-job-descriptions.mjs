@@ -1152,7 +1152,7 @@ Rules:
 - Digits/units exact. Preserve must vs nice.
 - Put immutable strings (years like 5+, salary bands, product names) in slots[].value.
 - skills = methods/tools (FRACAS, Go, HubSpot). systems = products (V-BAT, Hivemind).
-- Include EVERY hard requirement and EVERY listed duty theme.
+- Include EVERY hard requirement and EVERY listed duty theme. If the source is long, extract at least 10 duties and 8 must-haves.
 - Unknown meta fields are "" (empty). Never invent a value.
 
 META
@@ -1371,17 +1371,18 @@ function buildWritePrompt(job, sheet) {
 
   return `Write original sentences from the notes. Do not copy a note's word order. Do not add facts.
 
-For every note write 2 sentences: the work, then its stated purpose only if the note already has one.
+The page MUST be at least ${MIN_REWRITE_WORDS} words (target 680-850). Short pages fail.
+For every note write 3 sentences: the work, how it shows up in this role, then any purpose the note already states.
 Start each sentence with a different subject than the note (the object, the tool, the result, or the team).
 Keep names and numbers exactly.
 
 Example:
 Note: "define API contracts with product managers"
 Wrong: "Define API contracts with product managers."
-Right: "Product and engineering settle the API surface together, and the contract grows as features land."
+Right: "Product and engineering settle the API surface together. The contract grows as features land. Reviewers check each change against that surface before it ships."
 
-About the role: 4 sentences that scope the work from the duty notes. No marketing.
-What you'll do / Requirements / Nice to have: one bullet per note, two sentences each.
+About the role: 6 sentences that scope the work from the duty notes. No marketing.
+What you'll do / Requirements / Nice to have: one bullet per note, three sentences each.
 Keep those headings. Do not write Key facts. Do not write Practical notes.
 
 ${notes}
@@ -1399,7 +1400,7 @@ function buildRepairPrompt(job, sheet, draft, failReasons) {
   }
   if (/rewrite_short/.test(reasons)) {
     extra +=
-      ' Too short: give every duty and requirement note 2 sentences from that note. Do not invent perks, culture, or extra duties.';
+      ` Too short: the page must reach ${MIN_REWRITE_WORDS} words. Give every duty and requirement note 3 sentences from that note. Lengthen About the role to 6 sentences. Do not invent perks, culture, or extra duties.`;
   }
   if (/rewrite_long/.test(reasons)) {
     extra += ' Too long: cut repeated sentences. Do not drop a note.';
@@ -1542,6 +1543,7 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null } = {}) 
   }
 
   text = stripLeakedWriterInstructions(text);
+  text = String(text || '').replace(/[—–]/g, ', ');
   if (descriptionHasWriterLeak(text)) throw new Error('rewrite_leak');
 
   const wordCount = text.split(/\s+/).filter(Boolean).length;
@@ -2456,7 +2458,18 @@ async function runOneBatch(batchNum, state, done) {
 
       if (RE_ENRICH) {
         scraped = await fetchSourceText(job);
-        if (!scraped.ok && existingUsable) {
+        const scrapeWords = scraped.ok ? descriptionWords(scraped.text) : 0;
+        const existWords = descriptionWords(existing);
+        if (scraped.ok && scrapeWords >= Math.max(280, existWords)) {
+          /* keep live ATS when it is at least as rich as the stored paraphrase */
+        } else if (existingUsable && existWords > scrapeWords) {
+          scraped = {
+            ok: true,
+            text: existing,
+            extras: scraped.ok ? scraped.extras || {} : {},
+            fromExisting: true,
+          };
+        } else if (!scraped.ok && existingUsable) {
           scraped = { ok: true, text: existing, extras: {}, fromExisting: true };
         }
       } else if (existingUsable && RETRY_ONLY && existing.length >= 500) {
@@ -2532,8 +2545,8 @@ async function runOneBatch(batchNum, state, done) {
         stats.fail++;
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
-        // Quality-gate rejects (rewrite_slop/short/structure/long, invented facts)
-        // can never become an indexable page → delete now.
+        // Quality-gate rejects stay in the queue on RE_ENRICH. Only truly dead
+        // sources (404, expired, thin ATS) are purged.
         if (isPermanentUnenrichableReason(reason)) {
           if (await purgeJobRow(job)) console.log(`[purge] ${reason} ${job.id}`);
         }
@@ -2666,14 +2679,7 @@ async function runOneBatch(batchNum, state, done) {
         const reason = String(e.message || e).slice(0, 80);
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
-        if (RE_ENRICH && !DRY_RUN && isCuratedJd(job.tags)) {
-          const tags = (Array.isArray(job.tags) ? job.tags : []).filter((t) => t !== 'curated-jd');
-          try {
-            await updateJob(job.id, { tags });
-          } catch {
-            /* keep fail visible; do not block batch */
-          }
-        }
+        // Keep curated-jd on rewrite_short/slop — those are model misses, not stubs.
         await withCompanyLock(companySlug, async () => {
           usedByCompany.get(companySlug)?.delete(jobSlug);
         });
