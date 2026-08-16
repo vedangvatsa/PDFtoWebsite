@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx tsx
 /**
  * Find thin curated pages, clear enrich state, optionally strip curated-jd from
  * rows that cannot be re-enriched, and write a priority ID file for RE_ENRICH.
