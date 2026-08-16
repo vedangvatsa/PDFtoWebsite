@@ -39,7 +39,7 @@ describe('formatJobDescription meta facts', () => {
       path.join(root, '.github/scripts/enrich-remote-job-descriptions.mjs'),
       'utf8'
     );
-    assert.match(enrich, /buildUniquenessPrompt/);
+    assert.match(enrich, /qwen\/qwen3\.7-flash/);
     assert.match(enrich, /splitSourceForUniqueness/);
     assert.doesNotMatch(enrich, /uniquenessFromSource/);
     assert.doesNotMatch(enrich, /process\.env\.SKIP_LLM/);

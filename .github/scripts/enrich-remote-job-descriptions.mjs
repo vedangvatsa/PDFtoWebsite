@@ -8,8 +8,8 @@
  *  3. Skip curated-jd DB write — a human/agent applies JD_PARAPHRASE_RULES and publishes
  *
  * AI enrich is opt-in only: ALLOW_AI_ENRICH=1.
- * When enabled, the ONLY LLM path is OpenRouter model inclusionai/ling-2.6-flash.
- * Gemini / OpenAI / NVIDIA / Groq / Cohere / Anthropic are disabled.
+ * When enabled, the LLM path is OpenRouter (default qwen/qwen3.7-flash).
+ * Override with OPENROUTER_MODEL. Gemini / OpenAI / NVIDIA / Groq / Cohere / Anthropic are disabled.
  *
  * Single entry for JD rewrite + unique About-the-company blurbs:
  *   ALLOW_AI_ENRICH=1 node .github/scripts/enrich-remote-job-descriptions.mjs
@@ -120,8 +120,7 @@ const OPENROUTER_KEYS = [
   unquote(process.env.OPENROUTER_API_KEY_3),
 ].filter(Boolean);
 const OPENROUTER_BASE = (process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
-// Locked — do not read OPENROUTER_MODEL; this is the only rewrite model.
-const OPENROUTER_MODEL = 'inclusionai/ling-2.6-flash';
+const OPENROUTER_MODEL = unquote(process.env.OPENROUTER_MODEL) || 'qwen/qwen3.7-flash';
 const ANTHROPIC_KEY = unquote(process.env.ANTHROPIC_API_KEY);
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
@@ -1900,7 +1899,7 @@ async function rewriteWithNvidia(prompt, opts = {}) {
   throw new Error(lastErr || 'nvidia_failed');
 }
 
-/** OpenRouter only — model locked to inclusionai/ling-2.6-flash. */
+/** OpenRouter only. Default qwen/qwen3.7-flash; override OPENROUTER_MODEL. */
 const openrouterKeyCooldown = new Map();
 async function openrouterCall(key, model, prompt, temperature, maxTokens) {
   const headers = {
@@ -1915,6 +1914,7 @@ async function openrouterCall(key, model, prompt, temperature, maxTokens) {
     temperature,
     max_tokens: maxTokens,
     top_p: 0.9,
+    reasoning: { exclude: true },
   });
   return jfetch(`${OPENROUTER_BASE}/chat/completions`, { method: 'POST', headers, body }, TURBO ? 90000 : 60000);
 }
@@ -2012,7 +2012,7 @@ async function rewriteWithAnthropic(prompt, opts = {}) {
   throw new Error(lastErr || 'anthropic_failed');
 }
 
-// AI rewrite is OpenRouter + inclusionai/ling-2.6-flash only. No other providers.
+// AI rewrite is OpenRouter only. Default qwen/qwen3.7-flash.
 function buildProviderList() {
   if (!OPENROUTER_KEYS.length) return [];
   return [['openrouter', rewriteWithOpenRouter]];
