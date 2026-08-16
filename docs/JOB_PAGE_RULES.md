@@ -39,7 +39,7 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
 ## SEO
 
 - Regular Google: index when the body is a trusted curated paraphrase (≥600w, headings, gates). Closed pages stay indexable if they already qualify. Title may say `(closed)`.
-- Google Jobs: emit `JobPosting` for every live, indexable, not-expired public job page. Worldwide `"Remote"` keeps `TELECOMMUTE` — do not drop the posting for lack of a country, and do not invent `USA` / `Worldwide`. `validThrough` follows the newest listing stamp (`jobPostingValidThrough`). Schema `url` is `jobPublicPath`.
+- Google Jobs: emit `JobPosting` for every live, indexable, not-expired public job page. Worldwide `"Remote"` keeps `TELECOMMUTE` plus `applicantLocationRequirements` as `AdministrativeArea` (`Worldwide`) — do not drop the posting for lack of a country, and do not invent `USA` or emit `Worldwide` as a Country. GSC flags TELECOMMUTE without that field as critical. `validThrough` follows the newest listing stamp (`jobPostingValidThrough`). Schema `url` is `jobPublicPath`.
 - Indexing API pings `jobPublicPath` only. Workflows must pass `NEXT_PUBLIC_SUPABASE_URL`. After markup changes, bump `SCHEMA_EPOCH` in `.github/scripts/google-indexing.mjs`.
 - Sitemap job queries use `companyJobsDateOrFilter` (newest of published_at / created_at). Never AND `created_at`.
 - Sitemap and `/jobs` lists: live inventory only.

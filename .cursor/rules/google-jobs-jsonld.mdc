@@ -11,8 +11,9 @@ Do not ship a public job page that is 200 / indexable / not expired without `Job
 ## JobPosting (`buildJobJsonLd`)
 
 - Live + indexable + not expired + ≥80 char real body → emit `JobPosting`. Never return `null` only because location is `"Remote"` with no country.
-- Worldwide remote: `jobLocationType: TELECOMMUTE`. Do **not** invent `USA` or emit `Worldwide` as a Country.
-- `Remote (USA)` / a real country: keep `applicantLocationRequirements`.
+- Every `TELECOMMUTE` JobPosting must include `applicantLocationRequirements`. GSC treats a missing field as a critical Job Postings error (listings become ineligible).
+- Worldwide remote: `jobLocationType: TELECOMMUTE` plus `AdministrativeArea` named `Worldwide`. Do **not** invent `USA` or emit `Worldwide` as a Country.
+- `Remote (USA)` / a real country: `Country` in `applicantLocationRequirements`. Regions (Europe, APAC) use `AdministrativeArea`, not a fake Country.
 - Onsite/hybrid without a parseable Place may omit JobPosting. Remote may not.
 - `validThrough` = `jobPostingValidThrough()` (newest of `published_at` / `created_at` + 30d). Never `published_at + 30d` alone — source posted dates are often weeks older than ingest.
 - `url` must be `siteUrl + jobPublicPath` (`/{company}/{slug}`). Never `/jobs/{uuid}` when the company is routeable.

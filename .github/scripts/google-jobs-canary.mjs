@@ -64,6 +64,9 @@ function assertPosting(path, html) {
   if (!url.endsWith(path) && !url.includes(path)) {
     throw new Error(`${path} JobPosting.url is ${url}`);
   }
+  if (ld.jobLocationType === 'TELECOMMUTE' && !ld.applicantLocationRequirements) {
+    throw new Error(`${path} TELECOMMUTE missing applicantLocationRequirements`);
+  }
   return ld;
 }
 

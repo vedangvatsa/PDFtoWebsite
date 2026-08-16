@@ -31,7 +31,7 @@ export function validateJobPostingJsonLd(jsonLd: Record<string, unknown>): JobPo
     err('location', 'Missing jobLocation and not TELECOMMUTE');
   }
   if (remote && !jsonLd.applicantLocationRequirements) {
-    warn('remote_req', 'TELECOMMUTE without applicantLocationRequirements');
+    err('remote_req', 'TELECOMMUTE without applicantLocationRequirements');
   }
 
   if (jsonLd.baseSalary) {
