@@ -2322,9 +2322,7 @@ async function runOneBatch(batchNum, state, done) {
         return false;
       }
       return RE_ENRICH
-        ? j.apply_url &&
-          descriptionWords(j.description) < MIN_REWRITE_WORDS &&
-          !isPermanentlyFailed(state, j.id)
+        ? j.apply_url && !isFullyEnrichedJob(j) && !isPermanentlyFailed(state, j.id)
         : RETRY_ONLY
           ? j.apply_url &&
             ((j.description || '').length >= 500 ||
