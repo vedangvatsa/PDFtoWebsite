@@ -571,6 +571,37 @@ function countryRequirementName(iso: string): string {
   return GOOGLE_COUNTRY_NAME[iso] || iso;
 }
 
+/** Region labels Google accepts as AdministrativeArea, not Country. */
+function inferRemoteAdministrativeArea(location: string | null | undefined): string | null {
+  const s = String(location || '');
+  if (!s) return null;
+  if (/\b(europe|emea|european union|eu-only|eu only)\b/i.test(s) || /(?:^|[\s,(])EU(?:[\s,)]|$)/i.test(s)) {
+    return 'Europe';
+  }
+  if (/\b(apac|asia-pacific|asia pacific|asia)\b/i.test(s)) return 'Asia';
+  if (/\b(latam|latin america)\b/i.test(s)) return 'Latin America';
+  if (/\bnorth america\b/i.test(s)) return 'North America';
+  return null;
+}
+
+/**
+ * GSC critical: TELECOMMUTE without applicantLocationRequirements.
+ * Real ISO → Country. Region → AdministrativeArea. Unrestricted remote →
+ * AdministrativeArea "Worldwide" — never Country "Worldwide" (Google rejects
+ * that) and never an invented USA.
+ */
+function remoteApplicantRequirements(
+  countryIso: string | null,
+  location: string
+): { '@type': string; name: string } {
+  if (countryIso) {
+    return { '@type': 'Country', name: countryRequirementName(countryIso) };
+  }
+  const area = inferRemoteAdministrativeArea(location);
+  if (area) return { '@type': 'AdministrativeArea', name: area };
+  return { '@type': 'AdministrativeArea', name: 'Worldwide' };
+}
+
 function inferCountryFromLocation(location: string | null | undefined): string | null {
   const s = String(location || '');
   if (!s) return null;
@@ -1037,12 +1068,7 @@ export function buildJobJsonLd(
 
   if (remote) {
     jsonLd.jobLocationType = 'TELECOMMUTE';
-    if (countryIso) {
-      jsonLd.applicantLocationRequirements = {
-        '@type': 'Country',
-        name: countryRequirementName(countryIso),
-      };
-    }
+    jsonLd.applicantLocationRequirements = remoteApplicantRequirements(countryIso, rawLoc);
   }
 
   if (address) {
@@ -1070,9 +1096,8 @@ export function buildJobJsonLd(
   }
 
   // Onsite/hybrid still need a Place. Worldwide remote must keep JobPosting —
-  // dropping markup here zeroed Google Jobs for "Remote" listings. Do not
-  // invent a country (Google rejects "Worldwide"); TELECOMMUTE without a
-  // country is a warning, not a reason to omit the posting.
+  // dropping markup here zeroed Google Jobs for "Remote" listings. TELECOMMUTE
+  // always has applicantLocationRequirements (Country or AdministrativeArea).
   if (!jsonLd.jobLocation && jsonLd.jobLocationType !== 'TELECOMMUTE') {
     return null;
   }

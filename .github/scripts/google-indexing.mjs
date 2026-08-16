@@ -17,7 +17,7 @@
  *   - Publishes jobPublicPath URLs (/{company}/{slug}), never the first 8
  *     chars of external_id (those 404/301 and Google Jobs drops them).
  *   - Re-notifies URLs last pinged before SCHEMA_EPOCH so Google recrawls
- *     after JobPosting schema fixes (validThrough, worldwide remote).
+ *     after JobPosting schema fixes (validThrough, applicantLocationRequirements).
  *   - Also sends remove notifications for URLs whose jobs went expired.
  *
  * Usage: node .github/scripts/google-indexing.mjs
@@ -42,7 +42,7 @@ const STATE_FILE = path.join(__dirname, 'google-indexing-state.json');
 const SITE_URL = (process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio').replace(/\/$/, '');
 const DAILY_QUOTA = 200; // Indexing API free-tier limit (URLs per day)
 // Bump this when JobPosting markup changes so live URLs get URL_UPDATED again.
-const SCHEMA_EPOCH = '2026-08-15T00:00:00.000Z';
+const SCHEMA_EPOCH = '2026-08-16T00:00:00.000Z';
 // 1000-row pages that include `description` + an OR date filter hit
 // PostgREST statement timeout (~2.5m). Slim columns, small pages, cap the scan.
 const PAGE_SIZE = 100;

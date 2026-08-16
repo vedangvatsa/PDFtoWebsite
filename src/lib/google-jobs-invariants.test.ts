@@ -77,7 +77,9 @@ describe('JobPosting JSON-LD', () => {
     assert.ok(ld, 'worldwide remote must keep JobPosting');
     assert.equal(ld['@type'], 'JobPosting');
     assert.equal(ld.jobLocationType, 'TELECOMMUTE');
-    assert.equal(ld.applicantLocationRequirements, undefined);
+    const req = ld.applicantLocationRequirements as { '@type'?: string; name?: string };
+    assert.equal(req?.['@type'], 'AdministrativeArea');
+    assert.equal(req?.name, 'Worldwide');
     assert.equal(ld.employmentType, 'FULL_TIME');
     assert.equal(ld.url, 'https://cvin.bio/drata/enterp-31');
   });
@@ -90,8 +92,22 @@ describe('JobPosting JSON-LD', () => {
     );
     assert.ok(ld);
     assert.equal(ld.jobLocationType, 'TELECOMMUTE');
-    const req = ld.applicantLocationRequirements as { name?: string };
+    const req = ld.applicantLocationRequirements as { '@type'?: string; name?: string };
+    assert.equal(req?.['@type'], 'Country');
     assert.equal(req?.name, 'USA');
+  });
+
+  it('uses AdministrativeArea for Remote (Europe), not a fake Country', () => {
+    const ld = buildJobJsonLd(
+      row({ location: 'Remote (Europe)' }),
+      detail({ location: 'Remote (Europe)' }),
+      site
+    );
+    assert.ok(ld);
+    assert.equal(ld.jobLocationType, 'TELECOMMUTE');
+    const req = ld.applicantLocationRequirements as { '@type'?: string; name?: string };
+    assert.equal(req?.['@type'], 'AdministrativeArea');
+    assert.equal(req?.name, 'Europe');
   });
 
   it('validThrough follows ingest created_at when source published_at is older', () => {
@@ -188,6 +204,7 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
       'utf8'
     );
     assert.match(file, /sitemap-jobs\/0/);
+    assert.match(file, /applicantLocationRequirements/);
     assert.doesNotMatch(file, /\$\{SITE\}\/api\/jobs/);
   });
 
