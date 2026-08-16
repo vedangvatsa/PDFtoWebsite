@@ -39,9 +39,8 @@ describe('formatJobDescription meta facts', () => {
       path.join(root, '.github/scripts/enrich-remote-job-descriptions.mjs'),
       'utf8'
     );
-    assert.match(enrich, /Paraphrase the FULL posting/);
-    assert.match(enrich, /MAX_REWRITE_WORDS = 1400/);
-    assert.match(enrich, /source_html/);
+    assert.match(enrich, /buildUniquenessPrompt/);
+    assert.match(enrich, /MAX_REWRITE_WORDS = 4000/);
     assert.match(enrich, /rewriteMeetsPublishFloor/);
     assert.match(enrich, /rewrite_formats_short/);
     assert.doesNotMatch(enrich, /filter\(\(t\) => t !== 'curated-jd'\)/);
