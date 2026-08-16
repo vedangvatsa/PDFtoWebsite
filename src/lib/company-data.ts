@@ -1053,6 +1053,40 @@ const COMPANIES: Record<string, CompanyMeta> = {
       linkedin: 'https://linkedin.com/company/torc-robotics',
     },
   },
+  vanta: {
+    slug: 'vanta',
+    name: 'Vanta',
+    website: 'https://www.vanta.com',
+    founded: 2018,
+    hq: 'San Francisco, CA (remote-first)',
+    size: '1,000+',
+    stage: 'Late Stage',
+    funding: '$504M',
+    industry: 'Trust & Compliance',
+    description:
+      'Vanta automates security and compliance work so companies can prove they meet standards such as SOC 2, ISO 27001, HIPAA, and GDPR. Christina Cacioppo and Erik Goldman founded the company in 2018 after working at Dropbox, and it came through Y Combinator the same year. The product started with SOC 2 monitoring and now covers broader GRC tasks including risk, access reviews, vendor reviews, and security questionnaires. Vanta is based in San Francisco, runs remote-first with offices in the US, UK, Ireland, and Australia, and was valued at $4.15 billion after a Series D in 2025.',
+    socials: {
+      linkedin: 'https://linkedin.com/company/vanta',
+    },
+  },
+  databricks: {
+    slug: 'databricks',
+    name: 'Databricks',
+    website: 'https://databricks.com',
+    founded: 2013,
+    hq: 'San Francisco, CA',
+    size: '10,000+',
+    stage: 'Late Stage',
+    funding: 'Series L (2025)',
+    industry: 'Data & AI Platform',
+    description:
+      'Databricks builds a lakehouse platform so companies can store data, run analytics, and train AI models in one system. Ali Ghodsi, Matei Zaharia, and colleagues from the UC Berkeley AMPLab founded the company in 2013 after creating Apache Spark. The product runs on AWS, Azure, and Google Cloud. Databricks is based in San Francisco and remains privately held after later-stage funding rounds.',
+    socials: {
+      x: 'https://x.com/databricks',
+      linkedin: 'https://linkedin.com/company/databricks',
+      github: 'https://github.com/databricks',
+    },
+  },
 };
 
 export function listCompanyMeta(): CompanyMeta[] {

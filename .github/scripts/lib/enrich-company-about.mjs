@@ -18,17 +18,22 @@ const ENCYCLOPEDIA_DUMP_RE =
 
 function looksLikeEncyclopediaDump(text) {
   const t = String(text || '').trim();
-  if (t.length < 40) return true;
+  if (t.length < 120) return true;
   if (t.length > 1200) return true;
   if (ENCYCLOPEDIA_DUMP_RE.test(t)) return true;
   if (/\n\s*History\s*\n/i.test(t)) return true;
-  if (/\b(about the role|compensation and benefits|what you.?ll do|requirements:)\b/i.test(t)) return true;
+  if (/\b(about the role|compensation and benefits|what you.?ll do|requirements:|preferred qualifications|job openings at|how we work|ramp quota|is seeking|are seeking|we are looking for|we.?re looking for|study overview)\b/i.test(t)) return true;
+  if (/<[^>]+>|\[&hellip;\]|&hellip;/i.test(t)) return true;
+  if (/https?:\/\//i.test(t)) return true;
+  if (/^(?:we|we[’']re|we[’']ve)\b/i.test(t)) return true;
   return false;
 }
 
 function looksBadCached(text) {
   const t = String(text || '').trim();
-  if (t.length < 80) return true;
+  if (t.length < 120) return true;
+  if (!/[.!?]$/.test(t.replace(/["')\]]+$/g, ''))) return true;
+  if (/^[a-z•*]/.test(t)) return true;
   return looksLikeEncyclopediaDump(t);
 }
 

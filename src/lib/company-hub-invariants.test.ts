@@ -208,12 +208,46 @@ describe('company about never publishes aggregator/wiki dumps', () => {
     assert.equal(await publishableCompanyAbout('__missing_wwr_slug__'), null);
   });
 
-  it('keeps Databricks as a known hub even when the cache lede is wiki', async () => {
+  it('rejects truncated mid-word cache blurbs and JD fragments', () => {
+    assert.equal(
+      isUnpublishableCompanyBlurb('We started in 2018, in the wake of several high-pro'),
+      true
+    );
+    assert.equal(isUnpublishableCompanyBlurb('Job openings at Prosper'), true);
+    assert.equal(
+      isUnpublishableCompanyBlurb(
+        '• Have worked with our Account Executive team on your first opportunity • Have shadowed a ton of calls and practiced several role plays • Started delivering your ramp quota By the end of month 3, you'
+      ),
+      true
+    );
+    assert.equal(
+      isUnpublishableCompanyBlurb(
+        'We help visionary entrepreneurs secure extraordinary domain names to power their brands to success.'
+      ),
+      true
+    );
+    assert.equal(
+      isUnpublishableCompanyBlurb(
+        'Articulate is seeking a results-oriented SMB Account Executive to join our high-performing sales team. In this role, you will focus on growing revenue with small to medium-sized businesses across North America and Europe.'
+      ),
+      true
+    );
+  });
+
+  it('keeps Databricks as a known hub with original copy', async () => {
     assert.equal(await companyHasCachedProfile('databricks'), true);
     const about = await publishableCompanyAbout('databricks');
-    if (about) {
-      assert.equal(isUnpublishableCompanyBlurb(about), false);
-    }
+    assert.ok(about && about.length > 120);
+    assert.equal(isUnpublishableCompanyBlurb(about), false);
+    assert.doesNotMatch(about, /\bis an American\b/i);
+  });
+
+  it('Vanta hub about is a complete original blurb', async () => {
+    const about = await publishableCompanyAbout('vanta');
+    assert.ok(about && about.length > 80);
+    assert.match(about, /SOC 2/);
+    assert.doesNotMatch(about, /high-pro/);
+    assert.match(about, /[.!?]$/);
   });
 });
 
@@ -291,6 +325,15 @@ describe('source locks — do not reintroduce empty hubs', () => {
     const page = readRel('src/app/[slug]/page.tsx');
     assert.match(page, /getCompanyLinks/);
     assert.match(page, /companyHubJobLink/);
+  });
+
+  it('company hub about does not mash a truncated cache slice with the job count', () => {
+    const page = readRel('src/app/[slug]/page.tsx');
+    assert.match(page, /companyHubAbout/);
+    assert.doesNotMatch(page, /cachedDesc \? `\$\{cachedDesc\}/);
+    const loader = readRel('src/lib/company-page.ts');
+    assert.match(loader, /companyHubMetaDescription/);
+    assert.doesNotMatch(loader, /description\.slice\(0, 100\)/);
   });
 
   it('hub lists every live job, not a 50-row sample with a fake total', () => {

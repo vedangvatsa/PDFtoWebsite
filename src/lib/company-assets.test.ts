@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isUnpublishableCompanyBlurb } from './company-about';
+import { isUnpublishableCompanyBlurb, clipMetaDescription, companyHubMetaDescription } from './company-about';
 import { listCompanyMeta } from './company-data';
 import { getCompanyLinks } from './company-links';
 
@@ -74,7 +74,7 @@ describe('company socials and overlay', () => {
   });
 
   it('keeps high-profile overlay websites', () => {
-    for (const slug of ['openai', 'databricks', 'anduril', 'spacex', 'teleskope', 'era', 'nasa', 'iisc']) {
+    for (const slug of ['openai', 'databricks', 'anduril', 'spacex', 'teleskope', 'era', 'nasa', 'iisc', 'vanta']) {
       const links = getCompanyLinks(slug);
       assert.ok(links.website, `${slug} needs a website`);
     }
@@ -89,15 +89,39 @@ describe('company socials and overlay', () => {
 });
 
 describe('company-descriptions.json', () => {
-  it('contains no We Work Remotely aggregator dumps', () => {
+  it('contains only publishable blurbs', () => {
     const desc = JSON.parse(
       fs.readFileSync(path.join(here, 'company-descriptions.json'), 'utf8')
     ) as Record<string, string>;
-    const bad = Object.entries(desc).filter(([, text]) => isUnpublishableCompanyBlurb(text) && /we work remotely/i.test(text));
+    const bad = Object.entries(desc).filter(([, text]) => isUnpublishableCompanyBlurb(text));
     assert.deepEqual(
-      bad.map(([k]) => k),
+      bad.map(([k]) => k).slice(0, 25),
       [],
-      'WWR dumps must not stay in the cache'
+      'unpublishable cache rows must be dropped, not shown'
     );
+  });
+});
+
+describe('truncated company blurbs stay off the page', () => {
+  it('rejects the Vanta mid-word scrape', () => {
+    assert.equal(
+      isUnpublishableCompanyBlurb('We started in 2018, in the wake of several high-pro'),
+      true
+    );
+  });
+
+  it('clipMetaDescription never cuts a word in half', () => {
+    const clipped = clipMetaDescription(
+      'We started in 2018, in the wake of several high-profile data breaches that changed how companies think about security monitoring for growing internet businesses.'
+    );
+    assert.doesNotMatch(clipped, /high-pro$/);
+    assert.notEqual(clipped.slice(-1), '-');
+    const meta = companyHubMetaDescription({
+      companyDisplay: 'Vanta',
+      jobCount: 85,
+      about: 'We started in 2018, in the wake of several high-pro',
+    });
+    assert.doesNotMatch(meta, /high-pro/);
+    assert.match(meta, /Vanta is hiring/);
   });
 });

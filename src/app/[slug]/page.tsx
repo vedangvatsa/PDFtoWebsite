@@ -32,7 +32,7 @@ import {
   isDisposableProfileSlug,
   goneDisposableProfilePath,
 } from '@/lib/seo-fallbacks';
-import { publishableCompanyAbout } from '@/lib/company-about';
+import { companyHubAbout } from '@/lib/company-about';
 import {
   resolveCompanyPage,
   buildCompanyPageMetadata,
@@ -553,7 +553,19 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       ],
     };
 
-    const cachedDesc = (await publishableCompanyAbout(slug)) || '';
+    const topLocations = [
+      ...new Set(
+        jobs
+          .map((j: any) => normalizeLocation(j.location))
+          .filter((l) => l && l !== 'Remote')
+      ),
+    ].slice(0, 5);
+    const description = await companyHubAbout(slug, companyName, {
+      roleCount: totalJobs,
+      location: topLocations.slice(0, 4).join(', '),
+      remotePercent,
+      skills: topSkills,
+    });
 
     return (
       <div className="min-h-screen bg-zinc-50 flex flex-col overflow-x-hidden">
@@ -605,58 +617,49 @@ export default async function ProfileSlugPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Company About — original copy only (never raw Wikipedia) */}
-          {(() => {
-            const topLocations = [...new Set(jobs.map((j: any) => normalizeLocation(j.location)).filter(l => l && l !== 'Remote'))].slice(0, 5);
-
-            const description = meta?.description
-              || (cachedDesc ? `${cachedDesc} ${companyName} has ${totalJobs} open positions.` : '')
-              || `${companyName} is actively hiring with ${totalJobs} open ${totalJobs === 1 ? 'position' : 'positions'}. ${remotePercent > 0 ? `${remotePercent}% of roles are remote. ` : ''}${topLocations.length > 0 ? `Key hiring locations include ${topLocations.join(', ')}.` : ''} ${topSkills.length > 0 ? `In-demand skills include ${topSkills.slice(0, 5).join(', ')}.` : ''}`;
-            return (
-              <div className="mb-8 p-5 rounded-xl bg-white border border-zinc-200">
-                <p className="text-[14px] leading-relaxed text-zinc-700 mb-5">{description}</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 pt-4 border-t border-zinc-100">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Active Roles</p>
-                    <p className="text-[13px] font-semibold text-zinc-900">{totalJobs}</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Remote</p>
-                    <p className="text-[13px] font-semibold text-zinc-900">{remotePercent}%</p>
-                  </div>
-                  {meta ? (
-                    <>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Size</p>
-                        <p className="text-[13px] font-semibold text-zinc-900">{meta.size}</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">HQ</p>
-                        <p className="text-[13px] font-semibold text-zinc-900 leading-tight break-words">{meta.hq}</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Founded</p>
-                        <p className="text-[13px] font-semibold text-zinc-900">{meta.founded}</p>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Locations</p>
-                        <p className="text-[13px] font-semibold text-zinc-900 leading-tight">{topLocations.slice(0, 2).join(', ') || '—'}</p>
-                      </div>
-                      {topSkills.length > 0 && (
-                        <div className="col-span-2">
-                          <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Top Skills</p>
-                          <p className="text-[13px] font-semibold text-zinc-900 leading-tight">{topSkills.slice(0, 4).join(', ')}</p>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
+          {/* Company About — original copy only (never raw Wikipedia or cut-off scrapes) */}
+          <div className="mb-8 p-5 rounded-xl bg-white border border-zinc-200">
+            <p className="text-[14px] leading-relaxed text-zinc-700 mb-5">{description}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 pt-4 border-t border-zinc-100">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Active Roles</p>
+                <p className="text-[13px] font-semibold text-zinc-900">{totalJobs}</p>
               </div>
-            );
-          })()}
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Remote</p>
+                <p className="text-[13px] font-semibold text-zinc-900">{remotePercent}%</p>
+              </div>
+              {meta ? (
+                <>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Size</p>
+                    <p className="text-[13px] font-semibold text-zinc-900">{meta.size}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">HQ</p>
+                    <p className="text-[13px] font-semibold text-zinc-900 leading-tight break-words">{meta.hq}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Founded</p>
+                    <p className="text-[13px] font-semibold text-zinc-900">{meta.founded}</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Locations</p>
+                    <p className="text-[13px] font-semibold text-zinc-900 leading-tight">{topLocations.slice(0, 4).join(', ') || '—'}</p>
+                  </div>
+                  {topSkills.length > 0 && (
+                    <div className="col-span-2">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Top Skills</p>
+                      <p className="text-[13px] font-semibold text-zinc-900 leading-tight">{topSkills.slice(0, 4).join(', ')}</p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
 
           {/* Open Roles */}
           <div className="mb-6 flex items-center justify-between gap-3 min-w-0">

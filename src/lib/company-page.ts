@@ -6,7 +6,11 @@ import { shouldListJobOnCompanyHub } from '@/lib/job-apply-source';
 import { JOB_MAX_AGE_DAYS } from '@/lib/job-age';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { knownCompanyDescription } from '@/lib/seo-fallbacks';
-import { companyHasCachedProfile } from '@/lib/company-about';
+import {
+  companyHasCachedProfile,
+  companyHubMetaDescription,
+  publishableCompanyAbout,
+} from '@/lib/company-about';
 import {
   companyJobsDateOrFilter,
   companyKeyEqualityValues,
@@ -285,18 +289,17 @@ export async function buildCompanyPageMetadata(
   const ctx = resolved ?? (await resolveCompanyPage(slug));
   if (!ctx) return null;
   const { dir, jobs } = ctx;
-  const { getCompanyMeta } = await import('@/lib/company-data');
-  const meta = getCompanyMeta(slug);
   const companyDisplay = companyDisplayNameFromJob(
     jobs[0],
     dir?.name || slug.replace(/-/g, ' ')
   );
   const jobCount = jobs.length;
   const title = `${companyDisplay} Careers — ${jobCount.toLocaleString()} Open Roles (${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`;
-  const desc = meta
-    ? `${meta.description.slice(0, 100)} ${companyDisplay} has ${jobCount.toLocaleString()} open positions. Browse roles and apply.`
-    : `${companyDisplay} is hiring — ${jobCount.toLocaleString()} open positions. Browse active job openings with live hiring data, remote availability, and technical requirements.`;
-  const description = desc.slice(0, 160);
+  const description = companyHubMetaDescription({
+    companyDisplay,
+    jobCount,
+    about: await publishableCompanyAbout(slug),
+  });
   const indexable = jobCount > 0;
   return {
     title,
