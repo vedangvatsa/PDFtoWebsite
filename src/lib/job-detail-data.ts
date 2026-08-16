@@ -197,9 +197,13 @@ export async function publishSafeDescription(job: JobRow, location: string): Pro
         indexable: isCurated,
       };
     }
-    // Curated rows passed the ingest gate on raw body size; sanitizer trimming
-    // must not downgrade a real paraphrase to the company-about stub.
-    if (isCurated && rawWordCount >= JOB_INDEXABLE_MIN_WORDS && wordCount >= JOB_CURATED_DISPLAY_FLOOR) {
+    // Curated rows with real stored copy must never downgrade to the assemble stub.
+    if (
+      isCurated &&
+      rawWordCount >= 80 &&
+      !/\bcompany apply page\b/i.test(String(raw || '')) &&
+      wordCount >= JOB_CURATED_DISPLAY_FLOOR
+    ) {
       return {
         isCurated,
         kind: 'curated',

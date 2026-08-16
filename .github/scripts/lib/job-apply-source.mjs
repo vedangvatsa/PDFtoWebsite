@@ -4,8 +4,20 @@ import { isLowQualityApplySource } from '../../../src/lib/job-apply-hosts.mjs';
 import { isBannedJobTitle } from '../../../src/lib/banned-jobs.mjs';
 import { fellowshipPublishBlockReason } from '../../../src/lib/fellowship-publish-gate.mjs';
 import { isGenericCompanyLabel } from '../../../src/lib/company-host.mjs';
+import {
+  isFullyEnrichedJob,
+  rewriteMeetsPublishFloor,
+  needsCuratedReenrich,
+  formattedDescriptionWords,
+} from './job-description-gate.mjs';
 
 export { isLowQualityApplySource };
+export {
+  isFullyEnrichedJob,
+  rewriteMeetsPublishFloor,
+  needsCuratedReenrich,
+  formattedDescriptionWords,
+};
 /** Public job URL / board / sitemap floor. */
 export const MIN_WORDS = 600;
 /**
@@ -34,10 +46,6 @@ export function curatedJdMeetsWordFloor(description) {
   return descriptionWords(description) >= MIN_WORDS;
 }
 
-export function isFullyEnrichedJob(job) {
-  return isCuratedJd(job.tags) && descriptionWords(job.description) >= MIN_WORDS;
-}
-
 /** Public URL may render (closed curated OK). Uncurated stubs are not pages. */
 export function isPublicJobPage(job) {
   if (isBannedJobTitle(job?.title)) return false;
@@ -57,7 +65,7 @@ export function isPublicJobPage(job) {
 export function shouldQueueForManualEnrich(job, _opts = {}) {
   if (isFullyEnrichedJob(job)) return false;
   if (isLowQualityApplySource(job.apply_url)) return false;
-  return descriptionWords(job.description) < MIN_WORDS;
+  return descriptionWords(job.description) < ENRICH_MIN_WORDS;
 }
 
 export function shouldListJobOnBoard(job) {

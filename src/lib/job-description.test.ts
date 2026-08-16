@@ -34,6 +34,15 @@ describe('formatJobDescription meta facts', () => {
     assert.match(enrich, /MIN_REWRITE_WORDS = ENRICH_MIN_WORDS/);
   });
 
+  it('enrich validates formatted word floor before curated-jd', () => {
+    const enrich = fs.readFileSync(
+      path.join(root, '.github/scripts/enrich-remote-job-descriptions.mjs'),
+      'utf8'
+    );
+    assert.match(enrich, /rewriteMeetsPublishFloor/);
+    assert.match(enrich, /rewrite_formats_short/);
+  });
+
   it('keeps curated bodies when sanitizer trims slightly below 600 words', async (t) => {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.NEXT_PUBLIC_SUPABASE_URL) {
       t.skip('needs Supabase credentials');

@@ -26,10 +26,14 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
   shouldQueueForManualEnrich,
-  isFullyEnrichedJob,
   descriptionWords,
   ENRICH_MIN_WORDS,
+  isCuratedJd,
 } from './lib/job-apply-source.mjs';
+import {
+  isFullyEnrichedJob,
+  rewriteMeetsPublishFloor,
+} from './lib/job-description-gate.mjs';
 import { isBannedJobTitle } from '../../src/lib/banned-jobs.mjs';
 import { fellowshipPublishBlockReason } from '../../src/lib/fellowship-publish-gate.mjs';
 import { runCompanyAboutPass } from './lib/enrich-company-about.mjs';
@@ -2597,6 +2601,9 @@ async function runOneBatch(batchNum, state, done) {
           if (descriptionWords(storedDescription) < MIN_REWRITE_WORDS) {
             throw new Error('rewrite_short');
           }
+          if (!rewriteMeetsPublishFloor(storedDescription, job)) {
+            throw new Error('rewrite_formats_short');
+          }
           const tags = Array.isArray(job.tags) ? [...job.tags] : [];
           if (!tags.includes('remote')) tags.push('remote');
           if (!tags.includes('curated-jd')) tags.push('curated-jd');
@@ -2660,6 +2667,14 @@ async function runOneBatch(batchNum, state, done) {
         const reason = String(e.message || e).slice(0, 80);
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
+        if (RE_ENRICH && !DRY_RUN && isCuratedJd(job.tags)) {
+          const tags = (Array.isArray(job.tags) ? job.tags : []).filter((t) => t !== 'curated-jd');
+          try {
+            await updateJob(job.id, { tags });
+          } catch {
+            /* keep fail visible; do not block batch */
+          }
+        }
         await withCompanyLock(companySlug, async () => {
           usedByCompany.get(companySlug)?.delete(jobSlug);
         });
