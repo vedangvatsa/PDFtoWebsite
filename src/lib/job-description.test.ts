@@ -41,6 +41,7 @@ describe('formatJobDescription meta facts', () => {
     );
     assert.match(enrich, /Paraphrase the FULL posting/);
     assert.match(enrich, /MAX_REWRITE_WORDS = 1400/);
+    assert.match(enrich, /source_html/);
     assert.match(enrich, /rewriteMeetsPublishFloor/);
     assert.match(enrich, /rewrite_formats_short/);
     assert.doesNotMatch(enrich, /filter\(\(t\) => t !== 'curated-jd'\)/);
