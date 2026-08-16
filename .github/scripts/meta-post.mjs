@@ -219,12 +219,23 @@ async function fetchRecentThreadsTexts() {
   }
 }
 
+/** Append /th so middleware tags utm_source=threads. Skip media paths and links that already end in /th. */
+function withThreadsCta(text) {
+  return text.replace(/(https?:\/\/)?cvin\.bio(\/[^\s]*)?/gi, (full, proto = '', path = '') => {
+    const p = path || '';
+    if (p.startsWith('/images') || /\/th\/?$/i.test(p)) return full;
+    const host = proto ? `${proto}cvin.bio` : 'cvin.bio';
+    const cleaned = p.replace(/\/$/, '');
+    return `${host}${cleaned}/th`;
+  });
+}
+
 // ── Threads Post ──────────────────────────────────────────────────────────
 async function postToThreads(text, mediaUrl, isVideo = false) {
   if (!THREADS_USER_ID || !THREADS_TOKEN) return false;
 
   try {
-    const createParams = new URLSearchParams({ text, access_token: THREADS_TOKEN });
+    const createParams = new URLSearchParams({ text: withThreadsCta(text), access_token: THREADS_TOKEN });
     
     if (mediaUrl) {
       createParams.append('media_type', isVideo ? 'VIDEO' : 'IMAGE');

@@ -39,7 +39,7 @@ Swipe through. Find the ones that are actually yours.
 
 Then put them where a recruiter can see them.
 
-cvin.bio`;
+cvin.bio/th`;
 
 const IG_MAX = 10;
 const THREADS_MAX = 20;
