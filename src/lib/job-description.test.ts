@@ -39,8 +39,9 @@ describe('formatJobDescription meta facts', () => {
       path.join(root, '.github/scripts/enrich-remote-job-descriptions.mjs'),
       'utf8'
     );
-    assert.match(enrich, /qwen\/qwen3\.7-flash/);
-    assert.match(enrich, /splitSourceForUniqueness/);
+    assert.match(enrich, /inclusionai\/ling-2\.6-flash/);
+    assert.match(enrich, /splitSentencesForUniqueness/);
+    assert.match(enrich, /proseTokens/);
     assert.doesNotMatch(enrich, /uniquenessFromSource/);
     assert.doesNotMatch(enrich, /process\.env\.SKIP_LLM/);
     assert.match(enrich, /Priority wave/);
