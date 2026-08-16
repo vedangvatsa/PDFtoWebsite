@@ -143,10 +143,17 @@ describe('public lists constrain curated-jd before limit()', () => {
     const mjs = src('.github/scripts/lib/job-apply-source.mjs');
     assert.doesNotMatch(mjs, /from\s+['"]\.\/job-description-gate\.mjs['"]/);
     assert.doesNotMatch(mjs, /from\s+['"][^'"]*job-description\.ts['"]/);
+  });
+
+  it('jobs-sync / cleanup never Telegram-post on failure', () => {
     const workflows = [
       src('.github/workflows/x-scheduler.yml'),
       src('.github/workflows/cleanup-old-jobs.yml'),
     ].join('\n');
+    assert.doesNotMatch(workflows, /Notify on failure/);
+    assert.doesNotMatch(workflows, /jobs-sync failed/);
+    assert.doesNotMatch(workflows, /cleanup-old-jobs failed/);
+    assert.doesNotMatch(workflows, /if:\s*failure\(\)/);
     assert.doesNotMatch(workflows, /github\.com\/\$\{\{\s*github\.repository/);
     assert.doesNotMatch(workflows, /actions\/runs\/\$\{\{\s*github\.run_id/);
   });
