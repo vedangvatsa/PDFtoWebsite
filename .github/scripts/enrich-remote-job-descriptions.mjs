@@ -2526,31 +2526,37 @@ async function runOneBatch(batchNum, state, done) {
       }
 
       let description;
+      const sourcePublishable = rewriteMeetsPublishFloor(scraped.text, job);
       try {
-        if (!ALLOW_AI_ENRICH) {
+        if (sourcePublishable) {
+          // Full ATS HTML already meets the public floor — do not compress via fact sheet.
+          description = scraped.text;
+          stats.reasons.source_html = (stats.reasons.source_html || 0) + 1;
+        } else if (!ALLOW_AI_ENRICH) {
           enqueueManualPack(job, scraped);
           stats.skip++;
           stats.reasons.manual_queued = (stats.reasons.manual_queued || 0) + 1;
           state.processed[job.id] = { status: 'queued', reason: 'manual_only' };
           if (!RE_ENRICH) done.add(job.id);
           return;
+        } else {
+          description = await rewriteJobPage(job, scraped.text, scraped.extras);
+          consecutiveProviderFails = 0;
+          if (!TURBO) await sleep(80);
         }
-        description = await rewriteJobPage(job, scraped.text, scraped.extras);
-        consecutiveProviderFails = 0;
-        // Normal mode soft-throttles; TURBO relies on API 429 backoff only
-        if (!TURBO) await sleep(80);
       } catch (e) {
         const reason = String(e.message || e).slice(0, 80);
-        if (/manual_only/.test(reason)) {
+        if (rewriteMeetsPublishFloor(scraped.text, job)) {
+          description = scraped.text;
+          stats.reasons.source_html_fallback = (stats.reasons.source_html_fallback || 0) + 1;
+        } else if (/manual_only/.test(reason)) {
           enqueueManualPack(job, scraped);
           stats.skip++;
           stats.reasons.manual_queued = (stats.reasons.manual_queued || 0) + 1;
           state.processed[job.id] = { status: 'queued', reason: 'manual_only' };
           if (!RE_ENRICH) done.add(job.id);
           return;
-        }
-        // Thin / unindexable fact sheets are skips, not provider fails
-        if (/source_thin|fact_sheet_parse/.test(reason)) {
+        } else if (/source_thin|fact_sheet_parse/.test(reason)) {
           stats.skip++;
           stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
           state.processed[job.id] = { status: 'skip', reason };
@@ -2559,20 +2565,18 @@ async function runOneBatch(batchNum, state, done) {
           }
           if (!RE_ENRICH) done.add(job.id);
           return;
+        } else {
+          stats.fail++;
+          stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
+          state.processed[job.id] = { status: 'fail', reason };
+          if (isPermanentUnenrichableReason(reason)) {
+            if (await purgeJobRow(job)) console.log(`[purge] ${reason} ${job.id}`);
+          }
+          if (/429|rate|all_providers_failed/i.test(reason)) consecutiveProviderFails++;
+          else consecutiveProviderFails = 0;
+          if (!RE_ENRICH) done.add(job.id);
+          return;
         }
-        stats.fail++;
-        stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
-        state.processed[job.id] = { status: 'fail', reason };
-        // Quality-gate rejects stay in the queue on RE_ENRICH. Only truly dead
-        // sources (404, expired, thin ATS) are purged.
-        if (isPermanentUnenrichableReason(reason)) {
-          if (await purgeJobRow(job)) console.log(`[purge] ${reason} ${job.id}`);
-        }
-        if (/429|rate|all_providers_failed/i.test(reason)) consecutiveProviderFails++;
-        else consecutiveProviderFails = 0;
-        // Don't permanently burn RE_ENRICH fails — allow retry next batch
-        if (!RE_ENRICH) done.add(job.id);
-        return;
       }
 
       if (stats.ok >= BATCH_SIZE) return;
