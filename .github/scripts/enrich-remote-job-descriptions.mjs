@@ -135,7 +135,8 @@ const RETRY_ONLY = process.env.RETRY_ONLY === '1';
 const LINKEDIN_ONLY = process.env.LINKEDIN_ONLY === '1';
 const RE_ENRICH = process.env.RE_ENRICH === '1';
 const MIN_REWRITE_WORDS = ENRICH_MIN_WORDS;
-const MAX_REWRITE_WORDS = 900;
+/** Long ATS postings must keep coverage; 900 was truncating rich sources. */
+const MAX_REWRITE_WORDS = 1400;
 /** Originality / adequacy knobs (docs/JD_PARAPHRASE_RULES.md). */
 const GATE = {
   maxLcsWords: 10, // fail if shared contiguous words >= 11 (after slot mask)
@@ -1152,14 +1153,14 @@ Rules:
 - Digits/units exact. Preserve must vs nice.
 - Put immutable strings (years like 5+, salary bands, product names) in slots[].value.
 - skills = methods/tools (FRACAS, Go, HubSpot). systems = products (V-BAT, Hivemind).
-- Include EVERY hard requirement and EVERY listed duty theme. If the source is long, extract at least 10 duties and 8 must-haves.
+- Do not summarize. One duties[] / must_have[] / nice_to_have[] item per source bullet or numbered item. If the posting has 20 duty bullets, duties has 20 items. Never collapse a long posting into 6 themes.
 - Unknown meta fields are "" (empty). Never invent a value.
 
 META
 ${buildMetaBits(job, extras)}
 
 SOURCE:
-${String(sourceText || '').slice(0, 14000)}`;
+${String(sourceText || '').slice(0, 24000)}`;
 }
 
 const ENGAGEMENT_LABELS = {
@@ -1237,7 +1238,7 @@ function isPageSectionHeader(line) {
   return PAGE_SECTION_HEADERS.some((h) => h.toLowerCase() === t.toLowerCase());
 }
 
-function noteLines(arr, max = 24) {
+function noteLines(arr, max = 40) {
   const out = [];
   const seen = new Set();
   for (const raw of arr || []) {
@@ -1366,12 +1367,20 @@ ${nice.join('\n')}
   return page.trim();
 }
 
-function buildWritePrompt(job, sheet) {
+function targetRewriteWords(sourceText) {
+  const n = descriptionWords(sourceText);
+  if (n < 80) return MIN_REWRITE_WORDS;
+  return Math.max(MIN_REWRITE_WORDS, Math.min(MAX_REWRITE_WORDS, n));
+}
+
+function buildWritePrompt(job, sheet, sourceText = '') {
   const notes = buildNotesForWriter(job, sheet);
+  const target = targetRewriteWords(sourceText);
 
-  return `Write original sentences from the notes. Do not copy a note's word order. Do not add facts.
+  return `Paraphrase the FULL posting. Notes are a coverage checklist — do not drop a source section because the notes omitted it.
+Do not copy source or note word order. Do not add facts that are not in SOURCE or notes.
 
-The page MUST be at least ${MIN_REWRITE_WORDS} words (target 680-850). Short pages fail.
+The page MUST be at least ${target} words (cap ${MAX_REWRITE_WORDS}). Short pages fail.
 For every note write 3 sentences: the work, how it shows up in this role, then any purpose the note already states.
 Start each sentence with a different subject than the note (the object, the tool, the result, or the team).
 Keep names and numbers exactly.
@@ -1385,22 +1394,27 @@ About the role: 6 sentences that scope the work from the duty notes. No marketin
 What you'll do / Requirements / Nice to have: one bullet per note, three sentences each.
 Keep those headings. Do not write Key facts. Do not write Practical notes.
 
+NOTES:
 ${notes}
 
-Cover every note. No HTML. No em dashes. Output only the page.`;
+SOURCE:
+${String(sourceText || '').slice(0, 12000)}
+
+Cover every note and every SOURCE section. No HTML. No em dashes. Output only the page.`;
 }
 
-function buildRepairPrompt(job, sheet, draft, failReasons) {
+function buildRepairPrompt(job, sheet, draft, failReasons, sourceText = '') {
   const notes = buildNotesForWriter(job, sheet);
   const reasons = failReasons.join(', ');
-  let extra = 'Keep every note. Do not add facts. Do not write Key facts or Practical notes.';
+  const target = targetRewriteWords(sourceText);
+  let extra = 'Keep every note and every SOURCE section. Do not add facts. Do not write Key facts or Practical notes.';
   if (/copy_span|ngram_overlap/.test(reasons)) {
     extra +=
       ' Copied wording: rewrite those bullets with a new grammatical subject. Keep names and numbers.';
   }
   if (/rewrite_short/.test(reasons)) {
     extra +=
-      ` Too short: the page must reach ${MIN_REWRITE_WORDS} words. Give every duty and requirement note 3 sentences from that note. Lengthen About the role to 6 sentences. Do not invent perks, culture, or extra duties.`;
+      ` Too short: the page must reach ${target} words. Cover every SOURCE bullet, not a 600-word digest. Give every duty and requirement note 3 sentences. Do not invent perks, culture, or extra duties.`;
   }
   if (/rewrite_long/.test(reasons)) {
     extra += ' Too long: cut repeated sentences. Do not drop a note.';
@@ -1411,6 +1425,9 @@ ${extra}
 
 NOTES:
 ${notes}
+
+SOURCE:
+${String(sourceText || '').slice(0, 8000)}
 
 DRAFT:
 ${String(draft || '').slice(0, 8000)}
@@ -1546,8 +1563,11 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null } = {}) 
   text = String(text || '').replace(/[—–]/g, ', ');
   if (descriptionHasWriterLeak(text)) throw new Error('rewrite_leak');
 
+  const minWords = sourceText
+    ? Math.max(MIN_REWRITE_WORDS, Math.min(MAX_REWRITE_WORDS, Math.floor(descriptionWords(sourceText) * 0.7)))
+    : MIN_REWRITE_WORDS;
   const wordCount = text.split(/\s+/).filter(Boolean).length;
-  if (wordCount < MIN_REWRITE_WORDS) throw new Error('rewrite_short');
+  if (wordCount < minWords) throw new Error('rewrite_short');
   if (wordCount > MAX_REWRITE_WORDS + 80) throw new Error('rewrite_long');
   // Soft trim only trailing Practical notes fluff if slightly over — else fail for repair
   if (wordCount > MAX_REWRITE_WORDS) throw new Error('rewrite_long');
@@ -1987,14 +2007,14 @@ async function rewriteJobPage(job, sourceText, extras) {
 
   const extractRaw = await completeWithProviders(buildExtractPrompt(job, sourceText, extras), {
     temperature: 0.1,
-    maxOutputTokens: 4096,
+    maxOutputTokens: 8192,
   });
   const sheet = parseFactSheet(extractRaw);
   if (!factSheetIsIndexable(sheet)) {
     throw new Error('source_thin');
   }
 
-  let draft = await completeWithProviders(buildWritePrompt(job, sheet), {
+  let draft = await completeWithProviders(buildWritePrompt(job, sheet, sourceText), {
     temperature: TURBO ? 0.2 : 0.25,
     maxOutputTokens: 8192,
   });
@@ -2008,7 +2028,7 @@ async function rewriteJobPage(job, sourceText, extras) {
       reason
     );
     if (!repairable || GATE.maxRepair < 1) throw e;
-    draft = await completeWithProviders(buildRepairPrompt(job, sheet, draft, [reason]), {
+    draft = await completeWithProviders(buildRepairPrompt(job, sheet, draft, [reason], sourceText), {
       temperature: 0.2,
       maxOutputTokens: 8192,
     });
