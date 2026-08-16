@@ -143,10 +143,9 @@ const MIN_REWRITE_WORDS = ENRICH_MIN_WORDS;
 const MAX_REWRITE_WORDS = 4000;
 /** Originality / adequacy knobs (docs/JD_PARAPHRASE_RULES.md). */
 const GATE = {
-  maxLcsWords: 10, // fail if shared contiguous words >= 11 (after slot mask)
+  maxLcsWords: 7, // fail if shared contiguous words >= 8 (no plagiarism)
   max5gramJaccard: 0.12,
   maxRepair: 2,
-  // Never publish a page that still matches the ATS after repair.
   originalitySoft: false,
 };
 const OPENAI_FAST_MODEL = process.env.OPENAI_FAST_MODEL || 'gpt-4o-mini';
@@ -1383,6 +1382,83 @@ SOURCE:
 ${String(sourceText || '').slice(0, 24000)}`;
 }
 
+const UNIQUENESS_CHUNK_WORDS = 450;
+
+function splitSourceForUniqueness(sourceText) {
+  const text = String(sourceText || '').trim();
+  if (!text) return [];
+  let blocks = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
+  if (blocks.length <= 1) {
+    blocks = text.split(/\n/).map((p) => p.trim()).filter(Boolean);
+  }
+  if (blocks.length <= 1) {
+    const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean);
+    if (sentences.length > 1) blocks = sentences;
+  }
+  const chunks = [];
+  let buf = [];
+  let words = 0;
+  const flush = () => {
+    if (!buf.length) return;
+    chunks.push(buf.join('\n\n'));
+    buf = [];
+    words = 0;
+  };
+  for (const block of blocks) {
+    const w = descriptionWords(block);
+    if (w >= UNIQUENESS_CHUNK_WORDS * 1.4) {
+      flush();
+      const toks = block.split(/\s+/).filter(Boolean);
+      for (let i = 0; i < toks.length; i += UNIQUENESS_CHUNK_WORDS) {
+        chunks.push(toks.slice(i, i + UNIQUENESS_CHUNK_WORDS).join(' '));
+      }
+      continue;
+    }
+    if (words && words + w > UNIQUENESS_CHUNK_WORDS) flush();
+    buf.push(block);
+    words += w;
+  }
+  flush();
+  return chunks.length ? chunks : [text];
+}
+
+function buildUniquenessChunkPrompt(job, chunk, index, total) {
+  const target = Math.max(40, descriptionWords(chunk));
+  return `Your only job: rewrite section ${index + 1} of ${total} of this official job posting so CVin.Bio does not publish copied ATS wording.
+${uniquenessLengthRules(target)}
+Title: ${job.title}
+Company: ${job.company}
+
+SOURCE SECTION:
+${String(chunk || '').slice(0, 8000)}`;
+}
+
+function buildUniquenessRepairPrompt(job, draft, failReasons, sourceText = '') {
+  const reasons = failReasons.join(', ');
+  const target = targetRewriteWords(sourceText);
+  let extra = 'Keep every SOURCE fact. Do not add facts. Do not copy 8-word spans.';
+  if (/copy_span|ngram_overlap/.test(reasons)) {
+    extra += ' Copied wording remains: rewrite those sentences with a new grammatical subject. Keep names and numbers.';
+  }
+  if (/rewrite_short/.test(reasons)) {
+    extra += ` Too short: restore every SOURCE section until the page has at least ${target} words.`;
+  }
+  if (/rewrite_long/.test(reasons)) {
+    extra += ' Too long: cut repetition only. Do not drop a SOURCE section.';
+  }
+  return `Fix uniqueness: ${reasons}
+
+${extra}
+
+SOURCE:
+${String(sourceText || '').slice(0, 16000)}
+
+DRAFT:
+${String(draft || '').slice(0, 12000)}
+
+Output only the corrected posting.`;
+}
+
 function stripCodeFence(text) {
   let t = String(text || '').trim();
   if (t.startsWith('```')) {
@@ -1949,30 +2025,36 @@ async function completeWithProviders(prompt, opts = {}) {
   return rewriteWithOpenRouter(prompt, opts);
 }
 
-/** Break 11-word copied runs so a full ATS body can publish when the LLM shrinks it. */
-function uniquenessFromSource(sourceText) {
-  const pivot = 'here';
-  const parts = String(sourceText || '')
-    .replace(/[—–]/g, ', ')
-    .split(/([^a-zA-Z0-9+]+)/);
-  let seen = 0;
-  const out = [];
-  for (const part of parts) {
-    if (!part) continue;
-    if (!/[a-zA-Z0-9+]/.test(part)) {
-      out.push(part);
-      continue;
-    }
-    out.push(part);
-    seen += 1;
-    if (seen % 8 === 0) out.push(' ', pivot);
+/** True when a prior SKIP_LLM run inserted "here" every 8 tokens. Those pages are still copied ATS. */
+function looksLikeMechanicalUniqueness(text) {
+  const words = descriptionWords(text);
+  if (words < 200) return false;
+  const here = (String(text || '').match(/\bhere\b/gi) || []).length;
+  return here >= 15 && here / words >= 0.08;
+}
+
+async function rewriteUniquenessChunk(job, chunk, index, total) {
+  const target = Math.max(40, descriptionWords(chunk));
+  const minKeep = Math.max(30, Math.floor(target * 0.8));
+  let text = stripCodeFence(
+    await completeWithProviders(buildUniquenessChunkPrompt(job, chunk, index, total), {
+      temperature: TURBO ? 0.25 : 0.3,
+      maxOutputTokens: 4096,
+    })
+  );
+  if (descriptionWords(text) < minKeep) {
+    text = stripCodeFence(
+      await completeWithProviders(buildUniquenessRepairPrompt(job, text, ['rewrite_short'], chunk), {
+        temperature: 0.25,
+        maxOutputTokens: 4096,
+      })
+    );
   }
-  return out.join('');
+  return text;
 }
 
 /**
- * AI uniqueness-rewrites the full ATS posting. If that shrinks or copies,
- * publish the full source with copied spans broken. No fact-sheet digest.
+ * LLM uniqueness-rewrite of the full ATS posting. Never publish copied source.
  */
 async function rewriteJobPage(job, sourceText, extras) {
   if (!ALLOW_AI_ENRICH) {
@@ -1985,20 +2067,40 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('source_thin');
   }
 
-  const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
-  if (process.env.SKIP_LLM === '1') {
-    return finalizeText(uniquenessFromSource(sourceText), ctx);
-  }
-  try {
-    const draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
+  const chunks = splitSourceForUniqueness(sourceText);
+  let draft;
+  if (chunks.length <= 1) {
+    draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
       temperature: TURBO ? 0.25 : 0.3,
       maxOutputTokens: 8192,
     });
-    return finalizeText(draft, ctx);
-  } catch {
-    // LLM shrunk or copied the ATS. Publish the full source with copied spans broken.
-    return finalizeText(uniquenessFromSource(sourceText), ctx);
+  } else {
+    const parts = [];
+    for (let i = 0; i < chunks.length; i++) {
+      parts.push(await rewriteUniquenessChunk(job, chunks[i], i, chunks.length));
+    }
+    draft = parts.join('\n\n');
   }
+
+  const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
+  let lastErr;
+  for (let attempt = 0; attempt <= GATE.maxRepair; attempt++) {
+    try {
+      return finalizeText(draft, ctx);
+    } catch (e) {
+      lastErr = e;
+      const reason = String(e.message || e);
+      const repairable = /copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak/.test(
+        reason
+      );
+      if (!repairable || attempt >= GATE.maxRepair) throw e;
+      draft = await completeWithProviders(buildUniquenessRepairPrompt(job, draft, [reason], sourceText), {
+        temperature: 0.25,
+        maxOutputTokens: 8192,
+      });
+    }
+  }
+  throw lastErr;
 }
 
 /** Write curl/ATS source pack for manual Fact Sheet → rewrite (no API). */
@@ -2284,10 +2386,10 @@ async function runOneBatch(batchNum, state, done) {
   let all;
   try {
     if (prioritySet && prioritySet.size) {
-      const pending = [...prioritySet].filter((id) => {
-        if (state.processed[id]?.status === 'ok') return false;
-        return !isPermanentlyFailed(state, id);
-      });
+      const ids = [...prioritySet].filter((id) => !isPermanentlyFailed(state, id));
+      const rework = ids.filter((id) => state.processed[id]?.status === 'ok');
+      const rest = ids.filter((id) => state.processed[id]?.status !== 'ok');
+      const pending = [...rework, ...rest];
       const wave = pending.slice(0, Math.max(BATCH_SIZE * 3, CONCURRENCY * 4, 200));
       console.log(`Priority wave: ${wave.length} of ${pending.length} pending (${prioritySet.size} listed)`);
       all = await fetchJobsByIds(wave);
@@ -2306,12 +2408,15 @@ async function runOneBatch(batchNum, state, done) {
       if (prioritySet) return Boolean(j.apply_url);
       if (isBannedJobTitle(j.title)) return false;
       // Never touch fully enriched (≥600 + curated-jd). Only under-600 for queue/rewrite.
-      if (isFullyEnrichedJob(j)) return false;
+      // Mechanical "here"-insertion pages are copied ATS and must be rewritten.
+      if (isFullyEnrichedJob(j) && !looksLikeMechanicalUniqueness(j.description)) return false;
       if (!shouldQueueForManualEnrich(j, { reworkShortCurated: process.env.REWORK_SHORT_CURATED === '1' })) {
         return false;
       }
       return RE_ENRICH
-        ? j.apply_url && !isFullyEnrichedJob(j) && !isPermanentlyFailed(state, j.id)
+        ? j.apply_url &&
+            (!isFullyEnrichedJob(j) || looksLikeMechanicalUniqueness(j.description)) &&
+            !isPermanentlyFailed(state, j.id)
         : RETRY_ONLY
           ? j.apply_url &&
             ((j.description || '').length >= 500 ||
@@ -2323,7 +2428,7 @@ async function runOneBatch(batchNum, state, done) {
     })
     .filter((j) => {
       if (prioritySet) return true;
-      if (isFullyEnrichedJob(j)) return false;
+      if (isFullyEnrichedJob(j) && !looksLikeMechanicalUniqueness(j.description)) return false;
       const kind = classifyApplyUrl(j.apply_url).kind;
       if (kind === 'none') return false;
       if (kind === 'skip' && (j.description || '').length < 500) return false;
@@ -2341,6 +2446,7 @@ async function runOneBatch(batchNum, state, done) {
         const k = classifyApplyUrl(j.apply_url).kind;
         const ats = { ashby: 0, greenhouse: 1, lever: 2, smartrecruiters: 3, html: 4 }[k] ?? 9;
         const words = (j.description || '').split(/\s+/).filter(Boolean).length;
+        if (looksLikeMechanicalUniqueness(j.description)) return -100;
         if (TURBO && RE_ENRICH) {
           // more words → earlier (negated); then ATS rank
           const bodyScore = words >= 40 ? 0 : words >= 15 ? 1 : 2;
@@ -2419,7 +2525,7 @@ async function runOneBatch(batchNum, state, done) {
       }
       attempted++;
 
-      if (isFullyEnrichedJob(job)) {
+      if (isFullyEnrichedJob(job) && !looksLikeMechanicalUniqueness(job.description)) {
         stats.skip++;
         stats.reasons.already_enriched = (stats.reasons.already_enriched || 0) + 1;
         state.processed[job.id] = { status: 'skip', reason: 'already_enriched' };
@@ -2448,7 +2554,9 @@ async function runOneBatch(batchNum, state, done) {
         const existWords = descriptionWords(existing);
         // Never uniqueness-rewrite our own ~600w digest. Only reuse stored text
         // when it is already a long posting (ATS-scale) and richer than the scrape.
-        const storedLooksFull = existWords >= Math.max(900, MIN_REWRITE_WORDS + 250);
+        const storedLooksFull =
+          existWords >= Math.max(900, MIN_REWRITE_WORDS + 250) &&
+          !looksLikeMechanicalUniqueness(existing);
         if (scraped.ok && scrapeWords >= Math.max(280, existWords * 0.9)) {
           /* keep live ATS */
         } else if (storedLooksFull && existWords > scrapeWords) {
