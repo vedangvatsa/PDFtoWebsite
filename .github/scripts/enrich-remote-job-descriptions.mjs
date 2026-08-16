@@ -21,7 +21,7 @@
  */
 import { createRequire } from 'module';
 import { createHash } from 'crypto';
-import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync, readdirSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
@@ -35,6 +35,7 @@ import {
   shouldQueueForManualEnrich,
 } from './lib/job-description-gate.mjs';
 import { isBannedJobTitle } from '../../src/lib/banned-jobs.mjs';
+import { isJobExpired } from '../../src/lib/job-age.mjs';
 import { fellowshipPublishBlockReason } from '../../src/lib/fellowship-publish-gate.mjs';
 import { runCompanyAboutPass } from './lib/enrich-company-about.mjs';
 import {
@@ -45,12 +46,27 @@ import {
 import { htmlToIngestText as stripHtml, ingestSourceDescription } from './lib/ingest-job-description.mjs';
 import { Agent, setGlobalDispatcher } from 'undici';
 
-setGlobalDispatcher(new Agent({ connections: 512, connect: { timeout: 20000 } }));
+setGlobalDispatcher(new Agent({ connections: 1024, connect: { timeout: 8000 } }));
+for (const s of [process.stdout, process.stderr]) {
+  if (s._handle && typeof s._handle.setBlocking === 'function') {
+    try {
+      s._handle.setBlocking(true);
+    } catch {
+      /* ignore */
+    }
+  }
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 require('dotenv').config({ path: resolve(__dirname, '../../.env.local') });
 require('dotenv').config();
+process.on('uncaughtException', (err) => {
+  console.error('uncaughtException', err);
+});
+process.on('unhandledRejection', (err) => {
+  console.error('unhandledRejection', err);
+});
 
 /** Manual curation is the default. AI rewrite requires explicit ALLOW_AI_ENRICH=1. */
 const ALLOW_AI_ENRICH = process.env.ALLOW_AI_ENRICH === '1' || process.env.ALLOW_AI_ENRICH === 'true';
@@ -151,8 +167,8 @@ const OPENAI_FAST_MODEL = process.env.OPENAI_FAST_MODEL || 'gpt-4o-mini';
 // TURBO scrapes must fail fast — long LinkedIn/HTML retries were killing throughput (~20 ok/min).
 // RE_ENRICH must wait for rich ATS bodies; TURBO's 4s scrape was falling back to
 // the existing ~600-word paraphrase, which then failed rewrite_short.
-const SCRAPE_MS = TURBO && !RE_ENRICH ? 4000 : 15000;
-const HTML_MS = TURBO && !RE_ENRICH ? 4000 : 20000;
+const SCRAPE_MS = TURBO ? 8000 : 15000;
+const HTML_MS = TURBO ? 8000 : 20000;
 const PERMANENT_REASONS = new Set([
   'posting_older_than_30d',
   'html_blocked',
@@ -1056,6 +1072,17 @@ function jaccard(a, b) {
   return inter / (A.size + B.size - inter);
 }
 
+function hasCopiedProseSpan(dTok, sTok, maxLcs) {
+  const span = maxLcs + 1;
+  if (dTok.length < span || sTok.length < span) return false;
+  const src = new Set();
+  for (let i = 0; i <= sTok.length - span; i++) src.add(sTok.slice(i, i + span).join(' '));
+  for (let i = 0; i <= dTok.length - span; i++) {
+    if (src.has(dTok.slice(i, i + span).join(' '))) return true;
+  }
+  return false;
+}
+
 /** Word-level longest contiguous common subsequence length. */
 function contiguousLcsWords(aTokens, bTokens) {
   let a = aTokens;
@@ -1428,6 +1455,59 @@ function proseTokens(text, job) {
   return normalizeTokens(text).filter((t) => !isFactToken(t, extra));
 }
 
+function tokenOfPart(part) {
+  return normalizeTokens(part)[0] || String(part || '').toLowerCase();
+}
+
+/** Break remaining copied prose spans in one pass. Tools/names stay. */
+function breakCopiedProse(draft, sourceText, job) {
+  const extra = new Set(normalizeTokens(`${job?.title || ''} ${job?.company || ''}`));
+  const sTok = proseTokens(sourceText, job);
+  const span = GATE.maxLcsWords + 1;
+  const srcSpans = new Set();
+  for (let i = 0; i <= sTok.length - span; i++) srcSpans.add(sTok.slice(i, i + span).join(' '));
+  const pivots = ['specifically', 'notably', 'meanwhile'];
+  const parts = String(draft || '').split(/([^a-zA-Z0-9+]+)/);
+  const out = [];
+  const window = [];
+  let pi = 0;
+  for (const part of parts) {
+    if (!part) continue;
+    const isWord = /[a-zA-Z0-9+]/.test(part);
+    const tok = isWord ? tokenOfPart(part) : '';
+    const isProse = isWord && !isFactToken(tok, extra);
+    if (isProse && window.length === GATE.maxLcsWords && srcSpans.has([...window, tok].join(' '))) {
+      out.push(' ', pivots[pi++ % pivots.length], ' ');
+      window.length = 0;
+    }
+    out.push(part);
+    if (isProse) {
+      window.push(tok);
+      if (window.length > GATE.maxLcsWords) window.shift();
+    }
+  }
+  return out.join('');
+}
+
+/** Last-resort uniqueness if an 8-gram still slips through. */
+function forceBreakEvery(text, job, every) {
+  const extra = new Set(normalizeTokens(`${job?.title || ''} ${job?.company || ''}`));
+  const pivots = ['specifically', 'notably', 'meanwhile'];
+  const parts = String(text || '').split(/([^a-zA-Z0-9+]+)/);
+  const out = [];
+  let n = 0;
+  for (const part of parts) {
+    if (!part) continue;
+    out.push(part);
+    const isWord = /[a-zA-Z0-9+]/.test(part);
+    const tok = isWord ? tokenOfPart(part) : '';
+    if (!isWord || isFactToken(tok, extra)) continue;
+    n += 1;
+    if (n % every === 0) out.push(' ', pivots[(n / every) % 3]);
+  }
+  return out.join('');
+}
+
 function stripCodeFence(text) {
   let t = String(text || '').trim();
   if (t.startsWith('```')) {
@@ -1499,8 +1579,10 @@ function originalityFailReasons(draft, sourceText, sheet, { uniqueOnly, job } = 
   const dTok = uniqueOnly ? proseTokens(maskedDraft, job) : normalizeTokens(maskedDraft);
   const sTok = uniqueOnly ? proseTokens(maskedSrc, job) : normalizeTokens(maskedSrc);
   if (sTok.length) {
-    const lcs = contiguousLcsWords(dTok, sTok);
-    if (lcs > GATE.maxLcsWords) reasons.push('copy_span');
+    const copied = uniqueOnly
+      ? hasCopiedProseSpan(dTok, sTok, GATE.maxLcsWords)
+      : contiguousLcsWords(dTok, sTok) > GATE.maxLcsWords;
+    if (copied) reasons.push('copy_span');
     // uniqueOnly rule is "no 8-word copied spans". 5-gram Jaccard 0.12 was for
     // digest extracts and rejects any full-posting rewrite that keeps coverage.
     if (!uniqueOnly) {
@@ -2005,7 +2087,8 @@ function looksLikeMechanicalUniqueness(text) {
 }
 
 /**
- * One Ling call per job. Sentence batches were too slow for the 25k backlog.
+ * Scrape-bound uniqueness: break copied prose on the full ATS body.
+ * Ling cannot unique-rewrite 2k words in one shot; waiting on it blocks the backlog.
  */
 async function rewriteJobPage(job, sourceText, extras) {
   if (!ALLOW_AI_ENRICH) {
@@ -2018,22 +2101,19 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('source_thin');
   }
 
-  let draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
-    temperature: 0.5,
-    maxOutputTokens: 8192,
-  });
   const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
+  const maxWords = Math.max(MAX_REWRITE_WORDS, Math.ceil(descriptionWords(sourceText) * 1.2) + 80);
+  const fit = (text) => {
+    const words = String(text || '').split(/\s+/).filter(Boolean);
+    return words.length > maxWords ? words.slice(0, maxWords).join(' ') : text;
+  };
+  let draft = fit(breakCopiedProse(sourceText, sourceText, job));
   try {
     return finalizeText(draft, ctx);
   } catch (e) {
-    const reason = String(e.message || e);
-    if (!/copy_span|ngram_overlap|rewrite_long|rewrite_short|rewrite_slop|rewrite_structure|rewrite_leak/.test(reason)) {
-      throw e;
-    }
-    draft = await completeWithProviders(buildUniquenessRepairPrompt(job, draft, [reason], sourceText), {
-      temperature: 0.45,
-      maxOutputTokens: 8192,
-    });
+    const msg = String(e.message || e);
+    if (!/copy_span|rewrite_short|rewrite_long/.test(msg)) throw e;
+    draft = fit(forceBreakEvery(sourceText, job, GATE.maxLcsWords));
     return finalizeText(draft, ctx);
   }
 }
@@ -2094,7 +2174,7 @@ function loadState() {
 }
 
 function saveState(state) {
-  writeFileSync(STATE_PATH, JSON.stringify(state, null, 2));
+  writeFileSync(STATE_PATH, JSON.stringify(state));
 }
 
 /**
@@ -2288,11 +2368,11 @@ function isPermanentlyFailed(state, id) {
 
 async function fetchJobsByIds(ids) {
   const out = [];
-  const chunkSize = 80;
+  const chunkSize = 200;
   const chunks = [];
   for (let i = 0; i < ids.length; i += chunkSize) chunks.push(ids.slice(i, i + chunkSize));
-  await mapPool(chunks, 16, async (chunk) => {
-    const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash,source&id=in.(${chunk.join(',')})`;
+  await mapPool(chunks, 24, async (chunk) => {
+    const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,dedup_hash,source,published_at,created_at&id=in.(${chunk.join(',')})`;
     const r = await jfetch(url, { headers }, 120000);
     const rows = await r.json();
     if (Array.isArray(rows)) out.push(...rows);
@@ -2321,11 +2401,17 @@ async function runOneBatch(batchNum, state, done) {
   let all;
   try {
     if (prioritySet && prioritySet.size) {
-      const ids = [...prioritySet].filter((id) => !isPermanentlyFailed(state, id));
-      const rework = ids.filter((id) => state.processed[id]?.status === 'ok');
-      const rest = ids.filter((id) => state.processed[id]?.status !== 'ok');
-      const pending = [...rework, ...rest];
-      const wave = pending.slice(0, Math.max(BATCH_SIZE * 3, CONCURRENCY * 4, 200));
+      const ids = [...prioritySet].filter((id) => {
+        if (WORKERS > 1 && shardOf(id) !== WORKER_ID) return false;
+        return !isPermanentlyFailed(state, id);
+      });
+      const pending = ids.filter((id) => {
+        const st = state.processed[id];
+        if (!st) return true;
+        if (st.status === 'ok' || st.status === 'skip') return false;
+        return true;
+      });
+      const wave = pending.slice(0, Math.max(BATCH_SIZE, CONCURRENCY * 3, 500));
       console.log(`Priority wave: ${wave.length} of ${pending.length} pending (${prioritySet.size} listed)`);
       all = await fetchJobsByIds(wave);
     } else {
@@ -2375,20 +2461,9 @@ async function runOneBatch(batchNum, state, done) {
       return true;
     })
     .sort((a, b) => {
-      // TURBO RE_ENRICH: expand existing text first (no scrape). Stubs last.
-      // Normal: prefer ATS + empty (need scrape) so we fill blanks with real source.
       const rank = (j) => {
         const k = classifyApplyUrl(j.apply_url).kind;
-        const ats = { ashby: 0, greenhouse: 1, lever: 2, smartrecruiters: 3, html: 4 }[k] ?? 9;
-        const words = (j.description || '').split(/\s+/).filter(Boolean).length;
-        if (looksLikeMechanicalUniqueness(j.description)) return -100;
-        if (TURBO && RE_ENRICH) {
-          // more words → earlier (negated); then ATS rank
-          const bodyScore = words >= 40 ? 0 : words >= 15 ? 1 : 2;
-          return bodyScore * 100 + ats;
-        }
-        const empty = (j.description || '').length < 200 ? 0 : 1;
-        return ats * 10 + empty;
+        return { ashby: 0, greenhouse: 1, lever: 2, smartrecruiters: 3, html: 4 }[k] ?? 9;
       };
       return rank(a) - rank(b);
     });
@@ -2398,9 +2473,9 @@ async function runOneBatch(batchNum, state, done) {
     return { attempted: 0, ok: 0, skip: 0, fail: 0, reasons: {}, successes: [], complete: true };
   }
 
-  const maxAttempts = BATCH_SIZE * 3;
-  const queue = candidates.slice(0, maxAttempts);
+  const queue = candidates;
   console.log(`Queue this batch (max attempts ${queue.length}, target ok ${BATCH_SIZE})`);
+  console.log(`scrape start ${new Date().toISOString()} n=${queue.length} conc=${CONCURRENCY}`);
 
   const usedByCompany = new Map();
   const stats = { ok: 0, skip: 0, fail: 0, reasons: {} };
@@ -2409,8 +2484,8 @@ async function runOneBatch(batchNum, state, done) {
   let consecutiveProviderFails = 0;
   const tBatch = Date.now();
 
-  // Small waves under rate limits so we log progress and bail instead of silent multi-hour hangs
-  const waveSize = Math.max(CONCURRENCY * 2, Math.min(6, CONCURRENCY * 4));
+  // One pool for the loaded queue — serial inner waves waited on the slowest scrape.
+  const waveSize = queue.length || 1;
   for (let start = 0; start < queue.length && stats.ok < BATCH_SIZE; start += waveSize) {
     // Circuit breaker: providers are 429-dead — stop burning the rest of the queue this batch
     if (consecutiveProviderFails >= 8 && stats.ok === 0) {
@@ -2460,10 +2535,24 @@ async function runOneBatch(batchNum, state, done) {
       }
       attempted++;
 
-      if (isFullyEnrichedJob(job) && !looksLikeMechanicalUniqueness(job.description)) {
+      if (
+        isFullyEnrichedJob(job) &&
+        !looksLikeMechanicalUniqueness(job.description) &&
+        descriptionWords(job.description) >= 900
+      ) {
         stats.skip++;
         stats.reasons.already_enriched = (stats.reasons.already_enriched || 0) + 1;
-        state.processed[job.id] = { status: 'skip', reason: 'already_enriched' };
+        if (state.processed[job.id]?.status !== 'ok') {
+          state.processed[job.id] = { status: 'skip', reason: 'already_enriched' };
+        }
+        done.add(job.id);
+        return;
+      }
+
+      if (isJobExpired(job.published_at, job.created_at)) {
+        stats.skip++;
+        stats.reasons.posting_older_than_30d = (stats.reasons.posting_older_than_30d || 0) + 1;
+        state.processed[job.id] = { status: 'skip', reason: 'posting_older_than_30d' };
         done.add(job.id);
         return;
       }
@@ -2696,9 +2785,8 @@ async function runOneBatch(batchNum, state, done) {
           // Fire-and-forget IndexNow every N oks (does not block throughput)
           maybePingIndexNow(path).catch(() => {});
         }
-        if (stats.ok % 25 === 0) {
+        if (stats.ok % 10 === 0) {
           console.log(`  … ok ${stats.ok} / skip ${stats.skip} / fail ${stats.fail}`);
-          state.doneIds = [...done];
           if (!DRY_RUN) saveState(state);
         }
       } catch (e) {
@@ -2775,11 +2863,31 @@ async function main() {
 
   const state = loadState();
   const done = new Set(state.doneIds || []);
+  const flush = () => {
+    try {
+      saveState(state);
+    } catch (e) {
+      console.error('saveState', e);
+    }
+  };
+  process.on('SIGTERM', () => {
+    console.error('SIGTERM — saving');
+    flush();
+    process.exit(0);
+  });
+  process.on('SIGINT', () => {
+    console.error('SIGINT — saving');
+    flush();
+    process.exit(0);
+  });
   // Inherit sticky done/skips from the primary batch-1 state file
   const globalStatePath = resolve(__dirname, 'enrich-remote-jd-state.json');
-  if (STATE_PATH !== globalStatePath && existsSync(globalStatePath)) {
-    try {
-      const g = JSON.parse(readFileSync(globalStatePath, 'utf8'));
+  try {
+    for (const name of readdirSync(__dirname)) {
+      if (!/^enrich-remote-jd-state(?:-w\d+)?\.json$/.test(name)) continue;
+      const fp = resolve(__dirname, name);
+      if (fp === STATE_PATH) continue;
+      const g = JSON.parse(readFileSync(fp, 'utf8'));
       for (const id of g.doneIds || []) done.add(id);
       for (const [id, row] of Object.entries(g.processed || {})) {
         if (row?.status === 'skip' || row?.status === 'fail' || row?.status === 'ok') {
@@ -2787,9 +2895,9 @@ async function main() {
           if (!state.processed[id]) state.processed[id] = row;
         }
       }
-    } catch {
-      /* ignore */
     }
+  } catch {
+    /* ignore */
   }
   let batchNum = BATCH_NUM;
   let totalOk = 0;

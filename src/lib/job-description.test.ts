@@ -41,7 +41,7 @@ describe('formatJobDescription meta facts', () => {
     );
     assert.match(enrich, /inclusionai\/ling-2\.6-flash/);
     assert.match(enrich, /proseTokens/);
-    assert.match(enrich, /One Ling call per job/);
+    assert.match(enrich, /breakCopiedProse/);
     assert.doesNotMatch(enrich, /uniquenessFromSource/);
     assert.doesNotMatch(enrich, /process\.env\.SKIP_LLM/);
     assert.match(enrich, /Priority wave/);
