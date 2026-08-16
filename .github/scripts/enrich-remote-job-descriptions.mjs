@@ -43,6 +43,9 @@ import {
   descriptionHasWriterLeak,
 } from './lib/normalize-job-description.mjs';
 import { htmlToIngestText as stripHtml, ingestSourceDescription } from './lib/ingest-job-description.mjs';
+import { Agent, setGlobalDispatcher } from 'undici';
+
+setGlobalDispatcher(new Agent({ connections: 512, connect: { timeout: 20000 } }));
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -600,21 +603,27 @@ function extractEmbeddedJson(html) {
 const jfetch = (url, opts = {}, ms = SCRAPE_MS) =>
   fetch(url, { ...opts, signal: opts.signal || AbortSignal.timeout(ms) });
 
+const ashbyBoardInflight = new Map();
 async function fetchAshbyBoard(board) {
   if (ashbyBoardCache.has(board)) return ashbyBoardCache.get(board);
-  const r = await jfetch(
-    `https://api.ashbyhq.com/posting-api/job-board/${encodeURIComponent(board)}?includeCompensation=true`,
-    { headers: { 'User-Agent': 'cvin-jd-enrich/1.0' } }
-  );
-  if (!r.ok) {
-    ashbyBoardCache.set(board, null);
-    return null;
-  }
-  const data = await r.json();
-  const map = new Map();
-  for (const j of data.jobs || []) map.set(j.id, j);
-  ashbyBoardCache.set(board, map);
-  return map;
+  if (ashbyBoardInflight.has(board)) return ashbyBoardInflight.get(board);
+  const pending = (async () => {
+    const r = await jfetch(
+      `https://api.ashbyhq.com/posting-api/job-board/${encodeURIComponent(board)}?includeCompensation=true`,
+      { headers: { 'User-Agent': 'cvin-jd-enrich/1.0' } }
+    );
+    if (!r.ok) {
+      ashbyBoardCache.set(board, null);
+      return null;
+    }
+    const data = await r.json();
+    const map = new Map();
+    for (const j of data.jobs || []) map.set(j.id, j);
+    ashbyBoardCache.set(board, map);
+    return map;
+  })().finally(() => ashbyBoardInflight.delete(board));
+  ashbyBoardInflight.set(board, pending);
+  return pending;
 }
 
 async function fetchSourceText(job) {
@@ -1977,6 +1986,9 @@ async function rewriteJobPage(job, sourceText, extras) {
   }
 
   const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
+  if (process.env.SKIP_LLM === '1') {
+    return finalizeText(uniquenessFromSource(sourceText), ctx);
+  }
   try {
     const draft = await completeWithProviders(buildUniquenessPrompt(job, sourceText), {
       temperature: TURBO ? 0.25 : 0.3,
@@ -2242,7 +2254,7 @@ async function fetchJobsByIds(ids) {
   const chunkSize = 80;
   const chunks = [];
   for (let i = 0; i < ids.length; i += chunkSize) chunks.push(ids.slice(i, i + chunkSize));
-  await mapPool(chunks, 8, async (chunk) => {
+  await mapPool(chunks, 16, async (chunk) => {
     const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash,source&id=in.(${chunk.join(',')})`;
     const r = await jfetch(url, { headers }, 120000);
     const rows = await r.json();

@@ -41,6 +41,7 @@ describe('formatJobDescription meta facts', () => {
     );
     assert.match(enrich, /buildUniquenessPrompt/);
     assert.match(enrich, /uniquenessFromSource/);
+    assert.match(enrich, /SKIP_LLM/);
     assert.match(enrich, /Priority wave/);
     assert.match(enrich, /fetchJobsByIds/);
     assert.match(enrich, /MAX_REWRITE_WORDS = 4000/);
