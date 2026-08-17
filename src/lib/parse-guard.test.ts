@@ -94,6 +94,7 @@ describe('repairWorkExperienceRow', () => {
       title: '(8 months)',
       company: 'Pune, Maharashtra, India',
       description: 'Built the payments platform.',
+      location: '',
     });
     assert.equal(row.title, '');
     assert.equal(row.company, '');

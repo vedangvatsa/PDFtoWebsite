@@ -613,7 +613,7 @@ function splitTitleCompanyDash(title: string): { title: string; company: string 
 }
 
 export function repairWorkExperienceRow<
-  T extends { title?: string; company?: string; description?: string; location?: string },
+  T extends { title?: string; company?: string; description?: string; location?: string | null },
 >(w: T): T {
   let title = String(w.title || '').trim();
   let company = cleanCompany(String(w.company || '').trim())
@@ -621,7 +621,7 @@ export function repairWorkExperienceRow<
     .replace(/\s+/g, ' ')
     .trim();
   let description = preserveUploadedCvText(String(w.description || ''));
-  let location = String((w as { location?: string }).location || '').trim();
+  let location = String((w as { location?: string | null }).location || '').trim();
 
   if (DURATION_ONLY_RE.test(title)) title = '';
   if (DURATION_ONLY_RE.test(company)) company = '';
@@ -727,7 +727,7 @@ export function publicWorkExperience<
   },
 >(rows: T[] | null | undefined): T[] {
   const list = (Array.isArray(rows) ? rows : []).map((w) =>
-    repairWorkExperienceRow(w as T & { title?: string; company?: string; description?: string })
+    repairWorkExperienceRow(w as T & { title?: string; company?: string; description?: string; location?: string })
   );
 
   const out: T[] = [];
