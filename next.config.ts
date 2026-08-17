@@ -215,6 +215,12 @@ const nextConfigFn = (phase: string): NextConfig => {
           destination: '/terms#privacy',
           permanent: true,
         },
+        // Company slug redirects
+        {
+          source: '/indian-oil-corporation',
+          destination: '/indian-oil',
+          permanent: true,
+        },
         // AI directory URL aliases & shortcuts
         {
           source: '/full-llms',
