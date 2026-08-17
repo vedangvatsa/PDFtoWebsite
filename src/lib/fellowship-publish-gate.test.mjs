@@ -110,6 +110,22 @@ describe('fellowshipPublishBlockReason', () => {
     );
   });
 
+  it('allows Sequoia Capital OSS fellowship pages', () => {
+    assert.equal(
+      fellowshipPublishBlockReason(
+        {
+          title: 'Sequoia Open Source Fellowship',
+          apply_url: 'https://www.sequoiacap.com/oss/',
+          company: 'Sequoia Capital',
+          company_key: 'sequoia-capital',
+          source: 'fellowship-discover',
+        },
+        now
+      ),
+      null
+    );
+  });
+
   it('allows NASA and IISc institute pages the hub already curates', () => {
     assert.equal(
       fellowshipPublishBlockReason(

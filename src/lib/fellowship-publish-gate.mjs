@@ -7,7 +7,7 @@
  * a real ATS row, or an explicit allowlisted institute page (NASA / IISc / ERA).
  */
 
-const ALLOW_COMPANY_KEYS = new Set(['nasa', 'iisc', 'era', 'erafellowship']);
+const ALLOW_COMPANY_KEYS = new Set(['nasa', 'iisc', 'era', 'erafellowship', 'sequoiacapital']);
 
 const APPLY_HOSTS = new Set([
   'airtable.com',

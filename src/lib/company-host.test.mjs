@@ -48,6 +48,17 @@ describe('companyNameFromApply', () => {
     assert.equal(companyNameFromApply('nasa', 'https://www.nasa.gov/careers'), 'NASA');
   });
 
+  it('maps sequoiacap.com to Sequoia Capital, not the payroll Sequoia hub', () => {
+    assert.equal(
+      companyNameFromApply('Sequoia', 'https://www.sequoiacap.com/oss/'),
+      'Sequoia Capital'
+    );
+    assert.equal(
+      companyNameFromApply('sequoiacap', 'https://sequoiacap.com/oss'),
+      'Sequoia Capital'
+    );
+  });
+
   it('maps erafellowship.org to ERA', () => {
     assert.equal(
       companyNameFromApply('erafellowship', 'https://erafellowship.org/fellowship'),
