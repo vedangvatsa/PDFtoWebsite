@@ -1,0 +1,23 @@
+---
+description: Heal LinkedIn/PDF wrap junk before persist and again on public profile render
+globs: src/lib/parse-guard.ts,src/lib/parse-guard.test.ts,src/lib/supabase-server.ts,src/app/api/parse-resume/route.ts,src/lib/parse-resume-fallback.ts,src/lib/profile-lookup.contract.test.ts
+alwaysApply: false
+---
+
+# PDF / LinkedIn profile healing
+
+Imports wrap metrics cards, hyphenated lines, and the next employer into fake job rows (`19 Years`, `to-Market engine serving…`, `advisor beyond day-to-day…`, `` as a title). That is a parser shape, not a one-off profile bug.
+
+## Persist and render
+
+- **Parse/save:** `repairParsedData` must run `publicWorkExperience` + `publicEducation`. Per-row `repairWorkExperienceRow` is not enough. Every parse path (`parse-resume` route, regex fallback) already calls `repairParsedData` — do not add a third path that skips it.
+- **Public page:** `getProfileBySlug` must keep `publicWorkExperience` / `publicEducation` so already-saved junk still heals. Do not read `experience` onto a public page raw.
+
+## Do not regress
+
+- Drop stats/metric cards; merge bullet and sentence-fragment continuation rows into the previous job.
+- Peel trailing ALL-CAPS / `Pvt. Ltd.` / `Bros.` employer lines onto the next real role.
+- Rejoin `Go-\n` + `to-Market` wraps. Do not split `day-to-day` on hyphens.
+- Merge field-of-study education rows (`Marketing` + MBA) into the following school.
+
+Tests: `src/lib/parse-guard.test.ts` + `src/lib/profile-lookup.contract.test.ts`.

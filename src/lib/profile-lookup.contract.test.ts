@@ -62,4 +62,10 @@ describe('every parse path heals before persist', () => {
     const file = src('src/app/api/parse-resume/route.ts');
     assert.match(file, /repairParsedData\(aiStructuredData/);
   });
+
+  it('repairParsedData runs cross-row public healers before persist', () => {
+    const file = src('src/lib/parse-guard.ts');
+    assert.match(file, /data\.workExperience = publicWorkExperience/);
+    assert.match(file, /data\.education = publicEducation/);
+  });
 });

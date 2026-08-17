@@ -138,6 +138,10 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
     const emailRaw = getLink('email') || '';
     const email = emailRaw ? repairSpacedEmail(emailRaw) || emailRaw : undefined;
 
+    const phoneRaw = getLink('phone');
+    const phoneDigits = String(phoneRaw || '').replace(/\D/g, '');
+    const phone = phoneDigits.length >= 8 ? phoneRaw : undefined;
+
     const rawLoc = getLink('location');
     const location = rawLoc
       ? rawLoc.replace(/^(?:university|college|institute|school|faculty)\s+of\s+[^,]+,\s*/i, '').trim()
@@ -149,7 +153,7 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
             fullName: displayName,
             slug: profile.username || slug,
             email,
-            phone: getLink('phone'),
+            phone,
             location,
             summary,
             themeId: profile.theme_id || 'modern-creative',
@@ -160,13 +164,23 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
             linkedin,
             viewCount: profile.views || 0,
             skills: splitSkills(profile.skills || []),
-            links: (profile.links || []).map((l: any) => {
-              if (!l || typeof l !== 'object') return l;
-              if (l.type === 'linkedin') return { ...l, value: sanitizeSocialHandle(l.value || '', 'linkedin') };
-              if (l.type === 'github') return { ...l, value: sanitizeSocialHandle(l.value || '', 'github') };
-              if (l.type === 'email' && l.value) return { ...l, value: repairSpacedEmail(l.value) || l.value };
-              if (l.type === 'location' && l.value) return { ...l, value: l.value.replace(/^(?:university|college|institute|school|faculty)\s+of\s+[^,]+,\s*/i, '').trim() };
-              return l;
+            links: (profile.links || []).flatMap((l: any) => {
+              if (!l || typeof l !== 'object') return [l];
+              if (l.type === 'linkedin') {
+                const value = sanitizeSocialHandle(l.value || '', 'linkedin');
+                return value ? [{ ...l, value }] : [];
+              }
+              if (l.type === 'github') {
+                const value = sanitizeSocialHandle(l.value || '', 'github');
+                return value ? [{ ...l, value }] : [];
+              }
+              if (l.type === 'email' && l.value) return [{ ...l, value: repairSpacedEmail(l.value) || l.value }];
+              if (l.type === 'location' && l.value) return [{ ...l, value: l.value.replace(/^(?:university|college|institute|school|faculty)\s+of\s+[^,]+,\s*/i, '').trim() }];
+              if (l.type === 'phone') {
+                const digits = String(l.value || '').replace(/\D/g, '');
+                return digits.length >= 8 ? [l] : [];
+              }
+              return [l];
             })
         },
         workExperience: publicWorkExperience(profile.experience || []),
