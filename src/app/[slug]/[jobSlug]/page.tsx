@@ -1,4 +1,4 @@
-import { notFound, permanentRedirect } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import {
   fetchJobByCompanyAndSlug,
@@ -23,7 +23,7 @@ import { toCompanyKey } from '@/lib/company-directory';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { gonePrettyJobPath } from '@/lib/seo-fallbacks';
-import { isPublicJobPage } from '@/lib/job-apply-source';
+import { isPublicJobPage, liveUncuratedApplyUrl } from '@/lib/job-apply-source';
 import JobDetailClient from '@/app/jobs/[id]/job-detail-client';
 
 // Longer ISR: job snapshots revalidate in loaders (900s); page can stay warm longer.
@@ -172,7 +172,9 @@ export default async function CompanyJobPage({ params }: PageProps) {
     }
   }
   if (!job || !isPublicJobPage(job)) {
-    // Expired / deleted / reminted / uncurated: soft-land on company hub (or /jobs).
+    const apply = job ? liveUncuratedApplyUrl(job) : null;
+    if (apply) redirect(apply);
+    // Expired / deleted / reminted: soft-land on company hub (or /jobs).
     permanentRedirect(await gonePrettyJobPath(slug));
   }
 

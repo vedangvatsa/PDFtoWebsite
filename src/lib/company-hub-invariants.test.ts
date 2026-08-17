@@ -8,6 +8,7 @@ import {
   isPublicJobPage,
   shouldListJobOnBoard,
   shouldListJobOnCompanyHub,
+  shouldListLiveJobCard,
 } from './job-apply-source';
 import {
   companyHubJobLink,
@@ -102,8 +103,9 @@ describe('board vs company hub listing', () => {
   };
   const curated = { ...uncurated, tags: ['curated-jd'] };
 
-  it('lists live uncurated jobs on hubs but not the board', () => {
+  it('lists live uncurated jobs on hubs and board cards, not as public pages', () => {
     assert.equal(shouldListJobOnCompanyHub(uncurated), true);
+    assert.equal(shouldListLiveJobCard(uncurated), true);
     assert.equal(shouldListJobOnBoard(uncurated), false);
     assert.equal(isPublicJobPage(uncurated), false);
   });
@@ -322,13 +324,13 @@ describe('source locks — do not reintroduce empty hubs', () => {
   });
 
   it('company hub page uses overlay links and hub card helper', () => {
-    const page = readRel('src/app/[slug]/page.tsx');
+    const page = readRel('src/app/[slug]/(hub)/page.tsx');
     assert.match(page, /getCompanyLinks/);
     assert.match(page, /companyHubJobLink/);
   });
 
   it('company hub about does not mash a truncated cache slice with the job count', () => {
-    const page = readRel('src/app/[slug]/page.tsx');
+    const page = readRel('src/app/[slug]/(hub)/page.tsx');
     assert.match(page, /companyHubAbout/);
     assert.doesNotMatch(page, /cachedDesc \? `\$\{cachedDesc\}/);
     const loader = readRel('src/lib/company-page.ts');
@@ -343,7 +345,7 @@ describe('source locks — do not reintroduce empty hubs', () => {
     assert.match(loader, /\.range\(/);
     assert.doesNotMatch(loader, /\.limit\(50\)/);
     assert.match(loader, /const jobCount = jobs\.length/);
-    const page = readRel('src/app/[slug]/page.tsx');
+    const page = readRel('src/app/[slug]/(hub)/page.tsx');
     assert.match(page, /const totalJobs = jobs\.length/);
     assert.doesNotMatch(page, /dir\?\.role_count/);
     assert.match(page, /resolveCompanyPage/);

@@ -9,7 +9,7 @@ import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
 import CompanyLogo from '@/components/company-logo';
 import CvFileOverlay from '@/components/cv-file-overlay';
-import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2 } from 'lucide-react';
+import { Briefcase, ChevronRight, Search, Target, ChevronDown, Sparkles, UploadCloud, Loader2, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
 import { timeAgo, jobTypeLabel } from '@/lib/job-description';
@@ -35,6 +35,7 @@ interface Job {
   published_at: string | null;
   external_id?: string | null;
   path?: string;
+  external?: boolean;
   matched_skills: string[];
   match_count: number;
   match_score: number;
@@ -259,7 +260,7 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
     }).catch(() => {});
   };
 
-  const handleJobClick = (_e: React.MouseEvent<HTMLAnchorElement>, job: Job) => {
+  const handleJobClick = (job: Job) => {
     trackClick(job.id, job);
   };
 
@@ -446,14 +447,13 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
         {/* Job Cards */}
         {!loading && jobs.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {jobs.map((job) => (
-              <Link
-                key={job.id}
-                href={job.path || `/jobs/${job.id}`}
-                data-job-id={job.id}
-                className="group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all"
-                onClick={(e) => handleJobClick(e, job)}
-              >
+            {jobs.map((job) => {
+              const href = job.path || job.apply_url || `/jobs/${job.id}`;
+              const external = Boolean(job.external);
+              const cardClass =
+                'group flex items-center gap-3 px-4 py-2.5 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 hover:shadow-sm transition-all';
+              const body = (
+                <>
                 <CompanyLogo
                   name={job.company}
                   logo={job.company_logo}
@@ -500,9 +500,40 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
                     )}
                   </div>
                 </div>
-                <ChevronRight className="h-3.5 w-3.5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" />
+                {external ? (
+                  <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 shrink-0 transition-colors" />
+                ) : (
+                  <ChevronRight className="h-3.5 w-3.5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" />
+                )}
+                </>
+              );
+              if (external) {
+                return (
+                  <a
+                    key={job.id}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-job-id={job.id}
+                    className={cardClass}
+                    onClick={() => handleJobClick(job)}
+                  >
+                    {body}
+                  </a>
+                );
+              }
+              return (
+              <Link
+                key={job.id}
+                href={href}
+                data-job-id={job.id}
+                className={cardClass}
+                onClick={() => handleJobClick(job)}
+              >
+                {body}
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
 

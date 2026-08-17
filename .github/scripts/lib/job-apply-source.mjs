@@ -25,6 +25,10 @@ export function isCuratedJd(tags) {
   return Array.isArray(tags) && tags.includes(CURATED_JD_TAG);
 }
 
+export function hasHttpApplyUrl(applyUrl) {
+  return /^https?:\/\//i.test(String(applyUrl || '').trim());
+}
+
 export function descriptionWords(description) {
   const text = String(description || '')
     .replace(/<[^>]+>/g, ' ')
@@ -66,4 +70,17 @@ export function shouldListJobOnCompanyHub(job) {
   if (isBannedJobTitle(job?.title)) return false;
   if (isJobExpired(job?.published_at, job?.created_at)) return false;
   return true;
+}
+
+export function shouldListLiveJobCard(job) {
+  if (!shouldListJobOnCompanyHub(job)) return false;
+  if (isPublicJobPage(job)) return true;
+  return hasHttpApplyUrl(job.apply_url);
+}
+
+export function liveUncuratedApplyUrl(job) {
+  if (isPublicJobPage(job)) return null;
+  if (isJobExpired(job.published_at, job.created_at)) return null;
+  const apply = String(job.apply_url || '').trim();
+  return hasHttpApplyUrl(apply) ? apply : null;
 }

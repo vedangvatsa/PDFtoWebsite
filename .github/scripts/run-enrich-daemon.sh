@@ -2,7 +2,7 @@
 # Fresh-ingest enrichment daemon: continuously sweeps jobs ingested since the
 # last sweep (checkpoint-based, so no gap even after downtime), enriches and
 # publishes them (indexable page or honest stub).
-# AI: OpenRouter inclusionai/ling-2.6-flash ONLY. Other LLM keys are blanked.
+# AI: OpenRouter inclusionai/ling-2.6-flash.
 # launchd runs with a minimal PATH — node/npx must be resolved explicitly.
 export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 command -v npx >/dev/null || export PATH="/Users/vedang/.nvm/versions/node/$(ls /Users/vedang/.nvm/versions/node 2>/dev/null | tail -1)/bin:$PATH"
@@ -27,10 +27,6 @@ while true; do
   for w in 0 1 2 3; do
     nohup env ALLOW_AI_ENRICH=1 RE_ENRICH=1 ENRICH_SINCE_HOURS="$hours" \
       JOB_MAX_AGE_DAYS=9999 TURBO=1 WORKERS=4 WORKER_ID=$w CONCURRENCY=40 BATCH_SIZE=2000 \
-      GEMINI_API_KEY= GEMINI_API_KEY_2= GEMINI_API_KEY_3= GEMINI_API_KEY_4= \
-      OPENAI_API_KEY= OPENAI_API_KEY_2= OPENAI_API_KEY_3= OPENAI_API_KEY_4= \
-      NVIDIA_API_KEY= NVIDIA_API_KEY_2= NVIDIA_API_KEY_3= \
-      GROQ_API_KEY= GROQ_API_KEY_2= ANTHROPIC_API_KEY= \
       npx tsx .github/scripts/enrich-remote-job-descriptions.mjs > /var/folders/9v/95v6_ny50fq2t6wnlhc140dh0000gn/T/opencode/daemon-w$w.log 2>&1 &
     pids+=($!)
   done

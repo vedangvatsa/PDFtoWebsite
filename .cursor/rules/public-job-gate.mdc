@@ -1,38 +1,39 @@
 ---
-description: Company hubs list live jobs; board/job URLs stay curated-jd only
-globs: src/lib/job-apply-source.ts,.github/scripts/lib/job-apply-source.mjs,src/lib/company-page.ts,src/lib/company-hub-query.ts,src/lib/public-job-gate.contract.test.ts,src/lib/company-hub-invariants.test.ts,src/lib/job-apply-source.test.mjs,src/app/[slug]/page.tsx,docs/JOB_PAGE_RULES.md
+description: Hubs and /jobs list live inventory; job URLs/feeds stay curated-jd only
+globs: src/lib/job-apply-source.ts,.github/scripts/lib/job-apply-source.mjs,src/lib/company-page.ts,src/lib/company-hub-query.ts,src/lib/public-job-gate.contract.test.ts,src/lib/company-hub-invariants.test.ts,src/lib/job-apply-source.test.mjs,src/app/[slug]/(hub)/page.tsx,src/app/api/jobs/route.ts,src/components/jobs-client.tsx,.github/scripts/jobs-sync.mjs,docs/JOB_PAGE_RULES.md
 alwaysApply: true
 ---
 
-# Public job gate vs company hubs
+# Public job gate vs listings
 
-`curated-jd` is a **publish flag for job pages / the board / feeds**, not “row exists”.
+`curated-jd` is a **publish flag for on-site job pages / feeds**, not “row exists”.
 
 Wrapping company-hub SQL in `withCuratedJdTag`, or aliasing `shouldListJobOnCompanyHub` to `shouldListJobOnBoard`, emptied OpenAI/Stripe hubs while nested curated job URLs still existed. Do not revive that.
 
-## Job URLs, board, sitemap, feeds
+## Job URLs, sitemap, feeds
 
 Uncurated rows stay in the DB for enrich. They must not be:
 
-- a 200 job URL (`/{company}/{slug}`, `/jobs/{id}`)
-- a `/jobs` board card or related card
-- sitemap, RSS, Indeed/Jooble/Jobtome, Telegram, IndexNow
+- a 200 job URL (`/{company}/{slug}`, `/jobs/{id}`) — live uncurated hits **307** to `apply_url` until enrich publishes the page (do not 308; the URL will become a page)
+- sitemap, RSS, Indeed/Jooble/Jobtome, Telegram, IndexNow, related cards
 
 Required:
 
-- Public **board / feed / sitemap** list queries: `withCuratedJdTag` / `contains('tags', ['curated-jd'])` / `cs.{"curated-jd"}` **before** `limit()`.
-- Job pages / `GET /api/jobs/[id]`: `isPublicJobPage` or 301/404.
+- Public **feed / sitemap** list queries: `withCuratedJdTag` / `contains('tags', ['curated-jd'])` / `cs.{"curated-jd"}` **before** `limit()`.
+- Job pages / `GET /api/jobs/[id]`: `isPublicJobPage` or 307-to-apply / 301-to-hub / 404.
 - Ingest must strip `curated-jd`. Do not revive `jobs_auto_curated_tag` appending that tag.
+- `jobs-sync` must enrich newly inserted ids in the same run (`enrichInsertedJobs`). Fail-open: if enrich exits non-zero, cards stay apply-out.
 
-## Company hubs (`/{slug}`)
+## `/jobs` board + company hubs (`/{slug}`)
 
-Hubs list **live inventory** (not expired, not banned). `curated-jd` is not a hub-card gate. Page the full live set on every `/{slug}` hub and count the cards — never overlay `companies.role_count`.
+Both list **live inventory** (not expired, not banned). `curated-jd` is not a card gate. Use `shouldListLiveJobCard` / `companyHubJobLink`.
 
-- Do **not** wrap hub SQL in `withCuratedJdTag`.
+- Do **not** wrap hub or `/api/jobs` SQL in `withCuratedJdTag`.
 - `shouldListJobOnCompanyHub` must stay independent (banned + expired only). Never `return shouldListJobOnBoard(job)`.
 - Curated cards: `jobPublicPath` (on-site). Uncurated cards: outbound `apply_url` via `companyHubJobLink` so they do not 301-loop to the hub.
 - Date filter: `companyJobsDateOrFilter` (`published_at OR created_at`). Never AND `created_at`.
 - Join: equality on `company_key` / exact `company` names. Never ILIKE.
+- Hub header count is `jobs.length` — never overlay `companies.role_count`.
 
 ```ts
 // BAD — emptied high-profile hubs

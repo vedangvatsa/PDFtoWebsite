@@ -43,6 +43,16 @@ export function toCompanyKey(name: string): string {
   return toCompanySlug(name || '');
 }
 
+/** Public hub segment in `/{slug}` — prefers persisted `company_key` when set. */
+export function routeCompanySlug(input: {
+  company?: string | null;
+  company_key?: string | null;
+}): string {
+  const key = String(input.company_key ?? '').trim().toLowerCase();
+  if (key) return key;
+  return toCompanySlug(String(input.company ?? ''));
+}
+
 /** Known brand casing — only where Title Case of the label is wrong. */
 const BRAND_DISPLAY_NAMES: Record<string, string> = {
   elevenlabs: 'ElevenLabs',
@@ -65,6 +75,7 @@ const BRAND_DISPLAY_NAMES: Record<string, string> = {
   iisc: 'IISc',
   era: 'ERA',
   nasa: 'NASA',
+  dic: 'Digital India Corporation',
 };
 
 /** Common org / place tokens used to split mashed domain labels (apartresearch). */

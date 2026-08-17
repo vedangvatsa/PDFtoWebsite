@@ -4,9 +4,10 @@
  *
  * Policy:
  *  1. Do not ingest curl-empty sources as JD bodies (LinkedIn, etc.)
- *  2. Board, sitemap, feeds, and job URLs are curated-jd only
- *  3. Company hubs list live inventory (not expired, not banned). Uncurated
- *     rows are not pages — hub cards link out to apply_url.
+ *  2. Job URLs, sitemap, feeds, Telegram, IndexNow are curated-jd only
+ *  3. /jobs board + company hubs list live inventory. Curated cards stay
+ *     on-site; uncurated cards (and uncurated URL hits) go to apply_url
+ *     until enrich publishes a page in the same sync run.
  *  4. Never publish raw ATS or process/queue copy
  */
 import { JOB_INDEXABLE_MIN_WORDS, jobDescriptionWordCount, isGarbageJobTitle, formatJobDescription, jobDescriptionPlainText } from '@/lib/job-description';
@@ -71,9 +72,13 @@ export type PublicJobGate = {
   category?: string | null;
 };
 
+export function hasHttpApplyUrl(applyUrl: string | null | undefined): boolean {
+  return /^https?:\/\//i.test(String(applyUrl || '').trim());
+}
+
 /**
  * A public job URL may render. Closed curated pages stay up; uncurated stubs
- * never get a 200 (redirect to the company hub / jobs board).
+ * never get a 200 (temporary redirect to apply_url, else hub /jobs).
  * `curated-jd` without a 600-word body is not a page.
  */
 export function isPublicJobPage(job: PublicJobGate): boolean {
@@ -92,7 +97,7 @@ export function isPublicJobPage(job: PublicJobGate): boolean {
   return true;
 }
 
-/** Board, related cards, sitemap: live curated paraphrases only. */
+/** Sitemap, feeds, related cards, Telegram: live curated paraphrases only. */
 export function shouldListJobOnBoard(job: PublicJobGate): boolean {
   if (!isPublicJobPage(job)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
@@ -100,13 +105,31 @@ export function shouldListJobOnBoard(job: PublicJobGate): boolean {
 }
 
 /**
- * Company hub cards: live, not banned. Curated-jd is a board/sitemap/job-URL
+ * Company hub cards: live, not banned. Curated-jd is a sitemap/job-URL
  * gate. Aliasing this to shouldListJobOnBoard emptied OpenAI/Stripe hubs.
  */
 export function shouldListJobOnCompanyHub(job: PublicJobGate): boolean {
   if (isBannedJobTitle(job.title)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
   return true;
+}
+
+/**
+ * /jobs + hub cards. Live inventory: on-site if the page is public, otherwise
+ * only when there is an http(s) apply URL to send the click to.
+ */
+export function shouldListLiveJobCard(job: PublicJobGate): boolean {
+  if (!shouldListJobOnCompanyHub(job)) return false;
+  if (isPublicJobPage(job)) return true;
+  return hasHttpApplyUrl(job.apply_url);
+}
+
+/** Live uncurated row → employer apply URL. Null once the on-site page is public. */
+export function liveUncuratedApplyUrl(job: PublicJobGate): string | null {
+  if (isPublicJobPage(job)) return null;
+  if (isJobExpired(job.published_at, job.created_at)) return null;
+  const apply = String(job.apply_url || '').trim();
+  return hasHttpApplyUrl(apply) ? apply : null;
 }
 
 /** Manual paraphrase queue: never touch a 600w curated page; short tagged rows can re-enter. */

@@ -11,6 +11,7 @@
 import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { routeCompanySlug } from '@/lib/company-directory';
 import {
   isJobId,
   isShortJobSlug,
@@ -21,7 +22,7 @@ import {
 import type { JobRow } from '@/lib/job-detail-data';
 
 const SELECT_COLS =
-  'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at,slug';
+  'id,title,company,company_key,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at,slug';
 
 // Expired jobs still load. The page shows a closed notice and hides apply.
 // Missing rows (hard-deleted) still 301 to the company hub.
@@ -54,7 +55,12 @@ async function loadJobByExternalIdLive(
   ): JobRow | null => {
     if (!rows || rows.length !== 1) return null;
     const row = rows[0] as JobRow;
-    if (companyToSlug(row.company) !== companySlug.toLowerCase()) return null;
+    const want = companySlug.toLowerCase();
+    const rowHub = routeCompanySlug({
+      company: row.company,
+      company_key: (row as JobRow & { company_key?: string }).company_key,
+    });
+    if (rowHub !== want) return null;
     return row;
   };
 

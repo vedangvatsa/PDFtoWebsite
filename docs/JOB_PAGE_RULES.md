@@ -6,8 +6,8 @@ Canonical for public job URLs. Also: `noslop.md` · `docs/JD_PARAPHRASE_RULES.md
 
 | Age | Ingest | Row | URL | Apply | Google Search | Google Jobs | Board / sitemap |
 |-----|--------|-----|-----|-------|---------------|-------------|-----------------|
-    | Under 30 days | Accept if posting date is fresh | Keep (enrich queue until curated) | 200 only if curated-jd **and ≥600 words**; else 301 to hub/`/jobs` | On | Index only if curated ≥600w + gates | JobPosting only if indexable | Yes if curated + not expired |
-    | 30 days or older | Drop. Do not insert. | Keep. Do not hard-delete. | 200 + closed notice only if curated-jd **and ≥600 words**; else 301 | Off | Same as above. Closed is not a reason to noindex. | No JobPosting | No |
+| Under 30 days | Accept if posting date is fresh | Keep; same-run enrich | 200 only if curated-jd **and ≥600 words**; else **307** to `apply_url` (or 301 hub if none) | On | Index only if curated ≥600w + gates | JobPosting only if indexable | Board: live cards (curated on-site, uncurated apply-out). Sitemap: curated only |
+| 30 days or older | Drop. Do not insert. | Keep. Do not hard-delete. | 200 + closed notice only if curated-jd **and ≥600 words**; else 301 | Off | Same as above. Closed is not a reason to noindex. | No JobPosting | No |
 
 Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not a hard 404.
 
@@ -15,7 +15,7 @@ Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not 
 
 ## Company hubs (`/{slug}`)
 
-- List **live** jobs (not expired, not banned). `curated-jd` is a board / sitemap / job-URL gate, not a hub-card gate.
+- List **live** jobs (not expired, not banned). `curated-jd` is a sitemap / job-URL gate, not a hub or `/jobs` card gate.
 - Every `/{slug}` hub pages the full live set (not a 50-row sample). The header count is `jobs.length` — never overlay `companies.role_count`.
 - Curated cards link to `/{company}/{jobSlug}`. Uncurated cards link to `apply_url` so they do not 301-loop back to the hub.
 - Date filter is `published_at OR created_at` (`companyJobsDateOrFilter`). Never AND `created_at`.
@@ -34,7 +34,7 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
 - Reach 600 words by expanding real ATS claims into full sentences, then owned company / apply notes. Never invent duties, perks, years, or pay.
 - Originality fail-closed: 7-word copy, 5-gram overlap, patchwrite, synonym-spin.
 - noslop. Owned headings. No `[placeholder]`. No raw ATS / EEO paste.
-- Thin or failing drafts: do not save as `curated-jd`. Uncurated rows are an enrich queue only — they must not render as public job pages, list on `/jobs`, or be posted to Telegram. Company hubs may show them as apply-out cards.
+- Thin or failing drafts: do not save as `curated-jd`. Uncurated rows must not render as public job pages or be posted to Telegram / sitemap. `/jobs` and company hubs show them as apply-out cards until same-run enrich publishes a page.
 
 ## SEO
 

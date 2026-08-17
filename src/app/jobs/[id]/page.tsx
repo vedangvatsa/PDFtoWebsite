@@ -1,4 +1,4 @@
-import { notFound, permanentRedirect } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import {
   fetchJobById,
@@ -12,7 +12,7 @@ import {
 } from '@/lib/job-detail-data';
 import { jobPublicPath, isJobId } from '@/lib/job-description';
 import { goneUuidJobPath } from '@/lib/seo-fallbacks';
-import { isPublicJobPage } from '@/lib/job-apply-source';
+import { isPublicJobPage, liveUncuratedApplyUrl } from '@/lib/job-apply-source';
 import JobDetailClient from './job-detail-client';
 
 export const revalidate = 1800;
@@ -38,7 +38,9 @@ export default async function JobDetailPage({ params }: PageProps) {
 
   const job = await fetchJobById(id);
   if (!job || !isPublicJobPage(job)) {
-    // Missing, expired UUID, or enrich-queue stub → jobs board (not a public page).
+    const apply = job ? liveUncuratedApplyUrl(job) : null;
+    if (apply) redirect(apply);
+    // Missing, expired, or enrich-queue without apply → jobs board (not a public page).
     permanentRedirect(goneUuidJobPath());
   }
 

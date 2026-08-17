@@ -52,6 +52,7 @@ export type JobRow = {
   id: string;
   title: string;
   company: string;
+  company_key?: string | null;
   company_logo: string | null;
   location: string | null;
   job_type: string | null;

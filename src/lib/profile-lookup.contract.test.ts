@@ -24,7 +24,7 @@ describe('timeout must never become a public 404', () => {
   });
 
   it('public page throws unavailable instead of notFound() on outage', () => {
-    const page = src('src/app/[slug]/page.tsx');
+    const page = src('src/app/[slug]/(hub)/page.tsx');
     assert.match(page, /lookupPublicProfile/);
     assert.match(page, /ProfileUnavailableError/);
     assert.match(page, /status === 'unavailable'/);

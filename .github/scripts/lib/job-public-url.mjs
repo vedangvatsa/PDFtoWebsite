@@ -28,6 +28,12 @@ export function companyToSlug(company) {
     .replace(/^-|-$/g, '');
 }
 
+function hubSlug(job) {
+  const key = String(job?.company_key || '').trim().toLowerCase();
+  if (key) return key;
+  return companyToSlug(job?.company);
+}
+
 /** Segment-level check used by Next route /[slug]/[jobSlug]. */
 export function isShortJobSlug(s) {
   if (!s || RESERVED_JOB_SEGMENTS.has(String(s).toLowerCase())) return false;
@@ -155,9 +161,9 @@ export function persistedJobSlug(company, title, id, usedByCompany) {
 }
 
 /** The jobSlug segment from a stored slug ({company_slug}_{jobSlug}). */
-export function storedSlugSegment(company, slug) {
+export function storedSlugSegment(company, slug, companyKey) {
   if (!slug) return null;
-  const co = companyToSlug(company);
+  const co = companyKey ? String(companyKey).toLowerCase() : companyToSlug(company);
   if (!co) return null;
   const s = String(slug).toLowerCase();
   const prefix = `${co}_`;
@@ -221,9 +227,9 @@ export function shortJobSlug(company, externalId) {
  * 8 chars of external_id (those URLs 404 or 301 and Google Jobs drops them).
  */
 export function jobPublicPath(job) {
-  const co = companyToSlug(job.company);
+  const co = hubSlug(job);
   if (!co) return job?.id ? `/jobs/${job.id}` : null;
-  const slugSeg = storedSlugSegment(job.company, job.slug);
+  const slugSeg = storedSlugSegment(job.company, job.slug, job.company_key);
   if (slugSeg) return `/${co}/${slugSeg}`;
   if (isRouteableExternalId(job.company, job.external_id)) {
     const rest = String(job.external_id).slice(co.length + 1).toLowerCase();
@@ -239,9 +245,9 @@ export function jobPublicPath(job) {
  * /jobs/{uuid} for TG). UUID fallback only when prettyOnly is false.
  */
 export function jobPublicUrl(job, { prettyOnly = false, base = 'https://cvin.bio' } = {}) {
-  const co = companyToSlug(job.company);
+  const co = hubSlug(job);
   if (co) {
-    const slugSeg = storedSlugSegment(job.company, job.slug);
+    const slugSeg = storedSlugSegment(job.company, job.slug, job.company_key);
     if (slugSeg) return `${base}/${co}/${slugSeg}`;
     if (isRouteableExternalId(job.company, job.external_id)) {
       const rest = String(job.external_id).slice(co.length + 1).toLowerCase();

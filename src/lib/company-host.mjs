@@ -55,6 +55,8 @@ export const HOST_BRANDS = {
   'erafellowship.org': 'ERA',
   'nasa.gov': 'NASA',
   'sequoiacap.com': 'Sequoia Capital',
+  'dic.gov.in': 'Digital India Corporation',
+  'digitalindiacorporation.in': 'Digital India Corporation',
 };
 
 /** Mixed-case / known labels that Title Case / ALL CAPS would get wrong. */
@@ -64,6 +66,8 @@ export const SHORT_BRANDS = {
   nasa: 'NASA',
   sequoiacap: 'Sequoia Capital',
   sequoiacapital: 'Sequoia Capital',
+  dic: 'Digital India Corporation',
+  digitalindiacorporation: 'Digital India Corporation',
 };
 
 export function hostnameOf(url) {

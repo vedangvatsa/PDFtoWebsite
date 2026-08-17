@@ -77,7 +77,7 @@ Apply on the portal.`;
 
 describe('formatJobDescription numbered requirements', () => {
   it('bumps format version for cache invalidation', () => {
-    assert.equal(JOB_DESCRIPTION_FORMAT_VERSION, 30);
+    assert.equal(JOB_DESCRIPTION_FORMAT_VERSION, 32);
   });
 
   it('renders Aspen STEM criteria as a single ordered list without h3/h4 headings', () => {
@@ -115,6 +115,38 @@ describe('formatJobDescription numbered requirements', () => {
 
     assert.match(html, /<h4>5\. SOC Platform/);
     assert.doesNotMatch(html, /<ol>/);
+  });
+});
+
+describe('formatJobDescription mechanical pivot slop', () => {
+  it('repairs broken tags and strips copy-gate pivot words from dense bodies', () => {
+    const pivot = ' specifically notably meanwhile';
+    const body =
+      '< specifically p>Anthropic mission is to create reliable AI.' +
+      pivot.repeat(40) +
+      '</ specifically p>' +
+      '< notably li>4 months of full-time research' +
+      pivot.repeat(40) +
+      '</ notably li>' +
+      '< meanwhile strong>Interview process</ meanwhile strong>' +
+      pivot.repeat(40) +
+      'selection & meanwhile amp; mentor matching' +
+      pivot.repeat(40);
+
+    const html = formatJobDescription(body);
+    assert.doesNotMatch(html, /<\s*(specifically|notably|meanwhile)/i);
+    assert.doesNotMatch(html, /\b(specifically|notably|meanwhile)\b/i);
+    assert.match(html, /<p>Anthropic mission is to create reliable AI\./);
+    assert.match(html, /4 months of full-time research/);
+    assert.match(html, /<strong>Interview process<\/strong>/);
+    assert.match(html, /selection &amp; mentor matching/);
+  });
+
+  it('keeps occasional legitimate uses of pivot words in short copy', () => {
+    const raw = 'We specifically need someone with Python. Notably, the team works remotely.';
+    const html = formatJobDescription(raw);
+    assert.match(html, /specifically need someone/);
+    assert.match(html, /Notably/);
   });
 });
 

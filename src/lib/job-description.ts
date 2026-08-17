@@ -8,10 +8,10 @@
 
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
-import { toCompanySlug, applyCompanyDisplayCasing } from '@/lib/company-directory';
+import { toCompanySlug, applyCompanyDisplayCasing, routeCompanySlug } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 30;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 32;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -250,6 +250,62 @@ export function cleanSalaryDisplay(salary: string | null | undefined): string | 
     .replace(/\s+/g, ' ')
     .trim();
   return s || null;
+}
+
+const MECHANICAL_PIVOT_WORD = /\b(specifically|notably|meanwhile)\b/gi;
+
+/** True when copy-gate pivot words were stuffed into the body to dodge overlap checks. */
+function looksLikeMechanicalPivotSlop(text: string): boolean {
+  const raw = String(text || '');
+  const words = raw.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  if (words < 200) return false;
+  const pivots = (raw.match(MECHANICAL_PIVOT_WORD) || []).length;
+  const pivotCycle = (
+    raw.match(/\bspecifically\b[\s\S]{0,120}?\bnotably\b[\s\S]{0,120}?\bmeanwhile\b/gi) || []
+  ).length;
+  if (pivots >= 8 && pivots / words >= 0.01) return true;
+  if (pivotCycle >= 2) return true;
+  return false;
+}
+
+/** Repair broken tags/entities from mechanical pivot insertion (`< specifically p>`, `& notably nbsp;`). */
+function repairMechanicalPivotMarkup(html: string): string {
+  let s = html;
+  s = s.replace(
+    /<\s*(specifically|notably|meanwhile)\s+([a-z][a-z0-9]*)(\s[^>]*)?>/gi,
+    '<$2$3>'
+  );
+  s = s.replace(
+    /<\s*\/\s*(specifically|notably|meanwhile)\s+([a-z][a-z0-9]*)\s*>/gi,
+    '</$2>'
+  );
+  s = s.replace(/&\s*(specifically|notably|meanwhile)\s+([a-z]+);/gi, '&$2;');
+  // Dangling `<` left when a pivot-corrupted tag was truncated (`outputs<`).
+  s = s.replace(/([a-z0-9])<(?![/]?[a-z])/gi, '$1');
+  return s;
+}
+
+function stripMechanicalPivotWords(text: string): string {
+  return text
+    .replace(MECHANICAL_PIVOT_WORD, ' ')
+    .replace(/\s+([,.;:!?])/g, '$1')
+    .replace(/([(\[{])\s+/g, '$1')
+    .replace(/\s+([)\]}])/g, '$1')
+    .replace(/-\s+/g, '-')
+    .replace(/\s+-/g, '-')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+/** Strip copy-gate pivot slop from stored JDs (broken markup + stuffed filler words). */
+export function stripMechanicalPivotSlop(text: string | null | undefined): string {
+  if (!text) return '';
+  let s = repairMechanicalPivotMarkup(text);
+  if (looksLikeMechanicalPivotSlop(s)) {
+    s = stripMechanicalPivotWords(s);
+  }
+  return s;
 }
 
 /** Strip aggregator / mirror disclaimers that must never appear on job pages. */
@@ -808,7 +864,10 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^Must have$/i.test(t)) return true;
   if (/^Open application window$/i.test(t)) return true;
   if (/^Placement groups$/i.test(t)) return true;
-  if (/^Selection$/i.test(t)) return true;
+  if (/^Selection(?:\s+process)?$/i.test(t)) return true;
+  if (/^Service bond$/i.test(t)) return true;
+  if (/^Application fee$/i.test(t)) return true;
+  if (/^Vacancies$/i.test(t)) return true;
   if (/^During the internship$/i.test(t)) return true;
   if (/^How to apply/i.test(t)) return true;
   if (/^Applying with a CV link$/i.test(t)) return true;
@@ -1122,7 +1181,7 @@ export function formatJobDescription(
   if (!raw || !raw.trim()) return '';
 
   const cleaned = stripRedundantTitleOpener(
-    stripAggregatorDisclaimers(raw),
+    stripAggregatorDisclaimers(stripMechanicalPivotSlop(raw)),
     opts?.title,
     opts?.company
   );
@@ -1198,7 +1257,7 @@ export function formatJobDescription(
 export function jobDescriptionPlainText(raw: string | null | undefined): string {
   if (!raw) return '';
   return cleanPublishText(
-    stripAggregatorDisclaimers(raw)
+    stripAggregatorDisclaimers(stripMechanicalPivotSlop(raw))
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '')
       .replace(/<[^>]+>/g, ' ')
@@ -1544,10 +1603,11 @@ function md5Hex(s: string): string {
  */
 export function shortJobSlug(
   company: string,
-  externalId: string | null | undefined
+  externalId: string | null | undefined,
+  companyKey?: string | null
 ): string | null {
   if (!externalId) return null;
-  const co = companyToSlug(company);
+  const co = routeCompanySlug({ company, company_key: companyKey });
   if (!co) return null;
   const prefix = `${co}_`;
   const lower = externalId.toLowerCase();
@@ -1579,10 +1639,11 @@ export function shortJobSlug(
  */
 export function jobStoredSlug(job: {
   company: string;
+  company_key?: string | null;
   external_id?: string | null;
   slug?: string | null;
 }): string | null {
-  const co = companyToSlug(job.company);
+  const co = routeCompanySlug(job);
   if (!co) return null;
   if (job.slug) {
     const s = String(job.slug).toLowerCase();
@@ -1592,7 +1653,7 @@ export function jobStoredSlug(job: {
       if (isShortJobSlug(rest) && !/^[0-9a-f]{8,}$/i.test(rest)) return rest;
     }
   }
-  return shortJobSlug(job.company, job.external_id);
+  return shortJobSlug(job.company, job.external_id, job.company_key);
 }
 
 /**
@@ -1618,11 +1679,12 @@ export function jobSlugSegmentMatchesHint(
 export function jobPublicPath(job: {
   id: string;
   company: string;
+  company_key?: string | null;
   title?: string | null;
   external_id?: string | null;
   slug?: string | null;
 }): string {
-  const co = companyToSlug(job.company);
+  const co = routeCompanySlug(job);
   if (!co) return `/jobs/${job.id}`;
   const jobSlug = jobStoredSlug(job) ?? mintPrettyJobSlug(job.title ?? '', job.id);
   return `/${co}/${jobSlug}`;

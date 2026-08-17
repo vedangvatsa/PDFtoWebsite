@@ -81,3 +81,4 @@ enrich-thin-jobs-company-state*.json
 .github/scripts/thin-curated-audit.json
 .github/scripts/thin-reenrich.log
 .github/scripts/logs/
+.github/scripts/sync-inserted-ids.txt

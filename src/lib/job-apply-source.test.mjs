@@ -5,6 +5,8 @@ import {
   isPublicJobPage,
   shouldListJobOnBoard,
   shouldListJobOnCompanyHub,
+  shouldListLiveJobCard,
+  liveUncuratedApplyUrl,
 } from '../../.github/scripts/lib/job-apply-source.mjs';
 
 describe('public job gate', () => {
@@ -14,6 +16,11 @@ describe('public job gate', () => {
     assert.equal(isPublicJobPage(job), false);
     assert.equal(shouldListJobOnBoard({ ...job, published_at: new Date().toISOString() }), false);
     assert.equal(shouldListJobOnCompanyHub({ ...job, published_at: new Date().toISOString() }), true);
+    assert.equal(shouldListLiveJobCard({ ...job, published_at: new Date().toISOString() }), true);
+    assert.equal(
+      liveUncuratedApplyUrl({ ...job, published_at: new Date().toISOString() }),
+      'https://boards.greenhouse.io/acme/jobs/1'
+    );
   });
 
   it('allows live curated paraphrases', () => {
@@ -26,6 +33,8 @@ describe('public job gate', () => {
     assert.equal(isPublicJobPage(job), true);
     assert.equal(shouldListJobOnBoard(job), true);
     assert.equal(shouldListJobOnCompanyHub(job), true);
+    assert.equal(shouldListLiveJobCard(job), true);
+    assert.equal(liveUncuratedApplyUrl(job), null);
   });
 
   it('treats an unloaded description as not a word-floor fail', () => {
@@ -50,6 +59,8 @@ describe('public job gate', () => {
     assert.equal(isPublicJobPage(job), true);
     assert.equal(shouldListJobOnBoard(job), false);
     assert.equal(shouldListJobOnCompanyHub(job), false);
+    assert.equal(shouldListLiveJobCard(job), false);
+    assert.equal(liveUncuratedApplyUrl(job), null);
   });
 
   it('rejects listing-page titles even when curated', () => {
@@ -122,5 +133,17 @@ describe('public job gate', () => {
       description: Array.from({ length: 600 }, () => 'word').join(' '),
     };
     assert.equal(isPublicJobPage(job), false);
+  });
+
+  it('does not list uncurated jobs that have no apply URL', () => {
+    const job = {
+      title: 'Engineer',
+      tags: [],
+      apply_url: '',
+      published_at: new Date().toISOString(),
+    };
+    assert.equal(shouldListJobOnCompanyHub(job), true);
+    assert.equal(shouldListLiveJobCard(job), false);
+    assert.equal(liveUncuratedApplyUrl(job), null);
   });
 });

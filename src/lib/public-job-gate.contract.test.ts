@@ -1,11 +1,11 @@
 /**
- * Locks board / sitemap / feeds / job URLs to curated-jd.
- * Company hubs are live inventory — see company-hub-invariants.test.ts.
- * Do not require withCuratedJdTag on hub SQL; that emptied OpenAI/Stripe hubs.
+ * Locks job URLs / sitemap / feeds to curated-jd.
+ * /jobs board + company hubs are live inventory (uncurated = apply-out).
+ * Do not require withCuratedJdTag on hub or board SQL.
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,7 +34,7 @@ function walk(dir: string, acc: string[] = []): string[] {
 }
 
 const CURATED_MARK =
-  /withCuratedJdTag|['"]curated-jd['"]|isPublicJobPage|shouldListJobOnBoard|shouldListJobOnCompanyHub|jobQualifiesForSitemap|isCuratedJd|cs\.\{\"curated-jd\"\}/;
+  /withCuratedJdTag|['"]curated-jd['"]|isPublicJobPage|shouldListJobOnBoard|shouldListJobOnCompanyHub|shouldListLiveJobCard|liveUncuratedApplyUrl|companyHubJobLink|jobQualifiesForSitemap|isCuratedJd|cs\.\{\"curated-jd\"\}/;
 
 const LIST_QUERY =
   /\.from\(\s*['"]jobs['"]\s*\)|restUrl\([^)]*['"]jobs['"]/;
@@ -54,6 +54,7 @@ const SKIP_LIST_SCAN = [
   '.github/scripts/enrich-remote-job-descriptions.mjs',
   '.github/scripts/publish-manual-jd.mjs',
   '.github/scripts/scrub-leaked-instructions.mjs',
+  '.github/scripts/scrub-mechanical-pivot-slop.mjs',
   '.github/scripts/cleanup-old-jobs.mjs',
   '.github/scripts/queue-manual-jd-priority.mjs',
   '.github/scripts/restore-rows.mjs',
@@ -88,6 +89,8 @@ describe('public job URLs 301 uncurated stubs', () => {
     it(`${rel} gates with isPublicJobPage + redirect`, () => {
       const file = src(rel);
       assert.match(file, /isPublicJobPage/, rel);
+      assert.match(file, /liveUncuratedApplyUrl/, rel);
+      assert.match(file, /redirect\(/, rel);
       assert.match(file, /permanentRedirect/, rel);
       assert.match(file, /!job \|\| !isPublicJobPage\(job\)/, rel);
     });
@@ -107,6 +110,15 @@ describe('public job URLs 301 uncurated stubs', () => {
       assert.match(src(rel), /isPublicJobPage/);
     });
   }
+
+  it('job pages have no ancestor loading.tsx (streaming 200 swallows 308)', () => {
+    // GSC "Excluded by noindex" exploded because [slug]/loading.tsx streamed
+    // 200 + generateMetadata noindex instead of HTTP 308 for gone jobs.
+    assert.equal(existsSync(join(root, 'src/app/[slug]/loading.tsx')), false);
+    assert.equal(existsSync(join(root, 'src/app/jobs/loading.tsx')), false);
+    assert.equal(existsSync(join(root, 'src/app/[slug]/(hub)/loading.tsx')), true);
+    assert.equal(existsSync(join(root, 'src/app/jobs/(board)/loading.tsx')), true);
+  });
 });
 
 describe('public lists constrain curated-jd before limit()', () => {
@@ -116,10 +128,12 @@ describe('public lists constrain curated-jd before limit()', () => {
     assert.match(file, /shouldListJobOnCompanyHub/);
   });
 
-  it('board API SQL + in-memory gate', () => {
+  it('board API lists live inventory; uncurated cards go apply-out', () => {
     const file = src('src/app/api/jobs/route.ts');
-    assert.match(file, /withCuratedJdTag/);
-    assert.match(file, /shouldListJobOnBoard/);
+    assert.doesNotMatch(file, /withCuratedJdTag\(/);
+    assert.match(file, /shouldListLiveJobCard/);
+    assert.match(file, /companyHubJobLink/);
+    assert.match(file, /companyJobsDateOrFilter/);
     assert.match(file, /kind === 'fellowship'/);
   });
 
@@ -193,6 +207,13 @@ describe('public lists constrain curated-jd before limit()', () => {
     assert.match(file, /jobPublicPath\(job\)/);
     assert.match(file, /external:\s*true/);
   });
+
+  it('jobs board client opens uncurated cards off-site', () => {
+    const file = src('src/components/jobs-client.tsx');
+    assert.match(file, /job\.external/);
+    assert.match(file, /target="_blank"/);
+    assert.match(file, /ExternalLink/);
+  });
 });
 
 describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
@@ -200,6 +221,31 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
     const file = src('.github/scripts/jobs-sync.mjs');
     assert.match(file, /toLowerCase\(\) !== 'curated-jd'/);
     assert.doesNotMatch(file, /tags\.push\(['"]curated-jd['"]\)/);
+  });
+
+  it('jobs-sync enriches newly inserted ids in the same run', () => {
+    const file = src('.github/scripts/jobs-sync.mjs');
+    assert.match(file, /enrichInsertedJobs/);
+    assert.match(file, /enrich-remote-job-descriptions\.mjs/);
+    assert.match(file, /PRIORITY_IDS_FILE/);
+    assert.match(file, /SKIP_ENRICH/);
+  });
+
+  it('enrich rewrite is OpenRouter fact-sheet write with formatted sections', () => {
+    const file = src('.github/scripts/enrich-remote-job-descriptions.mjs');
+    const start = file.indexOf('async function rewriteJobPage');
+    assert.ok(start >= 0, 'rewriteJobPage must exist');
+    const fn = file.slice(start, file.indexOf('\nfunction enqueueManualPack'));
+    assert.match(fn, /buildExtractPrompt/);
+    assert.match(fn, /buildWriterPrompt/);
+    assert.match(fn, /rewriteWithOpenRouter/);
+    assert.match(fn, /rewriteMeetsPublishFloor/);
+    assert.match(fn, /factSheetIsIndexable/);
+    assert.doesNotMatch(fn, /breakCopiedProse/);
+    assert.doesNotMatch(fn, /forceBreakEvery/);
+    assert.match(file, /function asBulletBlock/);
+    assert.match(file, /assembleJobPage/);
+    assert.match(file, /Need OPENROUTER_API_KEY/);
   });
 
   it('latest jobs_auto_curated_tag is a no-op and trigger is dropped', () => {

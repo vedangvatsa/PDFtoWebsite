@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { displayJobLocation } from '@/lib/normalize-location';
-import { jobPublicPath, cleanJobTitle, isGarbageJobTitle, cleanSalaryDisplay, looksLikeFellowship } from '@/lib/job-description';
+import { cleanJobTitle, isGarbageJobTitle, cleanSalaryDisplay, looksLikeFellowship } from '@/lib/job-description';
 import { companyDisplayNameFromJob, isJunkCompanyName } from '@/lib/company-directory';
-import { shouldListJobOnBoard, withCuratedJdTag } from '@/lib/job-apply-source';
+import { shouldListLiveJobCard } from '@/lib/job-apply-source';
+import { companyHubJobLink, companyJobsDateOrFilter } from '@/lib/company-hub-query';
 import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { createAnonFromRequest } from '@/utils/supabase/anon';
@@ -68,9 +69,9 @@ export async function GET(request: NextRequest) {
   const boardSince = q ? ninetyDaysAgo : sixtyDaysAgo;
   const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug,description';
 
-  // Base filters shared by all queries
+  // Live inventory: curated pages + uncurated apply-out cards. Do not wrap
+  // withCuratedJdTag — that hid jobs until enrich finished.
   function applyBaseFilters(q: any) {
-    q = withCuratedJdTag(q);
     if (type && type !== 'all') q = q.eq('job_type', type);
     return q;
   }
@@ -87,7 +88,7 @@ export async function GET(request: NextRequest) {
   let priorityQuery = supabase
     .from('jobs')
     .select(selectCols)
-    .gt('created_at', thirtyDaysAgo)
+    .or(companyJobsDateOrFilter(thirtyDaysAgo))
     .or(priorityFilter)
     .order('published_at', { ascending: false, nullsFirst: false })
     .range(0, limit * 2 - 1);
@@ -101,13 +102,11 @@ export async function GET(request: NextRequest) {
   );
 
   // --- Query 2: All jobs (backfill pool) ---
-  let query = withCuratedJdTag(
-    supabase
-      .from('jobs')
-      .select(selectCols, needsDbCount ? { count: 'estimated' } : undefined)
-      .gt('created_at', boardSince)
-      .order('published_at', { ascending: false, nullsFirst: false })
-  );
+  let query = supabase
+    .from('jobs')
+    .select(selectCols, needsDbCount ? { count: 'estimated' } : undefined)
+    .or(companyJobsDateOrFilter(boardSince))
+    .order('published_at', { ascending: false, nullsFirst: false });
 
   // Filter by job type
   if (type && type !== 'all') {
@@ -340,8 +339,8 @@ export async function GET(request: NextRequest) {
     if (hideInternships && isBareInternship) return false;
     // Block known junk sources
     if (VAGUE_COMPANY_PATTERNS.some(p => p.test(job.company))) return false;
-    // Hide LinkedIn / aggregator apply URLs unless already fully enriched
-    if (!shouldListJobOnBoard(job)) return false;
+    // Curated → on-site page. Uncurated live → apply_url. Hide banned/expired.
+    if (!shouldListLiveJobCard(job)) return false;
     return true;
   });
 
@@ -437,7 +436,9 @@ export async function GET(request: NextRequest) {
   }
 
   // Map to response format (scores already computed)
-  const jobsWithMatches = jobs.map(job => ({
+  const jobsWithMatches = jobs.map(job => {
+    const link = companyHubJobLink(job);
+    return {
     id: job.id,
     title: cleanJobTitle(job.title),
     company: companyDisplayNameFromJob(job),
@@ -451,12 +452,14 @@ export async function GET(request: NextRequest) {
     source: job.source,
     published_at: job.published_at,
     external_id: job.external_id,
-    path: jobPublicPath(job),
+    path: link.href,
+    external: link.external,
     matched_skills: job._matchedSkills,
     match_count: job._matchedSkills.length,
     match_score: job._score,
     match_signals: job._signals,
-  }));
+  };
+  });
 
   // Final sort: score first, then recency
   jobsWithMatches.sort((a, b) => {

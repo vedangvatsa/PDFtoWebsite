@@ -3,8 +3,9 @@
 // Env: SUPABASE_URL, SUPABASE_KEY (service role)
 
 import crypto from 'crypto';
+import { spawnSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import dotenv from 'dotenv';
@@ -380,7 +381,7 @@ async function supabaseUpsert(jobs) {
 
       if (res.ok) {
         const result = await res.json();
-        return result.length;
+        return Array.isArray(result) ? result.length : 0;
       } else {
         const err = await res.text();
         // dedup_hash conflict → row-by-row (handles cross-source dupes)
@@ -398,7 +399,10 @@ async function supabaseUpsert(jobs) {
                 },
                 body: JSON.stringify(withCompanyKey([job])),
               });
-              if (r2.ok) { const r = await r2.json(); count += r.length; }
+              if (r2.ok) {
+                const r = await r2.json();
+                count += Array.isArray(r) ? r.length : 0;
+              }
             } catch {} // silently skip individual dupe failures
           }
           return count;
@@ -420,7 +424,10 @@ async function supabaseUpsert(jobs) {
                 },
                 body: JSON.stringify(withCompanyKey([retried])),
               });
-              if (r2.ok) { const r = await r2.json(); count += r.length; }
+              if (r2.ok) {
+                const r = await r2.json();
+                count += Array.isArray(r) ? r.length : 0;
+              }
             } catch (e2) {
               console.error(`  ⚠ slug retry failed ${job.slug}: ${String(e2.message || e2).slice(0, 120)}`);
             }
@@ -2549,240 +2556,6 @@ async function fetchJSearch() {
   return unique;
 }
 
-// ─── Source: LinkedIn (public guest endpoint — no auth, HTML parsing) ───
-// Endpoint: GET https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search
-// Returns HTML with job cards, 10 per page, paginate with start=0,25,50,...
-// No API key needed — this is the same endpoint LinkedIn's public job search page uses
-const LINKEDIN_QUERIES = [
-  // === REMOTE WORLDWIDE ===
-  { keywords: 'software engineer', location: 'remote' },
-  { keywords: 'frontend developer', location: 'remote' },
-  { keywords: 'backend developer', location: 'remote' },
-  { keywords: 'full stack developer', location: 'remote' },
-  { keywords: 'data scientist', location: 'remote' },
-  { keywords: 'devops engineer', location: 'remote' },
-  { keywords: 'machine learning engineer', location: 'remote' },
-  { keywords: 'product manager', location: 'remote' },
-  { keywords: 'UX designer', location: 'remote' },
-  { keywords: 'cloud engineer', location: 'remote' },
-  { keywords: 'data engineer', location: 'remote' },
-  { keywords: 'AI engineer', location: 'remote' },
-  { keywords: 'mobile developer', location: 'remote' },
-  { keywords: 'cybersecurity', location: 'remote' },
-  { keywords: 'solutions architect', location: 'remote' },
-  { keywords: 'SRE', location: 'remote' },
-  { keywords: 'blockchain developer', location: 'remote' },
-  { keywords: 'game developer', location: 'remote' },
-  { keywords: 'system administrator', location: 'remote' },
-  { keywords: 'business analyst', location: 'remote' },
-  { keywords: 'cloud architect', location: 'remote' },
-  { keywords: 'data analyst', location: 'remote' },
-  { keywords: 'security engineer', location: 'remote' },
-  { keywords: 'iOS developer', location: 'remote' },
-  { keywords: 'Android developer', location: 'remote' },
-  { keywords: 'QA engineer', location: 'remote' },
-  { keywords: 'infrastructure engineer', location: 'remote' },
-  { keywords: 'platform engineer', location: 'remote' },
-
-  // === NORTH AMERICA TECH HUBS ===
-  { keywords: 'software engineer', location: 'San Francisco Bay Area' },
-  { keywords: 'machine learning', location: 'San Francisco Bay Area' },
-  { keywords: 'AI engineer', location: 'San Francisco Bay Area' },
-  { keywords: 'data scientist', location: 'San Francisco Bay Area' },
-  { keywords: 'software engineer', location: 'New York, United States' },
-  { keywords: 'data scientist', location: 'New York, United States' },
-  { keywords: 'product manager', location: 'New York, United States' },
-  { keywords: 'software engineer', location: 'Seattle, WA' },
-  { keywords: 'cloud engineer', location: 'Seattle, WA' },
-  { keywords: 'software engineer', location: 'Austin, TX' },
-  { keywords: 'devops engineer', location: 'Austin, TX' },
-  { keywords: 'software engineer', location: 'Toronto, Canada' },
-  { keywords: 'data scientist', location: 'Toronto, Canada' },
-  { keywords: 'software engineer', location: 'Vancouver, Canada' },
-
-  // === EUROPE TECH HUBS ===
-  { keywords: 'software engineer', location: 'London, United Kingdom' },
-  { keywords: 'data scientist', location: 'London, United Kingdom' },
-  { keywords: 'product manager', location: 'London, United Kingdom' },
-  { keywords: 'machine learning', location: 'London, United Kingdom' },
-  { keywords: 'software engineer', location: 'Berlin, Germany' },
-  { keywords: 'backend developer', location: 'Berlin, Germany' },
-  { keywords: 'data engineer', location: 'Berlin, Germany' },
-  { keywords: 'software engineer', location: 'Amsterdam, Netherlands' },
-  { keywords: 'frontend developer', location: 'Amsterdam, Netherlands' },
-  { keywords: 'software engineer', location: 'Paris, France' },
-  { keywords: 'data scientist', location: 'Paris, France' },
-  { keywords: 'software engineer', location: 'Dublin, Ireland' },
-  { keywords: 'SRE', location: 'Dublin, Ireland' },
-  { keywords: 'software engineer', location: 'Stockholm, Sweden' },
-  { keywords: 'game developer', location: 'Stockholm, Sweden' },
-  { keywords: 'software engineer', location: 'Zurich, Switzerland' },
-  { keywords: 'machine learning', location: 'Zurich, Switzerland' },
-
-  // === ASIA / PACIFIC TECH HUBS ===
-  { keywords: 'software engineer', location: 'Singapore' },
-  { keywords: 'data scientist', location: 'Singapore' },
-  { keywords: 'cybersecurity', location: 'Singapore' },
-  { keywords: 'software engineer', location: 'Sydney, Australia' },
-  { keywords: 'full stack developer', location: 'Sydney, Australia' },
-  { keywords: 'software engineer', location: 'Tokyo, Japan' },
-  { keywords: 'AI engineer', location: 'Tokyo, Japan' },
-  { keywords: 'software engineer', location: 'Bengaluru, India' },
-  { keywords: 'backend developer', location: 'Bengaluru, India' },
-  { keywords: 'data engineer', location: 'Bengaluru, India' },
-
-  // === MIDDLE EAST / AFRICA ===
-  { keywords: 'software engineer', location: 'Dubai, UAE' },
-  { keywords: 'blockchain developer', location: 'Dubai, UAE' },
-  { keywords: 'software engineer', location: 'Tel Aviv, Israel' },
-  { keywords: 'cybersecurity', location: 'Tel Aviv, Israel' },
-
-  // === EMERGING AI & DATA ROLES (Global search) ===
-  { keywords: 'large language models', location: 'worldwide' },
-  { keywords: 'generative ai', location: 'worldwide' },
-  { keywords: 'prompt engineer', location: 'worldwide' },
-  { keywords: 'nlp engineer', location: 'worldwide' },
-  { keywords: 'computer vision', location: 'worldwide' },
-  { keywords: 'AI research scientist', location: 'worldwide' }
-];
-
-function parseLinkedInHTML(html) {
-  const jobs = [];
-  // Split into individual job cards
-  const cardPattern = /data-entity-urn="urn:li:jobPosting:(\d+)"[\s\S]*?<\/li>/g;
-  let match;
-  while ((match = cardPattern.exec(html)) !== null) {
-    const card = match[0];
-    const jobId = match[1];
-
-    // Extract title
-    const titleMatch = card.match(/base-search-card__title">\s*\n?\s*(.+?)\s*\n/);
-    const title = titleMatch ? titleMatch[1].trim() : null;
-
-    // Extract company
-    const companyMatch = card.match(/hidden-nested-link[^>]*>([^<]+)</);
-    const company = companyMatch ? companyMatch[1].replace(/\s+/g, ' ').trim() : null;
-
-    // Extract location
-    const locationMatch = card.match(/job-search-card__location">\s*([^<]+)/);
-    const location = locationMatch ? locationMatch[1].trim() : null;
-
-    // Extract URL
-    const urlMatch = card.match(/href="(https:\/\/www\.linkedin\.com\/jobs\/view\/[^"?]+)/);
-    const url = urlMatch ? urlMatch[1] : null;
-
-    // Extract date
-    const dateMatch = card.match(/datetime="([^"]+)"/);
-    const date = dateMatch ? dateMatch[1] : null;
-
-    // Extract company logo
-    const logoMatch = card.match(/data-delayed-url="(https:\/\/media\.licdn\.com\/[^"]+)"/);
-    const logo = logoMatch ? logoMatch[1].replace(/&amp;/g, '&') : null;
-
-    if (title && company && url) {
-      jobs.push({ jobId, title, company, location, url, date, logo });
-    }
-  }
-  return jobs;
-}
-
-async function fetchLinkedIn() {
-  console.log('\n── LinkedIn (public guest) ──');
-  const allJobs = [];
-  let queryCount = 0;
-  let consecutiveFailures = 0;
-
-  const USER_AGENTS = [
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-  ];
-
-  for (const query of LINKEDIN_QUERIES) {
-    if (consecutiveFailures >= 3) {
-      console.log('  ⚠️ Too many failures, stopping LinkedIn scrape');
-      break;
-    }
-
-    // Fetch up to 16 pages per query (start=0,25,50...375 → ~400 jobs per keyword/location)
-    for (let start = 0; start < 400; start += 25) {
-      try {
-        const params = new URLSearchParams({
-          keywords: query.keywords,
-          location: query.location,
-          start: String(start),
-          f_TPR: 'r604800', // Last 7 days
-        });
-
-        const ua = USER_AGENTS[queryCount % USER_AGENTS.length];
-        const res = await fetch(
-          `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?${params}`,
-          {
-            headers: {
-              'User-Agent': ua,
-              'Accept': 'text/html',
-              'Accept-Language': 'en-US,en;q=0.9',
-            },
-          }
-        );
-
-        if (!res.ok) {
-          if (res.status === 429) {
-            console.log(`  ⚠️ Rate limited at query ${queryCount}, waiting 30s...`);
-            await sleep(30000);
-            consecutiveFailures++;
-            continue;
-          }
-          consecutiveFailures++;
-          continue;
-        }
-
-        const html = await res.text();
-        const parsed = parseLinkedInHTML(html);
-        consecutiveFailures = 0; // Reset on success
-
-        if (parsed.length === 0) break; // No more results for this query
-
-        const jobs = parsed.map(j => ({
-          source: 'linkedin',
-          external_id: `linkedin_${j.jobId}`,
-          dedup_hash: dedupHash(j.company, j.title),
-          title: j.title,
-          company: j.company,
-          company_logo: j.logo || null,
-          location: j.location || query.location,
-          job_type: null,
-          salary: null,
-          description: '', // Guest endpoint doesn't include full descriptions
-          tags: extractTags(j.title),
-          apply_url: j.url,
-          category: null,
-          published_at: j.date || null,
-        }));
-
-        allJobs.push(...jobs);
-        queryCount++;
-
-        // Be respectful: 2-3 second delay between requests
-        await sleep(2000 + Math.random() * 1000);
-      } catch (e) {
-        console.error(`  ❌ LinkedIn ${query.keywords}/${query.location}/s${start}: ${e.message}`);
-        consecutiveFailures++;
-      }
-    }
-  }
-
-  const seen = new Set();
-  const unique = allJobs.filter(j => {
-    if (seen.has(j.dedup_hash)) return false;
-    seen.add(j.dedup_hash);
-    return true;
-  });
-
-  console.log(`  Total: ${unique.length} unique jobs from LinkedIn (${allJobs.length} raw, ${queryCount} requests)`);
-  return unique;
-}
-
 // ─── Cleanup: remove jobs older than 30 days ───
 // Prefer created_at (row age). Also wipe stale synced_at so old re-synced rows don't linger.
 // Batched deletes keep Free Nano from choking on one giant DELETE.
@@ -2856,10 +2629,85 @@ async function cleanupOldJobs() {
   return totalDeleted;
 }
 
+async function fetchRecentUncuratedIds(sinceIso) {
+  const ids = [];
+  let offset = 0;
+  const page = 1000;
+  const headers = {
+    apikey: SUPABASE_KEY,
+    Authorization: `Bearer ${SUPABASE_KEY}`,
+  };
+  while (true) {
+    const url =
+      `${SUPABASE_URL}/rest/v1/jobs?select=id` +
+      `&created_at=gte.${encodeURIComponent(sinceIso)}` +
+      `&tags=not.cs.{"curated-jd"}&apply_url=not.is.null` +
+      `&order=created_at.desc&limit=${page}&offset=${offset}`;
+    const res = await fetch(url, { headers });
+    if (!res.ok) {
+      console.error(`  ⚠ recent uncurated fetch ${res.status}`);
+      break;
+    }
+    const rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) break;
+    for (const row of rows) if (row?.id) ids.push(row.id);
+    if (rows.length < page) break;
+    offset += page;
+  }
+  return ids;
+}
+
+/** Same-run enrich so new rows become live pages before the workflow exits. */
+async function enrichInsertedJobs(sinceIso) {
+  if (process.env.SKIP_ENRICH === '1' || process.env.SKIP_ENRICH === 'true') {
+    console.log('\n⏭ SKIP_ENRICH=1 — new jobs stay listed as apply-out until a later enrich');
+    return;
+  }
+  let list = [];
+  try {
+    list = await fetchRecentUncuratedIds(sinceIso);
+  } catch (e) {
+    console.error(`  ⚠ recent uncurated id fetch failed: ${e.message}`);
+    return;
+  }
+  if (!list.length) {
+    console.log('\n⏭ No new jobs to enrich this run');
+    return;
+  }
+  const idsPath = resolve(__dirname, 'sync-inserted-ids.txt');
+  writeFileSync(idsPath, `${list.join('\n')}\n`);
+  console.log(`\n═══ Enrich ${list.length} newly ingested jobs ═══`);
+  const enrichScript = resolve(__dirname, 'enrich-remote-job-descriptions.mjs');
+  const r = spawnSync(
+    'npx',
+    ['tsx', enrichScript],
+    {
+      env: {
+        ...process.env,
+        ALLOW_AI_ENRICH: '1',
+        PRIORITY_IDS_FILE: idsPath,
+        TURBO: process.env.TURBO || '1',
+        BATCH_SIZE: process.env.ENRICH_BATCH_SIZE || '400',
+        CONCURRENCY: process.env.ENRICH_CONCURRENCY || '12',
+        JOB_MAX_AGE_DAYS: process.env.JOB_MAX_AGE_DAYS || '30',
+      },
+      stdio: 'inherit',
+      timeout: Number(process.env.ENRICH_TIMEOUT_MS || 50 * 60 * 1000),
+    }
+  );
+  if (r.status !== 0) {
+    console.error(
+      `  ⚠️ enrich exited ${r.status} — unenriched jobs stay listed as apply-out`
+    );
+  }
+}
+
 // ─── Main ───
 async function main() {
   console.log('🚀 Jobs Sync — Starting');
   const startTime = Date.now();
+
+  const startIso = new Date(startTime).toISOString();
 
   // ── PHASE 1: High-value sources (parallel, 50 concurrent each) ──
   console.log('\n═══ Phase 1: Core sources ═══');
@@ -2920,18 +2768,8 @@ async function main() {
     fetchFindwork(),
   ]);
 
-  // Group C: LinkedIn — DISABLED. Guest pages rarely return a usable JD body on curl;
-  // we exclude curl-empty apply hosts from ingest + listings (see job-apply-source.mjs).
-  await sleep(1000);
-  const linkedin = [];
-  if (process.env.INCLUDE_LINKEDIN === 'true' || process.env.INCLUDE_LINKEDIN === '1') {
-    console.log('  ⏭ INCLUDE_LINKEDIN ignored — LinkedIn ingest disabled (no usable curl body)');
-  } else {
-    console.log('  ⏭ Skipping LinkedIn scrape (curl-empty source — excluded by policy)');
-  }
-
-  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...findwork, ...linkedin];
-  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators (LinkedIn excluded)`);
+  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...findwork];
+  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators`);
 
   const phase3Valid = filterAndNormalize(phase3Jobs);
   if (phase3Valid.length > 0) {
@@ -2942,11 +2780,7 @@ async function main() {
   // ── PHASE 4: India internships (AICTE Indian Army + MoSPI NIOS) ──
   console.log('\n═══ Phase 4: India internships (Army + MoSPI + NITI Aayog) ═══');
   try {
-    const { spawnSync } = await import('child_process');
-    const { fileURLToPath } = await import('url');
-    const { dirname, join } = await import('path');
-    const here = dirname(fileURLToPath(import.meta.url));
-    const indiaScript = join(here, 'import-india-internships.mjs');
+    const indiaScript = join(__dirname, 'import-india-internships.mjs');
     const ir = spawnSync(process.execPath, [indiaScript], {
       env: process.env,
       stdio: 'inherit',
@@ -2959,17 +2793,28 @@ async function main() {
     console.error(`  ⚠️ India internships import failed: ${e.message}`);
   }
 
+  console.log('\n═══ Phase 4b: Digital India Corporation careers ═══');
+  try {
+    const dicScript = join(__dirname, 'import-dic-careers.mjs');
+    const dr = spawnSync(process.execPath, [dicScript], {
+      env: { ...process.env, SKIP_ENRICH: process.env.SKIP_ENRICH || '1' },
+      stdio: 'inherit',
+      timeout: 12 * 60 * 1000,
+    });
+    if (dr.status !== 0) {
+      console.error(`  ⚠️ DIC careers import exited ${dr.status}`);
+    }
+  } catch (e) {
+    console.error(`  ⚠️ DIC careers import failed: ${e.message}`);
+  }
+
   // Cleanup old jobs
   await cleanupOldJobs();
 
   // Rebuild /companies directory table (cheap page reads; see rebuild-companies.mjs)
   console.log('\n═══ Rebuild companies directory ═══');
   try {
-    const { spawnSync } = await import('child_process');
-    const { fileURLToPath } = await import('url');
-    const { dirname, join } = await import('path');
-    const here = dirname(fileURLToPath(import.meta.url));
-    const script = join(here, 'rebuild-companies.mjs');
+    const script = join(__dirname, 'rebuild-companies.mjs');
     const r = spawnSync(process.execPath, [script], {
       env: process.env,
       stdio: 'inherit',
@@ -2981,6 +2826,8 @@ async function main() {
   } catch (e) {
     console.error(`  ⚠️ companies rebuild failed: ${e.message}`);
   }
+
+  await enrichInsertedJobs(startIso);
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n🏁 Done in ${elapsed}s — Total: ${phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);

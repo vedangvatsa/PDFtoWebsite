@@ -48,6 +48,17 @@ describe('companyNameFromApply', () => {
     assert.equal(companyNameFromApply('nasa', 'https://www.nasa.gov/careers'), 'NASA');
   });
 
+  it('maps dic.gov.in to Digital India Corporation, not DIC/GOV', () => {
+    assert.equal(
+      companyNameFromApply('DIC', 'https://dic.gov.in/jobs/team-leader-software-development/'),
+      'Digital India Corporation'
+    );
+    assert.equal(
+      companyNameFromApply('dic', 'https://ora.digitalindiacorporation.in/'),
+      'Digital India Corporation'
+    );
+  });
+
   it('maps sequoiacap.com to Sequoia Capital, not the payroll Sequoia hub', () => {
     assert.equal(
       companyNameFromApply('Sequoia', 'https://www.sequoiacap.com/oss/'),

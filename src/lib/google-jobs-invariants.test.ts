@@ -227,7 +227,7 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
   });
 
   it('company hubs include a CVin.Bio URL FAQ', () => {
-    const page = fs.readFileSync(path.join(root, 'src/app/[slug]/page.tsx'), 'utf8');
+    const page = fs.readFileSync(path.join(root, 'src/app/[slug]/(hub)/page.tsx'), 'utf8');
     assert.match(page, /Where can I find \$\{companyName\} jobs on CVin\.Bio\?/);
     assert.match(page, /https:\/\/cvin\.bio\/\$\{slug\}/);
   });

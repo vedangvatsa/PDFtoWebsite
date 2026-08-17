@@ -4,6 +4,8 @@
  * writer-template text never lands in a new row.
  */
 
+import { stripMechanicalPivotSlop } from './mechanical-pivot-slop.mjs';
+
 const STRIP_PATTERNS = [
   /<p>\s*<em>\s*Applications close around[\s\S]*?<\/em>\s*<\/p>/gi,
   /<em>\s*Applications close around[\s\S]*?<\/em>/gi,
@@ -155,7 +157,9 @@ export function descriptionHasWriterLeak(text) {
 /** Normalize before upsert — never append CVin.Bio / aggregator footers or writer leaks. */
 export function normalizeJobDescriptionForStorage(description) {
   if (!description) return description ?? null;
-  const cleaned = stripLeakedWriterInstructions(stripAggregatorDisclaimers(description));
+  const cleaned = stripMechanicalPivotSlop(
+    stripLeakedWriterInstructions(stripAggregatorDisclaimers(description))
+  );
   if (!cleaned) return null;
   return cleaned.length > 12000 ? cleaned.slice(0, 12000) : cleaned;
 }

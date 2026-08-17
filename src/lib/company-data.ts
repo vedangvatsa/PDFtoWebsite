@@ -1087,6 +1087,38 @@ const COMPANIES: Record<string, CompanyMeta> = {
       github: 'https://github.com/databricks',
     },
   },
+  'dic': {
+    slug: 'dic',
+    name: 'Digital India Corporation',
+    website: 'https://dic.gov.in',
+    founded: 2017,
+    hq: 'New Delhi, India',
+    size: '500-1000',
+    stage: 'Government',
+    funding: 'Government of India',
+    industry: 'Digital Governance & Public Technology',
+    description: 'Digital India Corporation is a not-for-profit entity operating under the Ministry of Electronics and Information Technology. Originally established as Media Lab Asia in collaboration with MIT, the organization was rebranded in 2017 to spearhead the Digital India programme. DIC houses seven independent divisions including the National e-Governance Division, MyGov, MeitY Startup Hub, India Semiconductor Mission, Digital India Bhashini, and INDIAai. The corporation provides strategic and technical support to central and state government ministries, drives e-governance capacity building, promotes public-private partnerships, and nurtures technology innovations across health, education, livelihood, and digital infrastructure domains.',
+    socials: {
+      x: 'https://x.com/DigitalIndiaCrp',
+      linkedin: 'https://www.linkedin.com/company/digitalindiacorporation/',
+    },
+  },
+  'aspen-institute': {
+    slug: 'aspen-institute',
+    name: 'Aspen Institute',
+    website: 'https://www.aspeninstitute.org',
+    founded: 1949,
+    hq: 'Washington, DC',
+    size: '1,000+',
+    stage: 'Nonprofit',
+    funding: 'Nonprofit',
+    industry: 'Policy, Leadership & Education',
+    description: 'The Aspen Institute is a global nonprofit founded in 1949, dedicated to fostering dialogue, leadership, and action on society\'s most pressing challenges. Headquartered in Washington, DC with its iconic campus in Aspen, Colorado, the Institute runs a wide portfolio of programs spanning economic opportunity, energy and climate, leadership development, rising generations, and societal trust. Through its fellowship networks, policy academies, and convenings, Aspen brings together leaders from government, business, and civil society to exchange ideas and drive practical solutions. The Science and Technology Policy Fellowship, operated under the Aspen Tech Policy Hub, trains STEM professionals to translate technical expertise into policy impact.',
+    socials: {
+      x: 'https://x.com/aspeninstitute',
+      linkedin: 'https://www.linkedin.com/company/the-aspen-institute',
+    },
+  },
 };
 
 export function listCompanyMeta(): CompanyMeta[] {

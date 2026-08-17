@@ -8,8 +8,7 @@
  *  3. Skip curated-jd DB write — a human/agent applies JD_PARAPHRASE_RULES and publishes
  *
  * AI enrich is opt-in only: ALLOW_AI_ENRICH=1.
- * When enabled, the LLM path is OpenRouter (default inclusionai/ling-2.6-flash).
- * Override with OPENROUTER_MODEL. Gemini / OpenAI / NVIDIA / Groq / Cohere / Anthropic are disabled.
+ * When enabled, rewrite goes through OpenRouter (default inclusionai/ling-2.6-flash).
  *
  * Single entry for JD rewrite + unique About-the-company blurbs:
  *   ALLOW_AI_ENRICH=1 node .github/scripts/enrich-remote-job-descriptions.mjs
@@ -30,6 +29,7 @@ import {
   isCuratedJd,
 } from './lib/job-apply-source.mjs';
 import {
+  isCvinStubText,
   isFullyEnrichedJob,
   rewriteMeetsPublishFloor,
   shouldQueueForManualEnrich,
@@ -43,6 +43,7 @@ import {
   stripLeakedWriterInstructions,
   descriptionHasWriterLeak,
 } from './lib/normalize-job-description.mjs';
+import { hasMechanicalPivotCorruption } from './lib/mechanical-pivot-slop.mjs';
 import { htmlToIngestText as stripHtml, ingestSourceDescription } from './lib/ingest-job-description.mjs';
 import { Agent, setGlobalDispatcher } from 'undici';
 
@@ -71,65 +72,10 @@ process.on('unhandledRejection', (err) => {
 /** Manual curation is the default. AI rewrite requires explicit ALLOW_AI_ENRICH=1. */
 const ALLOW_AI_ENRICH = process.env.ALLOW_AI_ENRICH === '1' || process.env.ALLOW_AI_ENRICH === 'true';
 const MANUAL_QUEUE_DIR = resolve(__dirname, 'manual-jd-queue');
-// AI path: drop every non-OpenRouter LLM key so leftover rewrite helpers cannot fire.
-if (ALLOW_AI_ENRICH) {
-  for (const name of Object.keys(process.env)) {
-    if (/^(GEMINI_|OPENAI_|NVIDIA_|GROQ_|COHERE_|ANTHROPIC_)/.test(name)) {
-      delete process.env[name];
-    }
-  }
-}
 
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const K = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const unquote = (v) => (v || '').replace(/"/g, '').trim();
-const GEMINI_KEYS = [
-  unquote(process.env.GEMINI_API_KEY),
-  unquote(process.env.GEMINI_API_KEY_2),
-  unquote(process.env.GEMINI_API_KEY_3),
-  unquote(process.env.GEMINI_API_KEY_4),
-].filter(Boolean);
-
-const COHERE_KEYS = [
-  unquote(process.env.COHERE_API_KEY),
-  unquote(process.env.COHERE_API_KEY_2),
-  unquote(process.env.COHERE_API_KEY_3),
-  unquote(process.env.COHERE_API_KEY_4),
-  unquote(process.env.COHERE_API_KEY_5),
-].filter(Boolean);
-
-const GROQ_KEYS = [
-  unquote(process.env.GROQ_API_KEY),
-  unquote(process.env.GROQ_API_KEY_2),
-].filter(Boolean);
-// dotenv reloads .env.local after shell unset — honor SKIP_OPENAI / GEMINI_NVIDIA_ONLY
-const SKIP_OPENAI =
-  process.env.SKIP_OPENAI === '1' ||
-  process.env.SKIP_OPENAI === 'true' ||
-  process.env.GEMINI_NVIDIA_ONLY === '1' ||
-  process.env.GEMINI_NVIDIA_ONLY === 'true';
-const OPENAI_KEYS = SKIP_OPENAI
-  ? []
-  : [
-      unquote(process.env.OPENAI_API_KEY),
-      unquote(process.env.OPENAI_API_KEY_2),
-      unquote(process.env.OPENAI_API_KEY_3),
-      unquote(process.env.OPENAI_API_KEY_4),
-    ].filter(Boolean);
-if (SKIP_OPENAI) {
-  delete process.env.OPENAI_API_KEY;
-  delete process.env.OPENAI_API_KEY_2;
-  delete process.env.OPENAI_API_KEY_3;
-  delete process.env.OPENAI_API_KEY_4;
-}
-const NVIDIA_KEYS = [
-  unquote(process.env.NVIDIA_API_KEY),
-  unquote(process.env.NVIDIA_API_KEY_2),
-  unquote(process.env.NVIDIA_API_KEY_3),
-].filter(Boolean);
-// OpenAI-compatible NIM / integrate.api.nvidia.com
-const NVIDIA_BASE = (process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1').replace(/\/$/, '');
-const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'nvidia/nemotron-3-ultra-550b-a55b';
 const OPENROUTER_KEYS = [
   unquote(process.env.OPENROUTER_API_KEY),
   unquote(process.env.OPENROUTER_API_KEY_2),
@@ -137,8 +83,6 @@ const OPENROUTER_KEYS = [
 ].filter(Boolean);
 const OPENROUTER_BASE = (process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
 const OPENROUTER_MODEL = unquote(process.env.OPENROUTER_MODEL) || 'inclusionai/ling-2.6-flash';
-const ANTHROPIC_KEY = unquote(process.env.ANTHROPIC_API_KEY);
-const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-5';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
 const DRY_RUN = process.env.DRY_RUN === '1';
@@ -161,9 +105,7 @@ const GATE = {
   maxLcsWords: 7, // fail if shared contiguous words >= 8 (no plagiarism)
   max5gramJaccard: 0.12,
   maxRepair: 2,
-  originalitySoft: false,
 };
-const OPENAI_FAST_MODEL = process.env.OPENAI_FAST_MODEL || 'gpt-4o-mini';
 // TURBO scrapes must fail fast — long LinkedIn/HTML retries were killing throughput (~20 ok/min).
 // RE_ENRICH must wait for rich ATS bodies; TURBO's 4s scrape was falling back to
 // the existing ~600-word paraphrase, which then failed rewrite_short.
@@ -244,7 +186,7 @@ function normUrlForProtection(u) {
 
 function isPermanentUnenrichableReason(reason) {
   const r = String(reason || '');
-  if (/429|rate|timeout|timed out|aborted|fetch failed|openrouter|gemini|all_providers_failed|5\d\d/i.test(r)) return false;
+  if (/429|rate|timeout|timed out|aborted|fetch failed|openrouter|5\d\d/i.test(r)) return false;
   return PERMANENT_UNENRICHABLE_REASONS.has(r) || PERMANENT_UNENRICHABLE_REASONS.has(r.split(/[:]/)[0]);
 }
 
@@ -283,11 +225,6 @@ function companyToSlug(company) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
-}
-
-function isRemote(j) {
-  const s = `${j.location || ''} ${(j.tags || []).join(' ')} ${j.title || ''} ${j.job_type || ''}`.toLowerCase();
-  return /\bremote\b|work from home|\bwfh\b|distributed|anywhere|fully remote|remote-first|remote first/.test(s);
 }
 
 /** UTM suffixes + app routes — never emit these as standalone job slug segments. */
@@ -1035,11 +972,6 @@ function prettyJobSlug(title, uniqueSeed, used) {
   return slug;
 }
 
-function isCvinStubText(text) {
-  const t = String(text || '');
-  return /listed on CVin\.Bio|original summary prepared by CVin\.Bio/i.test(t);
-}
-
 function usableSourceText(text) {
   const t = String(text || '').trim();
   if (!t || isCvinStubText(t)) return false;
@@ -1070,17 +1002,6 @@ function jaccard(a, b) {
   let inter = 0;
   for (const x of A) if (B.has(x)) inter++;
   return inter / (A.size + B.size - inter);
-}
-
-function hasCopiedProseSpan(dTok, sTok, maxLcs) {
-  const span = maxLcs + 1;
-  if (dTok.length < span || sTok.length < span) return false;
-  const src = new Set();
-  for (let i = 0; i <= sTok.length - span; i++) src.add(sTok.slice(i, i + span).join(' '));
-  for (let i = 0; i <= dTok.length - span; i++) {
-    if (src.has(dTok.slice(i, i + span).join(' '))) return true;
-  }
-  return false;
 }
 
 /** Word-level longest contiguous common subsequence length. */
@@ -1176,6 +1097,46 @@ ${buildMetaBits(job, extras)}
 
 SOURCE:
 ${String(sourceText || '').slice(0, 24000)}`;
+}
+
+function buildWriterPrompt(job, sheet) {
+  const niceHeader = (sheet?.nice_to_have || []).length ? ', Nice to have' : '';
+  return `Write a cvin.bio job page from the Fact Sheet only.
+You do not have the original posting text.
+Rules:
+- Cover every Fact Sheet item. Invent nothing. Do not change slot values.
+- Use these headers on their own lines, each preceded by a blank line: About the role, What you'll do, Requirements${niceHeader}.
+- About the role: 2–4 prose paragraphs (not bullets). Varied sentence length. Concrete. No brochure tone.
+- What you'll do and Requirements${niceHeader}: markdown bullets starting with "- ". Full sentences. New grammatical subjects. Do not copy 8 words in a row from the notes.
+- Do NOT mirror note order. Regroup by workflow. Merge only when two notes are the same action.
+- Fully paraphrase. Do not insert specifically, notably, meanwhile, or here to dodge overlap.
+- Plain English. Short sentences. No corporate filler.
+- No HTML. No em dashes. No leverage, delve, cutting-edge, exciting opportunity, furthermore, moreover, tapestry.
+- Aim ${MIN_REWRITE_WORDS}–900 words. Output plain text only.
+
+Title: ${job.title}
+Company: ${job.company}
+
+FACT SHEET JSON:
+${JSON.stringify(sheet).slice(0, 18000)}
+
+NOTES (cover these; rewrite into full sentences; do not paste):
+${buildNotesForWriter(job, sheet)}`;
+}
+
+function buildWriterRepairPrompt(job, sheet, draft, failReason) {
+  return `Revise the draft using the Fact Sheet. Fix only this fail_reason: ${failReason}
+Do not invent facts. Do not reintroduce copied phrasing.
+Do not insert specifically, notably, meanwhile, or here to dodge overlap. Rewrite the sentence.
+Keep headers on their own lines: About the role, What you'll do, Requirements.
+About the role = paragraphs. What you'll do and Requirements = "- " bullets.
+Plain English. No HTML. No em dashes. Output the full page plain text.
+
+FACT SHEET JSON:
+${JSON.stringify(sheet).slice(0, 14000)}
+
+DRAFT:
+${String(draft || '').slice(0, 12000)}`;
 }
 
 const ENGAGEMENT_LABELS = {
@@ -1320,12 +1281,29 @@ function buildPracticalNotesBody(sheet) {
 /**
  * Cheap-model safety: the writer only authors About / duties / requirements.
  * Title line, Key facts, tool lists, and Practical notes are assembled in code.
+ * Duty/requirement bodies are forced to "- " bullets so formatJobDescription
+ * renders lists, not a wall of paragraphs.
  */
+function asBulletBlock(body) {
+  const lines = String(body || '')
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (!lines.length) return '';
+  return lines
+    .map((l) => {
+      if (/^[-*•]\s+/.test(l)) return l.replace(/^[•*]\s+/, '- ');
+      if (/^\d+[.)]\s+/.test(l)) return `- ${l.replace(/^\d+[.)]\s+/, '')}`;
+      return `- ${l}`;
+    })
+    .join('\n');
+}
+
 function assembleJobPage(draft, job, sheet) {
   const about = extractSectionBody(draft, 'About the role');
-  const duties = extractSectionBody(draft, "What you'll do");
-  const req = extractSectionBody(draft, 'Requirements');
-  const nice = extractSectionBody(draft, 'Nice to have');
+  const duties = asBulletBlock(extractSectionBody(draft, "What you'll do"));
+  const req = asBulletBlock(extractSectionBody(draft, 'Requirements'));
+  const nice = asBulletBlock(extractSectionBody(draft, 'Nice to have'));
   const keyFacts = buildKeyFactsLines(job, sheet);
   const skills = uniqueTokens(sheet?.skills);
   const systems = uniqueTokens(sheet?.systems);
@@ -1380,132 +1358,6 @@ ${nice.join('\n')}
 `;
   }
   return page.trim();
-}
-
-function targetRewriteWords(sourceText) {
-  const n = descriptionWords(sourceText);
-  if (n < 80) return MIN_REWRITE_WORDS;
-  return Math.max(MIN_REWRITE_WORDS, Math.min(MAX_REWRITE_WORDS, n));
-}
-
-function uniquenessLengthRules(target) {
-  return `Keep every fact, duty, requirement, benefit, process, and section. Do not summarize. Do not add facts.
-Keep names, numbers, tools, products, and pay exactly.
-Rewrite prose: new sentence subjects (The role / This position / You / Candidates). Do not copy 8 prose words in a row.
-Tool lists, product names, and numbers may stay verbatim.
-Length: at least ${target} words (match the source; do not shrink it).
-No HTML. No em dashes. Output only the rewritten posting.`;
-}
-
-function buildUniquenessPrompt(job, sourceText) {
-  const target = targetRewriteWords(sourceText);
-  return `Rewrite this job posting for CVin.Bio. One page, same coverage, different prose.
-${uniquenessLengthRules(target)}
-
-Title: ${job.title}
-Company: ${job.company}
-
-SOURCE:
-${String(sourceText || '').slice(0, 24000)}`;
-}
-
-function buildUniquenessRepairPrompt(job, draft, failReasons, sourceText = '') {
-  const reasons = failReasons.join(', ');
-  const target = targetRewriteWords(sourceText);
-  let extra = 'Keep every SOURCE fact. Do not add facts. Do not copy 8-word spans of prose.';
-  if (/copy_span|ngram_overlap/.test(reasons)) {
-    extra += ' Copied prose remains: rewrite those sentences with a new grammatical subject. Keep names and numbers.';
-  }
-  if (/rewrite_short/.test(reasons)) {
-    extra += ` Too short: restore every SOURCE section until the page has at least ${target} words.`;
-  }
-  if (/rewrite_long/.test(reasons)) {
-    extra += ' Too long: cut repetition only. Do not drop a SOURCE section.';
-  }
-  return `Fix uniqueness: ${reasons}
-
-${extra}
-
-SOURCE:
-${String(sourceText || '').slice(0, 16000)}
-
-DRAFT:
-${String(draft || '').slice(0, 12000)}
-
-Output only the corrected posting.`;
-}
-
-const FACT_TOKENS = new Set(
-  'aws gcp azure sql api sdk ios android http json xml css html python java kotlin scala rust golang react angular vue node docker kubernetes postgres mysql redis kafka spark python3 typescript javascript graphql terraform'.split(
-    ' '
-  )
-);
-
-function isFactToken(tok, extra) {
-  if (!tok) return true;
-  if (extra.has(tok)) return true;
-  if (/\d/.test(tok)) return true;
-  if (FACT_TOKENS.has(tok)) return true;
-  return false;
-}
-
-/** Prose-only tokens so required tool/name lists do not trip the 8-word copy gate. */
-function proseTokens(text, job) {
-  const extra = new Set(normalizeTokens(`${job?.title || ''} ${job?.company || ''}`));
-  return normalizeTokens(text).filter((t) => !isFactToken(t, extra));
-}
-
-function tokenOfPart(part) {
-  return normalizeTokens(part)[0] || String(part || '').toLowerCase();
-}
-
-/** Break remaining copied prose spans in one pass. Tools/names stay. */
-function breakCopiedProse(draft, sourceText, job) {
-  const extra = new Set(normalizeTokens(`${job?.title || ''} ${job?.company || ''}`));
-  const sTok = proseTokens(sourceText, job);
-  const span = GATE.maxLcsWords + 1;
-  const srcSpans = new Set();
-  for (let i = 0; i <= sTok.length - span; i++) srcSpans.add(sTok.slice(i, i + span).join(' '));
-  const pivots = ['specifically', 'notably', 'meanwhile'];
-  const parts = String(draft || '').split(/([^a-zA-Z0-9+]+)/);
-  const out = [];
-  const window = [];
-  let pi = 0;
-  for (const part of parts) {
-    if (!part) continue;
-    const isWord = /[a-zA-Z0-9+]/.test(part);
-    const tok = isWord ? tokenOfPart(part) : '';
-    const isProse = isWord && !isFactToken(tok, extra);
-    if (isProse && window.length === GATE.maxLcsWords && srcSpans.has([...window, tok].join(' '))) {
-      out.push(' ', pivots[pi++ % pivots.length], ' ');
-      window.length = 0;
-    }
-    out.push(part);
-    if (isProse) {
-      window.push(tok);
-      if (window.length > GATE.maxLcsWords) window.shift();
-    }
-  }
-  return out.join('');
-}
-
-/** Last-resort uniqueness if an 8-gram still slips through. */
-function forceBreakEvery(text, job, every) {
-  const extra = new Set(normalizeTokens(`${job?.title || ''} ${job?.company || ''}`));
-  const pivots = ['specifically', 'notably', 'meanwhile'];
-  const parts = String(text || '').split(/([^a-zA-Z0-9+]+)/);
-  const out = [];
-  let n = 0;
-  for (const part of parts) {
-    if (!part) continue;
-    out.push(part);
-    const isWord = /[a-zA-Z0-9+]/.test(part);
-    const tok = isWord ? tokenOfPart(part) : '';
-    if (!isWord || isFactToken(tok, extra)) continue;
-    n += 1;
-    if (n % every === 0) out.push(' ', pivots[(n / every) % 3]);
-  }
-  return out.join('');
 }
 
 function stripCodeFence(text) {
@@ -1572,25 +1424,17 @@ function slotValuesInDraft(sheet, draft) {
   return missing;
 }
 
-function originalityFailReasons(draft, sourceText, sheet, { uniqueOnly, job } = {}) {
+function originalityFailReasons(draft, sourceText, sheet) {
   const reasons = [];
   const maskedDraft = maskSlotSpans(draft, sheet);
   const maskedSrc = maskSlotSpans(sourceText, sheet);
-  const dTok = uniqueOnly ? proseTokens(maskedDraft, job) : normalizeTokens(maskedDraft);
-  const sTok = uniqueOnly ? proseTokens(maskedSrc, job) : normalizeTokens(maskedSrc);
+  const dTok = normalizeTokens(maskedDraft);
+  const sTok = normalizeTokens(maskedSrc);
   if (sTok.length) {
-    const copied = uniqueOnly
-      ? hasCopiedProseSpan(dTok, sTok, GATE.maxLcsWords)
-      : contiguousLcsWords(dTok, sTok) > GATE.maxLcsWords;
-    if (copied) reasons.push('copy_span');
-    // uniqueOnly rule is "no 8-word copied spans". 5-gram Jaccard 0.12 was for
-    // digest extracts and rejects any full-posting rewrite that keeps coverage.
-    if (!uniqueOnly) {
-      const j5 = jaccard(ngrams(dTok, 5), ngrams(sTok, 5));
-      if (j5 > GATE.max5gramJaccard) reasons.push('ngram_overlap');
-    }
+    if (contiguousLcsWords(dTok, sTok) > GATE.maxLcsWords) reasons.push('copy_span');
+    const j5 = jaccard(ngrams(dTok, 5), ngrams(sTok, 5));
+    if (j5 > GATE.max5gramJaccard) reasons.push('ngram_overlap');
   }
-  // Cheap models paste extract notes; those notes often still match the ATS.
   const draftNorm = dTok.join(' ');
   for (const note of [...(sheet?.duties || []), ...(sheet?.must_have || [])]) {
     const nt = normalizeTokens(note);
@@ -1603,36 +1447,31 @@ function originalityFailReasons(draft, sourceText, sheet, { uniqueOnly, job } = 
   return reasons;
 }
 
-function humanityFailReasons(text, { uniqueOnly } = {}) {
+function humanityFailReasons(text) {
   const reasons = [];
   if (/[—–]/.test(text)) reasons.push('slop');
-  // uniqueOnly rewrites the ATS itself; "leverage" in the source is not LLM slop.
+  if (looksLikeMechanicalUniqueness(text)) reasons.push('slop');
+  if (hasMechanicalPivotCorruption(text)) reasons.push('slop');
   if (
-    !uniqueOnly &&
     /leverage|delve into|cutting-edge|exciting opportunity|furthermore|moreover|tapestry|navigate the landscape/i.test(
       text
     )
   ) {
     reasons.push('slop');
   }
-  // Do not treat real parentheticals like "Team: (Growth)" as leaks.
-  if (descriptionHasWriterLeak(text)) reasons.push('rewrite_leak');
   return reasons;
 }
 
-function structureFailReasons(text, { uniqueOnly } = {}) {
-  if (uniqueOnly) return [];
-  const reasons = [];
+function structureFailReasons(text) {
   if (!/About the role/i.test(text) || !/What you'll do/i.test(text) || !/Requirements/i.test(text)) {
-    reasons.push('structure');
+    return ['structure'];
   }
-  return reasons;
+  return [];
 }
 
-function finalizeText(text, { sourceText = '', sheet = null, job = null, uniqueOnly = false } = {}) {
+function finalizeText(text, { sourceText = '', sheet = null, job = null } = {}) {
   text = stripCodeFence(text);
-
-  if (!uniqueOnly && job && sheet) {
+  if (job && sheet) {
     text = assembleJobPage(text, job, sheet);
   } else {
     text = text.replace(/^Engagement:\s*(.+)$/gim, (m, v) => {
@@ -1645,28 +1484,20 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null, uniqueO
   text = String(text || '').replace(/[—–]/g, ', ');
   if (descriptionHasWriterLeak(text)) throw new Error('rewrite_leak');
 
-  const minWords = sourceText
-    ? Math.max(MIN_REWRITE_WORDS, Math.min(MAX_REWRITE_WORDS, Math.floor(descriptionWords(sourceText) * 0.7)))
-    : MIN_REWRITE_WORDS;
-  const maxWords = uniqueOnly
-    ? Math.max(MAX_REWRITE_WORDS, Math.ceil(descriptionWords(sourceText) * 1.2) + 80)
-    : MAX_REWRITE_WORDS;
   const wordCount = text.split(/\s+/).filter(Boolean).length;
-  if (wordCount < minWords) throw new Error('rewrite_short');
-  if (wordCount > maxWords) throw new Error('rewrite_long');
+  if (wordCount < MIN_REWRITE_WORDS) throw new Error('rewrite_short');
+  if (wordCount > MAX_REWRITE_WORDS) throw new Error('rewrite_long');
 
   const fails = [
-    ...humanityFailReasons(text, { uniqueOnly }),
-    ...structureFailReasons(text, { uniqueOnly }),
-    ...originalityFailReasons(text, sourceText, sheet, { uniqueOnly, job }),
+    ...humanityFailReasons(text),
+    ...structureFailReasons(text),
+    ...originalityFailReasons(text, sourceText, sheet),
   ];
   if (sheet) {
     const missingSlots = slotValuesInDraft(sheet, text);
-    // Only fail on salary/years-like slots that are clearly immutable
     const critical = missingSlots.filter((v) => /(\d|\$|\+|years?)/i.test(v));
     if (critical.length) throw new Error('slot_mutation');
   }
-  if (fails.includes('rewrite_leak')) throw new Error('rewrite_leak');
   if (fails.includes('slop')) throw new Error('rewrite_slop');
   if (fails.includes('structure')) throw new Error('rewrite_structure');
   if (fails.includes('copy_span')) throw new Error('copy_span');
@@ -1674,282 +1505,6 @@ function finalizeText(text, { sourceText = '', sheet = null, job = null, uniqueO
   return text.slice(0, 50000);
 }
 
-
-// Per-key(+model) cooldowns so one 429 does not burn the whole key ring
-const geminiKeyCooldown = new Map();
-function geminiCooldownKey(model, key) {
-  return `${model}::${key.slice(0, 12)}`;
-}
-
-async function rewriteWithGemini(prompt, opts = {}) {
-  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
-  if (!GEMINI_KEYS.length) throw new Error('Missing GEMINI_API_KEY');
-  const temperature = opts.temperature ?? 0.4;
-  const maxOutputTokens = opts.maxOutputTokens ?? 8192;
-
-  // Prefer models confirmed working on free/paid keys (avoid 2.0-flash free limit:0).
-  const models = [
-    process.env.GEMINI_MODEL,
-    'gemini-2.0-flash',
-    'gemini-1.5-flash',
-  ].filter(Boolean);
-  let lastErr = '';
-  let data = null;
-
-  for (const model of models) {
-    for (const key of GEMINI_KEYS) {
-      const cdKey = geminiCooldownKey(model, key);
-      const until = geminiKeyCooldown.get(cdKey) || 0;
-      if (Date.now() < until) continue;
-
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-      try {
-        // Keep generationConfig simple — thinkingConfig 400s on some flash variants
-        const r = await jfetch(
-          url,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: {
-                temperature,
-                maxOutputTokens,
-                topP: 0.9,
-              },
-            }),
-          },
-          90000
-        );
-        if (r.ok) {
-          data = await r.json();
-          break;
-        }
-        const err = await r.text();
-        lastErr = `gemini_${model}_${r.status}:${err.slice(0, 180)}`;
-        if (r.status === 429) {
-          // key-specific cooldown; try other keys / models
-          geminiKeyCooldown.set(cdKey, Date.now() + 45_000);
-          continue;
-        }
-        if (r.status === 404) {
-          // model unavailable for this key — skip remaining keys for this model name
-          geminiKeyCooldown.set(cdKey, Date.now() + 600_000);
-          break;
-        }
-      } catch (e) {
-        lastErr = `gemini_${model}_err:${String(e.message || e).slice(0, 100)}`;
-      }
-    }
-    if (data) break;
-  }
-
-  if (!data) throw new Error(lastErr || 'gemini_failed');
-  const parts = data.candidates?.[0]?.content?.parts || [];
-  const text = parts.map((p) => p.text || '').join('');
-  if (!text.trim()) {
-    const reason = data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'empty';
-    throw new Error(`gemini_empty_${reason}`);
-  }
-  return stripCodeFence(text);
-}
-
-const cohereKeyIndex = new Map();
-const groqKeyIndex = new Map();
-
-async function rewriteWithCohere(prompt, opts = {}) {
-  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
-  if (!COHERE_KEYS.length) throw new Error('Missing COHERE_API_KEY');
-  const temperature = opts.temperature ?? 0.4;
-
-  const models = ['command-r-plus', 'command-r', 'command-light'];
-  let lastErr = '';
-
-  for (const model of models) {
-    for (const key of COHERE_KEYS) {
-      try {
-        const r = await jfetch('https://api.cohere.ai/v1/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${key}`,
-          },
-          body: JSON.stringify({
-            model,
-            message: prompt,
-            temperature,
-            max_tokens: opts.maxOutputTokens ?? 4096,
-          }),
-        }, 45000);
-        if (r.ok) {
-          const data = await r.json();
-          const text = data.text || '';
-          return stripCodeFence(text);
-        }
-        const err = await r.text();
-        lastErr = `cohere_${model}_${r.status}:${err.slice(0, 180)}`;
-        if (r.status === 429) await sleep(1000);
-      } catch (e) {
-        lastErr = `cohere_${model}_err:${String(e.message||e).slice(0, 100)}`;
-      }
-    }
-  }
-
-  throw new Error(lastErr || 'cohere_failed');
-}
-
-async function rewriteWithGroq(prompt, opts = {}) {
-  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
-  if (!GROQ_KEYS.length) throw new Error('Missing GROQ_API_KEY');
-  const temperature = opts.temperature ?? 0.4;
-
-  const models = ['llama-3.3-70b-versatile', 'llama-3.1-70b-versatile', 'mixtral-8x7b-32768'];
-  let lastErr = '';
-
-  for (const model of models) {
-    for (const key of GROQ_KEYS) {
-      try {
-        const r = await jfetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${key}`,
-          },
-          body: JSON.stringify({
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature,
-            max_tokens: opts.maxOutputTokens ?? 4096,
-            top_p: 0.9,
-          }),
-        }, 45000);
-        if (r.ok) {
-          const data = await r.json();
-          const text = data.choices?.[0]?.message?.content || '';
-          return stripCodeFence(text);
-        }
-        const err = await r.text();
-        lastErr = `groq_${model}_${r.status}:${err.slice(0, 180)}`;
-        if (r.status === 429) await sleep(1000);
-      } catch (e) {
-        lastErr = `groq_${model}_err:${String(e.message||e).slice(0, 100)}`;
-      }
-    }
-  }
-
-  throw new Error(lastErr || 'groq_failed');
-}
-
-async function rewriteWithOpenAI(prompt, opts = {}) {
-  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
-  if (!OPENAI_KEYS.length) throw new Error('Missing OPENAI_API_KEY');
-  const temperature = opts.temperature ?? (TURBO ? 0.3 : 0.4);
-  // TURBO: mini only (fast). Normal: mini then full.
-  const models = TURBO ? [OPENAI_FAST_MODEL] : [OPENAI_FAST_MODEL, 'gpt-4o'];
-  let lastErr = '';
-
-  for (const model of models) {
-    for (const key of OPENAI_KEYS) {
-      try {
-        const r = await jfetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${key}`,
-          },
-          body: JSON.stringify({
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature,
-            max_tokens: opts.maxOutputTokens ?? 4096,
-            top_p: 0.9,
-          }),
-        }, TURBO ? 60000 : 45000);
-        if (r.ok) {
-          const data = await r.json();
-          const text = data.choices?.[0]?.message?.content || '';
-          return stripCodeFence(text);
-        }
-        const err = await r.text();
-        lastErr = `openai_${model}_${r.status}:${err.slice(0, 180)}`;
-        // TURBO: fail over to Gemini quickly on 429 instead of burning the whole key ring
-        if (r.status === 429) {
-          if (TURBO) throw new Error(lastErr);
-          await sleep(1000);
-        }
-      } catch (e) {
-        lastErr = `openai_${model}_err:${String(e.message||e).slice(0, 100)}`;
-        if (TURBO && /429/.test(lastErr)) throw new Error(lastErr);
-      }
-    }
-  }
-
-  throw new Error(lastErr || 'openai_failed');
-}
-
-/** NVIDIA NIM — OpenAI-compatible chat completions (Nemotron). */
-let nvidiaNextAllowedAt = 0;
-async function rewriteWithNvidia(prompt, opts = {}) {
-  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
-  if (!NVIDIA_KEYS.length) throw new Error('Missing NVIDIA_API_KEY');
-  const temperature = opts.temperature ?? (TURBO ? 0.3 : 0.4);
-  // Prefer configured model (e.g. nvidia/nemotron-3-ultra-550b-a55b); optional fallbacks
-  const models = TURBO
-    ? [NVIDIA_MODEL]
-    : [NVIDIA_MODEL, 'meta/llama-3.3-70b-instruct', 'meta/llama-3.1-70b-instruct'];
-  let lastErr = '';
-
-  // Global min spacing across workers on this machine (~1 rps soft cap)
-  const waitMs = nvidiaNextAllowedAt - Date.now();
-  if (waitMs > 0) await sleep(Math.min(waitMs, 15_000));
-  nvidiaNextAllowedAt = Date.now() + 1200;
-
-  for (const model of models) {
-    for (const key of NVIDIA_KEYS) {
-      try {
-        const r = await jfetch(`${NVIDIA_BASE}/chat/completions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${key}`,
-          },
-          body: JSON.stringify({
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature,
-            max_tokens: opts.maxOutputTokens ?? 4096,
-            top_p: 0.9,
-            stream: false,
-            // Nemotron ultra can emit reasoning; disable so `content` is clean job text
-            chat_template_kwargs: { enable_thinking: false },
-          }),
-        }, TURBO ? 120000 : 90000);
-        if (r.ok) {
-          const data = await r.json();
-          const msg = data.choices?.[0]?.message || {};
-          // Prefer final content; never use reasoning_content as the JD body
-          const text = (msg.content || '').trim() || (msg.reasoning_content || '').trim();
-          return stripCodeFence(text);
-        }
-        const err = await r.text();
-        lastErr = `http_${r.status}:${err.slice(0, 120)}`;
-        // Rate limited — back off then throw so caller can skip this job
-        if (r.status === 429 || r.status === 503) {
-          nvidiaNextAllowedAt = Date.now() + 20_000;
-          await sleep(2000);
-          throw new Error(lastErr);
-        }
-        if (r.status >= 500) await sleep(TURBO ? 400 : 800);
-      } catch (e) {
-        const msg = String(e.message || e);
-        // Don't double-prefix if we already threw lastErr
-        lastErr = msg.startsWith('http_') || msg.startsWith('rewrite_') ? msg.slice(0, 140) : `err:${msg.slice(0, 120)}`;
-        if (/429|503|rate/i.test(lastErr)) throw new Error(lastErr);
-      }
-    }
-  }
-  throw new Error(lastErr || 'nvidia_failed');
-}
 
 /** OpenRouter only. Default inclusionai/ling-2.6-flash; override OPENROUTER_MODEL. */
 const openrouterKeyCooldown = new Map();
@@ -1966,7 +1521,6 @@ async function openrouterCall(key, model, prompt, temperature, maxTokens) {
     temperature,
     max_tokens: maxTokens,
     top_p: 0.9,
-    // Qwen3.7 Flash thinks by default; thinking ate max_tokens and left content empty.
     reasoning: { enabled: false, effort: 'none' },
   });
   return jfetch(`${OPENROUTER_BASE}/chat/completions`, { method: 'POST', headers, body }, TURBO ? 90000 : 60000);
@@ -1980,12 +1534,8 @@ async function rewriteWithOpenRouter(prompt, opts = {}) {
   const maxRetries = Math.max(2, Number(process.env.OR_RETRIES || 8));
   let lastErr = '';
 
-  // Each request retries in place with per-key backoff so the provider's
-  // throttling paces throughput without hard-failing the batch. When the key
-  // is cooled, WAIT for release instead of skipping — otherwise the shared
-  // cooldown map makes every concurrent call fail with empty lastErr.
   for (let attempt = 0; attempt < maxRetries; attempt++) {
-    const key = OPENROUTER_KEYS[0];
+    const key = OPENROUTER_KEYS[attempt % OPENROUTER_KEYS.length];
     const cdKey = `${model}::${key.slice(0, 12)}`;
     const until = openrouterKeyCooldown.get(cdKey) || 0;
     const wait = until - Date.now();
@@ -2027,72 +1577,32 @@ async function rewriteWithOpenRouter(prompt, opts = {}) {
   throw new Error(lastErr || 'openrouter_failed');
 }
 
-async function rewriteWithAnthropic(prompt, opts = {}) {
-  throw new Error('provider_disabled: openrouter inclusionai/ling-2.6-flash only');
-  if (!ANTHROPIC_KEY) throw new Error('Missing ANTHROPIC_API_KEY');
-  const temperature = opts.temperature ?? 0.4;
-
-  const models = [ANTHROPIC_MODEL, 'claude-sonnet-4-5'];
-  let lastErr = '';
-  for (const model of models) {
-    try {
-      const r = await jfetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': ANTHROPIC_KEY,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          model,
-          max_tokens: opts.maxOutputTokens ?? 4096,
-          temperature,
-          messages: [{ role: 'user', content: prompt }],
-        }),
-      }, 45000);
-      if (r.ok) {
-        const data = await r.json();
-        const text = (data.content || []).map((p) => p.text || '').join('');
-        return stripCodeFence(text);
-      }
-      const err = await r.text();
-      lastErr = `anthropic_${model}_${r.status}:${err.slice(0, 180)}`;
-      if (r.status === 429) await sleep(1000);
-    } catch (e) {
-      lastErr = `anthropic_${model}_err:${String(e.message||e).slice(0, 100)}`;
-    }
-  }
-  throw new Error(lastErr || 'anthropic_failed');
-}
-
-// AI rewrite is OpenRouter only. Default inclusionai/ling-2.6-flash.
-function buildProviderList() {
-  if (!OPENROUTER_KEYS.length) return [];
-  return [['openrouter', rewriteWithOpenRouter]];
-}
-
-async function completeWithProviders(prompt, opts = {}) {
-  if (!OPENROUTER_KEYS.length) {
-    throw new Error('No AI providers configured (need OPENROUTER_API_KEY)');
-  }
-  return rewriteWithOpenRouter(prompt, opts);
-}
-
-/** True when a prior SKIP_LLM run inserted "here" every 8 tokens. Those pages are still copied ATS. */
+/** True when a prior run inserted "here" / specifically / notably / meanwhile to pass the copy gate. Those pages are still copied ATS. */
 function looksLikeMechanicalUniqueness(text) {
-  const words = descriptionWords(text);
+  const raw = String(text || '');
+  const words = descriptionWords(raw);
   if (words < 200) return false;
-  const here = (String(text || '').match(/\bhere\b/gi) || []).length;
-  return here >= 15 && here / words >= 0.08;
+  const here = (raw.match(/\bhere\b/gi) || []).length;
+  const pivots = (raw.match(/\b(specifically|notably|meanwhile)\b/gi) || []).length;
+  const pivotCycle = (
+    raw.match(/\bspecifically\b[\s\S]{0,120}?\bnotably\b[\s\S]{0,120}?\bmeanwhile\b/gi) || []
+  ).length;
+  if (here >= 15 && here / words >= 0.08) return true;
+  if (pivots >= 8 && pivots / words >= 0.01) return true;
+  if (pivotCycle >= 2) return true;
+  return false;
 }
 
 /**
- * Scrape-bound uniqueness: break copied prose on the full ATS body.
- * Ling cannot unique-rewrite 2k words in one shot; waiting on it blocks the backlog.
+ * ATS → Fact Sheet → sealed write → A/O/H gates → formatted page.
+ * Mechanical pivot insertion is not a publish path.
  */
 async function rewriteJobPage(job, sourceText, extras) {
   if (!ALLOW_AI_ENRICH) {
     throw new Error('manual_only');
+  }
+  if (!OPENROUTER_KEYS.length) {
+    throw new Error('Missing OPENROUTER_API_KEY');
   }
   if (!usableSourceText(sourceText)) {
     throw new Error('source_thin');
@@ -2101,21 +1611,39 @@ async function rewriteJobPage(job, sourceText, extras) {
     throw new Error('source_thin');
   }
 
-  const ctx = { sourceText, sheet: null, job, uniqueOnly: true };
-  const maxWords = Math.max(MAX_REWRITE_WORDS, Math.ceil(descriptionWords(sourceText) * 1.2) + 80);
-  const fit = (text) => {
-    const words = String(text || '').split(/\s+/).filter(Boolean);
-    return words.length > maxWords ? words.slice(0, maxWords).join(' ') : text;
-  };
-  let draft = fit(breakCopiedProse(sourceText, sourceText, job));
-  try {
-    return finalizeText(draft, ctx);
-  } catch (e) {
-    const msg = String(e.message || e);
-    if (!/copy_span|rewrite_short|rewrite_long/.test(msg)) throw e;
-    draft = fit(forceBreakEvery(sourceText, job, GATE.maxLcsWords));
-    return finalizeText(draft, ctx);
+  const extractRaw = await rewriteWithOpenRouter(buildExtractPrompt(job, sourceText, extras), {
+    temperature: 0.1,
+    maxOutputTokens: 4096,
+  });
+  const sheet = parseFactSheet(extractRaw);
+  if (!factSheetIsIndexable(sheet)) {
+    throw new Error('source_thin');
   }
+
+  const ctx = { sourceText, sheet, job };
+  let draft = '';
+  let lastErr = 'rewrite_failed';
+  for (let attempt = 0; attempt <= GATE.maxRepair; attempt++) {
+    const prompt =
+      attempt === 0
+        ? buildWriterPrompt(job, sheet)
+        : buildWriterRepairPrompt(job, sheet, draft, lastErr);
+    draft = await rewriteWithOpenRouter(prompt, {
+      temperature: attempt === 0 ? (TURBO ? 0.35 : 0.4) : 0.25,
+      maxOutputTokens: 4096,
+    });
+    try {
+      const text = finalizeText(draft, ctx);
+      const stored = normalizeJobDescriptionForStorage(text);
+      if (!stored) throw new Error('rewrite_leak');
+      if (!rewriteMeetsPublishFloor(stored, job)) throw new Error('rewrite_formats_short');
+      return stored;
+    } catch (e) {
+      lastErr = String(e.message || e);
+      if (attempt === GATE.maxRepair) throw e;
+    }
+  }
+  throw new Error(lastErr);
 }
 
 /** Write curl/ATS source pack for manual Fact Sheet → rewrite (no API). */
@@ -2148,15 +1676,6 @@ function enqueueManualPack(job, scraped) {
       '\n'
   );
   return metaPath;
-}
-
-function hashString(s) {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
 }
 
 function loadState() {
@@ -2372,7 +1891,7 @@ async function fetchJobsByIds(ids) {
   const chunks = [];
   for (let i = 0; i < ids.length; i += chunkSize) chunks.push(ids.slice(i, i + chunkSize));
   await mapPool(chunks, 24, async (chunk) => {
-    const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,dedup_hash,source,published_at,created_at&id=in.(${chunk.join(',')})`;
+    const url = `${U}/rest/v1/jobs?select=id,title,company,company_key,location,tags,job_type,salary,apply_url,external_id,description,dedup_hash,source,published_at,created_at&id=in.(${chunk.join(',')})`;
     const r = await jfetch(url, { headers }, 120000);
     const rows = await r.json();
     if (Array.isArray(rows)) out.push(...rows);
@@ -2387,14 +1906,22 @@ async function runOneBatch(batchNum, state, done) {
 
   const priorityFile = process.env.PRIORITY_IDS_FILE;
   let prioritySet = null;
-  if (priorityFile && existsSync(priorityFile)) {
-    prioritySet = new Set(
-      readFileSync(priorityFile, 'utf8')
-        .split(/\s+/)
-        .map((s) => s.trim())
-        .filter(Boolean)
-    );
-    console.log(`Priority filter: ${prioritySet.size} ids from ${priorityFile}`);
+  if (priorityFile) {
+    if (existsSync(priorityFile)) {
+      prioritySet = new Set(
+        readFileSync(priorityFile, 'utf8')
+          .split(/\s+/)
+          .map((s) => s.trim())
+          .filter(Boolean)
+      );
+      console.log(`Priority filter: ${prioritySet.size} ids from ${priorityFile}`);
+    } else {
+      prioritySet = new Set();
+      console.log(`Priority file missing (${priorityFile}) — nothing to enrich`);
+    }
+    if (!prioritySet.size) {
+      return { attempted: 0, ok: 0, skip: 0, fail: 0, reasons: {}, complete: true };
+    }
   }
 
   console.log('Loading jobs…');
@@ -2449,7 +1976,6 @@ async function runOneBatch(batchNum, state, done) {
     })
     .filter((j) => {
       if (prioritySet) return true;
-      if (isFullyEnrichedJob(j) && !looksLikeMechanicalUniqueness(j.description)) return false;
       const kind = classifyApplyUrl(j.apply_url).kind;
       if (kind === 'none') return false;
       if (kind === 'skip' && (j.description || '').length < 500) return false;
@@ -2484,8 +2010,8 @@ async function runOneBatch(batchNum, state, done) {
   let consecutiveProviderFails = 0;
   const tBatch = Date.now();
 
-  // One pool for the loaded queue — serial inner waves waited on the slowest scrape.
-  const waveSize = queue.length || 1;
+  // Process in concurrency-sized waves so one slow scrape does not block the whole batch.
+  const waveSize = Math.max(CONCURRENCY, 32);
   for (let start = 0; start < queue.length && stats.ok < BATCH_SIZE; start += waveSize) {
     // Circuit breaker: providers are 429-dead — stop burning the rest of the queue this batch
     if (consecutiveProviderFails >= 8 && stats.ok === 0) {
@@ -2504,7 +2030,7 @@ async function runOneBatch(batchNum, state, done) {
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
         state.processed[job.id] = { status: 'fail', reason };
         done.add(job.id);
-        if (/429|rate|all_providers_failed/i.test(reason)) consecutiveProviderFails++;
+        if (/429|rate|openrouter/i.test(reason)) consecutiveProviderFails++;
         else consecutiveProviderFails = 0;
       }
       if (attempted > 0 && attempted % 5 === 0) {
@@ -2666,7 +2192,7 @@ async function runOneBatch(batchNum, state, done) {
           if (isPermanentUnenrichableReason(reason)) {
             if (await purgeJobRow(job)) console.log(`[purge] ${reason} ${job.id}`);
           }
-          if (/429|rate|all_providers_failed/i.test(reason)) consecutiveProviderFails++;
+          if (/429|rate|openrouter/i.test(reason)) consecutiveProviderFails++;
           else consecutiveProviderFails = 0;
           if (!RE_ENRICH) done.add(job.id);
           return;
@@ -2723,15 +2249,7 @@ async function runOneBatch(batchNum, state, done) {
       try {
         if (!DRY_RUN) {
           const storedDescription = normalizeJobDescriptionForStorage(description);
-          if (!storedDescription || descriptionHasWriterLeak(storedDescription)) {
-            throw new Error('rewrite_leak');
-          }
-          if (descriptionWords(storedDescription) < MIN_REWRITE_WORDS) {
-            throw new Error('rewrite_short');
-          }
-          if (!rewriteMeetsPublishFloor(storedDescription, job)) {
-            throw new Error('rewrite_formats_short');
-          }
+          if (!storedDescription) throw new Error('rewrite_leak');
           const tags = Array.isArray(job.tags) ? [...job.tags] : [];
           if (!tags.includes('remote')) tags.push('remote');
           if (!tags.includes('curated-jd')) tags.push('curated-jd');
@@ -2880,8 +2398,7 @@ async function main() {
     flush();
     process.exit(0);
   });
-  // Inherit sticky done/skips from the primary batch-1 state file
-  const globalStatePath = resolve(__dirname, 'enrich-remote-jd-state.json');
+  // Inherit sticky done/skips from sibling worker state files
   try {
     for (const name of readdirSync(__dirname)) {
       if (!/^enrich-remote-jd-state(?:-w\d+)?\.json$/.test(name)) continue;

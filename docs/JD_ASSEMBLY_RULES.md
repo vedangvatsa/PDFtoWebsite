@@ -46,7 +46,7 @@ Full curated pages must follow the paraphrase rulebook.
 
 ### Index vs render
 - **Uncurated / no curl body:** original company about (or a one-line hiring note). Never process/queue copy. **noindex.**
-- **Low-quality apply hosts** (LinkedIn, jobviewtrack, etc.): hidden from board/company lists unless `curated-jd`.
+- **Low-quality apply hosts** (LinkedIn, jobviewtrack, etc.): not ingested; leftover rows are apply-out cards, never 200 job pages.
 - **Passed gates:** full assembled body, tag `curated-jd`, eligible for sitemap/IndexNow only if `wordCount >= 600` and uniqueness gates pass.
 
 ### Note on DB auto-tag
@@ -58,13 +58,8 @@ Full curated pages must follow the paraphrase rulebook.
 
 ```
 1. Ingest job row (title, company, location, salary, tags, apply_url, …)
-2. Curl apply_url / ATS HTML (and Archive fallback if you already use it)
-3. Fact extract → JobFacts JSON (no prose)
-4. Map title → role_family
-5. Assemble page from libraries + facts + evergreen + related links
-6. Run gates (§7)
-7. PASS → upsert description, curated-jd, pretty slug, IndexNow
-   FAIL → short stub only, noindex, log fail_reason
+2. Same-run enrich (curl apply_url → uniqueness rewrite → curated-jd if gates pass)
+3. Unenriched leftovers stay listed as apply-out cards (no on-site 200)
 ```
 
 Curl frequency: reuse existing sync cadence. Do not re-shuffle variant IDs on every run if facts unchanged (crawler stability).
