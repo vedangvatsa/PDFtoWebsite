@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import TemplateModern from './templates/modern-creative';
+import TemplateModern from '../templates/modern-creative';
 import type { ServerProfileData } from '@/lib/supabase-server';
 import { createClient } from '@/utils/supabase/client';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
