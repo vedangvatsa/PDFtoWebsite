@@ -1935,7 +1935,10 @@ async function runOneBatch(batchNum, state, done) {
       const pending = ids.filter((id) => {
         const st = state.processed[id];
         if (!st) return true;
-        if (st.status === 'ok' || st.status === 'skip') return false;
+        // A continuous priority pass must not retry permanent/provider
+        // failures forever. Explicit retry runs can start with a fresh state
+        // or use RETRY_ONLY; this pass should drain and terminate.
+        if (st.status === 'ok' || st.status === 'skip' || st.status === 'fail') return false;
         return true;
       });
       const wave = pending.slice(0, Math.max(BATCH_SIZE, CONCURRENCY * 3, 500));
