@@ -862,6 +862,7 @@ function isMetaSectionHeading(line: string): boolean {
   if (/^Benefits$/i.test(t)) return true;
   if (/^Nice to have$/i.test(t)) return true;
   if (/^Must have$/i.test(t)) return true;
+  if (/^(?:Anthropic Fellows Program overview|What to expect|Interview process|Fellows workstreams|AI Safety Fellows|AI Security Fellows|ML Systems & Performance Fellows|Reinforcement Learning Fellows|Economics & Societal Impacts Fellows|Mentors, research areas,? & past projects|Unique candidate criteria)$/i.test(t)) return true;
   if (/^Open application window$/i.test(t)) return true;
   if (/^Placement groups$/i.test(t)) return true;
   if (/^Selection(?:\s+process)?$/i.test(t)) return true;

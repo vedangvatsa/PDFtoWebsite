@@ -116,6 +116,17 @@ describe('formatJobDescription numbered requirements', () => {
     assert.match(html, /<h4>5\. SOC Platform/);
     assert.doesNotMatch(html, /<ol>/);
   });
+
+  it('turns fellowship subsection labels into headings', () => {
+    const html = formatJobDescription(
+      '<p>Anthropic Fellows Program overview</p><p>Research details.</p>' +
+      '<p>AI Safety Fellows</p><ul><li>Mentorship</li></ul>' +
+      '<p>Unique candidate criteria</p><ul><li>Research experience</li></ul>'
+    );
+    assert.match(html, /<h3>Anthropic Fellows Program overview<\/h3>/);
+    assert.match(html, /<h3>AI Safety Fellows<\/h3>/);
+    assert.match(html, /<h3>Unique candidate criteria<\/h3>/);
+  });
 });
 
 describe('formatJobDescription mechanical pivot slop', () => {
