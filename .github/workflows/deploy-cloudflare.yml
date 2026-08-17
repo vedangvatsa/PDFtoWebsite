@@ -183,7 +183,8 @@ jobs:
           node .github/scripts/google-indexing.mjs
           git add -f .github/scripts/google-indexing-state.json
           if ! git diff --staged --quiet; then
-            git commit -m "chore: advance Google indexing state [skip ci]"
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "chore: advance Google indexing state [skip ci]"
             for i in 1 2 3 4 5; do
               git pull --rebase origin main && git push && break || sleep $((i * 3))
             done
