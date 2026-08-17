@@ -231,6 +231,14 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
     assert.match(file, /SKIP_ENRICH/);
   });
 
+  it('jobs-sync rejects unverifiable or older-than-30-day postings before insert', () => {
+    const file = src('.github/scripts/jobs-sync.mjs');
+    assert.match(file, /function normalizePublishedAt/);
+    assert.match(file, /function isFreshPublishedAt/);
+    assert.match(file, /if \(!isFreshPublishedAt\(j\.published_at\)\) return false/);
+    assert.match(file, /30 \* 24 \* 60 \* 60 \* 1000/);
+  });
+
   it('enrich rewrite is OpenRouter fact-sheet write with formatted sections', () => {
     const file = src('.github/scripts/enrich-remote-job-descriptions.mjs');
     const start = file.indexOf('async function rewriteJobPage');
@@ -302,6 +310,21 @@ describe('Telegram / IndexNow do not advertise uncurated URLs', () => {
     assert.match(file, /jobPublicPath/);
     assert.doesNotMatch(file, /slice\(0,\s*8\)/);
     assert.match(file, /NEXT_PUBLIC_SUPABASE_URL \|\| process\.env\.SUPABASE_URL/);
+  });
+});
+
+describe('mechanical pivot slop cleanup', () => {
+  it('formatJobDescription strips copy-gate pivot slop at render', () => {
+    const jd = src('src/lib/job-description.ts');
+    assert.match(jd, /stripMechanicalPivotSlop/);
+  });
+
+  it('storage normalize + enrich reject mechanical pivot corruption', () => {
+    const norm = src('.github/scripts/lib/normalize-job-description.mjs');
+    const enrich = src('.github/scripts/enrich-remote-job-descriptions.mjs');
+    assert.match(norm, /stripMechanicalPivotSlop/);
+    assert.match(enrich, /hasMechanicalPivotCorruption/);
+    assert.ok(existsSync(join(root, '.github/scripts/scrub-mechanical-pivot-slop.mjs')));
   });
 });
 

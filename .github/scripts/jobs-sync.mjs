@@ -170,8 +170,7 @@ function normalizeJobType(raw) {
 }
 
 // Aggregators sometimes send display labels such as "Posted 2 Days Ago".
-// Those are not PostgreSQL timestamps; discard them rather than failing a
-// whole insert batch. The listing window will still use created_at.
+// Those are not PostgreSQL timestamps and cannot prove freshness.
 function normalizePublishedAt(raw) {
   if (!raw) return null;
   const value = String(raw).trim();
@@ -180,6 +179,15 @@ function normalizePublishedAt(raw) {
   }
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+}
+
+const JOB_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
+function isFreshPublishedAt(raw, now = Date.now()) {
+  const publishedAt = normalizePublishedAt(raw);
+  if (!publishedAt) return false;
+  const age = now - Date.parse(publishedAt);
+  return age >= 0 && age <= JOB_MAX_AGE_MS;
 }
 
 async function fetchExistingKeys() {
@@ -2874,6 +2882,9 @@ function filterAndNormalize(allJobs) {
 
   const validJobs = allJobs.filter(j => {
     if (!j.title || !j.company || !j.apply_url) return false;
+    // Only ingest jobs with a verifiable posting date inside the 30-day
+    // listing window. Unknown/relative dates are not safe to publish.
+    if (!isFreshPublishedAt(j.published_at)) return false;
     applyCanonicalCompany(j);
     if (j.company.includes('...') || j.company.length <= 2) return false;
     if (isRegistryCompanyLabel(j.company)) return false;
