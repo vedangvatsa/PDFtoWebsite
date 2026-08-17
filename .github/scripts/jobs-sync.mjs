@@ -169,6 +169,19 @@ function normalizeJobType(raw) {
   return raw;
 }
 
+// Aggregators sometimes send display labels such as "Posted 2 Days Ago".
+// Those are not PostgreSQL timestamps; discard them rather than failing a
+// whole insert batch. The listing window will still use created_at.
+function normalizePublishedAt(raw) {
+  if (!raw) return null;
+  const value = String(raw).trim();
+  if (!value || /^\s*(?:posted\s+)?\d+\s+(?:day|days|hour|hours|week|weeks)\s+ago\s*$/i.test(value)) {
+    return null;
+  }
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+}
+
 async function fetchExistingKeys() {
   // Free-tier Nano: never full-scan the entire jobs table (that alone can OOM the project).
   // Only load recent keys client-side; DB unique constraints still block true dupes on insert.
@@ -2687,6 +2700,10 @@ async function enrichInsertedJobs(sinceIso) {
         ALLOW_AI_ENRICH: '1',
         PRIORITY_IDS_FILE: idsPath,
         TURBO: process.env.TURBO || '1',
+        // A priority file can contain thousands of rows. Without
+        // CONTINUOUS, enrich-remote-jd processes only the first batch and
+        // exits, leaving the rest apply-out.
+        CONTINUOUS: '1',
         BATCH_SIZE: process.env.ENRICH_BATCH_SIZE || '400',
         CONCURRENCY: process.env.ENRICH_CONCURRENCY || '12',
         JOB_MAX_AGE_DAYS: process.env.JOB_MAX_AGE_DAYS || '30',
@@ -2879,6 +2896,7 @@ function filterAndNormalize(allJobs) {
     if (match) t = match[1].trim();
     t = t.replace(/\s+/g, ' ').trim();
     job.title = t;
+    job.published_at = normalizePublishedAt(job.published_at);
   }
 
   // Stamp synced_at
