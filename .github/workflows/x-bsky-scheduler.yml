@@ -125,7 +125,7 @@ jobs:
           THREADS_ACCESS_TOKEN:  ${{ secrets.THREADS_ACCESS_TOKEN }}
         run: |
           node .github/scripts/meta-post.mjs
-          git add -f .github/scripts/meta-state.json
+          git add -f .github/scripts/meta-state.json .github/scripts/threads-performance.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: advance Meta post index [skip ci]"
             for i in 1 2 3 4 5; do

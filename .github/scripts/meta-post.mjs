@@ -8,12 +8,18 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {
+  applyPostsToPerformance,
+  emptyPerformance,
+  pickThreadsCandidate,
+} from './lib/threads-queue.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ── Config ────────────────────────────────────────────────────────────────
 const CONTENT_FILE = path.join(__dirname, 'x-content.json');
 const STATE_FILE   = path.join(__dirname, 'meta-state.json');
+const PERF_FILE    = path.join(__dirname, 'threads-performance.json');
 const IMAGES_DIR   = path.join(__dirname, '../images');
 
 const META_PAGE_ID    = process.env.META_PAGE_ID;
@@ -35,6 +41,19 @@ function loadState() {
 
 function saveState(state) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+}
+
+function loadPerformance() {
+  try {
+    return JSON.parse(fs.readFileSync(PERF_FILE, 'utf-8'));
+  } catch {
+    return emptyPerformance();
+  }
+}
+
+function savePerformance(perf) {
+  perf.updatedAt = new Date().toISOString();
+  fs.writeFileSync(PERF_FILE, JSON.stringify(perf, null, 2));
 }
 
 // ── Facebook Page Post (returns public image URL for IG/Threads) ──────────
@@ -204,18 +223,42 @@ async function postToInstagram(text, mediaUrl, isVideo = false) {
   }
 }
 
-// ── Fetch recent Threads posts for dedup ──────────────────────────────────
-async function fetchRecentThreadsTexts() {
-  if (!THREADS_USER_ID || !THREADS_TOKEN) return [];
+// ── Fetch recent Threads posts for dedup + live scoring ───────────────────
+async function fetchRecentThreads() {
+  if (!THREADS_USER_ID || !THREADS_TOKEN) return { prefixes: [], posts: [] };
   try {
     const res = await fetch(
-      `https://graph.threads.net/v1.0/${THREADS_USER_ID}/threads?fields=id,text&limit=25&access_token=${THREADS_TOKEN}`
+      `https://graph.threads.net/v1.0/${THREADS_USER_ID}/threads?fields=id,text,timestamp&limit=25&access_token=${THREADS_TOKEN}`
     );
-    if (!res.ok) return [];
+    if (!res.ok) return { prefixes: [], posts: [] };
     const data = await res.json();
-    return (data.data || []).map(p => (p.text || '').slice(0, 120).toLowerCase().trim());
+    const threads = data.data || [];
+    const posts = [];
+    for (const thread of threads) {
+      const post = {
+        text: thread.text || '',
+        timestamp: thread.timestamp,
+        likes: 0, views: 0, replies: 0, reposts: 0, quotes: 0, shares: 0,
+      };
+      try {
+        const ins = await fetch(
+          `https://graph.threads.net/v1.0/${thread.id}/insights?metric=views,likes,replies,reposts,quotes,shares&access_token=${THREADS_TOKEN}`
+        );
+        if (ins.ok) {
+          const insData = await ins.json();
+          for (const m of (insData.data || [])) {
+            post[m.name] = m.values?.[0]?.value || 0;
+          }
+        }
+      } catch { /* insights optional; dedup still works */ }
+      posts.push(post);
+    }
+    return {
+      prefixes: threads.map(p => (p.text || '').slice(0, 120).toLowerCase().trim()),
+      posts,
+    };
   } catch {
-    return [];
+    return { prefixes: [], posts: [] };
   }
 }
 
@@ -318,17 +361,17 @@ async function main() {
   const igIdx = state.instagram?.index || 0;
   const thIdx = state.threads?.index || 0;
 
-  if (fbIdx >= items.length && igIdx >= items.length && thIdx >= items.length) {
-    console.log(`✅ All ${items.length} engagement posts published on all Meta platforms. Done.`);
+  const hasFacebook = !!(META_PAGE_ID && META_PAGE_TOKEN);
+  const hasInstagram = !!(META_IG_USER_ID && META_PAGE_TOKEN);
+  const hasThreads = !!(THREADS_USER_ID && THREADS_TOKEN);
+
+  // Threads keeps going after the linear queue by recycling winners.
+  if (fbIdx >= items.length && igIdx >= items.length && !hasThreads) {
+    console.log(`✅ All ${items.length} engagement posts published on Facebook and Instagram. Done.`);
     process.exit(0);
   }
 
   console.log(`📊 Platform indices — FB: ${fbIdx}, IG: ${igIdx}, Threads: ${thIdx}`);
-
-  // Determine configured platforms
-  const hasFacebook = !!(META_PAGE_ID && META_PAGE_TOKEN);
-  const hasInstagram = !!(META_IG_USER_ID && META_PAGE_TOKEN);
-  const hasThreads = !!(THREADS_USER_ID && THREADS_TOKEN);
 
   console.log(`🔌 Platform Status: Facebook: ${hasFacebook ? 'Configured' : 'Skipped'}, Instagram: ${hasInstagram ? 'Configured' : 'Skipped'}, Threads: ${hasThreads ? 'Configured' : 'Skipped'}`);
 
@@ -502,77 +545,87 @@ async function main() {
     console.log('  Instagram: all posts published ✅');
   }
 
-  // 3. Post to Threads (at its own index) — with dedup check
-  // Threads has its own 7h cooldown (3 posts/day max)
+  // 3. Post to Threads — skip known flops, recycle proven winners
   const THREADS_COOLDOWN_MS = 7 * 60 * 60 * 1000; // 7 hours
   const threadsCooldownOk = !state.threads?.lastPostedAt ||
     (Date.now() - new Date(state.threads.lastPostedAt).getTime()) >= THREADS_COOLDOWN_MS;
 
   if (!threadsCooldownOk && hasThreads) {
     const thElapsed = ((Date.now() - new Date(state.threads.lastPostedAt).getTime()) / 3600000).toFixed(1);
-    console.log(`  ⏳ Threads Cooldown: last Threads post was ${thElapsed}h ago (need 8h gap). Skipping Threads.`);
+    console.log(`  ⏳ Threads Cooldown: last Threads post was ${thElapsed}h ago (need 7h gap). Skipping Threads.`);
   }
 
-  if (hasThreads && thIdx < items.length && threadsCooldownOk) {
-    // Fetch recent Threads posts to prevent duplicates
-    const recentThreadsTexts = await fetchRecentThreadsTexts();
-    console.log(`  🔍 Fetched ${recentThreadsTexts.length} recent Threads posts for dedup check`);
+  if (hasThreads && threadsCooldownOk) {
+    const recent = await fetchRecentThreads();
+    console.log(`  🔍 Fetched ${recent.prefixes.length} recent Threads posts for dedup + scoring`);
 
-    let thCurrent = thIdx;
-    while (thCurrent < items.length && shouldSkip('threads', thCurrent)) {
-      console.log(`  ⏭️ Threads: skipping post #${thCurrent + 1} after ${MAX_RETRIES} failures`);
-      thCurrent++;
-      state.threads.index = thCurrent;
-      clearRetries('threads');
+    let performance = loadPerformance();
+    if (recent.posts.length) {
+      performance = applyPostsToPerformance(performance, recent.posts, items);
+      savePerformance(performance);
+      console.log(`  📈 Threads scoreboard: ${Object.keys(performance.winners).length} winners, ${Object.keys(performance.flops).length} flops`);
     }
-    if (thCurrent < items.length) {
-      const thItem = items[thCurrent];
-      const thText = thItem.text.trim();
-      console.log(`\n📝 Threads Post #${thCurrent + 1}/${items.length}: "${thText.substring(0, 60)}..."`);
 
-      // Dedup: check if this text was already posted (use 120 chars for accuracy)
-      const textPrefix = thText.slice(0, 120).toLowerCase().trim();
-      const alreadyPosted = recentThreadsTexts.some(t => t === textPrefix);
+    if (!state.threads) state.threads = { index: 0 };
+    const pick = pickThreadsCandidate({
+      items,
+      index: state.threads.index || 0,
+      recycleIndex: state.threads.recycleIndex || 0,
+      recentPrefixes: recent.prefixes,
+      performance,
+    });
 
-      if (alreadyPosted) {
-        console.log(`  ⏭️ DEDUP: This content was already posted to Threads. Advancing index without re-posting.`);
-        state.threads.index = thCurrent + 1;
-        state.threads.lastPostedAt = new Date().toISOString();
-        clearRetries('threads');
-        anySuccess = true;
-        // Save state immediately to prevent index regression on git push failure
-        saveState(state);
-      } else if (!thItem.img) {
+    if (pick.skippedFlops.length) {
+      console.log(`  ⏭️ Threads: skipping ${pick.skippedFlops.length} known flop(s)`);
+    }
+
+    if (pick.kind === 'none') {
+      state.threads.index = pick.nextIndex;
+      saveState(state);
+      console.log('  ⏭️ Threads: no eligible post (flops skipped, winners already in the last 25).');
+    } else if (pick.kind === 'forward' && shouldSkip('threads', pick.index)) {
+      console.log(`  ⏭️ Threads: skipping post #${pick.index + 1} after ${MAX_RETRIES} failures`);
+      state.threads.index = pick.nextIndex;
+      clearRetries('threads');
+      saveState(state);
+    } else {
+      const thItem = items[pick.index];
+      const thText = (thItem.text || '').trim();
+      const label = pick.kind === 'recycle' ? '♻️ recycle winner' : `#${pick.index + 1}/${items.length}`;
+      console.log(`\n📝 Threads ${label}: "${thText.substring(0, 60)}..."`);
+
+      if (!thItem.img) {
         console.error('  ❌ No image for this post. Skipping.');
-        state.threads.index = thCurrent + 1;
+        state.threads.index = pick.nextIndex;
+        if (pick.kind === 'recycle') state.threads.recycleIndex = pick.recycleIndex;
         clearRetries('threads');
+        saveState(state);
       } else {
-        const { imagePath, isVideo, githubUrl } = resolveMedia(thItem);
-        let mediaUrl = isVideo ? `https://cvin.bio${thItem.img}` : githubUrl;
+        const { isVideo, githubUrl } = resolveMedia(thItem);
+        const mediaUrl = isVideo ? `https://cvin.bio${thItem.img}` : githubUrl;
         console.log('  📤 Posting to Threads...');
         const thOk = await postToThreads(thText, mediaUrl, isVideo);
         if (thOk) {
-          state.threads.index = thCurrent + 1;
+          state.threads.index = pick.nextIndex;
+          state.threads.recycleIndex = pick.recycleIndex;
           state.threads.lastPostedAt = new Date().toISOString();
           clearRetries('threads');
           anySuccess = true;
-          console.log(`  ✅ Threads index → ${thCurrent + 1}`);
-          // Save state immediately to prevent index regression on git push failure
+          console.log(`  ✅ Threads index → ${pick.nextIndex}${pick.kind === 'recycle' ? ` (recycle ${pick.recycleIndex})` : ''}`);
           saveState(state);
         } else {
-          recordFailure('threads', thCurrent);
+          recordFailure('threads', pick.index);
           console.error(`  ❌ Threads post failed (attempt ${getRetries('threads')}/${MAX_RETRIES})`);
           if (getRetries('threads') >= MAX_RETRIES) {
-            console.log(`  ⏭️ Threads: auto-skipping post #${thCurrent + 1} after ${MAX_RETRIES} failures`);
-            state.threads.index = thCurrent + 1;
+            console.log(`  ⏭️ Threads: auto-skipping post #${pick.index + 1} after ${MAX_RETRIES} failures`);
+            state.threads.index = pick.nextIndex;
+            if (pick.kind === 'recycle') state.threads.recycleIndex = pick.recycleIndex;
             clearRetries('threads');
             saveState(state);
           }
         }
       }
     }
-  } else if (hasThreads) {
-    console.log('  Threads: all posts published ✅');
   }
 
   if (anySuccess) {
