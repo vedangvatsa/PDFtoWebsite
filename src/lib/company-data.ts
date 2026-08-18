@@ -12,6 +12,7 @@ interface CompanyMeta {
   funding: string;
   industry: string;
   description: string;
+  logo?: string;
   socials?: {
     x?: string;
     linkedin?: string;
@@ -121,6 +122,23 @@ const COMPANIES: Record<string, CompanyMeta> = {
       x: 'https://x.com/webflow',
       linkedin: 'https://linkedin.com/company/webflow-inc-',
       github: 'https://github.com/webflow',
+    },
+  },
+  'oxford': {
+    slug: 'oxford',
+    name: 'University of Oxford',
+    website: 'https://www.ox.ac.uk',
+    founded: 1096,
+    hq: 'Oxford, United Kingdom',
+    size: '20,000-30,000',
+    stage: 'Academic',
+    funding: 'Public',
+    industry: 'Education / Research',
+    description: 'The University of Oxford is a collegiate research university in Oxford, England, United Kingdom. Founded around 1096, it is the oldest university in the English-speaking world and has a global reputation for excellence in teaching and research. The Department of Computer Science, located at Parks Road, Oxford, conducts research in areas including artificial intelligence, machine learning, computer vision, natural language processing, security, and theory. The department is home to the Oxford Applied and Theoretical Machine Learning (OATML) research group and supports various AI safety and security research initiatives.',
+    logo: 'https://www.ox.ac.uk/-/media/brand/oxford-logo.png',
+    socials: {
+      x: 'https://x.com/uniofoxford',
+      linkedin: 'https://www.linkedin.com/school/oxforduni/',
     },
   },
   'anthropic': {
@@ -1133,6 +1151,22 @@ const COMPANIES: Record<string, CompanyMeta> = {
     socials: {
       x: 'https://x.com/MATSprogram',
       linkedin: 'https://www.linkedin.com/company/mats-program/',
+    },
+  },
+  'state-bank-of-india': {
+    slug: 'state-bank-of-india',
+    name: 'State Bank of India',
+    website: 'https://sbi.bank.in',
+    founded: 1955,
+    hq: 'Mumbai',
+    size: '50,000+',
+    stage: 'Public',
+    funding: 'Government of India',
+    industry: 'Banking / Financial Services',
+    description: 'State Bank of India (SBI) is India\'s largest public sector bank and a Fortune 500 company. It is a government-owned corporation under the State Bank of India Act, 1955, and serves as the nation\'s premier banking and financial services provider with a vast network of branches across India and overseas. The bank offers a wide range of banking products and services including personal banking, corporate banking, treasury, and capital markets.',
+    socials: {
+      x: 'https://x.com/SBI_IN',
+      linkedin: 'https://www.linkedin.com/company/state-bank-of-india',
     },
   },
   'aspen': {
