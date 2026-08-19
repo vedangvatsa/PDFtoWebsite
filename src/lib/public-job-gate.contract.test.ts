@@ -244,6 +244,11 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
     assert.match(file, /jobSlug\.toLowerCase\(\)/);
     assert.match(file, /\.eq\('external_id', identifier\)/);
     assert.match(file, /\.eq\('slug', identifier\)/);
+    assert.match(file, /jobBelongsToCompanyHub/);
+    const legacy = src('src/app/[slug]/[jobSlug]/page.tsx');
+    assert.match(legacy, /companyKeyEqualityValues/);
+    assert.match(legacy, /companyHubAliasPrefixes/);
+    assert.match(legacy, /jobMatchesLegacySlugHint/);
   });
 
   it('keeps the Oxford company hub on its canonical slug', () => {

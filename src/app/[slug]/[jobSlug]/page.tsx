@@ -13,13 +13,16 @@ import {
 } from '@/lib/job-detail-data';
 import {
   isShortJobSlug,
-  mintPrettyJobSlug,
-  shortJobSlug,
   jobPublicPath,
   jobStoredSlug,
-  jobSlugSegmentMatchesHint,
+  jobMatchesLegacySlugHint,
 } from '@/lib/job-description';
-import { canonicalCompanyHub, toCompanyKey } from '@/lib/company-directory';
+import { canonicalCompanyHub, companyHubAliasPrefixes } from '@/lib/company-directory';
+import {
+  companyKeyEqualityValues,
+  companyNameEqualityValues,
+  jobBelongsToCompanyHub,
+} from '@/lib/company-hub-query';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { gonePrettyJobPath } from '@/lib/seo-fallbacks';
@@ -56,47 +59,24 @@ type LegacyResolution =
   | { kind: 'redirect'; path: string }
   | { kind: 'render'; job: Awaited<ReturnType<typeof fetchJobById>> };
 
+const LEGACY_JOB_COLS =
+  'id,title,company,company_key,external_id,slug,published_at,created_at,tags,description,apply_url,category,source';
+
 async function resolveLegacySlugPath(
   companySlug: string,
   jobSlug: string
 ): Promise<LegacyResolution | null> {
-  const companyKey = toCompanyKey(companySlug);
-  if (!companyKey || !isShortJobSlug(jobSlug)) return null;
+  if (!canonicalCompanyHub(companySlug) || !isShortJobSlug(jobSlug)) return null;
   const want = jobSlug.toLowerCase();
-  const slugPrefix = `${companyKey}_${want}`;
-
-  const prefixHit = await withTimeoutFallback(
-    supabaseAdmin
-      .from('jobs')
-      .select(
-        'id,title,company,external_id,slug,published_at,created_at,tags,description,apply_url,category,source'
-      )
-      .eq('company_key', companyKey)
-      .like('slug', `${slugPrefix}%`)
-      .order('created_at', { ascending: false })
-      .limit(40),
-    DB_BUDGET.fast,
-    { data: [] } as any,
-    `legacy-slug-prefix:${slugPrefix}`
-  );
-
-  const { data } = await withTimeoutFallback(
-    supabaseAdmin
-      .from('jobs')
-      .select(
-        'id,title,company,external_id,slug,published_at,created_at,tags,description,apply_url,category,source'
-      )
-      .eq('company_key', companyKey)
-      .limit(100),
-    DB_BUDGET.fast,
-    { data: [] } as any,
-    `legacy-slug:${companyKey}`
-  );
+  const keys = companyKeyEqualityValues(companySlug);
+  const names = companyNameEqualityValues(companySlug);
+  const prefixes = companyHubAliasPrefixes(companySlug);
 
   type Cand = {
     id: string;
     title: string;
     company: string;
+    company_key?: string | null;
     external_id: string | null;
     slug: string | null;
     published_at?: string | null;
@@ -108,26 +88,65 @@ async function resolveLegacySlugPath(
     source?: string | null;
   };
 
+  const batches: Cand[][] = [];
+
+  const run = async (query: any, label: string) => {
+    const result = await withTimeoutFallback(
+      query,
+      DB_BUDGET.fast,
+      { data: [] } as any,
+      label
+    );
+    batches.push((result.data || []) as Cand[]);
+  };
+
+  for (const prefix of prefixes) {
+    const pattern = `${prefix}_${want}%`;
+    await run(
+      supabaseAdmin
+        .from('jobs')
+        .select(LEGACY_JOB_COLS)
+        .like('slug', pattern)
+        .order('created_at', { ascending: false })
+        .limit(40),
+      `legacy-slug-prefix:${pattern}`
+    );
+    await run(
+      supabaseAdmin
+        .from('jobs')
+        .select(LEGACY_JOB_COLS)
+        .like('external_id', pattern)
+        .order('created_at', { ascending: false })
+        .limit(40),
+      `legacy-ext-prefix:${pattern}`
+    );
+  }
+
+  if (keys.length) {
+    await run(
+      supabaseAdmin.from('jobs').select(LEGACY_JOB_COLS).in('company_key', keys).limit(200),
+      `legacy-slug-keys:${keys.join(',')}`
+    );
+  }
+  if (names.length) {
+    await run(
+      supabaseAdmin.from('jobs').select(LEGACY_JOB_COLS).in('company', names).limit(200),
+      `legacy-slug-names:${names.slice(0, 6).join(',')}`
+    );
+  }
+
   const seen = new Set<string>();
   const matches: Cand[] = [];
   const consider = (job: Cand) => {
     if (!job?.id || seen.has(job.id)) return;
-    const rest = jobStoredSlug(job);
-    const minted = mintPrettyJobSlug(job.title || '', job.id).toLowerCase();
-    const mintedWrite = mintPrettyJobSlug(job.title || '', job.id, new Set()).toLowerCase();
-    const short = shortJobSlug(job.company, job.external_id)?.toLowerCase();
-    if (
-      jobSlugSegmentMatchesHint(rest, want) ||
-      minted === want ||
-      mintedWrite === want ||
-      short === want
-    ) {
-      seen.add(job.id);
-      matches.push(job);
-    }
+    if (!jobBelongsToCompanyHub(job, companySlug)) return;
+    if (!jobMatchesLegacySlugHint(job, want)) return;
+    seen.add(job.id);
+    matches.push(job);
   };
-  for (const job of (prefixHit.data || []) as Cand[]) consider(job);
-  for (const job of (data || []) as Cand[]) consider(job);
+  for (const batch of batches) {
+    for (const job of batch) consider(job);
+  }
 
   const publicMatches = matches.filter((j) => isPublicJobPage(j));
   if (!publicMatches.length) return null;

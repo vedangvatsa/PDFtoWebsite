@@ -1719,6 +1719,36 @@ export function jobSlugSegmentMatchesHint(
 }
 
 /**
+ * Whether a job owns `/{hub}/{want}` as a stored, minted (read or write),
+ * or short external segment. Used by the pretty-URL legacy resolver so
+ * `/aspen/sci-tech` still reaches a row stored as `aspen-institute_sci-e9`.
+ */
+export function jobMatchesLegacySlugHint(
+  job: {
+    id: string;
+    title?: string | null;
+    company?: string | null;
+    company_key?: string | null;
+    external_id?: string | null;
+    slug?: string | null;
+  },
+  want: string
+): boolean {
+  const hint = String(want || '').toLowerCase();
+  if (!hint || !job?.id) return false;
+  const rest = jobStoredSlug(job);
+  const minted = mintPrettyJobSlug(job.title || '', job.id).toLowerCase();
+  const mintedWrite = mintPrettyJobSlug(job.title || '', job.id, new Set()).toLowerCase();
+  const short = shortJobSlug(job.company || '', job.external_id, job.company_key)?.toLowerCase();
+  return (
+    jobSlugSegmentMatchesHint(rest, hint) ||
+    minted === hint ||
+    mintedWrite === hint ||
+    short === hint
+  );
+}
+
+/**
  * Canonical public path for a job — ALWAYS /{company}/{jobSlug}.
  * Persisted slug wins, then routeable external_id, then a deterministic
  * mint from the title. Never /jobs/{uuid} except when the company has no

@@ -51,6 +51,7 @@ export function toCompanyKey(name: string): string {
 export const COMPANY_HUB_ALIASES: Record<string, string> = {
   'university-of-oxford': 'oxford',
   'aspen-institute': 'aspen',
+  'the-aspen-institute': 'aspen',
 };
 
 export function canonicalCompanyHub(slug: string): string {
@@ -73,9 +74,18 @@ export function routeCompanySlug(input: {
   company?: string | null;
   company_key?: string | null;
 }): string {
+  const fromName = canonicalCompanyHub(toCompanySlug(String(input.company ?? '')));
   const key = String(input.company_key ?? '').trim().toLowerCase();
-  if (key) return canonicalCompanyHub(key);
-  return canonicalCompanyHub(toCompanySlug(String(input.company ?? '')));
+  if (!key) return fromName;
+  const fromKey = canonicalCompanyHub(key);
+  if (!fromName) return fromKey;
+  if (fromKey === fromName) return fromKey;
+  const namePrefixes = companyHubAliasPrefixes(fromName);
+  if (namePrefixes.includes(key) || namePrefixes.includes(fromKey)) return fromName;
+  // Program keys (aspentechpolicyhub) must not steal /aspen when the
+  // display name already maps to a known aliased hub.
+  if (namePrefixes.length > 1) return fromName;
+  return fromKey;
 }
 
 /** Known brand casing — only where Title Case of the label is wrong. */

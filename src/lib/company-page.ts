@@ -32,6 +32,7 @@ export type CompanyPageJob = {
   id: string;
   title: string;
   company: string;
+  company_key?: string | null;
   company_logo: string | null;
   location: string | null;
   job_type: string | null;
@@ -68,7 +69,7 @@ export async function getCompanyDirectory(slug: string) {
 }
 
 const SLIM_JOB_COLS =
-  'id, title, company, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug';
+  'id, title, company, company_key, company_logo, location, job_type, tags, category, apply_url, published_at, created_at, source, salary, external_id, slug';
 const HUB_JOB_PAGE = 100;
 const HUB_JOB_MAX = 2000;
 
@@ -232,7 +233,7 @@ export async function loadCompanyJobs(
       const live = rows.filter((j) => shouldListJobOnCompanyHub(j));
       return hydrateDescriptions(live);
     },
-    ['company-jobs-v18', slug, dirName || ''],
+    ['company-jobs-v19', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
 }

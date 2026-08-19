@@ -31,6 +31,7 @@ export function companyToSlug(company) {
 const HUB_ALIASES = {
   'university-of-oxford': 'oxford',
   'aspen-institute': 'aspen',
+  'the-aspen-institute': 'aspen',
 };
 
 function canonicalHub(slug) {
@@ -38,10 +39,25 @@ function canonicalHub(slug) {
   return HUB_ALIASES[s] || s;
 }
 
+function hubAliasPrefixes(hub) {
+  const canonical = canonicalHub(hub);
+  const aliases = Object.entries(HUB_ALIASES)
+    .filter(([, target]) => target === canonical)
+    .map(([alias]) => alias);
+  return [...new Set([canonical, String(hub || '').toLowerCase(), ...aliases].filter(Boolean))];
+}
+
 function hubSlug(job) {
+  const fromName = canonicalHub(companyToSlug(job?.company));
   const key = String(job?.company_key || '').trim().toLowerCase();
-  if (key) return canonicalHub(key);
-  return canonicalHub(companyToSlug(job?.company));
+  if (!key) return fromName;
+  const fromKey = canonicalHub(key);
+  if (!fromName) return fromKey;
+  if (fromKey === fromName) return fromKey;
+  const namePrefixes = hubAliasPrefixes(fromName);
+  if (namePrefixes.includes(key) || namePrefixes.includes(fromKey)) return fromName;
+  if (namePrefixes.length > 1) return fromName;
+  return fromKey;
 }
 
 /** Segment-level check used by Next route /[slug]/[jobSlug]. */

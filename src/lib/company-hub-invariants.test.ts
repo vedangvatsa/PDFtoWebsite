@@ -15,6 +15,7 @@ import {
   companyJobsDateOrFilter,
   companyKeyEqualityValues,
   companyNameEqualityValues,
+  jobBelongsToCompanyHub,
   shouldKeepCompanyHub,
 } from './company-hub-query';
 import {
@@ -25,7 +26,7 @@ import {
 import { getCompanyLinks } from './company-links';
 import { trustedCompanyWebsiteUrl } from './company-logo';
 import { jobPublicPath } from '../../.github/scripts/lib/job-public-url.mjs';
-import { jobPublicPath as appJobPublicPath, jobStoredSlug } from './job-description';
+import { jobPublicPath as appJobPublicPath, jobStoredSlug, jobMatchesLegacySlugHint, mintPrettyJobSlug } from './job-description';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const day = 24 * 60 * 60 * 1000;
@@ -79,6 +80,42 @@ describe('indexing canonical URLs', () => {
     };
     assert.equal(jobStoredSlug(job), 'sci-e9');
     assert.equal(appJobPublicPath(job), '/aspen/sci-e9');
+    assert.equal(
+      appJobPublicPath({ ...job, company_key: 'aspen-institute' }),
+      '/aspen/sci-e9'
+    );
+  });
+
+  it('treats /aspen/sci-tech as a minted alias of the fellowship title', () => {
+    const job = {
+      id: 'aspen-sci',
+      company: 'Aspen Institute',
+      company_key: 'aspen-institute',
+      slug: 'aspen-institute_sci-e9',
+      title: 'Science & Technology Policy Fellowship',
+      external_id: 'aspen-institute_sci-e9',
+    };
+    assert.equal(
+      mintPrettyJobSlug(job.title, job.id, new Set()),
+      'sci-tech'
+    );
+    assert.equal(jobMatchesLegacySlugHint(job, 'sci-tech'), true);
+    assert.equal(jobMatchesLegacySlugHint(job, 'sci-e9'), true);
+  });
+
+  it('does not let a program company_key steal the /aspen hub', () => {
+    const job = {
+      id: 'aspen-sci',
+      company: 'Aspen Institute',
+      company_key: 'aspentechpolicyhub',
+      slug: 'aspen_sci-tech',
+      title: 'Science & Technology Policy Fellowship',
+      external_id: 'fellow_aspen_1d6055865b',
+    };
+    assert.equal(jobStoredSlug(job), 'sci-tech');
+    assert.equal(appJobPublicPath(job), '/aspen/sci-tech');
+    assert.equal(jobBelongsToCompanyHub(job, 'aspen'), true);
+    assert.equal(jobMatchesLegacySlugHint(job, 'sci-tech'), true);
   });
 
   it('maps University of Oxford jobs onto the /oxford hub', () => {
@@ -245,9 +282,21 @@ describe('company hub query contracts', () => {
     const oxfordKeys = companyKeyEqualityValues('oxford', 'University of Oxford');
     assert.ok(oxfordKeys.includes('oxford'));
     assert.ok(oxfordKeys.includes('university-of-oxford'));
+    const aspenKeys = companyKeyEqualityValues('aspen', 'Aspen Institute');
+    assert.ok(aspenKeys.includes('aspen'));
+    assert.ok(aspenKeys.includes('aspen-institute'));
     const names = companyNameEqualityValues('openai', 'OpenAI');
     assert.ok(names.includes('OpenAI'));
     assert.ok(names.includes('openai'));
+    const aspenNames = companyNameEqualityValues('aspen', 'Aspen Institute');
+    assert.ok(aspenNames.includes('Aspen Institute'));
+    assert.equal(
+      jobBelongsToCompanyHub(
+        { company: 'The Aspen Institute', company_key: 'the-aspen-institute' },
+        'aspen'
+      ),
+      true
+    );
   });
 
   it('keeps wiki-only brands instead of 404ing', () => {
@@ -426,7 +475,7 @@ describe('source locks — do not reintroduce empty hubs', () => {
     const loader = readRel('src/lib/company-page.ts');
     assert.match(loader, /const rows = recent\.rows \|\| \[\]/);
     assert.doesNotMatch(loader, /const all = await fetchJobs\(null\)/);
-    assert.match(loader, /company-jobs-v18/);
+    assert.match(loader, /company-jobs-v19/);
   });
 
   it('agent rule does not require hub to alias the board', () => {

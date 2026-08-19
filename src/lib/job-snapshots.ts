@@ -11,7 +11,8 @@
 import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { canonicalCompanyHub, companyHubAliasPrefixes, routeCompanySlug } from '@/lib/company-directory';
+import { companyHubAliasPrefixes } from '@/lib/company-directory';
+import { jobBelongsToCompanyHub } from '@/lib/company-hub-query';
 import {
   isJobId,
   isShortJobSlug,
@@ -50,15 +51,18 @@ async function loadJobByExternalIdLive(
   const pickUnique = (
     rows: Array<Record<string, unknown>> | null | undefined
   ): JobRow | null => {
-    if (!rows || rows.length !== 1) return null;
-    const row = rows[0] as JobRow;
-    const want = canonicalCompanyHub(companySlug);
-    const rowHub = routeCompanySlug({
-      company: row.company,
-      company_key: (row as JobRow & { company_key?: string }).company_key,
-    });
-    if (rowHub !== want) return null;
-    return row;
+    const matches = (rows || []).filter((raw) => {
+      const row = raw as JobRow;
+      return jobBelongsToCompanyHub(
+        {
+          company: row.company,
+          company_key: (row as JobRow & { company_key?: string }).company_key,
+        },
+        companySlug
+      );
+    }) as JobRow[];
+    if (matches.length !== 1) return null;
+    return matches[0];
   };
 
   // Look up every historical `{alias}_{job}` form plus the short segment.
