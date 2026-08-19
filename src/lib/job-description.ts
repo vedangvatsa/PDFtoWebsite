@@ -1736,7 +1736,12 @@ export function jobMatchesLegacySlugHint(
 ): boolean {
   const hint = String(want || '').toLowerCase();
   if (!hint || !job?.id) return false;
-  const rest = jobStoredSlug(job);
+  const rest = jobStoredSlug({
+    company: job.company || '',
+    company_key: job.company_key,
+    external_id: job.external_id,
+    slug: job.slug,
+  });
   const minted = mintPrettyJobSlug(job.title || '', job.id).toLowerCase();
   const mintedWrite = mintPrettyJobSlug(job.title || '', job.id, new Set()).toLowerCase();
   const short = shortJobSlug(job.company || '', job.external_id, job.company_key)?.toLowerCase();
