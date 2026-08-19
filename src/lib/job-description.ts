@@ -1253,6 +1253,10 @@ export function formatJobDescription(
     /<p>\s*On our Alignment Science and Frontier Red Team blogs, you can read about some past Fellows projects, including:\s*<\/p>\s*/gi,
     ''
   );
+  html = html.replace(
+    /<p>\s*For a full list of representative projects for each area, please see these blog posts:[\s\S]*?Recommendations for Technical AI Safety Research Directions\.\s*<\/p>/gi,
+    ''
+  );
   if (opts?.applyUrl) {
     const applyLink = `<a href="${escapeHtml(opts.applyUrl)}" target="_blank" rel="noopener noreferrer">this link</a>`;
     html = html.replace(/\bApply using this link\.?/gi, `Apply using ${applyLink}.`);

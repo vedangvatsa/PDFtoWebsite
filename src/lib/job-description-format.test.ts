@@ -46,11 +46,14 @@ describe('formatJobDescription section headings', () => {
 
 Apply using this link.
 
+For a full list of representative projects for each area, please see these blog posts: Introducing the Anthropic Fellows Program for AI Safety Research, Recommendations for Technical AI Safety Research Directions.
+
 Role details.`,
       null,
       { applyUrl: 'https://example.com/apply' }
     );
     assert.doesNotMatch(html, /see also the main Anthropic Fellows posting/i);
+    assert.doesNotMatch(html, /For a full list of representative projects/i);
     assert.match(html, /href="https:\/\/example\.com\/apply"/);
     assert.match(html, /Apply using <a /i);
   });
