@@ -25,7 +25,7 @@ import {
 import { getCompanyLinks } from './company-links';
 import { trustedCompanyWebsiteUrl } from './company-logo';
 import { jobPublicPath } from '../../.github/scripts/lib/job-public-url.mjs';
-import { jobStoredSlug } from './job-description';
+import { jobPublicPath as appJobPublicPath, jobStoredSlug } from './job-description';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const day = 24 * 60 * 60 * 1000;
@@ -66,7 +66,7 @@ describe('indexing canonical URLs', () => {
       title: 'Science and Technology Policy Fellow',
     };
     assert.equal(jobStoredSlug(job), 'aspen');
-    assert.equal(jobPublicPath(job), '/aspen-institute/aspen');
+    assert.equal(appJobPublicPath(job), '/aspen-institute/aspen');
   });
 });
 
