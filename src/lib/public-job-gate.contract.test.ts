@@ -239,6 +239,13 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
     assert.match(file, /30 \* 24 \* 60 \* 60 \* 1000/);
   });
 
+  it('job route resolves short stored identifiers as well as company-prefixed ids', () => {
+    const file = src('src/lib/job-snapshots.ts');
+    assert.match(file, /jobSlug\.toLowerCase\(\)/);
+    assert.match(file, /\.eq\('external_id', identifier\)/);
+    assert.match(file, /\.eq\('slug', identifier\)/);
+  });
+
   it('enrich rewrite is OpenRouter fact-sheet write with formatted sections', () => {
     const file = src('.github/scripts/enrich-remote-job-descriptions.mjs');
     const start = file.indexOf('async function rewriteJobPage');

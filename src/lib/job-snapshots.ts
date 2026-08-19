@@ -64,30 +64,41 @@ async function loadJobByExternalIdLive(
     return row;
   };
 
-  const extResult = await withTimeoutFallback(
-    supabaseAdmin
-      .from('jobs')
-      .select(SELECT_COLS)
-      .eq('external_id', externalId)
-      .limit(2),
-    DB_BUDGET.fast,
-    { data: [] } as any,
-    `job-ext:${externalId}`
-  );
-  const extRow = pickUnique(extResult.data);
-  if (extRow) return extRow;
+  // Most jobs use the historical `${company}_${slug}` identifier, but
+  // fellowship/academic imports can persist the short identifier itself
+  // (`oxford-ra`, `aspen`). Resolve both forms so links minted from the
+  // stored slug do not soft-redirect to the hub.
+  const identifiers = [...new Set([externalId, jobSlug.toLowerCase()])];
+  for (const identifier of identifiers) {
+    const extResult = await withTimeoutFallback(
+      supabaseAdmin
+        .from('jobs')
+        .select(SELECT_COLS)
+        .eq('external_id', identifier)
+        .limit(2),
+      DB_BUDGET.fast,
+      { data: [] } as any,
+      `job-ext:${identifier}`
+    );
+    const extRow = pickUnique(extResult.data);
+    if (extRow) return extRow;
+  }
 
-  const slugResult = await withTimeoutFallback(
-    supabaseAdmin
-      .from('jobs')
-      .select(SELECT_COLS)
-      .eq('slug', externalId)
-      .limit(2),
-    DB_BUDGET.fast,
-    { data: [] } as any,
-    `job-slug:${externalId}`
-  );
-  return pickUnique(slugResult.data);
+  for (const identifier of identifiers) {
+    const slugResult = await withTimeoutFallback(
+      supabaseAdmin
+        .from('jobs')
+        .select(SELECT_COLS)
+        .eq('slug', identifier)
+        .limit(2),
+      DB_BUDGET.fast,
+      { data: [] } as any,
+      `job-slug:${identifier}`
+    );
+    const slugRow = pickUnique(slugResult.data);
+    if (slugRow) return slugRow;
+  }
+  return null;
 }
 
 /** Cached by id — used by /jobs/{uuid}. */
