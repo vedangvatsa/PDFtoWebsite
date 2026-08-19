@@ -223,18 +223,48 @@ async function postToInstagram(text, mediaUrl, isVideo = false) {
   }
 }
 
-// ── Fetch recent Threads posts for dedup + live scoring ───────────────────
-async function fetchRecentThreads() {
+// ── Fetch Threads posts for dedup + live scoring ──────────────────────────
+// Full paginated fetch (all posts + insights) runs once per day so the
+// performance file stays complete. Every run also fetches the last 25 for
+// dedup; their insights are already included in the full fetch when it runs.
+async function fetchRecentThreads(performance) {
   if (!THREADS_USER_ID || !THREADS_TOKEN) return { prefixes: [], posts: [] };
+
+  const FULL_FETCH_INTERVAL_MS = 23 * 60 * 60 * 1000; // ~once a day
+  const lastUpdated = performance?.updatedAt ? new Date(performance.updatedAt).getTime() : 0;
+  const doFullFetch = (Date.now() - lastUpdated) >= FULL_FETCH_INTERVAL_MS;
+
   try {
-    const res = await fetch(
+    // Always fetch last 25 for dedup prefixes
+    const recentRes = await fetch(
       `https://graph.threads.net/v1.0/${THREADS_USER_ID}/threads?fields=id,text,timestamp&limit=25&access_token=${THREADS_TOKEN}`
     );
-    if (!res.ok) return { prefixes: [], posts: [] };
-    const data = await res.json();
-    const threads = data.data || [];
+    if (!recentRes.ok) return { prefixes: [], posts: [] };
+    const recentData = await recentRes.json();
+    const recentThreads = recentData?.data || [];
+    const prefixes = recentThreads.map(p => (p.text || '').slice(0, 120).toLowerCase().trim());
+
+    // Decide which thread IDs to score
+    let threadsToScore = recentThreads;
+    if (doFullFetch) {
+      console.log('  📡 Full Threads backfill (scoring all posts)...');
+      const allThreads = [];
+      let nextUrl = `https://graph.threads.net/v1.0/${THREADS_USER_ID}/threads?fields=id,text,timestamp&limit=100&access_token=${THREADS_TOKEN}`;
+      let pages = 0;
+      while (nextUrl && pages < 15) {
+        pages++;
+        const r = await fetch(nextUrl);
+        if (!r.ok) break;
+        const d = await r.json();
+        allThreads.push(...(d.data || []));
+        nextUrl = d.paging?.next || null;
+      }
+      threadsToScore = allThreads;
+      console.log(`  📡 Full fetch: ${allThreads.length} posts across ${pages} pages`);
+    }
+
     const posts = [];
-    for (const thread of threads) {
+    for (const thread of threadsToScore) {
       const post = {
         text: thread.text || '',
         timestamp: thread.timestamp,
@@ -253,10 +283,7 @@ async function fetchRecentThreads() {
       } catch { /* insights optional; dedup still works */ }
       posts.push(post);
     }
-    return {
-      prefixes: threads.map(p => (p.text || '').slice(0, 120).toLowerCase().trim()),
-      posts,
-    };
+    return { prefixes, posts };
   } catch {
     return { prefixes: [], posts: [] };
   }
@@ -556,10 +583,10 @@ async function main() {
   }
 
   if (hasThreads && threadsCooldownOk) {
-    const recent = await fetchRecentThreads();
+    let performance = loadPerformance();
+    const recent = await fetchRecentThreads(performance);
     console.log(`  🔍 Fetched ${recent.prefixes.length} recent Threads posts for dedup + scoring`);
 
-    let performance = loadPerformance();
     if (recent.posts.length) {
       performance = applyPostsToPerformance(performance, recent.posts, items);
       savePerformance(performance);
