@@ -28,10 +28,20 @@ export function companyToSlug(company) {
     .replace(/^-|-$/g, '');
 }
 
+const HUB_ALIASES = {
+  'university-of-oxford': 'oxford',
+  'aspen-institute': 'aspen',
+};
+
+function canonicalHub(slug) {
+  const s = String(slug || '').trim().toLowerCase();
+  return HUB_ALIASES[s] || s;
+}
+
 function hubSlug(job) {
   const key = String(job?.company_key || '').trim().toLowerCase();
-  if (key) return key;
-  return companyToSlug(job?.company);
+  if (key) return canonicalHub(key);
+  return canonicalHub(companyToSlug(job?.company));
 }
 
 /** Segment-level check used by Next route /[slug]/[jobSlug]. */
@@ -163,14 +173,23 @@ export function persistedJobSlug(company, title, id, usedByCompany) {
 /** The jobSlug segment from a stored slug ({company_slug}_{jobSlug}). */
 export function storedSlugSegment(company, slug, companyKey) {
   if (!slug) return null;
-  const co = companyKey ? String(companyKey).toLowerCase() : companyToSlug(company);
-  if (!co) return null;
+  const hub = companyKey ? canonicalHub(companyKey) : canonicalHub(companyToSlug(company));
+  if (!hub) return null;
   const s = String(slug).toLowerCase();
-  const prefix = `${co}_`;
-  if (!s.startsWith(prefix)) return null;
-  const rest = s.slice(prefix.length);
-  if (!isShortJobSlug(rest) || /^[0-9a-f]{8,}$/i.test(rest)) return null;
-  return rest;
+  const prefixes = new Set([hub, companyToSlug(company), String(companyKey || '').toLowerCase()]);
+  for (const [alias, target] of Object.entries(HUB_ALIASES)) {
+    if (target === hub) prefixes.add(alias);
+  }
+  for (const prefix of prefixes) {
+    if (!prefix) continue;
+    const head = `${prefix}_`;
+    if (!s.startsWith(head)) continue;
+    const rest = s.slice(head.length);
+    if (!isShortJobSlug(rest) || /^[0-9a-f]{8,}$/i.test(rest) || (/^\d+$/.test(rest) && rest.length > 8)) continue;
+    return rest;
+  }
+  if (isShortJobSlug(s) && !/^[0-9a-f]{8,}$/i.test(s) && !(/^\d+$/.test(s) && s.length > 8)) return s;
+  return null;
 }
 
 /**

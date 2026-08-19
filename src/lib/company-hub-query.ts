@@ -2,7 +2,7 @@
  * Pure company-hub query contracts. No DB, no Next cache.
  * Tests lock these so empty hubs / false 404s cannot return via filter drift.
  */
-import { companyDisplayName, toCompanyKey } from '@/lib/company-directory';
+import { companyDisplayName, toCompanyKey, toCompanySlug, canonicalCompanyHub, companyHubAliasPrefixes } from '@/lib/company-directory';
 import { isPublicJobPage } from '@/lib/job-apply-source';
 import { jobPublicPath } from '@/lib/job-description';
 
@@ -12,9 +12,14 @@ export function uniqueNonEmpty(values: Array<string | null | undefined>): string
 
 /** Equality keys for jobs.company_key — slug and directory name can diverge. */
 export function companyKeyEqualityValues(slug: string, dirName?: string | null): string[] {
+  const canonical = canonicalCompanyHub(toCompanyKey(slug));
+  const fromName = dirName ? toCompanySlug(dirName) : '';
   return uniqueNonEmpty([
-    toCompanyKey(slug),
-    dirName ? toCompanyKey(dirName) : '',
+    slug,
+    canonical,
+    fromName,
+    ...companyHubAliasPrefixes(canonical),
+    ...companyHubAliasPrefixes(fromName),
   ]);
 }
 

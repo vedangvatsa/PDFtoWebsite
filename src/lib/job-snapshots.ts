@@ -11,12 +11,10 @@
 import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { routeCompanySlug } from '@/lib/company-directory';
+import { canonicalCompanyHub, companyHubAliasPrefixes, routeCompanySlug } from '@/lib/company-directory';
 import {
   isJobId,
   isShortJobSlug,
-  jobExternalIdFromSlugs,
-  companyToSlug,
   JOB_DESCRIPTION_FORMAT_VERSION,
 } from '@/lib/job-description';
 import type { JobRow } from '@/lib/job-detail-data';
@@ -55,7 +53,7 @@ async function loadJobByExternalIdLive(
   ): JobRow | null => {
     if (!rows || rows.length !== 1) return null;
     const row = rows[0] as JobRow;
-    const want = companySlug.toLowerCase();
+    const want = canonicalCompanyHub(companySlug);
     const rowHub = routeCompanySlug({
       company: row.company,
       company_key: (row as JobRow & { company_key?: string }).company_key,
@@ -64,11 +62,17 @@ async function loadJobByExternalIdLive(
     return row;
   };
 
-  // Most jobs use the historical `${company}_${slug}` identifier, but
-  // fellowship/academic imports can persist the short identifier itself
-  // (`oxford-ra`, `aspen`). Resolve both forms so links minted from the
-  // stored slug do not soft-redirect to the hub.
-  const identifiers = [...new Set([externalId, jobSlug.toLowerCase()])];
+  // Look up every historical `{alias}_{job}` form plus the short segment.
+  // Oxford/Aspen jobs are stored under University of Oxford / Aspen Institute
+  // prefixes while the public hub is /oxford and /aspen.
+  const identifiers = [
+    ...new Set([
+      ...companyHubAliasPrefixes(companySlug).map(
+        (hub) => `${hub}_${jobSlug.toLowerCase()}`
+      ),
+      jobSlug.toLowerCase(),
+    ]),
+  ];
   for (const identifier of identifiers) {
     const extResult = await withTimeoutFallback(
       supabaseAdmin

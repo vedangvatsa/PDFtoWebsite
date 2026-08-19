@@ -106,7 +106,7 @@ Apply on the portal.`;
 
 describe('formatJobDescription numbered requirements', () => {
   it('bumps format version for cache invalidation', () => {
-    assert.equal(JOB_DESCRIPTION_FORMAT_VERSION, 32);
+    assert.equal(JOB_DESCRIPTION_FORMAT_VERSION, 33);
   });
 
   it('renders Aspen STEM criteria as a single ordered list without h3/h4 headings', () => {

@@ -66,7 +66,41 @@ describe('indexing canonical URLs', () => {
       title: 'Science and Technology Policy Fellow',
     };
     assert.equal(jobStoredSlug(job), 'aspen');
-    assert.equal(appJobPublicPath(job), '/aspen-institute/aspen');
+    assert.equal(appJobPublicPath(job), '/aspen/aspen');
+  });
+
+  it('maps Aspen Institute stored slugs onto the /aspen hub', () => {
+    const job = {
+      id: 'aspen-sci',
+      company: 'Aspen Institute',
+      slug: 'aspen-institute_sci-e9',
+      title: 'Science & Technology Policy Fellowship',
+      external_id: 'aspen-institute_sci-e9',
+    };
+    assert.equal(jobStoredSlug(job), 'sci-e9');
+    assert.equal(appJobPublicPath(job), '/aspen/sci-e9');
+  });
+
+  it('maps University of Oxford jobs onto the /oxford hub', () => {
+    const job = {
+      id: '133828b8-9a44-4da0-bb99-65ef84f194c0',
+      company: 'University of Oxford',
+      slug: 'oxford_ra',
+      title: 'Research Assistant on AI Safety',
+      external_id: '188116',
+    };
+    assert.equal(jobStoredSlug(job), 'ra');
+    assert.equal(appJobPublicPath(job), '/oxford/ra');
+    assert.equal(
+      jobPublicPath({
+        id: job.id,
+        company: job.company,
+        slug: job.slug,
+        title: job.title,
+        external_id: job.external_id,
+      }),
+      '/oxford/ra'
+    );
   });
 });
 
@@ -208,6 +242,9 @@ describe('company hub query contracts', () => {
   it('queries both slug and display-name keys (OpenAI vs openai)', () => {
     const keys = companyKeyEqualityValues('openai', 'OpenAI');
     assert.ok(keys.includes('openai'));
+    const oxfordKeys = companyKeyEqualityValues('oxford', 'University of Oxford');
+    assert.ok(oxfordKeys.includes('oxford'));
+    assert.ok(oxfordKeys.includes('university-of-oxford'));
     const names = companyNameEqualityValues('openai', 'OpenAI');
     assert.ok(names.includes('OpenAI'));
     assert.ok(names.includes('openai'));
@@ -389,7 +426,7 @@ describe('source locks — do not reintroduce empty hubs', () => {
     const loader = readRel('src/lib/company-page.ts');
     assert.match(loader, /const rows = recent\.rows \|\| \[\]/);
     assert.doesNotMatch(loader, /const all = await fetchJobs\(null\)/);
-    assert.match(loader, /company-jobs-v17/);
+    assert.match(loader, /company-jobs-v18/);
   });
 
   it('agent rule does not require hub to alias the board', () => {

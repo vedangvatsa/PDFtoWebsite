@@ -8,10 +8,15 @@
 
 import { cleanPublishHtml, cleanPublishText } from '@/lib/noslop';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
-import { toCompanySlug, applyCompanyDisplayCasing, routeCompanySlug } from '@/lib/company-directory';
+import {
+  toCompanySlug,
+  applyCompanyDisplayCasing,
+  routeCompanySlug,
+  companyHubAliasPrefixes,
+} from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 32;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 33;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =
@@ -1662,6 +1667,28 @@ export function shortJobSlug(
  *  2. Routeable `external_id` ({company}_{short slug}) — legacy pretty rows.
  * Returns null only when the company slug is empty.
  */
+function isUsablePrettyJobSeg(raw: string): boolean {
+  const s = String(raw || '').toLowerCase();
+  if (!isShortJobSlug(s)) return false;
+  if (/^[0-9a-f]{8,}$/i.test(s)) return false;
+  if (/^\d+$/.test(s) && s.length > 8) return false;
+  return true;
+}
+
+function peelStoredJobSeg(stored: string | null | undefined, hub: string): string | null {
+  const s = String(stored || '').trim().toLowerCase();
+  if (!s) return null;
+  for (const prefix of companyHubAliasPrefixes(hub)) {
+    const head = `${prefix}_`;
+    if (s.startsWith(head)) {
+      const rest = s.slice(head.length);
+      if (isUsablePrettyJobSeg(rest)) return rest;
+    }
+  }
+  if (isUsablePrettyJobSeg(s)) return s;
+  return null;
+}
+
 export function jobStoredSlug(job: {
   company: string;
   company_key?: string | null;
@@ -1670,32 +1697,10 @@ export function jobStoredSlug(job: {
 }): string | null {
   const co = routeCompanySlug(job);
   if (!co) return null;
-  if (job.slug) {
-    const s = String(job.slug).toLowerCase();
-    const prefix = `${co}_`;
-    if (s.startsWith(prefix)) {
-      const rest = s.slice(prefix.length);
-      if (isShortJobSlug(rest) && !/^[0-9a-f]{8,}$/i.test(rest)) return rest;
-    }
-    // Some imports persist the short route segment itself (for example `ra`)
-    // rather than the historical `{company}_{slug}` form. Accept it only
-    // when it is already a valid short slug; numeric/hex ids remain excluded.
-    if (
-      isShortJobSlug(s) &&
-      !/^[0-9a-f]{8,}$/i.test(s) &&
-      !/^\d+$/.test(s)
-    ) {
-      return s;
-    }
-  }
-  const external = String(job.external_id || '').trim().toLowerCase();
-  if (
-    isShortJobSlug(external) &&
-    !/^[0-9a-f]{8,}$/i.test(external) &&
-    !(/^\d+$/.test(external) && external.length > 12)
-  ) {
-    return external;
-  }
+  const fromSlug = peelStoredJobSeg(job.slug, co);
+  if (fromSlug) return fromSlug;
+  const fromExternal = peelStoredJobSeg(job.external_id, co);
+  if (fromExternal) return fromExternal;
   return shortJobSlug(job.company, job.external_id, job.company_key);
 }
 

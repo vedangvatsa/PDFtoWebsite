@@ -247,9 +247,12 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
   });
 
   it('keeps the Oxford company hub on its canonical slug', () => {
-    const file = src('src/app/[slug]/(hub)/page.tsx');
-    assert.match(file, /'university-of-oxford': 'oxford'/);
-    assert.match(file, /permanentRedirect\(`\/\$\{canonicalCompany\}`\)/);
+    const aliases = src('src/lib/company-directory.ts');
+    const page = src('src/app/[slug]/(hub)/page.tsx');
+    assert.match(aliases, /'university-of-oxford': 'oxford'/);
+    assert.match(aliases, /'aspen-institute': 'aspen'/);
+    assert.match(page, /COMPANY_HUB_ALIASES/);
+    assert.match(page, /permanentRedirect\(`\/\$\{canonicalCompany\}`\)/);
   });
 
   it('enrich rewrite is OpenRouter fact-sheet write with formatted sections', () => {

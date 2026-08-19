@@ -232,7 +232,7 @@ export async function loadCompanyJobs(
       const live = rows.filter((j) => shouldListJobOnCompanyHub(j));
       return hydrateDescriptions(live);
     },
-    ['company-jobs-v17', slug, dirName || ''],
+    ['company-jobs-v18', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
 }

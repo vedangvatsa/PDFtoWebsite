@@ -37,6 +37,7 @@ import {
   resolveCompanyPage,
   buildCompanyPageMetadata,
 } from '@/lib/company-page';
+import { COMPANY_HUB_ALIASES } from '@/lib/company-directory';
 
 // Company careers: directory PK + company_key equality only (no public ILIKE).
 export const revalidate = 1800; // 30 minutes
@@ -46,9 +47,7 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-const COMPANY_CANONICAL_REDIRECTS: Record<string, string> = {
-  'university-of-oxford': 'oxford',
-};
+const COMPANY_CANONICAL_REDIRECTS: Record<string, string> = COMPANY_HUB_ALIASES;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -371,7 +370,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
         {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <Header />
-        <main id="main-content" className="w-full max-w-3xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32">
+        <main id="main-content" className="w-full max-w-5xl mx-auto px-6 py-12 md:py-20 lg:py-24 pb-32">
           <Link href="/blog" className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 mb-8 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Articles
           </Link>

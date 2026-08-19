@@ -19,7 +19,7 @@ import {
   jobStoredSlug,
   jobSlugSegmentMatchesHint,
 } from '@/lib/job-description';
-import { toCompanyKey } from '@/lib/company-directory';
+import { canonicalCompanyHub, toCompanyKey } from '@/lib/company-directory';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { gonePrettyJobPath } from '@/lib/seo-fallbacks';
@@ -175,7 +175,12 @@ export default async function CompanyJobPage({ params }: PageProps) {
     const apply = job ? liveUncuratedApplyUrl(job) : null;
     if (apply) redirect(apply);
     // Expired / deleted / reminted: soft-land on company hub (or /jobs).
-    permanentRedirect(await gonePrettyJobPath(slug));
+    permanentRedirect(await gonePrettyJobPath(canonicalCompanyHub(slug) || slug));
+  }
+
+  const canonical = jobPublicPath(job);
+  if (canonical.toLowerCase() !== `/${slug}/${jobSlug}`.toLowerCase()) {
+    permanentRedirect(canonical);
   }
 
   const detail = await toJobDetail(job);

@@ -40,7 +40,32 @@ export function toCompanySlug(name: string): string {
  * Prefer equality on this over ILIKE company scans on public pages.
  */
 export function toCompanyKey(name: string): string {
-  return toCompanySlug(name || '');
+  return canonicalCompanyHub(toCompanySlug(name || ''));
+}
+
+/**
+ * Display-name slugs that must share the known hub (`/oxford`, `/aspen`).
+ * Jobs often store "University of Oxford" / "Aspen Institute" while the
+ * public careers page is the short brand slug.
+ */
+export const COMPANY_HUB_ALIASES: Record<string, string> = {
+  'university-of-oxford': 'oxford',
+  'aspen-institute': 'aspen',
+};
+
+export function canonicalCompanyHub(slug: string): string {
+  const s = String(slug || '').trim().toLowerCase();
+  if (!s) return '';
+  return COMPANY_HUB_ALIASES[s] || s;
+}
+
+/** Hub slug plus every alias that maps to it — used to peel stored `{company}_{job}` ids. */
+export function companyHubAliasPrefixes(hub: string): string[] {
+  const canonical = canonicalCompanyHub(hub);
+  const aliases = Object.entries(COMPANY_HUB_ALIASES)
+    .filter(([, target]) => target === canonical)
+    .map(([alias]) => alias);
+  return [...new Set([canonical, String(hub || '').toLowerCase(), ...aliases].filter(Boolean))];
 }
 
 /** Public hub segment in `/{slug}` — prefers persisted `company_key` when set. */
@@ -49,8 +74,8 @@ export function routeCompanySlug(input: {
   company_key?: string | null;
 }): string {
   const key = String(input.company_key ?? '').trim().toLowerCase();
-  if (key) return key;
-  return toCompanySlug(String(input.company ?? ''));
+  if (key) return canonicalCompanyHub(key);
+  return canonicalCompanyHub(toCompanySlug(String(input.company ?? '')));
 }
 
 /** Known brand casing — only where Title Case of the label is wrong. */
