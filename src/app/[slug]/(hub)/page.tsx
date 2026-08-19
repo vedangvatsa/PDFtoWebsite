@@ -46,8 +46,14 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+const COMPANY_CANONICAL_REDIRECTS: Record<string, string> = {
+  'university-of-oxford': 'oxford',
+};
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const canonicalCompany = COMPANY_CANONICAL_REDIRECTS[slug.toLowerCase()];
+  if (canonicalCompany) permanentRedirect(`/${canonicalCompany}`);
   const post = blogPosts.find(p => p.slug === slug);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
   const canonicalUrl = `${siteUrl}/${slug}`;
@@ -227,6 +233,8 @@ function buildPersonSchema(data: ServerProfileData) {
 
 export default async function ProfileSlugPage({ params }: PageProps) {
   const { slug } = await params;
+  const canonicalCompany = COMPANY_CANONICAL_REDIRECTS[slug.toLowerCase()];
+  if (canonicalCompany) permanentRedirect(`/${canonicalCompany}`);
   
   // Check if city guide
   const isCity = nomadCities.some((c) => c.slug === slug);
@@ -505,42 +513,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     const now = Date.now();
     const last30d = jobs.filter((j: any) => { const d = j.published_at || j.created_at; return d && (now - new Date(d).getTime()) < 30 * 86400000; }).length;
 
-    const faqs = [
-      {
-        q: `Where can I find ${companyName} jobs on CVin.Bio?`,
-        a: `Live ${companyName} openings are listed at https://cvin.bio/${slug}. Search all tech jobs at https://cvin.bio/jobs?q=${encodeURIComponent(companyName)}.`,
-      },
-      {
-        q: `How many open positions does ${companyName} have right now?`,
-        a: `${companyName} currently has ${totalJobs} open positions listed on CVin.Bio. ${last30d} of these were posted in the last 30 days. ${remotePercent}% of all roles are listed as remote-friendly.`,
-      },
-      ...(topLocs.length > 0 ? [{
-        q: `Where are ${companyName} jobs located?`,
-        a: `The top hiring locations for ${companyName} are ${topLocs.map(([l, c]) => `${l} (${c} roles)`).join(', ')}.`,
-      }] : []),
-      ...(Object.keys(catCount).length > 0 ? [{
-        q: `What departments is ${companyName} hiring for?`,
-        a: `${companyName} is actively hiring across ${Object.keys(catCount).length} departments. The most active are ${topCats.map(([c, n]) => `${c} (${n} roles)`).join(', ')}.`,
-      }] : []),
-      ...(topSkills.length > 0 ? [{
-        q: `What skills does ${companyName} look for in candidates?`,
-        a: `Based on current job listings, the most frequently requested skills at ${companyName} are ${topSkills.join(', ')}. These appear across multiple open roles and departments.`,
-      }] : []),
-      ...(meta ? [{
-        q: `What is ${companyName}?`,
-        a: meta.description,
-      }] : []),
-    ];
-
-    const faqSchema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
-      })),
-    };
+    
 
     // Breadcrumb (Google: ≥2 ListItems, mirrors a real user path).
     const breadcrumbSchema = {
@@ -571,7 +544,6 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       <div className="min-h-screen bg-zinc-50 flex flex-col overflow-x-hidden">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
         <Header />
         
         <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-4">
@@ -745,23 +717,7 @@ export default async function ProfileSlugPage({ params }: PageProps) {
             })}
           </div>
 
-          {/* FAQ Section - SEO content at the bottom */}
-          <section className="border-t border-zinc-200 pt-10">
-            <h2 className="text-lg font-bold tracking-tight text-zinc-900 mb-4">Frequently Asked Questions</h2>
-            <div className="divide-y divide-zinc-200 border border-zinc-200 rounded-xl overflow-hidden">
-              {faqs.map((faq, i) => (
-                <details key={i} className="group bg-white" {...(i === 0 ? { open: true } : {})}>
-                  <summary className="flex items-center justify-between gap-3 cursor-pointer px-5 py-4 text-[14px] font-semibold text-zinc-900 hover:bg-zinc-50 transition-colors select-none list-none [&::-webkit-details-marker]:hidden min-w-0">
-                    <span className="min-w-0 break-words">{faq.q}</span>
-                    <svg className="w-4 h-4 text-zinc-400 shrink-0 ml-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-                  </summary>
-                  <div className="px-5 pb-4 text-[13px] leading-relaxed text-zinc-600">{faq.a}</div>
-                </details>
-              ))}
-            </div>
-          </section>
-
-        </main>
+          </main>
         
         <MicroFooter />
       </div>

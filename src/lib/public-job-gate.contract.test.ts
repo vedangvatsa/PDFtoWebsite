@@ -246,6 +246,12 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
     assert.match(file, /\.eq\('slug', identifier\)/);
   });
 
+  it('keeps the Oxford company hub on its canonical slug', () => {
+    const file = src('src/app/[slug]/(hub)/page.tsx');
+    assert.match(file, /'university-of-oxford': 'oxford'/);
+    assert.match(file, /permanentRedirect\(`\/\$\{canonicalCompany\}`\)/);
+  });
+
   it('enrich rewrite is OpenRouter fact-sheet write with formatted sections', () => {
     const file = src('.github/scripts/enrich-remote-job-descriptions.mjs');
     const start = file.indexOf('async function rewriteJobPage');
