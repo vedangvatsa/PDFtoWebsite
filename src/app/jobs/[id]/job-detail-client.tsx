@@ -22,6 +22,7 @@ import {
   jobTypeLabel,
   timeAgo,
   looksLikeFellowship,
+  JOB_DESCRIPTION_PROSE_CLASS,
 } from '@/lib/job-description';
 import { useToast } from '@/hooks/use-toast';
 import posthog from 'posthog-js';
@@ -378,7 +379,7 @@ export default function JobDetailClient({
               {job.description_kind === 'company' ? 'About the company' : 'Job description'}
             </h2>
             <div
-              className="prose max-w-full break-words [overflow-wrap:anywhere]"
+              className={JOB_DESCRIPTION_PROSE_CLASS}
               dangerouslySetInnerHTML={{ __html: job.description_html }}
             />
           </div>
