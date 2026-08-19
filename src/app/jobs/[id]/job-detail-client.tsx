@@ -21,7 +21,6 @@ import {
   addJobApplyUtm,
   jobTypeLabel,
   timeAgo,
-  JOB_DESCRIPTION_PROSE_CLASS,
   looksLikeFellowship,
 } from '@/lib/job-description';
 import { useToast } from '@/hooks/use-toast';
@@ -379,12 +378,8 @@ export default function JobDetailClient({
               {job.description_kind === 'company' ? 'About the company' : 'Job description'}
             </h2>
             <div
-              className={JOB_DESCRIPTION_PROSE_CLASS}
-              dangerouslySetInnerHTML={{
-                __html:
-                  job.description_html ||
-                  `<p>${job.company} is hiring for ${job.title}${job.location ? ` in ${job.location}` : ''}.</p>`,
-              }}
+              className="prose max-w-full break-words [overflow-wrap:anywhere]"
+              dangerouslySetInnerHTML={{ __html: job.description_html }}
             />
           </div>
 
