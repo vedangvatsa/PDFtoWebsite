@@ -225,18 +225,14 @@ export async function loadCompanyJobs(
       if (recent.timedOut && (!recent.rows || recent.rows.length === 0)) {
         throw new Error('COMPANY_JOBS_TIMEOUT');
       }
-      let rows = recent.rows || [];
-      if (!rows.length) {
-        const all = await fetchJobs(null);
-        if (all.timedOut && (!all.rows || all.rows.length === 0)) {
-          throw new Error('COMPANY_JOBS_TIMEOUT');
-        }
-        rows = all.rows || [];
-      }
+      // Never fall back to the full historical company inventory. A company
+      // with no jobs in the active window should show zero roles, not stale
+      // links that are expired or already gone from the public job route.
+      const rows = recent.rows || [];
       const live = rows.filter((j) => shouldListJobOnCompanyHub(j));
       return hydrateDescriptions(live);
     },
-    ['company-jobs-v16', slug, dirName || ''],
+    ['company-jobs-v17', slug, dirName || ''],
     { revalidate: 900, tags: [`company-jobs:${slug}`] }
   )();
 }

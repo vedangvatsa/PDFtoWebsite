@@ -354,6 +354,13 @@ describe('source locks — do not reintroduce empty hubs', () => {
     assert.doesNotMatch(og, /jobCount = companyDir\.role_count/);
   });
 
+  it('hub never falls back to historical jobs when the active window is empty', () => {
+    const loader = readRel('src/lib/company-page.ts');
+    assert.match(loader, /const rows = recent\.rows \|\| \[\]/);
+    assert.doesNotMatch(loader, /const all = await fetchJobs\(null\)/);
+    assert.match(loader, /company-jobs-v17/);
+  });
+
   it('agent rule does not require hub to alias the board', () => {
     const rule = readRel('.cursor/rules/public-job-gate.mdc');
     assert.doesNotMatch(rule, /must\*\* `return shouldListJobOnBoard/);
