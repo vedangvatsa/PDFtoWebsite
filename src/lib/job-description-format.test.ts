@@ -40,6 +40,17 @@ function requirementsSection(html: string): string {
 }
 
 describe('formatJobDescription section headings', () => {
+  it('does not preserve an ATS wrapper div as an extra spacing block', () => {
+    const html = formatJobDescription(
+      '<div><h2><strong>About BITS Pilani</strong></h2><p>University overview.</p></div>' +
+        '<p>The Academic Associate role supports faculty and laboratory instruction.</p>'
+    );
+    assert.doesNotMatch(html, /<div>/);
+    assert.match(html, /<h2><strong>About BITS Pilani<\/strong><\/h2>/);
+    assert.match(html, /<p>University overview\.<\/p>/);
+    assert.match(html, /<\/p>\s*<p>The Academic Associate role/);
+  });
+
   it('removes dangling Anthropic cross-references and links the apply sentence', () => {
     const html = formatJobDescription(
       `This page is specific to one of the Anthropic Fellows Workstreams, see also the main Anthropic Fellows posting.

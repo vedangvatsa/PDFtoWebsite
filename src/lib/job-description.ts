@@ -433,6 +433,10 @@ function sanitizeJobHtml(raw: string): string {
 
   // Collapse empty tags and excess whitespace
   html = html
+    // A few ATS exporters wrap an entire description in a generic div. Keep
+    // its content, but do not let that wrapper create an unstyled block whose
+    // margins differ from the shared description flow.
+    .replace(/<\/?div>/gi, '')
     .replace(/<(p|div|h[2-6]|li|span)>\s*<\/\1>/gi, '')
     .replace(/(<br\s*\/?>\s*){3,}/gi, '<br /><br />')
     .replace(/\n{3,}/g, '\n\n')
@@ -1673,6 +1677,24 @@ export function jobStoredSlug(job: {
       const rest = s.slice(prefix.length);
       if (isShortJobSlug(rest) && !/^[0-9a-f]{8,}$/i.test(rest)) return rest;
     }
+    // Some imports persist the short route segment itself (for example `ra`)
+    // rather than the historical `{company}_{slug}` form. Accept it only
+    // when it is already a valid short slug; numeric/hex ids remain excluded.
+    if (
+      isShortJobSlug(s) &&
+      !/^[0-9a-f]{8,}$/i.test(s) &&
+      !/^\d+$/.test(s)
+    ) {
+      return s;
+    }
+  }
+  const external = String(job.external_id || '').trim().toLowerCase();
+  if (
+    isShortJobSlug(external) &&
+    !/^[0-9a-f]{8,}$/i.test(external) &&
+    !(/^\d+$/.test(external) && external.length > 12)
+  ) {
+    return external;
   }
   return shortJobSlug(job.company, job.external_id, job.company_key);
 }
