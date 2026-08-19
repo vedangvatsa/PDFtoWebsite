@@ -40,7 +40,6 @@ async function loadJobByExternalIdLive(
   companySlug: string,
   jobSlug: string
 ): Promise<JobRow | null> {
-  const externalId = jobExternalIdFromSlugs(companySlug, jobSlug);
   // A URL is ambiguous when one job's minted slug column equals another job's
   // external_id (e.g. a greenhouse row minted `twilio_sw-eng` vs a native row
   // whose external_id is literally `twilio_sw-eng`). The exact external_id
