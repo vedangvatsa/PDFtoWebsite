@@ -25,6 +25,7 @@ import {
 import { getCompanyLinks } from './company-links';
 import { trustedCompanyWebsiteUrl } from './company-logo';
 import { jobPublicPath } from '../../.github/scripts/lib/job-public-url.mjs';
+import { jobStoredSlug } from './job-description';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const day = 24 * 60 * 60 * 1000;
@@ -54,6 +55,18 @@ describe('indexing canonical URLs', () => {
       }),
       '/drata/enterp-31'
     );
+  });
+
+  it('keeps legacy short external identifiers routeable', () => {
+    const job = {
+      id: 'aspen-job',
+      company: 'Aspen Institute',
+      external_id: 'aspen',
+      slug: 'aspen',
+      title: 'Science and Technology Policy Fellow',
+    };
+    assert.equal(jobStoredSlug(job), 'aspen');
+    assert.equal(jobPublicPath(job), '/aspen-institute/aspen');
   });
 });
 
@@ -167,6 +180,24 @@ describe('board vs company hub listing', () => {
 });
 
 describe('company hub query contracts', () => {
+  it('uses the short stored identifier for Oxford’s canonical card route', () => {
+    const job = {
+      id: '133828b8-9a44-4da0-bb99-65ef84f194c0',
+      title: 'Research Assistant on AI Safety',
+      company: 'University of Oxford',
+      company_key: 'oxford',
+      external_id: '188116',
+      slug: 'oxford_ra',
+      tags: ['curated-jd'],
+      description: 'A'.repeat(4000),
+    };
+    assert.equal(jobPublicPath(job), '/oxford/ra');
+    assert.deepEqual(companyHubJobLink(job), {
+      href: '/oxford/ra',
+      external: false,
+    });
+  });
+
   it('ORs published_at and created_at instead of ANDing created_at', () => {
     const filter = companyJobsDateOrFilter('2026-07-15T00:00:00.000Z');
     assert.match(filter, /published_at\.gt\./);
