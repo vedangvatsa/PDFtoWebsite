@@ -28,6 +28,8 @@ const NEWS_RE =
 const LANDING_PATH_RE =
   /^\/(careers|career|jobs)\/?$|^\/careers\/research\/?$|\/company\/careers$|\/about\/careers$|\/careers-at-|\/employment-opportunities|\/people\/fellows$/i;
 
+const POLYMARKET_SCIENCE_RE = /\bpolymarket\s+science\s+fellowship\b/i;
+
 function compactKey(job) {
   return String(job?.company_key || job?.company || '')
     .toLowerCase()
@@ -73,6 +75,17 @@ export function fellowshipPublishBlockReason(job, now = new Date()) {
   const years = yearsIn(blob);
   const hasLiveYear = years.some((y) => y >= year);
   const pastOnly = years.length > 0 && years.every((y) => y < year);
+
+  // This program is a real Polymarket Institute fellowship page, not an
+  // aggregator directory. Keep the exact listing publishable even when the
+  // source URL has no year or conventional /apply path.
+  if (
+    POLYMARKET_SCIENCE_RE.test(title) &&
+    compactKey(job) === 'polymarket' &&
+    /polymarket\.com/i.test(url)
+  ) {
+    return null;
+  }
 
   if (ALLOW_COMPANY_KEYS.has(compactKey(job))) return null;
   if (/paused/i.test(title)) return 'paused_program';

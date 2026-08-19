@@ -154,4 +154,21 @@ describe('fellowshipPublishBlockReason', () => {
       null
     );
   });
+
+  it('keeps the Polymarket Science Fellowship page publishable', () => {
+    assert.equal(
+      fellowshipPublishBlockReason(
+        {
+          title: 'Polymarket Science Fellowship',
+          company: 'Polymarket',
+          company_key: 'polymarket',
+          apply_url: 'https://polymarket.com/science-fellowship',
+          source: 'fellowship-discover',
+        },
+        now
+      ),
+      null
+    );
+  });
+
 });
