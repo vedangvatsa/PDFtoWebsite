@@ -24,8 +24,8 @@ const LOGO_OVERRIDES: Record<string, string> = {
   'governance ai': '/company-logos/govai.png',
   anthropic: '/company-logos/anthropic.png',
   apple: '/company-logos/apple.png',
-  oxford: 'https://www.ox.ac.uk/favicon.ico',
-  'university of oxford': 'https://www.ox.ac.uk/favicon.ico',
+  oxford: '/company-logos/oxford.png',
+  'university of oxford': '/company-logos/university-of-oxford.png',
   era: '/company-logos/era.png',
   'era fellowship': '/company-logos/era.png',
   mats: '/company-logos/mats.png',
@@ -51,7 +51,7 @@ const LOGO_OVERRIDES: Record<string, string> = {
 };
 
 /** Hotlink-blocked or expired CDN logos — skip and use fallbacks. */
-const UNRELIABLE_LOGO_HOSTS = ['media.licdn.com', 'licdn.com', 'linkedin.com'];
+const UNRELIABLE_LOGO_HOSTS = ['media.licdn.com', 'licdn.com', 'linkedin.com', 'ox.ac.uk'];
 
 function isReliableStoredLogo(url: string | null | undefined): boolean {
   if (!url || !/^https?:\/\//i.test(url)) return false;
@@ -445,6 +445,7 @@ const LOCAL_LOGO_FILES = new Set([
   'motional.png',
   'nasa.png',
   'niti-aayog.png',
+  'oxford.png',
   'palantir.png',
   'point72.png',
   'rainmaker.png',
@@ -454,6 +455,7 @@ const LOCAL_LOGO_FILES = new Set([
   'spar.png',
   'tenstorrent.png',
   'the-good-food-institute.png',
+  'university-of-oxford.png',
   'the-new-york-times.png',
   'viking-global-investors.png',
 ]);
@@ -484,10 +486,10 @@ export function companyLogoCandidates(
 ): string[] {
   const domain = domainForCompany(name, applyUrl);
   const out: string[] = [];
+  out.push(...localLogoPaths(name));
   if (isReliableStoredLogo(storedLogo) && !/google\.com\/s2\/favicons|gstatic\.com\/favicon/i.test(storedLogo!)) {
     out.push(storedLogo!);
   }
-  out.push(...localLogoPaths(name));
   // Fallback: original IAIP-hosted Indian Army emblem if CDN mirror 404s pre-deploy
   if (name.toLowerCase().trim() === 'indian army') {
     out.push(

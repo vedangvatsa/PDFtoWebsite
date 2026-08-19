@@ -113,6 +113,12 @@ assert(
   'do not 404-guess missing local logos'
 );
 assert(companyLogoCandidates('J Street')[0] === '/company-logos/j-street.png', 'J Street uses local mark');
+assert(
+  companyLogoCandidates('University of Oxford', 'https://www.ox.ac.uk/-/media/brand/oxford-logo.png')[0] ===
+    '/company-logos/university-of-oxford.png',
+  'Oxford uses the local crest, not the blocked ox.ac.uk brand file'
+);
+assert(companyLogoCandidates('oxford')[0] === '/company-logos/oxford.png', 'oxford slug uses local crest');
 
 assert(companyHubKeyForProfileSlug('NASA') === 'nasa', 'profile slug maps to company_key');
 assert(companyHubKeyForProfileSlug('sam-smith') === 'sam-smith', 'hyphens stay in the equality key');

@@ -135,7 +135,7 @@ const COMPANIES: Record<string, CompanyMeta> = {
     funding: 'Public',
     industry: 'Education / Research',
     description: 'The University of Oxford is a collegiate research university in Oxford, England, United Kingdom. Founded around 1096, it is the oldest university in the English-speaking world and has a global reputation for excellence in teaching and research. The Department of Computer Science, located at Parks Road, Oxford, conducts research in areas including artificial intelligence, machine learning, computer vision, natural language processing, security, and theory. The department is home to the Oxford Applied and Theoretical Machine Learning (OATML) research group and supports various AI safety and security research initiatives.',
-    logo: 'https://www.ox.ac.uk/-/media/brand/oxford-logo.png',
+    logo: '/company-logos/oxford.png',
     socials: {
       x: 'https://x.com/uniofoxford',
       linkedin: 'https://www.linkedin.com/school/oxforduni/',
@@ -1183,6 +1183,38 @@ const COMPANIES: Record<string, CompanyMeta> = {
     socials: {
       x: 'https://x.com/aspeninstitute',
       linkedin: 'https://www.linkedin.com/company/the-aspen-institute',
+    },
+  },
+  'polymarket': {
+    slug: 'polymarket',
+    name: 'Polymarket',
+    website: 'https://polymarket.com',
+    founded: 2020,
+    hq: 'New York, NY',
+    size: '100-200',
+    stage: 'Growth',
+    funding: 'Venture-backed',
+    industry: 'Prediction Markets, Information Markets, DeFi',
+    description: 'Polymarket is a prediction market platform that enables users to trade on the outcome of real-world events. Founded in 2020, the company operates a decentralized information marketplace where participants can speculate on politics, sports, pop culture, and other events by buying and selling outcome-linked tokens. The platform processes hundreds of millions in trading volume and has become a major source of real-time probabilistic information on current events. Polymarket also runs the Polymarket Institute, an independent research arm focused on advancing the science of prediction markets as information institutions.',
+    socials: {
+      x: 'https://x.com/Polymarket',
+      linkedin: 'https://www.linkedin.com/company/polymarket',
+    },
+  },
+  'bits-pilani': {
+    slug: 'bits-pilani',
+    name: 'BITS Pilani',
+    website: 'https://www.bits-pilani.ac.in',
+    founded: 1964,
+    hq: 'Pilani, Rajasthan, India',
+    size: '2,000+',
+    stage: 'Educational Institution',
+    funding: 'Private',
+    industry: 'Higher Education, Engineering, Science, Management',
+    description: 'Birla Institute of Technology and Science (BITS Pilani) is a private deemed university located in Pilani, Rajasthan, India. Founded in 1964, BITS Pilani has grown into a multi-campus institution with campuses in Pilani, Goa, and Hyderabad. The institute is recognized as an Institution of Eminence by the Government of India and is known for its rigorous academic programs in engineering, sciences, management, and humanities. BITS Pilani follows a unique practice school model that integrates industry experience into its curriculum, and it has a strong research output across multiple disciplines.',
+    socials: {
+      x: 'https://x.com/BITSBirla',
+      linkedin: 'https://www.linkedin.com/company/bits-pilani',
     },
   },
 };
