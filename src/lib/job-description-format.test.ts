@@ -40,6 +40,21 @@ function requirementsSection(html: string): string {
 }
 
 describe('formatJobDescription section headings', () => {
+  it('removes dangling Anthropic cross-references and links the apply sentence', () => {
+    const html = formatJobDescription(
+      `This page is specific to one of the Anthropic Fellows Workstreams, see also the main Anthropic Fellows posting.
+
+Apply using this link.
+
+Role details.`,
+      null,
+      { applyUrl: 'https://example.com/apply' }
+    );
+    assert.doesNotMatch(html, /see also the main Anthropic Fellows posting/i);
+    assert.match(html, /href="https:\/\/example\.com\/apply"/);
+    assert.match(html, /Apply using <a /i);
+  });
+
   it('renders common PayJoy-style section titles as bold h3, not plain paragraphs', () => {
     const raw = `About the role
 Intro paragraph.

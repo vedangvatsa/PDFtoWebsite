@@ -1243,6 +1243,22 @@ export function formatJobDescription(
   );
 
   html = stripLeakedPromptText(html);
+  // Remove dangling editorial references copied from source pages. They are
+  // misleading when the referenced main posting is not linked on this page.
+  html = html.replace(
+    /<p>\s*This page is specific to one of the Anthropic Fellows Workstreams,[\s\S]*?main Anthropic Fellows posting\.\s*<\/p>/gi,
+    ''
+  );
+  html = html.replace(
+    /<p>\s*On our Alignment Science and Frontier Red Team blogs, you can read about some past Fellows projects, including:\s*<\/p>\s*/gi,
+    ''
+  );
+  if (opts?.applyUrl) {
+    const applyLink = `<a href="${escapeHtml(opts.applyUrl)}" target="_blank" rel="noopener noreferrer">this link</a>`;
+    html = html.replace(/\bApply using this link\.?/gi, `Apply using ${applyLink}.`);
+  } else {
+    html = html.replace(/<p>\s*Apply using this link\.?\s*<\/p>/gi, '');
+  }
   html = html.replace(
     /<h3>\s*Nice to have\s*<\/h3>\s*(?:<(?:p|ul|ol)>[\s]*<\/(?:p|ul|ol)>\s*)*(?=<h[23]>|$)/gi,
     ''
