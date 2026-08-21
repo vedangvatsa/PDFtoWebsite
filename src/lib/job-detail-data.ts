@@ -549,6 +549,10 @@ const GOOGLE_COUNTRY_NAME: Record<string, string> = {
   VN: 'Vietnam', TH: 'Thailand', TW: 'Taiwan', AR: 'Argentina', CO: 'Colombia',
   CL: 'Chile', ZA: 'South Africa', PK: 'Pakistan', NG: 'Nigeria', KE: 'Kenya',
   BD: 'Bangladesh', UA: 'Ukraine', TR: 'Turkey',
+  EE: 'Estonia', GR: 'Greece', LV: 'Latvia', LT: 'Lithuania', SK: 'Slovakia',
+  SI: 'Slovenia', HR: 'Croatia', RS: 'Serbia', BG: 'Bulgaria', IS: 'Iceland',
+  LU: 'Luxembourg', CY: 'Cyprus', SA: 'Saudi Arabia', EG: 'Egypt', MA: 'Morocco',
+  GH: 'Ghana', PE: 'Peru', UY: 'Uruguay', CR: 'Costa Rica', LK: 'Sri Lanka', NP: 'Nepal',
 };
 
 function isRemoteLocation(location: string | null | undefined): boolean {
@@ -562,6 +566,74 @@ function isHybridLocation(location: string | null | undefined): boolean {
   return /\bhybrid\b/i.test(String(location || ''));
 }
 
+/**
+ * ATS often writes employment type into `location` ("Full-time", "Contract").
+ * Those are job types, not places — never treat them as a locality.
+ */
+export function locationIsEmploymentTypeOnly(location: string | null | undefined): boolean {
+  const s = String(location || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!s) return false;
+  return /^(full[\s_-]*time|part[\s_-]*time|contract(or|ing)?|permanent|temporary|temp|freelance|intern(ship)?|seasonal|volunteer|fixed[\s_-]*term|unlimited|fte|w2|c2c|1099)(\s+(role|position|job|employment|engagement))?$/i.test(
+    s
+  );
+}
+
+/** Empty / N/A / misfiled job-type strings — no geographic Place. */
+export function isNonPlaceLocation(location: string | null | undefined): boolean {
+  const s = String(location || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!s) return true;
+  if (/^n\/?a$/i.test(s) || /^none$/i.test(s) || /^null$/i.test(s) || /^-+$/.test(s)) {
+    return true;
+  }
+  return locationIsEmploymentTypeOnly(s);
+}
+
+/** @deprecated use isNonPlaceLocation — kept for older call sites */
+export function isJunkJobLocation(location: string | null | undefined): boolean {
+  return isNonPlaceLocation(location);
+}
+
+/** Map a misfiled location token (or job_type) to schema.org employmentType. */
+export function employmentTypeFromToken(raw: string | null | undefined): string | undefined {
+  const s = String(raw || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\s+(role|position|job|employment|engagement)$/i, '')
+    .trim();
+  if (!s || /^n\/?a$/i.test(s)) return undefined;
+  const key = s.toLowerCase().replace(/-/g, '_').replace(/\s+/g, '_');
+  return (
+    EMPLOYMENT_TYPE_MAP[s] ||
+    EMPLOYMENT_TYPE_MAP[key] ||
+    EMPLOYMENT_TYPE_MAP[s.toLowerCase()] ||
+    ({
+      full_time: 'FULL_TIME',
+      fulltime: 'FULL_TIME',
+      part_time: 'PART_TIME',
+      parttime: 'PART_TIME',
+      contract: 'CONTRACTOR',
+      contractor: 'CONTRACTOR',
+      contracting: 'CONTRACTOR',
+      permanent: 'FULL_TIME',
+      temporary: 'TEMPORARY',
+      temp: 'TEMPORARY',
+      intern: 'INTERN',
+      internship: 'INTERN',
+      freelance: 'OTHER',
+      seasonal: 'TEMPORARY',
+      volunteer: 'VOLUNTEER',
+      fte: 'FULL_TIME',
+      w2: 'FULL_TIME',
+      c2c: 'CONTRACTOR',
+      '1099': 'CONTRACTOR',
+    } as Record<string, string>)[key]
+  );
+}
+
 /** ISO 3166-1 alpha-2, or null. Never "Worldwide" — Google rejects that as a Country. */
 function isoCountryCode(value: string | null | undefined): string | null {
   if (!value) return null;
@@ -572,8 +644,22 @@ function isoCountryCode(value: string | null | undefined): string | null {
   if (aliased) return aliased;
   const up = raw.toUpperCase();
   if (up === 'UK') return 'GB';
-  if (/^[A-Z]{2}$/.test(up) && !US_STATE_ABBR.has(up)) return up;
-  return null;
+  if (!/^[A-Z]{2}$/.test(up)) return null;
+  // CA/IN/GA/… are both US state abbrs and real ISO countries. Once a caller
+  // has resolved Canada/India/etc. to the ISO code, keep it — rejecting those
+  // here deleted jobLocation and dropped JobPosting (~40% of onsite pages).
+  if (KNOWN_ISO_COUNTRY.has(up)) return up;
+  if (US_STATE_ABBR.has(up)) return null;
+  return up;
+}
+
+function usStateAbbr(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const raw = String(value).trim();
+  if (!raw) return null;
+  const up = raw.toUpperCase();
+  if (US_STATE_ABBR.has(up)) return up;
+  return US_STATE_NAMES[raw.toLowerCase()] || null;
 }
 
 function countryRequirementName(iso: string): string {
@@ -630,12 +716,13 @@ function inferCountryFromLocation(location: string | null | undefined): string |
 }
 
 function inferEmploymentType(job: JobRow): string | undefined {
-  const key = (job.job_type || '').toLowerCase().replace(/-/g, '_');
-  const mapped =
-    EMPLOYMENT_TYPE_MAP[job.job_type || ''] ||
-    EMPLOYMENT_TYPE_MAP[key] ||
-    EMPLOYMENT_TYPE_MAP[(job.job_type || '').toLowerCase()];
-  if (mapped) return mapped;
+  const fromColumn = employmentTypeFromToken(job.job_type);
+  if (fromColumn) return fromColumn;
+  // Location field sometimes holds the job type (ATS misfile), never a place.
+  if (locationIsEmploymentTypeOnly(job.location)) {
+    const fromLoc = employmentTypeFromToken(job.location);
+    if (fromLoc) return fromLoc;
+  }
   if (looksLikeFellowship(job)) return 'OTHER';
   const blob = `${job.job_type || ''} ${job.title || ''} ${(job.tags || []).join(' ')} ${job.category || ''}`.toLowerCase();
   if (/\bintern(ship)?s?\b/.test(blob)) return 'INTERN';
@@ -730,13 +817,28 @@ const US_STATE_ABBR = new Set([
   'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC',
 ]);
 
+/** Full US state / district names → abbr. "Chicago, Illinois" must become US+IL. */
+const US_STATE_NAMES: Record<string, string> = {
+  alabama: 'AL', alaska: 'AK', arizona: 'AZ', arkansas: 'AR', california: 'CA', colorado: 'CO',
+  connecticut: 'CT', delaware: 'DE', florida: 'FL', georgia: 'GA', hawaii: 'HI', idaho: 'ID',
+  illinois: 'IL', indiana: 'IN', iowa: 'IA', kansas: 'KS', kentucky: 'KY', louisiana: 'LA',
+  maine: 'ME', maryland: 'MD', massachusetts: 'MA', michigan: 'MI', minnesota: 'MN',
+  mississippi: 'MS', missouri: 'MO', montana: 'MT', nebraska: 'NE', nevada: 'NV',
+  'new hampshire': 'NH', 'new jersey': 'NJ', 'new mexico': 'NM', 'new york': 'NY',
+  'north carolina': 'NC', 'north dakota': 'ND', ohio: 'OH', oklahoma: 'OK', oregon: 'OR',
+  pennsylvania: 'PA', 'rhode island': 'RI', 'south carolina': 'SC', 'south dakota': 'SD',
+  tennessee: 'TN', texas: 'TX', utah: 'UT', vermont: 'VT', virginia: 'VA', washington: 'WA',
+  'west virginia': 'WV', wisconsin: 'WI', wyoming: 'WY', 'district of columbia': 'DC',
+};
+
 const COUNTRY_ALIASES: Record<string, string> = {
   usa: 'US', us: 'US', 'u.s.': 'US', 'u.s.a.': 'US',
   'united states': 'US', 'united states of america': 'US',
   uk: 'GB', 'u.k.': 'GB', 'united kingdom': 'GB', 'great britain': 'GB', england: 'GB',
   scotland: 'GB', wales: 'GB',
   germany: 'DE', deutschland: 'DE', france: 'FR', canada: 'CA', india: 'IN',
-  australia: 'AU', netherlands: 'NL', 'the netherlands': 'NL', singapore: 'SG', ireland: 'IE', spain: 'ES',
+  australia: 'AU', netherlands: 'NL', 'the netherlands': 'NL', holland: 'NL',
+  singapore: 'SG', ireland: 'IE', spain: 'ES',
   italy: 'IT', brazil: 'BR', japan: 'JP', mexico: 'MX', poland: 'PL', sweden: 'SE',
   switzerland: 'CH', portugal: 'PT', israel: 'IL', 'south korea': 'KR', korea: 'KR',
   'hong kong': 'HK', 'new zealand': 'NZ', uae: 'AE', 'united arab emirates': 'AE',
@@ -745,8 +847,17 @@ const COUNTRY_ALIASES: Record<string, string> = {
   philippines: 'PH', malaysia: 'MY', indonesia: 'ID', vietnam: 'VN', thailand: 'TH',
   taiwan: 'TW', argentina: 'AR', colombia: 'CO', chile: 'CL',
   'south africa': 'ZA', pakistan: 'PK', nigeria: 'NG', kenya: 'KE',
-  bangladesh: 'BD', ukraine: 'UA', turkey: 'TR',
+  bangladesh: 'BD', ukraine: 'UA', turkey: 'TR', türkiye: 'TR',
+  estonia: 'EE', greece: 'GR', hellas: 'GR', latvia: 'LV', lithuania: 'LT',
+  slovakia: 'SK', slovenia: 'SI', croatia: 'HR', serbia: 'RS', bulgaria: 'BG',
+  iceland: 'IS', luxembourg: 'LU', malta: 'MT', cyprus: 'CY',
+  'saudi arabia': 'SA', egypt: 'EG', morocco: 'MA', ghana: 'GH',
+  peru: 'PE', uruguay: 'UY', 'costa rica': 'CR', panama: 'PA',
+  'sri lanka': 'LK', nepal: 'NP',
 };
+
+/** ISO codes we intentionally emit (values of COUNTRY_ALIASES). */
+const KNOWN_ISO_COUNTRY = new Set(Object.values(COUNTRY_ALIASES));
 
 /** Known city → country ISO, from the site's own curated city dataset. */
 const CITY_COUNTRY: Record<string, string> = (() => {
@@ -773,6 +884,7 @@ export function parseJobLocationAddress(
   location: string | null | undefined
 ): Record<string, unknown> | undefined {
   if (!location) return undefined;
+  if (isNonPlaceLocation(location)) return undefined;
   // Light clean only — keep city/region tokens for schema
   const loc = cleanPublishText(
     String(location)
@@ -781,7 +893,7 @@ export function parseJobLocationAddress(
       .replace(/\b(remote|hybrid|onsite|on-site)\b/gi, (m) => m)
       .trim()
   );
-  if (!loc) return undefined;
+  if (!loc || isNonPlaceLocation(loc)) return undefined;
 
   // Strip leading "Remote - " / "Remote," wrappers for address parts
   const stripped = loc
@@ -825,47 +937,53 @@ export function parseJobLocationAddress(
 
   const last = parts[parts.length - 1];
   const lastLower = last.toLowerCase();
-  const lastCountry = COUNTRY_ALIASES[lastLower] || (/^[A-Z]{2}$/i.test(last) && !US_STATE_ABBR.has(last.toUpperCase()) ? last.toUpperCase() : null);
+  const lastCountry =
+    COUNTRY_ALIASES[lastLower] ||
+    (/^[A-Z]{2}$/i.test(last) && KNOWN_ISO_COUNTRY.has(last.toUpperCase())
+      ? last.toUpperCase()
+      : null);
+  const lastUsState = usStateAbbr(last);
 
   if (parts.length >= 3) {
     address.addressLocality = parts[0];
     // middle may be state
     const mid = parts[1];
-    if (US_STATE_ABBR.has(mid.toUpperCase()) || mid.length <= 20) {
-      address.addressRegion = US_STATE_ABBR.has(mid.toUpperCase()) ? mid.toUpperCase() : mid;
+    const midState = usStateAbbr(mid);
+    if (midState) {
+      address.addressRegion = midState;
+    } else if (mid.length <= 20) {
+      address.addressRegion = mid;
     } else {
       address.addressRegion = mid;
     }
-    address.addressCountry = lastCountry || isoCountryCode(last);
+    address.addressCountry =
+      lastCountry || (lastUsState ? 'US' : null) || isoCountryCode(last);
+    if (lastUsState && !address.addressRegion) address.addressRegion = lastUsState;
   } else if (parts.length === 2) {
     address.addressLocality = parts[0];
     const regionRaw = parts[1].replace(/\s*\([^)]*\)/g, '').trim();
-    const regionState = regionRaw.toUpperCase();
     if (lastCountry) {
       address.addressCountry = lastCountry;
-      if (!US_STATE_ABBR.has(regionState) && !isoCountryCode(regionRaw)) {
-        address.addressRegion = regionRaw;
-      } else if (US_STATE_ABBR.has(regionState)) {
-        address.addressRegion = regionState;
-      }
-    } else if (US_STATE_ABBR.has(regionState)) {
-      address.addressRegion = regionState;
+      // "Piraeus, Greece" — second token is the country, not a region.
+    } else if (lastUsState) {
+      address.addressRegion = lastUsState;
       address.addressCountry = 'US';
     } else {
       address.addressRegion = regionRaw;
     }
   } else {
     const one = parts[0];
+    const oneState = usStateAbbr(one);
     if (COUNTRY_ALIASES[one.toLowerCase()]) {
       address.addressCountry = COUNTRY_ALIASES[one.toLowerCase()];
-    } else if (US_STATE_ABBR.has(one.toUpperCase())) {
-      address.addressRegion = one.toUpperCase();
+    } else if (oneState) {
+      address.addressRegion = oneState;
       address.addressCountry = 'US';
     } else {
       address.addressLocality = one;
       const knownCity = CITY_COUNTRY[one.toLowerCase()];
-      if (knownCity) {
-        address.addressCountry = knownCity;
+      if (knownCity && isoCountryCode(knownCity)) {
+        address.addressCountry = isoCountryCode(knownCity);
       } else if (/^(london|manchester|edinburgh|birmingham)$/i.test(one)) address.addressCountry = 'GB';
       else if (/^(berlin|munich|münchen|hamburg)$/i.test(one)) address.addressCountry = 'DE';
       else if (/^(paris|lyon|marseille)$/i.test(one)) address.addressCountry = 'FR';
@@ -874,7 +992,7 @@ export function parseJobLocationAddress(
         address.addressCountry = 'IN';
       } else if (/^(singapore)$/i.test(one)) address.addressCountry = 'SG';
       else if (
-        /^(san francisco|new york|nyc|seattle|austin|boston|chicago|los angeles|denver|atlanta|miami)$/i.test(
+        /^(san francisco|south san francisco|palo alto|mountain view|sunnyvale|cupertino|menlo park|redwood city|new york|nyc|seattle|austin|boston|chicago|los angeles|denver|atlanta|miami|dallas|houston|phoenix|philadelphia|san diego|san jose|portland|minneapolis|detroit|charlotte|raleigh|nashville|salt lake city|pittsburgh|tampa|orlando|las vegas|henderson|honolulu|princeton)$/i.test(
           one
         )
       ) {
@@ -893,7 +1011,7 @@ export function parseJobLocationAddress(
     const city = String(address.addressLocality).toLowerCase();
     if (CITY_COUNTRY[city]) address.addressCountry = CITY_COUNTRY[city];
   }
-  if (!address.addressCountry && US_STATE_ABBR.has(String(address.addressRegion || '').toUpperCase())) {
+  if (!address.addressCountry && usStateAbbr(String(address.addressRegion || ''))) {
     address.addressCountry = 'US';
   }
   const countryIso = isoCountryCode(address.addressCountry as string);
@@ -1022,9 +1140,16 @@ export function buildJobJsonLd(
   const description = plainToHtmlDescription(plain.slice(0, 8000));
 
   const rawLoc = job.location || detail.location || '';
-  const hybrid = isHybridLocation(rawLoc) || isHybridLocation(detail.location);
+  const nonPlace =
+    isNonPlaceLocation(rawLoc) || isNonPlaceLocation(detail.location);
+  const hybrid =
+    !nonPlace && (isHybridLocation(rawLoc) || isHybridLocation(detail.location));
+  // Misfiled job-type / empty location is not a Place — emit TELECOMMUTE +
+  // Worldwide (same as unrestricted Remote). employmentType comes from the
+  // misfiled token via inferEmploymentType. Never invent USA.
   const remote =
-    !hybrid && (isRemoteLocation(job.location) || isRemoteLocation(detail.location));
+    nonPlace ||
+    (!hybrid && (isRemoteLocation(job.location) || isRemoteLocation(detail.location)));
   const employmentType = inferEmploymentType(job);
 
   const org: Record<string, unknown> = {
@@ -1067,7 +1192,9 @@ export function buildJobJsonLd(
   if (employmentType) jsonLd.employmentType = employmentType;
 
   // Prefer RAW job.location for schema (display may collapse cities → "USA")
-  const address = parseJobLocationAddress(job.location) || parseJobLocationAddress(detail.location);
+  const address = nonPlace
+    ? undefined
+    : parseJobLocationAddress(job.location) || parseJobLocationAddress(detail.location);
   const countryIso =
     isoCountryCode(address?.addressCountry as string) || inferCountryFromLocation(rawLoc);
   if (address && countryIso) address.addressCountry = countryIso;
@@ -1104,11 +1231,12 @@ export function buildJobJsonLd(
     };
   }
 
-  // Onsite/hybrid still need a Place. Worldwide remote must keep JobPosting —
-  // dropping markup here zeroed Google Jobs for "Remote" listings. TELECOMMUTE
-  // always has applicantLocationRequirements (Country or AdministrativeArea).
+  // Onsite/hybrid still prefer a Place. When location is a misfiled job type
+  // ("Full-time"), empty, or otherwise not a Place, keep JobPosting as
+  // TELECOMMUTE + Worldwide — same as unrestricted Remote. Never invent USA.
   if (!jsonLd.jobLocation && jsonLd.jobLocationType !== 'TELECOMMUTE') {
-    return null;
+    jsonLd.jobLocationType = 'TELECOMMUTE';
+    jsonLd.applicantLocationRequirements = remoteApplicantRequirements(null, '');
   }
 
   const salaryRaw = job.salary || extractSalaryFromText(job.description) || extractSalaryFromText(plain);

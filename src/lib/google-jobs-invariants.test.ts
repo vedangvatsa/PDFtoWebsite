@@ -128,6 +128,92 @@ describe('JobPosting JSON-LD', () => {
     assert.equal(buildJobJsonLd(row(), detail({ expired: true }), site), null);
     assert.equal(buildJobJsonLd(row(), detail({ is_indexable: false }), site), null);
   });
+
+  it('keeps JobPosting for Canada/India cities (ISO CA/IN must not be stripped as US states)', () => {
+    const toronto = buildJobJsonLd(
+      row({ location: 'Toronto' }),
+      detail({ location: 'Toronto' }),
+      site
+    );
+    assert.ok(toronto, 'Toronto must emit JobPosting');
+    const tLoc = toronto.jobLocation as { address?: { addressCountry?: string } };
+    assert.equal(tLoc?.address?.addressCountry, 'CA');
+
+    const india = buildJobJsonLd(
+      row({ location: 'Bangalore' }),
+      detail({ location: 'Bangalore' }),
+      site
+    );
+    assert.ok(india);
+    const iLoc = india.jobLocation as { address?: { addressCountry?: string } };
+    assert.equal(iLoc?.address?.addressCountry, 'IN');
+  });
+
+  it('maps City, FullStateName and City, Country into jobLocation', () => {
+    const chicago = buildJobJsonLd(
+      row({ location: 'Chicago, Illinois' }),
+      detail({ location: 'Chicago, Illinois' }),
+      site
+    );
+    assert.ok(chicago, 'Chicago, Illinois must emit JobPosting');
+    const cLoc = chicago.jobLocation as {
+      address?: { addressCountry?: string; addressRegion?: string; addressLocality?: string };
+    };
+    assert.equal(cLoc?.address?.addressCountry, 'US');
+    assert.equal(cLoc?.address?.addressRegion, 'IL');
+    assert.equal(cLoc?.address?.addressLocality, 'Chicago');
+
+    const greece = buildJobJsonLd(
+      row({ location: 'Piraeus, Greece' }),
+      detail({ location: 'Piraeus, Greece' }),
+      site
+    );
+    assert.ok(greece);
+    const gLoc = greece.jobLocation as {
+      address?: { addressCountry?: string; addressLocality?: string };
+    };
+    assert.equal(gLoc?.address?.addressCountry, 'GR');
+    assert.equal(gLoc?.address?.addressLocality, 'Piraeus');
+
+    const estonia = buildJobJsonLd(
+      row({ location: 'Estonia' }),
+      detail({ location: 'Estonia' }),
+      site
+    );
+    assert.ok(estonia);
+    const eLoc = estonia.jobLocation as { address?: { addressCountry?: string } };
+    assert.equal(eLoc?.address?.addressCountry, 'EE');
+  });
+
+  it('treats Full-time/Part-time/Contract in location as employmentType, not a Place', () => {
+    const cases: { loc: string; type: string }[] = [
+      { loc: 'Full-time', type: 'FULL_TIME' },
+      { loc: 'Part-time', type: 'PART_TIME' },
+      { loc: 'Contract', type: 'CONTRACTOR' },
+    ];
+    for (const { loc, type } of cases) {
+      const ld = buildJobJsonLd(
+        row({ location: loc, job_type: null }),
+        detail({ location: loc }),
+        site
+      );
+      assert.ok(ld, `misfiled job type "${loc}" must still emit JobPosting`);
+      assert.equal(ld.employmentType, type);
+      assert.equal(ld.jobLocationType, 'TELECOMMUTE');
+      const req = ld.applicantLocationRequirements as { '@type'?: string; name?: string };
+      assert.equal(req?.['@type'], 'AdministrativeArea');
+      assert.equal(req?.name, 'Worldwide');
+      assert.equal(ld.jobLocation, undefined);
+    }
+    const na = buildJobJsonLd(
+      row({ location: 'N/A', job_type: null }),
+      detail({ location: 'N/A' }),
+      site
+    );
+    assert.ok(na);
+    assert.equal(na.jobLocationType, 'TELECOMMUTE');
+    assert.equal(na.jobLocation, undefined);
+  });
 });
 
 describe('Indexing API / sitemap cannot drift off public paths', () => {
