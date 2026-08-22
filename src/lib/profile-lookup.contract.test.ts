@@ -67,5 +67,41 @@ describe('every parse path heals before persist', () => {
     const file = src('src/lib/parse-guard.ts');
     assert.match(file, /data\.workExperience = publicWorkExperience/);
     assert.match(file, /data\.education = publicEducation/);
+    assert.match(file, /data\.skills = splitSkills/);
+  });
+});
+
+describe('PDF soft-wrap and LinkedIn trailer healing stays wired', () => {
+  it('formatWorkExperienceDescription rejoins soft-wraps before display', () => {
+    const file = src('src/lib/parse-guard.ts');
+    assert.match(file, /function joinSoftWrappedLines/);
+    assert.match(file, /joinSoftWrappedLines\(preserveUploadedCvText/);
+  });
+
+  it('peels both Title\\nCompany and Company\\nTitle trailers onto prose/city next rows', () => {
+    const file = src('src/lib/parse-guard.ts');
+    assert.match(file, /Title then company/);
+    assert.match(file, /looksLikeProseTitle/);
+    assert.match(file, /looksLikeLocationField\(title\) \|\| looksLikeProseTitle\(title\)/);
+  });
+
+  it('public profile render heals experience, education, and skills', () => {
+    const file = src('src/lib/supabase-server.ts');
+    assert.match(file, /workExperience: publicWorkExperience/);
+    assert.match(file, /education: publicEducation/);
+    assert.match(file, /skills: splitSkills/);
+  });
+
+  it('profile template joins soft-wrapped lines with spaces, not bare breaks', () => {
+    const file = src('src/app/[slug]/templates/modern-creative.tsx');
+    assert.match(file, /block\.lines\.join\(' '\)/);
+    assert.doesNotMatch(file, /block\.lines\.join\('<br>'\)/);
+  });
+
+  it('regression tests cover soft-wrap peel, glued skills, and city education', () => {
+    const file = src('src/lib/parse-guard.test.ts');
+    assert.match(file, /rejoins PDF soft-wraps and peels Title/);
+    assert.match(file, /splits PDF-glued skill blobs/);
+    assert.match(file, /merges city-as-institution rows/);
   });
 });

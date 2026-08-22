@@ -252,8 +252,9 @@ function StructuredText({ text }: { text?: string }) {
             </ul>
           );
         }
-        const fullText = block.lines.join('<br>');
-        // Only auto-split if user didn't already add their own line breaks
+        const fullText = block.lines.join(' ');
+        // Soft-wrapped PDF lines become a single paragraph; only auto-split
+        // long walls of text that the user never broke themselves.
         const paras = shouldAutoSplit ? splitIntoParas(fullText) : [fullText];
         return (
           <React.Fragment key={bi}>

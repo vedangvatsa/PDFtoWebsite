@@ -1,23 +1,27 @@
 ---
 description: Heal LinkedIn/PDF wrap junk before persist and again on public profile render
-globs: src/lib/parse-guard.ts,src/lib/parse-guard.test.ts,src/lib/supabase-server.ts,src/app/api/parse-resume/route.ts,src/lib/parse-resume-fallback.ts,src/lib/profile-lookup.contract.test.ts
-alwaysApply: false
+globs: src/lib/parse-guard.ts,src/lib/parse-guard.test.ts,src/lib/supabase-server.ts,src/app/api/parse-resume/route.ts,src/lib/parse-resume-fallback.ts,src/lib/profile-lookup.contract.test.ts,src/app/[slug]/templates/modern-creative.tsx
+alwaysApply: true
 ---
 
 # PDF / LinkedIn profile healing
 
-Imports wrap metrics cards, hyphenated lines, and the next employer into fake job rows (`19 Years`, `to-Market engine serving…`, `advisor beyond day-to-day…`, `` as a title). That is a parser shape, not a one-off profile bug.
+Imports wrap metrics cards, hyphenated lines, and the next employer into fake job rows (`19 Years`, `to-Market engine serving…`, `advisor beyond day-to-day…`, `` as a title). Soft-wraps also glue words (`Stem'sflagship`) and mash the next role into the previous description (`Technical Lead\nMaple Labs`). That is a parser shape, not a one-off profile bug.
 
 ## Persist and render
 
-- **Parse/save:** `repairParsedData` must run `publicWorkExperience` + `publicEducation`. Per-row `repairWorkExperienceRow` is not enough. Every parse path (`parse-resume` route, regex fallback) already calls `repairParsedData` — do not add a third path that skips it.
-- **Public page:** `getProfileBySlug` must keep `publicWorkExperience` / `publicEducation` so already-saved junk still heals. Do not read `experience` onto a public page raw.
+- **Parse/save:** `repairParsedData` must run `publicWorkExperience` + `publicEducation` + `splitSkills`. Per-row `repairWorkExperienceRow` is not enough. Every parse path (`parse-resume` route, regex fallback) already calls `repairParsedData` — do not add a third path that skips it.
+- **Public page:** `getProfileBySlug` must keep `publicWorkExperience` / `publicEducation` / `splitSkills` so already-saved junk still heals. Do not read `experience` or `skills` onto a public page raw.
+- **Template:** `StructuredText` joins soft-wrapped lines with spaces (`join(' ')`), never bare `<br>` that re-glues words in scrapers/markdown.
 
 ## Do not regress
 
 - Drop stats/metric cards; merge bullet and sentence-fragment continuation rows into the previous job.
 - Peel trailing ALL-CAPS / `Pvt. Ltd.` / `Bros.` employer lines onto the next real role.
+- Peel `Title\nCompany` and `Company\nTitle` trailers when the next row's title is prose or a city.
+- Rejoin PDF soft-wraps (`Stem's\nflagship` → `Stem's flagship`) and punctuation/glued-word joins.
 - Rejoin `Go-\n` + `to-Market` wraps. Do not split `day-to-day` on hyphens.
-- Merge field-of-study education rows (`Marketing` + MBA) into the following school.
+- Merge field-of-study education rows (`Marketing` + MBA) and city-as-institution rows (`IIT` + `Mumbai`) into the school.
+- Split glued skill blobs (`RedisSQL`, `AWSKubernetes`, `Apache Kafka Amazon Kinesis`).
 
-Tests: `src/lib/parse-guard.test.ts` + `src/lib/profile-lookup.contract.test.ts`.
+Tests: `src/lib/parse-guard.test.ts` + `src/lib/profile-lookup.contract.test.ts` (CI via `npm test`).

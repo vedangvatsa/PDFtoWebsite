@@ -9,6 +9,7 @@ import {
   repairWorkExperienceRow,
   enrichNameFromContact,
   preserveUploadedCvText,
+  splitSkills,
 } from './parse-guard';
 
 describe('normalizeName — production junk from Aug 2026 signups', () => {
@@ -173,6 +174,77 @@ describe('public render healers', () => {
     assert.match(text, /India FSV/);
   });
 
+  it('restores separators lost around PDF punctuation and symbols', () => {
+    const text = preserveUploadedCvText(
+      'monitoring and retraining.Built services for 800,000+emails using models(Lang Chain).'
+    );
+    assert.match(text, /retraining\. Built/);
+    assert.match(text, /800,000\+ emails/);
+    assert.match(text, /models \(Lang Chain\)/);
+  });
+
+  it('restores common lowercase word boundaries lost by PDF text layers', () => {
+    const text = preserveUploadedCvText(
+      'platform that orchestrates domestic andcross-border payments withoutreplacing rails. provideconsulting andtraining to businesses.'
+    );
+    assert.match(text, /and cross-border/);
+    assert.match(text, /without replacing/);
+    assert.match(text, /provide consulting/);
+    assert.match(text, /and training/);
+  });
+
+  it('rejoins PDF soft-wraps and peels Title\\nCompany onto the next role', () => {
+    const rows = publicWorkExperience([
+      {
+        title: 'Staff Software Engineer',
+        company: 'Stem Inc.',
+        description:
+          "Spearheaded the fault detection engine for Stem's\nflagship Athena platform across multiple\nlocations.\nContinuously enhanced reliability.\nTechnical Lead – Data Platform\nMaple Labs",
+      },
+      {
+        title: "Led the team responsible for Snappy Flow's data path and data archival",
+        company: '',
+        location: 'Bengaluru',
+        startDate: '04/2019',
+        endDate: '10/2021',
+        description: 'modules, overseeing user data ingestion.\nSenior Software Engineer\nMaple Labs',
+      },
+      {
+        title: 'Bengaluru',
+        company: 'Executed SoftNAS benchmarking on AWS in a two-person team, managing',
+        startDate: '03/2017',
+        endDate: '03/2019',
+        description: 'planning and result analysis.\nSoftware Engineer\nMaple Labs',
+      },
+    ]);
+    assert.equal(rows[0].title, 'Staff Software Engineer');
+    assert.doesNotMatch(String(rows[0].description), /Technical Lead|Maple Labs/);
+    assert.match(String(rows[0].description), /Stem's flagship/);
+    assert.match(String(rows[0].description), /multiple locations/);
+    assert.equal(rows[1].title, 'Technical Lead – Data Platform');
+    assert.equal(rows[1].company, 'Maple Labs');
+    assert.match(String(rows[1].description), /Led the team/);
+    assert.equal(rows[2].title, 'Senior Software Engineer');
+    assert.equal(rows[2].company, 'Maple Labs');
+  });
+
+  it('splits PDF-glued skill blobs into individual skills', () => {
+    const skills = splitSkills([
+      'RedisSQL',
+      'Apache Kafka Amazon Kinesis',
+      'ZeroMQ Apache Spark',
+      'AWSKubernetes',
+      'Python',
+    ]);
+    assert.ok(skills.includes('Redis'));
+    assert.ok(skills.includes('SQL'));
+    assert.ok(skills.includes('Apache Kafka'));
+    assert.ok(skills.includes('Amazon Kinesis'));
+    assert.ok(skills.includes('AWS'));
+    assert.ok(skills.includes('Kubernetes'));
+    assert.ok(skills.includes('Python'));
+  });
+
   it('merges PDF metric cards and split bullets into real jobs', () => {
     const rows = publicWorkExperience([
       {
@@ -236,6 +308,32 @@ describe('public render healers', () => {
     assert.match(String(rows[3].company), /LG ELECTRONICS/i);
     assert.equal(rows[4].title, 'Manager, Operations');
     assert.match(String(rows[4].company), /LIFESTYLE INTERNATIONAL/i);
+  });
+
+  it('merges city-as-institution rows into the preceding school', () => {
+    const rows = publicEducation([
+      { institution: 'Indian Institute of Technology (IIT)', degree: 'M.Tech CSE' },
+      {
+        institution: 'Mumbai',
+        degree: 'M.Tech, Computer Science',
+        startDate: '2009',
+        endDate: '2011',
+      },
+      { institution: 'Nagpur University', degree: '' },
+      {
+        institution: 'Nagpur',
+        degree: 'B.E, Computer Technology',
+        startDate: '2005',
+        endDate: '2009',
+      },
+    ]);
+    assert.equal(rows.length, 2);
+    assert.match(String(rows[0].institution), /IIT/);
+    assert.match(String(rows[0].degree), /Computer Science/);
+    assert.equal(rows[0].startDate, '2009');
+    assert.match(String(rows[1].institution), /Nagpur University/);
+    assert.match(String(rows[1].degree), /B\.E/);
+    assert.equal(rows[1].endDate, '2009');
   });
 
   it('merges a field-of-study institution into the following school row', () => {

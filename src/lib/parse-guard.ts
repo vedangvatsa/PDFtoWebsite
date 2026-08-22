@@ -334,6 +334,19 @@ export function preserveUploadedCvText(raw: string): string {
     .replace(/\bpage\s+\d+\s+of\s+\d+\b/gi, ' ')
     .replace(/(\w)-\n(to|in|up|on|off|out)-?/gi, '$1-$2')
     .replace(/(\w)-\n([a-z])/g, '$1$2')
+    // PDF text extraction frequently drops the separator after punctuation,
+    // plus signs, or a closing parenthesis.
+    .replace(/([.!?])(?=[A-Za-z])/g, '$1 ')
+    .replace(/([+])(?=[A-Za-z])/g, '$1 ')
+    .replace(/([a-z0-9)])(?=\()/gi, '$1 ')
+    .replace(/(\))(?=[A-Za-z])/g, '$1 ')
+    // Some PDF text layers concatenate common words without preserving the
+    // original word boundary (for example "andcross-border" or
+    // "provideconsulting"). Keep this list deliberately conservative.
+    .replace(
+      /\b(?:and(?=(?:cross|training|promote|provid|support|create|collaborat))|without(?=replac)|provide(?=consult)|of(?=special)|with(?=(?:60|expert|complete|diverse)))(?=[a-z0-9])/gi,
+      '$& '
+    )
     .replace(/([a-z]{4,})([A-Z]{2,})\b/g, '$1 $2')
     .replace(/([a-z]{2,})([A-Z][a-z]{2,})/g, '$1 $2')
     .replace(/[ \t]+\n/g, '\n')
@@ -375,8 +388,32 @@ export function cleanDescription(raw: string, maxLen?: number): string {
  * e.g. "...teams. Outbound-Inbound Caller • Built..." → newlines before project title.
  * Never truncates uploaded job text unless an explicit maxLen is passed.
  */
+/** Join PDF soft-wraps: mid-sentence line breaks → spaces (keep real paragraph breaks). */
+function joinSoftWrappedLines(text: string): string {
+  const lines = String(text || '').split('\n');
+  const out: string[] = [];
+  for (const raw of lines) {
+    const line = raw.replace(/[ \t]+/g, ' ').trimEnd();
+    const trimmed = line.trim();
+    const prev = out[out.length - 1];
+    if (
+      prev &&
+      trimmed &&
+      !/^[•▪▸►‣○●\uF0B7*\-]/.test(trimmed) &&
+      !/^\d+\.\s/.test(trimmed) &&
+      /[A-Za-z0-9,'")\]]$/.test(prev.trim()) &&
+      /^[a-z0-9(]/.test(trimmed)
+    ) {
+      out[out.length - 1] = `${prev.trimEnd()} ${trimmed}`;
+    } else {
+      out.push(line);
+    }
+  }
+  return out.join('\n');
+}
+
 export function formatWorkExperienceDescription(raw: string, maxLen?: number): string {
-  let text = preserveUploadedCvText(raw).replace(/\r\n/g, '\n').trim();
+  let text = joinSoftWrappedLines(preserveUploadedCvText(raw).replace(/\r\n/g, '\n').trim());
   if (!text) return '';
   // Normalize mid-line bullets to newline bullets
   text = text.replace(/\s*[•▪▸►‣○●\uF0B7]\s*/g, '\n• ').replace(/\s+-\s+(?=[A-Z])/g, '\n• ');
@@ -440,17 +477,43 @@ export function looksLikeLocationField(raw: string): boolean {
   if (/,\s*(india|usa|uk|uae|canada|australia|singapore|germany|france|netherlands|switzerland)\s*$/i.test(t)) {
     return true;
   }
-  return /^(pune|mumbai|delhi|new delhi|bengaluru|bangalore|hyderabad|chennai|kolkata|noida|gurgaon|gurugram|pune city|pune area)([,\s].*)?$/i.test(
+  return /^(pune|mumbai|delhi|new delhi|bengaluru|bangalore|hyderabad|chennai|kolkata|noida|gurgaon|gurugram|nagpur|ahmedabad|jaipur|chandigarh|indore|bhopal|kochi|coimbatore|pune city|pune area)([,\s].*)?$/i.test(
     t
   );
 }
+
+const GENERIC_ROLE_RE =
+  /^(manager|head|lead|director|associate|executive|officer|specialist|analyst|consultant|coordinator)$/i;
+const COMPANY_ABBREV_TAIL_RE =
+  /\b(?:pvt\.?\s*ltd|private limited|llc|inc|ltd|gmbh|llp|bros|co|corp|limited)\.?\s*$/i;
 
 function looksLikeProseCompany(raw: string): boolean {
   const t = String(raw || '').replace(/\s+/g, ' ').trim();
   if (!t) return false;
   if (/^[a-z]/.test(t)) return true;
   if (t.length < 40) return /^(for the|the)\b/i.test(t);
-  return /\b(is a|is an|that|providing|empowering|orchestrat|gateway to|lectures?|mentoring|serving)\b/i.test(t);
+  if (
+    /\b(is a|is an|that|providing|empowering|orchestrat|gateway to|lectures?|mentoring|serving|executed|collaborated|managing|overseeing|developed|engineered|spearheaded)\b/i.test(
+      t
+    )
+  ) {
+    return true;
+  }
+  // Sentence-length company field (PDF ate the real title/company).
+  return t.split(/\s+/).length >= 8 && !COMPANY_ABBREV_TAIL_RE.test(t);
+}
+
+/** Title field that is really a wrapped bullet / sentence, not a role name. */
+function looksLikeProseTitle(raw: string): boolean {
+  const t = String(raw || '').replace(/\s+/g, ' ').trim();
+  if (!t) return false;
+  if (looksLikeLocationField(t) || DURATION_ONLY_RE.test(t)) return false;
+  if (looksLikeRealJobTitle(t)) return false;
+  if (t.length > 55) return true;
+  if (t.split(/\s+/).length >= 8) return true;
+  return /^(led|collaborated|executed|developed|engineered|spearheaded|managed|built|designed|modules)\b/i.test(
+    t
+  );
 }
 
 function looksLikeRealJobTitle(raw: string): boolean {
@@ -468,11 +531,6 @@ function looksLikeDepartment(raw: string): boolean {
     String(raw || '').trim()
   );
 }
-
-const GENERIC_ROLE_RE =
-  /^(manager|head|lead|director|associate|executive|officer|specialist|analyst|consultant|coordinator)$/i;
-const COMPANY_ABBREV_TAIL_RE =
-  /\b(?:pvt\.?\s*ltd|private limited|llc|inc|ltd|gmbh|llp|bros|co|corp|limited)\.?\s*$/i;
 
 function foldDepartmentIntoTitle(title: string, company: string): { title: string; company: string } {
   if (!looksLikeDepartment(company)) return { title, company };
@@ -493,6 +551,20 @@ function looksLikeCompanyName(raw: string): boolean {
   if (/[.!?]$/.test(t) && !COMPANY_ABBREV_TAIL_RE.test(t)) return false;
   if (/\b(pvt\.?\s*ltd|private limited|llc|inc\.?|ltd\.?|gmbh|llp|bros\.?)\b/i.test(t)) return true;
   if (/^[A-Z0-9][A-Z0-9 &.'()/-]{2,70}$/.test(t) && /[A-Z]{3,}/.test(t) && t.split(/\s+/).length <= 10) {
+    return true;
+  }
+  // Title-case org names from LinkedIn PDFs ("Maple Labs", "Brocade Communications")
+  if (
+    /^[A-Z][A-Za-z0-9][A-Za-z0-9 &.'()/-]{0,70}$/.test(t) &&
+    t.split(/\s+/).length <= 6 &&
+    !/^(the|a|an)\b/i.test(t) &&
+    !/\b(supported|delivered|billings|budget|growth|contributions?|impact|availability|fulfiliment)\b/i.test(
+      t
+    ) &&
+    /\b(labs?|inc\.?|corp\.?|systems?|technologies|communications?|software|media|group|partners?|ventures|capital|forum|solutions?|networks?|platform|analytics|consulting)\b/i.test(
+      t
+    )
+  ) {
     return true;
   }
   return false;
@@ -556,11 +628,26 @@ function peelTrailingJobHeader(desc: string): { title: string; company: string; 
   const prevIdx = nonempty[nonempty.length - 2];
   const last = lines[lastIdx].replace(/^[•\-\*▪▸►‣○●\uF0B7]\s*/, '').trim();
   const prev = lines[prevIdx].replace(/^[•\-\*▪▸►‣○●\uF0B7]\s*/, '').trim();
-  if (!looksLikeJobTitle(last) || looksLikeJobTitle(prev)) return null;
   if (looksLikeLocationField(prev) || DURATION_ONLY_RE.test(prev)) return null;
   if (prev.length < 3 || prev.length > 90) return null;
   if (/[.!?]$/.test(prev) || prev.split(/\s+/).length > 14) return null;
-  return { title: last, company: prev, rest: lines.slice(0, prevIdx).join('\n') };
+
+  // Company then title (LinkedIn wrap: "...\nXPI\nCo-Founder")
+  if (looksLikeJobTitle(last) && !looksLikeJobTitle(prev) && !looksLikeLocationField(last)) {
+    return { title: last, company: prev, rest: lines.slice(0, prevIdx).join('\n') };
+  }
+
+  // Title then company (common LinkedIn export: "...\nTechnical Lead\nMaple Labs")
+  if (
+    looksLikeRealJobTitle(prev) &&
+    looksLikeCompanyName(last) &&
+    !looksLikeJobTitle(last) &&
+    !looksLikeLocationField(last)
+  ) {
+    return { title: prev, company: last, rest: lines.slice(0, prevIdx).join('\n') };
+  }
+
+  return null;
 }
 
 const SECTION_HEADER_FIELD_RE =
@@ -746,11 +833,28 @@ export function publicWorkExperience<
     const last = out[out.length - 1];
     const title = String(w.title || '').trim();
     const cur = String(w.company || '').trim();
-    if (!title) {
+    const titleNeedsPeel =
+      !title || looksLikeLocationField(title) || looksLikeProseTitle(title);
+    if (titleNeedsPeel) {
       const peeled = peelTrailingJobHeader(String(last.description || ''));
       if (peeled) {
+        if (looksLikeLocationField(title) && !(w as any).location) {
+          (w as any).location = title;
+        } else if (title && !looksLikeLocationField(title)) {
+          w.description = formatWorkExperienceDescription(
+            [title, cur && looksLikeProseCompany(cur) ? cur : '', w.description]
+              .filter(Boolean)
+              .join('\n')
+          );
+          if (cur && looksLikeProseCompany(cur)) w.company = '';
+        }
         w.title = peeled.title;
-        if (!cur || looksLikeProseCompany(cur) || looksLikeLocationField(cur) || looksLikeDepartment(cur)) {
+        if (
+          !String(w.company || '').trim() ||
+          looksLikeProseCompany(String(w.company || '')) ||
+          looksLikeLocationField(String(w.company || '')) ||
+          looksLikeDepartment(String(w.company || ''))
+        ) {
           w.company = peeled.company;
         }
         last.description = formatWorkExperienceDescription(peeled.rest);
@@ -763,6 +867,10 @@ export function publicWorkExperience<
         w.company = peeledCo.company;
         last.description = formatWorkExperienceDescription(peeledCo.rest);
       }
+    }
+    if (cur && looksLikeProseCompany(cur)) {
+      w.description = formatWorkExperienceDescription([cur, w.description].filter(Boolean).join('\n'));
+      w.company = '';
     }
     const lastDesc = String(last.description || '').trim();
     const companyNow = String(w.company || '').trim();
@@ -835,7 +943,9 @@ function repairEducationList<
       s.trim()
     ) || /^cgpa:\s*\d/i.test(s.trim());
   const isDegreeTitle = (s: string) =>
-    /\b(msc|bsc|btech|mtech|ba|ma|phd|diploma|bachelor|master|degree|associate)\b/i.test(s);
+    /\b(m\.?\s?tech|b\.?\s?tech|b\.?\s?e\b|m\.?\s?sc|b\.?\s?sc|m\.?\s?a\b|b\.?\s?a\b|ph\.?\s?d|mba|msc|bsc|btech|mtech|ba|ma|phd|diploma|bachelor|master|degree|associate)\b/i.test(
+      s
+    );
 
   const isFieldOfStudy = (s: string) =>
     /^(marketing|finance|commerce|arts|science|management|computer science|business|economics|accounting)$/i.test(
@@ -885,6 +995,25 @@ function repairEducationList<
           curr.description = [curr.description, next.description].filter(Boolean).join('\n');
         }
         i++; // skip next row
+        result.push(curr);
+        continue;
+      }
+
+      // City-as-institution row after a real school (IIT / Mumbai, Nagpur University / Nagpur)
+      if (
+        isSchoolName(inst) &&
+        looksLikeLocationField(nextInst) &&
+        (isDegreeTitle(nextDeg) || isDegreeTitle(deg))
+      ) {
+        if (isDegreeTitle(nextDeg) && (!deg || nextDeg.length > deg.length)) {
+          curr.degree = nextDeg;
+        }
+        if (!curr.startDate && next.startDate) curr.startDate = next.startDate;
+        if (!curr.endDate && next.endDate) curr.endDate = next.endDate;
+        if (next.description) {
+          curr.description = [curr.description, next.description].filter(Boolean).join('\n');
+        }
+        i++;
         result.push(curr);
         continue;
       }
@@ -1072,12 +1201,63 @@ export function nameToProfileSlug(name: string): string {
 }
 
 export function splitSkills(skills: unknown[] | null | undefined): string[] {
+  const KNOWN_SKILLS = [
+    'Apache Kafka',
+    'Amazon Kinesis',
+    'Apache Spark',
+    'Networking Protocols',
+    'Kubernetes',
+    'ZeroMQ',
+    'Grafana',
+    'Python',
+    'Redis',
+    'SQL',
+    'AWS',
+  ].sort((a, b) => b.length - a.length);
+
+  const explodePart = (raw: string): string[] => {
+    let val = String(raw || '').replace(/\s+/g, ' ').trim();
+    if (!val) return [];
+    const found: string[] = [];
+    let rest = ` ${val} `;
+    for (const skill of KNOWN_SKILLS) {
+      const re = new RegExp(`\\s${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s`, 'i');
+      if (re.test(rest)) {
+        found.push(skill);
+        rest = rest.replace(re, ' ');
+      }
+    }
+    // CamelCase / acronym joins left after known multi-word products are removed.
+    rest = rest
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (rest) {
+      let restPad = ` ${rest} `;
+      for (const skill of KNOWN_SKILLS) {
+        const re = new RegExp(`\\s${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s`, 'i');
+        if (re.test(restPad)) {
+          found.push(skill);
+          restPad = restPad.replace(re, ' ');
+        }
+      }
+      rest = restPad.replace(/\s+/g, ' ').trim();
+    }
+    if (found.length) {
+      return rest ? [...found, rest] : found;
+    }
+    return [val];
+  };
+
   let rawList: string[] = [];
   for (const s of skills || []) {
     let val = typeof s === 'string' ? s : String((s as any)?.name ?? '');
     if (!val) continue;
     const parts = val.split(/[,;|]+/).map((p) => p.trim()).filter(Boolean);
-    rawList.push(...parts);
+    for (const part of parts) {
+      rawList.push(...explodePart(part));
+    }
   }
 
   // Recombine split multi-word skills like "Federated" + "Learning"
@@ -1102,6 +1282,8 @@ export function splitSkills(skills: unknown[] | null | undefined): string[] {
       .replace(/\s+/g, ' ')
       .trim();
 
+  const knownLower = new Set(KNOWN_SKILLS.map((s) => s.toLowerCase()));
+
   const push = (rawVal: string) => {
     let val = rawVal
       .replace(/\s*[-–—]\s*(Alison\.com|Naan Muthalvan|FaBC|Coursera|Udemy|EdX)\b/gi, '')
@@ -1116,6 +1298,7 @@ export function splitSkills(skills: unknown[] | null | undefined): string[] {
     if (/^(building|developed|go language)\b/i.test(val)) return;
     if (/\b to \b/.test(val)) return;
     if (
+      !knownLower.has(val.toLowerCase()) &&
       /^[A-Z][a-z]+\s+[A-Z][a-z]+$/.test(val) &&
       !/\b(ai|ml|native|script|chain|cloud|data|web|dev)\b/i.test(val)
     ) {
