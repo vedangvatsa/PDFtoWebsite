@@ -1614,7 +1614,7 @@ async function rewriteJobPage(job, sourceText, extras) {
   if (!usableSourceText(sourceText)) {
     throw new Error('source_thin');
   }
-  if (descriptionWords(sourceText) < MIN_REWRITE_WORDS) {
+  if (descriptionWords(sourceText) < 80) {
     throw new Error('source_thin');
   }
 
