@@ -1,10 +1,13 @@
 // Telegram AI Jobs Poster — posts daily AI/ML job roundup to @hashtag_ai
+// (and optionally extra channels like @globalAIjobs).
 //
 // Pulls from the same Supabase jobs DB, but filters for:
 //  1. AI/ML-relevant titles (engineer, researcher, scientist, etc.)
 //  2. Famous AI companies only (top-tier labs + infra + apps)
 //
-// Env: TELEGRAM_AI_BOT_TOKEN, TELEGRAM_AI_CHANNEL_ID, SUPABASE_URL, SUPABASE_KEY
+// Env: TELEGRAM_AI_BOT_TOKEN, TELEGRAM_AI_CHANNEL_ID,
+//      TELEGRAM_AI_EXTRA_CHANNEL_IDS (comma-separated, default @globalAIjobs),
+//      SUPABASE_URL, SUPABASE_KEY
 // Usage: node telegram-ai-jobs.mjs [--dry-run]
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
@@ -31,6 +34,12 @@ const DRY_RUN = process.argv.includes('--dry-run');
 // ─── Config ──────────────────────────────────────────────────────────────────
 const BOT_TOKEN  = process.env.TELEGRAM_AI_BOT_TOKEN;
 const CHANNEL_ID = process.env.TELEGRAM_AI_CHANNEL_ID || '@hashtag_ai';
+// Same digest also goes to Global AI Jobs (and any other extras).
+const EXTRA_CHANNEL_IDS = (process.env.TELEGRAM_AI_EXTRA_CHANNEL_IDS ?? '@globalAIjobs')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+const CHANNEL_IDS = [...new Set([CHANNEL_ID, ...EXTRA_CHANNEL_IDS].filter(Boolean))];
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -500,12 +509,12 @@ function formatMessage(jobs) {
 }
 
 // ─── Send via Telegram Bot API ───────────────────────────────────────────────
-async function sendTelegram(text) {
+async function sendTelegramTo(chatId, text) {
   const res = await fetch(`${TELEGRAM_API}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      chat_id: CHANNEL_ID,
+      chat_id: chatId,
       text,
       parse_mode: 'HTML',
       disable_web_page_preview: true,
@@ -514,15 +523,34 @@ async function sendTelegram(text) {
 
   const data = await res.json();
   if (!data.ok) {
-    throw new Error(`Telegram API error: ${data.description} (code: ${data.error_code})`);
+    throw new Error(
+      `Telegram API error (${chatId}): ${data.description} (code: ${data.error_code})`
+    );
   }
   return data.result;
+}
+
+/** Post the same digest to every configured channel. */
+async function sendTelegram(text) {
+  const results = [];
+  const errors = [];
+  for (const chatId of CHANNEL_IDS) {
+    try {
+      const result = await sendTelegramTo(chatId, text);
+      console.log(`  ✅ ${chatId} message ID: ${result.message_id}`);
+      results.push({ chatId, result });
+    } catch (e) {
+      console.error(`  ❌ ${chatId}: ${e.message}`);
+      errors.push({ chatId, error: e });
+    }
+  }
+  return { results, errors };
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 async function main() {
   console.log('🤖 Telegram AI Jobs Poster');
-  console.log(`  Channel: ${CHANNEL_ID}`);
+  console.log(`  Channels: ${CHANNEL_IDS.join(', ')}`);
   console.log(`  Dry run: ${DRY_RUN}`);
 
   // 1. Load dedup history
@@ -603,13 +631,23 @@ async function main() {
     return;
   }
 
-  // 7. Send + update dedup only on real posts
-  const result = await sendTelegram(message);
-  console.log(`  ✅ Posted. Message ID: ${result.message_id}`);
+  // 7. Send + update dedup only when at least one channel accepted the post
+  const { results, errors } = await sendTelegram(message);
+  if (results.length === 0) {
+    throw errors[0]?.error || new Error('Telegram post failed for all channels');
+  }
 
   const newUrls = [...postedUrls, ...jobs.map(j => j.apply_url)];
   savePosted(newUrls);
   console.log(`  Saved ${newUrls.length} total URLs to dedup file.`);
+
+  if (errors.length > 0) {
+    const detail = errors.map((e) => `${e.chatId}: ${e.error.message}`).join('; ');
+    throw new Error(
+      `Posted to ${results.map((r) => r.chatId).join(', ')}, but failed: ${detail}`
+    );
+  }
+  console.log(`  ✅ Posted to ${results.length} channel(s).`);
 }
 
 main().catch(e => {

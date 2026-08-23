@@ -164,11 +164,12 @@ jobs:
         run: sleep 15
         continue-on-error: true
 
-      - name: Post AI jobs to @hashtag_ai
+      - name: Post AI jobs to @hashtag_ai and @globalAIjobs
         continue-on-error: true
         env:
           TELEGRAM_AI_BOT_TOKEN: ${{ secrets.TELEGRAM_AI_BOT_TOKEN }}
           TELEGRAM_AI_CHANNEL_ID: '@hashtag_ai'
+          TELEGRAM_AI_EXTRA_CHANNEL_IDS: '@globalAIjobs'
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
