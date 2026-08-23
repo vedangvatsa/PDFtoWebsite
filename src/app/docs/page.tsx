@@ -6,9 +6,9 @@ import MicroFooter from '@/components/micro-footer';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const metadata: Metadata = {
-  title: 'CVin.Bio Developer Resources — API Docs, OpenAPI Spec & MCP Server',
+  title: 'CVin.Bio Developer Resources — API Docs, OpenAPI Spec, MCP Server & Webhooks',
   description:
-    'Public API documentation for CVin.Bio: REST endpoints for curated tech jobs, news, and profiles; OpenAPI 3.1 spec; MCP server over Streamable HTTP; rate-limit conventions.',
+    'Official developer documentation for CVin.Bio: REST API endpoints for curated tech jobs, news, and profiles; OpenAPI 3.1 spec; MCP server over Streamable HTTP; webhooks; auth metadata.',
   alternates: { canonical: `${siteUrl}/docs` },
 };
 
@@ -32,28 +32,30 @@ export default function DocsPage() {
       <Header />
       <main id="main-content" className="flex-1 mx-auto w-full max-w-2xl px-4 py-12 space-y-8 text-sm text-muted-foreground">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">CVin.Bio API Documentation</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">CVin.Bio Developer Resources &amp; API Documentation</h1>
           <p>
-            CVin.Bio exposes a small public, read-mostly API so developers and AI agents can query live
-            curated tech jobs, aggregated tech news, and public candidate profiles. No authentication is
-            required for read endpoints.
+            CVin.Bio exposes a public, read-mostly API and Model Context Protocol (MCP) server so developers
+            and AI agents can query live curated tech jobs, aggregated tech news, and public candidate profiles.
+            No authentication is required for public read endpoints.
           </p>
         </div>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">Machine-readable resources</h2>
+          <h2 className="text-lg font-semibold text-foreground">CVin.Bio Machine-Readable Specifications</h2>
           <ul className="space-y-1.5">
-            <li><a href={`${siteUrl}/openapi.json`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /openapi.json</a> — OpenAPI 3.1 specification of every endpoint below.</li>
-            <li><a href={`${siteUrl}/.well-known/mcp.json`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /.well-known/mcp.json</a> — MCP server manifest.</li>
-            <li><a href={`${siteUrl}/mcp`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">POST /mcp</a> — MCP server over Streamable HTTP (JSON-RPC 2.0: initialize, tools/list, tools/call). No auth for read-only tools.</li>
-            <li><a href={`${siteUrl}/llms.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /llms.txt</a> · <a href={`${siteUrl}/llms-full.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/llms-full.txt</a> — structured context for AI systems.</li>
-            <li><a href={`${siteUrl}/agent.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /agent.txt</a> — agent instructions incl. when-to-use guidance.</li>
-            <li><a href={`${siteUrl}/sitemap.xml`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /sitemap.xml</a> — indexable URLs; <a href={`${siteUrl}/rss.xml`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/rss.xml</a> — blog feed.</li>
+            <li><a href={`${siteUrl}/openapi.json`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /openapi.json</a> — CVin.Bio OpenAPI 3.1 specification.</li>
+            <li><a href={`${siteUrl}/.well-known/mcp.json`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /.well-known/mcp.json</a> — CVin.Bio MCP server manifest.</li>
+            <li><a href={`${siteUrl}/mcp`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">POST /mcp</a> — CVin.Bio MCP server over Streamable HTTP (JSON-RPC 2.0: initialize, tools/list, tools/call).</li>
+            <li><a href={`${siteUrl}/.well-known/oauth-authorization-server`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /.well-known/oauth-authorization-server</a> — RFC 8414 Authorization Server Metadata.</li>
+            <li><a href={`${siteUrl}/.well-known/oauth-protected-resource`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /.well-known/oauth-protected-resource</a> — RFC 9728 Protected Resource Metadata.</li>
+            <li><a href={`${siteUrl}/llms.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /llms.txt</a> · <a href={`${siteUrl}/llms-full.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/llms-full.txt</a> — CVin.Bio LLMs directory and context index.</li>
+            <li><a href={`${siteUrl}/agent.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /agent.txt</a> — CVin.Bio agent instructions and when-to-use guidance.</li>
+            <li><a href={`${siteUrl}/sitemap.xml`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /sitemap.xml</a> — sitemap; <a href={`${siteUrl}/rss.xml`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/rss.xml</a> — RSS feed.</li>
           </ul>
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">REST endpoints</h2>
+          <h2 className="text-lg font-semibold text-foreground">CVin.Bio REST API Endpoints</h2>
           <ul className="space-y-4">
             {ENDPOINTS.map((e) => (
               <li key={e.opId} className="space-y-1">
@@ -68,7 +70,7 @@ export default function DocsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">MCP tools</h2>
+          <h2 className="text-lg font-semibold text-foreground">CVin.Bio MCP Tools</h2>
           <p>
             The same data is available to AI agents via the Model Context Protocol at{' '}
             <code className="font-mono text-xs">{siteUrl}/mcp</code>. Point any MCP client (Claude,
@@ -81,8 +83,20 @@ export default function DocsPage() {
           </ul>
         </section>
 
+        <section id="webhooks" className="space-y-3">
+          <h2 className="text-lg font-semibold text-foreground">CVin.Bio Webhooks &amp; Event Notifications</h2>
+          <p>
+            CVin.Bio provides real-time job updates and profile indexing events via polling feeds and webhooks:
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 font-mono text-xs">
+            <li><code>GET /rss.xml</code> — RSS 2.0 feed of new technology jobs and platform news</li>
+            <li><code>GET /api/jobs?sort=latest</code> — polling feed for new job listings</li>
+            <li><code>POST /api/contact</code> — partner webhook registration requests (email hi@cvin.bio)</li>
+          </ul>
+        </section>
+
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">Rate limits</h2>
+          <h2 className="text-lg font-semibold text-foreground">CVin.Bio Rate Limits</h2>
           <p>
             API responses carry standard rate-limit headers:{' '}
             <code className="font-mono text-xs">RateLimit-Limit</code>,{' '}
@@ -95,7 +109,7 @@ export default function DocsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">Errors</h2>
+          <h2 className="text-lg font-semibold text-foreground">CVin.Bio Errors</h2>
           <p>
             All API errors return JSON — never HTML pages — shaped as{' '}
             <code className="font-mono text-xs">{`{ error, code?, hint? }`}</code>. Unknown /api/* paths
@@ -122,9 +136,9 @@ export default function DocsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">Support</h2>
+          <h2 className="text-lg font-semibold text-foreground">Developer Support</h2>
           <p>
-            Questions about the API? Email hi@cvin.bio or use the{' '}
+            Questions about the API or developer integrations? Email hi@cvin.bio or use the{' '}
             <Link href="/contact" className="underline underline-offset-2 hover:text-foreground">contact page</Link>.
           </p>
         </section>
