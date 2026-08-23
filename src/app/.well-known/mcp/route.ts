@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { handleRpcMessage, type JsonRpcResponse } from '@/lib/mcp-rpc';
+import { MCP_SERVER_INFO, MCP_TOOLS } from '@/lib/mcp-tools';
 
 export const revalidate = 0;
 
@@ -10,7 +11,6 @@ const CORS_HEADERS: Record<string, string> = {
 };
 
 function jsonRpcResponse(body: JsonRpcResponse | JsonRpcResponse[] | null): NextResponse {
-  // Notifications only → 202 Accepted, no body (Streamable HTTP spec).
   if (body === null || (Array.isArray(body) && body.length === 0)) {
     return new NextResponse(null, {
       status: 202,
@@ -23,17 +23,6 @@ function jsonRpcResponse(body: JsonRpcResponse | JsonRpcResponse[] | null): Next
   });
 }
 
-/**
- * CVin.Bio MCP server over Streamable HTTP.
- *
- * POST accepts JSON-RPC 2.0 messages (single or batch). Requests are
- * answered application/json; notifications return 202 Accepted. GET/DELETE
- * return 405 because no server-initiated SSE streams or sessions are
- * offered — allowed by the MCP spec for stateless servers.
- *
- * Tool listing is public: search_jobs, get_job, platform_stats expose only
- * data that is already public on cvin.bio.
- */
 export async function POST(request: NextRequest) {
   let parsed: unknown;
   try {
@@ -50,9 +39,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (Array.isArray(parsed)) {
-    if (parsed.length === 0) {
-      return jsonRpcResponse(null);
-    }
+    if (parsed.length === 0) return jsonRpcResponse(null);
     const responses = await Promise.all(parsed.map((m) => handleRpcMessage(m)));
     return jsonRpcResponse(responses.filter((r): r is JsonRpcResponse => r !== null));
   }
@@ -64,31 +51,22 @@ export function GET() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
   return NextResponse.json(
     {
-      name: 'CVin.Bio MCP Server',
-      version: '1.0.0',
+      name: MCP_SERVER_INFO.name,
+      version: MCP_SERVER_INFO.version,
       protocolVersion: '2024-11-05',
       endpoint: `${siteUrl}/mcp`,
       transport: 'Streamable HTTP (JSON-RPC 2.0)',
+      tools: MCP_TOOLS,
       instructions:
-        'CVin.Bio Model Context Protocol server. Send JSON-RPC 2.0 requests via POST to execute tools or initialize.',
+        'CVin.Bio Model Context Protocol server. Accepts JSON-RPC 2.0 requests over HTTP POST at /mcp or /.well-known/mcp.',
     },
     {
       status: 200,
-      headers: { ...CORS_HEADERS, 'Cache-Control': 'public, max-age=3600, s-maxage=3600' },
-    }
-  );
-}
-
-export function DELETE() {
-  return new NextResponse(
-    JSON.stringify({
-      error: 'Method Not Allowed.',
-      code: 'MCP_SESSION_DELETE_NOT_SUPPORTED',
-      hint: 'This MCP server is stateless — no session to terminate.',
-    }),
-    {
-      status: 405,
-      headers: { ...CORS_HEADERS, Allow: 'POST', 'Content-Type': 'application/json' },
+      headers: {
+        ...CORS_HEADERS,
+        'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        'Content-Type': 'application/json',
+      },
     }
   );
 }
