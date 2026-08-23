@@ -18,7 +18,11 @@
  *     chars of external_id (those 404/301 and Google Jobs drops them).
  *   - Re-notifies URLs last pinged before SCHEMA_EPOCH so Google recrawls
  *     after JobPosting schema fixes (validThrough, applicantLocationRequirements).
- *   - Also sends remove notifications for URLs whose jobs went expired.
+ *   - Prefer refreshing URLs already in state (Google Jobs already knows them)
+ *     before brand-new inventory.
+ *   - URL_DELETED for state URLs that redirect / expired / lost curated-jd —
+ *     not only those inside the capped live scan (that left dead Valid entries).
+ *   - Removes run before publishes so daily quota cleans Google's index first.
  *
  * Usage: node .github/scripts/google-indexing.mjs
  * State: .github/scripts/google-indexing-state.json (committed)
@@ -47,8 +51,12 @@ const SCHEMA_EPOCH = '2026-08-22T00:00:00.000Z';
 // PostgREST statement timeout (~2.5m). Slim columns, small pages, cap the scan.
 const PAGE_SIZE = 100;
 const MAX_SCAN = 800;
+/** Cap targeted dead-state checks so one run stays within Actions time. */
+const MAX_DEAD_CHECK = 200;
+/** Prefer cleaning dead Valid entries; leave the rest of the day for UPDATED. */
+const MAX_REMOVE_PER_RUN = 80;
 const SLIM_COLS =
-  'id,title,company,external_id,slug,tags,published_at,created_at,apply_url,category,source';
+  'id,title,company,company_key,external_id,slug,tags,published_at,created_at,apply_url,category,source';
 
 const SA_JSON = process.env.GOOGLE_INDEXING_SERVICE_ACCOUNT;
 if (!SA_JSON) {
@@ -173,6 +181,80 @@ function needsPublish(url, state) {
   return new Date(last).getTime() < Date.parse(SCHEMA_EPOCH);
 }
 
+/** Parse https://cvin.bio/{company}/{jobSlug} or /jobs/{uuid}. */
+function parseSiteJobUrl(url) {
+  try {
+    const u = new URL(url);
+    if (u.hostname !== 'cvin.bio' && u.hostname !== 'www.cvin.bio') return null;
+    const parts = u.pathname.split('/').filter(Boolean);
+    if (parts.length === 2 && parts[0] === 'jobs') return { id: parts[1] };
+    if (parts.length === 2) return { company: parts[0].toLowerCase(), jobSlug: parts[1].toLowerCase() };
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+/**
+ * True when this exact public URL is still a live JobPosting page.
+ * Used for state URLs missed by MAX_SCAN (redirects / expired / uncurated).
+ */
+async function jobStillIndexableAtUrl(url) {
+  const parsed = parseSiteJobUrl(url);
+  if (!parsed) return false;
+
+  let rows = [];
+  if (parsed.id) {
+    const { data, error } = await supabase.from('jobs').select(SLIM_COLS).eq('id', parsed.id).maybeSingle();
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+    if (data) rows = [data];
+  } else {
+    const { data, error } = await supabase
+      .from('jobs')
+      .select(SLIM_COLS)
+      .eq('company_key', parsed.company)
+      .ilike('slug', `%_${parsed.jobSlug}%`)
+      .limit(20);
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+    rows = data || [];
+    if (!rows.length) {
+      const { data: loose, error: looseErr } = await supabase
+        .from('jobs')
+        .select(SLIM_COLS)
+        .ilike('slug', `%_${parsed.jobSlug}`)
+        .limit(40);
+      if (looseErr) throw new Error(`Supabase error: ${looseErr.message}`);
+      rows = loose || [];
+    }
+  }
+
+  if (!rows.length) return false;
+  const hydrated = await hydrateDescriptions(rows);
+  for (const job of hydrated) {
+    if (canonicalUrl(job) === url && isIndexable(job)) return true;
+  }
+  return false;
+}
+
+/**
+ * State URLs Google already has that are no longer live public pages.
+ * Oldest first — most likely expired / redirected.
+ */
+async function findDeadStateUrls(state, liveUrls) {
+  const suspects = Object.entries(state.published || {})
+    .filter(([url]) => !liveUrls.has(url))
+    .sort((a, b) => String(a[1]).localeCompare(String(b[1])))
+    .slice(0, MAX_DEAD_CHECK);
+
+  const dead = [];
+  for (const [url] of suspects) {
+    const stillLive = await jobStillIndexableAtUrl(url);
+    if (!stillLive) dead.push(url);
+    if (dead.length >= MAX_REMOVE_PER_RUN) break;
+  }
+  return dead;
+}
+
 async function fetchSlimPages(since) {
   const all = [];
   for (let from = 0; from < MAX_SCAN; from += PAGE_SIZE) {
@@ -249,25 +331,18 @@ async function main() {
     }
   }
 
-  // Scan is capped — only URL_DELETED jobs we actually fetched and found dead.
-  const fetchedUrls = new Set();
-  for (const job of jobs) {
-    const url = canonicalUrl(job);
-    if (url) fetchedUrls.add(url);
-  }
-  const toRemove = [];
-  for (const url of Object.keys(state.published || {})) {
-    if (fetchedUrls.has(url) && !liveUrls.has(url)) {
-      toRemove.push(url);
-      delete state.published[url];
-    }
-  }
+  // Dead state URLs (redirect / expired / uncurated) — verify beyond MAX_SCAN.
+  // Do not require fetchedUrls; that left Google Valid entries hanging.
+  const toRemove = await findDeadStateUrls(state, liveUrls);
 
-  // Free-tier quota: max 200 URL notifications per day. Prioritize the
-  // most recently published jobs; the state file prevents re-notification,
-  // so older backlog URLs get covered on later days as quota frees up.
-  const budget = DAILY_QUOTA - toRemove.length;
+  // Free-tier quota: removes first (clean Valid drop), then UPDATED.
+  // Prefer URLs Google already knows (in state) for SCHEMA_EPOCH refresh.
+  const budget = Math.max(0, DAILY_QUOTA - Math.min(toRemove.length, MAX_REMOVE_PER_RUN));
+  const removeBatch = toRemove.slice(0, MAX_REMOVE_PER_RUN);
   toPublish.sort((a, b) => {
+    const knownA = state.published?.[a.url] ? 1 : 0;
+    const knownB = state.published?.[b.url] ? 1 : 0;
+    if (knownA !== knownB) return knownB - knownA;
     const fellow = (j) => (isFellowish(j) ? 1 : 0);
     if (fellow(a.job) !== fellow(b.job)) return fellow(a.job) - fellow(b.job);
     const newest = (j) =>
@@ -277,67 +352,76 @@ async function main() {
       );
     return newest(b.job) - newest(a.job);
   });
-  const publishBatch = toPublish.slice(0, Math.max(0, budget));
+  const publishBatch = toPublish.slice(0, budget);
 
   console.log(
-    `${jobs.length} live-window rows; ${liveUrls.size} public URLs; ${toPublish.length} to publish (${publishBatch.length} within quota), ${toRemove.length} to remove`
+    `${jobs.length} live-window rows; ${liveUrls.size} public URLs; ${toPublish.length} to publish (${publishBatch.length} within quota), ${toRemove.length} dead state (${removeBatch.length} to remove)`
   );
 
   let published = 0;
   let removed = 0;
   let errors = 0;
   let useUuidFallback = false;
+  let quotaHit = false;
 
-  // Google recommends at most ~1 URL per second; batch in small chunks with pauses.
-  for (const { url, job } of publishBatch) {
-    const target = useUuidFallback && job?.id ? `${SITE_URL}/jobs/${job.id}` : url;
-    let r = await notify(token, target, 'URL_UPDATED');
-    if (r.ownership && !useUuidFallback && job?.id) {
-      const uuidUrl = `${SITE_URL}/jobs/${job.id}`;
-      const r2 = await notify(token, uuidUrl, 'URL_UPDATED');
-      if (r2.ok) {
-        console.log(
-          '\n  Indexing API accepted /jobs/{id} but not pretty URLs. GSC is likely a /jobs prefix — add the service account as Owner on sc-domain:cvin.bio.'
-        );
-        useUuidFallback = true;
-        r = r2;
-      } else if (r2.ownership) {
-        logOwnershipHelp(url);
-        break;
-      } else {
-        r = r2;
-      }
-    } else if (r.ownership) {
-      logOwnershipHelp(url);
-      break;
-    }
-    if (r.ok) {
-      state.published[url] = new Date().toISOString();
-      published++;
-      process.stdout.write('+');
-    } else if (r.quota) {
-      console.log(`\n  ⏸ quota hit at ${url} — stopping (retries next run/day)`);
-      break;
-    } else if (!r.ownership) {
-      errors++;
-      console.error(`\n  ✗ publish ${url}: ${r.error?.message || 'failed'}`);
-    }
-    await new Promise((r) => setTimeout(r, 1200));
-  }
-
-  for (const url of toRemove) {
+  // Removes first — stop Valid from counting redirect/no-JobPosting URLs.
+  for (const url of removeBatch) {
     const r = await notify(token, url, 'URL_DELETED');
     if (r.ok) {
+      delete state.published[url];
       removed++;
       process.stdout.write('-');
     } else if (r.quota) {
       console.log(`\n  ⏸ quota hit at remove ${url} — stopping`);
+      quotaHit = true;
+      break;
+    } else if (r.ownership) {
+      logOwnershipHelp(url);
       break;
     } else {
       errors++;
       console.error(`\n  ✗ remove ${url}: ${r.error?.message || 'failed'}`);
     }
     await new Promise((r) => setTimeout(r, 1200));
+  }
+
+  // Google recommends at most ~1 URL per second; batch in small chunks with pauses.
+  if (!quotaHit) {
+    for (const { url, job } of publishBatch) {
+      const target = useUuidFallback && job?.id ? `${SITE_URL}/jobs/${job.id}` : url;
+      let r = await notify(token, target, 'URL_UPDATED');
+      if (r.ownership && !useUuidFallback && job?.id) {
+        const uuidUrl = `${SITE_URL}/jobs/${job.id}`;
+        const r2 = await notify(token, uuidUrl, 'URL_UPDATED');
+        if (r2.ok) {
+          console.log(
+            '\n  Indexing API accepted /jobs/{id} but not pretty URLs. GSC is likely a /jobs prefix — add the service account as Owner on sc-domain:cvin.bio.'
+          );
+          useUuidFallback = true;
+          r = r2;
+        } else if (r2.ownership) {
+          logOwnershipHelp(url);
+          break;
+        } else {
+          r = r2;
+        }
+      } else if (r.ownership) {
+        logOwnershipHelp(url);
+        break;
+      }
+      if (r.ok) {
+        state.published[url] = new Date().toISOString();
+        published++;
+        process.stdout.write('+');
+      } else if (r.quota) {
+        console.log(`\n  ⏸ quota hit at ${url} — stopping (retries next run/day)`);
+        break;
+      } else if (!r.ownership) {
+        errors++;
+        console.error(`\n  ✗ publish ${url}: ${r.error?.message || 'failed'}`);
+      }
+      await new Promise((r) => setTimeout(r, 1200));
+    }
   }
 
   // Prune state to last 10k URLs to keep the file small.

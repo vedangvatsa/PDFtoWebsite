@@ -240,6 +240,14 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     assert.match(file, /pingIndexNow/);
     assert.match(file, /\/jobs\/\$\{job\.id\}/);
     assert.match(file, /ensureGscOwnership/);
+    // Dead state URLs (redirects) must URL_DELETED beyond the capped live scan.
+    assert.match(file, /findDeadStateUrls/);
+    assert.match(file, /jobStillIndexableAtUrl/);
+    assert.match(file, /MAX_REMOVE_PER_RUN/);
+    assert.doesNotMatch(file, /fetchedUrls\.has\(url\) && !liveUrls\.has\(url\)/);
+    // Prefer refreshing URLs Google already has before brand-new inventory.
+    assert.match(file, /knownA/);
+    assert.match(file, /Removes first/);
   });
 
   it('Indexing API run verifies the service account on cvin.bio via DNS TXT', () => {

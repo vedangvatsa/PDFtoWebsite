@@ -27,6 +27,8 @@ Do not ship a public job page that is 200 / indexable / not expired without `Job
 - Client URL env: `NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL`. Workflows must set **both**.
 - Select live public jobs in the 30-day newest-stamp window (not only `created_at` last 7 days). Paginate; do not rely on `.limit(50000)` returning more than 1000.
 - After a schema change, bump `SCHEMA_EPOCH` so existing URLs get `URL_UPDATED` again (200/day quota).
+- Prefer refreshing URLs already in `google-indexing-state.json` (Google already knows them) before brand-new inventory.
+- `URL_DELETED` for state URLs that redirect / expired / lost curated-jd — verify with a targeted lookup, not only the capped live scan. Run removes before publishes.
 - `isPublicJobPage` + `isJobExpired` still apply. Do not ping uncurated or thin bodies.
 
 ## Sitemap
