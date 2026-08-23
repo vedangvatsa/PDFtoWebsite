@@ -192,6 +192,7 @@ export async function buildDirectory(scope: LlmsScope): Promise<string> {
       `- MCP manifest: ${siteUrl}/.well-known/mcp.json`,
       `- MCP Streamable HTTP endpoint: ${siteUrl}/mcp (JSON-RPC 2.0: initialize, tools/list, tools/call)`,
       `- Agent instructions & when-to-use: ${siteUrl}/agent.txt`,
+      `- Agent guide (markdown): ${siteUrl}/agents.md`,
       `- Rate limits: RateLimit-* headers on API responses, Retry-After on 429 (300 req/min per IP for reads); list endpoints paginate via opaque \`cursor\` + \`next_cursor\``,
       '',
       '## Useful Links',
