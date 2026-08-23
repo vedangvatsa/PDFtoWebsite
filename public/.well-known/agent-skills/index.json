@@ -1,10 +1,13 @@
 {
-  "$schema": "https://schemas.agentskills.io/index/v0.2.0.json",
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
   "version": "0.2.0",
   "updatedAt": "2026-08-23",
   "skills": [
     {
       "name": "search-jobs",
+      "type": "skill-md",
+      "url": "https://cvin.bio/docs",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "displayName": "Search curated tech jobs",
       "description": "Find live curated tech jobs by keyword, type, or location via MCP tool search_jobs or GET /api/jobs?q=. Supports cursor pagination (next_cursor). No auth.",
       "endpoint": "https://cvin.bio/api/jobs",
@@ -12,6 +15,9 @@
     },
     {
       "name": "get-job",
+      "type": "skill-md",
+      "url": "https://cvin.bio/docs",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "displayName": "Get one job's details",
       "description": "Fetch full detail for a single curated job by id via MCP tool get_job or GET /api/jobs/{id}.",
       "endpoint": "https://cvin.bio/api/jobs/{id}",
@@ -19,6 +25,9 @@
     },
     {
       "name": "platform-stats",
+      "type": "skill-md",
+      "url": "https://cvin.bio/docs",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "displayName": "Get platform statistics",
       "description": "Live counts of jobs, companies, and profiles on CVin.Bio via MCP tool platform_stats.",
       "endpoint": "https://cvin.bio/mcp",
@@ -26,11 +35,17 @@
     },
     {
       "name": "verify-public-profile",
+      "type": "skill-md",
+      "url": "https://cvin.bio/docs",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "displayName": "Verify a public professional profile",
       "description": "Check whether a person has a public CVin.Bio profile page at https://cvin.bio/{username} with schema.org Person markup."
     },
     {
       "name": "tech-news",
+      "type": "skill-md",
+      "url": "https://cvin.bio/docs",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "displayName": "List aggregated tech news",
       "description": "Recent ranked items from tier-1 tech RSS sources via GET /api/news?limit=20."
     }
