@@ -268,10 +268,18 @@ const nextConfigFn = (phase: string): NextConfig => {
     async rewrites() {
       return [
         {
-          // Versioned alias for the public API — /v1/api/* mirrors /api/*
-          // (documented as the versioning policy in /openapi.json).
+          // Versioned alias for the public API — /v1/* mirrors /api/* and
+          // /v1/api/* mirrors /api/* (documented in /openapi.json policy).
           source: '/v1/api/:path*',
           destination: '/api/:path*',
+        },
+        {
+          source: '/v1/:path*',
+          destination: '/api/:path*',
+        },
+        {
+          source: '/v1',
+          destination: '/api',
         },
         {
           source: '/ingest/static/:path*',

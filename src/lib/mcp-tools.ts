@@ -11,6 +11,12 @@ export interface McpTool {
   name: string;
   description: string;
   inputSchema: JsonSchema;
+  annotations?: {
+    readOnlyHint?: boolean;
+    destructiveHint?: boolean;
+    idempotentHint?: boolean;
+    openWorldHint?: boolean;
+  };
 }
 
 /**
@@ -40,6 +46,7 @@ export const MCP_TOOLS: McpTool[] = [
       },
       required: ['query'],
     },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: 'get_job',
@@ -52,11 +59,13 @@ export const MCP_TOOLS: McpTool[] = [
       },
       required: ['id'],
     },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: 'platform_stats',
     description: 'Live counts of curated jobs, hiring companies, and public candidate profiles on CVin.Bio.',
     inputSchema: { type: 'object', properties: {}, required: [], additionalProperties: false },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
 ];
 

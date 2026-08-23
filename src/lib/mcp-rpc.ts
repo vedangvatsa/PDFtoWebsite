@@ -76,6 +76,16 @@ export async function handleRpcMessage(msg: unknown): Promise<JsonRpcResponse | 
       if (typeof params.name !== 'string') {
         return reply({ error: { code: INVALID_PARAMS, message: 'tools/call requires a "name" string.' } });
       }
+      const known = MCP_TOOLS.some((t) => t.name === params.name);
+      if (!known) {
+        return reply({
+          error: {
+            code: INVALID_PARAMS,
+            message: `Unknown tool "${params.name}".`,
+            data: { available: MCP_TOOLS.map((t) => t.name) },
+          },
+        });
+      }
       const result = await callTool(params.name, params.arguments);
       return reply({ result });
     }

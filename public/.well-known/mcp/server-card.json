@@ -1,0 +1,21 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/sep-2127/server-card.json",
+  "name": "CVin.Bio MCP Server",
+  "displayName": "CVin.Bio — Curated Tech Jobs",
+  "description": "Search 100k+ curated tech jobs, fetch job details, and query live platform stats. Public, read-only, no authentication. Served over Streamable HTTP (JSON-RPC 2.0).",
+  "version": "1.1.0",
+  "url": "https://cvin.bio/mcp",
+  "icons": [
+    { "src": "https://cvin.bio/images/cvinbio.webp", "sizes": "any", "type": "image/webp" }
+  ],
+  "provider": {
+    "name": "CVin.Bio",
+    "url": "https://cvin.bio"
+  },
+  "tools": [
+    { "name": "search_jobs", "description": "Find curated tech jobs by keyword, type, or location" },
+    { "name": "get_job", "description": "Fetch one curated job by id" },
+    { "name": "platform_stats", "description": "Live counts of jobs, companies, and public profiles" }
+  ],
+  "documentation": "https://cvin.bio/docs"
+}

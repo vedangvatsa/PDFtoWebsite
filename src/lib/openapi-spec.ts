@@ -90,7 +90,10 @@ export function buildOpenApiSpec(): Record<string, unknown> {
       contact: { name: 'CVin.Bio', email: 'hi@cvin.bio', url: `${siteUrl}/contact` },
       license: { name: 'Proprietary', url: `${siteUrl}/terms` },
     },
-    servers: [{ url: siteUrl, description: 'Production' }],
+    servers: [
+      { url: siteUrl, description: 'Production (unversioned alias of the current stable major version)' },
+      { url: `${siteUrl}/v1`, description: 'Version-pinned v1 — path-identical to the unversioned alias' },
+    ],
     tags: [
       { name: 'jobs', description: 'Curated tech job listings' },
       { name: 'news', description: 'Aggregated tech news' },
@@ -107,6 +110,7 @@ export function buildOpenApiSpec(): Record<string, unknown> {
             'Returns a paginated, quality-filtered feed of curated tech jobs sorted by relevance then recency. Anonymous callers receive unpersonalized results; optional Supabase bearer auth personalizes match scores. Pagination is cursor-based and consistent across pages: pass each response\'s `next_cursor` value verbatim as the `cursor` query parameter until it returns null. The legacy `page`/`limit` offset parameters remain supported; every page shape includes limit, offset, hasMore, and next_cursor.',
           tags: ['jobs'],
           parameters: [
+            { $ref: '#/components/parameters/ApiVersionHeader' },
             {
               name: 'cursor',
               in: 'query',
@@ -200,6 +204,7 @@ export function buildOpenApiSpec(): Record<string, unknown> {
           description: 'Returns recently ranked items from curated tier-1 tech RSS sources (Hacker News, TechCrunch, The Verge, Ars Technica, and more).',
           tags: ['news'],
           parameters: [
+            { $ref: '#/components/parameters/ApiVersionHeader' },
             { name: 'limit', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 50, default: 20 }, description: 'Maximum items to return' },
           ],
           responses: {
@@ -453,6 +458,16 @@ export function buildOpenApiSpec(): Record<string, unknown> {
         ServerError: { description: 'Internal server error', content: { 'application/json': { schema: errorRef } } },
       },
       headers: rateLimitHeaders,
+      parameters: {
+        ApiVersionHeader: {
+          name: 'API-Version',
+          in: 'header',
+          required: false,
+          schema: { type: 'string', default: 'v1', enum: ['v1'] },
+          description:
+            'Major API version to serve. Responses always carry an API-Version header identifying what was served. Unversioned requests use the current stable version.',
+        },
+      },
     },
     'x-mcp-server': {
       transport: 'streamable-http',
