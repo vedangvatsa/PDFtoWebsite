@@ -188,7 +188,8 @@ export function middleware(request: NextRequest) {
         },
         {
           status: 404,
-          headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' },
+          statusText: 'Not Found',
+          headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow', 'x-opennext-status': '404' },
         }
       );
     }
@@ -209,10 +210,12 @@ export function middleware(request: NextRequest) {
       ].join('\n'),
       {
         status: 404,
+        statusText: 'Not Found',
         headers: {
           'Content-Type': 'text/markdown; charset=utf-8',
           'Cache-Control': 'no-store',
           'X-Robots-Tag': 'noindex, nofollow',
+          'x-opennext-status': '404',
         },
       }
     );
