@@ -37,7 +37,7 @@ describe('sitemap cache must not poison Google Jobs discovery', () => {
     assert.match(file, /sitemapXmlHasUrls\(cachedXml\)/);
     assert.match(file, /no-store/);
     assert.match(file, /SITEMAP_CACHE_EPOCH/);
-    assert.match(file, /if \(!isEmpty\)/);
+    assert.match(file, /if \(isEmpty\)/);
     assert.match(file, /cache\.put/);
   });
 
@@ -47,7 +47,16 @@ describe('sitemap cache must not poison Google Jobs discovery', () => {
       'utf8'
     );
     assert.doesNotMatch(file, /select\([^)]*description/);
-    assert.match(file, /if \(error\)/);
-    assert.match(file, /throw new Error/);
+    assert.match(file, /fetchSitemapJobsCreatedPage/);
+    assert.doesNotMatch(file, /companyJobsDateOrFilter/);
+  });
+
+  it('sitemap queries use DB budgets and split OR date filter', () => {
+    const file = fs.readFileSync(path.join(root, 'src/lib/sitemap-jobs-query.ts'), 'utf8');
+    assert.match(file, /withTimeoutFallback/);
+    assert.match(file, /DB_BUDGET/);
+    assert.match(file, /gte\('created_at'/);
+    assert.match(file, /fetchSitemapJobsPublishedComplement/);
+    assert.doesNotMatch(file, /companyJobsDateOrFilter/);
   });
 });

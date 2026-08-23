@@ -402,11 +402,14 @@ describe('source locks — do not reintroduce empty hubs', () => {
     assert.ok(src.includes('shouldKeepCompanyHub'));
   });
 
-  it('sitemap date window is newest-stamp OR, not AND created_at', () => {
+  it('sitemap date window covers newest stamp without AND created_at', () => {
+    const q = readRel('src/lib/sitemap-jobs-query.ts');
+    assert.ok(q.includes("gte('created_at'"), 'created_at leg');
+    assert.ok(q.includes("gte('published_at'"), 'published_at complement');
+    assert.ok(q.includes("lt('created_at'"), 'complement excludes created_at overlap');
     for (const rel of ['src/app/sitemap.xml/route.ts', 'src/app/sitemap-jobs/[chunk]/route.ts']) {
       const src = readRel(rel);
-      assert.ok(src.includes('companyJobsDateOrFilter'), rel);
-      assert.doesNotMatch(src, /\.gt\('created_at'/);
+      assert.doesNotMatch(src, /companyJobsDateOrFilter/, rel);
     }
   });
 

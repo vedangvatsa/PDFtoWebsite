@@ -1,5 +1,3 @@
-import { supabaseAdmin } from '@/lib/supabase-admin';
-import { companyJobsDateOrFilter } from '@/lib/company-hub-query';
 import { jobSitemapPath } from '@/lib/job-description';
 import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 import {
@@ -7,22 +5,38 @@ import {
   JOB_SITEMAP_PAGE,
   withSitemapCache,
 } from '@/lib/sitemap-cache';
+import {
+  fetchSitemapJobsCreatedPage,
+  fetchSitemapJobsPublishedComplement,
+  type SitemapJobRow,
+} from '@/lib/sitemap-jobs-query';
 import { escapeXml } from '@/lib/xml';
 
 export const revalidate = 3600;
 
 type Props = { params: Promise<{ chunk: string }> };
 
+function rowToUrl(
+  j: SitemapJobRow,
+  siteUrl: string
+): { loc: string; lastmod?: string } | null {
+  if (!jobQualifiesForSitemap(j)) return null;
+  const path = jobSitemapPath(j);
+  if (!path) return null;
+  const lastMs = [j.published_at, j.created_at]
+    .map((ts) => (ts ? new Date(String(ts)).getTime() : NaN))
+    .filter((ms) => Number.isFinite(ms));
+  const last = lastMs.length
+    ? new Date(Math.max(...lastMs)).toISOString().slice(0, 10)
+    : undefined;
+  return { loc: `${siteUrl}${path}`, lastmod: last };
+}
+
 /**
  * Dynamic job sitemap chunk.
  *
- * Curated paraphrases that pass quality gates.
- * Chunk offset is over recent jobs; non-qualifying rows are skipped.
- *
- * Do not select `description` here — fat text + OR date filter trips PostgREST
- * statement timeouts, which used to be swallowed into an empty urlset and
- * edge-cached. `jobQualifiesForSitemap` treats a missing description as
- * tag-trusted (curated-jd already implies the 600-word floor).
+ * Curated paraphrases that pass quality gates. Uses indexed created_at pages
+ * (not OR date filter) with a published_at complement on chunk 0.
  */
 export async function GET(req: Request, ctx: Props) {
   const { chunk } = await ctx.params;
@@ -37,6 +51,23 @@ export async function GET(req: Request, ctx: Props) {
     const offset = chunkIdx * JOB_SITEMAP_CHUNK;
 
     const urls: { loc: string; lastmod?: string }[] = [];
+    const seen = new Set<string>();
+
+    const pushRow = (j: SitemapJobRow) => {
+      const u = rowToUrl(j, siteUrl);
+      if (!u || seen.has(u.loc)) return;
+      seen.add(u.loc);
+      urls.push(u);
+    };
+
+    if (chunkIdx === 0) {
+      const complement = await fetchSitemapJobsPublishedComplement(thirtyDaysAgo);
+      for (const j of complement.data || []) {
+        pushRow(j);
+        if (urls.length >= JOB_SITEMAP_CHUNK) break;
+      }
+    }
+
     let from = offset;
     let done = false;
     let pages = 0;
@@ -44,35 +75,23 @@ export async function GET(req: Request, ctx: Props) {
 
     while (urls.length < JOB_SITEMAP_CHUNK && !done && pages < maxPages) {
       pages += 1;
-      const { data, error } = await supabaseAdmin
-        .from('jobs')
-        .select(
-          'id, company, external_id, slug, title, created_at, published_at, location, job_type, salary, tags, category'
-        )
-        .not('external_id', 'is', null)
-        .not('company', 'is', null)
-        .contains('tags', ['curated-jd'])
-        .or(companyJobsDateOrFilter(thirtyDaysAgo))
-        .order('created_at', { ascending: false })
-        .range(from, from + JOB_SITEMAP_PAGE - 1);
+      const { data, error } = await fetchSitemapJobsCreatedPage(
+        thirtyDaysAgo,
+        from,
+        JOB_SITEMAP_PAGE
+      );
 
-      // Rethrow — never return an empty urlset that looks like "no jobs".
-      if (error) {
+      if (error?.message === 'timeout' && !(data && data.length)) {
+        // Fail open with whatever we collected — never hang until CF kills us.
+        break;
+      }
+      if (error && error.message !== 'timeout') {
         throw new Error(`Sitemap jobs chunk ${chunkIdx}: ${error.message}`);
       }
 
       if (!data || !data.length) break;
       for (const j of data) {
-        if (!jobQualifiesForSitemap(j)) continue;
-        const path = jobSitemapPath(j);
-        if (!path) continue;
-        const lastMs = [j.published_at, j.created_at]
-          .map((ts) => (ts ? new Date(String(ts)).getTime() : NaN))
-          .filter((ms) => Number.isFinite(ms));
-        const last = lastMs.length
-          ? new Date(Math.max(...lastMs)).toISOString().slice(0, 10)
-          : undefined;
-        urls.push({ loc: `${siteUrl}${path}`, lastmod: last });
+        pushRow(j);
         if (urls.length >= JOB_SITEMAP_CHUNK) break;
       }
       from += JOB_SITEMAP_PAGE;

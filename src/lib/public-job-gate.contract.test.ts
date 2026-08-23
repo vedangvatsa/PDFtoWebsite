@@ -145,7 +145,7 @@ describe('public lists constrain curated-jd before limit()', () => {
     assert.match(ts, /JOB_INDEXABLE_MIN_WORDS/);
     assert.match(mjs, /MIN_WORDS/);
     const sitemap = src('src/app/sitemap-jobs/[chunk]/route.ts');
-    assert.match(sitemap, /description/);
+    assert.match(sitemap, /jobQualifiesForSitemap/);
     const detail = src('src/lib/job-detail-data.ts');
     assert.match(detail, /wordCount >= JOB_INDEXABLE_MIN_WORDS/);
     assert.doesNotMatch(detail, /wordCount >= 40/);
@@ -187,8 +187,7 @@ describe('public lists constrain curated-jd before limit()', () => {
   });
 
   for (const rel of [
-    'src/app/sitemap.xml/route.ts',
-    'src/app/sitemap-jobs/[chunk]/route.ts',
+    'src/lib/sitemap-jobs-query.ts',
     'src/app/rss.xml/route.ts',
     'src/app/indeed.xml/route.ts',
     'src/app/jooble.xml/route.ts',
