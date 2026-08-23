@@ -9,6 +9,7 @@ import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { createAnonFromRequest } from '@/utils/supabase/anon';
 import { rateLimit, rateLimitHeaders, rateLimitResponse } from '@/lib/rate-limit';
+import { encodeCursor, decodeCursor } from '@/lib/cursor';
 import {
   normalizeCompany,
   isNonEnglishTitle,
@@ -40,7 +41,27 @@ export async function GET(request: NextRequest) {
   const kind = searchParams.get('kind'); // fellowship → /fellowships board
   const fellowshipsOnly = kind === 'fellowship';
   const q = sanitizeFilterTerm(searchParams.get('q')?.toLowerCase().trim() || '');
-  const offset = (page - 1) * limit;
+
+  // Cursor-based pagination (preferred): opaque token from a previous
+  // response's next_cursor. `page` remains as a legacy alias.
+  let offset: number;
+  const cursorParam = searchParams.get('cursor');
+  if (cursorParam !== null && cursorParam !== '') {
+    const decoded = decodeCursor(cursorParam);
+    if (decoded === null) {
+      return NextResponse.json(
+        {
+          error: 'Malformed pagination cursor.',
+          code: 'INVALID_CURSOR',
+          hint: 'Pass next_cursor from the previous response verbatim, or omit cursor to start from page one.',
+        },
+        { status: 400, headers: rlHeaders }
+      );
+    }
+    offset = decoded;
+  } else {
+    offset = (page - 1) * limit;
+  }
 
   // Try to get authenticated user's profile for matching
   let userProfile: MatchUserProfile | null = null;
@@ -490,7 +511,9 @@ export async function GET(request: NextRequest) {
       total: 0,
       page,
       limit,
+      offset,
       hasMore: false,
+      next_cursor: null,
       degraded: true,
       userSkills: (userProfile?.skills || []).map((s) => s.trim()).filter(Boolean),
       profileComplete,
@@ -504,14 +527,18 @@ export async function GET(request: NextRequest) {
     ? (count || jobsWithMatches.length)
     : PLATFORM_JOBS_TOTAL;
 
+  const hasMore = needsDbCount
+    ? offset + limit < (count || 0)
+    : jobsWithMatches.length >= limit;
+
   const response = NextResponse.json({
     jobs: jobsWithMatches,
     total,
     page,
     limit,
-    hasMore: needsDbCount
-      ? offset + limit < (count || 0)
-      : jobsWithMatches.length >= limit,
+    offset,
+    hasMore,
+    next_cursor: hasMore ? encodeCursor(offset + limit) : null,
     userSkills: (userProfile?.skills || []).map(s => s.trim()).filter(Boolean),
     profileComplete,
   });

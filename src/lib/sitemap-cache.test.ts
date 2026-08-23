@@ -7,7 +7,7 @@ import {
   SITEMAP_CACHE_EPOCH,
   sitemapXmlHasUrls,
   JOB_SITEMAP_PAGE,
-} from './sitemap-cache.ts';
+} from './sitemap-cache';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 

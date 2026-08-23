@@ -23,6 +23,8 @@ export default function AgenticContent() {
         against open roles by skills and location, so candidates see relevant jobs first.
         Companies get dedicated career hubs listing all of their open positions.
       </p>
+      <h2 className="sr-only">Explore CVin.Bio</h2>
+      <h3 className="sr-only">Key pages</h3>
       <p>
         Key pages:{' '}
         <Link href="/jobs" className="underline underline-offset-2 hover:text-foreground">job board</Link>,{' '}

@@ -57,4 +57,41 @@ describe('OpenAPI spec (agent function-calling compatibility)', () => {
     assert.ok('RateLimit-Limit' in headers);
     assert.ok('X-RateLimit-Remaining' in headers);
   });
+
+  it('documents cursor pagination on list endpoints', () => {
+    const get = spec.paths['/api/jobs'].get as Record<string, any>;
+    const params: Array<Record<string, any>> = get.parameters ?? [];
+    const cursor = params.find((p) => p.name === 'cursor');
+    assert.ok(cursor, 'listJobs missing cursor parameter');
+    const schema = get.responses['200'].content['application/json'].schema;
+    assert.ok(schema.properties.next_cursor, 'listJobs response schema missing next_cursor');
+    assert.ok(schema.properties.offset, 'listJobs response schema missing offset');
+    assert.ok(schema.required.includes('next_cursor'));
+  });
+
+  it('defines a typed error model in components', () => {
+    const components = (spec as Record<string, any>).components;
+    const envelope = components?.schemas?.ErrorEnvelope;
+    assert.ok(envelope, 'missing ErrorEnvelope component');
+    assert.deepEqual(envelope.required, ['error', 'code']);
+    const codes: string[] = envelope.properties.code.enum;
+    for (const expected of ['RATE_LIMITED', 'API_NOT_FOUND', 'JOBS_QUERY_FAILED']) {
+      assert.ok(codes.includes(expected), `error code enum missing ${expected}`);
+    }
+    // Error responses reference the shared envelope.
+    const jobGet = (spec.paths['/api/jobs/{id}'] as { get?: { responses?: Record<string, any> } }).get;
+    const notFound = jobGet?.responses?.['404'];
+    assert.equal(
+      notFound?.content?.['application/json']?.schema?.$ref,
+      '#/components/schemas/ErrorEnvelope'
+    );
+  });
+
+  it('declares an API versioning policy', () => {
+    const versioning = (spec.info as Record<string, any>)['x-api-versioning'];
+    assert.ok(versioning, 'info missing x-api-versioning');
+    assert.match(versioning.policy, /v1/);
+    const jobsResponses = (spec.paths['/api/jobs'].get as { responses?: Record<string, any> }).responses ?? {};
+    assert.ok(jobsResponses['200']?.headers?.['API-Version'], 'listJobs 200 missing API-Version header doc');
+  });
 });

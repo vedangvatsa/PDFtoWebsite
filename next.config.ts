@@ -252,6 +252,12 @@ const nextConfigFn = (phase: string): NextConfig => {
     async rewrites() {
       return [
         {
+          // Versioned alias for the public API — /v1/api/* mirrors /api/*
+          // (documented as the versioning policy in /openapi.json).
+          source: '/v1/api/:path*',
+          destination: '/api/:path*',
+        },
+        {
           source: '/ingest/static/:path*',
           destination: 'https://us-assets.i.posthog.com/static/:path*',
         },

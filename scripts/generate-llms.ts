@@ -34,10 +34,22 @@ async function main() {
   const publicDir = join(REPO_ROOT, 'public');
   mkdirSync(publicDir, { recursive: true });
 
-  console.log('Generating /llms.txt…');
+  console.log('Generating /llms.txt (navigation index)…');
   const index = await buildDirectory('index');
   writeFileSync(join(publicDir, 'llms.txt'), index);
   console.log(`  llms.txt  ${index.length.toLocaleString()} B  (${(Date.now() - t0) / 1000}s)`);
+
+  const sectionJobs: Array<[string, () => Promise<string>]> = [
+    ['profiles', () => buildDirectory('profiles')],
+    ['companies', () => buildDirectory('companies')],
+    ['jobs', () => buildDirectory('jobs')],
+  ];
+  for (const [name, build] of sectionJobs) {
+    const t = Date.now();
+    const text = await build();
+    writeFileSync(join(publicDir, `llms-${name}.txt`), text);
+    console.log(`  llms-${name} ${text.length.toLocaleString()} B  (${(Date.now() - t) / 1000}s)`);
+  }
 
   const t1 = Date.now();
   console.log('Generating /llms-full.txt (all curated jobs)…');

@@ -81,12 +81,14 @@ export async function GET(req: Request, ctx: Props) {
         JOB_SITEMAP_PAGE
       );
 
-      if (error?.message === 'timeout' && !(data && data.length)) {
-        // Fail open with whatever we collected — never hang until CF kills us.
-        break;
-      }
-      if (error && error.message !== 'timeout') {
-        throw new Error(`Sitemap jobs chunk ${chunkIdx}: ${error.message}`);
+      if (error) {
+        if (error.message !== 'timeout') {
+          throw new Error(`Sitemap jobs chunk ${chunkIdx}: ${error.message}`);
+        }
+        if (!(data && data.length)) {
+          // Fail open with whatever we collected — never hang until CF kills us.
+          break;
+        }
       }
 
       if (!data || !data.length) break;

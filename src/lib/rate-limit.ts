@@ -86,6 +86,7 @@ export function rateLimit(
  */
 export function rateLimitHeaders(result: Pick<RateLimitResult, 'limit' | 'remaining' | 'resetSeconds'>): Record<string, string> {
   return {
+    'API-Version': 'v1',
     'RateLimit-Limit': String(result.limit),
     'RateLimit-Remaining': String(Math.max(0, result.remaining)),
     'RateLimit-Reset': String(result.resetSeconds),

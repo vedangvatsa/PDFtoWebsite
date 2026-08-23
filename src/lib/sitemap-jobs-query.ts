@@ -10,7 +10,7 @@ export const SITEMAP_JOB_COLS =
 
 export type SitemapJobRow = {
   id: string;
-  company: string | null;
+  company: string;
   external_id: string | null;
   slug: string | null;
   title: string | null;
@@ -45,9 +45,9 @@ export async function fetchSitemapJobsCreatedPage(
       .order('created_at', { ascending: false })
       .range(from, from + limit - 1),
     DB_BUDGET.list,
-    { data: [], error: { message: 'timeout' } } as PageResult,
+    { data: [], error: { message: 'timeout' } } as never,
     `sitemap-created:${from}`
-  )) as PageResult;
+  )) as unknown as PageResult;
 }
 
 /** Old ingest stamp + newer source publish — missed by created_at-only scans. */
@@ -62,31 +62,40 @@ export async function fetchSitemapJobsPublishedComplement(
       .order('published_at', { ascending: false })
       .limit(limit),
     DB_BUDGET.list,
-    { data: [], error: { message: 'timeout' } } as PageResult,
+    { data: [], error: { message: 'timeout' } } as never,
     'sitemap-published-complement'
-  )) as PageResult;
+  )) as unknown as PageResult;
 }
 
 /** null when both count legs time out — caller should fall back to fixed chunks. */
+function countQuery() {
+  return supabaseAdmin
+    .from('jobs')
+    .select('id', { count: 'exact', head: true })
+    .not('external_id', 'is', null)
+    .not('company', 'is', null)
+    .contains('tags', ['curated-jd']);
+}
+
+type CountResult = { count: number | null; error: { message: string } | null };
+
+/** null when both count legs time out — caller should fall back to fixed chunks. */
 export async function countSitemapJobs(sinceIso: string): Promise<number | null> {
-  const created = await withTimeoutFallback(
-    baseQuery().gte('created_at', sinceIso).select('id', { count: 'exact', head: true }),
+  const created = (await withTimeoutFallback(
+    countQuery().gte('created_at', sinceIso),
     DB_BUDGET.stats,
-    { count: null, error: { message: 'timeout' } } as { count: number | null; error: { message: string } | null },
+    { count: null, error: { message: 'timeout' } } as CountResult,
     'sitemap-count-created'
-  );
+  )) as unknown as CountResult;
   if (created.error?.message === 'timeout' && created.count == null) return null;
 
   let total = created.count || 0;
-  const extra = await withTimeoutFallback(
-    baseQuery()
-      .gte('published_at', sinceIso)
-      .lt('created_at', sinceIso)
-      .select('id', { count: 'exact', head: true }),
+  const extra = (await withTimeoutFallback(
+    countQuery().gte('published_at', sinceIso).lt('created_at', sinceIso),
     DB_BUDGET.stats,
-    { count: 0, error: null } as { count: number | null; error: { message: string } | null },
+    { count: 0, error: null } as never,
     'sitemap-count-published'
-  );
+  )) as unknown as CountResult;
   total += extra.count || 0;
   return total;
 }

@@ -52,6 +52,15 @@ const rateLimitHeaders = {
   'X-RateLimit-Remaining': { description: 'Legacy remaining header', schema: { type: 'string' } },
 };
 
+const apiVersionHeader = {
+  'API-Version': {
+    description: 'Major API version serving this response (e.g. v1)',
+    schema: { type: 'string', example: 'v1' },
+  },
+};
+
+const errorRef = { $ref: '#/components/schemas/ErrorEnvelope' };
+
 /**
  * OpenAPI 3.1 specification of the public CVin.Bio API surface.
  * Served at /openapi.json — every operation has an operationId,
@@ -65,7 +74,15 @@ export function buildOpenApiSpec(): Record<string, unknown> {
       title: 'CVin.Bio Public API',
       version: '1.0.0',
       description:
-        'Public, read-mostly API for CVin.Bio — a curated tech job board and CV-to-website product. Query live curated jobs, tech news, and public candidate profiles; submit contact messages. No authentication is required for read endpoints. An MCP server exposing equivalent tools over Streamable HTTP is available at https://cvin.bio/mcp (manifest: /.well-known/mcp.json). Rate limits: responses carry RFC 9331 draft RateLimit-* headers plus legacy X-RateLimit-* headers; on 429, honor Retry-After.',
+        'Public, read-mostly API for CVin.Bio — a curated tech job board and CV-to-website product. Query live curated jobs, tech news, and public candidate profiles; submit contact messages. No authentication is required for read endpoints. An MCP server exposing the same tools over Streamable HTTP is available at https://cvin.bio/mcp (manifest at /.well-known/mcp.json). Rate-limited responses carry RFC 9331 RateLimit-* headers plus legacy X-RateLimit-* headers; on 429, honor Retry-After.',
+      'x-api-versioning': {
+        strategy: 'URL-path major version with backward-compatible additive changes inside a major version',
+        current: 'v1',
+        policy:
+          'The current stable major version is v1. Breaking changes ship under /v2/ while /v1/ keeps working for at least 12 months after a v2 release. Additive fields may appear in responses at any time; consumers must ignore unknown properties. Send Prefer: code=true to receive machine-readable error envelopes.',
+        unversioned_alias: 'Paths without a version prefix (/api/...) always alias the current stable major version (/v1/api/...).',
+        version_header: 'Every API response includes an API-Version header identifying the served major version.',
+      },
       contact: { name: 'CVin.Bio', email: 'hi@cvin.bio', url: `${siteUrl}/contact` },
       license: { name: 'Proprietary', url: `${siteUrl}/terms` },
     },
@@ -83,10 +100,17 @@ export function buildOpenApiSpec(): Record<string, unknown> {
           operationId: 'listJobs',
           summary: 'List curated tech jobs',
           description:
-            'Returns a paginated, quality-filtered feed of curated tech jobs sorted by relevance then recency. Anonymous callers receive unpersonalized results; optional Supabase bearer auth personalizes match scores.',
+            'Returns a paginated, quality-filtered feed of curated tech jobs sorted by relevance then recency. Anonymous callers receive unpersonalized results; optional Supabase bearer auth personalizes match scores. Pagination is cursor-based and consistent across pages: pass each response\'s `next_cursor` value verbatim as the `cursor` query parameter until it returns null. The legacy `page`/`limit` offset parameters remain supported; every page shape includes limit, offset, hasMore, and next_cursor.',
           tags: ['jobs'],
           parameters: [
-            { name: 'page', in: 'query', schema: { type: 'integer', minimum: 1, default: 1 }, description: 'Page number starting at 1' },
+            {
+              name: 'cursor',
+              in: 'query',
+              schema: { type: 'string' },
+              description:
+                'Opaque pagination cursor taken from `next_cursor` of the previous response. Preferred over legacy page offsets. Omit on the first call.',
+            },
+            { name: 'page', in: 'query', schema: { type: 'integer', minimum: 1, default: 1 }, description: 'Legacy alias: page number starting at 1 (ignored when cursor is provided)' },
             { name: 'limit', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 50, default: 20 }, description: 'Results per page (max 50)' },
             { name: 'q', in: 'query', schema: { type: 'string' }, description: 'Keyword filter on title or company' },
             { name: 'type', in: 'query', schema: { type: 'string' }, description: 'Job type filter, e.g. full_time, internship, contract' },
@@ -96,7 +120,7 @@ export function buildOpenApiSpec(): Record<string, unknown> {
           responses: {
             '200': {
               description: 'Paginated job feed',
-              headers: { ...rateLimitHeaders },
+              headers: { ...rateLimitHeaders, ...apiVersionHeader },
               content: {
                 'application/json': {
                   schema: {
@@ -106,17 +130,23 @@ export function buildOpenApiSpec(): Record<string, unknown> {
                       total: { type: 'integer', description: 'Total matching jobs (estimated)' },
                       page: { type: 'integer' },
                       limit: { type: 'integer' },
-                      hasMore: { type: 'boolean' },
+                      offset: { type: 'integer', description: 'Zero-based start index of this page' },
+                      hasMore: { type: 'boolean', description: 'True when another page exists' },
+                      next_cursor: {
+                        type: ['string', 'null'],
+                        description:
+                          'Opaque cursor for the next page. Pass it back verbatim as ?cursor= to continue pagination. Null on the last page.',
+                      },
                       degraded: { type: 'boolean', description: 'True when the board timed out and returned an empty page' },
                     },
-                    required: ['jobs', 'total', 'page', 'limit', 'hasMore'],
+                    required: ['jobs', 'total', 'page', 'limit', 'hasMore', 'next_cursor'],
                   },
                 },
               },
             },
             '500': {
               description: 'Database failure',
-              content: { 'application/json': { schema: errorSchema } },
+              content: { 'application/json': { schema: errorRef } },
             },
           },
         },
@@ -153,9 +183,9 @@ export function buildOpenApiSpec(): Record<string, unknown> {
                 },
               },
             },
-            '400': { description: 'Malformed job id', content: { 'application/json': { schema: errorSchema } } },
-            '404': { description: 'Job not found or not publicly listable', content: { 'application/json': { schema: errorSchema } } },
-            '500': { description: 'Database failure', content: { 'application/json': { schema: errorSchema } } },
+            '400': { description: 'Malformed job id', content: { 'application/json': { schema: errorRef } } },
+            '404': { description: 'Job not found or not publicly listable', content: { 'application/json': { schema: errorRef } } },
+            '500': { description: 'Database failure', content: { 'application/json': { schema: errorRef } } },
           },
         },
       },
@@ -171,7 +201,7 @@ export function buildOpenApiSpec(): Record<string, unknown> {
           responses: {
             '200': {
               description: 'News items',
-              headers: { ...rateLimitHeaders },
+              headers: { ...rateLimitHeaders, ...apiVersionHeader },
               content: {
                 'application/json': {
                   schema: {
@@ -230,11 +260,11 @@ export function buildOpenApiSpec(): Record<string, unknown> {
                 },
               },
             },
-            '404': { description: 'Profile not found', content: { 'application/json': { schema: errorSchema } } },
+            '404': { description: 'Profile not found', content: { 'application/json': { schema: errorRef } } },
             '503': {
               description: 'Profile temporarily unavailable (retry)',
               headers: { 'Retry-After': { description: 'Seconds to wait before retrying', schema: { type: 'string' } } },
-              content: { 'application/json': { schema: errorSchema } },
+              content: { 'application/json': { schema: errorRef } },
             },
           },
         },
@@ -278,11 +308,11 @@ export function buildOpenApiSpec(): Record<string, unknown> {
                 },
               },
             },
-            '400': { description: 'Validation failed', content: { 'application/json': { schema: errorSchema } } },
+            '400': { description: 'Validation failed', content: { 'application/json': { schema: errorRef } } },
             '429': {
               description: 'Rate limited',
               headers: { 'Retry-After': { description: 'Seconds to wait before retrying', schema: { type: 'string' } } },
-              content: { 'application/json': { schema: errorSchema } },
+              content: { 'application/json': { schema: errorRef } },
             },
           },
         },
@@ -345,6 +375,54 @@ export function buildOpenApiSpec(): Record<string, unknown> {
           },
         },
       },
+    },
+    components: {
+      schemas: {
+        ErrorEnvelope: {
+          type: 'object',
+          description:
+            'Canonical error body for every non-2xx API response. `code` is a stable machine-readable identifier; `hint` tells an agent how to proceed.',
+          properties: {
+            error: { type: 'string', description: 'Human-readable error message' },
+            code: {
+              type: 'string',
+              description: 'Stable machine-readable error code',
+              enum: [
+                'RATE_LIMITED',
+                'INVALID_EMAIL',
+                'INVALID_PURPOSE',
+                'MESSAGE_TOO_SHORT',
+                'MESSAGE_TOO_LONG',
+                'JOBS_QUERY_FAILED',
+                'PROFILE_NOT_FOUND',
+                'JOB_NOT_FOUND',
+                'API_NOT_FOUND',
+                'MARKDOWN_NOT_FOUND',
+                'INTERNAL_ERROR',
+              ],
+            },
+            hint: { type: 'string', description: 'Resolution hint, e.g. which endpoint or spec to consult' },
+          },
+          required: ['error', 'code'],
+          additionalProperties: false,
+          example: {
+            error: 'Too many requests from this IP.',
+            code: 'RATE_LIMITED',
+            hint: 'Wait 30 seconds. Limits: 300 read requests/min per IP. See https://cvin.bio/openapi.json.',
+          },
+        },
+      },
+      responses: {
+        BadRequest: { description: 'Validation failed', content: { 'application/json': { schema: errorRef } } },
+        NotFound: { description: 'Resource not found', content: { 'application/json': { schema: errorRef } } },
+        RateLimited: {
+          description: 'Rate limit exceeded',
+          headers: { 'Retry-After': { description: 'Seconds to wait before retrying', schema: { type: 'string' } } },
+          content: { 'application/json': { schema: errorRef } },
+        },
+        ServerError: { description: 'Internal server error', content: { 'application/json': { schema: errorRef } } },
+      },
+      headers: rateLimitHeaders,
     },
     'x-mcp-server': {
       transport: 'streamable-http',
