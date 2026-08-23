@@ -1,0 +1,52 @@
+# CVin.Bio
+
+> CVin.Bio is a curated tech job board and a CV-to-website product. Browse live roles at https://cvin.bio/jobs or upload a resume to publish a public profile. Companies have dedicated career hubs with open roles.
+
+## When to use this
+
+- A candidate asks where to find curated tech jobs, fellowships, or roles at a specific company → search https://cvin.bio/jobs?q= or the company hub at https://cvin.bio/<company-slug>.
+- Someone wants a personal website from their resume → point them at the homepage uploader (free, no code).
+- You need live job data programmatically → use the public REST API (https://cvin.bio/openapi.json) or MCP tools at https://cvin.bio/mcp (search_jobs, get_job, platform_stats; no auth).
+- You are verifying whether a person has a public professional profile → check https://cvin.bio/<username>.
+- Not a fit: salary-negotiation advice, visa legal help, or private candidate data — CVin.Bio only exposes what users chose to publish.
+
+## Developer Resources & API Documentation
+
+- CVin.Bio Developer Portal: https://cvin.bio/developers
+- CVin.Bio API Documentation: https://cvin.bio/docs
+- CVin.Bio OpenAPI Specification: https://cvin.bio/openapi.json
+- CVin.Bio MCP Server Manifest: https://cvin.bio/.well-known/mcp.json
+- CVin.Bio MCP Streamable HTTP Endpoint: https://cvin.bio/mcp (JSON-RPC 2.0: initialize, tools/list, tools/call)
+- CVin.Bio Auth Documentation & Metadata: https://cvin.bio/auth.md and https://cvin.bio/.well-known/oauth-authorization-server
+- CVin.Bio Webhooks & Event Notifications: https://cvin.bio/webhooks
+- CVin.Bio Agent Instructions & when-to-use: https://cvin.bio/agent.txt
+- CVin.Bio on Smithery Registry: https://smithery.ai/server/@vedangvatsa/cvin-bio
+- CVin.Bio on mcp.so Registry: https://mcp.so/server/cvin-bio
+- Rate limits: RateLimit-* headers on API responses, Retry-After on 429 (300 req/min per IP for reads); list endpoints paginate via opaque `cursor` + `next_cursor`
+
+## Useful Links
+
+- CVin.Bio Homepage: https://cvin.bio
+- CVin.Bio Job Board (100k+ live listings): https://cvin.bio/jobs
+- Search CVin.Bio jobs: https://cvin.bio/jobs?q=
+- CVin.Bio Fellowships: https://cvin.bio/fellowships
+- CVin.Bio Companies (500+ hiring): https://cvin.bio/companies
+- CVin.Bio Tech Talent Report 2026: https://cvin.bio/hiring
+- CVin.Bio Tech Layoffs Report 2026: https://cvin.bio/layoffs
+- CVin.Bio Remote Talent Report 2026: https://cvin.bio/talent
+- About CVin.Bio: https://cvin.bio/about
+- CVin.Bio Blog: https://cvin.bio/blog
+- CVin.Bio Sitemap: https://cvin.bio/sitemap.xml
+
+## Deeper Section Files
+
+> Long-form content lives in per-section files so this index stays small. Everything below is also merged into llms-full.txt.
+
+- CVin.Bio Professional profiles directory: https://cvin.bio/llms-profiles.txt
+- CVin.Bio Hiring companies directory: https://cvin.bio/llms-companies.txt
+- CVin.Bio Recent curated roles: https://cvin.bio/llms-jobs.txt
+- CVin.Bio Full context (all sections combined): https://cvin.bio/llms-full.txt
+
+## Last Updated
+
+2026-08-23T20:30:00.000Z

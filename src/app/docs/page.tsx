@@ -51,6 +51,8 @@ export default function DocsPage() {
             <li><a href={`${siteUrl}/llms.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /llms.txt</a> · <a href={`${siteUrl}/llms-full.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/llms-full.txt</a> — CVin.Bio LLMs directory and context index.</li>
             <li><a href={`${siteUrl}/agent.txt`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /agent.txt</a> — CVin.Bio agent instructions and when-to-use guidance.</li>
             <li><a href={`${siteUrl}/sitemap.xml`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">GET /sitemap.xml</a> — sitemap; <a href={`${siteUrl}/rss.xml`} className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/rss.xml</a> — RSS feed.</li>
+            <li className="sr-only"><a href="https://smithery.ai/server/@vedangvatsa/cvin-bio">CVin.Bio on Smithery Registry</a></li>
+            <li className="sr-only"><a href="https://mcp.so/server/cvin-bio">CVin.Bio on mcp.so Registry</a></li>
           </ul>
         </section>
 
