@@ -15,21 +15,28 @@ export async function GET(req: Request) {
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     // Broader candidate set; chunks filter to curated or assembled-indexable.
+    // On count failure, list several chunks rather than a single empty child —
+    // Google still discovers inventory while the next request retries the count.
     let total = 0;
+    let countFailed = false;
     try {
-      const { count } = await supabaseAdmin
+      const { count, error } = await supabaseAdmin
         .from('jobs')
         .select('id', { count: 'exact', head: true })
         .not('external_id', 'is', null)
         .not('company', 'is', null)
         .contains('tags', ['curated-jd'])
         .or(companyJobsDateOrFilter(thirtyDaysAgo));
+      if (error) throw new Error(error.message);
       total = count || 0;
     } catch (e) {
+      countFailed = true;
       console.error('Sitemap index: failed to count jobs', e);
     }
 
-    const chunks = Math.max(1, Math.ceil(total / JOB_SITEMAP_CHUNK));
+    const chunks = countFailed
+      ? 8
+      : Math.max(1, Math.ceil(total / JOB_SITEMAP_CHUNK));
     const locs: string[] = [`${siteUrl}/sitemap-misc.xml`];
     for (let i = 0; i < chunks; i++) locs.push(`${siteUrl}/sitemap-jobs/${i}`);
 

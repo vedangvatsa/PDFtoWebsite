@@ -244,6 +244,8 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
     assert.match(file, /findDeadStateUrls/);
     assert.match(file, /jobStillIndexableAtUrl/);
     assert.match(file, /MAX_REMOVE_PER_RUN/);
+    assert.match(file, /isStatementTimeout|statement timeout/i);
+    assert.match(file, /HYDRATE_BATCH/);
     assert.doesNotMatch(file, /fetchedUrls\.has\(url\) && !liveUrls\.has\(url\)/);
     // Prefer refreshing URLs Google already has before brand-new inventory.
     assert.match(file, /knownA/);

@@ -52,11 +52,18 @@ const SCHEMA_EPOCH = '2026-08-22T00:00:00.000Z';
 const PAGE_SIZE = 100;
 const MAX_SCAN = 800;
 /** Cap targeted dead-state checks so one run stays within Actions time. */
-const MAX_DEAD_CHECK = 200;
+const MAX_DEAD_CHECK = 40;
 /** Prefer cleaning dead Valid entries; leave the rest of the day for UPDATED. */
 const MAX_REMOVE_PER_RUN = 80;
+/** Description batches — 50× fat JD text trips PostgREST statement timeout. */
+const HYDRATE_BATCH = 15;
 const SLIM_COLS =
   'id,title,company,company_key,external_id,slug,tags,published_at,created_at,apply_url,category,source';
+
+function isStatementTimeout(err) {
+  const msg = String(err?.message || err || '');
+  return /statement timeout|canceling statement/i.test(msg);
+}
 
 const SA_JSON = process.env.GOOGLE_INDEXING_SERVICE_ACCOUNT;
 if (!SA_JSON) {
@@ -199,41 +206,43 @@ function parseSiteJobUrl(url) {
  * True when this exact public URL is still a live JobPosting page.
  * Used for state URLs missed by MAX_SCAN (redirects / expired / uncurated).
  */
+/**
+ * True / false when known; null when the DB timed out (do not URL_DELETED).
+ */
 async function jobStillIndexableAtUrl(url) {
   const parsed = parseSiteJobUrl(url);
   if (!parsed) return false;
 
-  let rows = [];
-  if (parsed.id) {
-    const { data, error } = await supabase.from('jobs').select(SLIM_COLS).eq('id', parsed.id).maybeSingle();
-    if (error) throw new Error(`Supabase error: ${error.message}`);
-    if (data) rows = [data];
-  } else {
-    const { data, error } = await supabase
-      .from('jobs')
-      .select(SLIM_COLS)
-      .eq('company_key', parsed.company)
-      .ilike('slug', `%_${parsed.jobSlug}%`)
-      .limit(20);
-    if (error) throw new Error(`Supabase error: ${error.message}`);
-    rows = data || [];
-    if (!rows.length) {
-      const { data: loose, error: looseErr } = await supabase
+  try {
+    let rows = [];
+    if (parsed.id) {
+      const { data, error } = await supabase.from('jobs').select(SLIM_COLS).eq('id', parsed.id).maybeSingle();
+      if (error) throw new Error(`Supabase error: ${error.message}`);
+      if (data) rows = [data];
+    } else {
+      const { data, error } = await supabase
         .from('jobs')
         .select(SLIM_COLS)
+        .eq('company_key', parsed.company)
         .ilike('slug', `%_${parsed.jobSlug}`)
-        .limit(40);
-      if (looseErr) throw new Error(`Supabase error: ${looseErr.message}`);
-      rows = loose || [];
+        .limit(10);
+      if (error) throw new Error(`Supabase error: ${error.message}`);
+      rows = data || [];
     }
-  }
 
-  if (!rows.length) return false;
-  const hydrated = await hydrateDescriptions(rows);
-  for (const job of hydrated) {
-    if (canonicalUrl(job) === url && isIndexable(job)) return true;
+    if (!rows.length) return false;
+    const hydrated = await hydrateDescriptions(rows);
+    for (const job of hydrated) {
+      if (canonicalUrl(job) === url && isIndexable(job)) return true;
+    }
+    return false;
+  } catch (err) {
+    if (isStatementTimeout(err)) {
+      console.warn(`dead-check timeout for ${url}: ${err.message}`);
+      return null;
+    }
+    throw err;
   }
-  return false;
 }
 
 /**
@@ -249,6 +258,7 @@ async function findDeadStateUrls(state, liveUrls) {
   const dead = [];
   for (const [url] of suspects) {
     const stillLive = await jobStillIndexableAtUrl(url);
+    if (stillLive === null) continue; // unknown — leave in state
     if (!stillLive) dead.push(url);
     if (dead.length >= MAX_REMOVE_PER_RUN) break;
   }
@@ -265,34 +275,60 @@ async function fetchSlimPages(since) {
       .gte('created_at', since)
       .order('created_at', { ascending: false })
       .range(from, from + PAGE_SIZE - 1);
-    if (error) throw new Error(`Supabase error: ${error.message}`);
+    if (error) {
+      if (isStatementTimeout(error) && all.length) {
+        console.warn(`fetchSlimPages created_at timeout at ${from}; using ${all.length} rows`);
+        break;
+      }
+      throw new Error(`Supabase error: ${error.message}`);
+    }
     if (!data?.length) break;
     all.push(...data);
     if (data.length < PAGE_SIZE) break;
   }
   // Indexed complement: live by published_at but ingested earlier.
-  const { data: extra, error: extraErr } = await supabase
-    .from('jobs')
-    .select(SLIM_COLS)
-    .contains('tags', ['curated-jd'])
-    .gte('published_at', since)
-    .lt('created_at', since)
-    .order('published_at', { ascending: false })
-    .limit(200);
-  if (extraErr) throw new Error(`Supabase error: ${extraErr.message}`);
-  const seen = new Set(all.map((j) => j.id));
-  for (const row of extra || []) {
-    if (!seen.has(row.id)) all.push(row);
+  try {
+    const { data: extra, error: extraErr } = await supabase
+      .from('jobs')
+      .select(SLIM_COLS)
+      .contains('tags', ['curated-jd'])
+      .gte('published_at', since)
+      .lt('created_at', since)
+      .order('published_at', { ascending: false })
+      .limit(200);
+    if (extraErr) {
+      if (isStatementTimeout(extraErr)) {
+        console.warn(`fetchSlimPages published_at complement timed out: ${extraErr.message}`);
+      } else {
+        throw new Error(`Supabase error: ${extraErr.message}`);
+      }
+    } else {
+      const seen = new Set(all.map((j) => j.id));
+      for (const row of extra || []) {
+        if (!seen.has(row.id)) all.push(row);
+      }
+    }
+  } catch (err) {
+    if (!isStatementTimeout(err)) throw err;
+    console.warn(`fetchSlimPages complement failed: ${err.message}`);
   }
   return all;
 }
 
 async function hydrateDescriptions(rows) {
   const out = new Map();
-  for (let i = 0; i < rows.length; i += 50) {
-    const ids = rows.slice(i, i + 50).map((j) => j.id);
+  for (let i = 0; i < rows.length; i += HYDRATE_BATCH) {
+    const ids = rows.slice(i, i + HYDRATE_BATCH).map((j) => j.id);
     const { data, error } = await supabase.from('jobs').select('id,description').in('id', ids);
-    if (error) throw new Error(`Supabase error: ${error.message}`);
+    if (error) {
+      if (isStatementTimeout(error)) {
+        console.warn(
+          `hydrateDescriptions timeout on batch ${i}-${i + ids.length}; skipping those ids`
+        );
+        continue;
+      }
+      throw new Error(`Supabase error: ${error.message}`);
+    }
     for (const row of data || []) out.set(row.id, row.description);
   }
   return rows.map((j) => ({ ...j, description: out.get(j.id) ?? j.description }));
@@ -300,7 +336,15 @@ async function hydrateDescriptions(rows) {
 
 async function fetchCandidateJobs() {
   const since = new Date(Date.now() - JOB_MAX_AGE_DAYS * 24 * 60 * 60 * 1000).toISOString();
-  return hydrateDescriptions(await fetchSlimPages(since));
+  try {
+    return await hydrateDescriptions(await fetchSlimPages(since));
+  } catch (err) {
+    if (isStatementTimeout(err)) {
+      console.error(`fetchCandidateJobs timed out: ${err.message}`);
+      return [];
+    }
+    throw err;
+  }
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────

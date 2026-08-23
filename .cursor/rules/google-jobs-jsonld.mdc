@@ -34,5 +34,8 @@ Do not ship a public job page that is 200 / indexable / not expired without `Job
 ## Sitemap
 
 Job sitemaps use `companyJobsDateOrFilter` (`published_at OR created_at`). Never AND `created_at` with a published_at window — that hides live jobs Google already has.
+- Never edge-cache an empty job urlset. Reject empty Cache API hits; bump `SITEMAP_CACHE_EPOCH` after poisoning. Empty builds use `no-store`.
+- Do not `select description` on sitemap chunk builds — fat text + OR date filter caused PostgREST timeouts that were swallowed into empty cached urlsets.
+- Rethrow Supabase errors from chunk builds; never catch → empty urlset.
 
-Tests: `src/lib/google-jobs-invariants.test.ts`. Live canary: `.github/scripts/google-jobs-canary.mjs`. Docs: `docs/JOB_PAGE_RULES.md`.
+Tests: `src/lib/google-jobs-invariants.test.ts` + `src/lib/sitemap-cache.test.ts`. Live canary: `.github/scripts/google-jobs-canary.mjs`. Docs: `docs/JOB_PAGE_RULES.md`.
