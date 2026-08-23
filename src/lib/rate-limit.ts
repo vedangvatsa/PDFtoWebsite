@@ -34,35 +34,87 @@ export function getClientIp(request: NextRequest): string {
   return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'anonymous';
 }
 
+export interface RateLimitResult {
+  limited: boolean;
+  retryAfter: number;
+  /** Configured quota for the window. */
+  limit: number;
+  /** Requests left in the current window. */
+  remaining: number;
+  /** Seconds until the window resets. */
+  resetSeconds: number;
+}
+
 export function rateLimit(
   request: NextRequest,
   { windowMs, max, scope }: RateLimitOptions
-): { limited: boolean; retryAfter: number } {
+): RateLimitResult {
   const now = Date.now();
   sweep(now);
   const key = `${getClientIp(request)}|${scope || 'default'}`;
+
+  const build = (count: number, resetAt: number): RateLimitResult => ({
+    limited: false,
+    retryAfter: 0,
+    limit: max,
+    remaining: Math.max(0, max - count),
+    resetSeconds: Math.max(0, Math.ceil((resetAt - now) / 1000)),
+  });
 
   let entry = buckets.get(key);
   if (!entry || now > entry.resetAt) {
     entry = { count: 1, resetAt: now + windowMs };
     buckets.set(key, entry);
-    return { limited: false, retryAfter: 0 };
+    return build(1, entry.resetAt);
   }
 
   if (entry.count >= max) {
-    return { limited: true, retryAfter: Math.max(1, Math.ceil((entry.resetAt - now) / 1000)) };
+    return {
+      ...build(entry.count, entry.resetAt),
+      limited: true,
+      retryAfter: Math.max(1, Math.ceil((entry.resetAt - now) / 1000)),
+    };
   }
 
   entry.count++;
-  return { limited: false, retryAfter: 0 };
+  return build(entry.count, entry.resetAt);
 }
 
-export function rateLimitResponse(retryAfter: number): NextResponse {
+/**
+ * Standard rate-limit headers (RFC 9331 draft RateLimit-* plus the widely
+ * supported X-RateLimit-* compat set) so agents can self-throttle.
+ */
+export function rateLimitHeaders(result: Pick<RateLimitResult, 'limit' | 'remaining' | 'resetSeconds'>): Record<string, string> {
+  return {
+    'RateLimit-Limit': String(result.limit),
+    'RateLimit-Remaining': String(Math.max(0, result.remaining)),
+    'RateLimit-Reset': String(result.resetSeconds),
+    'X-RateLimit-Limit': String(result.limit),
+    'X-RateLimit-Remaining': String(Math.max(0, result.remaining)),
+    'X-RateLimit-Reset': String(result.resetSeconds),
+  };
+}
+
+export function rateLimitResponse(
+  retryAfter: number,
+  info?: Partial<Pick<RateLimitResult, 'limit' | 'remaining' | 'resetSeconds'>>
+): NextResponse {
+  const headers: Record<string, string> = {
+    'Retry-After': String(retryAfter),
+    ...(info
+      ? rateLimitHeaders({
+          limit: info.limit ?? 0,
+          remaining: 0,
+          resetSeconds: info.resetSeconds ?? retryAfter,
+        })
+      : {}),
+  };
   return NextResponse.json(
-    { error: 'Too many requests. Please try again later.' },
     {
-      status: 429,
-      headers: { 'Retry-After': String(retryAfter) },
-    }
+      error: 'Too many requests. Please try again later.',
+      code: 'RATE_LIMITED',
+      hint: `Wait ${retryAfter}s before retrying.`,
+    },
+    { status: 429, headers }
   );
 }

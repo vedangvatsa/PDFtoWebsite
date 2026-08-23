@@ -16,24 +16,24 @@ const PURPOSE_LABELS: Record<string, string> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const { limited, retryAfter } = rateLimit(request, { windowMs: 60 * 60 * 1000, max: 5, scope: 'contact' });
-    if (limited) return rateLimitResponse(retryAfter);
+    const rl = rateLimit(request, { windowMs: 60 * 60 * 1000, max: 5, scope: 'contact' });
+    if (rl.limited) return rateLimitResponse(rl.retryAfter, rl);
 
     const body = await request.json();
     const { email, purpose, message } = body;
 
     // Validate
     if (!email || typeof email !== 'string' || !email.includes('@')) {
-      return NextResponse.json({ error: 'A valid email address is required.' }, { status: 400 });
+      return NextResponse.json({ error: 'A valid email address is required.', code: 'INVALID_EMAIL', hint: 'Send a JSON body like {"email":"you@example.com","purpose":"support","message":"..."}.' }, { status: 400 });
     }
     if (!purpose || !VALID_PURPOSES.includes(purpose)) {
-      return NextResponse.json({ error: 'Please select a valid purpose.' }, { status: 400 });
+      return NextResponse.json({ error: 'Please select a valid purpose.', code: 'INVALID_PURPOSE', hint: 'One of: feedback, partnership, support, bug-report, feature-request, other.' }, { status: 400 });
     }
     if (!message || typeof message !== 'string' || message.trim().length < 10) {
-      return NextResponse.json({ error: 'Message must be at least 10 characters.' }, { status: 400 });
+      return NextResponse.json({ error: 'Message must be at least 10 characters.', code: 'MESSAGE_TOO_SHORT' }, { status: 400 });
     }
     if (message.length > 5000) {
-      return NextResponse.json({ error: 'Message is too long (max 5000 characters).' }, { status: 400 });
+      return NextResponse.json({ error: 'Message is too long (max 5000 characters).', code: 'MESSAGE_TOO_LONG' }, { status: 400 });
     }
 
     const cleanEmail = email.trim().toLowerCase();

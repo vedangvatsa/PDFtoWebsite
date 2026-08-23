@@ -8,6 +8,7 @@ import { companyHubJobLink, companyJobsDateOrFilter } from '@/lib/company-hub-qu
 import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { createAnonFromRequest } from '@/utils/supabase/anon';
+import { rateLimit, rateLimitHeaders, rateLimitResponse } from '@/lib/rate-limit';
 import {
   normalizeCompany,
   isNonEnglishTitle,
@@ -20,7 +21,17 @@ import {
 
 const supabase = supabaseAdmin;
 
+// Generous anonymous read quota — exists so agents can self-throttle via
+// the RateLimit-* headers, not to block anyone.
+const JOBS_READ_LIMIT = { windowMs: 60_000, max: 300, scope: 'jobs-read' } as const;
+
 export async function GET(request: NextRequest) {
+  const rl = rateLimit(request, JOBS_READ_LIMIT);
+  if (rl.limited) {
+    return rateLimitResponse(rl.retryAfter, rl);
+  }
+  const rlHeaders = rateLimitHeaders(rl);
+
   const { searchParams } = new URL(request.url);
   const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
   const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') || '20')));
@@ -222,10 +233,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         error: 'Failed to fetch jobs',
+        code: 'JOBS_QUERY_FAILED',
         // Safe, non-secret diagnostic for operators (no keys / tokens)
         reason: error.message || error.code || 'unknown',
+        hint: 'Retry with exponential backoff; if this persists the board is degraded.',
       },
-      { status: 500 }
+      { status: 500, headers: rlHeaders }
     );
   }
 
@@ -483,6 +496,7 @@ export async function GET(request: NextRequest) {
       profileComplete,
     });
     response.headers.set('Cache-Control', 'no-store');
+    for (const [k, v] of Object.entries(rlHeaders)) response.headers.set(k, v);
     return response;
   }
 
@@ -504,5 +518,6 @@ export async function GET(request: NextRequest) {
 
   // Cache for 60s on CDN, serve stale while revalidating for up to 5 min
   response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+  for (const [k, v] of Object.entries(rlHeaders)) response.headers.set(k, v);
   return response;
 }

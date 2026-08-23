@@ -6,11 +6,26 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 export const revalidate = 3600;
 
-export async function generateMetadata(): Promise<Metadata> {
+const MAX_CRAWL_PAGES = 50;
+
+function crawlPageNumber(page: string | undefined): number {
+  return Math.max(1, Math.min(MAX_CRAWL_PAGES, parseInt(page || '1', 10) || 1));
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}): Promise<Metadata> {
   const countStr = PLATFORM_JOBS_DISPLAY;
+  const params = await searchParams;
+  const pageNum = crawlPageNumber(params.page);
 
   return {
-    title: `Browse ${countStr} curated tech jobs`,
+    title:
+      pageNum > 1
+        ? `Browse ${countStr} curated tech jobs — Page ${pageNum}`
+        : `Browse ${countStr} curated tech jobs`,
     description: `Browse ${countStr} tech job openings at top companies including OpenAI, Stripe, Cloudflare, Anthropic and more. Filter by role, location, and company. Updated daily.`,
     keywords: ['tech jobs', 'software engineer jobs', 'AI jobs', 'remote tech jobs', 'startup jobs', 'engineering careers'],
     openGraph: {
@@ -24,10 +39,37 @@ export async function generateMetadata(): Promise<Metadata> {
       title: `Browse ${countStr} Jobs`,
       description: 'Search open roles at top tech companies. Updated daily.',
     },
-    alternates: { canonical: `${siteUrl}/jobs` },
+    alternates:
+      pageNum > 1
+        ? { canonical: `${siteUrl}/jobs?page=${pageNum}` }
+        : { canonical: `${siteUrl}/jobs` },
   };
 }
 
-export default function JobsPage() {
-  return <JobsClient />;
+/**
+ * /jobs?page=N is a real paginated series for crawlers — emit rel=next /
+ * rel=prev so AI crawlers traverse beyond page one (React 19 hoists these
+ * into <head>). Next 16 removed next/prev from the metadata API.
+ */
+function CrawlDepthLinks({ pageNum }: { pageNum: number }) {
+  return (
+    <>
+      {pageNum < MAX_CRAWL_PAGES && <link rel="next" href={`${siteUrl}/jobs?page=${pageNum + 1}`} />}
+      {pageNum > 1 && <link rel="prev" href={`${siteUrl}/jobs?page=${pageNum - 1}`} />}
+    </>
+  );
+}
+
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  return (
+    <>
+      <CrawlDepthLinks pageNum={crawlPageNumber(params.page)} />
+      <JobsClient />
+    </>
+  );
 }

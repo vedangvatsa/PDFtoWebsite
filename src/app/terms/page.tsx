@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Header from '@/components/header';
 import MicroFooter from '@/components/micro-footer';
+import { PAGE_CONTAINER } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Terms & Privacy',
@@ -18,7 +19,7 @@ export default function TermsPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main id="main-content" className="flex-1 mx-auto max-w-3xl px-6 py-16">
+      <main id="main-content" className={PAGE_CONTAINER}>
         <h1 className="text-3xl font-extrabold mb-8 tracking-tight text-foreground">Terms & Privacy</h1>
         <div className="prose prose-base space-y-8 text-muted-foreground">
           <p className="text-sm"><strong>Last updated:</strong> August 2026</p>

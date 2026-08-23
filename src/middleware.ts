@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import {
+  MARKDOWN_PAGES,
+  isAgentInfraPath,
+  negotiatesMarkdown,
+} from '@/lib/agent-negotiation';
 
 // ============================================================================
 // 1. CONSTANTS & CONFIGURATION
@@ -40,14 +45,16 @@ const ALLOWED_CRAWLER_UA = [
   /ClaudeBot|Claude-Web|Claude-SearchBot|anthropic-ai/i,
   /Google-Extended|Googlebot|GoogleOther|Storebot-Google|Google-InspectionTool|AdsBot-Google|APIs-Google|FeedFetcher-Google/i,
   /PerplexityBot|Perplexity-User/i,
+  /DeepSeekBot|MistralBot|MistralAI|cohere-ai|AI2Bot|xAI-Grok|YouBot|PanguBot|Bytespider|CCBot/i,
   /Meta-ExternalAgent|Meta-ExternalFetcher/i,
-  /Bytespider|CCBot|cohere-ai|AI2Bot|MistralBot|xAI-Grok|YouBot|PanguBot/i,
   // Search engines
   /Bingbot|msnbot|adidxbot|DuckDuckBot|YandexBot|YandexMobileBot|Baiduspider|Slurp|Qwantify|PetalBot|Mojeek|Seznam|NaverBot/i,
   // Social & link preview
   /facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterestbot|redditbot|SkypeUriPreview|Embedly|Quora-Bot|vkShare/i,
   // Platforms / research / SEO / archive / feeds
-  /Applebot|Applebot-Extended|Amazonbot|HuggingFaceBot|AhrefsBot|SemrushBot|MJ12bot|DotBot|Screaming Frog|rogerbot|SiteAuditBot|archive\.org_bot|Wayback|ia_archiver|ScholarBot|Feedly|Feedspot|NewsBlur/i,
+  /Applebot|Amazonbot|HuggingFaceBot|AhrefsBot|SemrushBot|MJ12bot|DotBot|Screaming Frog|rogerbot|SiteAuditBot|archive\.org_bot|Wayback|ia_archiver|ScholarBot|Feedly|Feedspot|NewsBlur/i,
+  // MCP clients & agent runtimes hitting machine-facing endpoints
+  /\bMCP\b|MCP-Client|^ora-agent$|LangChain|OpenAI-Agents|Cursor-/i,
   // First-party CI link checks (GitHub Actions; see google-jobs-canary.mjs, telegram-post.mjs)
   /cvin-google-jobs-canary|cvin-telegram-link-check/i,
 ];
@@ -154,10 +161,32 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // ── Agent infrastructure bypass ──────────────────────────────────────────
+  // Machine-readable endpoints are for agents — never anti-scraper block
+  // them regardless of User-Agent.
+  const isAgentInfra = isAgentInfraPath(pathname);
+
+  // ── Markdown content negotiation (acceptmarkdown.com) ────────────────────
+  const mdPage = MARKDOWN_PAGES[pathname];
+  if (mdPage !== undefined) {
+    if (!isAgentInfra && negotiatesMarkdown(request.headers.get('accept'))) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/md/${mdPage}`;
+      url.search = '';
+      const rewrite = NextResponse.rewrite(url);
+      rewrite.headers.set('Vary', 'Accept, Accept-Encoding');
+      return rewrite;
+    }
+    const response = NextResponse.next();
+    response.headers.append('Vary', 'Accept');
+    response.headers.append('Vary', 'Accept-Encoding');
+    return response;
+  }
+
   // ── Anti-scraper edge block ──────────────────────────────────────────────
   // Stop anonymous scrapers before any HTML/JS is served. Declared AI/search/
   // social crawlers and real browsers pass straight through.
-  if (isScraperAgent(ua) && !isAllowedCrawler(ua)) {
+  if (!isAgentInfra && isScraperAgent(ua) && !isAllowedCrawler(ua)) {
     return new NextResponse(null, {
       status: 403,
       headers: { 'Cache-Control': 'no-store' },

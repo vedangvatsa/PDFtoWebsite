@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import HomeClient from './home-client';
+import AgenticContent from './home-agentic-content';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -13,5 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <HomeClient />;
+  return (
+    <HomeClient>
+      <AgenticContent />
+    </HomeClient>
+  );
 }

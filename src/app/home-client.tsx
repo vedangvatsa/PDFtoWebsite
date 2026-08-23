@@ -50,7 +50,7 @@ function StepIndicator({ num, label, desc }: { num: number; label: string; desc:
   );
 }
 
-export default function HomeClient() {
+export default function HomeClient({ children }: { children?: React.ReactNode }) {
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
   const router = useRouter();
@@ -242,6 +242,7 @@ export default function HomeClient() {
 
         </div>
       </main>
+      {children}
       <MicroFooter />
     </div>
   );

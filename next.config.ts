@@ -99,10 +99,14 @@ const nextConfigFn = (phase: string): NextConfig => {
                 '</llms.txt>; rel="ai-context"; type="text/plain"',
                 '</llms-full.txt>; rel="ai-context-full"; type="text/plain"',
                 '</sitemap.xml>; rel="sitemap"; type="application/xml"',
+                '</docs>; rel="developer-docs"',
+                '</openapi.json>; rel="service-desc"; type="application/json"',
+                '</agent.txt>; rel="agent-instructions"; type="text/plain"',
+                '</mcp>; rel="mcp-server"; type="application/json"',
                 '</.well-known/api-catalog>; rel="api-catalog"',
                 '</.well-known/agents.json>; rel="agents"; type="application/json"',
                 '</.well-known/agent-card.json>; rel="agent-card"; type="application/json"',
-                '</.well-known/mcp.json>; rel="mcp-server"; type="application/json"',
+                '</.well-known/mcp.json>; rel="mcp-manifest"; type="application/json"',
               ].join(', '),
             },
             // Agentic Web — Content Signals
@@ -125,6 +129,16 @@ const nextConfigFn = (phase: string): NextConfig => {
                 "form-action 'self' https://accounts.google.com https://*.google.com https://*.supabase.co",
               ].join('; '),
             },
+          ],
+        },
+        {
+          // Markdown negotiation surfaces — every cached variant must declare
+          // Accept so CDNs never serve HTML to an agent asking for markdown
+          // (acceptmarkdown.com). Middleware also sets this; config-level
+          // headers survive Next's own Vary rewrite at render time.
+          source: '/((?!_next|api|mcp|ingest|images)[^?]*)',
+          headers: [
+            { key: 'Vary', value: 'Accept, Accept-Encoding' },
           ],
         },
         {
@@ -191,13 +205,13 @@ const nextConfigFn = (phase: string): NextConfig => {
           permanent: true,
         },
         {
-          source: '/passport',
-          destination: '/visas?tab=checker',
+          source: '/remote-talent-report',
+          destination: '/talent',
           permanent: true,
         },
         {
-          source: '/remote-talent-report',
-          destination: '/talent',
+          source: '/passport',
+          destination: '/visas?tab=checker',
           permanent: true,
         },
         {
@@ -208,11 +222,6 @@ const nextConfigFn = (phase: string): NextConfig => {
         {
           source: '/internet-speeds',
           destination: '/rankings?tab=internet',
-          permanent: true,
-        },
-        {
-          source: '/privacy',
-          destination: '/terms#privacy',
           permanent: true,
         },
         // Company slug redirects

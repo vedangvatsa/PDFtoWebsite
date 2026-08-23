@@ -96,7 +96,9 @@ export default function RootLayout({
               contactPoint: {
                 '@type': 'ContactPoint',
                 contactType: 'customer service',
+                email: 'hi@cvin.bio',
                 url: `${siteUrl}/contact`,
+                availableLanguage: ['English'],
               },
             }),
           }}

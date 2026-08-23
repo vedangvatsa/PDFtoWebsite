@@ -1,33 +1,54 @@
 {
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/main/schema/2025-06-18/schema.json",
   "schema_version": "1.0",
   "name": "CVin.Bio MCP Server",
-  "description": "Search professional profiles and job listings from the CVin.Bio talent database via MCP.",
+  "description": "Search curated tech jobs and query platform stats from CVin.Bio via MCP. Read-only, no authentication required.",
   "url": "https://cvin.bio",
   "server": {
-    "transport": "stdio",
+    "transport": "streamable-http",
+    "url": "https://cvin.bio/mcp",
+    "protocol_versions": ["2025-06-18", "2025-03-26", "2024-11-05"],
+    "auth": "none",
     "package": "@cvinbio/mcp-server",
     "registry": "npm",
     "repository": "https://github.com/vedangvatsa/PDFtoWebsite"
   },
   "tools": [
     {
-      "name": "search_candidates",
-      "description": "Search the CVin.Bio professional database by skills, location, or keyword. Returns matching candidate profiles with work history, education, and skills.",
-      "parameters": {
-        "query": "Search term: a skill, location, job title, or keyword",
-        "limit": "Number of results (1-20, default 10)"
+      "name": "search_jobs",
+      "description": "Search curated tech jobs by keyword, company name, or location. Returns matching listings with title, company, location, and cvin.bio URL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string", "description": "Search term — skill, company, location, or role title." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 20, "default": 10 }
+        },
+        "required": ["query"]
       }
     },
     {
-      "name": "get_profile",
-      "description": "Get the full professional profile for a specific CVin.Bio user by their username slug.",
-      "parameters": {
-        "username": "The CVin.Bio username/slug (e.g. 'vedang')"
+      "name": "get_job",
+      "description": "Get one curated tech job listing by id. Returns title, company, location, salary when listed, and the canonical cvin.bio URL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Job UUID from search_jobs results." }
+        },
+        "required": ["id"]
       }
+    },
+    {
+      "name": "platform_stats",
+      "description": "Live counts of curated jobs, hiring companies, and public candidate profiles on CVin.Bio.",
+      "inputSchema": { "type": "object", "properties": {} }
     }
   ],
   "installation": {
-    "claude_desktop": {
+    "streamable_http": {
+      "type": "http",
+      "url": "https://cvin.bio/mcp"
+    },
+    "claude_desktop_local_stdio": {
       "command": "npx",
       "args": ["tsx", "mcp-server.ts"],
       "env": {
@@ -35,5 +56,10 @@
         "SUPABASE_KEY": "your_service_role_key"
       }
     }
+  },
+  "api": {
+    "openapi": "https://cvin.bio/openapi.json",
+    "docs": "https://cvin.bio/docs",
+    "rate_limits": "RateLimit-* headers on API responses; Retry-After on 429"
   }
 }
