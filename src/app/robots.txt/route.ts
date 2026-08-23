@@ -1,14 +1,13 @@
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
 /**
- * Plain-text robots.txt so non-standard agent directives (Schemamap:) can be
- * emitted alongside the standard rules.
+ * Plain-text robots.txt allowing all search, AI crawlers, and agent runtimes.
  */
 export function GET() {
   const body = `User-agent: *
 Allow: /
+Allow: /api/
 Disallow: /editor
-Disallow: /api/
 Disallow: /admin
 
 User-agent: Google-Extended
@@ -36,6 +35,15 @@ User-agent: Perplexity-User
 Allow: /
 
 User-agent: Applebot-Extended
+Allow: /
+
+User-agent: ora-agent
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: MistralBot
 Allow: /
 
 Schemamap: ${siteUrl}/schemap.xml
