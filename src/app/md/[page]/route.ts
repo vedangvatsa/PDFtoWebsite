@@ -15,18 +15,39 @@ export async function GET(
   const { page } = await params;
   const built = await buildAgentMarkdown(page);
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
+
   if (built === null) {
-    return NextResponse.json(
-      {
-        error: `No markdown variant for '/${page}'.`,
-        code: 'MARKDOWN_NOT_FOUND',
-        hint: `Available pages: home, jobs, fellowships, companies, about, contact, docs, terms, privacy, discover.`,
+    const cleanName = String(page || 'Resource')
+      .replace(/^.*[/\\]/, '')
+      .replace(/\.md$/i, '')
+      .replace(/[-_]/g, ' ');
+    const titleName = (cleanName.charAt(0).toUpperCase() + cleanName.slice(1)) || 'Resource';
+    const fallbackMarkdown = [
+      `# CVin.Bio — ${titleName}`,
+      '',
+      `CVin.Bio turns your CV into a professional personal website and runs a curated tech job board. Upload a PDF or Word resume and AI extracts your work history, education, and skills to build a shareable profile page at cvin.bio/yourname — free, in seconds.`,
+      '',
+      `## Machine-readable resources`,
+      `- OpenAPI 3.1 Spec: ${siteUrl}/openapi.json`,
+      `- MCP Server (Streamable HTTP): ${siteUrl}/mcp`,
+      `- MCP Manifest: ${siteUrl}/.well-known/mcp.json`,
+      `- Agent Instructions: ${siteUrl}/agent.txt`,
+      `- llms.txt Directory: ${siteUrl}/llms.txt`,
+      `- Developer Docs: ${siteUrl}/docs`,
+      `- Job Board: ${siteUrl}/jobs`,
+      '',
+    ].join('\n');
+
+    return new NextResponse(fallbackMarkdown, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/markdown; charset=utf-8',
+        'Vary': 'Accept, Accept-Encoding',
+        'Cache-Control': 'public, max-age=300, s-maxage=300, stale-while-revalidate=3600',
+        'X-Robots-Tag': 'all',
       },
-      {
-        status: 404,
-        headers: { 'Vary': 'Accept, Accept-Encoding' },
-      }
-    );
+    });
   }
 
   const markdown = withFrontmatter(page, built);

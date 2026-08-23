@@ -194,27 +194,30 @@ export function middleware(request: NextRequest) {
   const explicitAgentRequest = wantsAgentMode || mdSuffixKey !== null;
   if (explicitAgentRequest) isAgentInfra = true;
 
+  if (mdSuffixKey !== null) {
+    let targetPage = 'home';
+    if (mdSuffixKey in MARKDOWN_PAGES) {
+      targetPage = MARKDOWN_PAGES[mdSuffixKey as keyof typeof MARKDOWN_PAGES];
+    } else {
+      const parts = mdSuffixKey.split('/').filter(Boolean);
+      const lastPart = parts[parts.length - 1] || 'home';
+      targetPage = lastPart;
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = `/md/${encodeURIComponent(targetPage)}`;
+    url.search = '';
+    const rewrite = NextResponse.rewrite(url);
+    rewrite.headers.set('Vary', 'Accept, Accept-Encoding');
+    return rewrite;
+  }
+
   if (!isAgentInfra && mdPage !== undefined) {
     const uaWantsMarkdown = AI_BOT_MD_UA.test(ua);
     if (
       negotiatesMarkdown(request.headers.get('accept')) ||
       uaWantsMarkdown ||
-      wantsAgentMode ||
-      mdSuffixKey !== null
+      wantsAgentMode
     ) {
-      const url = request.nextUrl.clone();
-      url.pathname = `/md/${mdPage}`;
-      url.search = '';
-      const rewrite = NextResponse.rewrite(url);
-      rewrite.headers.set('Vary', 'Accept, Accept-Encoding');
-      return rewrite;
-    }
-  }
-
-  if (isAgentInfra && mdPage !== undefined) {
-    // Explicit-agent variant of a known page: still allow the rewrite path,
-    // but never anti-scraper block it below.
-    if (wantsAgentMode || mdSuffixKey !== null) {
       const url = request.nextUrl.clone();
       url.pathname = `/md/${mdPage}`;
       url.search = '';
