@@ -72,9 +72,10 @@ describe('MCP JSON-RPC handler (Streamable HTTP)', () => {
       method: 'tools/call',
       params: { name: 'drop_tables' },
     });
-    const result = res.result as { isError?: boolean; content: { text: string }[] };
-    assert.equal(result.isError, true);
-    assert.match(result.content[0].text, /Unknown tool/);
+    const err = res.error as { code: number; message: string; data?: { available: string[] } };
+    assert.equal(err.code, -32602);
+    assert.match(err.message, /Unknown tool/);
+    assert.ok(err.data?.available.includes('search_jobs'));
   });
 
   it('tools/call validates required arguments before touching the database', async () => {
