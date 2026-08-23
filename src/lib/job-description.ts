@@ -198,7 +198,18 @@ export function cleanJobTitle(title: string | null | undefined): string {
     .replace(/^[\s:\-\|]+/, '')
     .replace(/[\s:\-\|,]+$/, '')
     .replace(/\s+jobs?$/i, '')
+    .replace(/\s*\(\s*at\s+[\w\s.-]+$/i, '')
+    .replace(/\s+at\s+[A-Za-z0-9_.-]+(?:\s+[A-Za-z0-9_.-]+)*$/i, (match) => {
+      // Only strip if it looks like trailing " at Company"
+      return /\s+at\s+[A-Z]/i.test(match) ? '' : match;
+    })
     .trim();
+
+  // Balance unclosed trailing parenthesis e.g. "Content Localization Specialist (Japanese"
+  if ((t.match(/\(/g) || []).length > (t.match(/\)/g) || []).length) {
+    t += ')';
+  }
+
   return t;
 }
 
