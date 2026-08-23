@@ -60,6 +60,7 @@ export default function RootLayout({
         <meta name="mcp-server-url" content="/.well-known/mcp.json" />
         <link rel="ai-context" href="/llms.txt" />
         <link rel="ai-context-full" href="/llms-full.txt" />
+        <link rel="alternate" type="text/markdown" href="/index.md" />
         <link rel="mcp-server" href="/.well-known/mcp.json" type="application/json" />
         <link rel="agent-card" href="/.well-known/agent-card.json" type="application/json" />
         <script
@@ -92,6 +93,7 @@ export default function RootLayout({
               sameAs: [
                 'https://x.com/cvinbio',
                 'https://www.linkedin.com/company/cvinbio',
+                'https://github.com/vedangvatsa/PDFtoWebsite',
               ],
               contactPoint: {
                 '@type': 'ContactPoint',
@@ -120,6 +122,23 @@ export default function RootLayout({
                 price: '0',
                 priceCurrency: 'USD',
               },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Service',
+              name: 'CV to Website',
+              serviceType: 'Resume website generation',
+              provider: { '@type': 'Organization', name: 'CVin.Bio', url: siteUrl },
+              areaServed: 'Worldwide',
+              url: siteUrl,
+              description:
+                'Upload a PDF or Word resume and AI extracts work history, education, and skills to build a shareable public profile website at cvin.bio/yourname.',
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
             }),
           }}
         />

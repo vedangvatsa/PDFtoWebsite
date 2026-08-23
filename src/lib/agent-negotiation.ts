@@ -14,6 +14,10 @@ export const AGENT_INFRA_PREFIXES = [
   '/sitemap',
   '/robots.txt',
   '/rss.xml',
+  '/schemap.xml',
+  '/auth.md',
+  '/docs/llms.txt',
+  '/api/llms.txt',
 ];
 
 /** Markdown page keys served by /md/[page]. */

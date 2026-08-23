@@ -1,0 +1,47 @@
+{
+  "$schema": "https://ai-catalog.io/schema/v1/catalog.json",
+  "catalogVersion": "1.0",
+  "updated": "2026-08-23",
+  "publisher": {
+    "name": "CVin.Bio",
+    "url": "https://cvin.bio",
+    "contact": "hi@cvin.bio"
+  },
+  "entries": [
+    {
+      "id": "urn:air:cvin.bio:mcp-server",
+      "type": "mcp-server",
+      "displayName": "CVin.Bio MCP Server",
+      "description": "Model Context Protocol server over Streamable HTTP. Tools: search_jobs, get_job, platform_stats. Public, read-only, no authentication.",
+      "mediaType": "application/json",
+      "url": "https://cvin.bio/mcp",
+      "manifest": "https://cvin.bio/.well-known/mcp.json",
+      "docs": "https://cvin.bio/docs"
+    },
+    {
+      "id": "urn:air:cvin.bio:rest-api",
+      "type": "api-spec",
+      "displayName": "CVin.Bio Public REST API",
+      "description": "Read-mostly REST API: list/get curated jobs, tech news, public profiles, contact submissions. OpenAPI 3.1 with operationIds for function calling.",
+      "mediaType": "application/vnd.oai.openapi+json",
+      "url": "https://cvin.bio/openapi.json",
+      "docs": "https://cvin.bio/docs"
+    },
+    {
+      "id": "urn:air:cvin.bio:skills-index",
+      "type": "skills-index",
+      "displayName": "CVin.Bio Agent Skills",
+      "description": "Agent Skills index describing ready-to-use CVin.Bio capabilities.",
+      "mediaType": "application/json",
+      "url": "https://cvin.bio/.well-known/agent-skills/index.json"
+    },
+    {
+      "id": "urn:air:cvin.bio:llms-index",
+      "type": "llms-index",
+      "displayName": "CVin.Bio llms.txt navigation index",
+      "description": "Markdown navigation index linking per-section context files (jobs, companies, developer docs).",
+      "mediaType": "text/markdown",
+      "url": "https://cvin.bio/llms.txt"
+    }
+  ]
+}

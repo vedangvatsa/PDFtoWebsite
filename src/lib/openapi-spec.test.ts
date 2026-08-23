@@ -1,4 +1,4 @@
-import { describe, it } from 'node:test';
+import { describe, it, before } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildOpenApiSpec } from './openapi-spec';
 
@@ -93,5 +93,34 @@ describe('OpenAPI spec (agent function-calling compatibility)', () => {
     assert.match(versioning.policy, /v1/);
     const jobsResponses = (spec.paths['/api/jobs'].get as { responses?: Record<string, any> }).responses ?? {};
     assert.ok(jobsResponses['200']?.headers?.['API-Version'], 'listJobs 200 missing API-Version header doc');
+  });
+});
+
+describe('openapi spec — agentic extensions', () => {
+  let spec: any;
+  before(async () => {
+    const mod = await import('./openapi-spec');
+    spec = mod.buildOpenApiSpec();
+  });
+
+  it('declares security schemes', () => {
+    const schemes = spec.components?.securitySchemes;
+    assert.ok(schemes?.OptionalBearer, 'missing OptionalBearer security scheme');
+    assert.equal(schemes.OptionalBearer.scheme, 'bearer');
+  });
+
+  it('documents Idempotency-Key and 202 on contact submit', () => {
+    const post = spec.paths['/api/contact'].post;
+    const params = post.parameters ?? [];
+    assert.ok(params.some((p: any) => p.name === 'Idempotency-Key'), 'missing Idempotency-Key param');
+    assert.ok(post.responses['202'], 'missing 202 response');
+    assert.equal(post.responses['202'].content['application/json'].schema.properties.status.enum[0], 'queued');
+    assert.ok(!post.responses['200'], '200 should be replaced by 202');
+  });
+
+  it('documents deprecation + async patterns in versioning policy', () => {
+    const v = spec.info['x-api-versioning'];
+    assert.match(v.deprecation, /Sunset/);
+    assert.match(v.async_operations, /202 Accepted/);
   });
 });

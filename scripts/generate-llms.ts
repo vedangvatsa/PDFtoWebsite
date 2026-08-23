@@ -40,16 +40,60 @@ async function main() {
   console.log(`  llms.txt  ${index.length.toLocaleString()} B  (${(Date.now() - t0) / 1000}s)`);
 
   const sectionJobs: Array<[string, () => Promise<string>]> = [
-    ['profiles', () => buildDirectory('profiles')],
     ['companies', () => buildDirectory('companies')],
     ['jobs', () => buildDirectory('jobs')],
   ];
+  // Privacy: no bulk profile directory file — personal profile pages stay
+  // discoverable individually but are never packaged as a scraped list.
   for (const [name, build] of sectionJobs) {
     const t = Date.now();
     const text = await build();
     writeFileSync(join(publicDir, `llms-${name}.txt`), text);
     console.log(`  llms-${name} ${text.length.toLocaleString()} B  (${(Date.now() - t) / 1000}s)`);
   }
+
+  // Scoped product-area llms files (no DB needed).
+  const siteUrlForLlms = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
+  const docsLlms = `# CVin.Bio Developer Docs
+
+> Scoped context for CVin.Bio developer resources. Parent index: ${siteUrlForLlms}/llms.txt
+
+- API overview and conventions: ${siteUrlForLlms}/docs
+- OpenAPI 3.1 spec (operationIds, schemas, error model): ${siteUrlForLlms}/openapi.json
+- MCP server manifest: ${siteUrlForLlms}/.well-known/mcp.json
+- MCP Streamable HTTP endpoint (JSON-RPC 2.0): ${siteUrlForLlms}/mcp
+- Agent instructions & when-to-use: ${siteUrlForLlms}/agent.txt
+- Authentication walkthrough (zero-auth reads): ${siteUrlForLlms}/auth.md
+- Agent skills index: ${siteUrlForLlms}/.well-known/agent-skills/index.json
+- Agentic resource catalog: ${siteUrlForLlms}/.well-known/ai-catalog.json
+- Rate limits: RateLimit-* headers on responses; Retry-After on 429; 300 req/min reads, 5 req/hour contact writes
+- Pagination: opaque cursor — pass next_cursor back as ?cursor= until null
+`;
+  const apiLlms = `# CVin.Bio Public API
+
+> Scoped context for the REST + MCP surface. Spec of record: ${siteUrlForLlms}/openapi.json
+
+## REST endpoints
+
+- GET /api/jobs?page|cursor&limit&q&type&loc&kind → operationId listJobs (cursor pagination via next_cursor)
+- GET /api/jobs/{id} → getJob
+- GET /api/news?limit → listTechNews
+- GET /api/profile/{username} → getPublicProfile
+- POST /api/contact → submitContactMessage (202 Accepted; Idempotency-Key supported)
+- POST /mcp → mcpJsonRpc (JSON-RPC 2.0: initialize, tools/list, tools/call)
+
+## Conventions
+
+- Errors: JSON { error, code, hint }; codes enum in ErrorEnvelope component
+- Auth: zero-auth reads; optional Supabase bearer on GET /api/jobs for match scores
+- Versioning: /v1/api/* aliases /api/*; API-Version header on list responses
+- Rate limits: RateLimit-* + X-RateLimit-* headers; Retry-After on 429
+`;
+  mkdirSync(join(publicDir, 'docs'), { recursive: true });
+  mkdirSync(join(publicDir, 'api'), { recursive: true });
+  writeFileSync(join(publicDir, 'docs', 'llms.txt'), docsLlms);
+  writeFileSync(join(publicDir, 'api', 'llms.txt'), apiLlms);
+  console.log(`  docs/llms.txt ${docsLlms.length} B | api/llms.txt ${apiLlms.length} B`);
 
   const t1 = Date.now();
   console.log('Generating /llms-full.txt (all curated jobs)…');

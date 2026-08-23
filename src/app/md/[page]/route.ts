@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { buildAgentMarkdown } from '@/lib/agent-markdown';
+import { buildAgentMarkdown, withFrontmatter } from '@/lib/agent-markdown';
 
 export const revalidate = 0;
 
@@ -13,9 +13,9 @@ export async function GET(
   { params }: { params: Promise<{ page: string }> }
 ) {
   const { page } = await params;
-  const markdown = await buildAgentMarkdown(page);
+  const built = await buildAgentMarkdown(page);
 
-  if (markdown === null) {
+  if (built === null) {
     return NextResponse.json(
       {
         error: `No markdown variant for '/${page}'.`,
@@ -28,6 +28,8 @@ export async function GET(
       }
     );
   }
+
+  const markdown = withFrontmatter(page, built);
 
   return new NextResponse(markdown, {
     status: 200,

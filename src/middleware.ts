@@ -164,12 +164,44 @@ export function middleware(request: NextRequest) {
   // ── Agent infrastructure bypass ──────────────────────────────────────────
   // Machine-readable endpoints are for agents — never anti-scraper block
   // them regardless of User-Agent.
-  const isAgentInfra = isAgentInfraPath(pathname);
+  let isAgentInfra = isAgentInfraPath(pathname);
 
-  // ── Markdown content negotiation (acceptmarkdown.com) ────────────────────
-  const mdPage = MARKDOWN_PAGES[pathname];
-  if (mdPage !== undefined) {
-    if (!isAgentInfra && negotiatesMarkdown(request.headers.get('accept'))) {
+  // ── Markdown representation selection ────────────────────────────────────
+  // Four equivalent ways for an agent to get markdown, all resolving to the
+  // same /md/[page] renderer:
+  //   1. Accept: text/markdown content negotiation
+  //   2. `.md` URL suffix (/jobs.md, /index.md)
+  //   3. ?mode=agent machine view (?mode=agent on any known page)
+  //   4. Declared AI bot user-agents get markdown directly — many agent
+  //      runtimes send plain GETs with generic Accept headers.
+  const AI_BOT_MD_UA = /GPTBot|ClaudeBot|ChatGPT-User|OAI-SearchBot|PerplexityBot|Perplexity-User|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot|MistralAI/i;
+
+  const wantsAgentMode = request.nextUrl.searchParams.get('mode') === 'agent';
+  const mdSuffixKey = pathname.endsWith('.md')
+    ? (() => {
+        const bare = pathname.slice(0, -3);
+        if (bare === '' || bare === '/index') return '/';
+        return bare;
+      })()
+    : null;
+
+  const mdPage =
+    mdSuffixKey !== null && mdSuffixKey in MARKDOWN_PAGES
+      ? MARKDOWN_PAGES[mdSuffixKey as keyof typeof MARKDOWN_PAGES]
+      : MARKDOWN_PAGES[pathname];
+
+  // Explicit machine-form requests (.md suffix, ?mode=agent) are agent traffic.
+  const explicitAgentRequest = wantsAgentMode || mdSuffixKey !== null;
+  if (explicitAgentRequest) isAgentInfra = true;
+
+  if (!isAgentInfra && mdPage !== undefined) {
+    const uaWantsMarkdown = AI_BOT_MD_UA.test(ua);
+    if (
+      negotiatesMarkdown(request.headers.get('accept')) ||
+      uaWantsMarkdown ||
+      wantsAgentMode ||
+      mdSuffixKey !== null
+    ) {
       const url = request.nextUrl.clone();
       url.pathname = `/md/${mdPage}`;
       url.search = '';
@@ -177,10 +209,19 @@ export function middleware(request: NextRequest) {
       rewrite.headers.set('Vary', 'Accept, Accept-Encoding');
       return rewrite;
     }
-    const response = NextResponse.next();
-    response.headers.append('Vary', 'Accept');
-    response.headers.append('Vary', 'Accept-Encoding');
-    return response;
+  }
+
+  if (isAgentInfra && mdPage !== undefined) {
+    // Explicit-agent variant of a known page: still allow the rewrite path,
+    // but never anti-scraper block it below.
+    if (wantsAgentMode || mdSuffixKey !== null) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/md/${mdPage}`;
+      url.search = '';
+      const rewrite = NextResponse.rewrite(url);
+      rewrite.headers.set('Vary', 'Accept, Accept-Encoding');
+      return rewrite;
+    }
   }
 
   // ── Anti-scraper edge block ──────────────────────────────────────────────
@@ -225,9 +266,11 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Only run on page routes, skip static assets and API routes
+// Only run on page routes, skip static assets and API routes.
+// NOTE: dotted paths are NOT excluded — agent surface files (/jobs.md,
+// /auth.md, /.well-known/*, /llms.txt, …) depend on middleware bypasses.
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|images|ingest|api|.*\\.).*)',
+    '/((?!_next/static|_next/image|favicon.ico|images/|ingest/|api/).*)',
   ],
 };

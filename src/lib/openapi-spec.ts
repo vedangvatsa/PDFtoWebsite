@@ -82,6 +82,10 @@ export function buildOpenApiSpec(): Record<string, unknown> {
           'The current stable major version is v1. Breaking changes ship under /v2/ while /v1/ keeps working for at least 12 months after a v2 release. Additive fields may appear in responses at any time; consumers must ignore unknown properties. Send Prefer: code=true to receive machine-readable error envelopes.',
         unversioned_alias: 'Paths without a version prefix (/api/...) always alias the current stable major version (/v1/api/...).',
         version_header: 'Every API response includes an API-Version header identifying the served major version.',
+        deprecation:
+          'Deprecated operations are announced in release notes and marked deprecated: true in this spec at least 90 days before removal, and their responses carry Deprecation and Sunset (HTTP-date) headers until shutdown.',
+        async_operations:
+          'Long-running submissions return 202 Accepted with a JSON body { status: "queued", received_at } — the operation completes asynchronously; retry safety is provided by the Idempotency-Key header.',
       },
       contact: { name: 'CVin.Bio', email: 'hi@cvin.bio', url: `${siteUrl}/contact` },
       license: { name: 'Proprietary', url: `${siteUrl}/terms` },
@@ -274,8 +278,18 @@ export function buildOpenApiSpec(): Record<string, unknown> {
           operationId: 'submitContactMessage',
           summary: 'Submit a contact message',
           description:
-            'Delivers a support/partnership message to the CVin.Bio team. Rate limited per IP (5 requests per hour); honor Retry-After on 429.',
+            'Delivers a support/partnership message to the CVin.Bio team. Rate limited per IP (5 requests per hour); honor Retry-After on 429. Returns 202 Accepted (async delivery); retries are safe when an Idempotency-Key header is provided — replays within 24h return the original response with an Idempotent-Replay: true header.',
           tags: ['contact'],
+          parameters: [
+            {
+              name: 'Idempotency-Key',
+              in: 'header',
+              required: false,
+              schema: { type: 'string', maxLength: 255 },
+              description:
+                'Unique key for this submission (e.g. a UUID). Retries with the same key within 24h return the original response instead of creating a duplicate message.',
+            },
+          ],
           requestBody: {
             required: true,
             content: {
@@ -297,13 +311,20 @@ export function buildOpenApiSpec(): Record<string, unknown> {
             },
           },
           responses: {
-            '200': {
-              description: 'Message accepted',
+            '202': {
+              description: 'Message accepted and queued for async delivery',
+              headers: { ...apiVersionHeader },
               content: {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: { ok: { type: 'boolean' } },
+                    properties: {
+                      success: { type: 'boolean' },
+                      ok: { type: 'boolean' },
+                      status: { type: 'string', enum: ['queued'], description: 'Async delivery state' },
+                      received_at: { type: 'string', format: 'date-time' },
+                    },
+                    required: ['success', 'status'],
                   },
                 },
               },
@@ -377,6 +398,15 @@ export function buildOpenApiSpec(): Record<string, unknown> {
       },
     },
     components: {
+      securitySchemes: {
+        OptionalBearer: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description:
+            'Optional Supabase access token for personalized job matching (GET /api/jobs?match=true). All read endpoints work anonymously; no consumer API keys are issued. Scope areas: jobs:read, profiles:read, news:read, stats:read, contact:write — see /.well-known/oauth-protected-resource.',
+        },
+      },
       schemas: {
         ErrorEnvelope: {
           type: 'object',

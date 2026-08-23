@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildAgentMarkdown } from './agent-markdown';
+import { buildAgentMarkdown, withFrontmatter } from './agent-markdown';
 
 // Dummy env so the lazy Supabase proxy constructs; live pages then degrade
 // to their fallback copy instead of throwing in the test runner.
@@ -39,5 +39,19 @@ describe('agent markdown variants (/md/[page])', () => {
 
   it('returns null for unknown pages (route answers JSON 404)', async () => {
     assert.equal(await buildAgentMarkdown('nonexistent'), null);
+  });
+});
+
+describe('withFrontmatter', () => {
+  it('prepends YAML metadata block', async () => {
+  const md = await buildAgentMarkdown('about');
+  assert.ok(md);
+  const wrapped = withFrontmatter('about', md);
+  assert.ok(wrapped.startsWith('---\n'));
+  assert.match(wrapped, /^title: About CVin\.Bio$/m);
+  assert.match(wrapped, /canonical: https:\/\/cvin\.bio\/about/);
+  assert.match(wrapped, /last-updated: \d{4}-\d{2}-\d{2}/);
+  // Body preserved after frontmatter
+  assert.ok(wrapped.includes('# '));
   });
 });

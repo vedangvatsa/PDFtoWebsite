@@ -7,7 +7,11 @@
   "server": {
     "transport": "streamable-http",
     "url": "https://cvin.bio/mcp",
-    "protocol_versions": ["2025-06-18", "2025-03-26", "2024-11-05"],
+    "protocol_versions": [
+      "2025-06-18",
+      "2025-03-26",
+      "2024-11-05"
+    ],
     "auth": "none",
     "package": "@cvinbio/mcp-server",
     "registry": "npm",
@@ -20,10 +24,20 @@
       "inputSchema": {
         "type": "object",
         "properties": {
-          "query": { "type": "string", "description": "Search term — skill, company, location, or role title." },
-          "limit": { "type": "integer", "minimum": 1, "maximum": 20, "default": 10 }
+          "query": {
+            "type": "string",
+            "description": "Search term \u2014 skill, company, location, or role title."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 10
+          }
         },
-        "required": ["query"]
+        "required": [
+          "query"
+        ]
       }
     },
     {
@@ -32,15 +46,23 @@
       "inputSchema": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "description": "Job UUID from search_jobs results." }
+          "id": {
+            "type": "string",
+            "description": "Job UUID from search_jobs results."
+          }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       }
     },
     {
       "name": "platform_stats",
       "description": "Live counts of curated jobs, hiring companies, and public candidate profiles on CVin.Bio.",
-      "inputSchema": { "type": "object", "properties": {} }
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
     }
   ],
   "installation": {
@@ -50,7 +72,10 @@
     },
     "claude_desktop_local_stdio": {
       "command": "npx",
-      "args": ["tsx", "mcp-server.ts"],
+      "args": [
+        "tsx",
+        "mcp-server.ts"
+      ],
       "env": {
         "SUPABASE_URL": "your_supabase_url",
         "SUPABASE_KEY": "your_service_role_key"
@@ -61,5 +86,8 @@
     "openapi": "https://cvin.bio/openapi.json",
     "docs": "https://cvin.bio/docs",
     "rate_limits": "RateLimit-* headers on API responses; Retry-After on 429"
-  }
+  },
+  "icons": [
+    "https://cvin.bio/images/cvinbio.webp"
+  ]
 }

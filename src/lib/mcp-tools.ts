@@ -56,7 +56,7 @@ export const MCP_TOOLS: McpTool[] = [
   {
     name: 'platform_stats',
     description: 'Live counts of curated jobs, hiring companies, and public candidate profiles on CVin.Bio.',
-    inputSchema: { type: 'object', properties: {} },
+    inputSchema: { type: 'object', properties: {}, required: [], additionalProperties: false },
   },
 ];
 

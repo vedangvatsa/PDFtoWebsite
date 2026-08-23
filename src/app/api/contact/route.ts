@@ -14,10 +14,52 @@ const PURPOSE_LABELS: Record<string, string> = {
   'other': 'Other',
 };
 
+/**
+ * Best-effort Idempotency-Key dedupe (24h, per isolate). Agents retry on
+ * flaky networks; this makes replays safe without a dedicated store.
+ */
+const idempotencyCache = new Map<string, { status: number; body: unknown; expires: number }>();
+const IDEMPOTENCY_TTL_MS = 24 * 60 * 60 * 1000;
+
+function pruneIdempotencyCache() {
+  const now = Date.now();
+  for (const [k, v] of idempotencyCache) {
+    if (v.expires < now) idempotencyCache.delete(k);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const rl = rateLimit(request, { windowMs: 60 * 60 * 1000, max: 5, scope: 'contact' });
     if (rl.limited) return rateLimitResponse(rl.retryAfter, rl);
+
+    const idempotencyKey = request.headers.get('idempotency-key')?.slice(0, 255) || null;
+    if (idempotencyKey) {
+      pruneIdempotencyCache();
+      const cached = idempotencyCache.get(idempotencyKey);
+      if (cached) {
+        const res = NextResponse.json(cached.body, { status: cached.status });
+        res.headers.set('X-Idempotency-Key', idempotencyKey);
+        res.headers.set('Idempotent-Replay', 'true');
+        return res;
+      }
+    }
+
+    const respond = (body: Record<string, unknown>, status: number) => {
+      if (idempotencyKey && status < 500) {
+        idempotencyCache.set(idempotencyKey, {
+          status,
+          body,
+          expires: Date.now() + IDEMPOTENCY_TTL_MS,
+        });
+        while (idempotencyCache.size > 10_000) {
+          idempotencyCache.delete(idempotencyCache.keys().next().value as string);
+        }
+      }
+      const res = NextResponse.json(body, { status });
+      if (idempotencyKey) res.headers.set('X-Idempotency-Key', idempotencyKey);
+      return res;
+    };
 
     const body = await request.json();
     const { email, purpose, message } = body;
@@ -95,7 +137,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true });
+    // 202 Accepted — the message is queued for async delivery (email via
+    // Resend is best-effort and happens outside this request's critical path).
+    return respond({ success: true, ok: true, status: 'queued', received_at: new Date().toISOString() }, 202);
   } catch (error) {
     console.error('Contact API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

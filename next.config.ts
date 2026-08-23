@@ -132,6 +132,16 @@ const nextConfigFn = (phase: string): NextConfig => {
           ],
         },
         {
+          // RFC 9727 API catalog — must carry the profiled linkset+json type.
+          source: '/.well-known/api-catalog',
+          headers: [
+            {
+              key: 'Content-Type',
+              value: 'application/linkset+json;profile="https://www.rfc-editor.org/info/rfc9727"',
+            },
+          ],
+        },
+        {
           // Markdown negotiation surfaces — every cached variant must declare
           // Accept so CDNs never serve HTML to an agent asking for markdown
           // (acceptmarkdown.com). Middleware also sets this; config-level
@@ -168,6 +178,12 @@ const nextConfigFn = (phase: string): NextConfig => {
   
     async redirects() {
       return [
+        {
+          // Developer portal alias — /docs is the canonical portal.
+          source: '/developers',
+          destination: '/docs',
+          permanent: false,
+        },
         {
           source: '/ai-interview-questions',
           destination: '/aiq',

@@ -339,7 +339,7 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
   });
 
   it('robots.txt explicitly allows AI citation crawlers', () => {
-    const file = fs.readFileSync(path.join(root, 'src/app/robots.ts'), 'utf8');
+    const file = fs.readFileSync(path.join(root, 'src/app/robots.txt/route.ts'), 'utf8');
     assert.match(file, /Google-Extended/);
     assert.match(file, /OAI-SearchBot/);
     assert.match(file, /PerplexityBot/);

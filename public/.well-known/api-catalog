@@ -1,3 +1,29 @@
 {
-  "api-catalog": "https://cvin.bio/api/"
+  "linkset": [
+    {
+      "anchor": "https://cvin.bio",
+      "service-desc": [
+        { "href": "https://cvin.bio/openapi.json", "type": "application/vnd.oai.openapi+json" }
+      ],
+      "service-doc": [
+        { "href": "https://cvin.bio/docs", "type": "text/html" },
+        { "href": "https://cvin.bio/docs", "type": "text/markdown" }
+      ],
+      "https://cvin.bio/relation/mcp-manifest": [
+        { "href": "https://cvin.bio/.well-known/mcp.json", "type": "application/json" }
+      ],
+      "https://cvin.bio/relation/llms-index": [
+        { "href": "https://cvin.bio/llms.txt", "type": "text/markdown" }
+      ]
+    },
+    {
+      "anchor": "https://cvin.bio/mcp",
+      "service-desc": [
+        { "href": "https://cvin.bio/.well-known/mcp.json", "type": "application/json" }
+      ],
+      "service-doc": [
+        { "href": "https://cvin.bio/docs", "type": "text/html" }
+      ]
+    }
+  ]
 }

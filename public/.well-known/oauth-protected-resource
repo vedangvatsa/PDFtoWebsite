@@ -1,0 +1,15 @@
+{
+  "resource": "https://cvin.bio",
+  "resource_documentation": "https://cvin.bio/docs",
+  "authorization_servers": [],
+  "scopes_supported": [
+    "jobs:read",
+    "profiles:read",
+    "news:read",
+    "stats:read",
+    "contact:write"
+  ],
+  "bearer_methods_supported": ["header"],
+  "access_policy": "All read scopes are public — no bearer token required. contact:write is rate limited per IP (5/hour). Personalized job matching accepts an optional Supabase bearer token; no consumer API keys are issued.",
+  "mcp_servers": ["https://cvin.bio/mcp"]
+}

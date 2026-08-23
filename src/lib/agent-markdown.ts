@@ -231,3 +231,68 @@ export async function buildAgentMarkdown(page: string): Promise<string | null> {
       return null;
   }
 }
+
+/**
+ * Frontmatter metadata per markdown page — agents read title/description/
+ * canonical without parsing the body. Applied by the /md/[page] route.
+ */
+const FRONTMATTER_META: Record<MarkdownPageKey, { title: string; description: string }> = {
+  home: {
+    title: 'CVin.Bio — CV to website + curated tech job board',
+    description: 'Turn a PDF resume into a professional personal site; search 100k+ curated tech jobs.',
+  },
+  jobs: {
+    title: 'Tech Job Board — CVin.Bio',
+    description: 'Live curated tech jobs with skill matching. Queryable via /api/jobs and MCP tools.',
+  },
+  fellowships: {
+    title: 'Fellowships — CVin.Bio',
+    description: 'Open fellowship programs for technologists, curated and updated continuously.',
+  },
+  companies: {
+    title: 'Hiring Companies — CVin.Bio',
+    description: 'Every hiring company with a dedicated careers hub of open roles.',
+  },
+  about: {
+    title: 'About CVin.Bio',
+    description: 'What CVin.Bio does, who runs it, and how profiles and job data are sourced.',
+  },
+  contact: {
+    title: 'Contact CVin.Bio',
+    description: 'Reach the team: hi@cvin.bio or POST /api/contact (rate limited).',
+  },
+  docs: {
+    title: 'Developer Resources — CVin.Bio',
+    description: 'REST API (/openapi.json), MCP server (/mcp), rate limits, and machine-readable files.',
+  },
+  terms: {
+    title: 'Terms of Service — CVin.Bio',
+    description: 'Terms governing use of CVin.Bio profiles, uploads, and the job board.',
+  },
+  privacy: {
+    title: 'Privacy Policy — CVin.Bio',
+    description: 'What CVin.Bio collects, what is published publicly, and how to remove a profile.',
+  },
+  discover: {
+    title: 'Discover — CVin.Bio',
+    description: 'Browse profiles, companies, reports, and trending roles across CVin.Bio.',
+  },
+};
+
+export function withFrontmatter(page: string, markdown: string): string {
+  const key = page as MarkdownPageKey;
+  const meta = FRONTMATTER_META[key];
+  if (!meta || !markdown) return markdown;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
+  const canonical = key === 'home' ? `${siteUrl}/` : `${siteUrl}/${key}`;
+  return [
+    '---',
+    `title: ${meta.title}`,
+    `description: ${meta.description}`,
+    `canonical: ${canonical}`,
+    `last-updated: ${new Date().toISOString().slice(0, 10)}`,
+    '---',
+    '',
+    markdown,
+  ].join('\n');
+}

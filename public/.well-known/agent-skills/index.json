@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "updatedAt": "2026-08-23",
+  "skills": [
+    {
+      "name": "search-jobs",
+      "displayName": "Search curated tech jobs",
+      "description": "Find live curated tech jobs by keyword, type, or location via MCP tool search_jobs or GET /api/jobs?q=. Supports cursor pagination (next_cursor). No auth.",
+      "endpoint": "https://cvin.bio/api/jobs",
+      "mcpTool": "search_jobs"
+    },
+    {
+      "name": "get-job",
+      "displayName": "Get one job's details",
+      "description": "Fetch full detail for a single curated job by id via MCP tool get_job or GET /api/jobs/{id}.",
+      "endpoint": "https://cvin.bio/api/jobs/{id}",
+      "mcpTool": "get_job"
+    },
+    {
+      "name": "platform-stats",
+      "displayName": "Get platform statistics",
+      "description": "Live counts of jobs, companies, and profiles on CVin.Bio via MCP tool platform_stats.",
+      "endpoint": "https://cvin.bio/mcp",
+      "mcpTool": "platform_stats"
+    },
+    {
+      "name": "verify-public-profile",
+      "displayName": "Verify a public professional profile",
+      "description": "Check whether a person has a public CVin.Bio profile page at https://cvin.bio/{username} with schema.org Person markup."
+    },
+    {
+      "name": "tech-news",
+      "displayName": "List aggregated tech news",
+      "description": "Recent ranked items from tier-1 tech RSS sources via GET /api/news?limit=20."
+    }
+  ],
+  "documentation": "https://cvin.bio/docs",
+  "openapi": "https://cvin.bio/openapi.json"
+}
