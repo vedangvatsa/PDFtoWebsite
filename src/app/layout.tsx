@@ -63,6 +63,8 @@ export default function RootLayout({
         <link rel="alternate" type="text/markdown" href="/index.md" />
         <link rel="mcp-server" href="/.well-known/mcp.json" type="application/json" />
         <link rel="agent-card" href="/.well-known/agent-card.json" type="application/json" />
+        <link rel="agent-instructions" href="/agent.txt" type="text/plain" />
+        <link rel="agent-instructions" href="/agent-instructions.txt" type="text/plain" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
