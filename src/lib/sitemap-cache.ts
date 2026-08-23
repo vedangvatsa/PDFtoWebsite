@@ -45,24 +45,34 @@ export async function withSitemapCache(
       // ignore cache read failures
     }
 
+    // Never pin an empty build (e.g. transient DB failure) into the edge
+    // cache — serve it uncached with a short TTL so the next request rebuilds.
     const xml = await build();
-    const res = new Response(xml, { headers });
-    try {
-      const { getCloudflareContext } = await import('@opennextjs/cloudflare');
-      const { ctx } = await getCloudflareContext({ async: true });
-      ctx.waitUntil(cache.put(key, res.clone()));
-    } catch {
+    const isEmpty = !xml.includes('<loc>');
+    const effectiveHeaders = isEmpty ? sitemapResponseHeaders(30) : headers;
+
+    const res = new Response(xml, { headers: effectiveHeaders });
+    if (!isEmpty) {
       try {
-        await cache.put(key, res.clone());
+        const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+        const { ctx } = await getCloudflareContext({ async: true });
+        ctx.waitUntil(cache.put(key, res.clone()));
       } catch {
-        // local / non-CF runtimes
+        try {
+          await cache.put(key, res.clone());
+        } catch {
+          // local / non-CF runtimes
+        }
       }
     }
     return res;
   }
 
   const xml = await build();
-  return new Response(xml, { headers });
+  const isEmpty = !xml.includes('<loc>');
+  return new Response(xml, {
+    headers: isEmpty ? sitemapResponseHeaders(30) : headers,
+  });
 }
 
 /** Max URLs per job child sitemap — keep cold builds well under CF/Google timeouts. */
