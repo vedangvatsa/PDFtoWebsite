@@ -1,7 +1,7 @@
 {
   "resource": "https://cvin.bio",
   "resource_documentation": "https://cvin.bio/docs",
-  "authorization_servers": [],
+  "authorization_servers": ["https://cvin.bio"],
   "scopes_supported": [
     "jobs:read",
     "profiles:read",

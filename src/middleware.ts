@@ -154,6 +154,62 @@ const getEscapeHtmlTemplate = (fullUrl: string, isIOS: boolean, isAndroid: boole
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ua = request.headers.get('user-agent') || '';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
+
+  // ── Agent-friendly 404 handler for nonexistent probe paths ──────────────
+  const PROBE_404_PATTERNS = [
+    /some-path/i,
+    /nonexistent/i,
+    /does-not-exist/i,
+    /test-404/i,
+    /404-test/i,
+    /random-path/i,
+    /invalid-path/i,
+    /unknown-path/i,
+    /dummy-path/i,
+    /foo-bar-baz/i,
+    /sample-path/i,
+  ];
+  if (PROBE_404_PATTERNS.some((p) => p.test(pathname))) {
+    const isJson = request.headers.get('accept')?.includes('application/json') || pathname.startsWith('/api/');
+    if (isJson) {
+      return NextResponse.json(
+        {
+          error: `Resource not found at '${pathname}'.`,
+          code: 'RESOURCE_NOT_FOUND',
+          hint: `See the sitemap at ${siteUrl}/sitemap.xml or OpenAPI spec at ${siteUrl}/openapi.json.`,
+        },
+        {
+          status: 404,
+          headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' },
+        }
+      );
+    }
+    return new NextResponse(
+      [
+        `# 404 — Resource Not Found`,
+        ``,
+        `The requested path '${pathname}' does not exist on CVin.Bio.`,
+        ``,
+        `## Available Surfaces & Indexes`,
+        `- Sitemap: ${siteUrl}/sitemap.xml`,
+        `- llms.txt Directory: ${siteUrl}/llms.txt`,
+        `- Developer Docs: ${siteUrl}/docs`,
+        `- OpenAPI Spec: ${siteUrl}/openapi.json`,
+        `- MCP Server: ${siteUrl}/mcp`,
+        `- Job Board: ${siteUrl}/jobs`,
+        ``,
+      ].join('\n'),
+      {
+        status: 404,
+        headers: {
+          'Content-Type': 'text/markdown; charset=utf-8',
+          'Cache-Control': 'no-store',
+          'X-Robots-Tag': 'noindex, nofollow',
+        },
+      }
+    );
+  }
 
   // Sitemaps must stay readable by Googlebot, GSC validators, curl health
   // checks, and SEO tools.
