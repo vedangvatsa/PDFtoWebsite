@@ -1717,7 +1717,7 @@ async function fetchAllJobs() {
   // limit=50 + description prevents Supabase statement timeout → page in smaller
   // chunks so the fetch never 500s mid-run.
   const page = Math.max(25, Math.min(200, Number(process.env.FETCH_PAGE || 50)));
-  const since = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? new Date(0).toISOString() : new Date(Date.now() - 30 * 86400000).toISOString();
+  const since = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? new Date(0).toISOString() : new Date(Date.now() - 7 * 86400000).toISOString();
   const orderDir = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? 'created_at.asc' : 'created_at.desc';
 
   const hex = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
