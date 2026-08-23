@@ -69,8 +69,15 @@ process.on('unhandledRejection', (err) => {
   console.error('unhandledRejection', err);
 });
 
-/** Manual curation is the default. AI rewrite requires explicit ALLOW_AI_ENRICH=1. */
-const ALLOW_AI_ENRICH = process.env.ALLOW_AI_ENRICH === '1' || process.env.ALLOW_AI_ENRICH === 'true';
+/** AI rewrite is enabled by default whenever OPENROUTER_API_KEY is available (disable with ALLOW_AI_ENRICH=0). */
+const ALLOW_AI_ENRICH =
+  process.env.ALLOW_AI_ENRICH === '0' || process.env.ALLOW_AI_ENRICH === 'false'
+    ? false
+    : Boolean(
+        process.env.ALLOW_AI_ENRICH === '1' ||
+          process.env.ALLOW_AI_ENRICH === 'true' ||
+          process.env.OPENROUTER_API_KEY
+      );
 const MANUAL_QUEUE_DIR = resolve(__dirname, 'manual-jd-queue');
 
 const U = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
