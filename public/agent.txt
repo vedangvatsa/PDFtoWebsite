@@ -37,6 +37,13 @@ CVin.Bio turns CVs into personal websites and runs a curated tech job board
    RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset (RFC 9331 draft)
    plus X-RateLimit-* headers. On 429, wait Retry-After seconds.
 
+## API Versioning and Deprecation Policy
+
+- Versioning strategy: URL-path major versioning (stable default /api/*, alias of /v1/api/*).
+- Deprecation notice: Minimum 180 days advance notice before shutting down any version or endpoint.
+- Deprecation headers: Deprecated responses carry Deprecation: @<unix-timestamp> (RFC 9261) and Sunset: <HTTP-date> (RFC 8594).
+- Compatibility guarantee: Non-breaking additive changes ship inside v1. Breaking changes bump the major version path to /v2/*.
+
 ## Content formats
 
 Send Accept: text/markdown on key pages (/ , /jobs , /about , /contact ,

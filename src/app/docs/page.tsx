@@ -105,6 +105,23 @@ export default function DocsPage() {
         </section>
 
         <section className="space-y-3">
+          <h2 className="text-lg font-semibold text-foreground">API Versioning &amp; Deprecation Policy</h2>
+          <p>
+            CVin.Bio APIs use URL-path major versioning (current stable: <code>/api/*</code> alias of <code>/v1/api/*</code>).
+            When an endpoint or version is scheduled for deprecation, CVin.Bio guarantees a minimum 180-day notice period
+            and signals deprecation on every affected response via standard HTTP headers:
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 font-mono text-xs">
+            <li><code>Deprecation: @&lt;unix-timestamp&gt;</code> — RFC 9261 deprecation header</li>
+            <li><code>Sunset: &lt;HTTP-date&gt;</code> — RFC 8594 sunset date header</li>
+            <li><code>Link: &lt;url&gt;; rel="deprecation"</code> — link to migration documentation</li>
+          </ul>
+          <p className="text-xs">
+            Breaking changes are never introduced within a major version. Non-breaking additive changes may be introduced at any time.
+          </p>
+        </section>
+
+        <section className="space-y-3">
           <h2 className="text-lg font-semibold text-foreground">Support</h2>
           <p>
             Questions about the API? Email hi@cvin.bio or use the{' '}
