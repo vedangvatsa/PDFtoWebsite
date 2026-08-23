@@ -1707,9 +1707,9 @@ function describeThinSource(job) {
 async function fetchAllJobs() {
   const out = [];
   let offset = 0;
-  // limit=1000 + description often exceeds Supabase statement timeout → page in smaller
+  // limit=50 + description prevents Supabase statement timeout → page in smaller
   // chunks so the fetch never 500s mid-run.
-  const page = Math.max(50, Math.min(500, Number(process.env.FETCH_PAGE || 500)));
+  const page = Math.max(25, Math.min(200, Number(process.env.FETCH_PAGE || 50)));
   const since = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? new Date(0).toISOString() : new Date(Date.now() - 30 * 86400000).toISOString();
   const orderDir = RETRY_ONLY || LINKEDIN_ONLY || RE_ENRICH ? 'created_at.asc' : 'created_at.desc';
 
@@ -1943,6 +1943,9 @@ async function runOneBatch(batchNum, state, done) {
       });
       const wave = pending.slice(0, Math.max(BATCH_SIZE, CONCURRENCY * 3, 500));
       console.log(`Priority wave: ${wave.length} of ${pending.length} pending (${prioritySet.size} listed)`);
+      if (!wave.length) {
+        return { attempted: 0, ok: 0, skip: 0, fail: 0, reasons: {}, complete: true };
+      }
       all = await fetchJobsByIds(wave);
     } else {
       all = await fetchAllJobs();

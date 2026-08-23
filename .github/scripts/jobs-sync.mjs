@@ -2699,18 +2699,20 @@ async function enrichInsertedJobs(sinceIso) {
   writeFileSync(idsPath, `${list.join('\n')}\n`);
   console.log(`\n═══ Enrich ${list.length} newly ingested jobs ═══`);
   const enrichScript = resolve(__dirname, 'enrich-remote-job-descriptions.mjs');
+  const tsxBin = resolve(__dirname, '../../node_modules/.bin/tsx');
+  const bin = existsSync(tsxBin) ? tsxBin : 'npx';
+  const args = existsSync(tsxBin) ? [enrichScript] : ['tsx', enrichScript];
+
   const r = spawnSync(
-    'npx',
-    ['tsx', enrichScript],
+    bin,
+    args,
     {
+      shell: true,
       env: {
         ...process.env,
         ALLOW_AI_ENRICH: '1',
         PRIORITY_IDS_FILE: idsPath,
         TURBO: process.env.TURBO || '1',
-        // A priority file can contain thousands of rows. Without
-        // CONTINUOUS, enrich-remote-jd processes only the first batch and
-        // exits, leaving the rest apply-out.
         CONTINUOUS: '1',
         BATCH_SIZE: process.env.ENRICH_BATCH_SIZE || '400',
         CONCURRENCY: process.env.ENRICH_CONCURRENCY || '12',

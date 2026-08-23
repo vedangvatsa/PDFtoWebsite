@@ -95,6 +95,10 @@ export default function RootLayout({
                 'https://www.linkedin.com/company/cvinbio',
                 'https://github.com/vedangvatsa/PDFtoWebsite',
               ],
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'US',
+              },
               contactPoint: {
                 '@type': 'ContactPoint',
                 contactType: 'customer service',

@@ -3,6 +3,15 @@
   "description": "Professional identity platform and job board. Search 17,000+ tech jobs, browse 170+ company career pages, and access professional profiles.",
   "url": "https://cvin.bio/api/rpc",
   "version": "1.0.0",
+  "when_to_use": [
+    "Searching curated tech jobs, fellowships, or openings at specific companies.",
+    "Converting a resume/CV into a personal public website profile.",
+    "Fetching structured professional candidate profiles and tech hiring market reports."
+  ],
+  "when_not_to_use": [
+    "Private candidate data (only public published profiles are accessible).",
+    "Legal/visa advice or salary negotiation coaching."
+  ],
   "protocolVersion": "1.0",
   "protocol_version": "1.0",
   "provider": {
