@@ -83,3 +83,8 @@ enrich-thin-jobs-company-state*.json
 .github/scripts/thin-reenrich.log
 .github/scripts/logs/
 .github/scripts/sync-inserted-ids.txt
+
+# purged from history — never re-commit
+ken-burns/reference/.venv/
+check_if_email_exists
+.github/scripts/enrich-remote-jd-state-w*.json
