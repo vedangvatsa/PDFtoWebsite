@@ -6,48 +6,34 @@
     {
       "name": "search-jobs",
       "type": "skill-md",
-      "url": "https://cvin.bio/docs",
-      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "url": "https://cvin.bio/skills/search-jobs/SKILL.md",
+      "digest": "sha256:0c27b8e50ba99ed5c3cac3c8a2e3a3f4970513a401a792a27c65f8058b9e422c",
       "displayName": "Search curated tech jobs",
-      "description": "Find live curated tech jobs by keyword, type, or location via MCP tool search_jobs or GET /api/jobs?q=. Supports cursor pagination (next_cursor). No auth.",
-      "endpoint": "https://cvin.bio/api/jobs",
-      "mcpTool": "search_jobs"
+      "description": "Find live curated tech jobs by keyword, type, or location via MCP tool search_jobs or GET /api/jobs?q=."
     },
     {
       "name": "get-job",
       "type": "skill-md",
-      "url": "https://cvin.bio/docs",
-      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "displayName": "Get one job's details",
-      "description": "Fetch full detail for a single curated job by id via MCP tool get_job or GET /api/jobs/{id}.",
-      "endpoint": "https://cvin.bio/api/jobs/{id}",
-      "mcpTool": "get_job"
+      "url": "https://cvin.bio/skills/get-job/SKILL.md",
+      "digest": "sha256:fe017ff300f6787b0bcfc7b6c30e3d5b98d4077c6ddae21aab9225f9f5927345",
+      "displayName": "Get one job details",
+      "description": "Fetch full detail for a single curated job by id via MCP tool get_job or GET /api/jobs/{id}."
     },
     {
       "name": "platform-stats",
       "type": "skill-md",
-      "url": "https://cvin.bio/docs",
-      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "url": "https://cvin.bio/skills/platform-stats/SKILL.md",
+      "digest": "sha256:ef744875974ea938c4eaaae68ca8885e3f5b71d87315147a8b5b96b58fc04133",
       "displayName": "Get platform statistics",
-      "description": "Live counts of jobs, companies, and profiles on CVin.Bio via MCP tool platform_stats.",
-      "endpoint": "https://cvin.bio/mcp",
-      "mcpTool": "platform_stats"
+      "description": "Live counts of jobs, companies, and profiles on CVin.Bio via MCP tool platform_stats."
     },
     {
-      "name": "verify-public-profile",
+      "name": "verify-profile",
       "type": "skill-md",
-      "url": "https://cvin.bio/docs",
-      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "displayName": "Verify a public professional profile",
-      "description": "Check whether a person has a public CVin.Bio profile page at https://cvin.bio/{username} with schema.org Person markup."
-    },
-    {
-      "name": "tech-news",
-      "type": "skill-md",
-      "url": "https://cvin.bio/docs",
-      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "displayName": "List aggregated tech news",
-      "description": "Recent ranked items from tier-1 tech RSS sources via GET /api/news?limit=20."
+      "url": "https://cvin.bio/skills/verify-profile/SKILL.md",
+      "digest": "sha256:3d7c4bd39630161a92ac959a7b57d55090bb0289a2854537ca5fc6f7ce9ea131",
+      "displayName": "Verify candidate profile",
+      "description": "Check whether a person has a public CVin.Bio profile page at https://cvin.bio/{username}."
     }
   ],
   "documentation": "https://cvin.bio/docs",
