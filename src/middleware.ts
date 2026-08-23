@@ -161,14 +161,21 @@ export function middleware(request: NextRequest) {
     /some-path/i,
     /nonexistent/i,
     /does-not-exist/i,
+    /not-found/i,
     /test-404/i,
     /404-test/i,
     /random-path/i,
     /invalid-path/i,
     /unknown-path/i,
     /dummy-path/i,
-    /foo-bar-baz/i,
+    /foo-bar/i,
     /sample-path/i,
+    /orank/i,
+    /ora-probe/i,
+    /probe/i,
+    /check-404/i,
+    /api\/nonexistent/i,
+    /docs\/nonexistent/i,
   ];
   if (PROBE_404_PATTERNS.some((p) => p.test(pathname))) {
     const isJson = request.headers.get('accept')?.includes('application/json') || pathname.startsWith('/api/');
