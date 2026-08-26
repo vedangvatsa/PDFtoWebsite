@@ -88,7 +88,15 @@ const OPENROUTER_KEYS = [
   unquote(process.env.OPENROUTER_API_KEY_2),
   unquote(process.env.OPENROUTER_API_KEY_3),
 ].filter(Boolean);
+const DIRECT_G_KEYS = [
+  unquote(process.env.GEMINI_API_KEY),
+  unquote(process.env.GEMINI_API_KEY_2),
+  unquote(process.env.GEMINI_API_KEY_3),
+  unquote(process.env.GEMINI_API_KEY_4),
+  unquote(process.env.GEMINI_API_KEY_5),
+].filter(Boolean);
 const OPENROUTER_BASE = (process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
+// Legacy model: inclusionai/ling-2.6-flash
 const OPENROUTER_MODEL = unquote(process.env.OPENROUTER_MODEL) || 'google/gemini-2.5-flash';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
@@ -1533,11 +1541,38 @@ async function openrouterCall(key, model, prompt, temperature, maxTokens) {
   return jfetch(`${OPENROUTER_BASE}/chat/completions`, { method: 'POST', headers, body }, TURBO ? 90000 : 60000);
 }
 
+async function directGCall(prompt, temperature, maxTokens) {
+  if (!DIRECT_G_KEYS.length) throw new Error('Missing GEMINI_API_KEY');
+  const key = DIRECT_G_KEYS[Math.floor(Math.random() * DIRECT_G_KEYS.length)];
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+  const headers = { 'Content-Type': 'application/json' };
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: Number(temperature),
+      maxOutputTokens: Number(maxTokens)
+    }
+  });
+  const r = await jfetch(url, { method: 'POST', headers, body }, 60000);
+  if (!r.ok) {
+    const err = await r.text();
+    throw new Error(`gemini_error_${r.status}:${err.slice(0, 180)}`);
+  }
+  const data = await r.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  return stripCodeFence(text);
+}
+
 async function rewriteWithOpenRouter(prompt, opts = {}) {
-  if (!OPENROUTER_KEYS.length) throw new Error('Missing OPENROUTER_API_KEY');
   const temperature = opts.temperature ?? (TURBO ? 0.3 : 0.4);
-  const model = OPENROUTER_MODEL;
   const maxTokens = opts.maxOutputTokens ?? 4096;
+
+  if (process.env.USE_DIRECT_GEMINI === '1' || (!OPENROUTER_KEYS.length && DIRECT_G_KEYS.length)) {
+    return await directGCall(prompt, temperature, maxTokens);
+  }
+  if (!OPENROUTER_KEYS.length) throw new Error('Missing OPENROUTER_API_KEY');
+
+  const model = OPENROUTER_MODEL;
   const maxRetries = Math.max(2, Number(process.env.OR_RETRIES || 8));
   let lastErr = '';
 
@@ -1557,6 +1592,10 @@ async function rewriteWithOpenRouter(prompt, opts = {}) {
         const text = data.choices?.[0]?.message?.content || '';
         if (!String(text).trim()) throw new Error('openrouter_empty');
         return stripCodeFence(text);
+      }
+      if (r.status === 402) {
+        console.log('[enrich] OpenRouter billing exhausted. Falling back to direct Google Gemini API...');
+        return await directGCall(prompt, temperature, maxTokens);
       }
       const err = await r.text();
       lastErr = `openrouter_${model}_${r.status}:${err.slice(0, 180)}`;
