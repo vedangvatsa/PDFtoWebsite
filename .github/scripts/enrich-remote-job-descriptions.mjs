@@ -89,7 +89,7 @@ const OPENROUTER_KEYS = [
   unquote(process.env.OPENROUTER_API_KEY_3),
 ].filter(Boolean);
 const OPENROUTER_BASE = (process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
-const OPENROUTER_MODEL = unquote(process.env.OPENROUTER_MODEL) || 'inclusionai/ling-2.6-flash';
+const OPENROUTER_MODEL = unquote(process.env.OPENROUTER_MODEL) || 'google/gemini-2.5-flash';
 const BATCH_SIZE = Math.max(1, Number(process.env.BATCH_SIZE || 500));
 const BATCH_NUM = Math.max(1, Number(process.env.BATCH_NUM || 1));
 const DRY_RUN = process.env.DRY_RUN === '1';
