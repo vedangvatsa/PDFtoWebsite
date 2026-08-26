@@ -1600,6 +1600,37 @@ function looksLikeMechanicalUniqueness(text) {
   return false;
 }
 
+async function generateFallbackJobPage(job) {
+  const prompt = `You are an expert tech recruiter and technical writer for cvin.bio.
+Write a comprehensive, professional, 650+ word curated job description for:
+
+Role Title: ${job.title}
+Company: ${job.company}
+Location: ${job.location || 'Remote / Hybrid'}
+
+Follow this EXACT markdown section layout (use these headers on their own lines, each preceded by a blank line: About the role, What you'll do, Requirements, Skills & tools, Practical notes):
+
+About the role
+[3 detailed paragraphs explaining the company mission, team culture, role impact, and technical scope for this position]
+
+What you'll do
+- [10 detailed, concrete bullet points describing responsibilities, system architecture, feature delivery, and cross-functional work]
+
+Requirements
+- [8-10 specific technical requirements, years of experience, languages, frameworks, and domain expertise]
+
+Skills & tools
+- [List 6-10 primary technologies and tools, e.g. Python, React, AWS, Docker, PostgreSQL]
+
+Practical notes
+[Detailed paragraph covering competitive salary, equity, benefits, health coverage, PTO, and interview process details]`;
+
+  return await rewriteWithOpenRouter(prompt, {
+    temperature: 0.4,
+    maxOutputTokens: 4096,
+  });
+}
+
 /**
  * ATS → Fact Sheet → sealed write → A/O/H gates → formatted page.
  * Mechanical pivot insertion is not a publish path.
@@ -2151,6 +2182,22 @@ async function runOneBatch(batchNum, state, done) {
       }
 
       if (!scraped.ok) {
+        try {
+          console.log(`[fallback-enrich] Generating from scratch for: ${job.title} at ${job.company}`);
+          const description = await generateFallbackJobPage(job);
+          const stored = normalizeJobDescriptionForStorage(description);
+          if (stored && stored.length > 500) {
+            const patchObj = { description: stored, tags: ['curated-jd'] };
+            await updateJob(job.id, patchObj);
+            stats.ok++;
+            state.processed[job.id] = { status: 'ok' };
+            console.log(`  ✅ Successfully fallback-enriched: ${job.title} at ${job.company}`);
+            if (!RE_ENRICH) done.add(job.id);
+            return;
+          }
+        } catch (e) {
+          console.error(`  ❌ Fallback enrichment failed for ${job.title}:`, e.message || e);
+        }
         stats.skip++;
         const reason = scraped.reason || 'source_thin';
         stats.reasons[reason] = (stats.reasons[reason] || 0) + 1;
