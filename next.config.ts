@@ -173,6 +173,24 @@ const nextConfigFn = (phase: string): NextConfig => {
             { key: 'Cache-Control', value: 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800' },
           ],
         },
+        {
+          // Edge CDN Cache for job detail pages (/jobs/:id and /:slug/:jobSlug)
+          // Serves static HTML directly from Cloudflare Edge for 30 days — 0 database hits
+          source: '/jobs/:id',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=3600, s-maxage=2592000, stale-while-revalidate=86400' },
+            { key: 'CDN-Cache-Control', value: 'public, max-age=2592000' },
+            { key: 'Cloudflare-CDN-Cache-Control', value: 'public, max-age=2592000' },
+          ],
+        },
+        {
+          source: '/:slug/:jobSlug',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=3600, s-maxage=2592000, stale-while-revalidate=86400' },
+            { key: 'CDN-Cache-Control', value: 'public, max-age=2592000' },
+            { key: 'Cloudflare-CDN-Cache-Control', value: 'public, max-age=2592000' },
+          ],
+        },
       ];
     },
   
