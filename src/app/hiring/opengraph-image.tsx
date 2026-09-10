@@ -2,6 +2,8 @@ import { ImageResponse } from 'next/og';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 
+// The company count comes from the live jobs table; do not block builds on it.
+export const dynamic = 'force-dynamic';
 export const alt = 'Tech Talent Report 2026 | CVin.Bio';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';

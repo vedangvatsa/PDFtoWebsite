@@ -347,8 +347,25 @@ async function fetchCandidateJobs() {
   }
 }
 
+async function hasCuratedJobs() {
+  const { data, error } = await supabase
+    .from('jobs')
+    .select('id')
+    .contains('tags', ['curated-jd'])
+    .limit(1);
+  if (error) throw new Error(`Supabase error: ${error.message}`);
+  return Boolean(data?.length);
+}
+
 // ── Main ─────────────────────────────────────────────────────────────────
 async function main() {
+  // Thin ATS-backed jobs are intentionally not sent to Google's JobPosting API.
+  // Avoid the expensive candidate scan when no curated pages exist.
+  if (!(await hasCuratedJobs())) {
+    console.log('Google Indexing skipped: no curated JobPosting inventory.');
+    return;
+  }
+
   try {
     await ensureGscOwnership();
   } catch (err) {

@@ -94,12 +94,11 @@ export async function GET(request: NextRequest) {
     // Not authenticated — show all jobs unfiltered
   }
 
-  // Description is selected for the 600-word board gate, then dropped from the JSON.
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
   const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
   const boardSince = q ? ninetyDaysAgo : sixtyDaysAgo;
-  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug,description';
+  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug';
 
   // Live inventory: curated pages + uncurated apply-out cards. Do not wrap
   // withCuratedJdTag — that hid jobs until enrich finished.
@@ -107,24 +106,6 @@ export async function GET(request: NextRequest) {
     if (type && type !== 'all') q = q.eq('job_type', type);
     return q;
   }
-
-  // --- Query 1: Remote + location-matched jobs (priority pool) ---
-  let priorityFilter = 'location.ilike.%remote%,location.ilike.%anywhere%,location.ilike.%distributed%,location.ilike.%worldwide%';
-  if (userProfile?.location) {
-    const userLoc = normalizeMatchLocation(userProfile.location);
-    if (!userLoc.isRemote && userLoc.tokens.length > 0) {
-      priorityFilter += ',' + userLoc.tokens.map((t: string) => `location.ilike.%${sanitizeFilterTerm(t)}%`).join(',');
-    }
-  }
-
-  let priorityQuery = supabase
-    .from('jobs')
-    .select(selectCols)
-    .or(companyJobsDateOrFilter(thirtyDaysAgo))
-    .or(priorityFilter)
-    .order('published_at', { ascending: false, nullsFirst: false })
-    .range(0, limit * 2 - 1);
-  priorityQuery = applyBaseFilters(priorityQuery);
 
   // Unfiltered board: skip DB count (static total). Keyword search skips count
   // too — estimated count + ilike is what timed out and returned 0 engineers.
@@ -165,14 +146,12 @@ export async function GET(request: NextRequest) {
   if (hideInternships) {
     const notInternOrIsFellow =
       'job_type.neq.internship,title.ilike.%fellow%,category.eq.fellowship';
-    priorityQuery = priorityQuery.or(notInternOrIsFellow);
     query = query.or(notInternOrIsFellow);
   }
 
   const fellowshipOr =
     'title.ilike.%fellow%,category.ilike.fellowship,tags.cs.{fellowship}';
   if (fellowshipsOnly) {
-    priorityQuery = priorityQuery.or(fellowshipOr);
     query = query.or(fellowshipOr);
   }
 
@@ -203,7 +182,7 @@ export async function GET(request: NextRequest) {
   const fetchLimit = limit * 3;
   query = query.range(offset, offset + fetchLimit - 1);
 
-  // Run both queries in parallel with hard timeout — never hang the board.
+  // Run the board query with a hard timeout — never hang the board.
   const timeoutResult = {
     data: [] as any[],
     error: { message: 'timeout', code: 'TIMEOUT' },
@@ -211,38 +190,11 @@ export async function GET(request: NextRequest) {
     status: 200,
     statusText: 'OK',
   } as any;
-  const emptyResult = {
-    data: [] as any[],
-    error: null,
-    count: null,
-    status: 200,
-    statusText: 'OK',
-  } as any;
-  const [priorityResult, mainResult] = await Promise.all([
-    loc === 'onsite' || q || fellowshipsOnly
-      ? Promise.resolve(emptyResult)
-      : withTimeoutFallback(
-          priorityQuery as any,
-          DB_BUDGET.list,
-          timeoutResult,
-          'api-jobs-priority'
-        ),
-    withTimeoutFallback(query as any, DB_BUDGET.list, timeoutResult, 'api-jobs-main'),
-  ]);
+  const mainResult = await withTimeoutFallback(query as any, DB_BUDGET.list, timeoutResult, 'api-jobs-main');
 
   const { data: mainJobs, error, count } = mainResult as any;
   const mainTimedOut = error?.code === 'TIMEOUT';
-  const priorityJobs = (priorityResult as any).data || [];
-
-  // Merge: priority jobs first (deduped), then backfill from main
-  const mergedIds = new Set<string>();
-  const rawJobs: any[] = [];
-  for (const job of priorityJobs) {
-    if (!mergedIds.has(job.id)) { mergedIds.add(job.id); rawJobs.push(job); }
-  }
-  for (const job of (mainJobs || [])) {
-    if (!mergedIds.has(job.id)) { mergedIds.add(job.id); rawJobs.push(job); }
-  }
+  const rawJobs: any[] = mainJobs || [];
 
   if (error && error.code !== 'TIMEOUT') {
     console.error('Jobs query error:', {
