@@ -42,6 +42,7 @@ interface Job {
   match_signals: string[];
   summary?: string;
   highlights?: string[];
+  company_about?: string | null;
 }
 
 interface JobsResponse {
@@ -504,6 +505,11 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
                   {job.summary && (
                     <p className="mt-1.5 text-[12px] leading-5 text-zinc-600 line-clamp-2">
                       {job.summary}
+                    </p>
+                  )}
+                  {job.company_about && (
+                    <p className="mt-1 text-[11px] leading-5 text-zinc-500 line-clamp-2">
+                      {job.company_about}
                     </p>
                   )}
                   {job.highlights && job.highlights.length > 0 && (

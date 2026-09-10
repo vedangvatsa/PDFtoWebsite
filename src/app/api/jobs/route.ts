@@ -58,6 +58,23 @@ function jobCardInfo(job: any) {
   return { summary, highlights };
 }
 
+async function companyAboutBySlug(jobs: any[]) {
+  const slugs = Array.from(new Set(jobs.map((job) => String(job.company_key || '').trim()).filter(Boolean)));
+  if (!slugs.length) return new Map<string, string>();
+  const result = await withTimeoutFallback(
+    supabase.from('companies').select('slug,about').in('slug', slugs),
+    DB_BUDGET.fast,
+    { data: [] } as any,
+    'api-jobs-company-about'
+  );
+  const map = new Map<string, string>();
+  for (const row of result.data || []) {
+    const about = String(row.about || '').trim();
+    if (row.slug && about) map.set(row.slug, about);
+  }
+  return map;
+}
+
 // Generous anonymous read quota — exists so agents can self-throttle via
 // the RateLimit-* headers, not to block anyone.
 const JOBS_READ_LIMIT = { windowMs: 60_000, max: 300, scope: 'jobs-read' } as const;
@@ -134,7 +151,7 @@ export async function GET(request: NextRequest) {
   const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
   const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
   const boardSince = q ? ninetyDaysAgo : sixtyDaysAgo;
-  const selectCols = 'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug';
+  const selectCols = 'id,title,company,company_key,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug';
 
   // Live inventory: curated pages + uncurated apply-out cards. Do not wrap
   // withCuratedJdTag — that hid jobs until enrich finished.
@@ -457,10 +474,13 @@ export async function GET(request: NextRequest) {
     if (!added) break;
   }
 
+  const companyAbout = await companyAboutBySlug(jobs);
+
   // Map to response format (scores already computed)
   const jobsWithMatches = jobs.map(job => {
     const link = companyHubJobLink(job);
     const cardInfo = jobCardInfo(job);
+    const about = String(companyAbout.get(job.company_key || '') || '').trim();
     return {
     id: job.id,
     title: cleanJobTitle(job.title),
@@ -483,6 +503,7 @@ export async function GET(request: NextRequest) {
     match_signals: job._signals,
     summary: cardInfo.summary,
     highlights: cardInfo.highlights,
+    company_about: about || null,
   };
   });
 

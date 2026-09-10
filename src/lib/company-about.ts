@@ -4,6 +4,8 @@
  */
 import { getCompanyMeta } from '@/lib/company-data';
 import { toCompanyKey, companyDisplayName } from '@/lib/company-directory';
+import { supabaseAdmin } from '@/lib/supabase-admin';
+import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 // Lazy-loaded to avoid bundling 2.4MB JSON into every server function
 let _descriptions: Record<string, string> | null = null;
 async function getDescriptions(): Promise<Record<string, string>> {
@@ -120,6 +122,22 @@ async function lookupCachedBlurb(slugOrName: string): Promise<string | null> {
   return null;
 }
 
+async function lookupDbBlurb(slugOrName: string): Promise<string | null> {
+  const key = toCompanyKey(slugOrName);
+  if (!key) return null;
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.SUPABASE_URL) return null;
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SUPABASE_KEY) return null;
+  const result = await withTimeoutFallback(
+    supabaseAdmin.from('companies').select('about').eq('slug', key).maybeSingle(),
+    DB_BUDGET.fast,
+    { data: null, error: null } as any,
+    `company-about:${key}`
+  );
+  const text = String(result.data?.about || '').trim();
+  if (!text || isUnpublishableCompanyBlurb(text)) return null;
+  return text;
+}
+
 /**
  * True when we still know this company well enough to keep `/{slug}` as a hub
  * even if Wikipedia-shaped cache copy is not publishable.
@@ -152,6 +170,9 @@ export async function publishableCompanyAbout(slugOrName: string): Promise<strin
   ) {
     return fromMeta;
   }
+
+  const db = await lookupDbBlurb(slugOrName);
+  if (db) return db;
 
   const cached = await lookupCachedBlurb(slugOrName);
   if (cached) return cached;
