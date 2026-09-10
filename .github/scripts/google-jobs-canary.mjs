@@ -78,6 +78,9 @@ async function pickJobPaths() {
   const paths = locs
     .map(pathOf)
     .filter((p) => /^\/[a-z0-9-]+\/[a-z0-9-]+$/i.test(p));
+  // A thin-only board has no JobPosting URLs by design. That is a valid state
+  // during a fresh ingest; keep the canary strict once any curated pages exist.
+  if (paths.length === 0) return [];
   if (paths.length < 2) throw new Error('sitemap-jobs/0 has too few job URLs');
   const step = Math.max(1, Math.floor(paths.length / 12));
   return [...new Set(Array.from({ length: 12 }, (_, i) => paths[(i * step) % paths.length]))];
@@ -85,6 +88,7 @@ async function pickJobPaths() {
 
 async function checkOnce() {
   const paths = await pickJobPaths();
+  if (paths.length === 0) return null;
   const results = [];
   const missing = [];
   for (const path of paths) {
@@ -121,6 +125,10 @@ async function main() {
   for (let i = 1; i <= ATTEMPTS; i++) {
     try {
       const results = await checkOnce();
+      if (results === null) {
+        console.log('Google Jobs canary skipped: no curated JobPosting URLs in sitemap');
+        return;
+      }
       console.log(`Google Jobs canary ok (${results.length} URLs)`);
       for (const r of results) {
         console.log(`  ${r.path} through ${r.validThrough} ${r.jobLocationType || ''}`);
