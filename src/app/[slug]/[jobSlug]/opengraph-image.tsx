@@ -3,7 +3,7 @@ import { cleanPublishText } from '@/lib/noslop';
 import { isShortJobSlug, jobExternalIdFromSlugs, jobTypeLabel } from '@/lib/job-description';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { resolveOgCompanyLogo } from '@/lib/og-company-logo';
-import { isPublicJobPage } from '@/lib/job-apply-source';
+import { canRenderJobPage } from '@/lib/job-apply-source';
 import { JobListingOgCard } from '@/components/og/job-listing-card';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
@@ -59,7 +59,7 @@ export default async function Image({ params }: Props) {
 
   if (isShortJobSlug(jobSlug)) {
     const job = await loadJobForOg(slug, jobSlug);
-    if (job && isPublicJobPage(job)) {
+    if (job && canRenderJobPage(job)) {
       title = cleanPublishText(job.title);
       company = cleanPublishText(job.company);
       location = cleanPublishText(normalizeLocation(job.location || '') || 'Remote');

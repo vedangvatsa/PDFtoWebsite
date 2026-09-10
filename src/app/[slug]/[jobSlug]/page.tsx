@@ -26,7 +26,7 @@ import {
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { gonePrettyJobPath } from '@/lib/seo-fallbacks';
-import { isPublicJobPage, liveUncuratedApplyUrl } from '@/lib/job-apply-source';
+import { canRenderJobPage, liveUncuratedApplyUrl } from '@/lib/job-apply-source';
 import JobDetailClient from '@/app/jobs/[id]/job-detail-client';
 
 // Longer ISR: job snapshots revalidate in loaders (900s); page can stay warm longer.
@@ -148,7 +148,7 @@ async function resolveLegacySlugPath(
     for (const job of batch) consider(job);
   }
 
-  const publicMatches = matches.filter((j) => isPublicJobPage(j));
+  const publicMatches = matches.filter((j) => canRenderJobPage(j));
   if (!publicMatches.length) return null;
 
   const exact = publicMatches.find((j) => (jobStoredSlug(j) || '').toLowerCase() === want);
@@ -170,7 +170,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const legacy = await resolveLegacySlugPath(slug, jobSlug);
     if (legacy?.kind === 'render') job = legacy.job;
   }
-  if (!job || !isPublicJobPage(job)) {
+  if (!job || !canRenderJobPage(job)) {
     // Page will 308 to company hub / jobs — keep noindex until redirect lands.
     return { title: 'Job not found', robots: { index: false, follow: true } };
   }
@@ -190,7 +190,7 @@ export default async function CompanyJobPage({ params }: PageProps) {
       permanentRedirect(legacy.path);
     }
   }
-  if (!job || !isPublicJobPage(job)) {
+  if (!job || !canRenderJobPage(job)) {
     const apply = job ? liveUncuratedApplyUrl(job) : null;
     if (apply) redirect(apply);
     // Expired / deleted / reminted: soft-land on company hub (or /jobs).

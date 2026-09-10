@@ -3,7 +3,7 @@
  * Tests lock these so empty hubs / false 404s cannot return via filter drift.
  */
 import { companyDisplayName, toCompanyKey, toCompanySlug, canonicalCompanyHub, companyHubAliasPrefixes, routeCompanySlug } from '@/lib/company-directory';
-import { isCuratedJd, isPublicJobPage } from '@/lib/job-apply-source';
+import { canRenderJobPage, isCuratedJd } from '@/lib/job-apply-source';
 import { jobPublicPath } from '@/lib/job-description';
 
 export function uniqueNonEmpty(values: Array<string | null | undefined>): string[] {
@@ -106,7 +106,7 @@ export function companyHubJobLink(job: {
   description?: string | null;
 }): { href: string; external: boolean } {
   const onSite = () => ({ href: jobPublicPath(job), external: false as const });
-  if (isPublicJobPage(job)) return onSite();
+  if (canRenderJobPage(job)) return onSite();
   const apply = String(job.apply_url || '').trim();
   if (/^https?:\/\//i.test(apply)) return { href: apply, external: true };
   // Unloaded curated body may still resolve; a loaded non-public row must not

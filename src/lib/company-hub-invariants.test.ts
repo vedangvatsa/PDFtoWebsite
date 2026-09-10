@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isJobExpired, jobPostingValidThrough } from './job-age.mjs';
 import {
+  canRenderJobPage,
   isPublicJobPage,
   shouldListJobOnBoard,
   shouldListJobOnCompanyHub,
@@ -199,7 +200,7 @@ describe('board vs company hub listing', () => {
     assert.equal(shouldListJobOnBoard(curated), true);
   });
 
-  it('hub cards send uncurated jobs off-site', () => {
+  it('hub cards keep thin jobs on-site and noindex', () => {
     const link = companyHubJobLink({
       id: 'abc',
       company: 'OpenAI',
@@ -207,8 +208,9 @@ describe('board vs company hub listing', () => {
       tags: [],
       apply_url: 'https://boards.greenhouse.io/openai/jobs/1',
     });
-    assert.equal(link.external, true);
-    assert.equal(link.href, 'https://boards.greenhouse.io/openai/jobs/1');
+    assert.equal(link.external, false);
+    assert.equal(link.href.startsWith('http'), false);
+    assert.equal(canRenderJobPage({ ...uncurated, company: 'OpenAI' }), true);
   });
 
   it('hub cards keep curated jobs on-site', () => {
@@ -223,7 +225,7 @@ describe('board vs company hub listing', () => {
     assert.equal(link.href.startsWith('http'), false);
   });
 
-  it('hub cards send thin curated bodies off-site', () => {
+  it('hub cards keep thin curated bodies on-site but not indexable', () => {
     const link = companyHubJobLink({
       id: 'abc',
       company: 'OpenAI',
@@ -232,8 +234,9 @@ describe('board vs company hub listing', () => {
       apply_url: 'https://boards.greenhouse.io/openai/jobs/1',
       description: Array.from({ length: 200 }, () => 'word').join(' '),
     });
-    assert.equal(link.external, true);
-    assert.equal(link.href, 'https://boards.greenhouse.io/openai/jobs/1');
+    assert.equal(link.external, false);
+    assert.equal(link.href.startsWith('http'), false);
+    assert.equal(isPublicJobPage({ ...uncurated, company: 'OpenAI', tags: ['curated-jd'], description: Array.from({ length: 200 }, () => 'word').join(' ') }), false);
   });
 
   it('hub cards keep 600-word curated bodies on-site', () => {
@@ -434,13 +437,13 @@ describe('source locks — do not reintroduce empty hubs', () => {
     );
   });
 
-  it('hub cards send uncurated jobs off-site in source', () => {
+  it('hub cards render thin jobs on-site in source', () => {
     const src = readRel('src/lib/company-hub-query.ts');
     const start = src.indexOf('export function companyHubJobLink');
     const hubLink = src.slice(start);
     assert.ok(hubLink.includes('jobPublicPath(job)'));
     assert.ok(hubLink.includes('external: true'));
-    assert.ok(hubLink.includes('isPublicJobPage'));
+    assert.ok(hubLink.includes('canRenderJobPage'));
   });
 
   it('company hub page uses overlay links and hub card helper', () => {

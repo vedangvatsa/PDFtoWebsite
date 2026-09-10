@@ -12,7 +12,7 @@ import {
 } from '@/lib/job-detail-data';
 import { jobPublicPath, isJobId } from '@/lib/job-description';
 import { goneUuidJobPath } from '@/lib/seo-fallbacks';
-import { isPublicJobPage, liveUncuratedApplyUrl } from '@/lib/job-apply-source';
+import { canRenderJobPage, liveUncuratedApplyUrl } from '@/lib/job-apply-source';
 import JobDetailClient from './job-detail-client';
 
 export const revalidate = 1800;
@@ -26,7 +26,7 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const job = await fetchJobById(id);
-  if (!job || !isPublicJobPage(job)) {
+  if (!job || !canRenderJobPage(job)) {
     return { title: 'Job not found', robots: { index: false, follow: true } };
   }
   return await buildJobMetadata(job, siteUrl);
@@ -37,7 +37,7 @@ export default async function JobDetailPage({ params }: PageProps) {
   if (!isJobId(id)) notFound();
 
   const job = await fetchJobById(id);
-  if (!job || !isPublicJobPage(job)) {
+  if (!job || !canRenderJobPage(job)) {
     const apply = job ? liveUncuratedApplyUrl(job) : null;
     if (apply) redirect(apply);
     // Missing, expired, or enrich-queue without apply → jobs board (not a public page).

@@ -406,7 +406,9 @@ async function supabaseUpsert(jobs) {
     return batch.map((j) => ({
       ...j,
       company_key: j.company_key || toCompanyKey(j.company),
-      description: normalizeJobDescriptionForStorage(j.description),
+      // Raw ATS copy is fetched only when a visitor opens a thin job page.
+      // Keeping it here caused Postgres TOAST/index growth to take down Auth.
+      description: null,
       tags: Array.isArray(j.tags)
         ? j.tags.filter((t) => String(t).toLowerCase() !== 'curated-jd')
         : j.tags,
@@ -2837,7 +2839,7 @@ async function main() {
     console.error(`  ⚠️ companies rebuild failed: ${e.message}`);
   }
 
-  await enrichInsertedJobs(startIso);
+  console.log('\n⏭ Same-run enrichment disabled; raw ATS descriptions are not stored in Postgres');
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n🏁 Done in ${elapsed}s — Total: ${phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);

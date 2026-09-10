@@ -200,7 +200,6 @@ WHERE j.created_at > now() - interval '${DAYS} days'
   AND j.company IS NOT NULL
   AND btrim(j.company) <> ''
   AND j.company NOT LIKE '%...%'
-  AND j.tags @> ARRAY['curated-jd']::text[]
 GROUP BY j.company;
 `;
   const rows = await mgmtQuery(sql);
@@ -227,7 +226,6 @@ async function fetchStatsViaScan() {
     let q = sb
       .from('jobs')
       .select('id, company, company_logo, location, published_at, created_at, tags')
-      .contains('tags', ['curated-jd'])
       .gt('created_at', since)
       .order('created_at', { ascending: true })
       .order('id', { ascending: true })

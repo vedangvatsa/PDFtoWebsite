@@ -83,6 +83,7 @@ export default function JobDetailClient({
   relatedJobs = [],
 }: Props) {
   const [userSkills] = useState(initialSkills);
+  const [employerDescription, setEmployerDescription] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -110,6 +111,18 @@ export default function JobDetailClient({
       body: JSON.stringify({ ids: [job.id], action: 'view' }),
     }).catch(() => {});
   }, [job.id, job.title, job.company, job.source, job.has_description]);
+
+  useEffect(() => {
+    if (job.is_indexable || job.expired) return;
+    const controller = new AbortController();
+    fetch(`/api/jobs/${job.id}/description`, { signal: controller.signal })
+      .then(async (response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (payload?.description) setEmployerDescription(payload.description);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [job.id, job.is_indexable, job.expired]);
 
   const trackClick = () => {
     posthog.capture('job_detail_apply_clicked', {
@@ -376,11 +389,11 @@ export default function JobDetailClient({
 
           <div className="border-t border-zinc-100 pt-5 sm:pt-6 min-w-0">
             <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-3 sm:mb-4">
-              {job.description_kind === 'company' ? 'About the company' : 'Job description'}
+              {employerDescription ? 'Employer job details' : job.description_kind === 'company' ? 'About the company' : 'Job description'}
             </h2>
             <div
               className={JOB_DESCRIPTION_PROSE_CLASS}
-              dangerouslySetInnerHTML={{ __html: job.description_html }}
+              dangerouslySetInnerHTML={{ __html: employerDescription ? employerDescription.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br />') : job.description_html }}
             />
           </div>
 

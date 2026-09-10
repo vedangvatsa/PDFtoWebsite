@@ -59,6 +59,7 @@ const SKIP_LIST_SCAN = [
   '.github/scripts/queue-manual-jd-priority.mjs',
   '.github/scripts/restore-rows.mjs',
   '.github/scripts/match-restore.mjs',
+  '.github/scripts/rebuild-companies.mjs',
 ];
 
 describe('hub gate is live inventory, not the board gate', () => {
@@ -81,24 +82,24 @@ describe('hub gate is live inventory, not the board gate', () => {
   });
 });
 
-describe('public job URLs 301 uncurated stubs', () => {
+describe('thin job pages render on-site but stay noindex', () => {
   for (const rel of [
     'src/app/jobs/[id]/page.tsx',
     'src/app/[slug]/[jobSlug]/page.tsx',
   ]) {
-    it(`${rel} gates with isPublicJobPage + redirect`, () => {
+    it(`${rel} renders canRenderJobPage jobs and redirects only invalid rows`, () => {
       const file = src(rel);
-      assert.match(file, /isPublicJobPage/, rel);
+      assert.match(file, /canRenderJobPage/, rel);
       assert.match(file, /liveUncuratedApplyUrl/, rel);
       assert.match(file, /redirect\(/, rel);
       assert.match(file, /permanentRedirect/, rel);
-      assert.match(file, /!job \|\| !isPublicJobPage\(job\)/, rel);
+      assert.match(file, /!job \|\| !canRenderJobPage\(job\)/, rel);
     });
   }
 
-  it('GET /api/jobs/[id] 404s uncurated rows', () => {
+  it('GET /api/jobs/[id] serves renderable thin rows', () => {
     const file = src('src/app/api/jobs/[id]/route.ts');
-    assert.match(file, /isPublicJobPage/);
+    assert.match(file, /canRenderJobPage/);
     assert.match(file, /status: 404/);
   });
 
@@ -106,8 +107,8 @@ describe('public job URLs 301 uncurated stubs', () => {
     'src/app/jobs/[id]/opengraph-image.tsx',
     'src/app/[slug]/[jobSlug]/opengraph-image.tsx',
   ]) {
-    it(`${rel} skips personalizing uncurated jobs`, () => {
-      assert.match(src(rel), /isPublicJobPage/);
+    it(`${rel} personalizes renderable thin jobs`, () => {
+      assert.match(src(rel), /canRenderJobPage/);
     });
   }
 

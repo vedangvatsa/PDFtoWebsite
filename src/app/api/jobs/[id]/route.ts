@@ -6,7 +6,7 @@ import { isJobId } from '@/lib/job-description';
 import { publishSafeDescription } from '@/lib/job-detail-data';
 import { isJobExpired } from '@/lib/job-age';
 import { companyDisplayNameFromJob } from '@/lib/company-directory';
-import { isPublicJobPage } from '@/lib/job-apply-source';
+import { canRenderJobPage } from '@/lib/job-apply-source';
 
 const SELECT_COLS =
   'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,description,views,clicks';
@@ -33,7 +33,7 @@ export async function GET(
   if (!job) {
     return NextResponse.json({ error: 'Job not found' }, { status: 404 });
   }
-  if (!isPublicJobPage(job)) {
+  if (!canRenderJobPage(job)) {
     return NextResponse.json({ error: 'Job not found' }, { status: 404 });
   }
 

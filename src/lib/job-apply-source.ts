@@ -97,6 +97,25 @@ export function isPublicJobPage(job: PublicJobGate): boolean {
   return true;
 }
 
+/**
+ * A lightweight job page is useful to visitors but must not enter SEO feeds.
+ * Its details are fetched from the employer only when a visitor opens it;
+ * raw ATS copy is never persisted in Postgres.
+ */
+export function isThinJobPage(job: PublicJobGate): boolean {
+  if (isBannedJobTitle(job.title)) return false;
+  if (isGarbageJobTitle(job.title)) return false;
+  if (isGenericCompanyLabel(job.company)) return false;
+  if (isLowQualityApplySource(job.apply_url)) return false;
+  if (!hasHttpApplyUrl(job.apply_url)) return false;
+  return !isJobExpired(job.published_at, job.created_at);
+}
+
+/** Render curated pages for SEO and thin pages for visitors. */
+export function canRenderJobPage(job: PublicJobGate): boolean {
+  return isPublicJobPage(job) || isThinJobPage(job);
+}
+
 /** Sitemap, feeds, related cards, Telegram: live curated paraphrases only. */
 export function shouldListJobOnBoard(job: PublicJobGate): boolean {
   if (!isPublicJobPage(job)) return false;
@@ -126,7 +145,7 @@ export function shouldListLiveJobCard(job: PublicJobGate): boolean {
 
 /** Live uncurated row → employer apply URL. Null once the on-site page is public. */
 export function liveUncuratedApplyUrl(job: PublicJobGate): string | null {
-  if (isPublicJobPage(job)) return null;
+  if (canRenderJobPage(job)) return null;
   if (isJobExpired(job.published_at, job.created_at)) return null;
   const apply = String(job.apply_url || '').trim();
   return hasHttpApplyUrl(apply) ? apply : null;
