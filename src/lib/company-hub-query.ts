@@ -88,8 +88,8 @@ export function shouldKeepCompanyHub(input: {
 }
 
 /**
- * Curated cards stay on-site. Uncurated live cards go to apply_url so they
- * do not 301-loop back to the hub (job URLs are curated-only until enrich).
+  * Curated cards stay on-site. Thin live cards go to apply_url so visitors see
+  * the complete employer description instead of a weak local stub.
  * Shared by company hubs and the /jobs board.
  */
 export function companyHubJobLink(job: {

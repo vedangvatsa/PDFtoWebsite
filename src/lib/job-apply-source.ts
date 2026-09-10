@@ -111,9 +111,9 @@ export function isThinJobPage(job: PublicJobGate): boolean {
   return !isJobExpired(job.published_at, job.created_at);
 }
 
-/** Render curated pages for SEO and thin pages for visitors. */
+/** Render only curated, publish-safe job pages. Thin rows click through to employers. */
 export function canRenderJobPage(job: PublicJobGate): boolean {
-  return isPublicJobPage(job) || isThinJobPage(job);
+  return isPublicJobPage(job);
 }
 
 /** Sitemap, feeds, related cards, Telegram: live curated paraphrases only. */
@@ -145,7 +145,7 @@ export function shouldListLiveJobCard(job: PublicJobGate): boolean {
 
 /** Live uncurated row → employer apply URL. Null once the on-site page is public. */
 export function liveUncuratedApplyUrl(job: PublicJobGate): string | null {
-  if (canRenderJobPage(job)) return null;
+  if (isPublicJobPage(job)) return null;
   if (isJobExpired(job.published_at, job.created_at)) return null;
   const apply = String(job.apply_url || '').trim();
   return hasHttpApplyUrl(apply) ? apply : null;

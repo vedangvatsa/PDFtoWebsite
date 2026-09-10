@@ -82,12 +82,12 @@ describe('hub gate is live inventory, not the board gate', () => {
   });
 });
 
-describe('thin job pages render on-site but stay noindex', () => {
+describe('thin job pages redirect to employer descriptions', () => {
   for (const rel of [
     'src/app/jobs/[id]/page.tsx',
     'src/app/[slug]/[jobSlug]/page.tsx',
   ]) {
-    it(`${rel} renders canRenderJobPage jobs and redirects only invalid rows`, () => {
+    it(`${rel} renders curated pages and redirects thin rows`, () => {
       const file = src(rel);
       assert.match(file, /canRenderJobPage/, rel);
       assert.match(file, /liveUncuratedApplyUrl/, rel);
@@ -97,7 +97,7 @@ describe('thin job pages render on-site but stay noindex', () => {
     });
   }
 
-  it('GET /api/jobs/[id] serves renderable thin rows', () => {
+  it('GET /api/jobs/[id] serves curated pages only', () => {
     const file = src('src/app/api/jobs/[id]/route.ts');
     assert.match(file, /canRenderJobPage/);
     assert.match(file, /status: 404/);
@@ -107,8 +107,8 @@ describe('thin job pages render on-site but stay noindex', () => {
     'src/app/jobs/[id]/opengraph-image.tsx',
     'src/app/[slug]/[jobSlug]/opengraph-image.tsx',
   ]) {
-    it(`${rel} personalizes renderable thin jobs`, () => {
-      assert.match(src(rel), /canRenderJobPage/);
+    it(`${rel} personalizes public curated jobs only`, () => {
+      assert.match(src(rel), /isPublicJobPage/);
     });
   }
 
