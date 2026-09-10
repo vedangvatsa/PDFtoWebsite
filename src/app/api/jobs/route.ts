@@ -477,11 +477,11 @@ export async function GET(request: NextRequest) {
 
   const total = needsDbCount
     ? (count || jobsWithMatches.length)
-    : PLATFORM_JOBS_TOTAL;
+    : offset + jobsWithMatches.length;
 
   const hasMore = needsDbCount
     ? offset + limit < (count || 0)
-    : jobsWithMatches.length >= limit;
+    : rawJobs.length > limit;
 
   const response = NextResponse.json({
     jobs: jobsWithMatches,
