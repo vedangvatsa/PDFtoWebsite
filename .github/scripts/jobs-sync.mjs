@@ -45,6 +45,20 @@ const KNOWN_COMPANY_SLUGS = new Set(
     String(company).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
   )
 );
+const companyDescriptionsPath = resolve(__dirname, '../../src/lib/company-descriptions.json');
+const COMPANY_DESCRIPTIONS = JSON.parse(readFileSync(companyDescriptionsPath, 'utf8'));
+const FUNDED_COMPANY_SIGNAL =
+  /\b(?:venture[- ]backed|vc[- ]backed|series [a-e]|seed[- ]stage|raised \$?\d|funding from|backed by|y combinator|sequoia|a16z|andreessen|bessemer|accel|greylock|general catalyst|index ventures|lightspeed|founders fund)\b/i;
+
+function isRemoteRole(location) {
+  return /remote|worldwide|anywhere|global|work from home|\bwfh\b/i.test(String(location || ''));
+}
+
+function isKnownFundedCompany(company) {
+  const slug = companyToSlug(company);
+  if (!KNOWN_COMPANY_SLUGS.has(slug)) return false;
+  return FUNDED_COMPANY_SIGNAL.test(String(COMPANY_DESCRIPTIONS[slug] || ''));
+}
 
 // A full scrape can discover tens of thousands of live listings. Keep the
 // free-tier database bounded; 500 new rows per scheduled sync is ample for a
@@ -2858,8 +2872,8 @@ function filterAndNormalize(allJobs) {
     if (!isFreshPublishedAt(j.published_at)) return false;
     applyCanonicalCompany(j);
     if (j.company.includes('...') || j.company.length <= 2) return false;
-    const companySlug = companyToSlug(j.company);
-    if (!KNOWN_COMPANY_SLUGS.has(companySlug)) return false;
+    if (!isKnownFundedCompany(j.company)) return false;
+    if (!isRemoteRole(j.location)) return false;
     if (isRegistryCompanyLabel(j.company)) return false;
     if (isGenericCompanyLabel(j.company)) return false;
     if (BLOCKED_COMPANIES.includes(j.company.toLowerCase().trim())) return false;
@@ -2869,12 +2883,6 @@ function filterAndNormalize(allJobs) {
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(j.title)) return false;
     if (isNonEnglishTitle(j.title)) return false;
     return true;
-  });
-  // Remote roles are more broadly useful; retain on-site roles only after all
-  // eligible remote roles when the free-tier sync cap is reached.
-  validJobs.sort((a, b) => {
-    const remote = (job) => /remote|worldwide|anywhere|global|work from home|\bwfh\b/i.test(String(job.location || ''));
-    return Number(remote(b)) - Number(remote(a));
   });
   console.log(`   Valid jobs: ${validJobs.length} (filtered ${allJobs.length - validJobs.length} bad)`);
 
