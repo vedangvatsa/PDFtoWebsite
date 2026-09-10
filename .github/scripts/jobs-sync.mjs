@@ -39,6 +39,18 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
   process.exit(1);
 }
 
+const knownCompaniesPath = resolve(__dirname, '../../src/lib/valid-companies.json');
+const KNOWN_COMPANY_SLUGS = new Set(
+  JSON.parse(readFileSync(knownCompaniesPath, 'utf8')).map((company) =>
+    String(company).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  )
+);
+
+// A full scrape can discover tens of thousands of live listings. Keep the
+// free-tier database bounded; 500 new rows per scheduled sync is ample for a
+// current board and works with the existing 30-day expiry cleanup.
+let newJobsRemaining = Math.max(0, Number(process.env.JOBS_SYNC_MAX_NEW || 500));
+
 // ─── Tech keywords for tag extraction (regex-matched against descriptions) ───
 const TECH_KEYWORDS = [
   'javascript','typescript','python','java','ruby','go','golang','rust','c\\+\\+','c#',
@@ -341,6 +353,11 @@ async function supabaseUpsert(jobs) {
   const skippedCount = unique.length - newJobs.length;
   console.log(`   🆕 ${newJobs.length} new jobs to insert (${skippedCount} already exist)`);
 
+  if (newJobs.length > newJobsRemaining) {
+    console.log(`   🛑 Free-tier cap: retaining only ${newJobsRemaining} new jobs for this sync`);
+    newJobs.length = newJobsRemaining;
+  }
+
   if (newJobs.length === 0) {
     return { inserted: 0, skipped: skippedCount };
   }
@@ -485,6 +502,7 @@ async function supabaseUpsert(jobs) {
     await sleep(400);
   }
 
+  newJobsRemaining = Math.max(0, newJobsRemaining - inserted);
   return { inserted, skipped: skippedCount + (newJobs.length - inserted) };
 }
 
@@ -2777,63 +2795,14 @@ async function main() {
     console.log(`✅ Phase 2: Inserted ${inserted}, Skipped ${skipped}`);
   }
 
-  // ── PHASE 3: Aggregator APIs (6 sources — millions of jobs) ──
-  console.log('\n═══ Phase 3: Aggregator APIs ═══');
-  await sleep(2000);
+  // Aggregators produce the largest volume of regional, duplicate, and
+  // short-lived listings. The free-tier board only ingests direct ATS sources.
+  console.log('\n⏭ Phase 3: Aggregator APIs disabled');
+  const phase3Jobs = [];
 
-  // Group A: Jooble + Adzuna + JSearch (lightweight, fast)
-  const [jooble, adzuna, jsearch] = await Promise.all([
-    fetchJooble(),
-    fetchAdzuna(),
-    fetchJSearch(),
-  ]);
-
-  // Group B: Careerjet + Findwork (heavier, more pages)
-  await sleep(1000);
-  const [careerjet, findwork] = await Promise.all([
-    fetchCareerjet(),
-    fetchFindwork(),
-  ]);
-
-  const phase3Jobs = [...jooble, ...adzuna, ...jsearch, ...careerjet, ...findwork];
-  console.log(`📊 Phase 3 collected: ${phase3Jobs.length} jobs from aggregators`);
-
-  const phase3Valid = filterAndNormalize(phase3Jobs);
-  if (phase3Valid.length > 0) {
-    const { inserted, skipped } = await supabaseUpsert(phase3Valid);
-    console.log(`✅ Phase 3: Inserted ${inserted}, Skipped ${skipped}`);
-  }
-
-  // ── PHASE 4: India internships (AICTE Indian Army + MoSPI NIOS) ──
-  console.log('\n═══ Phase 4: India internships (Army + MoSPI + NITI Aayog) ═══');
-  try {
-    const indiaScript = join(__dirname, 'import-india-internships.mjs');
-    const ir = spawnSync(process.execPath, [indiaScript], {
-      env: process.env,
-      stdio: 'inherit',
-      timeout: 8 * 60 * 1000,
-    });
-    if (ir.status !== 0) {
-      console.error(`  ⚠️ India internships import exited ${ir.status}`);
-    }
-  } catch (e) {
-    console.error(`  ⚠️ India internships import failed: ${e.message}`);
-  }
-
-  console.log('\n═══ Phase 4b: Digital India Corporation careers ═══');
-  try {
-    const dicScript = join(__dirname, 'import-dic-careers.mjs');
-    const dr = spawnSync(process.execPath, [dicScript], {
-      env: { ...process.env, SKIP_ENRICH: process.env.SKIP_ENRICH || '1' },
-      stdio: 'inherit',
-      timeout: 12 * 60 * 1000,
-    });
-    if (dr.status !== 0) {
-      console.error(`  ⚠️ DIC careers import exited ${dr.status}`);
-    }
-  } catch (e) {
-    console.error(`  ⚠️ DIC careers import failed: ${e.message}`);
-  }
+  // These direct regional importers bypass the central known-company and
+  // remote-first filters, so they are disabled for the bounded free-tier feed.
+  console.log('\n⏭ Phase 4: Regional direct importers disabled');
 
   // Cleanup old jobs
   await cleanupOldJobs();
@@ -2889,6 +2858,8 @@ function filterAndNormalize(allJobs) {
     if (!isFreshPublishedAt(j.published_at)) return false;
     applyCanonicalCompany(j);
     if (j.company.includes('...') || j.company.length <= 2) return false;
+    const companySlug = companyToSlug(j.company);
+    if (!KNOWN_COMPANY_SLUGS.has(companySlug)) return false;
     if (isRegistryCompanyLabel(j.company)) return false;
     if (isGenericCompanyLabel(j.company)) return false;
     if (BLOCKED_COMPANIES.includes(j.company.toLowerCase().trim())) return false;
@@ -2898,6 +2869,12 @@ function filterAndNormalize(allJobs) {
     if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]/.test(j.title)) return false;
     if (isNonEnglishTitle(j.title)) return false;
     return true;
+  });
+  // Remote roles are more broadly useful; retain on-site roles only after all
+  // eligible remote roles when the free-tier sync cap is reached.
+  validJobs.sort((a, b) => {
+    const remote = (job) => /remote|worldwide|anywhere|global|work from home|\bwfh\b/i.test(String(job.location || ''));
+    return Number(remote(b)) - Number(remote(a));
   });
   console.log(`   Valid jobs: ${validJobs.length} (filtered ${allJobs.length - validJobs.length} bad)`);
 
