@@ -49,6 +49,17 @@ const companyDescriptionsPath = resolve(__dirname, '../../src/lib/company-descri
 const COMPANY_DESCRIPTIONS = JSON.parse(readFileSync(companyDescriptionsPath, 'utf8'));
 const FUNDED_COMPANY_SIGNAL =
   /\b(?:venture[- ]backed|vc[- ]backed|series [a-e]|seed[- ]stage|raised \$?\d|funding from|backed by|y combinator|sequoia|a16z|andreessen|bessemer|accel|greylock|general catalyst|index ventures|lightspeed|founders fund)\b/i;
+const FAMOUS_AI_COMPANY_SLUGS = new Set([
+  'openai', 'anthropic', 'deepmind', 'google-deepmind', 'xai', 'mistral', 'cohere',
+  'perplexity', 'character', 'character-ai', 'reka', 'alephalpha', 'aleph-alpha',
+  'stability-ai', 'midjourney', 'elevenlabs', 'synthesia', 'runway', 'huggingface',
+  'hugging-face', 'weights-biases', 'wandb', 'langchain', 'pinecone', 'weaviate',
+  'vectara', 'cursor', 'cognition', 'sierra', 'poolside', 'together-ai', 'fireworks-ai',
+  'anyscale', 'modal', 'baseten', 'replicate', 'cerebras', 'groq', 'sambanova',
+  'tenstorrent', 'coreweave', 'lambda', 'databricks', 'scale-ai', 'scaleai', 'nvidia',
+  'waymo', 'skydio', 'shieldai', 'shield-ai', 'figure', 'physical-intelligence',
+  'insitro', 'pathai', 'snorkel', 'snorkel-ai', 'datarobot', 'c3-ai', 'c3ai',
+]);
 
 function isRemoteRole(location) {
   return /remote|worldwide|anywhere|global|work from home|\bwfh\b/i.test(String(location || ''));
@@ -56,6 +67,7 @@ function isRemoteRole(location) {
 
 function isKnownFundedCompany(company) {
   const slug = companyToSlug(company);
+  if (FAMOUS_AI_COMPANY_SLUGS.has(slug)) return true;
   if (!KNOWN_COMPANY_SLUGS.has(slug)) return false;
   return FUNDED_COMPANY_SIGNAL.test(String(COMPANY_DESCRIPTIONS[slug] || ''));
 }
