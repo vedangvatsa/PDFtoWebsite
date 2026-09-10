@@ -22,6 +22,42 @@ import {
 
 const supabase = supabaseAdmin;
 
+const CARD_SKILL_BLOCKLIST = new Set([
+  'ai',
+  'go',
+  'hr',
+  'vp',
+  'qa',
+  'r',
+  'growth',
+  'support',
+  'recruiting',
+  'recruiter',
+  'talent',
+  'content',
+]);
+
+function jobCardInfo(job: any) {
+  const title = cleanJobTitle(job.title || 'role');
+  const company = companyDisplayNameFromJob(job);
+  const category = guessCategory(job);
+  const location = displayJobLocation(job.location, job.job_type);
+  const salary = cleanSalaryDisplay(job.salary);
+  const skills = Array.isArray(job.tags)
+    ? job.tags
+        .map((tag: unknown) => String(tag || '').trim())
+        .filter(Boolean)
+        .filter((tag: string) => !CARD_SKILL_BLOCKLIST.has(tag.toLowerCase()))
+        .slice(0, 4)
+    : [];
+
+  const focus = skills.length > 0 ? ` with ${skills.slice(0, 3).join(', ')}` : '';
+  const where = location ? `, ${location}` : '';
+  const summary = `${company} is hiring a ${title} in ${category}${focus}${where}.`;
+  const highlights = [category, salary, ...skills].filter(Boolean).slice(0, 5);
+  return { summary, highlights };
+}
+
 // Generous anonymous read quota — exists so agents can self-throttle via
 // the RateLimit-* headers, not to block anyone.
 const JOBS_READ_LIMIT = { windowMs: 60_000, max: 300, scope: 'jobs-read' } as const;
@@ -424,6 +460,7 @@ export async function GET(request: NextRequest) {
   // Map to response format (scores already computed)
   const jobsWithMatches = jobs.map(job => {
     const link = companyHubJobLink(job);
+    const cardInfo = jobCardInfo(job);
     return {
     id: job.id,
     title: cleanJobTitle(job.title),
@@ -444,6 +481,8 @@ export async function GET(request: NextRequest) {
     match_count: job._matchedSkills.length,
     match_score: job._score,
     match_signals: job._signals,
+    summary: cardInfo.summary,
+    highlights: cardInfo.highlights,
   };
   });
 
