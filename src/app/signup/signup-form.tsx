@@ -40,6 +40,7 @@ export default function SignUpForm() {
   const errorMsgParam = searchParams.get('message');
   const fromUpload = fromParam === 'upload';
   const fromManual = fromParam === 'manual';
+  const allowSignup = fromUpload || fromManual;
 
   useEffect(() => {
     if (errorParam === 'auth') {
@@ -116,6 +117,9 @@ export default function SignUpForm() {
       options: {
         // Used by email templates that include {{ .RedirectTo }} / confirmation URL base
         emailRedirectTo: emailRedirectTo(),
+        // The direct auth page is sign-in only. New accounts are created from
+        // an explicit editor flow after the visitor has started their profile.
+        shouldCreateUser: allowSignup,
       },
     });
     if (error) {

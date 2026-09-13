@@ -35,7 +35,7 @@ type Analytics = {
   authProviders: { provider: string; count: number }[];
   recentUsers: {
     email: string; name: string; slug: string; views: number;
-    provider: string; createdAt: string; lastSignIn: string | null; hasPhoto: boolean; hasResume: boolean;
+    provider: string; createdAt: string; lastSignIn: string | null; isConfirmed: boolean; hasPhoto: boolean; hasResume: boolean;
   }[];
   productTimeline: { date: string; tag: string; title: string; desc: string }[];
   contactSubmissions: { id: string; email: string; purpose: string; message: string; is_read: boolean; created_at: string }[];
@@ -773,8 +773,8 @@ export default function AdminPage() {
           </Section>
         )}
 
-        {/* ═══ RECENT SIGNUPS (Supabase) ═══ */}
-        <Section title="Recent signups">
+        {/* ═══ RECENT AUTH ATTEMPTS (Supabase) ═══ */}
+        <Section title="Recent accounts">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
             {recentUsers.map((u, i) => (
               <div key={i} className="flex items-start justify-between gap-4 pb-4 border-b border-border/50 last:border-0 last:pb-0">
@@ -785,8 +785,14 @@ export default function AdminPage() {
                     {u.slug && <a href={`https://cvin.bio/${u.slug}`} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2">/{u.slug}</a>}
                     <span>{u.views} views</span>
                     {u.lastSignIn && <span>Last active: {new Date(u.lastSignIn).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>}
-                    <span>{u.hasPhoto ? 'Photo ✓' : 'No photo'}</span>
-                    <span>{u.hasResume ? 'CV ✓' : 'No CV'}</span>
+                    {u.isConfirmed ? (
+                      <>
+                        <span>{u.hasPhoto ? 'Photo ✓' : 'No photo'}</span>
+                        <span>{u.hasResume ? 'CV ✓' : 'No CV'}</span>
+                      </>
+                    ) : (
+                      <span>Pending email confirmation</span>
+                    )}
                   </div>
                 </div>
                 <span className="text-xs text-muted-foreground shrink-0">{new Date(u.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>

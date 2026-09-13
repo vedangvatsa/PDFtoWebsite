@@ -7,7 +7,7 @@ import SignUpForm from './signup-form';
 
 export const metadata: Metadata = {
   title: 'Sign In',
-  description: 'Sign in or create a free CVin.Bio account to turn your resume into a beautiful, shareable professional website. Continue with Google or email.',
+  description: 'Sign in to your CVin.Bio account to continue editing and sharing your professional profile.',
   robots: { index: false, follow: false },
 };
 
@@ -24,7 +24,7 @@ export default function SignUpPage() {
         <Card className="w-full max-w-sm">
           <CardHeader>
             <CardTitle className="text-2xl">Welcome to CVin.Bio</CardTitle>
-            <CardDescription>Sign in or create an account to get started.</CardDescription>
+            <CardDescription>Sign in to continue editing and sharing your profile.</CardDescription>
           </CardHeader>
           <CardContent>
             <SignUpForm />

@@ -28,7 +28,13 @@ function emailRedirectTo(): string {
   return `${origin}/auth/callback?next=${encodeURIComponent('/editor')}&auth_method=email_link`;
 }
 
-export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
+export function LoginDialog({
+  trigger,
+  allowSignup = false,
+}: {
+  trigger?: React.ReactNode;
+  allowSignup?: boolean;
+} = {}) {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -47,6 +53,9 @@ export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
       email,
       options: {
         emailRedirectTo: emailRedirectTo(),
+        // A regular sign-in must not create empty auth users. The editor opts
+        // into account creation only after a visitor has started a profile.
+        shouldCreateUser: allowSignup,
       },
     });
     if (error) {
@@ -161,7 +170,9 @@ export function LoginDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle className="sr-only">Sign In to CVin.Bio</DialogTitle>
+          <DialogTitle className="sr-only">
+            {allowSignup ? 'Create your CVin.Bio account' : 'Sign in to CVin.Bio'}
+          </DialogTitle>
         </DialogHeader>
 
         {emailSent ? (

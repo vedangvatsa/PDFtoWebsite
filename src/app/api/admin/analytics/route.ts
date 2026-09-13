@@ -550,6 +550,7 @@ async function fetchAnalyticsDataRaw() {
             provider: u.app_metadata?.provider || 'unknown',
             createdAt: u.created_at,
             lastSignIn: u.last_sign_in_at || null,
+            isConfirmed: Boolean(u.email_confirmed_at),
             hasPhoto: !!(profile?.profile_picture_url && profile.profile_picture_url.trim()),
             hasResume: Array.isArray(profile?.experience) && profile.experience.length > 0,
           };
@@ -569,6 +570,7 @@ async function fetchAnalyticsDataRaw() {
             provider: 'google',
             createdAt: p.created_at,
             lastSignIn: p.updated_at || null,
+            isConfirmed: true,
             hasPhoto: !!(p.profile_picture_url && p.profile_picture_url.trim()),
             hasResume: Array.isArray(p.experience) && p.experience.length > 0,
           };

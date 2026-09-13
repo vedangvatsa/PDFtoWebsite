@@ -1038,7 +1038,7 @@ export default function EditorPage() {
                 <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-amber-800 text-xs md:text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
                     <span className="min-w-0 text-center"><strong>Guest mode.</strong> Check your details below, then sign up to save.</span>
-                    <LoginDialog trigger={
+                    <LoginDialog allowSignup trigger={
                         <Button size="sm" variant="outline" className="px-4 text-xs font-semibold border-amber-300 text-amber-800 hover:bg-amber-100 shrink-0" onClick={() => {
                             const snapshot = {
                                 personalInfo: { fullName: profile.fullName, email: profile.email, phone: profile.phone, location: profile.location, website: profile.website, github: profile.github, linkedin: profile.linkedin, slug: profile.slug, avatarUrl: profile.avatarUrl },
@@ -1361,7 +1361,7 @@ export default function EditorPage() {
                                                 </PopoverContent>
                                             </Popover>
                                             ) : (
-                                                <LoginDialog trigger={
+                                                <LoginDialog allowSignup trigger={
                                                     <Button variant="default" size="sm" className="h-9 shrink-0 shadow-sm animate-pulse bg-primary">
                                                         Claim URL
                                                     </Button>
