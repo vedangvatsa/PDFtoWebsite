@@ -178,7 +178,8 @@ describe('job age uses newest stamp', () => {
 });
 
 describe('board vs company hub listing', () => {
-  const live = new Date(now - 2 * day).toISOString();
+  // Listing gates use the current clock, so this fixture must remain fresh.
+  const live = new Date(Date.now() - 2 * day).toISOString();
   const uncurated = {
     title: 'Software Engineer',
     tags: [],
