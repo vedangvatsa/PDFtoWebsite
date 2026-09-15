@@ -1,16 +1,12 @@
-'use client';
-
-import { useCallback, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import BlogCTA from '@/components/blog-cta';
 import { NomadPageShell } from '@/components/nomad/nomad-page-shell';
-import { useNomadCities } from '@/hooks/use-nomad-cities';
+import nomadCities from '@/lib/nomad-cities';
 import {
   ArrowDown, ArrowUp, Clock, Activity,
   Shield, AlertTriangle, BarChart3,
   Footprints, Train, Bike,
-  Info, Wifi,
+  Info,
 } from 'lucide-react';
 import { PAGE_DISCLAIMER } from '@/lib/utils';
 import {
@@ -601,21 +597,18 @@ function WalkabilityTab({ cities }: { cities: City[] }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Main page (with Suspense boundary for useSearchParams)             */
+/*  Main page (server-rendered: tab from searchParams, data bundled)   */
 /* ------------------------------------------------------------------ */
 
-function RankingsContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const tabParam = searchParams.get('tab') as TabKey | null;
-  const activeTab: TabKey = tabParam && TABS.some(t => t.key === tabParam) ? tabParam : 'internet';
-  const { cities, loading } = useNomadCities<City>();
+const cities = nomadCities as unknown as City[];
 
-  const setTab = useCallback((key: TabKey) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('tab', key);
-    router.push(`/rankings?${params.toString()}`, { scroll: false });
-  }, [router, searchParams]);
+export default async function RankingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
+  const { tab } = await searchParams;
+  const activeTab: TabKey = tab && TABS.some(t => t.key === tab) ? (tab as TabKey) : 'internet';
 
   return (
     <NomadPageShell
@@ -627,9 +620,10 @@ function RankingsContent() {
         {/* Tab Bar */}
         <div className="bg-zinc-100 rounded-lg p-1 inline-flex gap-1 mb-10">
           {TABS.map(tab => (
-            <button
+            <Link
               key={tab.key}
-              onClick={() => setTab(tab.key)}
+              href={tab.key === 'internet' ? '/rankings' : `/rankings?tab=${tab.key}`}
+              scroll={false}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === tab.key
                   ? 'bg-white shadow-sm text-zinc-900'
@@ -637,32 +631,14 @@ function RankingsContent() {
               }`}
             >
               {tab.label}
-            </button>
+            </Link>
           ))}
         </div>
 
         {/* Content */}
-        {loading ? (
-          <div className="text-center py-20 text-zinc-400">Loading data…</div>
-        ) : (
-          <>
-            {activeTab === 'internet' && <InternetTab cities={cities} />}
-            {activeTab === 'safety' && <SafetyTab cities={cities} />}
-            {activeTab === 'walkability' && <WalkabilityTab cities={cities} />}
-          </>
-        )}
+        {activeTab === 'internet' && <InternetTab cities={cities} />}
+        {activeTab === 'safety' && <SafetyTab cities={cities} />}
+        {activeTab === 'walkability' && <WalkabilityTab cities={cities} />}
     </NomadPageShell>
-  );
-}
-
-export default function RankingsPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center text-zinc-400">
-        Loading…
-      </div>
-    }>
-      <RankingsContent />
-    </Suspense>
   );
 }
