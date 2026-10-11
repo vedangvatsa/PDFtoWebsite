@@ -110,6 +110,7 @@ export function createOriginalJobFetcher(fetcher = fetch) {
       data = await json(`https://boards-api.greenhouse.io/v1/boards/${board}/jobs/${id}`);
       if (!data) return postingPage(meta, job);
       if (String(data.id) !== meta.id) return { ok: false, reason: 'source_identity_mismatch' };
+      if (data.internal_job_id === null) return { ok: false, reason: 'not_a_vacancy' };
       html = data.content;
     } else if (meta.kind === 'ashby') {
       // A single official page carries JobPosting JSON-LD, even when the

@@ -4,6 +4,10 @@ import { createOriginalJobFetcher, originalJobIdentity } from './fetch-original-
 const id = '12345678-1234-1234-1234-123456789abc';
 
 describe('official employer source fetching', () => {
+  it('does not publish a Greenhouse prospect signup as a vacancy', async () => {
+    const fetchOriginal = createOriginalJobFetcher(async () => Response.json({ id: 123, internal_job_id: null, content: '<p>Join our talent community.</p>' }));
+    assert.deepEqual(await fetchOriginal({ source: 'greenhouse', external_id: 'gh_example_123' }), { ok: false, reason: 'not_a_vacancy' });
+  });
   it('prefers matching URL region and board case, rejects conflicting source identities', async () => {
     const job = { source: 'ashby', external_id: `ashby_jasper ai_${id}`, apply_url: `https://jobs.ashbyhq.com/Jasper%20AI/${id}` };
     assert.equal(originalJobIdentity(job).board, 'Jasper AI');

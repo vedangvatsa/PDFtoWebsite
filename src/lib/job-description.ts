@@ -174,7 +174,8 @@ export function isGarbageJobTitle(title: string | null | undefined): boolean {
   }
   if (/^(?:current(?:ly)?\s+)?jobs?\s+openings?$/i.test(t)) return true;
   if (/^vacancies(?:\s+[a-z]+)?$/i.test(t) && t.length < 36) return true;
-  if (/^community\s+/i.test(t) && t.length < 28) return true;
+  // Community Manager/Lead are real roles; only reject community navigation.
+  if (/^community(?:\s+(?:news|updates?|stories|events?|blog))?$/i.test(t)) return true;
   if (/\bread more\b/i.test(t)) return true;
   if (/\bexplaining the\b/i.test(t) && t.length > 40) return true;
   if (/\band introducing (our|the)\b/i.test(t)) return true;

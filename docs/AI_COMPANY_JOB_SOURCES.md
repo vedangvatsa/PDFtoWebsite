@@ -25,6 +25,8 @@ Superhuman's unified board and uses its current employer name.
 - Existing banned-role, English-title, dedup and complete-description policies
   still apply. Original text is fetched independently by native posting identity,
   sanitized without rewriting, and checked before insertion. No AI calls.
+  Greenhouse prospect posts (`internal_job_id: null`) and talent-pool/general
+  application titles are not vacancies. Real Community Manager roles qualify.
 - AI100 runs first, round-robin by company after existing-record filtering,
   sharing the 500-new-job/run and 4,000-original-body limits with other sources.
   Source detail verification remains serial; inserts are at most 75 × 2.

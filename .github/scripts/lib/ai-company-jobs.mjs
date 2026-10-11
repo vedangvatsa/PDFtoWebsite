@@ -84,6 +84,7 @@ export function createAiFeedReader(fetcher = fetch) {
       if (!Array.isArray(data.jobs)) throw new Error('Invalid Greenhouse feed');
       return { total: data.jobs.length, jobs: data.jobs.map((job) => ({
         source: 'greenhouse', external_id: `gh_${board.toLowerCase()}_${job.id}`, title: job.title,
+        isProspect: job.internal_job_id === null,
         location: job.location?.name || '', published_at: postedIso(job.updated_at || job.first_published),
         apply_url: `https://job-boards${provider.endsWith('-eu') ? '.eu' : ''}.greenhouse.io/${slug}/jobs/${job.id}`, category: job.departments?.map((d) => d.name).join(', ') || null,
         workplaceType: job.metadata?.find((m) => /^(?:workplace type|workplace|remote status)$/i.test(m.name))?.value,
@@ -261,6 +262,7 @@ export async function collectAiCompanyJobs({ companies = AI_COMPANIES, sources =
           for (const [reason, count] of Object.entries(feed.excluded || {})) row.excluded[reason] = (row.excluded[reason] || 0) + count;
           row.errors.push(...(feed.errors || []));
           for (const job of feed.jobs) {
+            if (job.isProspect) { row.excluded.not_a_vacancy = (row.excluded.not_a_vacancy || 0) + 1; continue; }
             if (!isExplicitlyRemote(job)) { row.excluded.not_remote = (row.excluded.not_remote || 0) + 1; continue; }
             row.remote++;
             const stamp = postedIso(job.published_at);

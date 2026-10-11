@@ -105,6 +105,9 @@ export const BANNED_PATTERNS = [
   '\\bagent, critical incident response\\b', '\\broute to market\\b',
   '\\bsales associate\\b', '\\bretail associate\\b', '\\bcashier(?:s)?\\b',
   // Listing / placeholder titles (RemoteOK nav scrapes, not roles)
+  '\\btalent (?:pool|community|pipeline|network)\\b',
+  '\\b(?:general|open|spontaneous) application\\b',
+  '\\bexpressions? of interest\\b',
   '^jobs?$', '^vacancies$', '^openings$', '^positions$', '^careers$',
   '^opportunities$', '^job title$', '^hiring process$', '^now hiring$',
   '^test job\\b', '\\bpermanent jobs\\b', '\\bwanted jobs\\b', '\\bcasual jobs\\b',

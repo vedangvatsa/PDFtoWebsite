@@ -19,6 +19,9 @@ describe('listing-page titles are banned', () => {
     'Hiring Process',
     'Now Hiring in Canada – Roofers',
     'Commercial Roofers',
+    'Talent Community',
+    'Join our Talent Pool',
+    'General Application',
   ]) {
     it(`bans ${JSON.stringify(title)}`, () => {
       assert.equal(isBannedJobTitle(title), true, title);
@@ -30,6 +33,8 @@ describe('listing-page titles are banned', () => {
     'Background job monitoring',
     'Staff Product Manager',
     'AI Fellowship',
+    'Community Manager',
+    'Community Engineer',
     'Now Hiring Commercial and Industrial Electrical Project Manager for Data Centers',
   ]) {
     it(`keeps ${JSON.stringify(title)}`, () => {

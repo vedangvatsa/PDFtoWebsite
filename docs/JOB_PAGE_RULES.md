@@ -50,6 +50,9 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
   as basic listings. Never generate replacement prose or fabricate facts.
 - Confirmed removed postings get `source-closed`, leave the live board and
   company counts, and retain metadata. A network failure alone never closes a job.
+  A source confirmed to be a non-vacancy (such as a talent-pool signup) is also
+  withdrawn from live inventory using `source-closed` plus `source-not-vacancy`;
+  this reason tag distinguishes policy withdrawal from removal by the employer.
 - Daily sync admits up to 500 complete listings from known remote-tech companies;
   funding language in company blurbs is no longer required. Source lookups are
   serial and bounded to four attempts per admission slot. Store at most 4,000
