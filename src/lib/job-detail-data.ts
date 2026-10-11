@@ -42,7 +42,7 @@ import { isJobExpired, jobPostingValidThrough } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
 import { shouldListJobOnBoard } from '@/lib/job-apply-source';
-import { isSourceJd, sourceDescriptionValid, sourceDescriptionHtml, sourceDescriptionWords } from '@/lib/source-job-description.mjs';
+import { isSourceJd, sourceDescriptionValid, sourceDescriptionHtml, sourceDescriptionPlain, sourceDescriptionWords } from '@/lib/source-job-description.mjs';
 import {
   isTrustedCompanyDomain,
   primaryCompanyLogoUrl,
@@ -174,10 +174,11 @@ export async function publishSafeDescription(job: JobRow, location: string): Pro
   const isCurated = Array.isArray(job.tags) && job.tags.includes('curated-jd');
   const raw = job.description;
 
-  if (isCurated && isSourceJd(job.tags) && sourceDescriptionValid(raw)) {
+  if (isCurated && isSourceJd(job.tags) && sourceDescriptionValid(raw, job.tags)) {
+    const plain = sourceDescriptionPlain(raw, job.tags);
     return {
-      isCurated: false, kind: 'source', html: sourceDescriptionHtml(raw),
-      plain: raw!, wordCount: sourceDescriptionWords(raw), indexable: true,
+      isCurated: false, kind: 'source', html: sourceDescriptionHtml(raw, job.tags),
+      plain, wordCount: sourceDescriptionWords(plain), indexable: true,
     };
   }
 
@@ -1100,7 +1101,7 @@ function plainToHtmlDescription(plain: string): string {
 
 function schemaDescriptionSource(job: JobRow, detail: JobDetail): string {
   const raw = job.description || '';
-  if (isSourceJd(job.tags)) return raw;
+  if (isSourceJd(job.tags)) return sourceDescriptionPlain(raw, job.tags);
   if (raw && looksLikeOwnedJobCopy(raw) && !/\[placeholder\]|lorem ipsum/i.test(raw)) {
     return String(raw)
       .replace(/<script[\s\S]*?<\/script>/gi, '')
@@ -1144,7 +1145,7 @@ export function buildJobJsonLd(
   // string, which is a "description same as title" violation. When no real body
   // exists, skip JobPosting entirely instead of emitting weak markup.
   if (plain.length <= 80) return null;
-  const description = isSourceJd(job.tags) ? sourceDescriptionHtml(plain) : plainToHtmlDescription(plain.slice(0, 8000));
+  const description = isSourceJd(job.tags) ? detail.description_html : plainToHtmlDescription(plain.slice(0, 8000));
 
   const rawLoc = job.location || detail.location || '';
   const nonPlace =

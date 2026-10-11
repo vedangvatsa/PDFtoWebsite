@@ -33,21 +33,32 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
 
 - Fetch the exact posting from an official ATS API, matching its native job ID.
   Greenhouse, Ashby, Lever, Workable and SmartRecruiters are supported.
-- Preserve employer wording, punctuation and paragraph/list order. HTML is
-  converted to plain text and escaped for display; no AI, rewriting or padding.
+- Preserve employer wording, punctuation and paragraph/list order. Versioned
+  `source-html` descriptions retain headings, paragraphs, lists, emphasis,
+  tables and safe links through an HTML-parser allowlist at import and render.
+  Scripts, event handlers, unsafe URLs and embedded widgets are removed. No AI.
 - New descriptions carry `source-jd` plus `curated-jd`. The latter remains the
   existing SQL publication selector; the former selects the original-text path.
 - Source bodies need at least 40 words and must fit 32 KiB UTF-8. Reject oversized
   bodies rather than truncating them. Legacy rewrites retain their 600-word floor.
 - Pages, detail API responses, full-description feeds and JobPosting schema use
   the original body. The existing employer apply link remains the source link.
-- Missing, unavailable, unsupported or oversized sources remain apply-out cards;
-  never generate replacement prose, fabricate facts, or delete the job on a scrape failure.
-- Import at most 100 descriptions serially per sync, with at most 2,000 stored
-  original bodies (~62.5 MiB payload cap plus database overhead). After 30 days,
+- New rows require a verified original description BEFORE insertion. Missing,
+  unavailable, unsupported or oversized sources are deferred rather than added
+  as basic listings. Never generate replacement prose or fabricate facts.
+- Confirmed removed postings get `source-closed`, leave the live board and
+  company counts, and retain metadata. A network failure alone never closes a job.
+- Daily sync admits up to 500 complete listings from known remote-tech companies;
+  funding language in company blurbs is no longer required. Source lookups are
+  serial and bounded to four attempts per admission slot. Store at most 4,000
+  original bodies (~125 MiB payload cap plus database overhead). After 30 days,
   source snapshots lose their body/publication tags and gain `source-archived`;
   cleanup retains the row so old links can redirect to the company hub.
 - AI job rewriting's old entrypoint is disabled. Scheduled sync has no AI credentials.
+- Ashby single-job JobPosting data avoids giant board downloads. A bounded
+  64-MiB Node-only board fallback confirms missing IDs when pages lack metadata;
+  ordinary source responses remain capped at 12 MiB. Backfill uses the same
+  newest-of-created/published window as the public board.
 
 ## SEO
 

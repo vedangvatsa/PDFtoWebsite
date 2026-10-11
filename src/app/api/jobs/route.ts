@@ -157,6 +157,7 @@ export async function GET(request: NextRequest) {
   // Live inventory: curated pages + uncurated apply-out cards. Do not wrap
   // withCuratedJdTag — that hid jobs until enrich finished.
   function applyBaseFilters(q: any) {
+    q = q.or('tags.is.null,tags.not.cs.{source-closed}');
     if (type && type !== 'all') q = q.eq('job_type', type);
     return q;
   }
@@ -172,6 +173,7 @@ export async function GET(request: NextRequest) {
   let query = supabase
     .from('jobs')
     .select(selectCols, needsDbCount ? { count: 'estimated' } : undefined)
+    .or('tags.is.null,tags.not.cs.{source-closed}')
     .or(companyJobsDateOrFilter(boardSince))
     .order('published_at', { ascending: false, nullsFirst: false });
 

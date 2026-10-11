@@ -149,7 +149,9 @@ References: [DO pricing](https://developers.cloudflare.com/durable-objects/platf
 
 ## Ingestion and maintenance
 
-- Default: at most 500 new jobs/run, inserts of 75 rows with concurrency 2.
+- Daily sync: at most 500 new jobs/run, inserts of 75 rows with concurrency 2.
+  Known remote-tech employers qualify without a funding-keyword requirement.
+  Filter-exclusion counters explain remaining coverage constraints.
 - Failed dedup reads stop inserts; failed writes/cleanup/rebuild/publication fail
   the workflow. A green run must represent a completed pipeline.
 - Company rebuilds prove source completeness using SQL group counts, RPC exact
@@ -161,13 +163,14 @@ References: [DO pricing](https://developers.cloudflare.com/durable-objects/platf
   errors still fail the workflow instead of silently discarding records.
 - Sync uses `cleanup-old-jobs.mjs`, which protects described/curated jobs and
   Telegram-posted links, and rechecks guards at delete time.
-- Sync imports original employer descriptions with zero AI calls: up to 100
-  serial candidates per run, 32 KiB per body, and 2,000 active source snapshots.
-  The job ID is verified against an official ATS API. Original wording is kept;
-  missing/oversized sources remain apply-out listings. No partial truncation.
+- Every new row has its official employer description verified before insertion:
+  zero AI calls, serial source requests, at most 500 complete additions/run and
+  four source attempts per admission slot. Missing/oversized sources are deferred.
+  Original wording and safe headings/lists/links are retained as `source-html`.
+  Keep 32 KiB/body and at most 4,000 source snapshots. No partial truncation.
 - Source snapshots expire after 30 days. Their lightweight rows/URLs remain as
   `source-archived`; legacy curated descriptions are retained. Stored original
-  text is bounded to 62.5 MiB plus database overhead under the serialized sync.
+   text is bounded to 125 MiB plus database overhead under the serialized sync.
 - `source-jd` identifies originals; `curated-jd` remains the shared publication
   selector used by existing indexed SQL queries. The 600-word rewrite floor
   does not apply to originals, which have a 40-word empty-body guard.

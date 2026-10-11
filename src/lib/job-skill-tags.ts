@@ -36,6 +36,8 @@ const SKILL_TAG_BLOCKLIST = new Set([
   'curated',
   'curated-jd',
   'source-jd',
+  'source-html',
+  'source-closed',
   'source-archived',
   'curated job',
 ]);

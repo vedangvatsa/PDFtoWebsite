@@ -9,7 +9,7 @@ describe('official employer source fetching', () => {
       assert.equal(url, 'https://boards-api.greenhouse.io/v1/boards/example/jobs/123');
       return Response.json({ id: 123, content: '<p>Exact source — unchanged.</p>' });
     });
-    assert.deepEqual(await fetchOriginal({ source: 'greenhouse', external_id: 'gh_example_123', apply_url: 'https://careers.example.com/role' }), { ok: true, text: 'Exact source — unchanged.' });
+    assert.deepEqual(await fetchOriginal({ source: 'greenhouse', external_id: 'gh_example_123', apply_url: 'https://careers.example.com/role' }), { ok: true, text: 'Exact source — unchanged.', html: '<p>Exact source — unchanged.</p>' });
   });
   it('includes all Lever responsibility and qualification lists in source order', async () => {
     const fetchOriginal = createOriginalJobFetcher(async (url) => {
@@ -17,11 +17,13 @@ describe('official employer source fetching', () => {
       return Response.json({ id, description: '<p>Intro.</p>', lists: [{ text: 'Requirements', content: '<ul><li>SQL.</li></ul>' }], additional: '<p>Closing.</p>' });
     });
     const result = await fetchOriginal({ source: 'lever', external_id: `lever_example_${id}` });
-    assert.equal(result.text, 'Intro.\n\nRequirements\n- SQL.\n\nClosing.');
+    assert.equal(result.text, 'Intro.\n\nRequirements\n\n- SQL.\n\nClosing.');
+    assert.match(result.html, /<h2>Requirements<\/h2><ul><li>SQL\.<\/li><\/ul>/);
   });
   it('matches the exact Ashby ID and reuses the bounded board response', async () => {
     let calls = 0;
-    const fetchOriginal = createOriginalJobFetcher(async () => {
+    const fetchOriginal = createOriginalJobFetcher(async (url) => {
+      if (url.startsWith('https://jobs.ashbyhq.com/')) return new Response('<html>No structured data</html>');
       calls++;
       return Response.json({ jobs: [{ id: 'other', descriptionHtml: '<p>Wrong job</p>' }, { id, descriptionHtml: '<p>Correct job</p>' }] });
     });
@@ -35,9 +37,25 @@ describe('official employer source fetching', () => {
     assert.equal(originalJobIdentity({ apply_url: 'https://jobs.lever.co.evil.example/example/123' }), null);
     assert.deepEqual(await fetchOriginal({ apply_url: 'http://127.0.0.1/private' }), { ok: false, reason: 'unsupported_source' });
     const unavailable = createOriginalJobFetcher(async () => new Response(null, { status: 404 }));
-    assert.deepEqual(await unavailable({ source: 'greenhouse', external_id: 'gh_example_123' }), { ok: false, reason: 'source_not_found' });
+    assert.deepEqual(await unavailable({ source: 'greenhouse', external_id: 'gh_example_123' }), { ok: false, reason: 'source_closed', closed: true });
     const wrong = createOriginalJobFetcher(async () => Response.json({ id: 999, content: '<p>Wrong</p>' }));
     assert.equal((await wrong({ source: 'greenhouse', external_id: 'gh_example_123' })).ok, false);
+  });
+  it('gets one Ashby posting from structured page data without loading a huge board', async () => {
+    const fetchOriginal = createOriginalJobFetcher(async (url) => {
+      assert.equal(url, `https://jobs.ashbyhq.com/example/${id}`);
+      return new Response(`<script type="application/ld+json">${JSON.stringify({ '@type': 'JobPosting', identifier: { value: id }, description: '<h2>Requirements</h2><ul><li>SQL</li></ul>' })}</script>`);
+    });
+    const result = await fetchOriginal({ source: 'ashby', external_id: `ashby_example_${id}`, apply_url: `https://jobs.ashbyhq.com/example/${id}` });
+    assert.equal(result.html, '<h2>Requirements</h2><ul><li>SQL</li></ul>');
+  });
+  it('recognizes verified removed-posting redirects without following arbitrary URLs', async () => {
+    const fetchOriginal = createOriginalJobFetcher(async (url) => url.includes('boards-api')
+      ? new Response(null, { status: 404 }) : new Response(null, { status: 302, headers: { Location: '/example?error=true' } }));
+    assert.equal((await fetchOriginal({ source: 'greenhouse', external_id: 'gh_example_123' })).closed, true);
+    const unsafe = createOriginalJobFetcher(async (url) => url.includes('boards-api')
+      ? new Response(null, { status: 404 }) : new Response(null, { status: 302, headers: { Location: 'http://127.0.0.1/private' } }));
+    await assert.rejects(unsafe({ source: 'greenhouse', external_id: 'gh_example_123' }), /Unverified ATS redirect/);
   });
   it('surfaces source failures and enforces response byte limits', async () => {
     const job = { source: 'greenhouse', external_id: 'gh_example_123' };

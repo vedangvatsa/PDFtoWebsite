@@ -216,11 +216,13 @@ describe('public lists constrain curated-jd before limit()', () => {
   });
 });
 
-describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
-  it('jobs-sync strips curated-jd on insert', () => {
+describe('publication requires verified source content; DB cannot auto-tag it', () => {
+  it('jobs-sync verifies original descriptions before every insert', () => {
     const file = src('.github/scripts/jobs-sync.mjs');
-    assert.match(file, /toLowerCase\(\) !== 'curated-jd'/);
-    assert.doesNotMatch(file, /tags\.push\(['"]curated-jd['"]\)/);
+    assert.match(file, /await completeJobCandidates\(candidates/);
+    assert.match(file, /description: j.description/);
+    assert.doesNotMatch(file.slice(file.indexOf('function withCompanyKey'), file.indexOf('async function sendInsert')), /description: null/);
+    assert.match(src('.github/scripts/lib/complete-job-intake.mjs'), /sourcePublicationPatch/);
   });
 
   it('jobs-sync runs the bounded original-description importer without AI', () => {
@@ -239,7 +241,7 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
     const file = src('.github/scripts/jobs-sync.mjs');
     assert.match(file, /function normalizePublishedAt/);
     assert.match(file, /function isFreshPublishedAt/);
-    assert.match(file, /if \(!isFreshPublishedAt\(j\.published_at\)\) return false/);
+    assert.match(file, /if \(!isFreshPublishedAt\(j\.published_at\)\) return reject\('missing_or_stale_date'\)/);
     assert.match(file, /30 \* 24 \* 60 \* 60 \* 1000/);
   });
 

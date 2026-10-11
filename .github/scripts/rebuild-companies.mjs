@@ -202,6 +202,7 @@ WHERE (j.created_at > now() - interval '${DAYS} days' OR j.published_at > now() 
   AND j.company IS NOT NULL
   AND btrim(j.company) <> ''
   AND j.company NOT LIKE '%...%'
+  AND NOT coalesce(j.tags @> ARRAY['source-closed']::text[], false)
 GROUP BY j.company;
 `;
   const rows = await mgmtQuery(sql);
@@ -210,6 +211,11 @@ GROUP BY j.company;
 }
 
 async function fetchStatsViaRpc() {
+  // The legacy RPC predates source-closed. Use the verified scan whenever its
+  // result could count removed employer postings as current openings.
+  const { data: closed, error: checkError } = await sb.from('jobs').select('id').contains('tags', ['source-closed']).limit(1);
+  if (checkError) throw checkError;
+  if (closed?.length) throw new Error('Closed-source filtering requires the verified scan');
   const { data, error, count } = await sb.rpc('jobs_company_stats', { days: DAYS }, { count: 'exact' });
   if (error) throw error;
   return assertCompleteCompanyStats(data || [], count);
@@ -247,6 +253,7 @@ async function fetchStatsViaScan() {
     scannedRows += data.length;
 
     for (const j of data) {
+      if (j.tags?.includes('source-closed')) continue;
       if (!j.company) continue;
       const key = j.company;
       let row = byCompany.get(key);

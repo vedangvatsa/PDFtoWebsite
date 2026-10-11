@@ -48,7 +48,7 @@ export function isFullyEnrichedJob(job: {
   apply_url?: string | null;
 }): boolean {
   if (!isCuratedJd(job.tags)) return false;
-  if (isSourceJd(job.tags)) return sourceDescriptionValid(job.description);
+  if (isSourceJd(job.tags)) return sourceDescriptionValid(job.description, job.tags);
   const raw = jobDescriptionWordCount(job.description);
   if (raw < ENRICH_STORE_MIN_WORDS) return false;
   const html = formatJobDescription(job.description, job.location || null, {
@@ -86,12 +86,13 @@ export function hasHttpApplyUrl(applyUrl: string | null | undefined): boolean {
  * only to legacy rewrites. An unloaded body is allowed in slim list queries.
  */
 export function isPublicJobPage(job: PublicJobGate): boolean {
+  if (Array.isArray(job.tags) && job.tags.includes('source-closed')) return false;
   if (isBannedJobTitle(job.title)) return false;
   if (isGarbageJobTitle(job.title)) return false;
   if (isGenericCompanyLabel(job.company)) return false;
   if (!isCuratedJd(job.tags)) return false;
   if (isSourceJd(job.tags)) {
-    if (job.description !== undefined && !sourceDescriptionValid(job.description)) return false;
+    if (job.description !== undefined && !sourceDescriptionValid(job.description, job.tags)) return false;
   } else if (!curatedJdMeetsWordFloor(job.description)) return false;
   if (isLowQualityApplySource(job.apply_url)) return false;
   const fellowish =
@@ -134,6 +135,7 @@ export function shouldListJobOnBoard(job: PublicJobGate): boolean {
  * gate. Aliasing this to shouldListJobOnBoard emptied OpenAI/Stripe hubs.
  */
 export function shouldListJobOnCompanyHub(job: PublicJobGate): boolean {
+  if (Array.isArray(job.tags) && job.tags.includes('source-closed')) return false;
   if (isBannedJobTitle(job.title)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
   return true;
@@ -151,6 +153,7 @@ export function shouldListLiveJobCard(job: PublicJobGate): boolean {
 
 /** Live uncurated row → employer apply URL. Null once the on-site page is public. */
 export function liveUncuratedApplyUrl(job: PublicJobGate): string | null {
+  if (Array.isArray(job.tags) && job.tags.includes('source-closed')) return null;
   if (isPublicJobPage(job)) return null;
   if (isJobExpired(job.published_at, job.created_at)) return null;
   const apply = String(job.apply_url || '').trim();

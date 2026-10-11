@@ -191,10 +191,11 @@ export function jobQualifiesForSitemap(
     created_at?: string | null;
   }
 ): boolean {
+  if (Array.isArray(job.tags) && job.tags.includes('source-closed')) return false;
   if (isBannedJobTitle(job.title)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
   if (!Array.isArray(job.tags) || !job.tags.includes('curated-jd')) return false;
-  if (isSourceJd(job.tags)) return job.description === undefined || sourceDescriptionValid(job.description);
+  if (isSourceJd(job.tags)) return job.description === undefined || sourceDescriptionValid(job.description, job.tags);
   if (job.description == null) return true;
   return isTrustedCuratedBody(job.description);
 }

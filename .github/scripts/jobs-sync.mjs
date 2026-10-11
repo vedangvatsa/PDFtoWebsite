@@ -5,6 +5,9 @@
 import crypto from 'crypto';
 import { readInventory } from './lib/free-tier-guards.mjs';
 import { jobInsertConflict, insertJobWithRecovery } from './lib/job-insert-recovery.mjs';
+import { completeJobCandidates } from './lib/complete-job-intake.mjs';
+import { createOriginalJobFetcher } from './lib/fetch-original-job.mjs';
+import { SOURCE_DESCRIPTION_MAX_ROWS } from '../../src/lib/source-job-description.mjs';
 import { spawnSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname, join } from 'path';
@@ -61,6 +64,17 @@ const FAMOUS_AI_COMPANY_SLUGS = new Set([
   'waymo', 'skydio', 'shieldai', 'shield-ai', 'figure', 'physical-intelligence',
   'insitro', 'pathai', 'snorkel', 'snorkel-ai', 'datarobot', 'c3-ai', 'c3ai',
 ]);
+const EXPAND_KNOWN_REMOTE_TECH = process.env.JOBS_SYNC_EXPAND_KNOWN_REMOTE_TECH === '1';
+
+function isKnownCompany(company) {
+  const slug = companyToSlug(company);
+  return FAMOUS_AI_COMPANY_SLUGS.has(slug) || KNOWN_COMPANY_SLUGS.has(slug);
+}
+
+function isClearlyTechRole(job) {
+  const text = `${job.title || ''} ${(job.category || '')} ${(Array.isArray(job.tags) ? job.tags.join(' ') : '')}`;
+  return /\b(?:software|frontend|front-end|backend|back-end|full[- ]?stack|developer|engineer|engineering|devops|sre|site reliability|platform|infrastructure|cloud|security|data|analytics|machine learning|ml\b|ai\b|llm|research scientist|product manager|product designer|ux|ui|solutions architect|technical support|customer engineer|sales engineer|qa|quality assurance|automation)\b/i.test(text);
+}
 
 function isRemoteRole(location) {
   return /remote|worldwide|anywhere|global|work from home|\bwfh\b/i.test(String(location || ''));
@@ -77,6 +91,17 @@ function isKnownFundedCompany(company) {
 // free-tier database bounded; 500 new rows per scheduled sync is ample for a
 // current board and works with the existing 30-day expiry cleanup.
 let newJobsRemaining = Math.max(0, Number(process.env.JOBS_SYNC_MAX_NEW || 500));
+const fetchOriginal = createOriginalJobFetcher();
+
+async function sourceDescriptionCapacity() {
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/jobs?select=id&tags=cs.%7Bsource-jd%7D`, {
+    method: 'HEAD', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Prefer: 'count=exact' },
+    signal: AbortSignal.timeout(20_000),
+  });
+  const raw = response.headers.get('content-range')?.split('/').at(-1);
+  if (!response.ok || !raw || !/^\d+$/.test(raw)) throw new Error('Cannot verify original-description capacity');
+  return Math.max(0, SOURCE_DESCRIPTION_MAX_ROWS - Number(raw));
+}
 
 // ─── Tech keywords for tag extraction (regex-matched against descriptions) ───
 const TECH_KEYWORDS = [
@@ -365,14 +390,14 @@ async function supabaseUpsert(jobs) {
 
   // A job is new only if BOTH its external_id AND dedup_hash are absent from DB
   // This prevents cross-source duplicates (same company+title from RemoteOK vs Greenhouse)
-  const newJobs = unique.filter(j => !allExternalIds.has(j.external_id) && !allHashes.has(j.dedup_hash));
-  const skippedCount = unique.length - newJobs.length;
-  console.log(`   🆕 ${newJobs.length} new jobs to insert (${skippedCount} already exist)`);
-
-  if (newJobs.length > newJobsRemaining) {
-    console.log(`   🛑 Free-tier cap: retaining only ${newJobsRemaining} new jobs for this sync`);
-    newJobs.length = newJobsRemaining;
-  }
+  const candidates = unique.filter(j => !allExternalIds.has(j.external_id) && !allHashes.has(j.dedup_hash));
+  const alreadyExisting = unique.length - candidates.length;
+  console.log(`   🆕 ${candidates.length} candidate jobs (${alreadyExisting} already exist)`);
+  const { jobs: newJobs, stats } = await completeJobCandidates(candidates, {
+    limit: Math.min(newJobsRemaining, await sourceDescriptionCapacity()), fetchOriginal,
+  });
+  console.log(`   Original-description intake: ${JSON.stringify(stats)}`);
+  const skippedCount = alreadyExisting + candidates.length - newJobs.length;
 
   if (newJobs.length === 0) {
     return { inserted: 0, skipped: skippedCount };
@@ -408,12 +433,10 @@ async function supabaseUpsert(jobs) {
     return batch.map((j) => ({
       ...j,
       company_key: j.company_key || toCompanyKey(j.company),
-      // Descriptions are imported separately with verified provenance, a byte
-      // budget and retention. Never bulk-store the unbounded feed payload.
-      description: null,
-      tags: Array.isArray(j.tags)
-        ? j.tags.filter((t) => String(t).toLowerCase() !== 'curated-jd' && !['source-jd', 'source-archived'].includes(String(t).toLowerCase()))
-        : j.tags,
+      // Every row passed completeJobCandidates: preserve its verified body
+      // and publication markers. Never insert a new basic/apply-out listing.
+      description: j.description,
+      tags: j.tags,
     }));
   }
 
@@ -2665,6 +2688,8 @@ async function main() {
 
 // ── Shared filter/normalize logic ──
 function filterAndNormalize(allJobs) {
+  const rejected = {};
+  const reject = (reason) => { rejected[reason] = (rejected[reason] || 0) + 1; return false; };
   const BLOCKED_COMPANIES = ['impuls hrk'];
   const BLOCKED_TITLE_WORDS = ['(m/w/d)', 'm/w/d', 'w/m/d', 'entwickler', 'mitarbeiter', 'gesucht', 'du liebst', 'werde unser', 'praktikum'];
 
@@ -2686,14 +2711,19 @@ function filterAndNormalize(allJobs) {
   const isNonEnglishTitle = (t) => NON_ENGLISH_PATTERNS.some((re) => re.test(t));
 
   const validJobs = allJobs.filter(j => {
-    if (!j.title || !j.company || !j.apply_url) return false;
+    if (!j.title || !j.company || !j.apply_url) return reject('missing_fields');
     // Only ingest jobs with a verifiable posting date inside the 30-day
     // listing window. Unknown/relative dates are not safe to publish.
-    if (!isFreshPublishedAt(j.published_at)) return false;
+    if (!isFreshPublishedAt(j.published_at)) return reject('missing_or_stale_date');
     applyCanonicalCompany(j);
     if (j.company.includes('...') || j.company.length <= 2) return false;
-    if (!isKnownFundedCompany(j.company)) return false;
-    if (!isRemoteRole(j.location)) return false;
+    if (!isRemoteRole(j.location)) return reject('not_remote');
+    if (EXPAND_KNOWN_REMOTE_TECH) {
+      if (!isKnownCompany(j.company)) return reject('unknown_company');
+      if (!isClearlyTechRole(j)) return reject('not_tech_role');
+    } else if (!isKnownFundedCompany(j.company)) {
+      return reject('funding_filter');
+    }
     if (isRegistryCompanyLabel(j.company)) return false;
     if (isGenericCompanyLabel(j.company)) return false;
     if (BLOCKED_COMPANIES.includes(j.company.toLowerCase().trim())) return false;
@@ -2705,6 +2735,7 @@ function filterAndNormalize(allJobs) {
     return true;
   });
   console.log(`   Valid jobs: ${validJobs.length} (filtered ${allJobs.length - validJobs.length} bad)`);
+  console.log(`   Filter exclusions: ${JSON.stringify(rejected)}`);
 
   // Title normalization
   for (const job of validJobs) {

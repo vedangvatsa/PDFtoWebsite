@@ -46,11 +46,12 @@ export function curatedJdMeetsWordFloor(description) {
 
 /** Public URL may render (closed curated OK). Uncurated stubs are not pages. */
 export function isPublicJobPage(job) {
+  if (Array.isArray(job?.tags) && job.tags.includes('source-closed')) return false;
   if (isBannedJobTitle(job?.title)) return false;
   if (isGenericCompanyLabel(job?.company)) return false;
   if (!isCuratedJd(job?.tags)) return false;
   if (isSourceJd(job?.tags)) {
-    if (job.description !== undefined && !sourceDescriptionValid(job.description)) return false;
+    if (job.description !== undefined && !sourceDescriptionValid(job.description, job.tags)) return false;
   } else if (!curatedJdMeetsWordFloor(job?.description)) return false;
   if (isLowQualityApplySource(job?.apply_url)) return false;
   const fellowish =
@@ -70,6 +71,7 @@ export function shouldListJobOnBoard(job) {
 
 /** Company hub cards: live, not banned. Do not alias the board gate. */
 export function shouldListJobOnCompanyHub(job) {
+  if (Array.isArray(job?.tags) && job.tags.includes('source-closed')) return false;
   if (isBannedJobTitle(job?.title)) return false;
   if (isJobExpired(job?.published_at, job?.created_at)) return false;
   return true;
@@ -82,6 +84,7 @@ export function shouldListLiveJobCard(job) {
 }
 
 export function liveUncuratedApplyUrl(job) {
+  if (Array.isArray(job?.tags) && job.tags.includes('source-closed')) return null;
   if (isPublicJobPage(job)) return null;
   if (isJobExpired(job.published_at, job.created_at)) return null;
   const apply = String(job.apply_url || '').trim();

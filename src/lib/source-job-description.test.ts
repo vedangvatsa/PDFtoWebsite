@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { originalDescriptionText, sourceDescriptionHtml, sourcePublicationPatch, sourceDescriptionValid, SOURCE_DESCRIPTION_MAX_BYTES } from './source-job-description.mjs';
+import { originalDescriptionText, sourceDescriptionHtml, sourceDescriptionPlain, sanitizeSourceDescription, sourcePublicationPatch, sourceDescriptionValid, SOURCE_DESCRIPTION_MAX_BYTES } from './source-job-description.mjs';
 import { isPublicJobPage, shouldListJobOnBoard } from './job-apply-source';
 import { isPublicJobPage as scriptPublicPage } from '../../.github/scripts/lib/job-apply-source.mjs';
 import { jobQualifiesForSitemap } from './job-assemble';
@@ -16,6 +16,28 @@ const job: JobRow = {
 };
 
 describe('original employer descriptions', () => {
+  it('preserves safe employer headings, lists, emphasis and links while stripping executable markup', () => {
+    const html = sanitizeSourceDescription('<h1>About us</h1><p onclick="bad()">Original <strong>wording</strong>.</p><ol start="3"><li>First</li><li>Second</li></ol><a href="/careers/info">More details</a><a href="java&#x09;script:alert(1)">unsafe link</a><svg><script>alert(1)</script></svg><img src=x onerror=bad()>', 'https://employer.example/jobs/123');
+    assert.match(html, /<h2>About us<\/h2>/);
+    assert.match(html, /<strong>wording<\/strong>/);
+    assert.match(html, /<ol start="3"><li>First<\/li><li>Second<\/li><\/ol>/);
+    assert.match(html, /href="https:\/\/employer.example\/careers\/info"/);
+    assert.doesNotMatch(html, /onclick|onerror|javascript|<svg|<script|<img|alert\(/i);
+    assert.match(html, /unsafe link/);
+  });
+  it('publishes the same structured original on the page and in schema', async () => {
+    const html = `<h2>About the role</h2><p>${original}</p><h3>Requirements</h3><ul><li>SQL and TypeScript</li></ul>`;
+    const patch = sourcePublicationPatch(job, html, { html: true })!;
+    assert.ok(patch.tags.includes('source-html'));
+    const record = { ...job, ...patch };
+    const detail = await toJobDetail(record);
+    assert.match(detail.description_html, /<h2>About the role<\/h2>/);
+    assert.match(detail.description_html, /<ul><li>SQL and TypeScript<\/li><\/ul>/);
+    assert.equal(detail.description_plain, sourceDescriptionPlain(patch.description, patch.tags));
+    assert.equal(buildJobJsonLd(record, detail, 'https://cvin.bio')?.description, detail.description_html);
+    assert.equal(isPublicJobPage({ ...record, tags: [...record.tags, 'source-closed'] }), false);
+    assert.equal(shouldListJobOnBoard({ ...record, tags: [...record.tags, 'source-closed'] }), false);
+  });
   it('preserves wording, punctuation and paragraphs while removing executable HTML', () => {
     assert.equal(originalDescriptionText({ html: '<h2>Requirements</h2><p>We leverage C++ &amp; SQL — 5+ years.</p><ul><li>Build APIs.</li></ul><script>steal()</script><style>body{display:none}</style>' }),
       'Requirements\n\nWe leverage C++ & SQL — 5+ years.\n\n- Build APIs.');

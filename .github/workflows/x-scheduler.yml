@@ -1,12 +1,9 @@
-name: Jobs Sync (every 1–2 days)
+name: Jobs Sync (daily original listings)
 
 on:
   schedule:
-    # Free-tier: refresh jobs about every 2 days (not twice/day).
-    # Cron: 00:00 UTC on even calendar days of the month → ~1–2 day gap.
-    - cron: '0 0 */2 * *'
-    # Sunday 03:00 UTC: extra weekly pass of the same pipeline.
-    - cron: '0 3 * * 0'
+    # Daily, capped intake. All new rows need an original employer description.
+    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       mass_scan:
@@ -67,6 +64,8 @@ jobs:
           # Free Nano: small batches, low parallelism
           JOBS_SYNC_BATCH_SIZE: '75'
           JOBS_SYNC_CONCURRENCY: '2'
+          JOBS_SYNC_EXPAND_KNOWN_REMOTE_TECH: '1'
+          JOBS_SYNC_MAX_NEW: '500'
           # Original source text only; serial imports with a bounded queue.
           SOURCE_IMPORT_BATCH_SIZE: '100'
         run: node .github/scripts/jobs-sync.mjs

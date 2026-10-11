@@ -33,7 +33,7 @@ export function formattedDescriptionWords(job) {
 /** Curated row is truly done: enough raw storage AND survives formatter trim. */
 export function isFullyEnrichedJob(job) {
   if (!isCuratedJd(job?.tags)) return false;
-  if (isSourceJd(job?.tags)) return sourceDescriptionValid(job.description);
+  if (isSourceJd(job?.tags)) return sourceDescriptionValid(job.description, job.tags);
   const raw = descriptionWords(job?.description);
   if (raw < ENRICH_MIN_WORDS) return false;
   return formattedDescriptionWords(job) >= MIN_WORDS;

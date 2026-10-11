@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { createClient } from '@supabase/supabase-js';
 import { importOriginalDescriptions } from '../import-original-job-descriptions.mjs';
+import { SOURCE_DESCRIPTION_MAX_ROWS } from '../../../src/lib/source-job-description.mjs';
 
 const text = 'The employer requires production engineering experience, code review, database maintenance, and clear written communication. '.repeat(4);
 const row = { id: 'job-1', source: 'greenhouse', external_id: 'gh_example_123', apply_url: 'https://example.com/careers/123', tags: ['Engineering'] };
@@ -16,7 +17,7 @@ function database({ count = 0, rows = [row], expired = [], failedCount = false, 
       if (init.method === 'PATCH') return Response.json(race ? [] : [{ id: request.query.get('id').slice(3) }]);
       if (request.query.get('tags') === 'cs.{source-jd}') return Response.json(expired);
       assert.equal(request.query.get('description'), 'is.null');
-      assert.match(request.query.get('or'), /tags.not.cs.\{curated-jd\}/);
+      assert.match(request.query.getAll('or').join('&'), /tags.not.cs.\{curated-jd\}/);
       return Response.json(rows);
     },
   } });
@@ -43,7 +44,17 @@ describe('bounded original-description publication', () => {
   it('refuses work without a complete storage count and stops at the row cap', async () => {
     const forbidden = async () => { throw new Error('must not fetch'); };
     await assert.rejects(importOriginalDescriptions({ client: database({ failedCount: true }).client, fetchOriginal: forbidden }), /storage budget/);
-    assert.equal((await importOriginalDescriptions({ client: database({ count: 2000 }).client, fetchOriginal: forbidden })).selected, 0);
+    assert.equal((await importOriginalDescriptions({ client: database({ count: SOURCE_DESCRIPTION_MAX_ROWS }).client, fetchOriginal: forbidden })).selected, 0);
+  });
+  it('covers the same newest-stamp window as the board and marks confirmed removals without deleting rows', async () => {
+    const { client, requests } = database();
+    const result = await importOriginalDescriptions({ client, fetchOriginal: async () => ({ ok: false, closed: true, reason: 'source_closed' }) });
+    assert.equal(result.closed, 1);
+    const queue = requests.find((r) => r.method === 'GET' && r.query.has('source'));
+    assert.match(queue.query.getAll('or').join('&'), /created_at.gte.*published_at.gte/);
+    const patch = requests.find((r) => r.method === 'PATCH');
+    assert.deepEqual(patch.body.tags, ['Engineering', 'source-closed']);
+    assert.equal(requests.some((r) => r.method === 'DELETE'), false);
   });
   it('archives only expired source snapshots, keeping rows and URL metadata', async () => {
     const { client, requests } = database({ rows: [], expired: [{ id: 'old-source', tags: ['curated-jd', 'source-jd', 'Engineering'] }] });
