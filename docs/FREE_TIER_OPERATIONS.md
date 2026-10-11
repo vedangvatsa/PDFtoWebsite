@@ -24,6 +24,12 @@ CV uploads are sharded by client IP. The semaphore releases on stream completion
 cancellation, HEAD and errors; saturation returns `503 RENDER_BUSY` with
 `Retry-After: 5`. It retains no session data and starts no keepalive timers.
 
+Application and parser actors use the `us` jurisdiction with an Eastern North
+America hint because both call Gemini (autofill and resume parsing). A generic
+APAC hint can place them in an unsupported Gemini region. Jurisdiction is a
+placement constraint, unlike a best-effort hint; derive and resolve IDs through
+the same scoped namespace. Image actors retain the APAC hint.
+
 At build time, `generate-static-pages.mjs` extracts only immutable public SSG
 HTML and its security headers (23 routes in the October 11 build). Ordinary
 browser requests use these assets without initializing Next.js. Auth routes,

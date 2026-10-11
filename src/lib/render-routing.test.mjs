@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyticsTarget, canServeStaticHtml, renderShard, forwardedRequest } from './render-routing.mjs';
+import { analyticsTarget, canServeStaticHtml, renderShard, forwardedRequest, rendererStub, AI_RENDER_LOCATION } from './render-routing.mjs';
 
 const browser = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15';
 function request(path = '/about', options = {}) {
@@ -12,6 +12,25 @@ describe('lightweight routing preserves representations', () => {
     const names = new Set(Array.from({ length: 5000 }, (_, i) => renderShard(`/person-${i}`)));
     assert.equal(names.size, 4);
     assert.equal(renderShard('/jobs'), renderShard('/jobs'));
+  });
+  it('creates and resolves AI actor IDs in the same supported jurisdiction', () => {
+    const names = new Set();
+    const scoped = {
+      idFromName(name) { names.add(name); return `us:${name}`; },
+      get(id, options) { assert.match(id, /^us:/); assert.equal(options.locationHint, 'enam'); return id; },
+    };
+    const namespace = { jurisdiction(region) { assert.equal(region, 'us'); return scoped; } };
+    for (let i = 0; i < 100; i++) rendererStub(namespace, `client-${i}`, 2, AI_RENDER_LOCATION);
+    assert.equal(names.size, 2);
+  });
+  it('tolerates only the known local workerd jurisdiction limitation', () => {
+    const namespace = {
+      jurisdiction() { throw new Error('Jurisdiction restrictions are not implemented in workerd.'); },
+      idFromName(name) { return name; }, get(id) { return id; },
+    };
+    assert.equal(rendererStub(namespace, '/jobs', 4, AI_RENDER_LOCATION), renderShard('/jobs'));
+    namespace.jurisdiction = () => { throw new Error('jurisdiction unavailable'); };
+    assert.throws(() => rendererStub(namespace, '/jobs', 4, AI_RENDER_LOCATION), /jurisdiction unavailable/);
   });
   it('allows normal public HTML and tracking params', () => {
     assert.equal(canServeStaticHtml(request()), true);

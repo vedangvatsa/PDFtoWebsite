@@ -2,6 +2,9 @@
 export const RENDER_POOL_SIZE = 4;
 export const PARSER_POOL_SIZE = 2;
 export const IMAGE_POOL_SIZE = 2;
+// Gemini rejects some APAC egress locations. Both the app (autofill) and parser
+// call it; constrain their execution instead of relying on a best-effort hint.
+export const AI_RENDER_LOCATION = { jurisdiction: 'us', locationHint: 'enam' };
 
 export function renderShard(pathname, size = RENDER_POOL_SIZE) {
   let hash = 2166136261;
@@ -9,8 +12,17 @@ export function renderShard(pathname, size = RENDER_POOL_SIZE) {
   return `render-v1-${(hash >>> 0) % size}`;
 }
 
-export function rendererStub(namespace, pathname, size) {
-  return namespace.get(namespace.idFromName(renderShard(pathname, size)), { locationHint: 'apac' });
+export function rendererStub(namespace, pathname, size, { jurisdiction, locationHint = 'apac' } = {}) {
+  let scoped = namespace;
+  if (jurisdiction) {
+    try { scoped = namespace.jurisdiction(jurisdiction); }
+    catch (error) {
+      // Local workerd cannot simulate jurisdictions. Production errors must
+      // propagate rather than silently escaping the requested jurisdiction.
+      if (error.message !== 'Jurisdiction restrictions are not implemented in workerd.') throw error;
+    }
+  }
+  return scoped.get(scoped.idFromName(renderShard(pathname, size)), { locationHint });
 }
 
 /** Preserve the public authority across the internal DO hop. Never trust

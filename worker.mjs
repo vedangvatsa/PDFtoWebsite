@@ -1,5 +1,5 @@
 import { browserSafeRedirect } from './src/lib/redirect-cache.mjs';
-import { rendererStub, RENDER_POOL_SIZE, PARSER_POOL_SIZE, IMAGE_POOL_SIZE, analyticsTarget, canServeStaticHtml, forwardedRequest } from './src/lib/render-routing.mjs';
+import { rendererStub, RENDER_POOL_SIZE, PARSER_POOL_SIZE, IMAGE_POOL_SIZE, AI_RENDER_LOCATION, analyticsTarget, canServeStaticHtml, forwardedRequest } from './src/lib/render-routing.mjs';
 import staticPages from './.open-next/static-pages.json';
 // Retain the existing queue namespace for migration compatibility, without
 // importing Next.js or any of its middleware into the gateway.
@@ -36,7 +36,7 @@ export default {
     if (['/api/parse-resume', '/v1/api/parse-resume', '/v1/parse-resume'].includes(path.replace(/\/$/, ''))) {
       // Normalize documented API aliases before the isolated parser's router.
       url.pathname = '/api/parse-resume';
-      return rendererStub(env.PARSER_RENDERER, request.headers.get('cf-connecting-ip') || path, PARSER_POOL_SIZE).fetch(new Request(url, forwardedRequest(request)));
+      return rendererStub(env.PARSER_RENDERER, request.headers.get('cf-connecting-ip') || path, PARSER_POOL_SIZE, AI_RENDER_LOCATION).fetch(new Request(url, forwardedRequest(request)));
     }
     if (/\/opengraph-image(?:\/|$)/.test(path) || /^\/(?:icon|apple-icon)\/?$/.test(path)) {
       return rendererStub(env.IMAGE_RENDERER, path, IMAGE_POOL_SIZE).fetch(forwardedRequest(request));
@@ -54,7 +54,7 @@ export default {
       const hit = await caches.default.match(key);
       if (hit) return browserSafeRedirect(hit);
     }
-    const response = await rendererStub(env.APP_RENDERER, path, RENDER_POOL_SIZE).fetch(forwardedRequest(request));
+    const response = await rendererStub(env.APP_RENDERER, path, RENDER_POOL_SIZE, AI_RENDER_LOCATION).fetch(forwardedRequest(request));
     if (publicRedirect && [301, 308].includes(response.status) &&
         response.headers.get('location')?.startsWith('/') &&
         !response.headers.get('location').startsWith('//') && !response.headers.has('set-cookie')) {
