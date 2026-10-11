@@ -256,3 +256,46 @@ continues to require the actual `https://cvin.bio` origin.
 
 Production CPU and Durable Object duration must be checked after activating this
 migration using `check-free-tier-usage.mjs` and an entirely post-deployment window.
+
+### Production result after deadline cleanup
+
+The rollout completed in three application commits: `1574a656` (gateway/object
+pools), `3d030359` (Gemini-supported US placement), and `9a075f95` (cancellable
+upstream deadlines). The final deployment completed at 16:16 UTC:
+[successful CI run](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38154400785).
+Regression checks passed 335 tests with one credential-dependent skip; typecheck,
+OG styles, clean build and all compressed-size gates passed.
+
+The completed 16:17–16:25 UTC window was queried after 16:40 UTC to allow Durable
+Object analytics to arrive. It includes synthetic functional verification:
+
+| Metric | Observed result | Free allowance |
+| --- | --- | --- |
+| Successful gateway CPU p50 / p99 | 1.344 / 5.423 ms | 10 ms per invocation |
+| Gateway invocations / resource errors | 153 / 0 | 100,000 requests/day |
+| DO requests, projected at window rate | 27,180/day | 100,000/day |
+| DO duration | 41.764 GB-s over 8 minutes; 7,518/day at that rate | 13,000 GB-s/day |
+| DO CPU / memory / fatal-limit errors | 0 / 0 / 0 | No quota failures |
+| Largest DO isolate memory p99 | 59.8 MB | 128 MB |
+| D1 reads / writes, projected at window rate | 280,080 / 80,280 per day | 5 million / 100,000 per day |
+
+The quieter 16:21–16:25 follow-up projected 4,655 GB-s/day of DO duration and
+56,880 D1 writes/day. Actual UTC-day counters through 16:25 were 15,333 Worker
+requests, 848 DO requests, 352.487 GB-s DO duration, and 16,047 D1 writes. These
+are short-window observations, not a promise about future traffic. Continue to
+use the usage command above for daily capacity checks.
+
+DO invocation analytics also classify cancelled response streams as
+`clientDisconnected` (34 in the eight-minute window); do not relabel those as
+CPU failures or claim zero errors of every kind. Redirect/HEAD handling cancels
+upstream bodies deliberately. One transient `RENDER_BUSY` response was observed
+during the earlier cold US rollout; subsequent full live smoke checks passed.
+
+Final live checks passed public pages, companies, search, PNGs, markdown, RSC,
+sitemaps, API aliases, authenticated invalidation and origin rejection. Two
+concurrent synthetic users retained separate private results, and account
+save/update/read/delete plus AI autofill passed with synthetic cleanup. Gemini
+extracted the synthetic candidate's name, experience and skills from an image;
+text and PDF uploads also used the AI parser after the regional correction.
+Safari verified static-homepage hydration, client navigation to jobs and a
+submitted `engineer` search showing 32 results without a degraded-state error.
