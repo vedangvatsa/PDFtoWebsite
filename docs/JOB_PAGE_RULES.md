@@ -1,13 +1,15 @@
 # Job page rules
 
-Canonical for public job URLs. Also: `noslop.md` · `docs/JD_PARAPHRASE_RULES.md` · `src/lib/job-age.ts`
+Canonical for public job URLs. Current policy (October 11): import original
+employer descriptions without AI. `JD_PARAPHRASE_RULES.md` applies only to legacy
+rewrites. Runtime expiry is defined in `src/lib/job-age.ts`.
 
 ## Lifecycle (30 days)
 
 | Age | Ingest | Row | URL | Apply | Google Search | Google Jobs | Board / sitemap |
 |-----|--------|-----|-----|-------|---------------|-------------|-----------------|
-| Under 30 days | Accept if posting date is fresh | Keep; same-run enrich | 200 only if curated-jd **and ≥600 words**; else **307** to `apply_url` (or 301 hub if none) | On | Index only if curated ≥600w + gates | JobPosting only if indexable | Board: live cards (curated on-site, uncurated apply-out). Sitemap: curated only |
-| 30 days or older | Drop. Do not insert. | Keep. Do not hard-delete. | 200 + closed notice only if curated-jd **and ≥600 words**; else 301 | Off | Same as above. Closed is not a reason to noindex. | No JobPosting | No |
+| Under 30 days | Accept if posting date is fresh | Keep; import original source text | 200 for verified source descriptions or valid legacy rewrites; otherwise 307 to employer | On | Index verified full descriptions | JobPosting only if indexable | Live cards; verified pages enter sitemap and posting feeds |
+| 30 days or older | Drop. Do not insert. | Archive original source body; retain lightweight row and URL metadata | Original snapshot redirects after archival; legacy curated pages retain the closed notice | Off | Legacy curated pages may remain indexed | No JobPosting | No |
 
 Missing row (never existed / already wiped): 301 to company hub or `/jobs`. Not a hard 404.
 
@@ -29,16 +31,27 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
 
 ## Content
 
-- Clean ATS → one paraphrase. Invent nothing.
-- Do not write 600 words from a compressed fact sheet. Fact sheet = tags, salary, location, job type only.
-- Reach 600 words by expanding real ATS claims into full sentences, then owned company / apply notes. Never invent duties, perks, years, or pay.
-- Originality fail-closed: 7-word copy, 5-gram overlap, patchwrite, synonym-spin.
-- noslop. Owned headings. No `[placeholder]`. No raw ATS / EEO paste.
-- Thin or failing drafts: do not save as `curated-jd`. Uncurated rows must not render as public job pages or be posted to Telegram / sitemap. `/jobs` and company hubs show them as apply-out cards until same-run enrich publishes a page.
+- Fetch the exact posting from an official ATS API, matching its native job ID.
+  Greenhouse, Ashby, Lever, Workable and SmartRecruiters are supported.
+- Preserve employer wording, punctuation and paragraph/list order. HTML is
+  converted to plain text and escaped for display; no AI, rewriting or padding.
+- New descriptions carry `source-jd` plus `curated-jd`. The latter remains the
+  existing SQL publication selector; the former selects the original-text path.
+- Source bodies need at least 40 words and must fit 32 KiB UTF-8. Reject oversized
+  bodies rather than truncating them. Legacy rewrites retain their 600-word floor.
+- Pages, detail API responses, full-description feeds and JobPosting schema use
+  the original body. The existing employer apply link remains the source link.
+- Missing, unavailable, unsupported or oversized sources remain apply-out cards;
+  never generate replacement prose, fabricate facts, or delete the job on a scrape failure.
+- Import at most 100 descriptions serially per sync, with at most 2,000 stored
+  original bodies (~62.5 MiB payload cap plus database overhead). After 30 days,
+  source snapshots lose their body/publication tags and gain `source-archived`;
+  cleanup retains the row so old links can redirect to the company hub.
+- AI job rewriting's old entrypoint is disabled. Scheduled sync has no AI credentials.
 
 ## SEO
 
-- Regular Google: index when the body is a trusted curated paraphrase (≥600w, headings, gates). Closed pages stay indexable if they already qualify. Title may say `(closed)`.
+- Regular Google: index verified original descriptions or qualified legacy rewrites. Legacy closed pages stay indexable if they already qualify. Title may say `(closed)`.
 - Google Jobs: emit `JobPosting` for every live, indexable, not-expired public job page. Worldwide `"Remote"` keeps `TELECOMMUTE` plus `applicantLocationRequirements` as `AdministrativeArea` (`Worldwide`) — do not drop the posting for lack of a country, and do not invent `USA` or emit `Worldwide` as a Country. GSC flags TELECOMMUTE without that field as critical. `validThrough` follows the newest listing stamp (`jobPostingValidThrough`). Schema `url` is `jobPublicPath`.
 - Indexing API pings `jobPublicPath` only. Workflows must pass `NEXT_PUBLIC_SUPABASE_URL`. After markup changes, bump `SCHEMA_EPOCH` in `.github/scripts/google-indexing.mjs`.
 - Sitemap job queries use `companyJobsDateOrFilter` (newest of published_at / created_at). Never AND `created_at`.

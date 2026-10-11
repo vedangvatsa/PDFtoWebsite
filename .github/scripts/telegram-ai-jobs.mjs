@@ -409,7 +409,7 @@ async function fetchJobs() {
   }
 
   if (byUrl.size === 0) {
-    throw new Error('No jobs fetched from Supabase after retries (free-tier timeout?)');
+    throw new Error('No publishable job descriptions are available. Check the original-description import step and source eligibility.');
   }
 
   return [...byUrl.values()];

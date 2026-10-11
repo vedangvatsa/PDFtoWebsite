@@ -150,7 +150,6 @@ jobs:
       # Stagger Telegram/Supabase calls so Free Nano isn't hit with two heavy
       # job queries back-to-back (was a common cause of Cloudflare 522s).
       - name: Post jobs to Telegram (techjobsdaily) and cross-post to LinkedIn
-        continue-on-error: true
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
@@ -165,7 +164,6 @@ jobs:
         continue-on-error: true
 
       - name: Post AI jobs to @hashtag_ai and @globalAIjobs
-        continue-on-error: true
         env:
           TELEGRAM_AI_BOT_TOKEN: ${{ secrets.TELEGRAM_AI_BOT_TOKEN }}
           TELEGRAM_AI_CHANNEL_ID: '@hashtag_ai'
@@ -206,4 +204,3 @@ jobs:
               git pull --rebase origin main && git push && break || sleep $((i * 3))
             done
           fi
-

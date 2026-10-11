@@ -3,6 +3,7 @@ import { jobSitemapPath } from '@/lib/job-description';
 import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 import { withSitemapCache } from '@/lib/sitemap-cache';
 import { escapeXml } from '@/lib/xml';
+import { isSourceJd } from '@/lib/source-job-description.mjs';
 
 export const revalidate = 3600;
 
@@ -27,7 +28,7 @@ export async function GET(req: Request) {
 
     const jobs: any[] = [];
     let from = 0;
-    const PAGE = 1000;
+    const PAGE = 100;
     try {
       while (jobs.length < 200 && true) {
         const { data } = await supabaseAdmin
@@ -59,11 +60,11 @@ export async function GET(req: Request) {
         const path = jobSitemapPath(j);
         if (!path) return '';
         const url = `${siteUrl}${path}`;
-        const desc = String(j.description || '')
+        const desc = (isSourceJd(j.tags) ? String(j.description || '') : String(j.description || '')
           .replace(/<[^>]+>/g, ' ')
           .replace(/\s+/g, ' ')
           .trim()
-          .slice(0, 2000);
+          .slice(0, 2000)).replace(/\]\]>/g, ']]]]><![CDATA[>');
         const pub = rfc822(j.published_at || j.created_at);
         return `  <item>
     <title><![CDATA[${escapeXml(j.title)} at ${escapeXml(j.company)} (${escapeXml(j.location || 'Remote')})]]></title>

@@ -49,7 +49,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Sync remote jobs (then same-run enrich)
+      - name: Sync jobs and import original employer descriptions
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -64,16 +64,11 @@ jobs:
           REED_API_KEY: ${{ secrets.REED_API_KEY }}
           FINDWORK_API_KEY: ${{ secrets.FINDWORK_API_KEY }}
           JSEARCH_API_KEY: ${{ secrets.JSEARCH_API_KEY }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          OPENROUTER_API_KEY_2: ${{ secrets.OPENROUTER_API_KEY_2 }}
-          OPENROUTER_API_KEY_3: ${{ secrets.OPENROUTER_API_KEY_3 }}
           # Free Nano: small batches, low parallelism
           JOBS_SYNC_BATCH_SIZE: '75'
           JOBS_SYNC_CONCURRENCY: '2'
-          ENRICH_BATCH_SIZE: '400'
-          ENRICH_CONCURRENCY: '12'
-          # Drain the full same-run priority queue, not only the first 400.
-          ENRICH_TIMEOUT_MS: '10800000'
+          # Original source text only; serial imports with a bounded queue.
+          SOURCE_IMPORT_BATCH_SIZE: '100'
         run: node .github/scripts/jobs-sync.mjs
 
       # Prune is heavy (HTTP checks + DB). Off on schedule; only when manually requested.
@@ -84,4 +79,3 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           MASS_SCAN: ${{ github.event.inputs.mass_scan }}
         run: node .github/scripts/prune-404s.mjs
-

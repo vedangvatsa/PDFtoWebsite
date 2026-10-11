@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Enrich remote jobs with curated JD pages (see docs/JD_PARAPHRASE_RULES.md).
+ * RETIRED: AI job rewriting is disabled. Use import-original-job-descriptions.mjs.
+ * Historical implementation retained below; main exits before any provider call.
  *
  * DEFAULT = MANUAL ONLY (no LLM API calls):
  *  1. Fetch official apply_url (curl/ATS APIs)
@@ -2442,6 +2443,7 @@ async function runOneBatch(batchNum, state, done) {
 }
 
 async function main() {
+  throw new Error('AI job rewriting is retired. Run import-original-job-descriptions.mjs to import employer text without AI.');
   if (!U || !K) {
     console.error('Need Supabase env');
     process.exit(1);

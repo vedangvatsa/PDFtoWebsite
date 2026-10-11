@@ -125,8 +125,8 @@ These are hard limits, not promises of unlimited traffic:
 
 Warn at 300 MB database size, intervene by 400 MB. Review actual billed egress
 at a 3 GB/month forecast and intervene by 4 GB. A stored-user count is not MAU,
-and HTTP content-length sums are not a billing ledger. Keep raw job descriptions
-out of Postgres until a deliberately bounded publishing/enrichment policy is used.
+and HTTP content-length sums are not a billing ledger. Original job descriptions
+use the bounded publication policy below, rather than bulk raw-feed storage.
 
 Read aggregate Cloudflare usage (defaults to the last hour, ending 15 minutes
 ago to allow ingestion; optional explicit ISO start/end, at most 24 hours):
@@ -161,8 +161,20 @@ References: [DO pricing](https://developers.cloudflare.com/durable-objects/platf
   errors still fail the workflow instead of silently discarding records.
 - Sync uses `cleanup-old-jobs.mjs`, which protects described/curated jobs and
   Telegram-posted links, and rechecks guards at delete time.
-- Do not restart the old high-concurrency enrichment daemon under the free-tier
-  policy. CI currently uses the bounded thin-record/apply-out model.
+- Sync imports original employer descriptions with zero AI calls: up to 100
+  serial candidates per run, 32 KiB per body, and 2,000 active source snapshots.
+  The job ID is verified against an official ATS API. Original wording is kept;
+  missing/oversized sources remain apply-out listings. No partial truncation.
+- Source snapshots expire after 30 days. Their lightweight rows/URLs remain as
+  `source-archived`; legacy curated descriptions are retained. Stored original
+  text is bounded to 62.5 MiB plus database overhead under the serialized sync.
+- `source-jd` identifies originals; `curated-jd` remains the shared publication
+  selector used by existing indexed SQL queries. The 600-word rewrite floor
+  does not apply to originals, which have a 40-word empty-body guard.
+- XML feeds are bounded to 200 descriptions in 100-row pages. Their cache keys
+  include publication-tag revisions, so imports invalidate partial old feeds.
+- The old AI enrichment entrypoint exits before provider calls, and sync no
+  longer receives AI credentials. Telegram job-step failures fail the workflow.
 - Do not delete all "unused" indexes, bulk-delete profiles, or schedule routine
   VACUUM FULL. The migration removes only confirmed redundant indexes.
 

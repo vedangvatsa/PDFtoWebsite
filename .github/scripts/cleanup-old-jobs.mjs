@@ -75,6 +75,7 @@ async function main() {
       .or(`published_at.is.null,published_at.lt.${cutoff}`)
       .is('description', null)
       .not('tags', 'cs', '{curated-jd}')
+      .not('tags', 'cs', '{source-archived}')
       .is('telegram_posted_at', null)
       .order('id', { ascending: true })
       .limit(BATCH);
@@ -101,7 +102,7 @@ async function main() {
     if (!ids.length) { if (rows.length < BATCH) break; continue; }
     // Re-check the guard at write time in case enrichment raced the read.
     const { error: delErr, count: delCount } = await sb.from('jobs').delete({ count: 'exact' }).in('id', ids)
-      .is('description', null).not('tags', 'cs', '{curated-jd}').is('telegram_posted_at', null)
+      .is('description', null).not('tags', 'cs', '{curated-jd}').not('tags', 'cs', '{source-archived}').is('telegram_posted_at', null)
       .lt('created_at', cutoff).or(`published_at.is.null,published_at.lt.${cutoff}`);
 
     if (delErr) {

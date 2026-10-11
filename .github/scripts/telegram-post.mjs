@@ -182,17 +182,12 @@ function isUrlLiveForPost(check) {
 }
 
 async function fetchJobsPage({ days, limit, label }) {
-  // Dummy call to satisfy contract static analysis test for cs.{"curated-jd"}
-  if (global.DUMMY_REST_CALL_UNUSED) {
-    restUrl(SUPABASE_URL, 'jobs', { tags: 'cs.{"curated-jd"}' });
-  }
-
   const sourceFilter = TELEGRAM_ALLOWED_SOURCES.map(s => `"${s}"`).join(',');
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-  const tableName = 'jobs';
-  const url = restUrl(SUPABASE_URL, tableName, {
+  const url = restUrl(SUPABASE_URL, 'jobs', {
     // Minimal columns — less IO on free tier
     select: 'id,title,company,location,apply_url,published_at,created_at,telegram_posted_at,external_id,slug,tags,description,category',
+    tags: 'cs.{"curated-jd"}',
     source: `in.(${sourceFilter})`,
     or: `(${jobsDateOrFilter(since)})`,
     order: 'created_at.desc',
@@ -804,4 +799,3 @@ function companyToSlug(company) {
 function jobPublicPath(job) {
   return jobPublicUrl(job, { prettyOnly: true });
 }
-

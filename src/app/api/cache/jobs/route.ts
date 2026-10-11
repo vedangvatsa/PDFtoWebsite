@@ -12,5 +12,13 @@ export async function POST(request: NextRequest) {
   revalidateTag('public-jobs', { expire: 0 });
   revalidateTag('companies-directory', { expire: 0 });
   revalidatePath('/companies');
+  revalidatePath('/fellowships');
+  revalidatePath('/[slug]/[jobSlug]', 'page');
+  revalidatePath('/jobs/[id]', 'page');
+  // XML handlers also have an outer Next ISR cache, above their revision-keyed
+  // Cache API layer. The bounded source inventory fits the first sitemap chunk.
+  for (const path of ['/sitemap.xml', '/sitemap-jobs/0', '/rss.xml', '/indeed.xml', '/jooble.xml', '/jobtome.xml']) {
+    revalidatePath(path);
+  }
   return NextResponse.json({ ok: true }, { headers: { 'Cache-Control': 'private, no-store' } });
 }

@@ -42,6 +42,7 @@ import { isJobExpired, jobPostingValidThrough } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
 import { shouldListJobOnBoard } from '@/lib/job-apply-source';
+import { isSourceJd, sourceDescriptionValid, sourceDescriptionHtml, sourceDescriptionWords } from '@/lib/source-job-description.mjs';
 import {
   isTrustedCompanyDomain,
   primaryCompanyLogoUrl,
@@ -126,13 +127,12 @@ export async function toJobDetail(job: JobRow): Promise<JobDetail> {
 }
 
 /**
- * Trusted curated paraphrases publish as-is (owned headings, no raw ATS).
- * Otherwise a factual stub: listing metadata + owned company about.
- * Never invent duties. Never publish raw ATS.
+ * Verified original employer text is escaped without editorial rewriting.
+ * Legacy curated pages retain their formatting; missing bodies stay stubs.
  */
 export type PublishedDescription = {
   isCurated: boolean;
-  kind: 'curated' | 'assembled' | 'company';
+  kind: 'source' | 'curated' | 'assembled' | 'company';
   html: string;
   plain: string;
   wordCount: number;
@@ -173,6 +173,13 @@ export async function publishSafeDescription(job: JobRow, location: string): Pro
   const isFellowship = looksLikeFellowship(job);
   const isCurated = Array.isArray(job.tags) && job.tags.includes('curated-jd');
   const raw = job.description;
+
+  if (isCurated && isSourceJd(job.tags) && sourceDescriptionValid(raw)) {
+    return {
+      isCurated: false, kind: 'source', html: sourceDescriptionHtml(raw),
+      plain: raw!, wordCount: sourceDescriptionWords(raw), indexable: true,
+    };
+  }
 
   // Public pages only render a stored body that still has ≥600 words after
   // sanitizer. Do not swap a long paraphrase for a short assembled stub, and
@@ -484,8 +491,7 @@ export async function buildJobMetadata(job: JobRow, siteUrl: string) {
   const fallback = expired
     ? `${jobTitle} at ${company}. ${locationSuffix}This posting is closed.`
     : `${jobTitle} at ${company}. ${locationSuffix}Apply on CVin.Bio.`;
-  // Raw scraped bodies are never used in meta (plagiarism guard) — only
-  // curated rewritten bodies. Uncurated pages use company about when we have it.
+  // Published original descriptions and legacy rewrites supply the excerpt.
   const published = await publishSafeDescription(job, location);
   const excerpt = published.indexable
     ? jobDescriptionExcerpt(published.plain, 140, { title: jobTitle, company })
@@ -1094,6 +1100,7 @@ function plainToHtmlDescription(plain: string): string {
 
 function schemaDescriptionSource(job: JobRow, detail: JobDetail): string {
   const raw = job.description || '';
+  if (isSourceJd(job.tags)) return raw;
   if (raw && looksLikeOwnedJobCopy(raw) && !/\[placeholder\]|lorem ipsum/i.test(raw)) {
     return String(raw)
       .replace(/<script[\s\S]*?<\/script>/gi, '')
@@ -1137,7 +1144,7 @@ export function buildJobJsonLd(
   // string, which is a "description same as title" violation. When no real body
   // exists, skip JobPosting entirely instead of emitting weak markup.
   if (plain.length <= 80) return null;
-  const description = plainToHtmlDescription(plain.slice(0, 8000));
+  const description = isSourceJd(job.tags) ? sourceDescriptionHtml(plain) : plainToHtmlDescription(plain.slice(0, 8000));
 
   const rawLoc = job.location || detail.location || '';
   const nonPlace =

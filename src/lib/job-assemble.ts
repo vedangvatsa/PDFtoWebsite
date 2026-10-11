@@ -14,6 +14,7 @@ import { companyDisplayName, applyCompanyDisplayCasing } from '@/lib/company-dir
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
 import { isJobExpired } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
+import { isSourceJd, sourceDescriptionValid } from '@/lib/source-job-description.mjs';
 
 export type AssembleJobInput = {
   id?: string | null;
@@ -177,7 +178,7 @@ export async function assembleJobPage(
   };
 }
 
-/** Factual stubs are never indexable. Board listing uses curated-jd instead. */
+/** Factual stubs are never indexable. Verified source or legacy curated bodies are. */
 export function jobAssembledIndexable(_job: AssembleJobInput): boolean {
   return false;
 }
@@ -193,6 +194,7 @@ export function jobQualifiesForSitemap(
   if (isBannedJobTitle(job.title)) return false;
   if (isJobExpired(job.published_at, job.created_at)) return false;
   if (!Array.isArray(job.tags) || !job.tags.includes('curated-jd')) return false;
+  if (isSourceJd(job.tags)) return job.description === undefined || sourceDescriptionValid(job.description);
   if (job.description == null) return true;
   return isTrustedCuratedBody(job.description);
 }

@@ -10,6 +10,7 @@ import {
 } from '../../../src/lib/job-description.ts';
 import { isLowQualityApplySource } from '../../../src/lib/job-apply-hosts.mjs';
 import { descriptionWords, ENRICH_MIN_WORDS, MIN_WORDS, isCuratedJd } from './job-apply-source.mjs';
+import { isSourceJd, sourceDescriptionValid } from '../../../src/lib/source-job-description.mjs';
 
 export { ENRICH_MIN_WORDS, MIN_WORDS };
 
@@ -32,12 +33,14 @@ export function formattedDescriptionWords(job) {
 /** Curated row is truly done: enough raw storage AND survives formatter trim. */
 export function isFullyEnrichedJob(job) {
   if (!isCuratedJd(job?.tags)) return false;
+  if (isSourceJd(job?.tags)) return sourceDescriptionValid(job.description);
   const raw = descriptionWords(job?.description);
   if (raw < ENRICH_MIN_WORDS) return false;
   return formattedDescriptionWords(job) >= MIN_WORDS;
 }
 
 export function needsCuratedReenrich(job) {
+  if (isSourceJd(job?.tags)) return false;
   if (!isCuratedJd(job?.tags)) return false;
   if (!job?.apply_url) return false;
   if (isCvinStubText(job?.description)) return true;

@@ -3,6 +3,7 @@ import { jobSitemapPath } from '@/lib/job-description';
 import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 import { withSitemapCache } from '@/lib/sitemap-cache';
 import { escapeXml } from '@/lib/xml';
+import { isSourceJd } from '@/lib/source-job-description.mjs';
 
 export const revalidate = 3600;
 
@@ -37,9 +38,9 @@ export async function GET(req: Request) {
 
     const jobs: any[] = [];
     let from = 0;
-    const PAGE = 1000;
+    const PAGE = 100;
     try {
-      while (jobs.length < 10000 && true) {
+      while (jobs.length < 200) {
         const { data } = await supabaseAdmin
           .from('jobs')
           .select(
@@ -55,7 +56,7 @@ export async function GET(req: Request) {
         for (const j of data) {
           if (!jobQualifiesForSitemap(j)) continue;
           jobs.push(j);
-          if (jobs.length >= 10000) break;
+          if (jobs.length >= 200) break;
         }
         from += PAGE;
         if (data.length < PAGE) break;
@@ -69,11 +70,11 @@ export async function GET(req: Request) {
         const path = jobSitemapPath(j);
         if (!path) return '';
         const url = `${siteUrl}${path}?utm_source=jooble&utm_medium=job-feed&utm_campaign=cvinbio_feed`;
-        const desc = String(j.description || '')
+        const desc = (isSourceJd(j.tags) ? String(j.description || '') : String(j.description || '')
           .replace(/<[^>]+>/g, ' ')
           .replace(/\s+/g, ' ')
           .trim()
-          .slice(0, 9000);
+          .slice(0, 9000)).replace(/\]\]>/g, ']]]]><![CDATA[>');
         const pubdate = dmy(j.published_at || j.created_at);
         const expire = dmy(
           new Date(new Date(j.published_at || j.created_at || Date.now()).getTime() + 45 * 86400000).toISOString()

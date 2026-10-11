@@ -7,6 +7,7 @@ import {
   SITEMAP_CACHE_EPOCH,
   sitemapXmlHasUrls,
   JOB_SITEMAP_PAGE,
+  cacheKeyFor,
 } from './sitemap-cache';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -30,6 +31,13 @@ describe('sitemap cache must not poison Google Jobs discovery', () => {
   it('bumps cache epoch and keeps page size small', () => {
     assert.match(SITEMAP_CACHE_EPOCH, /^v\d+/);
     assert.ok(JOB_SITEMAP_PAGE <= 250, 'fat pages + OR date filter time out');
+  });
+  it('changes XML cache keys after publication while ignoring query noise', () => {
+    assert.equal(cacheKeyFor('https://cvin.bio/rss.xml?q=a', 10).url, cacheKeyFor('https://cvin.bio/rss.xml?q=b', 10).url);
+    assert.notEqual(cacheKeyFor('https://cvin.bio/rss.xml', 10).url, cacheKeyFor('https://cvin.bio/rss.xml', 11).url);
+    assert.equal(sitemapXmlHasUrls('<rss><channel><item><link>url</link></item></channel></rss>'), true);
+    assert.equal(sitemapXmlHasUrls('<jobs><job id="1"></job></jobs>'), true);
+    assert.equal(sitemapXmlHasUrls('<jobs></jobs>'), false);
   });
 
   it('withSitemapCache rejects empty hits and never stores empty builds', () => {

@@ -1,6 +1,9 @@
 # Job Description Paraphrase Rules
 
-**Canonical for indexable `curated-jd` pages.**  
+**Historical policy for legacy rewritten pages.** New job descriptions use the
+employer's original text without AI, as defined in `docs/JOB_PAGE_RULES.md`.
+The `source-jd` marker bypasses rewrite-only word-count and originality rules.
+
 **Also:** `noslop.md` · `docs/JD_ASSEMBLY_RULES.md` (stubs only) · `docs/PARAPHRASE_REPO_LEARNINGS.md`
 
 ---

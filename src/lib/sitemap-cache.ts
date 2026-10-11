@@ -10,10 +10,10 @@
  */
 
 /** Bump to invalidate every cached sitemap entry (e.g. after a poisoning incident). */
-export const SITEMAP_CACHE_EPOCH = 'v3';
+export const SITEMAP_CACHE_EPOCH = 'v4';
 
 export function sitemapXmlHasUrls(xml: string): boolean {
-  return typeof xml === 'string' && xml.includes('<loc>');
+  return typeof xml === 'string' && (xml.includes('<loc>') || xml.includes('<item>') || /<job(?:\s|>)/.test(xml));
 }
 
 const XML_HEADERS_BASE = {
@@ -35,11 +35,11 @@ function sitemapResponseHeaders(ttlSeconds = 3600): HeadersInit {
   };
 }
 
-function cacheKeyFor(url: string): Request {
+export function cacheKeyFor(url: string, revision = 0): Request {
   const u = new URL(url);
   // Path+epoch key: query noise / UA variance don't fragment the cache, and a
   // deploy can orphan all previously cached (possibly poisoned) entries.
-  return new Request(`${u.origin}${u.pathname}?smaphe=${SITEMAP_CACHE_EPOCH}`, { method: 'GET' });
+  return new Request(`${u.origin}${u.pathname}?smaphe=${SITEMAP_CACHE_EPOCH}&revision=${revision}`, { method: 'GET' });
 }
 
 export async function withSitemapCache(
@@ -52,7 +52,14 @@ export async function withSitemapCache(
     ?.default;
 
   if (cache) {
-    const key = cacheKeyFor(requestUrl);
+    // The importer already invalidates these shared D1 tags. Include their
+    // generation so partial pre-import XML cannot hide newly published jobs.
+    let revision = 0;
+    try {
+      const { default: tags } = await import('@opennextjs/cloudflare/overrides/tag-cache/d1-next-tag-cache');
+      revision = await tags.getLastRevalidated(['public-jobs', 'public-profiles', 'companies-directory']);
+    } catch { /* Node build / tests do not have Cloudflare bindings. */ }
+    const key = cacheKeyFor(requestUrl, revision);
     try {
       const hit = await cache.match(key);
       if (hit) {

@@ -11,7 +11,6 @@ import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import dotenv from 'dotenv';
-import { normalizeJobDescriptionForStorage } from './lib/normalize-job-description.mjs';
 import { ingestSourceDescription } from './lib/ingest-job-description.mjs';
 import {
   persistedJobSlug,
@@ -409,11 +408,11 @@ async function supabaseUpsert(jobs) {
     return batch.map((j) => ({
       ...j,
       company_key: j.company_key || toCompanyKey(j.company),
-      // Raw ATS copy is fetched only when a visitor opens a thin job page.
-      // Keeping it here caused Postgres TOAST/index growth to take down Auth.
+      // Descriptions are imported separately with verified provenance, a byte
+      // budget and retention. Never bulk-store the unbounded feed payload.
       description: null,
       tags: Array.isArray(j.tags)
-        ? j.tags.filter((t) => String(t).toLowerCase() !== 'curated-jd')
+        ? j.tags.filter((t) => String(t).toLowerCase() !== 'curated-jd' && !['source-jd', 'source-archived'].includes(String(t).toLowerCase()))
         : j.tags,
     }));
   }
@@ -2568,91 +2567,10 @@ async function fetchJSearch() {
   return unique;
 }
 
-async function fetchRecentUncuratedIds(sinceIso) {
-  const ids = [];
-  let offset = 0;
-  const page = 1000;
-  const headers = {
-    apikey: SUPABASE_KEY,
-    Authorization: `Bearer ${SUPABASE_KEY}`,
-  };
-  while (true) {
-    const url =
-      `${SUPABASE_URL}/rest/v1/jobs?select=id` +
-      `&created_at=gte.${encodeURIComponent(sinceIso)}` +
-      `&tags=not.cs.{"curated-jd"}&apply_url=not.is.null` +
-      `&order=created_at.desc&limit=${page}&offset=${offset}`;
-    const res = await fetch(url, { headers });
-    if (!res.ok) {
-      console.error(`  ⚠ recent uncurated fetch ${res.status}`);
-      break;
-    }
-    const rows = await res.json();
-    if (!Array.isArray(rows) || !rows.length) break;
-    for (const row of rows) if (row?.id) ids.push(row.id);
-    if (rows.length < page) break;
-    offset += page;
-  }
-  return ids;
-}
-
-/** Same-run enrich so new rows become live pages before the workflow exits. */
-async function enrichInsertedJobs(sinceIso) {
-  if (process.env.SKIP_ENRICH === '1' || process.env.SKIP_ENRICH === 'true') {
-    console.log('\n⏭ SKIP_ENRICH=1 — new jobs stay listed as apply-out until a later enrich');
-    return;
-  }
-  let list = [];
-  try {
-    list = await fetchRecentUncuratedIds(sinceIso);
-  } catch (e) {
-    console.error(`  ⚠ recent uncurated id fetch failed: ${e.message}`);
-    return;
-  }
-  if (!list.length) {
-    console.log('\n⏭ No new jobs to enrich this run');
-    return;
-  }
-  const idsPath = resolve(__dirname, 'sync-inserted-ids.txt');
-  writeFileSync(idsPath, `${list.join('\n')}\n`);
-  console.log(`\n═══ Enrich ${list.length} newly ingested jobs ═══`);
-  const enrichScript = resolve(__dirname, 'enrich-remote-job-descriptions.mjs');
-  const tsxBin = resolve(__dirname, '../../node_modules/.bin/tsx');
-  const bin = existsSync(tsxBin) ? tsxBin : 'npx';
-  const args = existsSync(tsxBin) ? [enrichScript] : ['tsx', enrichScript];
-
-  const r = spawnSync(
-    bin,
-    args,
-    {
-      shell: true,
-      env: {
-        ...process.env,
-        ALLOW_AI_ENRICH: '1',
-        PRIORITY_IDS_FILE: idsPath,
-        TURBO: process.env.TURBO || '1',
-        CONTINUOUS: '1',
-        BATCH_SIZE: process.env.ENRICH_BATCH_SIZE || '400',
-        CONCURRENCY: process.env.ENRICH_CONCURRENCY || '12',
-        JOB_MAX_AGE_DAYS: process.env.JOB_MAX_AGE_DAYS || '30',
-      },
-      stdio: 'inherit',
-      timeout: Number(process.env.ENRICH_TIMEOUT_MS || 50 * 60 * 1000),
-    }
-  );
-  if (r.status !== 0) {
-    console.error(
-      `  ⚠️ enrich exited ${r.status} — unenriched jobs stay listed as apply-out`
-    );
-  }
-}
-
 // ─── Main ───
 async function main() {
   console.log('🚀 Jobs Sync — Starting');
   const startTime = Date.now();
-
-  const startIso = new Date(startTime).toISOString();
 
   // ── PHASE 1: High-value sources (parallel, 50 concurrent each) ──
   console.log('\n═══ Phase 1: Core sources ═══');
@@ -2728,7 +2646,11 @@ async function main() {
     throw new Error(`Company directory rebuild failed: ${e.message}`);
   }
 
-  console.log('\n⏭ Same-run enrichment disabled; raw ATS descriptions are not stored in Postgres');
+  console.log('\n═══ Import original employer descriptions (no AI) ═══');
+  const publication = spawnSync(process.execPath, [join(__dirname, 'import-original-job-descriptions.mjs')], {
+    env: process.env, stdio: 'inherit', timeout: 30 * 60 * 1000,
+  });
+  if (publication.status !== 0) throw new Error('Original job-description publication failed');
 
   const invalidation = await fetch('https://cvin.bio/api/cache/jobs', {
     method: 'POST', headers: { Authorization: `Bearer ${SUPABASE_KEY}` },

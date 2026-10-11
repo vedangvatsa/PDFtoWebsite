@@ -223,12 +223,16 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
     assert.doesNotMatch(file, /tags\.push\(['"]curated-jd['"]\)/);
   });
 
-  it('jobs-sync enriches newly inserted ids in the same run', () => {
+  it('jobs-sync runs the bounded original-description importer without AI', () => {
     const file = src('.github/scripts/jobs-sync.mjs');
-    assert.match(file, /enrichInsertedJobs/);
-    assert.match(file, /enrich-remote-job-descriptions\.mjs/);
-    assert.match(file, /PRIORITY_IDS_FILE/);
-    assert.match(file, /SKIP_ENRICH/);
+    assert.match(file, /spawnSync\(process\.execPath, \[join\(__dirname, 'import-original-job-descriptions\.mjs'\)\]/);
+    assert.match(file, /publication\.status !== 0/);
+    assert.doesNotMatch(file, /enrichInsertedJobs|ALLOW_AI_ENRICH|enrich-remote-job-descriptions\.mjs/);
+    const workflow = src('.github/workflows/x-scheduler.yml');
+    assert.match(workflow, /SOURCE_IMPORT_BATCH_SIZE/);
+    assert.doesNotMatch(workflow, /OPENROUTER_API_KEY|GEMINI_API_KEY|ENRICH_CONCURRENCY/);
+    const legacy = src('.github/scripts/enrich-remote-job-descriptions.mjs');
+    assert.match(legacy, /async function main\(\) \{\s*throw new Error\('AI job rewriting is retired/);
   });
 
   it('jobs-sync rejects unverifiable or older-than-30-day postings before insert', () => {
