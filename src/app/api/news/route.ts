@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { fetchWithDeadline } from '@/lib/fetch-deadline';
 
 // ── High-signal tech news sources (curated/ranked, no lifestyle) ──
 const RSS_FEEDS = [
@@ -148,11 +149,10 @@ async function fetchAllNews(): Promise<NewsItem[]> {
   const results = await Promise.allSettled(
     RSS_FEEDS.map(async (feed) => {
       try {
-        const res = await fetch(feed.url, {
+        const res = await fetchWithDeadline(feed.url, {
           headers: { 'User-Agent': 'cvin.bio/news-aggregator' },
-          signal: AbortSignal.timeout(8000),
-        });
-        if (!res.ok) return [];
+        }, 8000);
+        if (!res.ok) { await res.body?.cancel(); return []; }
         const xml = await res.text();
         return parseRSS(xml, feed.name, feed.icon);
       } catch {

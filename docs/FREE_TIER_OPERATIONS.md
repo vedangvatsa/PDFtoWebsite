@@ -24,6 +24,12 @@ CV uploads are sharded by client IP. The semaphore releases on stream completion
 cancellation, HEAD and errors; saturation returns `503 RENDER_BUSY` with
 `Retry-After: 5`. It retains no session data and starts no keepalive timers.
 
+Upstream fetch deadlines are cancellable through body completion. Never replace
+them with `AbortSignal.timeout`: an uncleared 8-second timer was keeping actors
+active after successful database calls. Body EOF, cancellation, no-body responses
+and failures clear timers; stalled headers/bodies still time out. News responses
+discarded on HTTP errors are explicitly cancelled too.
+
 Application and parser actors use the `us` jurisdiction with an Eastern North
 America hint because both call Gemini (autofill and resume parsing). A generic
 APAC hint can place them in an unsupported Gemini region. Jurisdiction is a
@@ -122,7 +128,7 @@ at a 3 GB/month forecast and intervene by 4 GB. A stored-user count is not MAU,
 and HTTP content-length sums are not a billing ledger. Keep raw job descriptions
 out of Postgres until a deliberately bounded publishing/enrichment policy is used.
 
-Read aggregate Cloudflare usage (defaults to the last hour, ending two minutes
+Read aggregate Cloudflare usage (defaults to the last hour, ending 15 minutes
 ago to allow ingestion; optional explicit ISO start/end, at most 24 hours):
 
 ```sh
@@ -134,6 +140,8 @@ GB-s, errors/memory, account-wide UTC-day counters and clearly labelled window
 extrapolations. Check both request budgets, DO duration and D1 operations. Review
 at 70% of a daily allowance and intervene at 80%; never infer compliance from
 successful requests or compressed bundle size alone. No-data values remain null.
+During rollout, Durable Object counters arrived over ten minutes after the
+gateway CPU metrics; do not extrapolate from a partially ingested window.
 
 References: [DO pricing](https://developers.cloudflare.com/durable-objects/platform/pricing/),
 [DO CPU limits](https://developers.cloudflare.com/durable-objects/platform/limits/),

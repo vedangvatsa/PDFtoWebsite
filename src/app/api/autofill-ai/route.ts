@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { lookupPublicProfile } from '@/lib/supabase-server';
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
+import { fetchWithDeadline } from '@/lib/fetch-deadline';
 
 export const maxDuration = 60;
 
@@ -77,12 +78,11 @@ Rules:
 - Output ONLY the answer text, no labels or formatting`;
 
   try {
-    const res = await fetch(
+    const res = await fetchWithDeadline(
       `https://generativelanguage.googleapis.com/v1beta/models/${process.env.GEMINI_MODEL?.trim() || 'gemini-3-flash-preview'}:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        signal: AbortSignal.timeout(15000),
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
@@ -90,7 +90,8 @@ Rules:
             maxOutputTokens: 500,
           },
         }),
-      }
+      },
+      15000,
     );
 
     const data = await res.json();

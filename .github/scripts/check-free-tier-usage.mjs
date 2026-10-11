@@ -2,7 +2,7 @@
 // Usage: node --env-file=.env.local .github/scripts/check-free-tier-usage.mjs [start ISO] [end ISO]
 const account = process.env.CLOUDFLARE_ACCOUNT_ID;
 if (!/^[a-f0-9]{32}$/i.test(account || '')) throw new Error('CLOUDFLARE_ACCOUNT_ID is required');
-const end = new Date(process.argv[3] || Date.now() - 120_000);
+const end = new Date(process.argv[3] || Date.now() - 15 * 60_000);
 const start = new Date(process.argv[2] || end.getTime() - 3_600_000);
 const seconds = (end.getTime() - start.getTime()) / 1000;
 if (!Number.isFinite(seconds) || seconds <= 0 || seconds > 86_400) throw new Error('Provide an ordered window of at most 24 hours');
@@ -78,5 +78,5 @@ console.log(JSON.stringify({
     objectDurationGBs: estimate(total(metrics.duration, 'duration')),
     d1RowsRead: estimate(total(metrics.d1, 'rowsRead')), d1RowsWritten: estimate(total(metrics.d1, 'rowsWritten')),
   },
-  note: 'Analytics can be delayed or sampled. A short-window projection is not a billing forecast; null means no reported data.',
+  note: 'Analytics can be delayed or sampled; DO counters have arrived over 10 minutes after Worker CPU. Default end lags by 15 minutes. A short-window projection is not a billing forecast; null means no reported data.',
 }, null, 2));

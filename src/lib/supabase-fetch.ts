@@ -1,5 +1,6 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { circuitFetch, type OriginCircuit } from './origin-circuit';
+import { fetchWithDeadline } from './fetch-deadline';
 
 function databaseCircuit(db: D1Database): OriginCircuit {
   return {
@@ -27,8 +28,8 @@ export const protectedSupabaseFetch: typeof fetch = async (input, init) => {
   if (!url.pathname.startsWith('/rest/v1/')) return fetch(input, init);
   let db: D1Database | undefined;
   try { db = getCloudflareContext().env.NEXT_TAG_CACHE_D1; } catch { /* Node build / tests */ }
-  const signal = init?.signal || (input instanceof Request ? input.signal : undefined);
-  const timeout = AbortSignal.timeout(8_000);
-  const options = { ...init, signal: signal ? AbortSignal.any([signal, timeout]) : timeout };
-  return db ? circuitFetch(input, options, databaseCircuit(db)) : fetch(input, options);
+  const fetcher: typeof fetch = db
+    ? (resource, options) => circuitFetch(resource, options, databaseCircuit(db))
+    : fetch;
+  return fetchWithDeadline(input, init, 8_000, fetcher);
 };
