@@ -58,6 +58,8 @@ Apply it before deploying the sitemap reader to a different database.
 - No timeout is cached as a missing job/profile. Cold unavailable lookups fail
   instead of creating a permanent redirect for a live record.
 - Anonymous, non-RSC stale-job redirects have a 60-second Cache API shortcut.
+  The browser-facing response remains no-store, so zone browser-TTL settings
+  cannot turn a short server cache entry into a sticky permanent redirect.
 - Full misc sitemaps publish only when both profile and company reads complete.
 - A shared D1 origin circuit opens for 30 seconds on API gateway/network failure.
   After cooldown it permits a single recovery probe, instead of letting every
@@ -123,3 +125,20 @@ database, 1,803 profiles, 2,443 jobs, 17 connections and no lock waiters. Both
 exposed schemas were present. The organization remained Pro and its billing
 add-ons endpoint reported no selected add-ons. Monthly billed egress still needs
 checking in the organization's Usage screen before a downgrade is cleared.
+
+Deployment `1f489444` passed CI and deployed all three workers at 07:41 UTC.
+Live checks returned 200 for jobs, company HTML, PNG previews and sitemap XML;
+OAuth responses were private/no-store and cache invalidation endpoints rejected
+unauthenticated requests. A subsequent three-minute Supabase gateway sample had
+no error responses and no old exact-slug/external-ID lookup shape on jobs.
+
+**Remaining budget evidence:** the management API cannot expose billed org
+egress with a personal access token (the dashboard usage endpoint rejects it).
+Also, an initial five-minute post-deployment Cloudflare sample (41 main-worker
+requests) reported median CPU 253.8 ms and p99 1,019.5 ms. The API confirms these
+metrics are in microseconds. The sample includes cold starts and is not a steady
+state forecast, but it exceeds the strict Workers Free 10 ms CPU allowance.
+Bundle-size compliance and zero observed errors do not certify CPU compliance.
+Further CPU reduction/static-serving work is needed before declaring the whole
+stack reliably free-tier-ready. Supabase capacity/health and Cloudflare CPU are
+separate downgrade considerations.

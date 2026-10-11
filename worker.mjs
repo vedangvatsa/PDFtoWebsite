@@ -1,4 +1,5 @@
 import app from './.open-next/worker.js';
+import { browserSafeRedirect } from './src/lib/redirect-cache.mjs';
 export { DOQueueHandler, DOShardedTagCache, BucketCachePurge } from './.open-next/worker.js';
 
 export default {
@@ -24,7 +25,7 @@ export default {
     const key = new Request(`${url.origin}${path}${url.search}`, { method: 'GET' });
     if (publicRedirect) {
       const hit = await caches.default.match(key);
-      if (hit) return hit;
+      if (hit) return browserSafeRedirect(hit);
     }
     const response = await app.fetch(request, env, ctx);
     if (publicRedirect && [301, 308].includes(response.status) &&
@@ -36,7 +37,7 @@ export default {
       });
       ctx.waitUntil(caches.default.put(key, cached.clone()));
       await response.body?.cancel();
-      return cached;
+      return browserSafeRedirect(cached);
     }
     return response;
   },
