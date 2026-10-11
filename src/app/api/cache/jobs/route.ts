@@ -1,6 +1,6 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, revalidatePath } from 'next/cache';
 
 export async function POST(request: NextRequest) {
   const expected = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
@@ -10,5 +10,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Authentication required', code: 'AUTH_REQUIRED', hint: 'This endpoint is for the trusted ingestion worker.' }, { status: 401 });
   }
   revalidateTag('public-jobs', { expire: 0 });
+  revalidateTag('companies-directory', { expire: 0 });
+  revalidatePath('/companies');
   return NextResponse.json({ ok: true }, { headers: { 'Cache-Control': 'private, no-store' } });
 }

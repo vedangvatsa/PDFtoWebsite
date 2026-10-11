@@ -15,12 +15,12 @@
  *   SUPABASE_ACCESS_TOKEN (optional, project management token)
  *   SUPABASE_PROJECT_REF (optional, default from URL)
  *   COMPANIES_STATS_DAYS (default 30)
- *   COMPANIES_MIN_COUNT (default 1; also abort on a >50% drop from the active directory)
+ *   COMPANIES_MIN_COUNT (default 1, or 0 for a verified empty source)
  *
  * Usage: node .github/scripts/rebuild-companies.mjs
  */
 import { createClient } from '@supabase/supabase-js';
-import { assertDirectorySize } from './lib/free-tier-guards.mjs';
+import { assertDirectorySize, assertCompleteCompanyStats } from './lib/free-tier-guards.mjs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
@@ -187,6 +187,7 @@ SET statement_timeout = '8s';
 SELECT
   j.company,
   count(*)::bigint AS role_count,
+  count(*) OVER ()::integer AS source_company_count,
   min(j.company_logo) FILTER (
     WHERE j.company_logo IS NOT NULL AND btrim(j.company_logo) <> ''
   ) AS logo,
@@ -205,13 +206,13 @@ GROUP BY j.company;
 `;
   const rows = await mgmtQuery(sql);
   if (!Array.isArray(rows)) throw new Error('mgmt returned non-array');
-  return rows;
+  return assertCompleteCompanyStats(rows, rows.length ? Number(rows[0].source_company_count) : 0);
 }
 
 async function fetchStatsViaRpc() {
-  const { data, error } = await sb.rpc('jobs_company_stats', { days: DAYS });
+  const { data, error, count } = await sb.rpc('jobs_company_stats', { days: DAYS }, { count: 'exact' });
   if (error) throw error;
-  return data || [];
+  return assertCompleteCompanyStats(data || [], count);
 }
 
 async function fetchStatsViaScan() {
@@ -221,21 +222,29 @@ async function fetchStatsViaScan() {
   let page = 0;
   let lastId = null;
   let complete = false;
+  let expectedRows = null;
+  let scannedRows = 0;
 
-  // Keyset on (created_at, id) avoids OFFSET blowups
+  // Keyset on id avoids OFFSET blowups. Verify against the first exact count
+  // rather than assuming a short response means the server returned every row.
   while (page < SCAN_MAX_PAGES) {
     let q = sb
       .from('jobs')
-      .select('id, company, company_logo, location, published_at, created_at, tags')
+      .select('id, company, company_logo, location, published_at, created_at, tags', page === 0 ? { count: 'exact' } : undefined)
       .or(`created_at.gt.${since},published_at.gt.${since}`)
       .order('id', { ascending: true })
       .limit(SCAN_PAGE);
 
     if (lastId) q = q.gt('id', lastId);
 
-    const { data, error } = await q;
+    const { data, error, count } = await q;
     if (error) throw error;
-    if (!data?.length) { complete = true; break; }
+    if (page === 0) {
+      if (!Number.isSafeInteger(count) || count < 0) throw new Error('Company scan count unavailable');
+      expectedRows = count;
+    }
+    if (!data?.length) { complete = scannedRows === expectedRows; break; }
+    scannedRows += data.length;
 
     for (const j of data) {
       if (!j.company) continue;
@@ -264,7 +273,7 @@ async function fetchStatsViaScan() {
     if (page % 20 === 0) {
       console.log(`  scanned ~${page * SCAN_PAGE} rows, ${byCompany.size} companies…`);
     }
-    if (data.length < SCAN_PAGE) { complete = true; break; }
+    if (scannedRows >= expectedRows) { complete = scannedRows === expectedRows; break; }
   }
   if (!complete) throw new Error('Company scan reached its cap; refusing partial directory');
 
@@ -379,7 +388,10 @@ async function main() {
     .select('slug', { count: 'exact', head: true }).gt('role_count', 0);
   if (previousError || previous === null) throw new Error('Previous company directory unavailable');
   assertDirectorySize(companies.length, previous, {
-    minimum: Math.max(1, Number(process.env.COMPANIES_MIN_COUNT || 1)),
+    minimum: raw.length === 0 && !process.env.COMPANIES_MIN_COUNT ? 0 : Math.max(1, Number(process.env.COMPANIES_MIN_COUNT || 1)),
+    // All loader paths above prove completeness. Legitimate expiry may shrink
+    // the directory by more than 50%, including to zero when the window empties.
+    coverageVerified: true,
   });
 
   let upserted = 0;
@@ -432,6 +444,12 @@ async function main() {
     .map((c) => `${c.name}(${c.role_count})`)
     .join(', ');
   console.log(`✅ companies directory ready in ${((Date.now() - t0) / 1000).toFixed(1)}s — top: ${top}`);
+  const invalidation = await fetch('https://cvin.bio/api/cache/jobs', {
+    method: 'POST', headers: { Authorization: `Bearer ${SUPABASE_KEY}` },
+    signal: AbortSignal.timeout(20_000),
+  });
+  await invalidation.body?.cancel();
+  if (!invalidation.ok) throw new Error(`Company cache publication failed (${invalidation.status})`);
 }
 
 main().catch((e) => {

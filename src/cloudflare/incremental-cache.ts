@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import staticAssets from '@opennextjs/cloudflare/overrides/incremental-cache/static-assets-incremental-cache';
 import type { CacheEntryType, CacheValue, IncrementalCache, WithLastModified } from '@opennextjs/aws/types/overrides.js';
+import { encodeCacheValue, decodeCacheValue } from '../lib/cache-value';
 
 /**
  * Free-plan cache: build-time pages stay in unlimited static assets; runtime
@@ -27,7 +28,7 @@ export class FreeTierIncrementalCache implements IncrementalCache {
       const hit = await env.NEXT_TAG_CACHE_D1!.prepare(
         'SELECT value, last_modified FROM cache_entries WHERE slot = ? AND cache_key = ? AND last_modified > ?'
       ).bind(slot, hash, Date.now() - 86_400_000).first<{ value: string; last_modified: number }>();
-      if (hit) return { value: JSON.parse(hit.value), lastModified: hit.last_modified };
+      if (hit) return { value: decodeCacheValue(hit.value) as CacheValue<T>, lastModified: hit.last_modified };
     } catch {
       console.warn('[cache] runtime read unavailable');
     }
@@ -36,8 +37,11 @@ export class FreeTierIncrementalCache implements IncrementalCache {
   }
 
   async set<T extends CacheEntryType = 'cache'>(key: string, value: CacheValue<T>, type?: T): Promise<void> {
-    const body = JSON.stringify(value);
-    if (Buffer.byteLength(body, 'utf8') > 131_072) return;
+    const body = encodeCacheValue(value);
+    if (body === null) {
+      console.warn('[cache] value exceeds bounded slot capacity');
+      return;
+    }
     const { env } = getCloudflareContext();
     const { hash, slot } = this.key(key, type);
     try {

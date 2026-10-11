@@ -4,6 +4,7 @@
 
 import crypto from 'crypto';
 import { readInventory } from './lib/free-tier-guards.mjs';
+import { jobInsertConflict, insertJobWithRecovery } from './lib/job-insert-recovery.mjs';
 import { spawnSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname, join } from 'path';
@@ -417,99 +418,50 @@ async function supabaseUpsert(jobs) {
     }));
   }
 
+  async function sendInsert(batch) {
+    const payload = withCompanyKey(batch);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=ignore-duplicates,return=representation',
+      },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(20_000),
+    });
+    const body = await res.json().catch(() => null);
+    return { status: res.status, data: res.ok ? body : null, error: res.ok ? null : body };
+  }
+
   async function insertBatch(batch) {
     try {
-      const payload = withCompanyKey(batch);
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
-        method: 'POST',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'resolution=ignore-duplicates,return=representation',
-        },
-        body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(20_000),
-      });
-
-      if (res.ok) {
-        const result = await res.json();
-        return Array.isArray(result) ? result.length : 0;
-      } else {
-        const err = await res.text();
-        // dedup_hash conflict → row-by-row (handles cross-source dupes)
-        if (err.includes('dedup_hash')) {
-          let count = 0;
-          for (const job of batch) {
-            try {
-              const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
-                method: 'POST',
-                signal: AbortSignal.timeout(20_000),
-                headers: {
-                  'apikey': SUPABASE_KEY,
-                  'Authorization': `Bearer ${SUPABASE_KEY}`,
-                  'Content-Type': 'application/json',
-                  'Prefer': 'resolution=ignore-duplicates,return=representation',
-                },
-                body: JSON.stringify(withCompanyKey([job])),
-              });
-              if (r2.ok) {
-                const r = await r2.json();
-                count += Array.isArray(r) ? r.length : 0;
-              } else {
-                const detail = await r2.text();
-                if (r2.status !== 409 || !detail.includes('dedup_hash')) throw new Error(`Individual insert failed (${r2.status})`);
-              }
-            } catch (error) { throw error; }
-          }
-          return count;
-        }
-        // slug unique violation (collision with a slug from a row outside the
-        // 30-day used-set) → remint each job with a fresh short hash and retry.
-        if (err.includes('jobs_slug_key') || err.includes('slug')) {
-          let count = 0;
-          for (const job of batch) {
-            try {
-              const retried = remintSlug(job);
-              const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
-                method: 'POST',
-                signal: AbortSignal.timeout(20_000),
-                headers: {
-                  'apikey': SUPABASE_KEY,
-                  'Authorization': `Bearer ${SUPABASE_KEY}`,
-                  'Content-Type': 'application/json',
-                  'Prefer': 'resolution=ignore-duplicates,return=representation',
-                },
-                body: JSON.stringify(withCompanyKey([retried])),
-              });
-              if (r2.ok) {
-                const r = await r2.json();
-                count += Array.isArray(r) ? r.length : 0;
-              } else {
-                await r2.body?.cancel();
-                throw new Error(`Slug retry failed (${r2.status})`);
-              }
-            } catch (e2) {
-              throw e2;
-            }
-          }
-          return count;
-        }
-        throw new Error(`Insert batch failed (${res.status})`);
+      const result = await sendInsert(batch);
+      if (result.status >= 200 && result.status < 300) {
+        if (!Array.isArray(result.data)) throw new Error('Insert batch returned an invalid row response');
+        return result.data.length;
       }
+      if (!jobInsertConflict(result)) throw new Error(`Insert batch failed (${result.status}, ${result.error?.code || 'unknown'})`);
+      // A batch may contain both slug collisions and cross-source duplicates.
+      // Classify every individual response; never retry the same slug forever
+      // or mistake a legitimate dedup conflict for an infrastructure failure.
+      let inserted = 0;
+      for (const job of batch) inserted += await insertJobWithRecovery(job, (row) => sendInsert([row]), remintSlug);
+      return inserted;
     } catch (e) {
       throw new Error(`Insert batch failed: ${e.message}`);
     }
   }
 
-  // Stay short: head≤6 + 2-hex (matches mint prettyJobSlug collision form).
-  function remintSlug(job) {
-    const h = crypto.createHash('md5').update(job.id || job.external_id || String(Math.random())).digest('hex').slice(0, 2);
+  // A deterministic attempt-specific suffix stays under the 24-character
+  // route limit and avoids the old two-hex (256-value) collision space.
+  function remintSlug(job, attempt) {
+    const h = crypto.createHash('sha256').update(`${job.external_id}:${attempt}`).digest('hex').slice(0, 8);
     const co = companyToSlug(job.company);
     const current = job.slug ? String(job.slug).slice(co.length + 1) : 'role';
     const head = (current.split('-')[0] || 'role').slice(0, 6);
-    job.slug = `${co}_${head}-${h}`;
-    return job;
+    return { ...job, slug: `${co}_${head}-${h}` };
   }
 
   // Fire batches with low concurrency + cooldown for Free Nano

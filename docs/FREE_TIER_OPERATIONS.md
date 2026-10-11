@@ -15,8 +15,11 @@ URLs use the existing application routes.
 
 `src/cloudflare/incremental-cache.ts` stores at most 1,024 D1 cache slots, with a
 128 KiB maximum value per slot. Full keys are checked so collisions are misses,
-never incorrect data. Value storage is bounded to 128 MiB plus metadata. Expiry
-and global invalidation are evaluated by Next/OpenNext; prerendered static assets
+never incorrect data. Value storage is bounded to 128 MiB plus metadata.
+Large HTML entries are compressed within the same slot limit (maximum decoded
+payload 2 MB), so a large company-directory refresh can replace its build-time
+snapshot without increasing the storage budget.
+Expiry and global invalidation are evaluated by Next/OpenNext; prerendered static assets
 remain the fallback. Large query results are paged so their individual pages fit.
 
 ## Commands
@@ -92,8 +95,13 @@ out of Postgres until a deliberately bounded publishing/enrichment policy is use
 - Default: at most 500 new jobs/run, inserts of 75 rows with concurrency 2.
 - Failed dedup reads stop inserts; failed writes/cleanup/rebuild/publication fail
   the workflow. A green run must represent a completed pipeline.
-- Company rebuilds accept the current small inventory but reject empty results,
-  incomplete scans, or a >50% unexpected drop in active companies.
+- Company rebuilds prove source completeness using SQL group counts, RPC exact
+  counts, or a fully counted keyset scan. This permits legitimate large expiry
+  contractions (including a genuinely empty window) while rejecting truncated
+  or malformed results. Successful rebuilds invalidate public directory caches.
+- Insert retries distinguish duplicate jobs from slug collisions. Slug retries
+  use distinct, deterministic suffixes and a bounded retry count; infrastructure
+  errors still fail the workflow instead of silently discarding records.
 - Sync uses `cleanup-old-jobs.mjs`, which protects described/curated jobs and
   Telegram-posted links, and rechecks guards at delete time.
 - Do not restart the old high-concurrency enrichment daemon under the free-tier
@@ -142,3 +150,27 @@ Bundle-size compliance and zero observed errors do not certify CPU compliance.
 Further CPU reduction/static-serving work is needed before declaring the whole
 stack reliably free-tier-ready. Supabase capacity/health and Cloudflare CPU are
 separate downgrade considerations.
+
+## Verification after the Supabase downgrade
+
+At 11:23 UTC on October 11 the organization API confirmed `plan: free`, all four
+services were healthy, the database was writable, and there were no lock waiters.
+Live public pages, job search, images and sitemaps returned successful responses.
+A synthetic account passed sign-in, session verification, owner profile insert
+and update, public reads, authenticated cache invalidation and account deletion.
+The account and its profile were removed afterwards. A synthetic CV upload
+returned a structured result via the regex fallback parser.
+
+Two scheduled maintenance failures were application-level regressions:
+
+- The expiry job successfully removed 2,241 old unenriched jobs, but its company
+  rebuild then rejected the legitimate 193-to-34 company contraction. Completeness
+  checks now distinguish a verified contraction from a truncated response.
+- Import recovery encountered a second uniqueness conflict after reminting a
+  slug. Every individual response is now classified, duplicate jobs are skipped,
+  and actual slug collisions get distinct bounded retries.
+
+The verified company rebuild completed in 2.8 seconds on Free, preserving company
+pages while zeroing inactive role counts. Native Cloudflare preview testing also
+verified a 231 KB directory page could be stored and read as an 85 KB compressed
+cache entry after invalidation, retaining the 128 KiB per-slot storage cap.

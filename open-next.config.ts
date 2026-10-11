@@ -7,6 +7,7 @@ const config = defineCloudflareConfig({
   queue: () => import('@opennextjs/cloudflare/overrides/queue/do-queue').then((m) => m.default),
   tagCache: () => import('@opennextjs/cloudflare/overrides/tag-cache/d1-next-tag-cache').then((m) => m.default),
 });
+config.edgeExternals = [...(config.edgeExternals || []), 'node:zlib'];
 
 // Keep each deployed Worker below the Free plan's compressed script limit.
 // Heavy document decoders and image-rendering WASM must not ship with pages.

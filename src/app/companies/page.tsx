@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 import { TelegramJobPopup } from '@/components/telegram-job-popup';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 import { toCompanySlug, companyDisplayName } from '@/lib/company-directory';
-import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { withTimeout, DB_BUDGET, requireDatabaseResult } from '@/lib/db-timeout';
 import { primaryCompanyLogoUrl } from '@/lib/company-logo';
 import { unstable_cache } from 'next/cache';
 
@@ -46,7 +46,7 @@ type CompanyRow = {
 
 const loadCompaniesDirectory = unstable_cache(
   async (): Promise<CompanyRow[]> => {
-    const result = await withTimeoutFallback(
+    const result = await withTimeout(
       supabase
         .from('companies')
         // Slim select — no locations[] (shown on company pages only).
@@ -54,23 +54,18 @@ const loadCompaniesDirectory = unstable_cache(
         .order('role_count', { ascending: false })
         .limit(DIRECTORY_LIMIT),
       DB_BUDGET.fast,
-      { data: null, error: { message: 'timeout' } } as any,
       'companies-directory'
     );
 
-    if (result.error) {
-      console.error('companies directory read failed:', result.error.message);
-    }
-
-    return (result.data || []).map((c: any) => ({
+    return (requireDatabaseResult(result, 'companies directory') || []).map((c: any) => ({
       slug: c.slug || toCompanySlug(c.name),
       name: companyDisplayName(c.name),
       role_count: c.role_count ?? 0,
       logo: c.logo ?? null,
     }));
   },
-  ['companies-directory-v3'],
-  { revalidate: 3600, tags: ['companies-directory'] }
+  ['companies-directory-v4'],
+  { revalidate: 3600, tags: ['companies-directory', 'public-jobs'] }
 );
 
 /** Server-only logo img — keeps company marks without client hydration × N. */
