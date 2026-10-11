@@ -397,3 +397,53 @@ across 13 pages, with zero duplicate IDs and 519 unspecified-type Greenhouse
 listings included. Every returned card had a formatted original (`source-html`)
 and an on-site job URL. The company directory independently reported 72 active
 employers and 606 roles.
+
+## October 11 AI100 rollout and final verification
+
+The official-source roster landed in `ab750adb` and deployed with merge commit
+`2d45cad3` in [38174582218](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38174582218).
+The AI-only import [38174971889](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38174971889)
+completed successfully and retained its `ai100-coverage` artifact:
+
+- All 100 employers checked: 59 had current eligible remote candidates, 25 had
+  no explicitly remote openings, 14 had no fresh/eligible candidates (including
+  Google's undated DeepMind result), one partial source failure (H2O.ai detail
+  metadata) and one unavailable source (Tabnine HTTP 502).
+- 500 original descriptions independently verified; 452 inserted, 48 database
+  duplicates ignored, 162 already-existing jobs recognized, 36 feed duplicates
+  removed and 115 candidates deferred by the shared batch bound.
+- Verification identified one newly imported Arize talent-community signup and
+  two earlier EBANX talent-pool entries. Official sources confirmed these were
+  future-opportunity registrations. Their rows/descriptions remain retained,
+  but `source-closed` + `source-not-vacancy` withdraw them from publication.
+  Final additions are **451 actual remote vacancies from 46 employers**.
+- Complete inventory: **1,055 live jobs**, **zero missing formatted originals**,
+  113 active company pages and 1,055 directory roles. Live original HTML totals
+  7,302,403 bytes; database size is 60,206,227 bytes (500 MB Free allowance).
+
+Follow-up fixes retained real Community Manager titles, rejected prospect posts
+and raw talent-pool labels before title cleanup, and hid internal roster tags
+from card summaries. Job-read failures now return retryable, uncacheable 503
+envelopes rather than empty final pages or misleading missing-job responses.
+Caller cancellation no longer trips a shared database outage; actual upstream
+timeouts still do. Native four-worker fault injection verified both the board
+and detail API return 503 during backoff and recover to 200 afterwards.
+
+OpenNext scopes tag revisions to a build. The XML Cache API key now includes
+that same build ID: a deployment can no longer resurrect an earlier
+revision-zero sitemap. Final application `91ea01f7` deployed successfully in
+[38178258541](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38178258541).
+Tests passed **385**, with one credential-dependent skip; typecheck, OG checks,
+build/size gates and the production Google Jobs canary passed.
+
+Final live traversal reached **all 1,055 cards across 22 pages**, zero duplicate
+IDs, all original HTML, and no internal markers in card summaries/highlights.
+The sitemap's 1,055 URLs exactly matched every board URL. Five new Workday jobs
+matched freshly fetched employer HTML in storage, detail API, visible page and
+JobPosting schema. All four full-description feeds returned 200 entries.
+
+The mature 21:20–21:35 UTC resource sample reported gateway CPU **1.520 ms median,
+5.309 ms p99**, zero CPU/memory-limit/fatal DO failures and 95.007 GB-s DO duration.
+UTC-day usage through 21:35 was 21,877 Worker requests, 7,317 DO requests,
+1,681.143 GB-s duration, 139,455 D1 rows read and 30,335 D1 rows written. These
+are observed counters, not a promise about future traffic or monthly egress.
