@@ -384,3 +384,10 @@ passed, and the same full traversal succeeded live. The remaining one-card
 difference was traced to B12 being misclassified as a junk company because its
 name has only one letter. The short-brand guard now recognizes B12 and 3M while
 retaining the existing rejection of numeric IDs and symbol-only labels.
+
+Final deployment [38167633276](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38167633276)
+passed for `6b0f9511`. Live cursor traversal reached **all 606 advertised jobs**
+across 13 pages, with zero duplicate IDs and 519 unspecified-type Greenhouse
+listings included. Every returned card had a formatted original (`source-html`)
+and an on-site job URL. The company directory independently reported 72 active
+employers and 606 roles.
