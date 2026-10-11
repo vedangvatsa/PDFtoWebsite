@@ -10,6 +10,19 @@ export class DbTimeoutError extends Error {
   }
 }
 
+/** A failed lookup must not become a cached miss or permanent redirect. */
+export class DatabaseUnavailableError extends Error {
+  constructor(label = 'public data') {
+    super(`Temporarily unable to load ${label}`);
+    this.name = 'DatabaseUnavailableError';
+  }
+}
+
+export function requireDatabaseResult<T>(result: { data: T; error: unknown }, label: string): T {
+  if (result.error) throw new DatabaseUnavailableError(label);
+  return result.data;
+}
+
 /**
  * Public profile exists-or-not is unknown because the database timed out or
  * returned a transient error. Callers MUST map this to HTTP 503 / a retry UI —
@@ -57,15 +70,23 @@ export async function withRetryOnTimeout<T>(
   throw lastErr;
 }
 
-/** Race a thenable (incl. Supabase builders) against a wall-clock deadline. */
+/** Cancel Supabase builders at the deadline, before starting any retry. */
 export function withTimeout<T>(
   promise: PromiseLike<T>,
   ms: number,
   label = 'query'
 ): Promise<T> {
+  const controller = new AbortController();
+  // PostgrestBuilder is lazy: attach cancellation before consuming its thenable.
+  if ('abortSignal' in promise && typeof promise.abortSignal === 'function') {
+    promise.abortSignal(controller.signal);
+  }
   let timer: ReturnType<typeof setTimeout> | undefined;
   const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(() => reject(new DbTimeoutError(label, ms)), ms);
+    timer = setTimeout(() => {
+      reject(new DbTimeoutError(label, ms));
+      controller.abort();
+    }, ms);
   });
   // Promise.resolve so PostgrestBuilder (thenable) is a real Promise for race/finally.
   return Promise.race([Promise.resolve(promise), timeout]).finally(() => {

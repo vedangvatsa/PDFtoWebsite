@@ -11,10 +11,9 @@ interface Bucket {
   resetAt: number;
 }
 
-// Shared in-memory limiter (per-isolate). Cloudflare Workers run a single
-// isolate per deployment, so this is consistent across requests — but it is
-// not cluster-accurate if the Worker is ever replicated. Acceptable for
-// abuse-mitigation purposes.
+// Best-effort per-isolate limiter. Workers can run many isolates in many
+// regions: this is not a global quota. Database privileges additionally keep
+// internal write RPCs behind these application endpoints.
 const buckets = new Map<string, Bucket>();
 const MAX_BUCKETS = 10000;
 

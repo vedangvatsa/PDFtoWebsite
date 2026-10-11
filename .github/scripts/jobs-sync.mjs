@@ -3,6 +3,7 @@
 // Env: SUPABASE_URL, SUPABASE_KEY (service role)
 
 import crypto from 'crypto';
+import { readInventory } from './lib/free-tier-guards.mjs';
 import { spawnSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname, join } from 'path';
@@ -242,21 +243,15 @@ async function fetchExistingKeys() {
   let offset = 0;
   let retries = 0;
   const maxPages = 40; // hard cap 20k rows — never unbounded
+  let complete = false;
 
   console.log(`   📥 fetchExistingKeys: last 30d only (free-tier safe), pageSize=${pageSize}`);
 
   for (let page = 0; page < maxPages; page++) {
     try {
       const url = `${SUPABASE_URL}/rest/v1/jobs?select=dedup_hash,external_id,company,slug&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&offset=${offset}&limit=${pageSize}`;
-      const res = await fetch(url, {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-      });
-      if (!res.ok) {
-        console.error(`  ❌ fetchExistingKeys HTTP ${res.status}`);
-        break;
-      }
-      const rows = await res.json();
-      if (!Array.isArray(rows) || rows.length === 0) break;
+      const rows = await readInventory(url, { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` });
+      if (rows.length === 0) { complete = true; break; }
       for (const r of rows) {
         if (r.dedup_hash) allHashes.add(r.dedup_hash);
         if (r.external_id) allExternalIds.add(r.external_id);
@@ -279,17 +274,12 @@ async function fetchExistingKeys() {
       retries = 0;
       // Pace requests so Free Nano connection pool can breathe
       await sleep(150);
-      if (rows.length < pageSize) break;
+      if (rows.length < pageSize) { complete = true; break; }
     } catch (e) {
-      retries++;
-      if (retries > 5) {
-        console.error('  ❌ fetchExistingKeys failed after 5 retries');
-        break;
-      }
-      console.log(`  ⚠ fetchExistingKeys retry ${retries}/5: ${e.message}`);
-      await sleep(3000 * retries);
+      throw new Error(`Cannot safely insert using a partial dedup inventory: ${e.message}`);
     }
   }
+  if (!complete) throw new Error('Dedup inventory exceeded its bounded scan; refusing a partial insert');
   return { allHashes, allExternalIds, usedByCompany };
 }
 
@@ -430,9 +420,7 @@ async function supabaseUpsert(jobs) {
   async function insertBatch(batch) {
     try {
       const payload = withCompanyKey(batch);
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 120000);
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id`, {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_KEY,
@@ -441,9 +429,8 @@ async function supabaseUpsert(jobs) {
           'Prefer': 'resolution=ignore-duplicates,return=representation',
         },
         body: JSON.stringify(payload),
-        signal: controller.signal,
+        signal: AbortSignal.timeout(20_000),
       });
-      clearTimeout(timeout);
 
       if (res.ok) {
         const result = await res.json();
@@ -455,8 +442,9 @@ async function supabaseUpsert(jobs) {
           let count = 0;
           for (const job of batch) {
             try {
-              const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id`, {
+              const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
                 method: 'POST',
+                signal: AbortSignal.timeout(20_000),
                 headers: {
                   'apikey': SUPABASE_KEY,
                   'Authorization': `Bearer ${SUPABASE_KEY}`,
@@ -468,8 +456,11 @@ async function supabaseUpsert(jobs) {
               if (r2.ok) {
                 const r = await r2.json();
                 count += Array.isArray(r) ? r.length : 0;
+              } else {
+                const detail = await r2.text();
+                if (r2.status !== 409 || !detail.includes('dedup_hash')) throw new Error(`Individual insert failed (${r2.status})`);
               }
-            } catch {} // silently skip individual dupe failures
+            } catch (error) { throw error; }
           }
           return count;
         }
@@ -480,8 +471,9 @@ async function supabaseUpsert(jobs) {
           for (const job of batch) {
             try {
               const retried = remintSlug(job);
-              const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id`, {
+              const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
                 method: 'POST',
+                signal: AbortSignal.timeout(20_000),
                 headers: {
                   'apikey': SUPABASE_KEY,
                   'Authorization': `Bearer ${SUPABASE_KEY}`,
@@ -493,19 +485,20 @@ async function supabaseUpsert(jobs) {
               if (r2.ok) {
                 const r = await r2.json();
                 count += Array.isArray(r) ? r.length : 0;
+              } else {
+                await r2.body?.cancel();
+                throw new Error(`Slug retry failed (${r2.status})`);
               }
             } catch (e2) {
-              console.error(`  ⚠ slug retry failed ${job.slug}: ${String(e2.message || e2).slice(0, 120)}`);
+              throw e2;
             }
           }
           return count;
         }
-        console.error(`  ❌ Batch error: ${err.substring(0, 200)}`);
-        return 0;
+        throw new Error(`Insert batch failed (${res.status})`);
       }
     } catch (e) {
-      console.error(`  ❌ Batch failed: ${e.message}`);
-      return 0;
+      throw new Error(`Insert batch failed: ${e.message}`);
     }
   }
 
@@ -2623,79 +2616,6 @@ async function fetchJSearch() {
   return unique;
 }
 
-// ─── Cleanup: remove jobs older than 30 days ───
-// Prefer created_at (row age). Also wipe stale synced_at so old re-synced rows don't linger.
-// Batched deletes keep Free Nano from choking on one giant DELETE.
-async function cleanupOldJobs() {
-  const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-
-  let totalDeleted = 0;
-  const maxRounds = 50; // safety: 50 × ~1000
-
-  console.log(`\n🗑️ Cleaning jobs older than 30 days (created_at < ${cutoff})...`);
-
-  for (let round = 0; round < maxRounds; round++) {
-    // Select a batch of old ids, then delete by id (more reliable than unbounded DELETE)
-    const sel = await fetch(
-      `${SUPABASE_URL}/rest/v1/jobs?select=id&created_at=lt.${encodeURIComponent(cutoff)}&limit=1000`,
-      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
-    );
-    if (!sel.ok) {
-      const err = await sel.text();
-      console.error(`  ❌ cleanup select failed: ${sel.status} ${err.slice(0, 200)}`);
-      break;
-    }
-    const rows = await sel.json();
-    if (!Array.isArray(rows) || rows.length === 0) break;
-
-    const ids = rows.map((r) => r.id).filter(Boolean);
-    if (ids.length === 0) break;
-
-    // PostgREST: quote UUIDs inside in.()
-    const inList = ids.map((id) => `"${id}"`).join(',');
-    const del = await fetch(
-      `${SUPABASE_URL}/rest/v1/jobs?id=in.(${inList})`,
-      {
-        method: 'DELETE',
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-          Prefer: 'return=minimal',
-        },
-      }
-    );
-    if (!del.ok) {
-      const err = await del.text();
-      console.error(`  ❌ cleanup delete failed: ${del.status} ${err.slice(0, 200)}`);
-      break;
-    }
-    const n = ids.length;
-    totalDeleted += n;
-    console.log(`  🗑️ round ${round + 1}: deleted ${n} (total ${totalDeleted})`);
-    await sleep(200);
-    if (rows.length < 1000) break;
-  }
-
-  // Also remove rows with null/missing created_at but stale synced_at
-  const syncedDel = await fetch(
-    `${SUPABASE_URL}/rest/v1/jobs?synced_at=lt.${encodeURIComponent(cutoff)}&created_at=is.null`,
-    {
-      method: 'DELETE',
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        Prefer: 'return=minimal',
-      },
-    }
-  );
-  if (syncedDel.ok) {
-    console.log('  🗑️ also cleared null-created_at rows with old synced_at');
-  }
-
-  console.log(`\n🗑️ Cleanup done: ${totalDeleted} jobs older than 30 days removed`);
-  return totalDeleted;
-}
-
 async function fetchRecentUncuratedIds(sinceIso) {
   const ids = [];
   let offset = 0;
@@ -2833,7 +2753,12 @@ async function main() {
   console.log('\n⏭ Phase 4: Regional direct importers disabled');
 
   // Cleanup old jobs
-  await cleanupOldJobs();
+  // Use the single guarded implementation: the old local copy deleted
+  // curated pages and Telegram-posted links as well as expired thin rows.
+  const cleanup = spawnSync(process.execPath, [join(__dirname, 'cleanup-old-jobs.mjs')], {
+    env: process.env, stdio: 'inherit', timeout: 10 * 60 * 1000,
+  });
+  if (cleanup.status !== 0) throw new Error('Guarded job cleanup failed');
 
   // Rebuild /companies directory table (cheap page reads; see rebuild-companies.mjs)
   console.log('\n═══ Rebuild companies directory ═══');
@@ -2845,13 +2770,20 @@ async function main() {
       timeout: 10 * 60 * 1000,
     });
     if (r.status !== 0) {
-      console.error(`  ⚠️ companies rebuild exited ${r.status} (jobs sync still OK)`);
+      throw new Error(`Company directory rebuild exited ${r.status}`);
     }
   } catch (e) {
-    console.error(`  ⚠️ companies rebuild failed: ${e.message}`);
+    throw new Error(`Company directory rebuild failed: ${e.message}`);
   }
 
   console.log('\n⏭ Same-run enrichment disabled; raw ATS descriptions are not stored in Postgres');
+
+  const invalidation = await fetch('https://cvin.bio/api/cache/jobs', {
+    method: 'POST', headers: { Authorization: `Bearer ${SUPABASE_KEY}` },
+    signal: AbortSignal.timeout(20_000),
+  });
+  await invalidation.body?.cancel();
+  if (!invalidation.ok) throw new Error(`Job cache publication failed (${invalidation.status})`);
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n🏁 Done in ${elapsed}s — Total: ${phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);

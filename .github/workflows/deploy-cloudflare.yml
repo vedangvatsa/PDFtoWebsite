@@ -82,8 +82,7 @@ jobs:
             console.log("wrote .env.production.local with", out.trim() ? out.trim().split("\n").length : 0, "vars");
           '
           npx tsx scripts/generate-llms.ts
-          npx opennextjs-cloudflare build
-          npm run cf:prune-assets
+          npm run cf:build
         env:
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://cvin.bio' }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -139,7 +138,7 @@ jobs:
           if [ -n "$CLOUDFLARE_API_KEY" ] && [ -n "$CLOUDFLARE_EMAIL" ]; then
             unset CLOUDFLARE_API_TOKEN
           fi
-          npx wrangler deploy
+          node .github/scripts/deploy-free-tier.mjs
 
       - name: Deployment summary
         if: success()

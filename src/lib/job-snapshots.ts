@@ -1,133 +1,88 @@
-/**
- * Cache-first job snapshots for public job pages.
- *
- * Layering:
- *  1. Next.js unstable_cache (edge/data cache, revalidate 15m)
- *  2. Live Supabase with hard timeout (fail open → null)
- *
- * When the primary is unhealthy, ISR still serves the last good snapshot.
- * Supabase remains system of record; public traffic never hangs on it.
- */
+/** Public job data is cached independently of authenticated viewer context. */
+import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-import { companyHubAliasPrefixes } from '@/lib/company-directory';
-import { jobBelongsToCompanyHub } from '@/lib/company-hub-query';
-import {
-  isJobId,
-  isShortJobSlug,
-  JOB_DESCRIPTION_FORMAT_VERSION,
-} from '@/lib/job-description';
+import { withTimeout, DB_BUDGET, DatabaseUnavailableError, requireDatabaseResult } from '@/lib/db-timeout';
+import { companyKeyEqualityValues, companyNameEqualityValues } from '@/lib/company-hub-query';
+import { isJobId, isShortJobSlug, JOB_DESCRIPTION_FORMAT_VERSION } from '@/lib/job-description';
+import { canRenderJobPage } from '@/lib/job-apply-source';
+import { exactJobRoute, legacyJobRoutes, type JobRouteRow } from '@/lib/job-route-resolution';
 import type { JobRow } from '@/lib/job-detail-data';
 
 const SELECT_COLS =
   'id,title,company,company_key,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,description,external_id,created_at,slug';
-
-// Expired jobs still load. The page shows a closed notice and hides apply.
-// Missing rows (hard-deleted) still 301 to the company hub.
+const ROUTE_COLS = 'id,title,company,company_key,external_id,slug,tags,created_at';
+const ROUTE_PAGE = 100;
+const ROUTE_MAX = 2000;
 
 async function loadJobByIdLive(id: string): Promise<JobRow | null> {
-  const result = await withTimeoutFallback(
+  const result = await withTimeout(
     supabaseAdmin.from('jobs').select(SELECT_COLS).eq('id', id).maybeSingle(),
     DB_BUDGET.fast,
-    { data: null, error: { message: 'timeout' } } as any,
-    `job-by-id:${id.slice(0, 8)}`
+    'job-by-id'
   );
-  if (result.error || !result.data) return null;
-  return result.data as JobRow;
+  return requireDatabaseResult(result, 'job') as JobRow | null;
 }
 
-async function loadJobByExternalIdLive(
+export const getCachedJobById = cache(async (id: string): Promise<JobRow | null> => {
+  if (!isJobId(id)) return null;
+  return unstable_cache(() => loadJobByIdLive(id),
+    ['job-snapshot-id-v2', `v${JOB_DESCRIPTION_FORMAT_VERSION}`, id],
+    { revalidate: 300, tags: ['public-jobs', `job:${id}`] }
+  )();
+});
+
+// One cache key per company/page, not per arbitrary crawled job URL. Small
+// pages fit the bounded free-tier cache even for the largest company hubs.
+async function routePage(company: string, column: 'company_key' | 'company', values: string[], from: number) {
+  return unstable_cache(async () => {
+    const result = await withTimeout(
+      supabaseAdmin.from('jobs').select(ROUTE_COLS).in(column, values)
+        .order('id').range(from, from + ROUTE_PAGE - 1),
+      DB_BUDGET.list,
+      'job-route-index'
+    );
+    return (requireDatabaseResult(result, 'job route index') || []) as JobRouteRow[];
+  }, ['job-route-index-v1', company, column, String(from)],
+  { revalidate: 900, tags: ['public-jobs'] })();
+}
+
+const getCompanyRouteRows = cache(async (company: string): Promise<JobRouteRow[]> => {
+  const rows = new Map<string, JobRouteRow>();
+  const lookups = [
+    ['company_key', companyKeyEqualityValues(company)],
+    ['company', companyNameEqualityValues(company)],
+  ] as const;
+  for (const [column, values] of lookups) {
+    if (!values.length) continue;
+    let complete = false;
+    for (let from = 0; from <= ROUTE_MAX; from += ROUTE_PAGE) {
+      const page = await routePage(company, column, values, from);
+      for (const row of page) rows.set(row.id, row);
+      if (page.length < ROUTE_PAGE) { complete = true; break; }
+    }
+    // Never turn an incomplete catalog into a false miss/permanent redirect.
+    if (!complete) throw new DatabaseUnavailableError('complete job route index');
+  }
+  return [...rows.values()];
+});
+
+export const getCachedJobByCompanyAndSlug = cache(async (
   companySlug: string,
   jobSlug: string
-): Promise<JobRow | null> {
-  // A URL is ambiguous when one job's minted slug column equals another job's
-  // external_id (e.g. a greenhouse row minted `twilio_sw-eng` vs a native row
-  // whose external_id is literally `twilio_sw-eng`). The exact external_id
-  // match owns the URL — it is the legacy canonical and always unique. The
-  // slug-column match is a minted pretty alias and only wins when nothing
-  // claims the external_id. Never fall back to `.or().maybeSingle()`, which
-  // 406s (and then legacy-redirects into a loop) when both rows match.
-  const pickUnique = (
-    rows: Array<Record<string, unknown>> | null | undefined
-  ): JobRow | null => {
-    const matches = (rows || []).filter((raw) => {
-      const row = raw as JobRow;
-      return jobBelongsToCompanyHub(
-        {
-          company: row.company,
-          company_key: (row as JobRow & { company_key?: string }).company_key,
-        },
-        companySlug
-      );
-    }) as JobRow[];
-    if (matches.length !== 1) return null;
-    return matches[0];
-  };
-
-  // Look up every historical `{alias}_{job}` form plus the short segment.
-  // Oxford/Aspen jobs are stored under University of Oxford / Aspen Institute
-  // prefixes while the public hub is /oxford and /aspen.
-  const identifiers = [
-    ...new Set([
-      ...companyHubAliasPrefixes(companySlug).map(
-        (hub) => `${hub}_${jobSlug.toLowerCase()}`
-      ),
-      jobSlug.toLowerCase(),
-    ]),
-  ];
-  for (const identifier of identifiers) {
-    const extResult = await withTimeoutFallback(
-      supabaseAdmin
-        .from('jobs')
-        .select(SELECT_COLS)
-        .eq('external_id', identifier)
-        .limit(2),
-      DB_BUDGET.fast,
-      { data: [] } as any,
-      `job-ext:${identifier}`
-    );
-    const extRow = pickUnique(extResult.data);
-    if (extRow) return extRow;
+): Promise<JobRow | null> => {
+  if (!/^[a-z0-9-]{1,80}$/i.test(companySlug) || !isShortJobSlug(jobSlug)) return null;
+  const company = companySlug.toLowerCase();
+  const rows = await getCompanyRouteRows(company);
+  const exact = exactJobRoute(rows, company, jobSlug);
+  if (exact) return getCachedJobById(exact.id);
+  // Check a bounded number of likely historical aliases; a trusted full body
+  // is still required before an old link can render/redirect to a public page.
+  const candidates = legacyJobRoutes(rows, company, jobSlug);
+  for (const candidate of candidates.slice(0, 5)) {
+    const job = await getCachedJobById(candidate.id);
+    if (job && canRenderJobPage(job)) return job;
   }
-
-  for (const identifier of identifiers) {
-    const slugResult = await withTimeoutFallback(
-      supabaseAdmin
-        .from('jobs')
-        .select(SELECT_COLS)
-        .eq('slug', identifier)
-        .limit(2),
-      DB_BUDGET.fast,
-      { data: [] } as any,
-      `job-slug:${identifier}`
-    );
-    const slugRow = pickUnique(slugResult.data);
-    if (slugRow) return slugRow;
-  }
+  if (candidates.length > 5) throw new DatabaseUnavailableError('ambiguous legacy job');
   return null;
-}
-
-/** Cached by id — used by /jobs/{uuid}. */
-export function getCachedJobById(id: string): Promise<JobRow | null> {
-  if (!isJobId(id)) return Promise.resolve(null);
-  return unstable_cache(
-    () => loadJobByIdLive(id),
-    ['job-snapshot-id', `v${JOB_DESCRIPTION_FORMAT_VERSION}`, id],
-    { revalidate: 300, tags: [`job:${id}`] }
-  )();
-}
-
-/** Cached by company+slug — used by /google/mkt. */
-export function getCachedJobByCompanyAndSlug(
-  companySlug: string,
-  jobSlug: string
-): Promise<JobRow | null> {
-  if (!companySlug || !isShortJobSlug(jobSlug)) return Promise.resolve(null);
-  const key = `${companySlug.toLowerCase()}_${jobSlug.toLowerCase()}`;
-  return unstable_cache(
-    () => loadJobByExternalIdLive(companySlug.toLowerCase(), jobSlug.toLowerCase()),
-    ['job-snapshot-ext', `v${JOB_DESCRIPTION_FORMAT_VERSION}`, key],
-    { revalidate: 300, tags: [`job-ext:${key}`] }
-  )();
-}
+});

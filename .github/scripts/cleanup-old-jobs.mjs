@@ -63,17 +63,23 @@ async function main() {
 
   let totalDeleted = 0;
   let consecutiveEmpty = 0;
+  let afterId = null;
 
   for (let round = 1; round <= MAX_ROUNDS; round++) {
     // Only rows with NO description ever get deleted. Enriched pages are safe.
     // Rows whose apply_url was posted to Telegram are protected too.
-    const { data: rows, error: selErr } = await sb
+    let query = sb
       .from('jobs')
       .select('id,apply_url')
       .lt('created_at', cutoff)
+      .or(`published_at.is.null,published_at.lt.${cutoff}`)
       .is('description', null)
-      .order('created_at', { ascending: true })
+      .not('tags', 'cs', '{curated-jd}')
+      .is('telegram_posted_at', null)
+      .order('id', { ascending: true })
       .limit(BATCH);
+    if (afterId) query = query.gt('id', afterId);
+    const { data: rows, error: selErr } = await query;
 
     if (selErr) {
       console.error('select failed', selErr.message);
@@ -86,26 +92,21 @@ async function main() {
       continue;
     }
     consecutiveEmpty = 0;
+    afterId = rows[rows.length - 1].id;
 
     const ids = rows
       .filter((r) => !protectedUrls.has(normUrl(r.apply_url)))
       .map((r) => r.id)
       .filter(Boolean);
-    const { error: delErr, count: delCount } = await sb.from('jobs').delete({ count: 'exact' }).in('id', ids);
+    if (!ids.length) { if (rows.length < BATCH) break; continue; }
+    // Re-check the guard at write time in case enrichment raced the read.
+    const { error: delErr, count: delCount } = await sb.from('jobs').delete({ count: 'exact' }).in('id', ids)
+      .is('description', null).not('tags', 'cs', '{curated-jd}').is('telegram_posted_at', null)
+      .lt('created_at', cutoff).or(`published_at.is.null,published_at.lt.${cutoff}`);
 
     if (delErr) {
       console.error('delete failed', delErr.message);
-      let ok = 0;
-      for (const id of ids) {
-        const { error: oneErr } = await sb.from('jobs').delete().eq('id', id);
-        if (oneErr) {
-          console.error('single delete failed', id, oneErr.message);
-          process.exit(1);
-        }
-        ok++;
-      }
-      totalDeleted += ok;
-      console.log(`round ${round}: deleted ${ok} (fallback, total ${totalDeleted})`);
+      process.exit(1);
     } else {
       const n = delCount ?? ids.length;
       totalDeleted += n;
@@ -113,7 +114,7 @@ async function main() {
     }
 
     await sleep(300);
-    if (ids.length < BATCH) break;
+    if (rows.length < BATCH) break;
   }
 
   // Verify: enriched pages untouched

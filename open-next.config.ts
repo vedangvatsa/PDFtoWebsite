@@ -1,12 +1,23 @@
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
 
-// Serve prerendered pages directly from the Workers static-assets binding
-// (cdn-cgi/_next_cache) instead of re-rendering them in the Worker on every
-// request. This eliminates the SSR cold-start TTFB on static routes. Only
-// safe because static pages never revalidate.
-export default defineCloudflareConfig({
-  incrementalCache: () =>
-    import("@opennextjs/cloudflare/overrides/incremental-cache/static-assets-incremental-cache").then(
-      (m) => m.default
-    ),
+// All bindings below work on Workers Free. Runtime cache writes must not go
+// into the read-only static-assets adapter. Keep static assets as a fallback.
+const config = defineCloudflareConfig({
+  incrementalCache: () => import('./src/cloudflare/incremental-cache').then((m) => m.default),
+  queue: () => import('@opennextjs/cloudflare/overrides/queue/do-queue').then((m) => m.default),
+  tagCache: () => import('@opennextjs/cloudflare/overrides/tag-cache/d1-next-tag-cache').then((m) => m.default),
 });
+
+// Keep each deployed Worker below the Free plan's compressed script limit.
+// Heavy document decoders and image-rendering WASM must not ship with pages.
+const imagePages = ['', 'talent', 'timezone', 'schengen', 'layoffs', 'jobs',
+  'fellowships', 'visas', 'fire', 'tax', 'nomad', 'costs', 'resources', 'rankings',
+  'climate', 'hiring', 'compare', '[slug]', '[slug]/[jobSlug]', 'jobs/[id]'];
+config.functions = {
+  parser: { ...config.default, routes: ['app/api/parse-resume/route'], patterns: ['/api/parse-resume'] },
+  images: { ...config.default,
+    routes: [...imagePages.map((path) => `app/${path ? `${path}/` : ''}opengraph-image/route` as const), 'app/icon/route', 'app/apple-icon/route'],
+    patterns: ['*/opengraph-image', '/icon', '/apple-icon'],
+  },
+};
+export default config;

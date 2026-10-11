@@ -483,7 +483,7 @@ describe('source locks — do not reintroduce empty hubs', () => {
     const loader = readRel('src/lib/company-page.ts');
     assert.match(loader, /const rows = recent\.rows \|\| \[\]/);
     assert.doesNotMatch(loader, /const all = await fetchJobs\(null\)/);
-    assert.match(loader, /company-jobs-v19/);
+    assert.match(loader, /company-jobs-v20/);
   });
 
   it('agent rule does not require hub to alias the board', () => {

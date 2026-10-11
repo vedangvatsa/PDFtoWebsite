@@ -2,6 +2,7 @@ import { blogPosts } from '@/lib/blog-data';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withSitemapCache } from '@/lib/sitemap-cache';
 import { escapeXml } from '@/lib/xml';
+import { withTimeout, DB_BUDGET, requireDatabaseResult } from '@/lib/db-timeout';
 
 export const revalidate = 3600;
 
@@ -48,46 +49,40 @@ export async function GET(req: Request) {
 
     let profileEntries: Entry[] = [];
     try {
-      const { data: profiles } = await supabaseAdmin
-        .from('profiles')
-        .select('username, updated_at, full_name, about, skills, experience, education')
-        .not('username', 'is', null)
-        .order('updated_at', { ascending: false })
-        .limit(5000);
-
-      if (profiles) {
-        profileEntries = profiles
-          .filter((p) => {
-            if (!p.username || p.username.length < 3) return false;
-            const hasRealName = p.full_name && p.full_name !== 'Your Name' && p.full_name.length > 1;
-            const hasContent =
-              (p.about && p.about.length > 10) ||
-              (Array.isArray(p.skills) && p.skills.length > 0) ||
-              (Array.isArray(p.experience) && p.experience.length > 0) ||
-              (Array.isArray(p.education) && p.education.length > 0);
-            return hasRealName && hasContent;
-          })
-          .map((p) => ({
+      let after = '';
+      let complete = false;
+      for (let page = 0; page < 200; page++) {
+        const result = await withTimeout(supabaseAdmin.rpc('profile_sitemap_page', {
+          after_username: after, page_size: 250,
+        }), DB_BUDGET.list, 'profile-sitemap');
+        const profiles = (requireDatabaseResult(result, 'profile sitemap') || []) as { username: string; updated_at: string | null }[];
+        profileEntries.push(...profiles.map((p) => ({
             url: `${siteUrl}/${p.username}`,
             lastmod: p.updated_at ? new Date(p.updated_at).toISOString() : new Date().toISOString(),
             changefreq: 'weekly',
             priority: '0.7',
-          }));
+          })));
+        if (profiles.length < 250) { complete = true; break; }
+        after = profiles[profiles.length - 1].username;
       }
+      if (!complete) throw new Error('Profile sitemap exceeded its page budget');
     } catch (e) {
       console.error('Sitemap misc: failed to fetch profiles', e);
+      throw e; // Never publish a partial XML document just because static URLs exist.
     }
 
     let companyEntries: Entry[] = [];
     try {
       // Use the companies directory (rebuilt from jobs) so EVERY hiring company
       // with open roles is covered — not just a 2.5k-row job sample.
-      const { data: companies } = await supabaseAdmin
+      const result = await withTimeout(supabaseAdmin
         .from('companies')
         .select('slug, name, role_count')
         .gt('role_count', 0)
         .order('role_count', { ascending: false })
-        .limit(20000);
+        .limit(1000), DB_BUDGET.list, 'company-sitemap');
+      const companies = requireDatabaseResult(result, 'company sitemap');
+      if (companies?.length === 1000) throw new Error('Company sitemap needs pagination before publishing');
 
       if (companies) {
         const BLOCKED = /leverdemo|test company|demo company|confidential|\.\.\.|gopuff|n\/a|^unknown$/i;
@@ -105,6 +100,7 @@ export async function GET(req: Request) {
       }
     } catch (e) {
       console.error('Sitemap misc: failed to fetch companies', e);
+      throw e;
     }
 
     entries.push(...staticEntries, ...blogEntries, ...profileEntries, ...companyEntries);

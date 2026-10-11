@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { protectedSupabaseFetch } from './supabase-fetch';
 
 /**
  * Shared Supabase admin client for server-side API routes.
@@ -40,7 +41,10 @@ let _client: SupabaseClient | null = null;
 
 export function getSupabaseAdmin(): SupabaseClient {
   if (!_client) {
-    _client = createClient(resolveUrl(), resolveKey());
+    _client = createClient(resolveUrl(), resolveKey(), {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+      global: { fetch: protectedSupabaseFetch },
+    });
   }
   return _client;
 }

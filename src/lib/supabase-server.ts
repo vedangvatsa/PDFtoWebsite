@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import {
   withRetryOnTimeout,
@@ -190,7 +191,11 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
 }
 
 /** Request-scoped: generateMetadata + page share one lookup. */
-export const getProfileBySlug = cache(getProfileBySlugUncached);
+export const getProfileBySlug = cache(async (slug: string) => {
+  if (!slug || slug.length > 100) return null;
+  return unstable_cache(() => getProfileBySlugUncached(slug), ['public-profile-v1', slug],
+    { revalidate: 300, tags: ['public-profiles'] })();
+});
 
 /** Distinguish miss (404) from outage (503). Never collapse the two. */
 export async function lookupPublicProfile(slug: string): Promise<PublicProfileLookup> {

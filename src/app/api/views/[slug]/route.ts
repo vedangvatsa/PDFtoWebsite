@@ -75,13 +75,11 @@ export async function POST(
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     }
 
-    // Atomic increment: try RPC first (recommended), fall back to read-write
+    // Atomic only. A failed RPC must not amplify an outage or double count a
+    // write whose response was lost.
     const { error: rpcError } = await supabase.rpc('increment_views', { profile_id: profile.id });
     if (rpcError) {
-      // Fallback: read-write (tiny race window acceptable for resume view counters)
-      const { data: current } = await supabase.from('profiles').select('views').eq('id', profile.id).single();
-      const newViews = ((current?.views) || 0) + 1;
-      await supabase.from('profiles').update({ views: newViews }).eq('id', profile.id);
+      return NextResponse.json({ error: 'Tracking temporarily unavailable', code: 'DATABASE_UNAVAILABLE', hint: 'The profile remains available. Do not retry this view event.' }, { status: 503, headers: { 'Cache-Control': 'no-store' } });
     }
 
     // Set a cookie to prevent duplicate counting (expires in 24 hours)

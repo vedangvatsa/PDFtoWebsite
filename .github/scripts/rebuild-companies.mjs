@@ -15,11 +15,12 @@
  *   SUPABASE_ACCESS_TOKEN (optional, project management token)
  *   SUPABASE_PROJECT_REF (optional, default from URL)
  *   COMPANIES_STATS_DAYS (default 30)
- *   COMPANIES_MIN_COUNT (default 1000; abort if a rebuild yields fewer)
+ *   COMPANIES_MIN_COUNT (default 1; also abort on a >50% drop from the active directory)
  *
  * Usage: node .github/scripts/rebuild-companies.mjs
  */
 import { createClient } from '@supabase/supabase-js';
+import { assertDirectorySize } from './lib/free-tier-guards.mjs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
@@ -182,7 +183,7 @@ async function mgmtQuery(sql) {
 
 async function fetchStatsViaMgmt() {
   const sql = `
-SET statement_timeout = '180s';
+SET statement_timeout = '8s';
 SELECT
   j.company,
   count(*)::bigint AS role_count,
@@ -194,9 +195,9 @@ SELECT
       AND btrim(j.location) <> ''
       AND j.location !~* 'remote|hybrid|worldwide|anywhere'
   ))[1:6] AS locations,
-  max(coalesce(j.published_at, j.created_at)) AS latest_job_at
+   max(greatest(j.published_at, j.created_at)) AS latest_job_at
 FROM public.jobs j
-WHERE j.created_at > now() - interval '${DAYS} days'
+WHERE (j.created_at > now() - interval '${DAYS} days' OR j.published_at > now() - interval '${DAYS} days')
   AND j.company IS NOT NULL
   AND btrim(j.company) <> ''
   AND j.company NOT LIKE '%...%'
@@ -218,29 +219,23 @@ async function fetchStatsViaScan() {
   const since = new Date(Date.now() - DAYS * 24 * 60 * 60 * 1000).toISOString();
   const byCompany = new Map();
   let page = 0;
-  let lastCreated = null;
   let lastId = null;
+  let complete = false;
 
   // Keyset on (created_at, id) avoids OFFSET blowups
   while (page < SCAN_MAX_PAGES) {
     let q = sb
       .from('jobs')
       .select('id, company, company_logo, location, published_at, created_at, tags')
-      .gt('created_at', since)
-      .order('created_at', { ascending: true })
+      .or(`created_at.gt.${since},published_at.gt.${since}`)
       .order('id', { ascending: true })
       .limit(SCAN_PAGE);
 
-    if (lastCreated && lastId) {
-      // (created_at, id) > (lastCreated, lastId)
-      q = q.or(
-        `and(created_at.gt.${lastCreated}),and(created_at.eq.${lastCreated},id.gt.${lastId})`
-      );
-    }
+    if (lastId) q = q.gt('id', lastId);
 
     const { data, error } = await q;
     if (error) throw error;
-    if (!data?.length) break;
+    if (!data?.length) { complete = true; break; }
 
     for (const j of data) {
       if (!j.company) continue;
@@ -259,19 +254,19 @@ async function fetchStatsViaScan() {
       row.role_count += 1;
       if (j.company_logo && !row.logo) row.logo = j.company_logo;
       if (j.location) row.locations.add(j.location);
-      const d = j.published_at || j.created_at;
+      const d = [j.published_at, j.created_at].filter(Boolean).sort().at(-1);
       if (d && (!row.latest_job_at || d > row.latest_job_at)) row.latest_job_at = d;
     }
 
     const last = data[data.length - 1];
-    lastCreated = last.created_at;
     lastId = last.id;
     page++;
     if (page % 20 === 0) {
       console.log(`  scanned ~${page * SCAN_PAGE} rows, ${byCompany.size} companies…`);
     }
-    if (data.length < SCAN_PAGE) break;
+    if (data.length < SCAN_PAGE) { complete = true; break; }
   }
+  if (!complete) throw new Error('Company scan reached its cap; refusing partial directory');
 
   return [...byCompany.values()].map((r) => ({
     company: r.company,
@@ -380,20 +375,12 @@ async function main() {
   const companies = mergeCanonical(raw);
   console.log(`  after normalize: ${companies.length} companies (${Date.now() - t0}ms)`);
 
-  // Guard against partial/failed queries: a healthy rebuild yields thousands of
-  // companies, and the inactive-mark pass below would zero out everyone missing
-  // from a truncated result. Abort loudly instead of silently destroying counts.
-  const MIN_COMPANIES = Math.max(1, Number(process.env.COMPANIES_MIN_COUNT || 1000));
-  if (companies.length === 0) {
-    console.error('No companies produced — aborting (will not touch table)');
-    process.exit(1);
-  }
-  if (companies.length < MIN_COMPANIES) {
-    console.error(
-      `Suspiciously few companies (${companies.length} < ${MIN_COMPANIES}) — aborting so the directory isn't zeroed by a partial query. Set COMPANIES_MIN_COUNT to override.`
-    );
-    process.exit(1);
-  }
+  const { count: previous, error: previousError } = await sb.from('companies')
+    .select('slug', { count: 'exact', head: true }).gt('role_count', 0);
+  if (previousError || previous === null) throw new Error('Previous company directory unavailable');
+  assertDirectorySize(companies.length, previous, {
+    minimum: Math.max(1, Number(process.env.COMPANIES_MIN_COUNT || 1)),
+  });
 
   let upserted = 0;
   for (let i = 0; i < companies.length; i += UPSERT_BATCH) {
@@ -417,10 +404,10 @@ async function main() {
     const { data: existing, error: listErr } = await sb
       .from('companies')
       .select('slug')
+      .order('slug')
       .range(page * 1000, (page + 1) * 1000 - 1);
     if (listErr) {
-      console.warn('inactive-mark list failed:', listErr.message);
-      break;
+      throw new Error(`Inactive-mark list failed: ${listErr.message}`);
     }
     if (!existing?.length) break;
     const stale = existing.map((r) => r.slug).filter((s) => !keep.has(s));
@@ -431,7 +418,7 @@ async function main() {
           .from('companies')
           .update({ role_count: 0, updated_at: new Date().toISOString() })
           .in('slug', chunk);
-        if (upErr) console.warn('inactive-mark failed:', upErr.message);
+        if (upErr) throw new Error(`Inactive-mark failed: ${upErr.message}`);
         else markedInactive += chunk.length;
       }
     }

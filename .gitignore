@@ -62,8 +62,10 @@ scratch/
 /scripts/
 .open-next
 .wrangler
+supabase/.temp/
 .dev.vars
 cloudflare-env.d.ts
+public/cdn-cgi/company-abouts/
 
 # Cloudflare local tokens (never commit)
 cf-deploy-api.token

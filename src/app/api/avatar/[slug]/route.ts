@@ -76,9 +76,9 @@ export async function GET(req: NextRequest, props: { params: Promise<{ slug: str
       return new NextResponse(buffer, {
         headers: {
           'Content-Type': `image/${type}`,
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+          // Public image bytes; keep browser lifetime short after an edit.
+          // Profile data is cached separately and invalidated on save/delete.
+          'Cache-Control': 'public, max-age=60, s-maxage=60',
         }
       });
     }

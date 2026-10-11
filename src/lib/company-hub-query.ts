@@ -56,7 +56,9 @@ export function jobBelongsToCompanyHub(
   const want = canonicalCompanyHub(hubSlug);
   if (!want) return false;
   if (routeCompanySlug(job) === want) return true;
-  const keys = companyKeyEqualityValues(want, job.company);
+  // Never seed the wanted company's aliases with the candidate's name: that
+  // makes every candidate authorize itself (e.g. Stripe's /swe under OpenAI).
+  const keys = companyKeyEqualityValues(want);
   const rowKey = String(job.company_key || '').trim().toLowerCase();
   if (rowKey && (keys.includes(rowKey) || canonicalCompanyHub(rowKey) === want)) {
     return true;

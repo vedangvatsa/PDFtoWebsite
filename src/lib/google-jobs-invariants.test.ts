@@ -289,7 +289,7 @@ describe('Indexing API / sitemap cannot drift off public paths', () => {
       'utf8'
     );
     assert.match(file, /google-jobs-canary\.mjs/);
-    const deployAt = file.indexOf('npx wrangler deploy');
+    const deployAt = file.indexOf('node .github/scripts/deploy-free-tier.mjs');
     const canaryAt = file.indexOf('google-jobs-canary.mjs');
     assert.ok(deployAt >= 0 && canaryAt > deployAt, 'canary must run after deploy');
   });

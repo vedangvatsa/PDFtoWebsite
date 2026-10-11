@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createClient } from '@/utils/supabase/server';
+import { revalidateTag } from 'next/cache';
 
 export async function DELETE() {
   try {
@@ -23,6 +24,7 @@ export async function DELETE() {
       console.error('Auth user deletion failed:', authDeleteError);
       return NextResponse.json({ error: 'Failed to delete authentication user.' }, { status: 500 });
     }
+    revalidateTag('public-profiles', { expire: 0 });
 
     // 3. Delete profile row using the user's active session (relies on RLS allowing delete self)
     const { error: profileDeleteError } = await supabaseUser

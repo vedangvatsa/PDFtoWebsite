@@ -29,6 +29,29 @@ describe('profile lookup budget', () => {
 });
 
 describe('withRetryOnTimeout', () => {
+  it('aborts a lazy query before retrying and attaches the signal before execution', async () => {
+    let aborted = false;
+    let calls = 0;
+    const result = await withRetryOnTimeout(() => {
+      calls++;
+      if (calls === 2) {
+        assert.equal(aborted, true, 'first request must be cancelled before retry');
+        return Promise.resolve(42);
+      }
+      let signal: AbortSignal;
+      return {
+        abortSignal(s: AbortSignal) { signal = s; return this; },
+        then(resolve: (value: number) => unknown, reject: (reason: unknown) => unknown) {
+          assert.ok(signal, 'signal attached before lazy query starts');
+          return new Promise<number>((_done, fail) => {
+            signal.addEventListener('abort', () => { aborted = true; fail(new Error('aborted')); });
+          }).then(resolve, reject);
+        },
+      } as PromiseLike<number>;
+    }, 15, 'abort-test');
+    assert.equal(result, 42);
+    assert.equal(calls, 2);
+  });
   it('retries once after a timeout then throws', async () => {
     let calls = 0;
     await assert.rejects(

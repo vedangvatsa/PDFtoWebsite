@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { displayJobLocation } from '@/lib/normalize-location';
 import { cleanJobTitle, isGarbageJobTitle, cleanSalaryDisplay, looksLikeFellowship } from '@/lib/job-description';
@@ -6,7 +7,7 @@ import { companyDisplayNameFromJob, isJunkCompanyName } from '@/lib/company-dire
 import { shouldListLiveJobCard } from '@/lib/job-apply-source';
 import { companyHubJobLink, companyJobsDateOrFilter } from '@/lib/company-hub-query';
 import { PLATFORM_JOBS_TOTAL } from '@/lib/platform-job-count';
-import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { withTimeout, withTimeoutFallback, DB_BUDGET, requireDatabaseResult } from '@/lib/db-timeout';
 import { createAnonFromRequest } from '@/utils/supabase/anon';
 import { rateLimit, rateLimitHeaders, rateLimitResponse } from '@/lib/rate-limit';
 import { encodeCursor, decodeCursor } from '@/lib/cursor';
@@ -61,12 +62,12 @@ function jobCardInfo(job: any) {
 async function companyAboutBySlug(jobs: any[]) {
   const slugs = Array.from(new Set(jobs.map((job) => String(job.company_key || '').trim()).filter(Boolean)));
   if (!slugs.length) return new Map<string, string>();
-  const result = await withTimeoutFallback(
-    supabase.from('companies').select('slug,about').in('slug', slugs),
-    DB_BUDGET.fast,
-    { data: [] } as any,
-    'api-jobs-company-about'
-  );
+  slugs.sort();
+  const result = await withTimeoutFallback(unstable_cache(async () => {
+    const value = await withTimeout(supabase.from('companies').select('slug,about').in('slug', slugs), DB_BUDGET.fast, 'board-company-about');
+    return { data: requireDatabaseResult(value, 'company summaries') || [] };
+  }, ['board-company-about-v1', ...slugs], { revalidate: 900, tags: ['public-jobs'] })(),
+  DB_BUDGET.fast + 250, { data: [] }, 'board-company-about');
   const map = new Map<string, string>();
   for (const row of result.data || []) {
     const about = String(row.about || '').trim();
@@ -87,8 +88,8 @@ export async function GET(request: NextRequest) {
   const rlHeaders = rateLimitHeaders(rl);
 
   const { searchParams } = new URL(request.url);
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
-  const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') || '20')));
+  const page = Math.max(1, parseInt(searchParams.get('page') || '1') || 1);
+  const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') || '20') || 20));
   const type = searchParams.get('type'); // full_time, contract, etc.
   const loc = searchParams.get('loc');   // remote, hybrid, onsite
   const kind = searchParams.get('kind'); // fellowship → /fellowships board
@@ -243,7 +244,18 @@ export async function GET(request: NextRequest) {
     status: 200,
     statusText: 'OK',
   } as any;
-  const mainResult = await withTimeoutFallback(query as any, DB_BUDGET.list, timeoutResult, 'api-jobs-main');
+  const fetchMain = async () => {
+    const result = await withTimeout(query, DB_BUDGET.list, 'api-jobs-main');
+    requireDatabaseResult(result, 'jobs board');
+    return result;
+  };
+  // Cache the public data, not the user response or per-client rate headers.
+  // Personalized SQL is never included in a shared entry.
+  const mainRead = userProfile
+    ? fetchMain()
+    : unstable_cache(fetchMain, ['jobs-board-v2', String(offset), String(limit), type || '', loc || '', kind || '', q, String(matchOnly)],
+        { revalidate: 60, tags: ['public-jobs'] })();
+  const mainResult = await withTimeoutFallback(mainRead, DB_BUDGET.list + 250, timeoutResult, 'api-jobs-main');
 
   const { data: mainJobs, error, count } = mainResult as any;
   const mainTimedOut = error?.code === 'TIMEOUT';
@@ -555,8 +567,11 @@ export async function GET(request: NextRequest) {
     profileComplete,
   });
 
-  // Cache for 60s on CDN, serve stale while revalidating for up to 5 min
-  response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+  // The data above is cached. This envelope may contain skills and always
+  // contains client-specific rate-limit state, so it must never be shared.
+  response.headers.set('Cache-Control', 'private, no-store');
+  response.headers.set('CDN-Cache-Control', 'no-store');
+  response.headers.set('Cloudflare-CDN-Cache-Control', 'no-store');
   for (const [k, v] of Object.entries(rlHeaders)) response.headers.set(k, v);
   return response;
 }

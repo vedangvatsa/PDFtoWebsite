@@ -4,8 +4,10 @@
  * prefer 301 to a live parent over hard 404 so Google drops dead URLs cleanly.
  */
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { unstable_cache } from 'next/cache';
+import { cache } from 'react';
 import { toCompanyKey, COMPANY_BLOCKLIST, isJunkCompanyName } from '@/lib/company-directory';
-import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { withTimeout, DB_BUDGET, requireDatabaseResult } from '@/lib/db-timeout';
 import { companyHasCachedProfile, publishableCompanyAbout } from '@/lib/company-about';
 
 /** Disposable profile remints leave /user87 etc. permanently dead without redirects. */
@@ -16,7 +18,7 @@ export { isDisposableProfileSlug } from '@/lib/parse-guard';
  * True when `/{slug}` can (or should) resolve as a company careers hub —
  * directory row, any live job under company_key, or a known description.
  */
-async function companyHubExists(slug: string): Promise<boolean> {
+const companyHubExists = cache(async (slug: string): Promise<boolean> => {
   const key = toCompanyKey(slug);
   if (!key) return false;
   const blockKey = key.replace(/-/g, ' ').trim();
@@ -25,30 +27,32 @@ async function companyHubExists(slug: string): Promise<boolean> {
 
   if (await companyHasCachedProfile(key)) return true;
 
-  const dir = await withTimeoutFallback(
+  return unstable_cache(async () => {
+  const dir = await withTimeout(
     supabaseAdmin
       .from('companies')
       .select('slug')
       .eq('slug', key)
       .maybeSingle(),
     DB_BUDGET.fast,
-    { data: null } as any,
     `seo-hub-dir:${key}`
   );
+  requireDatabaseResult(dir, 'company redirect');
   if (dir.data?.slug) return true;
 
-  const jobs = await withTimeoutFallback(
+  const jobs = await withTimeout(
     supabaseAdmin
       .from('jobs')
       .select('id')
       .eq('company_key', key)
       .limit(1),
     DB_BUDGET.fast,
-    { data: [] } as any,
     `seo-hub-jobs:${key}`
   );
+  requireDatabaseResult(jobs, 'company redirect');
   return Array.isArray(jobs.data) && jobs.data.length > 0;
-}
+  }, ['company-hub-exists-v2', key], { revalidate: 900, tags: ['public-jobs'] })();
+});
 
 /** Where to send a dead `/{company}/{jobSlug}` — company hub if live, else jobs board. */
 export async function gonePrettyJobPath(companySlug: string): Promise<string> {

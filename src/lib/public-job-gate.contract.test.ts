@@ -241,14 +241,14 @@ describe('ingest cannot mint curated-jd; DB cannot auto-tag it', () => {
 
   it('job route resolves short stored identifiers as well as company-prefixed ids', () => {
     const file = src('src/lib/job-snapshots.ts');
-    assert.match(file, /jobSlug\.toLowerCase\(\)/);
-    assert.match(file, /\.eq\('external_id', identifier\)/);
-    assert.match(file, /\.eq\('slug', identifier\)/);
-    assert.match(file, /jobBelongsToCompanyHub/);
-    const legacy = src('src/app/[slug]/[jobSlug]/page.tsx');
+    assert.match(file, /exactJobRoute/);
+    assert.match(file, /getCompanyRouteRows/);
+    assert.doesNotMatch(file, /\.like\(/);
+    const legacy = src('src/lib/job-route-resolution.ts') + file;
     assert.match(legacy, /companyKeyEqualityValues/);
     assert.match(legacy, /companyHubAliasPrefixes/);
     assert.match(legacy, /jobMatchesLegacySlugHint/);
+    assert.match(legacy, /jobBelongsToCompanyHub/);
   });
 
   it('keeps the Oxford company hub on its canonical slug', () => {

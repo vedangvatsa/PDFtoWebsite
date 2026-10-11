@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import type { EmailOtpType } from '@supabase/supabase-js'
+import { revalidateTag } from 'next/cache'
 
 const OTP_TYPES = new Set<string>([
   'signup',
@@ -115,6 +116,7 @@ export async function GET(request: Request) {
         type,
       })
       if (!error) {
+        revalidateTag('public-profiles', { expire: 0 })
         return response
       }
       lastError = error
@@ -142,6 +144,7 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
+      revalidateTag('public-profiles', { expire: 0 })
       return response
     }
 

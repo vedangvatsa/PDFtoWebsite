@@ -1,7 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cvinbio",
-  "main": ".open-next/worker.js",
+  "main": "worker.mjs",
+  "minify": true,
   "compatibility_date": "2025-12-01",
   "compatibility_flags": [
     "nodejs_compat",
@@ -15,8 +16,31 @@
     {
       "binding": "WORKER_SELF_REFERENCE",
       "service": "cvinbio"
+    },
+    {
+      "binding": "PARSER_WORKER",
+      "service": "cvinbio-parser"
+    },
+    {
+      "binding": "IMAGE_WORKER",
+      "service": "cvinbio-images"
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "NEXT_TAG_CACHE_D1",
+      "database_name": "cvinbio-cache-tags",
+      "database_id": "3200328a-ff85-40b9-ba0b-334bcaa8112b"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" }]
+  },
+  "migrations": [{ "tag": "cache-v1", "new_sqlite_classes": ["DOQueueHandler"] }],
+  "vars": {
+    "NEXT_CACHE_DO_QUEUE_MAX_REVALIDATION": "1",
+    "NEXT_CACHE_DO_QUEUE_MAX_RETRIES": "2"
+  },
   "images": {
     "binding": "IMAGES"
   },
@@ -27,6 +51,7 @@
   "workers_dev": true,
   "preview_urls": true,
   "observability": {
-    "enabled": true
+    "enabled": true,
+    "head_sampling_rate": 0.1
   }
 }

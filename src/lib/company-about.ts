@@ -5,16 +5,10 @@
 import { getCompanyMeta } from '@/lib/company-data';
 import { toCompanyKey, companyDisplayName } from '@/lib/company-directory';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
-// Lazy-loaded to avoid bundling 2.4MB JSON into every server function
-let _descriptions: Record<string, string> | null = null;
-async function getDescriptions(): Promise<Record<string, string>> {
-  if (!_descriptions) {
-    const mod = await import('@/lib/company-descriptions.json');
-    _descriptions = mod.default as Record<string, string>;
-  }
-  return _descriptions;
-}
+import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
+import { withTimeout, requireDatabaseResult, DB_BUDGET } from '@/lib/db-timeout';
+import { cachedCompanyDescription } from '@/lib/company-description-store';
 
 /** Encyclopedia / wiki residue that must never reach a public page. */
 const ENCYCLOPEDIA_DUMP_RE =
@@ -112,10 +106,10 @@ async function lookupCachedBlurb(slugOrName: string): Promise<string | null> {
   const key = toCompanyKey(slugOrName);
   const compact = key.replace(/-/g, '');
   const raw = String(slugOrName || '').trim().toLowerCase();
-  const descriptions = await getDescriptions();
   for (const candidate of [raw, key, compact]) {
     if (!candidate) continue;
-    const text = String(descriptions[candidate] || '').trim();
+    const text = String(await cachedCompanyDescription(candidate) || '').trim();
+    if (!text) continue;
     if (isUnpublishableCompanyBlurb(text)) continue;
     return text;
   }
@@ -127,12 +121,14 @@ async function lookupDbBlurb(slugOrName: string): Promise<string | null> {
   if (!key) return null;
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.SUPABASE_URL) return null;
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SUPABASE_KEY) return null;
-  const result = await withTimeoutFallback(
-    supabaseAdmin.from('companies').select('about').eq('slug', key).maybeSingle(),
-    DB_BUDGET.fast,
-    { data: null, error: null } as any,
-    `company-about:${key}`
-  );
+  const result = await unstable_cache(async () => {
+    const response = await withTimeout(
+      supabaseAdmin.from('companies').select('about').eq('slug', key).maybeSingle(),
+      DB_BUDGET.fast, 'company-about'
+    );
+    requireDatabaseResult(response, 'company about');
+    return response;
+  }, ['company-about-v2', key], { revalidate: 3600, tags: ['public-jobs'] })();
   const text = String(result.data?.about || '').trim();
   if (!text || isUnpublishableCompanyBlurb(text)) return null;
   return text;
@@ -147,9 +143,8 @@ export async function companyHasCachedProfile(slugOrName: string): Promise<boole
   const compact = key.replace(/-/g, '');
   const raw = String(slugOrName || '').trim().toLowerCase();
   if ((key && getCompanyMeta(key)) || (compact && getCompanyMeta(compact))) return true;
-  const descriptions = await getDescriptions();
   for (const candidate of [raw, key, compact]) {
-    if (candidate && descriptions[candidate]) return true;
+    if (candidate && await cachedCompanyDescription(candidate)) return true;
   }
   return false;
 }
@@ -158,7 +153,7 @@ export async function companyHasCachedProfile(slugOrName: string): Promise<boole
  * Original, publishable company about. Prefers curated company-data copy.
  * Cached JSON is used only when it does not look like Wikipedia or a scraped JD.
  */
-export async function publishableCompanyAbout(slugOrName: string): Promise<string | null> {
+export const publishableCompanyAbout = cache(async (slugOrName: string): Promise<string | null> => {
   const key = toCompanyKey(slugOrName);
   const compact = key.replace(/-/g, '');
   const meta = (key && getCompanyMeta(key)) || (compact && getCompanyMeta(compact)) || null;
@@ -177,7 +172,7 @@ export async function publishableCompanyAbout(slugOrName: string): Promise<strin
   const cached = await lookupCachedBlurb(slugOrName);
   if (cached) return cached;
   return null;
-}
+});
 
 /** Always-original fallback when we have no curated blurb. */
 function originalHiringAbout(
