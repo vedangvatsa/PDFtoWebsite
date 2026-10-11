@@ -343,3 +343,39 @@ the roundup successfully to both existing channels:
 The channel name refers to the jobs' industry; no AI generated their descriptions.
 The workflow persisted deduplication state. Future scheduled syncs call the same
 bounded original-description importer.
+
+## Complete formatted inventory and broader coverage
+
+Commit `b790a9db` introduced allowlisted employer HTML (`source-html`), authoritative
+closed-source detection, and complete-description intake before insertion. It
+deployed successfully in [run 38164082111](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38164082111).
+The full 179-row current inventory was refreshed: 158 formatted originals, 21
+confirmed employer removals, zero unresolved source failures and zero AI calls.
+This recovered 65 of the 86 missing bodies; the other 21 were closed postings.
+
+The broader daily sync [38164812675](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38164812675)
+found 4,384 eligible first-phase jobs (previously 226). Of 4,110 new candidates,
+500 were source-verified and 448 inserted after uniqueness checks. Forty-six
+second-phase candidates lacked supported original-source retrieval and were
+deferred without creating basic listings.
+
+Database verification after the run: 704 retained records, **606 live jobs**, zero
+live jobs lacking a formatted original, 21 confirmed closed records, 4,363,486
+bytes of stored original HTML and a 58,322,067-byte database. Five fresh jobs
+matched sanitized employer HTML exactly in the detail API, page and schema.
+The sitemap contained all 606 URLs; the Google Jobs canary passed. One immediate
+post-sync API probe returned 500; the subsequent full verification passed.
+
+Safari confirmed real description headings, paragraphs and bullet lists (the
+Clasp sample had six headings, 40 paragraphs and 19 list items; heading weight
+700, list style `disc`, and no executable elements). Tests passed 358 with one
+credential-dependent skip; typecheck and all four Worker size checks passed.
+
+Follow-up board verification exposed an old SQL NULL bug: `job_type != internship`
+also excluded unspecified employment types, hiding most Greenhouse listings.
+The board now explicitly includes NULL types, counts the cached 30-day inventory,
+uses stable published-date/ID ordering and disjoint pages with one lookahead row.
+Distinct posting IDs are retained even when display-title cleanup makes them
+look alike. Native preview traversed 605 distinct cards across 13 pages under
+the existing title filters, including 518 unspecified-type Greenhouse listings,
+without duplicate IDs. Production pagination verification follows deployment.

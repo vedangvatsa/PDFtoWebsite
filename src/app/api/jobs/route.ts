@@ -149,9 +149,7 @@ export async function GET(request: NextRequest) {
   }
 
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-  const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
-  const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
-  const boardSince = q ? ninetyDaysAgo : sixtyDaysAgo;
+  const boardSince = thirtyDaysAgo;
   const selectCols = 'id,title,company,company_key,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,external_id,slug';
 
   // Live inventory: curated pages + uncurated apply-out cards. Do not wrap
@@ -162,20 +160,21 @@ export async function GET(request: NextRequest) {
     return q;
   }
 
-  // Unfiltered board: skip DB count (static total). Keyword search skips count
-  // too — estimated count + ilike is what timed out and returned 0 engineers.
+  // Cache the bounded, unfiltered inventory count with the page data. Keyword
+  // searches still avoid an extra count scan unless another filter needs it.
   const matchOnlyEarly = searchParams.get('match') === 'true';
   const needsDbCount = Boolean(
-    fellowshipsOnly || (type && type !== 'all') || loc || matchOnlyEarly
+    !q || fellowshipsOnly || (type && type !== 'all') || loc || matchOnlyEarly
   );
 
   // --- Query 2: All jobs (backfill pool) ---
   let query = supabase
     .from('jobs')
-    .select(selectCols, needsDbCount ? { count: 'estimated' } : undefined)
+    .select(selectCols, needsDbCount ? { count: 'exact' } : undefined)
     .or('tags.is.null,tags.not.cs.{source-closed}')
     .or(companyJobsDateOrFilter(boardSince))
-    .order('published_at', { ascending: false, nullsFirst: false });
+    .order('published_at', { ascending: false, nullsFirst: false })
+    .order('id', { ascending: true });
 
   // Filter by job type
   if (type && type !== 'all') {
@@ -201,7 +200,7 @@ export async function GET(request: NextRequest) {
     !fellowshipsOnly && (!type || type === 'all') && (!q || !qWantsIntern);
   if (hideInternships) {
     const notInternOrIsFellow =
-      'job_type.neq.internship,title.ilike.%fellow%,category.eq.fellowship';
+      'job_type.is.null,job_type.neq.internship,title.ilike.%fellow%,category.eq.fellowship';
     query = query.or(notInternOrIsFellow);
   }
 
@@ -234,8 +233,9 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Fetch a larger batch to allow company interleaving (3x is enough)
-  const fetchLimit = limit * 3;
+  // One lookahead row establishes hasMore. Reordering a 3x window while moving
+  // the cursor by only 1x duplicated some jobs and skipped others between pages.
+  const fetchLimit = limit + 1;
   query = query.range(offset, offset + fetchLimit - 1);
 
   // Run the board query with a hard timeout — never hang the board.
@@ -255,13 +255,14 @@ export async function GET(request: NextRequest) {
   // Personalized SQL is never included in a shared entry.
   const mainRead = userProfile
     ? fetchMain()
-    : unstable_cache(fetchMain, ['jobs-board-v2', String(offset), String(limit), type || '', loc || '', kind || '', q, String(matchOnly)],
+    : unstable_cache(fetchMain, ['jobs-board-v3', String(offset), String(limit), type || '', loc || '', kind || '', q, String(matchOnly)],
         { revalidate: 60, tags: ['public-jobs'] })();
   const mainResult = await withTimeoutFallback(mainRead, DB_BUDGET.list + 250, timeoutResult, 'api-jobs-main');
 
   const { data: mainJobs, error, count } = mainResult as any;
   const mainTimedOut = error?.code === 'TIMEOUT';
-  const rawJobs: any[] = mainJobs || [];
+  const rawWindow: any[] = mainJobs || [];
+  const rawJobs: any[] = rawWindow.slice(0, limit);
 
   if (error && error.code !== 'TIMEOUT') {
     console.error('Jobs query error:', {
@@ -397,10 +398,11 @@ export async function GET(request: NextRequest) {
     return true;
   });
 
-  // Deduplicate by normalized company+title (cross-source dupes)
+  // Ingestion handles cross-source duplicates. Distinct posting IDs can share
+  // a displayed title while describing different teams or eligible locations.
   const seen = new Set<string>();
   const englishJobs = englishFiltered.filter(job => {
-    const key = `${normalizeCompany(job.company)}::${cleanJobTitle(job.title).toLowerCase()}`;
+    const key = job.id;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -553,9 +555,7 @@ export async function GET(request: NextRequest) {
     ? (count || jobsWithMatches.length)
     : offset + jobsWithMatches.length;
 
-  const hasMore = needsDbCount
-    ? offset + limit < (count || 0)
-    : rawJobs.length > limit;
+  const hasMore = rawWindow.length > limit;
 
   const response = NextResponse.json({
     jobs: jobsWithMatches,
