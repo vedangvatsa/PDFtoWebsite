@@ -311,3 +311,32 @@ extracted the synthetic candidate's name, experience and skills from an image;
 text and PDF uploads also used the AI parser after the regional correction.
 Safari verified static-homepage hydration, client navigation to jobs and a
 submitted `engineer` search showing 32 results without a degraded-state error.
+
+## Original employer descriptions: October 11 rollout
+
+At the user's request, job enrichment now copies the official employer listing
+without AI rewriting. Application commit `6394f819` passed [deployment
+38159899441](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38159899441).
+Checks passed: 351 tests, one credential-dependent skip, TypeScript, OG styles,
+native four-worker preview and all four compressed-size budgets.
+
+The first bounded import selected 100 existing jobs and published **93 original
+descriptions**, with zero AI calls and zero processing failures. Four sources were
+no longer found and three source responses exceeded the fetch byte budget; those
+rows stayed apply-out listings. Stored original text totals 641,858 bytes, the
+largest body is 12,935 bytes, and the database measured 55,561,363 bytes afterward.
+
+Five live samples matched the official ATS text exactly after HTML-to-text
+conversion, both in the detail API and in visible page/JobPosting HTML. The job
+sitemap contained 93 URLs; Indeed, Jooble and Jobtome feeds each contained 93 jobs;
+RSS contained 36 jobs within its shorter window. The Google Jobs canary passed.
+
+[Telegram-only run 38160505707](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38160505707)
+found 76 eligible AI-industry jobs, checked five HTTP-200 public URLs and posted
+the roundup successfully to both existing channels:
+- [@hashtag_ai, message 193332](https://t.me/hashtag_ai/193332)
+- [@globalAIjobs, message 45](https://t.me/globalAIjobs/45)
+
+The channel name refers to the jobs' industry; no AI generated their descriptions.
+The workflow persisted deduplication state. Future scheduled syncs call the same
+bounded original-description importer.

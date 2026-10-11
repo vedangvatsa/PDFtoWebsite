@@ -62,8 +62,8 @@ export async function GET(
     // anonymous
   }
 
-  // Publish-safe: raw scraped bodies are never exposed — only AI-rewritten or
-  // synthesized original content.
+  // Verified employer text uses the escaped source path; legacy rewrites keep
+  // their formatter. Unverified rows are rejected by canRenderJobPage above.
   const published = await publishSafeDescription(job as any, normalizeLocation(job.location) || '');
   const descriptionHtml = published.html;
   const expired = isJobExpired(job.published_at, job.created_at);

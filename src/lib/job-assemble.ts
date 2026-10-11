@@ -1,5 +1,5 @@
 /**
- * Factual stub only. Indexable pages must already be a trusted curated paraphrase.
+ * Factual stub assembly, plus eligibility for verified originals and legacy rewrites.
  */
 import { cleanPublishText } from '@/lib/noslop';
 import {
