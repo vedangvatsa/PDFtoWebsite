@@ -25,7 +25,12 @@ export async function circuitFetch(
     }
     return response;
   } catch (error) {
-    await circuit.trip(Date.now()).catch(() => {});
+    const signal = init?.signal || (input instanceof Request ? input.signal : undefined);
+    // A caller's shorter query budget or disconnect says nothing about other
+    // requests. Do not turn one cancelled read into a shared 30-second outage.
+    // Our actual upstream deadline has a distinct TimeoutError reason.
+    const callerCancelled = signal?.aborted && signal.reason?.name !== 'TimeoutError';
+    if (!callerCancelled) await circuit.trip(Date.now()).catch(() => {});
     throw error;
   }
 }

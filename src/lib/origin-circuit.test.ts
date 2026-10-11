@@ -53,4 +53,24 @@ describe('database outage circuit', () => {
     assert.equal(calls, 1);
     assert.equal(await circuit.acquire(), 'blocked');
   });
+  it('does not block unrelated reads when a caller cancels its own query', async () => {
+    const circuit = store();
+    const controller = new AbortController();
+    await assert.rejects(circuitFetch('https://example.invalid', { signal: controller.signal }, circuit, async () => {
+      controller.abort();
+      throw controller.signal.reason;
+    }), { name: 'AbortError' });
+    assert.equal(await circuit.acquire(), 'allowed');
+    const response = await circuitFetch('https://example.invalid', {}, circuit, async () => Response.json({ ok: true }));
+    assert.equal(response.status, 200);
+  });
+  it('still opens the circuit when the actual upstream deadline expires', async () => {
+    const circuit = store();
+    const controller = new AbortController();
+    await assert.rejects(circuitFetch('https://example.invalid', { signal: controller.signal }, circuit, async () => {
+      controller.abort(new DOMException('Fetch deadline exceeded', 'TimeoutError'));
+      throw controller.signal.reason;
+    }), { name: 'TimeoutError' });
+    assert.equal(await circuit.acquire(), 'blocked');
+  });
 });

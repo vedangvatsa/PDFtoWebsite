@@ -11,6 +11,8 @@ import { withTimeout, withTimeoutFallback, DB_BUDGET, requireDatabaseResult } fr
 import { createAnonFromRequest } from '@/utils/supabase/anon';
 import { rateLimit, rateLimitHeaders, rateLimitResponse } from '@/lib/rate-limit';
 import { encodeCursor, decodeCursor } from '@/lib/cursor';
+import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
+import { jobDataUnavailableResponse } from '@/lib/job-api-errors';
 import {
   normalizeCompany,
   isNonEnglishTitle,
@@ -44,13 +46,10 @@ function jobCardInfo(job: any) {
   const category = guessCategory(job);
   const location = displayJobLocation(job.location, job.job_type);
   const salary = cleanSalaryDisplay(job.salary);
-  const skills = Array.isArray(job.tags)
-    ? job.tags
-        .map((tag: unknown) => String(tag || '').trim())
-        .filter(Boolean)
-        .filter((tag: string) => !CARD_SKILL_BLOCKLIST.has(tag.toLowerCase()))
-        .slice(0, 4)
-    : [];
+  const skills = filterMeaningfulSkillTags(
+    Array.isArray(job.tags) ? job.tags.map((tag: unknown) => String(tag || '').trim()) : [],
+    { companyName: company },
+  ).filter((tag) => !CARD_SKILL_BLOCKLIST.has(tag.toLowerCase())).slice(0, 4);
 
   const focus = skills.length > 0 ? ` with ${skills.slice(0, 3).join(', ')}` : '';
   const where = location ? `, ${location}` : '';
@@ -238,14 +237,8 @@ export async function GET(request: NextRequest) {
   const fetchLimit = limit + 1;
   query = query.range(offset, offset + fetchLimit - 1);
 
-  // Run the board query with a hard timeout — never hang the board.
-  const timeoutResult = {
-    data: [] as any[],
-    error: { message: 'timeout', code: 'TIMEOUT' },
-    count: null,
-    status: 200,
-    statusText: 'OK',
-  } as any;
+  // Run the board query with a hard timeout — never cache a failed read or
+  // return an empty last page when the inventory is temporarily unavailable.
   const fetchMain = async () => {
     const result = await withTimeout(query, DB_BUDGET.list, 'api-jobs-main');
     requireDatabaseResult(result, 'jobs board');
@@ -257,31 +250,19 @@ export async function GET(request: NextRequest) {
     ? fetchMain()
     : unstable_cache(fetchMain, ['jobs-board-v3', String(offset), String(limit), type || '', loc || '', kind || '', q, String(matchOnly)],
         { revalidate: 60, tags: ['public-jobs'] })();
-  const mainResult = await withTimeoutFallback(mainRead, DB_BUDGET.list + 250, timeoutResult, 'api-jobs-main');
+  let mainResult;
+  try {
+    mainResult = await withTimeout(mainRead, DB_BUDGET.list + 250, 'api-jobs-main');
+  } catch (error) {
+    console.warn('[job-board-unavailable]', error instanceof Error ? error.name : 'query failure');
+    return jobDataUnavailableResponse(rlHeaders);
+  }
 
   const { data: mainJobs, error, count } = mainResult as any;
-  const mainTimedOut = error?.code === 'TIMEOUT';
   const rawWindow: any[] = mainJobs || [];
   const rawJobs: any[] = rawWindow.slice(0, limit);
 
-  if (error && error.code !== 'TIMEOUT') {
-    console.error('Jobs query error:', {
-      message: error.message,
-      code: error.code,
-      details: error.details,
-      hint: error.hint,
-    });
-    return NextResponse.json(
-      {
-        error: 'Failed to fetch jobs',
-        code: 'JOBS_QUERY_FAILED',
-        // Safe, non-secret diagnostic for operators (no keys / tokens)
-        reason: error.message || error.code || 'unknown',
-        hint: 'Retry with exponential backoff; if this persists the board is degraded.',
-      },
-      { status: 500, headers: rlHeaders }
-    );
-  }
+  if (error) return jobDataUnavailableResponse(rlHeaders);
 
   // Clean titles: strip noise so only the meaningful role name remains
   for (const job of (rawJobs || [])) {
@@ -530,26 +511,6 @@ export async function GET(request: NextRequest) {
     const dateB = b.published_at ? new Date(b.published_at).getTime() : 0;
     return dateB - dateA;
   });
-
-  const degraded = jobsWithMatches.length === 0 && Boolean(mainTimedOut);
-
-  if (degraded) {
-    const response = NextResponse.json({
-      jobs: [],
-      total: 0,
-      page,
-      limit,
-      offset,
-      hasMore: false,
-      next_cursor: null,
-      degraded: true,
-      userSkills: (userProfile?.skills || []).map((s) => s.trim()).filter(Boolean),
-      profileComplete,
-    });
-    response.headers.set('Cache-Control', 'no-store');
-    for (const [k, v] of Object.entries(rlHeaders)) response.headers.set(k, v);
-    return response;
-  }
 
   const total = needsDbCount
     ? (count || jobsWithMatches.length)

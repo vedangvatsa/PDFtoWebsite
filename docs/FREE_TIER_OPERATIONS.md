@@ -13,8 +13,8 @@
 - `cvinbio-cache-tags`: D1 Free database for OpenNext cache tags and bounded runtime data.
 - Supabase remains the authoritative Postgres database and Auth provider.
 
-R2 and Workers KV are not required. Splitting the Worker is necessary for the Free
-compressed-script limit. Company descriptions are generated into 256 static asset
+R2 and Workers KV are not required. Split Workers keep the gateway lightweight
+and satisfy the project's conservative compressed-bundle budget. Company descriptions are generated into 256 static asset
 shards, rather than embedding the entire dataset in each Worker. The UI and public
 URLs use the existing application routes.
 
@@ -104,8 +104,11 @@ Apply it before deploying the sitemap reader to a different database.
 
 These are hard limits, not promises of unlimited traffic:
 
-- Workers Free: 100,000 requests/day across the account, 10 ms CPU/invocation,
-  and 3 MiB compressed code per Worker. Static asset requests are free/unlimited.
+- Workers Free: 100,000 requests/day across the account, 10 ms CPU/invocation.
+  Current [platform limits](https://developers.cloudflare.com/workers/platform/limits/)
+  (checked October 11) allow 64 MiB uncompressed code with no compressed-size limit.
+  This project retains its stricter 3,000,000-byte compressed build gate and
+  100,000-byte gateway budget. Static asset requests are free/unlimited.
   Service splitting alone solves code size, not the CPU allowance. The gateway
   performs only routing/static-serving/proxy work; Next.js, CV decoding and
   dynamic images execute inside SQLite Durable Objects.
@@ -150,6 +153,9 @@ References: [DO pricing](https://developers.cloudflare.com/durable-objects/platf
 ## Ingestion and maintenance
 
 - Daily sync: at most 500 new jobs/run, inserts of 75 rows with concurrency 2.
+  The [100-AI-employer roster](AI_COMPANY_JOB_SOURCES.md) runs first, using
+  official feeds, explicit remote eligibility, company-interleaved admission and
+  a per-employer source/intake coverage artifact. It shares these same budgets.
   Known remote-tech employers qualify without a funding-keyword requirement.
   Filter-exclusion counters explain remaining coverage constraints.
 - Failed dedup reads stop inserts; failed writes/cleanup/rebuild/publication fail

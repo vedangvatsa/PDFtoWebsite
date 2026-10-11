@@ -7,6 +7,8 @@ import { publishSafeDescription } from '@/lib/job-detail-data';
 import { isJobExpired } from '@/lib/job-age';
 import { companyDisplayNameFromJob } from '@/lib/company-directory';
 import { canRenderJobPage } from '@/lib/job-apply-source';
+import { withTimeout, DB_BUDGET } from '@/lib/db-timeout';
+import { jobDataUnavailableResponse } from '@/lib/job-api-errors';
 
 const SELECT_COLS =
   'id,title,company,company_logo,location,job_type,salary,tags,apply_url,category,source,published_at,created_at,description,views,clicks';
@@ -17,24 +19,25 @@ export async function GET(
 ) {
   const { id } = await context.params;
   if (!isJobId(id)) {
-    return NextResponse.json({ error: 'Invalid job id' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid job id', code: 'INVALID_JOB_ID', hint: 'Use a job id returned by GET /api/jobs.' }, { status: 400 });
   }
 
-  const { data: job, error } = await supabaseAdmin
+  const result = await withTimeout(supabaseAdmin
     .from('jobs')
     .select(SELECT_COLS)
     .eq('id', id)
-    .maybeSingle();
+    .maybeSingle(), DB_BUDGET.list, 'api-job-detail').catch((error) => {
+      console.warn('[job-detail-unavailable]', error instanceof Error ? error.name : 'query failure');
+      return null;
+    });
 
-  if (error) {
-    console.error('Job detail query error:', error.message);
-    return NextResponse.json({ error: 'Failed to fetch job' }, { status: 500 });
-  }
+  if (!result || result.error) return jobDataUnavailableResponse();
+  const job = result.data;
   if (!job) {
-    return NextResponse.json({ error: 'Job not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Job not found', code: 'JOB_NOT_FOUND', hint: 'Find current openings at /jobs.' }, { status: 404 });
   }
   if (!canRenderJobPage(job)) {
-    return NextResponse.json({ error: 'Job not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Job not found', code: 'JOB_NOT_FOUND', hint: 'Find current openings at /jobs.' }, { status: 404 });
   }
 
   // Auth + profile for soft conversion signals

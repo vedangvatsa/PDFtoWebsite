@@ -429,6 +429,8 @@ export function buildOpenApiSpec(): Record<string, unknown> {
                 'MESSAGE_TOO_SHORT',
                 'MESSAGE_TOO_LONG',
                 'JOBS_QUERY_FAILED',
+                'INVALID_JOB_ID',
+                'INVALID_CURSOR',
                 'PROFILE_NOT_FOUND',
                 'JOB_NOT_FOUND',
                 'API_NOT_FOUND',
