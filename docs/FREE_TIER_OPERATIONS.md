@@ -2,9 +2,14 @@
 
 ## Deployment architecture
 
-- `cvinbio`: public Next.js site and APIs, static assets, cache revalidation queue.
-- `cvinbio-parser`: service-bound CV parsing routes. No public workers.dev URL.
-- `cvinbio-images`: service-bound social-preview image routes. No public workers.dev URL.
+- `cvinbio`: lightweight public gateway, static assets and legacy queue namespace.
+- `cvinbio-render`: private Next.js renderer; four SQLite `AppRenderer` actors,
+  each admitting four streaming responses, plus the cache revalidation queue.
+- `cvinbio-parser`: two SQLite `ParserRenderer` actors, one active response each.
+- `cvinbio-images`: two SQLite `ImageRenderer` actors, one active response each.
+- The three private workers have no public workers.dev or preview URL. The
+  gateway calls their Durable Object bindings directly, preserving the public
+  authority, cookies, request bodies, redirects and streamed responses.
 - `cvinbio-cache-tags`: D1 Free database for OpenNext cache tags and bounded runtime data.
 - Supabase remains the authoritative Postgres database and Auth provider.
 
@@ -12,6 +17,18 @@ R2 and Workers KV are not required. Splitting the Worker is necessary for the Fr
 compressed-script limit. Company descriptions are generated into 256 static asset
 shards, rather than embedding the entire dataset in each Worker. The UI and public
 URLs use the existing application routes.
+
+Heavy modules initialize lazily inside the Durable Object request budget. Fixed
+path-hashed pools prevent arbitrary crawler URLs from creating unlimited actors;
+CV uploads are sharded by client IP. The semaphore releases on stream completion,
+cancellation, HEAD and errors; saturation returns `503 RENDER_BUSY` with
+`Retry-After: 5`. It retains no session data and starts no keepalive timers.
+
+At build time, `generate-static-pages.mjs` extracts only immutable public SSG
+HTML and its security headers (23 routes in the October 11 build). Ordinary
+browser requests use these assets without initializing Next.js. Auth routes,
+actions, RSC, revalidation, negotiated markdown, crawlers, profiles and ISR stay
+on the application path. Analytics forwarding uses fixed PostHog origins.
 
 `src/cloudflare/incremental-cache.ts` stores at most 1,024 D1 cache slots, with a
 128 KiB maximum value per slot. Full keys are checked so collisions are misses,
@@ -27,25 +44,28 @@ remain the fallback. Large query results are paged so their individual pages fit
 ```sh
 npm ci
 npm test
-npm run cf-typegen
-npx tsc --noEmit
 npm run cf:build
+npx tsc --noEmit
 npm run cf:check-size
 npm run preview
 npm run deploy
 ```
 
 `npm run deploy` builds all workers, verifies every compressed bundle is below
-3,000,000 bytes, initializes D1, deploys the private workers first, then switches
-the public worker. Only the required Supabase/AI secrets are copied to private
-workers. Temporary secret files are removed even when deployment fails.
+3,000,000 bytes and the gateway below 100,000 bytes, initializes D1, then deploys
+render, parser, images and finally the public gateway. Runtime secrets are copied
+from explicit per-worker allowlists. Temporary secret files are removed even
+when deployment fails. `cf:build` regenerates binding types after creating the
+generated imports, so a fresh checkout does not need build output for typegen.
 
 The OpenNext adapter is pinned to 1.20.2. Its final Cloudflare bundler assumes the
 default function directory; `bundle-split-workers.mjs` applies that pass to each
 generated split. `patch-opennext-split.mjs` narrows the adapter's OG trace pass to
 routes present in the current function. Review both helpers when upgrading.
 `npm run upload` uploads versions without activating them; initial setup must use
-deploy because it introduces the SQLite-backed queue namespace.
+deploy because it introduces SQLite-backed namespaces. A rollback across the
+initial namespace migrations must preserve the new class exports; do not blindly
+roll a private worker back to a pre-migration version.
 
 The Supabase migration `20261009105804_free_tier_efficiency.sql` was applied and
 verified on 2026-10-09. It is additive for sitemap data and restricts internal
@@ -74,13 +94,19 @@ These are hard limits, not promises of unlimited traffic:
 
 - Workers Free: 100,000 requests/day across the account, 10 ms CPU/invocation,
   and 3 MiB compressed code per Worker. Static asset requests are free/unlimited.
-  Service splitting solves code size; it does not increase account request or
-  CPU allowances. Monitor CPU on document decoding and dynamic image rendering.
+  Service splitting alone solves code size, not the CPU allowance. The gateway
+  performs only routing/static-serving/proxy work; Next.js, CV decoding and
+  dynamic images execute inside SQLite Durable Objects.
 - D1 Free: 5 million rows read/day, 100,000 rows written/day, 5 GB total storage
   (also observe per-database limits). Cache operations are indexed point reads
   and single-slot writes, not whole-table scans.
-- SQLite Durable Objects are available on Free; the queue uses concurrency 1
-  per queue object and at most 2 retries to bound revalidation work.
+- SQLite Durable Objects Free: 100,000 requests/day, 13,000 GB-s duration/day,
+  5 million rows read/day, 100,000 rows written/day, 5 GB total storage. Default
+  CPU allowance is 30 seconds per invocation. Duration includes pending I/O and
+  non-hibernateable idle time, not just CPU; eligible idle objects incur no
+  duration usage. At 128 MB per actor, 13,000 GB-s is about 28.2 aggregate active
+  actor-hours/day. Eight fixed render actors are a concurrency bound, **not** a
+  daily-duration guarantee. The queue uses concurrency 1 and at most 2 retries.
 - Supabase Free: 500 MB database/project; 5 GB uncached egress plus a separate
   5 GB cached allowance; 1 GB object storage; 50,000 MAU. Organization usage from
   other projects shares most quotas.
@@ -89,6 +115,23 @@ Warn at 300 MB database size, intervene by 400 MB. Review actual billed egress
 at a 3 GB/month forecast and intervene by 4 GB. A stored-user count is not MAU,
 and HTTP content-length sums are not a billing ledger. Keep raw job descriptions
 out of Postgres until a deliberately bounded publishing/enrichment policy is used.
+
+Read aggregate Cloudflare usage (defaults to the last hour, ending two minutes
+ago to allow ingestion; optional explicit ISO start/end, at most 24 hours):
+
+```sh
+node --env-file=.env.local .github/scripts/check-free-tier-usage.mjs
+```
+
+This reports gateway CPU in milliseconds, Durable Object duration directly in
+GB-s, errors/memory, account-wide UTC-day counters and clearly labelled window
+extrapolations. Check both request budgets, DO duration and D1 operations. Review
+at 70% of a daily allowance and intervene at 80%; never infer compliance from
+successful requests or compressed bundle size alone. No-data values remain null.
+
+References: [DO pricing](https://developers.cloudflare.com/durable-objects/platform/pricing/),
+[DO CPU limits](https://developers.cloudflare.com/durable-objects/platform/limits/),
+[hibernation](https://developers.cloudflare.com/durable-objects/concepts/durable-object-lifecycle/).
 
 ## Ingestion and maintenance
 
@@ -174,3 +217,28 @@ The verified company rebuild completed in 2.8 seconds on Free, preserving compan
 pages while zeroing inactive role counts. Native Cloudflare preview testing also
 verified a 231 KB directory page could be stored and read as an 85 KB compressed
 cache entry after invalidation, retaining the 128 KiB per-slot storage cap.
+
+## October 11 CPU migration verification
+
+Before the CPU migration, the 14:32–15:32 UTC sample reported 1,113 successful
+main-worker invocations with median CPU 41.535 ms and p99 1,169.540 ms, plus
+63 `exceededResources` failures. Image-worker median CPU was 106.424 ms.
+These measurements establish the need to move rendering out of the gateway.
+
+Local checks for the new architecture: 327 passing tests, one credential-dependent
+skip, successful TypeScript and 23-file OG style checks. The OpenNext build clears
+its output before rebuilding; all generated gateway imports and binding types
+were recreated successfully. Compressed bundles: gateway 9.64 KiB, application
+2,845.76 KiB, parser 2,900.60 KiB, images 1,877.74 KiB.
+
+Four-worker native preview passed static HTML/security headers/HEAD, dynamic
+pages, APIs, markdown, RSC, social PNGs, parser validation and OAuth callback
+routing. Two concurrent synthetic users received separate private personalized
+responses. The account lifecycle passed sign-in, verified session, profile
+save/update, authenticated invalidation, public reads and deletion; synthetic
+records were removed. Wrangler's custom-domain preview rewrites local authority
+to `http://cvin.bio`, so the local origin-check fixture uses that origin; production
+continues to require the actual `https://cvin.bio` origin.
+
+Production CPU and Durable Object duration must be checked after activating this
+migration using `check-free-tier-usage.mjs` and an entirely post-deployment window.

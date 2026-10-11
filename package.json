@@ -11,10 +11,10 @@
     "check:og": "npx tsx scripts/check-og-satori.ts",
     "test": "node .github/scripts/generate-company-assets.mjs && tsx --test src/lib/company-hub-invariants.test.ts src/lib/*.test.ts src/lib/*.test.mjs .github/scripts/lib/*.test.mjs && tsx src/lib/company-directory.test.ts",
     "mcp": "npx tsx mcp-server.ts",
-    "preview": "npm run cf:build && wrangler d1 execute cvinbio-cache-tags --local --file cloudflare-cache-schema.sql && wrangler dev -c wrangler.jsonc -c wrangler.parser.jsonc -c wrangler.images.jsonc",
+    "preview": "npm run cf:build && wrangler d1 execute cvinbio-cache-tags --local --file cloudflare-cache-schema.sql && wrangler dev -c wrangler.jsonc -c wrangler.render.jsonc -c wrangler.parser.jsonc -c wrangler.images.jsonc",
     "deploy": "npx tsx scripts/generate-llms.ts && npm run cf:build && node .github/scripts/deploy-free-tier.mjs",
     "upload": "npm run cf:build && node .github/scripts/deploy-free-tier.mjs --upload-only",
-    "cf:build": "node .github/scripts/patch-opennext-split.mjs && opennextjs-cloudflare build && node .github/scripts/bundle-split-workers.mjs && npm run cf-typegen && npm run cf:prune-assets && node .github/scripts/populate-static-assets-cache.mjs",
+    "cf:build": "node .github/scripts/patch-opennext-split.mjs && opennextjs-cloudflare build && node .github/scripts/bundle-split-workers.mjs && node .github/scripts/generate-static-pages.mjs && npm run cf-typegen && npm run cf:prune-assets && node .github/scripts/populate-static-assets-cache.mjs",
     "cf:check-size": "node .github/scripts/deploy-free-tier.mjs --check",
     "cf:prune-assets": "node -e \"const fs=require('fs'),path=require('path');const max=24*1024*1024;function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p);else{const s=fs.statSync(p).size;if(s>max){console.log('prune',p,(s/1024/1024).toFixed(1)+'MiB');fs.unlinkSync(p);}}}};const root='.open-next/assets';if(fs.existsSync(root))walk(root);\"",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv --include-runtime false cloudflare-env.d.ts"

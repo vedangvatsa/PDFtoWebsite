@@ -438,6 +438,7 @@ export function buildOpenApiSpec(): Record<string, unknown> {
                 'INVALID_ORIGIN',
                 'INVALID_TRACKING_EVENT',
                 'DATABASE_UNAVAILABLE',
+                'RENDER_BUSY',
               ],
             },
             hint: { type: 'string', description: 'Resolution hint, e.g. which endpoint or spec to consult' },

@@ -1,18 +1,45 @@
-import app from './.open-next/worker.js';
 import { browserSafeRedirect } from './src/lib/redirect-cache.mjs';
-export { DOQueueHandler, DOShardedTagCache, BucketCachePurge } from './.open-next/worker.js';
+import { rendererStub, RENDER_POOL_SIZE, PARSER_POOL_SIZE, IMAGE_POOL_SIZE, analyticsTarget, canServeStaticHtml, forwardedRequest } from './src/lib/render-routing.mjs';
+import staticPages from './.open-next/static-pages.json';
+// Retain the existing queue namespace for migration compatibility, without
+// importing Next.js or any of its middleware into the gateway.
+export { DOQueueHandler } from './.open-next/.build/durable-objects/queue.js';
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname;
+    const analytics = analyticsTarget(url);
+    if (analytics) {
+      const headers = new Headers(request.headers);
+      headers.delete('host');
+      headers.delete('cookie');
+      headers.delete('authorization');
+      return fetch(new Request(analytics, {
+        method: request.method, headers, redirect: 'manual',
+        body: ['GET', 'HEAD'].includes(request.method) ? undefined : request.body,
+      }));
+    }
+    const page = Object.hasOwn(staticPages, path) ? staticPages[path] : null;
+    if (page && canServeStaticHtml(request)) {
+      const asset = await env.ASSETS.fetch(new Request(`https://assets.local${page.asset}`, { method: request.method }));
+      if (asset.ok) {
+        const headers = new Headers(asset.headers);
+        for (const [key, value] of Object.entries(page.headers)) headers.set(key, value);
+        headers.set('Content-Type', 'text/html; charset=utf-8');
+        headers.set('Cache-Control', 'private, no-store');
+        headers.set('X-CVin-Render', 'static');
+        return new Response(asset.body, { status: asset.status, headers });
+      }
+      await asset.body?.cancel();
+    }
     if (['/api/parse-resume', '/v1/api/parse-resume', '/v1/parse-resume'].includes(path.replace(/\/$/, ''))) {
       // Normalize documented API aliases before the isolated parser's router.
       url.pathname = '/api/parse-resume';
-      return env.PARSER_WORKER.fetch(new Request(url, request));
+      return rendererStub(env.PARSER_RENDERER, request.headers.get('cf-connecting-ip') || path, PARSER_POOL_SIZE).fetch(new Request(url, forwardedRequest(request)));
     }
     if (/\/opengraph-image(?:\/|$)/.test(path) || /^\/(?:icon|apple-icon)\/?$/.test(path)) {
-      return env.IMAGE_WORKER.fetch(request);
+      return rendererStub(env.IMAGE_RENDERER, path, IMAGE_POOL_SIZE).fetch(forwardedRequest(request));
     }
     // Absorb repeated crawler requests for confirmed stale job URLs before
     // starting the Next.js renderer. Auth, RSC and API traffic bypass this.
@@ -27,7 +54,7 @@ export default {
       const hit = await caches.default.match(key);
       if (hit) return browserSafeRedirect(hit);
     }
-    const response = await app.fetch(request, env, ctx);
+    const response = await rendererStub(env.APP_RENDERER, path, RENDER_POOL_SIZE).fetch(forwardedRequest(request));
     if (publicRedirect && [301, 308].includes(response.status) &&
         response.headers.get('location')?.startsWith('/') &&
         !response.headers.get('location').startsWith('//') && !response.headers.has('set-cookie')) {

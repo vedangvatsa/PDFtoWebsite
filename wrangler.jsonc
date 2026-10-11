@@ -16,14 +16,6 @@
     {
       "binding": "WORKER_SELF_REFERENCE",
       "service": "cvinbio"
-    },
-    {
-      "binding": "PARSER_WORKER",
-      "service": "cvinbio-parser"
-    },
-    {
-      "binding": "IMAGE_WORKER",
-      "service": "cvinbio-images"
     }
   ],
   "d1_databases": [
@@ -34,7 +26,12 @@
     }
   ],
   "durable_objects": {
-    "bindings": [{ "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" }]
+    "bindings": [
+      { "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" },
+      { "name": "APP_RENDERER", "class_name": "AppRenderer", "script_name": "cvinbio-render" },
+      { "name": "PARSER_RENDERER", "class_name": "ParserRenderer", "script_name": "cvinbio-parser" },
+      { "name": "IMAGE_RENDERER", "class_name": "ImageRenderer", "script_name": "cvinbio-images" }
+    ]
   },
   "migrations": [{ "tag": "cache-v1", "new_sqlite_classes": ["DOQueueHandler"] }],
   "vars": {

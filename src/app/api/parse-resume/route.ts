@@ -342,20 +342,24 @@ export async function POST(request: NextRequest) {
 
       const AI_PARSE_TIMEOUT_MS = 35_000;
       const aiCall = callParseAI(baseMessages, { media: parseMedia });
+      let parseDeadline: ReturnType<typeof setTimeout> | undefined;
       try {
         aiStructuredData = await Promise.race([
           aiCall,
-          new Promise((_, reject) =>
-            setTimeout(
+          new Promise((_, reject) => {
+            parseDeadline = setTimeout(
               () => reject(new Error(`AI parse timed out after ${AI_PARSE_TIMEOUT_MS}ms`)),
               AI_PARSE_TIMEOUT_MS
-            )
-          ),
+            );
+          }),
         ]);
       } catch (timeoutOrAiErr) {
         // If we timed out, swallow a late AI rejection so it isn't an unhandled rejection.
         void aiCall.catch(() => {});
         throw timeoutOrAiErr;
+      } finally {
+        // An already-settled parse must not keep its Durable Object awake.
+        if (parseDeadline) clearTimeout(parseDeadline);
       }
 
       // Validate RAW model output FIRST. Repair used to truncate education dumps

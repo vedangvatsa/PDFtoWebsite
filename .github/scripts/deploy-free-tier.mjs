@@ -4,7 +4,7 @@ import { parse } from 'dotenv';
 
 const checkOnly = process.argv.includes('--check');
 const uploadOnly = process.argv.includes('--upload-only');
-const configurations = ['wrangler.parser.jsonc', 'wrangler.images.jsonc', 'wrangler.jsonc'];
+const configurations = ['wrangler.render.jsonc', 'wrangler.parser.jsonc', 'wrangler.images.jsonc', 'wrangler.jsonc'];
 const run = (args, options = {}) => {
   const result = spawnSync('node_modules/.bin/wrangler', args, { encoding: 'utf8', ...options });
   if (result.status !== 0) {
@@ -30,6 +30,7 @@ for (const config of configurations) {
   const bytes = Number(match[1]) * 1024;
   console.log(`${config}: ${match[1]} KiB compressed`);
   if (bytes > 3_000_000) throw new Error(`${config} exceeds the Workers Free script budget`);
+  if (config === 'wrangler.jsonc' && bytes > 100_000) throw new Error('The gateway must remain lightweight; renderer code leaked into its bundle');
 }
 if (checkOnly) process.exit(0);
 
@@ -40,13 +41,16 @@ for (const file of ['.env.local', '.env.production.local']) {
 Object.assign(values, Object.fromEntries(Object.entries(process.env).filter(([, value]) => value !== '')));
 const common = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'NEXT_PUBLIC_SITE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_KEY'];
 const parser = [...common, 'GEMINI_API_KEY', 'GEMINI_API_KEY_2', 'GEMINI_API_KEY_3', 'GEMINI_API_KEY_4', 'GEMINI_API_KEY_5', 'GEMINI_MODEL', 'DEEPSEEK_API_KEY', 'DEEPSEEK_API_KEY_2', 'DEEPSEEK_MODEL', 'DEEPSEEK_REASONING_EFFORT'];
+const renderer = [...parser, 'RESEND_API_KEY', 'CONTACT_NOTIFY_EMAIL', 'POSTHOG_PERSONAL_API_KEY', 'POSTHOG_PROJECT_ID',
+  'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHANNEL_ID', 'THREADS_ACCESS_TOKEN', 'THREADS_USER_ID', 'META_PAGE_TOKEN', 'META_PAGE_ID',
+  'META_IG_USER_ID', 'BUFFER_ACCESS_TOKEN', 'BUFFER_TOKEN', 'BUFFER_ORG_ID', 'JSEARCH_API_KEY', 'JOOBLE_API_KEY', 'CAREERJET_API_KEY', 'ADZUNA_APP_ID', 'ADZUNA_APP_KEY'];
 if (!values.NEXT_PUBLIC_SUPABASE_URL || !(values.SUPABASE_SERVICE_ROLE_KEY || values.SUPABASE_KEY)) {
   throw new Error('Supabase deployment credentials unavailable');
 }
 mkdirSync('.wrangler', { recursive: true });
 run(['d1', 'execute', 'cvinbio-cache-tags', '--remote', '--file', 'cloudflare-cache-schema.sql']);
 for (const config of configurations) {
-  const keys = config === 'wrangler.parser.jsonc' ? parser : common;
+  const keys = config === 'wrangler.render.jsonc' ? renderer : config === 'wrangler.parser.jsonc' ? parser : common;
   const secrets = Object.fromEntries(keys.filter((key) => values[key]).map((key) => [key, values[key]]));
   const file = '.wrangler/free-tier-deploy-secrets.json';
   writeFileSync(file, JSON.stringify(secrets), { mode: 0o600 });
