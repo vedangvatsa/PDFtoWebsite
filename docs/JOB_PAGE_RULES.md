@@ -32,7 +32,9 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
 ## Content
 
 - Fetch the exact posting from an official ATS API, matching its native job ID.
-  Greenhouse, Ashby, Lever, Workable and SmartRecruiters are supported.
+  Greenhouse, Ashby, Lever, Workable, SmartRecruiters, Workday, Gem and JazzHR
+  are supported. Greenhouse's public API is global; hosted EU board links keep
+  their EU hostname. Dotted/spaced Ashby board names retain URL case/encoding.
 - Preserve employer wording, punctuation and paragraph/list order. Versioned
   `source-html` descriptions retain headings, paragraphs, lists, emphasis,
   tables and safe links through an HTML-parser allowlist at import and render.

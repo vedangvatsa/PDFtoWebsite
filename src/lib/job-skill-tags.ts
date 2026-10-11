@@ -52,7 +52,7 @@ function isMeaningfulSkillTag(
 ): boolean {
   const n = normalizeTag(tag);
   if (!n || n.length < 2 || n.length > 40) return false;
-  if (SKILL_TAG_BLOCKLIST.has(n)) return false;
+  if (SKILL_TAG_BLOCKLIST.has(n) || n.startsWith('ai100:')) return false;
 
   const company = opts?.companyName ? normalizeTag(opts.companyName) : '';
   if (company && (n === company || company.includes(n) || n.includes(company))) {

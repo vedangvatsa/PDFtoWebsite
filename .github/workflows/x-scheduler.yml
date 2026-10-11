@@ -6,6 +6,11 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
+      scope:
+        description: 'AI100 first, then general feeds; or AI100 only'
+        type: choice
+        options: [all, ai100]
+        default: all
       mass_scan:
         description: 'Check all 19k+ jobs for 404s in parallel (HEAVY — never use on Free tier unless necessary)'
         type: boolean
@@ -66,9 +71,20 @@ jobs:
           JOBS_SYNC_CONCURRENCY: '2'
           JOBS_SYNC_EXPAND_KNOWN_REMOTE_TECH: '1'
           JOBS_SYNC_MAX_NEW: '500'
+          JOBS_SYNC_SCOPE: ${{ inputs.scope || 'all' }}
+          AI_COVERAGE_OUTPUT: ${{ runner.temp }}/ai100-coverage.json
           # Original source text only; serial imports with a bounded queue.
           SOURCE_IMPORT_BATCH_SIZE: '100'
         run: node .github/scripts/jobs-sync.mjs
+
+      - name: Preserve AI100 source and intake coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai100-coverage
+          path: ${{ runner.temp }}/ai100-coverage.json
+          if-no-files-found: warn
+          retention-days: 14
 
       # Prune is heavy (HTTP checks + DB). Off on schedule; only when manually requested.
       - name: Prune dead job links

@@ -7,6 +7,7 @@ import { readInventory } from './lib/free-tier-guards.mjs';
 import { jobInsertConflict, insertJobWithRecovery } from './lib/job-insert-recovery.mjs';
 import { completeJobCandidates } from './lib/complete-job-intake.mjs';
 import { createOriginalJobFetcher } from './lib/fetch-original-job.mjs';
+import { AI_COMPANIES, AI_COMPANY_IDS, AI_SOURCES, collectAiCompanyJobs, interleaveAiCompanies, aiCompanyId } from './lib/ai-company-jobs.mjs';
 import { SOURCE_DESCRIPTION_MAX_ROWS } from '../../src/lib/source-job-description.mjs';
 import { spawnSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
@@ -65,6 +66,8 @@ const FAMOUS_AI_COMPANY_SLUGS = new Set([
   'insitro', 'pathai', 'snorkel', 'snorkel-ai', 'datarobot', 'c3-ai', 'c3ai',
 ]);
 const EXPAND_KNOWN_REMOTE_TECH = process.env.JOBS_SYNC_EXPAND_KNOWN_REMOTE_TECH === '1';
+const AI_ONLY = process.env.JOBS_SYNC_SCOPE === 'ai100';
+const AI_COMPANY_SLUGS = new Set(AI_COMPANIES.flatMap((company) => [company.id, companyToSlug(company.name)]));
 
 function isKnownCompany(company) {
   const slug = companyToSlug(company);
@@ -90,7 +93,7 @@ function isKnownFundedCompany(company) {
 // A full scrape can discover tens of thousands of live listings. Keep the
 // free-tier database bounded; 500 new rows per scheduled sync is ample for a
 // current board and works with the existing 30-day expiry cleanup.
-let newJobsRemaining = Math.max(0, Number(process.env.JOBS_SYNC_MAX_NEW || 500));
+let newJobsRemaining = Math.max(0, Math.min(500, Math.floor(Number(process.env.JOBS_SYNC_MAX_NEW || 500)) || 0));
 const fetchOriginal = createOriginalJobFetcher();
 
 async function sourceDescriptionCapacity() {
@@ -357,25 +360,31 @@ function isProbablyEnglish(title) {
   return true;
 }
 
-async function supabaseUpsert(jobs) {
+async function supabaseUpsert(jobs, { onOutcome = () => {}, interleave = false } = {}) {
   // Deduplicate by external_id in-memory (prefer external_id over dedup_hash)
   // Also discard jobs matching the BANNED_REGEX or non-English titles
   const seen = new Map();
+  const seenHashes = new Set();
   let bannedCount = 0;
   let curlEmptySourceCount = 0;
   for (const job of jobs) {
     if (job.title && (BANNED_REGEX.test(job.title) || !isProbablyEnglish(job.title))) {
       bannedCount++;
+      onOutcome(job, 'policy_excluded');
       continue;
     }
     // Skip apply URLs that never yield a JD body on curl (LinkedIn, jobviewtrack, …)
     if (isLowQualityApplySource(job.apply_url)) {
       curlEmptySourceCount++;
+      onOutcome(job, 'policy_excluded');
       continue;
     }
     const key = job.external_id || job.dedup_hash;
-    if (!seen.has(key)) {
+    if (!seen.has(key) && !seenHashes.has(job.dedup_hash)) {
       seen.set(key, job);
+      if (job.dedup_hash) seenHashes.add(job.dedup_hash);
+    } else {
+      onOutcome(job, 'duplicate_candidate');
     }
   }
   const unique = [...seen.values()];
@@ -390,11 +399,16 @@ async function supabaseUpsert(jobs) {
 
   // A job is new only if BOTH its external_id AND dedup_hash are absent from DB
   // This prevents cross-source duplicates (same company+title from RemoteOK vs Greenhouse)
-  const candidates = unique.filter(j => !allExternalIds.has(j.external_id) && !allHashes.has(j.dedup_hash));
+  let candidates = unique.filter(j => {
+    const exists = allExternalIds.has(j.external_id) || allHashes.has(j.dedup_hash);
+    if (exists) onOutcome(j, 'already_existing');
+    return !exists;
+  });
+  if (interleave) candidates = interleaveAiCompanies(candidates);
   const alreadyExisting = unique.length - candidates.length;
   console.log(`   🆕 ${candidates.length} candidate jobs (${alreadyExisting} already exist)`);
   const { jobs: newJobs, stats } = await completeJobCandidates(candidates, {
-    limit: Math.min(newJobsRemaining, await sourceDescriptionCapacity()), fetchOriginal,
+    limit: Math.min(newJobsRemaining, await sourceDescriptionCapacity()), fetchOriginal, onOutcome,
   });
   console.log(`   Original-description intake: ${JSON.stringify(stats)}`);
   const skippedCount = alreadyExisting + candidates.length - newJobs.length;
@@ -411,8 +425,8 @@ async function supabaseUpsert(jobs) {
 
   // Free-tier safe inserts: smaller batches, low concurrency, pause between groups
   // (was 200 × 5 parallel — enough to exhaust Nano memory/connections)
-  const batchSize = Number(process.env.JOBS_SYNC_BATCH_SIZE || 75);
-  const concurrency = Number(process.env.JOBS_SYNC_CONCURRENCY || 2);
+  const batchSize = Math.max(1, Math.min(75, Math.floor(Number(process.env.JOBS_SYNC_BATCH_SIZE || 75)) || 75));
+  const concurrency = Math.max(1, Math.min(2, Math.floor(Number(process.env.JOBS_SYNC_CONCURRENCY || 2)) || 2));
   let inserted = 0;
   const batches = [];
 
@@ -442,7 +456,7 @@ async function supabaseUpsert(jobs) {
 
   async function sendInsert(batch) {
     const payload = withCompanyKey(batch);
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id,external_id`, {
       method: 'POST',
       headers: {
         'apikey': SUPABASE_KEY,
@@ -454,6 +468,10 @@ async function supabaseUpsert(jobs) {
       signal: AbortSignal.timeout(20_000),
     });
     const body = await res.json().catch(() => null);
+    if (res.ok && Array.isArray(body)) {
+      const insertedIds = new Set(body.map((row) => row.external_id));
+      for (const job of batch) if (insertedIds.has(job.external_id)) onOutcome(job, 'inserted');
+    }
     return { status: res.status, data: res.ok ? body : null, error: res.ok ? null : body };
   }
 
@@ -462,6 +480,8 @@ async function supabaseUpsert(jobs) {
       const result = await sendInsert(batch);
       if (result.status >= 200 && result.status < 300) {
         if (!Array.isArray(result.data)) throw new Error('Insert batch returned an invalid row response');
+        const insertedIds = new Set(result.data.map((row) => row.external_id));
+        for (const job of batch) if (!insertedIds.has(job.external_id)) onOutcome(job, 'duplicate_at_insert');
         return result.data.length;
       }
       if (!jobInsertConflict(result)) throw new Error(`Insert batch failed (${result.status}, ${result.error?.code || 'unknown'})`);
@@ -469,7 +489,11 @@ async function supabaseUpsert(jobs) {
       // Classify every individual response; never retry the same slug forever
       // or mistake a legitimate dedup conflict for an infrastructure failure.
       let inserted = 0;
-      for (const job of batch) inserted += await insertJobWithRecovery(job, (row) => sendInsert([row]), remintSlug);
+      for (const job of batch) {
+        const count = await insertJobWithRecovery(job, (row) => sendInsert([row]), remintSlug);
+        inserted += count;
+        if (!count) onOutcome(job, 'duplicate_at_insert');
+      }
       return inserted;
     } catch (e) {
       throw new Error(`Insert batch failed: ${e.message}`);
@@ -2595,45 +2619,74 @@ async function main() {
   console.log('🚀 Jobs Sync — Starting');
   const startTime = Date.now();
 
-  // ── PHASE 1: High-value sources (parallel, 50 concurrent each) ──
-  console.log('\n═══ Phase 1: Core sources ═══');
-  const [remoteok, remotive, wwr, himalayas, jobicy, greenhouse, ashby, workable, lever, smartrecruiters, workday] = await Promise.all([
-    fetchRemoteOK(),
-    fetchRemotive(),
-    fetchWeWorkRemotely(),
-    fetchHimalayas(),
-    fetchJobicy(),
-    fetchGreenhouse(),
-    fetchAshby(),
-    fetchWorkable(),
-    fetchLever(),
-    fetchSmartRecruiters(),
-    fetchWorkday(),
-  ]);
-
-  const phase1Jobs = [...remoteok, ...remotive, ...wwr, ...himalayas, ...jobicy, ...greenhouse, ...ashby, ...workable, ...lever, ...smartrecruiters, ...workday];
-  console.log(`\n📊 Phase 1 collected: ${phase1Jobs.length} jobs`);
-
-  // Process and upsert Phase 1 immediately
-  const phase1Valid = filterAndNormalize(phase1Jobs);
-  if (phase1Valid.length > 0) {
-    const { inserted, skipped } = await supabaseUpsert(phase1Valid);
-    console.log(`✅ Phase 1: Inserted ${inserted}, Skipped ${skipped}`);
+  // Dedicated, reviewed AI-employer feeds get the first share of the same
+  // bounded intake. A missing source or date is not reported as zero openings.
+  console.log('\n═══ AI100: official remote-only employer feeds ═══');
+  const ai = await collectAiCompanyJobs({ decorate: (job) => ({ ...job,
+    job_type: normalizeJobType(job.job_type), tags: [...job.tags, ...extractTags(`${job.title} ${job.description || ''}`)],
+  }) });
+  const rows = new Map(ai.coverage.map((row) => [row.id, row]));
+  const onOutcome = (job, outcome) => {
+    const row = rows.get(aiCompanyId(job));
+    if (!row) return;
+    row.intake ||= {};
+    row.intake[outcome] = (row.intake[outcome] || 0) + 1;
+  };
+  let aiResult;
+  try {
+    const valid = filterAndNormalize(ai.jobs, { aiRoster: true });
+    const accepted = new Set(valid);
+    for (const job of ai.jobs) if (!accepted.has(job)) onOutcome(job, 'policy_excluded');
+    aiResult = await supabaseUpsert(valid, { onOutcome, interleave: true });
+    console.log(`AI100 intake: ${JSON.stringify(aiResult)}`);
+  } finally {
+    const report = { checkedAt: new Date().toISOString(), rosterSize: AI_COMPANIES.length, remoteOnly: true,
+      intake: aiResult || { incomplete: true }, limitations: AI_SOURCES.limitations, companies: ai.coverage };
+    if (process.env.AI_COVERAGE_OUTPUT) writeFileSync(process.env.AI_COVERAGE_OUTPUT, JSON.stringify(report, null, 2));
+    for (const row of ai.coverage) console.log(`AI100_FINAL ${JSON.stringify(row)}`);
   }
+  if (!ai.coverage.some((row) => row.boards.length)) throw new Error('All AI100 sources failed');
 
-  // ── PHASE 2: BambooHR, Personio, Breezy ──
-  console.log('\n═══ Phase 2: BambooHR & Others ═══');
-  await sleep(5000); // Let sockets fully drain
-  const bamboohr = await fetchBambooHR();
-  const personio = await fetchPersonio();
-  const breezy = await fetchBreezy();
-  const phase2Jobs = [...bamboohr, ...personio, ...breezy];
-  console.log(`📊 Phase 2 collected: ${phase2Jobs.length} jobs`);
+  let phase1Jobs = [], phase2Jobs = [];
+  if (!AI_ONLY && newJobsRemaining > 0) {
+    // ── PHASE 1: Existing general sources ──
+    console.log('\n═══ Phase 1: Core sources ═══');
+    const [remoteok, remotive, wwr, himalayas, jobicy, greenhouse, ashby, workable, lever, smartrecruiters, workday] = await Promise.all([
+      fetchRemoteOK(),
+      fetchRemotive(),
+      fetchWeWorkRemotely(),
+      fetchHimalayas(),
+      fetchJobicy(),
+      fetchGreenhouse(),
+      fetchAshby(),
+      fetchWorkable(),
+      fetchLever(),
+      fetchSmartRecruiters(),
+      fetchWorkday(),
+    ]);
+    phase1Jobs = [...remoteok, ...remotive, ...wwr, ...himalayas, ...jobicy, ...greenhouse, ...ashby, ...workable, ...lever, ...smartrecruiters, ...workday];
+    console.log(`\n📊 Phase 1 collected: ${phase1Jobs.length} jobs`);
+    const phase1Valid = filterAndNormalize(phase1Jobs);
+    if (phase1Valid.length > 0) {
+      const { inserted, skipped } = await supabaseUpsert(phase1Valid);
+      console.log(`✅ Phase 1: Inserted ${inserted}, Skipped ${skipped}`);
+    }
 
-  const phase2Valid = filterAndNormalize(phase2Jobs);
-  if (phase2Valid.length > 0) {
-    const { inserted, skipped } = await supabaseUpsert(phase2Valid);
-    console.log(`✅ Phase 2: Inserted ${inserted}, Skipped ${skipped}`);
+    // ── PHASE 2: BambooHR, Personio, Breezy ──
+    if (newJobsRemaining > 0) {
+      console.log('\n═══ Phase 2: BambooHR & Others ═══');
+      await sleep(5000); // Let sockets fully drain
+      const bamboohr = await fetchBambooHR();
+      const personio = await fetchPersonio();
+      const breezy = await fetchBreezy();
+      phase2Jobs = [...bamboohr, ...personio, ...breezy];
+      console.log(`📊 Phase 2 collected: ${phase2Jobs.length} jobs`);
+      const phase2Valid = filterAndNormalize(phase2Jobs);
+      if (phase2Valid.length > 0) {
+        const { inserted, skipped } = await supabaseUpsert(phase2Valid);
+        console.log(`✅ Phase 2: Inserted ${inserted}, Skipped ${skipped}`);
+      }
+    }
   }
 
   // Aggregators produce the largest volume of regional, duplicate, and
@@ -2683,11 +2736,11 @@ async function main() {
   if (!invalidation.ok) throw new Error(`Job cache publication failed (${invalidation.status})`);
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-  console.log(`\n🏁 Done in ${elapsed}s — Total: ${phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);
+  console.log(`\n🏁 Done in ${elapsed}s — Total: ${ai.jobs.length + phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);
 }
 
 // ── Shared filter/normalize logic ──
-function filterAndNormalize(allJobs) {
+function filterAndNormalize(allJobs, { aiRoster = false } = {}) {
   const rejected = {};
   const reject = (reason) => { rejected[reason] = (rejected[reason] || 0) + 1; return false; };
   const BLOCKED_COMPANIES = ['impuls hrk'];
@@ -2718,7 +2771,12 @@ function filterAndNormalize(allJobs) {
     applyCanonicalCompany(j);
     if (j.company.includes('...') || j.company.length <= 2) return false;
     if (!isRemoteRole(j.location)) return reject('not_remote');
-    if (EXPAND_KNOWN_REMOTE_TECH) {
+    if (aiRoster) {
+      if (!AI_COMPANY_IDS.has(aiCompanyId(j))) return reject('unknown_ai_employer');
+    } else if (AI_COMPANY_SLUGS.has(companyToSlug(j.company))) {
+      // The reviewed adapter owns this employer's remote/date evidence.
+      return reject('handled_by_ai_roster');
+    } else if (EXPAND_KNOWN_REMOTE_TECH) {
       if (!isKnownCompany(j.company)) return reject('unknown_company');
       if (!isClearlyTechRole(j)) return reject('not_tech_role');
     } else if (!isKnownFundedCompany(j.company)) {
@@ -2741,7 +2799,7 @@ function filterAndNormalize(allJobs) {
   for (const job of validJobs) {
     let t = job.title;
     t = t.replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'").replace(/&nbsp;/gi, ' ');
-    const match = t.match(/^(.{20,}?)\s*[\-\/]\s+.+/) || t.match(/^(.{20,}?)\s*\(.+/);
+    const match = !aiRoster && (t.match(/^(.{20,}?)\s*[\-\/]\s+.+/) || t.match(/^(.{20,}?)\s*\(.+/));
     if (match) t = match[1].trim();
     t = t.replace(/\s+/g, ' ').trim();
     job.title = t;

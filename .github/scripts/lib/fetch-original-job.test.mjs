@@ -4,6 +4,29 @@ import { createOriginalJobFetcher, originalJobIdentity } from './fetch-original-
 const id = '12345678-1234-1234-1234-123456789abc';
 
 describe('official employer source fetching', () => {
+  it('prefers matching URL region and board case, rejects conflicting source identities', async () => {
+    const job = { source: 'ashby', external_id: `ashby_jasper ai_${id}`, apply_url: `https://jobs.ashbyhq.com/Jasper%20AI/${id}` };
+    assert.equal(originalJobIdentity(job).board, 'Jasper AI');
+    assert.equal(originalJobIdentity({ ...job, apply_url: `https://jobs.ashbyhq.com/other/${id}` }), null);
+    assert.equal(originalJobIdentity({ source: 'ashby', external_id: `ashby_.._${id}` }), null);
+    assert.equal(originalJobIdentity({ apply_url: `https://jobs.ashbyhq.com/a%2Fb/${id}` }), null);
+    const fetchOriginal = createOriginalJobFetcher(async (url) => {
+      assert.equal(url, 'https://boards-api.greenhouse.io/v1/boards/example/jobs/123');
+      return Response.json({ id: 123, content: '<p>Original</p>' });
+    });
+    assert.equal((await fetchOriginal({ source: 'greenhouse', external_id: 'gh_example_123', apply_url: 'https://job-boards.eu.greenhouse.io/example/jobs/123' })).ok, true);
+  });
+  it('verifies Workday requisitions and does not accept a mismatched body', async () => {
+    const job = { source: 'workday', external_id: 'wd_example_JR123', apply_url: 'https://example.wd1.myworkdayjobs.com/Careers/job/US/Engineer_JR123-1' };
+    const fetchOriginal = createOriginalJobFetcher(async (url) => {
+      assert.equal(url, 'https://example.wd1.myworkdayjobs.com/wday/cxs/example/Careers/job/US/Engineer_JR123-1');
+      return Response.json({ jobPostingInfo: { jobReqId: 'JR123', jobDescription: '<h2>Original requirements</h2><p>Source.</p>' } });
+    });
+    assert.equal((await fetchOriginal(job)).ok, true);
+    const wrong = createOriginalJobFetcher(async () => Response.json({ jobPostingInfo: { jobReqId: 'JR124', jobDescription: '<p>Wrong</p>' } }));
+    assert.equal((await wrong(job)).reason, 'source_identity_mismatch');
+    assert.equal(originalJobIdentity({ ...job, apply_url: 'https://example.wd1.myworkdayjobs.com.evil.example/Careers/job/US/Engineer_JR123' }), null);
+  });
   it('routes custom Greenhouse careers URLs using the stored ATS identity', async () => {
     const fetchOriginal = createOriginalJobFetcher(async (url) => {
       assert.equal(url, 'https://boards-api.greenhouse.io/v1/boards/example/jobs/123');
