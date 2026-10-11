@@ -13,6 +13,7 @@ import { rateLimit, rateLimitHeaders, rateLimitResponse } from '@/lib/rate-limit
 import { encodeCursor, decodeCursor } from '@/lib/cursor';
 import { filterMeaningfulSkillTags } from '@/lib/job-skill-tags';
 import { jobDataUnavailableResponse } from '@/lib/job-api-errors';
+import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
 import {
   normalizeCompany,
   isNonEnglishTitle,
@@ -260,7 +261,8 @@ export async function GET(request: NextRequest) {
 
   const { data: mainJobs, error, count } = mainResult as any;
   const rawWindow: any[] = mainJobs || [];
-  const rawJobs: any[] = rawWindow.slice(0, limit);
+  // Apply title policy before display cleanup can remove a [Talent Pool] label.
+  const rawJobs: any[] = rawWindow.slice(0, limit).filter((job) => !isBannedJobTitle(job.title));
 
   if (error) return jobDataUnavailableResponse(rlHeaders);
 

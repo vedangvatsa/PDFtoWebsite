@@ -35,11 +35,12 @@ function sitemapResponseHeaders(ttlSeconds = 3600): HeadersInit {
   };
 }
 
-export function cacheKeyFor(url: string, revision = 0): Request {
+export function cacheKeyFor(url: string, revision = 0, buildId = process.env.OPEN_NEXT_BUILD_ID || 'development'): Request {
   const u = new URL(url);
-  // Path+epoch key: query noise / UA variance don't fragment the cache, and a
-  // deploy can orphan all previously cached (possibly poisoned) entries.
-  return new Request(`${u.origin}${u.pathname}?smaphe=${SITEMAP_CACHE_EPOCH}&revision=${revision}`, { method: 'GET' });
+  // Tag revisions are build-scoped in OpenNext and start at zero on deployment.
+  // Scope this outer cache too, or a new build resurrects an older revision-zero
+  // sitemap even after a previous deployment withdrew a posting.
+  return new Request(`${u.origin}${u.pathname}?smaphe=${SITEMAP_CACHE_EPOCH}&build=${encodeURIComponent(buildId)}&revision=${revision}`, { method: 'GET' });
 }
 
 export async function withSitemapCache(

@@ -39,6 +39,12 @@ describe('sitemap cache must not poison Google Jobs discovery', () => {
     assert.equal(sitemapXmlHasUrls('<jobs><job id="1"></job></jobs>'), true);
     assert.equal(sitemapXmlHasUrls('<jobs></jobs>'), false);
   });
+  it('does not resurrect a previous deployment snapshot when tag revisions reset', () => {
+    const oldBuild = cacheKeyFor('https://cvin.bio/sitemap-jobs/0', 0, 'old-build').url;
+    const newBuild = cacheKeyFor('https://cvin.bio/sitemap-jobs/0', 0, 'new-build').url;
+    assert.notEqual(oldBuild, newBuild);
+    assert.equal(newBuild, cacheKeyFor('https://cvin.bio/sitemap-jobs/0?noise=1', 0, 'new-build').url);
+  });
 
   it('withSitemapCache rejects empty hits and never stores empty builds', () => {
     const file = fs.readFileSync(path.join(root, 'src/lib/sitemap-cache.ts'), 'utf8');

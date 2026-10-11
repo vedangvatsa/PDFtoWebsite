@@ -22,6 +22,7 @@ describe('listing-page titles are banned', () => {
     'Talent Community',
     'Join our Talent Pool',
     'General Application',
+    '[Talent Pool] Business Development Specialist',
   ]) {
     it(`bans ${JSON.stringify(title)}`, () => {
       assert.equal(isBannedJobTitle(title), true, title);

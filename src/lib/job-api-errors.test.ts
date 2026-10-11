@@ -21,5 +21,6 @@ it('board and detail routes keep failed reads distinct from real empty results',
   assert.match(board, /return jobDataUnavailableResponse\(rlHeaders\)/);
   assert.doesNotMatch(board, /timeoutResult|degraded: true/);
   assert.match(board, /const skills = filterMeaningfulSkillTags\(/);
+  assert.match(board, /rawWindow.slice\(0, limit\).filter\(\(job\) => !isBannedJobTitle\(job.title\)\)/);
   assert.match(detail, /if \(!result \|\| result.error\) return jobDataUnavailableResponse\(\)/);
 });
