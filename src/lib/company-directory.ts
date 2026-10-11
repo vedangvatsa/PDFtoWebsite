@@ -394,7 +394,7 @@ export function isJunkCompanyName(raw: string): boolean {
   if (/^[\d\s\-_.]+$/.test(name)) return true;
   // Mostly symbols / emoji
   const letters = name.replace(/[^a-zA-Z]/g, '');
-  if (letters.length < 2) return true;
+  if (letters.length < 2 && !['b12', '3m'].includes(lower)) return true;
   // URL / email fragments used as company
   if (/^(https?:|www\.)/i.test(name) || name.includes('://')) return true;
   if (/@/.test(name) && !/\.ai\b/i.test(name)) return true;

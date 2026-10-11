@@ -378,4 +378,9 @@ uses stable published-date/ID ordering and disjoint pages with one lookahead row
 Distinct posting IDs are retained even when display-title cleanup makes them
 look alike. Native preview traversed 605 distinct cards across 13 pages under
 the existing title filters, including 518 unspecified-type Greenhouse listings,
-without duplicate IDs. Production pagination verification follows deployment.
+without duplicate IDs. Production run
+[38166743014](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38166743014)
+passed, and the same full traversal succeeded live. The remaining one-card
+difference was traced to B12 being misclassified as a junk company because its
+name has only one letter. The short-brand guard now recognizes B12 and 3M while
+retaining the existing rejection of numeric IDs and symbol-only labels.
