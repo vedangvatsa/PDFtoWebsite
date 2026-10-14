@@ -59,44 +59,52 @@
   }
 }
 
-/* Job detail HTML from formatJobDescription — explicit CSS so typography survives Tailwind purge */
+/* Shared typography for employer originals and legacy job descriptions. */
 @layer components {
+  .job-description-column {
+    max-width: 76ch;
+  }
+
   .job-description {
-    @apply text-[13px] sm:text-[14px] leading-[1.7] text-zinc-600 min-w-0 max-w-full break-words;
+    @apply text-[15px] sm:text-base text-zinc-700 min-w-0 max-w-full break-words;
+    line-height: 1.75;
     overflow-wrap: anywhere;
   }
 
   .job-description h2,
   .job-description h3 {
     @apply font-bold text-zinc-900 leading-snug;
-    margin-top: 2.25rem;
+    margin-top: 2rem;
     margin-bottom: 0.75rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid rgb(228 228 231);
-    font-size: 1rem;
+    padding: 0;
+    border: 0;
+    font-size: 1.125rem;
   }
 
   @screen sm {
+    .job-description h2,
     .job-description h3 {
-      font-size: 1.0625rem;
+      font-size: 1.25rem;
     }
   }
 
-  .job-description h3:first-child {
+  .job-description > :first-child {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
   }
 
   .job-description h4 {
-    @apply text-sm font-bold text-zinc-800;
-    margin-top: 1.25rem;
-    margin-bottom: 0.5rem;
+    @apply font-semibold text-zinc-900;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    margin-top: 1.5rem;
+    margin-bottom: 0.625rem;
   }
 
   .job-description p {
-    margin-bottom: 0.75rem;
-    line-height: 1.625;
+    margin: 0 0 1rem;
+    line-height: inherit;
   }
 
   .job-description p:last-child {
@@ -113,12 +121,12 @@
 
   .job-description .jd-intro p:first-child {
     @apply font-medium text-zinc-800;
-    font-size: 0.9375rem;
+    font-size: inherit;
   }
 
   @screen sm {
     .job-description .jd-intro p:first-child {
-      font-size: 0.9375rem;
+      font-size: inherit;
     }
   }
 
@@ -131,22 +139,10 @@
     margin-bottom: 0;
   }
 
-  .job-description h3 + ul,
-  .job-description h3 + ol,
-  .job-description h3 + .jd-meta-facts {
-    margin-top: 0.5rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .job-description h3 + p {
-    margin-top: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
   .job-description ul,
   .job-description ol {
-    margin: 0;
-    padding-left: 1.25rem;
+    margin: 0 0 1.25rem;
+    padding-left: 1.5rem;
     list-style-position: outside;
   }
 
@@ -159,14 +155,35 @@
   }
 
   .job-description li {
-    @apply text-zinc-600;
-    line-height: 1.625;
-    margin-bottom: 0.75rem;
-    padding-left: 0.125rem;
+    line-height: inherit;
+    margin-bottom: 0.625rem;
+    padding-left: 0.25rem;
   }
 
   .job-description li:last-child {
     margin-bottom: 0;
+  }
+
+  .job-description li > p {
+    margin-bottom: 0.5rem;
+  }
+
+  .job-description li > p:last-child {
+    margin-bottom: 0;
+  }
+
+  .job-description li > ul,
+  .job-description li > ol {
+    margin-top: 0.625rem;
+    margin-bottom: 0;
+  }
+
+  .job-description ul ul {
+    list-style-type: circle;
+  }
+
+  .job-description li::marker {
+    color: rgb(113 113 122);
   }
 
   .job-description strong,
@@ -175,6 +192,52 @@
   }
 
   .job-description a {
-    @apply text-primary underline-offset-2 hover:underline break-all;
+    @apply text-primary underline underline-offset-2 decoration-zinc-400 hover:decoration-zinc-900;
+    overflow-wrap: anywhere;
+  }
+
+  .job-description h2 strong,
+  .job-description h3 strong,
+  .job-description h4 strong {
+    font-weight: inherit;
+  }
+
+  .job-description blockquote {
+    @apply border-l-2 border-zinc-300 pl-4 text-zinc-600;
+    margin: 1.25rem 0;
+  }
+
+  .job-description table {
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.9375em;
+  }
+
+  .job-description th,
+  .job-description td {
+    @apply border border-zinc-200;
+    padding: 0.625rem 0.75rem;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  .job-description th {
+    @apply bg-zinc-50 font-semibold text-zinc-900;
+  }
+
+  .job-description pre {
+    @apply rounded-lg bg-zinc-50 border border-zinc-200;
+    padding: 1rem;
+    margin: 1.25rem 0;
+    font-size: 0.875em;
+  }
+
+  .job-description hr {
+    @apply border-zinc-200;
+    margin: 1.75rem 0;
+  }
+
+  .job-description > :last-child {
+    margin-bottom: 0;
   }
 }

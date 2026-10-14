@@ -39,6 +39,12 @@ Tests (CI `npm test`): `src/lib/company-hub-invariants.test.ts` · `src/lib/publ
   `source-html` descriptions retain headings, paragraphs, lists, emphasis,
   tables and safe links through an HTML-parser allowlist at import and render.
   Scripts, event handlers, unsafe URLs and embedded widgets are removed. No AI.
+- The shared display formatter removes empty ATS blocks, unwraps redundant divs,
+  promotes short section labels, groups literal bullet sequences and wraps loose
+  text in paragraphs. It preserves wording, links, emphasis, legal footnotes,
+  numbering, tables and code. Original database snapshots remain intact; pages,
+  detail API HTML and JobPosting schema use the same formatted representation.
+  Never apply editorial paraphrasing to original descriptions.
 - New descriptions carry `source-jd` plus `curated-jd`. The latter remains the
   existing SQL publication selector; the former selects the original-text path.
 - Source bodies need at least 40 words and must fit 32 KiB UTF-8. Reject oversized

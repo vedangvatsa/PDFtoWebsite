@@ -33,6 +33,7 @@ import {
   storePendingResumeFile,
 } from '@/lib/cv-upload-client';
 import CvFileOverlay from '@/components/cv-file-overlay';
+import { formatPlainSourceDescription } from '@/lib/source-description-format.mjs';
 
 export interface JobDetail {
   id: string;
@@ -388,13 +389,15 @@ export default function JobDetailClient({
           </div>
 
           <div className="border-t border-zinc-100 pt-5 sm:pt-6 min-w-0">
-            <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-3 sm:mb-4">
-              {employerDescription ? 'Employer job details' : job.description_kind === 'company' ? 'About the company' : 'Job description'}
-            </h2>
-            <div
-              className={JOB_DESCRIPTION_PROSE_CLASS}
-              dangerouslySetInnerHTML={{ __html: employerDescription ? employerDescription.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br />') : job.description_html }}
-            />
+            <div className="job-description-column mx-auto w-full">
+              <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-3 sm:mb-4">
+                {employerDescription ? 'Employer job details' : job.description_kind === 'company' ? 'About the company' : 'Job description'}
+              </h2>
+              <div
+                className={JOB_DESCRIPTION_PROSE_CLASS}
+                dangerouslySetInnerHTML={{ __html: employerDescription ? formatPlainSourceDescription(employerDescription) : job.description_html }}
+              />
+            </div>
           </div>
 
           {/* Soft company exit only — not a primary CTA */}

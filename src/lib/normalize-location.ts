@@ -180,6 +180,16 @@ export function normalizeLocation(raw: string): string {
   if (!raw) return '';
   let loc = raw.trim();
 
+  // Workday lists eligible remote regions separately. Keep every restriction,
+  // but remove repeated Remote labels and dangling commas from each region.
+  const regions = loc.split(/\s*[;|]\s*/).filter(Boolean);
+  if (regions.length > 1 && regions.every((region) => /\bremote\b/i.test(region))) {
+    const places = [...new Set(regions.map((region) => region.replace(/\bremote\b/gi, '')
+      .replace(/^[\s,;:()\-–—]+|[\s,;:()\-–—]+$/g, '').trim()).filter(Boolean))];
+    return places.length ? `Remote (${places.join('; ')})` : 'Remote';
+  }
+
+  const parentheticalRemote = /\(remote\)/i.test(loc);
   // Strip common suffixes/noise
   loc = loc
     .replace(/\s*\(HQ\)/gi, '')
@@ -189,6 +199,7 @@ export function normalizeLocation(raw: string): string {
     .replace(/\s*-\s*The\s+.*$/i, '')  // "London - The River Building HQ"
     .replace(/\s*HQ$/i, '')
     .trim();
+  if (parentheticalRemote && !/^remote\b/i.test(loc)) loc = `Remote — ${loc}`;
 
   // Handle "Remote" variants
   const remoteMatch = loc.match(/^(?:Remote|Work from Home|WFH|Telecommute)/i);
@@ -196,7 +207,7 @@ export function normalizeLocation(raw: string): string {
     // "Remote - US" → "Remote (US)"
     const rest = loc
       .slice(remoteMatch[0].length)
-      .replace(/^[\s\-–:,]+/, '')
+      .replace(/^[\s\-–—:,]+/, '')
       .replace(/^\(|\)$/g, '')
       .replace(/\s*\/+\s*$/g, '')
       .trim();
@@ -208,7 +219,7 @@ export function normalizeLocation(raw: string): string {
   }
   // "United States - Remote" / "US Remote" etc.
   if (/remote$/i.test(loc) || /^remote/i.test(loc)) {
-    const cleaned = loc.replace(/[\s\-–]*remote[\s\-–]*/gi, '').trim();
+    const cleaned = loc.replace(/[\s,\-–—]*remote[\s,\-–—]*/gi, '').replace(/^[\s,;:]+|[\s,;:]+$/g, '').trim();
     if (!cleaned || /^u\.?s\.?a?\.?$|^united states$/i.test(cleaned)) return 'Remote (USA)';
     return `Remote (${cleaned})`;
   }

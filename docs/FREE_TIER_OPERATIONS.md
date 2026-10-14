@@ -469,3 +469,28 @@ retry, the two-attempt ceiling, API-error handling and confirmed missing rows.
 Local checks passed 390 tests with one credential-dependent skip, typecheck,
 23-file OG checks and all bundle-size gates. Native four-worker preview returned
 valid HTML and RSC responses for ElevenLabs, NVIDIA, Databricks and the Block hub.
+
+The timeout fix `2500743f` deployed successfully in
+[38639895675](https://github.com/vedangvatsa/PDFtoWebsite/actions/runs/38639895675).
+Live checks covered seven job URLs and the Block hub, including HTML/RSC reads
+of previously failing Postscript, GitLab and Datadog routes. Safari navigation
+from the board to Coinbase rendered its description without client/render errors.
+
+## October 14 description formatting
+
+Browser inspection across Ashby, Greenhouse and Workday found 13px mobile body
+text, excess heading padding/separators, empty ATS paragraphs, bold section
+labels treated as prose, and dangling remote-location separators. The shared
+renderer now provides 15px mobile / 16px desktop text, a bounded reading column,
+consistent heading/list/paragraph spacing, explicit link styling, nested-list,
+table and code styles, and structural cleanup of original employer HTML.
+Remote labels retain their eligible regions while removing separator debris.
+
+The rendering-only content audit checked all 2,048 current source-HTML jobs:
+zero wording/punctuation differences after whitespace/list-marker normalization,
+and zero non-idempotent formatting results. Original stored snapshots were not
+rewritten. Local Chromium checks at 1280px and 390px verified ElevenLabs,
+Databricks, Coinbase and NVIDIA: zero empty blocks, zero horizontal page overflow,
+semantic headings, readable text sizes, and zero client errors. The suite passed
+399 tests with one credential-dependent skip; typecheck, OG and Worker build/size
+checks passed. Job description format version is 34.

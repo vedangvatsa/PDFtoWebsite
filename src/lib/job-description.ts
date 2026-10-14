@@ -16,7 +16,7 @@ import {
 } from '@/lib/company-directory';
 
 /** Bump when display formatting changes — invalidates job snapshot caches. */
-export const JOB_DESCRIPTION_FORMAT_VERSION = 33;
+export const JOB_DESCRIPTION_FORMAT_VERSION = 34;
 
 /** Tailwind prose for every job detail description block. Base + layout utilities; typography in globals.css */
 export const JOB_DESCRIPTION_PROSE_CLASS =

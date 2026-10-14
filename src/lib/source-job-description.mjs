@@ -2,6 +2,7 @@
  * publication selector; `source-jd` distinguishes original text from rewrites.
  */
 import { Parser } from 'htmlparser2';
+import { formatSourceHtml, formatPlainSourceDescription } from './source-description-format.mjs';
 
 export const SOURCE_JD_TAG = 'source-jd';
 export const SOURCE_HTML_TAG = 'source-html';
@@ -109,9 +110,8 @@ export function sourceDescriptionPlain(text, tags = []) {
 /** Legacy plain snapshots remain safe; versioned HTML retains its structure. */
 /** @param {unknown} text @param {unknown} [tags] */
 export function sourceDescriptionHtml(text, tags = []) {
-  if (Array.isArray(tags) && tags.includes(SOURCE_HTML_TAG)) return sanitizeSourceDescription(text);
-  return String(text || '').split(/\n{2,}/).filter(Boolean)
-    .map((block) => `<p>${escape(block).replace(/\n/g, '<br>')}</p>`).join('');
+  if (Array.isArray(tags) && tags.includes(SOURCE_HTML_TAG)) return formatSourceHtml(sanitizeSourceDescription(text));
+  return formatPlainSourceDescription(text);
 }
 
 export function sourcePublicationPatch(job, description, { html = false } = {}) {
