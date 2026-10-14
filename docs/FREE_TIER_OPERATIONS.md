@@ -447,3 +447,25 @@ The mature 21:20–21:35 UTC resource sample reported gateway CPU **1.520 ms med
 UTC-day usage through 21:35 was 21,877 Worker requests, 7,317 DO requests,
 1,681.143 GB-s duration, 139,455 D1 rows read and 30,335 D1 rows written. These
 are observed counters, not a promise about future traffic or monthly egress.
+
+## October 14 job-page render timeouts
+
+The reported production Server Components error was investigated through live
+HTML/RSC requests, Safari board navigation, Supabase logs and Cloudflare logs.
+The recorded renderer stack at `worker-render.js:338:75588` maps to the rejecting
+timer in `withTimeout`. Healthy Supabase responses in the incident window took
+up to 3,107 ms, exceeding the job snapshot's 2,500 ms deadline. Resource metrics
+showed no Worker/DO CPU or memory limit failures in the sampled hour.
+
+Required job snapshots, route-index pages, company directory records and hub
+description reads now use `readJobQuery`: an 8-second deadline and at most one
+retry, with the first query cancelled before constructing the next. Database
+API errors and shared-origin backoff responses fail without retries. A failed
+read never becomes a cached missing job or an empty company inventory.
+Final failures emit a structured operation/error-name log without query values.
+
+Regression tests reproduce a healthy 3.1-second response, cancellation before
+retry, the two-attempt ceiling, API-error handling and confirmed missing rows.
+Local checks passed 390 tests with one credential-dependent skip, typecheck,
+23-file OG checks and all bundle-size gates. Native four-worker preview returned
+valid HTML and RSC responses for ElevenLabs, NVIDIA, Databricks and the Block hub.

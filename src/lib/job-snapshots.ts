@@ -2,7 +2,8 @@
 import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { withTimeout, DB_BUDGET, DatabaseUnavailableError, requireDatabaseResult } from '@/lib/db-timeout';
+import { DatabaseUnavailableError } from '@/lib/db-timeout';
+import { readJobQuery } from '@/lib/job-data-read';
 import { companyKeyEqualityValues, companyNameEqualityValues } from '@/lib/company-hub-query';
 import { isJobId, isShortJobSlug, JOB_DESCRIPTION_FORMAT_VERSION } from '@/lib/job-description';
 import { canRenderJobPage } from '@/lib/job-apply-source';
@@ -16,12 +17,11 @@ const ROUTE_PAGE = 100;
 const ROUTE_MAX = 2000;
 
 async function loadJobByIdLive(id: string): Promise<JobRow | null> {
-  const result = await withTimeout(
-    supabaseAdmin.from('jobs').select(SELECT_COLS).eq('id', id).maybeSingle(),
-    DB_BUDGET.fast,
+  const result = await readJobQuery(
+    () => supabaseAdmin.from('jobs').select(SELECT_COLS).eq('id', id).maybeSingle(),
     'job-by-id'
   );
-  return requireDatabaseResult(result, 'job') as JobRow | null;
+  return result.data as JobRow | null;
 }
 
 export const getCachedJobById = cache(async (id: string): Promise<JobRow | null> => {
@@ -36,13 +36,12 @@ export const getCachedJobById = cache(async (id: string): Promise<JobRow | null>
 // pages fit the bounded free-tier cache even for the largest company hubs.
 async function routePage(company: string, column: 'company_key' | 'company', values: string[], from: number) {
   return unstable_cache(async () => {
-    const result = await withTimeout(
-      supabaseAdmin.from('jobs').select(ROUTE_COLS).in(column, values)
+    const result = await readJobQuery(
+      () => supabaseAdmin.from('jobs').select(ROUTE_COLS).in(column, values)
         .order('id').range(from, from + ROUTE_PAGE - 1),
-      DB_BUDGET.list,
       'job-route-index'
     );
-    return (requireDatabaseResult(result, 'job route index') || []) as JobRouteRow[];
+    return (result.data || []) as JobRouteRow[];
   }, ['job-route-index-v1', company, column, String(from)],
   { revalidate: 900, tags: ['public-jobs'] })();
 }

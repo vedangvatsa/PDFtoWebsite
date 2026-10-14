@@ -5,7 +5,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { COMPANY_BLOCKLIST, companyDisplayName, companyDisplayNameFromJob } from '@/lib/company-directory';
 import { shouldListJobOnCompanyHub } from '@/lib/job-apply-source';
 import { JOB_MAX_AGE_DAYS } from '@/lib/job-age';
-import { withTimeout, DB_BUDGET, requireDatabaseResult } from '@/lib/db-timeout';
+import { readJobQuery } from '@/lib/job-data-read';
 import { knownCompanyDescription } from '@/lib/seo-fallbacks';
 import {
   companyHasCachedProfile,
@@ -56,11 +56,11 @@ export type CompanyPageContext = {
 
 /** Resolve directory row by slug (O(1) PK) — avoids dual exact COUNT on jobs. */
 export const getCompanyDirectory = cache(async (slug: string) => unstable_cache(async () => {
-  const result = await withTimeout(
-    supabaseForCompany.from('companies').select('slug, name, role_count, logo, locations')
-      .eq('slug', slug).maybeSingle(), DB_BUDGET.fast, 'company-directory'
+  const result = await readJobQuery(
+    () => supabaseForCompany.from('companies').select('slug, name, role_count, logo, locations')
+      .eq('slug', slug).maybeSingle(), 'company-directory'
   );
-  return requireDatabaseResult(result, 'company directory') as CompanyDirectoryRow | null;
+  return result.data as CompanyDirectoryRow | null;
 }, ['company-directory-v2', slug], { revalidate: 900, tags: ['public-jobs'] })());
 
 const SLIM_JOB_COLS =
@@ -106,9 +106,7 @@ export async function loadCompanyJobs(
         // cache entry size. Date is deliberately absent from the key; the
         // 15-minute refresh computes a new window without key churn.
         return unstable_cache(async () => {
-          const page = await withTimeout<{ data: CompanyPageJob[] | null; count: number | null; error: { message: string } | null }>(run(), DB_BUDGET.list, 'company-jobs-page');
-          requireDatabaseResult(page, 'company jobs');
-          return page;
+          return readJobQuery<{ data: CompanyPageJob[] | null; count: number | null; error: { message: string } | null }>(run, 'company-jobs-page');
         }, ['company-jobs-page-v1', slug, dirName || '', label.split(':').slice(0, 2).join(':'), String(from)],
         { revalidate: 900, tags: ['public-jobs'] })();
       }
@@ -199,12 +197,10 @@ export async function loadCompanyJobs(
         const byId = new Map<string, string | null>();
         for (let i = 0; i < need.length; i += 40) {
           const ids = need.slice(i, i + 40).map((j) => j.id);
-          const page = await withTimeout(
-            supabaseForCompany.from('jobs').select('id,description').in('id', ids),
-            DB_BUDGET.list,
-            `company-jobs-desc:${slug}:${i}`
+          const page = await readJobQuery(
+            () => supabaseForCompany.from('jobs').select('id,description').in('id', ids),
+            'company-jobs-descriptions'
           );
-          requireDatabaseResult(page, 'company job descriptions');
           for (const row of page.data || []) {
             byId.set(row.id, row.description ?? null);
           }

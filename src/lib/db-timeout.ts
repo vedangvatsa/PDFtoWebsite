@@ -120,6 +120,8 @@ export const DB_BUDGET = {
   fast: 2500,
   /** Company jobs list, directory, filtered board */
   list: 4000,
+  /** Required job-page data: allow healthy cold-origin reads over 2.5s. */
+  job: 8000,
   /**
    * Profile rows carry large JSON (experience/education/custom_sections).
    * Too-tight budgets turn a slow primary into a public 404.
