@@ -196,7 +196,7 @@ async function fetchJobsPage({ days, limit, label }) {
 
   const jobs = await supabaseFetch(url, {
     apiKey: SUPABASE_KEY,
-    timeoutMs: 20_000,
+    timeoutMs: 30_000,
     retries: 5,
     label,
   });

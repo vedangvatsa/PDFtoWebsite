@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -32,8 +32,10 @@ const AGENTMAIL_ACCOUNTS = [
   { apiKey: K6, inbox: 'hurtinspiration418@agentmail.to', provider: 'agentmail' },
 ];
 
-const VOIDMAIL_ACCOUNTS = JSON.parse(readFileSync(join(__dirname, 'voidmail-accounts.json'), 'utf8'))
-  .map(a => ({ apiKey: a.api_key, inbox: a.address, provider: 'voidmail' }));
+const VOIDMAIL_PATH = join(__dirname, 'voidmail-accounts.json');
+const VOIDMAIL_ACCOUNTS = existsSync(VOIDMAIL_PATH)
+  ? JSON.parse(readFileSync(VOIDMAIL_PATH, 'utf8')).map(a => ({ apiKey: a.api_key, inbox: a.address, provider: 'voidmail' }))
+  : [];
 
 const ACCOUNTS = [...AGENTMAIL_ACCOUNTS, ...VOIDMAIL_ACCOUNTS];
 

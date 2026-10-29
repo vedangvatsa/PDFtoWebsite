@@ -8,7 +8,7 @@ describe('free tier ingestion correctness', () => {
     await assert.rejects(readInventory('https://example.invalid/jobs', {}, {
       fetcher: async () => { calls++; return new Response('', { status: 522 }); }, pause: async () => {},
     }), /522/);
-    assert.equal(calls, 3);
+    assert.equal(calls, 5);
   });
   it('retries transient reads but preserves actual empty results', async () => {
     let calls = 0;

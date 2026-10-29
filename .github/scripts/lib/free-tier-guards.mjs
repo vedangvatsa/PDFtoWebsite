@@ -1,7 +1,7 @@
 /** Small, bounded retries only for idempotent inventory reads. */
 export async function readInventory(url, headers, { fetcher = fetch, pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms)) } = {}) {
   let lastError;
-  for (let attempt = 0; attempt < 3; attempt++) {
+  for (let attempt = 0; attempt < 5; attempt++) {
     try {
       const response = await fetcher(url, { headers, signal: AbortSignal.timeout(20_000) });
       if (!response.ok) {
@@ -13,7 +13,7 @@ export async function readInventory(url, headers, { fetcher = fetch, pause = (ms
       return rows;
     } catch (error) {
       lastError = error;
-      if (attempt < 2) await pause(500 * (attempt + 1));
+      if (attempt < 4) await pause(1000 * (attempt + 1));
     }
   }
   throw lastError;
