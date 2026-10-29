@@ -77,6 +77,16 @@ jobs:
           SOURCE_IMPORT_BATCH_SIZE: '100'
         run: node .github/scripts/jobs-sync.mjs
 
+      - name: Commit and push refreshed jobs catalog
+        run: |
+          git add content/jobs-runtime.json content/job-description-shards/ content/companies-runtime.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(jobs): update static jobs catalog and shards [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || sleep $((i * 3))
+            done
+          fi
+
       - name: Preserve AI100 source and intake coverage
         if: always()
         uses: actions/upload-artifact@v4

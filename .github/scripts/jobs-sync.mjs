@@ -258,13 +258,49 @@ function isFreshPublishedAt(raw, now = Date.now()) {
 }
 
 async function fetchExistingKeys() {
-  // Free-tier Nano: never full-scan the entire jobs table (that alone can OOM the project).
-  // Only load recent keys client-side; DB unique constraints still block true dupes on insert.
-  await sleep(2000);
-
   const allHashes = new Set();
   const allExternalIds = new Set();
   const usedByCompany = new Map(); // company_slug → Set of taken slug segments
+
+  // First seed from local content/jobs-runtime.json if present
+  const staticPath = resolve(__dirname, '../../content/jobs-runtime.json');
+  if (existsSync(staticPath)) {
+    try {
+      const staticCatalog = JSON.parse(readFileSync(staticPath, 'utf8'));
+      if (Array.isArray(staticCatalog)) {
+        for (const r of staticCatalog) {
+          if (r.dedup_hash) allHashes.add(r.dedup_hash);
+          if (r.external_id) allExternalIds.add(r.external_id);
+          const co = companyToSlug(r.company);
+          if (!co) continue;
+          let used = usedByCompany.get(co);
+          if (!used) {
+            used = new Set();
+            usedByCompany.set(co, used);
+          }
+          const seg =
+            storedSlugSegment(r.company, r.slug) ||
+            (isRouteableExternalId(r.company, r.external_id)
+              ? String(r.external_id).slice(co.length + 1).toLowerCase()
+              : null);
+          if (seg) used.add(seg);
+        }
+        console.log(`   📂 Loaded ${allExternalIds.size} existing external_ids from content/jobs-runtime.json`);
+      }
+    } catch (e) {
+      console.warn(`   ⚠️ Could not load local jobs catalog: ${e.message}`);
+    }
+  }
+
+  // If Supabase credentials are missing or we already have local inventory, return
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    return { allHashes, allExternalIds, usedByCompany };
+  }
+
+  // Free-tier Nano: never full-scan the entire jobs table (that alone can OOM the project).
+  // Only load recent keys client-side; DB unique constraints still block true dupes on insert.
+  await sleep(1000);
+
   const pageSize = 500;
   // ~30 days of recent jobs is enough for daily/bi-daily sync dedup
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -519,6 +555,37 @@ async function supabaseUpsert(jobs, { onOutcome = () => {}, interleave = false }
       `   ✅ Group ${Math.floor(g / concurrency) + 1}/${Math.ceil(batches.length / concurrency)} done (${inserted} inserted so far)`
     );
     await sleep(400);
+  }
+
+  // Also append newly inserted jobs to local static JSON catalog and shard descriptions
+  try {
+    const staticCatalogPath = resolve(__dirname, '../../content/jobs-runtime.json');
+    const shardsDir = resolve(__dirname, '../../content/job-description-shards');
+    if (existsSync(staticCatalogPath)) {
+      const existing = JSON.parse(readFileSync(staticCatalogPath, 'utf8'));
+      const existingIds = new Set(existing.map((j) => j.external_id || j.id));
+      const newlyAdded = [];
+
+      for (const job of newJobs) {
+        if (!existingIds.has(job.external_id || job.id)) {
+          const compact = { ...job };
+          if (compact.description) {
+            const shardName = (compact.slug || compact.id || compact.external_id) + '.json';
+            writeFileSync(resolve(shardsDir, shardName), JSON.stringify({ id: compact.id || compact.external_id, description: compact.description }));
+            delete compact.description;
+          }
+          existing.unshift(compact);
+          newlyAdded.push(compact);
+        }
+      }
+
+      if (newlyAdded.length > 0) {
+        writeFileSync(staticCatalogPath, JSON.stringify(existing));
+        console.log(`   💾 Appended ${newlyAdded.length} new jobs to content/jobs-runtime.json`);
+      }
+    }
+  } catch (err) {
+    console.warn(`   ⚠️ Could not update local static catalog: ${err.message}`);
   }
 
   newJobsRemaining = Math.max(0, newJobsRemaining - inserted);

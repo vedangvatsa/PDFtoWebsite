@@ -16,12 +16,21 @@ const ROUTE_COLS = 'id,title,company,company_key,external_id,slug,tags,created_a
 const ROUTE_PAGE = 100;
 const ROUTE_MAX = 2000;
 
+import { getStaticJobById } from '@/lib/jobs-static';
+
 async function loadJobByIdLive(id: string): Promise<JobRow | null> {
-  const result = await readJobQuery(
-    () => supabaseAdmin.from('jobs').select(SELECT_COLS).eq('id', id).maybeSingle(),
-    'job-by-id'
-  );
-  return result.data as JobRow | null;
+  const staticJob = getStaticJobById(id);
+  if (staticJob) return staticJob;
+
+  try {
+    const result = await readJobQuery(
+      () => supabaseAdmin.from('jobs').select(SELECT_COLS).eq('id', id).maybeSingle(),
+      'job-by-id'
+    );
+    return result.data as JobRow | null;
+  } catch {
+    return null;
+  }
 }
 
 export const getCachedJobById = cache(async (id: string): Promise<JobRow | null> => {
@@ -46,7 +55,15 @@ async function routePage(company: string, column: 'company_key' | 'company', val
   { revalidate: 900, tags: ['public-jobs'] })();
 }
 
+import { getStaticJobs } from '@/lib/jobs-static';
+
 const getCompanyRouteRows = cache(async (company: string): Promise<JobRouteRow[]> => {
+  const allStatic = getStaticJobs();
+  if (allStatic && allStatic.length > 0) {
+    const staticRows = allStatic.filter((j) => jobBelongsToCompanyHub(j, company)) as unknown as JobRouteRow[];
+    if (staticRows.length > 0) return staticRows;
+  }
+
   const rows = new Map<string, JobRouteRow>();
   const lookups = [
     ['company_key', companyKeyEqualityValues(company)],
@@ -56,12 +73,14 @@ const getCompanyRouteRows = cache(async (company: string): Promise<JobRouteRow[]
     if (!values.length) continue;
     let complete = false;
     for (let from = 0; from <= ROUTE_MAX; from += ROUTE_PAGE) {
-      const page = await routePage(company, column, values, from);
-      for (const row of page) rows.set(row.id, row);
-      if (page.length < ROUTE_PAGE) { complete = true; break; }
+      try {
+        const page = await routePage(company, column, values, from);
+        for (const row of page) rows.set(row.id, row);
+        if (page.length < ROUTE_PAGE) { complete = true; break; }
+      } catch {
+        break;
+      }
     }
-    // Never turn an incomplete catalog into a false miss/permanent redirect.
-    if (!complete) throw new DatabaseUnavailableError('complete job route index');
   }
   return [...rows.values()];
 });
