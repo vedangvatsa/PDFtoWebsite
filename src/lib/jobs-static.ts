@@ -44,7 +44,8 @@ export function getStaticCompanies(): any[] {
   if (companiesCache) return companiesCache;
   try {
     const raw = readFileSync(resolve(CONTENT_DIR, 'companies-runtime.json'), 'utf8');
-    companiesCache = JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    companiesCache = Array.isArray(parsed) ? parsed : [];
     return companiesCache;
   } catch (err) {
     console.error('[getStaticCompanies] Failed to read companies-runtime.json:', err);

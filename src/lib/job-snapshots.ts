@@ -4,7 +4,7 @@ import { unstable_cache } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { DatabaseUnavailableError } from '@/lib/db-timeout';
 import { readJobQuery } from '@/lib/job-data-read';
-import { companyKeyEqualityValues, companyNameEqualityValues } from '@/lib/company-hub-query';
+import { companyKeyEqualityValues, companyNameEqualityValues, jobBelongsToCompanyHub } from '@/lib/company-hub-query';
 import { isJobId, isShortJobSlug, JOB_DESCRIPTION_FORMAT_VERSION } from '@/lib/job-description';
 import { canRenderJobPage } from '@/lib/job-apply-source';
 import { exactJobRoute, legacyJobRoutes, type JobRouteRow } from '@/lib/job-route-resolution';
