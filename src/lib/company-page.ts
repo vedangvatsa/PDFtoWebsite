@@ -54,13 +54,33 @@ export type CompanyPageContext = {
   jobs: CompanyPageJob[];
 };
 
+import { getStaticCompanies, getStaticJobs } from '@/lib/jobs-static';
+
 /** Resolve directory row by slug (O(1) PK) — avoids dual exact COUNT on jobs. */
 export const getCompanyDirectory = cache(async (slug: string) => unstable_cache(async () => {
-  const result = await readJobQuery(
-    () => supabaseForCompany.from('companies').select('slug, name, role_count, logo, locations')
-      .eq('slug', slug).maybeSingle(), 'company-directory'
-  );
-  return result.data as CompanyDirectoryRow | null;
+  const staticCompanies = getStaticCompanies();
+  if (staticCompanies && staticCompanies.length > 0) {
+    const found = staticCompanies.find((c: any) => c.slug === slug);
+    if (found) {
+      return {
+        slug: found.slug,
+        name: found.name,
+        role_count: Number(found.role_count || 0),
+        logo: found.logo || null,
+        locations: found.locations || null,
+      } as CompanyDirectoryRow;
+    }
+  }
+
+  try {
+    const result = await readJobQuery(
+      () => supabaseForCompany.from('companies').select('slug, name, role_count, logo, locations')
+        .eq('slug', slug).maybeSingle(), 'company-directory'
+    );
+    return result.data as CompanyDirectoryRow | null;
+  } catch {
+    return null;
+  }
 }, ['company-directory-v2', slug], { revalidate: 900, tags: ['public-jobs'] })());
 
 const SLIM_JOB_COLS =
@@ -80,6 +100,14 @@ export async function loadCompanyJobs(
 ): Promise<CompanyPageJob[]> {
   return unstable_cache(
     async () => {
+      const allStatic = getStaticJobs();
+      if (allStatic && allStatic.length > 0) {
+        const matching = allStatic.filter((j) => shouldListJobOnCompanyHub(j) && (j.company_key === slug || (dirName && j.company?.toLowerCase() === dirName.toLowerCase()) || j.company?.toLowerCase() === slug.replace(/-/g, ' ').toLowerCase()));
+        if (matching.length > 0) {
+          return matching as unknown as CompanyPageJob[];
+        }
+      }
+
       const since = new Date(
         Date.now() - JOB_MAX_AGE_DAYS * 24 * 60 * 60 * 1000
       ).toISOString();
