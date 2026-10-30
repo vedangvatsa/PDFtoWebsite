@@ -60,8 +60,7 @@ import { getStaticJobs } from '@/lib/jobs-static';
 const getCompanyRouteRows = cache(async (company: string): Promise<JobRouteRow[]> => {
   const allStatic = await getStaticJobs();
   if (allStatic && allStatic.length > 0) {
-    const staticRows = allStatic.filter((j) => jobBelongsToCompanyHub(j, company)) as unknown as JobRouteRow[];
-    if (staticRows.length > 0) return staticRows;
+    return allStatic.filter((j) => jobBelongsToCompanyHub(j, company)) as unknown as JobRouteRow[];
   }
 
   const rows = new Map<string, JobRouteRow>();

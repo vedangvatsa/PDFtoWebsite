@@ -102,10 +102,7 @@ export async function loadCompanyJobs(
     async () => {
       const allStatic = await getStaticJobs();
       if (allStatic && allStatic.length > 0) {
-        const matching = allStatic.filter((j) => shouldListJobOnCompanyHub(j) && (j.company_key === slug || (dirName && j.company?.toLowerCase() === dirName.toLowerCase()) || j.company?.toLowerCase() === slug.replace(/-/g, ' ').toLowerCase()));
-        if (matching.length > 0) {
-          return matching as unknown as CompanyPageJob[];
-        }
+        return allStatic.filter((j) => shouldListJobOnCompanyHub(j) && (j.company_key === slug || (dirName && j.company?.toLowerCase() === dirName.toLowerCase()) || j.company?.toLowerCase() === slug.replace(/-/g, ' ').toLowerCase())) as unknown as CompanyPageJob[];
       }
 
       const since = new Date(
