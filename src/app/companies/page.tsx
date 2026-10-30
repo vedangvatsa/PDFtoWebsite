@@ -49,7 +49,7 @@ import { getStaticCompanies } from '@/lib/jobs-static';
 const loadCompaniesDirectory = unstable_cache(
   async (): Promise<CompanyRow[]> => {
     try {
-      const staticCos = getStaticCompanies();
+      const staticCos = await getStaticCompanies();
       if (staticCos && staticCos.length > 0) {
         return staticCos.slice(0, DIRECTORY_LIMIT).map((c: any) => ({
           slug: c.slug || toCompanySlug(c.name),

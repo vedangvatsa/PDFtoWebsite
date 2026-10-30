@@ -19,7 +19,7 @@ const ROUTE_MAX = 2000;
 import { getStaticJobById } from '@/lib/jobs-static';
 
 async function loadJobByIdLive(id: string): Promise<JobRow | null> {
-  const staticJob = getStaticJobById(id);
+  const staticJob = await getStaticJobById(id);
   if (staticJob) return staticJob;
 
   try {
@@ -58,7 +58,7 @@ async function routePage(company: string, column: 'company_key' | 'company', val
 import { getStaticJobs } from '@/lib/jobs-static';
 
 const getCompanyRouteRows = cache(async (company: string): Promise<JobRouteRow[]> => {
-  const allStatic = getStaticJobs();
+  const allStatic = await getStaticJobs();
   if (allStatic && allStatic.length > 0) {
     const staticRows = allStatic.filter((j) => jobBelongsToCompanyHub(j, company)) as unknown as JobRouteRow[];
     if (staticRows.length > 0) return staticRows;

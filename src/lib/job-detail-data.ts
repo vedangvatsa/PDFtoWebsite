@@ -329,7 +329,7 @@ export async function fetchRelatedJobs(
 
   // 1) Fast path: resolve from static catalog directly in memory (<1ms, zero network calls)
   try {
-    const allStatic = getStaticJobs();
+    const allStatic = await getStaticJobs();
     if (allStatic && allStatic.length > 0) {
       const ranked = allStatic
         .filter((row) => {

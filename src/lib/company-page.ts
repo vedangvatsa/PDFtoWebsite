@@ -58,7 +58,7 @@ import { getStaticCompanies, getStaticJobs } from '@/lib/jobs-static';
 
 /** Resolve directory row by slug (O(1) PK) — avoids dual exact COUNT on jobs. */
 export const getCompanyDirectory = cache(async (slug: string) => unstable_cache(async () => {
-  const staticCompanies = getStaticCompanies();
+  const staticCompanies = await getStaticCompanies();
   if (staticCompanies && staticCompanies.length > 0) {
     const found = staticCompanies.find((c: any) => c.slug === slug);
     if (found) {
@@ -100,7 +100,7 @@ export async function loadCompanyJobs(
 ): Promise<CompanyPageJob[]> {
   return unstable_cache(
     async () => {
-      const allStatic = getStaticJobs();
+      const allStatic = await getStaticJobs();
       if (allStatic && allStatic.length > 0) {
         const matching = allStatic.filter((j) => shouldListJobOnCompanyHub(j) && (j.company_key === slug || (dirName && j.company?.toLowerCase() === dirName.toLowerCase()) || j.company?.toLowerCase() === slug.replace(/-/g, ' ').toLowerCase()));
         if (matching.length > 0) {
