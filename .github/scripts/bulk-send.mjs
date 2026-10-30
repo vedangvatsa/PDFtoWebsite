@@ -48,7 +48,7 @@ const SENT_PATH = join(__dirname, 'sent-emails.json');
 // 1. Data Loading
 const queue = JSON.parse(readFileSync(CLEAN_LIST_PATH, 'utf8'));
 const sentList = JSON.parse(readFileSync(SENT_PATH, 'utf8'));
-const logs = JSON.parse(readFileSync(LOGS_PATH, 'utf8'));
+const logs = existsSync(LOGS_PATH) ? JSON.parse(readFileSync(LOGS_PATH, 'utf8')) : [];
 
 // 2. Filter & Batch (with blacklist)
 let doNotSend = new Set();

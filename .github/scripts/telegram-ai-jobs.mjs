@@ -409,6 +409,27 @@ async function fetchJobs() {
   }
 
   if (byUrl.size === 0) {
+    const staticRuntime = resolve(__dirname, '../../content/jobs-runtime.json');
+    if (existsSync(staticRuntime)) {
+      try {
+        const localJobs = JSON.parse(readFileSync(staticRuntime, 'utf8'));
+        if (Array.isArray(localJobs)) {
+          const matching = localJobs.filter(
+            (j) =>
+              Array.isArray(j.tags) &&
+              j.tags.includes('curated-jd') &&
+              (isPureAICompany(j.company) || isBigTech(j.company) || AI_TITLE_RE.test(j.title || ''))
+          );
+          console.log(`  Static fallback (jobs-runtime.json): ${matching.length} matching AI jobs`);
+          mergeByUrl(byUrl, matching);
+        }
+      } catch (err) {
+        console.warn(`  ⚠️  Failed reading static jobs-runtime.json: ${err.message}`);
+      }
+    }
+  }
+
+  if (byUrl.size === 0) {
     throw new Error('No publishable job descriptions are available. Check the original-description import step and source eligibility.');
   }
 

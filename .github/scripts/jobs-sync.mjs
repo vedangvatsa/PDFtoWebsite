@@ -340,6 +340,10 @@ async function fetchExistingKeys() {
       await sleep(150);
       if (rows.length < pageSize) { complete = true; break; }
     } catch (e) {
+      if (allExternalIds.size > 0) {
+        console.warn(`   ⚠️ Supabase inventory fetch interrupted (${e.message}). Falling back to local static catalog with ${allExternalIds.size} keys.`);
+        return { allHashes, allExternalIds, usedByCompany };
+      }
       throw new Error(`Cannot safely insert using a partial dedup inventory: ${e.message}`);
     }
   }
