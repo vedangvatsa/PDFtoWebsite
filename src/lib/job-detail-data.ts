@@ -37,6 +37,7 @@ import {
   getCachedJobById,
   getCachedJobByCompanyAndSlug,
 } from '@/lib/job-snapshots';
+import { getStaticJobs } from '@/lib/jobs-static';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
 import { isJobExpired, jobPostingValidThrough } from '@/lib/job-age';
 import { isBannedJobTitle } from '@/lib/banned-jobs.mjs';
@@ -325,6 +326,34 @@ export async function fetchRelatedJobs(
 ): Promise<RelatedJobCard[]> {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const titleTokens = titleSearchTokens(job.title, 4);
+
+  // 1) Fast path: resolve from static catalog directly in memory (<1ms, zero network calls)
+  try {
+    const allStatic = getStaticJobs();
+    if (allStatic && allStatic.length > 0) {
+      const ranked = allStatic
+        .filter((row) => {
+          if (!row?.id || row.id === job.id) return false;
+          if (!shouldListJobOnBoard(row)) return false;
+          if (row.created_at && row.created_at < thirtyDaysAgo && (!row.published_at || row.published_at < thirtyDaysAgo)) return false;
+          if (RELATED_NON_ENGLISH.test(row.title || '')) return false;
+          return true;
+        })
+        .map((row) => ({ row, score: scoreRelatedJob(row, job, titleTokens) }))
+        .filter((x) => x.score > 0)
+        .sort((a, b) => b.score - a.score);
+
+      const cards: RelatedJobCard[] = [];
+      for (const { row } of ranked) {
+        cards.push(rowToRelatedCard(row));
+        if (cards.length >= limit) break;
+      }
+      if (cards.length > 0) return cards;
+    }
+  } catch (err) {
+    console.error('[fetchRelatedJobs] static path error:', err);
+  }
+
   const selectCols =
     'id, title, company, location, external_id, slug, description, published_at, created_at, tags, apply_url';
 

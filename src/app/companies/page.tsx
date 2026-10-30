@@ -44,8 +44,24 @@ type CompanyRow = {
   logo: string | null;
 };
 
+import { getStaticCompanies } from '@/lib/jobs-static';
+
 const loadCompaniesDirectory = unstable_cache(
   async (): Promise<CompanyRow[]> => {
+    try {
+      const staticCos = getStaticCompanies();
+      if (staticCos && staticCos.length > 0) {
+        return staticCos.slice(0, DIRECTORY_LIMIT).map((c: any) => ({
+          slug: c.slug || toCompanySlug(c.name),
+          name: companyDisplayName(c.name),
+          role_count: c.role_count ?? 0,
+          logo: c.logo ?? null,
+        }));
+      }
+    } catch (err) {
+      console.error('[loadCompaniesDirectory] static fallback error:', err);
+    }
+
     const result = await withTimeout(
       supabase
         .from('companies')
@@ -64,7 +80,7 @@ const loadCompaniesDirectory = unstable_cache(
       logo: c.logo ?? null,
     }));
   },
-  ['companies-directory-v4'],
+  ['companies-directory-v5'],
   { revalidate: 3600, tags: ['companies-directory', 'public-jobs'] }
 );
 
