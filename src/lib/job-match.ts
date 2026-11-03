@@ -45,20 +45,41 @@ export function sanitizeFilterTerm(term: string): string {
 }
 
 // ── Role keyword families for title matching ──
-const ROLE_FAMILIES: Record<string, string[]> = {
+export const ROLE_FAMILIES: Record<string, string[]> = {
+  // Software & Systems Engineering
+  swe:         ['software engineer', 'software developer', 'software architect', 'swe', 'programmer', 'developer', 'application engineer', 'staff engineer', 'principal engineer'],
   frontend:    ['frontend', 'front-end', 'front end', 'react', 'vue', 'angular', 'ui engineer', 'ui developer', 'css', 'next.js', 'nextjs'],
-  backend:     ['backend', 'back-end', 'back end', 'server', 'api', 'node', 'python', 'java', 'golang', 'go developer', 'ruby', 'django', 'flask', 'express', 'spring'],
+  backend:     ['backend', 'back-end', 'back end', 'server engineer', 'api engineer', 'golang', 'node.js developer', 'java engineer', 'python engineer', 'ruby developer', 'c++ developer'],
   fullstack:   ['full stack', 'fullstack', 'full-stack'],
   mobile:      ['mobile', 'ios', 'android', 'react native', 'flutter', 'swift', 'kotlin'],
-  devops:      ['devops', 'sre', 'site reliability', 'infrastructure', 'platform engineer', 'cloud engineer', 'kubernetes', 'docker', 'terraform', 'ci/cd'],
-  data:        ['data engineer', 'data scientist', 'data analyst', 'analytics', 'etl', 'data platform', 'business intelligence', 'bi engineer'],
-  ml:          ['machine learning', 'ml engineer', 'ai engineer', 'deep learning', 'nlp', 'computer vision', 'llm'],
-  security:    ['security', 'cybersecurity', 'infosec', 'penetration', 'appsec'],
-  design:      ['designer', 'ux', 'ui/ux', 'product design', 'design system', 'figma'],
-  product:     ['product manager', 'program manager', 'product owner', 'product lead', 'tpm'],
-  qa:          ['qa', 'quality', 'test engineer', 'sdet', 'automation engineer'],
-  embedded:    ['embedded', 'firmware', 'hardware', 'iot', 'fpga'],
+  devops:      ['devops', 'sre', 'site reliability', 'infrastructure engineer', 'platform engineer', 'cloud engineer', 'kubernetes', 'cloud architect', 'systems engineer'],
+  qa:          ['qa', 'quality assurance', 'test engineer', 'sdet', 'automation engineer'],
+  embedded:    ['embedded', 'firmware', 'hardware engineer', 'iot', 'fpga'],
+  security:    ['security engineer', 'cybersecurity', 'infosec', 'penetration tester', 'appsec', 'security analyst'],
+
+  // Data & AI
+  data:        ['data engineer', 'data scientist', 'data analyst', 'analytics', 'etl', 'data platform', 'business intelligence', 'bi engineer', 'bi analyst'],
+  ml:          ['machine learning', 'ml engineer', 'ai engineer', 'deep learning', 'nlp engineer', 'computer vision', 'ai research', 'llm engineer', 'research scientist'],
+
+  // Product & Design
+  product:     ['product manager', 'program manager', 'product owner', 'product lead', 'tpm', 'technical program manager', 'group product manager', 'vp product', 'head of product'],
+  design:      ['designer', 'ux', 'ui/ux', 'product design', 'design system', 'figma', 'creative director', 'visual designer', 'graphic designer'],
+
+  // Business & Go-To-Market Domains
+  marketing:   ['marketing', 'growth', 'seo', 'sem', 'demand gen', 'brand manager', 'digital marketing', 'content marketing', 'product marketing', 'pmm', 'social media', 'communications'],
+  sales:       ['account executive', 'sales', 'business development', 'bdr', 'sdr', 'account manager', 'sales manager', 'sales director', 'revenue', 'enterprise sales', 'partnerships'],
+  operations:  ['operations', 'business operations', 'bizops', 'chief of staff', 'operations manager', 'supply chain', 'logistics', 'strategy & operations', 'project manager', 'scrum master'],
+  finance:     ['finance', 'financial analyst', 'accountant', 'accounting', 'controller', 'fp&a', 'auditor', 'treasury', 'payroll', 'tax', 'bookkeeper', 'cfo'],
+  people:      ['recruiter', 'recruiting', 'talent acquisition', 'sourcer', 'people ops', 'human resources', 'hr', 'hrbp', 'talent partner', 'people partner', 'hr generalist', 'people manager'],
+  legal:       ['legal', 'counsel', 'corporate counsel', 'paralegal', 'compliance', 'privacy officer', 'contracts', 'attorney', 'general counsel'],
+  support:     ['customer support', 'customer success', 'support specialist', 'csm', 'client services', 'technical support', 'customer service', 'onboarding specialist'],
+  content:     ['writer', 'copywriter', 'editor', 'technical writer', 'content creator', 'journalist', 'editorial', 'content strategist'],
 };
+
+// Engineering disciplines that strictly require domain engineering experience
+export const CORE_ENGINEERING_FAMILIES = new Set([
+  'swe', 'frontend', 'backend', 'fullstack', 'mobile', 'devops', 'qa', 'embedded'
+]);
 
 // ── Seniority levels and their numeric rank ──
 const SENIORITY_MAP: Record<string, number> = {
@@ -112,14 +133,19 @@ export interface MatchUserProfile {
   about: string;
 }
 
+
 /**
  * Compute a match score (0–100) between a user profile and a job listing.
  * 
- * Weights:
- * - Skills overlap:     40 points max
- * - Title/role match:   25 points max
- * - Seniority match:    10 points max
- * - Location match:     25 points max
+ * Re-balanced Weights:
+ * - Title/domain experience: 40 points max (core professional domain alignment)
+ * - Skills overlap:          25 points max (domain-relevant execution skills)
+ * - Seniority match:         15 points max (career level alignment)
+ * - Location match:          20 points max (remote or local geography)
+ * 
+ * Guardrail:
+ * - Domain mismatch penalty: -35 points if a specialized engineering/developer
+ *   role is matched against a candidate with zero past engineering experience.
  */
 export function computeMatchScore(
   user: MatchUserProfile,
@@ -128,97 +154,127 @@ export function computeMatchScore(
   const signals: string[] = [];
   let score = 0;
 
-  // ── 1. Skills overlap (40 pts) ──
-  const userSkillsLower = user.skills.map(s => s.toLowerCase());
-  const jobTagsLower = (job.tags || []).map(t => t.toLowerCase());
   const jobTitleLower = job.title.toLowerCase();
-  // Match against both tags AND job title (bidirectional: skill⊂tag OR tag⊂skill)
-  const matchedSkills = user.skills.filter(s => {
-    const sl = s.toLowerCase();
-    // Split compound skills like "AI & Automation" into parts
-    const parts = sl.split(/[\s&,/]+/).filter(p => p.length > 2);
-    return jobTagsLower.some(t => t.includes(sl) || sl.includes(t) || parts.some(p => t === p || t.includes(p)))
-      || parts.some(p => jobTitleLower.includes(p));
-  });
-  if (matchedSkills.length > 0) {
-    const skillScore = Math.min(40, matchedSkills.length * 10);
-    score += skillScore;
-    signals.push(`${matchedSkills.length} skill${matchedSkills.length > 1 ? 's' : ''}`);
-  }
-
-  // ── 2. Title/role match (30 pts) ──
-  // Extract role families from user's most recent job titles
-  const userRoleFamilies = new Set<string>();
-  for (const exp of (user.experience || []).slice(0, 3)) {
-    if (exp.title) {
-      for (const f of extractRoleFamilies(exp.title)) {
-        userRoleFamilies.add(f);
-      }
-    }
-  }
-  // Also extract from user's about/summary
-  if (user.about) {
-    for (const f of extractRoleFamilies(user.about)) {
-      userRoleFamilies.add(f);
-    }
-  }
-  // Also extract from skills (e.g., "React" → frontend)
-  const skillText = userSkillsLower.join(' ');
-  for (const f of extractRoleFamilies(skillText)) {
-    userRoleFamilies.add(f);
-  }
-
+  const jobTagsLower = (job.tags || []).map(t => t.toLowerCase());
   const jobRoleFamilies = new Set(extractRoleFamilies(job.title));
-  // Also check job tags for role families
   const tagText = jobTagsLower.join(' ');
   for (const f of extractRoleFamilies(tagText)) {
     jobRoleFamilies.add(f);
   }
 
-  const roleOverlap = [...userRoleFamilies].filter(f => jobRoleFamilies.has(f));
-  if (roleOverlap.length > 0) {
-    const roleScore = Math.min(25, roleOverlap.length * 12);
-    score += roleScore;
-    signals.push(`role: ${roleOverlap.join(', ')}`);
+  // ── 1. Experience & Title/Role Matching (40 pts max) ──
+  // Extract verified role families specifically from user's actual job titles
+  const userExperienceRoleFamilies = new Set<string>();
+  const userExperienceTitles: string[] = [];
+
+  for (const exp of (user.experience || []).slice(0, 5)) {
+    if (exp.title) {
+      userExperienceTitles.push(exp.title.toLowerCase());
+      for (const f of extractRoleFamilies(exp.title)) {
+        userExperienceRoleFamilies.add(f);
+      }
+    }
   }
 
-  // ── 3. Seniority match (15 pts) ──
-  // Get user's seniority from most recent title
+  // Also check about/summary with lower weight if experience is empty
+  const userProfileRoleFamilies = new Set<string>(userExperienceRoleFamilies);
+  if (userProfileRoleFamilies.size === 0 && user.about) {
+    for (const f of extractRoleFamilies(user.about)) {
+      userProfileRoleFamilies.add(f);
+    }
+  }
+
+  // Check direct overlap with job role families
+  const verifiedRoleOverlap = [...userExperienceRoleFamilies].filter(f => jobRoleFamilies.has(f));
+  const profileRoleOverlap = [...userProfileRoleFamilies].filter(f => jobRoleFamilies.has(f));
+
+  if (verifiedRoleOverlap.length > 0) {
+    // Strongest match: candidate held this exact role domain in their career
+    const roleScore = Math.min(40, 25 + (verifiedRoleOverlap.length - 1) * 8);
+    score += roleScore;
+    signals.push(`role: ${verifiedRoleOverlap.join(', ')}`);
+  } else if (profileRoleOverlap.length > 0) {
+    // Role mentioned in summary / profile
+    const roleScore = Math.min(25, 15 + (profileRoleOverlap.length - 1) * 5);
+    score += roleScore;
+    signals.push(`role: ${profileRoleOverlap.join(', ')}`);
+  } else {
+    // Direct title keyword overlap (e.g., "Account Executive", "Product Designer")
+    const titleMatch = userExperienceTitles.some(t => {
+      const words = t.split(/\s+/).filter(w => w.length > 3);
+      return words.some(w => jobTitleLower.includes(w));
+    });
+    if (titleMatch) {
+      score += 15;
+      signals.push('title: related');
+    }
+  }
+
+  // ── 2. Skills overlap (25 pts max) ──
+  const userSkillsLower = user.skills.map(s => s.toLowerCase());
+  const matchedSkills = user.skills.filter(s => {
+    const sl = s.toLowerCase();
+    const parts = sl.split(/[\s&,/]+/).filter(p => p.length > 2);
+    return jobTagsLower.some(t => t.includes(sl) || sl.includes(t) || parts.some(p => t === p || t.includes(p)))
+      || parts.some(p => jobTitleLower.includes(p));
+  });
+
+  if (matchedSkills.length > 0) {
+    const skillScore = Math.min(25, matchedSkills.length * 5);
+    score += skillScore;
+    signals.push(`${matchedSkills.length} skill${matchedSkills.length > 1 ? 's' : ''}`);
+  }
+
+  // ── 3. Seniority match (15 pts max) ──
   const userTitles = (user.experience || []).slice(0, 2).map(e => e.title || '');
   const userSeniority = userTitles.length > 0 ? Math.max(...userTitles.map(extractSeniority)) : 3;
   const jobSeniority = extractSeniority(job.title);
   const seniorityDiff = Math.abs(userSeniority - jobSeniority);
   if (seniorityDiff === 0) {
-    score += 10;
+    score += 15;
     signals.push('seniority: exact');
   } else if (seniorityDiff === 1) {
-    score += 7;
+    score += 10;
     signals.push('seniority: close');
   } else if (seniorityDiff === 2) {
-    score += 3;
+    score += 5;
   }
 
-  // ── 4. Location match (25 pts) ──
+  // ── 4. Location match (20 pts max) ──
   if (job.location) {
     const jobLoc = normalizeMatchLocation(job.location);
 
     if (user.location) {
       const userLoc = normalizeMatchLocation(user.location);
       if (userLoc.tokens.some(t => jobLoc.tokens.includes(t))) {
-        // City/country overlap — strongest signal
-        score += 25;
+        score += 20;
         signals.push('location: match');
       } else if (jobLoc.isRemote) {
-        // Remote jobs are a good match for everyone with a location
-        score += 20;
+        score += 15;
         signals.push('location: remote');
       }
     } else {
-      // No user location — boost remote jobs
       if (jobLoc.isRemote) {
-        score += 25;
+        score += 20;
         signals.push('location: remote');
       }
+    }
+  }
+
+  // ── 5. Domain Relevance Guardrail (Anti-mismatch Penalty) ──
+  // If the job belongs to core software/systems engineering, verify that candidate
+  // has actual engineering domain experience or relevant tech titles.
+  const isJobEngineering = [...jobRoleFamilies].some(f => CORE_ENGINEERING_FAMILIES.has(f)) ||
+    /\b(software engineer|software developer|swe|backend engineer|frontend engineer|fullstack engineer|devops engineer|site reliability engineer|systems engineer)\b/i.test(job.title);
+
+  if (isJobEngineering && (user.experience || []).length > 0) {
+    const hasEngineeringExp = [...userExperienceRoleFamilies].some(f => CORE_ENGINEERING_FAMILIES.has(f)) ||
+      userExperienceTitles.some(t => /\b(engineer|developer|programmer|architect|swe|devops|sre)\b/i.test(t));
+
+    if (!hasEngineeringExp) {
+      // Candidate has non-engineering work history; penalize cross-domain engineering recommendations
+      score = Math.max(0, score - 35);
+      signals.push('domain: outside engineering');
     }
   }
 
