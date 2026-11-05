@@ -573,6 +573,16 @@ async function supabaseUpsert(jobs, { onOutcome = () => {}, interleave = false }
       for (const job of newJobs) {
         if (!existingIds.has(job.external_id || job.id)) {
           const compact = { ...job };
+          if (!compact.id) {
+            const hash = crypto.createHash('sha256').update(compact.external_id || compact.slug || compact.title).digest('hex');
+            compact.id = [
+              hash.substring(0, 8),
+              hash.substring(8, 12),
+              '4' + hash.substring(13, 16),
+              ((parseInt(hash.substring(16, 18), 16) & 0x3f) | 0x80).toString(16) + hash.substring(18, 20),
+              hash.substring(20, 32)
+            ].join('-');
+          }
           if (compact.description) {
             const shardName = (compact.slug || compact.id || compact.external_id) + '.json';
             writeFileSync(resolve(shardsDir, shardName), JSON.stringify({ id: compact.id || compact.external_id, description: compact.description }));

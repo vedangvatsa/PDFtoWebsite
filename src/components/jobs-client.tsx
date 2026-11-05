@@ -495,12 +495,6 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
                         <span className="truncate">{job.location}</span>
                       </>
                     )}
-                    {job.published_at && (
-                      <>
-                        <span className="text-zinc-300">·</span>
-                        <span className="shrink-0">{timeAgo(job.published_at)}</span>
-                      </>
-                    )}
                   </div>
                 </div>
                 {external ? (

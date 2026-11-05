@@ -113,3 +113,12 @@ export const getStaticCompanies = cache(async (): Promise<any[]> => {
   }
 });
 
+export const isKnownCompanySlug = cache(async (slug: string): Promise<boolean> => {
+  if (!slug) return false;
+  const s = slug.toLowerCase().trim();
+  const companies = await getStaticCompanies();
+  if (companies.some((c: any) => c.slug === s || c.slug === s.replace(/-/g, ''))) return true;
+  const jobs = await getStaticJobs();
+  return jobs.some((j: any) => j.company_key === s || j.company?.toLowerCase() === s.replace(/-/g, ' '));
+});
+

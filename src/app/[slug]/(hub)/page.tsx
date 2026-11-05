@@ -38,6 +38,7 @@ import {
   buildCompanyPageMetadata,
 } from '@/lib/company-page';
 import { COMPANY_HUB_ALIASES } from '@/lib/company-directory';
+import { isKnownCompanySlug } from '@/lib/jobs-static';
 
 // Company careers: directory PK + company_key equality only (no public ILIKE).
 export const revalidate = 1800; // 30 minutes
@@ -100,6 +101,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         creator: '@cvinbio',
       },
     };
+  }
+
+  // If this is a known company hub, resolve company page immediately without checking user profiles
+  if (await isKnownCompanySlug(slug)) {
+    const companyMeta = await buildCompanyPageMetadata(slug, canonicalUrl);
+    if (companyMeta) return companyMeta;
   }
 
   const lookup = await lookupPublicProfile(slug);
@@ -436,11 +443,21 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     );
   }
 
-  const lookup = await lookupPublicProfile(slug);
-  if (lookup.status === 'unavailable') {
-    throw new ProfileUnavailableError(slug);
+  let data: ServerProfileData | null = null;
+
+  // If this is a known company hub, resolve company page immediately without checking user profiles
+  if (await isKnownCompanySlug(slug)) {
+    const hub = companyHub ?? (await resolveCompanyPage(slug));
+    if (hub) {
+      data = null;
+    }
+  } else {
+    const lookup = await lookupPublicProfile(slug);
+    if (lookup.status === 'unavailable') {
+      throw new ProfileUnavailableError(slug);
+    }
+    data = lookup.status === 'ok' ? lookup.data : null;
   }
-  let data = lookup.status === 'ok' ? lookup.data : null;
 
   // If profile exists but is empty/default, check if this slug matches a company.
   // Company careers pages take priority over abandoned user profiles.
