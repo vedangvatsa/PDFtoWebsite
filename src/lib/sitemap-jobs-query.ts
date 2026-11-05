@@ -4,6 +4,8 @@
  */
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withTimeoutFallback, DB_BUDGET } from '@/lib/db-timeout';
+import { getStaticJobs } from '@/lib/jobs-static';
+import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 
 export const SITEMAP_JOB_COLS =
   'id, company, external_id, slug, title, created_at, published_at, location, job_type, salary, tags, category';
@@ -81,6 +83,11 @@ type CountResult = { count: number | null; error: { message: string } | null };
 
 /** null when both count legs time out — caller should fall back to fixed chunks. */
 export async function countSitemapJobs(sinceIso: string): Promise<number | null> {
+  const allStatic = await getStaticJobs();
+  if (allStatic && allStatic.length > 0) {
+    return allStatic.filter((j) => jobQualifiesForSitemap(j)).length;
+  }
+
   const created = (await withTimeoutFallback(
     countQuery().gte('created_at', sinceIso),
     DB_BUDGET.stats,

@@ -1,5 +1,6 @@
 import { jobSitemapPath } from '@/lib/job-description';
 import { jobQualifiesForSitemap } from '@/lib/job-assemble';
+import { getStaticJobs } from '@/lib/jobs-static';
 import {
   JOB_SITEMAP_CHUNK,
   JOB_SITEMAP_PAGE,
@@ -60,44 +61,65 @@ export async function GET(req: Request, ctx: Props) {
       urls.push(u);
     };
 
-    if (chunkIdx === 0) {
-      const complement = await fetchSitemapJobsPublishedComplement(thirtyDaysAgo);
-      for (const j of complement.data || []) {
-        pushRow(j);
-        if (urls.length >= JOB_SITEMAP_CHUNK) break;
+    const allStatic = await getStaticJobs();
+    if (allStatic && allStatic.length > 0) {
+      const qualifying = allStatic.filter((j) => jobQualifiesForSitemap(j));
+      const chunkJobs = qualifying.slice(offset, offset + JOB_SITEMAP_CHUNK);
+      for (const j of chunkJobs) {
+        pushRow(j as unknown as SitemapJobRow);
+      }
+    }
+
+    if (chunkIdx === 0 && urls.length < JOB_SITEMAP_CHUNK && !allStatic?.length) {
+      try {
+        const complement = await fetchSitemapJobsPublishedComplement(thirtyDaysAgo);
+        for (const j of complement.data || []) {
+          pushRow(j);
+          if (urls.length >= JOB_SITEMAP_CHUNK) break;
+        }
+      } catch {
+        // Fall back to collected rows
       }
     }
 
     let from = offset;
-    let done = false;
+    let done = urls.length >= JOB_SITEMAP_CHUNK || Boolean(allStatic?.length);
     let pages = 0;
     const maxPages = Math.ceil(JOB_SITEMAP_CHUNK / JOB_SITEMAP_PAGE) + 25;
 
-    while (urls.length < JOB_SITEMAP_CHUNK && !done && pages < maxPages) {
-      pages += 1;
-      const { data, error } = await fetchSitemapJobsCreatedPage(
-        thirtyDaysAgo,
-        from,
-        JOB_SITEMAP_PAGE
-      );
+    while (urls.length < JOB_SITEMAP_CHUNK && !done && pages < maxPages && !allStatic?.length) {
+      try {
+        pages += 1;
+        const { data, error } = await fetchSitemapJobsCreatedPage(
+          thirtyDaysAgo,
+          from,
+          JOB_SITEMAP_PAGE
+        );
 
-      if (error) {
-        if (error.message !== 'timeout') {
-          throw new Error(`Sitemap jobs chunk ${chunkIdx}: ${error.message}`);
+        if (error) {
+          if (urls.length > 0) {
+            // Fail open with whatever we collected — never 500 when jobs already exist
+            break;
+          }
+          if (error.message !== 'timeout') {
+            throw new Error(`Sitemap jobs chunk ${chunkIdx}: ${error.message}`);
+          }
+          if (!(data && data.length)) {
+            // Fail open with whatever we collected — never hang until CF kills us.
+            break;
+          }
         }
-        if (!(data && data.length)) {
-          // Fail open with whatever we collected — never hang until CF kills us.
-          break;
-        }
-      }
 
-      if (!data || !data.length) break;
-      for (const j of data) {
-        pushRow(j);
-        if (urls.length >= JOB_SITEMAP_CHUNK) break;
+        if (!data || !data.length) break;
+        for (const j of data) {
+          pushRow(j);
+          if (urls.length >= JOB_SITEMAP_CHUNK) break;
+        }
+        from += JOB_SITEMAP_PAGE;
+        if (data.length < JOB_SITEMAP_PAGE) done = true;
+      } catch {
+        break;
       }
-      from += JOB_SITEMAP_PAGE;
-      if (data.length < JOB_SITEMAP_PAGE) done = true;
     }
 
     return `<?xml version="1.0" encoding="UTF-8"?>

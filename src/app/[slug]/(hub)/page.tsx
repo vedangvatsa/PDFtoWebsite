@@ -16,7 +16,7 @@ import { ArrowLeft, Briefcase, Monitor, ExternalLink, Github, Linkedin, Twitter,
 import { blogPosts } from '@/lib/blog-data';
 import nomadCities from '@/lib/nomad-cities';
 import { CityGuidePage } from '@/components/city-guide-page';
-import { timeAgo } from '@/lib/job-description';
+import { jobTypeLabel } from '@/lib/job-description';
 import { companyHubJobLink } from '@/lib/company-hub-query';
 import {
   EMPLOYMENT_TYPE_MAP,
@@ -733,14 +733,17 @@ export default async function ProfileSlugPage({ params }: PageProps) {
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-zinc-500 min-w-0">
                     <span className="font-medium truncate shrink-0 max-w-[40%]">{companyName}</span>
+                    {jobTypeLabel(job.job_type, { title: job.title }) && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 transition-colors shrink-0">
+                        {jobTypeLabel(job.job_type, { title: job.title })}
+                      </span>
+                    )}
                     {job.location && (
                       <>
                         <span className="shrink-0 text-zinc-300">·</span>
                         <span className="truncate max-w-[40%]">{normalizeLocation(job.location)}</span>
                       </>
                     )}
-                    <span className="shrink-0 text-zinc-300">·</span>
-                    <span className="truncate">{timeAgo(job.published_at || job.created_at)}</span>
                   </div>
                 </div>
                 {link.external ? (
