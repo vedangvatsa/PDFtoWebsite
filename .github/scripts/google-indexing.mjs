@@ -237,11 +237,8 @@ async function jobStillIndexableAtUrl(url) {
     }
     return false;
   } catch (err) {
-    if (isStatementTimeout(err)) {
-      console.warn(`dead-check timeout for ${url}: ${err.message}`);
-      return null;
-    }
-    throw err;
+    console.warn(`dead-check lookup error for ${url}: ${err.message}`);
+    return null;
   }
 }
 
@@ -339,6 +336,19 @@ async function fetchCandidateJobs() {
   try {
     return await hydrateDescriptions(await fetchSlimPages(since));
   } catch (err) {
+    console.warn(`fetchCandidateJobs DB error (${err.message}); checking runtime jobs`);
+    const runtimeFile = path.join(__dirname, '../../content/jobs-runtime.json');
+    if (fs.existsSync(runtimeFile)) {
+      try {
+        const jobs = JSON.parse(fs.readFileSync(runtimeFile, 'utf8'));
+        const filtered = jobs.filter(
+          (j) => Array.isArray(j.tags) && j.tags.includes('curated-jd')
+        );
+        if (filtered.length > 0) return filtered;
+      } catch (readErr) {
+        console.warn(`Failed to read jobs-runtime.json: ${readErr.message}`);
+      }
+    }
     if (isStatementTimeout(err)) {
       console.error(`fetchCandidateJobs timed out: ${err.message}`);
       return [];
@@ -348,13 +358,29 @@ async function fetchCandidateJobs() {
 }
 
 async function hasCuratedJobs() {
-  const { data, error } = await supabase
-    .from('jobs')
-    .select('id')
-    .contains('tags', ['curated-jd'])
-    .limit(1);
-  if (error) throw new Error(`Supabase error: ${error.message}`);
-  return Boolean(data?.length);
+  try {
+    const { data, error } = await supabase
+      .from('jobs')
+      .select('id')
+      .contains('tags', ['curated-jd'])
+      .limit(1);
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+    return Boolean(data?.length);
+  } catch (err) {
+    console.warn(`hasCuratedJobs DB error (${err.message}); checking runtime jobs`);
+    const runtimeFile = path.join(__dirname, '../../content/jobs-runtime.json');
+    if (fs.existsSync(runtimeFile)) {
+      try {
+        const jobs = JSON.parse(fs.readFileSync(runtimeFile, 'utf8'));
+        return jobs.some(
+          (j) => Array.isArray(j.tags) && j.tags.includes('curated-jd')
+        );
+      } catch (readErr) {
+        console.warn(`Failed to read jobs-runtime.json: ${readErr.message}`);
+      }
+    }
+    throw err;
+  }
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
