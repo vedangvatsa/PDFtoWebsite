@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withSitemapCache } from '@/lib/sitemap-cache';
 import { escapeXml } from '@/lib/xml';
 import { withTimeout, DB_BUDGET, requireDatabaseResult } from '@/lib/db-timeout';
+import { getStaticCompanies } from '@/lib/jobs-static';
 
 export const revalidate = 3600;
 
@@ -68,27 +69,14 @@ export async function GET(req: Request) {
       if (!complete) throw new Error('Profile sitemap exceeded its page budget');
     } catch (e) {
       console.error('Sitemap misc: failed to fetch profiles', e);
-      throw e; // Never publish a partial XML document just because static URLs exist.
+      // Fail open: do not 500 when Supabase is slow
     }
 
     let companyEntries: Entry[] = [];
     try {
-      // Use the companies directory (rebuilt from jobs) so EVERY hiring company
-      // with open roles is covered — not just a 2.5k-row job sample.
-      const result = await withTimeout(supabaseAdmin
-        .from('companies')
-        .select('slug, name, role_count')
-        .gt('role_count', 0)
-        .order('role_count', { ascending: false })
-        .limit(1000), DB_BUDGET.list, 'company-sitemap');
-      const companies = requireDatabaseResult(result, 'company sitemap');
-      if (companies?.length === 1000) throw new Error('Company sitemap needs pagination before publishing');
-
-      if (companies) {
-        const BLOCKED = /leverdemo|test company|demo company|confidential|\.\.\.|gopuff|n\/a|^unknown$/i;
-        for (const c of companies) {
-          const name = String(c.name || '').trim();
-          if (!name || name.length <= 2 || BLOCKED.test(name)) continue;
+      const staticCompanies = await getStaticCompanies();
+      if (staticCompanies && staticCompanies.length > 0) {
+        for (const c of staticCompanies) {
           const slug = String(c.slug || '').trim();
           if (!slug || slug.length < 2 || slug.length > 48) continue;
           companyEntries.push({
@@ -97,10 +85,33 @@ export async function GET(req: Request) {
             priority: '0.8',
           });
         }
+      } else {
+        const result = await withTimeout(supabaseAdmin
+          .from('companies')
+          .select('slug, name, role_count')
+          .gt('role_count', 0)
+          .order('role_count', { ascending: false })
+          .limit(1000), DB_BUDGET.list, 'company-sitemap');
+        const companies = requireDatabaseResult(result, 'company sitemap');
+        if (companies?.length === 1000) throw new Error('Company sitemap needs pagination before publishing');
+
+        if (companies) {
+          const BLOCKED = /leverdemo|test company|demo company|confidential|\.\.\.|gopuff|n\/a|^unknown$/i;
+          for (const c of companies) {
+            const name = String(c.name || '').trim();
+            if (!name || name.length <= 2 || BLOCKED.test(name)) continue;
+            const slug = String(c.slug || '').trim();
+            if (!slug || slug.length < 2 || slug.length > 48) continue;
+            companyEntries.push({
+              url: `${siteUrl}/${slug}`,
+              changefreq: 'daily',
+              priority: '0.8',
+            });
+          }
+        }
       }
     } catch (e) {
       console.error('Sitemap misc: failed to fetch companies', e);
-      throw e;
     }
 
     entries.push(...staticEntries, ...blogEntries, ...profileEntries, ...companyEntries);
