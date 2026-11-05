@@ -502,25 +502,6 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
                       </>
                     )}
                   </div>
-                  {job.summary && (
-                    <p className="mt-1.5 text-[12px] leading-5 text-zinc-600 line-clamp-2">
-                      {job.summary}
-                    </p>
-                  )}
-                  {job.company_about && (
-                    <p className="mt-1 text-[11px] leading-5 text-zinc-500 line-clamp-2">
-                      {job.company_about}
-                    </p>
-                  )}
-                  {job.highlights && job.highlights.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {job.highlights.slice(0, 5).map((highlight) => (
-                        <span key={highlight} className="rounded-full bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-500 ring-1 ring-zinc-100">
-                          {highlight}
-                        </span>
-                      ))}
-                    </div>
-                  )}
                 </div>
                 {external ? (
                   <ExternalLink className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 shrink-0 transition-colors" />
