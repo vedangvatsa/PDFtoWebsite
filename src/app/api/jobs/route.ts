@@ -64,17 +64,22 @@ async function companyAboutBySlug(jobs: any[]) {
   const slugs = Array.from(new Set(jobs.map((job) => String(job.company_key || '').trim()).filter(Boolean)));
   if (!slugs.length) return new Map<string, string>();
   slugs.sort();
-  const result = await withTimeoutFallback(unstable_cache(async () => {
-    const value = await withTimeout(supabase.from('companies').select('slug,about').in('slug', slugs), DB_BUDGET.fast, 'board-company-about');
-    return { data: requireDatabaseResult(value, 'company summaries') || [] };
-  }, ['board-company-about-v1', ...slugs], { revalidate: 900, tags: ['public-jobs'] })(),
-  DB_BUDGET.fast + 250, { data: [] }, 'board-company-about');
-  const map = new Map<string, string>();
-  for (const row of result.data || []) {
-    const about = String(row.about || '').trim();
-    if (row.slug && about) map.set(row.slug, about);
+  try {
+    const result = await withTimeoutFallback(unstable_cache(async () => {
+      const value = await withTimeout(supabase.from('companies').select('slug,about').in('slug', slugs), DB_BUDGET.fast, 'board-company-about');
+      return { data: requireDatabaseResult(value, 'company summaries') || [] };
+    }, ['board-company-about-v1', ...slugs], { revalidate: 900, tags: ['public-jobs'] })(),
+    DB_BUDGET.fast + 250, { data: [] }, 'board-company-about');
+    const map = new Map<string, string>();
+    for (const row of result.data || []) {
+      const about = String(row.about || '').trim();
+      if (row.slug && about) map.set(row.slug, about);
+    }
+    return map;
+  } catch (err) {
+    console.warn('[companyAboutBySlug] error:', err);
+    return new Map<string, string>();
   }
-  return map;
 }
 
 // Generous anonymous read quota — exists so agents can self-throttle via

@@ -62,23 +62,28 @@ const loadCompaniesDirectory = unstable_cache(
       console.error('[loadCompaniesDirectory] static fallback error:', err);
     }
 
-    const result = await withTimeout(
-      supabase
-        .from('companies')
-        // Slim select — no locations[] (shown on company pages only).
-        .select('slug, name, role_count, logo')
-        .order('role_count', { ascending: false })
-        .limit(DIRECTORY_LIMIT),
-      DB_BUDGET.fast,
-      'companies-directory'
-    );
+    try {
+      const result = await withTimeout(
+        supabase
+          .from('companies')
+          // Slim select — no locations[] (shown on company pages only).
+          .select('slug, name, role_count, logo')
+          .order('role_count', { ascending: false })
+          .limit(DIRECTORY_LIMIT),
+        DB_BUDGET.fast,
+        'companies-directory'
+      );
 
-    return (requireDatabaseResult(result, 'companies directory') || []).map((c: any) => ({
-      slug: c.slug || toCompanySlug(c.name),
-      name: companyDisplayName(c.name),
-      role_count: c.role_count ?? 0,
-      logo: c.logo ?? null,
-    }));
+      return (requireDatabaseResult(result, 'companies directory') || []).map((c: any) => ({
+        slug: c.slug || toCompanySlug(c.name),
+        name: companyDisplayName(c.name),
+        role_count: c.role_count ?? 0,
+        logo: c.logo ?? null,
+      }));
+    } catch (err) {
+      console.warn('[loadCompaniesDirectory] DB error, returning empty list:', err);
+      return [];
+    }
   },
   ['companies-directory-v5'],
   { revalidate: 3600, tags: ['companies-directory', 'public-jobs'] }

@@ -9,6 +9,7 @@ import { cache } from 'react';
 import { toCompanyKey, COMPANY_BLOCKLIST, isJunkCompanyName } from '@/lib/company-directory';
 import { withTimeout, DB_BUDGET, requireDatabaseResult } from '@/lib/db-timeout';
 import { companyHasCachedProfile, publishableCompanyAbout } from '@/lib/company-about';
+import { isKnownCompanySlug } from '@/lib/jobs-static';
 
 /** Disposable profile remints leave /user87 etc. permanently dead without redirects. */
 /** Prefer the shared parse-guard definition so bare `profile` is treated as disposable. */
@@ -26,32 +27,37 @@ const companyHubExists = cache(async (slug: string): Promise<boolean> => {
   if (isJunkCompanyName(key.replace(/-/g, ' '))) return false;
 
   if (await companyHasCachedProfile(key)) return true;
+  if (await isKnownCompanySlug(key)) return true;
 
-  return unstable_cache(async () => {
-  const dir = await withTimeout(
-    supabaseAdmin
-      .from('companies')
-      .select('slug')
-      .eq('slug', key)
-      .maybeSingle(),
-    DB_BUDGET.fast,
-    `seo-hub-dir:${key}`
-  );
-  requireDatabaseResult(dir, 'company redirect');
-  if (dir.data?.slug) return true;
+  try {
+    return await unstable_cache(async () => {
+      const dir = await withTimeout(
+        supabaseAdmin
+          .from('companies')
+          .select('slug')
+          .eq('slug', key)
+          .maybeSingle(),
+        DB_BUDGET.fast,
+        `seo-hub-dir:${key}`
+      );
+      requireDatabaseResult(dir, 'company redirect');
+      if (dir.data?.slug) return true;
 
-  const jobs = await withTimeout(
-    supabaseAdmin
-      .from('jobs')
-      .select('id')
-      .eq('company_key', key)
-      .limit(1),
-    DB_BUDGET.fast,
-    `seo-hub-jobs:${key}`
-  );
-  requireDatabaseResult(jobs, 'company redirect');
-  return Array.isArray(jobs.data) && jobs.data.length > 0;
-  }, ['company-hub-exists-v2', key], { revalidate: 900, tags: ['public-jobs'] })();
+      const jobs = await withTimeout(
+        supabaseAdmin
+          .from('jobs')
+          .select('id')
+          .eq('company_key', key)
+          .limit(1),
+        DB_BUDGET.fast,
+        `seo-hub-jobs:${key}`
+      );
+      requireDatabaseResult(jobs, 'company redirect');
+      return Array.isArray(jobs.data) && jobs.data.length > 0;
+    }, ['company-hub-exists-v2', key], { revalidate: 900, tags: ['public-jobs'] })();
+  } catch {
+    return false;
+  }
 });
 
 /** Where to send a dead `/{company}/{jobSlug}` — company hub if live, else jobs board. */

@@ -233,9 +233,19 @@ export async function loadCompanyJobs(
         return rows.map((j) => (byId.has(j.id) ? { ...j, description: byId.get(j.id) } : j));
       }
 
-      const recent = await fetchJobs(since);
+      let recent = { rows: [] as CompanyPageJob[], timedOut: false };
+      try {
+        recent = await fetchJobs(since);
+      } catch (err) {
+        console.warn('[loadCompanyJobs] fetchJobs error:', err);
+        recent.timedOut = true;
+      }
       if (recent.timedOut && (!recent.rows || recent.rows.length === 0)) {
-        throw new Error('COMPANY_JOBS_TIMEOUT');
+        const staticJobs = await getStaticJobs();
+        if (staticJobs && staticJobs.length > 0) {
+          return staticJobs.filter((j) => shouldListJobOnCompanyHub(j) && (j.company_key === slug || (dirName && j.company?.toLowerCase() === dirName.toLowerCase()) || j.company?.toLowerCase() === slug.replace(/-/g, ' ').toLowerCase())) as unknown as CompanyPageJob[];
+        }
+        return [];
       }
       // Never fall back to the full historical company inventory. A company
       // with no jobs in the active window should show zero roles, not stale
@@ -255,31 +265,68 @@ export const resolveCompanyPage = cache(async (slug: string): Promise<CompanyPag
   if (COMPANY_BLOCKLIST.has(blockKey) || COMPANY_BLOCKLIST.has(slug.toLowerCase())) {
     return null;
   }
-  const dir = await getCompanyDirectory(slug);
-  const jobs = await loadCompanyJobs(slug, dir?.name);
-  const resolvedName = (dir?.name || jobs[0]?.company || '').toLowerCase().trim();
-  const keep = shouldKeepCompanyHub({
-    nameBlocked: Boolean(resolvedName && COMPANY_BLOCKLIST.has(resolvedName)),
-    hasDirectory: Boolean(dir),
-    liveJobCount: jobs.length,
-    hasCachedProfile: await companyHasCachedProfile(slug) || Boolean(await knownCompanyDescription(slug)),
-  });
-  if (!keep) return null;
+  try {
+    const dir = await getCompanyDirectory(slug);
+    const jobs = await loadCompanyJobs(slug, dir?.name);
+    const resolvedName = (dir?.name || jobs[0]?.company || '').toLowerCase().trim();
+    const keep = shouldKeepCompanyHub({
+      nameBlocked: Boolean(resolvedName && COMPANY_BLOCKLIST.has(resolvedName)),
+      hasDirectory: Boolean(dir),
+      liveJobCount: jobs.length,
+      hasCachedProfile: await companyHasCachedProfile(slug) || Boolean(await knownCompanyDescription(slug)),
+    });
+    if (!keep) return null;
 
-  if ((jobs && jobs.length > 0) || dir) {
-    return { dir, jobs: jobs || [] };
+    if ((jobs && jobs.length > 0) || dir) {
+      return { dir, jobs: jobs || [] };
+    }
+    const name = companyDisplayName(slug.replace(/-/g, ' '));
+    return {
+      dir: {
+        slug,
+        name,
+        role_count: 0,
+        logo: null,
+        locations: null,
+      },
+      jobs: [],
+    };
+  } catch (err) {
+    console.warn('[resolveCompanyPage] error, falling back to static:', err);
+    try {
+      const staticCompanies = await getStaticCompanies();
+      const staticJobs = await getStaticJobs();
+      const foundDir = staticCompanies.find((c: any) => c.slug === slug);
+      const matchingJobs = (staticJobs || []).filter(
+        (j: any) =>
+          shouldListJobOnCompanyHub(j) &&
+          (j.company_key === slug ||
+            (foundDir?.name && j.company?.toLowerCase() === foundDir.name.toLowerCase()) ||
+            j.company?.toLowerCase() === slug.replace(/-/g, ' ').toLowerCase())
+      );
+      if (foundDir || matchingJobs.length > 0) {
+        return {
+          dir: foundDir
+            ? {
+                slug: foundDir.slug,
+                name: foundDir.name,
+                role_count: Number(foundDir.role_count || 0),
+                logo: foundDir.logo || null,
+                locations: foundDir.locations || null,
+              }
+            : {
+                slug,
+                name: companyDisplayName(slug.replace(/-/g, ' ')),
+                role_count: matchingJobs.length,
+                logo: null,
+                locations: null,
+              },
+          jobs: matchingJobs as any,
+        };
+      }
+    } catch {}
+    return null;
   }
-  const name = companyDisplayName(slug.replace(/-/g, ' '));
-  return {
-    dir: {
-      slug,
-      name,
-      role_count: 0,
-      logo: null,
-      locations: null,
-    },
-    jobs: [],
-  };
 });
 
 /** Shared company careers metadata — mirrors page render (dir OR jobs). */

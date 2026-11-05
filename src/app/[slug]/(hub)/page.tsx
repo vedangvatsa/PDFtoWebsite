@@ -452,11 +452,26 @@ export default async function ProfileSlugPage({ params }: PageProps) {
       data = null;
     }
   } else {
-    const lookup = await lookupPublicProfile(slug);
-    if (lookup.status === 'unavailable') {
-      throw new ProfileUnavailableError(slug);
+    try {
+      const lookup = await lookupPublicProfile(slug);
+      if (lookup.status === 'unavailable') {
+        const hub = await resolveCompanyPage(slug);
+        if (hub) {
+          data = null;
+        } else {
+          throw new ProfileUnavailableError(slug);
+        }
+      } else {
+        data = lookup.status === 'ok' ? lookup.data : null;
+      }
+    } catch (err) {
+      const hub = await resolveCompanyPage(slug);
+      if (hub) {
+        data = null;
+      } else {
+        throw err;
+      }
     }
-    data = lookup.status === 'ok' ? lookup.data : null;
   }
 
   // If profile exists but is empty/default, check if this slug matches a company.

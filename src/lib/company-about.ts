@@ -121,17 +121,22 @@ async function lookupDbBlurb(slugOrName: string): Promise<string | null> {
   if (!key) return null;
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.SUPABASE_URL) return null;
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SUPABASE_KEY) return null;
-  const result = await unstable_cache(async () => {
-    const response = await withTimeout(
-      supabaseAdmin.from('companies').select('about').eq('slug', key).maybeSingle(),
-      DB_BUDGET.fast, 'company-about'
-    );
-    requireDatabaseResult(response, 'company about');
-    return response;
-  }, ['company-about-v2', key], { revalidate: 3600, tags: ['public-jobs'] })();
-  const text = String(result.data?.about || '').trim();
-  if (!text || isUnpublishableCompanyBlurb(text)) return null;
-  return text;
+  try {
+    const result = await unstable_cache(async () => {
+      const response = await withTimeout(
+        supabaseAdmin.from('companies').select('about').eq('slug', key).maybeSingle(),
+        DB_BUDGET.fast, 'company-about'
+      );
+      requireDatabaseResult(response, 'company about');
+      return response;
+    }, ['company-about-v2', key], { revalidate: 3600, tags: ['public-jobs'] })();
+    const text = String(result.data?.about || '').trim();
+    if (!text || isUnpublishableCompanyBlurb(text)) return null;
+    return text;
+  } catch (err) {
+    console.warn('[lookupDbBlurb] Supabase unavailable, falling back:', err);
+    return null;
+  }
 }
 
 /**
