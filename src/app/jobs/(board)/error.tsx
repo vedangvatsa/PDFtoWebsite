@@ -7,12 +7,17 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const isRedactedRsc = /Server Components render|omitted in production|digest property/i.test(error?.message || '');
+  const message = isRedactedRsc || !error?.message
+    ? 'We ran into a temporary issue loading the jobs board. Please try again in a moment.'
+    : error.message;
+
   return (
     <div className="flex min-h-[50vh] flex-col items-center justify-center p-6 text-center">
       <p className="text-sm font-medium text-muted-foreground mb-2">Something went wrong</p>
       <h1 className="text-2xl font-bold tracking-tight mb-2">Failed to load jobs</h1>
       <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-        {error?.message || 'We ran into an issue loading the jobs board. Please try again.'}
+        {message}
       </p>
       <div className="flex gap-3">
         <button

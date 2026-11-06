@@ -83,7 +83,15 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('Missing NEXT_PUBLIC_SUPABASE_URL (or SUPABASE_URL) / SUPABASE_SERVICE_ROLE_KEY');
   process.exit(1);
 }
-const supabase = createClient(supabaseUrl, supabaseKey);
+const fetchWithTimeout = (url, options = {}) => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(new Error('Supabase request timeout after 15s')), 15000);
+  const signal = options.signal ? AbortSignal.any([options.signal, controller.signal]) : controller.signal;
+  return fetch(url, { ...options, signal }).finally(() => clearTimeout(timer));
+};
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  global: { fetch: fetchWithTimeout },
+});
 
 // ── State ────────────────────────────────────────────────────────────────
 function loadState() {

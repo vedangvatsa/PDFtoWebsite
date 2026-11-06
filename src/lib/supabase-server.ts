@@ -197,8 +197,10 @@ export const getProfileBySlug = cache(async (slug: string) => {
     { revalidate: 300, tags: ['public-profiles'] })();
 });
 
-/** Distinguish miss (404) from outage (503). Never collapse the two. */
-export async function lookupPublicProfile(slug: string): Promise<PublicProfileLookup> {
+/** Distinguish miss (404) from outage (503). Never collapse the two.
+ * Request-scoped: memoize resolved status across generateMetadata and page component.
+ */
+export const lookupPublicProfile = cache(async (slug: string): Promise<PublicProfileLookup> => {
   try {
     const data = await getProfileBySlug(slug);
     return data ? { status: 'ok', data } : { status: 'missing' };
@@ -206,4 +208,4 @@ export async function lookupPublicProfile(slug: string): Promise<PublicProfileLo
     if (isProfileUnavailable(err)) return { status: 'unavailable' };
     throw err;
   }
-}
+});

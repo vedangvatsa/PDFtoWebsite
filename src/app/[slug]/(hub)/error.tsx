@@ -7,9 +7,12 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const isRedactedRsc = /Server Components render|omitted in production|digest property/i.test(error?.message || '');
   const unavailable =
     error?.name === 'ProfileUnavailableError' ||
-    /taking too long to load/i.test(error?.message || '');
+    /taking too long to load/i.test(error?.message || '') ||
+    Boolean(error?.digest) ||
+    isRedactedRsc;
     
   return (
     <div className="flex min-h-[50vh] flex-col items-center justify-center p-6 text-center">
@@ -22,7 +25,9 @@ export default function Error({
       <p className="text-sm text-muted-foreground mb-6 max-w-sm">
         {unavailable
           ? 'Please try again in a moment. This is not a missing profile.'
-          : error?.message || 'We ran into an issue loading this profile. Please try again.'}
+          : isRedactedRsc || !error?.message
+            ? 'We ran into an issue loading this profile. Please try again.'
+            : error.message}
       </p>
       <div className="flex gap-3">
         <button

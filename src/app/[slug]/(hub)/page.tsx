@@ -455,16 +455,13 @@ export default async function ProfileSlugPage({ params }: PageProps) {
     try {
       const lookup = await lookupPublicProfile(slug);
       if (lookup.status === 'unavailable') {
-        const hub = await resolveCompanyPage(slug);
-        if (hub) {
-          data = null;
-        } else {
-          throw new ProfileUnavailableError(slug);
-        }
-      } else {
-        data = lookup.status === 'ok' ? lookup.data : null;
+        throw new ProfileUnavailableError(slug);
       }
+      data = lookup.status === 'ok' ? lookup.data : null;
     } catch (err) {
+      if (err instanceof ProfileUnavailableError) {
+        throw err;
+      }
       const hub = await resolveCompanyPage(slug);
       if (hub) {
         data = null;
