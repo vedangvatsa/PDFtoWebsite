@@ -182,6 +182,7 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
       setProfileComplete(data.profileComplete ?? false);
     } catch (e) {
       console.error('Failed to fetch jobs:', e);
+      setDegraded(true);
     } finally {
       setLoading(false);
       setLoadingMore(false);

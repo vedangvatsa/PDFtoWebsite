@@ -2809,12 +2809,16 @@ async function main() {
   });
   if (publication.status !== 0) throw new Error('Original job-description publication failed');
 
-  const invalidation = await fetch('https://cvin.bio/api/cache/jobs', {
-    method: 'POST', headers: { Authorization: `Bearer ${SUPABASE_KEY}` },
-    signal: AbortSignal.timeout(20_000),
-  });
-  await invalidation.body?.cancel();
-  if (!invalidation.ok) throw new Error(`Job cache publication failed (${invalidation.status})`);
+  try {
+    const invalidation = await fetch('https://cvin.bio/api/cache/jobs', {
+      method: 'POST', headers: { Authorization: `Bearer ${SUPABASE_KEY}` },
+      signal: AbortSignal.timeout(20_000),
+    });
+    await invalidation.body?.cancel();
+    if (!invalidation.ok) console.warn(`Job cache publication warning (${invalidation.status})`);
+  } catch (err) {
+    console.warn('Job cache publication fetch failed:', err?.message || err);
+  }
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n🏁 Done in ${elapsed}s — Total: ${ai.jobs.length + phase1Jobs.length + phase2Jobs.length + phase3Jobs.length} jobs processed`);

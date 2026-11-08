@@ -194,7 +194,7 @@ async function getProfileBySlugUncached(slug: string): Promise<ServerProfileData
 export const getProfileBySlug = cache(async (slug: string) => {
   if (!slug || slug.length > 100) return null;
   return unstable_cache(() => getProfileBySlugUncached(slug), ['public-profile-v1', slug],
-    { revalidate: 300, tags: ['public-profiles'] })();
+    { revalidate: 86400, tags: ['public-profiles'] })();
 });
 
 /** Distinguish miss (404) from outage (503). Never collapse the two.
