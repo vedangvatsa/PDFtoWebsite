@@ -2700,6 +2700,16 @@ async function main() {
   console.log('🚀 Jobs Sync — Starting');
   const startTime = Date.now();
 
+  console.log('\n═══ Archive expired source descriptions (>30d) ═══');
+  try {
+    const preRetention = spawnSync(process.execPath, [join(__dirname, 'import-original-job-descriptions.mjs')], {
+      env: process.env, stdio: 'inherit', timeout: 10 * 60 * 1000,
+    });
+    if (preRetention.status !== 0) console.warn('  ⚠️ Initial expired-description archive failed, proceeding anyway');
+  } catch (err) {
+    console.warn(`  ⚠️ Failed running pre-sync retention: ${err.message}`);
+  }
+
   // Dedicated, reviewed AI-employer feeds get the first share of the same
   // bounded intake. A missing source or date is not reported as zero openings.
   console.log('\n═══ AI100: official remote-only employer feeds ═══');

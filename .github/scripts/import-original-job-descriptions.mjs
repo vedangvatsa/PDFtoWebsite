@@ -9,11 +9,12 @@ import { sourcePublicationPatch, SOURCE_DESCRIPTION_MAX_ROWS, SOURCE_ARCHIVED_TA
 export async function importOriginalDescriptions({ client, fetchOriginal = createOriginalJobFetcher(), limit = 100, dryRun = false, refreshFormat = false, now = new Date() }) {
   const cutoff = new Date(now.getTime() - 30 * 86400000).toISOString();
   const budget = Math.max(1, Math.min(500, Number(limit) || 100));
+  const archiveLimit = Math.max(100, Math.min(1000, Number(limit) * 5 || 500));
   const stats = { selected: 0, imported: 0, archived: 0, closed: 0, skipped: {}, failed: 0 };
   if (!dryRun) {
     const { data: expired, error } = await client.from('jobs').select('id,tags')
       .contains('tags', ['source-jd']).lt('created_at', cutoff)
-      .or(`published_at.is.null,published_at.lt.${cutoff}`).limit(100);
+      .or(`published_at.is.null,published_at.lt.${cutoff}`).limit(archiveLimit);
     if (error) throw new Error(`Source retention read failed: ${error.message}`);
     for (const row of expired || []) {
       const tags = row.tags.filter((tag) => !['source-jd', 'source-html', 'curated-jd'].includes(tag));

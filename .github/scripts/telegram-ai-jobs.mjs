@@ -475,21 +475,25 @@ function pickJobs(jobs, postedUrls, limit = JOBS_PER_POST * 4) {
 
   console.log(`  Candidates after filter: ${candidates.length}`);
 
-  // First pass: Try to get one per company
+  const companyCounts = new Map();
+
+  // First pass: Try to get one per company (maximum diversity)
   for (const job of candidates) {
     if (picked.length >= limit) break;
     const key = job.company.toLowerCase().trim();
-    if (companySeen.has(key)) continue;
-    companySeen.add(key);
+    if ((companyCounts.get(key) || 0) >= 1) continue;
+    companyCounts.set(key, 1);
     picked.push(job);
   }
 
-  // Second pass: Fill remaining slots (still one per company)
+  // Second pass: If fewer than 5 unique companies exist in the candidate pool,
+  // allow up to 2 per company to ensure a full digest (e.g. 5 jobs) is posted
   for (const job of candidates) {
     if (picked.length >= limit) break;
+    if (picked.some((p) => p.id === job.id)) continue;
     const key = job.company.toLowerCase().trim();
-    if (companySeen.has(key)) continue;
-    companySeen.add(key);
+    if ((companyCounts.get(key) || 0) >= 2) continue;
+    companyCounts.set(key, (companyCounts.get(key) || 0) + 1);
     picked.push(job);
   }
 
@@ -608,13 +612,18 @@ async function main() {
     live.push(job);
     if (live.length >= JOBS_PER_POST) break;
   }
-  // If first pass failed, try more candidates from pool (still one per company)
+  // If first pass failed, try more candidates from pool
   if (live.length < JOBS_PER_POST) {
-    const liveCompanies = new Set(live.map((j) => j.company.toLowerCase().trim()));
+    const liveCounts = new Map();
+    for (const j of live) {
+      const k = j.company.toLowerCase().trim();
+      liveCounts.set(k, (liveCounts.get(k) || 0) + 1);
+    }
     const more = pickJobs(allJobs, [...postedUrls, ...live.map((j) => j.apply_url)]);
     for (const job of more) {
       if (live.some((j) => j.id === job.id)) continue;
-      if (liveCompanies.has(job.company.toLowerCase().trim())) continue;
+      const k = job.company.toLowerCase().trim();
+      if ((liveCounts.get(k) || 0) >= 2) continue;
       const url = jobPublicPath(job);
       if (!url) continue;
       const check = await assertJobUrlLive(url, { allowNetworkFail: false });
@@ -624,6 +633,7 @@ async function main() {
       }
       console.log(`  ✓ live ${check.status}: ${url}`);
       live.push(job);
+      liveCounts.set(k, (liveCounts.get(k) || 0) + 1);
       if (live.length >= JOBS_PER_POST) break;
     }
   }

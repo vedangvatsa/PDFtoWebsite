@@ -10,7 +10,7 @@ export const SOURCE_CLOSED_TAG = 'source-closed';
 export const SOURCE_ARCHIVED_TAG = 'source-archived';
 export const SOURCE_DESCRIPTION_MAX_BYTES = 32 * 1024;
 export const SOURCE_DESCRIPTION_MIN_WORDS = 40;
-export const SOURCE_DESCRIPTION_MAX_ROWS = 4000;
+export const SOURCE_DESCRIPTION_MAX_ROWS = 6000;
 
 export function isSourceJd(tags) {
   return Array.isArray(tags) && tags.includes(SOURCE_JD_TAG);
