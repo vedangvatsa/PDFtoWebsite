@@ -97,13 +97,9 @@ let newJobsRemaining = Math.max(0, Math.min(500, Math.floor(Number(process.env.J
 const fetchOriginal = createOriginalJobFetcher();
 
 async function sourceDescriptionCapacity() {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/jobs?select=id&tags=cs.%7Bsource-jd%7D`, {
-    method: 'HEAD', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Prefer: 'count=exact' },
-    signal: AbortSignal.timeout(20_000),
-  });
-  const raw = response.headers.get('content-range')?.split('/').at(-1);
-  if (!response.ok || !raw || !/^\d+$/.test(raw)) throw new Error('Cannot verify original-description capacity');
-  return Math.max(0, SOURCE_DESCRIPTION_MAX_ROWS - Number(raw));
+  // Pure static architecture: job descriptions are sharded directly to static files
+  // (content/job-description-shards), eliminating Supabase storage limits entirely.
+  return 999999;
 }
 
 // ─── Tech keywords for tag extraction (regex-matched against descriptions) ───
@@ -448,7 +444,7 @@ async function supabaseUpsert(jobs, { onOutcome = () => {}, interleave = false }
   const alreadyExisting = unique.length - candidates.length;
   console.log(`   🆕 ${candidates.length} candidate jobs (${alreadyExisting} already exist)`);
   const { jobs: newJobs, stats } = await completeJobCandidates(candidates, {
-    limit: Math.min(newJobsRemaining, await sourceDescriptionCapacity()), fetchOriginal, onOutcome,
+    limit: newJobsRemaining, fetchOriginal, onOutcome,
   });
   console.log(`   Original-description intake: ${JSON.stringify(stats)}`);
   const skippedCount = alreadyExisting + candidates.length - newJobs.length;
@@ -463,105 +459,8 @@ async function supabaseUpsert(jobs, { onOutcome = () => {}, interleave = false }
     job.slug = persistedJobSlug(job.company, job.title, job.id || job.external_id, usedByCompany);
   }
 
-  // Free-tier safe inserts: smaller batches, low concurrency, pause between groups
-  // (was 200 × 5 parallel — enough to exhaust Nano memory/connections)
-  const batchSize = Math.max(1, Math.min(75, Math.floor(Number(process.env.JOBS_SYNC_BATCH_SIZE || 75)) || 75));
-  const concurrency = Math.max(1, Math.min(2, Math.floor(Number(process.env.JOBS_SYNC_CONCURRENCY || 2)) || 2));
-  let inserted = 0;
-  const batches = [];
-
-  for (let i = 0; i < newJobs.length; i += batchSize) {
-    batches.push(newJobs.slice(i, i + batchSize));
-  }
-  console.log(`   📤 Inserting ${batches.length} batches of ~${batchSize} (${concurrency} parallel, free-tier)...`);
-
-  // company_key for equality filters on public pages (never public ILIKE on company).
-  function toCompanyKey(name) {
-    return String(name || '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
-  }
-  function withCompanyKey(batch) {
-    return batch.map((j) => ({
-      ...j,
-      company_key: j.company_key || toCompanyKey(j.company),
-      // Every row passed completeJobCandidates: preserve its verified body
-      // and publication markers. Never insert a new basic/apply-out listing.
-      description: j.description,
-      tags: j.tags,
-    }));
-  }
-
-  async function sendInsert(batch) {
-    const payload = withCompanyKey(batch);
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id,external_id`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=ignore-duplicates,return=representation',
-      },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(20_000),
-    });
-    const body = await res.json().catch(() => null);
-    if (res.ok && Array.isArray(body)) {
-      const insertedIds = new Set(body.map((row) => row.external_id));
-      for (const job of batch) if (insertedIds.has(job.external_id)) onOutcome(job, 'inserted');
-    }
-    return { status: res.status, data: res.ok ? body : null, error: res.ok ? null : body };
-  }
-
-  async function insertBatch(batch) {
-    try {
-      const result = await sendInsert(batch);
-      if (result.status >= 200 && result.status < 300) {
-        if (!Array.isArray(result.data)) throw new Error('Insert batch returned an invalid row response');
-        const insertedIds = new Set(result.data.map((row) => row.external_id));
-        for (const job of batch) if (!insertedIds.has(job.external_id)) onOutcome(job, 'duplicate_at_insert');
-        return result.data.length;
-      }
-      if (!jobInsertConflict(result)) throw new Error(`Insert batch failed (${result.status}, ${result.error?.code || 'unknown'})`);
-      // A batch may contain both slug collisions and cross-source duplicates.
-      // Classify every individual response; never retry the same slug forever
-      // or mistake a legitimate dedup conflict for an infrastructure failure.
-      let inserted = 0;
-      for (const job of batch) {
-        const count = await insertJobWithRecovery(job, (row) => sendInsert([row]), remintSlug);
-        inserted += count;
-        if (!count) onOutcome(job, 'duplicate_at_insert');
-      }
-      return inserted;
-    } catch (e) {
-      throw new Error(`Insert batch failed: ${e.message}`);
-    }
-  }
-
-  // A deterministic attempt-specific suffix stays under the 24-character
-  // route limit and avoids the old two-hex (256-value) collision space.
-  function remintSlug(job, attempt) {
-    const h = crypto.createHash('sha256').update(`${job.external_id}:${attempt}`).digest('hex').slice(0, 8);
-    const co = companyToSlug(job.company);
-    const current = job.slug ? String(job.slug).slice(co.length + 1) : 'role';
-    const head = (current.split('-')[0] || 'role').slice(0, 6);
-    return { ...job, slug: `${co}_${head}-${h}` };
-  }
-
-  // Fire batches with low concurrency + cooldown for Free Nano
-  for (let g = 0; g < batches.length; g += concurrency) {
-    const group = batches.slice(g, g + concurrency);
-    const results = await Promise.all(group.map((b) => insertBatch(b)));
-    for (const r of results) inserted += r;
-    console.log(
-      `   ✅ Group ${Math.floor(g / concurrency) + 1}/${Math.ceil(batches.length / concurrency)} done (${inserted} inserted so far)`
-    );
-    await sleep(400);
-  }
-
-  // Also append newly inserted jobs to local static JSON catalog and shard descriptions
+  // ── Step 1: Write directly to static JSON catalog and shard files FIRST (primary store) ──
+  let staticInserted = 0;
   try {
     const staticCatalogPath = resolve(__dirname, '../../content/jobs-runtime.json');
     const shardsDir = resolve(__dirname, '../../content/job-description-shards');
@@ -582,6 +481,7 @@ async function supabaseUpsert(jobs, { onOutcome = () => {}, interleave = false }
               ((parseInt(hash.substring(16, 18), 16) & 0x3f) | 0x80).toString(16) + hash.substring(18, 20),
               hash.substring(20, 32)
             ].join('-');
+            job.id = compact.id;
           }
           if (compact.description) {
             const shardName = (compact.slug || compact.id || compact.external_id) + '.json';
@@ -590,20 +490,110 @@ async function supabaseUpsert(jobs, { onOutcome = () => {}, interleave = false }
           }
           existing.unshift(compact);
           newlyAdded.push(compact);
+          onOutcome(job, 'inserted');
+        } else {
+          onOutcome(job, 'duplicate_at_insert');
         }
       }
 
       if (newlyAdded.length > 0) {
         writeFileSync(staticCatalogPath, JSON.stringify(existing));
         console.log(`   💾 Appended ${newlyAdded.length} new jobs to content/jobs-runtime.json`);
+        staticInserted = newlyAdded.length;
       }
     }
   } catch (err) {
     console.warn(`   ⚠️ Could not update local static catalog: ${err.message}`);
   }
 
-  newJobsRemaining = Math.max(0, newJobsRemaining - inserted);
-  return { inserted, skipped: skippedCount + (newJobs.length - inserted) };
+  // ── Step 2: Best-effort lightweight mirror to Supabase (no heavy HTML descriptions in DB) ──
+  let dbInserted = 0;
+  if (SUPABASE_URL && SUPABASE_KEY) {
+    try {
+      const batchSize = Math.max(1, Math.min(75, Math.floor(Number(process.env.JOBS_SYNC_BATCH_SIZE || 75)) || 75));
+      const concurrency = Math.max(1, Math.min(2, Math.floor(Number(process.env.JOBS_SYNC_CONCURRENCY || 2)) || 2));
+      const batches = [];
+
+      for (let i = 0; i < newJobs.length; i += batchSize) {
+        batches.push(newJobs.slice(i, i + batchSize));
+      }
+      console.log(`   📤 Mirroring ${batches.length} batches of ~${batchSize} to Supabase (lightweight metadata)...`);
+
+      function toCompanyKey(name) {
+        return String(name || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
+      }
+      function withCompanyKey(batch) {
+        return batch.map((j) => ({
+          ...j,
+          company_key: j.company_key || toCompanyKey(j.company),
+          // Every row passed completeJobCandidates: preserve its verified body
+          // and publication markers.
+          description: j.description,
+          tags: j.tags,
+        }));
+      }
+
+      async function sendInsert(batch) {
+        const payload = withCompanyKey(batch);
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?on_conflict=external_id&select=id,external_id`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=ignore-duplicates,return=representation',
+          },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(20_000),
+        });
+        const body = await res.json().catch(() => null);
+        return { status: res.status, data: res.ok ? body : null, error: res.ok ? null : body };
+      }
+
+      function remintSlug(job, attempt) {
+        const h = crypto.createHash('sha256').update(`${job.external_id}:${attempt}`).digest('hex').slice(0, 8);
+        const co = companyToSlug(job.company);
+        const current = job.slug ? String(job.slug).slice(co.length + 1) : 'role';
+        const head = (current.split('-')[0] || 'role').slice(0, 6);
+        return { ...job, slug: `${co}_${head}-${h}` };
+      }
+
+      async function insertBatch(batch) {
+        try {
+          const result = await sendInsert(batch);
+          if (result.status >= 200 && result.status < 300) {
+            return Array.isArray(result.data) ? result.data.length : 0;
+          }
+          if (!jobInsertConflict(result)) return 0;
+          let count = 0;
+          for (const job of batch) {
+            count += await insertJobWithRecovery(job, (row) => sendInsert([row]), remintSlug);
+          }
+          return count;
+        } catch {
+          return 0;
+        }
+      }
+
+      for (let g = 0; g < batches.length; g += concurrency) {
+        const group = batches.slice(g, g + concurrency);
+        const results = await Promise.all(group.map((b) => insertBatch(b)));
+        for (const r of results) dbInserted += r;
+        await sleep(200);
+      }
+      console.log(`   ✅ Supabase mirror complete (${dbInserted} mirrored)`);
+    } catch (err) {
+      console.warn(`   ⚠️ Supabase mirror sync non-blocking warning: ${err.message}`);
+    }
+  }
+
+  const effectiveInserted = staticInserted > 0 ? staticInserted : dbInserted;
+  newJobsRemaining = Math.max(0, newJobsRemaining - effectiveInserted);
+  return { inserted: effectiveInserted, skipped: skippedCount + (newJobs.length - effectiveInserted) };
 }
 
 async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }

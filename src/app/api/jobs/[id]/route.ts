@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { getStaticJobById } from '@/lib/jobs-static';
 import { createAnonFromRequest } from '@/utils/supabase/anon';
 import { normalizeLocation } from '@/lib/normalize-location';
 import { isJobId } from '@/lib/job-description';
@@ -22,17 +23,23 @@ export async function GET(
     return NextResponse.json({ error: 'Invalid job id', code: 'INVALID_JOB_ID', hint: 'Use a job id returned by GET /api/jobs.' }, { status: 400 });
   }
 
-  const result = await withTimeout(supabaseAdmin
-    .from('jobs')
-    .select(SELECT_COLS)
-    .eq('id', id)
-    .maybeSingle(), DB_BUDGET.list, 'api-job-detail').catch((error) => {
-      console.warn('[job-detail-unavailable]', error instanceof Error ? error.name : 'query failure');
-      return null;
-    });
+  const staticJob = await getStaticJobById(id);
+  let job = staticJob as any;
 
-  if (!result || result.error) return jobDataUnavailableResponse();
-  const job = result.data;
+  if (!job) {
+    const result = await withTimeout(supabaseAdmin
+      .from('jobs')
+      .select(SELECT_COLS)
+      .eq('id', id)
+      .maybeSingle(), DB_BUDGET.list, 'api-job-detail').catch((error) => {
+        console.warn('[job-detail-unavailable]', error instanceof Error ? error.name : 'query failure');
+        return null;
+      });
+
+    if (!result || result.error) return jobDataUnavailableResponse();
+    job = result.data;
+  }
+
   if (!job) {
     return NextResponse.json({ error: 'Job not found', code: 'JOB_NOT_FOUND', hint: 'Find current openings at /jobs.' }, { status: 404 });
   }

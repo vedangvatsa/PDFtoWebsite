@@ -1,4 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { getStaticJobs } from '@/lib/jobs-static';
 import { jobSitemapPath } from '@/lib/job-description';
 import { jobQualifiesForSitemap } from '@/lib/job-assemble';
 import { withSitemapCache } from '@/lib/sitemap-cache';
@@ -27,32 +28,45 @@ export async function GET(req: Request) {
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
     const jobs: any[] = [];
-    let from = 0;
-    const PAGE = 100;
-    try {
-      while (jobs.length < 200 && true) {
-        const { data } = await supabaseAdmin
-          .from('jobs')
-          .select(
-            'id, company, external_id, slug, title, created_at, published_at, location, job_type, salary, tags, category, description'
-          )
-          .not('external_id', 'is', null)
-          .not('company', 'is', null)
-          .contains('tags', ['curated-jd'])
-          .gt('published_at', sevenDaysAgo)
-          .order('published_at', { ascending: false })
-          .range(from, from + PAGE - 1);
-        if (!data || !data.length) break;
-        for (const j of data) {
-          if (!jobQualifiesForSitemap(j)) continue;
-          jobs.push(j);
-          if (jobs.length >= 200) break;
-        }
-        from += PAGE;
-        if (data.length < PAGE) break;
+    const allStatic = await getStaticJobs();
+    if (allStatic && allStatic.length > 0) {
+      for (const j of allStatic) {
+        if (!j.external_id || !j.company) continue;
+        if (!Array.isArray(j.tags) || !j.tags.includes('curated-jd')) continue;
+        const pub = j.published_at || j.created_at;
+        if (!pub || pub <= sevenDaysAgo) continue;
+        if (!jobQualifiesForSitemap(j)) continue;
+        jobs.push(j);
+        if (jobs.length >= 200) break;
       }
-    } catch (e) {
-      console.error('RSS feed failed', e);
+    } else {
+      let from = 0;
+      const PAGE = 100;
+      try {
+        while (jobs.length < 200 && true) {
+          const { data } = await supabaseAdmin
+            .from('jobs')
+            .select(
+              'id, company, external_id, slug, title, created_at, published_at, location, job_type, salary, tags, category, description'
+            )
+            .not('external_id', 'is', null)
+            .not('company', 'is', null)
+            .contains('tags', ['curated-jd'])
+            .gt('published_at', sevenDaysAgo)
+            .order('published_at', { ascending: false })
+            .range(from, from + PAGE - 1);
+          if (!data || !data.length) break;
+          for (const j of data) {
+            if (!jobQualifiesForSitemap(j)) continue;
+            jobs.push(j);
+            if (jobs.length >= 200) break;
+          }
+          from += PAGE;
+          if (data.length < PAGE) break;
+        }
+      } catch (e) {
+        console.error('RSS feed failed', e);
+      }
     }
 
     const items = jobs

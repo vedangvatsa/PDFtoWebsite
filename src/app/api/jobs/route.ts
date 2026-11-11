@@ -178,113 +178,122 @@ export async function GET(request: NextRequest) {
 
   const fetchLimit = limit + 1;
   let mainResult: any = null;
-  try {
-    // --- Query 2: All jobs (backfill pool) ---
-    let query = supabase
-      .from('jobs')
-      .select(selectCols, needsDbCount ? { count: 'exact' } : undefined)
-      .or('tags.is.null,tags.not.cs.{source-closed}')
-      .or(companyJobsDateOrFilter(boardSince))
-      .order('published_at', { ascending: false, nullsFirst: false })
-      .order('id', { ascending: true });
-
-    // Filter by job type
-    if (type && type !== 'all') {
-      query = query.eq('job_type', type);
-    }
-
-    // Filter by location type (user-selected filter)
-    if (loc === 'remote') {
-      query = query.or('location.ilike.%remote%,location.ilike.%anywhere%,location.ilike.%distributed%,location.ilike.%worldwide%');
-    } else if (loc === 'onsite') {
-      query = query.not('location', 'ilike', '%remote%');
-    }
-
-    // Search by keyword in title or company
-    if (q) {
-      query = query.or(`title.ilike.%${q}%,company.ilike.%${q}%`);
-    }
-
-    // Unfiltered board: internships stay off unless asked. Fellowships are jobs —
-    // many are stored as internship, so keep any row whose title/category is a fellowship.
-    if (hideInternships) {
-      const notInternOrIsFellow =
-        'job_type.is.null,job_type.neq.internship,title.ilike.%fellow%,category.eq.fellowship';
-      query = query.or(notInternOrIsFellow);
-    }
-
-    const fellowshipOr =
-      'title.ilike.%fellow%,category.ilike.fellowship,tags.cs.{fellowship}';
+  const staticJobs = await getStaticJobs();
+  if (staticJobs && staticJobs.length > 0) {
+    let pool = staticJobs.filter((job) => shouldListLiveJobCard(job));
     if (fellowshipsOnly) {
-      query = query.or(fellowshipOr);
+      pool = pool.filter((j) => looksLikeFellowship({ title: j.title, category: j.category, tags: j.tags }) || j.category?.toLowerCase() === 'fellowship');
+    } else if (!type || type === 'all') {
+      pool = pool.filter((j) => j.job_type !== 'internship' || looksLikeFellowship({ title: j.title, category: j.category, tags: j.tags }));
     }
+    if (type && type !== 'all') {
+      pool = pool.filter((j) => j.job_type?.toLowerCase() === type.toLowerCase());
+    }
+    if (loc && loc !== 'all') {
+      if (loc === 'remote') pool = pool.filter((j) => /remote|worldwide|anywhere|global|\bwfh\b/i.test(j.location || ''));
+      else pool = pool.filter((j) => j.location?.toLowerCase().includes(loc.toLowerCase()));
+    }
+    if (q) {
+      const qLower = q.toLowerCase();
+      pool = pool.filter((j) => j.title?.toLowerCase().includes(qLower) || j.company?.toLowerCase().includes(qLower));
+    }
+    if (userProfile && profileComplete && userProfile.skills?.length > 0 && matchOnly && !q) {
+      pool = pool.filter((j) => {
+        const titleLower = (j.title || '').toLowerCase();
+        const tags = Array.isArray(j.tags) ? j.tags.map((t) => String(t).toLowerCase()) : [];
+        return userProfile.skills.some((s: string) => tags.includes(s.toLowerCase()) || titleLower.includes(s.toLowerCase()));
+      });
+    }
+    mainResult = {
+      data: pool.slice(offset, offset + fetchLimit),
+      count: pool.length,
+      error: null,
+    };
+  } else {
+    try {
+      // --- Query 2: All jobs (backfill pool) ---
+      let query = supabase
+        .from('jobs')
+        .select(selectCols, needsDbCount ? { count: 'exact' } : undefined)
+        .or('tags.is.null,tags.not.cs.{source-closed}')
+        .or(companyJobsDateOrFilter(boardSince))
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .order('id', { ascending: true });
 
-    // If user has complete profile AND match=true, filter to jobs that match their skills and location
-    if (profileComplete && userProfile && userProfile.skills.length > 0 && matchOnly && !q) {
-      // Build OR filter: match tags overlap OR any skill appears in the title
-      const titleFilters = userProfile.skills.map(s => `title.ilike.%${s}%`).join(',');
-      query = query.or(`tags.ov.{${userProfile.skills.join(',')}},${titleFilters}`);
+      // Filter by job type
+      if (type && type !== 'all') {
+        query = query.eq('job_type', type);
+      }
 
-      // If candidate has a location (and is not purely 'remote'), ensure jobs match location or are remote
-      if (userProfile.location) {
-        const userLoc = normalizeMatchLocation(userProfile.location);
-        if (!userLoc.isRemote && userLoc.tokens.length > 0) {
-          const locFilters = [
-            'location.ilike.%remote%',
-            'location.ilike.%anywhere%',
-            'location.ilike.%worldwide%',
-            'location.ilike.%distributed%',
-            ...userLoc.tokens.map((t: string) => `location.ilike.%${sanitizeFilterTerm(t)}%`)
-          ].join(',');
-          query = query.or(locFilters);
+      // Filter by location type (user-selected filter)
+      if (loc === 'remote') {
+        query = query.or('location.ilike.%remote%,location.ilike.%anywhere%,location.ilike.%distributed%,location.ilike.%worldwide%');
+      } else if (loc === 'onsite') {
+        query = query.not('location', 'ilike', '%remote%');
+      }
+
+      // Search by keyword in title or company
+      if (q) {
+        query = query.or(`title.ilike.%${q}%,company.ilike.%${q}%`);
+      }
+
+      // Unfiltered board: internships stay off unless asked. Fellowships are jobs —
+      // many are stored as internship, so keep any row whose title/category is a fellowship.
+      if (hideInternships) {
+        const notInternOrIsFellow =
+          'job_type.is.null,job_type.neq.internship,title.ilike.%fellow%,category.eq.fellowship';
+        query = query.or(notInternOrIsFellow);
+      }
+
+      const fellowshipOr =
+        'title.ilike.%fellow%,category.ilike.fellowship,tags.cs.{fellowship}';
+      if (fellowshipsOnly) {
+        query = query.or(fellowshipOr);
+      }
+
+      // If user has complete profile AND match=true, filter to jobs that match their skills and location
+      if (profileComplete && userProfile && userProfile.skills.length > 0 && matchOnly && !q) {
+        // Build OR filter: match tags overlap OR any skill appears in the title
+        const titleFilters = userProfile.skills.map(s => `title.ilike.%${s}%`).join(',');
+        query = query.or(`tags.ov.{${userProfile.skills.join(',')}},${titleFilters}`);
+
+        // If candidate has a location (and is not purely 'remote'), ensure jobs match location or are remote
+        if (userProfile.location) {
+          const userLoc = normalizeMatchLocation(userProfile.location);
+          if (!userLoc.isRemote && userLoc.tokens.length > 0) {
+            const locFilters = [
+              'location.ilike.%remote%',
+              'location.ilike.%anywhere%',
+              'location.ilike.%worldwide%',
+              'location.ilike.%distributed%',
+              ...userLoc.tokens.map((t: string) => `location.ilike.%${sanitizeFilterTerm(t)}%`)
+            ].join(',');
+            query = query.or(locFilters);
+          }
         }
       }
-    }
 
-    // One lookahead row establishes hasMore. Reordering a 3x window while moving
-    // the cursor by only 1x duplicated some jobs and skipped others between pages.
-    query = query.range(offset, offset + fetchLimit - 1);
+      // One lookahead row establishes hasMore. Reordering a 3x window while moving
+      // the cursor by only 1x duplicated some jobs and skipped others between pages.
+      query = query.range(offset, offset + fetchLimit - 1);
 
-    // Run the board query with a hard timeout — never cache a failed read or
-    // return an empty last page when the inventory is temporarily unavailable.
-    const fetchMain = async () => {
-      const result = await withTimeout(query, DB_BUDGET.list, 'api-jobs-main');
-      requireDatabaseResult(result, 'jobs board');
-      return result;
-    };
-    // Cache the public data, not the user response or per-client rate headers.
-    // Personalized SQL is never included in a shared entry.
-    const mainRead = userProfile
-      ? fetchMain()
-      : unstable_cache(fetchMain, ['jobs-board-v3', String(offset), String(limit), type || '', loc || '', kind || '', q, String(matchOnly)],
-          { revalidate: 60, tags: ['public-jobs'] })();
-    mainResult = await withTimeout(mainRead, DB_BUDGET.list + 250, 'api-jobs-main');
-    if (mainResult?.error) throw mainResult.error;
-  } catch (error) {
-    console.warn('[job-board-fallback]', error instanceof Error ? error.message : 'query failure');
-    const staticJobs = await getStaticJobs();
-    if (staticJobs && staticJobs.length > 0) {
-      let pool = staticJobs.filter((job) => shouldListLiveJobCard(job));
-      if (fellowshipsOnly) {
-        pool = pool.filter((j) => looksLikeFellowship({ title: j.title, category: j.category, tags: j.tags }) || j.category?.toLowerCase() === 'fellowship');
-      } else if (!type || type === 'all') {
-        pool = pool.filter((j) => j.job_type !== 'internship' || looksLikeFellowship({ title: j.title, category: j.category, tags: j.tags }));
-      }
-      if (type && type !== 'all') {
-        pool = pool.filter((j) => j.job_type?.toLowerCase() === type.toLowerCase());
-      }
-      if (loc && loc !== 'all') {
-        pool = pool.filter((j) => j.location?.toLowerCase().includes(loc.toLowerCase()));
-      }
-      if (q) {
-        pool = pool.filter((j) => j.title?.toLowerCase().includes(q) || j.company?.toLowerCase().includes(q));
-      }
-      mainResult = {
-        data: pool.slice(offset, offset + fetchLimit),
-        count: pool.length,
-        error: null,
+      // Run the board query with a hard timeout — never cache a failed read or
+      // return an empty last page when the inventory is temporarily unavailable.
+      const fetchMain = async () => {
+        const result = await withTimeout(query, DB_BUDGET.list, 'api-jobs-main');
+        requireDatabaseResult(result, 'jobs board');
+        return result;
       };
-    } else {
+      // Cache the public data, not the user response or per-client rate headers.
+      // Personalized SQL is never included in a shared entry.
+      const mainRead = userProfile
+        ? fetchMain()
+        : unstable_cache(fetchMain, ['jobs-board-v3', String(offset), String(limit), type || '', loc || '', kind || '', q, String(matchOnly)],
+            { revalidate: 60, tags: ['public-jobs'] })();
+      mainResult = await withTimeout(mainRead, DB_BUDGET.list + 250, 'api-jobs-main');
+      if (mainResult?.error) throw mainResult.error;
+    } catch (error) {
+      console.warn('[job-board-fallback]', error instanceof Error ? error.message : 'query failure');
       return jobDataUnavailableResponse(rlHeaders);
     }
   }
