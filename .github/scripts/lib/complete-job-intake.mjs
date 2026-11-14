@@ -6,7 +6,7 @@ import { sourcePublicationPatch } from '../../../src/lib/source-job-description.
 export async function completeJobCandidates(candidates, { limit, fetchOriginal, onOutcome = () => {} }) {
   const jobs = [];
   const stats = { attempted: 0, complete: 0, skipped: {}, failed: 0 };
-  const cap = Math.max(0, Math.min(500, Number(limit) || 0));
+  const cap = Math.max(0, Math.min(1000, Number(limit) || 0));
   for (const job of candidates) {
     if (jobs.length >= cap || stats.attempted >= cap * 4) break;
     stats.attempted++;

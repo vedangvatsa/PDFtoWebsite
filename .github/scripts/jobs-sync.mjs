@@ -91,9 +91,9 @@ function isKnownFundedCompany(company) {
 }
 
 // A full scrape can discover tens of thousands of live listings. Keep the
-// free-tier database bounded; 500 new rows per scheduled sync is ample for a
+// daily intake bounded; 1000 new rows per scheduled sync is ample for a
 // current board and works with the existing 30-day expiry cleanup.
-let newJobsRemaining = Math.max(0, Math.min(500, Math.floor(Number(process.env.JOBS_SYNC_MAX_NEW || 500)) || 0));
+let newJobsRemaining = Math.max(0, Math.min(1000, Math.floor(Number(process.env.JOBS_SYNC_MAX_NEW || 1000)) || 0));
 const fetchOriginal = createOriginalJobFetcher();
 
 async function sourceDescriptionCapacity() {

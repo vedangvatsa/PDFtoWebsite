@@ -70,7 +70,7 @@ jobs:
           JOBS_SYNC_BATCH_SIZE: '75'
           JOBS_SYNC_CONCURRENCY: '2'
           JOBS_SYNC_EXPAND_KNOWN_REMOTE_TECH: '1'
-          JOBS_SYNC_MAX_NEW: '500'
+          JOBS_SYNC_MAX_NEW: '1000'
           JOBS_SYNC_SCOPE: ${{ inputs.scope || 'all' }}
           AI_COVERAGE_OUTPUT: ${{ runner.temp }}/ai100-coverage.json
           # Original source text only; serial imports with a bounded queue.
