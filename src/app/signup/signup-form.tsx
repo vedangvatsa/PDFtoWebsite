@@ -117,9 +117,8 @@ export default function SignUpForm() {
       options: {
         // Used by email templates that include {{ .RedirectTo }} / confirmation URL base
         emailRedirectTo: emailRedirectTo(),
-        // The direct auth page is sign-in only. New accounts are created from
-        // an explicit editor flow after the visitor has started their profile.
-        shouldCreateUser: allowSignup,
+        // Allow visitors on the signup page to create accounts
+        shouldCreateUser: true,
       },
     });
     if (error) {

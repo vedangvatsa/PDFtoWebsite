@@ -30,7 +30,7 @@ function emailRedirectTo(): string {
 
 export function LoginDialog({
   trigger,
-  allowSignup = false,
+  allowSignup = true,
 }: {
   trigger?: React.ReactNode;
   allowSignup?: boolean;
@@ -53,8 +53,7 @@ export function LoginDialog({
       email,
       options: {
         emailRedirectTo: emailRedirectTo(),
-        // A regular sign-in must not create empty auth users. The editor opts
-        // into account creation only after a visitor has started a profile.
+        // Allow users to sign in or create an account via OTP
         shouldCreateUser: allowSignup,
       },
     });
