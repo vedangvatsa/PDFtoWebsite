@@ -57,9 +57,11 @@ interface JobsResponse {
 }
 
 const LOCATIONS = [
-  { value: 'all', label: 'All Locations' },
-  { value: 'remote', label: 'Remote Only' },
-  { value: 'onsite', label: 'On-site' },
+  { value: 'all', label: 'All Regions' },
+  { value: 'worldwide', label: 'Worldwide / Anywhere' },
+  { value: 'us', label: 'Americas / US' },
+  { value: 'europe', label: 'Europe / UK' },
+  { value: 'apac', label: 'Asia / APAC' },
 ];
 
 function organizeJobs(existingJobs: Job[], newJobs: Job[]): Job[] {

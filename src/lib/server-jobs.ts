@@ -70,8 +70,17 @@ export async function fetchServerJobs(options: ServerJobsQuery = {}) {
     pool = pool.filter((j) => j.job_type?.toLowerCase() === type.toLowerCase());
   }
   if (loc && loc !== 'all') {
-    if (loc === 'remote') pool = pool.filter((j) => /remote|worldwide|anywhere|global|\bwfh\b/i.test(j.location || ''));
-    else pool = pool.filter((j) => j.location?.toLowerCase().includes(loc.toLowerCase()));
+    if (loc === 'worldwide' || loc === 'remote') {
+      pool = pool.filter((j) => /\b(worldwide|anywhere|global|everywhere|wfh)\b/i.test(j.location || '') || (j.location || '').trim().toLowerCase() === 'remote');
+    } else if (loc === 'us') {
+      pool = pool.filter((j) => /\b(us|usa|united states|north america|canada)\b/i.test(j.location || ''));
+    } else if (loc === 'europe') {
+      pool = pool.filter((j) => /\b(europe|emea|uk|united kingdom|germany|france|spain|netherlands|ireland|poland|switzerland|sweden)\b/i.test(j.location || ''));
+    } else if (loc === 'apac') {
+      pool = pool.filter((j) => /\b(apac|asia|australia|india|singapore|japan|nz|new zealand|philippines|indonesia)\b/i.test(j.location || ''));
+    } else {
+      pool = pool.filter((j) => j.location?.toLowerCase().includes(loc.toLowerCase()));
+    }
   }
   if (q) {
     const qLower = q.toLowerCase();
