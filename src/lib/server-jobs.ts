@@ -33,7 +33,7 @@ function jobCardInfo(job: any) {
   const focus = skills.length > 0 ? ` with ${skills.slice(0, 3).join(', ')}` : '';
   const where = location ? `, ${location}` : '';
   const summary = `${company} is hiring a ${title} in ${category}${focus}${where}.`;
-  const highlights = [category, salary, ...skills].filter(Boolean).slice(0, 5);
+  const highlights: string[] = [category, salary, ...skills].filter((h): h is string => Boolean(h)).slice(0, 5);
   return { summary, highlights };
 }
 
