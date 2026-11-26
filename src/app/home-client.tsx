@@ -171,7 +171,7 @@ export default function HomeClient({ children }: { children?: React.ReactNode })
 
           <div className="space-y-3">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-balance">
-              Upload your CV. Browse tech jobs.
+              Upload CV. See Matching Jobs.
             </h1>
             <Link href="/jobs" className="inline-block text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors">
               {PLATFORM_JOBS_DISPLAY} curated roles, updated daily
