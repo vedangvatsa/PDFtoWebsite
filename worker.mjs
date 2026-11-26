@@ -39,7 +39,20 @@ export default {
       return rendererStub(env.PARSER_RENDERER, request.headers.get('cf-connecting-ip') || path, PARSER_POOL_SIZE, AI_RENDER_LOCATION).fetch(new Request(url, forwardedRequest(request)));
     }
     if (/\/opengraph-image(?:\/|$)/.test(path) || /^\/(?:icon|apple-icon)\/?$/.test(path)) {
-      return rendererStub(env.IMAGE_RENDERER, path, IMAGE_POOL_SIZE).fetch(forwardedRequest(request));
+      const imgKey = new Request(`${url.origin}${path}${url.search}`, { method: 'GET' });
+      if (request.method === 'GET') {
+        const hit = await caches.default.match(imgKey);
+        if (hit) return hit;
+      }
+      const response = await rendererStub(env.IMAGE_RENDERER, path, IMAGE_POOL_SIZE).fetch(forwardedRequest(request));
+      if (request.method === 'GET' && response.status === 200 && response.body) {
+        const headers = new Headers(response.headers);
+        headers.set('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+        const cached = new Response(response.body, { status: response.status, headers });
+        ctx.waitUntil(caches.default.put(imgKey, cached.clone()));
+        return cached;
+      }
+      return response;
     }
     // Absorb repeated crawler requests for confirmed stale job URLs before
     // starting the Next.js renderer. Auth, RSC and API traffic bypass this.

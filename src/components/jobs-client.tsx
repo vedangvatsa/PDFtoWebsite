@@ -166,8 +166,22 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
       if (matchOnly) params.set('match', 'true');
       if (isFellowships) params.set('kind', 'fellowship');
 
-      const res = await fetch(`/api/jobs?${params}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      let res: Response | null = null;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          res = await fetch(`/api/jobs?${params}`);
+          if (res.status === 503 && attempt < 2) {
+            // RENDER_BUSY backoff — wait 1.5s then retry before failing
+            await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
+            continue;
+          }
+          break;
+        } catch (fetchErr) {
+          if (attempt === 2) throw fetchErr;
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+      if (!res || !res.ok) throw new Error(`HTTP ${res?.status || 500}`);
       const data: JobsResponse = await res.json();
 
       if (append) {
