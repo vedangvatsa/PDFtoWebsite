@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PLATFORM_JOBS_DISPLAY } from '@/lib/platform-job-count';
 import JobsClient from '@/components/jobs-client';
+import { fetchServerJobs } from '@/lib/server-jobs';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cvin.bio';
 
@@ -15,7 +16,7 @@ function crawlPageNumber(page: string | undefined): number {
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; q?: string; type?: string; loc?: string }>;
 }): Promise<Metadata> {
   const countStr = PLATFORM_JOBS_DISPLAY;
   const params = await searchParams;
@@ -24,9 +25,9 @@ export async function generateMetadata({
   return {
     title:
       pageNum > 1
-        ? `Browse ${countStr} curated tech jobs — Page ${pageNum}`
-        : `Browse ${countStr} curated tech jobs`,
-    description: `Browse ${countStr} tech job openings at top companies including OpenAI, Stripe, Cloudflare, Anthropic and more. Filter by role, location, and company. Updated daily.`,
+        ? `Browse ${countStr} Remote Jobs — Page ${pageNum}`
+        : `Browse ${countStr} Remote Jobs`,
+    description: `Browse ${countStr} remote tech job openings at top companies including OpenAI, Stripe, Cloudflare, Anthropic and more. Filter by role, location, and company. Updated daily.`,
     keywords: ['tech jobs', 'software engineer jobs', 'AI jobs', 'remote tech jobs', 'startup jobs', 'engineering careers'],
     openGraph: {
       title: `Browse ${countStr} Jobs at Top Companies`,
@@ -63,13 +64,22 @@ function CrawlDepthLinks({ pageNum }: { pageNum: number }) {
 export default async function JobsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; q?: string; type?: string; loc?: string }>;
 }) {
   const params = await searchParams;
+  const pageNum = crawlPageNumber(params.page);
+  const initialData = await fetchServerJobs({
+    page: pageNum,
+    limit: 50,
+    q: params.q,
+    type: params.type,
+    loc: params.loc,
+  });
+
   return (
     <>
-      <CrawlDepthLinks pageNum={crawlPageNumber(params.page)} />
-      <JobsClient />
+      <CrawlDepthLinks pageNum={pageNum} />
+      <JobsClient initialData={initialData} />
     </>
   );
 }

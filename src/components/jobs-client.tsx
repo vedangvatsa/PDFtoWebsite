@@ -126,13 +126,26 @@ const FELLOWSHIP_LOGOS = [
   { name: 'Horizon', domain: 'horizonpublicservice.org' },
 ];
 
-export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellowships' }) {
+export interface JobsInitialData {
+  jobs: Job[];
+  total: number;
+  hasMore: boolean;
+  page?: number;
+}
+
+export default function JobsClient({
+  mode = 'jobs',
+  initialData,
+}: {
+  mode?: 'jobs' | 'fellowships';
+  initialData?: JobsInitialData;
+}) {
   const isFellowships = mode === 'fellowships';
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState<Job[]>(() => initialData?.jobs ? organizeJobs([], initialData.jobs) : []);
+  const [total, setTotal] = useState(() => initialData?.total ?? 0);
+  const [page, setPage] = useState(() => initialData?.page ?? 1);
+  const [hasMore, setHasMore] = useState(() => initialData?.hasMore ?? false);
+  const [loading, setLoading] = useState(() => !initialData?.jobs?.length);
   const [loadingMore, setLoadingMore] = useState(false);
   const [type] = useState('all');
   const [loc, setLoc] = useState('all');
@@ -145,6 +158,7 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const isInitialMount = useRef(Boolean(initialData?.jobs?.length));
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get('q');
@@ -204,6 +218,11 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
   }, [type, loc, search, matchOnly, isFellowships]);
 
   useEffect(() => {
+    // If the server provided initial jobs for page 1, skip duplicate initial client fetch
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     setPage(1);
     fetchJobs(1);
   }, [fetchJobs]);
@@ -294,7 +313,7 @@ export default function JobsClient({ mode = 'jobs' }: { mode?: 'jobs' | 'fellows
         {/* Hero */}
         <div className="flex flex-col mb-10">
           <h1 className={PAGE_TITLE}>
-            {isFellowships ? 'Fellowships' : 'Curated tech jobs'}
+            {isFellowships ? 'Fellowships' : 'Remote Jobs'}
           </h1>
           {!isFellowships && (
             <p className="mt-2 text-sm text-zinc-500">
