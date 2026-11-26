@@ -250,37 +250,6 @@ export default function JobsClient({
     return () => observer.disconnect();
   });
 
-  const viewedIds = useRef<Set<string>>(new Set());
-  useEffect(() => {
-    const flush = () => {
-      if (viewedIds.current.size === 0) return;
-      const ids = Array.from(viewedIds.current);
-      viewedIds.current.clear();
-      fetch('/api/jobs/track', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids, action: 'view' }),
-      }).catch(() => {});
-    };
-    const timer = setInterval(flush, 3000);
-    return () => { flush(); clearInterval(timer); };
-  }, []);
-
-  useEffect(() => {
-    const cards = document.querySelectorAll('[data-job-id]');
-    if (cards.length === 0) return;
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const id = (e.target as HTMLElement).dataset.jobId;
-          if (id) viewedIds.current.add(id);
-        }
-      });
-    }, { threshold: 0.5 });
-    cards.forEach(c => obs.observe(c));
-    return () => obs.disconnect();
-  }, [jobs]);
-
   const trackClick = (jobId: string, job: Job) => {
     posthog.capture('job_clicked', {
       job_id: job.id,
@@ -290,11 +259,6 @@ export default function JobsClient({
       match_count: job.match_count,
       destination: 'job_detail',
     });
-    fetch('/api/jobs/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ids: [jobId], action: 'click' }),
-    }).catch(() => {});
   };
 
   const handleJobClick = (job: Job) => {
